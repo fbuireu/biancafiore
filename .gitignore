@@ -62,3 +62,4 @@ yarn-error.log
 .yarn-integrity
 
 # IDE
+.idea
