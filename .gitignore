@@ -61,5 +61,6 @@ yarn-error.log
 .pnp.js
 .yarn-integrity
 
-# IDE
+# IDEs
 .idea
+.vscode
