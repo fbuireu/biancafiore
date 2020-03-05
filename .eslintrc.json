@@ -18,7 +18,7 @@
     "babel/no-invalid-this": 1,
     "linebreak-style": [
       "warn",
-      "unix"
+      "windows"
     ],
     "max-len": [
       "warn",
@@ -32,6 +32,7 @@
         "ignoreChainWithDepth": 2
       }
     ],
+    "no-unused-vars": "warn",
     "no-else-return": [
       "warn",
       {
