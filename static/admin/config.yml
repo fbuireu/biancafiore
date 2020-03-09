@@ -1,0 +1,17 @@
+backend:
+  name: github
+  repo: fbuireu/biancafiore
+media_folder: static/assets
+public_folder: /assets
+publish_mode: editorial_workflow
+collections:
+  - name: articles
+    label: Articles
+    label_singular: Article
+    folder: articles
+    create: true
+    fields:
+      - { name: slug, label: Slug }
+      - { name: date, label: Date, widget: datetime }
+      - { name: title, label: Title }
+      - { name: body, label: Body, widget: markdown }
