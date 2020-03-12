@@ -1,17 +1,80 @@
 backend:
   name: github
   repo: fbuireu/biancafiore
+  branch: master
 media_folder: static/assets
 public_folder: /assets
 publish_mode: editorial_workflow
+site_url: https://biancafiore.me
+display_url: https://biancafiore.me
+logo_url: https://your-site.com/images/logo.svg
+commit_messages:
+  create: "Create {{collection}} {{slug}}"
+  update: "Update {{collection}} {{slug}}"
+  delete: "Delete {{collection}} {{slug}}"
+  uploadMedia: "[skip ci] Upload {{path}}"
+  deleteMedia: "[skip ci] Delete {{path}}"
 collections:
+  - name: menu
+    label: Menu
+    label_singular: Menu element
+    folder: menu_items
+    create: true
+    editor:
+      preview: false
+    fields:
+      - { name: name, label: Name }
+      - { name: slug, label: Slug }
   - name: articles
     label: Articles
     label_singular: Article
     folder: articles
+    description: A list of all created articles
+    slug: "{{slug}}"
     create: true
+    preview_path: articles/{{slug}}
+    show_preview_links: true
     fields:
-      - { name: slug, label: Slug }
-      - { name: date, label: Date, widget: datetime }
-      - { name: title, label: Title }
-      - { name: body, label: Body, widget: markdown }
+      - { label: SEO, name: seo, widget: object,
+          fields: [
+          { name: title, label: Title, widget: string, required: true },
+          { name: metaDescription, label: MetaDescription, required: true, widget: text },
+          { name: author, label: Author, default: Bianca Fiore, required: true },
+          { name: slug, label: Slug, required: true }]}
+      - { label: Content, name: content, widget: object,
+          fields:[
+          { name: date, label: Date, required: true, widget: datetime },
+          { name: isFeaturedPost, label: Featured Post, widget: boolean },
+          { name: featuredimage, label: Featured Image, widget: image },
+          { name: title, label: Title, required: true },
+          { name: body, label: Body, required: true, widget: markdown },
+          { name: tags,  label: Tags, widget: list }]}
+  - name: pages
+    label: Pages
+    label_singular: Page
+    create: true
+    description: A list of all pages and its configuration
+    files:
+      - file: src/pages/index.md
+        label: Home
+        name:  index
+        show_preview_links: true
+        fields:
+          - { label: Template Key, name: templateKey, widget: hidden, required: true, default: index }
+          - { label: Title, name: title, widget: string, required: true  }
+          - { label: Image, name: image, widget: image }
+          - { label: Description, name: description, widget: string }
+          - { label: Testimonials, name: testimonials, widget: list,
+              fields: [
+              { label: Quote, name: quote, widget: string },
+              { label: Author, name: author, widget: string },
+              { label: Description, name: description, widget: string }]}
+      - file: src/pages/about/index.md
+        label: About me
+        name: about me
+        show_preview_links: true
+        fields:
+          - { label: Template Key, name: templateKey, widget: hidden, required: true, default: about-me }
+          - { label: Slug, name: slug, widget: string, required: true, default: about-me }
+          - { label: Title, name: title, widget: string }
+          - { label: Body, name: body, widget: markdown }
