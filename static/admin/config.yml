@@ -9,22 +9,32 @@ site_url: https://biancafiore.me
 display_url: https://biancafiore.me
 logo_url: https://your-site.com/images/logo.svg
 commit_messages:
-  create: "Create {{collection}} {{slug}}"
-  update: "Update {{collection}} {{slug}}"
-  delete: "Delete {{collection}} {{slug}}"
-  uploadMedia: "[skip ci] Upload {{path}}"
-  deleteMedia: "[skip ci] Delete {{path}}"
+  create: "{{collection}} collection ({{slug}}) created"
+  update: "{{collection}} collection ({{slug}}) updated"
+  delete: "{{collection}} collection ({{slug}}) deleted"
+  uploadMedia: "[skip ci] {{path}} media uploaded"
+  deleteMedia: "[skip ci] {{path}} media deleted"
 collections:
-  - name: menu
-    label: Menu
-    label_singular: Menu element
-    folder: menu_items
+  - name: locales
+    label: Locales
+    label_singular: Locale
+    folder: locales
     create: true
     editor:
       preview: false
     fields:
-      - { name: name, label: Name }
-      - { name: slug, label: Slug }
+      - { name: name, label: Name, required: true, widget: string }
+      - { name: iso, label: 2 letter ISO code, required: true, widget: string, pattern:["^[a-z]{2}$", This value must have 2 characters]}
+  - name: menu
+    label: Menu
+    label_singular: Menu element
+    folder: src/atoms/menuItems
+    create: true
+    editor:
+      preview: false
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: slug, label: Slug, widget: string }
   - name: articles
     label: Articles
     label_singular: Article
@@ -32,21 +42,22 @@ collections:
     description: A list of all created articles
     slug: "{{slug}}"
     create: true
-    preview_path: articles/{{slug}}
+    preview_path: articles/{{locale}/{{slug}}
     show_preview_links: true
     fields:
-      - { label: SEO, name: seo, widget: object,
-          fields: [
-          { name: title, label: Title, widget: string, required: true },
-          { name: metaDescription, label: MetaDescription, required: true, widget: text },
-          { name: author, label: Author, default: Bianca Fiore, required: true },
-          { name: slug, label: Slug, required: true }]}
-      - { label: Content, name: content, widget: object,
+      - { name: locale, label: locale, required: true, widget: relation, collection: locales, searchFields: name, value: name, displayFields: name }
+      - {name: seo, label: SEO, widget: object,
+         fields: [
+         { name: title, label: Title, required: true, widget: string },
+         { name: metaDescription, label: Meta description, required: true, widget: text },
+         { name: author, label: Author, default: Bianca Fiore, required: true, widget: string },
+         { name: slug, label: Slug, required: true, widget: string }]}
+      - { name: content, label: Content,  widget: object,
           fields:[
-          { name: date, label: Date, required: true, widget: datetime },
+          { name: date, label: Date, required: true, widget: datetime, dateFormat: MM/DD/YYYY, timeFormat: HH:mm, format: LLL },
           { name: isFeaturedPost, label: Featured Post, widget: boolean },
           { name: featuredimage, label: Featured Image, widget: image },
-          { name: title, label: Title, required: true },
+          { name: title, label: Title, required: true, widget: string },
           { name: body, label: Body, required: true, widget: markdown },
           { name: tags,  label: Tags, widget: list }]}
   - name: pages
@@ -60,21 +71,21 @@ collections:
         name:  index
         show_preview_links: true
         fields:
-          - { label: Template Key, name: templateKey, widget: hidden, required: true, default: index }
-          - { label: Title, name: title, widget: string, required: true  }
-          - { label: Image, name: image, widget: image }
-          - { label: Description, name: description, widget: string }
-          - { label: Testimonials, name: testimonials, widget: list,
+          - { name: templateKey, label: Template Key, required: true, default: index,  widget: hidden }
+          - { name: title, label: Title, required: true, widget: string }
+          - { name: image, label: Image, widget: image }
+          - { name: description, label: Description, widget: string }
+          - { name: testimonials, label: Testimonials, widget: list,
               fields: [
-              { label: Quote, name: quote, widget: string },
-              { label: Author, name: author, widget: string },
-              { label: Description, name: description, widget: string }]}
+              { name: quote, label: Quote,  widget: string },
+              { name: author, label: Author, widget: string },
+              { name: description, label: Description, widget: string }]}
       - file: src/pages/about/index.md
         label: About me
         name: about me
         show_preview_links: true
         fields:
-          - { label: Template Key, name: templateKey, widget: hidden, required: true, default: about-me }
-          - { label: Slug, name: slug, widget: string, required: true, default: about-me }
-          - { label: Title, name: title, widget: string }
-          - { label: Body, name: body, widget: markdown }
+          - { name: templateKey, label: Template Key, required: true, default: about-me, widget: hidden }
+          - { name: slug, label: Slug, required: true, default: about-me, widget: string }
+          - { name: title, label: Title, widget: string }
+          - { name: body, label: Body, widget: markdown }
