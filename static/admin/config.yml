@@ -2,18 +2,18 @@ backend:
   name: github
   repo: fbuireu/biancafiore
   branch: master
+  commit_messages:
+    create: "{{collection}} collection ({{slug}}) created"
+    update: "{{collection}} collection ({{slug}}) updated"
+    delete: "{{collection}} collection ({{slug}}) deleted"
+    uploadMedia: "[skip ci] {{path}} media uploaded"
+    deleteMedia: "[skip ci] {{path}} media deleted"
 media_folder: static/assets
 public_folder: /assets
 publish_mode: editorial_workflow
 site_url: https://biancafiore.me
 display_url: https://biancafiore.me
 logo_url: https://your-site.com/images/logo.svg
-commit_messages:
-  create: "{{collection}} collection ({{slug}}) created"
-  update: "{{collection}} collection ({{slug}}) updated"
-  delete: "{{collection}} collection ({{slug}}) deleted"
-  uploadMedia: "[skip ci] {{path}} media uploaded"
-  deleteMedia: "[skip ci] {{path}} media deleted"
 collections:
   - name: locales
     label: Locales
@@ -24,7 +24,7 @@ collections:
       preview: false
     fields:
       - { name: name, label: Name, required: true, widget: string }
-      - { name: iso, label: 2 letter ISO code, required: true, widget: string, pattern:["^[a-z]{2}$", This value must have 2 characters]}
+      - { name: iso, label: ISO code, required: true, widget: string, pattern:["^[a-z]{2}$", "This field must have only 2 characters"]}
   - name: menu
     label: Menu
     label_singular: Menu element
@@ -42,7 +42,7 @@ collections:
     description: A list of all created articles
     slug: "{{slug}}"
     create: true
-    preview_path: articles/{{locale}/{{slug}}
+    preview_path: articles/{{slug}}
     show_preview_links: true
     fields:
       - { name: locale, label: locale, required: true, widget: relation, collection: locales, searchFields: name, value: name, displayFields: name }
