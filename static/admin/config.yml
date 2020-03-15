@@ -20,6 +20,7 @@ collections:
     label_singular: Locale
     identifier_field: name
     folder: site/locales
+    description: A list of all availables locales. They will appear on article creation page
     create: true
     editor:
       preview: false
@@ -30,6 +31,7 @@ collections:
     label: Menu
     label_singular: Menu element
     folder: site/menu
+    description: A list of all menu items
     create: true
     editor:
       preview: false
@@ -41,6 +43,7 @@ collections:
     label_singular: Tag
     identifier_field: tag
     folder: site/articles/tags
+    description: A list of all created tags. They will appear on article creation page
     create: true
     editor:
       preview: false
@@ -75,8 +78,8 @@ collections:
   - name: pages
     label: Pages
     label_singular: Page
+    description: A list of all created pages and its configuration
     create: true
-    description: A list of all pages and its configuration
     files:
       - file: src/pages/index.md
         label: Home
