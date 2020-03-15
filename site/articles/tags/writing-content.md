@@ -1,3 +1,0 @@
----
-tag: Writing content
----
