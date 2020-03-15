@@ -10,6 +10,7 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-plugin-eslint`,
     `gatsby-plugin-sass`,
+    `gatsby-plugin-netlify-cms`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
