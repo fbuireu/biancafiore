@@ -3,9 +3,9 @@ backend:
   repo: fbuireu/biancafiore
   branch: master
   commit_messages:
-    create: "Collection {{collection}} ({{slug}}) created"
-    update: "Collection {{collection}} ({{slug}}) updated"
-    delete: "Collection {{collection}} ({{slug}}) deleted"
+    create: "{{slug}} {{collection}} created"
+    update: "{{slug}} {{collection}} updated"
+    delete: "{{slug}} {{collection}} deleted"
     uploadMedia: "[skip ci] {{path}} media uploaded"
     deleteMedia: "[skip ci] {{path}} media deleted"
 media_folder: static/assets
