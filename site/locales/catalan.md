@@ -1,4 +1,0 @@
----
-name: Catalan
-iso: ca
----
