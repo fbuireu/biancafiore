@@ -13,39 +13,50 @@ public_folder: /assets
 publish_mode: editorial_workflow
 site_url: https://biancafiore.me
 display_url: https://biancafiore.me
-logo_url: https://your-site.com/images/logo.svg
+logo_url: https://biancafiore.me/images/logo.svg
 collections:
   - name: locales
     label: Locales
     label_singular: Locale
-    folder: locales
+    identifier_field: name
+    folder: site/locales
     create: true
     editor:
       preview: false
     fields:
       - { name: name, label: Name, required: true, widget: string }
-      - { name: iso, label: ISO code, required: true, widget: string, pattern:["^[a-z]{2}$", "This field must have only 2 characters"]}
+      - { name: iso, label: ISO code, required: true, widget: string, pattern: ["^[a-z]{2}$", "This field must have only 2 characters"]}
   - name: menu
     label: Menu
     label_singular: Menu element
-    folder: src/atoms/menuItems
+    folder: site/menu
     create: true
     editor:
       preview: false
     fields:
       - { name: name, label: Name, widget: string }
       - { name: slug, label: Slug, widget: string }
+  - name: tags
+    label: Tags
+    label_singular: Tag
+    identifier_field: tag
+    folder: site/articles/tags
+    create: true
+    editor:
+      preview: false
+    fields:
+      - { name: tag, label: Tag, widget: string }
   - name: articles
     label: Articles
     label_singular: Article
-    folder: articles
+    folder: site/articles
     description: A list of all created articles
     slug: "{{slug}}"
     create: true
     preview_path: articles/{{slug}}
     show_preview_links: true
     fields:
-      - { name: locale, label: locale, required: true, widget: relation, collection: locales, searchFields: name, value: name, displayFields: name }
+      - { name: locale, label: Locale, required: true, widget: relation, collection: locales, searchFields: name, valueField: name, displayFields: name }
       - {name: seo, label: SEO, widget: object,
          fields: [
          { name: title, label: Title, required: true, widget: string },
@@ -54,12 +65,13 @@ collections:
          { name: slug, label: Slug, required: true, widget: string }]}
       - { name: content, label: Content,  widget: object,
           fields:[
-          { name: date, label: Date, required: true, widget: datetime, dateFormat: MM/DD/YYYY, timeFormat: HH:mm, format: LLL },
+          { name: publishDate, label: Publish date, required: true, widget: datetime, dateFormat: MM/DD/YYYY, timeFormat: HH:mm, format: LLL },
+          { name: readingTime, label: Reading time, widget: number, valueType: int, min: 0, max: 25 },
           { name: isFeaturedPost, label: Featured Post, widget: boolean },
           { name: featuredimage, label: Featured Image, widget: image },
           { name: title, label: Title, required: true, widget: string },
           { name: body, label: Body, required: true, widget: markdown },
-          { name: tags,  label: Tags, widget: list }]}
+          { name: tags, label: Tags, required: true, widget: relation, collection: tags, searchFields: tag, valueField: tag, displayFields: tag, multiple: true }]}
   - name: pages
     label: Pages
     label_singular: Page
@@ -80,7 +92,7 @@ collections:
               { name: quote, label: Quote,  widget: string },
               { name: author, label: Author, widget: string },
               { name: description, label: Description, widget: string }]}
-      - file: src/pages/about/index.md
+      - file: src/pages/about-me/index.md
         label: About me
         name: about me
         show_preview_links: true
