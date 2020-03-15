@@ -3,11 +3,11 @@ backend:
   repo: fbuireu/biancafiore
   branch: master
   commit_messages:
-    create: "Collection {{collection}} ({{slug}}) created"
-    update: "Collection {{collection}} ({{slug}}) updated"
-    delete: "Collection {{collection}} ({{slug}}) deleted"
-    uploadMedia: "[skip ci] {{path}} media uploaded"
-    deleteMedia: "[skip ci] {{path}} media deleted"
+    create: '{{collection}} "{{slug}}" created'
+    update: '{{collection}} "{{slug}}" updated'
+    delete: '{{collection}} "{{slug}}" deleted'
+    uploadMedia: '[skip ci] {{path}} media uploaded'
+    deleteMedia: '[skip ci] {{path}} media deleted'
 media_folder: static/assets
 public_folder: /assets
 publish_mode: editorial_workflow
@@ -25,7 +25,7 @@ collections:
       preview: false
     fields:
       - { name: name, label: Name, required: true, widget: string }
-      - { name: iso, label: ISO code, required: true, widget: string, pattern: ["^[a-z]{2}$", "This field must have only 2 characters"]}
+      - { name: iso, label: ISO code, required: true, widget: string, pattern: ['^[a-z]{2}$', 'This field must have only 2 characters']}
   - name: menu
     label: Menu
     label_singular: Menu element
@@ -51,7 +51,7 @@ collections:
     label_singular: Article
     folder: site/articles
     description: A list of all created articles
-    slug: "{{slug}}"
+    slug: '{{slug}}'
     create: true
     preview_path: articles/{{slug}}
     show_preview_links: true
