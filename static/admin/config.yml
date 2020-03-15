@@ -1,0 +1,103 @@
+backend:
+  name: github
+  repo: fbuireu/biancafiore
+  branch: master
+  commit_messages:
+    create: "Collection {{collection}} ({{slug}}) created"
+    update: "Collection {{collection}} ({{slug}}) updated"
+    delete: "Collection {{collection}} ({{slug}}) deleted"
+    uploadMedia: "[skip ci] {{path}} media uploaded"
+    deleteMedia: "[skip ci] {{path}} media deleted"
+media_folder: static/assets
+public_folder: /assets
+publish_mode: editorial_workflow
+site_url: https://biancafiore.me
+display_url: https://biancafiore.me
+logo_url: https://biancafiore.me/images/logo.svg
+collections:
+  - name: locales
+    label: Locales
+    label_singular: Locale
+    identifier_field: name
+    folder: site/locales
+    create: true
+    editor:
+      preview: false
+    fields:
+      - { name: name, label: Name, required: true, widget: string }
+      - { name: iso, label: ISO code, required: true, widget: string, pattern: ["^[a-z]{2}$", "This field must have only 2 characters"]}
+  - name: menu
+    label: Menu
+    label_singular: Menu element
+    folder: site/menu
+    create: true
+    editor:
+      preview: false
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: slug, label: Slug, widget: string }
+  - name: tags
+    label: Tags
+    label_singular: Tag
+    identifier_field: tag
+    folder: site/articles/tags
+    create: true
+    editor:
+      preview: false
+    fields:
+      - { name: tag, label: Tag, widget: string }
+  - name: articles
+    label: Articles
+    label_singular: Article
+    folder: site/articles
+    description: A list of all created articles
+    slug: "{{slug}}"
+    create: true
+    preview_path: articles/{{slug}}
+    show_preview_links: true
+    fields:
+      - { name: locale, label: Locale, required: true, widget: relation, collection: locales, searchFields: name, valueField: name, displayFields: name }
+      - {name: seo, label: SEO, widget: object,
+         fields: [
+         { name: title, label: Title, required: true, widget: string },
+         { name: metaDescription, label: Meta description, required: true, widget: text },
+         { name: author, label: Author, default: Bianca Fiore, required: true, widget: string },
+         { name: slug, label: Slug, required: true, widget: string }]}
+      - { name: content, label: Content,  widget: object,
+          fields:[
+          { name: publishDate, label: Publish date, required: true, widget: datetime, dateFormat: MM/DD/YYYY, timeFormat: HH:mm, format: LLL },
+          { name: readingTime, label: Reading time, widget: number, valueType: int, min: 0, max: 25 },
+          { name: isFeaturedPost, label: Featured Post, widget: boolean },
+          { name: featuredimage, label: Featured Image, widget: image },
+          { name: title, label: Title, required: true, widget: string },
+          { name: body, label: Body, required: true, widget: markdown },
+          { name: tags, label: Tags, required: true, widget: relation, collection: tags, searchFields: tag, valueField: tag, displayFields: tag, multiple: true }]}
+  - name: pages
+    label: Pages
+    label_singular: Page
+    create: true
+    description: A list of all pages and its configuration
+    files:
+      - file: src/pages/index.md
+        label: Home
+        name:  index
+        show_preview_links: true
+        fields:
+          - { name: templateKey, label: Template Key, required: true, default: index,  widget: hidden }
+          - { name: title, label: Title, required: true, widget: string }
+          - { name: image, label: Image, widget: image }
+          - { name: description, label: Description, widget: string }
+          - { name: testimonials, label: Testimonials, widget: list,
+              fields: [
+              { name: quote, label: Quote,  widget: string },
+              { name: author, label: Author, widget: string },
+              { name: description, label: Description, widget: string }]}
+      - file: src/pages/about-me/index.md
+        label: About me
+        name: about me
+        show_preview_links: true
+        fields:
+          - { name: templateKey, label: Template Key, required: true, default: about-me, widget: hidden }
+          - { name: slug, label: Slug, required: true, default: about-me, widget: string }
+          - { name: title, label: Title, widget: string }
+          - { name: body, label: Body, widget: markdown }
