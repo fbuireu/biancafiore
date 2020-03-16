@@ -1,9 +1,11 @@
-const pages = require(`./src/build/pages`);
+import { home } from './src/build/home';
+import { articles } from './src/build/articles';
 
-exports.createPages = async ({ graphql, actions }) => {
+export async function createPages ({ graphql, actions, reporter }) {
   await Promise.all(
     [
-      // pages(graphql, actions),
+      home(graphql, actions, reporter),
+      articles(graphql, actions, reporter),
     ],
   );
-};
+}
