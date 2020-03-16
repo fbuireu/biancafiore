@@ -78,12 +78,12 @@ collections:
   - name: pages
     label: Pages
     label_singular: Page
-    description: A list of all created pages and its configuration
+    description: A list of all created home and its configuration
     create: true
     files:
       - file: src/pages/markdown/index.md
         label: Home
-        name:  index
+        name:  home
         show_preview_links: true
         fields:
           - { name: templateKey, label: Template Key, required: true, default: index,  widget: hidden }
