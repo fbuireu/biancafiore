@@ -10,7 +10,15 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-plugin-eslint`,
     `gatsby-plugin-sass`,
+    `gatsby-transformer-remark`,
     `gatsby-plugin-netlify-cms`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `pages`,
+        path: `${__dirname}/src/pages`,
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {

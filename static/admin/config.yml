@@ -20,6 +20,7 @@ collections:
     label_singular: Locale
     identifier_field: name
     folder: site/locales
+    description: A list of all availables locales. They will appear on article creation page
     create: true
     editor:
       preview: false
@@ -30,6 +31,7 @@ collections:
     label: Menu
     label_singular: Menu element
     folder: site/menu
+    description: A list of all menu items
     create: true
     editor:
       preview: false
@@ -41,6 +43,7 @@ collections:
     label_singular: Tag
     identifier_field: tag
     folder: site/articles/tags
+    description: A list of all created tags. They will appear on article creation page
     create: true
     editor:
       preview: false
@@ -75,8 +78,8 @@ collections:
   - name: pages
     label: Pages
     label_singular: Page
+    description: A list of all created pages and its configuration
     create: true
-    description: A list of all pages and its configuration
     files:
       - file: src/pages/index.md
         label: Home
@@ -85,7 +88,8 @@ collections:
         fields:
           - { name: templateKey, label: Template Key, required: true, default: index,  widget: hidden }
           - { name: title, label: Title, required: true, widget: string }
-          - { name: image, label: Image, widget: image }
+          - { name: slug, label: Slug, required: true, widget: string }
+          - { name: image, label: Image, required: false, widget: image }
           - { name: description, label: Description, widget: string }
           - { name: testimonials, label: Testimonials, widget: list,
               fields: [
@@ -98,6 +102,6 @@ collections:
         show_preview_links: true
         fields:
           - { name: templateKey, label: Template Key, required: true, default: about-me, widget: hidden }
-          - { name: slug, label: Slug, required: true, default: about-me, widget: string }
           - { name: title, label: Title, widget: string }
+          - { name: slug, label: Slug, required: true, default: about-me, widget: string }
           - { name: body, label: Body, widget: markdown }
