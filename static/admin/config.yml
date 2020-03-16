@@ -81,7 +81,7 @@ collections:
     description: A list of all created pages and its configuration
     create: true
     files:
-      - file: src/pages/index.md
+      - file: src/pages/markdown/index.md
         label: Home
         name:  index
         show_preview_links: true
@@ -96,7 +96,7 @@ collections:
               { name: quote, label: Quote,  widget: string },
               { name: author, label: Author, widget: string },
               { name: description, label: Description, widget: string }]}
-      - file: src/pages/about-me.md
+      - file: src/pages/markdown/about-me.md
         label: About me
         name: about-me
         show_preview_links: true
