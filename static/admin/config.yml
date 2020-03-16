@@ -96,9 +96,9 @@ collections:
               { name: quote, label: Quote,  widget: string },
               { name: author, label: Author, widget: string },
               { name: description, label: Description, widget: string }]}
-      - file: src/pages/about-me/index.md
+      - file: src/pages/about-me.md
         label: About me
-        name: about me
+        name: about-me
         show_preview_links: true
         fields:
           - { name: templateKey, label: Template Key, required: true, default: about-me, widget: hidden }
