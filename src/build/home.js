@@ -1,24 +1,23 @@
-import * as path from 'path';
+const path = require(`path`);
 
-export async function home (graphql, { createPage }, reporter) {
-  const HOME_TEMPLATE = path.resolve(
-    __dirname + `/../../pages/index.js`);
+async function home (graphql, { createPage }, reporter) {
+  const HOME_PAGE = path.resolve(`./src/pages/index.js`);
 
-  const QUERY = await graphql(`{
-      allMarkdownRemark {
-        edges {
-          node {
-            id
-            fields {
-              slug
-            }
-            frontmatter {
-              templateKey
-            }
+  const QUERY = await graphql(`
+  {
+    allMarkdownRemark(filter: { frontmatter: {slug: {eq: '/' }}}) {
+      edges {
+        node {
+          frontmatter {
+            title
+            slug
+            description
+            tag
           }
         }
       }
     }
+  }
 `);
 
   if (QUERY.errors) {
@@ -26,13 +25,17 @@ export async function home (graphql, { createPage }, reporter) {
     return true;
   }
 
-  let resultForms = QUERY.data.allMarkdownRemark.edges;
+  let result = QUERY.data.allMarkdownRemark.edges;
 
-  resultForms.map(node => {
+  result.forEach(node => {
     createPage({
-      path: node.slug + `/`,
-      component: HOME_TEMPLATE,
-      context: {},
+      path: node.frontmatter.slug,
+      component: HOME_PAGE,
+      context: {
+        data: node.frontmatter,
+      },
     });
   });
 }
+
+module.exports = home;
