@@ -1,5 +1,5 @@
 ---
 title: Welcome to Bianca Fiore site
 slug: /
-description: Test description v1
+description: Test description v2
 ---
