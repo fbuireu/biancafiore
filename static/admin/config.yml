@@ -59,6 +59,7 @@ collections:
     preview_path: articles/{{slug}}
     show_preview_links: true
     fields:
+      - { name: templateKey, label: Template Key, required: true, default: articles, widget: hidden }
       - { name: locale, label: Locale, required: true, widget: relation, collection: locales, searchFields: name, valueField: name, displayFields: name }
       - {name: seo, label: SEO, widget: object,
          fields: [
@@ -78,15 +79,16 @@ collections:
   - name: pages
     label: Pages
     label_singular: Page
-    description: A list of all created home and its configuration
+    slug: '{{slug}}'
+    description: A list of all created pages and its configuration
     create: true
     files:
-      - file: src/pages/markdown/index.md
+      - name:  home
         label: Home
-        name:  home
+        file: src/pages/markdown/index.md
         show_preview_links: true
         fields:
-          - { name: templateKey, label: Template Key, required: true, default: index,  widget: hidden }
+          - { name: templateKey, label: Template Key, required: true, default: index, widget: hidden }
           - { name: title, label: Title, required: true, widget: string }
           - { name: slug, label: Slug, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
@@ -96,9 +98,9 @@ collections:
               { name: quote, label: Quote,  widget: string },
               { name: author, label: Author, widget: string },
               { name: description, label: Description, widget: string }]}
-      - file: src/pages/markdown/about-me.md
+      - name: about-me
         label: About me
-        name: about-me
+        file: src/pages/markdown/about-me.md
         show_preview_links: true
         fields:
           - { name: templateKey, label: Template Key, required: true, default: about-me, widget: hidden }
