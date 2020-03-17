@@ -9,20 +9,33 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-eslint`,
-    `gatsby-plugin-sass`,
     `gatsby-transformer-remark`,
     `gatsby-plugin-netlify-cms`,
+    `gatsby-plugin-sass`,
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: `gatsby-plugin-postcss`,
       options: {
-        name: `pages`,
-        path: `${__dirname}/src/pages/markdown`,
+        postCssPlugins: [require(`postcss-preset-env`)({ stage: 0 })],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-purgecss`,
+      options: {
+        printRejected: true,
+        develop: true,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `pages`,
+        name: `tags`,
+        path: `${__dirname}/site/articles/tags`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `articles`,
         path: `${__dirname}/site/articles`,
       },
     },
@@ -31,6 +44,13 @@ module.exports = {
       options: {
         name: `images`,
         path: `${__dirname}/src/images`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `pages`,
+        path: `${__dirname}/src/pages/markdown`,
       },
     },
     {
@@ -45,5 +65,6 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+    `gatsby-plugin-netlify`,
   ],
 };
