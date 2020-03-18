@@ -56,10 +56,10 @@ collections:
     description: A list of all created articles
     slug: '{{seo.slug}}'
     create: true
-    preview_path: articles/
+    preview_path: articles/{{slug}}
     show_preview_links: true
     fields:
-      - { name: templateKey, label: Template Key, required: true, default: article, widget: hidden }
+      - { name: templateKey, label: Template Key, required: true, default: "article", widget: hidden }
       - { name: locale, label: Locale, required: true, widget: relation, collection: locales, searchFields: name, valueField: name, displayFields: name }
       - {name: seo, label: SEO, widget: object,
          fields: [
