@@ -54,16 +54,15 @@ collections:
     label_singular: Article
     folder: site/articles
     description: A list of all created articles
-    slug: '{{slug}}'
+    slug: '{{seo.slug}}'
     create: true
-    preview_path: articles/{{slug}}
+    preview_path: articles/
     show_preview_links: true
     fields:
-      - { name: templateKey, label: Template Key, required: true, default: articles, widget: hidden }
+      - { name: templateKey, label: Template Key, required: true, default: article, widget: hidden }
       - { name: locale, label: Locale, required: true, widget: relation, collection: locales, searchFields: name, valueField: name, displayFields: name }
       - {name: seo, label: SEO, widget: object,
          fields: [
-         { name: title, label: Title, required: true, widget: string },
          { name: metaDescription, label: Meta description, required: true, widget: text },
          { name: author, label: Author, default: Bianca Fiore, required: true, widget: string },
          { name: slug, label: Slug, required: true, widget: string }]}
@@ -71,11 +70,11 @@ collections:
           fields:[
           { name: publishDate, label: Publish date, required: true, widget: datetime, dateFormat: MM/DD/YYYY, timeFormat: HH:mm, format: LLL },
           { name: readingTime, label: Reading time, widget: number, valueType: int, min: 0, max: 25 },
-          { name: isFeaturedPost, label: Featured Post, widget: boolean },
-          { name: featuredimage, label: Featured Image, widget: image },
+          { name: isFeaturedPost, label: Featured Post, required: false, widget: boolean },
+          { name: featuredimage, label: Featured Image, required: false, widget: image },
           { name: title, label: Title, required: true, widget: string },
-          { name: body, label: Body, required: true, widget: markdown },
-          { name: tags, label: Tags, required: true, widget: relation, collection: tags, searchFields: tag, valueField: tag, displayFields: tag, multiple: true }]}
+          { name: tags, label: Tags, required: true, widget: relation, collection: tags, searchFields: tag, valueField: tag, displayFields: tag, multiple: true },
+          { name: body, label: Body, required: true, widget: markdown }]}
   - name: pages
     label: Pages
     label_singular: Page
@@ -90,7 +89,6 @@ collections:
         fields:
           - { name: templateKey, label: Template Key, required: true, default: index, widget: hidden }
           - { name: title, label: Title, required: true, widget: string }
-          - { name: slug, label: Slug, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
           - { name: description, label: Description, widget: string }
           - { name: testimonials, label: Testimonials, widget: list,
