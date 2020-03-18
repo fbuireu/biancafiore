@@ -7,7 +7,7 @@ async function articlesBuilder (graphql, { createPage }, reporter) {
   const ARTICLES_QUERY = await graphql(`
     {
       allMarkdownRemark(
-        filter: { frontmatter: { templateKey: { eq: "article" }}}, 
+        filter: { frontmatter: { templateKey: { eq: "articles" }}}, 
         sort: { order: DESC, fields: [frontmatter___content___publishDate] }) {
         edges {
           node {
