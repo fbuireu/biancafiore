@@ -9,20 +9,12 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-eslint`,
-    `gatsby-transformer-remark`,
     `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-sass`,
-    {
-      resolve: `gatsby-plugin-postcss`,
-      options: {
-        postCssPlugins: [require(`postcss-preset-env`)({ stage: 0 })],
-      },
-    },
     {
       resolve: `gatsby-plugin-purgecss`,
       options: {
         printRejected: true,
-        develop: true,
       },
     },
     {
@@ -54,6 +46,22 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-relative-images`,
+          },
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 1024,
+            },
+          },
+        ],
+      },
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `gatsby-starter-default`,
@@ -62,7 +70,7 @@ module.exports = {
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `src/images/gatsby-icon.png`,
       },
     },
     `gatsby-plugin-netlify`,
