@@ -19,7 +19,7 @@ collections:
     label: Locales
     label_singular: Locale
     identifier_field: name
-    folder: site/locales
+    folder: src/locales
     description: A list of all availables locales. They will appear on article creation page
     create: true
     editor:
