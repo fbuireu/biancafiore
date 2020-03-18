@@ -19,7 +19,7 @@ collections:
     label: Locales
     label_singular: Locale
     identifier_field: name
-    folder: site/locales
+    folder: src/locales
     description: A list of all availables locales. They will appear on article creation page
     create: true
     editor:
@@ -42,7 +42,7 @@ collections:
     label: Tags
     label_singular: Tag
     identifier_field: tag
-    folder: site/articles/tags
+    folder: src/articles/tags
     description: A list of all created tags. They will appear on article creation page
     create: true
     editor:
@@ -52,7 +52,7 @@ collections:
   - name: articles
     label: Articles
     label_singular: Article
-    folder: site/articles
+    folder: src/articles
     description: A list of all created articles
     slug: '{{seo.slug}}'
     create: true

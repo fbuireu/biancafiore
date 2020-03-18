@@ -21,14 +21,14 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `tags`,
-        path: `${__dirname}/site/articles/tags`,
+        path: `${__dirname}/src/articles/tags`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `articles`,
-        path: `${__dirname}/site/articles`,
+        path: `${__dirname}/src/articles`,
       },
     },
     {
