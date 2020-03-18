@@ -9,30 +9,30 @@ async function articlesBuilder (graphql, { createPage }, reporter) {
       allMarkdownRemark(
         filter: { frontmatter: { templateKey: { eq: "article" }}}, 
         sort: { order: DESC, fields: [frontmatter___content___publishDate] }) {
-          edges {
-            node {
-              fields {
-                slug
+        edges {
+          node {
+            fields {
+              slug
+            }
+            frontmatter {
+              templateKey
+              locale
+              seo {
+                author
+                title
+                metaDescription
               }
-              frontmatter {
-                templateKey
-                locale
-                seo {
-                  author
-                  title
-                  metaDescription
-                }
-                content {
-                  publishDate
-                  readingTime
-                  title
-                  tags
-                  body
-                }
+              content {
+                publishDate
+                readingTime
+                title
+                tags
+                body
               }
             }
           }
         }
+      }
     }
   `);
 
