@@ -7,7 +7,7 @@ async function articlesBuilder (graphql, { createPage }, reporter) {
   const articlesQuery = await graphql(`
     {
       allMarkdownRemark(
-        filter: { frontmatter: { templateKey: { eq: "articles" }}}, 
+        filter: { frontmatter: { key: { eq: "articles" }}}, 
         sort: { order: DESC, fields: [frontmatter___content___publishDate] }) {
         edges {
           node {
@@ -15,7 +15,7 @@ async function articlesBuilder (graphql, { createPage }, reporter) {
               slug
             }
             frontmatter {
-              templateKey
+              key
               locale
               seo {
                 author
@@ -45,7 +45,7 @@ async function articlesBuilder (graphql, { createPage }, reporter) {
 
   articles.forEach(({ node }) => {
     createPage({
-      path: `${node.frontmatter.templateKey}${node.fields.slug}`,
+      path: `${node.frontmatter.key}${node.fields.slug}`,
       tags: node.frontmatter.content.tags,
       component: articlesTemplate,
       context: {},

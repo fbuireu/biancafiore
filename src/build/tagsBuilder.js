@@ -10,7 +10,7 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
         edges {
           node {
             frontmatter {
-              templateKey
+              key
               locale
               content {
                 tags
@@ -32,7 +32,7 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
 
   tags.forEach(({ node }) => {
     createPage({
-      path: `${node.frontmatter.templateKey}${node.fields.slug}`,
+      path: `${node.frontmatter.key}${node.fields.slug}`,
       component: tagsTemplate,
       context: {},
     });
