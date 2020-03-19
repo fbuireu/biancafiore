@@ -94,6 +94,7 @@ collections:
           - { name: image, label: Image, required: false, widget: image }
           - { name: description, label: Description, widget: string }
           - { name: testimonials, label: Testimonials, widget: list,
+          - { name: body, label: Body, widget: markdown },
               fields: [
               { name: quote, label: Quote,  widget: string },
               { name: author, label: Author, widget: string },
