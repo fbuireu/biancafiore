@@ -1,8 +1,7 @@
 const path = require(`path`);
 
 async function articlesBuilder (graphql, { createPage }, reporter) {
-  const ARTICLES_TEMPLATE = path.resolve(
-    `./src/components/templates/articles.js`);
+  const ARTICLES_TEMPLATE = path.resolve(`./src/components/templates/articles.js`);
 
   const ARTICLES_QUERY = await graphql(`
     {
@@ -42,11 +41,11 @@ async function articlesBuilder (graphql, { createPage }, reporter) {
 
   let articles = ARTICLES_QUERY.data.allMarkdownRemark.edges;
 
-  articles.forEach(({ article }) => {
+  articles.forEach(({ node }) => {
     createPage({
-      path: article.fields.slug,
+      path: `${node.frontmatter.templateKey}${node.fields.slug}`,
+      tags: node.frontmatter.content.tags,
       component: ARTICLES_TEMPLATE,
-      tags: article.node.frontmatter.tags,
       context: {},
     });
   });
