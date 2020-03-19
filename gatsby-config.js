@@ -20,6 +20,13 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
+        name: `locales`,
+        path: `${__dirname}/src/locales`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
         name: `tags`,
         path: `${__dirname}/src/articles/tags`,
       },
