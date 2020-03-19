@@ -1,9 +1,10 @@
 const path = require(`path`);
 
 async function articlesBuilder (graphql, { createPage }, reporter) {
-  const ARTICLES_TEMPLATE = path.resolve(`./src/components/templates/articles.js`);
+  const articlesTemplate = path.resolve(
+    `./src/components/templates/articles.js`);
 
-  const ARTICLES_QUERY = await graphql(`
+  const articlesQuery = await graphql(`
     {
       allMarkdownRemark(
         filter: { frontmatter: { templateKey: { eq: "articles" }}}, 
@@ -34,18 +35,19 @@ async function articlesBuilder (graphql, { createPage }, reporter) {
     }
   `);
 
-  if (ARTICLES_QUERY.errors) {
+  if (articlesQuery.errors) {
     reporter.panicOnBuild(`Error while running GraphQL query.`);
+
     return true;
   }
 
-  let articles = ARTICLES_QUERY.data.allMarkdownRemark.edges;
+  let articles = articlesQuery.data.allMarkdownRemark.edges;
 
   articles.forEach(({ node }) => {
     createPage({
       path: `${node.frontmatter.templateKey}${node.fields.slug}`,
       tags: node.frontmatter.content.tags,
-      component: ARTICLES_TEMPLATE,
+      component: articlesTemplate,
       context: {},
     });
   });

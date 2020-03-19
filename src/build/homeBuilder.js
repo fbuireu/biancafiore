@@ -1,9 +1,9 @@
 const path = require(`path`);
 
 async function homeBuilder (graphql, { createPage }, reporter) {
-  const HOME_PAGE = path.resolve(`./src/pages/index.js`);
+  const homePage = path.resolve(`./src/pages/index.js`);
 
-  const HOME_QUERY = await graphql(`
+  const homeQuery = await graphql(`
     {
       allMarkdownRemark(filter: { frontmatter: {slug: {eq: "/" }}}) {
         edges {
@@ -21,17 +21,18 @@ async function homeBuilder (graphql, { createPage }, reporter) {
     }
   `);
 
-  if (HOME_QUERY.errors) {
+  if (homeQuery.errors) {
     reporter.panicOnBuild(`Error while running GraphQL query.`);
+
     return true;
   }
   
-  let homeData = HOME_QUERY.data.allMarkdownRemark.edges;
+  const homeData = homeQuery.data.allMarkdownRemark.edges;
 
   homeData.forEach(({ node }) => {
     createPage({
       path: node.fields.slug,
-      component: HOME_PAGE,
+      component: homePage,
       context: {},
     });
   });
