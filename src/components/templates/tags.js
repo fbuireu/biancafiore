@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../layout';
 import Seo from '../seo';
 
-const Articles = props => {
+const Tags = props => {
   return (
     <Layout>
       <Seo title="Home" />
@@ -13,4 +13,4 @@ const Articles = props => {
   );
 };
 
-export default Articles;
+export default Tags;
