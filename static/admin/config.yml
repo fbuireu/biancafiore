@@ -48,6 +48,7 @@ collections:
     editor:
       preview: false
     fields:
+      - { name: templateKey, label: Template Key, required: true, default: tags, widget: hidden }
       - { name: tag, label: Tag, widget: string }
   - name: articles
     label: Articles
