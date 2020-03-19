@@ -1,4 +1,4 @@
 ---
-templateKey: tags
+key: tags
 tag: Content marketing
 ---
