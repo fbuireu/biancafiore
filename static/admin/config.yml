@@ -90,7 +90,6 @@ collections:
         file: src/pages/markdown/index.md
         show_preview_links: true
         fields:
-          - { name: key, label: Key, required: true, default: home, widget: hidden }
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
           - { name: description, label: Description, widget: string }
@@ -104,7 +103,6 @@ collections:
         file: src/pages/markdown/about-me.md
         show_preview_links: true
         fields:
-          - { name: key, label: Key, required: true, default: about-me, widget: hidden }
           - { name: title, label: Title, widget: string }
           - { name: slug, label: Slug, required: true, default: about-me, widget: string }
           - { name: body, label: Body, widget: markdown }

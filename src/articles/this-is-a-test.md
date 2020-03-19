@@ -1,5 +1,5 @@
 ---
-templateKey: articles
+key: articles
 locale: Catalan
 seo:
   author: Bianca Fiore
