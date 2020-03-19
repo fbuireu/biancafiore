@@ -52,6 +52,7 @@ collections:
   - name: articles
     label: Articles
     label_singular: Article
+    identifier_field: content.title
     folder: src/articles
     description: A list of all created articles
     slug: '{{seo.slug}}'
