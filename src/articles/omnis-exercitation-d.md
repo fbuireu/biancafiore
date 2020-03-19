@@ -13,4 +13,5 @@ content:
     - Content marketing
     - Writing tips
   body: Test
+  isFeaturedPost: true
 ---
