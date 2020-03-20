@@ -44,10 +44,9 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
 
     return Array.from(new Set(tags));
   });
-  console.log('tags', tags);
   // tags.forEach(tag => {
   //   createPage({
-  //     path: `${node.frontmatter.key}${node.frontmatter.iso}`,
+  //     path: `tag/${tag}`,
   //     component: tagsTemplate,
   //     context: {},
   //   });
