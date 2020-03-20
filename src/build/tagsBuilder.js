@@ -1,4 +1,5 @@
 const path = require(`path`);
+const slugify = require(`slugify`);
 
 async function tagsBuilder (graphql, { createPage }, reporter) {
   const tagsTemplate = path.resolve(
@@ -12,8 +13,10 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
             frontmatter {
               key
               locale
+              iso
               content {
                 tags
+                body
               }
             }
           }
@@ -28,15 +31,26 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
     return true;
   }
 
-  const tags = tagsQuery.data.allMarkdownRemark.edges;
+  let tags = [];
+  const posts = tagsQuery.data.allMarkdownRemark.edges;
 
-  tags.forEach(({ node }) => {
-    createPage({
-      path: `${node.frontmatter.key}${node.fields.slug}`,
-      component: tagsTemplate,
-      context: {},
-    });
+  posts.map(({ node }) => {
+    if (node.frontmatter.content && node.frontmatter.content.tags) {
+      node.frontmatter.content.tags.map(tag => tags.push(slugify(tag)));
+    } else if (node.frontmatter.iso && node.frontmatter.content) {
+      console.log('isoo', node.frontmatter.iso);
+      tags.push(node.frontmatter.iso);
+    }
+    console.log('TAGS', tags);
+    return tags;
   });
+
+  // createPage({
+  //   path: `${node.frontmatter.key}${node.frontmatter.iso}`,
+  //   component: tagsTemplate,
+  //   context: {},
+  // });
+
 }
 
 module.exports = tagsBuilder;
