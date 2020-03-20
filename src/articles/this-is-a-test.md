@@ -11,5 +11,7 @@ content:
   title: This is a test
   tags:
     - Content marketing
+    - Writing tips
   body: This is a test
+  lastUpdated: 'March 20, 2020 6:11 PM'
 ---
