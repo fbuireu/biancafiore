@@ -73,7 +73,7 @@ collections:
           fields: [
           { name: publishDate, label: Publish date, required: false, default: '', widget: datetime, dateFormat: MM/DD/YYYY, timeFormat: HH:mm, format: LLL },
           { name: lastUpdated, label: Last updated, required: false, default: '', widget: datetime, dateFormat: MM/DD/YYYY, timeFormat: HH:mm, format: LLL },
-          { name: readingTime, label: Reading time, required: false, widget: number, valueType: int, min: 0, max: 25 },
+          { name: readingTime, label: Reading time, required: false, default: '', widget: number, valueType: int, min: 0, max: 25 },
           { name: isFeaturedPost, label: Featured Post, required: false, widget: boolean },
           { name: featuredimage, label: Featured Image, required: false, widget: image },
           { name: title, label: Title, required: true, widget: string },
