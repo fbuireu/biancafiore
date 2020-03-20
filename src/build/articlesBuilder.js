@@ -17,6 +17,7 @@ async function articlesBuilder (graphql, { createPage }, reporter) {
             frontmatter {
               key
               locale
+              iso
               seo {
                 author
                 metaDescription
