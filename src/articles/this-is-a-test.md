@@ -1,6 +1,6 @@
 ---
 key: articles
-locale: Catalan
+locale: English
 seo:
   author: Bianca Fiore
   metaDescription: This is a test
