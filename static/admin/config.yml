@@ -43,7 +43,7 @@ collections:
     label: Tags
     label_singular: Tag
     identifier_field: tag
-    folder: src/articles/tags
+    folder: src/blog/tags
     description: A list of all created tags. They will appear on article creation page
     create: true
     editor:
@@ -51,18 +51,18 @@ collections:
     fields:
       - { name: key, label: Key, required: true, default: tag, widget: hidden }
       - { name: tag, label: Tag, required: true, widget: string }
-  - name: articles
-    label: Articles
+  - name: blog
+    label: Blog
     label_singular: Article
     identifier_field: content.title
-    folder: src/articles
+    folder: src/blog
     description: A list of all created articles
     slug: '{{seo.slug}}'
     create: true
-    preview_path: articles/{{slug}}
+    preview_path: blog/{{slug}}
     show_preview_links: true
     fields:
-      - { name: key, label: Key, required: true, default: article, widget: hidden }
+      - { name: key, label: Key, required: true, default: blog, widget: hidden }
       - { name: locale, label: Locale, required: true, widget: relation, collection: locales, searchFields: [name, iso], valueField: name, displayFields: name }
       - {name: seo, label: SEO, widget: object,
          fields: [
