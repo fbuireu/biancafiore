@@ -37,8 +37,8 @@ collections:
     editor:
       preview: false
     fields:
-      - { name: name, label: Name, widget: string }
-      - { name: slug, label: Slug, widget: string }
+      - { name: name, label: Name, required: true, widget: string }
+      - { name: slug, label: Slug, required: true, widget: string }
   - name: tags
     label: Tags
     label_singular: Tag
@@ -50,7 +50,7 @@ collections:
       preview: false
     fields:
       - { name: key, label: Key, required: true, default: tags, widget: hidden }
-      - { name: tag, label: Tag, widget: string }
+      - { name: tag, label: Tag, required: true, widget: string }
   - name: articles
     label: Articles
     label_singular: Article
@@ -63,20 +63,21 @@ collections:
     show_preview_links: true
     fields:
       - { name: key, label: Key, required: true, default: articles, widget: hidden }
-      - { name: locale, label: Locale, required: true, widget: relation, collection: locales, searchFields: name, valueField: name, displayFields: name }
+      - { name: locale, label: Locale, required: true, widget: relation, collection: locales, searchFields: [name, iso], valueField: name, displayFields: name }
       - {name: seo, label: SEO, widget: object,
          fields: [
          { name: metaDescription, label: Meta description, required: true, widget: text },
          { name: author, label: Author, default: Bianca Fiore, required: true, widget: string },
          { name: slug, label: Slug, required: true, widget: string }]}
       - { name: content, label: Content,  widget: object,
-          fields:[
-          { name: publishDate, label: Publish date, required: true, widget: datetime, dateFormat: MM/DD/YYYY, timeFormat: HH:mm, format: LLL },
-          { name: readingTime, label: Reading time, widget: number, valueType: int, min: 0, max: 25 },
+          fields: [
+          { name: publishDate, label: Publish date, required: false, widget: datetime, dateFormat: MM/DD/YYYY, timeFormat: HH:mm, format: LLL },
+          { name: lastUpdated, label: Last updated, required: false, widget: datetime, dateFormat: MM/DD/YYYY, timeFormat: HH:mm, format: LLL },
+          { name: readingTime, label: Reading time, required: false, widget: number, valueType: int, min: 0, max: 25 },
           { name: isFeaturedPost, label: Featured Post, required: false, widget: boolean },
           { name: featuredimage, label: Featured Image, required: false, widget: image },
           { name: title, label: Title, required: true, widget: string },
-          { name: tags, label: Tags, required: true, widget: relation, collection: tags, searchFields: tag, valueField: tag, displayFields: tag, multiple: true },
+          { name: tags, label: Tags, required: false, widget: relation, collection: tags, searchFields: tag, valueField: tag, displayFields: tag, multiple: true },
           { name: body, label: Body, required: true, widget: markdown }]}
   - name: pages
     label: Pages
@@ -92,18 +93,18 @@ collections:
         fields:
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
-          - { name: description, label: Description, widget: string }
-          - { name: testimonials, label: Testimonials, widget: list,
-          - { name: body, label: Body, widget: markdown },
+          - { name: description, label: Description, required: true, widget: string }
+          - { name: testimonials, label: Testimonials, required: false, widget: list,
               fields: [
-              { name: quote, label: Quote,  widget: string },
-              { name: author, label: Author, widget: string },
-              { name: description, label: Description, widget: string }]}
+              { name: author, label: Author, required: true, widget: string },
+              { name: quote, label: Quote, required: true, widget: string },
+              { name: description, label: Description, required: false, widget: string },
+              { name: body, label: Body, required: true, widget: markdown }]}
       - name: about-me
         label: About me
         file: src/pages/markdown/about-me.md
         show_preview_links: true
         fields:
-          - { name: title, label: Title, widget: string }
+          - { name: title, label: Title,required: true, widget: string }
           - { name: slug, label: Slug, required: true, default: about-me, widget: string }
-          - { name: body, label: Body, widget: markdown }
+          - { name: body, label: Body, required: true, widget: markdown }
