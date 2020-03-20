@@ -13,7 +13,6 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
             frontmatter {
               key
               locale
-              iso
               content {
                 tags
                 body
@@ -36,19 +35,22 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
 
   posts.map(({ node }) => {
     if (node.frontmatter.content && node.frontmatter.content.tags) {
-      node.frontmatter.content.tags.map(tag => tags.push(slugify(tag)));
-    } else if (node.frontmatter.iso && node.frontmatter.content) {
-      console.log('isoo', node.frontmatter.iso);
-      tags.push(node.frontmatter.iso);
+      node.frontmatter.content.tags.map(
+        tag => tags.push(slugify(tag, { lower: true })),
+      );
     }
-    console.log('TAGS', tags);
-    return tags;
-  });
+    if (node.frontmatter.locale) tags.push(
+      slugify(node.frontmatter.locale, { lower: true }));
 
-  // createPage({
-  //   path: `${node.frontmatter.key}${node.frontmatter.iso}`,
-  //   component: tagsTemplate,
-  //   context: {},
+    return Array.from(new Set(tags));
+  });
+  console.log('tags', tags);
+  // tags.forEach(tag => {
+  //   createPage({
+  //     path: `${node.frontmatter.key}${node.frontmatter.iso}`,
+  //     component: tagsTemplate,
+  //     context: {},
+  //   });
   // });
 
 }
