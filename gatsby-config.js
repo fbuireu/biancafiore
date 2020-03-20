@@ -24,20 +24,20 @@ module.exports = {
         path: `${__dirname}/src/locales`,
       },
     },
-    // {
-    //   resolve: `gatsby-source-filesystem`,
-    //   options: {
-    //     name: `tags`,
-    //     path: `${__dirname}/src/blog/tags`,
-    //   },
-    // },
-    // {
-    //   resolve: `gatsby-source-filesystem`,
-    //   options: {
-    //     name: `articles`,
-    //     path: `${__dirname}/src/blog`,
-    //   },
-    // },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `tags`,
+        path: `${__dirname}/src/blog/tags`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `articles`,
+        path: `${__dirname}/src/blog`,
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
