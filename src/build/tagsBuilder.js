@@ -34,23 +34,21 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
   const posts = tagsQuery.data.allMarkdownRemark.edges;
 
   posts.map(({ node }) => {
-    if (node.frontmatter.content && node.frontmatter.content.tags) {
-      node.frontmatter.content.tags.map(
-        tag => tags.push(slugify(tag, { lower: true })),
-      );
-    }
-    if (node.frontmatter.locale) tags.push(
-      slugify(node.frontmatter.locale, { lower: true }));
+    let { content, locale } = node.frontmatter;
+
+    if (content && content.tags) content.tags.map(tag => tags.push(slugify(tag, { lower: true })));
+    if (locale) tags.push(slugify(locale, { lower: true }));
 
     return Array.from(new Set(tags));
   });
-  // tags.forEach(tag => {
-  //   createPage({
-  //     path: `tag/${tag}`,
-  //     component: tagsTemplate,
-  //     context: {},
-  //   });
-  // });
+
+  tags.forEach(tag => {
+    createPage({
+      path: `tag/${tag}/`,
+      component: tagsTemplate,
+      context: {},
+    });
+  });
 
 }
 
