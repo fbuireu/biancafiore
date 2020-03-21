@@ -24,13 +24,13 @@ module.exports = {
         path: `${__dirname}/src/locales`,
       },
     },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `menu`,
-        path: `${__dirname}/src/menu`,
-      },
-    },
+    // {
+    //   resolve: `gatsby-source-filesystem`,
+    //   options: {
+    //     name: `menu`,
+    //     path: `${__dirname}/src/menu`,
+    //   },
+    // },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
