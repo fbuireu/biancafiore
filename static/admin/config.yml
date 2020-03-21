@@ -17,10 +17,11 @@ logo_url: https://biancafiore.me/images/logo.svg
 collections:
   - name: locales
     label: Locales
+    description: A list of all availables locales. They will appear on article creation page
     label_singular: Locale
     identifier_field: name
+    slug: '{{slug}}'
     folder: src/locales
-    description: A list of all availables locales. They will appear on article creation page
     create: true
     editor:
       preview: false
@@ -30,16 +31,15 @@ collections:
       - { name: iso, label: ISO code, required: true, widget: string, pattern: ['^[a-z]{2}$', 'This field must have only 2 characters']}
   - name: menu
     label: Menu
-    label_singular: Menu element
-    identifier_field: name
-    folder: src/menu
     description: A list of all menu items
-    slug: '{{seo.slug}}'
+    label_singular: Menu element
+    slug: '{{slug}}'
+    folder: src/menuAS
     create: true
     editor:
       preview: false
     fields:
-      - { name: key, label: Key, required: true, default: menuItem, widget: hidden }
+      - { name: key, label: Key, required: true, widget: hidden, default: menuItem }
       - { name: name, label: Name, required: true, widget: string }
       - { name: slug, label: Slug, required: true, widget: string }
       - { name: position, label: Position, required: true, widget: number, valueType: int,  min: 0 }
@@ -47,6 +47,7 @@ collections:
     label: Tags
     label_singular: Tag
     identifier_field: tag
+    slug: '{{slug}}'
     folder: src/blog/tags
     description: A list of all created tags. They will appear on article creation page
     create: true
@@ -57,11 +58,11 @@ collections:
       - { name: tag, label: Tag, required: true, widget: string }
   - name: blog
     label: Blog
+    description: A list of all created articles
     label_singular: Article
     identifier_field: content.title
-    folder: src/blog/articles
-    description: A list of all created articles
     slug: '{{seo.slug}}'
+    folder: src/blog/articles
     create: true
     preview_path: blog/{{slug}}
     show_preview_links: true
@@ -85,9 +86,9 @@ collections:
           { name: body, label: Body, required: true, widget: markdown }]}
   - name: pages
     label: Pages
+    description: A list of all created pages and its configuration
     label_singular: Page
     slug: '{{slug}}'
-    description: A list of all created pages and its configuration
     create: true
     files:
       - name:  home
@@ -110,5 +111,5 @@ collections:
         show_preview_links: true
         fields:
           - { name: title, label: Title,required: true, widget: string }
-          - { name: slug, label: Slug, required: true, widget: string, default: about-me, }
+          - { name: slug, label: Slug, required: true, widget: string, default: about-me }
           - { name: body, label: Body, required: true, widget: markdown }
