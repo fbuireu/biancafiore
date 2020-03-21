@@ -3,7 +3,7 @@ key: blog
 locale: Italian
 seo:
   author: Bianca Fiore
-  metaDescription: Ma che cosa
+  metaDescription: Ma che 2
   slug: ma-che-cosa
 content:
   publishDate: ''
