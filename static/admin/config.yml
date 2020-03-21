@@ -34,7 +34,7 @@ collections:
     description: A list of all menu items
     label_singular: Menu element
     slug: '{{slug}}'
-    folder: src/menuAS
+    folder: src/menu
     create: true
     editor:
       preview: false
