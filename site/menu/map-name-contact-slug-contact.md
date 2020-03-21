@@ -1,4 +1,0 @@
----
-name: Contact
-slug: contact
----
