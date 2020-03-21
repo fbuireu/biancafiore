@@ -31,8 +31,10 @@ collections:
   - name: menu
     label: Menu
     label_singular: Menu element
-    folder: site/menu
+    identifier_field: name
+    folder: src/menu
     description: A list of all menu items
+    slug: '{{seo.slug}}'
     create: true
     editor:
       preview: false
