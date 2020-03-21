@@ -3,7 +3,7 @@ key: blog
 locale: English
 seo:
   author: Bianca Fiore
-  metaDescription: This is a test v151
+  metaDescription: This is a test v152
   slug: this-is-a-test-v151
 content:
   publishDate: ''
