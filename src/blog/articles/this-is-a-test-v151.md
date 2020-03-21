@@ -10,7 +10,10 @@ content:
   lastUpdated: ''
   readingTime: ''
   title: This is a test v151
-  body: This is a test v151
+  body: |-
+    This is a test v151
+
+    ![](/assets/profile.jpeg)
   tags:
     - Writing tips
 ---
