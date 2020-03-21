@@ -49,7 +49,6 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
       context: {},
     });
   });
-
 }
 
 module.exports = tagsBuilder;
