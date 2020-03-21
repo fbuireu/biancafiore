@@ -55,7 +55,7 @@ collections:
     label: Blog
     label_singular: Article
     identifier_field: content.title
-    folder: src/blog
+    folder: src/blog/articles
     description: A list of all created articles
     slug: '{{seo.slug}}'
     create: true
