@@ -37,6 +37,7 @@ collections:
     editor:
       preview: false
     fields:
+      - { name: key, label: Key, required: true, default: menuItem, widget: hidden }
       - { name: name, label: Name, required: true, widget: string }
       - { name: slug, label: Slug, required: true, widget: string }
   - name: tags
