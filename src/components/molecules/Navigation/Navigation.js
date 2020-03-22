@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
-import { useMenuItems } from '../../../hooks/useMenuItems/useMenuItems';
+import { useMenuItems } from '../../../hooks/useMenuItems';
 
 const Navigation = () => {
   const menuItems = useMenuItems();
