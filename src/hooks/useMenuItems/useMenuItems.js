@@ -4,7 +4,7 @@ export const useMenuItems = () => {
   const { allMarkdownRemark } = useStaticQuery(graphql`
       {
           allMarkdownRemark(
-              filter: { frontmatter: { key: { eq: "menuItem" }}}
+              filter: { frontmatter: { key: { eq: "menuItem" }}},
               sort: { order: ASC, fields: [frontmatter___position] }) {
               edges {
                   node {
