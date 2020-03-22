@@ -1,29 +1,24 @@
-import { graphql, Link } from 'gatsby';
-import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'gatsby';
+import PropTypes from 'prop-types';
+import { useMenuItems } from '../../../hooks/useMenuItems/useMenuItems';
 
 const Navigation = () => {
-  return (
-    <nav>
-      <ul>
-        <li></li>
-      </ul>
-    </nav>
-  );
+  const menuItems = useMenuItems();
+
+  return <nav>
+    <ul>
+      {menuItems.map(({ node }) => <li key={node.frontmatter.position}><Link to={node.fields.slug}>{node.frontmatter.name}</Link></li>)}
+    </ul>
+  </nav>;
 };
 
-// export const navigationQuery = graphql`
-//     query {
-//
-//     }
-// `;
-
 Navigation.propTypes = {
-  siteTitle: PropTypes.string,
+  menuItems: PropTypes.array,
 };
 
 Navigation.defaultProps = {
-  siteTitle: ``,
+  menuItems: ``,
 };
 
 export default Navigation;
