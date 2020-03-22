@@ -1,6 +1,6 @@
 {
   "name": "biancafiore",
-  "private": false,
+  "private": true,
   "description": "A portfolio for the best content writer ever",
   "version": "1",
   "author": "Ferran Buireu <mathews.kyle@gmail.com>",
