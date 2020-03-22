@@ -34,7 +34,6 @@ collections:
     description: A list of all menu items
     label_singular: Menu element
     identifier_field: name
-#    slug: '{{slug}}'
     folder: src/menu
     create: true
     editor:
