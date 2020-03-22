@@ -2,12 +2,12 @@ const path = require(`path`);
 
 async function articlesBuilder (graphql, { createPage }, reporter) {
   const articlesTemplate = path.resolve(
-    `./src/components/templates/articles.js`);
+    `./src/components/templates/articles/articles.js`);
 
   const articlesQuery = await graphql(`
     {
       allMarkdownRemark(
-        filter: { frontmatter: { key: { eq: "blog" }}}, 
+        filter: { frontmatter: { key: { eq: "blog" }}}
         sort: { order: DESC, fields: [frontmatter___content___publishDate] }) {
         edges {
           node {
