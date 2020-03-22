@@ -6106,14 +6106,6 @@ gatsby-plugin-netlify-cms@^4.1.42:
     netlify-identity-widget "^1.5.6"
     webpack "^4.42.0"
 
-gatsby-plugin-netlify-identity-widget@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-netlify-identity-widget/-/gatsby-plugin-netlify-identity-widget-1.1.1.tgz#06fd3f4f927c07ff6e6d6247047f12ae11995c62"
-  integrity sha512-6uO7UCBduIED7McFlQY3rdS9N5uBCsywVO6abx8RfpVCwEnAdApHPy106oEVmfgeshmVLtfpniWfw2ckif+SXQ==
-  dependencies:
-    babel-runtime "^6.26.0"
-    netlify-identity-widget "^1.4.12"
-
 gatsby-plugin-netlify@^2.1.35:
   version "2.1.35"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-netlify/-/gatsby-plugin-netlify-2.1.35.tgz#e0cafd848172e07d6226178302eeb6ead66c7e46"
@@ -6167,12 +6159,12 @@ gatsby-plugin-react-helmet@^3.1.21:
   dependencies:
     "@babel/runtime" "^7.7.6"
 
-gatsby-plugin-sass@^2.1.29:
-  version "2.1.29"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-sass/-/gatsby-plugin-sass-2.1.29.tgz#07e44f346d6e40bea9816bd710e994bc34bb29be"
-  integrity sha512-/t0NioasjZnCm+vICI7LQH3Ge/oc1NVMfTR4v+8LwjQGIUR+Tgd7k0soiVeyVXCNl7zV/oYTVkzPcjxkIYrDxQ==
+gatsby-plugin-sass@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-sass/-/gatsby-plugin-sass-2.2.0.tgz#74ff9cb1f8d034b17a72f80ff995cd79ced282cf"
+  integrity sha512-KqjvuLX244zb6EAoF8izUMmaOgynAuLg0PSkqpvWLqtgeisZdbWkFJ8G3jH6CoATzFWUmoMkncsUCUW30eCmXw==
   dependencies:
-    "@babel/runtime" "^7.7.6"
+    "@babel/runtime" "^7.8.7"
     sass-loader "^7.3.1"
 
 gatsby-plugin-sharp@^2.4.3:
@@ -9844,7 +9836,7 @@ netlify-cms-widget-text@^2.3.0:
   dependencies:
     react-textarea-autosize "^7.1.0"
 
-netlify-identity-widget@^1.4.12, netlify-identity-widget@^1.5.6:
+netlify-identity-widget@^1.5.6:
   version "1.5.6"
   resolved "https://registry.yarnpkg.com/netlify-identity-widget/-/netlify-identity-widget-1.5.6.tgz#b841d4d469ad37bdc47e876d87cc2926aba2c302"
   integrity sha512-DvWVUGuswOd+IwexKjzIpYcqYMrghmnkmflNqCQc4lG4KX55zE3fFjfXziCTr6LibP7hvZp37s067j5N3kRuyw==
