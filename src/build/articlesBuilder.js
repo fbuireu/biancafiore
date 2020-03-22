@@ -2,7 +2,7 @@ const path = require(`path`);
 
 async function articlesBuilder (graphql, { createPage }, reporter) {
   const articlesTemplate = path.resolve(
-    `./src/components/templates/articles/articles.js`);
+    `./src/components/templates/Articles/Articles.js`);
 
   const articlesQuery = await graphql(`
     {
