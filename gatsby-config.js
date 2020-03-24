@@ -15,8 +15,8 @@ module.exports = {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
         fonts: [
-          `Zilla Slab: 400, 400i`,
-          `Montserrat: 300, 600, 700`
+          `Zilla Slab: 400, 400i, 700`,
+          `Montserrat: 300, 400, 700`
         ],
         display: `swap`
       }
