@@ -1,0 +1,15 @@
+$global-max-width: 960px;
+
+$large-device: 1024px;
+$medium-device: 960px;
+$small-device: 720px;
+$extra-small-device: 575px;
+
+$font-primary: 'Zilla Slab', serif;
+$font-secondary: 'Montserrat', sans-serif;
+
+$minimum-font-size: 1rem;
+$maximum-font-size: 1.125rem;
+$base-line-height: $minimum-font-size * 1.25rem;
+$vertical-rhythm: $base-line-height / $maximum-font-size;
+
