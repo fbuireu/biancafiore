@@ -1,5 +1,63 @@
 @import 'variables';
 
-@function space($times: 1) {
-  @return $vertical-rhythm * $times;
+@mixin typography-settings($level: 0) {
+  font-size: typography-scale($level);
+  line-height: line-height($level);
+}
+
+@mixin breakpoint($breakpoint, $breakpoints: $grid) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $mq-breakpoint: map-get($breakpoints, $breakpoint);
+  }
+
+  @media screen and (min-width: #{$breakpoint}) {
+    @content;
+  }
+}
+
+@mixin font($group, $variant: regular, $properties: family weight style, $font-stack: $fonts) {
+  $font-properties: map-deep-get($font-stack, $group, $variant);
+
+  @if $font-properties {
+    @each $property, $values in $font-properties {
+      @if contains($properties, $property) {
+        font-#{$property}: map-get($font-properties, $property);
+      }
+    }
+  }
+}
+
+@function color($base, $shade: main) {
+  $color: map-get(map-get($colors, $base), $shade);
+  @return $color;
+}
+
+@function line-height($level) {
+  @return map-get($line-heights, $level);
+}
+
+@function typography-scale($level) {
+  @return map-get($typography-scale, $level);
+}
+
+@function map-deep-get($map, $keys...) {
+  @each $key in $keys {
+    @if type-of($map) != "map" {
+      @warn '`#{$map}` is not a map.';
+      @return false;
+    }
+    $map: map-get($map, $key);
+  }
+
+  @return $map;
+}
+
+@function contains($list, $values...) {
+  @each $value in $values {
+    @if type-of(index($list, $value)) != 'number' {
+      @return false;
+    }
+  }
+
+  @return true;
 }
