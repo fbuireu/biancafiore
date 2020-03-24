@@ -1,0 +1,5 @@
+@import 'variables';
+
+@function space($times: 1) {
+  @return $vertical-rhythm * $times;
+}
