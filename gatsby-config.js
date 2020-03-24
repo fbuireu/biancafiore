@@ -12,11 +12,22 @@ module.exports = {
     `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-sass`,
     {
+      resolve: `gatsby-plugin-google-fonts`,
+      options: {
+        fonts: [
+          `Zilla Slab: 400, 400i`,
+          `Montserrat: 300, 600, 700`
+        ],
+        display: `swap`
+      }
+    },
+    {
       resolve: `gatsby-plugin-purgecss`,
       options: {
         printRejected: true,
       },
     },
+    
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -35,14 +46,14 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `tags`,
-        path: `${__dirname}/src/blog/tags`,
+        path: `${__dirname}/content/tags`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `articles`,
-        path: `${__dirname}/src/blog/articles`,
+        path: `${__dirname}/content/articles`,
       },
     },
     {
