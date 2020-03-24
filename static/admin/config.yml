@@ -21,7 +21,7 @@ collections:
     label_singular: Locale
     identifier_field: name
     slug: '{{slug}}'
-    folder: src/locales
+    folder: content/locales
     create: true
     editor:
       preview: false
@@ -34,7 +34,7 @@ collections:
     description: A list of all menu items
     label_singular: Menu element
     identifier_field: name
-    folder: src/menu
+    folder: content/menu
     create: true
     editor:
       preview: false
@@ -93,7 +93,7 @@ collections:
     files:
       - name:  home
         label: Home
-        file: src/pages/markdown/index.md
+        file: content/pages/index.md
         show_preview_links: true
         fields:
           - { name: title, label: Title, required: true, widget: string }
@@ -107,7 +107,7 @@ collections:
               { name: body, label: Body, required: true, widget: markdown }]}
       - name: about-me
         label: About me
-        file: src/pages/markdown/about-me.md
+        file: content/pages/about-me.md
         show_preview_links: true
         fields:
           - { name: title, label: Title,required: true, widget: string }
