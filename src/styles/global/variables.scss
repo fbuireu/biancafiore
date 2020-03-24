@@ -62,7 +62,20 @@ $line-heights: (
 );
 
 $colors: (
-  neutral: (
-    main: #1f2022
+  neutral:(
+    main: #1E2021,
+    neutral-1: #3D4042,
+    neutral-2: #6D7275,
+    neutral-3: #B5BABD,
+    neutral-4: #DBE1E5,
+    neutral-5: #F3F7FA
+  ),
+  error:(
+    main: #D63737,
+    error-2: #F09D9E,
+    error-3: #FFECEF
+  ),
+  others:(
+    white: #FFFFFF,
   )
 );
