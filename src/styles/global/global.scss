@@ -1,5 +1,5 @@
 @import 'variables';
-@import 'mediaqueries';
+@import 'functions';
 
 * {
   box-sizing: border-box;
@@ -7,14 +7,19 @@
 
 html,
 body {
-  font-family: $font-primary;
-  @include large-device {
-    font-size: $minimum-font-size;
-  }
+  color: color(neutral);
+  font-size: $base-font-size;
+  @include font(primary, regular);
 }
 
 img {
   width: 100%;
   max-width: 100%;
   height: 100%;
+}
+
+.main-wrapper {
+  max-width: $global-max-width;
+  margin: 0 auto;
+  text-align: center;
 }
