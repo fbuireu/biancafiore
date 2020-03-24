@@ -1,15 +1,68 @@
-$global-max-width: 960px;
+$global-max-width: 1200px;
+$base-font-size: 1rem;
+$base-line-height: $base-font-size * 1.25;
 
-$large-device: 1024px;
-$medium-device: 960px;
-$small-device: 720px;
-$extra-small-device: 575px;
+$grid: (
+  extra-small: 575px,
+  small: 720px,
+  medium : 960px,
+  large : 1024px
+);
 
-$font-primary: 'Zilla Slab', serif;
-$font-secondary: 'Montserrat', sans-serif;
+$fonts: (
+  primary: (
+    regular: (
+      family: ('Zilla Slab', serif),
+      weight: 400,
+      style: normal
+    ),
+    regular-italic: (
+      family: ('Zilla Slab', serif),
+      weight: 400,
+      style: italic
+    ),
+    bold: (
+      family: ('Zilla Slab', serif),
+      weight: 700,
+      style: normal
+    ),
+  ),
+  secondary: (
+    light: (
+      family: ('Montserrat', sans-serif),
+      weight: 300,
+      style: normal
+    ),
+    regular: (
+      family: ('Montserrat', sans-serif),
+      weight: 400,
+      style: normal
+    ),
+    bold: (
+      family: ('Montserrat', sans-serif),
+      weight: 700,
+      style: normal
+    ),
+  ),
+);
 
-$minimum-font-size: 1rem;
-$maximum-font-size: 1.125rem;
-$base-line-height: $minimum-font-size * 1.25rem;
-$vertical-rhythm: $base-line-height / $maximum-font-size;
+$typography-scale: (
+  -1: 0.75rem,
+  0: 1rem,
+  1: 1.5rem,
+  2: 1.75rem,
+  3: 2rem
+);
 
+$line-heights: (
+  -1: $base-line-height,
+  0: $base-line-height,
+  1: $base-line-height * 2,
+  2: $base-line-height * 2
+);
+
+$colors: (
+  neutral: (
+    main: #1f2022
+  )
+);
