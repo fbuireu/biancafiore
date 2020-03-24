@@ -32,14 +32,14 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `locales`,
-        path: `${__dirname}/src/locales`,
+        path: `${__dirname}/content/locales`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `menu`,
-        path: `${__dirname}/src/menu`,
+        path: `${__dirname}/content/menu`,
       },
     },
     {
@@ -67,7 +67,7 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `pages`,
-        path: `${__dirname}/src/pages/markdown`,
+        path: `${__dirname}/content/pages`,
       },
     },
     {
