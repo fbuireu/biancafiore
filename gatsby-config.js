@@ -16,10 +16,10 @@ module.exports = {
       options: {
         fonts: [
           `Zilla Slab: 400, 400i, 700`,
-          `Montserrat: 300, 400, 700`
+          `Montserrat: 300, 400, 700`,
         ],
-        display: `swap`
-      }
+        display: `swap`,
+      },
     },
     {
       resolve: `gatsby-plugin-purgecss`,
@@ -27,7 +27,7 @@ module.exports = {
         printRejected: true,
       },
     },
-    
+
     {
       resolve: `gatsby-source-filesystem`,
       options: {
