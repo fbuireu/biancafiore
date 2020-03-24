@@ -10,6 +10,7 @@
     "gatsby": "^2.19.7",
     "gatsby-image": "^2.2.39",
     "gatsby-plugin-eslint": "^2.0.8",
+    "gatsby-plugin-google-fonts": "^1.0.1",
     "gatsby-plugin-manifest": "^2.2.39",
     "gatsby-plugin-netlify": "^2.1.35",
     "gatsby-plugin-netlify-cms": "^4.1.42",
