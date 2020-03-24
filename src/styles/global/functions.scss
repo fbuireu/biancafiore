@@ -7,7 +7,7 @@
 
 @mixin breakpoint($breakpoint, $breakpoints: $grid) {
   @if map-has-key($breakpoints, $breakpoint) {
-    $mq-breakpoint: map-get($breakpoints, $breakpoint);
+    $breakpoint: map-get($breakpoints, $breakpoint);
   }
 
   @media screen and (min-width: #{$breakpoint}) {
@@ -15,7 +15,7 @@
   }
 }
 
-@mixin font($group, $variant: regular, $properties: family weight style, $font-stack: $fonts) {
+@mixin font-properties($group, $variant: regular, $properties: family weight style, $font-stack: $fonts) {
   $font-properties: map-deep-get($font-stack, $group, $variant);
 
   @if $font-properties {
