@@ -8,8 +8,8 @@
 html,
 body {
   color: color(neutral);
+  @include font-properties(primary, bold);
   font-size: $base-font-size;
-  @include font(primary, regular);
 }
 
 img {
