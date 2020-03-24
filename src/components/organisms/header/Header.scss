@@ -1,4 +1,58 @@
+@import "../../../styles/global/functions.scss";
+
 header {
   width: 100%;
   margin: 0 auto;
+
+  ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    padding: 1rem 0;
+    @include font(primary, bold);
+    @include typography-settings(2);
+    text-transform: uppercase;
+  }
+
+  a {
+    position: relative;
+    color: rgba(color(neutral),.8);
+    padding: .5rem;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      height: 1rem;
+      width: 1rem;
+      transition: all .3s ease;
+      opacity: 0;
+    }
+
+    &:before {
+      right: 0;
+      top: 0;
+      border-right: 3px solid color(neutral);
+      border-top: 3px solid color(neutral);
+      transform: translate(-100%, 50%);
+    }
+
+    &:after {
+      left: 0;
+      bottom: 0;
+      border-left: 3px solid color(neutral);
+      border-bottom: 3px solid color(neutral);
+      transform: translate(100%, -50%);
+    }
+
+    &:hover {
+      color: color(neutral);
+
+      &:before,
+      &:after {
+        transform: translate(0%, 0%);
+        opacity: 1;
+      }
+    }
+  }
 }
