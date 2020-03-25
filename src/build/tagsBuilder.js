@@ -36,8 +36,8 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
   posts.map(({ node }) => {
     let { content, locale } = node.frontmatter;
 
-    if (content && content.tags) content.tags.map(tag => tags.push(slugify(tag, { lower: true })));
-    if (locale) tags.push(slugify(locale, { lower: true }));
+    (content && content.tag) && content.tags.map(tag => tags.push(slugify(tag, { lower: true })));
+    locale && tags.push(slugify(locale, { lower: true }));
 
     return Array.from(new Set(tags));
   });
