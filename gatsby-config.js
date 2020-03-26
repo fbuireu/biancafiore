@@ -24,6 +24,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-purgecss`,
       options: {
+        ignore: [`/src/styles/styles.scss`],
         printRejected: true,
       },
     },
