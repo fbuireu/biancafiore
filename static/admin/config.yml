@@ -15,13 +15,13 @@ site_url: https://biancafiore.me
 display_url: https://biancafiore.me
 logo_url: https://biancafiore.me/images/logo.svg
 collections:
-  - name: locales
-    label: Locales
-    description: A list of all availables locales. They will appear on article creation page
-    label_singular: Locale
+  - name: languages
+    label: Languages
+    description: A list of all availables languages. They will appear on article creation page
+    label_singular: language
     identifier_field: name
     slug: '{{slug}}'
-    folder: content/locales
+    folder: content/languages
     create: true
     editor:
       preview: false
@@ -68,7 +68,7 @@ collections:
     show_preview_links: true
     fields:
       - { name: key, label: Key, required: true, widget: hidden, default: blog }
-      - { name: locale, label: Locale, required: true, widget: relation, collection: locales, searchFields: [name, iso], valueField: name, displayFields: name }
+      - { name: language, label: Language, required: true, widget: relation, collection: languages, searchFields: [name, iso], valueField: name, displayFields: name }
       - {name: seo, label: SEO, widget: object,
          fields: [
          { name: metaDescription, label: Meta description, required: true, widget: text },
@@ -95,6 +95,7 @@ collections:
         file: content/pages/home/index.en.md
         show_preview_links: true
         fields:
+          - { name: language, label: language, required: true, widget: hidden, default: en }
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
           - { name: description, label: Description, required: true, widget: string }
@@ -109,6 +110,7 @@ collections:
         file: content/pages/home/index.it.md
         show_preview_links: true
         fields:
+          - { name: language, label: language, required: true, widget: hidden, default: it }
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
           - { name: description, label: Description, required: true, widget: string }
@@ -123,6 +125,7 @@ collections:
         file: content/pages/home/index.ca.md
         show_preview_links: true
         fields:
+          - { name: language, label: language, required: true, widget: hidden, default: ca }
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
           - { name: description, label: Description, required: true, widget: string }
@@ -132,11 +135,12 @@ collections:
               { name: quote, label: Quote, required: true, widget: string },
               { name: description, label: Description, required: false, widget: string }]}
           - { name: body, label: Body, required: true, widget: markdown }
-      - name:  homeEs
+      - name:  home
         label: Home - Spanish
         file: content/pages/home/index.es.md
         show_preview_links: true
         fields:
+          - { name: language, label: language, required: true, widget: hidden, default: es }
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
           - { name: description, label: Description, required: true, widget: string }
