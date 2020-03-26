@@ -1,0 +1,22 @@
+{
+  "aboutMeEn": {
+    "title": "About me",
+    "slug": "about-me",
+    "body": "English about me"
+  },
+  "aboutMeIt": {
+    "title": "Riguardo a me",
+    "slug": "riguardo-a-me",
+    "body": "Italian about me"
+  },
+  "aboutCa": {
+    "title": "Sobre mi",
+    "slug": "sobre-mi",
+    "body": "Catalan about me"
+  },
+  "aboutMeEs": {
+    "title": "Sobre mí",
+    "body": "Spanish about me",
+    "slug": "sobre-mi"
+  }
+}
