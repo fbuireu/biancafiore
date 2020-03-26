@@ -1,5 +1,5 @@
 ---
 key: tags
-name: Catalan
+name: 'Catalan '
 iso: ca
 ---
