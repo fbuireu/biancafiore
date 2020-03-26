@@ -87,11 +87,10 @@ collections:
   - name: home
     label: Home
     description: A list of all availables content for home page
-    identifier_field: language
     slug: '{{slug}}'
     create: false
     files:
-      - name:  homeEn
+      - name:  home-english
         label: Home - English
         file: content/pages/home/index.en.md
         show_preview_links: true
@@ -106,7 +105,7 @@ collections:
               { name: quote, label: Quote, required: true, widget: string },
               { name: description, label: Description, required: false, widget: string }]}
           - { name: body, label: Body, required: true, widget: markdown }
-      - name:  homeIt
+      - name:  home-italian
         label: Home - Italian
         file: content/pages/home/index.it.md
         show_preview_links: true
@@ -121,7 +120,7 @@ collections:
               { name: quote, label: Quote, required: true, widget: string },
               { name: description, label: Description, required: false, widget: string }]}
           - { name: body, label: Body, required: true, widget: markdown }
-      - name:  homeCa
+      - name:  home-catalan
         label: Home - Catalan
         file: content/pages/home/index.ca.md
         show_preview_links: true
@@ -136,7 +135,7 @@ collections:
               { name: quote, label: Quote, required: true, widget: string },
               { name: description, label: Description, required: false, widget: string }]}
           - { name: body, label: Body, required: true, widget: markdown }
-      - name:  home
+      - name:  home-spanish
         label: Home - Spanish
         file: content/pages/home/index.es.md
         show_preview_links: true
