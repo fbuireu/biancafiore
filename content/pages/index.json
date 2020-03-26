@@ -1,0 +1,22 @@
+{
+  "homeEn": {
+    "title": "aaa",
+    "description": "bbb",
+    "body": "ccc"
+  },
+  "homeIt": {
+    "title": "ddd",
+    "description": "eee",
+    "body": "fff"
+  },
+  "homeCa": {
+    "title": "ggg",
+    "description": "hhhh",
+    "body": "iii"
+  },
+  "homeEs": {
+    "title": "jjj",
+    "description": "kkk",
+    "body": "lll"
+  }
+}
