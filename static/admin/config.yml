@@ -87,6 +87,7 @@ collections:
   - name: home
     label: Home
     description: A list of all availables content for home page
+    identifier_field: language
     slug: '{{slug}}'
     create: false
     files:
