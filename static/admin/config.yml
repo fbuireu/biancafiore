@@ -83,6 +83,7 @@ collections:
           { name: featuredimage, label: Featured Image, required: false, widget: image },
           { name: title, label: Title, required: true, widget: string },
           { name: tags, label: Tags, required: false, widget: relation, collection: tags, searchFields: tag, valueField: tag, displayFields: tag, multiple: true },
+          { name: customFile, label: Custom file, required: false, widget: file },
           { name: body, label: Body, required: true, widget: markdown }]}
   - name: pages
     label: Pages
@@ -93,23 +94,75 @@ collections:
     files:
       - name:  home
         label: Home
-        file: content/pages/index.md
+        file: content/pages/index.json
         show_preview_links: true
         fields:
-          - { name: title, label: Title, required: true, widget: string }
-          - { name: image, label: Image, required: false, widget: image }
-          - { name: description, label: Description, required: true, widget: string }
-          - { name: testimonials, label: Testimonials, required: false, widget: list,
+          - { name: homeEn, label: Enlgish, widget: object,
               fields: [
-              { name: author, label: Author, required: true, widget: string },
-              { name: quote, label: Quote, required: true, widget: string },
-              { name: description, label: Description, required: false, widget: string },
+              { name: title, label: Title, required: true, widget: string },
+              { name: image, label: Image, required: false, widget: image },
+              { name: description, label: Description, required: true, widget: string },
+              { name: testimonials, label: Testimonials, required: false, widget: list,
+                fields: [
+                { name: author, label: Author, required: true, widget: string },
+                { name: quote, label: Quote, required: true, widget: string },
+                { name: description, label: Description, required: false, widget: string }]},
+              { name: body, label: Body, required: true, widget: markdown }]}
+          - { name: homeIt, label: Italian, widget: object,
+              fields: [
+              { name: title, label: Title, required: true, widget: string },
+              { name: image, label: Image, required: false, widget: image },
+              { name: description, label: Description, required: true, widget: string },
+              { name: testimonials, label: Testimonials, required: false, widget: list,
+                fields: [
+                { name: author, label: Author, required: true, widget: string },
+                { name: quote, label: Quote, required: true, widget: string },
+                { name: description, label: Description, required: false, widget: string }]},
+              { name: body, label: Body, required: true, widget: markdown }]}
+          - { name: homeCa, label: Catalan, widget: object,
+              fields: [
+              { name: title, label: Title, required: true, widget: string },
+              { name: image, label: Image, required: false, widget: image },
+              { name: description, label: Description, required: true, widget: string },
+              { name: testimonials, label: Testimonials, required: false, widget: list,
+                fields: [
+                { name: author, label: Author, required: true, widget: string },
+                { name: quote, label: Quote, required: true, widget: string },
+                { name: description, label: Description, required: false, widget: string }]},
+              { name: body, label: Body, required: true, widget: markdown }]}
+          - { name: homeEs, label: Spanish, widget: object,
+              fields: [
+              { name: title, label: Title, required: true, widget: string },
+              { name: image, label: Image, required: false, widget: image },
+              { name: description, label: Description, required: true, widget: string },
+              { name: testimonials, label: Testimonials, required: false, widget: list,
+                fields: [
+                { name: author, label: Author, required: true, widget: string },
+                { name: quote, label: Quote, required: true, widget: string },
+                { name: description, label: Description, required: false, widget: string }]},
               { name: body, label: Body, required: true, widget: markdown }]}
       - name: about-me
         label: About me
-        file: content/pages/about-me.md
+        file: content/pages/about-me.json
         show_preview_links: true
         fields:
-          - { name: title, label: Title,required: true, widget: string }
-          - { name: slug, label: Slug, required: true, widget: string, default: about-me }
-          - { name: body, label: Body, required: true, widget: markdown }
+          - { name: aboutMeEn, label: Enlgish, widget: object,
+              fields: [
+                - { name: title, label: Title,required: true, widget: string }
+                  - { name: slug, label: Slug, required: true, widget: string, default: about-me }
+                  - { name: body, label: Body, required: true, widget: markdown }]}
+          - { name: aboutMeIt, label: Italian, widget: object,
+              fields: [
+                - { name: title, label: Title,required: true, widget: string }
+                  - { name: slug, label: Slug, required: true, widget: string, default: about-me }
+                  - { name: body, label: Body, required: true, widget: markdown }]}
+          - { name: aboutCa, label: Catalan, widget: object,
+              fields: [
+                - { name: title, label: Title,required: true, widget: string }
+                  - { name: slug, label: Slug, required: true, widget: string, default: about-me }
+                  - { name: body, label: Body, required: true, widget: markdown }]}
+          - { name: aboutMeEs, label: Spanish, widget: object,
+              fields: [
+                - { name: title, label: Title,required: true, widget: string }
+                  - { name: slug, label: Slug, required: true, widget: string, default: about-me }
+                  - { name: body, label: Body, required: true, widget: markdown }]}
