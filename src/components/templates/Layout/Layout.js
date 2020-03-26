@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useStaticQuery, graphql } from 'gatsby';
-import Header from '../../organisms/header/Header';
+import Header from '../../organisms/Header/Header';
 import '../../../styles/styles.scss';
 
 const Layout = ({ children }) => {
