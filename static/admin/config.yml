@@ -94,7 +94,7 @@ collections:
     files:
       - name:  home
         label: Home
-        file: content/pages/index.json
+        file: content/pages/index.md
         show_preview_links: true
         fields:
           - { name: homeEn, label: Enlgish, widget: object,
@@ -143,7 +143,7 @@ collections:
               { name: body, label: Body, required: true, widget: markdown }]}
       - name: about-me
         label: About me
-        file: content/pages/about-me.json
+        file: content/pages/about-me.md
         show_preview_links: true
         fields:
           - { name: aboutMeEn, label: Enlgish, widget: object,
