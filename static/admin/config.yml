@@ -18,7 +18,7 @@ collections:
   - name: languages
     label: Languages
     description: A list of all availables languages. They will appear on article creation page
-    label_singular: language
+    label_singular: Language
     identifier_field: name
     slug: '{{slug}}'
     folder: content/languages
