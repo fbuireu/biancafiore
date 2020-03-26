@@ -6,7 +6,7 @@ async function articlesBuilder (graphql, { createPage }, reporter) {
 
   const articlesQuery = await graphql(`
     {
-      allMarkdownRemark(
+      articles:allMarkdownRemark(
         filter: { frontmatter: { key: { eq: "blog" }}},
         sort: { order: DESC, fields: [frontmatter___content___publishDate] }) {
         edges {
@@ -42,7 +42,7 @@ async function articlesBuilder (graphql, { createPage }, reporter) {
     return true;
   }
 
-  let articles = articlesQuery.data.allMarkdownRemark.edges;
+  let articles = articlesQuery.data.articles.edges;
 
   articles.forEach(({ node }) => {
     createPage({

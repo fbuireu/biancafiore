@@ -7,7 +7,7 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
 
   const tagsQuery = await graphql(`
     {
-      allMarkdownRemark{
+      articles:allMarkdownRemark{
         edges {
           node {
             frontmatter {
@@ -31,9 +31,9 @@ async function tagsBuilder (graphql, { createPage }, reporter) {
   }
 
   let tags = [];
-  const posts = tagsQuery.data.allMarkdownRemark.edges;
+  const articles = tagsQuery.data.articles.edges;
 
-  posts.map(({ node }) => {
+  articles.map(({ node }) => {
     let { content, locale } = node.frontmatter;
 
     (content && content.tag) && content.tags.map(tag => tags.push(slugify(tag, { lower: true })));
