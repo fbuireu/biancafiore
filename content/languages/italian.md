@@ -1,5 +1,5 @@
 ---
 key: tags
-name: 'Italian '
+name: Italian
 iso: it
 ---
