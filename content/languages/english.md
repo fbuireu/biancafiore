@@ -1,5 +1,5 @@
 ---
 key: tags
-name: English
+name: 'English '
 iso: en
 ---
