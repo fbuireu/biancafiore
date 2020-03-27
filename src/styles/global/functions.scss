@@ -29,6 +29,7 @@
 
 @function color($base, $shade: main) {
   $color: map-get(map-get($colors, $base), $shade);
+
   @return $color;
 }
 
@@ -46,6 +47,7 @@
       @warn '`#{$map}` is not a map.';
       @return false;
     }
+
     $map: map-get($map, $key);
   }
 
