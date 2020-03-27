@@ -8,7 +8,7 @@ const Navigation = () => {
 
   return <nav>
     <ul>
-      {menuItems.map(({node}) => <li key={node.frontmatter.position}><Link to={node.fields.slug}>{node.frontmatter.name}</Link></li>)}
+      {menuItems.map(({ node }) => <li key={node.frontmatter.position}><Link to={node.fields.slug}>{node.frontmatter.name}</Link></li>)}
     </ul>
   </nav>;
 };

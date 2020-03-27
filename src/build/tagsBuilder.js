@@ -1,7 +1,7 @@
 const path = require(`path`);
 const slugify = require(`slugify`);
 
-async function tagsBuilder(graphql, {createPage}, reporter) {
+async function tagsBuilder(graphql, { createPage }, reporter) {
   const tagsTemplate = path.resolve(
     `./src/components/templates/Tags/Tags.js`);
 
@@ -33,12 +33,12 @@ async function tagsBuilder(graphql, {createPage}, reporter) {
   let tags = [];
   const articles = tagsQuery.data.articles.edges;
 
-  articles.map(({node}) => {
-    let {content, locale} = node.frontmatter;
+  articles.map(({ node }) => {
+    let { content, locale } = node.frontmatter;
 
     (content && content.tag) &&
-    content.tags.map(tag => tags.push(slugify(tag, {lower: true})));
-    locale && tags.push(slugify(locale, {lower: true}));
+    content.tags.map(tag => tags.push(slugify(tag, { lower: true })));
+    locale && tags.push(slugify(locale, { lower: true }));
 
     return Array.from(new Set(tags));
   });

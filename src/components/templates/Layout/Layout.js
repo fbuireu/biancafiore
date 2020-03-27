@@ -4,7 +4,7 @@ import { useStaticQuery, graphql } from 'gatsby';
 import Header from '../../organisms/Header/Header';
 import '../../../styles/styles.scss';
 
-const Layout = ({children}) => {
+const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
       query SiteTitleQuery {
           site {
