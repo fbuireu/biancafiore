@@ -100,6 +100,19 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`,
       },
     },
+    {
+      resolve: `gatsby-plugin-intl`,
+      options: {
+        path: `${__dirname}/content/translations`,
+        languages: [`en`, `it`, `ca`, `es`],
+        defaultLanguage: `en`,
+        redirect: true,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-exclude`,
+      options: { paths: [`**/tag/**`, `**/blog/**`, `!**/en/**`] },
+    },
     `gatsby-plugin-netlify`,
   ],
 };
