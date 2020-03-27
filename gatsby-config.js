@@ -111,7 +111,7 @@ module.exports = {
     },
     {
       resolve: `gatsby-plugin-exclude`,
-      options: { paths: [`**/tag/**`, `**/blog/**`, `!**/en/**`] },
+      options: { paths: [`**/blog/**`, `!**/en/**`] },
     },
     `gatsby-plugin-netlify`,
   ],
