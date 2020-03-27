@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Navigation from '../../molecules/Navigation/Navigation';
 import './Header.scss';
 
-const Header = ({ siteTitle }) => (
+const Header = ({siteTitle}) => (
   <header>
     <section className={`main-wrapper`}>
       {siteTitle}

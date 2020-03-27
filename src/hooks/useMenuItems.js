@@ -1,7 +1,7 @@
 import { graphql, useStaticQuery } from 'gatsby';
 
 export const useMenuItems = () => {
-  const { allMarkdownRemark } = useStaticQuery(graphql`
+  const {allMarkdownRemark} = useStaticQuery(graphql`
       {
           allMarkdownRemark(
               filter: { frontmatter: { key: { eq: "menuItem" }}},

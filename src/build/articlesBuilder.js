@@ -1,6 +1,6 @@
 const path = require(`path`);
 
-async function articlesBuilder(graphql, { createPage }, reporter) {
+async function articlesBuilder(graphql, {createPage}, reporter) {
   const articlesTemplate = path.resolve(
     `./src/components/templates/Articles/Articles.js`);
 
@@ -44,7 +44,7 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
 
   let articles = articlesQuery.data.articles.edges;
 
-  articles.forEach(({ node }) => {
+  articles.forEach(({node}) => {
     createPage({
       path: `${node.frontmatter.key}${node.fields.slug}`,
       tags: node.frontmatter.content.tags,
