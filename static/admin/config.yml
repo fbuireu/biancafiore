@@ -98,7 +98,6 @@ collections:
           - { name: language, label: language, required: true, widget: hidden, default: en }
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
-          - { name: description, label: Description, required: true, widget: string }
           - { name: testimonials, label: Testimonials, required: false, widget: list,
               fields: [
               { name: author, label: Author, required: true, widget: string },
@@ -113,7 +112,6 @@ collections:
           - { name: language, label: language, required: true, widget: hidden, default: it }
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
-          - { name: description, label: Description, required: true, widget: string }
           - { name: testimonials, label: Testimonials, required: false, widget: list,
               fields: [
               { name: author, label: Author, required: true, widget: string },
@@ -128,7 +126,6 @@ collections:
           - { name: language, label: language, required: true, widget: hidden, default: ca }
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
-          - { name: description, label: Description, required: true, widget: string }
           - { name: testimonials, label: Testimonials, required: false, widget: list,
               fields: [
               { name: author, label: Author, required: true, widget: string },
@@ -143,7 +140,6 @@ collections:
           - { name: language, label: language, required: true, widget: hidden, default: es }
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image }
-          - { name: description, label: Description, required: true, widget: string }
           - { name: testimonials, label: Testimonials, required: false, widget: list,
               fields: [
               { name: author, label: Author, required: true, widget: string },
