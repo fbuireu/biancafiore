@@ -1,0 +1,19 @@
+.language-switcher {
+  &__list {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 10;
+    transition: all .3s ease;
+
+    &.--is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__item {
+    width: 100%;
+  text-align: left;
+  }
+}
