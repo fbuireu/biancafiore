@@ -5681,6 +5681,11 @@ eslint-plugin-react-hooks@^1.7.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-1.7.0.tgz#6210b6d5a37205f0b92858f895a4e827020a7d04"
   integrity sha512-iXTCFcOmlWvw4+TOE8CLWj6yX1GwzT0Y6cUfHHZqWnSk144VmVIRcVGtUAzrLES7C798lmvnt02C7rxaOX1HNA==
 
+eslint-plugin-react-hooks@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-3.0.0.tgz#9e80c71846eb68dd29c3b21d832728aa66e5bd35"
+  integrity sha512-EjxTHxjLKIBWFgDJdhKKzLh5q+vjTFrqNZX36uIxWS4OfyXe5DawqPj3U5qeJ1ngLwatjzQnmR0Lz0J0YH3kxw==
+
 eslint-plugin-react@^7.18.3, eslint-plugin-react@^7.19.0:
   version "7.19.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.19.0.tgz#6d08f9673628aa69c5559d33489e855d83551666"
@@ -6840,6 +6845,13 @@ gatsby-plugin-react-helmet@^3.1.21:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-react-helmet/-/gatsby-plugin-react-helmet-3.2.1.tgz#28a89e884e5447f7aefead2a80749e3745f5f5a9"
   integrity sha512-5oarZdVvp3k3keG26eVFagVHLYw7wCGs/MXRYQg8MEyJewU3X4Uc0eo7qu4TM5EIuZ2ekaL14r86RB6RM5TORA==
+  dependencies:
+    "@babel/runtime" "^7.8.7"
+
+gatsby-plugin-remove-trailing-slashes@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-remove-trailing-slashes/-/gatsby-plugin-remove-trailing-slashes-2.2.1.tgz#71b010afbd93df99ad37f7d24164867e9c9a6c9f"
+  integrity sha512-V/pLK1VkmqePlrPkEagsY4LSGVVG73+quiYOoNOWGzPi4FFSUu3GSiA8is4hiejB5fOs81TDhjYfvIIPbv5Q7w==
   dependencies:
     "@babel/runtime" "^7.8.7"
 
