@@ -8,7 +8,7 @@ export const LanguageSwitcher = () => {
   const [isMenuSelectorOpen, setIsMenuSelectorOpen] = useState(false),
     languages = useLanguages();
 
-  let currentLanguage = localStorage.getItem('gatsby-intl-language');
+  let currentLanguage = localStorage.getItem(`gatsby-intl-language`);
 
   return <li className={`language-switcher__wrapper ${isMenuSelectorOpen ? `--is-open` : ``}`}>
     <span onClick={() => setIsMenuSelectorOpen(!isMenuSelectorOpen)}>
