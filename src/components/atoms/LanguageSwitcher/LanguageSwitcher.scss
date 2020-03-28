@@ -3,10 +3,32 @@
     cursor: pointer;
 
     span {
+      display: flex;
       transition: transform .3s ease;
 
       &:active {
         transform: scale(.975);
+      }
+    }
+
+    svg {
+      width: 1rem;
+      margin-left: .5rem;
+      transition: transform .3s ease;
+    }
+
+    &.--is-open {
+      span {
+        svg {
+          transform: rotate(180deg)
+        }
+      }
+
+      .language-switcher {
+        &__list {
+          opacity: 1;
+          visibility: visible;
+        }
       }
     }
   }
@@ -17,11 +39,6 @@
     visibility: hidden;
     z-index: 10;
     transition: all .3s ease;
-
-    &.--is-open {
-      opacity: 1;
-      visibility: visible;
-    }
   }
 
   &__item {
