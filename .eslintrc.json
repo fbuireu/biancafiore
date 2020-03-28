@@ -1,6 +1,8 @@
 {
   "root": true,
   "rules": {
+    "react-hooks/rules-of-hooks": "warn",
+    "react-hooks/exhaustive-deps": "warn",
     "indent": [
       "warn",
       2,
@@ -89,6 +91,7 @@
   },
   "plugins": [
     "react",
+    "react-hooks",
     "babel"
   ],
   "settings": {
