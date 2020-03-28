@@ -1,4 +1,16 @@
 .language-switcher {
+  &__wrapper {
+    cursor: pointer;
+
+    span {
+      transition: transform .3s ease;
+
+      &:active {
+        transform: scale(.975);
+      }
+    }
+  }
+
   &__list {
     position: absolute;
     opacity: 0;
@@ -14,6 +26,6 @@
 
   &__item {
     width: 100%;
-  text-align: left;
+    text-align: left;
   }
 }
