@@ -1,9 +1,9 @@
 import { graphql, useStaticQuery } from 'gatsby';
 
 export const useMenuItems = () => {
-  const { allMarkdownRemark } = useStaticQuery(graphql`
+  const { menuItems } = useStaticQuery(graphql`
       {
-          allMarkdownRemark(
+          menuItems:allMarkdownRemark(
               filter: { frontmatter: { key: { eq: "menuItem" }}},
               sort: { order: ASC, fields: [frontmatter___position] }) {
               edges {
@@ -21,5 +21,5 @@ export const useMenuItems = () => {
       }
   `);
 
-  return allMarkdownRemark.edges;
+  return menuItems.edges;
 };
