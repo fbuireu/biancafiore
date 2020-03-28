@@ -1,0 +1,16 @@
+@import "../../../styles/global/functions.scss";
+
+ul {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  padding: 1rem 0;
+  @include font-properties(primary, bold);
+  @include typography-settings(2);
+  text-transform: uppercase;
+}
+
+a {
+  position: relative;
+  color: color(neutral);
+}
