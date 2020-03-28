@@ -8,6 +8,8 @@ export const LanguageSwitcher = () => {
   const [isMenuSelectorOpen, setIsMenuSelectorOpen] = useState(false),
     languages = useLanguages();
 
+  let currentLanguage = localStorage.getItem('gatsby-intl-language');
+
   return <li className={`language-switcher__wrapper ${isMenuSelectorOpen ? `--is-open` : ``}`}>
     <span onClick={() => setIsMenuSelectorOpen(!isMenuSelectorOpen)}>
       <FormattedMessage id={`changeLanguage`} />
@@ -15,7 +17,11 @@ export const LanguageSwitcher = () => {
     </span>
     <ul className={`language-switcher__list`}>
       {languages.map((language, index) => isMenuSelectorOpen &&
-        <li className={`language-switcher__item`} key={index} onClick={() => changeLocale(language.iso)}><FormattedMessage id={language.iso} /></li>)}
+        <li className={`language-switcher__item ${currentLanguage === language.iso ? `--is-current-language` : ``}`}
+            key={index}
+            onClick={() => changeLocale(language.iso)}>
+          <FormattedMessage id={language.iso} />
+        </li>)}
     </ul>
   </li>;
 };
