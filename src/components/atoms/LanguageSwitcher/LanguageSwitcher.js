@@ -10,7 +10,7 @@ export const LanguageSwitcher = () => {
     languages = useLanguages();
 
   useEffect(() => {
-    setCurrentLanguage(localStorage.getItem(`gatsby-intl-language`));
+    setCurrentLanguage(localStorage.getItem(`gatsby-intl-language`)); 
   }, []);
 
   return <li className={`language-switcher__wrapper ${isMenuSelectorOpen ? `--is-open` : ``}`}>
