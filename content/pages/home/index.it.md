@@ -1,5 +1,5 @@
 ---
-language: eit
+language: it
 title: Home italian
 description: Description italian
 ---
