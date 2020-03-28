@@ -15,7 +15,7 @@ export const LanguageSwitcher = () => {
     </span>
     <ul className={`language-switcher__list`}>
       {languages.map((language, index) => isMenuSelectorOpen &&
-        <li className={`language-switcher__item`} key={index} onClick={() => changeLocale(language.iso)}>{language.name}</li>)}
+        <li className={`language-switcher__item`} key={index} onClick={() => changeLocale(language.iso)}><FormattedMessage id={language.iso} /></li>)}
     </ul>
   </li>;
 };
