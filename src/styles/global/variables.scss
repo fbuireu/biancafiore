@@ -11,23 +11,6 @@ $grid: (
 
 $fonts: (
   primary: (
-    regular: (
-      family: ('Zilla Slab', serif),
-      weight: 400,
-      style: normal
-    ),
-    regular-italic: (
-      family: ('Zilla Slab', serif),
-      weight: 400,
-      style: italic
-    ),
-    bold: (
-      family: ('Zilla Slab', serif),
-      weight: 700,
-      style: normal
-    ),
-  ),
-  secondary: (
     light: (
       family: ('Montserrat', sans-serif),
       weight: 300,
@@ -40,6 +23,23 @@ $fonts: (
     ),
     bold: (
       family: ('Montserrat', sans-serif),
+      weight: 700,
+      style: normal
+    ),
+  ),
+  secondary: (
+    regular: (
+      family: ('Zilla Slab', serif),
+      weight: 400,
+      style: normal
+    ),
+    regular-italic: (
+      family: ('Zilla Slab', serif),
+      weight: 400,
+      style: italic
+    ),
+    bold: (
+      family: ('Zilla Slab', serif),
       weight: 700,
       style: normal
     ),
