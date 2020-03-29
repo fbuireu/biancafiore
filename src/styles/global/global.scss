@@ -7,19 +7,19 @@
 
 html,
 body {
-  color: color(neutral);
   @include font-properties(primary, bold);
+  color: color(neutral);
   font-size: $base-font-size;
 }
 
 img {
-  width: 100%;
-  max-width: 100%;
   height: 100%;
+  max-width: 100%;
+  width: 100%;
 }
 
 .main-wrapper {
-  max-width: $global-max-width;
   margin: 0 auto;
+  max-width: $global-max-width;
   text-align: center;
 }
