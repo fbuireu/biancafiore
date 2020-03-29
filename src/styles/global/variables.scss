@@ -47,7 +47,7 @@ $fonts: (
 );
 
 $typography-scale: (
-  -1: 0.75rem,
+  -1: .75rem,
   0: 1rem,
   1: 1.5rem,
   2: 1.75rem,
@@ -76,6 +76,6 @@ $colors: (
     error-3: #FFECEF
   ),
   others:(
-    white: #FFFFFF,
+    white: #FFF,
   )
 );
