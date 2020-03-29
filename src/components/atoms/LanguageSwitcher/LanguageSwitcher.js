@@ -10,7 +10,7 @@ export const LanguageSwitcher = () => {
     languages = useLanguages();
 
   useEffect(() => {
-    setCurrentLanguage(localStorage.getItem(`gatsby-intl-language`)); 
+    setCurrentLanguage(localStorage.getItem(`gatsby-intl-language`));
   }, []);
 
   return <li className={`language-switcher__wrapper ${isMenuSelectorOpen ? `--is-open` : ``}`}>
@@ -21,8 +21,8 @@ export const LanguageSwitcher = () => {
     <ul className={`language-switcher__list`}>
       {languages.map((language, index) => isMenuSelectorOpen &&
         <li className={`language-switcher__item ${currentLanguage === language.iso ? `--is-current-language` : ``}`}
-            key={index}
-            onClick={() => changeLocale(language.iso)}>
+            onClick={() => changeLocale(language.iso)}
+            key={index}>
           <FormattedMessage id={language.iso} />
         </li>)}
     </ul>
