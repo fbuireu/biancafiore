@@ -49,7 +49,7 @@ linters:
     style: short
   HexNotation:
     enabled: true
-    style: uppercase
+    style: lowercase
   HexValidation:
     enabled: true
   IdSelector:
