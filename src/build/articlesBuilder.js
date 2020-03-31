@@ -39,7 +39,7 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
   if (articlesQuery.errors) {
     reporter.panicOnBuild(`Error while running GraphQL query.`);
 
-    return true;
+    return;
   }
 
   let articles = articlesQuery.data.articles.edges;
@@ -49,7 +49,11 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
       path: `${node.frontmatter.key}${node.fields.slug}`,
       tags: node.frontmatter.content.tags,
       component: articlesTemplate,
-      context: {},
+      context: {
+        slug: node.fields.slug,
+        seo: node.seo,
+        content: node.content
+      },
     });
   });
 }
