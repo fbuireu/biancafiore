@@ -17,7 +17,7 @@ const Navigation = () => {
 };
 
 Navigation.propTypes = {
-  menuItems: PropTypes.object,
+  menuItems: PropTypes.string,
 };
 
 Navigation.defaultProps = {
