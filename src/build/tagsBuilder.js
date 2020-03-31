@@ -27,7 +27,7 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
   if (tagsQuery.errors) {
     reporter.panicOnBuild(`Error while running GraphQL query.`);
 
-    return true;
+    return;
   }
 
   let tags = [];
