@@ -1,6 +1,6 @@
-import React from 'react';
-import { useStaticQuery, graphql } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby';
 import PropTypes from 'prop-types';
+import React from 'react';
 import Helmet from 'react-helmet';
 
 const Seo = ({ description, lang, meta, title }) => {
@@ -21,9 +21,7 @@ const Seo = ({ description, lang, meta, title }) => {
   const metaDescription = description || site.siteMetadata.description;
 
   return <Helmet
-    htmlAttributes={{
-      lang,
-    }}
+    htmlAttributes={{ lang }}
     title={title}
     titleTemplate={`%s | ${site.siteMetadata.title}`}
     meta={[
