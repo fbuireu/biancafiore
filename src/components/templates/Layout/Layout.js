@@ -1,6 +1,7 @@
-import React from 'react';
+import { graphql, useStaticQuery } from 'gatsby';
 import PropTypes from 'prop-types';
-import { useStaticQuery, graphql } from 'gatsby';
+import React from 'react';
+import { useScrollPosition } from '../../../hooks/useScrollPosition';
 import Header from '../../organisms/Header/Header';
 import '../../../styles/styles.scss';
 
@@ -14,6 +15,7 @@ const Layout = ({ children }) => {
           }
       }
   `);
+  useScrollPosition(({ currentPosition }) => {});
 
   return (
     <>
