@@ -1,6 +1,6 @@
-import React from 'react';
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { useMenuItems } from '../../../hooks/useMenuItems';
 import { LanguageSwitcher } from '../../atoms/LanguageSwitcher/LanguageSwitcher';
 import './Navigation.scss';
