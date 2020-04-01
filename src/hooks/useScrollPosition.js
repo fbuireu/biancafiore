@@ -19,6 +19,7 @@ export const useScrollPosition = (effect, deps, element, useWindow, wait) => {
 
   const callBack = () => {
     const currentPosition = getScrollPosition({ element, useWindow });
+
     effect({ previousPosition: position.current, currentPosition: currentPosition });
     position.current = currentPosition;
     throttleTimeout = null;
