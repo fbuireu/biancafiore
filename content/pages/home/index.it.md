@@ -1,5 +1,5 @@
 ---
-language: it
+language: italian
 title: Home italian
 description: Description italian
 ---
