@@ -82,8 +82,8 @@ collections:
           { name: isFeaturedPost, label: Featured Post, required: false, widget: boolean },
           { name: featuredimage, label: Featured Image, required: false, widget: image },
           { name: title, label: Title, required: true, widget: string },
-          { name: tags, label: Tags, required: false, widget: relation, collection: tags, searchFields: tag, valueField: tag, displayFields: tag, multiple: true },
-          { name: body, label: Body, required: true, widget: markdown }]}
+          { name: tags, label: Tags, required: false, widget: relation, collection: tags, searchFields: tag, valueField: tag, displayFields: tag, multiple: true }]}
+      - { name: body, label: Body, required: true, widget: markdown }
   - name: home
     label: Home
     description: A list of all availables content for home page
