@@ -14,29 +14,29 @@ const Article = ({ data }) => {
     <div dangerouslySetInnerHTML={{ __html: article.frontmatter.content.body }} />
   </Layout>;
 };
-export const articleData = graphql`
-    query($slug: String!) {
-        article:markdownRemark(fields: { slug: { eq: $slug }}) {
-            html
-            frontmatter {
-                key
-                language
-                iso
-                seo {
-                    author
-                    metaDescription
-                }
-                content {
-                    publishDate
-                    readingTime
-                    title
-                    tags
-                    body
-                }
-            }
-        }
-    }
-`;
+
+// export const articleData = graphql`
+//     query ($slug: String!) {
+//         article:markdownRemark(fields: { slug: { eq: $slug }}) {
+//             html
+//             frontmatter {
+//                 key
+//                 language
+//                 iso
+//                 seo {
+//                     author
+//                     metaDescription
+//                 }
+//                 content {
+//                     publishDate
+//                     title
+//                     tags
+//                     body
+//                 }
+//             }
+//         }
+//     }
+// `;
 
 Article.propTypes = {
   data: PropTypes.object,
