@@ -1,5 +1,5 @@
 ---
-language: es
+language: spanish
 title: Home spanish
 description: Description spanish
 ---
