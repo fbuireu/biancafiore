@@ -65,7 +65,7 @@
     "clean": "gatsby clean",
     "start": "gatsby clean && gatsby develop",
     "test": "jest",
-    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\""
   },
   "repository": {
     "type": "git",
