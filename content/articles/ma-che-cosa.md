@@ -48,4 +48,6 @@ content:
     #### Heading 4
   isFeaturedPost: true
   featuredimage: /assets/360_sea_otter_0901.jpg
+  tags:
+    - How to guides
 ---
