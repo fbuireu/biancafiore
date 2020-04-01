@@ -1,5 +1,5 @@
 ---
-language: ca
+language: catalan
 title: Home catalan
 description: Description catalan
 ---
