@@ -2,8 +2,8 @@ import { graphql, useStaticQuery } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useScrollPosition } from '../../../hooks/useScrollPosition';
-import Header from '../../organisms/Header/Header';
 import '../../../styles/styles.scss';
+import Header from '../../organisms/Header/Header';
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
 import { changeLocale, FormattedMessage } from 'gatsby-plugin-intl';
-import { useLanguages } from '../../../hooks/useLanguages';
+import React, { useEffect, useState } from 'react';
 import DownArrow from '../../../assets/svg/down_arrow.svg';
+import { useLanguages } from '../../../hooks/useLanguages';
 import './LanguageSwitcher.scss';
 
 export const LanguageSwitcher = () => {
@@ -9,7 +9,7 @@ export const LanguageSwitcher = () => {
     [currentLanguage, setCurrentLanguage] = useState(undefined),
     languages = useLanguages();
 
-  useEffect(() => setCurrentLanguage(localStorage.getItem(`gatsby-intl-language`)),[]);
+  useEffect(() => setCurrentLanguage(localStorage.getItem(`gatsby-intl-language`)), []);
 
   return <li className={`language-switcher__wrapper ${isMenuSelectorOpen ? `--is-open` : ``}`}>
     <span onClick={() => setIsMenuSelectorOpen(!isMenuSelectorOpen)}>

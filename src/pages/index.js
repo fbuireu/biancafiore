@@ -1,7 +1,7 @@
 import React from 'react';
-import Layout from '../components/templates/Layout/Layout';
 import Image from '../components/atoms/Image/Image';
 import Seo from '../components/organisms/Seo';
+import Layout from '../components/templates/Layout/Layout';
 
 const Index = props => {
   return <Layout>
