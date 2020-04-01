@@ -10,7 +10,7 @@ content:
   lastUpdated: 'May 6, 2020 6:03 AM'
   readingTime: 9
   isFeaturedPost: true
-  featuredimage: /assets/vanaqua_soaw_eventpage-support-03-664x664.jpg
+  featuredimage: /assets/images/360_sea_otter_0901.jpg
   title: This is a dummy title
   tags:
     - How to guides
@@ -24,7 +24,7 @@ This is a normal text
 
 `This is code`
 
-![Cutie otter](/assets/360_sea_otter_0901.jpg "Cutie otter")
+![Cutie otter](/assets/images/vanaqua_soaw_eventpage-support-03-664x664.jpg "Cutie otter")
 
 > *Quotation* in **bold** 
 
