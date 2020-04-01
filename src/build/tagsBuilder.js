@@ -7,15 +7,17 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
 
   const tagsQuery = await graphql(`
     query {
-      articles:allMarkdownRemark{
+      articles: allMarkdownRemark {
         edges {
           node {
+            fields {
+              slug
+            }
             frontmatter {
               key
               language
               content {
                 tags
-                body
               }
             }
           }
@@ -36,10 +38,10 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
   articles.map(({ node }) => {
     let { content, language } = node.frontmatter;
 
-    (content && content.tag) && content.tags.map(tag => tags.push(slugify(tag, { lower: true })));
+    (content && content.tags) && content.tags.map(tag => tags.push(slugify(tag, { lower: true })));
     language && tags.push(slugify(language, { lower: true }));
 
-    return Array.from(new Set(tags));
+    return new Set(tags);
   });
 
   tags.forEach(tag => {
