@@ -2,11 +2,11 @@ const path = require(`path`);
 const slugify = require(`slugify`);
 
 async function tagsBuilder(graphql, { createPage }, reporter) {
-  const tagsTemplate = path.resolve(
+  const tagTemplate = path.resolve(
     `./src/components/templates/Tags/Tags.js`);
 
   const tagsQuery = await graphql(`
-    {
+    query {
       articles:allMarkdownRemark{
         edges {
           node {
@@ -45,7 +45,7 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
   tags.forEach(tag => {
     createPage({
       path: `tag/${tag}`,
-      component: tagsTemplate,
+      component: tagTemplate,
       context: {},
     });
   });
