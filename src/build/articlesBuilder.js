@@ -1,11 +1,11 @@
 const path = require(`path`);
 
 async function articlesBuilder(graphql, { createPage }, reporter) {
-  const articlesTemplate = path.resolve(
-    `./src/components/templates/Articles/Articles.js`);
+  const articleTemplate = path.resolve(
+    `./src/components/templates/Article/Article.js`);
 
   const articlesQuery = await graphql(`
-    {
+    query {
       articles:allMarkdownRemark(
         filter: { frontmatter: { key: { eq: "blog" }}},
         sort: { order: DESC, fields: [frontmatter___content___publishDate] }) {
@@ -48,7 +48,7 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
     createPage({
       path: `${node.frontmatter.key}${node.fields.slug}`,
       tags: node.frontmatter.content.tags,
-      component: articlesTemplate,
+      component: articleTemplate,
       context: {
         slug: node.fields.slug,
         seo: node.seo,
