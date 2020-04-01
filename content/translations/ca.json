@@ -1,7 +1,9 @@
 {
-  "en": "Anglès",
-  "it": "Italià",
-  "ca": "Català",
-  "es": "Espanyol",
-  "changeLanguage": "Cambiar d'idioma"
+  "global": {
+    "en": "Anglès",
+    "it": "Italià",
+    "ca": "Català",
+    "es": "Espanyol",
+    "changeLanguage": "Cambiar d'idioma"
+  }
 }
