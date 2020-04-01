@@ -1,5 +1,5 @@
 ---
-language: en
+language: english
 title: Home english
 description: Description english
 ---
