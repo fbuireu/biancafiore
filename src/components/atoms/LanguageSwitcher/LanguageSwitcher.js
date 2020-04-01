@@ -13,7 +13,7 @@ export const LanguageSwitcher = () => {
 
   return <li className={`language-switcher__wrapper ${isMenuSelectorOpen ? `--is-open` : ``}`}>
     <span onClick={() => setIsMenuSelectorOpen(!isMenuSelectorOpen)}>
-      <FormattedMessage id={`changeLanguage`} />
+      <FormattedMessage id={`global.changeLanguage`} />
       <DownArrow />
     </span>
     <ul className={`language-switcher__list`}>
@@ -21,7 +21,7 @@ export const LanguageSwitcher = () => {
         <li className={`language-switcher__item ${currentLanguage === language.iso ? `--is-current-language` : ``}`}
             onClick={() => changeLocale(language.iso)}
             key={index}>
-          <FormattedMessage id={language.iso} />
+          <FormattedMessage id={`global.${language.iso}`} />
         </li>)}
     </ul>
   </li>;
