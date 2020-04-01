@@ -11,6 +11,7 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
         sort: { order: DESC, fields: [frontmatter___content___publishDate] }) {
         edges {
           node {
+            html
             fields {
               slug
             }
@@ -27,7 +28,6 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
                 readingTime
                 title
                 tags
-                body
               }
             }
           }
