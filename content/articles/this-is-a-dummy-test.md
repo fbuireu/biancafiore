@@ -24,13 +24,9 @@ This is a normal text
 
 `This is code`
 
-
-
 ![Cutie otter](/assets/360_sea_otter_0901.jpg "Cutie otter")
 
-
-
-> Quotation in **bold**
+> *Quotation* in **bold** 
 
 [This is a link](google.com)
 
