@@ -5,14 +5,13 @@ import Navigation from '../../molecules/Navigation/Navigation';
 import Seo from '../../organisms/Seo';
 import Layout from '../Layout/Layout';
 
-const Articles = ({ data }) => {
-  console.log(data);
+const Article = ({ data }) => {
+  const { article } = data;
 
   return <Layout>
     <Seo title="Home" />
-    <h1>Hi people</h1>
-    <p>This will be an amazing portfolio for the best content writer ever.</p>
-    <p>Now go build something great.</p>
+    <h1>{article.frontmatter.content.title}</h1>
+    <div dangerouslySetInnerHTML={{ __html: article.frontmatter.content.body }} />
   </Layout>;
 };
 export const articleData = graphql`
@@ -39,10 +38,10 @@ export const articleData = graphql`
     }
 `;
 
-Articles.propTypes = {
+Article.propTypes = {
   data: PropTypes.object,
 };
 
 Navigation.defaultProps = {};
 
-export default Articles;
+export default Article;
