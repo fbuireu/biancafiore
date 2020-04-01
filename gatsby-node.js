@@ -6,8 +6,8 @@ const tagsBuilder = require(`./src/build/tagsBuilder`);
 exports.createPages = async ({ graphql, actions, reporter }) => {
   await Promise.all(
     [
-      articlesBuilder(graphql, actions, reporter),
-      tagsBuilder(graphql, actions, reporter),
+      // articlesBuilder(graphql, actions, reporter),
+      // tagsBuilder(graphql, actions, reporter),
     ],
   );
 };
