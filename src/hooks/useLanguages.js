@@ -2,7 +2,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 export const useLanguages = () => {
   const { languages } = useStaticQuery(graphql`
-      {
+      query {
           languages: allMarkdownRemark(
               filter: { frontmatter: { key: { eq: "tag" }}}
           ) {
