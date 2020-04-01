@@ -8,8 +8,8 @@ backend:
     delete: '{{collection}} "{{slug}}" deleted'
     uploadMedia: '[skip ci] {{path}} media uploaded'
     deleteMedia: '[skip ci] {{path}} media deleted'
-media_folder: static/assets
-public_folder: /assets
+media_folder: static/assets/images
+public_folder: /assets/images
 publish_mode: editorial_workflow
 site_url: https://biancafiore.me
 display_url: https://biancafiore.me
