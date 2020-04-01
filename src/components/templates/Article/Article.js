@@ -11,32 +11,32 @@ const Article = ({ data }) => {
   return <Layout>
     <Seo title="Home" />
     <h1>{article.frontmatter.content.title}</h1>
-    <div dangerouslySetInnerHTML={{ __html: article.frontmatter.content.body }} />
+    <div dangerouslySetInnerHTML={{ __html: article.html }} />
   </Layout>;
 };
 
-// export const articleData = graphql`
-//     query ($slug: String!) {
-//         article:markdownRemark(fields: { slug: { eq: $slug }}) {
-//             html
-//             frontmatter {
-//                 key
-//                 language
-//                 iso
-//                 seo {
-//                     author
-//                     metaDescription
-//                 }
-//                 content {
-//                     publishDate
-//                     title
-//                     tags
-//                     body
-//                 }
-//             }
-//         }
-//     }
-// `;
+export const articleData = graphql`
+    query ($slug: String!) {
+        article:markdownRemark(fields: { slug: { eq: $slug }}) {
+            html
+            frontmatter {
+                key
+                language
+                iso
+                seo {
+                    author
+                    metaDescription
+                }
+                content {
+                    publishDate
+                    readingTime
+                    title
+                    tags
+                }
+            }
+        }
+    }
+`;
 
 Article.propTypes = {
   data: PropTypes.object,
