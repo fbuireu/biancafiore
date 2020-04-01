@@ -52,7 +52,7 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
       context: {
         slug: node.fields.slug,
         seo: node.seo,
-        content: node.content
+        content: node.content,
       },
     });
   });
