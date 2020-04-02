@@ -11,25 +11,30 @@ const Article = ({ data }) => {
   return <Layout>
     <Seo title="Home" />
     <h1>{article.frontmatter.content.title}</h1>
-    <div dangerouslySetInnerHTML={{ __html: article.html }} />
+    <article dangerouslySetInnerHTML={{ __html: article.html }} />
   </Layout>;
 };
 
 export const articleData = graphql`
-    query ($slug: String!) {
+    query getArticleBySlug($slug: String!) {
         article:markdownRemark(fields: { slug: { eq: $slug }}) {
             html
+            fields {
+                slug
+            }
             frontmatter {
                 key
                 language
-                iso
                 seo {
                     author
                     metaDescription
                 }
                 content {
                     publishDate
+                    lastUpdated
                     readingTime
+                    isFeaturedPost
+                    featuredImage
                     title
                     tags
                 }
