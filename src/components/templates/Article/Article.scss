@@ -1,0 +1,25 @@
+@import '../../../styles/global/functions';
+
+blockquote {
+  @include typography-settings(2);
+  border-left: .2rem solid color(neutral, neutral-2);
+  font-weight: 100;
+  margin-left: .5rem;
+  padding-left: .5rem;
+  position: relative;
+
+  p {
+    display: inline-block;
+    padding: 1rem 0;
+  }
+
+  &::before,
+  &::after {
+    color: color(neutral, neutral-2);
+    content: '\201C';
+  }
+
+  &::after {
+    content: '\201D';
+  }
+}
