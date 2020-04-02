@@ -1,5 +1,5 @@
 ---
 key: tag
 name: Italian
-iso: it
+isoCode: it
 ---
