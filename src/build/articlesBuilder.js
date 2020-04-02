@@ -5,7 +5,7 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
     `./src/components/templates/Article/Article.js`);
 
   const articlesQuery = await graphql(`
-    query {
+    query getAllArticlesOrderedByDate {
       articles:allMarkdownRemark(
         filter: { frontmatter: { key: { eq: "blog" }}},
         sort: { order: DESC, fields: [frontmatter___content___publishDate] }) {
@@ -18,14 +18,16 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
             frontmatter {
               key
               language
-              iso
               seo {
                 author
                 metaDescription
               }
               content {
                 publishDate
+                lastUpdated
                 readingTime
+                isFeaturedPost
+                featuredImage
                 title
                 tags
               }

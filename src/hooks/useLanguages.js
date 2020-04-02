@@ -2,7 +2,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 export const useLanguages = () => {
   const { languages } = useStaticQuery(graphql`
-      query {
+      query getAllLanguages{
           languages: allMarkdownRemark(
               filter: { frontmatter: { key: { eq: "tag" }}}
           ) {
@@ -11,7 +11,7 @@ export const useLanguages = () => {
                       frontmatter {
                           key
                           name
-                          iso
+                          isoCode
                       }
                   }
               }
@@ -22,9 +22,9 @@ export const useLanguages = () => {
   let availableLanguages = [];
 
   languages.edges.forEach(({ node }) => {
-    let { name, iso } = node.frontmatter;
+    let { name, isoCode } = node.frontmatter;
 
-    (name || iso) && availableLanguages.push({ name: name, iso: iso });
+    (name || isoCode) && availableLanguages.push({ name: name, isoCode: isoCode });
   });
 
   return availableLanguages;

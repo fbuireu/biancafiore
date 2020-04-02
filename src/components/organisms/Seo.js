@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 
 const Seo = ({ description, lang, meta, title }) => {
   const { site } = useStaticQuery(graphql`
-              query {
+              query getAllMetadata {
                   site {
                       siteMetadata {
                           title
@@ -16,7 +16,6 @@ const Seo = ({ description, lang, meta, title }) => {
               }
     `,
     ),
-
     metaDescription = description || site.siteMetadata.description;
 
   return <Helmet htmlAttributes={{ lang }}
