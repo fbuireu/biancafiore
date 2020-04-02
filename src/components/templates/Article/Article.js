@@ -4,6 +4,7 @@ import React from 'react';
 import Navigation from '../../molecules/Navigation/Navigation';
 import Seo from '../../organisms/Seo';
 import Layout from '../Layout/Layout';
+import './Article.scss';
 
 const Article = ({ data }) => {
   const { article } = data;
