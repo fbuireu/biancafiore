@@ -1,5 +1,5 @@
 ---
 key: tag
 name: Catalan
-iso: ca
+isoCode: ca
 ---
