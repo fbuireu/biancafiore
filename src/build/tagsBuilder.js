@@ -6,7 +6,7 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
     `./src/components/templates/Tags/Tags.js`);
 
   const tagsQuery = await graphql(`
-    query {
+    query getAllTags{
       articles: allMarkdownRemark {
         edges {
           node {
