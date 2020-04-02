@@ -7,7 +7,7 @@ import Header from '../../organisms/Header/Header';
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
-      query SiteTitleQuery {
+      query getSiteTitle {
           site {
               siteMetadata {
                   title
@@ -15,6 +15,7 @@ const Layout = ({ children }) => {
           }
       }
   `);
+
   useScrollPosition(({ currentPosition }) => {});
 
   return (
