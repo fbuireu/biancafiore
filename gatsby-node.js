@@ -25,3 +25,24 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     });
   }
 };
+
+exports.onCreateWebpackConfig = ({ loaders, getConfig, stage }) => {
+  const config = getConfig();
+
+  config.module.rules = [
+    ...config.module.rules.filter(
+      rule => String(rule.test) !== String(/\.jsx?$/),
+    ), {
+      ...loaders.js(),
+      test: /\.jsx?$/,
+      exclude: modulePath => /node_modules/.test(modulePath),
+    },
+  ];
+
+  if (stage.startsWith(`develop`) && config.resolve) {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'react-dom': `@hot-loader/react-dom`,
+    };
+  }
+};
