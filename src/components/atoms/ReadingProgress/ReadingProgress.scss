@@ -1,0 +1,16 @@
+@import '../../../styles/global/functions';
+
+.reading-progress {
+  appearance: none;
+  background-color: color(neutral);
+  height: .25rem;
+  max-width: 100vw;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  transition: width .5s ease;
+
+  &.--is-visible {
+    opacity: 1;
+  }
+}
