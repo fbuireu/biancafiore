@@ -16,8 +16,6 @@ const Layout = ({ children }) => {
       }
   `);
 
-  useScrollPosition(({ currentPosition }) => {});
-
   return (
     <>
       <Header siteTitle={`biancafiore.me (v0)`} />
