@@ -38,11 +38,4 @@ exports.onCreateWebpackConfig = ({ loaders, getConfig, stage }) => {
       exclude: modulePath => /node_modules/.test(modulePath),
     },
   ];
-
-  if (stage.startsWith(`develop`) && config.resolve) {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      'react-dom': `@hot-loader/react-dom`,
-    };
-  }
 };
