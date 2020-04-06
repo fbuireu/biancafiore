@@ -1,5 +1,10 @@
 @import '../../../styles/global/functions';
 
+article {
+  margin: 0 auto;
+  max-width: $global-max-width / 2;
+}
+
 blockquote {
   @include typography-settings(2);
   border-left: .2rem solid color(neutral, neutral-2);
