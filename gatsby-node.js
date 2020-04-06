@@ -30,9 +30,8 @@ exports.onCreateWebpackConfig = ({ loaders, getConfig, stage }) => {
   const config = getConfig();
 
   config.module.rules = [
-    ...config.module.rules.filter(
-      rule => String(rule.test) !== String(/\.jsx?$/),
-    ), {
+    ...config.module.rules.filter(rule => String(rule.test) !== String(/\.jsx?$/)),
+    {
       ...loaders.js(),
       test: /\.jsx?$/,
       exclude: modulePath => /node_modules/.test(modulePath),
