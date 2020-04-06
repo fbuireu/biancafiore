@@ -1,0 +1,7 @@
+@import '../../../styles/global/functions';
+
+.subtitle {
+  @include typography-settings(4);
+  color: color(others, white);
+  letter-spacing: .25rem;
+}
