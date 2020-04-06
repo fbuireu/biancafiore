@@ -7,9 +7,10 @@ const ReadingProgress = ({ scroll, articleProperties }) => {
   let currentScroll = Math.abs(scroll),
     { height: windowHeight } = useWindowSize(),
     { offsetTop: articleOffsetTop, offsetHeight: articleHeight } = articleProperties,
-    currentProgress = Math.round((currentScroll - articleOffsetTop) / (articleHeight - windowHeight) * 100);
+    isArticleVisible = currentScroll >= articleOffsetTop,
+    currentProgress = isArticleVisible ? Math.round((currentScroll - articleOffsetTop) / (articleHeight - windowHeight) * 100) : 0;
 
-  return <div className={`reading-progress ${currentScroll >= articleOffsetTop ? `--is-visible` : ``}`} style={{ width: `${currentProgress}vw` }} />;
+  return <div className={`reading-progress ${isArticleVisible ? `--is-visible` : ``}`} style={{ width: `${currentProgress}vw` }} />;
 };
 
 ReadingProgress.propTypes = {
