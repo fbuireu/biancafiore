@@ -5,7 +5,7 @@ import './Header.scss';
 
 const Header = ({ siteTitle }) => (
   <header>
-    <section className={`main-wrapper`}>
+    <section className={`wrapper`}>
       {siteTitle}
       <Navigation />
     </section>
