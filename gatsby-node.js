@@ -26,7 +26,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 };
 
-exports.onCreateWebpackConfig = ({ loaders, getConfig, stage }) => {
+exports.onCreateWebpackConfig = ({ loaders, getConfig }) => {
   const config = getConfig();
 
   config.module.rules = [
