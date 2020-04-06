@@ -1,0 +1,9 @@
+@import '../../../styles/global/functions';
+
+.title {
+  @include font-properties(secondary, bold);
+  @include typography-settings(7);
+  color: color(others, white);
+  letter-spacing: .25rem;
+  text-transform: uppercase;
+}
