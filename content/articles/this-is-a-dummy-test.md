@@ -12,6 +12,7 @@ content:
   isFeaturedPost: true
   featuredImage: /assets/images/360_sea_otter_0901.jpg
   title: This is a dummy title
+  subtitle: This is a dummy subtitle
   tags:
     - How to guides
     - Writing tips
