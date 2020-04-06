@@ -1,7 +1,7 @@
 @import '../../../styles/global/functions';
 
 .reading-progress {
-  background-color: color(neutral);
+  background-color: color(error, error-2);
   height: .25rem;
   max-width: 100vw;
   opacity: 0;
