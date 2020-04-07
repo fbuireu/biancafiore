@@ -2,7 +2,7 @@
 
 .title {
   @include font-properties(secondary, bold);
-  @include typography-settings(7);
+  @include typography-settings(10);
   color: color(others, white);
   letter-spacing: .25rem;
   text-transform: uppercase;
