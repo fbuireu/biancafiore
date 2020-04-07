@@ -56,12 +56,14 @@ $typography-scale: (
   5: 2.25rem,
   6: 2.5rem,
   7: 2.75rem,
-  8: 3rem
+  8: 3rem,
+  9: 3.25rem,
+  10: 3.5rem
 );
 
 $line-heights: (
-  -1: $base-line-height,
-  0: $base-line-height,
+  -1: $base-line-height * .75,
+  0: $base-line-height * 1.25,
   1: $base-line-height * 2,
   2: $base-line-height * 2.25,
   3: $base-line-height * 2.5,
@@ -69,7 +71,9 @@ $line-heights: (
   5: $base-line-height * 3,
   6: $base-line-height * 3.25,
   7: $base-line-height * 3.5,
-  8: $base-line-height * 3.75
+  8: $base-line-height * 3.75,
+  9: $base-line-height * 4,
+  10: $base-line-height * 4.25
 );
 
 $colors: (
