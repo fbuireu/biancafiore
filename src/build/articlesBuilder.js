@@ -29,7 +29,7 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
                 isFeaturedPost
                 featuredImage
                 title
-                subtitle
+                summary
                 tags
               }
             }
