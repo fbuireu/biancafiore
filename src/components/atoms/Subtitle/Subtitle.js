@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import './Subtitle.scss';
 
-const Subtitle = ({ subtitle, classNames = `` }) => <h2 className={`subtitle ${classNames}`}>{subtitle}</h2>;
+const Subtitle = ({ lastUpdated, author }) => <p className={`subtitle`}>{lastUpdated} by {author}</p>;
 
 Subtitle.propTypes = {
-  subtitle: PropTypes.string,
-  classNames: PropTypes.classNames,
+  lastUpdated: PropTypes.string,
+  author: PropTypes.string,
 };
 
 Subtitle.defaultProps = {};
