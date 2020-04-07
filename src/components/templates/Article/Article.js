@@ -48,7 +48,7 @@ export const articleData = graphql`
                     isFeaturedPost
                     featuredImage
                     title
-                    subtitle
+                    summary
                     tags
                 }
             }
