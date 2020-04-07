@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import './Summary.scss';
 
-const Summary = ({ summary }) => <h2 className={`summary`}>{summary}</h2>;
+const Summary = ({ summary }) => <p className={`summary`}>{summary}</p>;
 
 Summary.propTypes = {
   summary: PropTypes.string,
