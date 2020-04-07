@@ -1,0 +1,7 @@
+@import '../../../styles/global/functions';
+
+.summary {
+  @include typography-settings(3);
+  color: color(others, white);
+  letter-spacing: .25rem;
+}
