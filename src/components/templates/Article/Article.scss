@@ -2,7 +2,7 @@
 
 article {
   margin: 0 auto;
-  max-width: $global-max-width / 2;
+  max-width: map-get($grid, 'medium');
 }
 
 blockquote {
