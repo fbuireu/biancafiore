@@ -2,7 +2,7 @@
 
 .billboard {
   background-color: color(neutral);
-  height: 70vh;
+  height: 50vh;
 
   .wrapper {
     align-items: center;
@@ -12,6 +12,6 @@
   }
 
   .article-information {
-    transform: translateY(-50%);
+    transform: translateY(-25%);
   }
 }
