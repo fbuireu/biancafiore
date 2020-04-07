@@ -2,7 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import './Subtitle.scss';
 
-const Subtitle = ({ lastUpdated, author }) => <p className={`subtitle`}>{lastUpdated} by {author}</p>;
+const Subtitle = ({ lastUpdated, author }) => <p className={`subtitle`}>
+  <time dateTime={lastUpdated}>{lastUpdated}</time> | <span>{author}</span>
+</p>;
 
 Subtitle.propTypes = {
   lastUpdated: PropTypes.string,
