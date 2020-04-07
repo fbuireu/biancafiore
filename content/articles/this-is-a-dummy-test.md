@@ -8,8 +8,8 @@ seo:
 content:
   title: This is a dummy title
   summary: This is a dummy subtitle
-  publishDate: 07/09/2020
-  lastUpdated: 06/11/2020
+  publishDate: 09/09/2020
+  lastUpdated: 11/11/2020
   readingTime: 9
   isFeaturedPost: true
   featuredImage: /assets/images/360_sea_otter_0901.jpg
