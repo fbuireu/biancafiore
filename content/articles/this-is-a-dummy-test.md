@@ -7,9 +7,9 @@ seo:
   metaDescription: This is a dummy description
 content:
   title: This is a dummy title
-  subtitle: This is a dummy subtitle
-  publishDate: 'April 7, 2020 11:45 PM'
-  lastUpdated: 'May 6, 2020 6:03 AM'
+  summary: This is a dummy subtitle
+  publishDate: 'April 7, 2020'
+  lastUpdated: 'May 6, 2020'
   readingTime: 9
   isFeaturedPost: true
   featuredImage: /assets/images/360_sea_otter_0901.jpg
