@@ -10,7 +10,7 @@ const Billboard = ({ frontmatter }) => <section className={`billboard`}>
     <div className={`article-information`}>
       <Title title={frontmatter.content.title} />
       <Subtitle author={frontmatter.seo.author} lastUpdated={frontmatter.content.lastUpdated} />
-      <Summary subtitle={frontmatter.content.summary} />
+      <Summary summary={frontmatter.content.summary} />
     </div>
   </div>
 </section>;
