@@ -23,13 +23,13 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
                 metaDescription
               }
               content {
+                title
+                summary
                 publishDate
                 lastUpdated
                 readingTime
                 isFeaturedPost
                 featuredImage
-                title
-                summary
                 tags
               }
             }
