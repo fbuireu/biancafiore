@@ -1,0 +1,31 @@
+@import '../../../styles/global/functions';
+@import '../../../styles/global/variables';
+@import '../../../styles/global/animations';
+
+.reading-time {
+  border: 2px solid color(others, white);
+  border-radius: $global-border-radius;
+  color: color(others, white);
+  margin-top: 2rem;
+  padding: .25rem;
+  width: fit-content;
+
+  .clock {
+    fill: color(others, white);
+    height: 1.5rem;
+    margin-right: .5rem;
+    width: 1.5rem;
+
+    &__handles {
+      animation: clock-spin 1s linear infinite paused;
+      transform-origin: center center;
+      will-change: transform;
+    }
+  }
+
+  &:hover {
+    .clock__handles {
+      animation-play-state: running;
+    }
+  }
+}
