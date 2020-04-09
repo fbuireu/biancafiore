@@ -2,16 +2,10 @@
 
 .billboard {
   background-color: color(neutral);
-  height: 50vh;
+  height: 40vh;
 
   .wrapper {
-    align-items: center;
-    display: flex;
     height: 100%;
     text-align: left;
-  }
-
-  .article-information {
-    transform: translateY(-25%);
   }
 }
