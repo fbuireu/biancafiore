@@ -6,16 +6,22 @@ seo:
   slug: this-is-a-dummy-test
   metaDescription: This is a dummy description
 content:
-  title: This is a dummy title
-  summary: Look, just because I don't be givin' no man a foot massage don't make it right for Marsellus to throw Antwone into a glass motherfuckin' house, fuckin' up the way the nigger talks. Motherfucker do that shit to me, he better paralyze my ass, 'cause I'll kill the motherfucker, know what I'm sayin'?a 
-  publishDate: 03/31/2020
   lastUpdated: 04/07/2020
-  readingTime: 9
-  isFeaturedPost: true
+  summary: >-
+    Look, just because I don't be givin' no man a foot massage don't make it
+    right for Marsellus to throw Antwone into a glass motherfuckin' house,
+    fuckin' up the way the nigger talks. Motherfucker do that shit to me, he
+    better paralyze my ass, 'cause I'll kill the motherfucker, know what I'm
+    sayin'?a
   featuredImage: /assets/images/360_sea_otter_0901.jpg
+  isFeaturedPost: true
+  title: This is a dummy title
   tags:
     - How to guides
     - Writing tips
+  readingTime: 9
+  map: '{"type":"Point","coordinates":[2.1794128,41.3912338]}'
+  publishDate: 03/31/2020
 ---
 This is a normal text
 
