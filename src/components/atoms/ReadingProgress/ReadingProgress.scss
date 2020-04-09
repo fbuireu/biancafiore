@@ -8,7 +8,7 @@
   position: fixed;
   top: 0;
   transition: width .5s ease;
-
+  will-change: width;
   &.--is-visible {
     opacity: 1;
   }
