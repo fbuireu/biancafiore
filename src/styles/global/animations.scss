@@ -1,1 +1,7 @@
 @import 'variables';
+
+@keyframes clock-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
