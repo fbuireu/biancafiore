@@ -30,6 +30,7 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
                 readingTime
                 isFeaturedPost
                 featuredImage
+                map
                 tags
               }
             }

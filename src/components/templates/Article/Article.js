@@ -49,7 +49,7 @@ export const articleData = graphql`
                     readingTime
                     isFeaturedPost
                     featuredImage
-#                    map
+                    map
                     tags
                 }
             }
