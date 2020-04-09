@@ -42,13 +42,14 @@ export const articleData = graphql`
                     metaDescription
                 }
                 content {
+                    title
+                    summary
                     publishDate
                     lastUpdated
                     readingTime
                     isFeaturedPost
                     featuredImage
-                    title
-                    summary
+#                    map
                     tags
                 }
             }
