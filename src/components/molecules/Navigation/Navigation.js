@@ -9,7 +9,7 @@ const Navigation = () => {
   const menuItems = useMenuItems();
 
   return <nav>
-    <ul>
+    <ul className={`flex --row-wrap --justify-between`}>
       {menuItems.map(({ node }) => <li key={node.frontmatter.position}><Link to={node.fields.slug}>{node.frontmatter.name}</Link></li>)}
       <LanguageSwitcher />
     </ul>
