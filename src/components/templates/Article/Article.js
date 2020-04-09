@@ -49,7 +49,6 @@ export const articleData = graphql`
                     readingTime
                     isFeaturedPost
                     featuredImage
-                    map
                     tags
                 }
             }
