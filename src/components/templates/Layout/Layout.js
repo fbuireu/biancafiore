@@ -1,7 +1,6 @@
 import { graphql, useStaticQuery } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useScrollPosition } from '../../../hooks/useScrollPosition';
 import '../../../styles/styles.scss';
 import Header from '../../organisms/Header/Header';
 
