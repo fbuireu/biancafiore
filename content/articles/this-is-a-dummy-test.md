@@ -20,7 +20,6 @@ content:
     - How to guides
     - Writing tips
   readingTime: 9
-  map: '{"type":"Point","coordinates":[2.1794128,41.3912338]}'
   publishDate: 03/31/2020
 ---
 This is a normal text
