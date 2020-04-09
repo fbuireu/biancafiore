@@ -18,6 +18,38 @@ img {
   width: 100%;
 }
 
+.flex {
+  display: flex;
+
+  &.--row-wrap {
+    flex-flow: row wrap;
+  }
+
+  &.--row-nowrap {
+    flex-flow: row nowrap;
+  }
+
+  &.--column-wrap {
+    flex-flow: column wrap;
+  }
+
+  &.--column-nowrap {
+    flex-flow: column nowrap;
+  }
+
+  &.--justify-between {
+    justify-content: space-between;
+  }
+
+  &.--justify-center {
+    justify-content: center;
+  }
+
+  &.--align-center {
+    align-items: center;
+  }
+}
+
 .wrapper {
   margin: 0 auto;
   max-width: $global-max-width;
