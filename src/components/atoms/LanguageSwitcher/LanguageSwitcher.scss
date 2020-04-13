@@ -11,15 +11,15 @@
       will-change: transform;
     }
 
-    svg {
+    .arrow-down {
       margin-left: .5rem;
-      transition: transform .3s ease-in;
       max-width: .75rem;
+      transition: transform .3s ease-in;
       width: 100%;
       will-change: transform;
     }
 
-    &.--is-open svg {
+    &.--is-open .arrow-down {
       transform: rotate(180deg);
     }
 
