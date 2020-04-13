@@ -1,6 +1,6 @@
 import { changeLocale, FormattedMessage } from 'gatsby-plugin-intl';
 import React, { useEffect, useState } from 'react';
-import DownArrow from '../../../assets/svg/down_arrow.svg';
+import ArrowDown from '../../../assets/svg/arrow-down.svg';
 import { useLanguages } from '../../../hooks/useLanguages';
 import './LanguageSwitcher.scss';
 
@@ -14,7 +14,7 @@ export const LanguageSwitcher = () => {
   return <li className={`language-switcher__wrapper ${isMenuSelectorOpen ? `--is-open` : ``}`}>
     <span onClick={() => setIsMenuSelectorOpen(!isMenuSelectorOpen)}>
       <FormattedMessage id={`global.changeLanguage`} />
-      <DownArrow />
+      <ArrowDown className={`arrow-down`} />
     </span>
     <ul className={`language-switcher__list`}>
       {languages.map((language, index) => isMenuSelectorOpen &&
