@@ -1,15 +1,35 @@
 @import '../../../styles/global/functions';
 
 .reading-progress {
-  background-color: color(error, error-2);
-  height: .25rem;
-  max-width: 100vw;
+  background-color: color(primary);
+  border-radius: 50%;
+  bottom: 2rem;
+  box-shadow: .25rem .25rem .25rem color(neutral, neutral-3);
+  cursor: pointer;
+  height: 4rem;
   opacity: 0;
   position: fixed;
-  top: 0;
-  transition: width .5s ease;
-  will-change: width;
+  right: 2rem;
+  transform: translateY(1rem);
+  transition: all .3s ease;
+  visibility: hidden;
+  width: 4rem;
+  will-change: box-shadow, opacity, visibility, transform;
+
   &.--is-visible {
     opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  &:hover {
+    box-shadow: .25rem .25rem .25rem color(neutral, neutral-2);
+  }
+
+  .arrow-up {
+    fill: color(others, white);
+    height: 2rem;
+    margin-top: -.5rem;
+    width: 2rem;
   }
 }
