@@ -3,10 +3,13 @@
 @import '../../../styles/global/animations';
 
 .reading-time {
+  align-items: center;
   border: 2px solid color(others, white);
   border-radius: $global-border-radius;
   color: color(others, white);
-  margin-top: 2rem;
+  display: flex;
+  flex-flow: row wrap;
+  grid-area: ReadingTime;
   padding: .25rem;
   width: fit-content;
 
@@ -17,7 +20,7 @@
     width: 1.5rem;
 
     &__handles {
-      animation: clock-spin 1s linear infinite paused;
+      animation: clock-spin 1.5s linear infinite paused;
       transform-origin: center center;
       will-change: transform;
     }
