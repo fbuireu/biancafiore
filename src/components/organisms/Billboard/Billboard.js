@@ -7,13 +7,11 @@ import ReadingTime from '../../molecules/ReadingTime/ReadingTime';
 import './Billboard.scss';
 
 const Billboard = ({ frontmatter }) => <section className={`billboard`}>
-  <div className={`wrapper flex`}>
-    <div className={`article-information flex --column-wrap --justify-center`}>
-      <Title title={frontmatter.content.title} />
-      <Subtitle author={frontmatter.seo.author} lastUpdated={frontmatter.content.lastUpdated} />
-      <Summary summary={frontmatter.content.summary} />
-      <ReadingTime />
-    </div>
+  <div className={`wrapper article-information`}>
+    <Title title={frontmatter.content.title} />
+    <Subtitle author={frontmatter.seo.author} lastUpdated={frontmatter.content.lastUpdated} />
+    <Summary summary={frontmatter.content.summary} />
+    <ReadingTime readingTime={frontmatter.content.readingTime}/>
   </div>
 </section>;
 

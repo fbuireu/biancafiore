@@ -3,8 +3,10 @@
 .summary {
   @include typography-settings(0);
   color: color(others, white);
+  grid-area: Summary;
   letter-spacing: 1px;
-  margin-top: 1rem;
+  margin-top: -.5rem;
   max-width: 50%;
+  text-align: left;
   width: 100%;
 }

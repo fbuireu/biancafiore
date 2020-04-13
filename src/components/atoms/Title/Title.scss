@@ -4,6 +4,7 @@
   @include font-properties(secondary, bold);
   @include typography-settings(10);
   color: color(others, white);
+  grid-area: Title;
   letter-spacing: .25rem;
   text-transform: uppercase;
 }

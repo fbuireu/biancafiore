@@ -1,13 +1,23 @@
 @import '../../../styles/global/functions';
 
-article {
-  margin: 0 auto;
-  max-width: map-get($grid, 'medium');
+.article__wrapper {
+  display: grid;
+  grid: 'Share Article Author' 1fr / 1fr map-get($grid, 'medium') 1fr;
+  grid-gap: 0 1rem;
+
+  article {
+    grid-area: Article;
+  }
+
+  a {
+    @include font-properties(primary, bold);
+    color: color(primary, primary-dark-1);
+  }
 }
 
 blockquote {
   @include typography-settings(2);
-  border-left: .2rem solid color(neutral, neutral-2);
+  border-left: .2rem solid color(primary, primary-dark-1);
   font-weight: 100;
   margin-left: .5rem;
   padding-left: .5rem;
@@ -20,7 +30,7 @@ blockquote {
 
   &::before,
   &::after {
-    color: color(neutral, neutral-2);
+    color: color(primary, primary-dark-1);
     content: '\201C';
   }
 
