@@ -20,10 +20,12 @@ const Article = ({ data }) => {
   useScrollPosition(({ currentPosition }) => setScroll(currentPosition.y));
 
   return <Layout>
-    <SEO title={article.frontmatter.title}/>
+    <SEO title={article.frontmatter.title} />
     <Billboard {...article} />
+    <section className={`article__wrapper`}>
+      <article ref={articleReference} dangerouslySetInnerHTML={{ __html: article.html }} />
+    </section>
     <ReadingProgress scroll={scroll} articleProperties={articleProperties} />
-    <article ref={articleReference} dangerouslySetInnerHTML={{ __html: article.html }} />
   </Layout>;
 };
 
