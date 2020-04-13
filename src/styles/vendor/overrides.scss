@@ -1,0 +1,8 @@
+@import '../global/functions';
+
+.CircularProgressbar-path {
+  stroke: color(primary, primary-light-1);
+  stroke-linecap: round;
+  transition: stroke-dashoffset .5s ease;
+  will-change: stroke-dashoffset;
+}
