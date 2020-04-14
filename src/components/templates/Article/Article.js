@@ -4,25 +4,35 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useScrollPosition } from '../../../hooks/useScrollPosition';
 import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
 import Navigation from '../../molecules/Navigation/Navigation';
+import ShareButtons from '../../molecules/ShareButtons/ShareButtons';
 import Billboard from '../../organisms/Billboard/Billboard';
 import SEO from '../../organisms/SEO/SEO';
 import Layout from '../Layout/Layout';
 import './Article.scss';
 
-const Article = ({ data }) => {
+export const Article = ({ data }) => {
   const [scroll, setScroll] = useState(0),
     [articleProperties, setArticleProperties] = useState({}),
     articleReference = useRef(null),
-    { article } = data;
+    { article, site } = data,
+    shareParameters = {
+      twitterUser: site.siteMetadata.twitterUser,
+      parameters: {
+        url: `${site.siteMetadata.url}${article.fields.slug}`,
+        title: article.frontmatter.content.title,
+      },
+    },
+    tags = article.frontmatter.content.tags.map(tag => tag.split(` `).join(``));
 
   useEffect(() => setArticleProperties(articleReference.current), []);
 
   useScrollPosition(({ currentPosition }) => setScroll(currentPosition.y));
 
   return <Layout>
-    <SEO title={article.frontmatter.title} />
+    <SEO title={article.frontmatter.content.title} />
     <Billboard {...article} />
-    <section className={`article__wrapper`}>
+    <section className={`wrapper article__wrapper`}>
+      <ShareButtons shareParameters={shareParameters} tags={tags} />
       <article ref={articleReference} dangerouslySetInnerHTML={{ __html: article.html }} />
     </section>
     <ReadingProgress scroll={scroll} articleProperties={articleProperties} />
@@ -55,11 +65,17 @@ export const articleData = graphql`
                 }
             }
         }
+        site {
+            siteMetadata {
+                url
+                twitterUser
+            }
+        }
     }
 `;
 
 Article.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.object.isRequired,
 };
 
 Navigation.defaultProps = {};
