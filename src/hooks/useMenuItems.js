@@ -2,7 +2,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 export const useMenuItems = () => {
   const { menuItems } = useStaticQuery(graphql`
-      query getAllMenuItemsOrderedByPosition{
+      query getAllMenuItemsOrderedByPositionAsc{
           menuItems:allMarkdownRemark(
               filter: { frontmatter: { key: { eq: "menuItem" }}},
               sort: { order: ASC, fields: [frontmatter___position] }) {
