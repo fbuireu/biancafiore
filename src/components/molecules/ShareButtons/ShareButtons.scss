@@ -1,0 +1,44 @@
+@import '../../../styles/global/functions';
+
+.share-buttons__wrapper {
+  margin-top: 1rem;
+
+  div {
+    display: flex;
+    flex-flow: column wrap;
+    position: sticky;
+    top: .5rem;
+  }
+
+  .share-button {
+    outline: none;
+    text-align: left;
+    transition: all .3s ease-out;
+    width: fit-content;
+  }
+
+  svg {
+    height: 2.5rem;
+    transition: transform .3s ease;
+    width: 2.5rem;
+    will-change: transform;
+
+    &:hover {
+      transform: rotate(-15deg) scale(1.1);
+    }
+  }
+
+  circle {
+    fill: color(primary);
+    transition: fill .3s ease;
+    will-change: fill;
+  }
+
+  @each $social-network-item, $color in map-get($colors, 'social-networks') {
+    .#{$social-network-item} svg:hover {
+      circle {
+        fill: $color;
+      }
+    }
+  }
+}
