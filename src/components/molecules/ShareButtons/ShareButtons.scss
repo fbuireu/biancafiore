@@ -11,16 +11,27 @@
   }
 
   .share-button {
+    border-radius: 50%;
+    height: 2.5rem;
+    margin-top: .25rem;
     outline: none;
     text-align: left;
     transition: all .3s ease-out;
-    width: fit-content;
+    width: 2.5rem;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:hover {
+      box-shadow: .25rem .25rem .25rem color(neutral, neutral-2);
+    }
   }
 
   svg {
-    height: 2.5rem;
+    height: 100%;
     transition: transform .3s ease;
-    width: 2.5rem;
+    width: 100%;
     will-change: transform;
 
     circle {
