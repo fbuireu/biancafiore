@@ -16,8 +16,9 @@ export const Article = ({ data }) => {
     articleReference = useRef(null),
     { article, site } = data,
     shareParameters = {
-      twitterUser: site.siteMetadata.twitterUser,
+      author: site.siteMetadata.author,
       parameters: {
+        domain: site.siteMetadata.url,
         url: `${site.siteMetadata.url}${article.fields.slug}`,
         title: article.frontmatter.content.title,
         description: article.frontmatter.content.summary || article.frontmatter.seo.metaDescription,
@@ -69,7 +70,7 @@ export const articleData = graphql`
         site {
             siteMetadata {
                 url
-                twitterUser
+                author
             }
         }
     }
