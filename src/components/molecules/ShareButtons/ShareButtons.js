@@ -21,7 +21,7 @@ const ShareButtons = ({ shareParameters, tags }) => <section className="share-bu
     <TwitterShareButton className={`share-button twitter`}
                         url={shareParameters.parameters.url}
                         title={shareParameters.parameters.title}
-                        via={shareParameters.twitterUser.split(`@`).join(``)}
+                        via={shareParameters.author.split(`@`).join(``)}
                         hashtags={tags}>
       <TwitterIcon round={true} />
     </TwitterShareButton>
@@ -29,7 +29,7 @@ const ShareButtons = ({ shareParameters, tags }) => <section className="share-bu
       <FacebookIcon round={true} />
     </FacebookShareButton>
     <LinkedinShareButton className={`share-button linkedin`}
-                         url={shareParameters.parameters.url}
+                         url={shareParameters.parameters.domain}
                          summary={shareParameters.parameters.description}
                          source={shareParameters.parameters.url}
                          title={shareParameters.parameters.title}>
@@ -52,8 +52,9 @@ const ShareButtons = ({ shareParameters, tags }) => <section className="share-bu
 
 ShareButtons.propTypes = {
   shareParameters: PropTypes.shape({
-    twitterUser: PropTypes.string,
+    author: PropTypes.string,
     parameters: PropTypes.shape({
+      domain: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
