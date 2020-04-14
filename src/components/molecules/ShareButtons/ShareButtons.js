@@ -28,7 +28,11 @@ const ShareButtons = ({ shareParameters, tags }) => <section className="share-bu
     <FacebookShareButton className={`share-button facebook`} url={shareParameters.parameters.url}>
       <FacebookIcon round={true} />
     </FacebookShareButton>
-    <LinkedinShareButton className={`share-button linkedin`} url={shareParameters.parameters.url} title={shareParameters.parameters.title}>
+    <LinkedinShareButton className={`share-button linkedin`}
+                         url={shareParameters.parameters.url}
+                         summary={shareParameters.parameters.description}
+                         source={shareParameters.parameters.url}
+                         title={shareParameters.parameters.title}>
       <LinkedinIcon round={true} />
     </LinkedinShareButton>
     <WhatsappShareButton className={`share-button whatsapp`} url={shareParameters.parameters.url} title={shareParameters.parameters.title}>
@@ -52,6 +56,7 @@ ShareButtons.propTypes = {
     parameters: PropTypes.shape({
       url: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
     }),
   }).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string),

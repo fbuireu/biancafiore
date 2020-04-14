@@ -20,6 +20,7 @@ export const Article = ({ data }) => {
       parameters: {
         url: `${site.siteMetadata.url}${article.fields.slug}`,
         title: article.frontmatter.content.title,
+        description: article.frontmatter.content.summary || article.frontmatter.seo.metaDescription,
       },
     },
     tags = article.frontmatter.content.tags.map(tag => tag.split(` `).join(``));
