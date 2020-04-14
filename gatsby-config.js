@@ -4,7 +4,7 @@ module.exports = {
     description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
     author: `@gatsbyjs`,
     url: `https://biancafiore.me`,
-    twitterUser: `biancamariola`
+    twitterUser: `biancamariola`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -22,13 +22,6 @@ module.exports = {
           `Montserrat: 300, 400, 700`,
         ],
         display: `swap`,
-      },
-    },
-    {
-      resolve: `gatsby-plugin-purgecss`,
-      options: {
-        ignore: [`/src/styles/styles.scss`],
-        printRejected: true,
       },
     },
     {
