@@ -3,6 +3,8 @@ module.exports = {
     title: `Gatsby Default Starter`,
     description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
     author: `@gatsbyjs`,
+    url: `https://biancafiore.me`,
+    twitterUser: `biancamariola`
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -30,7 +32,7 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-react-svg',
+      resolve: `gatsby-plugin-react-svg`,
       options: {
         rule: {
           include: /svg/,
