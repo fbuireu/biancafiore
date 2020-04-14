@@ -5,7 +5,7 @@ import './Title.scss';
 const Title = ({ title }) => <h1 className={`title`}>{title}</h1>;
 
 Title.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
 };
 
 Title.defaultProps = {};

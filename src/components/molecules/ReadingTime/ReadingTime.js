@@ -6,7 +6,7 @@ import './ReadingTime.scss';
 const ReadingTime = ({ readingTime }) => <div className={`reading-time`}><Clock /><span>{readingTime} min</span></div>;
 
 ReadingTime.propTypes = {
-  readingTime: PropTypes.number,
+  readingTime: PropTypes.number.isRequired,
 };
 
 ReadingTime.defaultProps = {};

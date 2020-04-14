@@ -8,8 +8,8 @@ const Subtitle = ({ lastUpdated, author }) => <p className={`subtitle`}>
 </p>;
 
 Subtitle.propTypes = {
-  lastUpdated: PropTypes.string,
-  author: PropTypes.string,
+  lastUpdated: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
 };
 
 Subtitle.defaultProps = {};

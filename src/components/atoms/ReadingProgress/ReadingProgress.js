@@ -27,8 +27,8 @@ export const ReadingProgress = ({ scroll, articleProperties }) => {
 };
 
 ReadingProgress.propTypes = {
-  scroll: PropTypes.number,
-  articleProperties: PropTypes.object,
+  scroll: PropTypes.number.isRequired,
+  articleProperties: PropTypes.object.isRequired,
 };
 
 ReadingProgress.defaultProps = {};

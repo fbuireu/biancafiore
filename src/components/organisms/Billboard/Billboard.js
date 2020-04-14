@@ -16,7 +16,7 @@ const Billboard = ({ frontmatter }) => <section className={`billboard`}>
 </section>;
 
 Billboard.propTypes = {
-  frontmatter: PropTypes.object,
+  frontmatter: PropTypes.object.isRequired,
 };
 
 Billboard.defaultProps = {};
