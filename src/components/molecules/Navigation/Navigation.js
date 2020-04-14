@@ -1,5 +1,4 @@
 import { Link } from 'gatsby';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useMenuItems } from '../../../hooks/useMenuItems';
 import { LanguageSwitcher } from '../../atoms/LanguageSwitcher/LanguageSwitcher';
@@ -14,14 +13,6 @@ const Navigation = () => {
       <LanguageSwitcher />
     </ul>
   </nav>;
-};
-
-Navigation.propTypes = {
-  menuItems: PropTypes.string,
-};
-
-Navigation.defaultProps = {
-  menuItems: ``,
 };
 
 export default Navigation;
