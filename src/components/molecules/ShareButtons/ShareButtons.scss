@@ -23,16 +23,17 @@
     width: 2.5rem;
     will-change: transform;
 
+    circle {
+      fill: color(primary);
+      transition: fill .3s ease;
+      will-change: fill;
+    }
+
     &:hover {
       transform: rotate(-15deg) scale(1.1);
     }
   }
 
-  circle {
-    fill: color(primary);
-    transition: fill .3s ease;
-    will-change: fill;
-  }
 
   @each $social-network-item, $color in map-get($colors, 'social-networks') {
     .#{$social-network-item} svg:hover {
