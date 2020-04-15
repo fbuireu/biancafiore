@@ -56,6 +56,21 @@ collections:
     fields:
       - { name: key, label: Key, required: true, widget: hidden, default: tag }
       - { name: tag, label: Tag, required: true, widget: string }
+  - name: authors
+    label: Authors
+    label_singular: Author
+    identifier_field: name
+    slug: '{{slug}}'
+    folder: content/authors
+    description: A list of all authors available.
+    create: true
+    editor:
+      preview: false
+    fields:
+      - { name: key, label: Key, required: true, widget: hidden, default: author }
+      - { name: name, label: Name, required: true, widget: string }
+      - { name: image, label: Image, required: true, widget: image, allow_multiple: false }
+      - { name: description, label: Description, required: false, widget: string }
   - name: blog
     label: Blog
     description: A list of all created articles
@@ -69,10 +84,10 @@ collections:
     fields:
       - { name: key, label: Key, required: true, widget: hidden, default: blog }
       - { name: language, label: Language, required: true, widget: relation, collection: languages, searchFields: [name, isoCode], valueField: name, displayFields: name }
+      - { name: author, label: Author, required: true, widget: relation, collection: authors, searchFields: name, valueField: name, displayField: name, default: Bianca Fiore }
       - {name: seo, label: SEO, widget: object,
          fields: [
          { name: metaDescription, label: Meta description, required: true, widget: text },
-         { name: author, label: Author, required: true, widget: string, default: Bianca Fiore },
          { name: slug, label: Slug, required: true, widget: string }]}
       - { name: content, label: Content,  widget: object,
           fields: [
@@ -82,7 +97,7 @@ collections:
           { name: lastUpdated, label: Last updated, required: false, widget: datetime, default: '', dateFormat: MM/DD/YYYY, timeformat: false, format: L },
           { name: readingTime, label: Reading time, required: false, widget: number, default: '', valueType: int, min: 0, max: 25 },
           { name: isFeaturedPost, label: Featured Post, required: false, widget: boolean },
-          { name: featuredImage, label: Featured Image, required: false, widget: image },
+          { name: featuredImage, label: Featured Image, required: false, widget: image, allow_multiple: false },
           { name: tags, label: Tags, required: false, widget: relation, collection: tags, searchFields: tag, valueField: tag, displayFields: tag, multiple: true }]}
       - { name: body, label: Body, required: true, widget: markdown }
   - name: home
@@ -98,7 +113,7 @@ collections:
         fields:
           - { name: language, label: language, required: true, widget: hidden, default: en }
           - { name: title, label: Title, required: true, widget: string }
-          - { name: image, label: Image, required: false, widget: image }
+          - { name: image, label: Image, required: false, widget: image, allow_multiple: false }
           - { name: testimonials, label: Testimonials, required: false, widget: list,
               fields: [
               { name: author, label: Author, required: true, widget: string },
@@ -112,7 +127,7 @@ collections:
         fields:
           - { name: language, label: language, required: true, widget: hidden, default: it }
           - { name: title, label: Title, required: true, widget: string }
-          - { name: image, label: Image, required: false, widget: image }
+          - { name: image, label: Image, required: false, widget: image, allow_multiple: false }
           - { name: testimonials, label: Testimonials, required: false, widget: list,
               fields: [
               { name: author, label: Author, required: true, widget: string },
@@ -126,7 +141,7 @@ collections:
         fields:
           - { name: language, label: language, required: true, widget: hidden, default: ca }
           - { name: title, label: Title, required: true, widget: string }
-          - { name: image, label: Image, required: false, widget: image }
+          - { name: image, label: Image, required: false, widget: image, allow_multiple: false }
           - { name: testimonials, label: Testimonials, required: false, widget: list,
               fields: [
               { name: author, label: Author, required: true, widget: string },
@@ -140,7 +155,7 @@ collections:
         fields:
           - { name: language, label: language, required: true, widget: hidden, default: es }
           - { name: title, label: Title, required: true, widget: string }
-          - { name: image, label: Image, required: false, widget: image }
+          - { name: image, label: Image, required: false, widget: image, allow_multiple: false }
           - { name: testimonials, label: Testimonials, required: false, widget: list,
               fields: [
               { name: author, label: Author, required: true, widget: string },
