@@ -22,7 +22,7 @@ const ShareButtons = ({ shareParameters, tags }) => <section className="share-bu
                         url={shareParameters.parameters.url}
                         title={shareParameters.parameters.title}
                         via={shareParameters.author.split(`@`).join(``)}
-                        hashtags={tags}>
+                        hashtags={tags.map(tag => tag.split(` `).join(``))}>
       <TwitterIcon round={true} />
     </TwitterShareButton>
     <FacebookShareButton className={`share-button facebook`} url={shareParameters.parameters.url}>
