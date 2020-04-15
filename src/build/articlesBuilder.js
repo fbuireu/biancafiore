@@ -6,30 +6,16 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
 
   const articlesQuery = await graphql(`
     query getAllArticlesOrderedByDate {
-      articles:allMarkdownRemark(
-        filter: { frontmatter: { key: { eq: "blog" }}},
-        sort: { order: DESC, fields: [frontmatter___content___publishDate] }) {
+      articles: allMarkdownRemark(filter: { frontmatter: { key: { eq: "blog" }}}){
         edges {
           node {
-            html
             fields {
               slug
             }
             frontmatter {
               key
-              language
-              seo {
-                author
-                metaDescription
-              }
+              author
               content {
-                title
-                summary
-                publishDate
-                lastUpdated
-                readingTime
-                isFeaturedPost
-                featuredImage
                 tags
               }
             }
@@ -54,8 +40,7 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
       component: articleTemplate,
       context: {
         slug: node.fields.slug,
-        seo: node.seo,
-        content: node.content,
+        author: node.frontmatter.author,
       },
     });
   });
