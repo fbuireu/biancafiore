@@ -1,8 +1,8 @@
 ---
 key: blog
 language: Catalan
+author: Bianca Fiore
 seo:
-  author: Bianca Fiore
   slug: this-is-a-dummy-test
   metaDescription: This is a dummy description
 content:
