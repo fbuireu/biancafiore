@@ -6,17 +6,22 @@ import Title from '../../atoms/Title/Title';
 import ReadingTime from '../../molecules/ReadingTime/ReadingTime';
 import './Billboard.scss';
 
-const Billboard = ({ frontmatter }) => <section className={`billboard`}>
-  <div className={`wrapper article-information`}>
-    <Title title={frontmatter.content.title} />
-    <Subtitle author={frontmatter.seo.author} lastUpdated={frontmatter.content.lastUpdated} />
-    <Summary summary={frontmatter.content.summary} />
-    <ReadingTime readingTime={frontmatter.content.readingTime}/>
-  </div>
-</section>;
+const Billboard = article => {
+  const { frontmatter } = article;
+  let summary = frontmatter.content.summary || article.excerpt;
+
+  return <section className={`billboard`}>
+    <div className={`wrapper article-information`}>
+      <Title title={frontmatter.content.title} />
+      <Subtitle author={article.author.frontmatter.name} lastUpdated={frontmatter.content.lastUpdated} />
+      <Summary summary={summary} />
+      <ReadingTime readingTime={frontmatter.content.readingTime} />
+    </div>
+  </section>;
+};
 
 Billboard.propTypes = {
-  frontmatter: PropTypes.object.isRequired,
+  article: PropTypes.objectOf(PropTypes.string),
 };
 
 Billboard.defaultProps = {};
