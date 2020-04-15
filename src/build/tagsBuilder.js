@@ -10,11 +10,9 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
       articles: allMarkdownRemark {
         edges {
           node {
-            fields {
-              slug
-            }
             frontmatter {
               key
+              name
               language
               content {
                 tags
@@ -36,10 +34,11 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
   const articles = tagsQuery.data.articles.edges;
 
   articles.map(({ node }) => {
-    let { content, language } = node.frontmatter;
+    let { key, content, language, name: author } = node.frontmatter;
 
-    (content && content.tags) && content.tags.map(tag => tags.push(slugify(tag, { lower: true })));
+    (content && content.tags && content.tags.slug) && content.tags.map(({ slug }) => tags.push(slug));
     language && tags.push(slugify(language, { lower: true }));
+    key === `author` && tags.push(slugify(author, { lower: true }));
 
     return new Set(tags);
   });
