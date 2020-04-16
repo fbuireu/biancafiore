@@ -37,7 +37,7 @@ export const Article = ({ data }) => {
     <section className={`wrapper article__wrapper`}>
       <ShareButtons shareParameters={shareParameters} tags={tags} />
       <article ref={articleReference} dangerouslySetInnerHTML={{ __html: article.html }} />
-      <Author author={author} />
+      <Author author={author} tags={tags} />
     </section>
     <ReadingProgress scroll={scroll} articleProperties={articleProperties} />
   </Layout>;
@@ -78,6 +78,7 @@ export const articleData = graphql`
         }
         author: markdownRemark(frontmatter: {name: {eq: $author}}) {
             frontmatter {
+                slug
                 name
                 image {
                     childImageSharp {
