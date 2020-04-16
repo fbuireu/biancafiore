@@ -22,6 +22,11 @@ $fonts: (
       weight: 400,
       style: normal
     ),
+    italic: (
+      family: ('Montserrat', sans-serif),
+      weight: 400,
+      style: italic
+    ),
     bold: (
       family: ('Montserrat', sans-serif),
       weight: 700,
@@ -34,7 +39,7 @@ $fonts: (
       weight: 400,
       style: normal
     ),
-    regular-italic: (
+    italic: (
       family: ('Zilla Slab', serif),
       weight: 400,
       style: italic
