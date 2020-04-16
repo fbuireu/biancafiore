@@ -2,20 +2,23 @@
 
 .article__wrapper {
   display: grid;
-  grid: 'Share Article Author' 1fr / 1fr map-get($grid, 'medium') 1fr;
+  grid: 'Share Article Author' 1fr / .5fr map-get($grid, 'medium') 1fr;
   grid-gap: 0 1rem;
+  margin-top: 1rem;
 
   article {
     grid-area: Article;
-  }
+    line-height: map-get($line-heights, 1);
+    text-align: left;
 
-  a {
-    @include font-properties(primary, bold);
-    color: color(primary, primary-dark-1);
-    padding: 0 0 .25rem;
-    position: relative;
+    a {
+      @include font-properties(primary, bold);
+      color: color(primary, primary-dark-1);
+      padding: 0 0 .25rem;
+      position: relative;
+    }
 
-    &::before {
+    a::before {
       background-color: color(primary);
       bottom: .15rem;
       content: '';
@@ -31,7 +34,7 @@
       z-index: -1;
     }
 
-    &:hover::before {
+    a:hover::before {
       transform: scale3d(1, 1, 1);
     }
   }
