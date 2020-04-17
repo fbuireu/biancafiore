@@ -2,6 +2,7 @@ const { createFilePath } = require(`gatsby-source-filesystem`);
 const { fmImagesToRelative } = require(`gatsby-remark-relative-images`);
 const articlesBuilder = require(`./src/build/articlesBuilder`);
 const tagsBuilder = require(`./src/build/tagsBuilder`);
+const path = require(`path`);
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   await Promise.all(
@@ -26,15 +27,27 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 };
 
-exports.onCreateWebpackConfig = ({ loaders, getConfig }) => {
+exports.onCreateWebpackConfig = ({ stage, actions, loaders, getConfig }) => {
   const config = getConfig();
 
-  config.module.rules = [
-    ...config.module.rules.filter(rule => String(rule.test) !== String(/\.jsx?$/)),
-    {
-      ...loaders.js(),
-      test: /\.jsx?$/,
-      exclude: modulePath => /node_modules/.test(modulePath),
+  if (stage === `build-html`) {
+    config.module.rules = [
+      ...config.module.rules.filter(rule => String(rule.test) !== String(/\.jsx?$/)),
+      {
+        use: loaders.null(),
+        test: /mapbox-gl/,
+      },
+      {
+        ...loaders.js(),
+        test: /\.jsx?$/,
+        exclude: modulePath => /node_modules/.test(modulePath),
+      },
+    ];
+  }
+
+  actions.setWebpackConfig({
+    resolve: {
+      modules: [path.resolve(__dirname, `src`), `node_modules`],
     },
-  ];
+  });
 };
