@@ -9,7 +9,7 @@ const AboutMe = props => {
     mapReference = useRef(null);
 
   useEffect(() => {
-    mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
+    mapboxgl.accessToken = process.env.GATSBY_MAPBOX_ACCESS_TOKEN;
 
     const initializeMap = ({ setMap, mapReference }) => {
       const map = new mapboxgl.Map({
