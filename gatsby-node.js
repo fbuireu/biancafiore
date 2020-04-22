@@ -27,23 +27,21 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 };
 
-exports.onCreateWebpackConfig = ({ stage, actions, loaders, getConfig }) => {
+exports.onCreateWebpackConfig = ({ actions, loaders, getConfig }) => {
   const config = getConfig();
 
-  if (stage === `build-html`) {
-    config.module.rules = [
-      ...config.module.rules.filter(rule => String(rule.test) !== String(/\.jsx?$/)),
-      {
-        use: loaders.null(),
-        test: /mapbox-gl/,
-      },
-      {
-        ...loaders.js(),
-        test: /\.jsx?$/,
-        exclude: modulePath => /node_modules/.test(modulePath),
-      },
-    ];
-  }
+  config.module.rules = [
+    ...config.module.rules.filter(rule => String(rule.test) !== String(/\.jsx?$/)),
+    {
+      test: /canvg/,
+      use: loaders.null(),
+    },
+    {
+      ...loaders.js(),
+      test: /\.jsx?$/,
+      exclude: modulePath => /node_modules/.test(modulePath),
+    },
+  ];
 
   actions.setWebpackConfig({
     resolve: {
