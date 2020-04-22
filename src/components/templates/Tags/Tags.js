@@ -9,4 +9,8 @@ const Tags = props => <Layout>
   <p>Now go build something great.</p>
 </Layout>;
 
+Tags.propTypes = {};
+
+Tags.defaultProps = {};
+
 export default Tags;
