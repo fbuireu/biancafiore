@@ -103,6 +103,6 @@ Article.propTypes = {
   data: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
-Navigation.defaultProps = {};
+Article.defaultProps = {};
 
 export default Article;
