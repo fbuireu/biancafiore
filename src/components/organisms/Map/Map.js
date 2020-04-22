@@ -191,7 +191,7 @@ const Map = () => {
     }
 
     // Go!
-    // flyPlane();
+    flyPlane();
 
     polygonTemplate.events.on(`over`, element => {
       countriesISO.map(iso => {
