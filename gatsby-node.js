@@ -37,8 +37,8 @@ exports.onCreateWebpackConfig = ({ actions, loaders, getConfig }) => {
       use: loaders.null(),
     },
     {
-      ...loaders.js(),
       test: /\.jsx?$/,
+      use: { ...loaders.js() },
       exclude: modulePath => /node_modules/.test(modulePath),
     },
   ];
