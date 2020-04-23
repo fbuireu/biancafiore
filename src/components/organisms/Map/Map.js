@@ -5,7 +5,18 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import React, { useEffect, useRef } from 'react';
 
 am4core.useTheme(am4themes_animated);
-//Todo: JSON config, selected point, retrieve selected point, refactor in promises
+//Todo:
+// Add country field in cities CMS (ISO code)
+// Change all CMS page schema (no need 4 pages, just 1 pages collection and all types inside [investigate])
+// JSON config,
+// selected point(from to),
+// retrieve selected point from CMS,
+// refactor in promises (await)
+// Change plane image
+// Add custom marker
+// Add series for countries (to remove on create event)
+// Decrease plane scale on higher point
+
 const Map = () => {
   const mapReference = useRef(null);
   const countriesISO = [`ES`, `GB`, `JO`, `AU`, `IT`];
