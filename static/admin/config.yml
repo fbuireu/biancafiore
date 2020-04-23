@@ -1,5 +1,5 @@
 backend:
-  name: git-gateawy
+  name: git-gateway
   repo: fbuireu/biancafiore
   branch: master
   commit_messages:
