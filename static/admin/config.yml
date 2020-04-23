@@ -1,5 +1,5 @@
 backend:
-  name: git-gateway
+  name: git-gateawy
   repo: fbuireu/biancafiore
   branch: master
   commit_messages:
@@ -28,7 +28,7 @@ collections:
     fields:
       - {name: key, label: Key, required: true, widget: hidden, default: tag}
       - {name: name, label: Name, required: true, widget: string}
-      - {name: isoCode, label: ISO code, required: true, widget: string, pattern: ['^[a-z]{2}$', 'This field must have only 2 characters']}
+      - {name: isoCode, label: ISO code, required: true, widget: string, pattern: ['^[a-z]{2}$', 'This field must have only 2 characters'] }
   - name: menu
     label: Menu
     description: A list of all menu items
@@ -131,7 +131,7 @@ collections:
           - { name: cities, label: Cities, required: false, widget: list,
               fields: [
               { name: city, label: City, required: true, widget: string },
-              { name: countryIsoCode, label: Country ISO code, required: true, widget: string, pattern: ['^[a-z]{2}$', 'This field must have only 2 characters']}
+              { name: countryIsoCode, label: Country ISO code, required: true, widget: string, pattern: ['^[a-z]{2}$', 'This field must have only 2 characters'] },
               { name: coordinates, label: Coordinates, required: true, widget: map },
               { name: description, label: Description, required: true, widget: string }]}
           - { name: body, label: Body, required: true, widget: markdown }
