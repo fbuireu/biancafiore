@@ -28,13 +28,13 @@
 
   svg {
     height: 100%;
-    transition: transform .3s ease;
+    transition: transform .3s;
     width: 100%;
     will-change: transform;
 
     circle {
       fill: color(primary);
-      transition: fill .3s ease;
+      transition: fill .3s;
       will-change: fill;
     }
 

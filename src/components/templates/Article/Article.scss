@@ -28,7 +28,7 @@
       position: absolute;
       transform: scale3d(0, 1, 1);
       transform-origin: 0 50%;
-      transition: transform .5s ease;
+      transition: transform .5s;
       width: 100%;
       will-change: transform;
       z-index: -1;

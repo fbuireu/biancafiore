@@ -3,6 +3,6 @@
 .CircularProgressbar-path {
   stroke: color(primary, primary-light-1);
   stroke-linecap: round;
-  transition: stroke-dashoffset .5s ease;
+  transition: stroke-dashoffset .5s;
   will-change: stroke-dashoffset;
 }
