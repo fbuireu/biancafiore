@@ -100,17 +100,18 @@ collections:
           { name: featuredImage, label: Featured Image, required: false, widget: image, allow_multiple: false },
           { name: tags, label: Tags, required: false, widget: relation, collection: tags, searchFields: tag, valueField: tag, displayFields: tag, multiple: true }]}
       - { name: body, label: Body, required: true, widget: markdown }
-  - name: home
-    label: Home
-    description: A list of all availables content for home page
+  - name: pages
+    label: Pages
+    description: A list of all availables pages
     slug: '{{slug}}'
     create: false
     files:
-      - name: home-english
-        label: Home - English
-        file: content/pages/home/index.en.md
+      - name: home
+        label: Home
+        file: content/pages/home
         show_preview_links: true
         fields:
+          - { name: key, label: Key, required: true, widget: hidden, default: home }
           - { name: language, label: language, required: true, widget: hidden, default: en }
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image, allow_multiple: false }
@@ -120,96 +121,13 @@ collections:
               { name: quote, label: Quote, required: true, widget: string },
               { name: description, label: Description, required: false, widget: string }]}
           - { name: body, label: Body, required: true, widget: markdown }
-      - name: home-italian
-        label: Home - Italian
-        file: content/pages/home/index.it.md
+      - name: about-me
+        label: About me
+        file: content/pages/about-me
         show_preview_links: true
         fields:
-          - { name: language, label: language, required: true, widget: hidden, default: it }
-          - { name: title, label: Title, required: true, widget: string }
-          - { name: image, label: Image, required: false, widget: image, allow_multiple: false }
-          - { name: testimonials, label: Testimonials, required: false, widget: list,
-              fields: [
-              { name: author, label: Author, required: true, widget: string },
-              { name: quote, label: Quote, required: true, widget: string },
-              { name: description, label: Description, required: false, widget: string }]}
-          - { name: body, label: Body, required: true, widget: markdown }
-      - name: home-catalan
-        label: Home - Catalan
-        file: content/pages/home/index.ca.md
-        show_preview_links: true
-        fields:
-          - { name: language, label: language, required: true, widget: hidden, default: ca }
-          - { name: title, label: Title, required: true, widget: string }
-          - { name: image, label: Image, required: false, widget: image, allow_multiple: false }
-          - { name: testimonials, label: Testimonials, required: false, widget: list,
-              fields: [
-              { name: author, label: Author, required: true, widget: string },
-              { name: quote, label: Quote, required: true, widget: string },
-              { name: description, label: Description, required: false, widget: string }]}
-          - { name: body, label: Body, required: true, widget: markdown }
-      - name: home-spanish
-        label: Home - Spanish
-        file: content/pages/home/index.es.md
-        show_preview_links: true
-        fields:
-          - { name: language, label: language, required: true, widget: hidden, default: es }
-          - { name: title, label: Title, required: true, widget: string }
-          - { name: image, label: Image, required: false, widget: image, allow_multiple: false }
-          - { name: testimonials, label: Testimonials, required: false, widget: list,
-              fields: [
-              { name: author, label: Author, required: true, widget: string },
-              { name: quote, label: Quote, required: true, widget: string },
-              { name: description, label: Description, required: false, widget: string }]}
-          - { name: body, label: Body, required: true, widget: markdown }
-  - name: about-me
-    label: About me
-    description: A list of all availables content for about me page
-    slug: '{{slug}}'
-    create: false
-    files:
-      - name: about-me-english
-        label: About me - English
-        file: content/pages/about-me/index.en.md
-        show_preview_links: true
-        fields:
+          - { name: key, label: Key, required: true, widget: hidden, default: about-me }
           - { name: language, label: language, required: true, widget: hidden, default: en }
-          - { name: cities, label: Cities, required: false, widget: list,
-              fields: [
-              { name: city, label: City, required: true, widget: string },
-              { name: coordinates, label: Coordinates, required: true, widget: map },
-              { name: description, label: Description, required: true, widget: string }]}
-          - { name: body, label: Body, required: true, widget: markdown }
-      - name: about-me-italian
-        label: About me - Italian
-        file: content/pages/about-me/index.it.md
-        show_preview_links: true
-        fields:
-          - { name: language, label: language, required: true, widget: hidden, default: it }
-          - { name: cities, label: Cities, required: false, widget: list,
-              fields: [
-              { name: city, label: City, required: true, widget: string },
-              { name: coordinates, label: Coordinates, required: true, widget: map },
-              { name: description, label: Description, required: true, widget: string }]}
-          - { name: body, label: Body, required: true, widget: markdown }
-      - name: about-me-catalan
-        label: About me - Catalan
-        file: content/pages/about-me/index.ca.md
-        show_preview_links: true
-        fields:
-          - { name: language, label: language, required: true, widget: hidden, default: it }
-          - { name: cities, label: Cities, required: false, widget: list,
-              fields: [
-              { name: city, label: City, required: true, widget: string },
-              { name: coordinates, label: Coordinates, required: true, widget: map },
-              { name: description, label: Description, required: true, widget: string }]}
-          - { name: body, label: Body, required: true, widget: markdown }
-      - name: about-me-spanish
-        label: About me - Spanish
-        file: content/pages/about-me/index.es.md
-        show_preview_links: true
-        fields:
-          - { name: language, label: language, required: true, widget: hidden, default: es }
           - { name: cities, label: Cities, required: false, widget: list,
               fields: [
               { name: city, label: City, required: true, widget: string },
