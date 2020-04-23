@@ -162,3 +162,59 @@ collections:
               { name: quote, label: Quote, required: true, widget: string },
               { name: description, label: Description, required: false, widget: string }]}
           - { name: body, label: Body, required: true, widget: markdown }
+  - name: about-me
+    label: About me
+    description: A list of all availables content for about me page
+    slug: '{{slug}}'
+    create: false
+    files:
+      - name: about-me-english
+        label: About me - English
+        file: content/pages/about-me/index.en.md
+        show_preview_links: true
+        fields:
+          - { name: language, label: language, required: true, widget: hidden, default: en }
+          - { name: cities, label: Cities, required: false, widget: list,
+              fields: [
+              { name: city, label: City, required: true, widget: string },
+              { name: coordinates, label: Coordinates, required: true, widget: map },
+              { name: description, label: Description, required: true, widget: string }]}
+          - { name: body, label: Body, required: true, widget: markdown }
+      - name: about-me-italian
+        label: About me - Italian
+        file: content/pages/about-me/index.it.md
+        show_preview_links: true
+        fields:
+          - { name: language, label: language, required: true, widget: hidden, default: it }
+          - { name: cities, label: Cities, required: false, widget: list,
+              fields: [
+              { name: city, label: City, required: true, widget: string },
+              { name: coordinates, label: Coordinates, required: true, widget: map },
+              { name: description, label: Description, required: true, widget: string }]}
+          - { name: body, label: Body, required: true, widget: markdown }
+      - name: about-me-catalan
+        label: About me - Catalan
+        file: content/pages/about-me/index.ca.md
+        show_preview_links: true
+        fields:
+          - { name: language, label: language, required: true, widget: hidden, default: it }
+          - { name: cities, label: Cities, required: false, widget: list,
+              fields: [
+              { name: city, label: City, required: true, widget: string },
+              { name: coordinates, label: Coordinates, required: true, widget: map },
+              { name: description, label: Description, required: true, widget: string }]}
+          - { name: body, label: Body, required: true, widget: markdown }
+      - name: about-me-spanish
+        label: About me - Spanish
+        file: content/pages/about-me/index.es.md
+        show_preview_links: true
+        fields:
+          - { name: language, label: language, required: true, widget: hidden, default: es }
+          - { name: cities, label: Cities, required: false, widget: list,
+              fields: [
+              { name: city, label: City, required: true, widget: string },
+              { name: coordinates, label: Coordinates, required: true, widget: map },
+              { name: description, label: Description, required: true, widget: string }]}
+          - { name: body, label: Body, required: true, widget: markdown }
+
+
