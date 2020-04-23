@@ -216,5 +216,3 @@ collections:
               { name: coordinates, label: Coordinates, required: true, widget: map },
               { name: description, label: Description, required: true, widget: string }]}
           - { name: body, label: Body, required: true, widget: markdown }
-
-
