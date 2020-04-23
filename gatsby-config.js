@@ -80,20 +80,20 @@ module.exports = {
         path: `${__dirname}/content/articles`,
       },
     },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `home`,
-        path: `${__dirname}/content/pages/home`,
-      },
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `about-me`,
-        path: `${__dirname}/content/pages/about-me`,
-      },
-    },
+    // {
+    //   resolve: `gatsby-source-filesystem`,
+    //   options: {
+    //     name: `home`,
+    //     path: `${__dirname}/content/pages/home`,
+    //   },
+    // },
+    // {
+    //   resolve: `gatsby-source-filesystem`,
+    //   options: {
+    //     name: `about-me`,
+    //     path: `${__dirname}/content/pages/about-me`,
+    //   },
+    // },
     {
       resolve: `gatsby-transformer-remark`,
       options: {
