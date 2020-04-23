@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Map from '../components/organisms/Map/Map';
 import SEO from '../components/organisms/SEO/SEO';
@@ -13,5 +14,17 @@ const AboutMe = props => {
     <Map />
   </Layout>;
 };
+
+// export const AboutMeData = graphql`
+//     query getAboutMeData($slug: String!, $author: String) {
+// #        about-me: markDownRemark
+//     }
+// `;
+
+AboutMe.propTypes = {
+  data: PropTypes.objectOf(PropTypes.object).isRequired,
+};
+
+AboutMe.defaultProps = {};
 
 export default AboutMe;
