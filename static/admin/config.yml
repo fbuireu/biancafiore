@@ -103,8 +103,11 @@ collections:
   - name: pages
     label: Pages
     description: A list of all availables pages
+    label_singular: Page
+    identifier_field: label_singular
     slug: '{{slug}}'
     create: false
+    preview_path: /{{slug}}
     files:
       - name: home
         label: Home
