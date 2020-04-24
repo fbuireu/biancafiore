@@ -1,34 +1,4 @@
 @import 'variables';
-@import 'functions';
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  @include font-properties(primary, regular);
-  color: color(neutral);
-  font-size: $base-font-size;
-  scroll-behavior: smooth;
-}
-
-body {
-  -webkit-font-smoothing: antialiased;
-  -webkit-tap-highlight-color: color(neutral);
-  text-rendering: optimizeSpeed;
-  -webkit-touch-callout: none;
-}
-
-main {
-  position: relative;
-}
-
-img {
-  height: 100%;
-  max-width: 100%;
-  width: 100%;
-}
 
 .wrapper {
   margin: 0 auto;
