@@ -113,7 +113,6 @@ collections:
         show_preview_links: true
         fields:
           - { name: key, label: Key, required: true, widget: hidden, default: home }
-          - { name: language, label: language, required: true, widget: hidden, default: en }
           - { name: title, label: Title, required: true, widget: string }
           - { name: image, label: Image, required: false, widget: image, allow_multiple: false }
           - { name: testimonials, label: Testimonials, required: false, widget: list,
@@ -128,7 +127,6 @@ collections:
         show_preview_links: true
         fields:
           - { name: key, label: Key, required: true, widget: hidden, default: about-me }
-          - { name: language, label: language, required: true, widget: hidden, default: en }
           - { name: cities, label: Cities, required: false, widget: list,
               fields: [
               { name: city, label: City, required: true, widget: string },
