@@ -10,6 +10,14 @@ body {
   @include font-properties(primary, regular);
   color: color(neutral);
   font-size: $base-font-size;
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rgba(color(neutral));
+  text-rendering: optimizeSpeed;
+  -webkit-touch-callout: none;
 }
 
 main {
