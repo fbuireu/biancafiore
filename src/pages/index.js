@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import SEO from '../components/organisms/SEO/SEO';
 import Layout from '../components/templates/Layout/Layout';
@@ -10,5 +11,11 @@ const Index = props => {
     <p>Now go build something great.</p>
   </Layout>;
 };
+
+Index.propTypes = {
+  data: PropTypes.objectOf(PropTypes.object).isRequired,
+};
+
+Index.defaultProps = {};
 
 export default Index;
