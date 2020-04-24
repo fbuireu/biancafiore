@@ -76,7 +76,7 @@ export const articleData = graphql`
                 }
             }
         }
-        author: markdownRemark(frontmatter: {name: {eq: $author}}) {
+        author: markdownRemark(frontmatter: { name: { eq: $author }}) {
             frontmatter {
                 slug
                 name
