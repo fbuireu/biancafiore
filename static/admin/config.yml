@@ -104,14 +104,12 @@ collections:
     label: Pages
     description: A list of all availables pages
     label_singular: Page
-    identifier_field: label_singular
     slug: '{{slug}}'
     create: false
-    preview_path: /{{slug}}
     files:
       - name: home
         label: Home
-        file: content/pages/home
+        file: content/pages/home.md
         show_preview_links: true
         fields:
           - { name: key, label: Key, required: true, widget: hidden, default: home }
@@ -126,7 +124,7 @@ collections:
           - { name: body, label: Body, required: true, widget: markdown }
       - name: about-me
         label: About me
-        file: content/pages/about-me
+        file: content/pages/about-me.md
         show_preview_links: true
         fields:
           - { name: key, label: Key, required: true, widget: hidden, default: about-me }
