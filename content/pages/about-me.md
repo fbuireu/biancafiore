@@ -1,4 +1,5 @@
 ---
+key: about-me
 cities:
   - city: Barcelona
     countryIsoCode: es
