@@ -28,6 +28,7 @@ export const AboutMeData = graphql`
                     frontmatter {
                         cities {
                             city
+                            isInitialCity
                             coordinates
                             countryIsoCode
                             description
