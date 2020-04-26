@@ -2,7 +2,7 @@ import am4geodata_worldHigh from '@amcharts/amcharts4-geodata/worldHigh';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4maps from '@amcharts/amcharts4/maps';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 am4core.useTheme(am4themes_animated);
 //Todo:
@@ -18,8 +18,13 @@ am4core.useTheme(am4themes_animated);
 // Decrease plane scale on higher point
 
 const Map = () => {
+  const [planeOrigin, setPlaneOrigin] = useState(null);
+  const [planeDstination, setPlaneDestination] = useState(null);
   const mapReference = useRef(null);
   const countriesISO = [`ES`, `GB`, `JO`, `AU`, `IT`];
+  const mapConfiguration = {
+    exclude: `AQ`,
+  };
 
   useEffect(() => {
     let mapChart = am4core.create(mapReference.current, am4maps.MapChart);
@@ -39,7 +44,7 @@ const Map = () => {
     polygonSeries.mapPolygons.template.fill = am4core.color(`#fff9f1`);
     polygonSeries.mapPolygons.template.stroke = am4core.color(`#b37e33`);
     polygonSeries.tooltip.background.strokeWidth = 0;
-    polygonSeries.exclude = [`AQ`];
+    polygonSeries.exclude = mapConfiguration.exclude;
 
     //SetPolygonTemplate()
     let polygonTemplate = polygonSeries.mapPolygons.template,
@@ -59,7 +64,7 @@ const Map = () => {
     cities.cursorOverStyle = am4core.MouseCursorStyle.pointer;
 
     let city = cities.mapImages.template.createChild(am4core.Circle);
-    city.radius = 10;
+    city.radius = 6;
     city.fill = am4core.color(`#d4a259`);
 
     const addCity = (coords, title) => {
@@ -104,11 +109,11 @@ const Map = () => {
       return line;
     }
 
-    addLine(genova, amman);
-    addLine(amman, sydney);
-    addLine(sydney, london);
-    addLine(london, barcelona);
-
+    addLine(genova, genova);
+    // addLine(amman, sydney);
+    // addLine(sydney, london);
+    // addLine(london, barcelona);
+    //
     //CreatePlane
     let plane = lineSeries.mapLines.getIndex(0).lineObjects.create();
     plane.position = 0;
@@ -118,7 +123,7 @@ const Map = () => {
 
     //SetPlane
     let planeImage = plane.createChild(am4core.Sprite);
-    planeImage.scale = .15;
+    planeImage.scale = .125;
     planeImage.horizontalCenter = `middle`;
     planeImage.verticalCenter = `middle`;
     planeImage.path = `m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47`;
@@ -133,7 +138,7 @@ const Map = () => {
 
     //SetPlaneImage
     let shadowPlaneImage = planeShadow.createChild(am4core.Sprite);
-    shadowPlaneImage.scale = .15;
+    shadowPlaneImage.scale = .125;
     shadowPlaneImage.horizontalCenter = `middle`;
     shadowPlaneImage.verticalCenter = `middle`;
     shadowPlaneImage.path = `m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47`;
@@ -142,6 +147,7 @@ const Map = () => {
 
     planeShadow.adapter.add(`scale`, (scale, target) => {
       target.opacity = (.6 - (Math.abs(.5 - target.position)));
+
       return .5 - .3 * (1 - (Math.abs(.5 - target.position)));
     });
 
@@ -158,22 +164,16 @@ const Map = () => {
       shadowPlaneImage.rotation = planeImage.rotation;
 
       // Set up animation
-      let from, to;
-      let numLines = lineSeries.mapLines.length;
+      let from,
+        to,
+        numLines = lineSeries.mapLines.length;
+
       if (direction === 1) {
         from = 0;
         to = 1;
-        if (planeImage.rotation !== 0) {
-          planeImage.animate({ to: 0, property: `rotation` }, 1000).events.on(`animationended`, flyPlane);
-          return;
-        }
-      } else {
-        from = 1;
-        to = 0;
-        if (planeImage.rotation != 180) {
-          planeImage.animate({ to: 180, property: `rotation` }, 1000).events.on(`animationended`, flyPlane);
-          return;
-        }
+
+        if (planeImage.rotation != 0) planeImage.animate({ to: 0, property: `rotation` }, 1000).events.on(`animationended`, flyPlane);
+
       }
 
       // Start the animation
@@ -202,7 +202,7 @@ const Map = () => {
     }
 
     // Go!
-    flyPlane();
+    // flyPlane();
 
     polygonTemplate.events.on(`over`, element => {
       countriesISO.map(iso => {
@@ -216,8 +216,15 @@ const Map = () => {
       });
     });
 
-    cities.events.on(`hit`, element => {
-      console.log(element.target.dataItem);
+    amman.events.on(`hit`, element => {
+      // console.log(element.target.name);
+      // setPlaneDestination(element.target);
+      addLine(genova, amman);
+      flyPlane()
+      // console.log(element.target.dataItem.dataContext);
+    });
+
+    polygonTemplate.events.on(`hit`, element => {
       console.log(element.target.dataItem.dataContext);
     });
 
