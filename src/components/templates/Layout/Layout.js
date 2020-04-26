@@ -20,7 +20,7 @@ const Layout = ({ children }) => {
       <Header siteTitle={`biancafiore.me (v0)`} />
       <main>{children}</main>
       <footer>
-        © {new Date().getFullYear()}, Built with love by
+        © {new Date().getFullYear()}, Built by
         {` `}
         <a href="https://www.gatsbyjs.org">Ferran Buireu</a>
       </footer>
