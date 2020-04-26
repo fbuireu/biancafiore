@@ -130,6 +130,7 @@ collections:
           - { name: cities, label: Cities, required: false, widget: list,
               fields: [
               { name: city, label: City, required: true, widget: string },
+              { name: isInitialCity, label: Initial city, required: false, widget: boolean },
               { name: countryIsoCode, label: Country ISO code, required: true, widget: string, pattern: ['^[a-z]{2}$', 'This field must have only 2 characters'] },
               { name: coordinates, label: Coordinates, required: true, widget: map },
               { name: description, label: Description, required: true, widget: string }]}
