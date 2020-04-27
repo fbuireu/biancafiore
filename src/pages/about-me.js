@@ -7,8 +7,10 @@ import SEO from '../components/organisms/SEO/SEO';
 import Layout from '../components/templates/Layout/Layout';
 
 const AboutMe = ({ data }) => {
-  const { aboutMe } = data,
-    cities = aboutMe.edges[0].node.frontmatter.cities;
+  const { aboutMe } = data;
+  let cities = aboutMe.edges[0].node.frontmatter.cities;
+
+  for (let city of cities) if (typeof city.coordinates === `string`) city.coordinates = JSON.parse(city.coordinates);
 
   return <Layout>
     <SEO title="Home" />
@@ -27,7 +29,7 @@ export const AboutMeData = graphql`
                     html
                     frontmatter {
                         cities {
-                            city
+                            name
                             isInitialCity
                             coordinates
                             countryIsoCode
