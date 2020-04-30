@@ -4,15 +4,19 @@ import * as am4maps from '@amcharts/amcharts4/maps';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
+import './Map.scss';
 
 am4core.useTheme(am4themes_animated);
+//Todo:
 //Todo:
 // JSON config,
 // selected point(from to),
 // refactor in promises (await)
 // Change plane image
-// Add custom marker (pin)
 // Add series for countries (to remove on create event)
+// Custom ZoomIn/Out Buttons
+// Loaderr
+// Treure pin al punt on esta l'avio
 
 const Map = ({ cities }) => {
   const [origin, setOrigin] = useState(null);
@@ -31,7 +35,9 @@ const Map = ({ cities }) => {
     //CreateMapChart()
     mapChart.geodata = am4geodata_worldHigh;
     mapChart.projection = new am4maps.projections.Miller();
+    mapChart.zoomControl = new am4maps.ZoomControl();
     mapChart.homeZoomLevel = 0;
+    mapChart.maxZoomLevel = 4;
     mapChart.homeGeoPoint = {
       latitude: 30,
       longitude: 180,
@@ -61,10 +67,18 @@ const Map = ({ cities }) => {
     mapCities.mapImages.template.nonScaling = true;
     mapCities.tooltip.background.strokeWidth = 0;
     mapCities.cursorOverStyle = am4core.MouseCursorStyle.pointer;
-
-    let mapCity = mapCities.mapImages.template.createChild(am4core.Circle);
-    mapCity.radius = 6;
-    mapCity.fill = am4core.color(`#d4a259`);
+    console.log('map', mapConfiguration);
+    let mapCity = mapCities.mapImages.template.createChild(am4core.Sprite);
+    mapCity.horizontalCenter = `middle`;
+    mapCity.verticalCenter = `bottom`;
+    mapCity.width = 8;
+    mapCity.height = 8;
+    mapCity.scale = .04;
+    mapCity.path = `M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035
+                    \tc6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719
+                    \tc-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z`;
+    mapCity.fill = am4core.color(`#8b5a14`);
+    mapCity.filters.push(new am4core.DropShadowFilter);
 
     const addCity = (coords, title) => {
       let city = mapCities.mapImages.create();
@@ -92,10 +106,15 @@ const Map = ({ cities }) => {
     lineSeries.mapLines.template.line.strokeWidth = 2;
     lineSeries.mapLines.template.line.stroke = am4core.color(`#d4a259`);
     lineSeries.mapLines.template.line.nonScalingStroke = true;
-    lineSeries.mapLines.template.line.strokeDasharray = `.5rem`;
+    lineSeries.mapLines.template.line.strokeDasharray = `.25rem`;
     lineSeries.zIndex = 10;
 
-    //AddShadowLines
+    let lineSeriesShadow = lineSeries.filters.push(new am4core.DropShadowFilter);
+    // lineSeriesShadow.dx = 0;
+    // lineSeriesShadow.dy = 15;
+    // // lineSeriesShadow.blur = 5;
+
+    // //AddShadowLines
     let shadowLineSeries = mapChart.series.push(new am4maps.MapLineSeries());
     shadowLineSeries.mapLines.template.line.strokeOpacity = 0;
     shadowLineSeries.mapLines.template.line.nonScalingStroke = true;
@@ -105,7 +124,8 @@ const Map = ({ cities }) => {
     const addLine = (from, to) => {
       let line = lineSeries.mapLines.create(),
         shadowLine = shadowLineSeries.mapLines.create();
-
+      line.className = 'path';
+      line.setClassName();
       line.imagesToConnect = [from, to];
       line.line.controlPointDistance = -.3;
       shadowLine.imagesToConnect = [from, to];
@@ -121,6 +141,8 @@ const Map = ({ cities }) => {
 
     //CreatePlane
     let plane = lineSeries.mapLines.getIndex(0).lineObjects.create();
+    plane.latitude = 0;
+    plane.longitude = 0;
     plane.position = 0;
     plane.width = 48;
     plane.height = 48;
@@ -128,7 +150,7 @@ const Map = ({ cities }) => {
 
     //SetPlane
     let planeImage = plane.createChild(am4core.Sprite);
-    planeImage.scale = .125;
+    planeImage.scale = .25;
     planeImage.horizontalCenter = `middle`;
     planeImage.verticalCenter = `middle`;
     planeImage.path = `m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47`;
@@ -143,7 +165,7 @@ const Map = ({ cities }) => {
 
     //SetPlaneImage
     let shadowPlaneImage = planeShadow.createChild(am4core.Sprite);
-    shadowPlaneImage.scale = .125;
+    shadowPlaneImage.scale = .25;
     shadowPlaneImage.horizontalCenter = `middle`;
     shadowPlaneImage.verticalCenter = `middle`;
     shadowPlaneImage.path = `m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47`;
@@ -171,7 +193,7 @@ const Map = ({ cities }) => {
       // Set up flyAnimation
       let from = 0,
         to = 1;
-
+      console.log('plane', plane.position);
       if (planeImage.rotation != 0) planeImage.animate({ to: 0, property: `rotation` }, 1000).events.on(`animationended`, flyPlane);
 
       // Start the flyAnimation
