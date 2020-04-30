@@ -1,0 +1,10 @@
+@import '../../../styles/global/animations';
+
+.amcharts-path-group path {
+  animation: draw-line 10s forwards;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
