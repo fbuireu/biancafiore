@@ -5,3 +5,9 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
