@@ -17,6 +17,7 @@ am4core.useTheme(am4themes_animated);
 // Custom ZoomIn/Out Buttons
 // Loaderr
 // Treure pin al punt on esta l'avio
+// Const in mayus
 
 const Map = ({ cities }) => {
   const [origin, setOrigin] = useState(null);
