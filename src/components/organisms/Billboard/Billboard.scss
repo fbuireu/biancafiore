@@ -11,8 +11,8 @@
   .article-information {
     align-content: center;
     display: grid;
+    gap: 1rem 0;
     grid: 'Title Title Title Title' auto 'Date-Author Date-Author . .' auto 'Summary Summary Summary Summary' auto 'ReadingTime . . .' auto / 1fr 1fr 1fr 1fr;
-    grid-gap: 1rem 0;
     justify-items: start;
     padding: 1rem 0 2rem;
   }
