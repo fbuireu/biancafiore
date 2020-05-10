@@ -15,5 +15,13 @@ cities:
     coordinates: '{"type":"Point","coordinates":[151.2158203,-33.8704156]}'
     countryIsoCode: au
     description: Sydney description
+  - name: London
+    countryIsoCode: gb
+    coordinates: '{"type":"Point","coordinates":[-0.1373291,51.5155798]}'
+    description: I'm london
+  - name: Amman
+    countryIsoCode: jo
+    coordinates: '{"type":"Point","coordinates":[35.901947,31.94284]}'
+    description: I'm Amman
 ---
 Test
