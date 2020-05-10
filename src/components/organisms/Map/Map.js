@@ -15,7 +15,7 @@ am4core.useTheme(am4themes_animated);
 // Change plane image
 // Add series for countries (to remove on create event)
 // Custom ZoomIn/Out Buttons
-// Loaderr
+// Loader
 // Treure pin al punt on esta l'avio
 // Const in mayus
 
@@ -68,7 +68,7 @@ const Map = ({ cities }) => {
     mapCities.mapImages.template.nonScaling = true;
     mapCities.tooltip.background.strokeWidth = 0;
     mapCities.cursorOverStyle = am4core.MouseCursorStyle.pointer;
-    console.log('map', mapConfiguration);
+
     let mapCity = mapCities.mapImages.template.createChild(am4core.Sprite);
     mapCity.horizontalCenter = `middle`;
     mapCity.verticalCenter = `bottom`;
@@ -111,9 +111,7 @@ const Map = ({ cities }) => {
     lineSeries.zIndex = 10;
 
     let lineSeriesShadow = lineSeries.filters.push(new am4core.DropShadowFilter);
-    // lineSeriesShadow.dx = 0;
-    // lineSeriesShadow.dy = 15;
-    // // lineSeriesShadow.blur = 5;
+    lineSeriesShadow.blur = 5;
 
     // //AddShadowLines
     let shadowLineSeries = mapChart.series.push(new am4maps.MapLineSeries());
@@ -125,7 +123,7 @@ const Map = ({ cities }) => {
     const addLine = (from, to) => {
       let line = lineSeries.mapLines.create(),
         shadowLine = shadowLineSeries.mapLines.create();
-      line.className = 'path';
+      line.className = `path`;
       line.setClassName();
       line.imagesToConnect = [from, to];
       line.line.controlPointDistance = -.3;
@@ -194,7 +192,7 @@ const Map = ({ cities }) => {
       // Set up flyAnimation
       let from = 0,
         to = 1;
-      console.log('plane', plane.position);
+
       if (planeImage.rotation != 0) planeImage.animate({ to: 0, property: `rotation` }, 1000).events.on(`animationended`, flyPlane);
 
       // Start the flyAnimation
@@ -219,9 +217,6 @@ const Map = ({ cities }) => {
       }
     };
 
-    // Go!
-    // flyPlane();
-
     polygonTemplate.events.on(`over`, element => {
       mapConfiguration.countriesIsoCode.map(iso => {
         let country = polygonSeries.getPolygonById(iso);
@@ -238,8 +233,8 @@ const Map = ({ cities }) => {
       city.events.on(`hit`, element => {
         // console.log(element.target.name)
         // let clickedCity = mapConfiguration.mapCities.find(city => city.name === element.target.name);
-// console.log(clickedCity)
-//         setDestination(element.target);
+        // console.log(clickedCity)
+        //         setDestination(element.target);
         // origin ? setOrigin(initialCity) : setOrigin(destination);
 
         // console.log('origin', origin);
