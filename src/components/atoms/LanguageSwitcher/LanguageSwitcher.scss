@@ -41,5 +41,10 @@
     letter-spacing: 2px;
     text-align: left;
     width: 100%;
+
+    &.--is-current-language {
+      opacity: .5;
+      pointer-events: none;
+    }
   }
 }
