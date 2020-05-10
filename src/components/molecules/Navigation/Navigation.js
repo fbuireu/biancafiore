@@ -11,9 +11,11 @@ const Navigation = () => {
   return <nav>
     <ul>
       <IntlContextConsumer>
-        {({ language: currentLocale }) =>
+        {({ language: currentLanguage }) =>
           menuItems.map(
-            ({ node }) => <li key={node.frontmatter.position}><Link to={`/${currentLocale}/${node.fields.slug}`}>{node.frontmatter.name}</Link></li>)
+            ({ node }) => <li key={node.frontmatter.position}>
+              <Link to={`/${currentLanguage}/${node.fields.slug}`} activeClassName={`--is-active`}>{node.frontmatter.name}</Link>
+            </li>)
         }
       </IntlContextConsumer>
       <LanguageSwitcher />
