@@ -16,6 +16,23 @@ nav {
     letter-spacing: 2px;
     padding: 0 .5rem;
     position: relative;
+    transition: all .3s ease;
+    will-change: font-weight;
+
+    &.--is-active {
+      font-weight: bold;
+    }
+
+    &.--is-active::after {
+      border-bottom: solid 2px color(neutral);
+      bottom: -.5rem;
+      content: '';
+      left: 0;
+      position: absolute;
+      transform: scaleX(1);
+      transform-origin: right;
+      width: 100%;
+    }
 
     &::after {
       border-bottom: solid 2px color(neutral);
