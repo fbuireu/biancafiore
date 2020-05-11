@@ -2,8 +2,8 @@ import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Map from '../components/organisms/Map/Map';
-import SEO from '../components/organisms/SEO/SEO';
+import Map from '../components/molecules/Map/Map';
+import SEO from '../components/atoms/SEO/SEO';
 import Layout from '../components/templates/Layout/Layout';
 
 const AboutMe = ({ data }) => {

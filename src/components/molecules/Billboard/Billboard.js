@@ -3,7 +3,7 @@ import React from 'react';
 import Subtitle from '../../atoms/Subtitle/Subtitle';
 import Summary from '../../atoms/Summary/Summary';
 import Title from '../../atoms/Title/Title';
-import ReadingTime from '../../molecules/ReadingTime/ReadingTime';
+import ReadingTime from '../../atoms/ReadingTime/ReadingTime';
 import './Billboard.scss';
 
 const Billboard = article => {

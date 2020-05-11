@@ -8,8 +8,7 @@ import './Map.scss';
 
 am4core.useTheme(am4themes_animated);
 //Todo:
-//Todo:
-// JSON config,
+// JSON config (mixed),
 // selected point(from to),
 // refactor in promises (await)
 // Change plane image
@@ -275,7 +274,7 @@ const Map = ({ cities }) => {
     });
 
     return () => mapChart && mapChart.dispose();
-  });
+  }, []);
 
   return <section>
     <div ref={mapReference} style={{ width: `100%`, height: `500px` }} />
