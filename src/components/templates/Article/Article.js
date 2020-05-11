@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useScrollPosition } from '../../../hooks/useScrollPosition';
 import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
-import Author from '../../molecules/Author/Author';
+import Author from '../../atoms/Author/Author';
 import Navigation from '../../molecules/Navigation/Navigation';
-import ShareButtons from '../../molecules/ShareButtons/ShareButtons';
-import Billboard from '../../organisms/Billboard/Billboard';
-import SEO from '../../organisms/SEO/SEO';
+import ShareButtons from '../../atoms/ShareButtons/ShareButtons';
+import Billboard from '../../molecules/Billboard/Billboard';
+import SEO from '../../atoms/SEO/SEO';
 import Layout from '../Layout/Layout';
 import './Article.scss';
 

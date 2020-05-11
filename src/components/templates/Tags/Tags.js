@@ -1,5 +1,5 @@
 import React from 'react';
-import SEO from '../../organisms/SEO/SEO';
+import SEO from '../../atoms/SEO/SEO';
 import Layout from '../Layout/Layout';
 
 const Tags = props => <Layout>
