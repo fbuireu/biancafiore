@@ -1,5 +1,11 @@
 @import 'variables';
 
+.site__wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .wrapper {
   margin: 0 auto;
   max-width: $global-max-width;
