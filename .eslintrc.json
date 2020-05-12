@@ -27,12 +27,6 @@
         "code": 180
       }
     ],
-    "newline-per-chained-call": [
-      "warn",
-      {
-        "ignoreChainWithDepth": 2
-      }
-    ],
     "no-unused-vars": "warn",
     "no-else-return": [
       "warn",
@@ -55,7 +49,7 @@
       }
     ],
     "react/jsx-indent": [
-      2,
+     "warn",
       2
     ],
     "react/jsx-indent-props": [
