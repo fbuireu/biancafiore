@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
   `);
 
   return (
-    <>
+    <section className={`site__wrapper`}>
       <Header siteTitle={`biancafiore.me (v0)`} />
       <main>{children}</main>
       <footer>
@@ -24,7 +24,7 @@ const Layout = ({ children }) => {
         {` `}
         <a href="https://www.gatsbyjs.org">Ferran Buireu</a>
       </footer>
-    </>
+    </section>
   );
 };
 
