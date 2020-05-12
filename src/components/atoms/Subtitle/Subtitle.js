@@ -4,7 +4,8 @@ import './Subtitle.scss';
 
 const Subtitle = ({ lastUpdated, author }) => <p className={`subtitle`}>
   <time dateTime={lastUpdated}>{lastUpdated}</time>
-  | <span className={`author`}>{author}</span>
+  &nbsp;|&nbsp;
+  <span className={`author`}>{author}</span>
 </p>;
 
 Subtitle.propTypes = {
