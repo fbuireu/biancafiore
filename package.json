@@ -75,7 +75,7 @@
   "license": "CC-BY-4.0",
   "scripts": {
     "develop": "gatsby develop",
-    "build": "gatsby build",
+    "build": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "start": "gatsby clean && gatsby develop",
