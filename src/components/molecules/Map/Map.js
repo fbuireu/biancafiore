@@ -13,7 +13,7 @@ am4core.useTheme(am4themes_animated);
 // refactor in promises (await)
 // Change plane image
 // Add series for countries (to remove on create event)
-// Custom ZoomIn/Out Buttons
+// Custom ZoomIn/Out Buttons (add home button)
 // Loader
 // Treure pin al punt on esta l'avio
 // Const in mayus
@@ -63,8 +63,6 @@ const Map = ({ cities }) => {
     let mapCity = mapCities.mapImages.template.createChild(am4core.Sprite);
     mapCity.horizontalCenter = `middle`;
     mapCity.verticalCenter = `bottom`;
-    mapCity.width = 8;
-    mapCity.height = 8;
     mapCity.scale = .04;
     mapCity.path = `M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035
                     \tc6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719
@@ -164,7 +162,6 @@ const Map = ({ cities }) => {
       planeContainer.parent = lineSeries;
       planeShadowContainer.mapLine = shadowLineSeries.mapLines.getIndex(currentLine);
       planeShadowContainer.parent = shadowLineSeries;
-      planeShadow.rotation = plane.rotation;
 
       // Set up flyAnimation
       if (plane.rotation !== 0) plane.animate({ to: 0, property: `rotation` }, 1000).events.on(`animationended`, flyPlane);
