@@ -53,6 +53,25 @@ const Map = ({ cities }) => {
       activeState = polygonTemplate.states.create(`active`);
     activeState.properties.fill = am4core.color(`#fbcf90`);
 
+    //AddLines
+    let lineSeries = mapChart.series.push(new am4maps.MapArcSeries());
+    lineSeries.mapLines.template.line.strokeWidth = 2;
+    lineSeries.mapLines.template.line.stroke = am4core.color(`#d4a259`);
+    lineSeries.mapLines.template.line.nonScalingStroke = true;
+    lineSeries.mapLines.template.line.strokeDasharray = `.25rem`;
+    lineSeries.zIndex = 10;
+
+    //AddDropShadowFilter
+    let lineSeriesShadow = lineSeries.filters.push(new am4core.DropShadowFilter);
+    lineSeriesShadow.blur = 5;
+
+    //AddShadowLines
+    let shadowLineSeries = mapChart.series.push(new am4maps.MapLineSeries());
+    shadowLineSeries.mapLines.template.line.strokeOpacity = 0;
+    shadowLineSeries.mapLines.template.line.nonScalingStroke = true;
+    shadowLineSeries.mapLines.template.shortestDistance = false;
+    shadowLineSeries.zIndex = 5;
+
     //AddCities
     let mapCities = mapChart.series.push(new am4maps.MapImageSeries());
     mapCities.mapImages.template.nonScaling = true;
@@ -81,24 +100,6 @@ const Map = ({ cities }) => {
       mapConfiguration.mapCities.push(mapCity);
     });
 
-    //AddLines
-    let lineSeries = mapChart.series.push(new am4maps.MapArcSeries());
-    lineSeries.mapLines.template.line.strokeWidth = 2;
-    lineSeries.mapLines.template.line.stroke = am4core.color(`#d4a259`);
-    lineSeries.mapLines.template.line.nonScalingStroke = true;
-    lineSeries.mapLines.template.line.strokeDasharray = `.25rem`;
-    lineSeries.zIndex = 10;
-
-    //AddDropShadowFilter
-    let lineSeriesShadow = lineSeries.filters.push(new am4core.DropShadowFilter);
-    lineSeriesShadow.blur = 5;
-
-    //AddShadowLines
-    let shadowLineSeries = mapChart.series.push(new am4maps.MapLineSeries());
-    shadowLineSeries.mapLines.template.line.strokeOpacity = 0;
-    shadowLineSeries.mapLines.template.line.nonScalingStroke = true;
-    shadowLineSeries.mapLines.template.shortestDistance = false;
-    shadowLineSeries.zIndex = 5;
 
     const addLine = (from, to) => {
       let line = lineSeries.mapLines.create(),
@@ -116,20 +117,11 @@ const Map = ({ cities }) => {
     let initialCity = mapConfiguration.mapCities.find(initialCity => initialCity.name === mapConfiguration.initialCity.name);
     addLine(initialCity, initialCity);
 
-    //CreatePlane
+    //CreatePlaneContainer
     let planeContainer = lineSeries.mapLines.getIndex(0).lineObjects.create();
     planeContainer.position = 0;
     planeContainer.nonScaling = false;
     planeContainer.adapter.add(`scale`, (scale, target) => .5 * (1 - (Math.abs(.5 - target.position))) / mapChart.zoomLevel);
-
-    //SetPlane
-    let plane = planeContainer.createChild(am4core.Sprite);
-    plane.scale = .25;
-    plane.horizontalCenter = `middle`;
-    plane.verticalCenter = `middle`;
-    plane.path = `m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47`;
-    plane.fill = am4core.color(`#633a00`);
-    plane.strokeOpacity = 0;
 
     //CreatePlaneShadow
     let planeShadowContainer = shadowLineSeries.mapLines.getIndex(0).lineObjects.create();
@@ -140,6 +132,15 @@ const Map = ({ cities }) => {
 
       return .5 * (1 - (Math.abs(.5 - target.position))) / mapChart.zoomLevel;
     });
+
+    //SetPlane
+    let plane = planeContainer.createChild(am4core.Sprite);
+    plane.scale = .25;
+    plane.horizontalCenter = `middle`;
+    plane.verticalCenter = `middle`;
+    plane.path = `m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47`;
+    plane.fill = am4core.color(`#633a00`);
+    plane.strokeOpacity = 0;
 
     //SetPlaneImage
     let planeShadow = planeShadowContainer.createChild(am4core.Sprite);
