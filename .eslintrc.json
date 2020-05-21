@@ -27,6 +27,12 @@
         "code": 180
       }
     ],
+    "newline-per-chained-call": [
+      "warn",
+      {
+        "ignoreChainWithDepth": 2
+      }
+    ],
     "no-unused-vars": "warn",
     "no-else-return": [
       "warn",
@@ -49,7 +55,7 @@
       }
     ],
     "react/jsx-indent": [
-     "warn",
+      "warn",
       2
     ],
     "react/jsx-indent-props": [
@@ -76,7 +82,7 @@
   ],
   "parser": "babel-eslint",
   "parserOptions": {
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2020,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true,
@@ -86,7 +92,8 @@
   "plugins": [
     "react",
     "react-hooks",
-    "babel"
+    "babel",
+    "promise"
   ],
   "settings": {
     "react": {
