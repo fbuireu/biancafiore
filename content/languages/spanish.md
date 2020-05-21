@@ -1,5 +1,5 @@
 ---
 key: tag
 name: Spanish
-isoCode: es
+isoCode: ES
 ---
