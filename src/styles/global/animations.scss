@@ -11,3 +11,9 @@
     stroke-dashoffset: 0;
   }
 }
+
+@keyframes remove-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
