@@ -33,8 +33,8 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
   let tags = [];
   const articles = tagsQuery.data.articles.edges;
 
-  articles.map(({ node }) => {
-    let { key, content, language, name: author } = node.frontmatter;
+  articles.map(({ node: article }) => {
+    let { key, content, language, name: author } = article.frontmatter;
 
     (content && content.tags && content.tags.slug) && content.tags.map(({ slug }) => tags.push(slug));
     language && tags.push(slugify(language, { lower: true }));
