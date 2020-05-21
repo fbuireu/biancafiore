@@ -13,8 +13,8 @@ const Navigation = () => {
       <IntlContextConsumer>
         {({ language: currentLanguage }) =>
           menuItems.map(
-            ({ node }) => <li key={node.frontmatter.position}>
-              <Link to={`/${currentLanguage}/${node.fields.slug}`} activeClassName={`--is-active`}>{node.frontmatter.name}</Link>
+            ({ node: menuItem }) => <li key={menuItem.frontmatter.position}>
+              <Link to={`/${currentLanguage}/${menuItem.fields.slug}`} activeClassName={`--is-active`}>{menuItem.frontmatter.name}</Link>
             </li>)
         }
       </IntlContextConsumer>

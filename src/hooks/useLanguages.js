@@ -21,8 +21,8 @@ export const useLanguages = () => {
 
   let availableLanguages = [];
 
-  languages.edges.forEach(({ node }) => {
-    let { name, isoCode } = node.frontmatter;
+  languages.edges.forEach(({ node: language }) => {
+    let { name, isoCode } = language.frontmatter;
 
     (name || isoCode) && availableLanguages.push({ name: name, isoCode: isoCode });
   });
