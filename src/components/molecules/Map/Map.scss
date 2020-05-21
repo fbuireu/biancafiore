@@ -1,10 +1,14 @@
 @import '../../../styles/global/animations';
 
-.amcharts-path-group path {
-  animation: draw-line 10s forwards;
+.amcharts---is-created-group path {
+  animation: draw-line 10s forwards .5s;
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
+.amcharts---is-erased-group path {
+  animation: remove-line 2s reverse forwards;
+  stroke-dashoffset: 1000;
+}
