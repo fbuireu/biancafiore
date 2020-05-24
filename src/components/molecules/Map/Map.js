@@ -8,14 +8,14 @@ import './Map.scss';
 
 am4core.useTheme(am4themes_animated);
 // Todo:
-// JSON config (mixed),
+// JSON config (mixed) + global vars,
 // Change plane image
-// Custom ZoomIn/Out Buttons (add home button)
+// Custom ZoomIn/Out Buttons
 // Treure pin al punt on esta l'avio
 // Const in mayus
-// Improve scale
-// zIndex linies
-// https://css-tricks.com/making-movies-with-amcharts/#article-header-id-6
+// centrar animation en plane
+// dibuixar linies darrera l'avio
+// Ideas: https://css-tricks.com/making-movies-with-amcharts/#article-header-id-6
 
 const Map = ({ cities }) => {
   const mapReference = useRef(null);
@@ -24,7 +24,7 @@ const Map = ({ cities }) => {
   const mapConfiguration = {
     exclude: `AQ`,
     initialCity: cities.find(city => city.isInitialCity),
-    countriesIsoCode: cities.map(city => city.countryIsoCode.toUpperCase()),
+    countriesIsoCode: cities.map(city => city.countryIsoCode),
     mapCities: [],
     flight: {
       from: 0,
@@ -122,17 +122,20 @@ const Map = ({ cities }) => {
   };
 
   const setCity = mapCities => {
-    const mapCity = mapCities.mapImages.template.createChild(am4core.Sprite);
+    const mapCity = mapCities.mapImages.template.createChild(am4core.Image);
+    mapCity.href = `/assets/svg/pin.svg`;
     mapCity.horizontalCenter = `middle`;
     mapCity.verticalCenter = `bottom`;
-    mapCity.scale = 0.04;
-    mapCity.path = `M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035
-                    \tc6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719
-                    \tc-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z`;
-    mapCity.fill = am4core.color(`#8b5a14`);
-    mapCity.filters.push(new am4core.DropShadowFilter());
+    mapCity.scale = .75;
+    mapCity.rotation = `15deg`;
 
     return mapCity;
+  };
+
+  const setCitiesShadowFilter = mapCity => {
+    let cityShadow = mapCity.filters.push(new am4core.DropShadowFilter());
+    cityShadow.dy = 10;
+    cityShadow.blur = 3;
   };
 
   const setInitialCities = mapCities => {
@@ -148,23 +151,23 @@ const Map = ({ cities }) => {
     });
   };
 
-  const setPlaneContainer = (lineSeries, mapChart) => {
+  const setPlaneContainer = lineSeries => {
     const planeContainer = lineSeries.mapLines.getIndex(0).lineObjects.create();
     planeContainer.position = 0;
     planeContainer.nonScaling = false;
-    planeContainer.adapter.add(`scale`, (scale, target) => 0.5 * (1 - (Math.abs(0.5 - target.position))) / mapChart.zoomLevel);
+    planeContainer.adapter.add(`scale`, (scale, target) => .5 * (1 - (Math.abs(.5 - target.position))));
 
     return planeContainer;
   };
 
-  const setPlaneShadowContainer = (shadowLineSeries, mapChart) => {
+  const setPlaneShadowContainer = shadowLineSeries => {
     const planeShadowContainer = shadowLineSeries.mapLines.getIndex(0).lineObjects.create();
     planeShadowContainer.position = 0;
     planeShadowContainer.nonScaling = false;
     planeShadowContainer.adapter.add(`scale`, (scale, target) => {
-      target.opacity = 0.6 - (Math.abs(0.5 - target.position));
+      target.opacity = .6 - (Math.abs(.5 - target.position));
 
-      return 0.5 * (1 - (Math.abs(0.5 - target.position))) / mapChart.zoomLevel;
+      return .5 * (1 - (Math.abs(.5 - target.position)));
     });
 
     return planeShadowContainer;
@@ -172,7 +175,7 @@ const Map = ({ cities }) => {
 
   const setPlane = planeContainer => {
     const plane = planeContainer.createChild(am4core.Sprite);
-    plane.scale = 0.25;
+    plane.scale = .2;
     plane.horizontalCenter = `middle`;
     plane.verticalCenter = `middle`;
     plane.path = `m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47`;
@@ -184,7 +187,7 @@ const Map = ({ cities }) => {
 
   const setPlaneShadow = planeShadowContainer => {
     const planeShadow = planeShadowContainer.createChild(am4core.Sprite);
-    planeShadow.scale = 0.15;
+    planeShadow.scale = .1;
     planeShadow.horizontalCenter = `middle`;
     planeShadow.verticalCenter = `middle`;
     planeShadow.path = `m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47`;
@@ -213,25 +216,26 @@ const Map = ({ cities }) => {
     line.setClassName();
   };
 
-  const flyPlane = (planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, currentLine) => {
+  const flyPlane = (currentLine, planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, plane, planeShadow) => {
     const { from, to } = mapConfiguration.flight;
 
     planeContainer.mapLine = lineSeries.mapLines.getIndex(currentLine);
-    planeContainer.parent = lineSeries;
+    planeContainer.parent = planeContainer.mapLine;
     planeShadowContainer.mapLine = shadowLineSeries.mapLines.getIndex(currentLine);
-    planeShadowContainer.parent = shadowLineSeries;
+    planeShadowContainer.parent = planeShadowContainer.mapLine;
+    plane.rotation = planeShadow.rotation;
 
     planeContainer.animate({
       property: `position`,
       from: from,
       to: to,
-    }, 5000, am4core.ease.sinInOut).delay(1000);
+    }, 4000, am4core.ease.sinInOut).delay(1000);
 
     planeShadowContainer.animate({
       property: `position`,
       from: from,
       to: to,
-    }, 5000, am4core.ease.sinInOut).delay(1000);
+    }, 4000, am4core.ease.sinInOut).delay(1000);
   };
 
   const buildMap = mapChart => {
@@ -249,7 +253,8 @@ const Map = ({ cities }) => {
     const shadowLineSeries = setShadowLineSeries(mapChart);
     const mapCities = setCities(mapChart);
 
-    setCity(mapCities);
+    const mapCity = setCity(mapCities);
+    setCitiesShadowFilter(mapCity);
     setInitialCities(mapCities);
 
     const initialCity = mapConfiguration.mapCities.find(initialCity => initialCity.name === mapConfiguration.initialCity.name);
@@ -257,14 +262,15 @@ const Map = ({ cities }) => {
 
     addLine(initialCity, initialCity);
 
-    const planeContainer = setPlaneContainer(lineSeries, mapChart);
-    const planeShadowContainer = setPlaneShadowContainer(shadowLineSeries, mapChart);
+    const planeContainer = setPlaneContainer(lineSeries);
+    const planeShadowContainer = setPlaneShadowContainer(shadowLineSeries);
 
-    setPlane(planeContainer);
-    setPlaneShadow(planeShadowContainer);
+    const plane = setPlane(planeContainer);
+    const planeShadow = setPlaneShadow(planeShadowContainer);
     loader.hide();
 
     return {
+      currentLine,
       polygonSeries,
       polygonTemplate,
       lineSeries,
@@ -274,13 +280,15 @@ const Map = ({ cities }) => {
       eraseLine,
       planeContainer,
       planeShadowContainer,
-      currentLine,
+      plane,
+      planeShadow,
     };
   };
 
   useEffect(() => {
     const mapChart = am4core.create(mapReference.current, am4maps.MapChart);
     let {
+      currentLine,
       polygonSeries,
       polygonTemplate,
       lineSeries,
@@ -290,7 +298,8 @@ const Map = ({ cities }) => {
       eraseLine,
       planeContainer,
       planeShadowContainer,
-      currentLine,
+      plane,
+      planeShadow,
     } = buildMap(mapChart);
 
     polygonTemplate.events.on(`over`, element => {
@@ -309,22 +318,27 @@ const Map = ({ cities }) => {
       city.events.on(`hit`, element => {
         destination = element.target;
         origin = previousDestinationRef.current ? previousDestinationRef.current : initialCity;
-        if (currentLine > 1) {
-          console.log(`in`);
-          eraseLine(previousLineRef.current);
+
+        if (destination !== origin) {
+          if (currentLine > 1) eraseLine(previousLineRef.current);
+
+          const line = addLine(origin, destination);
+          flyPlane(currentLine, planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, plane, planeShadow);
+
+          previousDestinationRef.current = element.target;
+          previousLineRef.current = line;
+          currentLine++;
         }
-
-        const line = addLine(origin, destination);
-        flyPlane(planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, currentLine);
-
-        previousDestinationRef.current = element.target;
-        previousLineRef.current = line;
-        currentLine++;
       });
     });
 
     polygonTemplate.events.on(`hit`, element => {
       console.log(element.target.dataItem.dataContext);
+    });
+
+    mapChart.events.on(`zoomlevelchanged`, () => {
+      plane.scale = .25 / mapChart.zoomLevel;
+      planeShadow.scale = .15 / mapChart.zoomLevel;
     });
 
     mapChart.events.on(`ready`, () => {
