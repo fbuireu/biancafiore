@@ -6,13 +6,13 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
     `./src/components/templates/Tags/Tags.js`);
 
   const tagsQuery = await graphql(`
-    query getAllTags{
-      articles: allMarkdownRemark {
+    query getAllTags {
+      allTags: allMarkdownRemark(filter: { frontmatter: { key: { eq: "tag" }}}) {
         edges {
           node {
             frontmatter {
-              key
               name
+              slug
               language
               content {
                 tags
@@ -31,14 +31,12 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
   }
 
   let tags = [];
-  const articles = tagsQuery.data.articles.edges;
+  const allTags = tagsQuery.data.allTags.edges;
 
-  articles.map(({ node: article }) => {
-    let { key, content, language, name: author } = article.frontmatter;
+  allTags.map(({ node: tag }) => {
+    let { name, slug } = tag.frontmatter;
 
-    (content && content.tags && content.tags.slug) && content.tags.map(({ slug }) => tags.push(slug));
-    language && tags.push(slugify(language, { lower: true }));
-    key === `author` && tags.push(slugify(author, { lower: true }));
+    slug ? tags.push(slug) : tags.push(slugify(name, { lower: true }));
 
     return new Set(tags);
   });
