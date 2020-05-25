@@ -1,23 +1,29 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
-import React from 'react';
-
-import Map from '../components/molecules/Map/Map';
+import React, { useState } from 'react';
+import CityInformation from '../components/atoms/CityInformation/CityInformation';
 import SEO from '../components/atoms/SEO/SEO';
+import Map from '../components/molecules/Map/Map';
 import Layout from '../components/templates/Layout/Layout';
 
 const AboutMe = ({ data }) => {
-  const { aboutMe } = data;
+  const [selectedCity, setSelectedCity] = useState(undefined),
+    { aboutMe } = data;
   let cities = aboutMe.edges[0].node.frontmatter.cities;
 
-  for (let city of cities) if (typeof city.coordinates === `string`) city.coordinates = JSON.parse(city.coordinates);
+  cities.map(city => {
+    if (typeof city.coordinates === `string`) return city.coordinates = JSON.parse(city.coordinates);
+  });
+
+  const showCityInformation = selectedCity => {
+    let { description: cityInformation } = cities.find(city => city.name === selectedCity);
+    setSelectedCity(cityInformation);
+  };
 
   return <Layout>
     <SEO title="Home" />
-    <h1>Hi About page</h1>
-    <p>This will be an amazing portfolio for the best content writer ever.</p>
-    <p>Now go build something great.</p>
-    <Map cities={cities} />
+    <Map cities={cities} showCityInformation={showCityInformation} />
+    {!selectedCity ? <p dangerouslySetInnerHTML={{ __html: aboutMe.edges[0].node.html }} /> : <CityInformation cityInformation={selectedCity} />}
   </Layout>;
 };
 
