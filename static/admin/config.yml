@@ -26,9 +26,9 @@ collections:
     editor:
       preview: false
     fields:
-      - {name: key, label: Key, required: true, widget: hidden, default: tag}
-      - {name: name, label: Name, required: true, widget: string}
-      - {name: isoCode, label: ISO code, required: true, widget: string, pattern: ['^[A-Z]{2}$', 'This field must have only 2 characters'] }
+      - { name: key, label: Key, required: true, widget: hidden, default: tag }
+      - { name: name, label: Name, required: true, widget: string }
+      - { name: isoCode, label: ISO code, required: true, widget: string, pattern: ['^[A-Z]{2}$', 'This field must have only 2 capitalized characters'] }
   - name: menu
     label: Menu
     description: A list of all menu items
@@ -39,14 +39,14 @@ collections:
     editor:
       preview: false
     fields:
-      - {name: key, label: Key, required: true, widget: hidden, default: menuItem }
-      - {name: name, label: Name, required: true, widget: string }
+      - { name: key, label: Key, required: true, widget: hidden, default: menuItem }
+      - { name: name, label: Name, required: true, widget: string }
       - { name: slug, label: Slug, required: true, widget: string }
       - { name: position, label: Position, required: true, widget: number, valueType: int,  min: 0 }
   - name: tags
     label: Tags
     label_singular: Tag
-    identifier_field: tag
+    identifier_field: name
     slug: '{{slug}}'
     folder: content/tags
     description: A list of all created tags. They will appear on article creation page
@@ -55,7 +55,24 @@ collections:
       preview: false
     fields:
       - { name: key, label: Key, required: true, widget: hidden, default: tag }
-      - { name: tag, label: Tag, required: true, widget: string }
+      - { name: name, label: Name, required: true, widget: string }
+  - name: cities
+    label: Cities
+    label_singular: City
+    identifier_field: name
+    slug: '{{slug}}'
+    folder: content/cities
+    description: A list of all created cities. They will appear on about me page
+    create: true
+    editor:
+      preview: true
+    fields:
+      - { name: key, label: Key, required: true, widget: hidden, default: city }
+      - { name: name, label: Name, required: true, widget: string }
+      - { name: isInitialCity, label: Initial city, required: false, widget: boolean }
+      - { name: countryIsoCode, label: Country ISO code, required: true, widget: string, pattern: ['^[A-Z]{2}$', 'This field must have only 2 capitalized characters'] }
+      - { name: coordinates, label: Coordinates, required: true, widget: map }
+      - { name: body, label: Body, required: true, widget: markdown }
   - name: authors
     label: Authors
     label_singular: Author
@@ -67,7 +84,7 @@ collections:
     editor:
       preview: false
     fields:
-      - { name: key, label: Key, required: true, widget: hidden, default: author }
+      - { name: key, label: Key, required: true, widget: hidden, default: tag }
       - { name: name, label: Name, required: true, widget: string }
       - { name: image, label: Image, required: true, widget: image, allow_multiple: false }
       - { name: description, label: Description, required: false, widget: string }
@@ -85,7 +102,7 @@ collections:
       - { name: key, label: Key, required: true, widget: hidden, default: blog }
       - { name: language, label: Language, required: true, widget: relation, collection: languages, searchFields: [name, isoCode], valueField: name, displayFields: name }
       - { name: author, label: Author, required: true, widget: relation, collection: authors, searchFields: name, valueField: name, displayField: name, default: Bianca Fiore }
-      - {name: seo, label: SEO, widget: object,
+      - { name: seo, label: SEO, widget: object,
          fields: [
          { name: metaDescription, label: Meta description, required: true, widget: text },
          { name: slug, label: Slug, required: true, widget: string }]}
@@ -127,11 +144,5 @@ collections:
         show_preview_links: true
         fields:
           - { name: key, label: Key, required: true, widget: hidden, default: about-me }
-          - { name: cities, label: Cities, required: false, widget: list,
-              fields: [
-              { name: name, label: Name, required: true, widget: string },
-              { name: isInitialCity, label: Initial city, required: false, widget: boolean },
-              { name: countryIsoCode, label: Country ISO code, required: true, widget: string, pattern: ['^[A-Z]{2}$', 'This field must have only 2 characters'] },
-              { name: coordinates, label: Coordinates, required: true, widget: map },
-              { name: description, label: Description, required: true, widget: markdown }]}
+          - { name: cities, label: Cities, required: true, widget: relation, collection: cities, searchFields: name, valueField: name, displayFields: name, multiple: true }
           - { name: body, label: Body, required: true, widget: markdown }
