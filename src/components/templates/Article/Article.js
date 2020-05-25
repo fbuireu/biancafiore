@@ -2,12 +2,11 @@ import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useScrollPosition } from '../../../hooks/useScrollPosition';
-import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
 import Author from '../../atoms/Author/Author';
-import Navigation from '../../molecules/Navigation/Navigation';
+import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
+import SEO from '../../atoms/SEO/SEO';
 import ShareButtons from '../../atoms/ShareButtons/ShareButtons';
 import Billboard from '../../molecules/Billboard/Billboard';
-import SEO from '../../atoms/SEO/SEO';
 import Layout from '../Layout/Layout';
 import './Article.scss';
 
