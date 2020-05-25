@@ -133,5 +133,5 @@ collections:
               { name: isInitialCity, label: Initial city, required: false, widget: boolean },
               { name: countryIsoCode, label: Country ISO code, required: true, widget: string, pattern: ['^[A-Z]{2}$', 'This field must have only 2 characters'] },
               { name: coordinates, label: Coordinates, required: true, widget: map },
-              { name: description, label: Description, required: true, widget: string }]}
+              { name: description, label: Description, required: true, widget: markdown }]}
           - { name: body, label: Body, required: true, widget: markdown }
