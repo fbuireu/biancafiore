@@ -7,17 +7,8 @@ import React, { useEffect, useRef } from 'react';
 import './Map.scss';
 
 am4core.useTheme(am4themes_animated);
-// Todo:
-// JSON config (mixed) + global vars,
-// Change plane image
-// Custom ZoomIn/Out Buttons
-// Treure pin al punt on esta l'avio
-// Const in mayus
-// centrar animation en plane
-// dibuixar linies darrera l'avio
-// Ideas: https://css-tricks.com/making-movies-with-amcharts/#article-header-id-6
 
-const Map = ({ cities }) => {
+const Map = ({ cities, showCityInformation }) => {
   const mapReference = useRef(null);
   const previousDestinationRef = useRef();
   const previousLineRef = useRef();
@@ -39,7 +30,6 @@ const Map = ({ cities }) => {
     mapChart.projection = new am4maps.projections.Miller();
     mapChart.zoomControl = new am4maps.ZoomControl();
     mapChart.homeZoomLevel = 0;
-    mapChart.maxZoomLevel = 4;
   };
 
   const setLoader = mapChart => {
@@ -145,6 +135,7 @@ const Map = ({ cities }) => {
       mapCity.latitude = city.coordinates.coordinates[1];
       mapCity.longitude = city.coordinates.coordinates[0];
       mapCity.tooltipText = city.name;
+      mapCity.countryIsoCode = city.countryIsoCode;
       mapCity.name = city.name;
 
       mapConfiguration.mapCities.push(mapCity);
@@ -308,6 +299,7 @@ const Map = ({ cities }) => {
 
         if (element.target.dataItem.dataContext.id === iso) {
           country.isHover = true;
+          country.cursorOverStyle = am4core.MouseCursorStyle.pointer;
           country.tooltipText = `{name}`;
           element.target.isActive = true;
         }
@@ -317,7 +309,9 @@ const Map = ({ cities }) => {
     mapConfiguration.mapCities.forEach(city => {
       city.events.on(`hit`, element => {
         destination = element.target;
-        origin = previousDestinationRef.current ? previousDestinationRef.current : initialCity;
+        origin = previousDestinationRef.current || initialCity;
+
+        showCityInformation(destination.name);
 
         if (destination !== origin) {
           if (currentLine > 1) eraseLine(previousLineRef.current);
@@ -332,8 +326,20 @@ const Map = ({ cities }) => {
       });
     });
 
-    polygonTemplate.events.on(`hit`, element => {
-      console.log(element.target.dataItem.dataContext);
+    polygonTemplate.events.on(`hit`, country => {
+      destination = mapConfiguration.mapCities.find(city => city.countryIsoCode === country.target.dataItem.dataContext.id);
+      origin = previousDestinationRef.current || initialCity;
+
+      if (destination !== origin) {
+        if (currentLine > 1) eraseLine(previousLineRef.current);
+
+        const line = addLine(origin, destination);
+        flyPlane(currentLine, planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, plane, planeShadow);
+
+        previousDestinationRef.current = mapConfiguration.mapCities.find(city => city.countryIsoCode === country.target.dataItem.dataContext.id);
+        previousLineRef.current = line;
+        currentLine++;
+      }
     });
 
     mapChart.events.on(`zoomlevelchanged`, () => {
@@ -347,10 +353,10 @@ const Map = ({ cities }) => {
       mapConfiguration.countriesIsoCode.forEach(isoCode => {
         const country = polygonSeries.getPolygonById(isoCode);
 
-        if (!north || (country.north > north)) north = country.north;
-        if (!south || (country.south < south)) south = country.south;
-        if (!west || (country.west < west)) west = country.west;
-        if (!east || (country.east > east)) east = country.east;
+        north = !north || (country.north > north) ? country.north : north;
+        south = !south || (country.south < south) ? country.south : south;
+        west = !west || (country.north < west) ? country.west : west;
+        east = !east || (country.east > east) ? country.east : east;
 
         country.isActive = true;
       });
@@ -359,7 +365,7 @@ const Map = ({ cities }) => {
     });
 
     return () => mapChart && mapChart.dispose();
-  });
+  }, []);
 
   return <section>
     <div ref={mapReference} style={{ width: `100%`, height: `500px` }} />
@@ -368,6 +374,7 @@ const Map = ({ cities }) => {
 
 Map.propTypes = {
   cities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  showCityInformation: PropTypes.func.isRequired,
 };
 
 Map.defaultProps = {};
