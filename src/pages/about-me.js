@@ -8,21 +8,29 @@ import Layout from '../components/templates/Layout/Layout';
 
 const AboutMe = ({ data }) => {
   const [selectedCity, setSelectedCity] = useState(undefined),
-    { aboutMe } = data;
-  let cities = aboutMe.edges[0].node.frontmatter.cities;
+    { aboutMe, cities } = data;
+  let availableCities = [];
 
-  cities.map(city => {
-    if (typeof city.coordinates === `string`) return city.coordinates = JSON.parse(city.coordinates);
+  cities.edges.forEach(({ node: city }) => {
+    let { name, isInitialCity, coordinates, countryIsoCode } = city.frontmatter;
+
+    availableCities.push({
+      name: name,
+      isInitialCity: isInitialCity,
+      coordinates: typeof coordinates === `string` && JSON.parse(coordinates),
+      countryIsoCode: countryIsoCode,
+      description: city.html,
+    });
   });
 
   const showCityInformation = selectedCity => {
-    let { description: cityInformation } = cities.find(city => city.name === selectedCity);
+    let { description: cityInformation } = availableCities.find(city => city.name === selectedCity);
     setSelectedCity(cityInformation);
   };
 
   return <Layout>
     <SEO title="Home" />
-    <Map cities={cities} showCityInformation={showCityInformation} />
+    <Map cities={availableCities} showCityInformation={showCityInformation} />
     {!selectedCity ? <p dangerouslySetInnerHTML={{ __html: aboutMe.edges[0].node.html }} /> : <CityInformation cityInformation={selectedCity} />}
   </Layout>;
 };
@@ -34,13 +42,20 @@ export const AboutMeData = graphql`
                 node {
                     html
                     frontmatter {
-                        cities {
-                            name
-                            isInitialCity
-                            coordinates
-                            countryIsoCode
-                            description
-                        }
+                        cities
+                    }
+                }
+            }
+        }
+        cities: allMarkdownRemark(filter: { frontmatter: { key: { eq: "city" }}}) {
+            edges {
+                node {
+                    html
+                    frontmatter {
+                        name
+                        isInitialCity
+                        coordinates
+                        countryIsoCode
                     }
                 }
             }
