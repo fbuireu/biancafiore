@@ -2,7 +2,7 @@
 key: city
 name: Sydney
 countryIsoCode: AU
-coordinates: '{"type":"Point","coordinates":[2.1794128,41.3850519]}'
+coordinates: '{"type":"Point","coordinates":[151.2226868,-33.8612931]}'
 ---
 ## Australia 2016-2018
 
