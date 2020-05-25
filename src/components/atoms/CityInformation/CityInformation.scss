@@ -1,0 +1,24 @@
+@import '../../../styles/global/animations';
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.city-information {
+  background: color(others, white);
+  border-radius: $global-border-radius;
+  box-shadow: .25rem .25rem .25rem color(neutral, neutral-2);
+  left: 20%;
+  opacity: 0;
+  position: absolute;
+  top: 15%;
+  transition: opacity .5s ease;
+  z-index: 10;
+
+  &.--is-visible {
+    animation: bounce-in 2s ease forwards 1s;
+    transform: translateY(0);
+  }
+
+  &.--is-hidden {
+    animation: fade-out 1s ease forwards;
+  }
+}
