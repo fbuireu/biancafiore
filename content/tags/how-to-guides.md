@@ -1,4 +1,5 @@
 ---
 key: tag
-tag: How to guides
+name: How to guides
+slug: how-to-guides
 ---
