@@ -1,4 +1,5 @@
 ---
 key: tag
-tag: Writing tips
+name: Writing tips
+slug: writing-tips
 ---
