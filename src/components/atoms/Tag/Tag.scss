@@ -1,0 +1,36 @@
+@import '../../../styles/global/functions';
+@import '../../../styles/global/variables';
+@import '../../../styles/global/animations';
+
+.tags__list {
+  display: flex;
+  flex-flow: row wrap;
+  grid-area: Tags;
+}
+
+.tag__item {
+  align-items: center;
+  border: 2px solid color(others, white);
+  border-radius: $global-border-radius;
+  color: color(others, white);
+  display: flex;
+  flex-flow: row wrap;
+  margin-right: 1rem;
+  padding: .25rem;
+  width: fit-content;
+
+  a {
+    align-content: center;
+    display: flex;
+  }
+
+  &__label {
+    fill: color(others, white);
+    margin-right: .25rem;
+    width: 1rem;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
