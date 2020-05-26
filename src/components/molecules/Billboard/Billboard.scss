@@ -5,14 +5,14 @@
   display: flex;
   flex-flow: row wrap;
   justify-items: center;
-  max-height: 40vh;
-  min-height: 40vh;
+  max-height: 50vh;
+  min-height: 50vh;
 
   .article-information {
     align-content: center;
     display: grid;
-    gap: 1rem 0;
-    grid: 'Title Title Title Title' auto 'Date-Author Date-Author . .' auto 'Summary Summary Summary Summary' auto 'ReadingTime . . .' auto / 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    grid: 'Title Title Title Title' auto 'Date-Author Date-Author . .' auto 'Summary Summary Summary Summary' auto 'ReadingTime Tags . .' auto / auto 1fr 1fr 1fr;
     justify-items: start;
     padding: 1rem 0 2rem;
   }
