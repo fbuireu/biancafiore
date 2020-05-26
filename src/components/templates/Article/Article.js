@@ -32,11 +32,11 @@ export const Article = ({ data }) => {
 
   return <Layout>
     <SEO title={article.frontmatter.content.title} />
-    <Billboard {...article} author={author} />
+    <Billboard {...article} author={author} tags={tags} />
     <section className={`wrapper article__wrapper`}>
       <ShareButtons shareParameters={shareParameters} tags={tags} />
       <article ref={articleReference} dangerouslySetInnerHTML={{ __html: article.html }} />
-      <Author author={author} tags={tags} />
+      <Author author={author} />
     </section>
     <ReadingProgress scroll={scroll} articleProperties={articleProperties} />
   </Layout>;
