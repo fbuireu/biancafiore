@@ -3,23 +3,6 @@
 .author {
   &__wrapper {
     justify-self: center;
-
-    .tags__list {
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: space-between;
-      margin-top: 1rem;
-    }
-
-    .tag__item a {
-      color: color(primary);
-      font-weight: bold;
-      margin-right: 1rem;
-    }
-
-    .tag__item:last-child a {
-      margin-right: 0;
-    }
   }
 
   &__image {
