@@ -6,7 +6,7 @@ import React from 'react';
 import slugify from 'slugify';
 import './Author.scss';
 
-export const Author = ({ author, tags }) => <section className={`author__wrapper`}>
+export const Author = ({ author }) => <section className={`author__wrapper`}>
   <div className={`author`}>
     <IntlContextConsumer>
       {({ language: currentLanguage }) =>
@@ -19,14 +19,10 @@ export const Author = ({ author, tags }) => <section className={`author__wrapper
     </IntlContextConsumer>
     {author.frontmatter.description && <p className={`author__description`}>{author.frontmatter.description}</p>}
   </div>
-  <ul className={`tags__list`}>
-    {tags.map((tag, index) => <li className={`tag__item`} key={index}><Link to={`/tag/${slugify(tag, { lower: true })}`}>#{tag}</Link></li>)}
-  </ul>
 </section>;
 
 Author.propTypes = {
   author: PropTypes.objectOf(PropTypes.object),
-  tags: PropTypes.arrayOf(PropTypes.string),
 };
 
 Author.defaultProps = {
