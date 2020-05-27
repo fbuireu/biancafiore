@@ -14,41 +14,48 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share';
+import { useWindowSize } from '../../../hooks/useWindowSize';
 import './ShareButtons.scss';
 
-const ShareButtons = ({ shareParameters, tags }) => <section className="share-buttons__wrapper">
-  <div>
-    <TwitterShareButton className={`share-button twitter`}
+const ShareButtons = ({ shareParameters, tags, scroll }) => {
+  let currentScroll = Math.abs(scroll),
+    { height: windowHeight } = useWindowSize(),
+    areShareButtonsVisible = currentScroll >= windowHeight * 1.2;
+
+  return <section className={`share-buttons__wrapper ${areShareButtonsVisible ? `--is-visible` : ``}`}>
+    <div className={`share-buttons__inner`}>
+      <TwitterShareButton className={`share-button twitter`}
+                          url={shareParameters.parameters.url}
+                          title={shareParameters.parameters.title}
+                          via={shareParameters.author.split(`@`).join(``)}
+                          hashtags={tags.map(tag => tag.split(` `).join(``))}>
+        <TwitterIcon round={true} />
+      </TwitterShareButton>
+      <FacebookShareButton className={`share-button facebook`} url={shareParameters.parameters.url}>
+        <FacebookIcon round={true} />
+      </FacebookShareButton>
+      <LinkedinShareButton className={`share-button linkedin`}
+                           url={shareParameters.parameters.domain}
+                           summary={shareParameters.parameters.description}
+                           source={shareParameters.parameters.url}
+                           title={shareParameters.parameters.title}>
+        <LinkedinIcon round={true} />
+      </LinkedinShareButton>
+      <WhatsappShareButton className={`share-button whatsapp`} url={shareParameters.parameters.url} title={shareParameters.parameters.title}>
+        <WhatsappIcon round={true} />
+      </WhatsappShareButton>
+      <PocketShareButton className={`share-button pocket`} url={shareParameters.parameters.url} title={shareParameters.parameters.title}>
+        <PocketIcon round={true} />
+      </PocketShareButton>
+      <EmailShareButton className={`share-button email`}
                         url={shareParameters.parameters.url}
-                        title={shareParameters.parameters.title}
-                        via={shareParameters.author.split(`@`).join(``)}
-                        hashtags={tags.map(tag => tag.split(` `).join(``))}>
-      <TwitterIcon round={true} />
-    </TwitterShareButton>
-    <FacebookShareButton className={`share-button facebook`} url={shareParameters.parameters.url}>
-      <FacebookIcon round={true} />
-    </FacebookShareButton>
-    <LinkedinShareButton className={`share-button linkedin`}
-                         url={shareParameters.parameters.domain}
-                         summary={shareParameters.parameters.description}
-                         source={shareParameters.parameters.url}
-                         title={shareParameters.parameters.title}>
-      <LinkedinIcon round={true} />
-    </LinkedinShareButton>
-    <WhatsappShareButton className={`share-button whatsapp`} url={shareParameters.parameters.url} title={shareParameters.parameters.title}>
-      <WhatsappIcon round={true} />
-    </WhatsappShareButton>
-    <PocketShareButton className={`share-button pocket`} url={shareParameters.parameters.url} title={shareParameters.parameters.title}>
-      <PocketIcon round={true} />
-    </PocketShareButton>
-    <EmailShareButton className={`share-button email`}
-                      url={shareParameters.parameters.url}
-                      subject={shareParameters.parameters.title}
-                      body={``}>
-      <EmailIcon round={true} />
-    </EmailShareButton>
-  </div>
-</section>;
+                        subject={shareParameters.parameters.title}
+                        body={``}>
+        <EmailIcon round={true} />
+      </EmailShareButton>
+    </div>
+  </section>;
+};
 
 ShareButtons.propTypes = {
   shareParameters: PropTypes.shape({
@@ -61,6 +68,7 @@ ShareButtons.propTypes = {
     }),
   }).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string),
+  scroll: PropTypes.number.isRequired,
 };
 
 ShareButtons.defaultProps = {
