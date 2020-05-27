@@ -1,7 +1,8 @@
 @import '../../../styles/global/functions';
+@import '../../../styles/global/variables';
 
 .share-buttons__wrapper {
-  div {
+  .share-buttons__inner {
     display: flex;
     flex-flow: column wrap;
     position: sticky;
@@ -12,9 +13,10 @@
     border-radius: 50%;
     height: 2.5rem;
     margin-top: .25rem;
+    opacity: 0;
     outline: none;
     text-align: left;
-    transition: all .3s ease-out;
+    transform: translateX(-2rem);
     width: 2.5rem;
 
     &:first-child {
@@ -23,6 +25,36 @@
 
     &:hover {
       box-shadow: .25rem .25rem .25rem color(neutral, neutral-2);
+    }
+  }
+
+  @each $social-network, $color in map-get($colors, 'social-networks') {
+    $index: index(map-get($colors, 'social-networks'), $social-network $color);
+    $length: length(map-get($colors, 'social-networks'));
+
+    .share-buttons__inner .share-button:nth-child(#{$index}) {
+      transition: transform .15s ease #{-($index - $length) * .1}s, opacity .1s ease-out #{-($index - $length) * .1}s;
+    }
+
+    .share-buttons__inner .#{$social-network} svg:hover {
+      circle {
+        fill: $color;
+      }
+    }
+  }
+
+  &.--is-visible {
+    .share-button {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    @each $social-network, $name in map-get($colors, 'social-networks') {
+      $index: index(map-get($colors, 'social-networks'), $social-network $name);
+
+      .share-buttons__inner .share-button:nth-child(#{$index}) {
+        transition: transform .15s ease #{$index * .1}s, opacity .1s ease-out #{$index * .1}s;
+      }
     }
   }
 
@@ -42,7 +74,6 @@
       transform: rotate(-15deg) scale(1.1);
     }
   }
-
 
   @each $social-network-item, $color in map-get($colors, 'social-networks') {
     .#{$social-network-item} svg:hover {
