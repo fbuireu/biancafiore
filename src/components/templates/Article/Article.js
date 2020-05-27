@@ -34,7 +34,7 @@ export const Article = ({ data }) => {
     <SEO title={article.frontmatter.content.title} />
     <Billboard {...article} author={author} tags={tags} />
     <section className={`wrapper article__wrapper`}>
-      <ShareButtons shareParameters={shareParameters} tags={tags} />
+      <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll} />
       <article ref={articleReference} dangerouslySetInnerHTML={{ __html: article.html }} />
       <Author author={author} />
     </section>
