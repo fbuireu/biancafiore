@@ -7,14 +7,14 @@ import Map from '../components/molecules/Map/Map';
 import Layout from '../components/templates/Layout/Layout';
 
 const AboutMe = ({ data }) => {
-  const [selectedCity, setSelectedCity] = useState(undefined),
-    { aboutMe, cities } = data;
-  let availableCities = [];
+  const [cityInformation, updateCityInformation] = useState(undefined),
+    { aboutMe, citiesInformation } = data;
+  let cities = [];
 
-  cities.edges.forEach(({ node: city }) => {
+  citiesInformation.edges.forEach(({ node: city }) => {
     let { name, isInitialCity, coordinates, countryIsoCode } = city.frontmatter;
 
-    availableCities.push({
+    cities.push({
       name: name,
       isInitialCity: isInitialCity,
       coordinates: typeof coordinates === `string` && JSON.parse(coordinates),
@@ -24,14 +24,14 @@ const AboutMe = ({ data }) => {
   });
 
   const showCityInformation = selectedCity => {
-    let { description: cityInformation } = availableCities.find(city => city.name === selectedCity);
-    setSelectedCity(cityInformation);
+    let { description } = cities.find(city => city.name === selectedCity);
+    updateCityInformation(description);
   };
 
   return <Layout>
     <SEO title="Home" />
-    <Map cities={availableCities} showCityInformation={showCityInformation} />
-    {!selectedCity ? <p dangerouslySetInnerHTML={{ __html: aboutMe.edges[0].node.html }} /> : <CityInformation cityInformation={selectedCity} />}
+    <Map cities={cities} showCityInformation={showCityInformation} />
+    {!cityInformation ? <p dangerouslySetInnerHTML={{ __html: aboutMe.edges[0].node.html }} /> : <CityInformation cityInformation={cityInformation} />}
   </Layout>;
 };
 
@@ -47,7 +47,7 @@ export const AboutMeData = graphql`
                 }
             }
         }
-        cities: allMarkdownRemark(filter: { frontmatter: { key: { eq: "city" }}}) {
+        citiesInformation: allMarkdownRemark(filter: { frontmatter: { key: { eq: "city" }}}) {
             edges {
                 node {
                     html
