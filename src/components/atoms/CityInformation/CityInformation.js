@@ -7,7 +7,7 @@ const CityInformation = ({ cityInformation }) => {
 
   useEffect(() => setIsVisible(true), [cityInformation]);
 
-  return <div className={`city-information ${isVisible ? `--is-visible` : `--is-hidden`}`} dangerouslySetInnerHTML={{ __html: cityInformation }} />;
+  return <article className={`city-information ${isVisible ? `--is-visible` : `--is-hidden`}`} dangerouslySetInnerHTML={{ __html: cityInformation }} />;
 };
 
 CityInformation.propTypes = {
