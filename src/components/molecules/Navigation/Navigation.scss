@@ -17,7 +17,6 @@ nav {
     padding: 0 .5rem;
     position: relative;
     transition: all .3s ease;
-    will-change: font-weight;
 
     &.--is-active {
       font-weight: bold;
@@ -44,7 +43,6 @@ nav {
       transform-origin: right;
       transition: transform .3s ease-in-out;
       width: 100%;
-      will-change: transform;
     }
 
     &:hover::after {

@@ -22,7 +22,6 @@
     &__handles {
       animation: clock-spin 1.5s linear infinite paused;
       transform-origin: center center;
-      will-change: transform;
     }
   }
 

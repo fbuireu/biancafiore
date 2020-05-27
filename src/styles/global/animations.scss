@@ -24,6 +24,7 @@
   30% {
     opacity: 1;
     transform: translateY(-2rem);
+    visibility: visible;
   }
 
   50% {
@@ -41,5 +42,11 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
   }
 }

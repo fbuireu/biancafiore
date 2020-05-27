@@ -6,11 +6,9 @@
   stroke-dashoffset: 1000;
   stroke-linecap: round;
   stroke-linejoin: round;
-  will-change: stroke-dashoffset;
 }
 
 .amcharts---is-erased-group path {
   opacity: 0;
   transition: opacity 1.5s ease;
-  will-change: opacity;
 }
