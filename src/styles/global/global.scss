@@ -11,3 +11,34 @@
   max-width: $global-max-width;
   text-align: center;
 }
+
+article {
+  line-height: map-get($line-heights, 1);
+
+  a {
+    @include font-properties(primary, bold);
+    color: color(primary, primary-dark-1);
+    padding: 0 0 .25rem;
+    position: relative;
+
+    &::before {
+      background-color: color(primary);
+      bottom: .25rem;
+      content: '';
+      height: .25rem;
+      left: 0;
+      opacity: .5;
+      position: absolute;
+      transform: scale3d(0, 1, 1);
+      transform-origin: 0 50%;
+      transition: transform .5s;
+      width: 100%;
+      will-change: transform;
+      z-index: -1;
+    }
+
+    &:hover::before {
+      transform: scale3d(1, 1, 1);
+    }
+  }
+}
