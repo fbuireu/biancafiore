@@ -3,11 +3,15 @@ import React, { useEffect, useState } from 'react';
 import './CityInformation.scss';
 
 const CityInformation = ({ cityInformation }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false),
+    handleModal = () => setIsVisible(!isVisible);
 
   useEffect(() => setIsVisible(true), [cityInformation]);
 
-  return <article className={`city-information ${isVisible ? `--is-visible` : `--is-hidden`}`} dangerouslySetInnerHTML={{ __html: cityInformation }} />;
+  return <div className={`city-information__wrapper`}>
+    <article className={`city-information ${isVisible ? `--is-visible` : `--is-hidden`}`} dangerouslySetInnerHTML={{ __html: cityInformation }} />
+    <span onClick={handleModal}>&times;</span>
+  </div>;
 };
 
 CityInformation.propTypes = {
