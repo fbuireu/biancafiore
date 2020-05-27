@@ -14,7 +14,6 @@
   transition: all .3s;
   visibility: hidden;
   width: 4rem;
-  will-change: box-shadow, opacity, visibility, transform;
 
   &.--is-visible {
     opacity: 1;

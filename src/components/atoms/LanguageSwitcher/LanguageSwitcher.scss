@@ -8,7 +8,6 @@
       display: flex;
       letter-spacing: 2px;
       transition: transform .3s ease-in;
-      will-change: transform;
     }
 
     .arrow-down {
@@ -16,7 +15,6 @@
       max-width: .75rem;
       transition: transform .3s ease-in;
       width: 100%;
-      will-change: transform;
     }
 
     &.--is-open .arrow-down {
