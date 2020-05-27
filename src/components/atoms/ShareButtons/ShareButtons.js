@@ -20,7 +20,7 @@ import './ShareButtons.scss';
 const ShareButtons = ({ shareParameters, tags, scroll }) => {
   let currentScroll = Math.abs(scroll),
     { height: windowHeight } = useWindowSize(),
-    areShareButtonsVisible = currentScroll >= windowHeight * 1.2;
+    areShareButtonsVisible = currentScroll >= windowHeight * (1 + (1 / 5));
 
   return <section className={`share-buttons__wrapper ${areShareButtonsVisible ? `--is-visible` : ``}`}>
     <div className={`share-buttons__inner`}>
