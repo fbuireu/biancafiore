@@ -1,5 +1,5 @@
 scss_files: "**/*.scss"
-exclude: 'src/styles/base/**'
+exclude: ['src/styles/base/**','src/styles/vendor/**',]
 plugin_directories: ['.scss-linters']
 plugin_gems: []
 severity: warning
