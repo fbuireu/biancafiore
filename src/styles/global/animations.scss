@@ -22,25 +22,24 @@
   }
 
   30% {
-    opacity: 1;
     transform: translateY(-2rem);
-    visibility: visible;
   }
 
   50% {
+    opacity: 1;
     transform: translateY(0);
+    visibility: visible;
   }
 
   57% {
     transform: translateY(-.5rem);
   }
 
-  64% {
+  65% {
     transform: translateY(0);
   }
 
   100% {
-    opacity: 1;
     transform: translateY(0);
   }
 }
@@ -48,5 +47,6 @@
 @keyframes fade-out {
   to {
     opacity: 0;
+    visibility: hidden;
   }
 }
