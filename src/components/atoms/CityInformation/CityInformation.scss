@@ -2,25 +2,36 @@
 @import '../../../styles/global/variables';
 @import '../../../styles/global/functions';
 
-.city-information__wrapper {
-  position: relative;
-}
-
-.city-information {
+.city-information__modal__wrapper {
   background: color(others, white);
   border-radius: $global-border-radius;
   box-shadow: .25rem .25rem .25rem color(neutral, neutral-2);
-  left: 20%;
-  max-width: 400px;
+  left: 2rem;
+  max-width: 700px;
+  padding: 2rem;
   position: absolute;
-  top: 15%;
+  top: 10%;
+  transform: translateY(-50%);
   z-index: 10;
 
   &.--is-visible {
-    animation: bounce-in 2s ease forwards 1s;
+    animation: bounce-in 2s ease forwards;
   }
 
   &.--is-hidden {
     animation: fade-out 1s ease forwards;
+    transform: translateY(0);
   }
+}
+
+.city-information__modal__inner {
+  position: relative;
+}
+
+.city-information__modal__close {
+  @include typography-settings(4);
+  cursor: pointer;
+  position: absolute;
+  right: -1rem;
+  top: -2rem;
 }
