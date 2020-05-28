@@ -2,6 +2,9 @@ backend:
   name: git-gateway
   repo: fbuireu/biancafiore
   branch: master
+  accept_roles:
+    - admin
+    - editor
   commit_messages:
     create: '{{collection}} "{{slug}}" created'
     update: '{{collection}} "{{slug}}" updated'
