@@ -5,7 +5,6 @@
   display: flex;
   flex-flow: row wrap;
   justify-items: center;
-  max-height: 50vh;
   min-height: 50vh;
 
   .article-information {
@@ -14,6 +13,6 @@
     gap: 1rem;
     grid: 'Title Title Title Title' auto 'Date-Author Date-Author . .' auto 'Summary Summary Summary Summary' auto 'ReadingTime Tags . .' auto / auto 1fr 1fr 1fr;
     justify-items: start;
-    padding: 1rem 0 2rem;
+    padding: 2rem 0;
   }
 }
