@@ -53,7 +53,6 @@ export const articleData = graphql`
                 slug
             }
             frontmatter {
-                key
                 language
                 author
                 seo {
@@ -106,6 +105,7 @@ export const articleData = graphql`
                         slug
                     }
                     frontmatter {
+                        language
                         content {
                             title
                             summary
