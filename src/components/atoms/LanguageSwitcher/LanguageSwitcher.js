@@ -18,11 +18,10 @@ export const LanguageSwitcher = () => {
     </span>
     <ul className={`language-switcher__list`}>
       {languages.map((language, index) => isMenuSelectorOpen &&
-        <IntlContextConsumer>
+        <IntlContextConsumer key={index}>
           {({ language: currentLanguage }) =>
             <li className={`language-switcher__item ${currentLanguage === language.isoCode ? `--is-current-language` : ``}`}
-                onClick={() => handleLanguage(language.isoCode)}
-                key={index}>
+                onClick={() => handleLanguage(language.isoCode)}>
               <FormattedMessage id={`global.${language.isoCode}`} />
             </li>
           }
