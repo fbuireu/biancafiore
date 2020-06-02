@@ -1,5 +1,5 @@
 ---
-key: blog
+key: article
 language: English
 author: Bianca Fiore
 seo:
