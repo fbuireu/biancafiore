@@ -1,3 +1,8 @@
 .related-articles__wrapper {
   grid-area: RelatedArticles;
 }
+
+.related-articles__list {
+  display: flex;
+  flex-flow: row wrap;
+}
