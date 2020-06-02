@@ -7,7 +7,8 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
 
   const tagsQuery = await graphql(`
     query getAllTags {
-      allTags: allMarkdownRemark(filter: { frontmatter: { key: { eq: "tag" }}}) {
+      allTags: allMarkdownRemark (
+        filter: { frontmatter: { key: { eq: "tag" }}}) {
         edges {
           node {
             frontmatter {
