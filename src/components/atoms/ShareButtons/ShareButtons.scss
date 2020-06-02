@@ -7,7 +7,7 @@
     flex-flow: column wrap;
     position: sticky;
     top: 50%;
-    transform: translateY(-50%);
+    visibility: hidden;
   }
 
   .share-button {
@@ -35,7 +35,7 @@
     $length: length(map-get($colors, 'social-networks'));
 
     .share-buttons__inner .share-button:nth-child(#{$index}) {
-      transition: transform .15s ease #{-($index - $length) * .05}s, opacity .1s ease-out #{-($index - $length) * .05}s, visibility .1s ease-out #{-($index - $length) * .05}s;
+      transition: transform .15s ease #{-($index - $length) * .05}s, opacity .1s ease #{-($index - $length) * .05}s, visibility .1s ease #{-($index - $length) * .05}s;
     }
 
     .share-buttons__inner .#{$social-network} svg:hover {
@@ -56,7 +56,7 @@
       $index: index(map-get($colors, 'social-networks'), $social-network $name);
 
       .share-buttons__inner .share-button:nth-child(#{$index}) {
-        transition: visibility, transform .15s ease #{$index * .05}s, opacity .1s ease-out #{$index * .05}s, visibility .1s ease-out #{$index * .05}s;
+        transition: visibility, transform .15s ease #{$index * .05}s, opacity .1s ease #{$index * .05}s, visibility .1s ease #{$index * .05}s;
       }
     }
   }
