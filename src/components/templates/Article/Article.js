@@ -4,9 +4,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useScrollPosition } from '../../../hooks/useScrollPosition';
 import Author from '../../atoms/Author/Author';
 import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
-import SEO from '../../atoms/SEO/SEO';
+import Seo from '../../atoms/Seo/Seo';
 import ShareButtons from '../../atoms/ShareButtons/ShareButtons';
 import Billboard from '../../molecules/Billboard/Billboard';
+import RelatedArticles from '../../molecules/RelatedArticles/RelatedArticles';
 import Layout from '../Layout/Layout';
 import './Article.scss';
 
@@ -14,7 +15,7 @@ export const Article = ({ data }) => {
   const [scroll, setScroll] = useState(0),
     [articleProperties, setArticleProperties] = useState({}),
     articleReference = useRef(null),
-    { article, site, author } = data,
+    { article, author, relatedArticles, site } = data,
     shareParameters = {
       author: site.siteMetadata.author,
       parameters: {
@@ -31,22 +32,23 @@ export const Article = ({ data }) => {
   useScrollPosition(({ currentPosition }) => setScroll(currentPosition.y));
 
   return <Layout>
-    <SEO title={article.frontmatter.content.title} />
+    <Seo title={article.frontmatter.content.title} />
     <Billboard {...article} author={author} tags={tags} />
     <section className={`wrapper article__wrapper`}>
       <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll} />
       <article ref={articleReference} dangerouslySetInnerHTML={{ __html: article.html }} />
       <Author author={author} />
+      <RelatedArticles relatedArticles={relatedArticles.edges}/>
     </section>
     <ReadingProgress scroll={scroll} articleProperties={articleProperties} />
   </Layout>;
 };
 
 export const articleData = graphql`
-    query getArticleBySlug($slug: String!, $author: String) {
-        article: markdownRemark(fields: { slug: { eq: $slug }}) {
+    query getArticleInformation ($slug: String!, $author: String, $tags: [String!]!) {
+        article: markdownRemark (fields: { slug: { eq: $slug }}) {
             html
-            excerpt(pruneLength: 350)
+            excerpt (pruneLength: 350)
             fields {
                 slug
             }
@@ -66,7 +68,7 @@ export const articleData = graphql`
                     isFeaturedPost
                     featuredImage {
                         childImageSharp {
-                            fluid(maxWidth: 800) {
+                            fluid (maxWidth: 800) {
                                 ...GatsbyImageSharpFluid
                             }
                         }
@@ -75,7 +77,7 @@ export const articleData = graphql`
                 }
             }
         }
-        author: markdownRemark(frontmatter: { name: { eq: $author }}) {
+        author: markdownRemark (frontmatter: { name: { eq: $author }}) {
             frontmatter {
                 slug
                 name
@@ -87,6 +89,40 @@ export const articleData = graphql`
                     }
                 }
                 description
+            }
+        }
+        relatedArticles: allMarkdownRemark (
+            filter: {
+                frontmatter: { content: { tags: { in: $tags }}},
+                fields: { slug: { ne: $slug }}},
+            sort: {
+                fields: frontmatter___content___publishDate,
+                order: DESC },
+            limit: 3) {
+            edges {
+                node {
+                    excerpt (pruneLength: 350)
+                    fields {
+                        slug
+                    }
+                    frontmatter {
+                        content {
+                            title
+                            summary
+                            publishDate
+                            lastUpdated
+                            readingTime
+                            featuredImage {
+                                childImageSharp {
+                                    fluid(maxWidth: 800) {
+                                        ...GatsbyImageSharpFluid
+                                    }
+                                }
+                            }
+                            tags
+                        }
+                    }
+                }
             }
         }
         site {
