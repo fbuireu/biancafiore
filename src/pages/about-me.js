@@ -2,7 +2,7 @@ import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import CityInformation from '../components/atoms/CityInformation/CityInformation';
-import SEO from '../components/atoms/SEO/SEO';
+import Seo from '../components/atoms/Seo/Seo';
 import Map from '../components/molecules/Map/Map';
 import Layout from '../components/templates/Layout/Layout';
 
@@ -29,7 +29,7 @@ const AboutMe = ({ data }) => {
   };
 
   return <Layout>
-    <SEO title="Home" />
+    <Seo title="Home" />
     <Map cities={cities} showCityInformation={showCityInformation} />
     {!cityInformation ? <p dangerouslySetInnerHTML={{ __html: aboutMe.edges[0].node.html }} /> : <CityInformation cityInformation={cityInformation} />}
   </Layout>;
@@ -37,7 +37,8 @@ const AboutMe = ({ data }) => {
 
 export const AboutMeData = graphql`
     query getAboutMeData {
-        aboutMe: allMarkdownRemark(filter: { frontmatter: { key: { eq: "about-me" }}}) {
+        aboutMe: allMarkdownRemark (
+            filter: { frontmatter: { key: { eq: "about-me" }}}) {
             edges {
                 node {
                     html
