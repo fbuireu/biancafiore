@@ -17,7 +17,6 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
               slug
             }
             frontmatter {
-              key
               author
               content {
                 tags

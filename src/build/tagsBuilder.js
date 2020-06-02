@@ -14,7 +14,6 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
             frontmatter {
               name
               slug
-              language
               content {
                 tags
               }
