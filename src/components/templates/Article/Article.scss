@@ -2,8 +2,8 @@
 
 .article__wrapper {
   display: grid;
-  gap: 0 1rem;
-  grid: 'Share Article Author' 1fr / .5fr map-get($grid, 'medium') 1fr;
+  gap: 5rem 1rem;
+  grid: 'Share Article Author' 1fr 'RelatedArticles RelatedArticles RelatedArticles' / .5fr map-get($grid, 'medium') 1fr;
   margin-top: 1rem;
 
   article {
