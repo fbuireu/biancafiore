@@ -38,7 +38,7 @@ export const Article = ({ data }) => {
       <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll} />
       <article ref={articleReference} dangerouslySetInnerHTML={{ __html: article.html }} />
       <Author author={author} />
-      <RelatedArticles relatedArticles={relatedArticles.edges}/>
+      <RelatedArticles relatedArticles={relatedArticles.edges} />
     </section>
     <ReadingProgress scroll={scroll} articleProperties={articleProperties} />
   </Layout>;
