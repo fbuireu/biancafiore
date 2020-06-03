@@ -6,7 +6,7 @@ export const ArticleCard = ({ article }) => {
   let { excerpt, fields, frontmatter } = article,
     summary = frontmatter.content.summary || excerpt;
 
-  return <Link to={`/${frontmatter.language.toLowerCase()}/blog/${fields.slug}`}>
+  return <Link to={`/${frontmatter.language.toLowerCase()}/blog${fields.slug}`}>
     <article>
       <h4>{frontmatter.content.title}</h4>
       <p>{summary}</p>
