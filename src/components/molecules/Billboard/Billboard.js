@@ -1,3 +1,4 @@
+import BackgroundImage from 'gatsby-background-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReadingTime from '../../atoms/ReadingTime/ReadingTime';
@@ -10,15 +11,19 @@ import './Billboard.scss';
 const Billboard = ({ frontmatter, author, tags, excerpt }) => {
   let summary = frontmatter.content.summary || excerpt;
 
-  return <section className={`billboard`}>
-    <div className={`wrapper article-information`}>
-      <Title title={frontmatter.content.title} />
-      <Subtitle author={author.frontmatter.name} lastUpdated={frontmatter.content.lastUpdated} />
-      <Summary summary={summary} />
-      <ReadingTime readingTime={frontmatter.content.readingTime} />
-      <Tag tags={tags} />
+  return <BackgroundImage className={`billboard`}
+                          Tag={`section`}
+                          fluid={[`linear-gradient(to bottom, transparent, black)`, frontmatter.content.featuredImage.childImageSharp.fluid]}>
+    <div className={`wrapper`}>
+      <div className={`article__information`}>
+        <Title title={frontmatter.content.title} />
+        <Subtitle author={author.frontmatter.name} lastUpdated={frontmatter.content.lastUpdated} />
+        <Summary summary={summary} />
+        <ReadingTime readingTime={frontmatter.content.readingTime} />
+        <Tag tags={tags} />
+      </div>
     </div>
-  </section>;
+  </BackgroundImage>;
 };
 
 Billboard.propTypes = {
