@@ -6,6 +6,7 @@ import Subtitle from '../../atoms/Subtitle/Subtitle';
 import Summary from '../../atoms/Summary/Summary';
 import Tag from '../../atoms/Tag/Tag';
 import Title from '../../atoms/Title/Title';
+import './FeaturedImageBillboard.scss';
 
 const FeaturedImageBillboard = ({ frontmatter, author, tags, excerpt }) => {
   let summary = frontmatter.content.summary || excerpt;
