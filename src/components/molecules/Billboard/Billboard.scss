@@ -7,12 +7,22 @@
   justify-items: center;
   min-height: 50vh;
 
-  .article-information {
+  .wrapper {
+    display: flex;
+  }
+
+  .article__featured-image {
+    height: 100%;
+  }
+
+  .article__information {
     align-content: center;
     display: grid;
     gap: 1rem;
     grid: 'Title Title Title Title' auto 'Date-Author Date-Author . .' auto 'Summary Summary Summary Summary' auto 'ReadingTime Tags . .' auto / auto 1fr 1fr 1fr;
     justify-items: start;
     padding: 2rem 0;
+    position: relative;
+    z-index: 10;
   }
 }
