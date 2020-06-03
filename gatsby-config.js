@@ -9,7 +9,6 @@ module.exports = {
     `gatsby-plugin-react-helmet`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
-    `gatsby-plugin-remove-trailing-slashes`,
     `gatsby-plugin-eslint`,
     `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-sass`,
