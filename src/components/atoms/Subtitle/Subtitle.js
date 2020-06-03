@@ -5,11 +5,11 @@ import React from 'react';
 import slugify from 'slugify';
 import './Subtitle.scss';
 
-const Subtitle = ({ lastUpdated, author }) => <p className={`subtitle`}>
+const Subtitle = ({ lastUpdated, author }) => <p className={`article__subtitle`}>
   <time dateTime={lastUpdated}>{lastUpdated}</time>
   &nbsp;|&nbsp;
   <IntlContextConsumer>
-    {({ language: currentLanguage }) => <Link to={`${currentLanguage}/tag/${slugify(author, { lower: true })}`} className={`author`}>{author}</Link>}
+    {({ language: currentLanguage }) => <Link to={`${currentLanguage}/tag/${slugify(author, { lower: true })}`} className={`article__author`}>{author}</Link>}
   </IntlContextConsumer>
 </p>;
 

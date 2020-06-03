@@ -1,13 +1,13 @@
 @import '../../../styles/global/functions';
 
-.subtitle {
+.article__subtitle {
   @include typography-settings(1);
   color: color(others, white);
   grid-area: Date-Author;
   letter-spacing: .25rem;
   margin-top: -1rem;
 
-  .author {
+  .article__author {
     @include font-properties(primary, bold);
     color: color(primary);
   }

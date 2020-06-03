@@ -6,11 +6,15 @@ import slugify from 'slugify';
 import Label from '../../../assets/svg/label.svg';
 import './Tag.scss';
 
-const Tag = ({ tags }) => <ul className={`tags__list`}>
+const Tag = ({ tags }) => <ul className={`article__tags__list`}>
   <IntlContextConsumer>
     {({ language: currentLanguage }) =>
       tags.map((tag, index) =>
-        <li className={`tag__item`} key={index}><Link to={`${currentLanguage}/${slugify(tag, { lower: true })}`}><Label className={`tag__item__label`} />{tag}</Link></li>)
+        <li className={`article__tag__item`} key={index}>
+          <Link to={`${currentLanguage}/${slugify(tag, { lower: true })}`}>
+            <Label className={`article__tag__item__label`} />{tag}
+          </Link>
+        </li>)
     }
   </IntlContextConsumer>
 </ul>;
