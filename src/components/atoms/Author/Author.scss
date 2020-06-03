@@ -1,19 +1,16 @@
 @import '../../../styles/global/functions';
 
-.author {
-  &__wrapper {
-    justify-self: center;
-  }
-
-  &__image {
-    border-radius: 50%;
-    margin: 0 auto 1rem;
-    max-width: 10rem;
-  }
-
-  &__description {
-    @include font-properties(primary, italic);
-    color: color(neutral, neutral-3);
-  }
+.author__wrapper {
+  justify-self: center;
 }
 
+.author__image {
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  max-width: 10rem;
+}
+
+.author__description {
+  @include font-properties(primary, italic);
+  color: color(neutral, neutral-3);
+}
