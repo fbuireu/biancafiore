@@ -6,15 +6,14 @@ import Subtitle from '../../atoms/Subtitle/Subtitle';
 import Summary from '../../atoms/Summary/Summary';
 import Tag from '../../atoms/Tag/Tag';
 import Title from '../../atoms/Title/Title';
-import './Billboard.scss';
 
-const Billboard = ({ frontmatter, author, tags, excerpt }) => {
+const FeaturedImageBillboard = ({ frontmatter, author, tags, excerpt }) => {
   let summary = frontmatter.content.summary || excerpt;
 
   return <BackgroundImage className={`billboard`}
                           Tag={`section`}
                           fluid={[`linear-gradient(to bottom, transparent, black)`, frontmatter.content.featuredImage.childImageSharp.fluid]}>
-    <div className={`wrapper`}>
+    <div className={`wrapper article__information__wrapper`}>
       <div className={`article__information`}>
         <Title title={frontmatter.content.title} />
         <Subtitle author={author.frontmatter.name} lastUpdated={frontmatter.content.lastUpdated} />
@@ -26,13 +25,13 @@ const Billboard = ({ frontmatter, author, tags, excerpt }) => {
   </BackgroundImage>;
 };
 
-Billboard.propTypes = {
+FeaturedImageBillboard.propTypes = {
   frontmatter: PropTypes.object.isRequired,
   author: PropTypes.objectOf(PropTypes.object).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string),
   excerpt: PropTypes.string,
 };
 
-Billboard.defaultProps = {};
+FeaturedImageBillboard.defaultProps = {};
 
-export default Billboard;
+export default FeaturedImageBillboard;
