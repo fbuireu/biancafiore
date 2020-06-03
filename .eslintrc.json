@@ -12,7 +12,8 @@
         "SwitchCase": 1,
         "ignoredNodes": [
           "JSXAttribute",
-          "JSXSpreadAttribute"
+          "JSXSpreadAttribute",
+          "TemplateLiteral"
         ]
       }
     ],
