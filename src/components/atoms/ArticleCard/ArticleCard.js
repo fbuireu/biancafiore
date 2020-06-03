@@ -5,7 +5,7 @@ import React from 'react';
 export const ArticleCard = ({ article }) => {
   let { excerpt, fields, frontmatter } = article,
     summary = frontmatter.content.summary || excerpt;
-  console.log(article);
+
   return <Link to={`/${frontmatter.language.toLowerCase()}/blog/${fields.slug}`}>
     <article>
       <h4>{frontmatter.content.title}</h4>

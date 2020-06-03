@@ -2,13 +2,13 @@
 @import '../../../styles/global/variables';
 @import '../../../styles/global/animations';
 
-.tags__list {
+.article__tags__list {
   display: flex;
   flex-flow: row wrap;
   grid-area: Tags;
 }
 
-.tag__item {
+.article__tag__item {
   align-items: center;
   border: 2px solid color(others, white);
   border-radius: $global-border-radius;

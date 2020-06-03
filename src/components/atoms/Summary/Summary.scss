@@ -1,6 +1,6 @@
 @import '../../../styles/global/functions';
 
-.summary {
+.article__summary {
   @include typography-settings(0);
   color: color(others, white);
   grid-area: Summary;

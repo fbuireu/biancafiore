@@ -1,6 +1,6 @@
 @import '../../../styles/global/functions';
 
-.title {
+.article__title {
   @include font-properties(secondary, bold);
   @include typography-settings(10);
   color: color(others, white);
