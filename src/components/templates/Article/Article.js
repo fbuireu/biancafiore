@@ -6,7 +6,7 @@ import Author from '../../atoms/Author/Author';
 import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
 import Seo from '../../atoms/Seo/Seo';
 import ShareButtons from '../../atoms/ShareButtons/ShareButtons';
-import Billboard from '../../molecules/Billboard/Billboard';
+import Billboard from '../../organisms/Billboard/Billboard';
 import RelatedArticles from '../../molecules/RelatedArticles/RelatedArticles';
 import Layout from '../Layout/Layout';
 import './Article.scss';
