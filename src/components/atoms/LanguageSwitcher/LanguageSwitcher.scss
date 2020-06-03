@@ -1,48 +1,47 @@
 @import '../../../styles/global/functions';
 
-.language-switcher {
-  &__wrapper {
-    cursor: pointer;
+.language-switcher__wrapper {
+  cursor: pointer;
 
-    span {
-      display: flex;
-      letter-spacing: 2px;
-      transition: transform .3s ease-in;
-    }
-
-    .arrow-down {
-      margin-left: .5rem;
-      max-width: .75rem;
-      transition: transform .3s ease-in;
-      width: 100%;
-    }
-
-    &.--is-open .arrow-down {
-      transform: rotate(180deg);
-    }
-
-    &.--is-open .language-switcher__list {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
-
-  &__list {
-    background-color: color(others, white);
-    opacity: 0;
-    position: absolute;
-    visibility: hidden;
-    z-index: 10;
-  }
-
-  &__item {
+  span {
+    display: flex;
     letter-spacing: 2px;
-    text-align: left;
-    width: 100%;
+    transition: transform .3s ease-in;
+  }
 
-    &.--is-current-language {
-      opacity: .5;
-      pointer-events: none;
-    }
+  .arrow-down {
+    margin-left: .5rem;
+    max-width: .75rem;
+    transition: transform .3s ease-in;
+    width: 100%;
+  }
+
+  &.--is-open .arrow-down {
+    transform: rotate(180deg);
+  }
+
+  &.--is-open .language-switcher__list {
+    opacity: 1;
+    visibility: visible;
   }
 }
+
+.language-switcher__list {
+  background-color: color(others, white);
+  opacity: 0;
+  position: absolute;
+  visibility: hidden;
+  z-index: 10;
+}
+
+.language-switcher__item {
+  letter-spacing: 2px;
+  text-align: left;
+  width: 100%;
+
+  &.--is-current-language {
+    opacity: .5;
+    pointer-events: none;
+  }
+}
+
