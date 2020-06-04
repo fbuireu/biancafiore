@@ -10,7 +10,7 @@ export const Author = ({ author }) => <section className={`author__wrapper`}>
   <div className={`author`}>
     <IntlContextConsumer>
       {({ language: currentLanguage }) =>
-        <Link to={`${currentLanguage}/tag/${slugify(author.frontmatter.name, { lower: true })}`}>
+        <Link to={`/${currentLanguage}/tag/${slugify(author.frontmatter.name, { lower: true })}`}>
           <Img className={`author__image`}
                fluid={author.frontmatter.image.childImageSharp.fluid}
                alt={author.frontmatter.name} />
