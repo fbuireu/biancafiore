@@ -1,3 +1,9 @@
+require(`dotenv`).config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
+const algoliaQueries = require(`./src/utils/search/algolia`);
+
 module.exports = {
   siteMetadata: {
     title: `Bianca Fiore`,
@@ -7,6 +13,7 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-catch-links`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-eslint`,
@@ -129,6 +136,16 @@ module.exports = {
         languages: [`en`, `it`, `ca`, `es`],
         defaultLanguage: `en`,
         redirect: true,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-algolia`,
+      options: {
+        appId: process.env.GATSBY_ALGOLIA_APP_ID,
+        apiKey: process.env.GATSBY_ALGOLIA_ADMIN_KEY,
+        indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
+        algoliaQueries,
+        chunkSize: 10000,
       },
     },
     {
