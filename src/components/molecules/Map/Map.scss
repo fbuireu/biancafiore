@@ -1,5 +1,10 @@
 @import '../../../styles/global/animations';
 
+.map__wrapper {
+  height: 500px;
+  width: 100%;
+}
+
 .amcharts---is-created-group path {
   animation: draw-line 10s forwards 1s ease;
   stroke-dasharray: 1000;
