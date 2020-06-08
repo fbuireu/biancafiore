@@ -20,16 +20,15 @@ const articlesQuery = `{
   }
 }`,
   tagsQuery = `{
-        tags: allMarkdownRemark (
-        filter: { frontmatter: { key: { eq: "tag" }}}) {
-        edges {
-          node {
-            frontmatter {
-              name
-              slug
-              content {
-                tags
-              }
+      tags: allMarkdownRemark (
+      filter: { frontmatter: { key: { eq: "tag" }}}) {
+      edges {
+        node {
+          frontmatter {
+            name
+            slug
+            content {
+              tags
             }
           }
         }
