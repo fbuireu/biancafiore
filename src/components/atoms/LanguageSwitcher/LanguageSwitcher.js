@@ -1,7 +1,7 @@
 import { changeLocale, FormattedMessage, IntlContextConsumer } from 'gatsby-plugin-intl';
 import React, { useState } from 'react';
 import ArrowDown from '../../../assets/svg/arrow-down.svg';
-import { useLanguages } from '../../../hooks/useLanguages';
+import { useLanguages } from '../../../utils/hooks/useLanguages';
 import './LanguageSwitcher.scss';
 
 export const LanguageSwitcher = () => {

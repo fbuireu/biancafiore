@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import ArrowUp from '../../../assets/svg/arrow-up.svg';
-import { useWindowSize } from '../../../hooks/useWindowSize';
+import { useWindowSize } from '../../../utils/hooks/useWindowSize';
 import './ReadingProgress.scss';
 
 export const ReadingProgress = ({ scroll, articleProperties }) => {

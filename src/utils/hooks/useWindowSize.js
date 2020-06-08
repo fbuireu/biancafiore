@@ -12,7 +12,7 @@ export const useWindowSize = () => {
 
   const [windowSize, setWindowSize] = useState(getWindowSize);
 
-  useEffect(() => {
+  useEffect(function onChangeWindowSize() {
     if (!isClient) return false;
 
     const handleResize = () => setWindowSize(getWindowSize());

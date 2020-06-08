@@ -14,7 +14,7 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share';
-import { useWindowSize } from '../../../hooks/useWindowSize';
+import { useWindowSize } from '../../../utils/hooks/useWindowSize';
 import './ShareButtons.scss';
 
 const ShareButtons = ({ shareParameters, tags, scroll }) => {
