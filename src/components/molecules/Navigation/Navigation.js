@@ -1,7 +1,7 @@
 import { Link } from 'gatsby';
 import { IntlContextConsumer } from 'gatsby-plugin-intl';
 import React from 'react';
-import { useMenuItems } from '../../../hooks/useMenuItems';
+import { useMenuItems } from '../../../utils/hooks/useMenuItems';
 import { LanguageSwitcher } from '../../atoms/LanguageSwitcher/LanguageSwitcher';
 import './Navigation.scss';
 
