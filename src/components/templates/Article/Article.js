@@ -1,13 +1,13 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
-import { useScrollPosition } from '../../../hooks/useScrollPosition';
+import { useScrollPosition } from '../../../utils/hooks/useScrollPosition';
 import Author from '../../atoms/Author/Author';
 import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
 import Seo from '../../atoms/Seo/Seo';
 import ShareButtons from '../../atoms/ShareButtons/ShareButtons';
-import Billboard from '../../organisms/Billboard/Billboard';
 import RelatedArticles from '../../molecules/RelatedArticles/RelatedArticles';
+import Billboard from '../../organisms/Billboard/Billboard';
 import Layout from '../Layout/Layout';
 import './Article.scss';
 
@@ -27,9 +27,9 @@ export const Article = ({ data }) => {
     },
     tags = article.frontmatter.content.tags;
 
-  useEffect(() => setArticleProperties(articleReference.current), []);
+  useEffect(function setCurrentArticleProperties() { setArticleProperties(articleReference.current);}, []);
 
-  useScrollPosition(({ currentPosition }) => setScroll(currentPosition.y));
+  useScrollPosition(function setScrollPosition({ currentPosition }) { setScroll(currentPosition.y);});
 
   return <Layout>
     <Seo title={article.frontmatter.content.title} />

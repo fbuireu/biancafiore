@@ -229,7 +229,7 @@ const Map = ({ cities, showCityInformation }) => {
     }, 4000, am4core.ease.sinInOut).delay(1000);
   };
 
-  const buildMap = mapChart => {
+  const setMap = mapChart => {
     const currentLine = 1;
 
     const loader = setLoader(mapChart);
@@ -276,7 +276,7 @@ const Map = ({ cities, showCityInformation }) => {
     };
   };
 
-  useEffect(() => {
+  useEffect(function buildMap() {
     const mapChart = am4core.create(mapReference.current, am4maps.MapChart);
     let {
       currentLine,
@@ -291,7 +291,7 @@ const Map = ({ cities, showCityInformation }) => {
       planeShadowContainer,
       plane,
       planeShadow,
-    } = buildMap(mapChart);
+    } = setMap(mapChart);
 
     polygonTemplate.events.on(`over`, element => {
       mapConfiguration.countriesIsoCode.map(iso => {
@@ -368,7 +368,7 @@ const Map = ({ cities, showCityInformation }) => {
   }, []);
 
   return <section>
-    <div ref={mapReference} style={{ width: `100%`, height: `500px` }} />
+    <div ref={mapReference} className={`map__wrapper`} />
   </section>;
 };
 
