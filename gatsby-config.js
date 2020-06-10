@@ -2,7 +2,7 @@ require(`dotenv`).config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
-const algoliaQueries = require(`./src/utils/search/algolia`);
+const ALGOLIA_QUERIES = require(`./src/utils/search/algolia`);
 
 module.exports = {
   siteMetadata: {
@@ -139,18 +139,18 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-exclude`,
+      options: { paths: [`**/blog/**`, `!**/en/**`] },
+    },
+    {
       resolve: `gatsby-plugin-algolia`,
       options: {
         appId: process.env.GATSBY_ALGOLIA_APP_ID,
-        apiKey: process.env.GATSBY_ALGOLIA_ADMIN_KEY,
+        apiKey: process.env.GATSBY_ALGOLIA_API_KEY,
         indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
-        algoliaQueries,
+        queries: ALGOLIA_QUERIES,
         chunkSize: 10000,
       },
-    },
-    {
-      resolve: `gatsby-plugin-exclude`,
-      options: { paths: [`**/blog/**`, `!**/en/**`] },
     },
     `gatsby-plugin-netlify`,
   ],
