@@ -21,7 +21,7 @@ const SEARCH_CLIENT = algoliasearch(process.env.GATSBY_ALGOLIA_APP_ID, process.e
 const Blog = () => <Layout>
   <Seo title="Blog" />
   <section className={`wrapper`}>
-    <InstantSearch searchClient={SEARCH_CLIENT} indexName={`Articles`}>
+    <InstantSearch searchClient={SEARCH_CLIENT} indexName={process.env.GATSBY_ALGOLIA_INDEX_NAME}>
       <SearchBox />
       <Stats />
       {/*<SortBy defaultRefinement={`Articles`}*/}
