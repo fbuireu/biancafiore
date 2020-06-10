@@ -1,7 +1,7 @@
-import './ArticleCard.scss';
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
+import './ArticleCard.scss';
 
 export const ArticleCard = ({ article }) => {
   let { excerpt, fields, frontmatter } = article,
@@ -13,11 +13,12 @@ export const ArticleCard = ({ article }) => {
         <h4>{frontmatter.content.title}</h4>
         <p>{summary}</p>
       </article>
-    </Link></li>;
+    </Link>
+  </li>;
 };
 
 ArticleCard.propTypes = {
-  article: PropTypes.arrayOf(PropTypes.object),
+  article: PropTypes.objectOf(PropTypes.object),
 };
 
 ArticleCard.defaultProps = {};
