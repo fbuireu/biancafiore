@@ -9,8 +9,8 @@ import './Tag.scss';
 const Tag = ({ tags }) => <ul className={`article__tags__list`}>
   <IntlContextConsumer>
     {({ language: currentLanguage }) =>
-      tags.map((tag, index) =>
-        <li className={`article__tag__item`} key={index}>
+      tags.map(tag =>
+        <li className={`article__tag__item`} key={tag}>
           <Link to={`${currentLanguage}/${slugify(tag, { lower: true })}`}>
             <Label className={`article__tag__item__label`} />{tag}
           </Link>

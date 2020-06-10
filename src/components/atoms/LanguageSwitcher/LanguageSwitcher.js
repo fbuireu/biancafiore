@@ -17,8 +17,8 @@ export const LanguageSwitcher = () => {
       <ArrowDown className={`arrow-down`} />
     </span>
     <ul className={`language-switcher__list`}>
-      {languages.map((language, index) => isMenuSelectorOpen &&
-        <IntlContextConsumer key={index}>
+      {languages.map(language => isMenuSelectorOpen &&
+        <IntlContextConsumer key={language.isoCode}>
           {({ language: currentLanguage }) =>
             <li className={`language-switcher__item ${currentLanguage === language.isoCode ? `--is-current-language` : ``}`}
                 onClick={() => handleLanguage(language.isoCode)}>
