@@ -64,7 +64,7 @@ export const articleData = graphql`
                     publishDate
                     lastUpdated
                     readingTime
-                    isFeaturedPost
+                    isFeaturedArticle
                     featuredImage {
                         childImageSharp {
                             fluid (maxWidth: 800) {
