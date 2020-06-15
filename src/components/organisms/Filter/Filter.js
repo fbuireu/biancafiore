@@ -1,6 +1,6 @@
 import algoliasearch from 'algoliasearch/lite';
 import React from 'react';
-import { InstantSearch } from 'react-instantsearch-dom';
+import { InstantSearch, SortBy } from 'react-instantsearch-dom';
 import FilterClearRefinements from '../../molecules/FilterClearRefinements/FilterClearRefinements';
 import FilterRange from '../../molecules/FilterRange/FilterRange';
 import FilterRefinementList from '../../molecules/FilterRefinementList/FilterRefinementList';
@@ -30,11 +30,12 @@ const Filter = () => {
       <p className={`filter__title`}>Filters</p>
       <FilterSearch />
       <FilterStats />
-      {/*<SortBy defaultRefinement={`Articles`}*/}
-      {/*        items={[*/}
-      {/*          { value: `author_asc`, label: `Author` },*/}
-      {/*          { value: `language`, label: `Language` },*/}
-      {/*        ]} />*/}
+      <SortBy defaultRefinement={`Articles`}
+              items={[
+                { value: `content.readingTime_asc`, label: `Reading Time Asc` },
+                { value: `content.readingTime_desc`, label: `Reading Time Desc` },
+                { value: `content.isFeaturedArticle`, label: `Featured` },
+              ]} />
       <FilterClearRefinements />
       {SEARCH_PARAMETERS.map(
         searchParameter => <FilterRefinementList key={searchParameter.label} {...searchParameter} />)}
