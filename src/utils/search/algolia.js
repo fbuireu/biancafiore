@@ -21,7 +21,7 @@ const articlesQuery = `{
             publishDate
             lastUpdated
             readingTime
-            isFeaturedArticle
+            isFeaturedArticle 
             tags
           }
         }
