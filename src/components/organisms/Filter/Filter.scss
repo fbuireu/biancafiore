@@ -1,0 +1,7 @@
+.filter__wrapper {
+  max-width: calc(100% / 4 - 1rem);
+  width: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: flex-start;
+}
