@@ -1,0 +1,26 @@
+@import '../../../styles/global/variables';
+
+.ais-Hits-item {
+  margin-right: 1rem;
+  max-width: calc(100% / 4 - 1rem);
+  min-width: calc(100% / 4 - 1rem);
+  width: 100%;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.article-card {
+  &:hover {
+    .article-card__image::after,
+    .article-card__image::before {
+      transform: scale(1.2);
+    }
+  }
+
+  .article-card__image {
+    border-radius: $global-border-radius;
+    overflow: hidden;
+  }
+}
