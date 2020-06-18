@@ -1,6 +1,6 @@
 @import '../../../styles/global/variables';
 
-.ais-Hits-item {
+.article-card__item {
   margin-right: 1rem;
   max-width: calc(100% / 4 - 1rem);
   min-width: calc(100% / 4 - 1rem);
@@ -9,9 +9,7 @@
   &:last-child {
     margin-right: 0;
   }
-}
 
-.article-card {
   &:hover {
     .article-card__image::after,
     .article-card__image::before {
