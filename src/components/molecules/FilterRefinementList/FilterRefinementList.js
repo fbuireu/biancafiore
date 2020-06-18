@@ -8,9 +8,7 @@ const FilterRefinementList = ({ label, attribute, operator }) => {
 
   return <div className={`filter__refinement-list`}>
     <p>{label}</p>
-    <RefinementList attribute={attribute}
-                    transformItems={items => defineRefinementListOrder(items)}
-                    operator={operator} />
+    <RefinementList attribute={attribute} transformItems={items => defineRefinementListOrder(items)} operator={operator} />
   </div>;
 };
 
