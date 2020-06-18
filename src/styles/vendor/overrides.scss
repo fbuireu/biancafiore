@@ -11,6 +11,12 @@ g [aria-labelledby="id-79-title"] {
   display: none;
 }
 
-.share-button{
+.share-button {
   background-color: color(primary) !important;
+}
+
+.article-card__image {
+  &::before, &::after {
+    transition: transform .3s ease !important;
+  }
 }
