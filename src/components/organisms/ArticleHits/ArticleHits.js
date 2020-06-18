@@ -1,6 +1,6 @@
 import React from 'react';
-import { connectStateResults, Hits } from 'react-instantsearch-dom';
-import Hit from '../../molecules/Hit/Hit';
+import { connectStateResults } from 'react-instantsearch-dom';
+import { ArticleHit } from '../../molecules/Hit/Hit';
 import './ArticleHits.scss';
 
 const ArticleHits = () => {
@@ -12,7 +12,7 @@ const ArticleHits = () => {
 
   return <div className={`filter__results`}>
     <FilterResults>
-      <Hits hitComponent={Hit} />
+      <ArticleHit />
     </FilterResults>
   </div>;
 };
