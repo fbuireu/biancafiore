@@ -21,7 +21,19 @@ const articlesQuery = `{
             publishDate
             lastUpdated
             readingTime
-            isFeaturedArticle 
+            isFeaturedArticle
+            featuredImage {
+              childImageSharp {
+                fluid (maxWidth: 800) {
+                  aspectRatio
+                  src
+                  srcSet
+                  sizes
+                  originalImg
+                  originalName
+                }
+              }
+            } 
             tags
           }
         }
@@ -36,7 +48,7 @@ const flatten = data => data.map(({ node: { frontmatter, ...rest } }) => ({ ...f
     {
       query: articlesQuery,
       transformer: ({ data }) => flatten(data.articles.edges),
-      indexName: `Articles`,
+      indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
       settings,
     },
   ];
