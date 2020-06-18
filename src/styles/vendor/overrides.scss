@@ -18,6 +18,6 @@ g [aria-labelledby="id-79-title"] {
 .article-card__image {
   &::before,
   &::after {
-    transition: transform .3s ease !important;
+    transition: transform .3s ease-in-out !important;
   }
 }
