@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Highlight } from 'react-instantsearch-dom';
 
-export const FeaturedImageHit = article => <li className={`article-card__item`}>
+export const FeaturedImageHit = article => <li className={`article-card__item ${article.content.isFeaturedArticle ? `--is-featured` : ``}`}>
   <article>
     <BackgroundImage className={`article-card__image`}
                      fluid={[
