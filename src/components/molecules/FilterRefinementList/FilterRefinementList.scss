@@ -1,0 +1,45 @@
+@import '../../../styles/global/animations';
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.filter__refinement-details {
+  cursor: pointer;
+  margin: 1rem 0;
+
+  ::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.filter__refinement-summary {
+  border-bottom: 1px solid color(neutral, neutral-3);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  outline: none;
+  user-select: none;
+
+  .arrow-down {
+    transition: transform .3s ease;
+    width: .75rem;
+  }
+}
+
+.filter__refinement-details[open] {
+  .filter__refinement-summary {
+    border-bottom-color: color(primary);
+    color: color(primary);
+    font-weight: bold;
+  }
+
+  .arrow-down {
+    fill: color(primary);
+    transform: rotate(180deg);
+  }
+
+  .ais-RefinementList-list {
+    animation: fade-in .5s forwards .1s;
+    opacity: 0;
+  }
+}
+
