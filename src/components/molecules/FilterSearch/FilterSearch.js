@@ -5,7 +5,7 @@ const FilterSearch = () => <div className={`filter__search-box`}>
   <SearchBox translations={{
     submitTitle: `Submit your search query.`,
     resetTitle: `Clear your search query.`,
-    placeholder: `Search here...`,
+    placeholder: `Find everything but Nemo.`,
   }} />
 </div>;
 
