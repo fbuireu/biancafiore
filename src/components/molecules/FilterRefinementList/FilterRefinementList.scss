@@ -3,7 +3,6 @@
 @import '../../../styles/global/functions';
 
 .filter__refinement-details {
-  cursor: pointer;
   margin: 1rem 0;
 
   ::-webkit-details-marker {
@@ -43,3 +42,60 @@
   }
 }
 
+.ais-RefinementList-item {
+  border-radius: $global-border-radius;
+  margin: .25rem 0;
+  padding: .25rem 0;
+  transition: background-color .3s ease;
+
+  &:hover:not(&--selected) {
+    background: color(primary, primary-light-2);
+
+    .ais-RefinementList-label {
+      color: color(primary, primary-dark-2);
+    }
+  }
+
+  &--selected {
+    background: color(primary, primary-light-1);
+  }
+
+  &--selected .ais-RefinementList-checkbox {
+    background-color: color(primary);
+  }
+}
+
+.ais-RefinementList-label {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding-left: .25rem;
+  transition: color .3s ease;
+
+  .ais-RefinementList-labelText {
+    @include typography-settings(-1);
+    order: 1;
+  }
+
+  .ais-RefinementList-count {
+    @include typography-settings(-3);
+    background-color: color(neutral, neutral-4);
+    border-radius: 50%;
+    margin: 0 .5rem;
+    order: 2;
+    padding: .25rem .5rem;
+  }
+
+  .ais-RefinementList-checkbox {
+    appearance: none;
+    border: 1px solid color(primary);
+    border-radius: 50%;
+    cursor: pointer;
+    height: 1.25rem;
+    order: 3;
+    outline: none;
+    width: 1.25rem;
+  }
+}
