@@ -53,7 +53,9 @@ $fonts: (
 );
 
 $typography-scale: (
-  -1: .75rem,
+  -3: .6rem,
+  -2: .75rem,
+  -1: .875rem,
   0: 1rem,
   1: 1.25rem,
   2: 1.5rem,
@@ -68,7 +70,9 @@ $typography-scale: (
 );
 
 $line-heights: (
-  -1: $base-line-height * .75,
+  -3: $base-line-height * .6,
+  -2: $base-line-height * .75,
+  -1: $base-line-height * .875,
   0: $base-line-height * 1.25,
   1: $base-line-height * 2,
   2: $base-line-height * 2.25,
@@ -98,7 +102,8 @@ $colors: (
     neutral-1: #3d4042,
     neutral-2: #6d7275,
     neutral-3: #b5babd,
-    neutral-4: #f3f7fa
+    neutral-4: #ddd,
+    neutral-: #f3f7fa,
   ),
   error:(
     main: #d63737,
