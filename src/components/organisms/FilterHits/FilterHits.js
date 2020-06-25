@@ -14,7 +14,7 @@ const FilterHits = () => {
       operator: `and`,
     },
     {
-      label: `Author`,
+      label: `Authors`,
       attribute: `author`,
       operator: `or`,
     },
