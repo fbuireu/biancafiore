@@ -11,7 +11,7 @@ import Billboard from '../../organisms/Billboard/Billboard';
 import Layout from '../Layout/Layout';
 import './Article.scss';
 
-export const Article = ({ data }) => {
+const Article = ({ data }) => {
   const [scroll, setScroll] = useState(0),
     [articleProperties, setArticleProperties] = useState({}),
     articleReference = useRef(null),
