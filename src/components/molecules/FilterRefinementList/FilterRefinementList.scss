@@ -2,6 +2,10 @@
 @import '../../../styles/global/variables';
 @import '../../../styles/global/functions';
 
+.filter__refinement-list {
+  width: 100%;
+}
+
 .filter__refinement-details {
   margin: 1rem 0;
 
@@ -15,6 +19,7 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+  margin-top: 1rem;
   outline: none;
   user-select: none;
 
