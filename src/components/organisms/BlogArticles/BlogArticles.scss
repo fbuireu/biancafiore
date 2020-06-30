@@ -1,6 +1,6 @@
 .ais-InstantSearch__root {
   display: grid;
-  gap: 0 1rem;
-  grid: 'ArticleFilter' auto 'ArticlesCard' auto / minmax(min-content, 20%) 1fr;
+  gap: 0 2rem;
+  grid: 'ArticleFilter' auto 'ArticlesCard' auto / calc(100% / 5) 1fr;
   justify-items: start;
 }
