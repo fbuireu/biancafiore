@@ -5,6 +5,7 @@ import FilterRange from '../../molecules/FilterRange/FilterRange';
 import FilterRefinementList from '../../molecules/FilterRefinementList/FilterRefinementList';
 import FilterSearch from '../../molecules/FilterSearch/FilterSearch';
 import FilterStats from '../../molecules/FilterStats/FilterStats';
+import './FilterHits.scss';
 
 const FilterHits = () => {
   const SEARCH_PARAMETERS = [
