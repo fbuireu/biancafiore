@@ -55,3 +55,6 @@ public
 
 # Compiled binary addons
 build/Release
+
+# Local Netlify folder
+.netlify
