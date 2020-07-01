@@ -55,6 +55,7 @@
     "react-scripts": "^1.1.5",
     "react-share": "^4.1.0",
     "rheostat": "2.2.0",
+    "semver": "^7.3.2",
     "slugify": "^1.4.0",
     "source-map-loader": "^0.2.4"
   },
