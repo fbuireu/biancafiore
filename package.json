@@ -2,7 +2,7 @@
   "name": "biancafiore",
   "private": true,
   "description": "A portfolio for the best content writer ever",
-  "version": "1",
+  "version": "1.0.0",
   "author": "Ferran Buireu <fbuireu@gmail.com>",
   "dependencies": {
     "@amcharts/amcharts4": "^4.9.16",
@@ -55,7 +55,6 @@
     "react-scripts": "^1.1.5",
     "react-share": "^4.1.0",
     "rheostat": "2.2.0",
-    "semver": "^7.3.2",
     "slugify": "^1.4.0",
     "source-map-loader": "^0.2.4"
   },
