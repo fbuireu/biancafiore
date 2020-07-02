@@ -24,7 +24,7 @@ const articlesQuery = `{
             isFeaturedArticle
             featuredImage {
               childImageSharp {
-                fluid (maxWidth: 800) {
+                fluid {
                   aspectRatio
                   src
                   srcSet
