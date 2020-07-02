@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import { connectRefinementList } from 'react-instantsearch-dom';
-import './RefinementList.scss';
+import './RefinementItem.scss';
 
-const CustomRefinementList = ({ items, refine, selectRefinement }) => {
+const CustomRefinementItem = ({ items, refine, selectRefinement }) => {
   const [isActiveRefinement, setIsActiveRefinements] = useState([]),
     [isRefinementSelected, setIsRefinementSelected] = useState(true),
     refinementReference = useRef(null);
@@ -34,12 +34,12 @@ const CustomRefinementList = ({ items, refine, selectRefinement }) => {
   </div>;
 };
 
-CustomRefinementList.propTypes = {
+CustomRefinementItem.propTypes = {
   items: PropTypes.string.isRequired,
   refine: PropTypes.string.isRequired,
   selectRefinement: PropTypes.string.isRequired,
 };
 
-CustomRefinementList.defaultProps = {};
+CustomRefinementItem.defaultProps = {};
 
-export const RefinementList = connectRefinementList(CustomRefinementList);
+export const RefinementItem = connectRefinementList(CustomRefinementItem);

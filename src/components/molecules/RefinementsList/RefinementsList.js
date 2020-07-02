@@ -2,10 +2,10 @@ import orderBy from 'lodash.orderby';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import ArrowDown from '../../../assets/svg/arrow-down.svg';
-import { RefinementList } from '../../atoms/RefinementList/RefinementList';
-import './FilterRefinementList.scss';
+import { RefinementItem } from '../../atoms/RefinementItem/RefinementItem';
+import './RefinementsList.scss';
 
-const FilterRefinementList = ({ label, attribute, operator }) => {
+const RefinementsList = ({ label, attribute, operator }) => {
   const [refinementSelected, setRefinementSelected] = useState(false);
 
   const defineRefinementListOrder = items => orderBy(items, [`label`, `count`], [`asc`, `desc`]);
@@ -18,7 +18,7 @@ const FilterRefinementList = ({ label, attribute, operator }) => {
         <span className={`filter__refinement-title ${refinementSelected ? `--is-selected` : ``}`}>{label}</span>
         <ArrowDown className={`arrow-down`} />
       </summary>
-      <RefinementList attribute={attribute}
+      <RefinementItem attribute={attribute}
                       operator={operator}
                       transformItems={items => defineRefinementListOrder(items)}
                       selectRefinement={handleRefinementSelection} />
@@ -26,12 +26,12 @@ const FilterRefinementList = ({ label, attribute, operator }) => {
   </div>;
 };
 
-FilterRefinementList.propTypes = {
+RefinementsList.propTypes = {
   label: PropTypes.string.isRequired,
   attribute: PropTypes.string.isRequired,
   operator: PropTypes.string.isRequired,
 };
 
-FilterRefinementList.defaultProps = {};
+RefinementsList.defaultProps = {};
 
-export default FilterRefinementList;
+export default RefinementsList;

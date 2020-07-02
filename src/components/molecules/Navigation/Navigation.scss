@@ -19,7 +19,7 @@ nav {
     transition: all .3s ease;
 
     &.--is-active {
-      font-weight: bold;
+      @include font-properties(primary, bold);
     }
 
     &.--is-active::after {

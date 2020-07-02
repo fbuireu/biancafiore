@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Highlight } from 'react-instantsearch-dom';
 
-export const FeaturedImageHit = article => <li className={`article-card__item ${article.content.isFeaturedArticle ? `--is-featured` : ``}`}>
+export const FeaturedImageArticleCard = article => <li className={`article-card__item ${article.content.isFeaturedArticle ? `--is-featured` : ``}`}>
   <article>
     <BackgroundImage className={`article-card__image`}
                      fluid={[
@@ -24,10 +24,10 @@ export const FeaturedImageHit = article => <li className={`article-card__item ${
   </article>
 </li>;
 
-FeaturedImageHit.propTypes = {
+FeaturedImageArticleCard.propTypes = {
   article: PropTypes.objectOf(PropTypes.object),
 };
 
-FeaturedImageHit.defaultProps = {};
+FeaturedImageArticleCard.defaultProps = {};
 
-export default FeaturedImageHit;
+export default FeaturedImageArticleCard;

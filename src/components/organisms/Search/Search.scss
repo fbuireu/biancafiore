@@ -1,0 +1,32 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.filter__search-box {
+  background: color(others, white);
+  border-radius: $global-border-radius;
+  box-shadow: 0 .5rem 1rem color(neutral, neutral-3);
+  margin: .5rem 0;
+  padding: .5rem;
+  width: 100%;
+
+}
+
+.ais-SearchBox{
+  margin-top: 1rem;
+}
+
+.ais-SearchBox-form {
+  display: flex;
+  width: 100%;
+}
+
+.ais-SearchBox-input {
+  @include typography-settings(0);
+  width: 100%;
+  border: 0;
+  height: 100%;
+
+  border-radius: $global-border-radius;
+  transition: all 0.4s ease;
+  outline: none;
+}
