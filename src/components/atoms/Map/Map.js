@@ -276,7 +276,7 @@ const Map = ({ cities, showCityInformation }) => {
     };
   };
 
-  useEffect(function buildMap () {
+  useEffect(function buildMap() {
     const mapChart = am4core.create(mapReference.current, am4maps.MapChart);
     let {
       currentLine,
