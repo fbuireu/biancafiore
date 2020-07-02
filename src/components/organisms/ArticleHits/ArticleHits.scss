@@ -4,3 +4,11 @@
   grid-area: ArticlesCard;
   justify-content: space-between;
 }
+
+.filter__results {
+  margin: 0 auto;
+
+  .--no-results-found {
+    margin-top: 2rem;
+  }
+}
