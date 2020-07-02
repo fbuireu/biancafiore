@@ -5,8 +5,8 @@ export const useMenuItems = () => {
       query getAllMenuItemsOrderedByPositionAsc {
           menuItems: allMarkdownRemark (
               filter: { frontmatter: { key: { eq: "menuItem" }}},
-              sort: { 
-                  fields: [frontmatter___position], 
+              sort: {
+                  fields: [frontmatter___position],
                   order: ASC }){
               edges {
                   node {

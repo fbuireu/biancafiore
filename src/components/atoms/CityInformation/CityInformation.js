@@ -6,7 +6,7 @@ const CityInformation = ({ cityInformation }) => {
   const [isVisible, setIsVisible] = useState(false),
     closeModal = () => setIsVisible(false);
 
-  useEffect(function changeSelectedCity () {setIsVisible(true);}, [cityInformation]);
+  useEffect(function changeSelectedCity() {setIsVisible(true);}, [cityInformation]);
 
   return <div className={`city-information__modal__wrapper ${isVisible ? `--is-visible` : `--is-hidden`}`}>
     <div className={`city-information__modal__inner`}>
