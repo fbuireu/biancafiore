@@ -1,14 +1,14 @@
 import RheostatRangeSlider from 'instantsearch-rheostat-range-slider-react';
 import React from 'react';
-import './FilterRange.scss';
+import './Range.scss';
 
-const FilterRange = () => <div className={`filter__refinement-list`}>
+const Range = () => <div className={`filter__refinement-list`}>
   <p className={`filter__refinement-summary`}>Reading Time</p>
   <RheostatRangeSlider attribute={`content.readingTime`} />
 </div>;
 
-FilterRange.propTypes = {};
+Range.propTypes = {};
 
-FilterRange.defaultProps = {};
+Range.defaultProps = {};
 
-export default FilterRange;
+export default Range;

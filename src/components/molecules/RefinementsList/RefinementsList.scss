@@ -23,8 +23,8 @@
   position: relative;
 
   &.--is-selected {
+    @include font-properties(primary, bold);
     color: color(primary);
-    font-weight: bold;
 
     &::before {
       background-color: color(primary);

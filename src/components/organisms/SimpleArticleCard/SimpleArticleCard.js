@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Highlight } from 'react-instantsearch-dom';
 
-export const SimpleHit = article => <li className={`article-card__item ${article.content.isFeaturedArticle ? `--is-featured` : ``}`}>
+export const SimpleArticleCard = article => <li className={`article-card__item ${article.content.isFeaturedArticle ? `--is-featured` : ``}`}>
   <article>
     <Link to={`/${article.language.toLowerCase()}/blog${article.fields.slug}`}>
       <h2>
@@ -16,10 +16,10 @@ export const SimpleHit = article => <li className={`article-card__item ${article
   </article>
 </li>;
 
-SimpleHit.propTypes = {
+SimpleArticleCard.propTypes = {
   article: PropTypes.objectOf(PropTypes.object),
 };
 
-SimpleHit.defaultProps = {};
+SimpleArticleCard.defaultProps = {};
 
-export default SimpleHit;
+export default SimpleArticleCard;

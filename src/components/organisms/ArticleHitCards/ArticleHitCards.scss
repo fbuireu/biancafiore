@@ -3,12 +3,13 @@
   flex-flow: row wrap;
   grid-area: ArticlesCard;
   justify-content: space-between;
+  margin-top: 3rem;
 }
 
 .filter__results {
   margin: 0 auto;
 
   .--no-results-found {
-    margin-top: 2rem;
+    margin-top: 4rem;
   }
 }

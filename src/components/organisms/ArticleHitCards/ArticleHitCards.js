@@ -1,9 +1,9 @@
 import React from 'react';
 import { connectStateResults } from 'react-instantsearch-dom';
-import { ArticleHit } from '../../molecules/Hit/Hit';
-import './ArticleHits.scss';
+import { ArticleHitCard } from '../../molecules/ArticleHitCard/ArticleHitCard';
+import './ArticleHitCards.scss';
 
-const ArticleHits = () => {
+const ArticleHitCards = () => {
   const FilterResults = connectStateResults(
     ({ searchResults, children }) => searchResults && searchResults.nbHits !== 0
       ? children
@@ -12,13 +12,13 @@ const ArticleHits = () => {
 
   return <div className={`filter__results`}>
     <FilterResults>
-      <ArticleHit />
+      <ArticleHitCard />
     </FilterResults>
   </div>;
 };
 
-ArticleHits.propTypes = {};
+ArticleHitCards.propTypes = {};
 
-ArticleHits.defaultProps = {};
+ArticleHitCards.defaultProps = {};
 
-export default ArticleHits;
+export default ArticleHitCards;
