@@ -1,4 +1,2 @@
 [[plugins]]
-package = "netlify-plugin-gatsby-cache"
-[[plugins]]
-package = "netlify-plugin-algolia-export"
+    package = "netlify-plugin-gatsby-cache"
