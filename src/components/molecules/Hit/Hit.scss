@@ -1,4 +1,5 @@
 @import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
 
 .article-card__item {
   flex: 0 0 25%;
@@ -15,6 +16,10 @@
   }
 
   &:hover {
+    .article-card__image {
+      box-shadow: 0 1rem 1.5rem color(neutral, neutral-2);
+    }
+
     .article-card__image::after,
     .article-card__image::before {
       transform: scale(1.2);
@@ -23,7 +28,9 @@
 
   .article-card__image {
     border-radius: $global-border-radius;
+    box-shadow: 0 .5rem 1rem color(neutral, neutral-3);
     margin-bottom: 1rem;
     overflow: hidden;
+    transition: box-shadow .3s ease;
   }
 }
