@@ -67,7 +67,7 @@ export const articleData = graphql`
                     isFeaturedArticle
                     featuredImage {
                         childImageSharp {
-                            fluid (maxWidth: 800) {
+                            fluid {
                                 ...GatsbyImageSharpFluid
                             }
                         }
@@ -82,7 +82,7 @@ export const articleData = graphql`
                 name
                 image {
                     childImageSharp {
-                        fluid(maxWidth: 800) {
+                        fluid {
                             ...GatsbyImageSharpFluid
                         }
                     }
@@ -114,7 +114,7 @@ export const articleData = graphql`
                             readingTime
                             featuredImage {
                                 childImageSharp {
-                                    fluid(maxWidth: 800) {
+                                    fluid {
                                         ...GatsbyImageSharpFluid
                                     }
                                 }
