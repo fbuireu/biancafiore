@@ -1,16 +1,27 @@
-import React from 'react';
-import { SortBy } from 'react-instantsearch-dom';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { connectSortBy } from 'react-instantsearch-dom';
+import Select from 'react-select';
 import './SortHitsBy.scss';
 
-const SortHitsBy = () => <SortBy defaultRefinement={process.env.GATSBY_ALGOLIA_INDEX_NAME}
-                                 items={[
-                                   { value: `content.readingTime_asc`, label: `Reading Time (asc)` },
-                                   { value: `content.readingTime_desc`, label: `Reading Time (desc)` },
-                                   { value: `content.isFeaturedArticle`, label: `Featured` },
-                                 ]} />;
+const CustomSortHitsBy = ({ items, refine }) => {
+  const [selectedOption, setSelectedOption] = useState(null);
 
-export default SortHitsBy;
+  const handleChange = selectedOption => {
+    setSelectedOption(selectedOption);
+    refine(selectedOption.value);
+  };
 
-SortHitsBy.propTypes = {};
+  return <div className={`filter__sort-hits-by`}>
+    <Select value={selectedOption} onChange={handleChange} options={items} isSearchable={false} placeholder={`Sort articles by...`} />
+  </div>;
+};
 
-SortHitsBy.defaultProps = {};
+CustomSortHitsBy.propTypes = {
+  items: PropTypes.string.isRequired,
+  refine: PropTypes.string.isRequired,
+};
+
+CustomSortHitsBy.defaultProps = {};
+
+export const SortHitsBy = connectSortBy(CustomSortHitsBy);
