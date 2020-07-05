@@ -1,6 +1,32 @@
-.ais-SortBy {
+@import '../../../styles/global/functions';
+
+.filter__sort-hits-by {
+  @include typography-settings(-1);
   position: absolute;
   right: -2rem;
-  transform: translateX(100%);
   top: 1rem;
+  transform: translateX(100%);
+  width: 100%;
+  z-index: 10;
+}
+
+.css-tlfecz-indicatorContainer svg {
+  fill: color(neutral);
+  transition: all .3s ease;
+}
+
+.css-1gtu0rj-indicatorContainer svg {
+  fill: color(primary);
+  transform: rotate(180deg);
+  transition: all .3s ease;
+}
+
+.css-1okebmr-indicatorSeparator {
+  display: none;
+}
+
+.css-1n7v3ny-option {
+  &:hover {
+    background-color: color(primary, primary-light-2);
+  }
 }
