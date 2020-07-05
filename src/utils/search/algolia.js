@@ -43,13 +43,14 @@ const articlesQuery = `{
 }`;
 
 const flatten = data => data.map(({ node: { frontmatter, ...rest } }) => ({ ...frontmatter, ...rest })),
-  settings = { attributesToSnippet: [`excerpt:20`] },
+  settings = { attributesToSnippet: [`excerpt: 200`] },
   algoliaQueries = [
     {
       query: articlesQuery,
       transformer: ({ data }) => flatten(data.articles.edges),
       indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
       settings,
+      matchFields: [`fields.slug`, `content.title`,`content.lastUpdated`]
     },
   ];
 
