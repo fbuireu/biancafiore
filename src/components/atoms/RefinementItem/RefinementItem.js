@@ -7,14 +7,22 @@ const CustomRefinementItem = ({ items, refine, selectRefinement }) => {
   const [isActiveRefinement, setIsActiveRefinements] = useState([]),
     [isRefinementSelected, setIsRefinementSelected] = useState(true),
     refinementReference = useRef(null);
+
   const handleClick = (event, { value }, index) => {
     event.preventDefault();
-    refine(value);
-    setIsRefinementSelected(!isRefinementSelected);
-    selectRefinement(isRefinementSelected);
 
-    if (!isActiveRefinement.includes(index)) setIsActiveRefinements(previousState => [...previousState, index]);
-    else setIsActiveRefinements(isActiveRefinement.filter(item => (item !== index)));
+    let isSelectingMoreRefinements = !isActiveRefinement.includes(index);
+
+    if (isSelectingMoreRefinements) {
+      setIsActiveRefinements(previousState => [...previousState, index]);
+      setIsRefinementSelected(true);
+    } else {
+      setIsActiveRefinements(isActiveRefinement.filter(item => item !== index));
+      setIsRefinementSelected(false);
+    }
+
+    selectRefinement(isRefinementSelected);
+    refine(value);
   };
   return <div className={`refinement-list__wrapper`}>
     <ul className={`refinement-list__list`}>
