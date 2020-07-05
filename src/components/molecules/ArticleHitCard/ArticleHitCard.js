@@ -5,7 +5,7 @@ import FeaturedImageArticleCard from '../../organisms/FeaturedImageArticleCard/F
 import SimpleArticleCard from '../../organisms/SimpleArticleCard/SimpleArticleCard';
 import './ArticleHitCard.scss';
 
-export const Hit = ({ hits: articles }) => {
+export const CustomHit = ({ hits: articles }) => {
   return <ul className={`article-card__list`}>
     {articles.map(article => article.content.featuredImage
       ? <FeaturedImageArticleCard key={article.content.title} {...article} />
@@ -14,11 +14,10 @@ export const Hit = ({ hits: articles }) => {
   </ul>;
 };
 
-Hit.propTypes = {
+CustomHit.propTypes = {
   hits: PropTypes.objectOf(PropTypes.object),
 };
 
-Hit.defaultProps = {};
+CustomHit.defaultProps = {};
 
-export const ArticleHitCard = connectHits(Hit);
-
+export const ArticleHitCard = connectHits(CustomHit);
