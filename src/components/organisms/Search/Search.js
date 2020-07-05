@@ -1,23 +1,45 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import { SearchBox } from 'react-instantsearch-dom';
+import { connectSearchBox } from 'react-instantsearch-dom';
 import Close from '../../../assets/svg/close.svg';
-import Lens from '../../../assets/svg/search.svg';
-import FilterStats from '../../molecules/FilterStats/FilterStats';
+import Lens from '../../../assets/svg/lens.svg';
+import SearchStats from '../../molecules/SearchStats/SearchStats';
 import './Search.scss';
 
-const Search = () => <div className={`filter__search-box`}>
-  <SearchBox submit={<Lens />}
-             reset={<Close />}
-             translations={{
-               submitTitle: `Find everything but Nemo.`,
-               resetTitle: `Everyone can make a mistake.`,
-               placeholder: `Find everything but Nemo.`,
-             }} />
-  <FilterStats />
-</div>;
+const CustomSearch = ({ currentRefinement, refine }) => {
+  const resetQuery = event => {
+    event.preventDefault();
+    refine(``);
+  };
 
-Search.propTypes = {};
+  const searchQuery = event => refine(event.currentTarget.value);
 
-Search.defaultProps = {};
+  return <div className={`filter__search`}>
+    <form noValidate action={``} role={`search`}>
+      <div className={`filter__search__inner`}>
+        <input id={`filter__search__input`}
+               className={`filter__search__input ${currentRefinement.length ? `--has-value` : ``}`}
+               type={`search`}
+               value={currentRefinement}
+               onChange={event => searchQuery(event)} />
+        <label htmlFor={`filter__search__input`}
+               className={`filter__search__label`}>Find anything but Nemo</label>
+        <div className={`filter__search__input__border`} />
+        <div className={`filter__search__buttons`}>
+          {currentRefinement.length ? <Close className={`filter__search__buttons__reset-query`} onClick={event => resetQuery(event)} /> : <Lens />}
+        </div>
+      </div>
+      <SearchStats />
+    </form>
+  </div>;
+};
 
-export default Search;
+CustomSearch.propTypes = {
+  currentRefinement: PropTypes.string.isRequired,
+  refine: PropTypes.string.isRequired,
+};
+
+CustomSearch.defaultProps = {};
+
+export const Search = connectSearchBox(CustomSearch);
+
