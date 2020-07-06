@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { connectRefinementList } from 'react-instantsearch-dom';
 import './RefinementItem.scss';
 
 const CustomRefinementItem = ({ items, refine, selectRefinement }) => {
-  const [isActiveRefinement, setIsActiveRefinements] = useState([]),
-    [isRefinementSelected, setIsRefinementSelected] = useState(true),
-    refinementReference = useRef(null);
+  const [isActiveRefinement, setIsActiveRefinements] = useState([]);
+  let isRefinementSelected = false;
 
   const handleClick = (event, { value }, index) => {
     event.preventDefault();
@@ -14,11 +13,11 @@ const CustomRefinementItem = ({ items, refine, selectRefinement }) => {
     let isSelectingMoreRefinements = !isActiveRefinement.includes(index);
 
     if (isSelectingMoreRefinements) {
-      setIsActiveRefinements(previousState => [...previousState, index]);
-      setIsRefinementSelected(true);
+      setIsActiveRefinements(isActiveRefinement => [...isActiveRefinement, index]);
+      isRefinementSelected = true;
     } else {
       setIsActiveRefinements(isActiveRefinement.filter(item => item !== index));
-      setIsRefinementSelected(false);
+      isRefinementSelected = false;
     }
 
     selectRefinement(isRefinementSelected);
@@ -29,7 +28,6 @@ const CustomRefinementItem = ({ items, refine, selectRefinement }) => {
       {items.map((item, index) => {
         return <li key={item.label}
                    className={`refinement-list__item ${isActiveRefinement.includes(index) ? `--is-selected` : ``}`}
-                   ref={refinementReference}
                    onClick={event => handleClick(event, item, index)}>
           <label className={`refinement-list__item__label`}>
             <input className={`refinement-list__item__checkbox`} type={`checkbox`} />
