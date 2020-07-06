@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connectHits } from 'react-instantsearch-dom';
-import FeaturedImageArticleCard from '../../organisms/FeaturedImageArticleCard/FeaturedImageArticleCard';
-import SimpleArticleCard from '../../organisms/SimpleArticleCard/SimpleArticleCard';
+import FeaturedImageArticleCard from '../FeaturedImageArticleCard/FeaturedImageArticleCard';
+import SimpleArticleCard from '../SimpleArticleCard/SimpleArticleCard';
 import './ArticleHitCard.scss';
 
 export const CustomHit = ({ hits: articles }) => {
