@@ -11,7 +11,7 @@ const Tag = ({ tags }) => <ul className={`article__tags__list`}>
     {({ language: currentLanguage }) =>
       tags.map(tag =>
         <li className={`article__tag__item`} key={tag}>
-          <Link to={`${currentLanguage}/${slugify(tag, { lower: true })}`}>
+          <Link to={`/${currentLanguage}/${slugify(tag, { lower: true })}`} className={`article__tag__item__link`}>
             <Label className={`article__tag__item__label`} />{tag}
           </Link>
         </li>)
