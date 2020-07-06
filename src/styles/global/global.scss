@@ -14,7 +14,7 @@
 }
 
 article:not([class]) {
-  line-height: map-get($line-heights, 1);
+  line-height: map-get($line-heights, 3);
 }
 
 a:not([class]),
