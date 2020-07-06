@@ -1,6 +1,6 @@
 import React from 'react';
 import { connectStateResults } from 'react-instantsearch-dom';
-import { ArticleHitCard } from '../../molecules/ArticleHitCard/ArticleHitCard';
+import { ArticleHitCard } from '../ArticleHitCard/ArticleHitCard';
 import './ArticleHitCards.scss';
 
 const ArticleHitCards = () => {
