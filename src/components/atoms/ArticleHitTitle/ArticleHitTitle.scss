@@ -1,0 +1,10 @@
+@import '../../../styles/global/functions';
+
+.article-card__title {
+  @include font-properties(secondary, bold);
+  @include typography-settings(5);
+  color: color(others, white);
+  grid-area: Title;
+  justify-self: flex-start;
+  padding-left: 1rem;
+}
