@@ -2,23 +2,26 @@ import { Link } from 'gatsby';
 import BackgroundImage from 'gatsby-background-image';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Highlight } from 'react-instantsearch-dom';
+import ArticleHitSummary from '../../atoms/ArticleHitSummary/ArticleHitSummary';
+import ArticleHitTitle from '../../atoms/ArticleHitTitle/ArticleHitTitle';
+import ReadingTime from '../../atoms/ReadingTime/ReadingTime';
+import Subtitle from '../../atoms/Subtitle/Subtitle';
+import Tag from '../../atoms/Tag/Tag';
 
 export const FeaturedImageArticleCard = article => <li className={`article-card__item ${article.content.isFeaturedArticle ? `--is-featured` : ``}`}>
-  <article>
+  <article className={`article-card__item__inner`}>
     <BackgroundImage className={`article-card__image`}
                      fluid={[
-                       `linear-gradient(to bottom, transparent, #000)`,
+                       `linear-gradient(rgba(0,0,0, .4), rgba(0, 0, 0, .8))`,
                        article.content.featuredImage.childImageSharp.fluid]}>
-      <Link to={`/${article.language.toLowerCase()}/blog${article.fields.slug}`}>
-        <h2>
-          <Highlight attribute={`content.title`} hit={article} tagName={`mark`} />
-        </h2>
-        <p>
-          <Highlight attribute={`${article.content.summary ? `content.summary` : `excerpt`}`}
-                     hit={article}
-                     tagName={`mark`} />
-        </p>
+      <Link to={`/${article.language.toLowerCase()}/blog${article.fields.slug}`}
+            className={`article-card__link`}>
+        <ArticleHitTitle hit={article} />
+        {console.log(article)}
+        <Subtitle author={article.author} lastUpdated={article.content.lastUpdated} />
+        <ReadingTime readingTime={article.content.readingTime} />
+        <Tag tags={article.content.tags} />
+        <ArticleHitSummary hit={article} article={article} />
       </Link>
     </BackgroundImage>
   </article>
