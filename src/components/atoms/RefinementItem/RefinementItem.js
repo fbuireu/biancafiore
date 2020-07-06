@@ -5,6 +5,7 @@ import './RefinementItem.scss';
 
 const CustomRefinementItem = ({ items, refine, selectRefinement }) => {
   const [isActiveRefinement, setIsActiveRefinements] = useState([]);
+
   let isRefinementSelected = false;
 
   const handleClick = (event, { value }, index) => {
@@ -17,12 +18,13 @@ const CustomRefinementItem = ({ items, refine, selectRefinement }) => {
       isRefinementSelected = true;
     } else {
       setIsActiveRefinements(isActiveRefinement.filter(item => item !== index));
-      isRefinementSelected = false;
+      isRefinementSelected = isActiveRefinement.length - 1 !== 0;
     }
 
     selectRefinement(isRefinementSelected);
     refine(value);
   };
+
   return <div className={`refinement-list__wrapper`}>
     <ul className={`refinement-list__list`}>
       {items.map((item, index) => {
