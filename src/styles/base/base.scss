@@ -30,7 +30,7 @@ a {
   color: inherit;
 }
 
-summary{
+summary {
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -44,4 +44,8 @@ svg {
   fill: color(neutral);
   height: 1rem;
   width: 1rem;
+}
+
+mark {
+  background-color: color(primary);
 }
