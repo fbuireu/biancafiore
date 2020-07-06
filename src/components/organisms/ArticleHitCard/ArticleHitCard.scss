@@ -25,8 +25,16 @@
       transform: scale(1.2);
     }
 
-    .article-card__summary {
+    .article__summary {
       transform: translateY(0);
+    }
+
+    .article-card__title {
+      padding-top: .5rem;
+    }
+
+    .article-card__link {
+      gap: .5rem 1rem;
     }
   }
 
@@ -35,7 +43,7 @@
     box-shadow: 0 .5rem 1rem color(neutral, neutral-3);
     margin-bottom: 1rem;
     overflow: hidden;
-    transition: box-shadow .3s ease;
+    transition: box-shadow .3s;
   }
 }
 
@@ -45,5 +53,6 @@
   gap: 1rem;
   grid: 'Title Title Title Title' auto 'Date-Author Date-Author Date-Author Date-Author' auto 'ReadingTime Tags Tags Tags' auto 'Summary Summary Summary Summary' auto / auto 1fr 1fr 1fr;
   padding: 0;
+  transition: gap .5s;
 }
 

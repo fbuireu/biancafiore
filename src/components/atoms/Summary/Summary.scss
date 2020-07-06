@@ -1,12 +1,27 @@
 @import '../../../styles/global/functions';
 
-.article__summary {
-  @include typography-settings(0);
-  color: color(others, white);
-  grid-area: Summary;
-  letter-spacing: 1px;
-  margin-top: -.5rem;
-  max-width: 50%;
-  text-align: left;
-  width: 100%;
+.article__information {
+  .article__summary {
+    @include typography-settings(0);
+    color: color(others, white);
+    grid-area: Summary;
+    letter-spacing: 1px;
+    margin-top: -.5rem;
+    max-width: 50%;
+    text-align: left;
+    width: 100%;
+  }
+}
+
+.article-card__link {
+  .article__summary {
+    @include typography-settings(-1);
+    background-color: color(others, white);
+    color: color(neutral);
+    grid-area: Summary;
+    padding: 1rem;
+    text-align: left;
+    transform: translateY(100%);
+    transition: transform .5s ease;
+  }
 }
