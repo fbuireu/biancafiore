@@ -22,7 +22,7 @@ g [aria-labelledby="id-79-title"] {
   }
 }
 
-.css-yk16xz-control{
+.css-yk16xz-control {
   border: 0 !important;
   border-bottom: 1px solid color(neutral, neutral-3) !important;
   border-radius: 0 !important;
@@ -45,6 +45,11 @@ g [aria-labelledby="id-79-title"] {
   background-color: color(primary, primary-light-2) !important;
 }
 
-.css-g1d714-ValueContainer{
-  padding:0 !important;
+.css-g1d714-ValueContainer {
+  padding: 0 !important;
+}
+
+.share-buttons__wrapper svg {
+  height: inherit !important;
+  width: inherit !important;
 }
