@@ -16,8 +16,8 @@
 }
 
 .filter__search__input {
+  @include typography-settings(0);
   border: 0;
-  margin-bottom: .5rem;
   outline: none;
   position: relative;
   width: 100%;
@@ -32,6 +32,10 @@
 
     ~ .filter__search__input__border::before {
       background-color: color(primary);
+    }
+
+    ~ .filter__search__buttons {
+      top: .25rem;
     }
 
     ~ .filter__search__buttons svg {
@@ -67,6 +71,7 @@
   position: absolute;
   right: .5rem;
   top: 0;
+  transition: top .3s ease;
 
   .filter__search__buttons__reset-query {
     cursor: pointer;
