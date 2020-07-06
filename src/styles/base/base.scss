@@ -42,6 +42,7 @@ img {
 
 svg {
   fill: color(neutral);
+  width: 1rem;
 
   &:not([class]) {
     fill: color(neutral);
