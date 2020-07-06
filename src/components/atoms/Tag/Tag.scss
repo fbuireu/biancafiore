@@ -6,6 +6,7 @@
   display: flex;
   flex-flow: row wrap;
   grid-area: Tags;
+  height: 100%;
 }
 
 .article__tag__item {
@@ -19,8 +20,8 @@
   padding: .25rem;
   width: fit-content;
 
-  a {
-    align-content: center;
+  .article__tag__item__link {
+    align-items: center;
     display: flex;
   }
 
