@@ -1,0 +1,12 @@
+@import '../../../styles/global/functions';
+
+.article-card__summary {
+  @include typography-settings(0);
+  background-color: color(others, white);
+  color: color(neutral);
+  grid-area: Summary;
+  padding: 0 1rem;
+  text-align: left;
+  transform: translateY(500%);
+  transition: transform .5s ease;
+}
