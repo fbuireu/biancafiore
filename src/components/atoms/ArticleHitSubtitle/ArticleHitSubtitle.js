@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Highlight } from 'react-instantsearch-dom';
 import slugify from 'slugify';
-import './ArticleHitSubtitle.scss';
 
 const ArticleHitSubtitle = ({ hit }) => <p className={`article__subtitle`}>
   <time dateTime={hit.content.lastUpdated}><Highlight attribute={`content.lastUpdated`} hit={hit} tagName={`mark`} /></time>
