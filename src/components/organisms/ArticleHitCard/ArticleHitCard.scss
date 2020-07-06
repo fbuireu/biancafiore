@@ -24,6 +24,10 @@
     .article-card__image::before {
       transform: scale(1.2);
     }
+
+    .article-card__summary {
+      transform: translateY(0);
+    }
   }
 
   .article-card__image {
@@ -34,3 +38,12 @@
     transition: box-shadow .3s ease;
   }
 }
+
+.article-card__link {
+  align-items: flex-start;
+  display: grid;
+  gap: 1rem;
+  grid: 'Title Title Title Title' auto 'Date-Author Date-Author Date-Author Date-Author' auto 'ReadingTime Tags Tags Tags' auto 'Summary Summary Summary Summary' auto / auto 1fr 1fr 1fr;
+  padding: 0;
+}
+
