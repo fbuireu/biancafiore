@@ -2,9 +2,10 @@
 
 .article-card__title {
   @include font-properties(secondary, bold);
-  @include typography-settings(5);
+  @include typography-settings(4);
   color: color(others, white);
   grid-area: Title;
   justify-self: flex-start;
   padding: 1rem 1rem 0;
+  transition: padding-top .3s ease;
 }
