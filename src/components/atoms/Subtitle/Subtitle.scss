@@ -1,14 +1,26 @@
 @import '../../../styles/global/functions';
 
 .article__subtitle {
-  @include typography-settings(1);
-  color: color(others, white);
   grid-area: Date-Author;
   letter-spacing: .25rem;
-  margin-top: -1rem;
+  color: color(others, white);
+  justify-self: flex-start;
+}
 
-  .article__author {
-    @include font-properties(primary, bold);
-    color: color(primary);
+.article__author {
+  @include font-properties(primary, bold);
+  color: color(primary);
+}
+
+.article__information {
+  .article__subtitle {
+    @include typography-settings(1);
+    margin-top: -1rem;
+  }
+}
+
+.article-card__link {
+  .article__subtitle {
+    padding-left: 1rem;
   }
 }
