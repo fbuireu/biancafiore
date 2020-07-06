@@ -21,11 +21,12 @@ const Filter = () => {
     SORT_BY_PARAMETERS = [
       { value: `content.readingTime_asc`, label: `Reading Time (asc)` },
       { value: `content.readingTime_desc`, label: `Reading Time (desc)` },
+      { value: `content.lastUpdated_asc`, label: `Last Updated Date (asc)` },
+      { value: `content.lastUpdated_desc`, label: `Last Updated Date (desc)` },
       { value: `content.isFeaturedArticle`, label: `Featured` },
     ];
 
   return <aside className={`filters__wrapper`}>
-    <p className={`filters__title`}>Filters</p>
     <Search />
     <SortHitsBy defaultRefinement={process.env.GATSBY_ALGOLIA_INDEX_NAME} items={SORT_BY_PARAMETERS} />
     {SEARCH_PARAMETERS.map(searchParameter => <RefinementsList key={searchParameter.label} {...searchParameter} />)}
