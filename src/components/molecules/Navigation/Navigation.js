@@ -9,12 +9,15 @@ const Navigation = () => {
   const menuItems = useMenuItems();
 
   return <nav>
-    <ul>
+    <ul className={`navigation__list`}>
       <IntlContextConsumer>
         {({ language: currentLanguage }) =>
           menuItems.map(
-            ({ node: menuItem }) => <li key={menuItem.frontmatter.position}>
-              <Link to={`/${currentLanguage}${menuItem.fields.slug}`} activeClassName={`--is-active`} partiallyActive={true}>{menuItem.frontmatter.name}</Link>
+            ({ node: menuItem }) => <li key={menuItem.frontmatter.position} className={`navigation__item`}>
+              <Link to={`/${currentLanguage}${menuItem.fields.slug}`}
+                    className={`navigation__item__link`}
+                    activeClassName={`--is-active`}
+                    partiallyActive={true}>{menuItem.frontmatter.name}</Link>
             </li>)
         }
       </IntlContextConsumer>
