@@ -9,7 +9,6 @@ const ContactForm = () => {
   return <form action={`/contact/success`} name={`contact`} method={`POST`} data-netlify={true} data-netlify-recaptcha={true}>
     <TextInput />
     <TextareaInput />
-    {/*<div data-netlify-recaptcha={true} />*/}
     <Recaptcha ref={recaptchaReference} sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY} />
     <button type={`submit`}>Send</button>
   </form>;
