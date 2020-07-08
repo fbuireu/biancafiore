@@ -6,7 +6,7 @@ import ArticleHitSubtitle from '../../atoms/ArticleHitSubtitle/ArticleHitSubtitl
 import ArticleHitTitle from '../../atoms/ArticleHitTitle/ArticleHitTitle';
 import ReadingTime from '../../atoms/ReadingTime/ReadingTime';
 import Summary from '../../atoms/Summary/Summary';
-import Tag from '../../atoms/Tag/Tag';
+import ArticleHitTag from '../../molecules/ArticleHitTag';
 
 export const FeaturedImageArticleCard = article => <li className={`article-card__item ${article.content.isFeaturedArticle ? `--is-featured` : ``}`}>
   <article className={`article-card__item__inner`}>
@@ -19,7 +19,7 @@ export const FeaturedImageArticleCard = article => <li className={`article-card_
         <ArticleHitTitle hit={article} />
         <ArticleHitSubtitle hit={article} />
         <ReadingTime readingTime={article.content.readingTime} />
-        <Tag tags={article.content.tags} />
+        <ArticleHitTag hit={article} />
         <Summary summary={article.content.summary || article.excerpt} />
       </Link>
     </BackgroundImage>
