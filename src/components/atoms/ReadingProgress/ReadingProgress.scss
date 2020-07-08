@@ -25,6 +25,10 @@
     box-shadow: .25rem .25rem .25rem color(neutral, neutral-2);
   }
 
+  .reading-progress__svg__wrapper {
+    width: inherit;
+  }
+
   .arrow-up {
     fill: color(others, white);
     height: 2rem;
