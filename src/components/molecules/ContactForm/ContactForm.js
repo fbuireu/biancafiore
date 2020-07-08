@@ -10,7 +10,7 @@ const ContactForm = () => {
     <TextInput />
     <TextareaInput />
     {/*<div data-netlify-recaptcha={true} />*/}
-    <Recaptcha ref={recaptchaReference} sitekey={process.env.SITE_RECAPTCHA_KEY} />
+    <Recaptcha ref={recaptchaReference} sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY} />
     <button type={`submit`}>Send</button>
   </form>;
 };
