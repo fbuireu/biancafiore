@@ -20,7 +20,7 @@ export const ReadingProgress = ({ scroll, articleProperties }) => {
   };
 
   return <div className={`reading-progress ${isArticleVisible ? `--is-visible` : ``}`} onClick={scrollToTop}>
-    <CircularProgressbarWithChildren className={`reading-progress__inner`} value={currentProgress}>
+    <CircularProgressbarWithChildren className={`reading-progress__svg__wrapper`} value={currentProgress}>
       <ArrowUp className={`arrow-up`} />
     </CircularProgressbarWithChildren>
   </div>;
