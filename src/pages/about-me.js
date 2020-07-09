@@ -35,7 +35,7 @@ const AboutMe = ({ data }) => {
   </Layout>;
 };
 
-export const AboutMeData = graphql`
+export const aboutMeData = graphql`
     query getAboutMeData {
         aboutMe: allMarkdownRemark (
             filter: { frontmatter: { key: { eq: "about-me" }}}) {
