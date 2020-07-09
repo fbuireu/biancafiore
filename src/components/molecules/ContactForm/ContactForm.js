@@ -1,9 +1,9 @@
+import PropTypes from 'prop-types';
 import React, { useRef } from 'react';
 import Recaptcha from 'react-google-recaptcha';
-import TextareaInput from '../../atoms/TextareaInput/TextareaInput';
-import TextInput from '../../atoms/TextInput/TextInput';
+import FormComponentsMapper from '../FormComponentsMapper/FormComponentsMapper';
 
-const ContactForm = () => {
+const ContactForm = ({ formInputs }) => {
   const recaptchaReference = useRef(null);
 
   const handleChange = value => {
@@ -17,14 +17,19 @@ const ContactForm = () => {
   };
 
   return <form action={`/contact/success`} method={`POST`} name={`contact`} data-netlify={true} data-netlify-recaptcha={true}>
-    <TextInput />
-    <TextareaInput />
+    {formInputs.map(input => {
+      let FormComponent = FormComponentsMapper[input.type];
+
+      return <FormComponent key={input.label} {...input} />;
+    })}
     <Recaptcha ref={recaptchaReference} sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY} onChange={handleChange} />
     <button type={`submit`} onSubmit={handleSubmit}>Send</button>
   </form>;
 };
 
-ContactForm.propTypes = {};
+ContactForm.propTypes = {
+  formInputs: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 ContactForm.defaultProps = {};
 
