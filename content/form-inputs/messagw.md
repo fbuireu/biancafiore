@@ -1,6 +1,6 @@
 ---
 key: contact-form-input
-name: Messagw
+name: Message
 type: textarea
 isRequired: true
 label: Message
