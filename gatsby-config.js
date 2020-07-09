@@ -89,13 +89,6 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `form-inputs`,
-        path: `${__dirname}/content/form-inputs`,
-      },
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
         name: `articles`,
         path: `${__dirname}/content/articles`,
       },
