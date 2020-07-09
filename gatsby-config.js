@@ -65,6 +65,7 @@ module.exports = {
         path: `${__dirname}/content/menu`,
       },
     },
+
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -151,7 +152,7 @@ module.exports = {
         enablePartialUpdates: true,
         queries: ALGOLIA_QUERIES,
         chunkSize: 10000,
-        matchFields: [`fields.slug`, `content.title`,`content.lastUpdated`]
+        matchFields: [`fields.slug`, `content.title`, `content.lastUpdated`],
       },
     },
     `gatsby-plugin-netlify`,
