@@ -88,26 +88,6 @@ collections:
       - { name: name, label: Name, required: true, widget: string }
       - { name: image, label: Image, required: true, widget: image, allow_multiple: false }
       - { name: description, label: Description, required: false, widget: string }
-  - name: formInputs
-    label: Form Inputs
-    label_singular: Form Input
-    identifier_field: name
-    slug: '{{slug}}'
-    folder: content/form-inputs
-    description: A list of all form inputs available.
-    create: true
-    editor:
-      preview: false
-    fields:
-      - { name: key, label: Key, required: true, widget: hidden, default: contact-form-input }
-      - { name: name, label: Name, required: true, widget: string }
-      - { name: type, label: Type, required: true, widget: select,
-          options: [
-          { label: 'Text', value: 'text' },
-          { label: 'Textarea', value: 'textarea'},
-          { label: 'Checkbox', value: 'checkbox' }]}
-      - { name: isRequired, label: Required, required: true, widget: boolean, default: true }
-      - { name: label, label: Label, required: true, widget: string }
   - name: blog
     label: Blog
     description: A list of all created articles
@@ -172,5 +152,14 @@ collections:
         show_preview_links: true
         fields:
           - { name: key, label: Key, required: true, widget: hidden, default: contact }
-          - { name: input, label: Input, required: true, widget: relation, collection: formInputs, searchFields: [name], valueField: name, displayFields: [name], multiple: true }
+          - { name: formInput, label: Form Input, required: false, widget: list,
+              fields: [
+              { name: name, label: Name, required: true, widget: string },
+              { name: type, label: Type, required: true, widget: select,
+                options: [
+                { label: 'Text', value: 'text' },
+                { label: 'Textarea', value: 'textarea'},
+                { label: 'Checkbox', value: 'checkbox' }]},
+              { name: isRequired, label: Required, required: true, widget: boolean },
+              { name: label, label: Label, required: true, widget: string }]}
           - { name: body, label: Body, required: true, widget: markdown }
