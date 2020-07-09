@@ -1,12 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const TextInput = ({ name, type, isRequired, label, isValid, errorMessage }) => <div>
-  <label>{label}:
-    <input type={type} name={name.toLowerCase()} required={isRequired} />
-  </label>
-  {!isValid && <div>{errorMessage}</div>}
-</div>;
+const TextInput = ({ name, type, isRequired, label, isValid, errorMessage }) => {
+  name = name.toLowerCase();
+    
+  return <div>
+    <label htmlFor={name}>{label}:
+      <input type={type} name={name} required={isRequired} />
+    </label>
+    {!isValid && <div>{errorMessage}</div>}
+  </div>;
+}
+;
 
 TextInput.propTypes = {
   name: PropTypes.string.isRequired,
