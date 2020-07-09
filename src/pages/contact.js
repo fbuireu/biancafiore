@@ -1,22 +1,51 @@
+import { graphql } from 'gatsby';
+import PropTypes from 'prop-types';
 import React from 'react';
 import Seo from '../components/atoms/Seo/Seo';
 import ContactForm from '../components/molecules/ContactForm/ContactForm';
 import Layout from '../components/templates/Layout/Layout';
 
-const Blog = () => {
+const Contact = ({ data }) => {
+  const { formInputs } = data.contact.edges[0].node.frontmatter;
+
   return <Layout>
     <Seo title="Contact" />
     <section className={`wrapper`}>
-      <ContactForm />
+      <ContactForm formInputs={formInputs} />
     </section>
   </Layout>;
 };
 
-Blog.propTypes = {};
+export const contactData = graphql`
+    query getContactData {
+        contact: allMarkdownRemark(
+            filter: { frontmatter: { key: { eq: "contact" }}}) {
+            edges {
+                node {
+                    html
+                    frontmatter {
+                        formInputs {
+                            name
+                            type
+                            isRequired
+                            label
+                            isValid
+                            errorMessage
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
 
-Blog.defaultProps = {};
+Contact.propTypes = {
+  data: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
-export default Blog;
+Contact.defaultProps = {};
+
+export default Contact;
 
 
 
