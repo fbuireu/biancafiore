@@ -152,14 +152,18 @@ collections:
         show_preview_links: true
         fields:
           - { name: key, label: Key, required: true, widget: hidden, default: contact }
-          - { name: formInput, label: Form Input, required: false, widget: list,
+          - { name: formInputs, label: Form Inputs, required: false, widget: list,
               fields: [
               { name: name, label: Name, required: true, widget: string },
               { name: type, label: Type, required: true, widget: select,
                 options: [
                 { label: 'Text', value: 'text' },
+                { label: 'Email', value: 'email' },
+                { label: 'Number', value: 'number' },
                 { label: 'Textarea', value: 'textarea'},
                 { label: 'Checkbox', value: 'checkbox' }]},
               { name: isRequired, label: Required, required: true, widget: boolean },
-              { name: label, label: Label, required: true, widget: string }]}
+              { name: label, label: Label, required: true, widget: string },
+              { name: isValid, label: isValid, required: true, widget: hidden, default: true },
+              { name: errorMessage, label: Error message, required: true, widget: string }]}
           - { name: body, label: Body, required: true, widget: markdown }
