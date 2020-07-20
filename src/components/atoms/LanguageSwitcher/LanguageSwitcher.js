@@ -4,7 +4,7 @@ import ArrowDown from '../../../assets/svg/arrow-down.svg';
 import { useLanguages } from '../../../utils/hooks/useLanguages';
 import './LanguageSwitcher.scss';
 
-export const LanguageSwitcher = () => {
+const LanguageSwitcher = () => {
   const [isMenuSelectorOpen, setIsMenuSelectorOpen] = useState(false),
     languages = useLanguages();
 
@@ -30,3 +30,5 @@ export const LanguageSwitcher = () => {
     </ul>
   </li>;
 };
+
+export default LanguageSwitcher;
