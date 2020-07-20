@@ -5,7 +5,7 @@ import ArrowUp from '../../../assets/svg/arrow-up.svg';
 import { useWindowSize } from '../../../utils/hooks/useWindowSize';
 import './ReadingProgress.scss';
 
-export const ReadingProgress = ({ scroll, articleProperties }) => {
+const ReadingProgress = ({ scroll, articleProperties }) => {
   let currentScroll = Math.abs(scroll),
     { height: windowHeight } = useWindowSize(),
     { offsetTop: articleOffsetTop, offsetHeight: articleHeight } = articleProperties,
