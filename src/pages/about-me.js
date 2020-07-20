@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import CityInformation from '../components/atoms/CityInformation/CityInformation';
 import Map from '../components/atoms/Map/Map';
-import Seo from '../components/atoms/Seo/Seo';
+import SEO from '../components/atoms/SEO/SEO';
 import Layout from '../components/templates/Layout/Layout';
 
 const AboutMe = ({ data }) => {
@@ -29,7 +29,7 @@ const AboutMe = ({ data }) => {
   };
 
   return <Layout>
-    <Seo title="Home" />
+    <SEO title="Home" />
     <Map cities={cities} showCityInformation={showCityInformation} />
     {!cityInformation ? <p dangerouslySetInnerHTML={{ __html: aboutMe.edges[0].node.html }} /> : <CityInformation cityInformation={cityInformation} />}
   </Layout>;
