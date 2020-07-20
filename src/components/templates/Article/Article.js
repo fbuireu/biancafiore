@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useScrollPosition } from '../../../utils/hooks/useScrollPosition';
 import Author from '../../atoms/Author/Author';
 import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
-import Seo from '../../atoms/Seo/Seo';
+import SEO from '../../atoms/SEO/SEO';
 import ShareButtons from '../../atoms/ShareButtons/ShareButtons';
 import RelatedArticles from '../../molecules/RelatedArticles/RelatedArticles';
 import Billboard from '../../organisms/Billboard/Billboard';
@@ -32,7 +32,7 @@ const Article = ({ data }) => {
   useScrollPosition(function setScrollPosition({ currentPosition }) { setScroll(currentPosition.y);});
 
   return <Layout>
-    <Seo title={article.frontmatter.content.title} />
+    <SEO title={article.frontmatter.content.title} />
     <Billboard {...article} author={author} tags={tags} />
     <section className={`wrapper article__wrapper`}>
       <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll} />
