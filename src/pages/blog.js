@@ -1,11 +1,11 @@
 import React from 'react';
-import Seo from '../components/atoms/Seo/Seo';
+import SEO from '../components/atoms/SEO/SEO';
 import BlogArticles from '../components/organisms/BlogArticles/BlogArticles';
 import Layout from '../components/templates/Layout/Layout';
 
 const Blog = () => {
   return <Layout>
-    <Seo title="Blog" />
+    <SEO title="Blog" />
     <section className={`wrapper`}>
       <BlogArticles />
     </section>
