@@ -1,7 +1,7 @@
 ---
 key: contact
 formInputs:
-  - name: contact-form
+  - name: form-name
     type: hidden
     isRequired: false
     label: ''
