@@ -63,7 +63,6 @@ const ContactForm = ({ formInputs, location }) => {
   };
 
   return <form ref={formReference}
-               action={`/contact/success`}
                method={`POST`}
                name={`Contact Form`}
                data-netlify={true}
