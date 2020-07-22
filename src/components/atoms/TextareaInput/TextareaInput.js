@@ -1,19 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const TextareaInput = ({ name, isRequired, label, value, isValid, errorMessage, onChange, onBlur }) => {
-  name = name.toLowerCase();
+const TextareaInput = ({ name, label, value, isValid, errorMessage, onChange, onBlur }) => <div>
+  <label htmlFor={name}>{label}:
+    <textarea name={name} value={value} onChange={onChange} onBlur={onBlur} />
+  </label>
+  {!isValid && <small>{errorMessage}</small>}
+</div>;
 
-  return <div>
-    <label htmlFor={name}>{label}:
-      <textarea name={name} value={value} required={isRequired} onChange={onChange} onBlur={onBlur} />
-    </label>
-    {!isValid && <div>{errorMessage}</div>}
-  </div>;
-};
 TextareaInput.propTypes = {
   name: PropTypes.string.isRequired,
-  isRequired: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   isValid: PropTypes.bool.isRequired,
