@@ -65,9 +65,10 @@ const ContactForm = ({ formInputs, location }) => {
   return <form ref={formReference}
                action={`/contact/success`}
                method={`POST`}
-               name={`contact`}
+               name={`Contact Form`}
                data-netlify={true}
                data-netlify-recaptcha={true}
+               data-netlify-honeypot={`bot-field`}
                onSubmit={event => handleSubmit(event)}>
     {formState.map(input => {
       let FormComponent = FormComponentsMapper[input.type];
