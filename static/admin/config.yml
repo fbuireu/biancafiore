@@ -154,7 +154,7 @@ collections:
           - { name: key, label: Key, required: true, widget: hidden, default: contact }
           - { name: formInputs, label: Form Inputs, required: false, widget: list,
               fields: [
-              { name: name, label: Name, required: true, widget: string },
+              { name: name, label: Name, required: true, widget: string, pattern: ['^[a-z]+$', 'This field only accepts lowercase values'] },
               { name: type, label: Type, required: true, widget: select,
                 options: [
                 { label: 'Text', value: 'text' },
