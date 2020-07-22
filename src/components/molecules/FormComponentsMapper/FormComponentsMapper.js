@@ -5,6 +5,7 @@ import TextInput from '../../atoms/TextInput/TextInput';
 const FormComponentsMapper = {
   text: TextInput,
   email: TextInput,
+  hidden: TextInput,
   textarea: TextareaInput,
 };
 
