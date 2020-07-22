@@ -47,7 +47,7 @@ const ContactForm = ({ formInputs, location }) => {
     formInputs.forEach(input => data[input.name] = input.value);
 
     const AXIOS_PARAMETERS = {
-      url: location.pathname,
+      url: `/contact/success`,
       method: `POST`,
       headers: { 'Content-Type': `application/x-www-form-urlencoded` },
       data: qs.stringify(data),
@@ -73,7 +73,7 @@ const ContactForm = ({ formInputs, location }) => {
     {formState.map(input => {
       let FormComponent = FormComponentsMapper[input.type];
 
-      return <FormComponent key={input.label} {...input} onChange={handleChange} onBlur={handleBlur} />;
+      return <FormComponent key={input.name} {...input} onChange={handleChange} onBlur={handleBlur} />;
     })}
     <Recaptcha ref={recaptchaReference} sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY} />
     <button type={`submit`} onSubmit={event => handleSubmit(event)}>Send</button>
