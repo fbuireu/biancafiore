@@ -40,7 +40,7 @@ const ContactForm = ({ formInputs }) => {
     let isValidForm = validateForm(scopedForm);
     setFormState([...scopedForm]);
 
-    if (!isValidForm || !recaptchaValue) return false;
+    if (!isValidForm) return false;
 
     formInputs.forEach(input => data[input.name] = input.value);
 
@@ -50,7 +50,10 @@ const ContactForm = ({ formInputs }) => {
         'Accept': `application/x-www-form-urlencoded;charset=UTF-8`,
         'Content-Type': `application/x-www-form-urlencoded`,
       },
-      body: { ...data },
+      body: encode({
+        'form-name': event.target.getAttribute(`name`),
+        ...data,
+      }),
     })
       .then(() => console.log(`OK`))
       .catch(error => alert(error));
