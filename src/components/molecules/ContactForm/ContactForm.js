@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import * as qs from 'query-string';
 import React, { useRef, useState } from 'react';
 import Recaptcha from 'react-google-recaptcha';
 import validateField from '../../../utils/form/validateField';
@@ -53,7 +52,7 @@ const ContactForm = ({ formInputs }) => {
       },
       body: encode({
         'form-name': `Contact Form`,
-        ...data
+        ...data,
       }),
     })
       .then(() => console.log(`OK`))
@@ -62,17 +61,18 @@ const ContactForm = ({ formInputs }) => {
 
   const encode = data => {
     return Object.keys(data)
-      .map((key) => encodeURIComponent(key) + `=` + encodeURIComponent(data[key]))
+      .map(key => encodeURIComponent(key) + `=` + encodeURIComponent(data[key]))
       .join(`&`);
   };
 
   return <form ref={formReference}
-               method={`POST`}
                name={`Contact Form`}
+               method={`POST`}
+               action={`/contact/success`}
                data-netlify={true}
-               data-netlify-recaptcha={true}
                data-netlify-honeypot={`bot-field`}
-               onSubmit={event => handleSubmit(event)}>
+               data-netlify-recaptcha={true}
+               onSubmit={handleSubmit}>
     {formState.map(input => {
       let FormComponent = FormComponentsMapper[input.type];
 
