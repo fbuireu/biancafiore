@@ -50,10 +50,7 @@ const ContactForm = ({ formInputs }) => {
         'Accept': `application/x-www-form-urlencoded;charset=UTF-8`,
         'Content-Type': `application/x-www-form-urlencoded`,
       },
-      body: encode({
-        'form-name': `Contact Form`,
-        ...data,
-      }),
+      body: data,
     })
       .then(() => console.log(`OK`))
       .catch(error => alert(error));
