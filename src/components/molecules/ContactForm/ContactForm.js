@@ -1,4 +1,3 @@
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import * as qs from 'query-string';
 import React, { useRef, useState } from 'react';
@@ -7,7 +6,7 @@ import validateField from '../../../utils/form/validateField';
 import validateForm from '../../../utils/form/validateForm';
 import FormComponentsMapper from '../FormComponentsMapper/FormComponentsMapper';
 
-const ContactForm = ({ formInputs, location }) => {
+const ContactForm = ({ formInputs }) => {
   const [formState, setFormState] = useState(formInputs);
   const formReference = useRef(null);
   const recaptchaReference = useRef(null);
@@ -46,20 +45,16 @@ const ContactForm = ({ formInputs, location }) => {
 
     formInputs.forEach(input => data[input.name] = input.value);
 
-    const AXIOS_PARAMETERS = {
-      method: `post`,
-      url: `/contact/success`,
-      headers: { 'Content-Type': `application/x-www-form-urlencoded` },
-      data: qs.stringify(data),
-    };
-
-    axios(AXIOS_PARAMETERS)
-      .then(response => {
-        console.log(`OK`, response);
-      })
-      .catch(error =>
-        console.log(`ERROR`, error),
-      );
+    fetch(`/`, {
+      method: `POST`,
+      headers: {
+        'Accept': `application/x-www-form-urlencoded;charset=UTF-8`,
+        'Content-Type': `application/x-www-form-urlencoded`,
+      },
+      body: qs.stringify(data),
+    })
+      .then(() => console.log(`OK`))
+      .catch(error => alert(error));
   };
 
   return <form ref={formReference}
@@ -75,13 +70,12 @@ const ContactForm = ({ formInputs, location }) => {
       return <FormComponent key={input.name} {...input} onChange={handleChange} onBlur={handleBlur} />;
     })}
     <Recaptcha ref={recaptchaReference} sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY} />
-    <button type={`submit`} onSubmit={event => handleSubmit(event)}>Send</button>
+    <button type={`submit`}>Send</button>
   </form>;
 };
 
 ContactForm.propTypes = {
   formInputs: PropTypes.arrayOf(PropTypes.object).isRequired,
-  location: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 ContactForm.defaultProps = {};
