@@ -21,12 +21,12 @@ const CustomSearch = ({ currentRefinement, refine }) => {
                className={`filter__search__input ${currentRefinement.length ? `--has-value` : ``}`}
                type={`search`}
                value={currentRefinement}
-               onChange={event => searchQuery(event)} />
+               onChange={searchQuery} />
         <label htmlFor={`filter__search__input`}
                className={`filter__search__label`}>Find anything but Nemo</label>
         <div className={`filter__search__input__border`} />
         <div className={`filter__search__buttons`}>
-          {currentRefinement.length ? <Close className={`filter__search__buttons__reset-query`} onClick={event => resetQuery(event)} /> : <Lens />}
+          {currentRefinement.length ? <Close className={`filter__search__buttons__reset-query`} onClick={resetQuery} /> : <Lens />}
         </div>
       </div>
       <SearchStats />
