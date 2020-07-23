@@ -51,10 +51,19 @@ const ContactForm = ({ formInputs }) => {
         'Accept': `application/x-www-form-urlencoded;charset=UTF-8`,
         'Content-Type': `application/x-www-form-urlencoded`,
       },
-      body: qs.stringify(data),
+      body: encode({
+        'form-name': `Contact Form`,
+        ...data
+      }),
     })
       .then(() => console.log(`OK`))
       .catch(error => alert(error));
+  };
+
+  const encode = data => {
+    return Object.keys(data)
+      .map((key) => encodeURIComponent(key) + `=` + encodeURIComponent(data[key]))
+      .join(`&`);
   };
 
   return <form ref={formReference}
