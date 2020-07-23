@@ -5,13 +5,13 @@ import SEO from '../components/atoms/SEO/SEO';
 import ContactForm from '../components/molecules/ContactForm/ContactForm';
 import Layout from '../components/templates/Layout/Layout';
 
-const Contact = ({ data, location }) => {
+const Contact = ({ data }) => {
   const { formInputs } = data.contact.edges[0].node.frontmatter;
 
   return <Layout>
     <SEO title="Contact" />
     <section className={`wrapper`}>
-      <ContactForm formInputs={formInputs} location={location} />
+      <ContactForm formInputs={formInputs} />
     </section>
   </Layout>;
 };
@@ -42,7 +42,6 @@ export const contactData = graphql`
 
 Contact.propTypes = {
   data: PropTypes.objectOf(PropTypes.object).isRequired,
-  location: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 Contact.defaultProps = {};
