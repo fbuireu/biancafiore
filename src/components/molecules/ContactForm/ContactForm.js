@@ -47,8 +47,8 @@ const ContactForm = ({ formInputs, location }) => {
     formInputs.forEach(input => data[input.name] = input.value);
 
     const AXIOS_PARAMETERS = {
+      method: `post`,
       url: `/contact/success`,
-      method: `POST`,
       headers: { 'Content-Type': `application/x-www-form-urlencoded` },
       data: qs.stringify(data),
     };
