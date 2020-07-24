@@ -72,7 +72,7 @@ const ContactForm = ({ formInputs }) => {
                action={`/`}
                data-netlify={true}
                data-netlify-honeypot={`bot-field`}
-               data-netlify-recaptcha={true}
+               // data-netlify-recaptcha={true}
                onSubmit={handleSubmit}>
     {formState.map(input => {
       let FormComponent = FormComponentsMapper[input.type];
