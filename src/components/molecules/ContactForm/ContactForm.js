@@ -1,3 +1,4 @@
+import { navigate } from 'gatsby-link';
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import Recaptcha from 'react-google-recaptcha';
@@ -55,7 +56,7 @@ const ContactForm = ({ formInputs }) => {
         ...data,
       }),
     })
-      .then(() => console.log(`OK`))
+      .then(() => navigate(`/success`))
       .catch(error => alert(error));
   };
 
