@@ -68,7 +68,7 @@ const ContactForm = ({ formInputs }) => {
   return <form ref={formReference}
                name={`Contact Form`}
                method={`POST`}
-               action={`/contact/success`}
+               action={`/success`}
                data-netlify={true}
                data-netlify-honeypot={`bot-field`}
                data-netlify-recaptcha={true}
