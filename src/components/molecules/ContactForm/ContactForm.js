@@ -41,7 +41,7 @@ const ContactForm = ({ formInputs }) => {
     let isValidForm = validateForm(scopedForm);
     setFormState([...scopedForm]);
 
-    if (!isValidForm) return false;
+    // if (!isValidForm) return false;
 
     formInputs.forEach(input => data[input.name] = input.value);
 
