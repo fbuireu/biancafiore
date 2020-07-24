@@ -35,7 +35,7 @@ const ContactForm = ({ formInputs }) => {
   const handleSubmit = event => {
     event.preventDefault();
     const data = {};
-    const recaptchaValue = recaptchaReference.current.getValue();
+    // const recaptchaValue = recaptchaReference.current.getValue();
     const scopedForm = [...formState];
 
     let isValidForm = validateForm(scopedForm);
@@ -56,7 +56,7 @@ const ContactForm = ({ formInputs }) => {
         ...data,
       }),
     })
-      .then(() => navigate(`/success`))
+      .then(() => console.log(`OK`))
       .catch(error => alert(error));
   };
 
@@ -69,7 +69,7 @@ const ContactForm = ({ formInputs }) => {
   return <form ref={formReference}
                name={`Contact Form`}
                method={`POST`}
-               action={`/success`}
+               action={`/`}
                data-netlify={true}
                data-netlify-honeypot={`bot-field`}
                data-netlify-recaptcha={true}
@@ -79,7 +79,7 @@ const ContactForm = ({ formInputs }) => {
 
       return <FormComponent key={input.name} {...input} onChange={handleChange} onBlur={handleBlur} />;
     })}
-    <Recaptcha ref={recaptchaReference} sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY} />
+    {/*<Recaptcha ref={recaptchaReference} sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY} />*/}
     <button type={`submit`}>Send</button>
   </form>;
 };
