@@ -48,7 +48,6 @@ const ContactForm = ({ formInputs }) => {
     fetch(`/`, {
       method: `POST`,
       headers: {
-        'Accept': `application/x-www-form-urlencoded;charset=UTF-8`,
         'Content-Type': `application/x-www-form-urlencoded`,
       },
       body: encode({
