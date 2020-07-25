@@ -22,9 +22,6 @@ const ContactForm = ({ formInputs }) => {
   const updateField = ({ value, name }) => {
     const scopedForm = [...formState];
     const field = scopedForm.find(field => field.name === name);
-    console.log(`value`, value);
-    console.log(`name`, name);
-    console.log(`field`, field);
 
     field.value = value;
     field.isValid = true;
@@ -43,8 +40,10 @@ const ContactForm = ({ formInputs }) => {
 
     if (!isValidForm) return false;
 
-    formInputs.forEach(input => data[input.name] = input.value);
-    console.log(`data`, data);
+    let recaptchaValue = formInputs.find(input => input.name === `recaptcha`).value;
+
+    formInputs.forEach(input => input.willBeSubmitted && (data[input.name] = input.value));
+
     fetch(`/`, {
       method: `POST`,
       headers: {
@@ -52,6 +51,7 @@ const ContactForm = ({ formInputs }) => {
       },
       body: encode({
         'form-name': event.target.getAttribute(`name`),
+        'g-recaptcha-response': recaptchaValue,
         ...data,
       }),
     })
@@ -70,7 +70,7 @@ const ContactForm = ({ formInputs }) => {
     {formState.map(input => {
       let FormComponent = FormComponentsMapper[input.type];
 
-      return <FormComponent key={input.name} {...input} onChange={handleChange} onBlur={handleBlur} />;
+      return <FormComponent key={input.name} {...input} onChange={handleChange} onBlur={handleBlur} updateField={updateField} />;
     })}
     <button type={`submit`}>Send</button>
   </form>;
