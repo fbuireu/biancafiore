@@ -8,7 +8,9 @@ const validateField = (name, field) => {
     case`email`:
       return field.isValid = !!field.value.match(IS_VALID_EMAIL);
     case`message`:
-      return field.isValid = !!field.value.length;
+      return field.isValid = !!field.value;
+    case`recaptcha`:
+      return field.isValid = !!field.value;
     default:
       field.errorMessage = `Something went wrong`;
 
