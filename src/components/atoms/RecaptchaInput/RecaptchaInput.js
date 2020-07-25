@@ -2,14 +2,13 @@ import PropTypes from 'prop-types';
 import React, { useRef } from 'react';
 import Recaptcha from 'react-google-recaptcha';
 
-const RecaptchaInput = ({ name, isValid, errorMessage, onChange }) => {
+const RecaptchaInput = ({ name, isValid, errorMessage, updateField }) => {
   const recaptchaReference = useRef(null);
 
   const handleChange = async () => {
     let recaptchaValue = recaptchaReference.current.getValue();
-    console.log(recaptchaValue);
 
-    onChange({ value: recaptchaValue, name: `recaptcha` });
+    updateField({ value: recaptchaValue, name: `recaptcha` });
   };
 
   return <div>
@@ -27,7 +26,7 @@ RecaptchaInput.propTypes = {
   value: PropTypes.string.isRequired,
   isValid: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  updateField: PropTypes.func.isRequired,
 };
 
 RecaptchaInput.defaultProps = {};
