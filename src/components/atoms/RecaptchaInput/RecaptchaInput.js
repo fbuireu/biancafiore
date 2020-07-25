@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Recaptcha from 'react-google-recaptcha';
 
-const RecaptchaInput = ({ name, isValid, errorMessage, onChange: updateField }) => {
-  const handleChange = value => updateField({ value: value, name: `recaptcha` });
+const RecaptchaInput = ({ name, isValid, errorMessage, onChange }) => {
+  const handleChange = value =>  onChange({ value: value, name: `recaptcha` });
 
   return <div>
     <label htmlFor={name}>
