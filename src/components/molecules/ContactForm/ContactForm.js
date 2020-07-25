@@ -17,15 +17,19 @@ const ContactForm = ({ formInputs }) => {
   const handleBlur = ({ target }) => {
     const { name, field } = updateField(target);
     validateField(name, field);
+    console.log(`handleBlur`,field);
   };
 
   const updateField = ({ value, name }) => {
     const scopedForm = [...formState];
     const field = scopedForm.find(field => field.name === name);
-
     field.value = value;
     field.isValid = true;
     setFormState([...scopedForm]);
+
+    console.log(`updateField`,field);
+    console.log(`value`,field);
+    console.log(`name`,name);
 
     return { name, field };
   };
