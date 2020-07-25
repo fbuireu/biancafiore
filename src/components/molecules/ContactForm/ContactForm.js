@@ -17,7 +17,7 @@ const ContactForm = ({ formInputs }) => {
   const handleBlur = ({ target }) => {
     const { name, field } = updateField(target);
     validateField(name, field);
-    console.log(`handleBlur`,field);
+    console.log(`handleBlur`, field);
   };
 
   const updateField = ({ value, name }) => {
@@ -41,7 +41,7 @@ const ContactForm = ({ formInputs }) => {
     if (!isValidForm) return false;
 
     formInputs.forEach(input => data[input.name] = input.value);
-
+    console.log(`data`, data);
     fetch(`/`, {
       method: `POST`,
       headers: {
