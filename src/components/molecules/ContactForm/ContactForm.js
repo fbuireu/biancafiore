@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import encode from '../../../utils/form/encode';
+import resetForm from '../../../utils/form/resetForm';
 import validateField from '../../../utils/form/validateField';
 import validateForm from '../../../utils/form/validateForm';
 import FormComponentsMapper from '../FormComponentsMapper/FormComponentsMapper';
 
 const ContactForm = ({ formInputs }) => {
   const [formState, setFormState] = useState(formInputs);
-  const formReference = useRef(null);
 
   const handleChange = ({ target }) => {
     const { name, field } = updateField(target);
@@ -40,27 +40,24 @@ const ContactForm = ({ formInputs }) => {
 
     if (!isValidForm) return false;
 
-    let recaptchaValue = formInputs.find(input => input.name === `recaptcha`).value;
+    formInputs.forEach(input => data[input.name] = input.value);
 
-    formInputs.forEach(input => input.willBeSubmitted && (data[input.name] = input.value));
-
-    fetch(`/`, {
+    const REQUEST_PARAMETERS = {
       method: `POST`,
-      headers: {
-        'Content-Type': `application/x-www-form-urlencoded`,
-      },
-      body: encode({
-        'form-name': event.target.getAttribute(`name`),
-        'g-recaptcha-response': recaptchaValue,
-        ...data,
-      }),
-    })
-      .then(() => console.log(`OK`))
+      headers: { 'Content-Type': `application/x-www-form-urlencoded` },
+      body: encode({ ...data }),
+    };
+
+    fetch(`/`, REQUEST_PARAMETERS)
+      .then(() => {
+        console.log(`OK`);
+        resetForm(scopedForm);
+        setFormState([...scopedForm]);
+      })
       .catch(error => alert(error));
   };
 
-  return <form ref={formReference}
-               name={`Contact Form`}
+  return <form name={`Contact Form`}
                method={`POST`}
                action={`/`}
                data-netlify={true}
@@ -70,7 +67,7 @@ const ContactForm = ({ formInputs }) => {
     {formState.map(input => {
       let FormComponent = FormComponentsMapper[input.type];
 
-      return <FormComponent key={input.name} {...input} onChange={handleChange} onBlur={handleBlur} updateField={updateField} />;
+      return <FormComponent key={input.name} {...input} onChange={handleChange} onBlur={handleBlur} />;
     })}
     <button type={`submit`}>Send</button>
   </form>;
