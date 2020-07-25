@@ -36,5 +36,12 @@ formInputs:
     isValid: true
     label: Message
     errorMessage: Imagine my excitement in receiving your message. Now imagine how sad I was when I found out it was empty. You don't want to make me sad, do you?
+  - name: recaptcha
+    type: recaptcha
+    isRequired: true
+    label: ''
+    value: ''
+    isValid: true
+    errorMessage: Mr. Robot?
 ---
 Wanna get in touch?
