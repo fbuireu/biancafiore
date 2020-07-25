@@ -168,6 +168,5 @@ collections:
               { name: label, label: Label, required: true, widget: string },
               { name: value, label: Value, required: false, widget: string },
               { name: isValid, label: isValid, required: true, widget: hidden, default: true },
-              { name: errorMessage, label: Error message, required: true, widget: string },
-              { name: willBeSubmitted, label: Will be subbmited?, required: true, widget: boolean }]}
+              { name: errorMessage, label: Error message, required: true, widget: string }]}
           - { name: body, label: Body, required: true, widget: markdown }
