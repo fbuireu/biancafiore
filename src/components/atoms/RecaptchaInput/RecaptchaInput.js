@@ -9,7 +9,7 @@ const RecaptchaInput = ({ name, isValid, errorMessage, onChange: updateField }) 
     const recaptchaValue = recaptchaReference.current.getValue();
     console.log(`recaptcha value`, value);
     console.log(`recaptchaValue`, recaptchaValue);
-    if (value) updateField(value, `recaptcha`);
+    if (value) updateField({ value: value, name: `recaptcha` });
   };
 
   return <div>
