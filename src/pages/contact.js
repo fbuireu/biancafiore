@@ -32,6 +32,7 @@ export const contactData = graphql`
                             value
                             isValid
                             errorMessage
+                            willBeSubmitted
                         }
                     }
                 }
