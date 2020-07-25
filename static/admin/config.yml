@@ -161,12 +161,12 @@ collections:
                 { label: 'Email', value: 'email' },
                 { label: 'Number', value: 'number' },
                 { label: 'Textarea', value: 'textarea'},
-                { label: 'Checkbox', value: 'checkbox' }
+                { label: 'Checkbox', value: 'checkbox' },
                 { label: 'reCAPTCHA', value: 'recaptcha' }]},
               { name: isRequired, label: Required, required: true, widget: boolean },
               { name: label, label: Label, required: true, widget: string },
               { name: value, label: Value, required: false, widget: string },
               { name: isValid, label: isValid, required: true, widget: hidden, default: true },
-              { name: errorMessage, label: Error message, required: true, widget: string }
+              { name: errorMessage, label: Error message, required: true, widget: string },
               { name: willBeSubmitted, label: Will be subbmited?, required: true, widget: boolean }]}
           - { name: body, label: Body, required: true, widget: markdown }
