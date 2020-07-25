@@ -157,6 +157,7 @@ collections:
               { name: name, label: Name, required: true, widget: string, pattern: ['^[a-z]+$', 'This field only accepts lowercase values'] },
               { name: type, label: Type, required: true, widget: select,
                 options: [
+                { label: 'Hidden', value: 'hidden' },
                 { label: 'Text', value: 'text' },
                 { label: 'Email', value: 'email' },
                 { label: 'Number', value: 'number' },
