@@ -41,7 +41,7 @@ formInputs:
     label: Message
     errorMessage: Imagine my excitement in receiving your message. Now imagine how sad I was when I found out it was empty. You don't want to make me sad, do you?
     willBeSubmitted: true
-  - name: recaptcha
+  - name: g-recaptcha-response
     type: recaptcha
     isRequired: true
     label: ''
