@@ -4,6 +4,7 @@ import Recaptcha from 'react-google-recaptcha';
 
 const RecaptchaInput = ({ name, isValid, errorMessage, onChange: updateField }) => {
   const handleChange = value => {
+    console.log(`recaptcha value`, value);
     if (value) updateField(value, `recaptcha`);
   };
 
