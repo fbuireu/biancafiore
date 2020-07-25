@@ -9,7 +9,7 @@ const validateField = (name, field) => {
       return field.isValid = !!field.value.match(IS_VALID_EMAIL);
     case`message`:
       return field.isValid = !!field.value;
-    case`recaptcha`:
+    case`g-recaptcha-response`:
       return field.isValid = !!field.value;
     default:
       field.errorMessage = `Something went wrong`;
