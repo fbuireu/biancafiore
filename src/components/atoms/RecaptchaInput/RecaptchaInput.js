@@ -1,22 +1,13 @@
 import PropTypes from 'prop-types';
-import React, { useRef } from 'react';
+import React from 'react';
 import Recaptcha from 'react-google-recaptcha';
 
 const RecaptchaInput = ({ name, isValid, errorMessage, onChange: updateField }) => {
-  const recaptchaReference = useRef(null);
-
-  const handleChange = value => {
-    const recaptchaValue = recaptchaReference.current.getValue();
-    console.log(`recaptcha value`, value);
-    console.log(`recaptchaValue`, recaptchaValue);
-    if (value) updateField({ value: value, name: `recaptcha` });
-  };
+  const handleChange = value => updateField({ value: value, name: `recaptcha` });
 
   return <div>
     <label htmlFor={name}>
-      <Recaptcha sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY}
-                 ref={recaptchaReference}
-                 onChange={handleChange} />
+      <Recaptcha sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY} onChange={handleChange} />
     </label>
     {!isValid && <small>{errorMessage}</small>}
   </div>;
