@@ -27,10 +27,6 @@ const ContactForm = ({ formInputs }) => {
     field.isValid = true;
     setFormState([...scopedForm]);
 
-    console.log(`updateField`,field);
-    console.log(`value`,field);
-    console.log(`name`,name);
-
     return { name, field };
   };
 
