@@ -42,7 +42,7 @@ const ContactForm = ({ formInputs }) => {
 
     let recaptchaValue = formInputs.find(input => input.name === `recaptcha`).value;
 
-    formInputs.forEach(input => input.willBeSubmitted && (data[input.name] = input.value));
+    formInputs.forEach(input => (data[input.name] = input.value));
 
     fetch(`/`, {
       method: `POST`,
@@ -50,8 +50,8 @@ const ContactForm = ({ formInputs }) => {
         'Content-Type': `application/x-www-form-urlencoded`,
       },
       body: encode({
-        'form-name': event.target.getAttribute(`name`),
-        'g-recaptcha-response': recaptchaValue,
+        // 'form-name': event.target.getAttribute(`name`),
+        // 'g-recaptcha-response': recaptchaValue,
         ...data,
       }),
     })
