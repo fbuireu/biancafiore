@@ -4,9 +4,10 @@ import Recaptcha from 'react-google-recaptcha';
 
 const RecaptchaInput = ({ name, isValid, errorMessage, onChange }) => {
   const recaptchaReference = useRef(null);
+
   const handleChange = () => {
     let recaptchaValue = recaptchaReference.current.getValue();
-    console.log(`a`,recaptchaValue);
+
     onChange({ value: recaptchaValue, name: `recaptcha` });
   };
 
