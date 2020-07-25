@@ -1,7 +1,6 @@
-import { navigate } from 'gatsby-link';
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
-import Recaptcha from 'react-google-recaptcha';
+import encode from '../../../utils/form/encode';
 import validateField from '../../../utils/form/validateField';
 import validateForm from '../../../utils/form/validateForm';
 import FormComponentsMapper from '../FormComponentsMapper/FormComponentsMapper';
@@ -9,7 +8,6 @@ import FormComponentsMapper from '../FormComponentsMapper/FormComponentsMapper';
 const ContactForm = ({ formInputs }) => {
   const [formState, setFormState] = useState(formInputs);
   const formReference = useRef(null);
-  const recaptchaReference = useRef(null);
 
   const handleChange = ({ target }) => {
     const { name, field } = updateField(target);
@@ -35,13 +33,12 @@ const ContactForm = ({ formInputs }) => {
   const handleSubmit = event => {
     event.preventDefault();
     const data = {};
-    // const recaptchaValue = recaptchaReference.current.getValue();
     const scopedForm = [...formState];
 
     let isValidForm = validateForm(scopedForm);
     setFormState([...scopedForm]);
 
-    // if (!isValidForm) return false;
+    if (!isValidForm) return false;
 
     formInputs.forEach(input => data[input.name] = input.value);
 
@@ -59,26 +56,19 @@ const ContactForm = ({ formInputs }) => {
       .catch(error => alert(error));
   };
 
-  const encode = data => {
-    return Object.keys(data)
-      .map(key => encodeURIComponent(key) + `=` + encodeURIComponent(data[key]))
-      .join(`&`);
-  };
-
   return <form ref={formReference}
                name={`Contact Form`}
                method={`POST`}
                action={`/`}
                data-netlify={true}
                data-netlify-honeypot={`bot-field`}
-               // data-netlify-recaptcha={true}
+               data-netlify-recaptcha={true}
                onSubmit={handleSubmit}>
     {formState.map(input => {
       let FormComponent = FormComponentsMapper[input.type];
 
       return <FormComponent key={input.name} {...input} onChange={handleChange} onBlur={handleBlur} />;
     })}
-    {/*<Recaptcha ref={recaptchaReference} sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY} />*/}
     <button type={`submit`}>Send</button>
   </form>;
 };
