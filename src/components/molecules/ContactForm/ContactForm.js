@@ -7,7 +7,7 @@ import validateForm from '../../../utils/form/validateForm';
 import FormComponentsMapper from '../FormComponentsMapper/FormComponentsMapper';
 
 const ContactForm = ({ formInputs }) => {
-  const [formState, setFormState] = useState(formInputs);
+  const [formState, updateFormState] = useState(formInputs);
 
   const handleChange = ({ target }) => {
     const { name, field } = updateField(target);
@@ -25,7 +25,7 @@ const ContactForm = ({ formInputs }) => {
 
     field.value = value;
     field.isValid = true;
-    setFormState([...scopedForm]);
+    updateFormState([...scopedForm]);
 
     return { name, field };
   };
@@ -36,7 +36,7 @@ const ContactForm = ({ formInputs }) => {
     const scopedForm = [...formState];
 
     let isValidForm = validateForm(scopedForm);
-    setFormState([...scopedForm]);
+    updateFormState([...scopedForm]);
 
     if (!isValidForm) return false;
 
@@ -52,7 +52,7 @@ const ContactForm = ({ formInputs }) => {
       .then(() => {
         console.log(`OK`);
         resetForm(scopedForm);
-        setFormState([...scopedForm]);
+        updateFormState([...scopedForm]);
       })
       .catch(error => alert(error));
   };
