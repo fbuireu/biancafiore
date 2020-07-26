@@ -67,6 +67,12 @@ button {
   outline: none;
 }
 
+input,
+textarea {
+  border: none;
+  outline: none;
+}
+
 input[type='search'] {
   &::-webkit-search-decoration,
   &::-webkit-search-cancel-button,
