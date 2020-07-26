@@ -1,0 +1,28 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.recaptcha-input__wrapper {
+  display: flex;
+  flex-flow: column wrap;
+  margin-bottom: 2rem;
+  position: relative;
+
+  * > div {
+    margin: 0 auto;
+  }
+}
+
+.recaptcha-input__label__text {
+  margin-bottom: .25rem;
+}
+
+.recaptcha-input__error-message {
+  @include typography-settings(-2);
+  @include font-properties(primary, bold);
+  bottom: -2rem;
+  color: color(error);
+  left: 0;
+  position: absolute;
+  right: 0;
+  transform: translateY(-100%);
+}
