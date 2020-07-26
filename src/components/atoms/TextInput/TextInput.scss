@@ -1,0 +1,45 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.text-input__wrapper:not(.--is-hidden) {
+  display: flex;
+  flex-flow: column wrap;
+  margin-bottom: 2rem;
+  position: relative;
+
+  .text-input__label__text {
+    margin-bottom: .25rem;
+  }
+}
+
+.text-input__label {
+  @include font-properties(primary, bold);
+}
+
+.text-input {
+  border-radius: $global-border-radius;
+  box-shadow: 0 0 0 2px color(primary, primary-light-2);
+  padding: .5rem .25rem;
+  transition: box-shadow .3s ease;
+
+  &:hover {
+    box-shadow: 0 0 0 2px color(primary, primary-light-1);
+  }
+
+  &:active,
+  &:focus,
+  &:focus-within {
+    box-shadow: 0 0 0 2px color(primary,primary-dark-1);
+  }
+}
+
+.text-input__error-message {
+  @include typography-settings(-2);
+  @include font-properties(primary, bold);
+  bottom: -2rem;
+  color: color(error);
+  left: 0;
+  position: absolute;
+  right: 0;
+  transform: translateY(-100%);
+}
