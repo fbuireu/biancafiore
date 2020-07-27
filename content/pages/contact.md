@@ -8,13 +8,6 @@ formInputs:
     value: 'Contact Form'
     isValid: true
     errorMessage: ''
-  - name: bot-field
-    type: hidden
-    isRequired: false
-    label: ''
-    value: ''
-    isValid: true
-    errorMessage: ''
   - name: name
     type: text
     isRequired: true
