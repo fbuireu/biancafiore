@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Highlight } from 'react-instantsearch-dom';
 import slugify from 'slugify';
-import Label from '../../assets/svg/label.svg';
+import Label from '../../../assets/svg/label.svg';
 
 const Tag = ({ hit }) => <ul className={`article__tags__list`}>
   <IntlContextConsumer>
