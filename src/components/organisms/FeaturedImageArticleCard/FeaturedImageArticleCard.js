@@ -6,7 +6,7 @@ import ArticleHitSubtitle from '../../atoms/ArticleHitSubtitle/ArticleHitSubtitl
 import ArticleHitTitle from '../../atoms/ArticleHitTitle/ArticleHitTitle';
 import ReadingTime from '../../atoms/ReadingTime/ReadingTime';
 import Summary from '../../atoms/Summary/Summary';
-import ArticleHitTag from '../../molecules/ArticleHitTag';
+import ArticleHitTag from '../../molecules/ArticleHitTag/ArticleHitTag';
 
 export const FeaturedImageArticleCard = article => <li className={`article-card__item ${article.content.isFeaturedArticle ? `--is-featured` : ``}`}>
   <article className={`article-card__item__inner`}>
