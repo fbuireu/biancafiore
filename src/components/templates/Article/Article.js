@@ -1,6 +1,7 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
+import sanitizeHtml from 'sanitize-html';
 import { useScrollPosition } from '../../../utils/hooks/useScrollPosition';
 import Author from '../../atoms/Author/Author';
 import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
@@ -36,7 +37,7 @@ const Article = ({ data }) => {
     <Billboard {...article} author={author} tags={tags} />
     <section className={`wrapper article__wrapper`}>
       <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll} />
-      <article ref={articleReference} dangerouslySetInnerHTML={{ __html: article.html }} />
+      <article ref={articleReference} dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.html) }} />
       <Author author={author} />
       <RelatedArticles relatedArticles={relatedArticles.edges} />
     </section>
