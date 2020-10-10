@@ -44,6 +44,7 @@
     "gatsby-transformer-sharp": "^2.5.4",
     "instantsearch-rheostat-range-slider-react": "^0.0.2",
     "lodash.orderby": "^4.6.0",
+    "markdown-to-jsx": "^7.0.1",
     "netlify-cms-app": "^2.11.29",
     "netlify-identity-widget": "^1.5.6",
     "node-sass": "^4.13.1",
@@ -58,7 +59,6 @@
     "react-select": "^3.1.0",
     "react-share": "^4.1.0",
     "rheostat": "2.2.0",
-    "sanitize-html": "^2.1.0",
     "slugify": "^1.4.0",
     "source-map-loader": "^0.2.4"
   },
