@@ -1,4 +1,4 @@
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
 
   const presets = [
@@ -8,9 +8,10 @@ module.exports = function(api) {
 
   const plugins = [
     `@babel/plugin-syntax-dynamic-import`,
+    `@babel/plugin-proposal-optional-chaining`,
     `@babel/plugin-proposal-class-properties`,
     `@babel/plugin-transform-classes`,
-    `@babel/plugin-transform-runtime`
+    `@babel/plugin-transform-runtime`,
   ];
 
   return { presets, plugins };
