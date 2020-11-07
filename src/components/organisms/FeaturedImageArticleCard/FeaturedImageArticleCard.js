@@ -14,7 +14,7 @@ export const FeaturedImageArticleCard = article => <li className={`article-card_
                      fluid={[
                        `linear-gradient(rgba(0,0,0, .5), rgba(0, 0, 0, .8))`,
                        article.content.featuredImage.childImageSharp.fluid]}>
-      <Link to={`/${article.language.toLowerCase()}/blog${article.fields.slug}`}
+      <Link to={`/${article.language.substring(0, 2).toLowerCase()}/blog${article.fields.slug}`}
             className={`article-card__link`}>
         <ArticleHitTitle hit={article} />
         <ArticleHitSubtitle hit={article} />
