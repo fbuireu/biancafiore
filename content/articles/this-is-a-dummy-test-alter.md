@@ -1,6 +1,6 @@
 ---
 key: article
-language: English
+language: Catalan
 author: Bianca Fiore
 seo:
   slug: this-is-a-dummy-test-alter
