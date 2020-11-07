@@ -100,8 +100,8 @@ collections:
     show_preview_links: true
     fields:
       - { name: key, label: Key, required: true, widget: hidden, default: article }
-      - { name: language, label: Language, required: true, widget: relation, collection: languages, searchFields: [name, isoCode], valueField: isoCode, displayFields: [name] }
-      - { name: author, label: Author, required: true, widget: relation, collection: authors, searchFields: [name], valueField: name, displayFields: [name], default: Bianca Fiore }
+      - { name: language, label: Language, required: true, widget: relation, collection: languages, search_fields: [name, isoCode], value_field: name, display_fields: [name, isoCode] }
+      - { name: author, label: Author, required: true, widget: relation, collection: authors, search_fields: [name], value_field: name, display_fields: [name], default: Bianca Fiore }
       - { name: seo, label: SEO, widget: object, collapsed: true,
           fields: [
           { name: metaDescription, label: Meta description, required: true, widget: text },
@@ -110,12 +110,12 @@ collections:
           fields: [
           { name: title, label: Title, required: true, widget: string },
           { name: summary, label: Summary, required: false, widget: string },
-          { name: publishDate, label: Publish date, required: false, widget: datetime, default: '', dateFormat: MM/DD/YYYY, timeformat: false, format: L },
-          { name: lastUpdated, label: Last updated, required: false, widget: datetime, default: '', dateFormat: MM/DD/YYYY, timeformat: false, format: L },
-          { name: readingTime, label: Reading time, required: false, widget: number, default: '', valueType: int, min: 0, max: 25 },
+          { name: publishDate, label: Publish date, required: false, widget: datetime, date_format: MM/DD/YYYY, time_format: false, format: L },
+          { name: lastUpdated, label: Last updated, required: false, widget: datetime, date_format: MM/DD/YYYY, time_format: false, format: L },
+          { name: readingTime, label: Reading time, required: false, widget: number, value_type: int, min: 0, max: 45 },
           { name: isFeaturedArticle, label: Featured Article, required: false, widget: boolean },
           { name: featuredImage, label: Featured Image, required: false, widget: image, allow_multiple: false },
-          { name: tags, label: Tags, required: false, widget: relation, collection: tags, searchFields: [name], valueField: name, displayFields: [name], multiple: true }]}
+          { name: tags, label: Tags, required: false, widget: relation, collection: tags, search_fields: [name], value_field: name, display_fields: [name], multiple: true }]}
       - { name: body, label: Body, required: true, widget: markdown }
   - name: pages
     label: Pages
@@ -144,7 +144,7 @@ collections:
         show_preview_links: true
         fields:
           - { name: key, label: Key, required: true, widget: hidden, default: about-me }
-          - { name: cities, label: Cities, required: true, widget: relation, collection: cities, searchFields: [name], valueField: name, displayFields: [name], multiple: true }
+          - { name: cities, label: Cities, required: true, widget: relation, collection: cities, search_fields: [name], value_field: name, display_fields: [name], multiple: true }
           - { name: body, label: Body, required: true, widget: markdown }
       - name: contact
         label: Contact
