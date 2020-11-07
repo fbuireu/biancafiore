@@ -50,7 +50,6 @@ const ContactForm = ({ formInputs }) => {
 
     fetch(`/`, REQUEST_PARAMETERS)
       .then(() => {
-        console.log(`OK`);
         resetForm(scopedForm);
         updateFormState([...scopedForm]);
       })
@@ -64,10 +63,10 @@ const ContactForm = ({ formInputs }) => {
                data-netlify-honeypot={`bot-field`}
                data-netlify-recaptcha={true}
                onSubmit={handleSubmit}>
-    {formState.map(input => {
-      let FormComponent = FormComponentsMapper[input.type];
+    {formState.map(({ name, type }, input) => {
+      let FormComponent = FormComponentsMapper[type];
 
-      return <FormComponent key={input.name} {...input} onChange={handleChange} onBlur={handleBlur} />;
+      return <FormComponent key={name} {...input} onChange={handleChange} onBlur={handleBlur} />;
     })}
     <button type={`submit`}>Send</button>
   </form>;
