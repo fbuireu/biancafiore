@@ -1,6 +1,6 @@
 ---
 key: article
-language: EN
+language: English
 author: Bianca Fiore
 seo:
   slug: this-is-a-dummy-test
