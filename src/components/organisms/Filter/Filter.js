@@ -8,6 +8,11 @@ import './Filter.scss';
 const Filter = () => {
   const SEARCH_PARAMETERS = [
       {
+        label: `Language`,
+        attribute: `language`,
+        operator: `and`,
+      },
+      {
         label: `Tags`,
         attribute: `content.tags`,
         operator: `and`,
