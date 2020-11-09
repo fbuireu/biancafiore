@@ -7,7 +7,7 @@
 
 .article__information {
   .article__summary {
-    @include typography-settings(0);
+    @include typography-settings(0, 0, 0);
     color: color(others, white);
     letter-spacing: 1px;
     margin-top: -.5rem;
@@ -18,7 +18,7 @@
 
 .article-card__link {
   .article__summary {
-    @include typography-settings(-1);
+    @include typography-settings(-1, -1, -1);
     background-color: color(others, white);
     color: color(neutral);
     padding: 1rem;

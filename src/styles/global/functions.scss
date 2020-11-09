@@ -1,8 +1,8 @@
 @import 'variables';
 
-@mixin typography-settings($level: 0) {
-  font-size: typography-scale($level);
-  line-height: line-height($level);
+@mixin typography-settings($min-value: 0, $value: 0, $max-value: 0) {
+  font-size: clamp(typography-scale($min-value), typography-scale($value), typography-scale($max-value));
+  line-height: line-height($value);
 }
 
 @mixin breakpoint($breakpoint, $breakpoints: $grid) {

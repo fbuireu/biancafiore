@@ -29,7 +29,7 @@
 }
 
 .city-information__modal__close {
-  @include typography-settings(4);
+  @include typography-settings(4, 4, 4);
   cursor: pointer;
   position: absolute;
   right: -1rem;
