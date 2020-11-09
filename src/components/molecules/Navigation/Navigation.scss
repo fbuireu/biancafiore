@@ -2,7 +2,7 @@
 
 nav {
   ul {
-    @include typography-settings(1.5);
+    @include typography-settings(1.5, 1.5, 1.5);
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;

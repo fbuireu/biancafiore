@@ -2,7 +2,7 @@
 
 .article__title {
   @include font-properties(secondary, bold);
-  @include typography-settings(10);
+  @include typography-settings(10, 10 , 10);
   color: color(others, white);
   grid-area: Title;
   letter-spacing: .25rem;

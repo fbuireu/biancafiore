@@ -2,7 +2,7 @@
 
 .article-card__title {
   @include font-properties(secondary, bold);
-  @include typography-settings(4);
+  @include typography-settings(4, 4, 4);
   color: color(others, white);
   grid-area: Title;
   justify-self: flex-start;

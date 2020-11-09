@@ -14,7 +14,7 @@
 
 .article__information {
   .article__subtitle {
-    @include typography-settings(1);
+    @include typography-settings(1, 1, 1);
     margin-top: -1rem;
   }
 }

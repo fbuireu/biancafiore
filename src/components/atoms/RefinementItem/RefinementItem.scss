@@ -36,12 +36,12 @@
   transition: color .3s ease;
 
   .refinement-list__item__label-text {
-    @include typography-settings(-1);
+    @include typography-settings(-1, -1, -1);
     order: 1;
   }
 
   .refinement-list__item__count {
-    @include typography-settings(-3);
+    @include typography-settings(-3, -3, -3);
     background-color: color(neutral, neutral-4);
     border-radius: 50%;
     margin: 0 .5rem;

@@ -2,7 +2,7 @@
 @import '../../../styles/global/functions';
 
 .filter__stats {
-  @include typography-settings(-2);
+  @include typography-settings(-2, -2, -2);
   @include font-properties(primary, italic);
   font-style: italic;
   margin: .25rem 0 .5rem;
