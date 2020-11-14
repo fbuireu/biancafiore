@@ -45,7 +45,7 @@ const ContactForm = ({ formInputs }) => {
     const REQUEST_PARAMETERS = {
       method: `POST`,
       headers: { 'Content-Type': `application/x-www-form-urlencoded` },
-      body: encode({ ...data }),
+      body: encode({ ...data })
     };
 
     fetch(`/`, REQUEST_PARAMETERS)
@@ -63,7 +63,8 @@ const ContactForm = ({ formInputs }) => {
                data-netlify-honeypot={`bot-field`}
                data-netlify-recaptcha={true}
                onSubmit={handleSubmit}>
-    {formState.map(({ name, type }, input) => {
+    {formState.map(input => {
+      let { type, name } = input;
       let FormComponent = FormComponentsMapper[type];
 
       return <FormComponent key={name} {...input} onChange={handleChange} onBlur={handleBlur} />;
@@ -73,7 +74,7 @@ const ContactForm = ({ formInputs }) => {
 };
 
 ContactForm.propTypes = {
-  formInputs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  formInputs: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 ContactForm.defaultProps = {};
