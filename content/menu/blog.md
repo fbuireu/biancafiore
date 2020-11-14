@@ -2,5 +2,5 @@
 key: menuItem
 name: Blog
 slug: blog
-position: 2
+position: 3
 ---
