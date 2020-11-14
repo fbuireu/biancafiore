@@ -9,27 +9,28 @@ import ReadingTime from '../../atoms/ReadingTime/ReadingTime';
 import Summary from '../../atoms/Summary/Summary';
 import ArticleHitTag from '../../molecules/ArticleHitTag/ArticleHitTag';
 
-export const FeaturedImageArticleCard = article => <li className={`article-card__item ${article.content.isFeaturedArticle ? `--is-featured` : ``}`}>
-  <article className={`article-card__item__inner`}>
-    <IntlContextConsumer>
-      {({ language: currentLanguage }) => <BackgroundImage className={`article-card__image`}
-                                                           fluid={[
-                                                             `linear-gradient(rgba(0,0,0, .5), rgba(0, 0, 0, .8))`,
-                                                             article.content.featuredImage.childImageSharp.fluid]}>
-        <Link to={`/${currentLanguage}/blog${article.fields.slug}`}
-              className={`article-card__link`}>
-          <ArticleHitTitle hit={article} />
-          <ArticleHitSubtitle hit={article} />
-          <ReadingTime readingTime={article.content.readingTime} />
-          <ArticleHitTag hit={article} />
-          <Summary summary={article.content.summary || article.excerpt} />
-        </Link>
-      </BackgroundImage>
-      }
-    </IntlContextConsumer>
-
-  </article>
-</li>;
+export const FeaturedImageArticleCard = article => {
+  return <li className={`article-card__item ${article.content.isFeaturedArticle ? `--is-featured` : ``}`}>
+    <article className={`article-card__item__inner`}>
+      <IntlContextConsumer>
+        {({ language: currentLanguage }) => <BackgroundImage className={`article-card__image`}
+                                                             fluid={[
+                                                               `linear-gradient(rgba(0,0,0, .5), rgba(0, 0, 0, .8))`,
+                                                               article.content.featuredImage.childImageSharp.fluid]}>
+          <Link to={`/${currentLanguage}/blog${article.fields.slug}`}
+                className={`article-card__link`}>
+            <ArticleHitTitle hit={article}/>
+            <ArticleHitSubtitle hit={article}/>
+            <ReadingTime readingTime={article.content.readingTime}/>
+            <ArticleHitTag hit={article}/>
+            <Summary summary={article.content.summary || article.excerpt}/>
+          </Link>
+        </BackgroundImage>
+        }
+      </IntlContextConsumer>
+    </article>
+  </li>;
+};
 
 FeaturedImageArticleCard.propTypes = {
   article: PropTypes.objectOf(PropTypes.object),
