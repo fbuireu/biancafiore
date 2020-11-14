@@ -3,12 +3,14 @@ import React from 'react';
 import Navigation from '../../molecules/Navigation/Navigation';
 import './Header.scss';
 
-const Header = ({ siteTitle }) => <header>
-  <section className={`wrapper`}>
-    {siteTitle}
-    <Navigation />
-  </section>
-</header>;
+const Header = ({ siteTitle }) => {
+  return <header>
+    <section className={`wrapper`}>
+      {siteTitle}
+      <Navigation/>
+    </section>
+  </header>;
+};
 
 Header.propTypes = {
   siteTitle: PropTypes.string.isRequired,
