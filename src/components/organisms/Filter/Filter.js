@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Range from '../../molecules/Range/Range';
 import RefinementsList from '../../molecules/RefinementsList/RefinementsList';
@@ -5,41 +6,22 @@ import { SortHitsBy } from '../../molecules/SortHitsBy/SortHitsBy';
 import { Search } from '../Search/Search';
 import './Filter.scss';
 
-const Filter = () => {
-  const SEARCH_PARAMETERS = [
-      {
-        label: `Language`,
-        attribute: `language`,
-        operator: `and`,
-      },
-      {
-        label: `Tags`,
-        attribute: `content.tags`,
-        operator: `and`,
-      },
-      {
-        label: `Authors`,
-        attribute: `author`,
-        operator: `or`,
-      },
-    ],
-    SORT_BY_PARAMETERS = [
-      { value: `content.isFeaturedArticle`, label: `Featured` },
-      { value: `content.readingTime_asc`, label: `Reading Time (ascending ↑)` },
-      { value: `content.readingTime_desc`, label: `Reading Time (descending ↓)` },
-      { value: `content.lastUpdated_asc`, label: `Updated Date (ascending ↑)` },
-      { value: `content.lastUpdated_desc`, label: `Updated Date (descending ↓)` },
-    ];
-
+const Filter = ({ filterParameters, defaultRefinement, hasRange }) => {
   return <aside className={`filters__wrapper`}>
     <Search />
-    <SortHitsBy defaultRefinement={process.env.GATSBY_ALGOLIA_INDEX_NAME} items={SORT_BY_PARAMETERS} />
-    {SEARCH_PARAMETERS.map(searchParameter => <RefinementsList key={searchParameter.label} {...searchParameter} />)}
-    <Range />
+    <SortHitsBy defaultRefinement={defaultRefinement}
+                items={filterParameters.SORT_BY} />
+    {filterParameters.SEARCH_PARAMETERS.map(
+      searchParameter => <RefinementsList key={searchParameter.label} {...searchParameter} />)}
+    {hasRange && <Range />}
   </aside>;
 };
 
-Filter.propTypes = {};
+Filter.propTypes = {
+  filterParameters: PropTypes.array.isRequired,
+  defaultRefinement: PropTypes.string.isRequired,
+  hasRange: PropTypes.bool.isRequired
+};
 
 Filter.defaultProps = {};
 

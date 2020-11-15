@@ -3,7 +3,6 @@ import React from 'react';
 import './TextInput.scss';
 
 const TextInput = ({ name, type, label, value, isValid, errorMessage, onChange, onBlur }) => {
-  console.log(`aa`,label);
   return <div className={`text-input__wrapper ${type === `hidden` ? `--is-hidden` : ``}`}>
     <label className={`text-input__label`} htmlFor={name}>
       <p className={`text-input__label__text`}>{label && `${label}:`}</p>
