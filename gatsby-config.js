@@ -2,7 +2,7 @@ require(`dotenv`).config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
-const ALGOLIA_QUERIES = require(`./src/utils/search/algolia`);
+const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries`);
 
 module.exports = {
   siteMetadata: {
@@ -86,13 +86,13 @@ module.exports = {
         path: `${__dirname}/content/authors`,
       },
     },
-    // {
-    //   resolve: `gatsby-source-filesystem`,
-    //   options: {
-    //     name: `projects`,
-    //     path: `${__dirname}/content/projects`,
-    //   },
-    // },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `projects`,
+        path: `${__dirname}/content/projects`,
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -160,11 +160,9 @@ module.exports = {
       options: {
         appId: process.env.GATSBY_ALGOLIA_APP_ID,
         apiKey: process.env.GATSBY_ALGOLIA_API_KEY,
-        indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
         enablePartialUpdates: true,
         queries: ALGOLIA_QUERIES,
         chunkSize: 10000,
-        matchFields: [`fields.slug`, `content.title`, `content.lastUpdated`],
       },
     },
     `gatsby-plugin-netlify`,
