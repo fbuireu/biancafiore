@@ -1,6 +1,6 @@
 ---
 key: menuItem
 name: Contact
-slug: "contact "
+slug: "contact"
 position: 4
 ---
