@@ -22,6 +22,7 @@ const articlesQuery = `{
             lastUpdated
             readingTime
             isFeaturedArticle
+            tags
             featuredImage {
               childImageSharp {
                 fluid {
@@ -34,7 +35,38 @@ const articlesQuery = `{
                 }
               }
             } 
-            tags
+          }
+        }
+      }
+    }
+  }
+}`;
+
+const projectsQuery = `{
+  projects: allMarkdownRemark(
+    filter: { frontmatter: { key: { eq: "project" }}}, 
+    sort: { fields: frontmatter___publishDate, order: DESC }) {
+    edges {
+      node {
+        html
+        excerpt(pruneLength: 350)
+        objectID: id
+        frontmatter {
+          language
+          name
+          publishDate
+          tags
+          featuredImage {
+            childImageSharp {
+              fluid {
+                aspectRatio
+                src
+                srcSet
+                sizes
+                originalImg
+                originalName
+              }
+            }
           }
         }
       }
@@ -43,14 +75,21 @@ const articlesQuery = `{
 }`;
 
 const flatten = data => data.map(({ node: { frontmatter, ...rest } }) => ({ ...frontmatter, ...rest })),
-  settings = { attributesToSnippet: [`excerpt: 200`] },
+  SETTINGS = { attributesToSnippet: [`excerpt: 200`] },
   algoliaQueries = [
     {
       query: articlesQuery,
       transformer: ({ data }) => flatten(data.articles.edges),
-      indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
-      settings,
+      indexName: process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME,
+      SETTINGS,
       matchFields: [`fields.slug`, `content.title`,`content.lastUpdated`]
+    },
+    {
+      query: projectsQuery,
+      transformer: ({ data }) => flatten(data.projects.edges),
+      indexName: process.env.GATSBY_ALGOLIA_PROJECTS_INDEX_NAME,
+      SETTINGS,
+      matchFields: [`name`]
     },
   ];
 
