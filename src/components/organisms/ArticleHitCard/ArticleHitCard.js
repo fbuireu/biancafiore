@@ -6,10 +6,10 @@ import SimpleArticleCard from '../SimpleArticleCard/SimpleArticleCard';
 import './ArticleHitCard.scss';
 
 export const CustomHit = ({ hits: articles }) => {
-  return <ul className={`article-card__list`}>
+  return <ul className={`articles-card__list`}>
     {articles.map(article => article.content.featuredImage
       ? <FeaturedImageArticleCard key={article.content.title} {...article} />
-      : <SimpleArticleCard key={article.content.title} {...article} />,
+      : <SimpleArticleCard key={article.content.title} {...article} />
     )}
   </ul>;
 };

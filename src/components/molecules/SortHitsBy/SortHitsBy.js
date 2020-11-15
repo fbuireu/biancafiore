@@ -13,7 +13,7 @@ const CustomSortHitsBy = ({ items, refine }) => {
   };
 
   return <div className={`filter__sort-hits-by`}>
-    <Select value={selectedOption} onChange={handleChange} options={items} isSearchable={false} placeholder={`Sort articles by...`} />
+    <Select value={selectedOption} onChange={handleChange} options={items} isSearchable={false} placeholder={`Sort by...`} />
   </div>;
 };
 

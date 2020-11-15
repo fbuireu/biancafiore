@@ -1,6 +1,7 @@
 @import '../../../styles/global/functions';
 
-.article__summary {
+.article__summary,
+.hit-card__summary{
   grid-area: Summary;
   text-align: left;
 }
@@ -16,13 +17,3 @@
   }
 }
 
-.article-card__link {
-  .article__summary {
-    @include typography-settings(-1, -1, -1);
-    background-color: color(others, white);
-    color: color(neutral);
-    padding: 1rem;
-    transform: translateY(100%);
-    transition: transform .5s ease;
-  }
-}

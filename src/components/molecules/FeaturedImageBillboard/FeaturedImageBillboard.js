@@ -18,8 +18,8 @@ const FeaturedImageBillboard = ({ frontmatter, author, tags, excerpt }) => {
       <div className={`article__information`}>
         <Title title={frontmatter.content.title} />
         <Subtitle author={author.frontmatter.name} lastUpdated={frontmatter.content.lastUpdated} />
-        <Summary summary={summary} />
-        <ReadingTime readingTime={frontmatter.content.readingTime} />
+        <Summary summary={summary} classNames={`hit-card__summary`} />
+        <ReadingTime readingTime={frontmatter.content.readingTime} classNames={`article__reading-time`} />
         <Tag tags={tags} />
       </div>
     </div>
