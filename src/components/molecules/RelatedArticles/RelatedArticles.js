@@ -8,7 +8,7 @@ export const RelatedArticles = ({ relatedArticles }) => {
     <h3>Related Articles</h3>
     <ul className={`related-articles__list`}>
       {relatedArticles.map(
-        ({ node: relatedArticle }) => <ArticleCard key={relatedArticle.fields.slug} article={relatedArticle}/>)}
+        ({ node: relatedArticle }) => <ArticleCard key={relatedArticle.fields.slug} article={relatedArticle} />)}
     </ul>
   </section>;
 };
