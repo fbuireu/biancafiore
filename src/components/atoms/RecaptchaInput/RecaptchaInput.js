@@ -13,7 +13,7 @@ const RecaptchaInput = ({ name, value, isValid, errorMessage, onChange }) => {
 
   }, [value]);
 
-  const handleChange = async () => {
+  const handleChange = () => {
     let recaptchaValue = recaptchaReference.current.getValue();
     let recaptcha = {
       target: {
