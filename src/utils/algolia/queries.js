@@ -46,7 +46,7 @@ const ARTICLES_QUERY = `{
 const PROJECTS_QUERY = `{
   projects: allMarkdownRemark(
     filter: { frontmatter: { key: { eq: "project" }}}, 
-    sort: { fields: frontmatter___publishDate, order: DESC }) {
+    sort: { fields: frontmatter___content___publishDate, order: DESC }) {
     edges {
       node {
         html
@@ -126,7 +126,7 @@ const flatten = data => data.map(({ node: { frontmatter, ...rest } }) => ({ ...f
       transformer: ({ data }) => flatten(data.projects.edges),
       indexName: process.env.GATSBY_ALGOLIA_PROJECTS_INDEX_NAME,
       SETTINGS,
-      matchFields: [`name`]
+      matchFields: [`content.name`, `content.publishDate`]
     },
     // {
     //   query: PROJECTS_AND_ARTICLES_QUERY,
