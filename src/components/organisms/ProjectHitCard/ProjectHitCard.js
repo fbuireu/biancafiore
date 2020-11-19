@@ -7,7 +7,7 @@ import './ProjectHitCard.scss';
 
 export const CustomHit = ({ hits: projects }) => {
   return <ul className={`projects-card__list`}>
-    {projects.map(project => project.featuredImage
+    {projects.map(project => project.content.featuredImage
       ? <FeaturedImageProjectCard key={project.content.title} {...project} />
       : <SimpleProjectCard key={project.content.title} {...project} />,
     )}
