@@ -1,7 +1,7 @@
 export const PROJECTS_SEARCH_PARAMETERS = [
   {
     label: `Tags`,
-    attribute: `tags`,
+    attribute: `content.tags`,
     operator: `and`
   },
   {
