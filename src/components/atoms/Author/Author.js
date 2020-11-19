@@ -13,7 +13,7 @@ export const Author = ({ author }) => {
     <div className={`author`}>
       <Link to={`/${currentLanguage}/tag/${slugify(author.frontmatter.name, { lower: true })}`}>
         <Img className={`author__image`}
-             fluid={author.frontmatter.image.childImageSharp.fluid}
+             fluid={author?.frontmatter?.image?.childImageSharp?.fluid}
              alt={author.frontmatter.name} />
       </Link>
       {author.frontmatter.description && <p className={`author__description`}>{author.frontmatter.description}</p>}

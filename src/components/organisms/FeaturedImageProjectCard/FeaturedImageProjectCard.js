@@ -11,7 +11,7 @@ export const FeaturedImageProjectCard = project => {
       <BackgroundImage className={`hit-card__image`}
                        fluid={[
                          `linear-gradient(rgba(0,0,0, .5), rgba(0, 0, 0, .8))`,
-                         project.content.featuredImage.childImageSharp.fluid]}>
+                         project?.content?.featuredImage?.childImageSharp?.fluid]}>
         <HitTitle hit={project} attribute={`title`} />
         <HitTags hit={project} attribute={`tags`} />
         {/*<Summary summary={project.html} />*/}
