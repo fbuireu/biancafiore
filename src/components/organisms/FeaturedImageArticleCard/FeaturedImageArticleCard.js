@@ -17,7 +17,7 @@ export const FeaturedImageArticleCard = article => {
       <BackgroundImage className={`hit-card__image`}
                        fluid={[
                          `linear-gradient(rgba(0,0,0, .5), rgba(0, 0, 0, .8))`,
-                         article.content.featuredImage.childImageSharp.fluid]}>
+                         article?.content?.featuredImage?.childImageSharp?.fluid]}>
         <Link to={`/${currentLanguage}/blog${article.fields.slug}`}
               className={`hit-card__link`}>
           <HitTitle hit={article} attribute={`content.title`} />
