@@ -55,8 +55,8 @@ const PROJECTS_QUERY = `{
         frontmatter {
           type: key
           language
-          name
           content {
+            name
             publishDate
             tags
             featuredImage {
