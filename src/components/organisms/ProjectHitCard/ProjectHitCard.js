@@ -8,8 +8,8 @@ import './ProjectHitCard.scss';
 export const CustomHit = ({ hits: projects }) => {
   return <ul className={`projects-card__list`}>
     {projects.map(project => project.featuredImage
-      ? <FeaturedImageProjectCard key={project.title} {...project} />
-      : <SimpleProjectCard key={project.title} {...project} />,
+      ? <FeaturedImageProjectCard key={project.content.title} {...project} />
+      : <SimpleProjectCard key={project.content.title} {...project} />,
     )}
   </ul>;
 };
