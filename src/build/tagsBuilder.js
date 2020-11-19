@@ -14,9 +14,6 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
             frontmatter {
               name
               slug
-              content {
-                tags
-              }
             }
           }
         }
@@ -30,22 +27,27 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
     return;
   }
 
-  let tags = [];
+  let tags = { slugs: [], names: [] };
   const allTags = tagsQuery.data.allTags.edges;
 
   allTags.map(({ node: tag }) => {
     let { name, slug } = tag.frontmatter;
 
-    slug ? tags.push(slug) : tags.push(slugify(name, { lower: true }));
+    slug ? tags.slugs.push(slug) : tags.slugs.push(slugify(name, { lower: true }));
+    name && tags.names.push(name);
 
-    return new Set(tags);
+    return new Set(tags.slugs) && new Set(tags.names);
   });
 
-  tags.forEach(tag => {
+  tags.slugs.forEach((tag, index) => {
+    let name = tags.names[index];
+
     createPage({
       path: `tag/${tag}`,
       component: tagTemplate,
-      context: {},
+      context: {
+        name: name
+      }
     });
   });
 }
