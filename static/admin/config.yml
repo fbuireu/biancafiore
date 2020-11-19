@@ -92,19 +92,21 @@ collections:
     label: Projects
     label_singular: Project
     description: A list of all created projects
-    identifier_field: name
-    slug: '{{slug}}'
+    identifier_field: content.name
+    slug: '{{content.name}}'
     folder: content/projects
     create: true
     preview_path: projects/{{slug}}
     show_preview_links: true
     fields:
       - { name: key, label: Key, required: true, widget: hidden, default: project }
-      - { name: language, label: Language, required: true, widget: relation, collection: languages, search_fields: [name, isoCode], value_field: name, display_fields: [name] }
-      - { name: name, label: Name, required: true, widget: string }
-      - { name: tags, label: Tags, required: false, widget: relation, collection: tags, search_fields: [name], value_field: name, display_fields: [name], multiple: true }
-      - { name: publishDate, label: Publish date, required: false, widget: datetime, date_format: MM/DD/YYYY, time_format: false, format: L }
-      - { name: featuredImage, label: Featured Image, required: false, widget: image, allow_multiple: false }
+      - { name: language, label: Language, required: true, widget: relation, collection: languages, search_fields: [ name, isoCode ], value_field: name, display_fields: [ name ] }
+      - { name: content, label: Content,  widget: object, collapsed: true,
+          fields: [
+            { name: name, label: Name, required: true, widget: string },
+            { name: publishDate, label: Publish date, required: false, widget: datetime, date_format: MM/DD/YYYY, time_format: false, format: L },
+            { name: featuredImage, label: Featured Image, required: false, widget: image, allow_multiple: false },
+            { name: tags, label: Tags, required: false, widget: relation, collection: tags, search_fields: [ name ], value_field: name, display_fields: [ name ], multiple: true } ] }
       - { name: body, label: Body, required: true, widget: markdown }
   - name: blog
     label: Blog
