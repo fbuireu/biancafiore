@@ -1,6 +1,8 @@
 require(`dotenv`).config({
-  path: `.env.${process.env.NODE_ENV}`,
+  path: `.env.${process.env.NODE_ENV}`
 });
+
+const { GATSBY_ALGOLIA_APP_ID, GATSBY_ALGOLIA_API_KEY } = process.env;
 
 const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries`);
 
@@ -9,7 +11,7 @@ module.exports = {
     title: `Bianca Fiore`,
     description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
     author: `@biancamariola`,
-    url: `https://biancafiore.me`,
+    url: `https://biancafiore.me`
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -158,11 +160,11 @@ module.exports = {
     {
       resolve: `gatsby-plugin-algolia`,
       options: {
-        appId: process.env.GATSBY_ALGOLIA_APP_ID,
-        apiKey: process.env.GATSBY_ALGOLIA_API_KEY,
-        enablePartialUpdates: true,
+        appId: GATSBY_ALGOLIA_APP_ID,
+        apiKey: GATSBY_ALGOLIA_API_KEY,
         queries: ALGOLIA_QUERIES,
-        chunkSize: 10000,
+        enablePartialUpdates: true,
+        chunkSize: 10000
       },
     },
     `gatsby-plugin-netlify`,
