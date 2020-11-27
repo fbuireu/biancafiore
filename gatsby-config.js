@@ -2,7 +2,7 @@ require(`dotenv`).config({
   path: `.env.${process.env.NODE_ENV}`
 });
 
-const { GATSBY_ALGOLIA_APP_ID, GATSBY_ALGOLIA_API_KEY } = process.env;
+const { GATSBY_ALGOLIA_APP_ID, GATSBY_ALGOLIA_API_KEY, GATSBY_GOOGLE_ANALYTICS_ID } = process.env;
 
 const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries`);
 
@@ -165,6 +165,12 @@ module.exports = {
         queries: ALGOLIA_QUERIES,
         enablePartialUpdates: true,
         chunkSize: 10000
+      },
+    },
+    {
+      resolve: `gatsby-plugin-google-gtag`,
+      options: {
+        trackingIds: [GATSBY_GOOGLE_ANALYTICS_ID],
       },
     },
     `gatsby-plugin-netlify`,
