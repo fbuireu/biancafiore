@@ -1,2 +1,5 @@
 [[plugins]]
     package = "netlify-plugin-gatsby-cache"
+
+[[plugins]]
+    package = "@algolia/netlify-plugin-crawler"
