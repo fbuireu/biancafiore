@@ -28,9 +28,7 @@ const Article = ({ data }) => {
     },
     tags = article.frontmatter.content.tags;
 
-  useEffect(function setCurrentArticleProperties() {
-    setArticleProperties(articleReference.current);
-  }, []);
+  useEffect(function setCurrentArticleProperties() {setArticleProperties(articleReference.current);}, []);
 
   useScrollPosition(function setScrollPosition({ currentPosition }) {
     setScroll(currentPosition.y);
