@@ -170,9 +170,18 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingIds: [GATSBY_GOOGLE_ANALYTICS_ID],
-      },
+        trackingIds: [GATSBY_GOOGLE_ANALYTICS_ID]
+      }
     },
-    `gatsby-plugin-netlify`,
+    `gatsby-plugin-netlify`
   ],
+  flags: {
+    FAST_DEV: true,
+    FAST_REFRESH: true,
+    QUERY_ON_DEMAND: true,
+    DEV_SSR: true,
+    LAZY_IMAGES: true,
+    PRESERVE_WEBPACK_CACHE: true,
+    PRESERVE_FILE_DOWNLOAD_CACHE: true
+  }
 };
