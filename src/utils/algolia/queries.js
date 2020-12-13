@@ -111,8 +111,10 @@ const PROJECTS_QUERY = `{
 //   }
 // }`;
 
-const flatten = data => data.map(({ node: { frontmatter, ...rest } }) => ({ ...frontmatter, ...rest }));
 const SETTINGS = { attributesToSnippet: [`excerpt: 200`] };
+
+const flatten = data => data.map(({ node: { frontmatter, ...rest } }) => ({ ...frontmatter, ...rest }));
+
 const ALGOLIA_QUERIES = [
   {
     query: ARTICLES_QUERY,
