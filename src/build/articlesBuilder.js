@@ -37,14 +37,16 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
   let articles = articlesQuery.data.articles.edges;
 
   articles.forEach(({ node: article }) => {
+    let { slug, author, tags } = article.frontmatter;
+
     createPage({
-      path: `/blog${article.fields.slug}`,
+      path: `/blog${slug}`,
       component: articleTemplate,
       context: {
-        slug: article.fields.slug,
-        author: article.frontmatter.author,
-        tags: article.frontmatter.content.tags,
-      },
+        slug: slug,
+        author: author,
+        tags: tags
+      }
     });
   });
 }
