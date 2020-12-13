@@ -12,17 +12,17 @@ import {
   TwitterIcon,
   TwitterShareButton,
   WhatsappIcon,
-  WhatsappShareButton,
+  WhatsappShareButton
 } from 'react-share';
 import { useWindowSize } from '../../../utils/hooks/useWindowSize';
 import './ShareButtons.scss';
 
 const ShareButtons = ({ shareParameters, tags, scroll }) => {
-  let currentScroll = Math.abs(scroll),
-    { height: windowHeight } = useWindowSize(),
-    areShareButtonsVisible = currentScroll >= windowHeight * (1 + (1 / 5));
+  let currentScroll = Math.abs(scroll);
+  const { height: windowHeight } = useWindowSize();
+  const shareShareButtonsVisible = currentScroll >= windowHeight * (1 + (1 / 5));
 
-  return <section className={`share-buttons__wrapper ${areShareButtonsVisible ? `--is-visible` : ``}`}>
+  return <section className={`share-buttons__wrapper ${shareShareButtonsVisible ? `--is-visible` : ``}`}>
     <div className={`share-buttons__inner`}>
       <TwitterShareButton className={`share-button twitter`}
                           url={shareParameters.parameters.url}
@@ -41,10 +41,14 @@ const ShareButtons = ({ shareParameters, tags, scroll }) => {
                            title={shareParameters.parameters.title}>
         <LinkedinIcon round={true} />
       </LinkedinShareButton>
-      <WhatsappShareButton className={`share-button whatsapp`} url={shareParameters.parameters.url} title={shareParameters.parameters.title}>
+      <WhatsappShareButton className={`share-button whatsapp`}
+                           url={shareParameters.parameters.url}
+                           title={shareParameters.parameters.title}>
         <WhatsappIcon round={true} />
       </WhatsappShareButton>
-      <PocketShareButton className={`share-button pocket`} url={shareParameters.parameters.url} title={shareParameters.parameters.title}>
+      <PocketShareButton className={`share-button pocket`}
+                         url={shareParameters.parameters.url}
+                         title={shareParameters.parameters.title}>
         <PocketIcon round={true} />
       </PocketShareButton>
       <EmailShareButton className={`share-button email`}

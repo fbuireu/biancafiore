@@ -13,24 +13,26 @@ import Layout from '../Layout/Layout';
 import './Article.scss';
 
 const Article = ({ data }) => {
-  const [scroll, setScroll] = useState(0),
-    [articleProperties, setArticleProperties] = useState({}),
-    articleReference = useRef(null),
-    { article, author, relatedArticles, site } = data,
-    shareParameters = {
-      author: site.siteMetadata.author,
-      parameters: {
-        domain: site.siteMetadata.url,
-        url: `${site.siteMetadata.url}${article.fields.slug}`,
-        title: article.frontmatter.content.title,
-        description: article.frontmatter.content.summary || article.excerpt,
-      },
-    },
-    tags = article.frontmatter.content.tags;
+  const [scroll, setScroll] = useState(0);
+  const [articleProperties, setArticleProperties] = useState({});
+  const articleReference = useRef(null);
+  const { article, author, relatedArticles, site } = data;
+  const shareParameters = {
+    author: site.siteMetadata.author,
+    parameters: {
+      domain: site.siteMetadata.url,
+      url: `${site.siteMetadata.url}${article.fields.slug}`,
+      title: article.frontmatter.content.title,
+      description: article.frontmatter.content.summary || article.excerpt
+    }
+  };
+  const { tags } = article.frontmatter.content;
 
-  useEffect(function setCurrentArticleProperties() {setArticleProperties(articleReference.current);}, []);
+  useEffect(function setCurrentArticleProperties () {
+    setArticleProperties(articleReference.current);
+  }, []);
 
-  useScrollPosition(function setScrollPosition({ currentPosition }) {
+  useScrollPosition(function setScrollPosition ({ currentPosition }) {
     setScroll(currentPosition.y);
   });
 

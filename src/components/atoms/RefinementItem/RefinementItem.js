@@ -5,7 +5,6 @@ import './RefinementItem.scss';
 
 const CustomRefinementItem = ({ items, refine, selectRefinement }) => {
   const [isActiveRefinement, setIsActiveRefinements] = useState([]);
-
   let isRefinementSelected = false;
 
   const handleClick = (event, { value }, index) => {

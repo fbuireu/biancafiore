@@ -4,10 +4,13 @@ import React, { useEffect, useState } from 'react';
 import './CityInformation.scss';
 
 const CityInformation = ({ cityInformation }) => {
-  const [isVisible, setIsVisible] = useState(false),
-    closeModal = () => setIsVisible(false);
+  const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(function changeSelectedCity() {setIsVisible(true);}, [cityInformation]);
+  const  closeModal = () => setIsVisible(false);
+
+  useEffect(function changeSelectedCity() {
+    setIsVisible(true);
+  }, [cityInformation]);
 
   return <div className={`city-information__modal__wrapper ${isVisible ? `--is-visible` : `--is-hidden`}`}>
     <div className={`city-information__modal__inner`}>

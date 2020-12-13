@@ -6,16 +6,17 @@ import { useWindowSize } from '../../../utils/hooks/useWindowSize';
 import './ReadingProgress.scss';
 
 const ReadingProgress = ({ scroll, articleProperties }) => {
-  let currentScroll = Math.abs(scroll),
-    { height: windowHeight } = useWindowSize(),
-    { offsetTop: articleOffsetTop, offsetHeight: articleHeight } = articleProperties,
-    isArticleVisible = currentScroll >= articleOffsetTop,
-    currentProgress = isArticleVisible ? Math.round((currentScroll - articleOffsetTop) / (articleHeight - windowHeight) * 100) : 0;
+  let currentScroll = Math.abs(scroll);
+  const { height: windowHeight } = useWindowSize();
+  const { offsetTop: articleOffsetTop, offsetHeight: articleHeight } = articleProperties;
+  const isArticleVisible = currentScroll >= articleOffsetTop;
+  const currentProgress = isArticleVisible ? Math.round(
+    (currentScroll - articleOffsetTop) / (articleHeight - windowHeight) * 100) : 0;
 
   const scrollToTop = () => {
     window.scroll({
       top: 0,
-      behavior: `smooth`,
+      behavior: `smooth`
     });
   };
 
