@@ -16,17 +16,25 @@ const Article = ({ data }) => {
   const [scroll, setScroll] = useState(0);
   const [articleProperties, setArticleProperties] = useState({});
   const articleReference = useRef(null);
-  const { article, author, relatedArticles, site } = data;
+
+  const { article } = data;
+
+  const {
+    article: { html, frontmatter: { content: { title, summary, tags } }, fields: { slug }, excerpt },
+    author,
+    relatedArticles: { edges: relatedArticles },
+    site: { siteMetadata: { author: metaAuthor, url } }
+  } = data;
+
   const shareParameters = {
-    author: site.siteMetadata.author,
+    author: metaAuthor,
     parameters: {
-      domain: site.siteMetadata.url,
-      url: `${site.siteMetadata.url}${article.fields.slug}`,
-      title: article.frontmatter.content.title,
-      description: article.frontmatter.content.summary || article.excerpt
+      domain: url,
+      url: `${url}${slug}`,
+      title: title,
+      description: summary || excerpt
     }
   };
-  const { tags } = article.frontmatter.content;
 
   useEffect(function setCurrentArticleProperties () {
     setArticleProperties(articleReference.current);
@@ -37,15 +45,15 @@ const Article = ({ data }) => {
   });
 
   return <Layout>
-    <SEO title={article.frontmatter.content.title} />
+    <SEO title={title} />
     <Billboard {...article} author={author} tags={tags} />
     <section className={`wrapper article__wrapper`}>
       <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll} />
       <article ref={articleReference}>
-        <Markdown>{article.html}</Markdown>
+        <Markdown>{html}</Markdown>
       </article>
       <Author author={author} />
-      <RelatedArticles relatedArticles={relatedArticles.edges} />
+      <RelatedArticles relatedArticles={relatedArticles} />
     </section>
     <ReadingProgress scroll={scroll} articleProperties={articleProperties} />
   </Layout>;
