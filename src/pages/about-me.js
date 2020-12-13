@@ -7,8 +7,9 @@ import SEO from '../components/atoms/SEO/SEO';
 import Layout from '../components/templates/Layout/Layout';
 
 const AboutMe = ({ data }) => {
-  const [cityInformation, updateCityInformation] = useState(undefined),
-    { aboutMe, citiesInformation } = data;
+  const [cityInformation, updateCityInformation] = useState(undefined);
+
+  const { aboutMe, citiesInformation } = data;
   let cities = [];
 
   citiesInformation.edges.forEach(({ node: city }) => {
