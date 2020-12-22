@@ -6,7 +6,7 @@ import './CityInformation.scss';
 const CityInformation = ({ cityInformation }) => {
   const [isVisible, setIsVisible] = useState(false);
 
-  const  closeModal = () => setIsVisible(false);
+  const closeModal = () => setIsVisible(false);
 
   useEffect(function changeSelectedCity() {
     setIsVisible(true);
