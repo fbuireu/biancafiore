@@ -8,24 +8,24 @@ import Layout from '../components/templates/Layout/Layout';
 
 const AboutMe = ({ data }) => {
   const [cityInformation, updateCityInformation] = useState(undefined);
-
   const { aboutMe, citiesInformation } = data;
   let cities = [];
 
   citiesInformation.edges.forEach(({ node: city }) => {
-    let { name, isInitialCity, coordinates, countryIsoCode } = city.frontmatter;
+    let { html: description, frontmatter: { name, isInitialCity, coordinates, countryIsoCode } } = city;
 
     cities.push({
       name: name,
       isInitialCity: isInitialCity,
       coordinates: typeof coordinates === `string` && JSON.parse(coordinates),
       countryIsoCode: countryIsoCode,
-      description: city.html,
+      description: description
     });
   });
 
   const showCityInformation = selectedCity => {
     let { description } = cities.find(city => city.name === selectedCity);
+
     updateCityInformation(description);
   };
 
