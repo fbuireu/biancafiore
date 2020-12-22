@@ -16,16 +16,13 @@ const Article = ({ data }) => {
   const [scroll, setScroll] = useState(0);
   const [articleProperties, setArticleProperties] = useState({});
   const articleReference = useRef(null);
-
   const { article } = data;
-
   const {
-    article: { html, frontmatter: { content: { title, summary, tags } }, fields: { slug }, excerpt },
+    article: { html, excerpt, fields: { slug }, frontmatter: { content: { title, summary, tags } } },
     author,
     relatedArticles: { edges: relatedArticles },
     site: { siteMetadata: { author: metaAuthor, url } }
   } = data;
-
   const shareParameters = {
     author: metaAuthor,
     parameters: {
@@ -40,8 +37,8 @@ const Article = ({ data }) => {
     setArticleProperties(articleReference.current);
   }, []);
 
-  useScrollPosition(function setScrollPosition ({ currentPosition }) {
-    setScroll(currentPosition.y);
+  useScrollPosition(function setScrollPosition ({ currentPosition: { y: currentVerticalYPosition } }) {
+    setScroll(currentVerticalYPosition);
   });
 
   return <Layout>
