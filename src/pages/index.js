@@ -13,7 +13,7 @@ const Index = props => {
 };
 
 Index.propTypes = {
-  data: PropTypes.objectOf(PropTypes.object).isRequired,
+  // data: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 Index.defaultProps = {};
