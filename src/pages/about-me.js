@@ -66,7 +66,7 @@ export const aboutMeData = graphql`
 `;
 
 AboutMe.propTypes = {
-  data: PropTypes.objectOf(PropTypes.object).isRequired,
+  data: PropTypes.objectOf(PropTypes.object).isRequired
 };
 
 AboutMe.defaultProps = {};
