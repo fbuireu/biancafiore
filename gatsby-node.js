@@ -5,7 +5,7 @@ const tagsBuilder = require(`./src/build/tagsBuilder`);
 const path = require(`path`);
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
-  await articlesBuilder(graphql, actions, reporter);a
+  await articlesBuilder(graphql, actions, reporter);
   await tagsBuilder(graphql, actions, reporter);
 };
 
