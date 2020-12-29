@@ -1,6 +1,7 @@
 ---
 key: project
 language: English
+isDraft: false
 content:
   publishDate: 11/19/2020
   name: The Publishing Post (Art 1)
