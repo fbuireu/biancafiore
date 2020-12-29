@@ -77,6 +77,7 @@ export const articleData = graphql`
                     lastUpdated
                     readingTime
                     isFeaturedArticle
+                    tags
                     featuredImage {
                         childImageSharp {
                             fluid {
@@ -84,7 +85,6 @@ export const articleData = graphql`
                             }
                         }
                     }
-                    tags
                 }
             }
         }
@@ -92,6 +92,7 @@ export const articleData = graphql`
             frontmatter {
                 slug
                 name
+                description
                 image {
                     childImageSharp {
                         fluid {
@@ -99,7 +100,6 @@ export const articleData = graphql`
                         }
                     }
                 }
-                description
             }
         }
         relatedArticles: allMarkdownRemark (
@@ -124,6 +124,7 @@ export const articleData = graphql`
                             publishDate
                             lastUpdated
                             readingTime
+                            tags
                             featuredImage {
                                 childImageSharp {
                                     fluid {
@@ -131,7 +132,6 @@ export const articleData = graphql`
                                     }
                                 }
                             }
-                            tags
                         }
                     }
                 }

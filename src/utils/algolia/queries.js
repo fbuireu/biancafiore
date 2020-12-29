@@ -1,6 +1,10 @@
 const ARTICLES_QUERY = `{
   articles: allMarkdownRemark (
-    filter: { frontmatter: { key: { eq: "article" }}},
+    filter: { frontmatter: { 
+      key: { eq: "article" },  
+      isDraft: { eq: false }
+      }
+    },
     sort: { 
       fields: frontmatter___content___publishDate, 
       order: DESC }) {
@@ -45,7 +49,11 @@ const ARTICLES_QUERY = `{
 
 const PROJECTS_QUERY = `{
   projects: allMarkdownRemark(
-    filter: { frontmatter: { key: { eq: "project" }}}, 
+    filter: { frontmatter: { 
+      key: { eq: "project" }, 
+      isDraft: { eq: false }
+      }
+    }, 
     sort: { fields: frontmatter___content___publishDate, order: DESC }) {
     edges {
       node {
