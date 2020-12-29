@@ -2,6 +2,7 @@
 key: article
 language: English
 author: Bianca Fiore
+isDraft: false
 seo:
   slug: this-is-a-dummy-test
   metaDescription: This is a dummy description
