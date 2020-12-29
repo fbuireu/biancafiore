@@ -57,7 +57,7 @@ const Article = ({ data }) => {
 };
 
 export const articleData = graphql`
-    query getArticleInformation ($slug: String!, $author: String, $tags: [String!]!) {
+    query getArticleInformation ($slug: String!, $author: String, $tags: [String!]) {
         article: markdownRemark (fields: { slug: { eq: $slug }}) {
             html
             excerpt (pruneLength: 350)
