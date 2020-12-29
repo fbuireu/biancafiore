@@ -1,7 +1,8 @@
 backend:
-  name: git-gateway
+  name: github
   repo: fbuireu/biancafiore
   branch: master
+  squash_merges: true
   commit_messages:
     create: '{{collection}} "{{slug}}" created'
     update: '{{collection}} "{{slug}}" updated'
@@ -111,6 +112,7 @@ collections:
     fields:
       - { name: key, label: Key, required: true, widget: hidden, default: project }
       - { name: language, label: Language, required: true, widget: relation, collection: languages, search_fields: [ name, isoCode ], value_field: name, display_fields: [ name ] }
+      - { name: isDraft, label: Draft, required: true, widget: boolean, default: true }
       - { name: content, label: Content,  widget: object, collapsed: true,
           fields: [
             { name: name, label: Name, required: true, widget: string },
@@ -154,6 +156,7 @@ collections:
       - { name: key, label: Key, required: true, widget: hidden, default: article }
       - { name: language, label: Language, required: true, widget: relation, collection: languages, search_fields: [ name, isoCode ], value_field: name, display_fields: [ name ], default: English }
       - { name: author, label: Author, required: true, widget: relation, collection: authors, search_fields: [ name ], value_field: name, display_fields: [ name ], default: Bianca Fiore }
+      - { name: isDraft, label: Draft, required: true, widget: boolean, default: true }
       - { name: seo, label: SEO, widget: object, collapsed: true,
           fields: [
             { name: metaDescription, label: Meta description, required: true, widget: text },
