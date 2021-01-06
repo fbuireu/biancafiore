@@ -3,8 +3,8 @@ import SEO from '../components/atoms/SEO/SEO';
 import AlgoliaWrapper from '../components/organisms/AlgoliaWrapper/AlgoliaWrapper';
 import ArticleHitCards from '../components/organisms/ArticleHitCards/ArticleHitCards';
 import Layout from '../components/templates/Layout/Layout';
-import { ARTICLES_SEARCH_PARAMETERS } from '../utils/algolia/articlesSearchParameters';
-import { ARTICLES_SORT_BY } from '../utils/algolia/articlesSortBy';
+import { ARTICLES_SEARCH_PARAMETERS } from '../utils/algolia/config/articlesSearchParameters';
+import { ARTICLES_SORT_BY } from '../utils/algolia/config/articlesSortBy';
 
 const Blog = () => {
   const FILTER_PARAMETERS = {
