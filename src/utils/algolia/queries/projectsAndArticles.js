@@ -1,4 +1,4 @@
-export const PROJECTS_AND_ARTICLES_QUERY = `{
+const PROJECTS_AND_ARTICLES_QUERY = `{
   projctsAndArticles: allMarkdownRemark(
     filter: { frontmatter: { key: { in: ["project", "article"]}}},
     sort: { fields: frontmatter___publishDate, order: DESC }) {
@@ -30,3 +30,5 @@ export const PROJECTS_AND_ARTICLES_QUERY = `{
     }
   }
 }`;
+
+module.exports = PROJECTS_AND_ARTICLES_QUERY;
