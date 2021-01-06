@@ -4,7 +4,7 @@ require(`dotenv`).config({
 
 const { GATSBY_ALGOLIA_APP_ID, GATSBY_ALGOLIA_API_KEY, GATSBY_GOOGLE_ANALYTICS_ID } = process.env;
 
-const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries`);
+const ALGOLIA_QUERIES = require(`src/utils/algolia/queries`);
 
 module.exports = {
   siteMetadata: {
