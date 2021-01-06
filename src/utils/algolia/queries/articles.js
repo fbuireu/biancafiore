@@ -1,4 +1,4 @@
-export const ARTICLES_QUERY = `{
+const ARTICLES_QUERY = `{
   articles: allMarkdownRemark (
     filter: { frontmatter: { 
       key: { eq: "article" },  
@@ -46,3 +46,5 @@ export const ARTICLES_QUERY = `{
     }
   }
 }`;
+
+module.exports = ARTICLES_QUERY;

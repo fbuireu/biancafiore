@@ -1,5 +1,5 @@
-import { ARTICLES_QUERY } from './articles';
-import { PROJECTS_QUERY } from './projects';
+const ARTICLES_QUERY = require(`./articles`);
+const PROJECTS_QUERY = require(`./projects`);
 
 const { GATSBY_ALGOLIA_ARTICLES_INDEX_NAME, GATSBY_ALGOLIA_PROJECTS_INDEX_NAME } = process.env;
 

@@ -1,4 +1,4 @@
-export const PROJECTS_QUERY = `{
+const PROJECTS_QUERY = `{
   projects: allMarkdownRemark(
     filter: { frontmatter: { 
       key: { eq: "project" }, 
@@ -36,3 +36,5 @@ export const PROJECTS_QUERY = `{
     }
   }
 }`;
+
+module.exports = PROJECTS_QUERY;
