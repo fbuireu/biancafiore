@@ -5,7 +5,7 @@ import HitTitle from '../../atoms/HitTitle/HitTitle';
 import Summary from '../../atoms/Summary/Summary';
 import HitTags from '../../molecules/HitTags/HitTags';
 
-export const FeaturedImageProjectCard = project => {
+const FeaturedImageProjectCard = project => {
   return <li className={`hit-card__item`}>
     <article className={`hit-card__item__inner`}>
       <BackgroundImage className={`hit-card__image`}
