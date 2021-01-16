@@ -5,7 +5,7 @@ import FeaturedImageArticleCard from '../FeaturedImageArticleCard/FeaturedImageA
 import SimpleArticleCard from '../SimpleArticleCard/SimpleArticleCard';
 import './ArticleHitCard.scss';
 
-export const CustomHit = ({ hits: articles }) => {
+const CustomHit = ({ hits: articles }) => {
   return <ul className={`articles-card__list`}>
     {articles.map(article => article.content.featuredImage
       ? <FeaturedImageArticleCard key={article.content.title} {...article} />

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import './ArticleCard.scss';
 
-export const ArticleCard = ({ article }) => {
+const ArticleCard = ({ article }) => {
   const { locale: currentLanguage } = useIntl();
 
   let { excerpt, fields, frontmatter } = article,

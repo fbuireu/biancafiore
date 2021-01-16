@@ -364,7 +364,7 @@ const Map = ({ cities, showCityInformation }) => {
       mapChart.zoomToRectangle(north, east, south, west, 1, true);
     });
 
-    return () => mapChart && mapChart.dispose();
+    return () => mapChart?.dispose();
   }, []);
 
   return <section>

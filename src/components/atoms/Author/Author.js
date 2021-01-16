@@ -6,7 +6,7 @@ import React from 'react';
 import slugify from 'slugify';
 import './Author.scss';
 
-export const Author = ({ author }) => {
+const Author = ({ author }) => {
   const { locale: currentLanguage } = useIntl();
 
   return <section className={`author__wrapper`}>

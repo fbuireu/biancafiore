@@ -3,7 +3,7 @@ import React from 'react';
 import ArticleCard from '../../atoms/ArticleCard/ArticleCard';
 import './RelatedArticles.scss';
 
-export const RelatedArticles = ({ relatedArticles }) => {
+const RelatedArticles = ({ relatedArticles }) => {
   return <section className={`related-articles__wrapper`}>
     <h3>Related Articles</h3>
     <ul className={`related-articles__list`}>

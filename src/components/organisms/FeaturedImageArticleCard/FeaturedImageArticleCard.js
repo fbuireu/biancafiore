@@ -9,7 +9,7 @@ import ReadingTime from '../../atoms/ReadingTime/ReadingTime';
 import Summary from '../../atoms/Summary/Summary';
 import HitTags from '../../molecules/HitTags/HitTags';
 
-export const FeaturedImageArticleCard = article => {
+const FeaturedImageArticleCard = article => {
   const { locale: currentLanguage } = useIntl();
 
   return <li className={`hit-card__item ${article.content.isFeaturedArticle ? `--is-featured` : ``}`}>
