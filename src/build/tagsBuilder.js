@@ -1,7 +1,7 @@
 const path = require(`path`);
 const slugify = require(`slugify`);
 
-async function tagsBuilder(graphql, { createPage }, reporter) {
+const tagsBuilder = async (graphql, { createPage }, reporter) => {
   const tagTemplate = path.resolve(
     `./src/components/templates/Tags/Tags.js`);
 
@@ -50,6 +50,6 @@ async function tagsBuilder(graphql, { createPage }, reporter) {
       }
     });
   });
-}
+};
 
 module.exports = tagsBuilder;
