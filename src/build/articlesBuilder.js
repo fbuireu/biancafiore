@@ -1,6 +1,6 @@
 const path = require(`path`);
 
-async function articlesBuilder(graphql, { createPage }, reporter) {
+const articlesBuilder = async (graphql, { createPage }, reporter) => {
   const articleTemplate = path.resolve(
     `./src/components/templates/Article/Article.js`);
 
@@ -53,6 +53,6 @@ async function articlesBuilder(graphql, { createPage }, reporter) {
       }
     });
   });
-}
+};
 
 module.exports = articlesBuilder;
