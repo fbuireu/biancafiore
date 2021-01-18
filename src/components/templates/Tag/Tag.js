@@ -22,6 +22,7 @@ const Tag = props => {
     </section>
   </Layout>;
 };
+
 Tag.propTypes = {};
 
 Tag.defaultProps = {};
