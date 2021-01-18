@@ -1,0 +1,5 @@
+{
+  "hooks": {
+    "pre-commit": "eslint \"**/*.{js, jsx, scss, json, md}\"",
+  }
+}
