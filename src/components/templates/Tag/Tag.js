@@ -6,7 +6,7 @@ import AlgoliaWrapper from '../../organisms/AlgoliaWrapper/AlgoliaWrapper';
 import ArticleHitCards from '../../organisms/ArticleHitCards/ArticleHitCards';
 import Layout from '../Layout/Layout';
 
-const Tags = props => {
+const Tag = props => {
   const FILTER_PARAMETERS = {
     SEARCH_PARAMETERS: TAGS_SEARCH_PARAMETERS,
     SORT_BY: TAGS_SORT_BY
@@ -22,8 +22,8 @@ const Tags = props => {
     </section>
   </Layout>;
 };
-Tags.propTypes = {};
+Tag.propTypes = {};
 
-Tags.defaultProps = {};
+Tag.defaultProps = {};
 
-export default Tags;
+export default Tag;
