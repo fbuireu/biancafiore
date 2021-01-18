@@ -133,6 +133,9 @@ module.exports = {
               withWebp: true,
             },
           },
+          {
+            resolve: `gatsby-remark-highlight-code`
+          },
         ],
       },
     },
