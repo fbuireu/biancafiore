@@ -3,7 +3,7 @@ const slugify = require(`slugify`);
 
 const tagsBuilder = async (graphql, { createPage }, reporter) => {
   const tagTemplate = path.resolve(
-    `./src/components/templates/Tag/Tags.js`);
+      `./src/components/templates/Tag/Tag.js`);
 
   const tagsQuery = await graphql(`
     query getAllTags {
