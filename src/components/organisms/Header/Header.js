@@ -7,17 +7,17 @@ const Header = ({ siteTitle }) => {
   return <header>
     <section className={`wrapper`}>
       {siteTitle}
-      <Navigation/>
+      <Navigation />
     </section>
   </header>;
 };
 
 Header.propTypes = {
-  siteTitle: PropTypes.string.isRequired,
+  siteTitle: PropTypes.string.isRequired
 };
 
 Header.defaultProps = {
-  siteTitle: `Bianca Fiore`,
+  siteTitle: `Bianca Fiore`
 };
 
 export default Header;
