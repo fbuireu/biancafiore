@@ -8,7 +8,7 @@ const Index = props => {
     textAlign: `center`,
     marginTop: `50vh`,
     fontSize: `52px`
-  }}>Site under construction<br />We&apos;ll back soon</h1>;
+  }}>Site under construction<br />We&apos;ll be back soon</h1>;
   // return <Layout>
   //   <SEO title="Home" />
   //   <h1>Hi people</h1>
