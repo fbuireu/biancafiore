@@ -37,7 +37,6 @@ Now that there is the Tec-9, a crappy spray gun from South Miami. This gun is ad
 
 `This is code`
 
-![Cutie otter](/assets/images/vanaqua_soaw_eventpage-support-03-664x664.jpg "Cutie otter")
 
 > *Quotation* in **bold** 
 
