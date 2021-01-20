@@ -1,5 +1,5 @@
 const { createFilePath } = require(`gatsby-source-filesystem`);
-const { fmImagesToRelative } = require(`gatsby-remark-relative-images`);
+const { fmImagesToRelative } = require(`gatsby-remark-relative-images-v2`);
 const articlesBuilder = require(`./src/build/articlesBuilder`);
 const tagsBuilder = require(`./src/build/tagsBuilder`);
 const path = require(`path`);
