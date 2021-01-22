@@ -2,5 +2,5 @@
 key: menuItem
 name: Contact
 slug: contact
-position: 3
+position: 4
 ---
