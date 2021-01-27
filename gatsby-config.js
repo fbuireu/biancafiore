@@ -65,7 +65,7 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `menu`,
-        path: `${__dirname}/content/menu`,
+        path: `${__dirname}/content/navigation/menu`
       },
     },
     {
@@ -86,22 +86,29 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `authors`,
-        path: `${__dirname}/content/authors`,
-      },
+        path: `${__dirname}/content/authors`
+      }
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `navigation`,
+        path: `${__dirname}/content/navigation`
+      }
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `projects`,
-        path: `${__dirname}/content/projects`,
-      },
+        path: `${__dirname}/content/projects`
+      }
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `articles`,
-        path: `${__dirname}/content/articles`,
-      },
+        path: `${__dirname}/content/articles`
+      }
     },
     {
       resolve: `gatsby-source-filesystem`,
