@@ -15,6 +15,7 @@ body {
   @include font-properties(primary, regular);
   color: color(neutral);
   font-size: $base-font-size;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 
   @media (prefers-reduced-motion: reduce) {
