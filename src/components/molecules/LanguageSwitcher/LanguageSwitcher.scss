@@ -1,15 +1,19 @@
 @import '../../../styles/global/functions';
 
 .language-switcher__wrapper {
+  @include font-properties(secondary);
+  color: color(others, white);
   cursor: pointer;
+  margin-top: 3rem;
 
-  span {
+  .language-switcher__icon {
     display: flex;
     letter-spacing: 2px;
     transition: transform .3s ease-in;
   }
 
   .arrow-down {
+    fill: color(others, white);
     margin-left: .5rem;
     max-width: .75rem;
     transition: transform .3s ease-in;
@@ -27,7 +31,6 @@
 }
 
 .language-switcher__list {
-  background-color: color(others, white);
   opacity: 0;
   position: absolute;
   visibility: hidden;
@@ -36,12 +39,22 @@
 
 .language-switcher__item {
   letter-spacing: 2px;
+  position: relative;
   text-align: left;
-  width: 100%;
+  transition: color .3s;
+  width: fit-content;
+
+  &:hover {
+    color: color(primary);
+  }
 
   &.--is-current-language {
-    opacity: .5;
-    pointer-events: none;
+    @include font-properties(secondary, bold);
+    color: color(primary, primary-dark-1);
+    cursor: default;
   }
 }
 
+.language-switcher__item:not(:last-child) {
+  margin: .5rem 0;
+}
