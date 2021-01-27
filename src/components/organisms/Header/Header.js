@@ -1,23 +1,26 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import Navigation from '../../molecules/Navigation/Navigation';
+import React, { useState } from 'react';
+import HamburgerMenu from '../../atoms/HamburgerMenu/HamburgerMenu';
+import Navigation from '../Navigation/Navigation';
 import './Header.scss';
 
-const Header = ({ siteTitle }) => {
+const Header = () => {
+  const [isMenuActive, setIsMenuActive] = useState(false);
+
+  const toggleMenuVisibility = () => setIsMenuActive(!isMenuActive);
+
   return <header>
     <section className={`wrapper`}>
-      {siteTitle}
-      <Navigation />
+      Logo
+      <HamburgerMenu toggleMenuVisibility={toggleMenuVisibility} isMenuActive={isMenuActive}/>
+      <Navigation isMenuActive={isMenuActive} toggleMenuVisibility={toggleMenuVisibility}/>
     </section>
   </header>;
 };
 
 Header.propTypes = {
-  siteTitle: PropTypes.string.isRequired
 };
 
 Header.defaultProps = {
-  siteTitle: `Bianca Fiore`
 };
 
 export default Header;
