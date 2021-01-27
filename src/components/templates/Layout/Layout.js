@@ -16,13 +16,8 @@ const Layout = ({ children }) => {
   `);
 
   return  <section className={`site__wrapper`}>
-    <Header siteTitle={`biancafiore.me (v0)`} />
+    <Header />
     <main>{children}</main>
-    <footer>
-      © {new Date().getFullYear()}, Built by
-      {` `}
-      <a href="https://www.gatsbyjs.org">Ferran Buireu</a>
-    </footer>
   </section>;
 };
 
