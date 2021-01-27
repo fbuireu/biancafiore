@@ -14,7 +14,7 @@ const LanguageSwitcher = () => {
   const handleLanguage = language => changeLocale(language);
 
   return <li className={`language-switcher__wrapper ${isMenuSelectorOpen ? `--is-open` : ``}`}>
-    <span onClick={handleMenuSelector}>
+    <span onClick={handleMenuSelector} className={`language-switcher__icon`}>
       <FormattedMessage id={`global.changeLanguage`} />
       <ArrowDown className={`arrow-down`} />
     </span>
