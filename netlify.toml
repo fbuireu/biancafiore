@@ -1,5 +1,24 @@
 [[plugins]]
-    package = "netlify-plugin-gatsby-cache"
+package = 'netlify-plugin-gatsby-cache'
 
 [[plugins]]
-    package = "@algolia/netlify-plugin-crawler"
+package = '@algolia/netlify-plugin-crawler'
+
+[[plugins]]
+package = '@netlify/plugin-lighthouse'
+
+[[plugins]]
+package = 'netlify-plugin-inline-critical-css'
+
+[[plugins]]
+package = 'netlify-plugin-image-optim'
+
+[[plugins]]
+package = 'netlify-plugin-submit-sitemap'
+
+[[plugins]]
+package = 'netlify-plugin-minify-html'
+[plugins.inputs]
+contexts = ['production']
+[plugins.inputs.minifierOptions]
+removeComments = true
