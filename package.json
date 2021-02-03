@@ -69,7 +69,8 @@
     "react-share": "^4.1.0",
     "rheostat": "2.2.0",
     "slugify": "^1.4.0",
-    "source-map-loader": "^0.2.4"
+    "source-map-loader": "^0.2.4",
+    "swiper": "^6.4.9"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.12.12",
