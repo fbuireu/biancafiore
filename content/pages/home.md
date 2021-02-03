@@ -2,7 +2,7 @@
 key: home
 title: Test
 image: /assets/images/bianca-fiore.jpg
-eo:
+jumbotron:
   welcomeImage: /assets/images/bianca-fiore.jpg
   welcomeTextLeft: Hi I'm
   welcomeTextRight: Bianca
