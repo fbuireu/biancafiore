@@ -11,13 +11,13 @@ const SimpleBillboard = ({ frontmatter, author, tags, excerpt }) => {
 
   return <section className={`billboard`}>
     <div className={`wrapper article__information__wrapper`}>
-      <div className={`article__information`}>
+      <header className={`article__information`}>
         <Title title={frontmatter.content.title} />
         <Subtitle author={author.frontmatter.name} lastUpdated={frontmatter.content.lastUpdated} />
         <Summary summary={summary} classNames={`hit-card__summary`} />
         <ReadingTime readingTime={frontmatter.content.readingTime} classNames={`article__reading-time`} />
         <Tag tags={tags} />
-      </div>
+      </header>
     </div>
   </section>;
 };

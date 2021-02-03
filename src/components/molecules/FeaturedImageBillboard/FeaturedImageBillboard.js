@@ -15,13 +15,13 @@ const FeaturedImageBillboard = ({ frontmatter, author, tags, excerpt }) => {
                           Tag={`section`}
                           fluid={[`linear-gradient(to bottom, transparent, #000)`, frontmatter?.content?.featuredImage?.childImageSharp?.fluid]}>
     <div className={`wrapper article__information__wrapper`}>
-      <div className={`article__information`}>
+      <header className={`article__information`}>
         <Title title={frontmatter.content.title} />
         <Subtitle author={author.frontmatter.name} lastUpdated={frontmatter.content.lastUpdated} />
         <Summary summary={summary} classNames={`hit-card__summary`} />
         <ReadingTime readingTime={frontmatter.content.readingTime} classNames={`article__reading-time`} />
         <Tag tags={tags} />
-      </div>
+      </header>
     </div>
   </BackgroundImage>;
 };
