@@ -188,11 +188,16 @@ collections:
         fields:
           - { name: key, label: Key, required: true, widget: hidden, default: home }
           - { name: title, label: Title, required: true, widget: string }
-          - { name: image, label: Image, required: true, widget: image, allow_multiple: false }
+          - { name: jumbotron, label: Jumbotron, widget: object, collapsed: true,
+              fields: [
+                { name: welcomeImage, label: Welcome image, required: true, widget: image, allow_multiple: false },
+                { name: welcomeTextLeft, label: Welcome text left, required: false, widget: markdown },
+                { name: welcomeTextRight, label: Welcome text right, required: false, widget: markdown },
+                { name: welcomeDescription, label: Welcome description, required: false, widget: markdown }] }
           - { name: testimonials, label: Testimonials, required: false, widget: list,
               fields: [
                 { name: author, label: Author, required: true, widget: string },
-                { name: quote, label: Quote, required: true, widget: string },
+                { name: quote, label: Quote, required: true, widget: markdown },
                 { name: image, label: Image, required: false, widget: image, allow_multiple: false },
                 { name: description, label: Description, required: false, widget: string }] }
           - { name: body, label: Body, required: true, widget: markdown }
