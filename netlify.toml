@@ -19,6 +19,8 @@ package = 'netlify-plugin-submit-sitemap'
 [[plugins]]
 package = 'netlify-plugin-minify-html'
 [plugins.inputs]
-contexts = ['production']
-[plugins.inputs.minifierOptions]
-removeComments = true
+contexts = [
+    'production',
+    'branch-deploy',
+    'deploy-preview'
+]
