@@ -2,7 +2,6 @@ import BackgroundImage from 'gatsby-background-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 import HitTitle from '../../atoms/HitTitle/HitTitle';
-import Summary from '../../atoms/Summary/Summary';
 import HitTags from '../../molecules/HitTags/HitTags';
 
 const FeaturedImageProjectCard = project => {
@@ -12,9 +11,11 @@ const FeaturedImageProjectCard = project => {
                        fluid={[
                          `linear-gradient(rgba(0,0,0, .5), rgba(0, 0, 0, .8))`,
                          project?.content?.featuredImage?.childImageSharp?.fluid]}>
-        <HitTitle hit={project} attribute={`title`} />
-        <HitTags hit={project} attribute={`tags`} />
-        {/*<Summary summary={project.html} />*/}
+        <header>
+          <HitTitle hit={project} attribute={`title`} />
+          <HitTags hit={project} attribute={`tags`} />
+          {/*<Summary summary={project.html} />*/}
+        </header>
       </BackgroundImage>
     </article>
   </li>;
