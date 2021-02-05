@@ -2,8 +2,8 @@ import { Link } from 'gatsby';
 import { useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
-import slugify from 'slugify';
 import Label from '../../../assets/svg/label.svg';
+import slugify from '../../../utils/slugify/slugify';
 import './Tag.scss';
 
 const Tag = ({ tags }) => {
@@ -12,7 +12,7 @@ const Tag = ({ tags }) => {
   return <ul className={`article__tags__list`}>
     {tags.map(tag =>
       <li className={`article__tag__item`} key={tag}>
-        <Link to={`/${currentLanguage}/tag/${slugify(tag, { lower: true })}`}
+        <Link to={`/${currentLanguage}/tag/${slugify(tag)}`}
               className={`article__tag__item__link`}>
           <Label className={`article__tag__item__label`}/>
           {tag}

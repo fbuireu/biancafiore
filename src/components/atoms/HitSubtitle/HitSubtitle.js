@@ -3,7 +3,7 @@ import { useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Highlight } from 'react-instantsearch-dom';
-import slugify from 'slugify';
+import slugify from '../../../utils/slugify/slugify';
 import './HitSubtitle.scss';
 
 const HitSubtitle = ({ hit, attribute, hasAuthor = false }) => {
@@ -13,7 +13,7 @@ const HitSubtitle = ({ hit, attribute, hasAuthor = false }) => {
     <time dateTime={hit.content.lastUpdated}><Highlight attribute={attribute} hit={hit} tagName={`mark`} />
     </time>
     &nbsp;|&nbsp;
-    <Link to={`/${currentLanguage}/tag/${slugify(hit.author, { lower: true })}`}
+    <Link to={`/${currentLanguage}/tag/${slugify(hit.author)}`}
           className={`hit-card__author`}>
       {hasAuthor && <Highlight attribute={`author`} hit={hit} tagName={`mark`} />}
     </Link>

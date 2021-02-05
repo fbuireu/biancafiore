@@ -1,5 +1,5 @@
 const path = require(`path`);
-const slugify = require(`slugify`);
+const slugify = require(`../utils/slugify/slugify`);
 
 const tagsBuilder = async (graphql, { createPage }, reporter) => {
   const tagTemplate = path.resolve(
@@ -33,7 +33,7 @@ const tagsBuilder = async (graphql, { createPage }, reporter) => {
   allTags.map(({ node: tag }) => {
     let { name, slug } = tag.frontmatter;
 
-    slug ? tags.slugs.push(slug) : tags.slugs.push(slugify(name, { lower: true }));
+    slug ? tags.slugs.push(slug) : tags.slugs.push(slugify(name));
     name && tags.names.push(name);
 
     return new Set(tags.slugs) && new Set(tags.names);
