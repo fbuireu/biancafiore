@@ -3,7 +3,7 @@ import Img from 'gatsby-image';
 import { useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
-import slugify from 'slugify';
+import slugify from '../../../utils/slugify/slugify';
 import './Author.scss';
 
 const Author = ({ author }) => {
@@ -11,7 +11,7 @@ const Author = ({ author }) => {
 
   return <section className={`author__wrapper`}>
     <div className={`author`}>
-      <Link to={`/${currentLanguage}/tag/${slugify(author.frontmatter.name, { lower: true })}`}>
+      <Link to={`/${currentLanguage}/tag/${slugify(author.frontmatter.name)}`}>
         <Img className={`author__image`}
              fluid={author?.frontmatter?.image?.childImageSharp?.fluid}
              alt={author.frontmatter.name} />
