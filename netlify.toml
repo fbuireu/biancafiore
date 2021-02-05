@@ -24,5 +24,4 @@ package = 'netlify-plugin-minify-html'
         'branch-deploy',
         'deploy-preview'
     ]
-        [plugins.inputs.minifierOptions]
-        removeComments = true
+
