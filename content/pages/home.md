@@ -6,7 +6,7 @@ jumbotron:
   welcomeImage: /assets/images/bianca-fiore.jpg
   welcomeTextLeft: Hi I'm
   welcomeTextRight: Bianca
-  welcomeDescription: Yada yada yada yada yada yada yada yada yada
+  welcomeDescription: Yada **yada** yada yada yada yada *yada* yada yada
 testimonials:
   - author: Ferran Buireu
     quote: La més guapa de totes
