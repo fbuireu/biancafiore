@@ -2,9 +2,9 @@ require(`dotenv`).config({
   path: `.env.${process.env.NODE_ENV}`
 });
 
-const { GATSBY_ALGOLIA_APP_ID, GATSBY_ALGOLIA_API_KEY, GATSBY_GOOGLE_ANALYTICS_ID } = process.env;
-
 const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries/queries`);
+
+const { GATSBY_ALGOLIA_APP_ID, GATSBY_ALGOLIA_API_KEY, GATSBY_GOOGLE_ANALYTICS_ID } = process.env;
 
 module.exports = {
   siteMetadata: {
@@ -23,22 +23,25 @@ module.exports = {
     `gatsby-plugin-sass`,
     `gatsby-plugin-netlify-cms-paths`,
     {
-      resolve: `gatsby-plugin-google-fonts`,
+      resolve: `gatsby-plugin-google-fonts-v2`,
       options: {
         fonts: [
-          `Zilla Slab: 400, 400i, 700`,
-          `Montserrat: 300, 400, 700`
-        ],
-        display: `swap`
+          {
+            family: `Literata:wght@300;400;700`,
+          },
+          {
+            family: `Montserrat:wght@300;400;700`,
+          }
+        ]
       }
     },
     {
       resolve: `gatsby-plugin-react-svg`,
       options: {
         rule: {
-          include: /svg/,
-        },
-      },
+          include: /svg/
+        }
+      }
     },
     {
       resolve: `gatsby-source-filesystem`,
