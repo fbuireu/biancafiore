@@ -7,16 +7,12 @@ package = "netlify-plugin-minify-html"
 contexts = ['production', 'branch-deploy', 'deploy-preview']
 [plugins.inputs.minifierOptions]
 removeComments = true
-collapseInlineTagWhitespace = false
 
 [[plugins]]
 package = 'netlify-plugin-gatsby-cache'
 
 [[plugins]]
 package = '@algolia/netlify-plugin-crawler'
-
-[[plugins]]
-package = '@netlify/plugin-lighthouse'
 
 [[plugins]]
 package = 'netlify-plugin-inline-critical-css'
@@ -26,3 +22,6 @@ package = 'netlify-plugin-image-optim'
 
 [[plugins]]
 package = 'netlify-plugin-submit-sitemap'
+
+[[plugins]]
+package = '@netlify/plugin-lighthouse'
