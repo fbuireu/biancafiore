@@ -34,18 +34,18 @@ $fonts: (
     ),
   ),
   secondary: (
+    light: (
+      family: ('Literata', serif),
+      weight: 300,
+      style: normal
+    ),
     regular: (
-      family: ('Zilla Slab', serif),
+      family: ('Literata', serif),
       weight: 400,
       style: normal
     ),
-    italic: (
-      family: ('Zilla Slab', serif),
-      weight: 400,
-      style: italic
-    ),
     bold: (
-      family: ('Zilla Slab', serif),
+      family: ('Literata', serif),
       weight: 700,
       style: normal
     ),
