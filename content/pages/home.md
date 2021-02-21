@@ -8,9 +8,16 @@ jumbotron:
   welcomeTextRight: Bianca
   welcomeDescription: Yada **yada** yada yada yada yada *yada* yada yada
 testimonials:
-  - author: Ferran Buireu
-    quote: La més guapa de totes
-    image: /assets/images/f6tptx3r_400x400.jpg
-    description: Front-end developer
+    title: Testimonials
+    subtitle: Yada **yada** yada yada yada yada *yada* yada yada
+    testimonials:
+        - author: Ferran Buireu
+          quote: La més guapa de totes
+          image: /assets/images/f6tptx3r_400x400.jpg
+          description: Front-end developer
+        - author: Ferran Buireu 2
+          quote: La més guapa de totes 2
+          image: /assets/images/f6tptx3r_400x400.jpg
+          description: Front-end developer
 ---
 Test description Test description Test descriptionTest descriptionTest description Test description Test description Test description Test description Test description Test description Test description Test description Test description Test description Test description Test description Test description
