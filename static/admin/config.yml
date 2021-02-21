@@ -193,13 +193,17 @@ collections:
                 { name: welcomeImage, label: Welcome image, required: true, widget: image, allow_multiple: false },
                 { name: welcomeTextLeft, label: Welcome text left, required: false, widget: markdown },
                 { name: welcomeTextRight, label: Welcome text right, required: false, widget: markdown },
-                { name: welcomeDescription, label: Welcome description, required: false, widget: markdown }] }
-          - { name: testimonials, label: Testimonials, required: false, widget: list,
+                { name: welcomeDescription, label: Welcome description, required: false, widget: markdown } ] }
+          - { name: testimonials, label: Testimonials, widget: object, collapsed: true,
               fields: [
-                { name: author, label: Author, required: true, widget: string },
-                { name: quote, label: Quote, required: true, widget: markdown },
-                { name: image, label: Image, required: false, widget: image, allow_multiple: false },
-                { name: description, label: Description, required: false, widget: string }] }
+                { name: title, label: Title, required: true, widget: string },
+                { name: subtitle, label: Subtitle, required: false, widget: markdown },
+                { name: testimonials, label: Testimonials, required: false, widget: list,
+                  fields: [
+                    { name: author, label: Author, required: true, widget: string },
+                    { name: quote, label: Quote, required: true, widget: markdown },
+                    { name: image, label: Image, required: false, widget: image, allow_multiple: false },
+                    { name: description, label: Description, required: false, widget: markdown }] }] }
           - { name: body, label: Body, required: true, widget: markdown }
       - name: about-me
         label: About me
