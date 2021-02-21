@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const Testimonial = ({ author, quote, description, image }) => {
-  return <div>{author}
+  return <div>
+    {author}
     {quote}
     {description}
     <Img fluid={image.childImageSharp.fluid} />
