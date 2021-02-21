@@ -30,7 +30,7 @@ const Index = ({ data }) => {
 
 export const homeData = graphql`
     query getHomeData {
-        home: allMarkdownRemark(filter: {frontmatter: {key: {eq: "home"}}}) {
+        home: allMarkdownRemark(filter: {frontmatter: {key: {eq: "home" }}}) {
             edges {
                 node {
                     html
