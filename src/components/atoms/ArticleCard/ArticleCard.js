@@ -1,5 +1,5 @@
 import { Link } from 'gatsby';
-import { useIntl } from "gatsby-plugin-intl";
+import { useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import './ArticleCard.scss';
@@ -8,7 +8,7 @@ const ArticleCard = ({ article }) => {
   const { locale: currentLanguage } = useIntl();
 
   let { excerpt, fields, frontmatter } = article,
-    summary = frontmatter.content.summary || excerpt;
+    summary = frontmatter.content.summary ?? excerpt;
 
   return <li className={`article-card__item`}>
     <Link to={`/${currentLanguage}/blog${fields.slug}`}>

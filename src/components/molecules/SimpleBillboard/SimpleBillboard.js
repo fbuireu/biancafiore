@@ -7,7 +7,7 @@ import Tag from '../../atoms/Tag/Tag';
 import Title from '../../atoms/Title/Title';
 
 const SimpleBillboard = ({ frontmatter, author, tags, excerpt }) => {
-  let summary = frontmatter.content.summary || excerpt;
+  let summary = frontmatter.content.summary ?? excerpt;
 
   return <section className={`billboard`}>
     <div className={`wrapper article__information__wrapper`}>

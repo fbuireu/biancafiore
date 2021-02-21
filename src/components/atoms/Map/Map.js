@@ -309,7 +309,7 @@ const Map = ({ cities, showCityInformation }) => {
     mapConfiguration.mapCities.forEach(city => {
       city.events.on(`hit`, element => {
         destination = element.target;
-        origin = previousDestinationRef.current || initialCity;
+        origin = previousDestinationRef.current ?? initialCity;
 
         showCityInformation(destination.name);
 
@@ -328,7 +328,7 @@ const Map = ({ cities, showCityInformation }) => {
 
     polygonTemplate.events.on(`hit`, country => {
       destination = mapConfiguration.mapCities.find(city => city.countryIsoCode === country.target.dataItem.dataContext.id);
-      origin = previousDestinationRef.current || initialCity;
+      origin = previousDestinationRef.current ?? initialCity;
 
       if (destination !== origin) {
         if (currentLine > 1) eraseLine(previousLineRef.current);
@@ -353,10 +353,10 @@ const Map = ({ cities, showCityInformation }) => {
       mapConfiguration.countriesIsoCode.forEach(isoCode => {
         const country = polygonSeries.getPolygonById(isoCode);
 
-        north = !north || (country.north > north) ? country.north : north;
-        south = !south || (country.south < south) ? country.south : south;
-        west = !west || (country.north < west) ? country.west : west;
-        east = !east || (country.east > east) ? country.east : east;
+        north = !north ?? (country.north > north) ? country.north : north;
+        south = !south ?? (country.south < south) ? country.south : south;
+        west = !west ?? (country.north < west) ? country.west : west;
+        east = !east ?? (country.east > east) ? country.east : east;
 
         country.isActive = true;
       });

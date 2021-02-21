@@ -9,7 +9,7 @@ import Title from '../../atoms/Title/Title';
 import './FeaturedImageBillboard.scss';
 
 const FeaturedImageBillboard = ({ frontmatter, author, tags, excerpt }) => {
-  let summary = frontmatter.content.summary || excerpt;
+  let summary = frontmatter.content.summary ?? excerpt;
 
   return <BackgroundImage className={`billboard`}
                           Tag={`section`}

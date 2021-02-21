@@ -29,7 +29,7 @@ const Article = ({ data }) => {
       domain: url,
       url: `${url}${slug}`,
       title: title,
-      description: summary || excerpt
+      description: summary ?? excerpt
     }
   };
 
@@ -37,22 +37,24 @@ const Article = ({ data }) => {
     setArticleProperties(articleReference.current);
   }, []);
 
-  useScrollPosition(function setScrollPosition ({ currentPosition: { y: currentVerticalYPosition } }) {
+  useScrollPosition(function setScrollPosition ({ currentPosition }) {
+    let { y: currentVerticalYPosition } = currentPosition;
+
     setScroll(currentVerticalYPosition);
   });
 
   return <Layout>
-    <SEO title={title} />
-    <Billboard {...article} author={author} tags={tags} />
+    <SEO title={title}/>
+    <Billboard {...article} author={author} tags={tags}/>
     <section className={`wrapper article__wrapper`}>
-      <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll} />
+      <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll}/>
       <article ref={articleReference}>
         <Markdown>{html}</Markdown>
       </article>
-      <Author author={author} />
-      <RelatedArticles relatedArticles={relatedArticles} />
+      <Author author={author}/>
+      <RelatedArticles relatedArticles={relatedArticles}/>
     </section>
-    <ReadingProgress scroll={scroll} articleProperties={articleProperties} />
+    <ReadingProgress scroll={scroll} articleProperties={articleProperties}/>
   </Layout>;
 };
 

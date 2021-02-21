@@ -15,51 +15,20 @@ const SEO = ({ description, lang, meta, title }) => {
                   }
               }
     `,
-    ),
-    metaDescription = description || site.siteMetadata.description;
+  );
+  const metaDescription = description ?? site.siteMetadata.description;
 
-  return <Helmet htmlAttributes={{ lang }}
-                 title={title}
-                 titleTemplate={`%s | ${site.siteMetadata.title}`}
-                 meta={[
-                   {
-                     name: `robots`,
-                     content: `noindex, nofollow`,
-                   },
-                   {
-                     name: `description`,
-                     content: metaDescription,
-                   },
-                   {
-                     property: `og:title`,
-                     content: title,
-                   },
-                   {
-                     property: `og:description`,
-                     content: metaDescription,
-                   },
-                   {
-                     property: `og:type`,
-                     content: `website`,
-                   },
-                   {
-                     name: `twitter:card`,
-                     content: `summary`,
-                   },
-                   {
-                     name: `twitter:creator`,
-                     content: site.siteMetadata.author,
-                   },
-                   {
-                     name: `twitter:title`,
-                     content: title,
-                   },
-                   {
-                     name: `twitter:description`,
-                     content: metaDescription,
-                   },
-                 ].concat(meta)}
-  />;
+  return <Helmet htmlAttributes={{ lang }} title={title} titleTemplate={`%s | ${site.siteMetadata.title}`}>
+    <meta name={`robots`} content={`noindex, nofollow`}/>
+    <meta name={`description`} content={metaDescription}/>
+    <meta name={`og:title`} content={title}/>
+    <meta name={`og:description`} content={metaDescription}/>
+    <meta name={`og:type`} content={`website`}/>
+    <meta name={`twitter:card`} content={`summary`}/>
+    <meta name={`twitter:creator`} content={site.siteMetadata.author}/>
+    <meta name={`twitter:title`} content={title}/>
+    <meta name={`twitter:description`} content={metaDescription}/>
+  </Helmet>;
 };
 
 SEO.defaultProps = {
