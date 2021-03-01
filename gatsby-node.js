@@ -5,8 +5,10 @@ const tagsBuilder = require(`./src/build/tagsBuilder`);
 const path = require(`path`);
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
-  await articlesBuilder(graphql, actions, reporter);
-  await tagsBuilder(graphql, actions, reporter);
+  await Promise.all([
+    articlesBuilder(graphql, actions, reporter),
+    tagsBuilder(graphql, actions, reporter)
+  ]);
 };
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
