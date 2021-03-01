@@ -1,0 +1,70 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.testimonial {
+  background-color: color(others, white);
+  display: grid;
+  gap: 0 2rem;
+  grid: 'Testimonial-Photo Testimonial-Photo . .' 1fr
+  'Testimonial-Photo Testimonial-Photo Testimonial-Body Testimonial-Body' 1fr
+  'Testimonial-Photo Testimonial-Photo Testimonial-Footer Testimonial-Footer' calc(100% / 8)
+  'Testimonial-Photo Testimonial-Photo Testimonial-Footer Testimonial-Footer' calc(100% / 8)
+  / 1fr 1fr 1fr 1fr;
+  transition: transform .3s;
+  width: 100%;
+
+  &:not(.--is-active) {
+    opacity: .25;
+  }
+}
+
+.testimonial__image {
+  grid-area: Testimonial-Photo;
+}
+
+.testimonial__quote {
+  fill: color(primary);
+  height: auto;
+  left: 50%;
+  position: absolute;
+  top: 30%;
+  transform: translate(50%, -100%);
+  width: 2.5rem;
+}
+
+.testimonial__body,
+.testimonial__author,
+.testimonial__description {
+  text-align: left;
+}
+
+.testimonial__body,
+.testimonial__footer {
+  justify-self: flex-start;
+}
+
+.testimonial__body {
+  @include font-properties(secondary);
+  color: color(others, black);
+  grid-area: Testimonial-Body;
+  position: relative;
+}
+
+.testimonial__footer {
+  display: flex;
+  flex-flow: column wrap;
+  grid-area: Testimonial-Footer;
+}
+
+.testimonial__author {
+  @include font-properties(primary, light);
+  @include typography-settings(2, 2, 2);
+  color: color(others, black);
+  margin-bottom: .5rem;
+  text-transform: uppercase;
+}
+
+.testimonial__description {
+  @include font-properties(secondary);
+  color: color(neutral, neutral-2);
+}
