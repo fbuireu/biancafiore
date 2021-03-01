@@ -38,7 +38,7 @@
   position: relative;
 
   &::after {
-    background: color(others, white);
+    background-color: color(others, white);
     content: '';
     height: 100%;
     left: 0;
@@ -50,7 +50,7 @@
 
 .navigation__wrapper__body {
   @include typography-settings(5, 5, 5);
-  @include font-properties(secondary);
+  @include font-properties(primary);
   color: color(others, white);
   max-width: 50%;
   padding-right: 5rem;
@@ -73,7 +73,7 @@
 }
 
 .navigation__item__link {
-  @include font-properties(secondary);
+  @include font-properties(primary);
   color: color(others, white);
   letter-spacing: 2px;
   position: relative;

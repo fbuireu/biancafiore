@@ -3,7 +3,7 @@
 @import '../../../styles/global/functions';
 
 .filter__refinement-list {
-  background: color(others, white);
+  background-color: color(others, white);
   border-radius: $global-border-radius;
   box-shadow: 0 .5rem 1rem color(neutral, neutral-3);
   margin: .5rem 0;
@@ -23,7 +23,7 @@
   position: relative;
 
   &.--is-selected {
-    @include font-properties(primary, bold);
+    @include font-properties(secondary, bold);
     color: color(primary);
 
     &::before {
