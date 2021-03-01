@@ -204,6 +204,13 @@ collections:
                     { name: quote, label: Quote, required: true, widget: markdown },
                     { name: image, label: Image, required: false, widget: image, allow_multiple: false },
                     { name: description, label: Description, required: false, widget: markdown }] }] }
+          - { name: myWork, label: My Work, widget: object, collapsed: true,
+              fields: [
+                { name: title, label: Title, required: true, widget: string },
+                { name: works, label: Works, required: true, widget: list,
+                  fields: [
+                    { name: tags, label: Tags, required: true, widget: relation, collection: tags, search_fields: [ name ], value_field: name, display_fields: [ name ], multiple: true },
+                    { name: image, label: Image, required: true, widget: image, allow_multiple: false }] }] }
           - { name: body, label: Body, required: true, widget: markdown }
       - name: about-me
         label: About me
