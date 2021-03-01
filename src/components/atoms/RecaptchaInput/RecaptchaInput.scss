@@ -18,7 +18,7 @@
 
 .recaptcha-input__error-message {
   @include typography-settings(-2, -2, -2);
-  @include font-properties(primary, bold);
+  @include font-properties(secondary, bold);
   bottom: -2rem;
   color: color(error);
   left: 0;

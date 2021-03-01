@@ -1,7 +1,7 @@
 @import '../../../styles/global/functions';
 
 .hit-card__title {
-  @include font-properties(secondary, bold);
+  @include font-properties(primary, bold);
   @include typography-settings(4, 4, 4);
   color: color(others, white);
   grid-area: Title;

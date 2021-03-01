@@ -3,7 +3,7 @@
 
 .filter__stats {
   @include typography-settings(-2, -2, -2);
-  @include font-properties(primary, italic);
+  @include font-properties(secondary, italic);
   font-style: italic;
   margin: .25rem 0 .5rem;
   text-align: left;

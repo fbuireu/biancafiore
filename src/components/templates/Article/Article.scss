@@ -18,7 +18,7 @@
 
 blockquote {
   @include typography-settings(2, 2, 2);
-  @include font-properties(primary, thin);
+  @include font-properties(secondary, thin);
   border-left: .2rem solid color(primary, primary-dark-1);
   margin-left: .5rem;
   padding-left: .5rem;
