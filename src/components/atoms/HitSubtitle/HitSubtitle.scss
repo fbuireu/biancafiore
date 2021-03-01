@@ -8,7 +8,7 @@
 }
 
 .hit-card__author {
-  @include font-properties(primary, bold);
+  @include font-properties(secondary, bold);
   color: color(primary);
 }
 

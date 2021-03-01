@@ -22,7 +22,7 @@
 
 .jumbotron__text-left,
 .jumbotron__text-right {
-  @include font-properties(secondary, light);
+  @include font-properties(primary, extra-light);
   @include typography-settings(10, 10, 10);
   text-transform: uppercase;
   z-index: 1;

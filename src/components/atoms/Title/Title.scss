@@ -1,7 +1,7 @@
 @import '../../../styles/global/functions';
 
 .article__title {
-  @include font-properties(secondary, bold);
+  @include font-properties(primary, bold);
   @include typography-settings(10, 10 , 10);
   color: color(others, white);
   grid-area: Title;
