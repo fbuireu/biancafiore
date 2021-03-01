@@ -3,5 +3,23 @@
 
 .testimonials__wrapper {
   background-color: color(neutral, neutral-5);
+  margin: 5rem 0;
   padding: 3rem 0;
+}
+
+.testimonials__title,
+.testimonials__subtitle {
+  @include font-properties(primary, light);
+  display: inherit;
+  text-align: center;
+}
+
+.testimonials__title {
+  @include typography-settings(5, 5, 5);
+  text-transform: uppercase;
+}
+
+.testimonials__subtitle {
+  @include typography-settings(0, 0, 0);
+  padding: 1rem 0 2rem;
 }
