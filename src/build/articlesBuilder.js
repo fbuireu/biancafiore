@@ -47,9 +47,9 @@ const articlesBuilder = async (graphql, { createPage }, reporter) => {
       path: `/blog${slug}`,
       component: articleTemplate,
       context: {
-        slug: slug,
-        author: author,
-        tags: tags
+        slug,
+        author,
+        tags
       }
     });
   });

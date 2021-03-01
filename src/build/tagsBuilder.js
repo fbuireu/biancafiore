@@ -46,7 +46,7 @@ const tagsBuilder = async (graphql, { createPage }, reporter) => {
       path: `tag/${tag}`,
       component: tagTemplate,
       context: {
-        name: name
+        name
       }
     });
   });
