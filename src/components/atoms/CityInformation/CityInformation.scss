@@ -3,7 +3,7 @@
 @import '../../../styles/global/functions';
 
 .city-information__modal__wrapper {
-  background: color(others, white);
+  background-color: color(others, white);
   border-radius: $global-border-radius;
   box-shadow: 0 .5rem 1rem color(neutral, neutral-3);
   left: 2rem;

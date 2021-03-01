@@ -9,7 +9,7 @@
   transition: background-color .3s ease;
 
   &:hover:not(.--is-selected) {
-    background: color(primary, primary-light-2);
+    background-color: color(primary, primary-light-2);
 
     .refinement-list__item__label {
       color: color(primary, primary-dark-2);
@@ -17,7 +17,7 @@
   }
 
   &.--is-selected {
-    background: color(primary, primary-light-1);
+    background-color: color(primary, primary-light-1);
 
     .refinement-list__item__checkbox {
       background-color: color(primary);
