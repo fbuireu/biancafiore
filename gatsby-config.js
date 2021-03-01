@@ -27,10 +27,10 @@ module.exports = {
       options: {
         fonts: [
           {
-            family: `Literata:wght@300;400;700`,
+            family: `Literata:wght@200;300;400;700`,
           },
           {
-            family: `Montserrat:wght@300;400;700`,
+            family: `Zilla Slab:wght@300;400;700`,
           }
         ]
       }
