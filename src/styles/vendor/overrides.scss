@@ -53,3 +53,12 @@ g [aria-labelledby="id-79-title"] {
   height: inherit !important;
   width: inherit !important;
 }
+
+.swiper-slide{
+  transform: scale(.85);
+  transition: all .3s linear;
+}
+
+.swiper-slide-active{
+  transform: scale(1);
+}
