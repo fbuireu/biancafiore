@@ -31,5 +31,7 @@ myWork:
     - tags:
         - Web Content
       image: /assets/images/web-content.jpg
+latestArticles:
+  title: Fresh from **the blog**
 ---
 Test description Test description Test descriptionTest descriptionTest description Test description Test description Test description Test description Test description Test description Test description Test description Test description Test description Test description Test description Test description
