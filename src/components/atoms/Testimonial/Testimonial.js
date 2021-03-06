@@ -7,7 +7,7 @@ import './Testimonial.scss';
 
 const Testimonial = ({ author, quote, description, image, isActive }) => {
   return <article className={`testimonial ${isActive ? `--is-active` : ``}`}>
-    <Img className={`testimonial__image`} fluid={image.childImageSharp.fluid}/>
+    <Img className={`testimonial__image`} fluid={image?.childImageSharp?.fluid}/>
     <Quotes className={`testimonial__quote`}/>
     <Markdown className={`testimonial__body`}>{quote}</Markdown>
     <div className={`testimonial__footer`}>
