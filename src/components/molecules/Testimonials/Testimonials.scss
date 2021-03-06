@@ -16,6 +16,7 @@
 
 .testimonials__title {
   @include typography-settings(5, 5, 5);
+  letter-spacing: .3rem;
   text-transform: uppercase;
 }
 
