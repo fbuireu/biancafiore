@@ -1,0 +1,43 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.my-work__title {
+  @include font-properties(primary, light);
+  @include typography-settings(5, 5, 5);
+  letter-spacing: .3rem;
+  margin-bottom: 4rem;
+  text-transform: uppercase;
+}
+
+.my-work__list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.my-work__item {
+  width: 100%;
+
+  &:nth-child(even) {
+    max-width: calc(100% / 2 - 1.5rem);
+  }
+
+  &:nth-child(odd) {
+    align-self: flex-end;
+    max-width: calc(100% / 4 - 1.5rem);
+
+    &:first-child {
+      align-self: flex-start;
+    }
+  }
+}
+
+.my-work__item__image {
+  margin-bottom: 2rem;
+}
+
+.my-work__item__name {
+  @include font-properties(primary, light);
+  @include typography-settings(3, 3, 3);
+  text-transform: uppercase;
+}
