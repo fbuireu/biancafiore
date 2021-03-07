@@ -32,9 +32,6 @@ export const useLatestArticles = () => {
                                   }
                               }
                           }
-                          content {
-                              tags
-                          }
                       }
                   }
               }
