@@ -15,7 +15,7 @@
   transform: translateY(-100%);
   transition: transform .6s ease-out;
   width: 100%;
-  z-index: 1;
+  z-index: 20;
 
   &.--is-visible {
     box-shadow: 0 .5rem .5rem -.5rem color(neutral);
