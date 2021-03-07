@@ -21,14 +21,14 @@ const LanguageSwitcher = () => {
 
   return <li className={`language-switcher__wrapper ${isMenuSelectorOpen ? `--is-open` : ``}`}>
     <span onClick={handleMenuSelector} className={`language-switcher__icon`}>
-      <FormattedMessage id={`global.changeLanguage`}/>
-      <ArrowDown className={`arrow-down`}/>
+      <FormattedMessage id={`global.changeLanguage`} />
+      <ArrowDown className={`arrow-down`} />
     </span>
     <ul className={`language-switcher__list`}>
       {languages.map(language => isMenuSelectorOpen &&
         <li className={`language-switcher__item ${currentLanguage === language.isoCode ? `--is-current-language` : ``}`}
             onClick={() => handleLanguage(language.isoCode)}>
-          <FormattedMessage id={`global.${language.isoCode}`}/>
+          <FormattedMessage id={`global.${language.isoCode}`} />
         </li>
       )}
     </ul>
