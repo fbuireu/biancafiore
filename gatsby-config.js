@@ -198,10 +198,8 @@ module.exports = {
   flags: {
     FAST_DEV: true,
     FAST_REFRESH: true,
-    QUERY_ON_DEMAND: true,
     PARALLEL_SOURCING: true,
     DEV_SSR: true,
-    LAZY_IMAGES: true,
     PRESERVE_WEBPACK_CACHE: true,
     PRESERVE_FILE_DOWNLOAD_CACHE: true
   }
