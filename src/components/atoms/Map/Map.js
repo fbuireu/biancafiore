@@ -294,7 +294,7 @@ const Map = ({ cities, showCityInformation }) => {
     } = setMap(mapChart);
 
     polygonTemplate.events.on(`over`, element => {
-      mapConfiguration.countriesIsoCode.map(iso => {
+      mapConfiguration.countriesIsoCode.forEach(iso => {
         const country = polygonSeries.getPolygonById(iso);
 
         if (element.target.dataItem.dataContext.id === iso) {
