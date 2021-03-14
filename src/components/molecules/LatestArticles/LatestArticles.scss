@@ -1,0 +1,29 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.latest-articles__wrapper {
+  background-color: color(others, black);
+  margin-top: 7rem;
+  padding: 5rem 0;
+}
+
+.latest-articles__list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+
+.latest-articles__title {
+  @include font-properties(primary, light);
+  @include typography-settings(5, 5, 5);
+  color: color(others, white);
+  letter-spacing: .3rem;
+  margin-bottom: 3rem;
+  text-transform: uppercase;
+
+  strong {
+    color: color(primary);
+    font-weight: normal;
+  }
+}
