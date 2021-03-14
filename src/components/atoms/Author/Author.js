@@ -1,5 +1,5 @@
 import { Link } from 'gatsby';
-import Img from 'gatsby-image';
+import { GatsbyImage } from 'gatsby-plugin-image';
 import { useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -9,16 +9,19 @@ import './Author.scss';
 const Author = ({ author }) => {
   const { locale: currentLanguage } = useIntl();
 
-  return <section className={`author__wrapper`}>
-    <div className={`author`}>
-      <Link to={`/${currentLanguage}/tag/${slugify(author.frontmatter.name)}`}>
-        <Img className={`author__image`}
-             fluid={author?.frontmatter?.image?.childImageSharp?.fluid}
-             alt={author.frontmatter.name} />
-      </Link>
-      {author.frontmatter.description && <p className={`author__description`}>{author.frontmatter.description}</p>}
-    </div>
-  </section>;
+  return (
+    <section className={`author__wrapper`}>
+      <div className={`author`}>
+        <Link to={`/${currentLanguage}/tag/${slugify(author.frontmatter.name)}`}>
+          <GatsbyImage
+            image={author?.frontmatter?.image?.childImageSharp?.gatsbyImageData}
+            className={`author__image`}
+            alt={author.frontmatter.name} />
+        </Link>
+        {author.frontmatter.description && <p className={`author__description`}>{author.frontmatter.description}</p>}
+      </div>
+    </section>
+  );
 };
 
 Author.propTypes = {
