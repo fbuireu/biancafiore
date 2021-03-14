@@ -1,5 +1,5 @@
 import { Link } from 'gatsby';
-import { GatsbyImage } from 'gatsby-plugin-image';
+import Img from 'gatsby-image';
 import { useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -13,10 +13,9 @@ const Author = ({ author }) => {
     <section className={`author__wrapper`}>
       <div className={`author`}>
         <Link to={`/${currentLanguage}/tag/${slugify(author.frontmatter.name)}`}>
-          <GatsbyImage
-            image={author?.frontmatter?.image?.childImageSharp?.gatsbyImageData}
-            className={`author__image`}
-            alt={author.frontmatter.name} />
+          <Img fluid={author?.frontmatter?.image?.childImageSharp?.fluid}
+               className={`author__image`}
+               alt={author.frontmatter.name} />
         </Link>
         {author.frontmatter.description && <p className={`author__description`}>{author.frontmatter.description}</p>}
       </div>
