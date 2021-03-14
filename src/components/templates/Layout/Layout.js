@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
       }
   `);
 
-  return  <section className={`site__wrapper`}>
+  return <section className={`site__wrapper`}>
     <Header />
     <main>{children}</main>
   </section>;
