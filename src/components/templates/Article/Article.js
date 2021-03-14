@@ -58,84 +58,94 @@ const Article = ({ data }) => {
   </Layout>;
 };
 
-export const articleData = graphql`query getArticleInformation($slug: String!, $author: String, $tags: [String!]) {
-  article: markdownRemark(fields: { slug: { eq: $slug }}) {
-    html
-    excerpt(pruneLength: 350)
-    fields {
-      slug
-    }
-    frontmatter {
-      language
-      author
-      seo {
-        metaDescription
-      }
-      content {
-        title
-        summary
-        publishDate
-        lastUpdated
-        readingTime
-        isFeaturedArticle
-        tags
-        featuredImage {
-          childImageSharp {
-            gatsbyImageData(layout: FULL_WIDTH)
-          }
-        }
-      }
-    }
-  }
-  author: markdownRemark(frontmatter: { name: { eq: $author }}) {
-    frontmatter {
-      slug
-      name
-      description
-      image {
-        childImageSharp {
-          gatsbyImageData(layout: FULL_WIDTH)
-        }
-      }
-    }
-  }
-  relatedArticles: allMarkdownRemark(
-    filter: {frontmatter: { content: { tags: { in: $tags }}}, fields: { slug: { ne: $slug }}}
-    sort: { fields: frontmatter___content___publishDate, order: DESC }
-    limit: 3
-  ) {
-    edges {
-      node {
-        excerpt(pruneLength: 350)
-        fields {
-          slug
-        }
-        frontmatter {
-          language
-          content {
-            title
-            summary
-            publishDate
-            lastUpdated
-            readingTime
-            tags
-            featuredImage {
-              childImageSharp {
-                gatsbyImageData(layout: FULL_WIDTH)
-              }
+export const articleData = graphql`
+    query getArticleInformation ($slug: String!, $author: String, $tags: [String!]) {
+        article: markdownRemark (fields: { slug: { eq: $slug }}) {
+            html
+            excerpt (pruneLength: 350)
+            fields {
+                slug
             }
-          }
+            frontmatter {
+                language
+                author
+                seo {
+                    metaDescription
+                }
+                content {
+                    title
+                    summary
+                    publishDate
+                    lastUpdated
+                    readingTime
+                    isFeaturedArticle
+                    tags
+                    featuredImage {
+                        childImageSharp {
+                            fluid {
+                                ...GatsbyImageSharpFluid
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
+        author: markdownRemark (frontmatter: { name: { eq: $author }}) {
+            frontmatter {
+                slug
+                name
+                description
+                image {
+                    childImageSharp {
+                        fluid {
+                            ...GatsbyImageSharpFluid
+                        }
+                    }
+                }
+            }
+        }
+        relatedArticles: allMarkdownRemark (
+            filter: {
+                frontmatter: { content: { tags: { in: $tags }}},
+                fields: { slug: { ne: $slug }}},
+            sort: {
+                fields: frontmatter___content___publishDate,
+                order: DESC },
+            limit: 3) {
+            edges {
+                node {
+                    excerpt (pruneLength: 350)
+                    fields {
+                        slug
+                    }
+                    frontmatter {
+                        language
+                        content {
+                            title
+                            summary
+                            publishDate
+                            lastUpdated
+                            readingTime
+                            tags
+                            featuredImage {
+                                childImageSharp {
+                                    fluid {
+                                        ...GatsbyImageSharpFluid
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        site {
+            siteMetadata {
+                url
+                author
+            }
+        }
     }
-  }
-  site {
-    siteMetadata {
-      url
-      author
-    }
-  }
-}
 `;
 
 Article.propTypes = {

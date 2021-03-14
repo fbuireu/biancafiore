@@ -29,17 +29,15 @@ const CustomRangeSlider = ({ min, max, currentRefinement, canRefine, refine }) =
   };
 
   return (
-    <Rheostat
-      min={min}
-      max={max}
-      values={[currentRefinement.min, currentRefinement.max]}
-      onChange={onChange}
-      onValuesUpdated={onValuesUpdated}
-    >
-      <div className="rheostat-marker rheostat-marker--large" style={{ left: 0 }}>
+    <Rheostat min={min}
+              max={max}
+              values={[currentRefinement.min, currentRefinement.max]}
+              onChange={onChange}
+              onValuesUpdated={onValuesUpdated}>
+      <div className="rheostat-marker rheostat-marker--large">
         <div className="rheostat-value">{minState}</div>
       </div>
-      <div className="rheostat-marker rheostat-marker--large" style={{ right: 0 }}>
+      <div className="rheostat-marker rheostat-marker--large">
         <div className="rheostat-value">{maxState}</div>
       </div>
     </Rheostat>

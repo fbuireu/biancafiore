@@ -1,36 +1,47 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
+import SEO from '../components/atoms/SEO/SEO';
+import Jumbotron from '../components/molecules/Jumbotron/Jumbotron';
+import LatestArticles from '../components/molecules/LatestArticles/LatestArticles';
+import MyWork from '../components/molecules/MyWork/MyWork';
+import Testimonials from '../components/molecules/Testimonials/Testimonials';
+import Layout from '../components/templates/Layout/Layout';
 
 const Index = ({ data }) => {
   const {
     home: {
       edges: [{
         node: {
-          html,
-          frontmatter: { jumbotron, testimonials: { title, subtitle, testimonials } }
+          frontmatter: {
+            jumbotron,
+            testimonials: { title: testimonialsTitle, subtitle, testimonials },
+            myWork: { title: myWorkTitle, works },
+            latestArticles: { title: latestArticlesTitle }
+          }
         }
       }]
     }
   } = data;
 
-  return <h1 style={{
-    textAlign: `center`,
-    marginTop: `50vh`,
-    fontSize: `52px`
-  }}>Site under construction<br />We&apos;ll be back soon</h1>;
+  // return <h1 style={{
+  //   textAlign: `center`,
+  //   marginTop: `50vh`,
+  //   fontSize: `52px`
+  // }}>Site under construction<br />We&apos;ll be back soon</h1>;
 
-  // return <Layout>
-  //   <SEO title="Home"/>
-  //   <h1>Hi people</h1>
-  //   <Jumbotron jumbotron={jumbotron}/>
-  //   <Testimonials title={title} subtitle={subtitle} testimonials={testimonials}/>
-  // </Layout>;
+  return <Layout>
+    <SEO title="Home"/>
+    <Jumbotron jumbotron={jumbotron}/>
+    <Testimonials title={testimonialsTitle} subtitle={subtitle} testimonials={testimonials}/>
+    <MyWork title={myWorkTitle} works={works}/>
+    <LatestArticles title={latestArticlesTitle}/>
+  </Layout>;
 };
 
 export const homeData = graphql`
     query getHomeData {
-        home: allMarkdownRemark(filter: {frontmatter: {key: {eq: "home" }}}) {
+        home: allMarkdownRemark(filter: { frontmatter: { key: { eq: "home" }}}) {
             edges {
                 node {
                     html
@@ -63,6 +74,22 @@ export const homeData = graphql`
                                     }
                                 }
                             }
+                        }
+                        myWork {
+                            title
+                            works {
+                                tags
+                                image {
+                                    childImageSharp {
+                                        fluid {
+                                            ...GatsbyImageSharpFluid
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        latestArticles {
+                            title
                         }
                     }
                 }

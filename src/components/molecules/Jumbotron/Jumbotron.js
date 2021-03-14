@@ -1,4 +1,4 @@
-import { GatsbyImage } from 'gatsby-plugin-image';
+import Img from 'gatsby-image';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -15,7 +15,7 @@ const Jumbotron = ({ jumbotron }) => {
       </div>
       <div className={`jumbotron__text-center`}>
         <Tilt gyroscope={true} tiltMaxAngleX={3} tiltMaxAngleY={5}>
-          <GatsbyImage image={bianca?.childImageSharp?.gatsbyImageData} />
+          <Img fixed={bianca?.childImageSharp?.fixed} />
         </Tilt>
       </div>
       <div className={`jumbotron__text-right`}>

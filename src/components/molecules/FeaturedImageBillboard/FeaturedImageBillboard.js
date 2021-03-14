@@ -14,7 +14,7 @@ const FeaturedImageBillboard = ({ frontmatter, author, tags, excerpt }) => {
   return (
     <BackgroundImage className={`billboard`}
                      Tag={`section`}
-                     image={[`linear-gradient(to bottom, transparent, #000)`, frontmatter?.content?.featuredImage?.childImageSharp?.gatsbyImageData]}>
+                     fluid={[`linear-gradient(to bottom, transparent, #000)`, frontmatter?.content?.featuredImage?.childImageSharp?.fluid]}>
       <div className={`wrapper article__information__wrapper`}>
         <header className={`article__information`}>
           <Title title={frontmatter.content.title} />
