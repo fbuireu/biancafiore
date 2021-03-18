@@ -74,6 +74,13 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
+        name: `footer`,
+        path: `${__dirname}/content/navigation/footer`
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
         name: `tags`,
         path: `${__dirname}/content/tags`,
       },
