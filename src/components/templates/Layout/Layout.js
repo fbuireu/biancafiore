@@ -2,6 +2,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
 import '../../../styles/styles.scss';
+import Footer from '../../atoms/Footer/Footer';
 import Header from '../../organisms/Header/Header';
 
 const Layout = ({ children }) => {
@@ -18,6 +19,7 @@ const Layout = ({ children }) => {
   return <section className={`site__wrapper`}>
     <Header />
     <main>{children}</main>
+    <Footer />
   </section>;
 };
 
