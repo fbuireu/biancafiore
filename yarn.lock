@@ -20172,7 +20172,7 @@ react-instantsearch-core@^6.10.3:
     prop-types "^15.6.2"
     react-fast-compare "^3.0.0"
 
-react-instantsearch-dom@^5.3.1, react-instantsearch-dom@^5.3.2, react-instantsearch-dom@^5.7.0:
+react-instantsearch-dom@^5.3.1, react-instantsearch-dom@^5.7.0:
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/react-instantsearch-dom/-/react-instantsearch-dom-5.7.0.tgz#5a9b0cfb461c08a349a5fdc5d1cff50b8f5fcf56"
   integrity sha512-FwFZZXwgaYtLrXD9KJNlrPVkfw8JOqVgpDBvra547udF4zbacZUuX7/qTyMHjVW/Lz59t5T25vCGLzmQiO89YA==
