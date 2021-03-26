@@ -1,10 +1,10 @@
 import React from 'react';
 import { IS_VALID_EMAIL } from '../../../utils/form/validateField';
-import { useFooterItems } from '../../../utils/hooks/useFooterItems';
+import { useSocialNetworkItems } from '../../../utils/hooks/useSocialNetworkItems';
 import './Footer.scss';
 
 const Footer = () => {
-  const footerItems = useFooterItems();
+  const footerItems = useSocialNetworkItems();
 
   return <section className={`footer-wrapper`}>
     <ul className={`footer__list wrapper`}>
