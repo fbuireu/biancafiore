@@ -2284,16 +2284,16 @@
   resolved "https://registry.yarnpkg.com/@mikaelkristiansson/domready/-/domready-1.0.11.tgz#6a4b5891dccb6402ff4e944de843036ee1ffd4f5"
   integrity sha512-nEBLOa0JgtqahmPrnJZ18epLiFBzxhdKgo4uhN3TaBFRmM30pEVrS9FAEV4tg92d8PTdU+dYQx2lnpPyFMgMcg==
 
-"@netlify/plugin-lighthouse@^1.4.2":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@netlify/plugin-lighthouse/-/plugin-lighthouse-1.4.3.tgz#97881d1c155deb48760f8e910019806980c303e2"
-  integrity sha512-JFq0JJJIpoHz3nsvs6G2oFogPTVlScKBm031Prz/7VKp4iwfJFxHnvd/FzoclRANW9LBAlc/Vxkvl2rBc/c7fg==
+"@netlify/plugin-lighthouse@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@netlify/plugin-lighthouse/-/plugin-lighthouse-2.0.0.tgz#e603983289aad2c2401ef314ef19914c91b1ef88"
+  integrity sha512-+WeQBZcHKiNNnipu5buJm6Uz7AZ8DQ+NSKAaF/+EOP2a6Ff/oJpNsYqJ0/sS3Ra52qTGnkJnzuzPf+GKt5kS1g==
   dependencies:
     chalk "^4.1.0"
     chrome-launcher "^0.13.2"
     dotenv "^8.2.0"
     http-server "^0.12.3"
-    lighthouse "^6.0.0"
+    lighthouse "^7.0.0"
     puppeteer "^8.0.0"
 
 "@node-minify/core@^5.3.0":
@@ -4064,12 +4064,7 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
 
-axe-core@3.5.5:
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-3.5.5.tgz#84315073b53fa3c0c51676c588d59da09a192227"
-  integrity sha512-5P0QZ6J5xGikH780pghEdbEKijCTrruK9KxtPZCFWUpef0f6GipO+xEZ5GKCb020mmqgbiNO6TcA55CriL784Q==
-
-axe-core@^4.0.2:
+axe-core@4.1.3, axe-core@^4.0.2:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.1.3.tgz#64a4c85509e0991f5168340edc4bedd1ceea6966"
   integrity sha512-vwPpH4Aj4122EW38mxO/fxhGKtwWTMLDIJfZ1He0Edbtjcfna/R3YB67yVhezUMzqc3Jr3+Ii50KRntlENL4xQ==
@@ -5912,7 +5907,7 @@ camelcase@^1.0.2:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-1.2.1.tgz#9bb5304d2e0b56698b2c758b08a3eaa9daa58a39"
   integrity sha1-m7UwTS4LVmmLLHWLCKPqqdqlijk=
 
-camelcase@^2.0.0, camelcase@^2.0.1:
+camelcase@^2.0.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-2.1.1.tgz#7c1d16d679a1bbe59ca02cacecfb011e201f5a1f"
   integrity sha1-fB0W1nmhu+WcoCys7PsBHiAfWh8=
@@ -6379,7 +6374,7 @@ cliui@^2.1.0:
     right-align "^0.1.1"
     wordwrap "0.0.2"
 
-cliui@^3.0.3, cliui@^3.2.0:
+cliui@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/cliui/-/cliui-3.2.0.tgz#120601537a916d29940f934da3b48d585a39213d"
   integrity sha1-EgYBU3qRbSmUD5NNo7SNWFo5IT0=
@@ -7233,6 +7228,11 @@ crypto-random-string@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
+
+csp_evaluator@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/csp_evaluator/-/csp_evaluator-1.0.1.tgz#cef3b755b26cfff25701a2fdaeab27ddceb31b7c"
+  integrity sha512-9L57/vkuwH1tJv9Sw9t13xKGKyRR7OKn/pizcLCHK/83WH+sqRav0JCFBmBLmpurQAcz5usU3efS1rabOPV/qA==
 
 css-color-names@0.0.4, css-color-names@^0.0.4:
   version "0.0.4"
@@ -15145,18 +15145,19 @@ jsonify@~0.0.0:
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
 
-jsonld@^1.5.0:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/jsonld/-/jsonld-1.8.1.tgz#55ea541b22b8af5a5d6a5e32328e3f2678148882"
-  integrity sha512-f0rusl5v8aPKS3jApT5fhYsdTC/JpyK1PoJ+ZtYYtZXoyb1J0Z///mJqLwrfL/g4NueFSqPymDYIi1CcSk7b8Q==
+jsonld@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/jsonld/-/jsonld-4.0.1.tgz#b8d464ae94bf00b54a219a99782cb488c49842d5"
+  integrity sha512-ltEqMQB37ZxZnsgmI+9rqHYkz1M6PqUykuS1t2aQNuH1oiLrUDYz5nyVkHQDgjFd7CFKTIWeLiNhwdwFrH5o5A==
   dependencies:
     canonicalize "^1.0.1"
-    rdf-canonize "^1.0.2"
+    lru-cache "^5.1.1"
+    object.fromentries "^2.0.2"
+    rdf-canonize "^2.0.1"
     request "^2.88.0"
-    semver "^5.6.0"
-    xmldom "0.1.19"
+    semver "^6.3.0"
 
-jsonlint-mod@^1.7.5:
+jsonlint-mod@^1.7.6:
   version "1.7.6"
   resolved "https://registry.yarnpkg.com/jsonlint-mod/-/jsonlint-mod-1.7.6.tgz#6f1c4c51fdb5c2002489a0665e3e19a316743319"
   integrity sha512-oGuk6E1ehmIpw0w9ttgb2KsDQQgGXBzZczREW8OfxEm9eCQYL9/LCexSnh++0z3AiYGcXpBgqDSx9AAgzl/Bvg==
@@ -15376,19 +15377,20 @@ lighthouse-logger@^1.0.0, lighthouse-logger@^1.2.0:
     debug "^2.6.8"
     marky "^1.2.0"
 
-lighthouse-stack-packs@^1.3.0:
+lighthouse-stack-packs@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/lighthouse-stack-packs/-/lighthouse-stack-packs-1.4.0.tgz#bf98e0fb04a091ec2d73648842698b41070968ef"
   integrity sha512-wdv94WUjaqUwtW8DOapng45Yah62c5O5geNVeoSQlnoagfbTO/YbiwNlfzDIF1xNKRkPlsfr/oWHhXsaHXDivg==
 
-lighthouse@^6.0.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/lighthouse/-/lighthouse-6.5.0.tgz#b59dde5ec35acd36e22457e19de33d4e14e2ef1c"
-  integrity sha512-d9J2V03WjvpJL2YvKlwZsz+KuCwrxXo/6uh1au74oNrVZm53w4CC3Xyaew82wz36frWToqN3k8dl06jFVziGrA==
+lighthouse@^7.0.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/lighthouse/-/lighthouse-7.3.0.tgz#bcd5d68b8ae6416daaa8fba20dee23ec186369f8"
+  integrity sha512-c3loU7ptP8TAlR+bBhc+5ClALx/YVRSh8m5KPiDZQ7wNYxRnhZjDDz6rLzd5gLDhjVwhjMv1APypZegDOFkKOQ==
   dependencies:
-    axe-core "3.5.5"
+    axe-core "4.1.3"
     chrome-launcher "^0.13.4"
     configstore "^5.0.1"
+    csp_evaluator "^1.0.1"
     cssstyle "1.2.1"
     details-element-polyfill "^2.4.0"
     http-link-header "^0.8.0"
@@ -15398,10 +15400,10 @@ lighthouse@^6.0.0:
     intl-pluralrules "^1.0.3"
     jpeg-js "^0.4.1"
     js-library-detector "^6.4.0"
-    jsonld "^1.5.0"
-    jsonlint-mod "^1.7.5"
+    jsonld "^4.0.1"
+    jsonlint-mod "^1.7.6"
     lighthouse-logger "^1.2.0"
-    lighthouse-stack-packs "^1.3.0"
+    lighthouse-stack-packs "^1.4.0"
     lodash.get "^4.4.2"
     lodash.isequal "^4.5.0"
     lodash.set "^4.3.2"
@@ -15418,8 +15420,8 @@ lighthouse@^6.0.0:
     third-party-web "^0.12.2"
     update-notifier "^4.1.0"
     ws "3.3.2"
-    yargs "3.32.0"
-    yargs-parser "^18.1.3"
+    yargs "^16.1.1"
+    yargs-parser "^20.2.4"
 
 linebreak@^1.0.2:
   version "1.0.2"
@@ -19933,13 +19935,13 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.2.7, rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-rdf-canonize@^1.0.2:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/rdf-canonize/-/rdf-canonize-1.2.0.tgz#9872b2cc6ed92a9969e834f9f042addaf0d4f7f9"
-  integrity sha512-MQdcRDz4+82nUrEb3hNQangBDpmep15uMmnWclGi/1KS0bNVc8oHpoNI0PFLHZsvwgwRzH31bO1JAScqUAstvw==
+rdf-canonize@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/rdf-canonize/-/rdf-canonize-2.0.1.tgz#12c9b8b41570cd669d9b152c9e679063478ba194"
+  integrity sha512-/GVELjrfW8G/wS4QfDZ5Kq68cS1belVNJqZlcwiErerexeBUsgOINCROnP7UumWIBNdeCwTVLE9NVXMnRYK0lA==
   dependencies:
-    node-forge "^0.10.0"
     semver "^6.3.0"
+    setimmediate "^1.0.5"
 
 react-aria-menubutton@^6.0.0:
   version "6.3.0"
@@ -25371,11 +25373,6 @@ window-size@0.1.0:
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   integrity sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
 
-window-size@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.4.tgz#f8e1aa1ee5a53ec5bf151ffa09742a6ad7697876"
-  integrity sha1-+OGqHuWlPsW/FR/6CXQqatdpeHY=
-
 wmf@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wmf/-/wmf-1.0.2.tgz#7d19d621071a08c2bdc6b7e688a9c435298cc2da"
@@ -25736,11 +25733,6 @@ xmldoc@^1.1.2:
   dependencies:
     sax "^1.2.1"
 
-xmldom@0.1.19:
-  version "0.1.19"
-  resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.19.tgz#631fc07776efd84118bf25171b37ed4d075a0abc"
-  integrity sha1-Yx/Ad3bv2EEYvyUXGzftTQdaCrw=
-
 xmlhttprequest-ssl@~1.5.4:
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.5.tgz#c2876b06168aadc40e57d97e81191ac8f4398b3e"
@@ -25771,7 +25763,7 @@ xxhashjs@^0.2.1:
   dependencies:
     cuint "^0.2.2"
 
-y18n@^3.2.0, y18n@^3.2.1:
+y18n@^3.2.1:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-3.2.2.tgz#85c901bd6470ce71fc4bb723ad209b70f7f28696"
   integrity sha512-uGZHXkHnhF0XeeAPgnKfPv1bgKAYyVvmNL1xlKsPYZPaIHxGti2hHqvOCQv71XMsLxu1QjergkqogUnms5D3YQ==
@@ -25838,7 +25830,7 @@ yargs-parser@^13.1.2:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
-yargs-parser@^20.2.2, yargs-parser@^20.2.3:
+yargs-parser@^20.2.2, yargs-parser@^20.2.3, yargs-parser@^20.2.4:
   version "20.2.7"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.7.tgz#61df85c113edfb5a7a4e36eb8aa60ef423cbc90a"
   integrity sha512-FiNkvbeHzB/syOjIUxFDCnhSfzAL8R5vs40MgLFBorXACCOAEaWu0gRZl14vG8MR9AOJIZbmkjhusqBYZ3HTHw==
@@ -25863,19 +25855,6 @@ yargs-parser@^9.0.2:
   integrity sha1-nM9qQ0YP5O1Aqbto9I1DuKaMwHc=
   dependencies:
     camelcase "^4.1.0"
-
-yargs@3.32.0:
-  version "3.32.0"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-3.32.0.tgz#03088e9ebf9e756b69751611d2a5ef591482c995"
-  integrity sha1-AwiOnr+edWtpdRYR0qXvWRSCyZU=
-  dependencies:
-    camelcase "^2.0.1"
-    cliui "^3.0.3"
-    decamelize "^1.1.1"
-    os-locale "^1.4.0"
-    string-width "^1.0.1"
-    window-size "^0.1.4"
-    y18n "^3.2.0"
 
 yargs@6.6.0:
   version "6.6.0"
@@ -25947,7 +25926,7 @@ yargs@^15.3.1, yargs@^15.4.1:
     y18n "^4.0.0"
     yargs-parser "^18.1.2"
 
-yargs@^16.1.0:
+yargs@^16.1.0, yargs@^16.1.1:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-16.2.0.tgz#1c82bf0f6b6a66eafce7ef30e376f49a12477f66"
   integrity sha512-D1mvvtDG0L5ft/jGWkLpG1+m0eQxOfaBvTNELraWj22wSVUMWxZUvYgJYcKh6jGGIkJFhH4IZPQhR4TKpc8mBw==
