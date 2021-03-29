@@ -46,6 +46,21 @@ collections:
       - { name: name, label: Name, required: true, widget: string }
       - { name: slug, label: Slug, required: true, widget: string }
       - { name: position, label: Position, required: true, widget: number, valueType: int,  min: 0 }
+  - name: socialNetwork
+    label: Social Network items
+    label_singular: Social Network item
+    description: A list of all social network items
+    identifier_field: name
+    folder: content/navigation/social-network
+    create: true
+    editor:
+      preview: false
+    sortable_fields: [ 'name', 'position' ]
+    fields:
+      - { name: key, label: Key, required: true, widget: hidden, default: socialNetworkItem }
+      - { name: name, label: Name, required: true, widget: string }
+      - { name: url, label: URL, required: true, widget: string }
+      - { name: position, label: Position, required: true, widget: number, valueType: int,  min: 0 }
   - name: tags
     label: Tags
     label_singular: Tag
