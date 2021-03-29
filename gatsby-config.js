@@ -74,8 +74,8 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `footer`,
-        path: `${__dirname}/content/navigation/footer`
+        name: `social-networks`,
+        path: `${__dirname}/content/navigation/social-networks`
       },
     },
     {
