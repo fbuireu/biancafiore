@@ -21,7 +21,7 @@ const LatestArticleCard = ({ fields, frontmatter }) => {
         <Link className={`latest-articles__author`} to={`/${currentLanguage}/tag/${slugify(author)}`}>{author}</Link>
         <time className={`latest-articles__date`}
               dateTime={publishDate}>
-          {moment(publishDate)
+          {moment(new Date(publishDate))
             .locale(currentLanguage)
             .format(`LL`)
           }
