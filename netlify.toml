@@ -1,8 +1,10 @@
+[functions]
+node_bundler = 'esbuild'
 [[plugins]]
-package = "@netlify/plugin-local-install-core"
+package = '@netlify/plugin-local-install-core'
 
 [[plugins]]
-package = "netlify-plugin-minify-html"
+package = 'netlify-plugin-minify-html'
 [plugins.inputs]
 contexts = ['production', 'branch-deploy', 'deploy-preview']
 [plugins.inputs.minifierOptions]
