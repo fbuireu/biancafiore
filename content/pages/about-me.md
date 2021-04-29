@@ -20,9 +20,9 @@ jumbotron:
   rightSide:
     image: /assets/images/bianca-fiore.jpg
     socialNetworks:
-      - Linkedin
-      - Upwork
-      - Twitter
+      - linkedin
+      - twitter
+      - upwork
 map:
   cities:
     - Genova
