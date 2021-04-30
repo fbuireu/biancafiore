@@ -6,7 +6,13 @@ const TextareaInput = ({ name, label, value, isValid, errorMessage, onChange, on
   return <div className={`textarea-input__wrapper`}>
     <label className={`textarea-input__label`} htmlFor={name}>
       <p className={`textarea-input__label__text`}>{label && `${label}:`}</p>
-      <textarea className={`textarea-input`} name={name} value={value} onChange={onChange} onBlur={onBlur}/>
+      <textarea className={`textarea-input`}
+                name={name}
+                value={value}
+                spellCheck={true}
+                onChange={onChange}
+                onBlur={onBlur}
+      />
     </label>
     {!isValid && <small className={`textarea-input__error-message`}>{errorMessage}</small>}
   </div>;
