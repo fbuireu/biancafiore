@@ -29,7 +29,8 @@ const RecaptchaInput = ({ name, value, isValid, errorMessage, onChange }) => {
     <label className={`recaptcha-input__label`} htmlFor={name}>
       <Recaptcha sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY}
                  ref={recaptchaReference}
-                 onChange={handleChange} />
+                 onChange={handleChange}
+      />
     </label>
     {!isValid && <small className={`recaptcha-input__error-message`}>{errorMessage}</small>}
   </div>;
