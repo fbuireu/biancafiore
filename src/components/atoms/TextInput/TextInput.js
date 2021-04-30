@@ -6,7 +6,14 @@ const TextInput = ({ name, type, label, value, isValid, errorMessage, onChange, 
   return <div className={`text-input__wrapper ${type === `hidden` ? `--is-hidden` : ``}`}>
     <label className={`text-input__label`} htmlFor={name}>
       <p className={`text-input__label__text`}>{label && `${label}:`}</p>
-      <input className={`text-input`} type={type} name={name} value={value} onChange={onChange} onBlur={onBlur} />
+      <input className={`text-input`}
+             type={type}
+             name={name}
+             value={value}
+             spellCheck={true}
+             onChange={onChange}
+             onBlur={onBlur}
+      />
     </label>
     {!isValid && <small className={`text-input__error-message`}>{errorMessage}</small>}
   </div>;
