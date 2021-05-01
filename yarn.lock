@@ -1206,10 +1206,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@deckdeckgo/highlight-code@^2.3.1":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@deckdeckgo/highlight-code/-/highlight-code-2.5.1.tgz#da1e4bbd5d09aa3ea91b0e3f4594f8883d4029b7"
-  integrity sha512-z3u6ui5F0RrR5rAaXkh3/07Ki48b1oiNdBpV9OT25RfYuOu4KZ0UTpt6xPdP+p+wfNOmP37NgrXbsxSTeVLojQ==
+"@deckdeckgo/highlight-code@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@deckdeckgo/highlight-code/-/highlight-code-2.6.0.tgz#4be253c8ae76aebfe1980dc559397f1c34ff468c"
+  integrity sha512-rmlCkRdtcF6mn0tIXPqv/3I/V3d2t8zyilURPBpIPGjibYKeJzIlWKUNdM41RBDtScckB0aXdEFOCBkH56G0oA==
   dependencies:
     "@deckdeckgo/utils" "1.3.0"
     prismjs "^1.21.0"
