@@ -48,5 +48,17 @@ timeline:
         test amman test Amman test amman testAmman test amman test Amman test
         amman testAmman test amman test Amman test amman test Amman test amman
         test
+    - year: 2005-2006
+      city: Sydney
+      description: This is Sydney
+      image: /assets/images/sydney.jpg
+    - year: 1990-1992
+      city: Genova
+      image: /assets/images/genova.jpg
+      description: This is genova
+    - year: 2007-2009
+      city: London
+      image: /assets/images/london.jpg
+      description: This is London fellas
 ---
 Don't you dare. Click and play
