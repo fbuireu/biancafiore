@@ -30,5 +30,15 @@ map:
     - Sydney
     - London
     - Barcelona
+timeline:
+  title: A little more of me
+  years:
+    - year: 2018-
+      city: Barcelona
+      image: /assets/images/barcelona.jpg
+      description: Test test test test test test test test test test test test test
+        test test test test test test test test test test test test test test
+        test test test test test test test test test test test test test test
+        test test test test test test test test test test test test test test
 ---
 Don't you dare. Click and play
