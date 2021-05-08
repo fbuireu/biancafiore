@@ -399,7 +399,7 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
   }, []);
 
   useEffect(() => {
-    if (selectedCityName && currentLineReference.current) {
+    if (currentLineReference.current) {
       let initialCity = mapCitiesReference?.current.find(({ name }) => name === mapConfiguration?.initialCity?.name);
 
       origin = previousDestinationReference?.current ?? initialCity;
@@ -425,7 +425,7 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
         previousLineReference.current = line;
         currentLineReference.current++;
       }
-    } else if (!currentLineReference.current) currentLineReference.current++;
+    } else currentLineReference.current++;
   }, [selectedCityName]);
 
   return <section>
