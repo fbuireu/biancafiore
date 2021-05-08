@@ -8,21 +8,34 @@ import './Map.scss';
 
 am4core.useTheme(am4themes_animated);
 
-const Map = ({ cities, showCityInformation }) => {
+const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
   const mapReference = useRef(null);
-  const previousDestinationRef = useRef();
-  const previousLineRef = useRef();
+  const previousDestinationReference = useRef();
+  const previousOriginReference = useRef();
+  const previousLineReference = useRef();
+
+  const currentLineReference = useRef(0);
+  const planeContainerReference = useRef();
+  const lineSeriesReference = useRef();
+  const planeShadowContainerReference = useRef();
+  const shadowLineSeriesReference = useRef();
+  const planeReference = useRef();
+  const planeShadowReference = useRef();
+  const mapCitiesReference = useRef();
+  const addLineReference = useRef();
+
   const mapConfiguration = {
     exclude: `AQ`,
-    initialCity: cities.find(city => city.isInitialCity),
-    countriesIsoCode: cities.map(city => city.countryIsoCode),
+    initialCity: cities.find(({ isInitialCity }) => isInitialCity),
+    countriesIsoCode: cities.map(({ countryIsoCode }) => countryIsoCode),
     mapCities: [],
     flight: {
       from: 0,
-      to: 1,
-    },
+      to: 1
+    }
   };
   let origin, destination;
+
 
   const createMapChart = mapChart => {
     mapChart.geodata = am4geodata_worldHigh;
@@ -140,6 +153,7 @@ const Map = ({ cities, showCityInformation }) => {
 
       mapConfiguration.mapCities.push(mapCity);
     });
+    mapCitiesReference.current = mapConfiguration.mapCities;
   };
 
   const setPlaneContainer = lineSeries => {
@@ -208,7 +222,7 @@ const Map = ({ cities, showCityInformation }) => {
   };
 
   const flyPlane = (currentLine, planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, plane, planeShadow) => {
-    const { from, to } = mapConfiguration.flight;
+    const { flight: { from, to } } = mapConfiguration;
 
     planeContainer.mapLine = lineSeries.mapLines.getIndex(currentLine);
     planeContainer.parent = planeContainer.mapLine;
@@ -218,19 +232,19 @@ const Map = ({ cities, showCityInformation }) => {
 
     planeContainer.animate({
       property: `position`,
-      from: from,
-      to: to,
+      from,
+      to
     }, 4000, am4core.ease.sinInOut).delay(1000);
 
     planeShadowContainer.animate({
       property: `position`,
-      from: from,
-      to: to,
+      from,
+      to
     }, 4000, am4core.ease.sinInOut).delay(1000);
   };
 
   const setMap = mapChart => {
-    const currentLine = 1;
+    const currentLine = 1; 
 
     const loader = setLoader(mapChart);
     loader.show();
@@ -239,25 +253,33 @@ const Map = ({ cities, showCityInformation }) => {
     const polygonSeries = setPolygonSeries(mapChart);
     const polygonTemplate = setPolygonTemplate(polygonSeries);
     const lineSeries = setLineSeries(mapChart);
+    lineSeriesReference.current = lineSeries;
     setDropShadowFilter(lineSeries);
 
     const shadowLineSeries = setShadowLineSeries(mapChart);
+    shadowLineSeriesReference.current = shadowLineSeries;
     const mapCities = setCities(mapChart);
 
     const mapCity = setCity(mapCities);
     setCitiesShadowFilter(mapCity);
     setInitialCities(mapCities);
 
-    const initialCity = mapConfiguration.mapCities.find(initialCity => initialCity.name === mapConfiguration.initialCity.name);
-    const addLine = addLines(lineSeries, shadowLineSeries);
+    const initialCity = mapConfiguration.mapCities.find(({ name }) => name === mapConfiguration.initialCity.name);
 
+    const addLine = addLines(lineSeries, shadowLineSeries);
+    addLineReference.current = addLines(lineSeries, shadowLineSeries);
     addLine(initialCity, initialCity);
 
     const planeContainer = setPlaneContainer(lineSeries);
+    planeContainerReference.current = planeContainer;
     const planeShadowContainer = setPlaneShadowContainer(shadowLineSeries);
+    planeShadowContainerReference.current = planeShadowContainer;
 
     const plane = setPlane(planeContainer);
+    planeReference.current = plane;
     const planeShadow = setPlaneShadow(planeShadowContainer);
+    planeShadowReference.current = planeShadow;
+
     loader.hide();
 
     return {
@@ -279,7 +301,6 @@ const Map = ({ cities, showCityInformation }) => {
   useEffect(function buildMap() {
     const mapChart = am4core.create(mapReference.current, am4maps.MapChart);
     let {
-      currentLine,
       polygonSeries,
       polygonTemplate,
       lineSeries,
@@ -294,10 +315,10 @@ const Map = ({ cities, showCityInformation }) => {
     } = setMap(mapChart);
 
     polygonTemplate.events.on(`over`, element => {
-      mapConfiguration.countriesIsoCode.forEach(iso => {
-        const country = polygonSeries.getPolygonById(iso);
+      mapConfiguration.countriesIsoCode.forEach(isoCode => {
+        const country = polygonSeries.getPolygonById(isoCode);
 
-        if (element.target.dataItem.dataContext.id === iso) {
+        if (element.target.dataItem.dataContext.id === isoCode) {
           country.isHover = true;
           country.cursorOverStyle = am4core.MouseCursorStyle.pointer;
           country.tooltipText = `{name}`;
@@ -308,37 +329,47 @@ const Map = ({ cities, showCityInformation }) => {
 
     mapConfiguration.mapCities.forEach(city => {
       city.events.on(`hit`, element => {
+        origin = previousDestinationReference.current ?? initialCity;
         destination = element.target;
-        origin = previousDestinationRef.current ?? initialCity;
+        previousOriginReference.current = origin;
+        previousDestinationReference.current = destination;
 
-        showCityInformation(destination.name);
+        findSelectedCityIndexByName(destination.name);
 
         if (destination !== origin) {
-          if (currentLine > 1) eraseLine(previousLineRef.current);
+          currentLineReference.current === 0 && currentLineReference.current++;
+          if (currentLineReference.current > 1) eraseLine(previousLineReference.current);
 
           const line = addLine(origin, destination);
-          flyPlane(currentLine, planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, plane, planeShadow);
 
-          previousDestinationRef.current = element.target;
-          previousLineRef.current = line;
-          currentLine++;
+          planeContainer = planeContainerReference.current;
+          lineSeries = lineSeriesReference.current;
+          planeShadowContainer = planeShadowReference.current;
+          shadowLineSeries = shadowLineSeriesReference.current;
+          plane = planeReference.current;
+          planeShadow = planeShadowReference.current;
+
+          flyPlane(currentLineReference.current, planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, plane, planeShadow);
+
+          previousLineReference.current = line;
+          currentLineReference.current++;
         }
       });
     });
 
     polygonTemplate.events.on(`hit`, country => {
-      destination = mapConfiguration.mapCities.find(city => city.countryIsoCode === country.target.dataItem.dataContext.id);
-      origin = previousDestinationRef.current ?? initialCity;
+      destination = mapConfiguration.mapCities.find(({ countryIsoCode }) => countryIsoCode === country.target.dataItem.dataContext.id);
+      origin = previousDestinationReference.current ?? initialCity;
 
       if (destination !== origin) {
-        if (currentLine > 1) eraseLine(previousLineRef.current);
+        if (currentLineReference.current > 1) eraseLine(previousLineReference.current);
 
         const line = addLine(origin, destination);
-        flyPlane(currentLine, planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, plane, planeShadow);
+        flyPlane(currentLineReference.current, planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, plane, planeShadow);
 
-        previousDestinationRef.current = mapConfiguration.mapCities.find(city => city.countryIsoCode === country.target.dataItem.dataContext.id);
-        previousLineRef.current = line;
-        currentLine++;
+        previousDestinationReference.current = mapConfiguration.mapCities.find(({ countryIsoCode }) => countryIsoCode === country.target.dataItem.dataContext.id);
+        previousLineReference.current = line;
+        currentLineReference.current++;
       }
     });
 
@@ -361,11 +392,41 @@ const Map = ({ cities, showCityInformation }) => {
         country.isActive = true;
       });
 
-      mapChart.zoomToRectangle(north, east, south, west, 1, true);
+      mapChart.zoomToRectangle(north, east, south, west, 10, true);
     });
 
     return () => mapChart?.dispose();
   }, []);
+
+  useEffect(() => {
+    if (selectedCityName && currentLineReference.current) {
+      let initialCity = mapCitiesReference?.current.find(({ name }) => name === mapConfiguration?.initialCity?.name);
+
+      origin = previousDestinationReference?.current ?? initialCity;
+      destination = mapCitiesReference?.current.find(({ name }) => name === selectedCityName);
+
+      if (destination !== origin) {
+        currentLineReference.current === 0 && currentLineReference.current++;
+        if (currentLineReference.current > 1) eraseLine(previousLineReference.current);
+
+        const line = addLineReference.current(origin, destination);
+
+        flyPlane(
+          currentLineReference.current,
+          planeContainerReference.current,
+          lineSeriesReference.current,
+          planeShadowContainerReference.current,
+          shadowLineSeriesReference.current,
+          planeReference.current,
+          planeShadowReference.current
+        );
+
+        previousDestinationReference.current = destination;
+        previousLineReference.current = line;
+        currentLineReference.current++;
+      }
+    }
+  }, [selectedCityName]);
 
   return <section>
     <div ref={mapReference} className={`map__wrapper`} />
@@ -374,7 +435,9 @@ const Map = ({ cities, showCityInformation }) => {
 
 Map.propTypes = {
   cities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  showCityInformation: PropTypes.func.isRequired,
+  findSelectedCityIndexByName: PropTypes.func.isRequired,
+  selectedCityName: PropTypes.string,
+  timelineIndex: PropTypes.number
 };
 
 Map.defaultProps = {};
