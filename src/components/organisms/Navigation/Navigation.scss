@@ -84,7 +84,7 @@
   }
 
   &.--is-active {
-    @include font-properties(secondary, bold);
+    @include font-properties(primary, bold);
     color: color(primary, primary-dark-1);
   }
 }
