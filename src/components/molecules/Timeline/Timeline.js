@@ -4,30 +4,28 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper.scss';
 import './Timeline.scss';
 
-const Timeline = ({ title, years, selectedCityIndex }) => {
-  const [swiper, setSwiper] = useState(null);
+const Timeline = ({ title, years, findSelectedCityNameByIndex, selectedCityIndex }) => {
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
-  useEffect(function slideTo () {
-    if(selectedCityIndex) swiper.slideTo(selectedCityIndex);
-  }, [selectedCityIndex, swiper]);
+  const handleOnSlideChange = swiper => findSelectedCityNameByIndex(swiper.activeIndex);
+
+  useEffect(function slideToIndex () {
+    swiperInstance?.slideTo(selectedCityIndex);
+  }, [selectedCityIndex, swiperInstance]);
 
   const SLIDER_PARAMETERS = {
     loop: false,
-    centeredSlides: true,
-    breakpoints: {
-      1024: {
-        // slidesPerView: 1.85,
-        spaceBetween: 150
-      },
-      320: {
-        slidesPerView: 1
-      }
-    }
+    initialSlide: selectedCityIndex
   };
 
   return <section>
     <h2>{title}</h2>
-    <Swiper {...SLIDER_PARAMETERS} onSwiper={swiperInstance => setSwiper(swiperInstance)} className={`wrapper`}>
+    <Swiper {...SLIDER_PARAMETERS}
+            onSwiper={swiper => setSwiperInstance(swiper)}
+            onSlideChange={swiper => handleOnSlideChange(swiper)}
+            className={`wrapper`}
+            activeSlideKey={selectedCityIndex}
+    >
       {years.map(year => {
         return <SwiperSlide key={year.name}>
           {({ isActive }) => <div key={year.year}>{year.year} <br /> {year.description}</div>}
@@ -40,6 +38,7 @@ const Timeline = ({ title, years, selectedCityIndex }) => {
 Timeline.propTypes = {
   title: PropTypes.string,
   years: PropTypes.arrayOf(PropTypes.object).isRequired,
+  findSelectedCityNameByIndex: PropTypes.func.isRequired,
   selectedCityIndex: PropTypes.number
 };
 
