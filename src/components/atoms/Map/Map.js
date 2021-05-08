@@ -425,7 +425,7 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
         previousLineReference.current = line;
         currentLineReference.current++;
       }
-    }
+    } else if (!currentLineReference.current) currentLineReference.current++;
   }, [selectedCityName]);
 
   return <section>
