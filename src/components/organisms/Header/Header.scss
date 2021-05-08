@@ -1,4 +1,16 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
 header {
+  background: color(others, white);
   margin: 0 auto;
+  padding: 1.5rem 0;
+  position: fixed;
+  transition: all .3s;
   width: 100%;
+  z-index: 1000;
+
+  &.--is-scrolling {
+    box-shadow: 0 .125rem .375rem color(neutral, neutral-3);
+  }
 }
