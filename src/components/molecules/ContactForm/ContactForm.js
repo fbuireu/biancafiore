@@ -21,7 +21,7 @@ const ContactForm = ({ formInputs }) => {
 
   const updateField = ({ value, name }) => {
     const scopedForm = [...formState];
-    const field = scopedForm.find(field => field.name === name);
+    const field = scopedForm.find(({ name: fieldName }) => fieldName === name);
 
     field.value = value;
     field.isValid = true;
