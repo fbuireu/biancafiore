@@ -1,58 +1,121 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import CityInformation from '../components/atoms/CityInformation/CityInformation';
 import Map from '../components/atoms/Map/Map';
 import SEO from '../components/atoms/SEO/SEO';
+import AboutMeJumbotron from '../components/molecules/AboutMeJumbotron/AboutMeJumbotron';
+import Timeline from '../components/molecules/Timeline/Timeline';
 import Layout from '../components/templates/Layout/Layout';
 
-const AboutMe = ({ data }) => {
-  const [cityInformation, updateCityInformation] = useState(undefined);
-  const { aboutMe, citiesInformation } = data;
+const AboutMe = ({
+  data: {
+    aboutMe: {
+      edges: [{
+        node: {
+          frontmatter: {
+            jumbotron,
+            map: { cities: mapCities },
+            timeline: { title, years }
+          }
+        }
+      }]
+    }, citiesDetails
+  }
+}) => {
   let cities = [];
 
-  citiesInformation.edges.forEach(({ node: city }) => {
-    let { html: description, frontmatter: { name, isInitialCity, coordinates, countryIsoCode } } = city;
+  citiesDetails.edges.forEach(({ node: city }) => {
+    let {
+      frontmatter: {
+        name, isInitialCity, coordinates, countryIsoCode
+      }
+    } = city;
 
-    cities.push({
-      name: name,
-      isInitialCity: isInitialCity,
-      coordinates: typeof coordinates === `string` && JSON.parse(coordinates),
-      countryIsoCode: countryIsoCode,
-      description: description
-    });
+    if (mapCities.includes(name)) {
+      cities.push({
+        name,
+        isInitialCity,
+        coordinates: typeof coordinates === `string` && JSON.parse(coordinates),
+        countryIsoCode
+      });
+    }
   });
 
-  const showCityInformation = selectedCity => {
-    let { description } = cities.find(city => city.name === selectedCity);
+  const [selectedCityIndex, setSelectedCityIndex] = useState(years.findIndex(({ city }) => city === cities.find(({ isInitialCity }) => isInitialCity).name));
+  const [selectedCityName, setSelectedCityName] = useState(cities.find(({ isInitialCity }) => isInitialCity));
 
-    updateCityInformation(description);
-  };
+  const findSelectedCityIndexByName = selectedCityName => setSelectedCityIndex(years.findIndex(({ city }) => city === selectedCityName));
+
+  const findSelectedCityNameByIndex = selectedCityIndex => setSelectedCityName(cities.find(({ name }) => years[selectedCityIndex].name));
 
   return <Layout>
     <SEO title="Home" />
-    <Map cities={cities} showCityInformation={showCityInformation} />
-    {!cityInformation ? <p dangerouslySetInnerHTML={{ __html: aboutMe.edges[0].node.html }} /> : <CityInformation cityInformation={cityInformation} />}
+    <AboutMeJumbotron jumbotron={jumbotron} />
+    <Map cities={cities}
+         findSelectedCityIndexByName={findSelectedCityIndexByName}
+         selectedCityName={selectedCityName}
+    />
+    <Timeline title={title}
+              years={years}
+              findSelectedCityNameByIndex={findSelectedCityNameByIndex}
+              selectedCityIndex={selectedCityIndex}
+    />
   </Layout>;
 };
 
 export const aboutMeData = graphql`
     query getAboutMeData {
-        aboutMe: allMarkdownRemark (
-            filter: { frontmatter: { key: { eq: "about-me" }}}) {
+        aboutMe: allMarkdownRemark(
+            filter: { frontmatter: { key: { eq: "about-me" }}}
+            sort: { fields: frontmatter___timeline___years___city, order: ASC }) {
             edges {
                 node {
                     html
                     frontmatter {
-                        cities
+                        jumbotron {
+                            leftSide {
+                                title
+                                welcomeText
+                                welcomeDescription
+                                cta
+                            }
+                            rightSide {
+                                socialNetworks
+                                image {
+                                    childImageSharp {
+                                        fixed(width: 400, height: 400) {
+                                            ...GatsbyImageSharpFixed_withWebp
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        map {
+                            cities
+                        }
+                        timeline {
+                            years {
+                                year
+                                city
+                                description
+                                image {
+                                    childImageSharp {
+                                        fluid {
+                                            ...GatsbyImageSharpFluid_withWebp
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-        citiesInformation: allMarkdownRemark(filter: { frontmatter: { key: { eq: "city" }}}) {
+        citiesDetails: allMarkdownRemark(
+            filter: { frontmatter: { key: { eq: "city" }}}
+            sort: { fields: frontmatter___name, order: ASC }) {
             edges {
                 node {
-                    html
                     frontmatter {
                         name
                         isInitialCity
