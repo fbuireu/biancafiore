@@ -13,9 +13,13 @@ jumbotron:
       Hi! I'm
 
       **Bianca**
-    welcomeDescription: Hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor
-      hodor hodor hodorhodor hodor hodor hodor hodor hodor hodor hodor hodor
-      hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor
+    welcomeDescription: >-
+      Hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor
+      hodorhodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor
+      hodor hodor hodor hodor hodor hodor hodor hodor hodor
+
+
+      Hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodorhodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor hodor
     cta: See my work
   rightSide:
     image: /assets/images/bianca-fiore.jpg
