@@ -54,11 +54,12 @@ g [aria-labelledby="id-79-title"] {
   width: inherit !important;
 }
 
-.swiper-slide{
-  transform: scale(.85);
-  transition: all .3s linear;
+.swiper-container{
+  overflow: visible !important;
+  overflow-x: clip !important;
 }
 
-.swiper-slide-active{
-  transform: scale(1);
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
 }
