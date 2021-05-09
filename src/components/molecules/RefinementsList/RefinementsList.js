@@ -1,7 +1,7 @@
 import orderBy from 'lodash.orderby';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import ArrowDown from '../../../assets/svg/arrow-down.svg';
+import ArrowDown from '../../../assets/svg-components/arrow-down.svg';
 import { RefinementItem } from '../../atoms/RefinementItem/RefinementItem';
 import './RefinementsList.scss';
 

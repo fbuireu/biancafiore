@@ -2,7 +2,7 @@ import { Link } from 'gatsby';
 import { useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Label from '../../../assets/svg/label.svg';
+import Label from '../../../assets/svg-components/label.svg';
 import slugify from '../../../utils/slugify/slugify';
 import './Tag.scss';
 
