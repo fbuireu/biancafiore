@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
-import ArrowUp from '../../../assets/svg/arrow-up.svg';
+import ArrowUp from '../../../assets/svg-components/arrow-up.svg';
 import { useWindowSize } from '../../../utils/hooks/useWindowSize';
 import './ReadingProgress.scss';
 

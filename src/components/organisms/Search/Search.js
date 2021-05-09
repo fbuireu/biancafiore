@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connectSearchBox } from 'react-instantsearch-dom';
-import Close from '../../../assets/svg/close.svg';
-import Lens from '../../../assets/svg/lens.svg';
+import Close from '../../../assets/svg-components/close.svg';
+import Lens from '../../../assets/svg-components/lens.svg';
 import SearchStats from '../../molecules/SearchStats/SearchStats';
 import './Search.scss';
 
