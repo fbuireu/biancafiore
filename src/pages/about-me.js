@@ -15,7 +15,7 @@ const AboutMe = ({
           frontmatter: {
             jumbotron,
             map: { cities: mapCities },
-            timeline: { title, years }
+            timeline: { title: timelineTitle, years }
           }
         }
       }]
@@ -41,22 +41,26 @@ const AboutMe = ({
     }
   });
 
-  const [selectedCityIndex, setSelectedCityIndex] = useState(years.findIndex(({ city }) => city === cities.find(({ isInitialCity }) => isInitialCity).name));
-  const [selectedCityName, setSelectedCityName] = useState(cities.find(({ isInitialCity }) => isInitialCity));
+  let initialCity = cities?.find(({ isInitialCity }) => isInitialCity);
 
-  const findSelectedCityIndexByName = selectedCityName => setSelectedCityIndex(years.findIndex(({ city }) => city === selectedCityName));
+  if (years[years.length - 1].city === initialCity?.name) years.reverse();
 
-  const findSelectedCityNameByIndex = selectedCityIndex => setSelectedCityName(cities.find(({ name }) => years[selectedCityIndex].name));
+  const [selectedCityIndex, setSelectedCityIndex] = useState(years.findIndex(({ city }) => city === initialCity?.name));
+  const [selectedCityName, setSelectedCityName] = useState(initialCity);
+
+  const findSelectedCityIndexByName = selectedCityName => setSelectedCityIndex(years.findIndex(({ city: name }) => name === selectedCityName));
+
+  const findSelectedCityNameByIndex = selectedCityIndex => setSelectedCityName(years[selectedCityIndex].city);
 
   return <Layout>
     <SEO title="Home" />
     <AboutMeJumbotron jumbotron={jumbotron} />
+    <h2>{timelineTitle}</h2>
     <Map cities={cities}
          findSelectedCityIndexByName={findSelectedCityIndexByName}
          selectedCityName={selectedCityName}
     />
-    <Timeline title={title}
-              years={years}
+    <Timeline years={years}
               findSelectedCityNameByIndex={findSelectedCityNameByIndex}
               selectedCityIndex={selectedCityIndex}
     />
@@ -94,6 +98,7 @@ export const aboutMeData = graphql`
                             cities
                         }
                         timeline {
+                            title
                             years {
                                 year
                                 city
