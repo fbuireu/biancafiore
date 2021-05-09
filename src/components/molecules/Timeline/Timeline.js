@@ -1,10 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import 'swiper/components/navigation/navigation.min.css';
+import SwiperCore, { Navigation } from 'swiper/core';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper.min.css';
 import 'swiper/swiper.scss';
 import './Timeline.scss';
 
-const Timeline = ({ title, years, findSelectedCityNameByIndex, selectedCityIndex }) => {
+SwiperCore.use([Navigation]);
+
+const Timeline = ({  years, findSelectedCityNameByIndex, selectedCityIndex }) => {
   const [swiperInstance, setSwiperInstance] = useState(null);
 
   const handleOnSlideChange = swiper => findSelectedCityNameByIndex(swiper.activeIndex);
@@ -14,29 +19,28 @@ const Timeline = ({ title, years, findSelectedCityNameByIndex, selectedCityIndex
   }, [selectedCityIndex, swiperInstance]);
 
   const SLIDER_PARAMETERS = {
+    navigation: true,
     loop: false,
     initialSlide: selectedCityIndex
   };
 
-  return <section>
-    <h2>{title}</h2>
+  return <section className={`timeline__wrapper`}>
     <Swiper {...SLIDER_PARAMETERS}
             onSwiper={swiper => setSwiperInstance(swiper)}
             onSlideChange={swiper => handleOnSlideChange(swiper)}
-            className={`wrapper`}
+            className={`timeline__slider`}
             activeSlideKey={selectedCityIndex}
     >
-      {years.map(year => {
-        return <SwiperSlide key={year.name}>
-          {({ isActive }) => <div key={year.year}>{year.year} <br /> {year.description}</div>}
-        </SwiperSlide>;
-      })}
+      {years.map(({ year, description, name }) => (
+        <SwiperSlide key={name}>
+          {({ isActive }) => <div key={year} /*isActive={isActive}*/>{year} <br /> {description}</div>}
+        </SwiperSlide>
+      ))}
     </Swiper>
   </section>;
 };
 
 Timeline.propTypes = {
-  title: PropTypes.string,
   years: PropTypes.arrayOf(PropTypes.object).isRequired,
   findSelectedCityNameByIndex: PropTypes.func.isRequired,
   selectedCityIndex: PropTypes.number
