@@ -1,13 +1,13 @@
 @import '../../../styles/global/variables';
 @import '../../../styles/global/functions';
 
-.jumbotron__wrapper {
+.home__jumbotron__wrapper {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
 }
 
-.jumbotron__text-right {
+.home__jumbotron__text-right {
   align-self: flex-end;
   display: flex;
   flex-flow: row wrap;
@@ -15,13 +15,13 @@
   text-align: left;
 }
 
-.jumbotron__text-center {
+.home__jumbotron__text-center {
   margin: 0 .5rem;
   width: fit-content;
 }
 
-.jumbotron__text-left,
-.jumbotron__text-right {
+.home__jumbotron__text-left,
+.home__jumbotron__text-right {
   @include font-properties(primary, extra-light);
   @include typography-settings(10, 10, 10);
   text-transform: uppercase;
@@ -29,28 +29,28 @@
 }
 
 
-.jumbotron__text-left,
-.jumbotron__text-right {
+.home__jumbotron__text-left,
+.home__jumbotron__text-right {
   max-width: calc(100% / 3);
   width: 100%;
 }
 
-.jumbotron__text-left__header {
+.home__jumbotron__text-left__header {
   justify-content: flex-end;
   padding-top: 2rem;
 }
 
-.jumbotron__text-right__header {
+.home__jumbotron__text-right__header {
   justify-content: flex-start;
 }
 
-.jumbotron__text-left__header,
-.jumbotron__text-right__header {
+.home__jumbotron__text-left__header,
+.home__jumbotron__text-right__header {
   display: flex;
   flex-flow: row wrap;
 }
 
-.jumbotron__text-right__body {
+.home__jumbotron__text-right__body {
   @include typography-settings(0, 0, 0);
   padding-right: 3rem;
   text-transform: none;

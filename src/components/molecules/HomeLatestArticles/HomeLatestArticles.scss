@@ -1,13 +1,13 @@
 @import '../../../styles/global/variables';
 @import '../../../styles/global/functions';
 
-.latest-articles__wrapper {
+.home__latest-articles__wrapper {
   background-color: color(others, black);
   margin-top: 7rem;
   padding: 5rem 0;
 }
 
-.latest-articles__list {
+.home__latest-articles__list {
   border-bottom: 1px solid color(others, white);
   display: flex;
   flex-flow: row wrap;
@@ -16,7 +16,7 @@
 }
 
 
-.latest-articles__title {
+.home__latest-articles__title {
   @include font-properties(primary, light);
   @include typography-settings(5, 5, 5);
   color: color(others, white);
