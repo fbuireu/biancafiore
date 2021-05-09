@@ -24,3 +24,24 @@
   @include typography-settings(0, 0, 0);
   padding: 1rem 0 2rem;
 }
+
+.testimonials__slider {
+  .swiper-slide {
+    transform: scale(.85);
+    transition: all .3s linear;
+  }
+
+  .swiper-slide-active {
+    transform: scale(1);
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    background: url('../../../assets/svg/traditional-arrow-right.svg') no-repeat center center / 100% auto;
+    top: 100%;
+  }
+
+  .swiper-button-prev {
+    transform: rotate(180deg);
+  }
+}
