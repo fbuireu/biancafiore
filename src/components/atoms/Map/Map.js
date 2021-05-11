@@ -43,6 +43,9 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
     mapChart.projection = new am4maps.projections.Miller();
     mapChart.zoomControl = new am4maps.ZoomControl();
     mapChart.homeZoomLevel = 0;
+    mapChart.zoomControl.slider.height = 100;
+    mapChart.zoomControl.color = am4core.color(`#b37e33`);
+    mapChart.zoomControl.cursorOverStyle = am4core.MouseCursorStyle.pointer;
   };
 
   const setLoader = mapChart => {
@@ -382,17 +385,16 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
       let north, south, west, east;
 
       mapConfiguration.countriesIsoCode.forEach(isoCode => {
-        const country = polygonSeries.getPolygonById(isoCode);
+        let country = polygonSeries.getPolygonById(isoCode);
 
-        north = !north ?? (country.north > north) ? country.north : north;
-        south = !south ?? (country.south < south) ? country.south : south;
-        west = !west ?? (country.north < west) ? country.west : west;
-        east = !east ?? (country.east > east) ? country.east : east;
+        if (!north || (country.north > north)) north = country.north;
+        if (!south || (country.south < south)) south = country.south;
+        if (!west || (country.west < west)) west = country.west;
+        if (!east || (country.east > east)) east = country.east;
 
         country.isActive = true;
       });
-
-      mapChart.zoomToRectangle(north, east, south, west, 10, true);
+      mapChart.zoomToRectangle(north, east, south, west, 1, true);
     });
 
     return () => mapChart?.dispose();
@@ -428,8 +430,8 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
     } else currentLineReference.current++;
   }, [selectedCityName]);
 
-  return <section>
-    <div ref={mapReference} className={`map__wrapper`} />
+  return <section className={`map__wrapper wrapper`}>
+    <div ref={mapReference} className={`map`} />
   </section>;
 };
 
