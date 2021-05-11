@@ -66,10 +66,11 @@ module.exports = {
       2,
       `first`
     ],
-    'react/jsx-no-bind': `warn`,
-    'semi': [
+    'react/jsx-no-bind': [
       `warn`,
-      `always`
+      {
+        'allowArrowFunctions': true
+      }
     ]
   },
   env: {
