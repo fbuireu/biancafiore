@@ -1,8 +1,13 @@
 @import '../../../styles/global/animations';
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
 
 .map__wrapper {
-  height: 500px;
-  width: 100%;
+  height: map-get($grid, 'extra-small');
+}
+
+.map {
+  height: 100%;
 }
 
 .amcharts---is-created-group path {
@@ -17,3 +22,5 @@
   opacity: 0;
   transition: opacity 1.5s ease;
 }
+
+
