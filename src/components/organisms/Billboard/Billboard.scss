@@ -15,7 +15,11 @@
     align-content: center;
     display: grid;
     gap: 1rem;
-    grid: 'Title Title Title Title' auto 'Date-Author Date-Author . .' auto 'Summary Summary Summary Summary' auto 'ReadingTime Tags . .' auto / auto 1fr 1fr 1fr;
+    grid: 'Title Title Title Title' auto
+          'Date-Author Date-Author . .' auto
+          'Summary Summary Summary Summary' auto
+          'ReadingTime Tags . .' auto
+         / auto 1fr 1fr 1fr;
     justify-items: start;
     padding: 2rem 0;
     position: relative;
