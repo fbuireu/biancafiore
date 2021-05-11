@@ -15,7 +15,7 @@ const AboutMe = ({
           frontmatter: {
             jumbotron,
             map: { cities: mapCities },
-            timeline: { title: timelineTitle, years }
+            timeline: { title, years }
           }
         }
       }]
@@ -48,21 +48,27 @@ const AboutMe = ({
   const [selectedCityIndex, setSelectedCityIndex] = useState(years.findIndex(({ city }) => city === initialCity?.name));
   const [selectedCityName, setSelectedCityName] = useState(initialCity);
 
-  const findSelectedCityIndexByName = selectedCityName => setSelectedCityIndex(years.findIndex(({ city: name }) => name === selectedCityName));
+  function findSelectedCityIndexByName(selectedCity) {
+    setSelectedCityIndex(years.findIndex(({ city: name }) => name === selectedCity));
+  }
 
-  const findSelectedCityNameByIndex = selectedCityIndex => setSelectedCityName(years[selectedCityIndex].city);
+  function findSelectedCityNameByIndex(selectedIndex) {
+    setSelectedCityName(years[selectedIndex].city);
+  }
 
   return <Layout>
     <SEO title="Home" />
     <AboutMeJumbotron jumbotron={jumbotron} />
-    <h2>{timelineTitle}</h2>
-    <Map cities={cities}
-         findSelectedCityIndexByName={findSelectedCityIndexByName}
-         selectedCityName={selectedCityName}
+    <Timeline
+      title={title}
+      years={years}
+      findSelectedCityNameByIndex={findSelectedCityNameByIndex}
+      selectedCityIndex={selectedCityIndex}
     />
-    <Timeline years={years}
-              findSelectedCityNameByIndex={findSelectedCityNameByIndex}
-              selectedCityIndex={selectedCityIndex}
+    <Map
+      cities={cities}
+      findSelectedCityIndexByName={findSelectedCityIndexByName}
+      selectedCityName={selectedCityName}
     />
   </Layout>;
 };
