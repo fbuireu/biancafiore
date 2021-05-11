@@ -52,7 +52,11 @@
   align-items: flex-start;
   display: grid;
   gap: 1rem;
-  grid: 'Title Title Title Title' auto 'Date-Author Date-Author Date-Author Date-Author' auto 'ReadingTime Tags Tags Tags' auto 'Summary Summary Summary Summary' auto / auto 1fr 1fr 1fr;
+  grid: 'Title Title Title Title' auto
+        'Date-Author Date-Author Date-Author Date-Author' auto
+        'ReadingTime Tags Tags Tags' auto
+        'Summary Summary Summary Summary' auto
+        / auto 1fr 1fr 1fr;
   padding: 0;
   transition: gap .5s;
 }

@@ -6,11 +6,11 @@
   cursor: grab;
   display: grid;
   gap: 0 2rem;
-  grid: 'Testimonial-Photo Testimonial-Photo . .' 1fr
-  'Testimonial-Photo Testimonial-Photo Testimonial-Body Testimonial-Body' 1fr
-  'Testimonial-Photo Testimonial-Photo Testimonial-Footer Testimonial-Footer' calc(100% / 8)
-  'Testimonial-Photo Testimonial-Photo Testimonial-Footer Testimonial-Footer' calc(100% / 8)
-  / 1fr 1fr 1fr 1fr;
+  grid: 'Testimonial-Image Testimonial-Image . .' 1fr
+        'Testimonial-Image Testimonial-Image Testimonial-Body Testimonial-Body' 1fr
+        'Testimonial-Image Testimonial-Image Testimonial-Footer Testimonial-Footer' calc(100% / 8)
+        'Testimonial-Image Testimonial-Image Testimonial-Footer Testimonial-Footer' calc(100% / 8)
+        / 1fr 1fr 1fr 1fr;
   width: 100%;
 
   &:not(.--is-active) {
@@ -19,7 +19,7 @@
 }
 
 .testimonial__image {
-  grid-area: Testimonial-Photo;
+  grid-area: Testimonial-Image;
 }
 
 .testimonial__quote {

@@ -1,3 +1,103 @@
 @import '../../../styles/global/variables';
 @import '../../../styles/global/functions';
 
+.about-me__jumbotron__wrapper {
+  display: grid;
+  gap: 1.5rem 2rem;
+  grid: 'AboutMeJumbotron-Title AboutMeJumbotron-Image' min-content
+        'AboutMeJumbotron-Header AboutMeJumbotron-Image' min-content
+        'AboutMeJumbotron-Description AboutMeJumbotron-Image' min-content
+        'AboutMeJumbotron-Description AboutMeJumbotron-Social-Networks' min-content
+        'AboutMeJumbotron-Cta AboutMeJumbotron-Social-Networks' min-content
+        / 50% 1fr;
+  justify-items: baseline;
+  max-width: map-get($grid, 'medium');
+  padding-bottom: 8rem;
+}
+
+.about-me__jumbotron__title,
+.about-me__jumbotron__header,
+.about-me__jumbotron__description,
+.about-me__jumbotron__cta {
+  text-align: left;
+}
+
+.about-me__jumbotron__title {
+  @include font-properties(primary, light);
+  @include typography-settings(3, 3, 3);
+  align-self: center;
+  color: color(primary);
+  grid-area: AboutMeJumbotron-Title;
+  padding-top: 3rem;
+  text-transform: uppercase;
+}
+
+.about-me__jumbotron__header {
+  @include font-properties(primary, light);
+  @include typography-settings(15, 15, 15);
+  grid-area: AboutMeJumbotron-Header;
+  text-transform: uppercase;
+
+  strong {
+    font-weight: bolder;
+  }
+}
+
+.about-me__jumbotron__description {
+  @include font-properties(secondary);
+  grid-area: AboutMeJumbotron-Description;
+  padding: 0 3rem;
+}
+
+.about-me__jumbotron__cta {
+  grid-area: AboutMeJumbotron-Cta;
+  padding: 0 1rem 0 3rem;
+  position: relative;
+  transition: padding .3s;
+
+  &:hover {
+    padding: 0 1.5rem 0 3rem;
+  }
+
+  &::after {
+    background: url('../../../assets/svg/traditional-arrow-right.svg') no-repeat center center / 100% auto;
+    content: '';
+    height: 1.5rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(100%, -10%);
+    width: 1.5rem;
+  }
+}
+
+.about-me__jumbotron__image {
+  grid-area: AboutMeJumbotron-Image;
+}
+
+.about-me__jumbotron__social-networks__list {
+  display: flex;
+  flex-flow: row nowrap;
+  grid-area: AboutMeJumbotron-Social-Networks;
+}
+
+.about-me__jumbotron__social-network__item:not(:last-child) {
+  margin-right: 2rem;
+}
+
+.about-me__jumbotron__social-network__link {
+  @include font-properties(secondary);
+  @include typography-settings(-1, -1, -1);
+  letter-spacing: .2rem;
+  position: relative;
+
+  &::after {
+    background-color: color(others, black);
+    bottom: -.25rem;
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
+}
