@@ -1,0 +1,41 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.timeline-city {
+  cursor: grab;
+  display: grid;
+  gap: 1rem 1.5rem;
+  grid: 'TimelineCity-Year TimelineCity-Year' min-content
+        'TimelineCity-Photo TimelineCity-Name' min-content
+        'TimelineCity-Photo TimelineCity-Description' 1fr
+        / 1fr 1fr;
+  transition: opacity .3s;
+  width: 100%;
+
+  &:not(.--is-active) {
+    opacity: .25;
+  }
+}
+
+.timeline-city__year {
+  @include font-properties(primary, extra-light);
+  @include typography-settings(3, 3, 3);
+  grid-area: TimelineCity-Year;
+  text-align: center;
+}
+
+.timeline-city__image {
+  border-radius: $global-border-radius;
+  grid-area: TimelineCity-Photo;
+}
+
+.timeline-city__name {
+  @include font-properties(primary, extra-light);
+  @include typography-settings(5, 5, 5);
+  grid-area: TimelineCity-Name;
+}
+
+.timeline-city__description {
+  @include font-properties(secondary);
+  grid-area: TimelineCity-Description;
+}
