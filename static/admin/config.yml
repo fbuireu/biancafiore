@@ -1,5 +1,5 @@
 backend:
-  name: git-gateway
+  name: github #git-gateway
   repo: fbuireu/biancafiore
   branch: master
   squash_merges: true
@@ -263,6 +263,11 @@ collections:
                     { name: image, label: Image, required: true, widget: image, allow_multiple: false },
                     { name: description, label: Description, required: false, widget: markdown } ] }
               ] }
+          - { name: latestArticles, label: Latest Articles, widget: object, collapsed: true,
+                fields: [
+                  { name: title, label: Title, required: true, widget: markdown },
+                  { name: quote, label: Quote, required: true, widget: markdown },
+                  { name: author, label: Author, required: false, widget: string } ] }
           - { name: body, label: Body, required: true, widget: markdown }
       - name: contact
         label: Contact
