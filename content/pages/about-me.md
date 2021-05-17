@@ -72,10 +72,10 @@ timeline:
       city: London
       image: /assets/images/london.jpg
       description: This is London fellas
-  latestArticles:
-    title: Fresh from **the blog**
-    quote: '"Lock up your libraries if you like; but there is no gate, no lock, no
-    bolt that you can set upon the freedom of my mind"'
-    author: Virginia Woolf
+latestArticles:
+  title: Fresh from **the blog**
+  quote: '"Lock up your libraries if you like; but there is no gate, no lock, no
+  bolt that you can set upon the freedom of my mind"'
+  author: Virginia Woolf
 ---
 Don't you dare. Click and play
