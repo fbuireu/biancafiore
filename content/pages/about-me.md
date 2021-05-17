@@ -37,21 +37,10 @@ map:
 timeline:
   title: A little more of me
   years:
-    - year: 2018-
-      city: Barcelona
-      image: /assets/images/barcelona.jpg
-      description: Test test test test test test test test test test test test test
-        test test test test test test test test test test test test test test
-        test test test test test test test test test test test test test test
-        test test test test test test test test test test test test test test
-    - year: 2007-2009
-      city: London
-      image: /assets/images/london.jpg
-      description: This is London fellas
-    - year: 2005-2006
-      city: Sydney
-      description: This is Sydney
-      image: /assets/images/sydney.jpg
+    - year: 1990-1992
+      city: Genova
+      image: /assets/images/genova.jpg
+      description: This is genova
     - year: 2015-2016
       city: Amman
       image: /assets/images/amman.jpg
@@ -64,14 +53,17 @@ timeline:
       city: Sydney
       description: This is Sydney
       image: /assets/images/sydney.jpg
-    - year: 1990-1992
-      city: Genova
-      image: /assets/images/genova.jpg
-      description: This is genova
     - year: 2007-2009
       city: London
       image: /assets/images/london.jpg
       description: This is London fellas
+    - year: 2018-
+      city: Barcelona
+      image: /assets/images/barcelona.jpg
+      description: Test test test test test test test test test test test test test
+        test test test test test test test test test test test test test test
+        test test test test test test test test test test test test test test
+        test test test test test test test test test test test test test test
 latestArticles:
   title: Fresh from **the blog**
   quote: '"Lock up your libraries if you like; but there is no gate, no lock, no
