@@ -5,10 +5,12 @@ import ArrowUp from '../../../assets/svg-components/arrow-up.svg';
 import { useWindowSize } from '../../../utils/hooks/useWindowSize';
 import './ReadingProgress.scss';
 
-const ReadingProgress = ({ scroll, articleProperties }) => {
+const ReadingProgress = ({
+  scroll,
+  articleProperties: { offsetTop: articleOffsetTop, offsetHeight: articleHeight }
+}) => {
   let currentScroll = Math.abs(scroll);
   const { height: windowHeight } = useWindowSize();
-  const { offsetTop: articleOffsetTop, offsetHeight: articleHeight } = articleProperties;
   const isArticleVisible = currentScroll >= articleOffsetTop;
   const currentProgress = isArticleVisible ? Math.round(
     (currentScroll - articleOffsetTop) / (articleHeight - windowHeight) * 100) : 0;
