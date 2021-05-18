@@ -5,6 +5,7 @@ import Map from '../components/atoms/Map/Map';
 import SEO from '../components/atoms/SEO/SEO';
 import AboutMeJumbotron from '../components/molecules/AboutMeJumbotron/AboutMeJumbotron';
 import Timeline from '../components/molecules/Timeline/Timeline';
+import AboutMeLatestArticles from '../components/organisms/AboutMeLatestArticles/AboutMeLatestArticles';
 import Layout from '../components/templates/Layout/Layout';
 
 const AboutMe = ({
@@ -15,7 +16,8 @@ const AboutMe = ({
           frontmatter: {
             jumbotron,
             map: { cities: mapCities },
-            timeline: { title, years }
+            timeline: { title, years },
+            latestArticles: latestArticlesData,
           }
         }
       }]
@@ -48,11 +50,11 @@ const AboutMe = ({
   const [selectedCityIndex, setSelectedCityIndex] = useState(years.findIndex(({ city }) => city === initialCity?.name));
   const [selectedCityName, setSelectedCityName] = useState(initialCity);
 
-  function findSelectedCityIndexByName(selectedCity) {
+  function findSelectedCityIndexByName({ selectedCity }) {
     setSelectedCityIndex(years.findIndex(({ city: name }) => name === selectedCity));
   }
 
-  function findSelectedCityNameByIndex(selectedIndex) {
+  function findSelectedCityNameByIndex({ selectedIndex }) {
     setSelectedCityName(years[selectedIndex].city);
   }
 
@@ -70,6 +72,7 @@ const AboutMe = ({
       findSelectedCityIndexByName={findSelectedCityIndexByName}
       selectedCityName={selectedCityName}
     />
+    <AboutMeLatestArticles latestArticlesData={latestArticlesData} />
   </Layout>;
 };
 
@@ -117,6 +120,11 @@ export const aboutMeData = graphql`
                                     }
                                 }
                             }
+                        }
+                        latestArticles {
+                            title
+                            quote
+                            author
                         }
                     }
                 }

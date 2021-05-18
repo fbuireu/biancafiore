@@ -8,7 +8,7 @@ import './RefinementsList.scss';
 const RefinementsList = ({ label, attribute, operator }) => {
   const [refinementSelected, setRefinementSelected] = useState(false);
 
-  const defineRefinementListOrder = items => orderBy(items, [`label`, `count`], [`asc`, `desc`]);
+  const defineRefinementListOrder = ({ items }) => orderBy(items, [`label`, `count`], [`asc`, `desc`]);
 
   const handleRefinementSelection = value => setRefinementSelected(value);
 
@@ -20,7 +20,7 @@ const RefinementsList = ({ label, attribute, operator }) => {
       </summary>
       <RefinementItem attribute={attribute}
                       operator={operator}
-                      transformItems={items => defineRefinementListOrder(items)}
+                      transformItems={items => defineRefinementListOrder({ items })}
                       selectRefinement={handleRefinementSelection} />
     </details>
   </div>;
