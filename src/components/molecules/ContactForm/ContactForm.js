@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import encode from '../../../utils/form/encode';
-import resetForm from '../../../utils/form/resetForm';
-import validateField from '../../../utils/form/validateField';
-import validateForm from '../../../utils/form/validateForm';
+import { encode } from '../../../utils/form/encode';
+import { resetForm } from '../../../utils/form/resetForm';
+import { validateField } from '../../../utils/form/validateField';
+import { validateForm } from '../../../utils/form/validateForm';
 import FormComponentsMapper from '../FormComponentsMapper/FormComponentsMapper';
 
 const ContactForm = ({ formInputs }) => {
