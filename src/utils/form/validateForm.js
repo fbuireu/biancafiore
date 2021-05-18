@@ -1,6 +1,6 @@
 import validateField from './validateField';
 
-const validateForm = form => {
+export const validateForm = form => {
   let isValidForm = [];
   form.forEach(input => {
     if (input.isRequired) isValidForm.push(validateField(input.name, input));
@@ -12,5 +12,3 @@ const validateForm = form => {
 
   return !isValidForm.some(item => !item);
 };
-
-export default validateForm;
