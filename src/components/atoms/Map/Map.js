@@ -224,7 +224,15 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
     line.setClassName();
   };
 
-  const flyPlane = (currentLine, planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, plane, planeShadow) => {
+  const flyPlane = ({
+    currentLine,
+    planeContainer,
+    lineSeries,
+    planeShadowContainer,
+    shadowLineSeries,
+    plane,
+    planeShadow
+  }) => {
     const { flight: { from, to } } = mapConfiguration;
 
     planeContainer.mapLine = lineSeries.mapLines.getIndex(currentLine);
@@ -337,7 +345,7 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
         previousOriginReference.current = origin;
         previousDestinationReference.current = destination;
 
-        findSelectedCityIndexByName(destination.name);
+        findSelectedCityIndexByName({ selectedCityName: destination.name });
 
         if (destination !== origin) {
           currentLineReference.current === 0 && currentLineReference.current++;
@@ -352,7 +360,15 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
           plane = planeReference.current;
           planeShadow = planeShadowReference.current;
 
-          flyPlane(currentLineReference.current, planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, plane, planeShadow);
+          flyPlane({
+            currentLine: currentLineReference.current,
+            planeContainer,
+            lineSeries,
+            planeShadowContainer,
+            shadowLineSeries,
+            plane,
+            planeShadow
+          });
 
           previousLineReference.current = line;
           currentLineReference.current++;
@@ -368,7 +384,15 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
         if (currentLineReference.current > 1) eraseLine(previousLineReference.current);
 
         const line = addLine(origin, destination);
-        flyPlane(currentLineReference.current, planeContainer, lineSeries, planeShadowContainer, shadowLineSeries, plane, planeShadow);
+        flyPlane({
+          currentLine: currentLineReference.current,
+          planeContainer,
+          lineSeries,
+          planeShadowContainer,
+          shadowLineSeries,
+          plane,
+          planeShadow
+        });
 
         previousDestinationReference.current = mapConfiguration.mapCities.find(({ countryIsoCode }) => countryIsoCode === country.target.dataItem.dataContext.id);
         previousLineReference.current = line;
@@ -413,15 +437,15 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
 
         const line = addLineReference.current(origin, destination);
 
-        flyPlane(
-          currentLineReference.current,
-          planeContainerReference.current,
-          lineSeriesReference.current,
-          planeShadowContainerReference.current,
-          shadowLineSeriesReference.current,
-          planeReference.current,
-          planeShadowReference.current
-        );
+        flyPlane({
+          currentLine: currentLineReference.current,
+          planeContainer: planeContainerReference.current,
+          lineSeries: lineSeriesReference.current,
+          planeShadowContainer: planeShadowContainerReference.current,
+          shadowLineSeries: shadowLineSeriesReference.current,
+          plane: planeReference.current,
+          planeShadow: planeShadowReference.current
+        });
 
         previousDestinationReference.current = destination;
         previousLineReference.current = line;
