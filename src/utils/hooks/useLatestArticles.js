@@ -16,6 +16,7 @@ export const useLatestArticles = () => {
               }) {
               edges {
                   node {
+                      excerpt(pruneLength: 350)
                       fields {
                           slug
                       }
@@ -23,6 +24,7 @@ export const useLatestArticles = () => {
                           author
                           content {
                               title
+                              summary
                               publishDate
                               featuredImage {
                                   childImageSharp {
