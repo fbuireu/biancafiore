@@ -10,7 +10,10 @@ const HomeLatestArticles = ({ title }) => {
 
   return <section className={`home__latest-articles__wrapper`}>
     <div className={`wrapper`}>
-      <Markdown className={`home__latest-articles__title`} options={{ wrapper: `h2` }}>{title}</Markdown>
+      <Markdown className={`home__latest-articles__title`}
+                options={{ wrapper: `h2`, forceWrapper: true }}>
+        {title}
+      </Markdown>
       <ul className={`home__latest-articles__list`}>
         {latestArticles.map(({ node: article }) => (
           <HomeLatestArticleCard key={article.frontmatter.content.title} {...article} />
