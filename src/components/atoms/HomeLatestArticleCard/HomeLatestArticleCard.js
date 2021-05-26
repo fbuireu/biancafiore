@@ -7,10 +7,14 @@ import React from 'react';
 import slugify from '../../../utils/slugify/slugify';
 import './HomeLatestArticleCard.scss';
 
-const HomeLatestArticleCard = ({ fields, frontmatter }) => {
+const HomeLatestArticleCard = ({
+  fields: { slug },
+  frontmatter: {
+    author,
+    content: { title, publishDate, featuredImage }
+  }
+}) => {
   const { locale: currentLanguage } = useIntl();
-  const { slug } = fields;
-  const { author, content: { title, publishDate, featuredImage } } = frontmatter;
 
   return (
     <li className={`home__latest-articles__item`}>
@@ -18,7 +22,8 @@ const HomeLatestArticleCard = ({ fields, frontmatter }) => {
         <Img fluid={featuredImage?.childImageSharp?.fluid}
              className={`home__latest-articles__item__image`} />
         <h4 className={`home__latest-articles__item__title`}>{title}</h4>
-        <Link className={`home__latest-articles__author`} to={`/${currentLanguage}/tag/${slugify(author)}`}>{author}</Link>
+        <Link className={`home__latest-articles__author`}
+              to={`/${currentLanguage}/tag/${slugify(author)}`}>{author}</Link>
         <time className={`home__latest-articles__date`}
               dateTime={publishDate}>
           {moment(new Date(publishDate))
