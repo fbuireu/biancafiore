@@ -345,7 +345,7 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
         previousOriginReference.current = origin;
         previousDestinationReference.current = destination;
 
-        findSelectedCityIndexByName({ selectedCityName: destination.name });
+        findSelectedCityIndexByName({ selectedCity: destination.name });
 
         if (destination !== origin) {
           currentLineReference.current === 0 && currentLineReference.current++;
