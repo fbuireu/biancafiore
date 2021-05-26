@@ -1,0 +1,70 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.about-me__latest-articles__wrapper {
+  margin: 5rem auto;
+}
+
+.about-me__latest-articles__title {
+  @include font-properties(primary, light);
+  @include typography-settings(3, 3, 3);
+  letter-spacing: .3rem;
+  text-transform: uppercase;
+
+  strong {
+    color: color(primary);
+    font-weight: normal;
+  }
+}
+
+.about-me__latest-articles__inner {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding: 3rem 0;
+}
+
+.about-me__quote__wrapper {
+  max-width: calc(100% / 3 - 1rem);
+  min-width: calc(100% / 3 - 1rem);
+  width: 100%;
+}
+
+.about-me__quote__text {
+  @include font-properties(primary, light);
+  @include typography-settings(6, 6, 6);
+  display: inline-block;
+  margin-bottom: 2rem;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.about-me__quote__author {
+  @include font-properties(secondary);
+  letter-spacing: .3rem;
+  text-align: right;
+}
+
+.about-me__latest-articles__list {
+  display: flex;
+  flex-flow: row wrap;
+  max-width: calc(100% / 3 * 2 - 1rem);
+  min-width: calc(100% / 3 * 2 - 1rem);
+  width: 100%;
+}
+
+.about-me__latest-articles__slider {
+  .swiper-button-prev,
+  .swiper-button-next {
+    background: url('../../../assets/svg/traditional-arrow-right.svg') no-repeat center center / 100% auto;
+    top: 100%;
+  }
+
+  .swiper-button-prev {
+    transform: rotate(180deg) translateY(-50%);
+  }
+
+  .swiper-button-next {
+    transform: translateY(50%);
+  }
+}
