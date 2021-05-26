@@ -1,4 +1,3 @@
-import React from 'react';
 import RecaptchaInput from '../../atoms/RecaptchaInput/RecaptchaInput';
 import TextareaInput from '../../atoms/TextareaInput/TextareaInput';
 import TextInput from '../../atoms/TextInput/TextInput';
