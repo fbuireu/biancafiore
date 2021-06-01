@@ -23301,10 +23301,10 @@ swap-case@^2.0.1:
   dependencies:
     tslib "^2.0.3"
 
-swiper@^6.4.9:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/swiper/-/swiper-6.5.0.tgz#4ca2243b44fccef47ee28199377666607d8c5141"
-  integrity sha512-cSx1SpfgrHlgwku++3Ce3cjPBpXgB7P+bGik5S3+F+j6ID0NUeV6qtmedFdr3C8jXR/W+TJPVNIT9fH/cwVAiA==
+swiper@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-6.7.0.tgz#ec971e703d03ef6196354140fbb22b074642bf5c"
+  integrity sha512-zCfvWn7H7mCq7jgVurckhAwkjPUeMCkdC4rA7lagvaD3mIrNhKiaYYo2+nkxMVpiaWuCQ38e44Mya/dKb7HpyQ==
   dependencies:
     dom7 "^3.0.0"
     ssr-window "^3.0.0"
