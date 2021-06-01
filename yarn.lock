@@ -11100,10 +11100,10 @@ gatsby-remark-autolink-headers@^2.4.1:
     mdast-util-to-string "^1.1.0"
     unist-util-visit "^1.4.1"
 
-gatsby-remark-highlight-code@^2.1.1:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/gatsby-remark-highlight-code/-/gatsby-remark-highlight-code-2.2.0.tgz#5408209c6217c09cc6436d51e86d875015a7300c"
-  integrity sha512-pFj2PRvIe0yMzM1tCeXNOsXNt9VBi+qkCDrNBsvUXSbOqYn+IjfHXAr5DlItxR32/v/OtvI7BVM6Bi49VhQvmA==
+gatsby-remark-highlight-code@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/gatsby-remark-highlight-code/-/gatsby-remark-highlight-code-2.2.1.tgz#989a48a7adefadc299b01faccf54a9a8a49f1f73"
+  integrity sha512-i8dSLQZdKOxnx2y7wKtKyIz2nnDsrDOKxKeQqOxtxzmOIi9ose6N05zL57s1EOHTu/7qJijwEsp3DhouMLVr1g==
   dependencies:
     gatsby-node-helpers "^0.3.0"
     lodash "^4.17.15"
