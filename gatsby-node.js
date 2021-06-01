@@ -73,7 +73,7 @@ exports.createSchemaCustomization = ({ actions }) => {
 
   createTypes(`
     type MarkdownRemark implements Node {
-      isFuture: Boolean! @isFuture(fieldName: "frontmatter.date")
+      isFuture: Boolean! @isFuture(fieldName: "frontmatter.publishDate")
     }
   `)
 }
