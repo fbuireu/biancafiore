@@ -107,10 +107,13 @@ export const articleData = graphql`
         relatedArticles: allMarkdownRemark (
             filter: {
                 frontmatter: { content: { tags: { in: $tags }}},
-                fields: { slug: { ne: $slug }}},
+                fields: { slug: { ne: $slug }
+                }
+            },
             sort: {
                 fields: frontmatter___content___publishDate,
-                order: DESC },
+                order: DESC
+            },
             limit: 3) {
             edges {
                 node {

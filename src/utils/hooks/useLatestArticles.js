@@ -5,6 +5,7 @@ export const useLatestArticles = () => {
       query getLatestArticles {
           latestArticles: allMarkdownRemark(
               filter: {
+                  isFuture: { eq: false }
                   frontmatter: {
                       key: { eq: "article" },
                       isDraft: { eq: false }
