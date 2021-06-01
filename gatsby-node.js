@@ -2,6 +2,7 @@ const { createFilePath } = require(`gatsby-source-filesystem`);
 const { fmImagesToRelative } = require(`gatsby-remark-relative-images-v2`);
 const articlesBuilder = require(`./src/build/articlesBuilder`);
 const tagsBuilder = require(`./src/build/tagsBuilder`);
+const get = require(`lodash.get`)
 const path = require(`path`);
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
@@ -48,3 +49,31 @@ exports.onCreateWebpackConfig = ({ actions, loaders, getConfig }) => {
     },
   });
 };
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes, createFieldExtension } = actions
+
+  const isFuture = fieldName => source => {
+    const date = get(source, fieldName)
+
+    return new Date(date) > new Date()
+  }
+
+  createFieldExtension({
+    name: `isFuture`,
+    args: {
+      fieldName: `String!`,
+    },
+    extend({ fieldName }) {
+      return {
+        resolve: isFuture(fieldName),
+      }
+    },
+  })
+
+  createTypes(`
+    type MarkdownRemark implements Node {
+      isFuture: Boolean! @isFuture(fieldName: "frontmatter.date")
+    }
+  `)
+}
