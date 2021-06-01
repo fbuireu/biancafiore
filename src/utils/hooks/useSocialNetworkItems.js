@@ -7,7 +7,8 @@ export const useSocialNetworkItems = () => {
               filter: { frontmatter: { key: { eq: "socialNetworkItem" }}},
               sort: {
                   fields: [frontmatter___position],
-                  order: ASC }){
+                  order: ASC
+              }){
               edges {
                   node {
                       frontmatter {

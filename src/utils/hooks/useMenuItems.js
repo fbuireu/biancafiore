@@ -7,7 +7,8 @@ export const useMenuItems = () => {
               filter: { frontmatter: { key: { eq: "menuItem" }}},
               sort: {
                   fields: [frontmatter___position],
-                  order: ASC }){
+                  order: ASC 
+              }){
               edges {
                   node {
                       fields {

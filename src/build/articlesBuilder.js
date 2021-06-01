@@ -7,14 +7,17 @@ const articlesBuilder = async (graphql, { createPage }, reporter) => {
   const articlesQuery = await graphql(`
     query getAllArticlesOrderedByDate {
       articles: allMarkdownRemark (
-        filter: { frontmatter: { 
-          key: { eq: "article" },  
-          isDraft: { eq: false }
+        filter: {
+          isFuture: { eq: false }, 
+          frontmatter: {
+            key: { eq: "article" }, 
+            isDraft: { eq: false }
           }
-        },
+        }, 
         sort: { 
           fields: frontmatter___content___publishDate, 
-          order: DESC }) {
+          order: DESC 
+        }) {
         edges {
           node {
             fields {
