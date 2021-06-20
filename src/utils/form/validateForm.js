@@ -1,4 +1,4 @@
-import validateField from './validateField';
+import { validateField } from './validateField';
 
 export const validateForm = form => {
   let isValidForm = [];
