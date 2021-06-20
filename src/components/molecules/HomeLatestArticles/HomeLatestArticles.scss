@@ -2,7 +2,7 @@
 @import '../../../styles/global/functions';
 
 .home__latest-articles__wrapper {
-  background-color: color(others, black);
+  background-color: color(neutral);
   margin-top: 7rem;
   padding-top: 5rem;
 }
@@ -18,7 +18,7 @@
 
 .home__latest-articles__title {
   @include font-properties(primary, light);
-  @include typography-settings(5, 5, 5);
+  @include typography-settings(4, 4, 4);
   color: color(others, white);
   letter-spacing: .3rem;
   text-transform: uppercase;
