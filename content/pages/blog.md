@@ -1,4 +1,5 @@
 ---
+key: blog
 title: The blog
 jumbotron:
   featuredArticle:
