@@ -8,10 +8,12 @@ import './AlgoliaWrapper.scss';
 const SEARCH_CLIENT = algoliasearch(process.env.GATSBY_ALGOLIA_APP_ID, process.env.GATSBY_ALGOLIA_API_KEY);
 
 const AlgoliaWrapper = ({ hitsComponent: HitsComponent, indexName, filterParameters, hasRange }) => {
-  return <InstantSearch searchClient={SEARCH_CLIENT} indexName={indexName}>
-    <Filter filterParameters={filterParameters} defaultRefinement={indexName} hasRange={hasRange} />
-    <HitsComponent />
-  </InstantSearch>;
+  return <section className={`wrapper`}>
+    <InstantSearch searchClient={SEARCH_CLIENT} indexName={indexName}>
+      <Filter filterParameters={filterParameters} defaultRefinement={indexName} hasRange={hasRange} />
+      <HitsComponent />
+    </InstantSearch>
+  </section>;
 };
 
 AlgoliaWrapper.propTypes = {
