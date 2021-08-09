@@ -3,7 +3,6 @@ import Img from 'gatsby-image';
 import { useIntl } from 'gatsby-plugin-intl';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { useSocialNetworkItems } from '../../../utils/hooks/useSocialNetworkItems';
 import './AboutMeJumbotron.scss';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { connectStateResults } from 'react-instantsearch-dom';
 import { ProjectHitCard } from '../ProjectHitCard/ProjectHitCard';
 import './ProjectHitCards.scss';

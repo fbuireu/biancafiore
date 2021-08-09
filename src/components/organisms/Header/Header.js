@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useScrollPosition } from '../../../utils/hooks/useScrollPosition';
 import HamburgerMenu from '../../atoms/HamburgerMenu/HamburgerMenu';
 import Navigation from '../Navigation/Navigation';

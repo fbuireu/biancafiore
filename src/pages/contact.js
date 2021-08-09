@@ -1,6 +1,5 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
-import React from 'react';
 import SEO from '../components/atoms/SEO/SEO';
 import ContactForm from '../components/molecules/ContactForm/ContactForm';
 import Layout from '../components/templates/Layout/Layout';

@@ -4,7 +4,6 @@ import { useIntl } from 'gatsby-plugin-intl';
 import Markdown from 'markdown-to-jsx';
 import moment from 'moment/moment';
 import PropTypes from 'prop-types';
-import React from 'react';
 import slugify from '../../../utils/slugify/slugify';
 import './AboutMeLatestArticleCard.scss';
 

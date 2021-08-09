@@ -1,6 +1,5 @@
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { useLatestArticles } from '../../../utils/hooks/useLatestArticles';
 import HomeLatestArticleCard from '../../atoms/HomeLatestArticleCard/HomeLatestArticleCard';
 import './HomeLatestArticles.scss';

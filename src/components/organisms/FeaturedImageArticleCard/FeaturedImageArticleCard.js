@@ -2,7 +2,6 @@ import { Link } from 'gatsby';
 import BackgroundImage from 'gatsby-background-image';
 import { useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
-import React from 'react';
 import HitSubtitle from '../../atoms/HitSubtitle/HitSubtitle';
 import HitTitle from '../../atoms/HitTitle/HitTitle';
 import ReadingTime from '../../atoms/ReadingTime/ReadingTime';

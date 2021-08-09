@@ -1,4 +1,3 @@
-import React from 'react';
 import SEO from '../components/atoms/SEO/SEO';
 import AlgoliaWrapper from '../components/organisms/AlgoliaWrapper/AlgoliaWrapper';
 import ProjectHitCards from '../components/organisms/ProjectHitCards/ProjectHitCards';

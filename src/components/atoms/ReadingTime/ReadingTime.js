@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import Clock from '../../../assets/svg-components/clock.svg';
 import './ReadingTime.scss';
 

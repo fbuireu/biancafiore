@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import './Summary.scss';
 
 const Summary = ({ summary, classNames }) => <p className={classNames}>{summary}</p>;

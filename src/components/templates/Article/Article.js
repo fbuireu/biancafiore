@@ -1,7 +1,7 @@
 import { graphql } from 'gatsby';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useScrollPosition } from '../../../utils/hooks/useScrollPosition';
 import Author from '../../atoms/Author/Author';
 import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';

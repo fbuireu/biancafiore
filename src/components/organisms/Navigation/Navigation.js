@@ -2,7 +2,7 @@ import { Link } from 'gatsby';
 import { useIntl } from 'gatsby-plugin-intl';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useMenuItems } from '../../../utils/hooks/useMenuItems';
 import { useNavigation } from '../../../utils/hooks/useNavigation';
 import { useOutsideClick } from '../../../utils/hooks/useOutsideClick';

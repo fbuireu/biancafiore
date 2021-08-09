@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import 'swiper/components/navigation/navigation.min.css';
 import SwiperCore, { Navigation } from 'swiper/core';
 import { Swiper, SwiperSlide } from 'swiper/react';

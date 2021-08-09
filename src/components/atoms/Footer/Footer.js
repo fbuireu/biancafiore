@@ -1,4 +1,3 @@
-import React from 'react';
 import { IS_VALID_EMAIL } from '../../../utils/form/validateField';
 import { useSocialNetworkItems } from '../../../utils/hooks/useSocialNetworkItems';
 import './Footer.scss';

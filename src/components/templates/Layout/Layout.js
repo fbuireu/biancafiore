@@ -1,6 +1,5 @@
 import { graphql, useStaticQuery } from 'gatsby';
 import PropTypes from 'prop-types';
-import React from 'react';
 import '../../../styles/styles.scss';
 import Footer from '../../atoms/Footer/Footer';
 import Header from '../../organisms/Header/Header';

@@ -1,6 +1,6 @@
 import { changeLocale, FormattedMessage, useIntl } from 'gatsby-plugin-intl';
 import moment from 'moment/moment';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ArrowDown from '../../../assets/svg-components/arrow-down.svg';
 import { useLanguages } from '../../../utils/hooks/useLanguages';
 import './LanguageSwitcher.scss';

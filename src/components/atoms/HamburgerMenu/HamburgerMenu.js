@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import Hamburger from '../../../assets/svg-components/menu.svg';
 import './HamburgerMenu.scss';
 
