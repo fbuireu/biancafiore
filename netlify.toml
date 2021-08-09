@@ -11,7 +11,7 @@ contexts = ['production', 'branch-deploy', 'deploy-preview']
 removeComments = true
 
 [[plugins]]
-package = 'netlify-plugin-gatsby-cache'
+package = "@netlify/plugin-gatsby"
 
 [[plugins]]
 package = '@algolia/netlify-plugin-crawler'
@@ -27,3 +27,13 @@ package = 'netlify-plugin-submit-sitemap'
 
 [[plugins]]
 package = '@netlify/plugin-lighthouse'
+
+[[plugins]]
+package = "netlify-plugin-a11y"
+
+[plugins.inputs]
+checkPaths = ['/']
+ignoreDirectories = ['/admin']
+resultMode = "warn"
+
+
