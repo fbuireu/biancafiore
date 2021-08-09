@@ -1,6 +1,6 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Map from '../components/atoms/Map/Map';
 import SEO from '../components/atoms/SEO/SEO';
 import AboutMeJumbotron from '../components/molecules/AboutMeJumbotron/AboutMeJumbotron';

@@ -1,6 +1,5 @@
 import BackgroundImage from 'gatsby-background-image';
 import PropTypes from 'prop-types';
-import React from 'react';
 import ReadingTime from '../../atoms/ReadingTime/ReadingTime';
 import Subtitle from '../../atoms/Subtitle/Subtitle';
 import Summary from '../../atoms/Summary/Summary';

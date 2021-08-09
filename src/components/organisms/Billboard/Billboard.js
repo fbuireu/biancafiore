@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import FeaturedImageBillboard from '../../molecules/FeaturedImageBillboard/FeaturedImageBillboard';
 import SimpleBillboard from '../../molecules/SimpleBillboard/SimpleBillboard';
 import './Billboard.scss';

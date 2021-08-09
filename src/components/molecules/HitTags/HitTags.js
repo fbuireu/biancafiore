@@ -1,7 +1,6 @@
 import { Link } from 'gatsby';
 import { useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Highlight } from 'react-instantsearch-dom';
 import Label from '../../../assets/svg-components/label.svg';
 import slugify from '../../../utils/slugify/slugify';

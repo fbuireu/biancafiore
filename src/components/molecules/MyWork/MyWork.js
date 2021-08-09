@@ -2,7 +2,6 @@ import { Link } from 'gatsby';
 import Img from 'gatsby-image';
 import { useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
-import React from 'react';
 import 'swiper/swiper.scss';
 import slugify from '../../../utils/slugify/slugify';
 import './MyWork.scss';

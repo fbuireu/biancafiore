@@ -1,4 +1,3 @@
-import React from 'react';
 import { TAGS_SEARCH_PARAMETERS } from '../../../utils/algolia/config/tagsSearchParameters';
 import { TAGS_SORT_BY } from '../../../utils/algolia/config/tagsSortBy';
 import SEO from '../../atoms/SEO/SEO';

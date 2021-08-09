@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import { RangeSlider } from '../../molecules/RangeSlider/RangeSlider';
 import RefinementsList from '../../molecules/RefinementsList/RefinementsList';
 import { SortHitsBy } from '../../molecules/SortHitsBy/SortHitsBy';
@@ -12,7 +11,7 @@ const Filter = ({ filterParameters, defaultRefinement, hasRange }) => {
     <SortHitsBy defaultRefinement={defaultRefinement}
                 items={filterParameters.SORT_BY} />
     {filterParameters.SEARCH_PARAMETERS.map(searchParameter => <RefinementsList key={searchParameter.label} {...searchParameter} />)}
-    {hasRange && <RangeSlider  attribute="content.readingTime"/>}
+    {hasRange && <RangeSlider attribute="content.readingTime"/>}
   </aside>;
 };
 

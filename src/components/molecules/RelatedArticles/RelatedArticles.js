@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import ArticleCard from '../../atoms/ArticleCard/ArticleCard';
 import './RelatedArticles.scss';
 

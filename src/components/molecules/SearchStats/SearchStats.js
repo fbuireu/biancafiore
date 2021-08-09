@@ -1,4 +1,3 @@
-import React from 'react';
 import { Stats } from 'react-instantsearch-dom';
 import './SearchStats.scss';
 

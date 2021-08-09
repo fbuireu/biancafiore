@@ -1,7 +1,6 @@
 import Img from 'gatsby-image';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
-import React from 'react';
 import Tilt from 'react-parallax-tilt';
 import './HomeJumbotron.scss';
 

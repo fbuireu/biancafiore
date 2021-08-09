@@ -1,6 +1,5 @@
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
-import React from 'react';
 import SwiperCore, { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper.scss';

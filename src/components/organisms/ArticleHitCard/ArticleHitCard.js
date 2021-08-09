@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import { connectHits } from 'react-instantsearch-dom';
 import FeaturedImageArticleCard from '../FeaturedImageArticleCard/FeaturedImageArticleCard';
 import SimpleArticleCard from '../SimpleArticleCard/SimpleArticleCard';

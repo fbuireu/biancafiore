@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { connectSortBy } from 'react-instantsearch-dom';
 import Select from 'react-select';
 import './SortHitsBy.scss';

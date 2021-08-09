@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { encode } from '../../../utils/form/encode';
 import { resetForm } from '../../../utils/form/resetForm';
 import { validateField } from '../../../utils/form/validateField';

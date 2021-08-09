@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import './TextInput.scss';
 
 const TextInput = ({ name, type, label, value, isValid, errorMessage, onChange, onBlur }) => {

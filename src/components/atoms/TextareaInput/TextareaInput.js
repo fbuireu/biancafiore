@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import './TextareaInput.scss';
 
 const TextareaInput = ({ name, label, value, isValid, errorMessage, onChange, onBlur }) => {
