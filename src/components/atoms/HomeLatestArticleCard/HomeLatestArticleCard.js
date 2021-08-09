@@ -3,7 +3,6 @@ import Img from 'gatsby-image';
 import { useIntl } from 'gatsby-plugin-intl';
 import moment from 'moment/moment';
 import PropTypes from 'prop-types';
-import React from 'react';
 import slugify from '../../../utils/slugify/slugify';
 import './HomeLatestArticleCard.scss';
 
