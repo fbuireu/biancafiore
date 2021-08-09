@@ -22,6 +22,7 @@ module.exports = {
     `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-sass`,
     `gatsby-plugin-netlify-cms-paths`,
+    `gatsby-plugin-provide-react`,
     {
       resolve: `gatsby-plugin-google-fonts-v2`,
       options: {
