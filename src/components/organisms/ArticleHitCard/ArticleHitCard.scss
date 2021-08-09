@@ -16,11 +16,12 @@
     margin-right: 0;
   }
 
+  @media (hover: hover) {
   &:hover {
     .hit-card__image {
       box-shadow: 0 1rem 1.5rem color(neutral, neutral-2);
     }
-
+  }
     .hit-card__image::after,
     .hit-card__image::before {
       transform: scale(1.2);
@@ -64,7 +65,7 @@
 .hit-card__link {
   .hit-card__summary{
     @include typography-settings(-1, -1, -1);
-    background-color: color(others, white);
+    background-color: currentColor;
     color: color(neutral);
     padding: 1rem;
     transform: translateY(100%);
