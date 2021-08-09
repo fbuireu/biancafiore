@@ -5,7 +5,6 @@
 .filter__refinement-list {
   background-color: color(others, white);
   border-radius: $global-border-radius;
-  box-shadow: 0 .5rem 1rem color(neutral, neutral-3);
   margin: .5rem 0;
   padding: .5rem;
   width: 100%;
@@ -27,7 +26,7 @@
     color: color(primary);
 
     &::before {
-      background-color: color(primary);
+      background-color: currentColor;
       border-radius: 50%;
       content: '';
       height: .5rem;
@@ -61,7 +60,7 @@
 
 .filter__refinement-details[open] {
   .filter__refinement-summary {
-    border-bottom-color: color(primary);
+    border-bottom-color: currentColor;
     color: color(primary);
     font-weight: bold;
   }
