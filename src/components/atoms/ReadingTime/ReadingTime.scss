@@ -5,7 +5,7 @@
 .article__reading-time,
 .hit-card__reading-time{
   align-items: center;
-  border: 2px solid color(others, white);
+  border: 2px solid currentColor;
   border-radius: $global-border-radius;
   color: color(others, white);
   display: flex;
