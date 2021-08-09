@@ -6,6 +6,7 @@ module.exports = {
   rules: {
     'react-hooks/rules-of-hooks': `warn`,
     'react-hooks/exhaustive-deps': `warn`,
+    'react/react-in-jsx-scope': `off`,
     'indent': [
       `warn`,
       2,
