@@ -28,12 +28,12 @@ package = 'netlify-plugin-submit-sitemap'
 [[plugins]]
 package = '@netlify/plugin-lighthouse'
 
-[[plugins]]
-package = "netlify-plugin-a11y"
-
-[plugins.inputs]
-checkPaths = ['/']
-ignoreDirectories = ['/admin']
-resultMode = "warn"
+#[[plugins]]
+#package = "netlify-plugin-a11y"
+#
+#[plugins.inputs]
+#checkPaths = ['/']
+#ignoreDirectories = ['/admin']
+#resultMode = "warn"
 
 
