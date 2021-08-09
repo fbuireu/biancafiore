@@ -47,6 +47,7 @@ g [aria-labelledby="id-79-title"] {
 
 .css-g1d714-ValueContainer {
   padding: 0 !important;
+  margin-top: .75rem;
 }
 
 .share-buttons__wrapper svg {
@@ -54,7 +55,7 @@ g [aria-labelledby="id-79-title"] {
   width: inherit !important;
 }
 
-.swiper-container{
+.swiper-container {
   overflow: visible !important;
   overflow-x: clip !important;
 }
@@ -62,4 +63,23 @@ g [aria-labelledby="id-79-title"] {
 .swiper-button-next::after,
 .swiper-button-prev::after {
   display: none;
+}
+
+.DefaultHandle_handle {
+  border-radius: 50% !important;
+
+  &::after, &::before {
+    display: none !important;
+  }
+}
+
+.DefaultBackground_background__horizontal {
+  top: 1px !important;
+  left: 0 !important;
+}
+
+
+.DefaultProgressBar_background__horizontal {
+  height: 11px !important;
+  top: 1px !important;
 }

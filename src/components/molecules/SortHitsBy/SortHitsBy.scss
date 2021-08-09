@@ -4,10 +4,24 @@
   @include typography-settings(-1, -1, -1);
   position: absolute;
   right: -2rem;
-  top: 1rem;
+  top: 1.1rem;
   transform: translateX(100%);
   width: 100%;
   z-index: 10;
+
+  &::after{
+    background-color: #b5babd;
+    bottom: 0;
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
+}
+
+.css-tlfecz-indicatorContainer {
+  transform: translateY(15%);
 }
 
 .css-tlfecz-indicatorContainer svg {
@@ -28,7 +42,9 @@
 }
 
 .css-1n7v3ny-option {
-  &:hover {
-    background-color: color(primary, primary-light-2);
+  @media (hover: hover) {
+    &:hover {
+      background-color: color(primary, primary-light-2);
+    }
   }
 }

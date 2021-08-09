@@ -1,13 +1,9 @@
 @import '../global/variables';
 @import '../global/functions';
 
-* {
-  box-sizing: border-box;
-
-  &::selection {
+*::selection {
     background-color: color(primary);
     color: color(others, white);
-  }
 }
 
 html,
@@ -39,6 +35,7 @@ main {
 a {
   -webkit-tap-highlight-color: transparent;
   color: inherit;
+  cursor: pointer;
 }
 
 summary {
@@ -47,7 +44,6 @@ summary {
 
 img {
   height: 100%;
-  max-width: 100%;
   width: 100%;
 }
 
