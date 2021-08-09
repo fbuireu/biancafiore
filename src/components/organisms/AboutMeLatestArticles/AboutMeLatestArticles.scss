@@ -35,14 +35,14 @@
   @include typography-settings(6, 6, 6);
   display: inline-block;
   margin-bottom: 2rem;
-  text-align: right;
+  text-align: end;
   text-transform: uppercase;
 }
 
 .about-me__quote__author {
   @include font-properties(secondary);
   letter-spacing: .3rem;
-  text-align: right;
+  text-align: end;
 }
 
 .about-me__latest-articles__list {

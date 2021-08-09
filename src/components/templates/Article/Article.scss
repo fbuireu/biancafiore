@@ -10,7 +10,7 @@
 
   article {
     grid-area: Article;
-    text-align: left;
+    text-align: start;
 
     > p:first-child::first-letter {
       font-size: 400%;
