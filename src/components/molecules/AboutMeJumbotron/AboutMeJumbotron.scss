@@ -19,7 +19,7 @@
 .about-me__jumbotron__header,
 .about-me__jumbotron__description,
 .about-me__jumbotron__cta {
-  text-align: left;
+  text-align: start;
 }
 
 .about-me__jumbotron__title {
@@ -55,10 +55,11 @@
   position: relative;
   transition: padding .3s;
 
-  &:hover {
-    padding: 0 1.5rem 0 3rem;
+  @media (hover: hover) {
+    &:hover {
+      padding: 0 1.5rem 0 3rem;
+    }
   }
-
   &::after {
     background: url('../../../assets/svg/traditional-arrow-right.svg') no-repeat center center / 100% auto;
     content: '';

@@ -55,7 +55,7 @@
   max-width: 50%;
   padding-right: 5rem;
   position: relative;
-  text-align: right;
+  text-align: end;
   width: 100%;
 }
 
@@ -65,7 +65,7 @@
   flex-flow: column wrap;
   justify-content: space-between;
   padding: 1rem 0;
-  text-align: left;
+  text-align: start;
 }
 
 .navigation__item:not(:last-child) {
@@ -79,10 +79,11 @@
   position: relative;
   transition: all .3s ease;
 
-  &:hover {
-    color: color(primary);
+  @media (hover: hover) {
+    &:hover {
+      color: color(primary);
+    }
   }
-
   &.--is-active {
     @include font-properties(primary, bold);
     color: color(primary, primary-dark-1);

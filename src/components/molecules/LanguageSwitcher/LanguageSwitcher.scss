@@ -40,12 +40,14 @@
 .language-switcher__item {
   letter-spacing: 2px;
   position: relative;
-  text-align: left;
+  text-align: start;
   transition: color .3s;
   width: fit-content;
 
-  &:hover {
-    color: color(primary);
+  @media (hover: hover) {
+    &:hover {
+      color: color(primary);
+    }
   }
 
   &.--is-current-language {
