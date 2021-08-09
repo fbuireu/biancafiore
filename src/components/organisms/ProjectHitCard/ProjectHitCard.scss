@@ -16,11 +16,12 @@
     margin-right: 0;
   }
 
-  &:hover {
-    .hit-card-card__image {
-      box-shadow: 0 1rem 1.5rem color(neutral, neutral-2);
+  @media (hover: hover) {
+    &:hover {
+      .hit-card-card__image {
+        box-shadow: 0 1rem 1.5rem color(neutral, neutral-2);
+      }
     }
-
     .hit-card-card__image::after,
     .hit-card-card__image::before {
       transform: scale(1.2);
