@@ -45,3 +45,7 @@
 .range-list__marker--large__max {
   right: 0;
 }
+
+.DefaultHandle_handle:active {
+  border-color: color(primary, primary-dark-1);
+}
