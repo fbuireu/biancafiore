@@ -79,7 +79,7 @@ const BlogJumbotron = ({
             .format(`LL`)
           }
         </time>
-        <Link to={`/${currentLanguage}${slug}`}
+        <Link to={`/${currentLanguage}/blog/${slug}`}
               className={`blog__jumbotron__latest-featured-article__cta`}>{latestFeaturedArticleCta}</Link>
       </div>
       <div className={`blog__jumbotron__latest-featured-article__share`}>
