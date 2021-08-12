@@ -1,0 +1,38 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.featured-image-hit-card__item {
+  display: grid;
+  gap: 0 .5rem;
+  grid: 'Article-Featured-Image Article-Featured-Image' 1fr
+  'Article-Reading-Time Article-Tags' max-content
+  'Article-Title Article-Title' max-content
+  'Article-Author Article-Publish-Date' auto
+  'Article-Excerpt Article-Excerpt' auto
+  'Article-Cta .' max-content
+  /  max-content 1fr;
+}
+
+.hit-card__reading-time {
+  grid-area: Article-Reading-Time;
+}
+
+.hit-card__featured-image {
+  grid-area: Article-Featured-Image;
+}
+
+.hit-card__link {
+  grid-area: Article-Title;
+}
+
+.hit-card__author {
+  grid-area: Article-Author;
+}
+
+.hit-card__publish-date {
+  grid-area: Article-Publish-Date;
+}
+
+.hit-card__summary {
+  grid-area: Article-Excerpt;
+}
