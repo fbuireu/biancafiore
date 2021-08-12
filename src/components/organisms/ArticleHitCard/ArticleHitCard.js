@@ -6,23 +6,22 @@ import SimpleArticleCard from '../SimpleArticleCard/SimpleArticleCard';
 import './ArticleHitCard.scss';
 
 const CustomHit = ({ hits: articles }) => {
-  const BREAKPOINT_COLUMNS = {
+  const ELEMENTS_PER_COLUMN = {
     default: 3,
     760: 2,
     500: 1
   };
 
-  return <ul className={`articles-card__list`}>
-    <Masonry breakpointCols={BREAKPOINT_COLUMNS}
-             className={`articles-card__list__masonry`}
-             columnClassName={`articles-card__list__item`}
-    >
-      {articles.map(article => article.content.featuredImage
-        ? <FeaturedImageArticleCard key={article.content.title} {...article} />
-        : <SimpleArticleCard key={article.content.title} {...article} />
-      )}
-    </Masonry>
-  </ul>;
+  return <Masonry breakpointCols={ELEMENTS_PER_COLUMN}
+                  className={`articles-card__list__masonry`}
+                  columnClassName={`articles-card__list__item`}
+  >
+    {articles.map(article => article.content.featuredImage
+      ? <FeaturedImageArticleCard key={article.content.title} {...article} />
+      : <SimpleArticleCard key={article.content.title} {...article} />
+    )}
+  </Masonry>;
+
 };
 
 CustomHit.propTypes = {
