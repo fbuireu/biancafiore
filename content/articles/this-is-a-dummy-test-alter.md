@@ -10,16 +10,15 @@ content:
   lastUpdated: 05/28/2020
   summary: Look, just because I don't be givin' no man a foot massage don't make
     it right for Marsellus to throw Antwone into a glass motherfuckin' house,
-    fuckin' up the way the nigger talks. Motherfucker do that shit to me, he
-    better paralyze my ass, 'cause I'll kill the motherfucker, know what I'm
-    sayin'?a
+    fuckin' up the way the nigger talks.
   featuredImage: /assets/images/360_sea_otter_0901.jpg
-  isFeaturedArticle: true
+  featuredImageLayout: true
   title: This is a dummy title alter
   tags:
     - Writing tips
   readingTime: 9
   publishDate: 05/01/2020
+  isFeaturedArticle: true
 ---
 The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness, for he is truly his brother's keeper and the finder of lost children. And I will strike down upon thee with great vengeance and furious anger those who would attempt to poison and destroy [My brothers](https://stackoverflow.com/). And you will know My name is the Lord when I lay My vengeance upon thee.
 
