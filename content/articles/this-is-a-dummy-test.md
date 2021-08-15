@@ -14,13 +14,14 @@ content:
     better paralyze my ass, 'cause I'll kill the motherfucker, know what I'm
     sayin'?a
   featuredImage: /assets/images/360_sea_otter_0901.jpg
-  isFeaturedArticle: true
+  featuredImageLayout: true
   title: This is a dummy title
   tags:
     - How to guides
     - Writing tips
   readingTime: 2
   publishDate: 03/31/2020
+  isFeaturedArticle: true
 ---
 import Title from "../components/Title"
 
