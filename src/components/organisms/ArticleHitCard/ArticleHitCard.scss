@@ -3,15 +3,18 @@
 
 .articles-card__list__masonry {
   display: flex;
+  flex-flow: row wrap;
+  grid-area: Hits;
+  justify-content: flex-start;
   margin-left: -2rem;
-  width: auto;
+  margin-top: 5rem;
 }
 
 .articles-card__list__item {
   background-clip: padding-box;
   padding-left: 2rem;
 
-  > li {
+  > article {
     margin-bottom: 1rem;
   }
 }
