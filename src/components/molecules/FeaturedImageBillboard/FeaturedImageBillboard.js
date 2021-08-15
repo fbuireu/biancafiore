@@ -1,6 +1,5 @@
 import BackgroundImage from 'gatsby-background-image';
 import PropTypes from 'prop-types';
-import ReadingTime from '../../atoms/ReadingTime/ReadingTime';
 import Subtitle from '../../atoms/Subtitle/Subtitle';
 import Summary from '../../atoms/Summary/Summary';
 import Tag from '../../atoms/Tag/Tag';
@@ -19,7 +18,6 @@ const FeaturedImageBillboard = ({ frontmatter, author, tags, excerpt }) => {
           <Title title={frontmatter.content.title} />
           <Subtitle author={author.frontmatter.name} lastUpdated={frontmatter.content.lastUpdated} />
           <Summary summary={summary} classNames={`hit-card__summary`} />
-          <ReadingTime readingTime={frontmatter.content.readingTime} classNames={`article__reading-time`} />
           <Tag tags={tags} />
         </header>
       </div>
