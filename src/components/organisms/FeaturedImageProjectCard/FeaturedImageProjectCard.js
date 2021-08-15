@@ -1,7 +1,6 @@
 import BackgroundImage from 'gatsby-background-image';
 import PropTypes from 'prop-types';
 import HitTitle from '../../atoms/HitTitle/HitTitle';
-import HitTags from '../../molecules/HitTags/HitTags';
 
 const FeaturedImageProjectCard = project => {
   return (
@@ -13,8 +12,6 @@ const FeaturedImageProjectCard = project => {
                            project?.content?.featuredImage?.childImageSharp?.fluid]}>
           <header>
             <HitTitle hit={project} attribute={`title`} />
-            <HitTags hit={project} attribute={`tags`} />
-            {/*<Summary summary={project.html} />*/}
           </header>
         </BackgroundImage>
       </article>
