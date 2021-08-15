@@ -6,13 +6,13 @@ import SimpleArticleCard from '../SimpleArticleCard/SimpleArticleCard';
 import './ArticleHitCard.scss';
 
 const CustomHit = ({ hits: articles }) => {
-  const ELEMENTS_PER_COLUMN = {
+  const ARTICLES_PER_COLUMN = {
     default: 3,
     760: 2,
     500: 1
   };
 
-  return <Masonry breakpointCols={ELEMENTS_PER_COLUMN}
+  return <Masonry breakpointCols={ARTICLES_PER_COLUMN}
                   className={`articles-card__list__masonry`}
                   columnClassName={`articles-card__list__item`}
   >
