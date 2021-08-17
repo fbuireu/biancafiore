@@ -30,6 +30,7 @@ const ARTICLES_QUERY = `{
             lastUpdated
             readingTime
             isFeaturedArticle
+            featuredImageLayout
             tags
             featuredImage {
               childImageSharp {
