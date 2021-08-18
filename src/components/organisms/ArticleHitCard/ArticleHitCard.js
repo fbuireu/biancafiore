@@ -5,24 +5,23 @@ import FeaturedImageArticleCard from '../FeaturedImageArticleCard/FeaturedImageA
 import SimpleArticleCard from '../SimpleArticleCard/SimpleArticleCard';
 import './ArticleHitCard.scss';
 
-const CustomHit = ({ hits: articles }) => {
-  const ARTICLES_PER_COLUMN = {
-    default: 3,
-    760: 2,
-    500: 1
-  };
+const ARTICLES_PER_COLUMN = {
+  default: 3,
+  760: 2,
+  500: 1
+};
 
-  return <Masonry breakpointCols={ARTICLES_PER_COLUMN}
-                  className={`articles-card__list__masonry`}
-                  columnClassName={`articles-card__list__item`}
+const CustomHit = ({ hits: articles }) => (
+  <Masonry breakpointCols={ARTICLES_PER_COLUMN}
+           className={`articles-card__list__masonry`}
+           columnClassName={`articles-card__list__item`}
   >
-    {articles.map(article => article.content.featuredImage
+    {articles.map(article => article.content.featuredImageLayout
       ? <FeaturedImageArticleCard key={article.content.title} {...article} />
       : <SimpleArticleCard key={article.content.title} {...article} />
     )}
-  </Masonry>;
-
-};
+  </Masonry>
+);
 
 CustomHit.propTypes = {
   hits: PropTypes.objectOf(PropTypes.object),
