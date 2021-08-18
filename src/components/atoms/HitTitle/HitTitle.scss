@@ -2,7 +2,7 @@
 
 .hit-card__title {
   @include font-properties(secondary);
-  @include typography-settings(2, 2, 2);
-  text-align: start;
+  @include typography-settings(3, 3, 3);
   margin: .5rem 0;
+  text-align: start;
 }
