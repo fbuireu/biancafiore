@@ -17,7 +17,9 @@ const Layout = ({ children }) => {
 
   return <section className={`site__wrapper`}>
     <Header />
-    <main>{children}</main>
+    <main>
+      {children}
+    </main>
     <Footer />
   </section>;
 };
