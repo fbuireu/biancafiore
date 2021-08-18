@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import { useScrollPosition } from '../../../utils/hooks/useScrollPosition';
 import Author from '../../atoms/Author/Author';
+import Breadcrumbs from '../../atoms/Breadcrumbs/Breadcrumbs';
 import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
 import SEO from '../../atoms/SEO/SEO';
 import ShareButtons from '../../atoms/ShareButtons/ShareButtons';
@@ -12,7 +13,7 @@ import Billboard from '../../organisms/Billboard/Billboard';
 import Layout from '../Layout/Layout';
 import './Article.scss';
 
-const Article = ({ data }) => {
+const Article = ({ data, location }) => {
   const [scroll, setScroll] = useState(0);
   const [articleProperties, setArticleProperties] = useState({});
   const articleReference = useRef(null);
@@ -44,15 +45,16 @@ const Article = ({ data }) => {
   });
 
   return <Layout>
-    <SEO title={title}/>
-    <Billboard {...article} author={author} tags={tags}/>
+    <SEO title={title} />
+    <Billboard {...article} author={author} tags={tags} />
+    <Breadcrumbs location={location} />
     <section className={`wrapper article__wrapper`}>
-      <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll}/>
+      <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll} />
       <article ref={articleReference}>
         <Markdown>{html}</Markdown>
       </article>
-      <Author author={author}/>
-      <RelatedArticles relatedArticles={relatedArticles}/>
+      <Author author={author} />
+      <RelatedArticles relatedArticles={relatedArticles} />
     </section>
     <ReadingProgress scroll={scroll} articleProperties={articleProperties}/>
   </Layout>;
@@ -153,6 +155,7 @@ export const articleData = graphql`
 
 Article.propTypes = {
   data: PropTypes.objectOf(PropTypes.object).isRequired,
+  location: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 Article.defaultProps = {};
