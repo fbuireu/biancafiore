@@ -1,5 +1,6 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
+import Breadcrumbs from '../components/atoms/Breadcrumbs/Breadcrumbs';
 import SEO from '../components/atoms/SEO/SEO';
 import BlogJumbotron from '../components/molecules/BlogJumbotron/BlogJumbotron';
 import AlgoliaWrapper from '../components/organisms/AlgoliaWrapper/AlgoliaWrapper';
@@ -9,6 +10,7 @@ import { ARTICLES_SEARCH_PARAMETERS } from '../utils/algolia/config/articlesSear
 import { ARTICLES_SORT_BY } from '../utils/algolia/config/articlesSortBy';
 
 const Blog = ({
+  location,
   data: {
     blog: {
       edges: [{
@@ -32,6 +34,7 @@ const Blog = ({
   return <Layout>
     <SEO title="Blog" />
     <BlogJumbotron blog={blog} latestFeaturedArticle={latestFeaturedArticle} />
+    <Breadcrumbs location={location} />
     <AlgoliaWrapper hitsComponent={ArticleHitCards}
                     indexName={process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME}
                     filterParameters={FILTER_PARAMETERS}
@@ -102,7 +105,8 @@ export const blogData = graphql`
 `;
 
 Blog.propTypes = {
-  data: PropTypes.objectOf(PropTypes.object).isRequired
+  data: PropTypes.objectOf(PropTypes.object).isRequired,
+  location: PropTypes.objectOf(PropTypes.object).isRequired
 };
 
 Blog.defaultProps = {};

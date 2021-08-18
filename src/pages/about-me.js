@@ -9,6 +9,7 @@ import AboutMeLatestArticles from '../components/organisms/AboutMeLatestArticles
 import Layout from '../components/templates/Layout/Layout';
 
 const AboutMe = ({
+  location,
   data: {
     aboutMe: {
       edges: [{
@@ -17,7 +18,7 @@ const AboutMe = ({
             jumbotron,
             map: { cities: mapCities },
             timeline: { title, years },
-            latestArticles: latestArticlesData,
+            latestArticles: latestArticlesData
           }
         }
       }]
@@ -57,6 +58,7 @@ const AboutMe = ({
   function findSelectedCityNameByIndex({ selectedIndex }) {
     setSelectedCityName(years[selectedIndex].city);
   }
+
 
   return <Layout>
     <SEO title="Home" />
@@ -148,7 +150,8 @@ export const aboutMeData = graphql`
 `;
 
 AboutMe.propTypes = {
-  data: PropTypes.objectOf(PropTypes.object).isRequired
+  data: PropTypes.objectOf(PropTypes.object).isRequired,
+  location: PropTypes.objectOf(PropTypes.object).isRequired
 };
 
 AboutMe.defaultProps = {};
