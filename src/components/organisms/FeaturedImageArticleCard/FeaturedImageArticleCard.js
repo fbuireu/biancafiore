@@ -45,6 +45,8 @@ const FeaturedImageArticleCard = article => {
       </time>
     </div>
     <Summary summary={article.content.summary ?? article.excerpt} classNames={`hit-card__summary`} />
+    <Link to={`/${currentLanguage}/blog${article.fields.slug}`}
+          className={`hit-card__cta`}>Read more</Link>
   </article>;
 
 };
