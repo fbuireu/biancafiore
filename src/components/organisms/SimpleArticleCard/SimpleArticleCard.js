@@ -1,8 +1,8 @@
 import { Link } from 'gatsby';
 import { useIntl } from 'gatsby-plugin-intl';
-import moment from 'moment/moment';
 import PropTypes from 'prop-types';
 import { Highlight } from 'react-instantsearch-dom';
+import { localizeDate } from '../../../utils/localizeDate/localizeDate';
 import slugify from '../../../utils/slugify/slugify';
 import HitTitle from '../../atoms/HitTitle/HitTitle';
 import Summary from '../../atoms/Summary/Summary';
@@ -35,10 +35,7 @@ const SimpleArticleCard = article => {
         <Highlight attribute={`author`} hit={article} tagName={`mark`} />
       </Link>
       <time dateTime={article.content.publishDate} className={`hit-card-subtitle__publish-date`}>
-        {moment(new Date(article.content.publishDate))
-          .locale(currentLanguage)
-          .format(`LL`)
-        }
+        {localizeDate(article.content.publishDate,currentLanguage)}
       </time>
     </div>
     <Summary summary={article.content.summary ?? article.excerpt} classNames={`hit-card__summary`} />
