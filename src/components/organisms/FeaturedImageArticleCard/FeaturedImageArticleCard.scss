@@ -54,6 +54,7 @@
   }
 
   .hit-card__information__reading-time {
+    @include font-properties(tertiary);
     @include typography-settings(-3, -3, -3);
     margin-right: .5rem;
   }
@@ -65,7 +66,7 @@
 
   .hit-card__information__tag__item {
     @include typography-settings(-3, -3, -3);
-    @include font-properties(primary, bold);
+    @include font-properties(tertiary);
     color: color(primary);
 
     &:not(:last-child) {
