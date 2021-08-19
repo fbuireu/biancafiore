@@ -47,7 +47,7 @@ const Article = ({ data, location }) => {
   return <Layout>
     <SEO title={title} />
     <Billboard {...article} author={author} tags={tags} />
-    <Breadcrumbs location={location} />
+    <Breadcrumbs location={location} breadcrumbLabel={title} />
     <section className={`wrapper article__wrapper`}>
       <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll} />
       <article ref={articleReference}>
