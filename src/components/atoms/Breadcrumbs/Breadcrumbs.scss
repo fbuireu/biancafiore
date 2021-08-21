@@ -1,6 +1,10 @@
 @import '../../../styles/global/functions';
 @import '../../../styles/global/variables';
 
+.breadcrumbs {
+  display: flex;
+}
+
 .breadcrumbs__list {
   @include font-properties(tertiary);
   @include typography-settings(-2, -2, -2);
