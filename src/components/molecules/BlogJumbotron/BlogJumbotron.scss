@@ -6,8 +6,13 @@
   @include typography-settings(8, 8, 8);
   color: color(primary);
   letter-spacing: .125rem;
-  margin-bottom: 2rem;
   text-transform: uppercase;
+}
+
+.breadcrumbs.blog__jumbotron {
+  justify-content: center;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
 .blog__jumbotron__inner {
