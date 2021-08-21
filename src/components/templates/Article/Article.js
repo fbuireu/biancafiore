@@ -34,20 +34,27 @@ const Article = ({ data, location }) => {
     }
   };
 
-  useEffect(function setCurrentArticleProperties () {
+  useEffect(function setCurrentArticleProperties() {
     setArticleProperties(articleReference.current);
   }, []);
 
-  useScrollPosition(function setScrollPosition ({ currentPosition }) {
+  useScrollPosition(function setScrollPosition({ currentPosition }) {
     let { y: currentVerticalYPosition } = currentPosition;
 
     setScroll(currentVerticalYPosition);
   });
 
+  let slugName = location?.href?.split(`/`)[location?.href?.split(`/`).length - (location?.href.endsWith(`/`) ? 2 : 1)];
+
+  let customBreadcrumb = {
+    position: location?.pathname?.split(`/`).findIndex(slug => slug === slugName),
+    label: title
+  };
+
   return <Layout>
     <SEO title={title} />
     <Billboard {...article} author={author} tags={tags} />
-    <Breadcrumbs location={location} breadcrumbLabel={title} />
+    <Breadcrumbs location={location} customBreadcrumb={customBreadcrumb} />
     <section className={`wrapper article__wrapper`}>
       <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll} />
       <article ref={articleReference}>
