@@ -1,6 +1,5 @@
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
-import Breadcrumbs from '../components/atoms/Breadcrumbs/Breadcrumbs';
 import SEO from '../components/atoms/SEO/SEO';
 import BlogJumbotron from '../components/molecules/BlogJumbotron/BlogJumbotron';
 import AlgoliaWrapper from '../components/organisms/AlgoliaWrapper/AlgoliaWrapper';
@@ -33,8 +32,7 @@ const Blog = ({
 
   return <Layout>
     <SEO title="Blog" />
-    <BlogJumbotron blog={blog} latestFeaturedArticle={latestFeaturedArticle} />
-    <Breadcrumbs location={location} />
+    <BlogJumbotron blog={blog} latestFeaturedArticle={latestFeaturedArticle} location={location} />
     <AlgoliaWrapper hitsComponent={ArticleHitCards}
                     indexName={process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME}
                     filterParameters={FILTER_PARAMETERS}
