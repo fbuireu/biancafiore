@@ -62,7 +62,7 @@ const AboutMe = ({
 
   return <Layout>
     <SEO title="Home" />
-    <AboutMeJumbotron jumbotron={jumbotron} />
+    <AboutMeJumbotron jumbotron={jumbotron} location={location} />
     <Timeline
       title={title}
       years={years}
