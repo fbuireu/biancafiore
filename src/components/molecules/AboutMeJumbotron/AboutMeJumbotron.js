@@ -4,9 +4,11 @@ import { useIntl } from 'gatsby-plugin-intl';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import { useSocialNetworkItems } from '../../../utils/hooks/useSocialNetworkItems';
+import Breadcrumbs from '../../atoms/Breadcrumbs/Breadcrumbs';
 import './AboutMeJumbotron.scss';
 
 const AboutMeJumbotron = ({
+  location,
   jumbotron: {
     leftSide: {
       title,
@@ -38,6 +40,7 @@ const AboutMeJumbotron = ({
 
   return <section className={`about-me__jumbotron__wrapper wrapper`}>
     <h1 className={`about-me__jumbotron__title`}>{title}</h1>
+    <Breadcrumbs classNames={`about-me__jumbotron`} location={location} />
     <Markdown className={`about-me__jumbotron__header`}>{welcomeText}</Markdown>
     <Markdown className={`about-me__jumbotron__description`}>{welcomeDescription}</Markdown>
     <Link className={`about-me__jumbotron__cta`} to={`/${currentLanguage}/blog`}>{cta}</Link>
@@ -55,7 +58,8 @@ const AboutMeJumbotron = ({
 };
 
 AboutMeJumbotron.propTypes = {
-  jumbotron: PropTypes.arrayOf(String).isRequired
+  jumbotron: PropTypes.arrayOf(String).isRequired,
+  location: PropTypes.arrayOf(String)
 };
 
 AboutMeJumbotron.defaultProps = {};
