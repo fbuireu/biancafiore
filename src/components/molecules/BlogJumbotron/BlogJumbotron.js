@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import { useSocialNetworkItems } from '../../../utils/hooks/useSocialNetworkItems';
 import { localizeDate } from '../../../utils/localizeDate/localizeDate';
 import slugify from '../../../utils/slugify/slugify';
+import Breadcrumbs from '../../atoms/Breadcrumbs/Breadcrumbs';
 import './BlogJumbotron.scss';
 
 const BlogJumbotron = ({
+  location,
   blog: {
     title: blogTitle,
     jumbotron: {
@@ -53,6 +55,7 @@ const BlogJumbotron = ({
 
   return <section className={`blog__jumbotron__wrapper wrapper`}>
     <h1 className={`blog__jumbotron__title`}>{blogTitle}</h1>
+    <Breadcrumbs classNames={`blog__jumbotron`} location={location} />
     <div className={`blog__jumbotron__inner`}>
       <Img
         className={`blog__jumbotron__latest-featured-article__image`}
@@ -97,6 +100,7 @@ const BlogJumbotron = ({
 
 BlogJumbotron.propTypes = {
   blog: PropTypes.arrayOf(String).isRequired,
+  location: PropTypes.arrayOf(String),
   latestFeaturedArticle: PropTypes.arrayOf(String).isRequired
 };
 
