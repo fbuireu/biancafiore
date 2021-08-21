@@ -7,24 +7,23 @@ import './Breadcrumbs.scss';
 
 const HOMEPAGE_PATH = [`/`];
 
-const Breadcrumbs = ({ location, breadcrumbLabel = null }) => {
+const Breadcrumbs = ({ location, customBreadcrumb = null, classNames }) => {
   const { locale: currentLanguage } = useIntl();
-
   let linkPath = ``;
+
   const breadcrumbs = HOMEPAGE_PATH.concat(location.pathname.split(`/`).filter(routeName => routeName !== `` && routeName !== currentLanguage));
 
   const lastPage = breadcrumbs.length > 0 ? breadcrumbs.length - 1 : 0;
 
   return (
-    <nav aria-label={`Breadcrumb`} className={`breadcrumbs`}>
+    <nav aria-label={`Breadcrumb`} className={`breadcrumbs ${classNames}`}>
       <ol className={`breadcrumbs__list`}>
         {breadcrumbs.map((breadcrumb, index) => {
           linkPath = path.join(index === 0 ? `/${currentLanguage}/${linkPath}` : `/${linkPath}`, `${breadcrumb}/`);
-          let isSameName = capitalizy(breadcrumb).toUpperCase() === breadcrumbLabel?.toUpperCase();
           let isHome = breadcrumb === `/`;
 
-          if (isHome) breadcrumb = `Home`;
-          else if (isSameName) breadcrumb = breadcrumbLabel;
+          if (customBreadcrumb && index === customBreadcrumb.position - 1) breadcrumb = customBreadcrumb.label;
+          else if (isHome) breadcrumb = `Home`;
           else breadcrumb = capitalizy(breadcrumb);
 
           return <>
@@ -34,7 +33,9 @@ const Breadcrumbs = ({ location, breadcrumbLabel = null }) => {
                 <span aria-hidden={true} className={`breadcrumb__item__separator`}>/</span>
               </li>
             ) : (
-              <li key={breadcrumb} className={`breadcrumb__item--is-current`} aria-current={`page`}><strong>{breadcrumb}</strong></li>
+              <li key={breadcrumb} className={`breadcrumb__item--is-current`} aria-current={`page`}>
+                <strong>{breadcrumb}</strong>
+              </li>
             )}
           </>;
         })}
@@ -45,7 +46,8 @@ const Breadcrumbs = ({ location, breadcrumbLabel = null }) => {
 
 Breadcrumbs.propTypes = {
   location: PropTypes.string.isRequired,
-  breadcrumbLabel: PropTypes.string
+  customBreadcrumb: PropTypes.string,
+  classNames: PropTypes.string
 };
 
 Breadcrumbs.defaultProps = {};
