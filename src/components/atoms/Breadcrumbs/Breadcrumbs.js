@@ -22,7 +22,7 @@ const Breadcrumbs = ({ location, customBreadcrumb = null, classNames }) => {
           linkPath = path.join(index === 0 ? `/${currentLanguage}/${linkPath}` : `/${linkPath}`, `${breadcrumb}/`);
           let isHome = breadcrumb === `/`;
 
-          if (customBreadcrumb && index === customBreadcrumb.position - 1) breadcrumb = customBreadcrumb.label;
+          if (customBreadcrumb?.position - 1 === index) breadcrumb = customBreadcrumb.label;
           else if (isHome) breadcrumb = `Home`;
           else breadcrumb = capitalizy(breadcrumb);
 
