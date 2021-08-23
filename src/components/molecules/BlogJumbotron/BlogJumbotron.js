@@ -1,6 +1,5 @@
-import { Link } from 'gatsby';
 import Img from 'gatsby-image';
-import { useIntl } from 'gatsby-plugin-intl';
+import { Link, useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import { useSocialNetworkItems } from '../../../utils/hooks/useSocialNetworkItems';
 import { localizeDate } from '../../../utils/localizeDate/localizeDate';
@@ -67,19 +66,19 @@ const BlogJumbotron = ({
           <ul className={`blog__jumbotron__latest-featured-article__tags__list`}>
             {tags.map(tag => (
               <li key={tag} className={`blog__jumbotron__latest-featured-article__tag__item`}>
-                <Link to={`/${currentLanguage}/tag/${slugify(tag)}`}>#{tag}</Link>
+                <Link to={`/tag/${slugify(tag)}`}>#{tag}</Link>
               </li>)
             )}
           </ul>
         </div>
         <h2 className={`blog__jumbotron__latest-featured-article__title`}>{latestFeaturedArticleTitle}</h2>
         <Link className={`blog__jumbotron__latest-featured-article__author`}
-              to={`/${currentLanguage}/tag/${slugify(author)}`}>{author}</Link>
+              to={`/tag/${slugify(author)}`}>{author}</Link>
         <time className={`blog__jumbotron__latest-featured-article__date`}
               dateTime={publishDate}>
-          {localizeDate(publishDate,currentLanguage)}
+          {localizeDate(publishDate, currentLanguage)}
         </time>
-        <Link to={`/${currentLanguage}/blog/${slug}`}
+        <Link to={`/blog/${slug}`}
               className={`blog__jumbotron__latest-featured-article__cta`}>{latestFeaturedArticleCta}</Link>
       </div>
       <div className={`blog__jumbotron__latest-featured-article__share`}>

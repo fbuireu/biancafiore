@@ -1,5 +1,4 @@
-import { Link } from 'gatsby';
-import { useIntl } from 'gatsby-plugin-intl';
+import { Link, useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import { Highlight } from 'react-instantsearch-dom';
 import { localizeDate } from '../../../utils/localizeDate/localizeDate';
@@ -17,7 +16,7 @@ const SimpleArticleCard = article => {
       <ul className={`hit-card__information__tags__list`}>
         {article.content.tags.map((tag, index) => (
           <li className={`hit-card__information__tag__item`} key={tag}>
-            <Link to={`/${currentLanguage}/tag/${slugify(tag)}`}
+            <Link to={`/tag/${slugify(tag)}`}
                   className={`hit-card__information__tag__item__link`}>
               #<Highlight attribute={`content.tags[${index}]`} hit={article} tagName={`mark`} />
             </Link>
@@ -25,21 +24,21 @@ const SimpleArticleCard = article => {
         ))}
       </ul>
     </div>
-    <Link to={`/${currentLanguage}/blog${article.fields.slug}`}
+    <Link to={`/blog${article.fields.slug}`}
           className={`hit-card__link`}>
       <HitTitle hit={article} attribute={`content.title`} />
     </Link>
     <div className={`hit-card-subtitle`}>
-      <Link to={`/${currentLanguage}/tag/${slugify(article.author)}`}
+      <Link to={`/tag/${slugify(article.author)}`}
             className={`hit-card-subtitle__author`}>
         <Highlight attribute={`author`} hit={article} tagName={`mark`} />
       </Link>
       <time dateTime={article.content.publishDate} className={`hit-card-subtitle__publish-date`}>
-        {localizeDate(article.content.publishDate,currentLanguage)}
+        {localizeDate(article.content.publishDate, currentLanguage)}
       </time>
     </div>
     <Summary summary={article.content.summary ?? article.excerpt} classNames={`hit-card__summary`} />
-    <Link to={`/${currentLanguage}/blog${article.fields.slug}`}
+    <Link to={`/blog${article.fields.slug}`}
           className={`hit-card__cta`}>Read more</Link>
   </article>;
 };
