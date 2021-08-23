@@ -1,5 +1,4 @@
-import { Link } from 'gatsby';
-import { useIntl } from 'gatsby-plugin-intl';
+import { Link } from 'gatsby-plugin-intl';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import { useRef } from 'react';
@@ -13,7 +12,6 @@ const Navigation = ({ isMenuActive, toggleMenuVisibility }) => {
   const menuItems = useMenuItems();
   const navigation = useNavigation();
   const navigationReference = useRef(null);
-  const { locale: currentLanguage } = useIntl();
 
   const NAVIGATION_DATA = {
     description: navigation[0]?.node?.html,
@@ -40,10 +38,12 @@ const Navigation = ({ isMenuActive, toggleMenuVisibility }) => {
             let { frontmatter: { position, name }, fields: { slug } } = navigationElement;
 
             return <li key={position} className={`navigation__item`}>
-              <Link to={`/${currentLanguage}${slug}`}
+              <Link to={`${slug}`}
                     className={`navigation__item__link`}
                     activeClassName={`--is-active`}
-                    partiallyActive={true}>{name}</Link>
+                    partiallyActive={true}>
+                {name}
+              </Link>
             </li>;
           })}
           <LanguageSwitcher />

@@ -1,6 +1,5 @@
-import { Link } from 'gatsby';
 import Img from 'gatsby-image';
-import { useIntl } from 'gatsby-plugin-intl';
+import { Link, useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import { localizeDate } from '../../../utils/localizeDate/localizeDate';
 import slugify from '../../../utils/slugify/slugify';
@@ -17,15 +16,15 @@ const HomeLatestArticleCard = ({
 
   return (
     <li className={`home__latest-articles__item`}>
-      <Link className={`home__latest-articles__item__card`} to={`/${currentLanguage}/blog${slug}`}>
+      <Link className={`home__latest-articles__item__card`} to={`/blog${slug}`}>
         <Img fluid={featuredImage?.childImageSharp?.fluid}
              className={`home__latest-articles__item__image`} />
         <h4 className={`home__latest-articles__item__title`}>{title}</h4>
         <Link className={`home__latest-articles__author`}
-              to={`/${currentLanguage}/tag/${slugify(author)}`}>{author}</Link>
+              to={`/tag/${slugify(author)}`}>{author}</Link>
         <time className={`home__latest-articles__date`}
               dateTime={publishDate}>
-          {localizeDate(publishDate,currentLanguage)}
+          {localizeDate(publishDate, currentLanguage)}
         </time>
       </Link>
     </li>

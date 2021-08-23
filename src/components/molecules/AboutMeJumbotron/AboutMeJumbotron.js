@@ -1,6 +1,5 @@
-import { Link } from 'gatsby';
 import Img from 'gatsby-image';
-import { useIntl } from 'gatsby-plugin-intl';
+import { Link } from 'gatsby-plugin-intl';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import { useSocialNetworkItems } from '../../../utils/hooks/useSocialNetworkItems';
@@ -23,7 +22,6 @@ const AboutMeJumbotron = ({
   }
 }) => {
   const allSocialNetworkItems = useSocialNetworkItems();
-  const { locale: currentLanguage } = useIntl();
 
   let availableSocialNetworks = { names: [], urls: [] };
 
@@ -43,7 +41,7 @@ const AboutMeJumbotron = ({
     <Breadcrumbs classNames={`about-me__jumbotron`} location={location} />
     <Markdown className={`about-me__jumbotron__header`}>{welcomeText}</Markdown>
     <Markdown className={`about-me__jumbotron__description`}>{welcomeDescription}</Markdown>
-    <Link className={`about-me__jumbotron__cta`} to={`/${currentLanguage}/blog`}>{cta}</Link>
+    <Link className={`about-me__jumbotron__cta`} to={`/blog`}>{cta}</Link>
     <Img className={`about-me__jumbotron__image`} fixed={bianca?.childImageSharp?.fixed} />
     <ul className={`about-me__jumbotron__social-networks__list`}>
       {availableSocialNetworks.urls.map((url, index) => {

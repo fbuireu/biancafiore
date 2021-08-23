@@ -13,15 +13,10 @@ import {
   WhatsappIcon,
   WhatsappShareButton
 } from 'react-share';
-import { useWindowSize } from '../../../utils/hooks/useWindowSize';
 import './ShareButtons.scss';
 
-const ShareButtons = ({ shareParameters, tags, scroll }) => {
-  let currentScroll = Math.abs(scroll);
-  const { height: windowHeight } = useWindowSize();
-  const shareShareButtonsVisible = currentScroll >= windowHeight * (1 + (1 / 5));
-
-  return <section className={`share-buttons__wrapper ${shareShareButtonsVisible ? `--is-visible` : ``}`}>
+const ShareButtons = ({ shareParameters, tags }) => {
+  return <section className={`share-buttons__wrapper`}>
     <div className={`share-buttons__inner`}>
       <TwitterShareButton className={`share-button twitter`}
                           url={shareParameters.parameters.url}
@@ -71,7 +66,6 @@ ShareButtons.propTypes = {
     }),
   }).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string),
-  scroll: PropTypes.number.isRequired,
 };
 
 ShareButtons.defaultProps = {
