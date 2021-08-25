@@ -15,8 +15,8 @@ import {
 } from 'react-share';
 import './ShareButtons.scss';
 
-const ShareButtons = ({ shareParameters, tags }) => {
-  return <section className={`share-buttons__wrapper`}>
+const ShareButtons = ({ shareParameters, tags, classNames }) => {
+  return <section className={`${classNames}__share-buttons share-buttons__wrapper`}>
     <div className={`share-buttons__inner`}>
       <TwitterShareButton className={`share-button twitter`}
                           url={shareParameters.parameters.url}
@@ -66,6 +66,7 @@ ShareButtons.propTypes = {
     }),
   }).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string),
+  classNames: PropTypes.arrayOf(PropTypes.string),
 };
 
 ShareButtons.defaultProps = {

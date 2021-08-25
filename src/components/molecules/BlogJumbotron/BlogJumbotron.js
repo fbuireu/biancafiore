@@ -54,7 +54,7 @@ const BlogJumbotron = ({
 
   return <section className={`blog__jumbotron__wrapper wrapper`}>
     <h1 className={`blog__jumbotron__title`}>{blogTitle}</h1>
-    <Breadcrumbs classNames={`blog__jumbotron`} location={location} />
+    <Breadcrumbs location={location} classNames={`blog__jumbotron`}/>
     <div className={`blog__jumbotron__inner`}>
       <Img
         className={`blog__jumbotron__latest-featured-article__image`}
