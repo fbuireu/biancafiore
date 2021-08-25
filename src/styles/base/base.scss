@@ -28,8 +28,11 @@ body {
 
 main {
   flex: 1;
-  padding-top: 10rem;
   position: relative;
+
+  &:not(.--is-article) {
+    padding-top: 10rem;
+  }
 }
 
 a {
