@@ -1,10 +1,10 @@
 @import '../../../styles/global/functions';
 
 .article__title {
-  @include font-properties(primary, bold);
-  @include typography-settings(10, 10 , 10);
-  color: color(others, white);
-  grid-area: Title;
+  @include font-properties(primary, light);
+  @include typography-settings(12, 8 , 12);
+  color: color(primary);
+  grid-area: Article-Title;
   letter-spacing: .25rem;
   text-transform: uppercase;
 }
