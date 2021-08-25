@@ -7,14 +7,21 @@ import './Author.scss';
 const Author = ({ author }) => {
   return (
     <section className={`author__wrapper`}>
-      <div className={`author`}>
+      <Link className={`author__image__inner`}
+            to={`/tag/${slugify(author.frontmatter.name)}`}>
+        <Img fluid={author?.frontmatter?.image?.childImageSharp?.fluid}
+             className={`author__image`}
+             alt={author.frontmatter.name} />
+      </Link>
+      <p className={`author__description__wrapper`}>
+        <span>Written by &#32;</span>
         <Link to={`/tag/${slugify(author.frontmatter.name)}`}>
-          <Img fluid={author?.frontmatter?.image?.childImageSharp?.fluid}
-               className={`author__image`}
-               alt={author.frontmatter.name} />
+          {author.frontmatter.name}
         </Link>
-        {author.frontmatter.description && <p className={`author__description`}>{author.frontmatter.description}</p>}
-      </div>
+        <span>
+          {author.frontmatter.description && <p className={`author__description`}>{author.frontmatter.description}</p>}
+        </span>
+      </p>
     </section>
   );
 };

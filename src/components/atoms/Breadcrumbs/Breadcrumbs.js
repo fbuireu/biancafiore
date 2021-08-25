@@ -16,7 +16,7 @@ const Breadcrumbs = ({ location, customBreadcrumb = null, classNames }) => {
   const lastPage = breadcrumbs.length > 0 ? breadcrumbs.length - 1 : 0;
 
   return (
-    <nav aria-label={`Breadcrumb`} className={`breadcrumbs ${classNames}`}>
+    <nav aria-label={`Breadcrumb`} className={` ${classNames}__breadcrumbs breadcrumbs`}>
       <ol className={`breadcrumbs__list`}>
         {breadcrumbs.map((breadcrumb, index) => {
           linkPath = path.join(index === 0 ? `/${currentLanguage}/${linkPath}` : `/${linkPath}`, `${breadcrumb}/`);
