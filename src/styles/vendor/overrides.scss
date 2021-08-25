@@ -11,10 +11,6 @@ g [aria-labelledby="id-79-title"] {
   display: none;
 }
 
-.share-button {
-  background-color: color(primary) !important;
-}
-
 .hit-card__image {
   &::before,
   &::after {
@@ -51,8 +47,8 @@ g [aria-labelledby="id-79-title"] {
 }
 
 .share-buttons__wrapper svg {
-  height: inherit !important;
-  width: inherit !important;
+  height: 2.5rem !important;
+  width: 2.5rem !important;
 }
 
 .swiper-container {
