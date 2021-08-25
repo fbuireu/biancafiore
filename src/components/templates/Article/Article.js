@@ -3,11 +3,8 @@ import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import { useScrollPosition } from '../../../utils/hooks/useScrollPosition';
-import Author from '../../atoms/Author/Author';
-import Breadcrumbs from '../../atoms/Breadcrumbs/Breadcrumbs';
 import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
 import SEO from '../../atoms/SEO/SEO';
-import ShareButtons from '../../atoms/ShareButtons/ShareButtons';
 import RelatedArticles from '../../molecules/RelatedArticles/RelatedArticles';
 import Billboard from '../../organisms/Billboard/Billboard';
 import Layout from '../Layout/Layout';
@@ -24,6 +21,7 @@ const Article = ({ data, location }) => {
     relatedArticles: { edges: relatedArticles },
     site: { siteMetadata: { author: metaAuthor, url } }
   } = data;
+
   const shareParameters = {
     author: metaAuthor,
     parameters: {
@@ -44,26 +42,16 @@ const Article = ({ data, location }) => {
     setScroll(currentVerticalYPosition);
   });
 
-  let slugName = location?.href?.split(`/`)[location?.href?.split(`/`).length - (location?.href.endsWith(`/`) ? 2 : 1)];
-
-  let customBreadcrumb = {
-    position: location?.pathname?.split(`/`).findIndex(slug => slug === slugName),
-    label: title
-  };
-
-  return <Layout>
+  return <Layout location={location}>
     <SEO title={title} />
-    <Billboard {...article} author={author} tags={tags} />
-    <Breadcrumbs location={location} customBreadcrumb={customBreadcrumb} />
+    <Billboard author={author} tags={tags} location={location} shareParameters={shareParameters} {...article} />
     <section className={`wrapper article__wrapper`}>
-      <ShareButtons shareParameters={shareParameters} tags={tags} scroll={scroll} />
       <article ref={articleReference}>
         <Markdown>{html}</Markdown>
       </article>
-      <Author author={author} />
       <RelatedArticles relatedArticles={relatedArticles} />
     </section>
-    <ReadingProgress scroll={scroll} articleProperties={articleProperties}/>
+    <ReadingProgress scroll={scroll} articleProperties={articleProperties} />
   </Layout>;
 };
 
