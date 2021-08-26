@@ -4,7 +4,9 @@ import '../../../styles/styles.scss';
 import Footer from '../../atoms/Footer/Footer';
 import Header from '../../organisms/Header/Header';
 
-const Layout = ({ children }) => {
+const BLOG_PATH = `/blog`;
+
+const Layout = ({ children, location = {} }) => {
   const data = useStaticQuery(graphql`
       query getSiteTitle {
           site {
@@ -17,7 +19,7 @@ const Layout = ({ children }) => {
 
   return <section className={`site__wrapper`}>
     <Header />
-    <main>
+    <main className={`${location?.href?.includes(BLOG_PATH) ? `--is-article` : ``}`}>
       {children}
     </main>
     <Footer />
@@ -26,6 +28,7 @@ const Layout = ({ children }) => {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  location: PropTypes.node.isRequired
 };
 
 Layout.defaultProps = {};
