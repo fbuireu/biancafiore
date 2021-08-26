@@ -1,2 +1,32 @@
 @import '../../../styles/global/functions';
 @import '../../../styles/global/variables';
+
+.share-button {
+  circle {
+    fill: none;
+  }
+
+  path {
+    fill: color(primary);
+  }
+
+  svg {
+    transition: all .3s;
+  }
+}
+
+@each $social-network, $color in map-get($colors, 'social-networks') {
+  $index: index(map-get($colors, 'social-networks'), $social-network $color);
+
+  &.#{$social-network} svg:hover {
+    transform: scale(1.1) rotate(15deg);
+
+    circle {
+      fill: $color;
+    }
+
+    path {
+      fill: color(others, white);
+    }
+  }
+}
