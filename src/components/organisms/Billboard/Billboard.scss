@@ -1,28 +1,47 @@
 @import '../../../styles/global/functions';
 
-.billboard {
-  background-color: color(neutral);
+.article__billboard {
+  height: 50vh;
+}
+
+.article__featured-image {
+  height: 100%;
+}
+
+.article__information {
+  align-items: center;
+  display: grid;
+  gap: .5rem 2rem;
+  grid: 'Article-Breadcrumbs Article-ShareButtons' min-content
+  'Article-Title Article-ShareButtons' min-content
+  'Article-ReadingTime-Tags Article-ShareButtons' min-content
+  'Article-Author Article-ShareButtons' min-content
+  / auto 1fr;
+  justify-content: center;
+  max-width: map-get($grid, 'medium');
+  padding: 2rem 3rem;
+  text-align: start;
+}
+
+.article__information__tags__list {
   display: flex;
   flex-flow: row wrap;
-  justify-items: center;
-  min-height: 50vh;
-
-  .article__information__wrapper {
-    display: flex;
-  }
-
-  .article__information {
-    align-content: center;
-    display: grid;
-    gap: 1rem;
-    grid: 'Title Title Title Title' auto
-          'Date-Author Date-Author . .' auto
-          'Summary Summary Summary Summary' auto
-          'ReadingTime Tags . .' auto
-         / auto 1fr 1fr 1fr;
-    justify-items: start;
-    padding: 2rem 0;
-    position: relative;
-    z-index: 10;
-  }
+  grid-area: Article-ReadingTime-Tags;
 }
+
+.article__information__tags__list {
+  @include typography-settings(-1, -1 , -1);
+  grid-area: Article-ReadingTime-Tags;
+}
+
+
+.article__information__breadcrumbs {
+  grid-area: Article-Breadcrumbs;
+  transform: translateY(50%);
+}
+
+.article__information__share-buttons {
+  grid-area: Article-ShareButtons;
+  text-align: center;
+}
+
