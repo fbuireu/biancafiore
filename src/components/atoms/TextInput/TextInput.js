@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import './TextInput.scss';
 
-const TextInput = ({ name, type, label, value, isValid, errorMessage, onChange, onBlur }) => {
+const TextInput = ({ name, type, label, value, isValid, errorMessage, isRequired, onChange, onBlur }) => {
   return <div className={`text-input__wrapper ${type === `hidden` ? `--is-hidden` : ``}`}>
     <label className={`text-input__label`} htmlFor={name}>
       <p className={`text-input__label__text`}>{label && `${label}:`}</p>
@@ -12,6 +12,7 @@ const TextInput = ({ name, type, label, value, isValid, errorMessage, onChange, 
              spellCheck={true}
              onChange={onChange}
              onBlur={onBlur}
+             required={isRequired}
       />
     </label>
     {!isValid && <small className={`text-input__error-message`}>{errorMessage}</small>}
@@ -25,6 +26,7 @@ TextInput.propTypes = {
   value: PropTypes.string.isRequired,
   isValid: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
+  isRequired: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
 };
