@@ -1,10 +1,10 @@
 @import '../../../styles/global/functions';
 
 .reading-progress {
-  background-color: color(primary);
+  background-color: color(primary, primary-light-2);
   border-radius: 50%;
   bottom: 2rem;
-  box-shadow: .25rem .25rem .25rem color(neutral, neutral-3);
+  box-shadow: .25rem .25rem .25rem color(neutral, neutral-2);
   cursor: pointer;
   height: 4rem;
   opacity: 0;
@@ -23,20 +23,17 @@
 
   @media (hover: hover){
     &:hover {
-      box-shadow: .25rem .25rem .25rem color(neutral, neutral-2);
+      box-shadow: .25rem .25rem .25rem color(neutral, neutral-1);
     }
   }
-
-
 
   .reading-progress__svg__wrapper {
     width: inherit;
   }
 
   .arrow-up {
-    fill: color(others, white);
     height: 2rem;
-    margin-top: -.5rem;
+    margin-top: -.75rem;
     width: 2rem;
   }
 }
