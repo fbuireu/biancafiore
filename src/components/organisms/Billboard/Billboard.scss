@@ -18,8 +18,8 @@
   'Article-Author Article-ShareButtons' min-content
   / auto 1fr;
   justify-content: center;
-  max-width: map-get($grid, 'medium');
-  padding: 2rem 3rem;
+  max-width: map-get($grid, 'small');
+  padding: 2rem 0;
   text-align: start;
 }
 
@@ -34,6 +34,9 @@
   grid-area: Article-ReadingTime-Tags;
 }
 
+.article__information__tag__item:not(:last-child) {
+  margin-right: .5rem;
+}
 
 .article__information__breadcrumbs {
   grid-area: Article-Breadcrumbs;
