@@ -11,15 +11,15 @@
 }
 
 .author__image__inner {
-  max-width: calc(100% / 8 - 1rem);
-  min-width: calc(100% / 8 - 1rem);
+  max-width: calc(100% / 4 - 1rem);
+  min-width: calc(100% / 4 - 1rem);
   width: 100%;
 }
 
 .author__description__wrapper {
   align-self: center;
-  max-width: calc(100% * 7 / 8 - 1rem);
-  min-width: calc(100% * 7 /8  - 1rem);
+  max-width: calc(100% * 3 / 4 - 1rem);
+  min-width: calc(100% * 3 / 4  - 1rem);
   width: 100%;
 }
 
