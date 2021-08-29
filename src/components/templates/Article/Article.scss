@@ -1,19 +1,61 @@
 @import '../../../styles/global/functions';
 
 .article__wrapper {
-  display: grid;
-  gap: 5rem 1rem;
-  grid: 'Share Article Author' 1fr
-        'RelatedArticles RelatedArticles RelatedArticles'
-         / .5fr map-get($grid, 'medium') 1fr;
   margin-top: 1rem;
+  max-width: map-get($grid, 'small');
 
   article {
     grid-area: Article;
     text-align: start;
 
-    > p:first-child::first-letter {
+    div > p:first-child::first-letter {
       font-size: 400%;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    blockquote > p,
+    blockquote > p > p {
+      margin-bottom: 0;
+    }
+
+    h1 {
+      @include typography-settings(5, 5, 5);
+    }
+
+    h2 {
+      @include typography-settings(4, 4, 4);
+    }
+
+    h3 {
+      @include typography-settings(3, 3, 3);
+    }
+
+    h4 {
+      @include typography-settings(2, 2, 2);
+    }
+
+    h4 {
+      @include typography-settings(1, 1, 1);
+    }
+
+    strong {
+      @include font-properties(primary, bold);
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    ul {
+      padding-left: 2rem;
+    }
+
+    ol, ul, li {
+      list-style: inherit;
+      padding-inline-start: 1rem;
     }
   }
 }
