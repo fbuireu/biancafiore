@@ -16,7 +16,7 @@ const Article = ({ data, location }) => {
   const articleReference = useRef(null);
   const { article } = data;
   const {
-    article: { html, excerpt, fields: { slug }, frontmatter: { content: { title, summary, tags } } },
+    article: { html, excerpt, fields: { slug }, frontmatter: { content: { title, summary, tags, relatedArticlesTitle } } },
     author,
     relatedArticles: { edges: relatedArticles },
     site: { siteMetadata: { author: metaAuthor, url } }
@@ -49,9 +49,11 @@ const Article = ({ data, location }) => {
       <article ref={articleReference}>
         <Markdown>{html}</Markdown>
       </article>
-      <RelatedArticles relatedArticles={relatedArticles} />
     </section>
+    <RelatedArticles relatedArticles={relatedArticles} relatedArticlesTitle={relatedArticlesTitle} />
     <ReadingProgress scroll={scroll} articleProperties={articleProperties} />
+
+    {/*TODO: implement comment section*/}
   </Layout>;
 };
 
@@ -77,6 +79,7 @@ export const articleData = graphql`
                     readingTime
                     isFeaturedArticle
                     tags
+                    relatedArticlesTitle
                     featuredImage {
                         childImageSharp {
                             fluid {
@@ -120,6 +123,7 @@ export const articleData = graphql`
                     }
                     frontmatter {
                         language
+                        author
                         content {
                             title
                             summary
