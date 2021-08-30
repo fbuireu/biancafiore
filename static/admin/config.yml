@@ -4,10 +4,10 @@ backend:
   branch: master
   squash_merges: true
   commit_messages:
-    create: '{{collection}} "{{slug}}" created'
-    update: '{{collection}} "{{slug}}" updated'
-    delete: '{{collection}} "{{slug}}" deleted'
-    uploadMedia: '[skip ci] {{path}} media uploaded'
+    create: 'docs(content): {{collection}} "{{slug}}" created'
+    update: 'docs(content): {{collection}} "{{slug}}" updated'
+    delete: 'docs(content): {{collection}} "{{slug}}" deleted'
+    uploadMedia: 'docs: [skip ci] {{path}} media uploaded'
     deleteMedia: '[skip ci] {{path}} media deleted'
     openAuthoring: '{{message}}'
 media_folder: static/assets/images
@@ -187,7 +187,8 @@ collections:
             { name: featuredImageLayout, label: Featured Article, required: false, widget: boolean },
             { name: isFeaturedArticle, label: Featured Article, required: false, widget: boolean },
             { name: featuredImage, label: Featured Image, required: false, widget: image, allow_multiple: false },
-            { name: tags, label: Tags, required: false, widget: relation, collection: tags, search_fields: [name], value_field: name, display_fields: [name], multiple: true }] }
+            { name: tags, label: Tags, required: false, widget: relation, collection: tags, search_fields: [name], value_field: name, display_fields: [name], multiple: true },
+            { name: relatedArticlesTitle, label: Related Articles Title, widget: string, default: Related Articles }] }
       - { name: body, label: Body, required: true, widget: markdown }
   - name: pages
     label: Pages
