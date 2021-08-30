@@ -12,6 +12,7 @@ content:
     it right for Marsellus to throw Antwone into a glass motherfuckin' house,
     fuckin' up the way the nigger talks.
   featuredImage: /assets/images/360_sea_otter_0901.jpg
+  relatedArticlesTitle: Related Articles
   featuredImageLayout: false
   title: This is a dummy title alter
   tags:
