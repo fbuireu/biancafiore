@@ -14,6 +14,7 @@ content:
     better paralyze my ass, 'cause I'll kill the motherfucker, know what I'm
     sayin'?a
   featuredImage: /assets/images/360_sea_otter_0901.jpg
+  relatedArticlesTitle: Related Articles
   featuredImageLayout: true
   title: This is a dummy title
   tags:
