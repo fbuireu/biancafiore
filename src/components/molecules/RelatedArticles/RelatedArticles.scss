@@ -1,5 +1,11 @@
-.related-articles__wrapper {
-  grid-area: RelatedArticles;
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.related-articles__title {
+  @include typography-settings(5, 5, 5);
+  letter-spacing: .3rem;
+  margin: 2rem 0;
+  text-transform: uppercase;
 }
 
 .related-articles__list {
