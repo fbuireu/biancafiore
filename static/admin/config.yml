@@ -1,5 +1,5 @@
 backend:
-  name: github #git-gateway
+  name: git-gateway
   repo: fbuireu/biancafiore
   branch: master
   squash_merges: true
