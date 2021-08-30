@@ -1,23 +1,40 @@
-import { Link } from 'gatsby-plugin-intl';
+import Img from 'gatsby-image';
+import { Link, useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
+import { localizeDate } from '../../../utils/localizeDate/localizeDate';
+import slugify from '../../../utils/slugify/slugify';
 import './ArticleCard.scss';
 
-const ArticleCard = ({ article }) => {
-  let { excerpt, fields, frontmatter } = article,
-    summary = frontmatter.content.summary ?? excerpt;
+const ArticleCard = ({
+  article: {
+    fields: { slug },
+    frontmatter: {
+      author,
+      content: { title, publishDate, featuredImage }
+    }
+  }
+}) => {
+  const { locale: currentLanguage } = useIntl();
 
-  return <li className={`article-card__item`}>
-    <Link to={`/blog${fields.slug}`}>
-      <article>
-        <h4>{frontmatter.content.title}</h4>
-        <p>{summary}</p>
-      </article>
-    </Link>
-  </li>;
+  return (
+    <li className={`home__latest-articles__item`}>
+      <Link className={`home__latest-articles__item__card`} to={`/blog${slug}`}>
+        <Img fluid={featuredImage?.childImageSharp?.fluid}
+             className={`home__latest-articles__item__image`} />
+        <h4 className={`home__latest-articles__item__title`}>{title}</h4>
+        <Link className={`home__latest-articles__author`}
+              to={`/tag/${slugify(author)}`}>{author}</Link>
+        <time className={`home__latest-articles__date`}
+              dateTime={publishDate}>
+          {localizeDate(publishDate, currentLanguage)}
+        </time>
+      </Link>
+    </li>
+  );
 };
 
 ArticleCard.propTypes = {
-  article: PropTypes.objectOf(PropTypes.object),
+  article: PropTypes.string.isRequired
 };
 
 ArticleCard.defaultProps = {};
