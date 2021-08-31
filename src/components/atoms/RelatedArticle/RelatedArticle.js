@@ -3,9 +3,9 @@ import { Link, useIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import { localizeDate } from '../../../utils/localizeDate/localizeDate';
 import slugify from '../../../utils/slugify/slugify';
-import './ArticleCard.scss';
+import './RelatedArticle.scss';
 
-const ArticleCard = ({
+const RelatedArticle = ({
   article: {
     fields: { slug },
     frontmatter: {
@@ -17,14 +17,14 @@ const ArticleCard = ({
   const { locale: currentLanguage } = useIntl();
 
   return (
-    <li className={`home__latest-articles__item`}>
-      <Link className={`home__latest-articles__item__card`} to={`/blog${slug}`}>
+    <li className={`related-article__item`}>
+      <Link className={`related-article__item__card`} to={`/blog${slug}`}>
         <Img fluid={featuredImage?.childImageSharp?.fluid}
-             className={`home__latest-articles__item__image`} />
-        <h4 className={`home__latest-articles__item__title`}>{title}</h4>
-        <Link className={`home__latest-articles__author`}
+             className={`related-article__item__image`} />
+        <h4 className={`related-article__item__title`}>{title}</h4>
+        <Link className={`related-article__author`}
               to={`/tag/${slugify(author)}`}>{author}</Link>
-        <time className={`home__latest-articles__date`}
+        <time className={`related-article__date`}
               dateTime={publishDate}>
           {localizeDate(publishDate, currentLanguage)}
         </time>
@@ -33,10 +33,10 @@ const ArticleCard = ({
   );
 };
 
-ArticleCard.propTypes = {
+RelatedArticle.propTypes = {
   article: PropTypes.string.isRequired
 };
 
-ArticleCard.defaultProps = {};
+RelatedArticle.defaultProps = {};
 
-export default ArticleCard;
+export default RelatedArticle;
