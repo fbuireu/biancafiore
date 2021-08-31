@@ -48,6 +48,10 @@ jumbotron:
 form:
   formInputs:
     - isValid: true
+      name: form-name
+      type: hidden
+      value: Contact Form
+    - isValid: true
       name: name
       type: text
       isRequired: true
