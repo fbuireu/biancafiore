@@ -1,10 +1,14 @@
 @import '../../../styles/global/variables';
 @import '../../../styles/global/functions';
 
+.related-articles__wrapper {
+  margin: 4rem auto;
+}
+
 .related-articles__title {
   @include typography-settings(5, 5, 5);
   letter-spacing: .3rem;
-  margin: 2rem 0;
+  margin: 3rem 0;
   text-transform: uppercase;
 }
 
