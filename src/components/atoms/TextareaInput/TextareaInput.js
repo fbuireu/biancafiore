@@ -11,7 +11,6 @@ const TextareaInput = ({ name, label, value, isValid, errorMessage, isRequired, 
                 spellCheck={true}
                 onChange={onChange}
                 onBlur={onBlur}
-                required={isRequired}
       />
     </label>
     {!isValid && <small className={`textarea-input__error-message`}>{errorMessage}</small>}
