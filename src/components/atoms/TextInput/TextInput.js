@@ -12,7 +12,6 @@ const TextInput = ({ name, type, label, value, isValid, errorMessage, isRequired
              spellCheck={true}
              onChange={onChange}
              onBlur={onBlur}
-             required={isRequired}
       />
     </label>
     {!isValid && <small className={`text-input__error-message`}>{errorMessage}</small>}
