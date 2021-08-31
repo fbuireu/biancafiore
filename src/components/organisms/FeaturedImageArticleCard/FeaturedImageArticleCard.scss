@@ -12,7 +12,6 @@
   'Article-Cta .' max-content
   / max-content 1fr;
 
-
   .hit-card__featured-image {
     grid-area: Article-Featured-Image;
   }
@@ -79,6 +78,7 @@
     grid-area: Article-Cta;
     margin-top: 1rem;
     position: relative;
+    text-align: start;
 
     &::after {
       background: url('../../../assets/svg/traditional-arrow-right.svg') no-repeat center center / 100% auto;
@@ -90,6 +90,7 @@
       transform: translate(100%, -10%);
       transition: right .3s;
       width: 1.5rem;
+      z-index: -1;
     }
 
     @media (hover: hover) {
