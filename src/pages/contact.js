@@ -5,7 +5,7 @@ import ContactForm from '../components/molecules/ContactForm/ContactForm';
 import Layout from '../components/templates/Layout/Layout';
 
 const Contact = ({ data, location }) => {
-  const { formInputs } = data.contact.edges[0].node.frontmatter;
+  const { form: { formInputs } } = data.contact.edges[0].node.frontmatter;
 
   return <Layout>
     <SEO title="Contact" />
@@ -23,14 +23,16 @@ export const contactData = graphql`
                 node {
                     html
                     frontmatter {
-                        formInputs {
-                            name
-                            type
-                            isRequired
-                            label
-                            value
-                            isValid
-                            errorMessage
+                        form {
+                            formInputs {
+                                name
+                                type
+                                isRequired
+                                label
+                                value
+                                isValid
+                                errorMessage
+                            }
                         }
                     }
                 }
