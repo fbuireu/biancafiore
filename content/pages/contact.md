@@ -48,11 +48,34 @@ jumbotron:
 form:
   formInputs:
     - isValid: true
+      name: form-name
+      type: hidden
+      value: Contact Form
+    - isValid: true
       name: name
       type: text
       isRequired: true
       label: Name
       errorMessage: Come on, this is just your name
+    - isValid: true
+      name: email
+      type: text
+      isRequired: true
+      label: Email
+      errorMessage: Really, is just your email
+    - isValid: true
+      name: message
+      type: textarea
+      isRequired: true
+      label: Message
+      errorMessage: Imagine my excitement in receiving your message. Now imagine how
+        sad I was when I found out it was empty. You don't want to make me sad,
+        do you?
+    - isValid: true
+      name: g-recaptcha-response
+      type: recaptcha
+      isRequired: true
+      errorMessage: Mr. Robot, is that you?
   sectionTitle: Contact me!
   sectionDescription: Explain everything yada yada
 ---
