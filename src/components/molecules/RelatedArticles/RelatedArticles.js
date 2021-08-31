@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import ArticleCard from '../../atoms/ArticleCard/ArticleCard';
+import RelatedArticle from '../../atoms/RelatedArticle/RelatedArticle';
 import './RelatedArticles.scss';
 
 const RelatedArticles = ({ relatedArticles, relatedArticlesTitle }) => {
@@ -7,7 +7,7 @@ const RelatedArticles = ({ relatedArticles, relatedArticlesTitle }) => {
     <h2 className={`related-articles__title`}>{relatedArticlesTitle}</h2>
     <ul className={`related-articles__list`}>
       {relatedArticles.map(
-        ({ node: relatedArticle }) => <ArticleCard key={relatedArticle.fields.slug} article={relatedArticle} />)}
+        ({ node: relatedArticle }) => <RelatedArticle key={relatedArticle.fields.slug} article={relatedArticle} />)}
     </ul>
   </section>;
 };
