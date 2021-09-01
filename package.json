@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "author": "Ferran Buireu <fbuireu@gmail.com>",
   "dependencies": {
-    "@amcharts/amcharts4": "^4.9.16",
+    "@amcharts/amcharts4": "^4.10.22",
     "@amcharts/amcharts4-geodata": "^4.1.14",
     "@babel/core": "^7.9.0",
     "@deckdeckgo/highlight-code": "^2.3.1",
