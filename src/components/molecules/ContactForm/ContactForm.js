@@ -11,12 +11,12 @@ const ContactForm = ({ formInputs }) => {
 
   const handleChange = ({ target }) => {
     const { name, field } = updateField(target);
-    if (!field.isValid) validateField(name, field);
+    if (!field.isValid) validateField({ name: name, field: field });
   };
 
   const handleBlur = ({ target }) => {
     const { name, field } = updateField(target);
-    validateField(name, field);
+    validateField({ name: name, field: field });
   };
 
   const updateField = ({ value, name }) => {
