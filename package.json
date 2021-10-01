@@ -91,7 +91,7 @@
     "eslint-plugin-react": "^7.18.3",
     "husky": "^4.3.8",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^25.1.0",
+    "jest": "^27.2.4",
     "netlify-plugin-a11y": "^0.0.12",
     "prettier": "^1.19.1",
     "react-test-renderer": "^16.13.1"
