@@ -173,10 +173,19 @@ module.exports = {
         name: `gatsby-starter-default`,
         short_name: `starter`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#d4a259`,
+        theme_color: `#d4a259`,
         display: `minimal-ui`,
-        icon: `src/assets/images/gatsby-icon.png`,
+        icon: `src/assets/images/favicon/favicon.png`,
+        // localize: [
+        //   {
+        //     start_url: `/de/`,
+        //     lang: `de`,
+        //     name: `Die coole Anwendung`,
+        //     short_name: `Coole Anwendung`,
+        //     description: `Die Anwendung macht coole Dinge und macht Ihr Leben besser.`,
+        //   },
+        // ],
       },
     },
     {
