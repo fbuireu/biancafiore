@@ -19,7 +19,7 @@
   $index: index(map-get($colors, 'social-networks'), $social-network $color);
 
   &.#{$social-network} svg:hover {
-    transform: scale(1.1) rotate(15deg);
+    transform: scale(1.1);
 
     circle {
       fill: $color;
