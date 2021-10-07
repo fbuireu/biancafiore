@@ -7,8 +7,11 @@ import 'rheostat/initialize';
 import './RangeSlider.scss';
 
 const CustomRangeSlider = ({ min, max, currentRefinement, canRefine, refine }) => {
-  const [minState, setMinState] = useState(min);
-  const [maxState, setMaxState] = useState(max);
+  const getMin= min => min;
+  const getMax= max => max;
+
+  const [minState, setMinState] = useState(getMin);
+  const [maxState, setMaxState] = useState(getMax);
 
   useEffect(function setMinAndMaxConstraints () {
     if (canRefine) {
