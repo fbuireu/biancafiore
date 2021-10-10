@@ -57,3 +57,15 @@
     visibility: hidden;
   }
 }
+
+@keyframes to-front {
+  to {
+    left: 0;
+    margin: 0 auto;
+    position: absolute;
+    right: 0;
+    top: 1px;
+    transform: translateY(50%);
+    z-index: 99;
+  }
+}
