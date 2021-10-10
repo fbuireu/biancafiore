@@ -15,7 +15,7 @@ public_folder: /assets/images
 publish_mode: editorial_workflow
 site_url: https://biancafiore.me
 display_url: https://biancafiore.me
-logo_url: https://biancafiore.me/images/logo.svg
+logo_url: https://biancafiore.me/assets/images/png/logo.png
 collections:
   - name: languages
     label: Languages
