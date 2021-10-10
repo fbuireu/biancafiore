@@ -18,7 +18,7 @@
   'Article-Author Article-ShareButtons' min-content
   / auto 1fr;
   justify-content: center;
-  max-width: map-get($grid, 'small');
+  max-width: map-get($grid, 'medium');
   padding: 2rem 0;
   text-align: start;
 }
