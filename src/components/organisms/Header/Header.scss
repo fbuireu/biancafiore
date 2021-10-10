@@ -14,3 +14,18 @@ header {
     box-shadow: 0 .125rem .375rem color(neutral, neutral-3);
   }
 }
+
+.logo {
+  height: 100%;
+  max-height: 14rem;
+  max-width: 14rem;
+  transition: 1s all .3s;
+  width: 100%;
+}
+
+.logo__link.--is-active {
+  .logo {
+    animation: to-front .5s forwards .1s;
+    fill: color(others, white);
+  }
+}
