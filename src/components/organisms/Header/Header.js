@@ -1,4 +1,6 @@
+import { Link } from 'gatsby-plugin-intl';
 import { useState } from 'react';
+import Logo from '../../../assets/svg-components/logo.svg';
 import { useScrollPosition } from '../../../utils/hooks/useScrollPosition';
 import HamburgerMenu from '../../atoms/HamburgerMenu/HamburgerMenu';
 import Navigation from '../Navigation/Navigation';
@@ -18,7 +20,9 @@ const Header = () => {
 
   return <header className={`${isScrolling ? `--is-scrolling` : ``}`}>
     <section className={`wrapper`}>
-      <span>Logo</span>
+      <Link className={`logo__link ${isMenuActive ? `--is-active` : ``}`} to={`/`}>
+        <Logo className={`logo`} />
+      </Link>
       <HamburgerMenu toggleMenuVisibility={toggleMenuVisibility} isMenuActive={isMenuActive} />
       <Navigation toggleMenuVisibility={toggleMenuVisibility} isMenuActive={isMenuActive} />
     </section>
