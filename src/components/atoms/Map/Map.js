@@ -379,24 +379,27 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
     polygonTemplate.events.on(`hit`, country => {
       destination = mapConfiguration.mapCities.find(({ countryIsoCode }) => countryIsoCode === country.target.dataItem.dataContext.id);
       origin = previousDestinationReference.current ?? initialCity;
+      let isValidTrip = origin && destination;
 
-      if (destination !== origin) {
-        if (currentLineReference.current > 1) eraseLine(previousLineReference.current);
+      if (isValidTrip) {
+        if (destination !== origin) {
+          if (currentLineReference.current > 1) eraseLine(previousLineReference.current);
 
-        const line = addLine(origin, destination);
-        flyPlane({
-          currentLine: currentLineReference.current,
-          planeContainer,
-          lineSeries,
-          planeShadowContainer,
-          shadowLineSeries,
-          plane,
-          planeShadow
-        });
+          const line = addLine(origin, destination);
+          flyPlane({
+            currentLine: currentLineReference.current,
+            planeContainer,
+            lineSeries,
+            planeShadowContainer,
+            shadowLineSeries,
+            plane,
+            planeShadow
+          });
 
-        previousDestinationReference.current = mapConfiguration.mapCities.find(({ countryIsoCode }) => countryIsoCode === country.target.dataItem.dataContext.id);
-        previousLineReference.current = line;
-        currentLineReference.current++;
+          previousDestinationReference.current = mapConfiguration.mapCities.find(({ countryIsoCode }) => countryIsoCode === country.target.dataItem.dataContext.id);
+          previousLineReference.current = line;
+          currentLineReference.current++;
+        }
       }
     });
 
