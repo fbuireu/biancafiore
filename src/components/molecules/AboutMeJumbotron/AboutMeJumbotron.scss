@@ -91,10 +91,7 @@ about-me__jumbotron__description {
   display: flex;
   flex-flow: row nowrap;
   grid-area: AboutMeJumbotron-Social-Networks;
-}
-
-.about-me__jumbotron__social-network__item:not(:last-child) {
-  margin-right: 2rem;
+  gap: 2rem;
 }
 
 .about-me__jumbotron__social-network__link {

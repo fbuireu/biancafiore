@@ -49,6 +49,7 @@
   .hit-card__information {
     display: flex;
     flex-flow: row nowrap;
+    gap: .5rem;
     grid-area: Article-Information;
   }
 
@@ -67,10 +68,6 @@
     @include typography-settings(-3, -3, -3);
     @include font-properties(tertiary);
     color: color(primary);
-
-    &:not(:last-child) {
-      margin-right: .5rem;
-    }
   }
 
   .hit-card__cta {
