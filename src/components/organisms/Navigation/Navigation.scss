@@ -63,13 +63,10 @@
   @include typography-settings(1.5, 1.5, 1.5);
   display: flex;
   flex-flow: column wrap;
+  gap: 1rem;
   justify-content: space-between;
   padding: 1rem 0;
   text-align: start;
-}
-
-.navigation__item:not(:last-child) {
-  margin-bottom: 1rem;
 }
 
 .navigation__item__link {

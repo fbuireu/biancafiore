@@ -59,16 +59,13 @@
   .hit-card__information__tags__list {
     display: flex;
     flex-flow: row wrap;
+    gap: .5rem;
   }
 
   .hit-card__information__tag__item {
     @include typography-settings(-3, -3, -3);
     @include font-properties(primary, bold);
     color: color(primary);
-
-    &:not(:last-child) {
-      margin-right: .5rem;
-    }
   }
 
   .hit-card__cta {

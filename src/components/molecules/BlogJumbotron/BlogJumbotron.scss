@@ -55,10 +55,7 @@
 .blog__jumbotron__latest-featured-article__tags__list {
   display: flex;
   flex-flow: row wrap;
-}
-
-.blog__jumbotron__latest-featured-article__tag__item:not(:last-child) {
-  margin-right: .5rem;
+  gap: .5rem;
 }
 
 .blog__jumbotron__latest-featured-article__reading-time,
@@ -128,10 +125,7 @@
 .blog__jumbotron__latest-featured-article__share__list {
   display: flex;
   flex-flow: row wrap;
-}
-
-.blog__jumbotron__latest-featured-article__share__item:not(:last-child) {
-  margin-right: 2rem;
+  gap: 2rem;
 }
 
 .blog__jumbotron__latest-featured-article__share__title {
