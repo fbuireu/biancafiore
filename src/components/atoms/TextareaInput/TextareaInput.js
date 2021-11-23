@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import './TextareaInput.scss';
 
-const TextareaInput = ({ name, label, value, isValid, errorMessage, onChange, onBlur }) => {
-  return <div className={`textarea-input__wrapper`}>
+const TextareaInput = ({ name, label, placeholder, value, isValid, errorMessage, onChange, onBlur }) => {
+  return <div className={`textarea-input__wrapper ${!isValid ? `--is-invalid` : ``}`}>
     <label className={`textarea-input__label`} htmlFor={name}>
-      <p className={`textarea-input__label__text`}>{label && `${label}:`}</p>
       <textarea className={`textarea-input`}
                 name={name}
                 value={value}
@@ -12,6 +11,7 @@ const TextareaInput = ({ name, label, value, isValid, errorMessage, onChange, on
                 onChange={onChange}
                 onBlur={onBlur}
       />
+      <p className={`textarea-input__label__text`}>{label ?? placeholder}</p>
     </label>
     {!isValid && <small className={`textarea-input__error-message`}>{errorMessage}</small>}
   </div>;
@@ -20,6 +20,7 @@ const TextareaInput = ({ name, label, value, isValid, errorMessage, onChange, on
 TextareaInput.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   isValid: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
