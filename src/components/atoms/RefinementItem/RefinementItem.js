@@ -7,7 +7,7 @@ const CustomRefinementItem = ({ items, refine, selectRefinement }) => {
   const [isActiveRefinement, setIsActiveRefinements] = useState([]);
   let isRefinementSelected = false;
 
-  const handleClick = (event, { value }, index) => {
+  const handleClick = ({ event, value: { value }, index }) => {
     event.preventDefault();
 
     let isSelectingMoreRefinements = !isActiveRefinement.includes(index);
@@ -26,17 +26,16 @@ const CustomRefinementItem = ({ items, refine, selectRefinement }) => {
 
   return <div className={`refinement-list__wrapper`}>
     <ul className={`refinement-list__list`}>
-      {items.map((item, index) => {
-        return <li key={item.label}
-                   className={`refinement-list__item ${isActiveRefinement.includes(index) ? `--is-selected` : ``}`}
-                   onClick={event => handleClick(event, item, index)}>
+      {items.map((item, index) => (
+        <li key={item.label}
+            className={`refinement-list__item ${isActiveRefinement.includes(index) ? `--is-selected` : ``}`}
+            onClick={event => handleClick({ event: event, value: item, index: index })}>
           <label className={`refinement-list__item__label`}>
             <input className={`refinement-list__item__checkbox`} type={`checkbox`} />
-            <span className={`refinement-list__item__label-text`}>{item.label}</span>
-            <span className={`refinement-list__item__count`}>{item.count}</span>
+            <span className={`refinement-list__item__label-text`}>{item.label} <sub>({item.count})</sub></span>
           </label>
-        </li>;
-      })}
+        </li>
+      ))}
     </ul>
   </div>;
 };
