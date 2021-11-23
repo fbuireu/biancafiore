@@ -62,6 +62,7 @@
   .hit-card__information__tags__list {
     display: flex;
     flex-flow: row wrap;
+    gap: .5rem;
   }
 
   .hit-card__information__tag__item {
