@@ -1,4 +1,4 @@
-import { IS_VALID_EMAIL } from '../../../utils/form/validateField';
+import { VALID_EMAIL } from '../../../utils/form/validateField';
 import { useSocialNetworkItems } from '../../../utils/hooks/useSocialNetworkItems';
 import './Footer.scss';
 
@@ -9,7 +9,7 @@ const Footer = () => {
     <ul className={`footer__list wrapper`}>
       {footerItems.map(({ node: footerItem }) => (
         <li key={footerItem.frontmatter.name} className={`footer__item`}>
-          {footerItem.frontmatter.url.match(IS_VALID_EMAIL)
+          {footerItem.frontmatter.url.match(VALID_EMAIL)
             ? <a href={`mailto:${footerItem.frontmatter.url}`} className={`footer__link`}>{footerItem.frontmatter.name}</a>
             : <a href={footerItem.frontmatter.url}
                  target={`_blank`}
