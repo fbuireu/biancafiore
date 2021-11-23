@@ -1,45 +1,74 @@
 @import '../../../styles/global/variables';
 @import '../../../styles/global/functions';
 
-.textarea-input__wrapper {
+.textarea-input__wrapper:not(.--is-hidden) {
   display: flex;
   flex-flow: column wrap;
   margin-bottom: 2rem;
+  max-width: 100%;
+  min-width: 100%;
   position: relative;
+  width: 100%;
+
+  .textarea-input__label__text {
+    background-color: color(others, white);
+    left: .75rem;
+    position: absolute;
+    top: .35rem;
+    transition: all .2s ease-in-out;
+  }
 }
 
-.textarea-input__label__text {
-  margin-bottom: .25rem;
+.textarea-input__wrapper.--is-hidden {
+  display: none;
+}
+
+.textarea-input__wrapper.--has-value .textarea-input {
+  + .textarea-input__label__text {
+    @include typography-settings(-2, -2, -2);
+    left: -.75rem;
+    padding: 0 1rem;
+    top: -.5rem;
+  }
 }
 
 .textarea-input__label {
-  @include font-properties(secondary, bold);
+  @include font-properties(secondary);
+  position: relative;
+}
+
+.textarea-input__wrapper.--is-invalid .textarea-input {
+  box-shadow: 0 0 0 1px color(error);
 }
 
 .textarea-input {
-  border-radius: $global-border-radius;
-  box-shadow: 0 0 0 2px color(primary, primary-light-2);
+  box-shadow: 0 0 0 1px color(neutral, neutral-3);
   padding: .5rem .25rem;
-  resize: vertical;
   transition: box-shadow .3s ease;
+  width: 100%;
 
-  @media (hover: hover) {
-    &:hover {
-      box-shadow: 0 0 0 2px color(primary, primary-light-1);
-    }
+  &:hover {
+    box-shadow: 0 0 0 2px color(primary, primary-light-1);
   }
 
   &:active,
   &:focus,
   &:focus-within {
-    box-shadow: 0 0 0 2px color(primary, primary-dark-1);
+    box-shadow: 0 0 0 2px color(primary, primary-light-2);
+
+    + .textarea-input__label__text {
+      @include typography-settings(-2, -2, -2);
+      left: -.5rem;
+      padding: 0 .5rem;
+      top: -.5rem;
+    }
   }
 }
 
 .textarea-input__error-message {
   @include typography-settings(-2, -2, -2);
   @include font-properties(secondary, bold);
-  bottom: -2rem;
+  bottom: -2.25rem;
   color: color(error);
   left: 0;
   position: absolute;
