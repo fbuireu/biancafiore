@@ -61,6 +61,10 @@ g [aria-labelledby="id-79-title"] {
   display: none;
 }
 
+.handleContainer, .DefaultBackground {
+  height: .5rem !important;
+}
+
 .DefaultHandle_handle {
   border-radius: 50% !important;
 
@@ -76,6 +80,6 @@ g [aria-labelledby="id-79-title"] {
 
 
 .DefaultProgressBar_background__horizontal {
-  height: 11px !important;
+  height: .5rem !important;
   top: 1px !important;
 }
