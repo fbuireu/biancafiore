@@ -42,7 +42,7 @@ const Article = ({ data, location }) => {
     setScroll(currentVerticalYPosition);
   });
 
-  return <Layout location={location}>
+  return <Layout>
     <SEO title={title} />
     <Billboard author={author} tags={tags} location={location} shareParameters={shareParameters} {...article} />
     <section className={`wrapper article__wrapper`}>
