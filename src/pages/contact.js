@@ -2,15 +2,29 @@ import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import SEO from '../components/atoms/SEO/SEO';
 import ContactForm from '../components/molecules/ContactForm/ContactForm';
+import ContactJumbotron from '../components/molecules/ContactJumbotron/ContactJumbotron';
 import Layout from '../components/templates/Layout/Layout';
 
-const Contact = ({ data, location }) => {
-  const { form: { formInputs } } = data.contact.edges[0].node.frontmatter;
-
+const Contact = ({
+  location,
+  data: {
+    contact: {
+      edges: [{
+        node: {
+          frontmatter: {
+            jumbotron,
+            form
+          }
+        }
+      }]
+    }
+  }
+}) => {
   return <Layout>
     <SEO title="Contact" />
     <section className={`wrapper`}>
-      <ContactForm formInputs={formInputs} />
+      <ContactJumbotron jumbotron={jumbotron} location={location} />
+      <ContactForm form={form} />
     </section>
   </Layout>;
 };
@@ -23,12 +37,26 @@ export const contactData = graphql`
                 node {
                     html
                     frontmatter {
+                        jumbotron {
+                            welcomeText
+                            welcomeDescription
+                            image {
+                                childImageSharp {
+                                    fixed(width: 400, height: 400) {
+                                        ...GatsbyImageSharpFixed_withWebp
+                                    }
+                                }
+                            }
+                        }
                         form {
+                            formTitle
+                            formDescription
                             formInputs {
                                 name
                                 type
                                 isRequired
                                 label
+                                placeholder
                                 value
                                 isValid
                                 errorMessage
