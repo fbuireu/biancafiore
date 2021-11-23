@@ -2,10 +2,14 @@
 @import '../../../styles/global/functions';
 
 .recaptcha-input__wrapper {
+  align-items: baseline;
   display: flex;
   flex-flow: column wrap;
   margin-bottom: 2rem;
+  max-width: 100%;
+  min-width: 100%;
   position: relative;
+  width: 100%;
 
   * > div {
     margin-inline: auto;
