@@ -19,6 +19,7 @@ form:
       value: ''
       isRequired: true
       label: Name
+      placeholder: Your Name. Easy peasy
       errorMessage: Come on, this is just your name
     - name: email
       isValid: true
@@ -26,6 +27,7 @@ form:
       value: ''
       isRequired: true
       label: Email
+      placeholder: Your Email. Easy peasy lemon squeezy
       errorMessage: Really, is just your email
     - name: message
       isValid: true
@@ -33,6 +35,7 @@ form:
       value: ''
       isRequired: true
       label: Message
+      placeholder: Your Message. Hard as hell
       errorMessage: Imagine my excitement in receiving your message. Now imagine how
         sad I was when I found out it was empty. You don't want to make me sad,
         do you?
@@ -42,7 +45,7 @@ form:
       value: ''
       isRequired: true
       errorMessage: Mr. Robot, is that you?
-  sectionTitle: Contact me!
-  sectionDescription: Explain everything yada yada
+  formTitle: Contact me!
+  formDescription: Explain everything yada yada
 ---
 Wanna get in touch?
