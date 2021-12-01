@@ -20603,10 +20603,10 @@ react-onclickoutside@^6.5.0:
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.10.0.tgz#05abb592575b08b4d129003494056b9dff46eeeb"
   integrity sha512-7i2L3ef+0ILXpL6P+Hg304eCQswh4jl3ynwR71BSlMU49PE2uk31k8B2GkP6yE9s2D4jTGKnzuSpzWxu4YxfQQ==
 
-react-parallax-tilt@^1.4.71:
-  version "1.4.92"
-  resolved "https://registry.yarnpkg.com/react-parallax-tilt/-/react-parallax-tilt-1.4.92.tgz#5da0e5bb73911f3ab7c726df7984ac8e752989ad"
-  integrity sha512-qUtIwCsGcPhI34kT3p/RZ7RkbnjIoF8AHpk5tQOdBi67AmUsBrmdMa4DUu/Z0mlA0wQih3OZ4a1iFyRi3HQmgg==
+react-parallax-tilt@^1.5.79:
+  version "1.5.79"
+  resolved "https://registry.yarnpkg.com/react-parallax-tilt/-/react-parallax-tilt-1.5.79.tgz#489ed8fe6ef2a6403ca0b86097b3e94ebb20bc60"
+  integrity sha512-SAwSxDlDghJitExXqrmS3Z4B4Q8zpglJ3aL2JXEfYJzQj9tf5WQ9bBkD7FAccDmATtg1qr4DXtQ4g5K7gWqYXg==
 
 react-polyglot@^0.7.0:
   version "0.7.1"
