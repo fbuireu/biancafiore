@@ -4,10 +4,29 @@ import { encode } from '../../../utils/form/encode';
 import { resetForm } from '../../../utils/form/resetForm';
 import { validateField } from '../../../utils/form/validateField';
 import { validateForm } from '../../../utils/form/validateForm';
-import FormComponentsMapper from '../FormComponentsMapper/FormComponentsMapper';
+import SubmitButton from '../../atoms/SubmitButton/SubmitButton';
 
-const ContactForm = ({ formInputs }) => {
+import '../../atoms/SubmitButton/SubmitButton.scss';
+import FormComponentsTuple from '../FormComponentsTuple/FormComponentsTuple';
+import './ContactForm.scss';
+
+const ContactForm = ({
+  form:
+    {
+      formTitle,
+      formDescription,
+      formInputs,
+      submitCtaMessages,
+      helperMessages,
+    }
+}) => {
   const [formState, updateFormState] = useState(formInputs);
+  const [submitStatus, setSubmitStatus] = useState({
+    initial: true,
+    sending: false,
+    sent: false,
+    error: false
+  });
 
   const handleChange = ({ target }) => {
     const { name, field } = updateField(target);
@@ -32,13 +51,18 @@ const ContactForm = ({ formInputs }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
+    setSubmitStatus({ initial: false, sending: true });
+
     const data = {};
     const scopedForm = [...formState];
-
     let isValidForm = validateForm(scopedForm);
     updateFormState([...scopedForm]);
 
-    if (!isValidForm) return false;
+    if (!isValidForm) {
+      setSubmitStatus({ initial: true, sending: false });
+
+      return false;
+    }
 
     formInputs.forEach(input => data[input.name] = input.value);
 
@@ -50,31 +74,42 @@ const ContactForm = ({ formInputs }) => {
 
     fetch(`/`, REQUEST_PARAMETERS)
       .then(() => {
-        resetForm(scopedForm);
-        updateFormState([...scopedForm]);
+        setTimeout(() => {
+          resetForm(formInputs);
+          updateFormState(formInputs);
+          setSubmitStatus({ sending: false, sent: true });
+        }, 1500);
       })
-      .catch(error => alert(error));
+      .catch(error => {
+        setSubmitStatus({ sending: false, error: true });
+        console.log(error);
+      });
   };
 
-  return <form name={`Contact Form`}
-               method={`POST`}
-               action={`/`}
-               data-netlify={true}
-               data-netlify-honeypot={`bot-field`}
-               data-netlify-recaptcha={true}
-               onSubmit={handleSubmit}>
-    {formState.map(input => {
-      let { type, name } = input;
-      let FormComponent = FormComponentsMapper[type];
+  return <section className={`wrapper contact-form__wrapper`}>
+    <h3 className={`contact-form__header`}>{formTitle}</h3>
+    <p className={`contact-form__body`}>{formDescription}</p>
+    <form name={`Contact Form`}
+          className={`contact-form`}
+          method={`POST`}
+          action={`/`}
+          data-netlify={true}
+          data-netlify-honeypot={`bot-field`}
+          data-netlify-recaptcha={true}
+          onSubmit={handleSubmit}>
+      {formState.map(input => {
+        let { type, name } = input;
+        let FormComponent = FormComponentsTuple.get(type);
 
-      return <FormComponent key={name} {...input} onChange={handleChange} onBlur={handleBlur} />;
-    })}
-    <button type={`submit`}>Send</button>
-  </form>;
+        return <FormComponent key={name} {...input} onChange={handleChange} onBlur={handleBlur} />;
+      })}
+      <SubmitButton submitStatus={submitStatus} submitCtaMessages={submitCtaMessages} helperMessages={helperMessages} />
+    </form>
+  </section>;
 };
 
 ContactForm.propTypes = {
-  formInputs: PropTypes.arrayOf(PropTypes.object).isRequired
+  form: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 ContactForm.defaultProps = {};
