@@ -3,7 +3,7 @@ import Error from '../../../assets/svg-components/error.svg';
 import Plane from '../../../assets/svg-components/plane.svg';
 import './SubmitButton.scss';
 
-const SubmitButton = ({ submitStatus }) => {
+const SubmitButton = ({ submitStatus, submitCtaMessages, helperMessages }) => {
   return <>
     <button
       className={`submit-button ${submitStatus.sent ? `--is-sent` : ``}${submitStatus.error ? `--is-error` : ``}${submitStatus.sending ? `--is-sending` : ``}`}>
@@ -15,10 +15,10 @@ const SubmitButton = ({ submitStatus }) => {
       </svg>
       <ul>
         <li>
-          {submitStatus.initial && `Send`}
-          {submitStatus.sending && `Sending`}
-          {submitStatus.sent && `Sent`}
-          {submitStatus.error && `Oops!`}
+          {submitStatus.initial && submitCtaMessages.find(({ status }) => status.toLowerCase() === `initial`).text}
+          {submitStatus.sending && submitCtaMessages.find(({ status }) => status.toLowerCase() === `sending`).text}
+          {submitStatus.sent && submitCtaMessages.find(({ status }) => status.toLowerCase() === `sent`).text}
+          {submitStatus.error && submitCtaMessages.find(({ status }) => status.toLowerCase() === `error`).text}
         </li>
       </ul>
     </button>
@@ -27,14 +27,16 @@ const SubmitButton = ({ submitStatus }) => {
     </div>
     <small
       className={`submit-button__submit__message ${submitStatus.sent ? `--is-sent` : ``}${submitStatus.error ? `--is-error` : ``}`}>
-      {submitStatus.sent && `You can resend the form by refilling it`}
-      {submitStatus.error && `Something went wrong. Please check your connection and try again`}
+      {submitStatus.sent && helperMessages.find(({ status }) => status.toLowerCase() === `sent`).message}
+      {submitStatus.error && helperMessages.find(({ status }) => status.toLowerCase() === `error`).message}
     </small>
   </>;
 };
 
 SubmitButton.propTypes = {
-  submitStatus: PropTypes.bool.isRequired
+  submitStatus: PropTypes.bool.isRequired,
+  submitCtaMessages: PropTypes.bool.isRequired,
+  helperMessages: PropTypes.bool.isRequired
 };
 
 SubmitButton.defaultProps = {};
