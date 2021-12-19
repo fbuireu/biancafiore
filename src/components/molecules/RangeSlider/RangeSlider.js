@@ -19,7 +19,7 @@ const CustomRangeSlider = ({ min, max, currentRefinement, canRefine, refine }) =
       setMaxState(currentRefinement.max);
     }
 
-  }, [currentRefinement.min, currentRefinement.max]);
+  }, [currentRefinement.min, currentRefinement.max, canRefine]);
 
   if (min === max) return null;
 
