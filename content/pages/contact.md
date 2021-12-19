@@ -56,5 +56,19 @@ form:
       text: Send
   formTitle: Contact me!
   formDescription: Explain me everything yada yada
+  submitCtaMessages:
+    - status: Initial
+      text: Send
+    - status: Sending
+      text: Sending
+    - status: Sent
+      text: Sent
+    - status: Error
+      text: Oops!
+  helperMessages:
+    - status: Error
+      message: Something went wrong. Please check your connection and try again
+    - status: Sent
+      message: You can resend the form by refilling it
 ---
 Wanna get in touch?
