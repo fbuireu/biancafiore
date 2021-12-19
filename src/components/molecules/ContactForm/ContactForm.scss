@@ -1,0 +1,37 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.contact-form__wrapper {
+  max-width: map-get($grid, 'medium');
+  text-align: start;
+}
+
+.contact-form__header {
+  @include typography-settings(2, 2, 2);
+  padding-bottom: .5rem;
+  position: relative;
+  text-transform: uppercase;
+
+  &::after {
+    background-color: color(neutral, neutral-3);
+    bottom: 0;
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
+}
+
+.contact-form__body {
+  color: color(neutral, neutral-3);
+  padding: .5rem 0;
+}
+
+.contact-form {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1.5rem;
+  justify-content: start;
+  margin: 4rem 0;
+}
