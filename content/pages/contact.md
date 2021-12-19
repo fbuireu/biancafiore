@@ -13,39 +13,56 @@ form:
       isValid: true
       type: hidden
       value: Contact Form
+      placeholder: ""      
+      isRequired: false
     - name: name
       isValid: true
       type: text
-      value: ''
+      value: ""
+      placeholder: ""
       isRequired: true
       label: Name
-      placeholder: Your Name. Easy peasy
       errorMessage: Come on, this is just your name
     - name: email
       isValid: true
       type: text
-      value: ''
+      value: ""
+      placeholder: "" 
       isRequired: true
       label: Email
-      placeholder: Your Email. Easy peasy lemon squeezy
       errorMessage: Really, is just your email
     - name: message
       isValid: true
       type: textarea
-      value: ''
+      value: ""
+      placeholder: ""
       isRequired: true
       label: Message
-      placeholder: Your Message. Hard as hell
       errorMessage: Imagine my excitement in receiving your message. Now imagine how
         sad I was when I found out it was empty. You don't want to make me sad,
         do you?
     - name: g-recaptcha-response
       isValid: true
       type: recaptcha
-      value: ''
+      value: ""
+      placeholder: ""
       isRequired: true
       errorMessage: Mr. Robot, is that you?
   formTitle: Contact me!
-  formDescription: Explain everything yada yada
+  formDescription: Explain me everything yada yada
+  submitCtaMessages:
+    - status: Initial
+      text: Send
+    - status: Sending
+      text: Sending
+    - status: Sent
+      text: Sent
+    - status: Error
+      text: Oops!
+  helperMessages:
+    - status: Error
+      message: Something went wrong. Please check your connection and try again
+    - status: Sent
+      message: You can resend the form by refilling it
 ---
 Wanna get in touch?
