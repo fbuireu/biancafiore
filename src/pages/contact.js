@@ -61,6 +61,14 @@ export const contactData = graphql`
                                 isValid
                                 errorMessage
                             }
+                            submitCtaMessages {
+                                status
+                                text
+                            }
+                            helperMessages {
+                                status
+                                message
+                            }
                         }
                     }
                 }
