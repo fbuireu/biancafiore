@@ -13,24 +13,25 @@ form:
       isValid: true
       type: hidden
       value: Contact Form
+      isRequired: false
     - name: name
       isValid: true
       type: text
-      value: ''
+      value: ""
       isRequired: true
       label: Name
       errorMessage: Come on, this is just your name
     - name: email
       isValid: true
       type: text
-      value: ''
+      value: ""
       isRequired: true
       label: Email
       errorMessage: Really, is just your email
     - name: message
       isValid: true
       type: textarea
-      value: ''
+      value: ""
       isRequired: true
       label: Message
       errorMessage: Imagine my excitement in receiving your message. Now imagine how
@@ -39,10 +40,21 @@ form:
     - name: g-recaptcha-response
       isValid: true
       type: recaptcha
-      value: ''
+      value: ""
       isRequired: true
       errorMessage: Mr. Robot, is that you?
   sectionTitle: Contact me!
   sectionDescription: Explain everything yada yada
+  submitCTA:
+    - status: Sending
+      text: Sending
+    - status: Sent
+      text: Sent
+    - status: Error
+      text: Oops!
+    - status: Initial
+      text: Send
+  formTitle: Contact me!
+  formDescription: Explain me everything yada yada
 ---
 Wanna get in touch?
