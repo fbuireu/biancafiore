@@ -44,6 +44,7 @@
 .textarea-input {
   box-shadow: 0 0 0 1px color(neutral, neutral-3);
   padding: .5rem .25rem;
+  resize: vertical;
   transition: box-shadow .3s ease;
   width: 100%;
 
