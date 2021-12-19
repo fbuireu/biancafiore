@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'functions';
 
 @keyframes clock-spin {
   to {
@@ -67,5 +68,48 @@
     top: 1px;
     transform: translateY(50%);
     z-index: 99;
+  }
+}
+
+@keyframes orbit {
+  0% {
+    animation-timing-function: ease-in;
+    transform: rotate3d(1, 0, 0, 0deg) translateZ(3.75rem) scale3d(1, 1, 1);
+  }
+
+  10% {
+    animation-timing-function: ease-out;
+    transform: rotate3d(1, .6, 0, -10deg) translateZ(3.75rem) scale3d(1, 1, 1);
+    z-index: 3;
+  }
+
+  20% {
+    animation-timing-function: ease-out;
+    transform: rotate3d(1, .6, 0, 30deg) translateZ(3.75rem) scale3d(1, 1, 1);
+    z-index: 3;
+  }
+
+  30% {
+    fill: color(neutral);
+    transform: rotate3d(1, .6, 0, 35deg) translateZ(3.75rem) scale3d(1, 1, 1);
+    z-index: 3;
+  }
+
+  40% {
+    fill: color(neutral);
+    transform: rotate3d(1, .6, 0, 120deg) translateZ(3.75rem) scale3d(.7, .7, 1);
+    z-index: 1;
+  }
+
+  70% {
+    animation-timing-function: ease-out;
+    fill: color(neutral);
+    transform: rotate3d(1, .6, 0, 240deg) translateZ(3.75rem) scale3d(.7, .7, 1);
+    z-index: 1;
+  }
+
+  100% {
+    transform: rotate3d(1, 0, 0, 360deg) translateZ(3.75rem) scale3d(1, 1, 1);
+    z-index: 3;
   }
 }
