@@ -315,9 +315,17 @@ collections:
                         { label: 'Textarea', value: 'textarea' },
                         { label: 'Checkbox', value: 'checkbox' },
                         { label: 'reCAPTCHA', value: 'recaptcha' } ] },
-                    { name: isRequired, label: Required, widget: boolean },
+                    { name: isRequired, label: Required, required: false, widget: boolean },
                     { name: label, label: Label, required: false, widget: string },
                     { name: placeholder, label: Placeholder, required: false, widget: string },
                     { name: value, label: Value, required: false, widget: string },
                     { name: isValid, label: isValid, required: true, widget: hidden, default: true },
-                    { name: errorMessage, label: Error message, required: false, widget: string } ] } ] }
+                    { name: errorMessage, label: Error message, required: false, widget: string } ] },
+                { name: submitCtaMessages, label: Submit CTA Messages, required: false, label_singular: Message, summary: '{{fields.status}}', allow_add: true, widget: list,
+                  fields: [
+                    { name: status, label: Status, required: true, widget: string },
+                    { name: text, label: Text, required: true, widget: string } ] },
+                { name: helperMessages, label: Helper Messages, required: false, label_singular: Message, summary: '{{fields.status}}', allow_add: true, widget: list,
+                  fields: [
+                    { name: status, label: Status, required: true, widget: string },
+                    { name: message, label: Message, required: true, widget: markdown } ] } ] }
