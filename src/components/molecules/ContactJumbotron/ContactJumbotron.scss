@@ -1,0 +1,38 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.contact__jumbotron__wrapper {
+  display: grid;
+  gap: 0 2rem;
+  grid: 'ContactJumbotron-Breadcrumbs ContactJumbotron-Image' min-content
+        'ContactJumbotron-Title ContactJumbotron-Image' auto
+        'ContactJumbotron-Description ContactJumbotron-Image' min-content
+        / 50% 1fr;
+  justify-items: baseline;
+  max-width: map-get($grid, 'medium');
+  padding-bottom: 8rem;
+}
+
+.contact__jumbotron__title,
+.contact__jumbotron__description {
+  text-align: start;
+}
+
+.contact__jumbotron__title {
+  @include typography-settings(16, 16, 16);
+  grid-area: ContactJumbotron-Title;
+}
+
+.contact__jumbotron__image {
+  grid-area: ContactJumbotron-Image;
+}
+
+.contact__jumbotron__breadcrumbs {
+  align-self: end;
+  grid-area: ContactJumbotron-Breadcrumbs;
+}
+
+.contact__jumbotron__description {
+  grid-area: ContactJumbotron-Description;
+  padding-right: 25%;
+}
