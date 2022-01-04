@@ -23,6 +23,8 @@ content:
   readingTime: 2
   publishDate: 03/31/2020
   isFeaturedArticle: true
+comments:
+  title: Comment
 ---
 import Title from "../components/Title"
 
