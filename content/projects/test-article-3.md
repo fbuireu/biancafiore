@@ -7,6 +7,6 @@ content:
   name: Test article 3
   featuredImage: /assets/images/the-publishing-post.png
   tags:
-    - The Publishing Post
+    - Atlas of the Future
 ---
 Yada yada yada Yada yada yada Yada yada yada Yada yada yada
