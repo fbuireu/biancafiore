@@ -12,6 +12,7 @@ content:
   name: Fixing the future
   tags:
     - Atlas of the Future
+  featuredImage: /assets/images/fixing.png
 ---
 # Lorem ipsum 
 
