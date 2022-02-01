@@ -73,7 +73,7 @@
     "react-share": "^4.1.0",
     "rheostat": "^4.1.1",
     "source-map-loader": "^0.2.4",
-    "swiper": "^6.4.9"
+    "swiper": "^8.0.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.12.12",
