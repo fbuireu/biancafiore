@@ -16217,10 +16217,10 @@ markdown-table@^2.0.0:
   dependencies:
     repeat-string "^1.0.0"
 
-markdown-to-jsx@^7.0.1:
-  version "7.1.2"
-  resolved "https://registry.yarnpkg.com/markdown-to-jsx/-/markdown-to-jsx-7.1.2.tgz#19d3da4cd8864045cdd13a0d179147fbd6a088d4"
-  integrity sha512-O8DMCl32V34RrD+ZHxcAPc2+kYytuDIoQYjY36RVdsLK7uHjgNVvFec4yv0X6LgB4YEZgSvK5QtFi5YVqEpoMA==
+markdown-to-jsx@^7.1.6:
+  version "7.1.6"
+  resolved "https://registry.yarnpkg.com/markdown-to-jsx/-/markdown-to-jsx-7.1.6.tgz#421487df2a66fe4231d94db653a34da033691e62"
+  integrity sha512-1wrIGZYwIG2gR3yfRmbr4FlQmhaAKoKTpRo4wur4fp9p0njU1Hi7vR8fj0AUKKIcPduiJmPprzmCB5B/GvlC7g==
 
 marky@^1.2.0:
   version "1.2.1"
