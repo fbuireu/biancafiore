@@ -1,14 +1,12 @@
 name: "CodeQL Analysis"
-
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
   schedule:
-    - cron: '30 15 * * 0'
-
-jobs:
+    - cron: '0 0 * * 0' 
+jobs: 
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
