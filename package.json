@@ -50,7 +50,7 @@
     "instantsearch-rheostat-range-slider-react": "^0.0.2",
     "lodash.get": "^4.4.2",
     "lodash.orderby": "^4.6.0",
-    "markdown-to-jsx": "^7.0.1",
+    "markdown-to-jsx": "^7.1.7",
     "moment": "^2.29.1",
     "netlify-cms-app": "^2.11.29",
     "netlify-identity-widget": "^1.5.6",
