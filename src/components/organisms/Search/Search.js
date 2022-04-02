@@ -19,6 +19,7 @@ const CustomSearch = ({ currentRefinement, refine }) => {
         <input id={`filter__search__input`}
                className={`filter__search__input ${currentRefinement.length ? `--has-value` : ``}`}
                type={`search`}
+               autoComplete={`off`}
                value={currentRefinement}
                onChange={searchQuery} />
         <label htmlFor={`filter__search__input`}
