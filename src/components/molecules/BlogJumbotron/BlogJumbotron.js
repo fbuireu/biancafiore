@@ -36,7 +36,7 @@ const BlogJumbotron = ({
   }
 }) => {
   const allSocialNetworkItems = useSocialNetworkItems();
-  const { locale: currentLanguage } = useIntl();
+  const { locale } = useIntl();
 
   let availableSocialNetworks = { names: [], urls: [] };
 
@@ -66,19 +66,19 @@ const BlogJumbotron = ({
           <ul className={`blog__jumbotron__latest-featured-article__tags__list`}>
             {tags.map(tag => (
               <li key={tag} className={`blog__jumbotron__latest-featured-article__tag__item`}>
-                <Link to={`/tag/${slugify(tag)}`}>#{tag}</Link>
+                <Link to={`/tags/${slugify(tag)}`}>#{tag}</Link>
               </li>)
             )}
           </ul>
         </div>
         <h2 className={`blog__jumbotron__latest-featured-article__title`}>{latestFeaturedArticleTitle}</h2>
         <Link className={`blog__jumbotron__latest-featured-article__author`}
-              to={`/tag/${slugify(author)}`}>{author}</Link>
+              to={`/tags/${slugify(author)}`}>{author}</Link>
         <time className={`blog__jumbotron__latest-featured-article__date`}
               dateTime={publishDate}>
-          {localizeDate(publishDate, currentLanguage)}
+          {localizeDate({ date: publishDate, locale })}
         </time>
-        <Link to={`/blog/${slug}`}
+        <Link to={`/blog${slug}`}
               className={`blog__jumbotron__latest-featured-article__cta`}>{latestFeaturedArticleCta}</Link>
       </div>
       <div className={`blog__jumbotron__latest-featured-article__share`}>

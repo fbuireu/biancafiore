@@ -12,7 +12,7 @@ const AboutMeLatestArticleCard = ({
   frontmatter: { author, content: { title, summary, publishDate, featuredImage } }
 }) => {
 
-  const {locale:currentLanguage} = useIntl();
+  const { locale } = useIntl();
 
   return (
     <li className={`about-me__latest-articles__item`}>
@@ -21,10 +21,10 @@ const AboutMeLatestArticleCard = ({
              className={`about-me__latest-articles__item__image`} />
         <h4 className={`about-me__latest-articles__item__title`}>{title}</h4>
         <Link className={`about-me__latest-articles__author`}
-              to={`/tag/${slugify(author)}`}>{author}</Link>
+              to={`/tags/${slugify(author)}`}>{author}</Link>
         <time className={`about-me__latest-articles__date`}
               dateTime={publishDate}>
-          {localizeDate(publishDate, currentLanguage)}
+          {localizeDate({ date: publishDate, locale })}
         </time>
         <Markdown className={`about-me__latest-articles__summary`}
                   options={{ wrapper: `p`, forceWrapper: true }}>

@@ -8,7 +8,7 @@ import Summary from '../../atoms/Summary/Summary';
 import './SimpleArticleCard.scss';
 
 const SimpleArticleCard = article => {
-  const { locale: currentLanguage } = useIntl();
+  const { locale } = useIntl();
 
   return <article className={`simple-hit-card__item ${article?.content?.isFeaturedArticle ? `--is-featured` : ``}`}>
     <div className={`hit-card__information`}>
@@ -16,7 +16,7 @@ const SimpleArticleCard = article => {
       <ul className={`hit-card__information__tags__list`}>
         {article.content.tags.map((tag, index) => (
           <li className={`hit-card__information__tag__item`} key={tag}>
-            <Link to={`/tag/${slugify(tag)}`}
+            <Link to={`/tags/${slugify(tag)}`}
                   className={`hit-card__information__tag__item__link`}>
               #<Highlight attribute={`content.tags[${index}]`} hit={article} tagName={`mark`} />
             </Link>
@@ -29,12 +29,12 @@ const SimpleArticleCard = article => {
       <HitTitle hit={article} attribute={`content.title`} />
     </Link>
     <div className={`hit-card-subtitle`}>
-      <Link to={`/tag/${slugify(article.author)}`}
+      <Link to={`/tags/${slugify(article.author)}`}
             className={`hit-card-subtitle__author`}>
         <Highlight attribute={`author`} hit={article} tagName={`mark`} />
       </Link>
       <time dateTime={article.content.publishDate} className={`hit-card-subtitle__publish-date`}>
-        {localizeDate(article.content.publishDate, currentLanguage)}
+        {localizeDate({ date: article.content.publishDate, locale })}
       </time>
     </div>
     <Summary summary={article.content.summary ?? article.excerpt} classNames={`hit-card__summary`} />
