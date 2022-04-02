@@ -8,14 +8,14 @@ const Author = ({ author }) => {
   return (
     <section className={`author__wrapper`}>
       <Link className={`author__image__inner`}
-            to={`/tag/${slugify(author.frontmatter.name)}`}>
+            to={`/tags/${slugify(author.frontmatter.name)}`}>
         <Img fluid={author?.frontmatter?.image?.childImageSharp?.fluid}
              className={`author__image`}
              alt={author.frontmatter.name} />
       </Link>
       <p className={`author__description__wrapper`}>
         <span>Written by &#32;</span>
-        <Link to={`/tag/${slugify(author.frontmatter.name)}`}>
+        <Link to={`/tags/${slugify(author.frontmatter.name)}`}>
           {author.frontmatter.name}
         </Link>
         <span>
