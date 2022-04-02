@@ -14,7 +14,7 @@ const RelatedArticle = ({
     }
   }
 }) => {
-  const { locale: currentLanguage } = useIntl();
+  const { locale } = useIntl();
 
   return (
     <li className={`related-article__item`}>
@@ -23,10 +23,10 @@ const RelatedArticle = ({
              className={`related-article__item__image`} />
         <h4 className={`related-article__item__title`}>{title}</h4>
         <Link className={`related-article__author`}
-              to={`/tag/${slugify(author)}`}>{author}</Link>
+              to={`/tags/${slugify(author)}`}>{author}</Link>
         <time className={`related-article__date`}
               dateTime={publishDate}>
-          {localizeDate(publishDate, currentLanguage)}
+          {localizeDate({ date: publishDate, locale })}
         </time>
       </Link>
     </li>
