@@ -6,6 +6,9 @@ isDraft: false
 seo:
   slug: this-is-a-dummy-test
   metaDescription: This is a dummy description
+  keywords:
+    - dummy
+    - test
 content:
   lastUpdated: 04/07/2020
   summary: Look, just because I don't be givin' no man a foot massage don't make
@@ -24,12 +27,58 @@ content:
   publishDate: 03/31/2020
   isFeaturedArticle: true
 comments:
-  title: Comment
+  title: Comments
+  subtitle: What people are saying about this article
+  submitCtaMessages:
+    - status: Initial
+      text: Post a comment
+    - status: Sending
+      text: Sent
+    - status: Sent
+      text: Sent
+    - status: Error
+      text: Oops!
+  replyCommentCtaMessage:
+    - status: Initial
+      text: Reply
+    - status: Sending
+      text: Sending Reply
+    - status: Sent
+      text: Reply Sent
+    - status: Error
+      text: Oops
+  helperMessages:
+    - status: Error
+      message: Something went wrong. Please check your connection and try again
+    - status: Sent
+      message: Thank you! You can resend the form by refilling it
+  formInputs:
+    - name: name
+      isValid: true
+      type: text
+      value: ""
+      placeholder: ""
+      isRequired: true
+      label: Name
+      errorMessage: Come on, this is just your name
+    - name: comment
+      isValid: true
+      type: textarea
+      value: ""
+      placeholder: ""
+      isRequired: true
+      label: Comment
+      errorMessage: Imagine my excitement in receiving your message. Now imagine how
+        sad I was when I found out it was empty. You don't want to make me sad,
+        do you?
+    - name: g-recaptcha-response
+      isValid: true
+      type: recaptcha
+      value: ""
+      placeholder: ""
+      isRequired: true
+      errorMessage: Mr. Robot, is that you?
 ---
-import Title from "../components/Title"
-
-<Title># Hello Manos</Title>
-
 The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness, for he is truly his brother's keeper and the finder of lost children. And I will strike down upon thee with great vengeance and furious anger those who would attempt to poison and destroy [My brothers](https://stackoverflow.com/). And you will know My name is the Lord when I lay My vengeance upon thee.
 
 Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while I'm in a transitional period so I don't wanna kill you, I wanna help you. But I can't give you this case, it don't belong to me. Besides, I've already been through too much shit this morning over this case to hand it over to your dumb ass.
