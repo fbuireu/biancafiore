@@ -12,7 +12,7 @@ const HomeLatestArticleCard = ({
     content: { title, publishDate, featuredImage }
   }
 }) => {
-  const { locale: currentLanguage } = useIntl();
+  const { locale } = useIntl();
 
   return (
     <li className={`home__latest-articles__item`}>
@@ -21,10 +21,10 @@ const HomeLatestArticleCard = ({
              className={`home__latest-articles__item__image`} />
         <h4 className={`home__latest-articles__item__title`}>{title}</h4>
         <Link className={`home__latest-articles__author`}
-              to={`/tag/${slugify(author)}`}>{author}</Link>
+              to={`/tags/${slugify(author)}`}>{author}</Link>
         <time className={`home__latest-articles__date`}
               dateTime={publishDate}>
-          {localizeDate(publishDate, currentLanguage)}
+          {localizeDate({ date: publishDate, locale })}
         </time>
       </Link>
     </li>
