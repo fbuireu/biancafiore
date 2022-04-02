@@ -5,13 +5,14 @@ export const validateField = ({ name, field }) => {
   if (!field.value) return field.isValid = false;
 
   switch (name) {
-    case`name`:
+    case `name`:
       return field.isValid = !!field.value.match(VALID_NAME);
-    case`email`:
+    case `email`:
       return field.isValid = !!field.value.match(VALID_EMAIL);
-    case`message`:
+    case `message`:
+    case `comment`:
       return field.isValid = !!field.value;
-    case`g-recaptcha-response`:
+    case `g-recaptcha-response`:
       return field.isValid = !!field.value;
     default:
       field.errorMessage = `Something went wrong`;
