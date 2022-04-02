@@ -1,8 +1,7 @@
 const path = require(`path`);
 
 const articlesBuilder = async (graphql, { createPage }, reporter) => {
-  const articleTemplate = path.resolve(
-    `./src/components/templates/Article/Article.js`);
+  const articleTemplate = path.resolve(`./src/components/templates/Article/Article.js`);
 
   const articlesQuery = await graphql(`
     query getAllArticlesOrderedByDate {
