@@ -16,11 +16,16 @@
     }
   }
 
-  &.--is-selected {
+  &.--is-selected,
+  &.--is-locked {
     background-color: color(primary, primary-light-1);
 
     .refinement-list__item__checkbox {
       background-color: color(primary);
+    }
+
+    &.--is-locked {
+      pointer-events: none;
     }
   }
 }
