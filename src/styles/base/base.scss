@@ -54,6 +54,7 @@ img {
 svg {
   fill: color(neutral);
   width: 1rem;
+  -webkit-tap-highlight-color: transparent;
 
   &:not([class]) {
     fill: color(neutral);
