@@ -22,8 +22,6 @@ const FeaturedImageArticleCard = article => {
             <Link to={`/tags/${slugify(tag)}`}
                   className={`hit-card__information__tag__item__link`}>
               #<Highlight attribute={`content.tags[${index}]`} hit={article} tagName={`mark`} />
-              <img src={`${locale}/images/myimage.jpg`} />
-
             </Link>
           </li>
         ))}
