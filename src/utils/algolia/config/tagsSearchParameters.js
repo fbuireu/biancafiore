@@ -1,22 +1,20 @@
 export const TAGS_SEARCH_PARAMETERS = [
   {
-    label: `Type`,
-    attribute: `type`,
-    operator: `and`
-  },
-  {
     label: `Language`,
     attribute: `language`,
-    operator: `and`
+    operator: `and`,
+    queryString: `language`,
   },
   {
     label: `Tags`,
     attribute: `content.tags`,
-    operator: `and`
+    operator: `and`,
+    queryString: `tag`,
   },
   {
     label: `Authors`,
     attribute: `author`,
-    operator: `or`
+    operator: `or`,
+    queryString: `author`,
   }
 ];
