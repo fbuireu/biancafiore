@@ -1,0 +1,11 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.tags__title {
+  @include font-properties(secondary);
+  @include typography-settings(8, 8, 8);
+}
+
+.tags__jumbotron__breadcrumbs {
+  justify-content: center;
+}
