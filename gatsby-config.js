@@ -7,6 +7,7 @@ const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries/queries`);
 const { GATSBY_ALGOLIA_APP_ID, GATSBY_ALGOLIA_API_KEY, GATSBY_GOOGLE_ANALYTICS_ID } = process.env;
 
 module.exports = {
+  //trailingSlash: `always`,
   siteMetadata: {
     title: `Bianca Fiore`,
     description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
@@ -85,8 +86,15 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `tags`,
-        path: `${__dirname}/content/tags`,
+        name: `articleTags`,
+        path: `${__dirname}/content/tags/article`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `projectTags`,
+        path: `${__dirname}/content/tags/project`,
       },
     },
     {
@@ -194,8 +202,8 @@ module.exports = {
         path: `${__dirname}/content/translations`,
         languages: [`en`, `it`, `ca`, `es`],
         defaultLanguage: `en`,
-        redirect: true,
-      },
+        redirect: true
+      }
     },
     {
       resolve: `gatsby-plugin-algolia`,
