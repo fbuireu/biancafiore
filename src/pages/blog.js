@@ -8,6 +8,11 @@ import Layout from '../components/templates/Layout/Layout';
 import { ARTICLES_SEARCH_PARAMETERS } from '../utils/algolia/config/articlesSearchParameters';
 import { ARTICLES_SORT_BY } from '../utils/algolia/config/articlesSortBy';
 
+const FILTER_PARAMETERS = {
+  SEARCH_PARAMETERS: ARTICLES_SEARCH_PARAMETERS,
+  SORT_BY: ARTICLES_SORT_BY
+};
+
 const Blog = ({
   location,
   data: {
@@ -25,10 +30,6 @@ const Blog = ({
     }
   }
 }) => {
-  const FILTER_PARAMETERS = {
-    SEARCH_PARAMETERS: ARTICLES_SEARCH_PARAMETERS,
-    SORT_BY: ARTICLES_SORT_BY
-  };
 
   return <Layout>
     <SEO title="Blog" />
