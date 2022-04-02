@@ -1,0 +1,15 @@
+@import '../../../styles/global/variables';
+@import '../../../styles/global/functions';
+
+.tag__title {
+  @include font-properties(secondary);
+  @include typography-settings(8, 8, 8);
+  color: color(primary);
+  letter-spacing: .125rem;
+  text-transform: uppercase;
+
+  .tag__name {
+    color: color(neutral);
+  }
+}
+
