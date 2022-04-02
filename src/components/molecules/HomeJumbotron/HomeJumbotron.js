@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Tilt from 'react-parallax-tilt';
 import './HomeJumbotron.scss';
 
-const HomeJumbotron = ({ jumbotron: { welcomeTextLeft, welcomeTextRight, welcomeDescription, welcomeImage: bianca } }) => (
+const HomeJumbotron = ({ welcomeTextLeft, welcomeTextRight, welcomeDescription, welcomeImage: bianca }) => (
   <section className={`home__jumbotron__wrapper wrapper`}>
     <div className={`home__jumbotron__text-left`}>
       <Markdown className={`home__jumbotron__text-left__header`}>{welcomeTextLeft}</Markdown>
@@ -22,7 +22,10 @@ const HomeJumbotron = ({ jumbotron: { welcomeTextLeft, welcomeTextRight, welcome
 );
 
 HomeJumbotron.propTypes = {
-  jumbotron: PropTypes.arrayOf(String).isRequired
+  welcomeTextLeft: PropTypes.arrayOf(String).isRequired,
+  welcomeTextRight: PropTypes.arrayOf(String).isRequired,
+  welcomeDescription: PropTypes.arrayOf(String).isRequired,
+  welcomeImage: PropTypes.arrayOf(String).isRequired
 };
 
 HomeJumbotron.defaultProps = {};
