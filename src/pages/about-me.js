@@ -59,7 +59,6 @@ const AboutMe = ({
     setSelectedCityName(years[selectedIndex].city);
   }
 
-
   return <Layout>
     <SEO title="Home" />
     <AboutMeJumbotron jumbotron={jumbotron} location={location} />
