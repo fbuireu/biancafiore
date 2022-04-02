@@ -2,6 +2,9 @@ import { graphql } from 'gatsby';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
+import { addComment } from '../../../utils/firebase/addComment';
+import { editComment } from '../../../utils/firebase/editComment';
+import { getComments } from '../../../utils/firebase/getComments';
 import { useScrollPosition } from '../../../utils/hooks/useScrollPosition';
 import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
 import SEO from '../../atoms/SEO/SEO';
@@ -13,10 +16,25 @@ import './Article.scss';
 const Article = ({ data, location }) => {
   const [scroll, setScroll] = useState(0);
   const [articleProperties, setArticleProperties] = useState({});
+  const [comments, setComments] = useState([]);
+  const [commentsLoadingStatus, setCommentsLoadingStatus] = useState({
+    initial: true,
+    loading: false,
+    loaded: false,
+    error: false
+  });
   const articleReference = useRef(null);
   const { article } = data;
   const {
-    article: { html, excerpt, fields: { slug }, frontmatter: { content: { title, summary, tags, relatedArticlesTitle } } },
+    article: {
+      html,
+      excerpt,
+      fields: { slug },
+      frontmatter: {
+        content: { title, summary, tags, relatedArticlesTitle },
+        comments: commentsContent
+      }
+    },
     author,
     relatedArticles: { edges: relatedArticles },
     site: { siteMetadata: { author: metaAuthor, url } }
@@ -32,15 +50,64 @@ const Article = ({ data, location }) => {
     }
   };
 
-  useEffect(function setCurrentArticleProperties() {
+  const handleLoadComments = async () => {
+    setCommentsLoadingStatus({
+      ...commentsLoadingStatus,
+      initial: false,
+      loading: true
+    });
+    await getComments({ articleSlug: slug, callback: setComments });
+  };
+
+  const fetchComments = () => {
+    handleLoadComments()
+      .then(() => {
+        setCommentsLoadingStatus({
+          ...commentsLoadingStatus,
+          loading: false,
+          loaded: true
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        setCommentsLoadingStatus({
+          ...commentsLoadingStatus,
+          loading: false,
+          error: true
+        });
+      });
+  };
+
+  useEffect(function initialSetup() {
     setArticleProperties(articleReference.current);
+    //fetchComments();
   }, []);
 
-  useScrollPosition(function setScrollPosition({ currentPosition }) {
-    let { y: currentVerticalYPosition } = currentPosition;
+  const handleComments = async ({ comment }) => {
+    await addComment({
+      comment: {
+        slug: slug,
+        ...comment
+      }
+    });
+    await fetchComments();
+  };
 
-    setScroll(currentVerticalYPosition);
-  });
+  const handleReplies = async ({ reply }) => {
+    await editComment({
+      comment: {
+        ...reply,
+        slug: slug
+      }
+    });
+    await fetchComments();
+  };
+
+  useScrollPosition(function setScrollPosition({ currentPosition }) {
+    let { y: currentYPosition } = currentPosition;
+
+    setScroll(currentYPosition);
+  }, [scroll]);
 
   return <Layout>
     <SEO title={title} />
@@ -49,11 +116,15 @@ const Article = ({ data, location }) => {
       <article ref={articleReference}>
         <Markdown>{html}</Markdown>
       </article>
+      {/*<Comments comments={comments}*/}
+      {/*          commentsLoadingStatus={commentsLoadingStatus}*/}
+      {/*          handleComments={handleComments}*/}
+      {/*          handleReplies={handleReplies}*/}
+      {/*          commentsContent={commentsContent}*/}
+      {/*/>*/}
     </section>
     <RelatedArticles relatedArticles={relatedArticles} relatedArticlesTitle={relatedArticlesTitle} />
     <ReadingProgress scroll={scroll} articleProperties={articleProperties} />
-
-    {/*TODO: implement comment section*/}
   </Layout>;
 };
 
@@ -70,6 +141,7 @@ export const articleData = graphql`
                 author
                 seo {
                     metaDescription
+                    keywords
                 }
                 content {
                     title
@@ -86,6 +158,32 @@ export const articleData = graphql`
                                 ...GatsbyImageSharpFluid
                             }
                         }
+                    }
+                }
+                comments {
+                    title
+                    subtitle
+                    submitCtaMessages {
+                        status
+                        text
+                    }
+                    replyCommentCtaMessage {
+                        status
+                        text
+                    }
+                    helperMessages {
+                        status
+                        message
+                    }
+                    formInputs {
+                        name
+                        type
+                        isRequired
+                        label
+                        placeholder
+                        value
+                        isValid
+                        errorMessage
                     }
                 }
             }
