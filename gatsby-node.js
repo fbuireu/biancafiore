@@ -1,14 +1,16 @@
 const { createFilePath } = require(`gatsby-source-filesystem`);
 const { fmImagesToRelative } = require(`gatsby-remark-relative-images-v2`);
 const articlesBuilder = require(`./src/build/articlesBuilder`);
-const tagsBuilder = require(`./src/build/tagsBuilder`);
+const projectsBuilder = require(`./src/build/projectsBuilder`);
+const articleTagsBuilder = require(`./src/build/articleTagsBuilder`);
 const get = require(`lodash.get`)
 const path = require(`path`);
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   await Promise.all([
     articlesBuilder(graphql, actions, reporter),
-    tagsBuilder(graphql, actions, reporter)
+    projectsBuilder(graphql, actions, reporter),
+    articleTagsBuilder(graphql, actions, reporter)
   ]);
 };
 
@@ -27,27 +29,29 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 };
 
-exports.onCreateWebpackConfig = ({ actions, loaders, getConfig }) => {
+exports.onCreateWebpackConfig = ({ stage, actions, loaders, getConfig }) => {
   const config = getConfig();
 
   config.module.rules = [
     ...config.module.rules.filter(rule => String(rule.test) !== String(/\.jsx?$/)),
     {
       test: /canvg/,
-      use: loaders.null(),
+      use: loaders.null()
     },
     {
       test: /\.jsx?$/,
       use: { ...loaders.js() },
-      exclude: modulePath => /node_modules/.test(modulePath),
-    },
+      exclude: modulePath => /node_modules/.test(modulePath)
+    }
   ];
 
-  actions.setWebpackConfig({
-    resolve: {
-      modules: [path.resolve(__dirname, `src`), `node_modules`],
-    },
-  });
+  if (stage === `build-html`) {
+    actions.setWebpackConfig({
+      resolve: {
+        modules: [path.resolve(__dirname, `src`), `node_modules`]
+      }
+    });
+  }
 };
 
 exports.createSchemaCustomization = ({ actions }) => {
