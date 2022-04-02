@@ -9,6 +9,7 @@ const ProjectHitCards = () => {
       : <p className={`filter__results --no-results-found`}>{`Blimey! You're so picky that not even a genie could find what you're looking for. Try to expand your search.`}</p>,
   );
 
+
   return <div className={`filter__results`}>
     <FilterResults>
       <ProjectHitCard />
