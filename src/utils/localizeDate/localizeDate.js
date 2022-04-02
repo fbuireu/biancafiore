@@ -1,7 +1,6 @@
-import moment from 'moment/moment';
-
-export function localizeDate(date, locale, format = `LL`) {
-  return moment(new Date(date))
-    .locale(locale)
-    .format(format);
+export function localizeDate({ date, locale, options = { dateStyle: `long` } }) {
+  if (typeof date === `string`) {
+    date = new Date(date);
+  }
+  return date.toLocaleString(locale, options);
 }
