@@ -5,6 +5,10 @@
   display: flex;
 }
 
+.breadcrumbs {
+  display: inline;
+}
+
 .breadcrumbs__list {
   @include font-properties(tertiary);
   @include typography-settings(-2, -2, -2);
