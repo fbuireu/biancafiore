@@ -20,17 +20,7 @@ testimonials:
       image: /assets/images/f6tptx3r_400x400.jpg
       description: Front-end developer
 myWork:
-    title: My Work
-    works:
-    - tags: 
-        - Publications
-      image: /assets/images/publications.jpg
-    - tags:
-        - Social Media
-      image: /assets/images/social-media.jpg
-    - tags:
-        - Web Content
-      image: /assets/images/web-content.jpg
+    title: Latest Projects I Worked On
 latestArticles:
   title: Fresh from **the blog**
 ---
