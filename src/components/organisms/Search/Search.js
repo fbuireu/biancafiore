@@ -11,7 +11,7 @@ const CustomSearch = ({ currentRefinement, refine }) => {
     refine(``);
   };
 
-  const searchQuery = ({ event: { currentTarget: { value } } }) => refine(value);
+  const searchQuery = ({ currentTarget: { value } }) => refine(value);
 
   return <div className={`filter__search`}>
     <form noValidate action={``} role={`search`}>
