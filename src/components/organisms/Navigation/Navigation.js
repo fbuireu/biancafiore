@@ -5,7 +5,6 @@ import { useRef } from 'react';
 import { useMenuItems } from '../../../utils/hooks/useMenuItems';
 import { useNavigation } from '../../../utils/hooks/useNavigation';
 import { useOutsideClick } from '../../../utils/hooks/useOutsideClick';
-import LanguageSwitcher from '../../molecules/LanguageSwitcher/LanguageSwitcher';
 import './Navigation.scss';
 
 const Navigation = ({ isMenuActive, toggleMenuVisibility }) => {
@@ -46,7 +45,7 @@ const Navigation = ({ isMenuActive, toggleMenuVisibility }) => {
               </Link>
             </li>;
           })}
-          <LanguageSwitcher />
+          {/*<LanguageSwitcher />*/}
         </ul>
       </nav>
     </div>
