@@ -7,7 +7,7 @@ import Layout from '../components/templates/Layout/Layout';
 
 const Tags = ({
   location,
-  data: { allArticleTags: { edges: tags } }
+  data: { allTags: { edges: tags } }
 }) => {
   tags = tags.flatMap(({ node: { frontmatter } }) => frontmatter).sort((a, b) => a.name.localeCompare(b.name));
 
@@ -22,11 +22,12 @@ const Tags = ({
 
 export const tagsData = graphql`
     query getAllTags {
-        allArticleTags: allMarkdownRemark (
-            filter: { frontmatter: { key: { in: ["articleTag", "tag"] }}}) {
+        allTags: allMarkdownRemark (
+            filter: { frontmatter: { key: { in: ["articleTag", "projectTag", "tag"] }}}) {
             edges {
                 node {
                     frontmatter {
+                        key
                         name
                         type
                     }
@@ -34,7 +35,6 @@ export const tagsData = graphql`
             }
         }
     }
-
 `;
 
 Tags.propTypes = {
