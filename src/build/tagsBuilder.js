@@ -1,19 +1,20 @@
 const path = require(`path`);
 const slugify = require(`../utils/slugify/slugify`);
 
-const articleTagsBuilder = async (graphql, { createPage }, reporter) => {
+const tagsBuilder = async (graphql, { createPage }, reporter) => {
   const tagTemplate = path.resolve(`./src/components/templates/Tag/Tag.js`);
 
   const tagsQuery = await graphql(`
-    query getAllArticleTags {
-      allArticleTags: allMarkdownRemark (
-        filter: { frontmatter: { key: { in: ["articleTag", "tag"] }}}) {
+    query getAllTags {
+      allTags: allMarkdownRemark (
+        filter: { frontmatter: { key: { in: ["articleTag", "projectTag", "tag"] }}}) {
         edges {
           node {
             frontmatter {
               name
               slug
               type
+              key
             }
           }
         }
@@ -27,18 +28,19 @@ const articleTagsBuilder = async (graphql, { createPage }, reporter) => {
     return;
   }
 
-  let tags = { slugs: [], names: [], types: [] };
-  const { data: { allArticleTags: { edges: allArticleTags } } } = tagsQuery;
+  let tags = { slugs: [], names: [], types: [], keys: [] };
+  const { data: { allTags: { edges: allTags } } } = tagsQuery;
 
   // todo: can be a foreach without return? (avoid && return)
-  allArticleTags.map(({ node: tag }) => {
-    let { name, slug, type } = tag.frontmatter;
+  allTags.map(({ node: tag }) => {
+    let { name, slug, type, key } = tag.frontmatter;
 
     tags.slugs.push(slug ?? slugify(name));
     name && tags.names.push(name);
     type && tags.types.push(type);
+    key && tags.keys.push(key);
 
-    return new Set(tags.slugs) && new Set(tags.names) && new Set(tags.types);
+    return new Set(tags.slugs) && new Set(tags.names) && new Set(tags.types) && new Set(tags.keys);
   });
 
 
@@ -49,11 +51,12 @@ const articleTagsBuilder = async (graphql, { createPage }, reporter) => {
       context: {
         tag: {
           name: tags.names[index],
-          type: tags.types[index]
+          type: tags.types[index],
+          key: tags.keys[index]
         }
       }
     });
   });
 };
 
-module.exports = articleTagsBuilder;
+module.exports = tagsBuilder;
