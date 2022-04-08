@@ -44,7 +44,6 @@ const FeaturedImageArticleCard = article => {
     <Link to={`/blog${article.fields.slug}`}
           className={`hit-card__cta`}>Read more</Link>
   </article>;
-
 };
 
 FeaturedImageArticleCard.propTypes = {
