@@ -1,8 +1,8 @@
 version: 2
 updates:
 - package-ecosystem: yarn
-  directory: "/"
+  directory: '/'
   schedule:
     interval: monthly
-    time: "17:00"
+    time: '17:00'
   open-pull-requests-limit: 10
