@@ -2,7 +2,7 @@ const { createFilePath } = require(`gatsby-source-filesystem`);
 const { fmImagesToRelative } = require(`gatsby-remark-relative-images-v2`);
 const articlesBuilder = require(`./src/build/articlesBuilder`);
 const projectsBuilder = require(`./src/build/projectsBuilder`);
-const articleTagsBuilder = require(`./src/build/articleTagsBuilder`);
+const tagsBuilder = require(`./src/build/tagsBuilder`);
 const get = require(`lodash.get`)
 const path = require(`path`);
 
@@ -10,7 +10,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   await Promise.all([
     articlesBuilder(graphql, actions, reporter),
     projectsBuilder(graphql, actions, reporter),
-    articleTagsBuilder(graphql, actions, reporter)
+    tagsBuilder(graphql, actions, reporter)
   ]);
 };
 
