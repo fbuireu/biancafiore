@@ -1,19 +1,27 @@
-import BackgroundImage from 'gatsby-background-image';
+import Img from 'gatsby-image';
+import { Link } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
-import HitTitle from '../../atoms/HitTitle/HitTitle';
+import { Highlight } from 'react-instantsearch-dom';
+import slugify from '../../../utils/slugify/slugify';
 
 const FeaturedImageProjectCard = project => {
+  console.log(`project`, project);
   return (
     <li className={`hit-card__item`}>
       <article className={`hit-card__item__inner`}>
-        <BackgroundImage className={`hit-card__image`}
-                         fluid={[
-                           `linear-gradient(rgba(0,0,0, .5), rgba(0, 0, 0, .8))`,
-                           project?.content?.featuredImage?.childImageSharp?.fluid]}>
-          <header>
-            <HitTitle hit={project} attribute={`title`} />
-          </header>
-        </BackgroundImage>
+        <Img className={`hit-card__featured-image`} fluid={project?.content?.featuredImage?.childImageSharp?.fluid} />
+        <div className={`hit-card__information`}>
+          <ul className={`hit-card__information__tags__list`}>
+            {project.content.tags.map((tag, index) => (
+              <li className={`hit-card__information__tag__item`} key={tag}>
+                <Link to={`/tags/${slugify(tag)}`}
+                      className={`hit-card__information__tag__item__link`}>
+                  #<Highlight attribute={`content.tags[${index}]`} hit={project} tagName={`mark`} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </article>
     </li>
   );
