@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import Hamburger from '../../../assets/svg-components/menu.svg';
 import './HamburgerMenu.scss';
 
-const HamburgerMenu = ({ toggleMenuVisibility, isMenuActive }) => {
-  return <Hamburger className={`hamburger-menu ${isMenuActive ? `--is-active` : ``}`} onClick={toggleMenuVisibility} />;
+const HamburgerMenu = ({ onClick, isMenuActive }) => {
+  return <Hamburger className={`hamburger-menu ${isMenuActive ? `--is-active` : ``}`} onClick={onClick} />;
 };
 
 HamburgerMenu.propTypes = {
-  toggleMenuVisibility: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
   isMenuActive: PropTypes.bool.isRequired
 };
 
