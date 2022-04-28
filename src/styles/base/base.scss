@@ -8,11 +8,22 @@
 
 html,
 body {
-  @include font-properties(primary, regular);
+  font-family: Literata, serif;
   color: color(neutral);
   font-size: $base-font-size;
-  overflow-x: hidden;
+  overflow: hidden auto;
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+
+  &.--is-menu-open {
+    overflow: hidden;
+  }
+
+  @include breakpoint('small') {
+    &.--is-menu-open {
+      overflow: hidden auto;
+    }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     scroll-behavior: auto;
