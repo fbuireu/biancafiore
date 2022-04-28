@@ -1,6 +1,8 @@
 @import 'variables';
 @import 'functions';
 
+@include set-font-faces;
+
 .site__wrapper {
   display: flex;
   flex-direction: column;
@@ -20,8 +22,9 @@ article:not([class]) {
 a:not([class]),
 a.article__author,
 a.hit-card__author {
-  @include font-properties(primary, bold);
   color: color(primary);
+  font-family: Literata, serif;
+  font-weight: bold;
   padding: 0 0 .25rem;
   position: relative;
 }
