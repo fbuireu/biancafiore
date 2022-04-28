@@ -7,7 +7,10 @@ import './HomeJumbotron.scss';
 const HomeJumbotron = ({ welcomeTextLeft, welcomeTextRight, welcomeDescription, welcomeImage: bianca }) => (
   <section className={`home__jumbotron__wrapper wrapper`}>
     <div className={`home__jumbotron__text-left`}>
-      <Markdown className={`home__jumbotron__text-left__header`}>{welcomeTextLeft}</Markdown>
+      <Markdown className={`home__jumbotron__text-left__header`}
+                options={{ wrapper: `h2`, forceWrapper: true }}>
+        {welcomeTextLeft}
+      </Markdown>
     </div>
     <div className={`home__jumbotron__text-center`}>
       <Tilt gyroscope={true} tiltMaxAngleX={3} tiltMaxAngleY={5}>
@@ -15,7 +18,10 @@ const HomeJumbotron = ({ welcomeTextLeft, welcomeTextRight, welcomeDescription, 
       </Tilt>
     </div>
     <div className={`home__jumbotron__text-right`}>
-      <Markdown className={`home__jumbotron__text-right__header`}>{welcomeTextRight}</Markdown>
+      <Markdown className={`home__jumbotron__text-right__header`}
+                options={{ wrapper: `h2`, forceWrapper: true }}>
+        {welcomeTextRight}
+      </Markdown>
       <Markdown className={`home__jumbotron__text-right__body`}>{welcomeDescription}</Markdown>
     </div>
   </section>
