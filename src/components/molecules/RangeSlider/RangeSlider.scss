@@ -33,7 +33,7 @@
 }
 
 .range-list__marker {
-  @include typography-settings(-2, -2, -2);
+  @include typography-settings(-2, 2, -2);
   position: absolute;
   top: 1rem;
 }

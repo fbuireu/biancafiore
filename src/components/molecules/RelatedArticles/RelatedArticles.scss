@@ -6,7 +6,7 @@
 }
 
 .related-articles__title {
-  @include typography-settings(5, 5, 5);
+  @include typography-settings(5, 2, 5);
   letter-spacing: .3rem;
   margin: 3rem 0;
   text-transform: uppercase;

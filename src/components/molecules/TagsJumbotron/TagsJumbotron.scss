@@ -2,8 +2,8 @@
 @import '../../../styles/global/functions';
 
 .tags__title {
-  @include font-properties(secondary);
-  @include typography-settings(8, 8, 8);
+  @include typography-settings(8, 2, 8);
+  font-family: Zilla Slab, sans-serif;
 }
 
 .tags__jumbotron__breadcrumbs {

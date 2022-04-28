@@ -2,7 +2,6 @@
 @import '../../../styles/global/functions';
 
 .home__latest-articles__item {
-  max-width: calc(100% / 4 - 2.5rem);
   width: 100%;
 }
 
@@ -25,7 +24,7 @@
 }
 
 .home__latest-articles__item__title {
-  @include typography-settings(1, 1, 2);
+  @include typography-settings(1, 2, 2);
   font-weight: normal;
   grid-area: HomeLatestArticle-Title;
 }
@@ -37,7 +36,7 @@
 
 .home__latest-articles__author,
 .home__latest-articles__date {
-  @include font-properties(secondary);
+  font-family: Zilla Slab, sans-serif;
 }
 
 .home__latest-articles__author {

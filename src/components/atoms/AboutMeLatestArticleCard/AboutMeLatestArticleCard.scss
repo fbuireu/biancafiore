@@ -33,7 +33,7 @@
 
 .about-me__latest-articles__author,
 .about-me__latest-articles__date {
-  @include font-properties(secondary);
+  font-family: Zilla Slab, sans-serif;
 }
 
 .about-me__latest-articles__author {
@@ -47,11 +47,11 @@
 }
 
 .about-me__latest-articles__summary {
-  @include typography-settings(0, 0, 0);
+  @include typography-settings(0, 2, 0);
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 7;
   display: -webkit-box;
   grid-area: AboutMeLatestArticle-Summary;
+  -webkit-line-clamp: 7;
   overflow: hidden;
 }
 

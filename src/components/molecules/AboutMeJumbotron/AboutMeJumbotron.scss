@@ -23,8 +23,8 @@
   text-align: start;
 }
 
-about-me__jumbotron__header,
-about-me__jumbotron__description {
+.about-me__jumbotron__header,
+.about-me__jumbotron__description {
   margin-bottom: 1rem;
 }
 
@@ -33,18 +33,20 @@ about-me__jumbotron__description {
 }
 
 .about-me__jumbotron__title {
-  @include font-properties(primary, light);
-  @include typography-settings(3, 3, 3);
+  @include typography-settings(3, 2, 3);
   align-self: center;
   color: color(primary);
+  font-family: Literata, serif;
+  font-weight: 300;
   grid-area: AboutMeJumbotron-Title;
   padding-top: 3rem;
   text-transform: uppercase;
 }
 
 .about-me__jumbotron__header {
-  @include font-properties(primary, light);
-  @include typography-settings(15, 15, 15);
+  @include typography-settings(15, 2, 15);
+  font-family: Literata, serif;
+  font-weight: 300;
   grid-area: AboutMeJumbotron-Header;
   text-transform: uppercase;
 
@@ -54,7 +56,7 @@ about-me__jumbotron__description {
 }
 
 .about-me__jumbotron__description {
-  @include font-properties(secondary);
+  font-family: Zilla Slab, sans-serif;
   grid-area: AboutMeJumbotron-Description;
   padding: 0 3rem;
 }
@@ -90,13 +92,13 @@ about-me__jumbotron__description {
 .about-me__jumbotron__social-networks__list {
   display: flex;
   flex-flow: row nowrap;
-  grid-area: AboutMeJumbotron-Social-Networks;
   gap: 2rem;
+  grid-area: AboutMeJumbotron-Social-Networks;
 }
 
 .about-me__jumbotron__social-network__link {
-  @include font-properties(secondary);
-  @include typography-settings(-1, -1, -1);
+  @include typography-settings(-1, 2, -1);
+  font-family: Zilla Slab, sans-serif;
   letter-spacing: .2rem;
   position: relative;
 

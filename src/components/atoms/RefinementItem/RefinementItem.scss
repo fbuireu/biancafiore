@@ -41,7 +41,7 @@
   transition: color .3s ease;
 
   .refinement-list__item__label-text {
-    @include typography-settings(-1, -1, -1);
+    @include typography-settings(-1, 2, -1);
     order: 1;
   }
 

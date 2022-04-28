@@ -22,8 +22,9 @@
   position: relative;
 
   &.--is-selected {
-    @include font-properties(secondary, bold);
     color: color(primary);
+    font-family: Zilla Slab, sans-serif;
+    font-weight: bold;
 
     &::before {
       background-color: currentColor;

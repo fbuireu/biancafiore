@@ -22,15 +22,15 @@
     }
 
     h1 {
-      @include typography-settings(5, 5, 5);
+      @include typography-settings(5, 2, 5);
     }
 
     h2 {
-      @include typography-settings(4, 4, 4);
+      @include typography-settings(4, 2, 4);
     }
 
     h3 {
-      @include typography-settings(3, 3, 3);
+      @include typography-settings(3, 2, 3);
     }
 
     h4 {
@@ -38,11 +38,12 @@
     }
 
     h4 {
-      @include typography-settings(1, 1, 1);
+      @include typography-settings(1, 2, 1);
     }
 
     strong {
-      @include font-properties(primary, bold);
+      font-family: Literata, serif;
+      font-weight: bold;
     }
 
     em {
@@ -66,8 +67,9 @@
 
 blockquote {
   @include typography-settings(2, 2, 2);
-  @include font-properties(secondary, thin);
   border-left: .2rem solid color(primary, primary-dark-1);
+  font-family: Zilla Slab, sans-serif;
+  font-weight: 300;
   margin-left: .5rem;
   padding-left: .5rem;
   position: relative;

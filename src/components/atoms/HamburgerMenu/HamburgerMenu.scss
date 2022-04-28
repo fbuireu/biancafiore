@@ -6,12 +6,13 @@
   position: absolute;
   right: 1rem;
   top: 0;
+  transform: translateY(10%);
   transition: transform .4s .6s;
   width: 4rem;
   z-index: 30;
 
   &.--is-active {
-    transform: rotate(45deg);
+    transform: translateY(25%) rotate(45deg);
 
     .hamburger-svg__line-top,
     .hamburger-svg__line-middle,

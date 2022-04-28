@@ -19,7 +19,7 @@
 }
 
 .contact__jumbotron__title {
-  @include typography-settings(16, 16, 16);
+  @include typography-settings(16, 2, 16);
   grid-area: ContactJumbotron-Title;
 }
 

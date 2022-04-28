@@ -1,9 +1,9 @@
 @import '../../../styles/global/functions';
 
 .language-switcher__wrapper {
-  @include font-properties(primary);
   color: color(others, white);
   cursor: pointer;
+  font-family: Literata, serif;
   margin-top: 3rem;
 
   .language-switcher__icon {
@@ -51,7 +51,8 @@
   }
 
   &.--is-current-language {
-    @include font-properties(primary, bold);
+    font-family: Literata, serif;
+    font-weight: bold;
     color: color(primary, primary-dark-1);
     cursor: default;
   }

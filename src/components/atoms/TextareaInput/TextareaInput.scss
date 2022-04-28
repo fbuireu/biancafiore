@@ -25,7 +25,7 @@
 
 .textarea-input__wrapper.--has-value .textarea-input {
   + .textarea-input__label__text {
-    @include typography-settings(-2, -2, -2);
+    @include typography-settings(-2, 2, -2);
     left: -.75rem;
     padding: 0 1rem;
     top: -.5rem;
@@ -33,7 +33,7 @@
 }
 
 .textarea-input__label {
-  @include font-properties(secondary);
+  font-family: Zilla Slab, sans-serif;
   position: relative;
 }
 
@@ -58,7 +58,7 @@
     box-shadow: 0 0 0 2px color(primary, primary-light-2);
 
     + .textarea-input__label__text {
-      @include typography-settings(-2, -2, -2);
+      @include typography-settings(-2, 2, -2);
       left: -.5rem;
       padding: 0 .5rem;
       top: -.5rem;
@@ -67,10 +67,11 @@
 }
 
 .textarea-input__error-message {
-  @include typography-settings(-2, -2, -2);
-  @include font-properties(secondary, bold);
+  @include typography-settings(-2, 2, -2);
   bottom: -2.25rem;
   color: color(error);
+  font-family: Zilla Slab, sans-serif;
+  font-weight: bold;
   left: 0;
   position: absolute;
   right: 0;
