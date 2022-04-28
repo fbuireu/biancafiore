@@ -8,28 +8,29 @@ import './Testimonials.scss';
 
 SwiperCore.use([Navigation]);
 
-const Testimonials = ({ title, subtitle, testimonials }) => {
-  const SLIDER_PARAMETERS = {
-    loop: true,
-    navigation: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: true
+const SLIDER_PARAMETERS = {
+  loop: true,
+  navigation: true,
+  autoplay: {
+    delay: 5000,
+    disableOnInteraction: true
+  },
+  centeredSlides: true,
+  keyboard: {
+    enabled: true
+  },
+  breakpoints: {
+    1024: {
+      slidesPerView: 1.85,
+      spaceBetween: 150
     },
-    centeredSlides: true,
-    keyboard: {
-      enabled: true
-    },
-    breakpoints: {
-      1024: {
-        slidesPerView: 1.85,
-        spaceBetween: 150
-      },
-      320: {
-        slidesPerView: 1
-      }
+    320: {
+      slidesPerView: 1
     }
-  };
+  }
+};
+
+const Testimonials = ({ title, subtitle, testimonials }) => {
 
   return <section className={`testimonials__wrapper`}>
     <h2 className={`testimonials__title`}>{title}</h2>
