@@ -1,0 +1,46 @@
+import React from 'react';
+
+export const onRenderBody = ({ setHeadComponents }) => {
+  setHeadComponents([
+    <link
+      key='literata'
+      rel='preload'
+      href='/assets/fonts/Literata-Regular.woff2'
+      as='font'
+      type='font/woff2'
+      crossOrigin='anonymous'
+    />,
+    <link
+      key='literata-bold'
+      rel='preload'
+      href='/assets/fonts/Literata-Bold.woff2'
+      as='font'
+      type='font/woff2'
+      crossOrigin='anonymous'
+    />,
+    <link
+      key='zilla-slab'
+      rel='preload'
+      href='/assets/fonts/Zilla-Slab-Regular.woff2'
+      as='font'
+      type='font/woff2'
+      crossOrigin='anonymous'
+    />,
+    <link
+      key='zilla-slab-bold'
+      rel='preload'
+      href='/assets/fonts/Zilla-Slab-Bold.woff2'
+      as='font'
+      type='font/woff2'
+      crossOrigin='anonymous'
+    />,
+    <link
+      key='montserrat'
+      rel='preload'
+      href='/assets/fonts/Montserrat-Regular.woff2'
+      as='font'
+      type='font/woff2'
+      crossOrigin='anonymous'
+    />
+  ]);
+};
