@@ -7,7 +7,7 @@ const get = require(`lodash.get`)
 const path = require(`path`);
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
-  await Promise.all([
+  await Promise.allSettled([
     articlesBuilder(graphql, actions, reporter),
     projectsBuilder(graphql, actions, reporter),
     tagsBuilder(graphql, actions, reporter)
