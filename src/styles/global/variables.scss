@@ -4,140 +4,156 @@ $base-line-height: $base-font-size * 1.25;
 $global-border-radius: .25rem;
 
 $grid: (
-  extra-small: 575px,
-  small: 720px,
-  medium : 960px,
-  large : 1024px
+        extra-small: 575px,
+        small: 720px,
+        medium : 960px,
+        large : 1024px
 );
 
 $fonts: (
-  primary: (
-    extra-light: (
-      family: ('Literata', serif),
-      weight: 200,
-      style: normal
-    ),
-    light: (
-      family: ('Literata', serif),
-      weight: 300,
-      style: normal
-    ),
-    regular: (
-      family: ('Literata', serif),
-      weight: 400,
-      style: normal
-    ),
-    bold: (
-      family: ('Literata', serif),
-      weight: 700,
-      style: normal
-    ),
-  ),
-  secondary: (
-    light: (
-      family: ('Zilla Slab', sans-serif),
-      weight: 300,
-      style: normal
-    ),
-    regular: (
-      family: ('Zilla Slab', sans-serif),
-      weight: 400,
-      style: normal
-    ),
-    bold: (
-      family: ('Zilla Slab', sans-serif),
-      weight: 700,
-      style: normal
-    ),
-  ),
-  tertiary: (
-    regular: (
-      family: ('Montserrat', sans-serif),
-      weight: 400,
-      style: normal
-    ),
-  ),
+        primary: (
+                extra-light: (
+                        family: 'Literata',
+                        weight: 200,
+                        style: normal,
+                        display: swap,
+                        src: url('/assets/fonts/Literata-Regular.woff2'),
+                ),
+                light: (
+                        family: 'Literata',
+                        weight: 300,
+                        style: normal,
+                        display: swap,
+                        src: url('/assets/fonts/Literata-Regular.woff2'),
+                ),
+                regular: (
+                        family: 'Literata',
+                        weight: 400,
+                        style: normal,
+                        display: swap,
+                        src: url('/assets/fonts/Literata-Regular.woff2'),
+                ),
+                bold: (
+                        family: 'Literata',
+                        weight: 700,
+                        style: normal,
+                        display: swap,
+                        src: url('/assets/fonts/Literata-Regular.woff2'),
+                ),
+        ),
+        secondary: (
+                light: (
+                        family: 'Zilla Slab',
+                        weight: 300,
+                        style: normal,
+                        display: swap,
+                        src: url('/assets/fonts/Zilla-Slab-Regular.woff2'),
+                ),
+                regular: (
+                        family: 'Zilla Slab',
+                        weight: 400,
+                        style: normal,
+                        display: swap,
+                        src: url('/assets/fonts/Zilla-Slab-Regular.woff2'),
+                ),
+                bold: (
+                        family: 'Zilla Slab',
+                        weight: 700,
+                        style: normal,
+                        display: swap,
+                        src: url('/assets/fonts/Zilla-Slab-Bold.woff2'),
+                ),
+        ),
+        tertiary: (
+                regular: (
+                        family: 'Montserrat',
+                        weight: 400,
+                        style: normal,
+                        display: swap,
+                        src: url('/assets/fonts/Montserrat-Regular.woff2'),
+                ),
+        ),
 );
 
 $typography-scale: (
-  -3: .6rem,
-  -2: .75rem,
-  -1: .875rem,
-  0: 1rem,
-  1: 1.25rem,
-  2: 1.5rem,
-  3: 1.75rem,
-  4: 2rem,
-  5: 2.25rem,
-  6: 2.5rem,
-  7: 2.75rem,
-  8: 3rem,
-  9: 3.25rem,
-  10: 3.5rem,
-  11: 3.75rem,
-  12: 4rem,
-  13: 4.25rem,
-  14: 4.5rem,
-  15: 4.75rem,
-  16: 5rem,
+        -3: .6rem,
+        -2: .75rem,
+        -1: .875rem,
+        0: 1rem,
+        1: 1.25rem,
+        2: 1.5rem,
+        3: 1.75rem,
+        4: 2rem,
+        5: 2.25rem,
+        6: 2.5rem,
+        7: 2.75rem,
+        8: 3rem,
+        9: 3.25rem,
+        10: 3.5rem,
+        11: 3.75rem,
+        12: 4rem,
+        13: 4.25rem,
+        14: 4.5rem,
+        15: 4.75rem,
+        16: 5rem,
 );
 
 $line-heights: (
-  -3: $base-line-height * .5,
-  -2: $base-line-height * .75,
-  -1: $base-line-height * 1,
-  0: $base-line-height * 1.25,
-  1: $base-line-height * 1.5,
-  2: $base-line-height * 1.75,
-  3: $base-line-height * 2,
-  4: $base-line-height * 2.25,
-  5: $base-line-height * 2.5,
-  6: $base-line-height * 2.75,
-  7: $base-line-height * 3,
-  8: $base-line-height * 3.25,
-  9: $base-line-height * 3.5,
-  10: $base-line-height * 3.75
+        -3: $base-line-height * .25,
+        -2: $base-line-height * .5,
+        -1: $base-line-height * .75,
+        0: $base-line-height * 1,
+        1: $base-line-height * 1.25,
+        2: $base-line-height * 1.5,
+        3: $base-line-height * 1.75,
+        4: $base-line-height * 2,
+        5: $base-line-height * 2.25,
+        6: $base-line-height * 2.5,
+        7: $base-line-height * 2.75,
+        8: $base-line-height * 3,
+        9: $base-line-height * 3.25,
+        10: $base-line-height * 3.5
 );
 
 $colors: (
-  primary:(
-    primary-light-4: #fff9f1,
-    primary-light-3: #fff0da,
-    primary-light-2: #ffe3bb,
-    primary-light-1: #fbcf90,
-    main: #d4a259,
-    primary-dark-1: #b37e33,
-    primary-dark-2: #8b5a14,
-    primary-dark-3: #633a00
-  ),
-  neutral:(
-    main: #1e2021,
-    neutral-1: #3d4042,
-    neutral-2: #6d7275,
-    neutral-3: #b5babd,
-    neutral-4: #ddd,
-    neutral-5: #f3f7fa,
-  ),
-  error:(
-    error-light-2: #ffecef,
-    error-light-1: #d09d9e,
-    main: #d63737
-  ),
-  success:(
-    success-light-2: #2CB235,
-    success-light-1: #0E9B17,
-    main: #008108
-  ),
-  social-networks:(
-    twitter: #1da1f2,
-    facebook: #3b5998,
-    linkedin: #0077b5,
-    whatsapp: #24d367,
-    pocket: #e3485b,
-    email: #7d7d7d,
-  ),
-  others:(
-    white: #fff,
-    black: #000,
-  )
+        primary:(
+                primary-light-4: #fff9f1,
+                primary-light-3: #fff0da,
+                primary-light-2: #ffe3bb,
+                primary-light-1: #fbcf90,
+                main: #d4a259,
+                primary-dark-1: #b37e33,
+                primary-dark-2: #8b5a14,
+                primary-dark-3: #633a00
+        ),
+        neutral:(
+                main: #1e2021,
+                neutral-1: #3d4042,
+                neutral-2: #6d7275,
+                neutral-3: #b5babd,
+                neutral-4: #ddd,
+                neutral-5: #f3f7fa,
+        ),
+        error:(
+                error-light-2: #ffecef,
+                error-light-1: #d09d9e,
+                main: #d63737
+        ),
+        success:(
+                success-light-2: #2cb235,
+                success-light-1: #0e9b17,
+                main: #008108
+        ),
+        social-networks:(
+                twitter: #1da1f2,
+                facebook: #3b5998,
+                linkedin: #0077b5,
+                whatsapp: #24d367,
+                pocket: #e3485b,
+                email: #7d7d7d,
+        ),
+        others:(
+                white: #fff,
+                black: #000,
+        )
 );
