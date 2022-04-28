@@ -1,27 +1,33 @@
 @import 'variables';
 
-@mixin typography-settings($min-value: 0, $value: 0, $max-value: 0) {
-  font-size: clamp(typography-scale($min-value), typography-scale($value), typography-scale($max-value));
-  line-height: line-height($value);
+@mixin typography-settings($min-value: 0, $preferred-value: 2, $max-value: 0) {
+  font-size: clamp(typography-scale($min-value), #{$preferred-value}vw, typography-scale($max-value));
+  line-height: line-height($max-value);
 }
 
 @mixin breakpoint($breakpoint, $breakpoints: $grid) {
   @if map-has-key($breakpoints, $breakpoint) {
     $breakpoint: map-get($breakpoints, $breakpoint);
-  }
 
-  @media screen and (min-width: #{$breakpoint}) {
-    @content;
+    @media screen and (min-width: #{$breakpoint}) {
+      @content;
+    }
+  } @else {
+    @warn "No value could be retrieved from `#{$breakpoint}`. Available breakpoints are: #{map-keys($breakpoints)}.";
   }
 }
 
-@mixin font-properties($group, $variant: regular, $properties: family weight style, $font-stack: $fonts) {
-  $font-properties: map-deep-get($font-stack, $group, $variant);
-
-  @if $font-properties {
-    @each $property, $values in $font-properties {
-      @if contains($properties, $property) {
-        font-#{$property}: map-get($font-properties, $property);
+@mixin set-font-faces($fonts: $fonts) {
+  @each $font-type, $font-variants in $fonts {
+    @each $properties, $font-variant in $font-variants {
+      @font-face {
+        @each $property, $value in $font-variant {
+          @if $property != 'src' {
+            font-#{$property}: $value;
+          } @else {
+            #{$property}: local(map-get($font-variant, 'family')), $value format('woff2');
+          }
+        }
       }
     }
   }
