@@ -5,6 +5,10 @@
   background-color: color(neutral);
   margin-top: 7rem;
   padding-top: 5rem;
+
+  .swiper-wrapper {
+    padding: 3rem 0;
+  }
 }
 
 .home__latest-articles__list {
@@ -17,9 +21,10 @@
 
 
 .home__latest-articles__title {
-  @include font-properties(primary, light);
-  @include typography-settings(4, 4, 4);
+  @include typography-settings(4, 2, 4);
   color: color(others, white);
+  font-family: Literata, serif;
+  font-weight: 300;
   letter-spacing: .3rem;
   text-transform: uppercase;
 

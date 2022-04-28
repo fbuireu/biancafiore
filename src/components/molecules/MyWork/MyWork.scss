@@ -2,29 +2,52 @@
 @import '../../../styles/global/functions';
 
 .my-work__title {
-  @include font-properties(primary, light);
-  @include typography-settings(5, 5, 5);
+  @include typography-settings(5, 2, 5);
+  font-family: Literata, serif;
+  font-weight: 300;
   letter-spacing: .3rem;
-  margin-bottom: 4rem;
+  margin: 5rem 0 4rem;
   text-transform: uppercase;
+
+  @include breakpoint('medium') {
+    margin: 4rem 0;
+  }
 }
 
 .my-work__list {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
+  padding: 0 1rem;
+
+  @include breakpoint('medium') {
+    padding: 0;
+  }
 }
 
 .my-work__item {
+  margin-bottom: 2rem;
   width: 100%;
 
+  @include breakpoint('medium') {
+    margin-bottom: 0;
+  }
+
   &:nth-child(even) {
-    max-width: calc(100% / 2 - 1.5rem);
+    max-width: 100%;
+
+    @include breakpoint('medium') {
+      max-width: calc(100% / 2 - 1.5rem);
+    }
   }
 
   &:nth-child(odd) {
     align-self: flex-end;
-    max-width: calc(100% / 4 - 1.5rem);
+    max-width: 100%;
+
+    @include breakpoint('medium') {
+      max-width: calc(100% / 4 - 1.5rem);
+    }
 
     &:first-child {
       align-self: flex-start;
@@ -33,11 +56,21 @@
 }
 
 .my-work__item__image {
-  margin-bottom: 2rem;
+  margin-bottom: .5rem;
+
+  @include breakpoint('medium') {
+    margin-bottom: 2rem;
+  }
 }
 
 .my-work__item__name {
-  @include font-properties(primary, light);
-  @include typography-settings(3, 3, 3);
+  @include typography-settings(3, 2, 3);
+  font-family: Literata, serif;
+  font-weight: 300;
+  margin-bottom: 1rem;
   text-transform: uppercase;
+
+  @include breakpoint('medium') {
+    margin-bottom: 0;
+  }
 }
