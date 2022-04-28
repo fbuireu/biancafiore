@@ -17,9 +17,11 @@ const Layout = ({ children, location = {} }) => {
       }
   `);
 
+  const isArticle = location?.href?.includes(BLOG_PATH);
+
   return <section className={`site__wrapper`}>
     <Header />
-    <main className={`${location?.href?.includes(BLOG_PATH) ? `--is-article` : ``}`}>
+    <main className={`${isArticle ? `--is-article` : ``}`}>
       {children}
     </main>
     <Footer />
