@@ -2,9 +2,9 @@
 @import '../../../styles/global/functions';
 
 .blog__jumbotron__title {
-  @include font-properties(secondary);
-  @include typography-settings(8, 8, 8);
+  @include typography-settings(8, 2, 8);
   color: color(primary);
+  font-family: Zilla Slab, sans-serif;
   letter-spacing: .125rem;
   text-transform: uppercase;
 }
@@ -60,12 +60,12 @@
 
 .blog__jumbotron__latest-featured-article__reading-time,
 .blog__jumbotron__latest-featured-article__tags__list {
-  @include typography-settings(-3, -3, -3);
+  @include typography-settings(-3, 2, -3);
 }
 
 .blog__jumbotron__latest-featured-article__title {
-  @include font-properties(primary);
-  @include typography-settings(5, 5, 5);
+  @include typography-settings(5, 2, 5);
+  font-family: Literata, serif;
   grid-area: LatestFeaturedArticle-Title;
 }
 
@@ -76,9 +76,9 @@
 }
 
 .blog__jumbotron__latest-featured-article__date {
-  @include font-properties(primary);
-  @include typography-settings(-2, -2, -2);
+  @include typography-settings(-2, 2, -2);
   align-self: baseline;
+  font-family: Literata, serif;
   grid-area: LatestFeaturedArticle-Date;
   letter-spacing: .25rem;
   margin-top: .45rem;
@@ -86,7 +86,7 @@
 }
 
 .blog__jumbotron__latest-featured-article__cta {
-  @include font-properties(secondary);
+  font-family: Zilla Slab, sans-serif;
   grid-area: LatestFeaturedArticle-Cta;
   margin-top: 1rem;
   position: relative;
@@ -129,8 +129,9 @@
 }
 
 .blog__jumbotron__latest-featured-article__share__title {
-  @include font-properties(secondary, bold);
-  @include typography-settings(-1, -1, -1);
+  @include typography-settings(-1, 2, -1);
+  font-family: Zilla Slab, sans-serif;
+  font-weight: bold;
   letter-spacing: .25rem;
   text-transform: uppercase;
 }

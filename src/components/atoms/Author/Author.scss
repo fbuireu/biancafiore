@@ -28,7 +28,7 @@
 }
 
 .author__description {
-  @include font-properties(secondary);
   color: color(neutral, neutral-3);
+  font-family: Zilla Slab, sans-serif;
   padding-right: 2rem;
 }

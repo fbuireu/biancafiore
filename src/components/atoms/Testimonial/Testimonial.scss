@@ -6,10 +6,10 @@
   cursor: grab;
   display: grid;
   gap: 0 2rem;
-  grid: 'Testimonial-Image Testimonial-Image . .' 1fr
+  grid: 'Testimonial-Image Testimonial-Image . .' calc(100% / 4)
         'Testimonial-Image Testimonial-Image Testimonial-Body Testimonial-Body' 1fr
-        'Testimonial-Image Testimonial-Image Testimonial-Footer Testimonial-Footer' calc(100% / 8)
-        'Testimonial-Image Testimonial-Image Testimonial-Footer Testimonial-Footer' calc(100% / 8)
+        'Testimonial-Image Testimonial-Image Testimonial-Footer Testimonial-Footer' auto
+        'Testimonial-Image Testimonial-Image Testimonial-Footer Testimonial-Footer' auto
         / 1fr 1fr 1fr 1fr;
   width: 100%;
 
@@ -27,7 +27,7 @@
   height: auto;
   left: 50%;
   position: absolute;
-  top: 30%;
+  top: 4rem;
   transform: translate(50%, -100%);
   width: 2.5rem;
 }
@@ -44,8 +44,9 @@
 }
 
 .testimonial__body {
-  @include font-properties(secondary);
+  @include typography-settings(1, 2, 1);
   color: color(others, black);
+  font-family: Zilla Slab, sans-serif;
   grid-area: Testimonial-Body;
   position: relative;
 }
@@ -57,14 +58,15 @@
 }
 
 .testimonial__author {
-  @include font-properties(primary, light);
   @include typography-settings(2, 2, 2);
   color: color(others, black);
+  font-family: Literata, serif;
+  font-weight: 300;
   margin-bottom: .5rem;
   text-transform: uppercase;
 }
 
 .testimonial__description {
-  @include font-properties(secondary);
   color: color(neutral, neutral-2);
+  font-family: Zilla Slab, sans-serif;
 }

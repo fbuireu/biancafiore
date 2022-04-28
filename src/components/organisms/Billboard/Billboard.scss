@@ -51,7 +51,7 @@
 }
 
 .article__information__tags__list {
-  @include typography-settings(-1, -1, -1);
+  @include typography-settings(-1, 2, -1);
   grid-area: Article-Tags;
 }
 

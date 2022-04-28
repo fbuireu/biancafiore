@@ -1,7 +1,7 @@
 @import '../../../styles/global/functions';
 
 .filter__sort-hits-by {
-  @include typography-settings(-1, -1, -1);
+  @include typography-settings(-1, 2, -1);
   position: absolute;
   right: -2rem;
   top: 1.1rem;
@@ -9,7 +9,7 @@
   width: 100%;
   z-index: 10;
 
-  &::after{
+  &::after {
     background-color: #b5babd;
     bottom: 0;
     content: '';

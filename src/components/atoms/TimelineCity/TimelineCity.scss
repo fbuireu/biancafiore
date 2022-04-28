@@ -18,8 +18,9 @@
 }
 
 .timeline-city__year {
-  @include font-properties(primary, extra-light);
-  @include typography-settings(3, 3, 3);
+  @include typography-settings(3, 2, 3);
+  font-family: Literata, serif;
+  font-weight: 200;
   grid-area: TimelineCity-Year;
   text-align: center;
 }
@@ -30,12 +31,13 @@
 }
 
 .timeline-city__name {
-  @include font-properties(primary, extra-light);
-  @include typography-settings(5, 5, 5);
+  @include typography-settings(5, 2, 5);
+  font-family: Literata, serif;
+  font-weight: 200;
   grid-area: TimelineCity-Name;
 }
 
 .timeline-city__description {
-  @include font-properties(secondary);
+  font-family: Zilla Slab, sans-serif;
   grid-area: TimelineCity-Description;
 }

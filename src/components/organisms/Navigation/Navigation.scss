@@ -5,10 +5,9 @@
   background-color: color(neutral);
   display: flex;
   flex-flow: row wrap;
-  height: 50vh;
+  height: 100vh;
   justify-content: center;
   left: 0;
-  max-height: 45vh;
   max-width: 100vw;
   position: absolute;
   top: 0;
@@ -17,6 +16,10 @@
   width: 100%;
   z-index: 20;
 
+  @include breakpoint('small') {
+    height: 50vh;
+  }
+
   &.--is-visible {
     box-shadow: 0 .5rem .5rem -.5rem color(neutral);
     transform: translateY(0);
@@ -24,54 +27,108 @@
 }
 
 .navigation__wrapper__inner {
-  align-self: center;
+  align-self: start;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   margin-top: 2rem;
-  max-width: map-get($grid, 'large');
-  padding-bottom: 2rem;
+  padding: 2rem;
   width: 100%;
+
+  @include breakpoint('small') {
+    align-self: center;
+    flex-flow: row nowrap;
+    max-width: map-get($grid, 'large');
+    padding-top: 0;
+  }
 }
 
 .navigation__navbar {
-  padding: 0 5rem 5rem;
+  order: -1;
+  padding: 0;
   position: relative;
+  width: 100%;
 
   &::after {
     background-color: color(others, white);
+    bottom: 0;
     content: '';
-    height: 100%;
+    height: 1px;
     left: 0;
+    margin: 0 auto;
+    max-width: 100%;
     position: absolute;
-    top: 0;
-    width: 1px;
+    right: 0;
+    width: 100%;
+  }
+
+  @include breakpoint('small') {
+    order: 0;
+    padding: 0 5rem 5rem;
+
+    &::after {
+      background-color: color(others, white);
+      content: '';
+      height: 100%;
+      left: 0;
+      margin: inherit;
+      position: absolute;
+      top: 0;
+      width: 1px;
+    }
   }
 }
 
 .navigation__wrapper__body {
-  @include typography-settings(5, 5, 5);
-  @include font-properties(primary);
+  @include typography-settings(2, 2, 5);
   color: color(others, white);
-  max-width: 50%;
-  padding-right: 5rem;
+  font-family: Literata, serif;
+  margin-top: 1rem;
+  max-width: 100%;
+  padding-right: 0;
   position: relative;
-  text-align: end;
+  text-align: center;
   width: 100%;
+
+  @include breakpoint('small') {
+    margin-top: 0;
+    max-width: 50%;
+    padding-right: 5rem;
+    text-align: end;
+  }
 }
 
 .navigation__list {
-  @include typography-settings(1.5, 1.5, 1.5);
+  @include typography-settings(1, 2, 1);
   display: flex;
   flex-flow: column wrap;
   gap: 1rem;
   justify-content: space-between;
-  padding: 1rem 0;
+  padding: 2rem 0;
   text-align: start;
+
+  @include breakpoint('small') {
+    padding: 1rem 0;
+  }
+}
+
+.navigation__item {
+  display: flex;
+  justify-content: center;
+  order: -1;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+
+  @include breakpoint('small') {
+    justify-content: start;
+    order: 0;
+    text-align: inherit;
+  }
 }
 
 .navigation__item__link {
-  @include font-properties(primary);
   color: color(others, white);
+  font-family: Literata, serif;
   letter-spacing: 2px;
   position: relative;
   transition: all .3s ease;
@@ -81,8 +138,10 @@
       color: color(primary);
     }
   }
+
   &.--is-active {
-    @include font-properties(primary, bold);
     color: color(primary, primary-dark-1);
+    font-family: Literata, serif;
+    font-weight: bold;
   }
 }

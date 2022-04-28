@@ -14,7 +14,7 @@
 }
 
 .filter__search__input {
-  @include typography-settings(0);
+  @include typography-settings(0, 2, 0);
   border: 0;
   outline: none;
   position: relative;
@@ -25,7 +25,7 @@
   &:focus-within,
   &.--has-value {
     ~ .filter__search__label {
-      @include typography-settings(-2, -2, -2);
+      @include typography-settings(-2, 2, -2);
       top: -1rem;
     }
 
@@ -58,7 +58,7 @@
 }
 
 .filter__search__label {
-  @include typography-settings(-1, -1, -1);
+  @include typography-settings(-1, 2, -1);
   color: color(neutral, neutral-2);
   left: 0;
   position: absolute;

@@ -21,10 +21,10 @@
 }
 
 .recaptcha-input__error-message {
-  @include typography-settings(-2, -2, -2);
-  @include font-properties(secondary, bold);
+  @include typography-settings(-2, 2, -2);
   bottom: -2rem;
   color: color(error);
+  font-family: Zilla Slab, sans-serif;
   left: 0;
   position: absolute;
   right: 0;

@@ -22,7 +22,7 @@
   }
 
   .hit-card__title {
-    @include typography-settings(12, 7, 10);
+    @include typography-settings(12, 2, 10);
   }
 
   .hit-card-subtitle {
@@ -32,27 +32,27 @@
   }
 
   .hit-card-subtitle__author {
-    @include typography-settings(-1, -1, -1);
+    @include typography-settings(-1, 2, -1);
     color: color(primary);
     margin-right: 1rem;
     text-align: start;
   }
 
   .hit-card-subtitle__publish-date {
-    @include font-properties(primary);
-    @include typography-settings(-2, -2, -2);
+    @include typography-settings(-2, 2, -2);
+    font-family: Literata, serif;
     letter-spacing: .25rem;
     margin-top: .25rem;
     text-transform: uppercase;
   }
 
   .hit-card__summary {
-    @include font-properties(secondary);
+    font-family: Zilla Slab, sans-serif;
     grid-area: Article-Excerpt;
   }
 
   .hit-card__information__reading-time {
-    @include typography-settings(-3, -3, -3);
+    @include typography-settings(-3, 2, -3);
     margin-right: .5rem;
   }
 
@@ -63,13 +63,14 @@
   }
 
   .hit-card__information__tag__item {
-    @include typography-settings(-3, -3, -3);
-    @include font-properties(primary, bold);
+    @include typography-settings(-3, 2, -3);
     color: color(primary);
+    font-family: Literata, serif;
+    font-weight: bold;
   }
 
   .hit-card__cta {
-    @include font-properties(secondary);
+    font-family: Zilla Slab, sans-serif;
     grid-area: Article-Cta;
     margin-top: 1rem;
     position: relative;

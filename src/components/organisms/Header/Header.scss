@@ -12,6 +12,10 @@ header {
 
   &.--is-scrolling {
     box-shadow: 0 .125rem .375rem color(neutral, neutral-3);
+
+    &::after {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 120%, 0% 120%);
+    }
   }
 }
 
@@ -23,9 +27,7 @@ header {
   width: 100%;
 }
 
-.logo__link.--is-active {
-  .logo {
-    animation: to-front .5s forwards .3s;
-    fill: color(others, white);
-  }
+.logo__link.--is-active .logo {
+  animation: to-front .5s forwards .3s;
+  fill: color(others, white);
 }

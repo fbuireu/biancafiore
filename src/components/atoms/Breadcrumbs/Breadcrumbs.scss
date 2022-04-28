@@ -2,17 +2,13 @@
 @import '../../../styles/global/variables';
 
 .breadcrumbs {
-  display: flex;
-}
-
-.breadcrumbs {
   display: inline;
 }
 
 .breadcrumbs__list {
-  @include font-properties(tertiary);
-  @include typography-settings(-2, -2, -2);
+  @include typography-settings(-2, 2, -2);
   display: flex;
+  font-family: Montserrat, sans-serif;
   text-transform: uppercase;
 }
 
