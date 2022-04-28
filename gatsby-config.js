@@ -25,22 +25,6 @@ module.exports = {
     `gatsby-plugin-netlify-cms-paths`,
     `gatsby-plugin-provide-react`,
     {
-      resolve: `gatsby-plugin-google-fonts-v2`,
-      options: {
-        fonts: [
-          {
-            family: `Literata:wght@200;300;400;700`
-          },
-          {
-            family: `Zilla Slab:wght@300;400;700`
-          },
-          {
-            family: `Montserrat:wght@400`
-          }
-        ]
-      }
-    },
-    {
       resolve: `gatsby-plugin-react-svg`,
       options: {
         rule: {
