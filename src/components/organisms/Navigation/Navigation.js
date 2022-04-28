@@ -7,12 +7,12 @@ import { useNavigation } from '../../../utils/hooks/useNavigation';
 import { useOutsideClick } from '../../../utils/hooks/useOutsideClick';
 import './Navigation.scss';
 
-const Navigation = ({ isMenuActive, toggleMenuVisibility }) => {
+const Navigation = ({ isMenuActive, onClick }) => {
   const menuItems = useMenuItems();
   const navigation = useNavigation();
   const navigationReference = useRef(null);
 
-  const NAVIGATION_DATA = {
+  const navigationData = {
     description: navigation[0]?.node?.html,
     link: []
   };
@@ -21,19 +21,19 @@ const Navigation = ({ isMenuActive, toggleMenuVisibility }) => {
     let { frontmatter: { name } } = menuItem;
     let { node: { frontmatter: { menuItems } } } = navigation[0];
 
-    if (menuItems.includes(name)) NAVIGATION_DATA.link.push(menuItem);
+    if (menuItems.includes(name)) navigationData.link.push(menuItem);
 
-    return NAVIGATION_DATA;
+    return navigationData;
   });
 
-  useOutsideClick(navigationReference, () => isMenuActive && toggleMenuVisibility());
+  useOutsideClick(navigationReference, () => isMenuActive && onClick());
 
   return <div ref={navigationReference} className={`navigation__wrapper wrapper ${isMenuActive ? `--is-visible` : ``}`}>
     <div className={`navigation__wrapper__inner`}>
-      <Markdown className={`navigation__wrapper__body`}>{NAVIGATION_DATA.description}</Markdown>
+      <Markdown className={`navigation__wrapper__body`}>{navigationData.description}</Markdown>
       <nav className={`navigation__navbar`}>
         <ul className={`navigation__list`}>
-          {NAVIGATION_DATA.link.map(navigationElement => {
+          {navigationData.link.map(navigationElement => {
             let { frontmatter: { position, name }, fields: { slug } } = navigationElement;
 
             return <li key={position} className={`navigation__item`}>
@@ -54,7 +54,7 @@ const Navigation = ({ isMenuActive, toggleMenuVisibility }) => {
 
 Navigation.propTypes = {
   isMenuActive: PropTypes.bool.isRequired,
-  toggleMenuVisibility: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired
 };
 
 Navigation.defaultProps = {};
