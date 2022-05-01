@@ -6,7 +6,7 @@
   "author": "Ferran Buireu <fbuireu@gmail.com>",
   "dependencies": {
     "@amcharts/amcharts4": "^4.9.16",
-    "@amcharts/amcharts4-geodata": "^4.1.14",
+    "@amcharts/amcharts4-geodata": "^4.1.23",
     "@babel/core": "^7.9.0",
     "@deckdeckgo/highlight-code": "^2.3.1",
     "@hot-loader/react-dom": "^16.13.0",

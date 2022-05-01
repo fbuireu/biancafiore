@@ -106,10 +106,10 @@
     "@algolia/logger-common" "4.8.6"
     "@algolia/requester-common" "4.8.6"
 
-"@amcharts/amcharts4-geodata@^4.1.14":
-  version "4.1.19"
-  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4-geodata/-/amcharts4-geodata-4.1.19.tgz#aa36f673ea3563e3f5549645db8ff85736b7f2ce"
-  integrity sha512-y100J6mp8H95qfHPPmeAat8oC+VXJrpt+rnwOt554sEW6cFCWY6BKgPKL2dVlVbnz0U3dqNsyENOqXmp3Pu7vg==
+"@amcharts/amcharts4-geodata@^4.1.23":
+  version "4.1.23"
+  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4-geodata/-/amcharts4-geodata-4.1.23.tgz#a46a6a2b5650ae51f76e8b9543f63b8c756a13d7"
+  integrity sha512-/hFqTuc2SUB0tAgygc8yj1xvTUdddltI7/15fAT9L5XHGERgF8qAa+AisQQ0UMITvrWIr5awJupWE3vDTlWsjQ==
 
 "@amcharts/amcharts4@^4.9.16":
   version "4.10.16"
