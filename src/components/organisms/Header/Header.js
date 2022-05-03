@@ -1,16 +1,15 @@
 import { Link } from 'gatsby-plugin-intl';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Logo from '../../../assets/svg-components/logo.svg';
+import useBoolean from '../../../utils/hooks/useBoolean';
 import { useScrollPosition } from '../../../utils/hooks/useScrollPosition';
 import HamburgerMenu from '../../atoms/HamburgerMenu/HamburgerMenu';
 import Navigation from '../Navigation/Navigation';
 import './Header.scss';
 
 const Header = () => {
-  const [isMenuActive, setIsMenuActive] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false);
-
-  const toggleMenuVisibility = () => setIsMenuActive(!isMenuActive);
+  const [isScrolling, { toggle: setIsScrolling }] = useBoolean();
+  const [isMenuActive, { toggle: toggleMenu }] = useBoolean();
 
   useEffect(() => {
     if (isMenuActive) document.documentElement.classList.add(`--is-menu-open`);
@@ -30,8 +29,8 @@ const Header = () => {
       <Link className={`logo__link ${isMenuActive ? `--is-active` : ``}`} to={`/`}>
         <Logo className={`logo`} />
       </Link>
-      <HamburgerMenu onClick={toggleMenuVisibility} isMenuActive={isMenuActive} />
-      <Navigation onClick={toggleMenuVisibility} isMenuActive={isMenuActive} />
+      <HamburgerMenu onClick={toggleMenu} isMenuActive={isMenuActive} />
+      <Navigation onClick={toggleMenu} isMenuActive={isMenuActive} />
     </section>
   </header>;
 };

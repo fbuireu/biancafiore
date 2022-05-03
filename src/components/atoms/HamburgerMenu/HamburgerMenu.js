@@ -3,7 +3,8 @@ import Hamburger from '../../../assets/svg-components/menu.svg';
 import './HamburgerMenu.scss';
 
 const HamburgerMenu = ({ onClick, isMenuActive }) => {
-  return <Hamburger className={`hamburger-menu ${isMenuActive ? `--is-active` : ``}`} onClick={onClick} />;
+  return <Hamburger className={`hamburger-menu ${isMenuActive ? `--is-active` : ``}`}
+                    onClick={onClick} />;
 };
 
 HamburgerMenu.propTypes = {
