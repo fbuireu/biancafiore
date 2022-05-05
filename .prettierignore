@@ -1,4 +1,4 @@
-.cache
+.cache/
 package.json
 yarn.lock
 public
