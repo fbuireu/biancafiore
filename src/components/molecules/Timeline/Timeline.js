@@ -1,14 +1,12 @@
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import 'swiper/components/navigation/navigation.min.css';
-import SwiperCore, { Navigation } from 'swiper/core';
+import { Navigation } from 'swiper/core';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper.min.css';
 import 'swiper/swiper.scss';
 import TimelineCity from '../../atoms/TimelineCity/TimelineCity';
 import './Timeline.scss';
-
-SwiperCore.use([Navigation]);
 
 const Timeline = ({ title, years, findSelectedCityNameByIndex, selectedCityIndex }) => {
   const [swiperInstance, setSwiperInstance] = useState(null);
@@ -25,6 +23,7 @@ const Timeline = ({ title, years, findSelectedCityNameByIndex, selectedCityIndex
   const SLIDER_PARAMETERS = {
     navigation: true,
     loop: false,
+    modules: [Navigation],
     centeredSlides: true,
     slidesPerView: 3,
     initialSlide: selectedCityIndex,
