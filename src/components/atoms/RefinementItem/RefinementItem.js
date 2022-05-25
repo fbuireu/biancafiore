@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { connectRefinementList } from 'react-instantsearch-dom';
 import './RefinementItem.scss';
 
-const CustomRefinementItem = ({ items, refine, selectRefinement, queryStringCriteria, attribute, queryString }) => {
-  const [isActiveRefinement, setIsActiveRefinements] = useState([]);
+const CustomRefinementItem = ({ items, refine, selectRefinement, queryStringCriteria, queryString }) => {
+  const [activeRefinements, setActiveRefinements] = useState([]);
   let isRefinementSelected = false;
 
   useEffect(() => {
@@ -16,14 +16,14 @@ const CustomRefinementItem = ({ items, refine, selectRefinement, queryStringCrit
 
   const handleClick = ({ event, value: { value }, index }) => {
     event.preventDefault();
-    let isSelectingMoreRefinements = !isActiveRefinement.includes(index);
+    let isSelectingMoreRefinements = !activeRefinements.includes(index);
 
     if (isSelectingMoreRefinements) {
-      setIsActiveRefinements(isActiveRefinement => [...isActiveRefinement, index]);
+      setActiveRefinements(isActiveRefinement => [...isActiveRefinement, index]);
       isRefinementSelected = true;
     } else {
-      setIsActiveRefinements(isActiveRefinement.filter(item => item !== index));
-      isRefinementSelected = isActiveRefinement.length - 1 !== 0;
+      setActiveRefinements(activeRefinements.filter(item => item !== index));
+      isRefinementSelected = activeRefinements.length - 1 !== 0;
     }
 
     selectRefinement(isRefinementSelected);
@@ -35,7 +35,7 @@ const CustomRefinementItem = ({ items, refine, selectRefinement, queryStringCrit
       {items.map((item, index) => {
         return <li
           key={item.label}
-          className={`refinement-list__item ${isActiveRefinement.includes(index) ? `--is-selected` : ``} ${item.label === (queryStringCriteria && queryStringCriteria[queryString]) ? `--is-locked` : ``}`}
+          className={`refinement-list__item ${activeRefinements.includes(index) ? `--is-selected` : ``} ${item.label === (queryStringCriteria && queryStringCriteria[queryString]) ? `--is-locked` : ``}`}
           onClick={event => handleClick({ event: event, value: item, index: index })}
         >
           <label className={`refinement-list__item__label`}>
