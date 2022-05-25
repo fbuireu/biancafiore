@@ -20,6 +20,7 @@ body {
   }
 
   @include breakpoint('small') {
+    scrollbar-gutter: unset;
     &.--is-menu-open {
       overflow: hidden auto;
     }
