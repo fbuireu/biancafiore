@@ -26,7 +26,7 @@ const Navigation = ({ isMenuActive, onClick }) => {
     return navigationData;
   });
 
-  useOutsideClick(navigationReference, () => isMenuActive && onClick());
+  useOutsideClick(navigationReference, () => isMenuActive && onClick);
 
   return <div ref={navigationReference} className={`navigation__wrapper wrapper ${isMenuActive ? `--is-visible` : ``}`}>
     <div className={`navigation__wrapper__inner`}>
