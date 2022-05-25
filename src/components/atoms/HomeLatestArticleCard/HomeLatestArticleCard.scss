@@ -8,11 +8,15 @@
 .home__latest-articles__item__card {
   color: color(others, white);
   display: grid;
-  grid: 'HomeHomeLatestArticle-Title HomeHomeLatestArticle-Title' 1fr
+  grid: 'HomeLatestArticle-Image HomeLatestArticle-Image' 1fr
   'HomeLatestArticle-Title HomeLatestArticle-Title' max-content
   'HomeLatestArticle-Author HomeLatestArticle-Date' auto
   / max-content 1fr;
   text-align: start;
+  gap: .5rem;
+  @include breakpoint('medium') {
+    gap: .25rem;
+  }
 }
 
 .home__latest-articles__item:not(:last-child) {
@@ -20,13 +24,23 @@
 }
 
 .home__latest-articles__item__image {
-  grid-area: HomeHomeLatestArticle-Title;
+  aspect-ratio: 2;
+  grid-area: HomeLatestArticle-Image;
+
+  @include breakpoint('medium') {
+    aspect-ratio: auto;
+  }
 }
 
 .home__latest-articles__item__title {
-  @include typography-settings(1, 2, 2);
+  @include typography-settings(3, 2, 2);
   font-weight: normal;
   grid-area: HomeLatestArticle-Title;
+
+  @include breakpoint('medium') {
+    @include typography-settings(1, 2, 2);
+
+  }
 }
 
 .home__latest-articles__item__tag__item {
@@ -37,6 +51,7 @@
 .home__latest-articles__author,
 .home__latest-articles__date {
   font-family: Zilla Slab, sans-serif;
+  font-weight: 600;
 }
 
 .home__latest-articles__author {
@@ -45,6 +60,7 @@
 }
 
 .home__latest-articles__date {
+  font-weight: 600;
   grid-area: HomeLatestArticle-Date;
   margin-left: .25rem;
 }
