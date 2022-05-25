@@ -16,7 +16,7 @@ testimonials:
       image: /assets/images/f6tptx3r_400x400.jpg
       description: Front-end developer
     - author: Ferran Buireu 2
-      quote: La més guapa de totes 2
+      quote: yada yada yarada
       image: /assets/images/f6tptx3r_400x400.jpg
       description: Front-end developer
 myWork:
