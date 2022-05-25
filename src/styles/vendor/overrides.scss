@@ -61,7 +61,25 @@ g [aria-labelledby="id-79-title"] {
   display: none;
 }
 
-.handleContainer, .DefaultBackground {
+.swiper-button-prev,
+.swiper-button-next {
+  background-color: color(neutral);
+  mask: url('../assets/images/svg/traditional-arrow-right.svg') no-repeat center center / 100% auto;
+  -webkit-tap-highlight-color: transparent;
+  transform: translateY(50%);
+  top: 125%;
+
+  @include breakpoint('extra-small') {
+    top: 105%;
+  }
+}
+
+.swiper-button-prev {
+  transform: translateY(50%) rotate(180deg);
+}
+
+.handleContainer,
+.DefaultBackground {
   height: .5rem !important;
 }
 
