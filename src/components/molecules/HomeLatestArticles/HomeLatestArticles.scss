@@ -9,6 +9,19 @@
   .swiper-wrapper {
     padding: 3rem 0;
   }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    background-color: color(others, white);
+  }
+}
+
+.home__latest-articles__slider {
+  margin: 0 1rem;
+
+  @include breakpoint('medium') {
+    margin: 0;
+  }
 }
 
 .home__latest-articles__list {
