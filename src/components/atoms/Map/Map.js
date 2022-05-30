@@ -340,38 +340,34 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
 
     mapConfiguration.mapCities.forEach(city => {
       city.events.on(`hit`, element => {
+        // todo: extract method
         origin = previousDestinationReference.current ?? initialCity;
         destination = element.target;
         previousOriginReference.current = origin;
         previousDestinationReference.current = destination;
+        let isValidTrip = origin && destination;
 
-        findSelectedCityIndexByName({ selectedCity: destination.name });
+        if (isValidTrip) {
+          findSelectedCityIndexByName({ selectedCity: destination.name });
 
-        if (destination !== origin) {
-          currentLineReference.current === 0 && currentLineReference.current++;
-          if (currentLineReference.current > 1) eraseLine(previousLineReference.current);
+          if (destination !== origin) {
+            if (currentLineReference.current > 1) eraseLine(previousLineReference.current);
 
-          const line = addLine(origin, destination);
+            const line = addLine(origin, destination);
+            flyPlane({
+              currentLine: currentLineReference.current,
+              planeContainer,
+              lineSeries,
+              planeShadowContainer,
+              shadowLineSeries,
+              plane,
+              planeShadow
+            });
 
-          planeContainer = planeContainerReference.current;
-          lineSeries = lineSeriesReference.current;
-          planeShadowContainer = planeShadowReference.current;
-          shadowLineSeries = shadowLineSeriesReference.current;
-          plane = planeReference.current;
-          planeShadow = planeShadowReference.current;
-
-          flyPlane({
-            currentLine: currentLineReference.current,
-            planeContainer,
-            lineSeries,
-            planeShadowContainer,
-            shadowLineSeries,
-            plane,
-            planeShadow
-          });
-
-          previousLineReference.current = line;
-          currentLineReference.current++;
+            previousDestinationReference.current = destination;
+            previousLineReference.current = line;
+            currentLineReference.current++;
+          }
         }
       });
     });
@@ -382,6 +378,7 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
       let isValidTrip = origin && destination;
 
       if (isValidTrip) {
+        findSelectedCityIndexByName({ selectedCity: destination.name });
         if (destination !== origin) {
           if (currentLineReference.current > 1) eraseLine(previousLineReference.current);
 
@@ -396,9 +393,10 @@ const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
             planeShadow
           });
 
-          previousDestinationReference.current = mapConfiguration.mapCities.find(({ countryIsoCode }) => countryIsoCode === country.target.dataItem.dataContext.id);
+          previousDestinationReference.current = destination;
           previousLineReference.current = line;
           currentLineReference.current++;
+          console.log(previousDestinationReference.current);
         }
       }
     });
