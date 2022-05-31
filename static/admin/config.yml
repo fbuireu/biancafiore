@@ -1,7 +1,7 @@
 backend:
   name: git-gateway
   repo: fbuireu/biancafiore
-  branch: master
+  branch: main
   squash_merges: true
   commit_messages:
     create: 'docs(content): {{collection}} "{{slug}}" created'
