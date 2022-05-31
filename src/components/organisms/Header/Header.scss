@@ -2,7 +2,8 @@
 @import '../../../styles/global/functions';
 
 header {
-  background: color(others, white);
+  backdrop-filter: blur(1.25rem);
+  background: rgba(color(others, white), .75);
   margin-inline: auto;
   padding: 1.5rem 0;
   position: fixed;
