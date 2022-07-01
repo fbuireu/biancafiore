@@ -93,7 +93,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.1.0",
     "netlify-plugin-a11y": "^0.0.12",
-    "prettier": "^1.19.1",
+    "prettier": "^2.7.1",
     "react-test-renderer": "^16.13.1"
   },
   "keywords": [
