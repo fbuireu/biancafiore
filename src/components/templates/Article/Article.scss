@@ -2,7 +2,7 @@
 
 .article__wrapper {
   margin-top: 1rem;
-  max-width: map-get($grid, 'small');
+  max-width: map-get($grid, article);
 
   article {
     grid-area: Article;

@@ -8,6 +8,12 @@
 
   .swiper-wrapper {
     padding: 3rem 0;
+    -webkit-mask: linear-gradient(90deg, transparent 0, black 15% 85%, transparent) 0 50% / 100% calc(100% - (2 * 1.25rem)) no-repeat,
+    linear-gradient(0deg, black, black) 50% 0 / 100% 1.25rem no-repeat,
+    linear-gradient(0deg, black, black) 50% 100% / 100% 1.25rem no-repeat;
+    mask: linear-gradient(90deg, transparent 0, black 15% 85%, transparent) 0 50% / 100% calc(100% - (2 * 1.25rem)) no-repeat,
+    linear-gradient(0deg, black, black) 50% 0 / 100% 1.25rem no-repeat,
+    linear-gradient(0deg, black, black) 50% 100% / 100% 1.25rem no-repeat;
   }
 
   .swiper-button-prev,
