@@ -1,27 +1,33 @@
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { connectRange } from 'react-instantsearch-dom';
-import Rheostat from 'rheostat';
-import 'rheostat/css/rheostat.css';
-import 'rheostat/initialize';
-import './RangeSlider.scss';
+import PropTypes from 'prop-types'
+import React, { useEffect, useState } from 'react'
+import { connectRange } from 'react-instantsearch-dom'
+import Rheostat from 'rheostat'
+import 'rheostat/css/rheostat.css'
+import 'rheostat/initialize'
+import './RangeSlider.scss'
 
-const CustomRangeSlider = ({ min, max, currentRefinement, canRefine, refine }) => {
-  const getMin= min => min;
-  const getMax= max => max;
+const CustomRangeSlider = ({
+  min,
+  max,
+  currentRefinement,
+  canRefine,
+  refine,
+}) => {
+  const getMin = min => min
+  const getMax = max => max
 
-  const [minState, setMinState] = useState(getMin);
-  const [maxState, setMaxState] = useState(getMax);
+  const [minState, setMinState] = useState(getMin)
+  const [maxState, setMaxState] = useState(getMax)
 
   useEffect(function setMinAndMaxConstraints () {
     if (canRefine) {
-      setMinState(currentRefinement.min);
-      setMaxState(currentRefinement.max);
+      setMinState(currentRefinement.min)
+      setMaxState(currentRefinement.max)
     }
 
-  }, [currentRefinement.min, currentRefinement.max, canRefine]);
+  }, [currentRefinement.min, currentRefinement.max, canRefine])
 
-  if (min === max) return null;
+  if (min === max) return null
 
   const onChange = ({ values: [min, max] }) => {
     if (currentRefinement.min !== min || currentRefinement.max !== max) refine({ min, max });

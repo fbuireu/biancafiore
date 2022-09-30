@@ -1,29 +1,29 @@
-import { Link } from 'gatsby-plugin-intl';
-import Markdown from 'markdown-to-jsx';
-import PropTypes from 'prop-types';
-import { useRef } from 'react';
-import { useMenuItems } from '../../../utils/hooks/useMenuItems';
-import { useNavigation } from '../../../utils/hooks/useNavigation';
-import { useOutsideClick } from '../../../utils/hooks/useOutsideClick';
-import './Navigation.scss';
+import { Link } from 'gatsby-plugin-react-i18next'
+import Markdown from 'markdown-to-jsx'
+import PropTypes from 'prop-types'
+import React, { useRef } from 'react'
+import { useMenuItems } from '../../../utils/hooks/useMenuItems'
+import { useNavigation } from '../../../utils/hooks/useNavigation'
+import { useOutsideClick } from '../../../utils/hooks/useOutsideClick'
+import './Navigation.scss'
 
 const Navigation = ({ isMenuActive, onClick }) => {
-  const menuItems = useMenuItems();
-  const navigation = useNavigation();
-  const navigationReference = useRef(null);
+  const menuItems = useMenuItems()
+  const navigation = useNavigation()
+  const navigationReference = useRef(null)
 
   const navigationData = {
     description: navigation[0]?.node?.html,
-    link: []
-  };
+    link: [],
+  }
 
   menuItems.map(({ node: menuItem }) => {
-    let { frontmatter: { name } } = menuItem;
-    let { node: { frontmatter: { menuItems } } } = navigation[0];
+    let { frontmatter: { name } } = menuItem
+    let { node: { frontmatter: { menuItems } } } = navigation[0]
 
-    if (menuItems.includes(name)) navigationData.link.push(menuItem);
+    if (menuItems.includes(name)) navigationData.link.push(menuItem)
 
-    return navigationData;
+    return navigationData
   });
 
   useOutsideClick(navigationReference, () => isMenuActive && onClick);

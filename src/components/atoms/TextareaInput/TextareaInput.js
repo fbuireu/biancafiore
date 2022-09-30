@@ -1,8 +1,21 @@
-import PropTypes from 'prop-types';
-import './TextareaInput.scss';
+import PropTypes from 'prop-types'
+import './TextareaInput.scss'
+import React from 'react'
 
-const TextareaInput = ({ name, label, placeholder, value, isValid, errorMessage, onChange, onBlur }) => {
-  return <div className={`textarea-input__wrapper ${value ? `--has-value`:``} ${!isValid ? `--is-invalid` : ``}`}>
+const TextareaInput = ({
+  name,
+  label,
+  placeholder,
+  value,
+  isValid,
+  errorMessage,
+  onChange,
+  onBlur,
+}) => {
+  return <div
+    className={`textarea-input__wrapper ${value ? `--has-value` : ``} ${!isValid
+      ? `--is-invalid`
+      : ``}`}>
     <label className={`textarea-input__label`} htmlFor={name}>
       <textarea className={`textarea-input`}
                 name={name}

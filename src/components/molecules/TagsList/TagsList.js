@@ -1,16 +1,17 @@
-import { Link } from 'gatsby';
-import { useIntl } from 'gatsby-plugin-intl';
-import PropTypes from 'prop-types';
-import slugify from '../../../utils/slugify/slugify';
+import { Link } from 'gatsby'
+import { useI18next } from 'gatsby-plugin-react-i18next'
+import PropTypes from 'prop-types'
+import slugify from '../../../utils/slugify/slugify'
+import React from 'react'
 
 const TagsList = ({ tags }) => {
-  const { locale } = useIntl();
+  const { i18n: { language: locale } } = useI18next()
 
   return <ul className={`tags__list`}>
     {tags.map(({ name: tag, type }, index) => {
-      let previousFirstLetter, currentFirstLetter;
+      let previousFirstLetter, currentFirstLetter
       if (index < tags.length) {
-        currentFirstLetter = tags[index].name.charAt(0);
+        currentFirstLetter = tags[index].name.charAt(0)
         if (index > 0) {
           previousFirstLetter = tags[index - 1].name.charAt(0);
         }

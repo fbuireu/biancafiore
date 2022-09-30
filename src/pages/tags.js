@@ -1,24 +1,26 @@
-import { graphql } from 'gatsby';
-import PropTypes from 'prop-types';
-import SEO from '../components/atoms/SEO/SEO';
-import TagsJumbotron from '../components/molecules/TagsJumbotron/TagsJumbotron';
-import TagsList from '../components/molecules/TagsList/TagsList';
-import Layout from '../components/templates/Layout/Layout';
+import { graphql } from 'gatsby'
+import PropTypes from 'prop-types'
+import SEO from '../components/atoms/SEO/SEO'
+import TagsJumbotron from '../components/molecules/TagsJumbotron/TagsJumbotron'
+import TagsList from '../components/molecules/TagsList/TagsList'
+import Layout from '../components/templates/Layout/Layout'
+import React from 'react'
 
 const Tags = ({
   location,
-  data: { allTags: { edges: tags } }
+  data: { allTags: { edges: tags } },
 }) => {
-  tags = tags.flatMap(({ node: { frontmatter } }) => frontmatter).sort((a, b) => a.name.localeCompare(b.name));
+  tags = tags.flatMap(({ node: { frontmatter } }) => frontmatter).
+    sort((a, b) => a.name.localeCompare(b.name))
 
   return <Layout>
-    <SEO title="Tag" />
+    <SEO title="Tag"/>
     <section className={`wrapper tags__wrapper`}>
-      <TagsJumbotron location={location} />
-      <TagsList tags={tags} />
+      <TagsJumbotron location={location}/>
+      <TagsList tags={tags}/>
     </section>
-  </Layout>;
-};
+  </Layout>
+}
 
 export const tagsData = graphql`
     query getAllTags {

@@ -1,24 +1,30 @@
-import { Link, useIntl } from 'gatsby-plugin-intl';
-import PropTypes from 'prop-types';
-import { Highlight } from 'react-instantsearch-dom';
-import { localizeDate } from '../../../utils/localizeDate/localizeDate';
-import slugify from '../../../utils/slugify/slugify';
-import HitTitle from '../../atoms/HitTitle/HitTitle';
-import Summary from '../../atoms/Summary/Summary';
-import './SimpleArticleCard.scss';
+import { Link, useI18next } from 'gatsby-plugin-react-i18next'
+import PropTypes from 'prop-types'
+import { Highlight } from 'react-instantsearch-dom'
+import { localizeDate } from '../../../utils/localizeDate/localizeDate'
+import slugify from '../../../utils/slugify/slugify'
+import HitTitle from '../../atoms/HitTitle/HitTitle'
+import Summary from '../../atoms/Summary/Summary'
+import './SimpleArticleCard.scss'
+import React from 'react'
 
 const SimpleArticleCard = article => {
-  const { locale } = useIntl();
+  const { i18n: { language: locale } } = useI18next()
 
-  return <article className={`simple-hit-card__item ${article?.content?.isFeaturedArticle ? `--is-featured` : ``}`}>
+  return <article
+    className={`simple-hit-card__item ${article?.content?.isFeaturedArticle
+      ? `--is-featured`
+      : ``}`}>
     <div className={`hit-card__information`}>
-      <span className={`hit-card__information__reading-time`}>{article.content.readingTime} min.</span>
+      <span
+        className={`hit-card__information__reading-time`}>{article.content.readingTime} min.</span>
       <ul className={`hit-card__information__tags__list`}>
         {article.content.tags.map((tag, index) => (
           <li className={`hit-card__information__tag__item`} key={tag}>
             <Link to={`/tags/${slugify(tag)}`}
                   className={`hit-card__information__tag__item__link`}>
-              #<Highlight attribute={`content.tags[${index}]`} hit={article} tagName={`mark`} />
+              #<Highlight attribute={`content.tags[${index}]`} hit={article}
+                          tagName={`mark`}/>
             </Link>
           </li>
         ))}

@@ -1,19 +1,20 @@
-import Markdown from 'markdown-to-jsx';
-import PropTypes from 'prop-types';
-import SwiperCore, { Navigation } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper.scss';
-import Testimonial from '../../atoms/Testimonial/Testimonial';
-import './Testimonials.scss';
+import Markdown from 'markdown-to-jsx'
+import PropTypes from 'prop-types'
+import SwiperCore, { Navigation } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import Testimonial from '../../atoms/Testimonial/Testimonial'
+import './Testimonials.scss'
+import 'swiper/css'
+import React from 'react'
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation])
 
 const SLIDER_PARAMETERS = {
   loop: true,
   navigation: true,
   autoplay: {
     delay: 5000,
-    disableOnInteraction: true
+    disableOnInteraction: true,
   },
   centeredSlides: true,
   keyboard: {

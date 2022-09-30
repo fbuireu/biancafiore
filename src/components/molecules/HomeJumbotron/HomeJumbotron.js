@@ -1,10 +1,16 @@
-import Img from 'gatsby-image';
-import Markdown from 'markdown-to-jsx';
-import PropTypes from 'prop-types';
-import Tilt from 'react-parallax-tilt';
-import './HomeJumbotron.scss';
+import { GatsbyImage } from 'gatsby-plugin-image'
+import Markdown from 'markdown-to-jsx'
+import PropTypes from 'prop-types'
+import Tilt from 'react-parallax-tilt'
+import './HomeJumbotron.scss'
+import React from 'react'
 
-const HomeJumbotron = ({ welcomeTextLeft, welcomeTextRight, welcomeDescription, welcomeImage: bianca }) => (
+const HomeJumbotron = ({
+  welcomeTextLeft,
+  welcomeTextRight,
+  welcomeDescription,
+  welcomeImage: bianca,
+}) => (
   <section className={`home__jumbotron__wrapper wrapper`}>
     <div className={`home__jumbotron__text-left`}>
       <Markdown className={`home__jumbotron__text-left__header`}
@@ -14,7 +20,7 @@ const HomeJumbotron = ({ welcomeTextLeft, welcomeTextRight, welcomeDescription, 
     </div>
     <div className={`home__jumbotron__text-center`}>
       <Tilt gyroscope={true} tiltMaxAngleX={3} tiltMaxAngleY={5}>
-        <Img fixed={bianca?.childImageSharp?.fixed} />
+        <GatsbyImage image={bianca?.childImageSharp?.gatsbyImageData}/>
       </Tilt>
     </div>
     <div className={`home__jumbotron__text-right`}>

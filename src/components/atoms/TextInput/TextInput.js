@@ -1,8 +1,22 @@
-import PropTypes from 'prop-types';
-import './TextInput.scss';
+import PropTypes from 'prop-types'
+import './TextInput.scss'
+import React from 'react'
 
-const TextInput = ({ name, type, label, placeholder, value, isValid, errorMessage, onChange, onBlur }) => {
-  return <div className={`text-input__wrapper ${!isValid ? `--is-invalid` : ``} ${value ? `--has-value`:``} ${type === `hidden` ? `--is-hidden` : ``}`}>
+const TextInput = ({
+  name,
+  type,
+  label,
+  placeholder,
+  value,
+  isValid,
+  errorMessage,
+  onChange,
+  onBlur,
+}) => {
+  return <div
+    className={`text-input__wrapper ${!isValid ? `--is-invalid` : ``} ${value
+      ? `--has-value`
+      : ``} ${type === `hidden` ? `--is-hidden` : ``}`}>
     <label className={`text-input__label`} htmlFor={name}>
       <input className={`text-input`}
              type={type}

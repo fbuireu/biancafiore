@@ -1,10 +1,11 @@
-import { graphql, useStaticQuery } from 'gatsby';
-import PropTypes from 'prop-types';
-import '../../../styles/styles.scss';
-import Footer from '../../atoms/Footer/Footer';
-import Header from '../../organisms/Header/Header';
+import { graphql, useStaticQuery } from 'gatsby'
+import PropTypes from 'prop-types'
+import '../../../styles/styles.scss'
+import Footer from '../../atoms/Footer/Footer'
+import Header from '../../organisms/Header/Header'
+import React from 'react'
 
-const BLOG_PATH = `/blog`;
+const BLOG_PATH = `/blog`
 
 const Layout = ({ children, location = {} }) => {
   const data = useStaticQuery(graphql`

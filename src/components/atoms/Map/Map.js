@@ -1,28 +1,28 @@
-import am4geodata_worldHigh from '@amcharts/amcharts4-geodata/worldHigh';
-import * as am4core from '@amcharts/amcharts4/core';
-import * as am4maps from '@amcharts/amcharts4/maps';
-import am4themes_animated from '@amcharts/amcharts4/themes/animated';
-import PropTypes from 'prop-types';
-import { useEffect, useRef } from 'react';
-import './Map.scss';
+import am4geodata_worldHigh from '@amcharts/amcharts4-geodata/worldHigh'
+import * as am4core from '@amcharts/amcharts4/core'
+import * as am4maps from '@amcharts/amcharts4/maps'
+import am4themes_animated from '@amcharts/amcharts4/themes/animated'
+import PropTypes from 'prop-types'
+import React, { useEffect, useRef } from 'react'
+import './Map.scss'
 
-am4core.useTheme(am4themes_animated);
+am4core.useTheme(am4themes_animated)
 
 const Map = ({ cities, findSelectedCityIndexByName, selectedCityName }) => {
-  const mapReference = useRef(null);
-  const previousDestinationReference = useRef();
-  const previousOriginReference = useRef();
-  const previousLineReference = useRef();
+  const mapReference = useRef(null)
+  const previousDestinationReference = useRef()
+  const previousOriginReference = useRef()
+  const previousLineReference = useRef()
 
-  const currentLineReference = useRef(0);
-  const planeContainerReference = useRef();
-  const lineSeriesReference = useRef();
-  const planeShadowContainerReference = useRef();
-  const shadowLineSeriesReference = useRef();
-  const planeReference = useRef();
-  const planeShadowReference = useRef();
-  const mapCitiesReference = useRef();
-  const addLineReference = useRef();
+  const currentLineReference = useRef(0)
+  const planeContainerReference = useRef()
+  const lineSeriesReference = useRef()
+  const planeShadowContainerReference = useRef()
+  const shadowLineSeriesReference = useRef()
+  const planeReference = useRef()
+  const planeShadowReference = useRef()
+  const mapCitiesReference = useRef()
+  const addLineReference = useRef()
 
   const mapConfiguration = {
     exclude: `AQ`,

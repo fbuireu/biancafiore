@@ -1,15 +1,16 @@
-import PropTypes from 'prop-types';
-import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
-import ArrowUp from '../../../assets/svg-components/arrow-up.svg';
-import { useWindowSize } from '../../../utils/hooks/useWindowSize';
-import './ReadingProgress.scss';
+import PropTypes from 'prop-types'
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar'
+import ArrowUp from '../../../assets/svg-components/arrow-up.svg'
+import { useWindowSize } from '../../../utils/hooks/useWindowSize'
+import './ReadingProgress.scss'
+import React from 'react'
 
 const scrollToTop = () => {
   window.scroll({
     top: 0,
-    behavior: `smooth`
-  });
-};
+    behavior: `smooth`,
+  })
+}
 
 const ReadingProgress = ({
   scroll,

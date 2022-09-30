@@ -1,27 +1,33 @@
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { PROJECTS_SEARCH_PARAMETERS } from '../../../utils/algolia/config/projectsSearchParameters';
-import { PROJECTS_SORT_BY } from '../../../utils/algolia/config/projectsSortBy';
-import { TAGS_SEARCH_PARAMETERS } from '../../../utils/algolia/config/tagsSearchParameters';
-import { TAGS_SORT_BY } from '../../../utils/algolia/config/tagsSortBy';
-import Breadcrumbs from '../../atoms/Breadcrumbs/Breadcrumbs';
-import SEO from '../../atoms/SEO/SEO';
-import AlgoliaWrapper from '../../organisms/AlgoliaWrapper/AlgoliaWrapper';
-import ArticleHitCards from '../../organisms/ArticleHitCards/ArticleHitCards';
-import ProjectHitCards from '../../organisms/ProjectHitCards/ProjectHitCards';
-import Layout from '../Layout/Layout';
-import './Tag.scss';
+import PropTypes from 'prop-types'
+import React, { useEffect, useState } from 'react'
+import {
+  PROJECTS_SEARCH_PARAMETERS,
+} from '../../../utils/algolia/config/projectsSearchParameters'
+import { PROJECTS_SORT_BY } from '../../../utils/algolia/config/projectsSortBy'
+import {
+  TAGS_SEARCH_PARAMETERS,
+} from '../../../utils/algolia/config/tagsSearchParameters'
+import { TAGS_SORT_BY } from '../../../utils/algolia/config/tagsSortBy'
+import Breadcrumbs from '../../atoms/Breadcrumbs/Breadcrumbs'
+import SEO from '../../atoms/SEO/SEO'
+import AlgoliaWrapper from '../../organisms/AlgoliaWrapper/AlgoliaWrapper'
+import ArticleHitCards from '../../organisms/ArticleHitCards/ArticleHitCards'
+import ProjectHitCards from '../../organisms/ProjectHitCards/ProjectHitCards'
+import Layout from '../Layout/Layout'
+import './Tag.scss'
 
-const CRITERIA = `criteria`;
+const CRITERIA = `criteria`
 
 const Tag = ({ location, pageContext: { tag } }) => {
-  const [queryStringCriteria, setQueryStringCriteria] = useState(null);
-  const isProject = tag.key.toLowerCase().includes(`project`);
+  const [queryStringCriteria, setQueryStringCriteria] = useState(null)
+  const isProject = tag.key.toLowerCase().includes(`project`)
 
   const FILTER_PARAMETERS = {
-    SEARCH_PARAMETERS: isProject ? PROJECTS_SEARCH_PARAMETERS : TAGS_SEARCH_PARAMETERS,
-    SORT_BY: isProject ? PROJECTS_SORT_BY : TAGS_SORT_BY
-  };
+    SEARCH_PARAMETERS: isProject
+      ? PROJECTS_SEARCH_PARAMETERS
+      : TAGS_SEARCH_PARAMETERS,
+    SORT_BY: isProject ? PROJECTS_SORT_BY : TAGS_SORT_BY,
+  }
 
   useEffect(() => {
     if (location?.search) {

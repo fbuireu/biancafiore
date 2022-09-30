@@ -1,27 +1,30 @@
-import { graphql } from 'gatsby';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import Map from '../components/atoms/Map/Map';
-import SEO from '../components/atoms/SEO/SEO';
-import AboutMeJumbotron from '../components/molecules/AboutMeJumbotron/AboutMeJumbotron';
-import Timeline from '../components/molecules/Timeline/Timeline';
-import AboutMeLatestArticles from '../components/organisms/AboutMeLatestArticles/AboutMeLatestArticles';
-import Layout from '../components/templates/Layout/Layout';
+import { graphql } from 'gatsby'
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
+import Map from '../components/atoms/Map/Map'
+import SEO from '../components/atoms/SEO/SEO'
+import AboutMeJumbotron
+  from '../components/molecules/AboutMeJumbotron/AboutMeJumbotron'
+import Timeline from '../components/molecules/Timeline/Timeline'
+import AboutMeLatestArticles
+  from '../components/organisms/AboutMeLatestArticles/AboutMeLatestArticles'
+import Layout from '../components/templates/Layout/Layout'
 
 const AboutMe = ({
   location,
   data: {
     aboutMe: {
-      edges: [{
-        node: {
-          frontmatter: {
-            jumbotron,
-            map: { cities: mapCities },
-            timeline: { title, years },
-            latestArticles: latestArticlesData
-          }
-        }
-      }]
+      edges: [
+        {
+          node: {
+            frontmatter: {
+              jumbotron,
+              map: { cities: mapCities },
+              timeline: { title, years },
+              latestArticles: latestArticlesData,
+            },
+          },
+        }],
     }, citiesDetails
   }
 }) => {
@@ -77,76 +80,73 @@ const AboutMe = ({
   </Layout>;
 };
 
-export const aboutMeData = graphql`
-    query getAboutMeData {
-        aboutMe: allMarkdownRemark(
-            filter: { frontmatter: { key: { eq: "about-me" }}}
-            sort: { fields: frontmatter___timeline___years___city, order: ASC }) {
-            edges {
-                node {
-                    html
-                    frontmatter {
-                        jumbotron {
-                            leftSide {
-                                title
-                                welcomeText
-                                welcomeDescription
-                                cta
-                            }
-                            rightSide {
-                                socialNetworks
-                                image {
-                                    childImageSharp {
-                                        fixed(width: 400, height: 400) {
-                                            ...GatsbyImageSharpFixed_withWebp
-                                        }
-                                    }
+export const aboutMeData = graphql`query getAboutMeData {
+    aboutMe: allMarkdownRemark(
+        filter: {frontmatter: {key: {eq: "about-me"}}}
+        sort: {fields: frontmatter___timeline___years___city, order: ASC}
+    ) {
+        edges {
+            node {
+                html
+                frontmatter {
+                    jumbotron {
+                        leftSide {
+                            title
+                            welcomeText
+                            welcomeDescription
+                            cta
+                        }
+                        rightSide {
+                            socialNetworks
+                            image {
+                                childImageSharp {
+                                    gatsbyImageData(width: 400, height: 400, layout: FIXED)
                                 }
                             }
-                        }
-                        map {
-                            cities
-                        }
-                        timeline {
-                            title
-                            years {
-                                year
-                                city
-                                description
-                                image {
-                                    childImageSharp {
-                                        fluid {
-                                            ...GatsbyImageSharpFluid_withWebp
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        latestArticles {
-                            title
-                            quote
-                            author
                         }
                     }
-                }
-            }
-        }
-        citiesDetails: allMarkdownRemark(
-            filter: { frontmatter: { key: { eq: "city" }}}
-            sort: { fields: frontmatter___name, order: ASC }) {
-            edges {
-                node {
-                    frontmatter {
-                        name
-                        isInitialCity
-                        coordinates
-                        countryIsoCode
+                    map {
+                        cities
+                    }
+                    timeline {
+                        title
+                        years {
+                            year
+                            city
+                            description
+                            image {
+                                childImageSharp {
+                                    gatsbyImageData(layout: FULL_WIDTH)
+                                }
+                            }
+                        }
+                    }
+                    latestArticles {
+                        title
+                        quote
+                        author
                     }
                 }
             }
         }
     }
-`;
+    citiesDetails: allMarkdownRemark(
+        filter: {frontmatter: {key: {eq: "city"}}}
+        sort: {fields: frontmatter___name, order: ASC}
+    ) {
+        edges {
+            node {
+                frontmatter {
+                    name
+                    isInitialCity
+                    coordinates
+                    countryIsoCode
+                }
+            }
+        }
+    }
+}
+`
 
 AboutMe.propTypes = {
   data: PropTypes.objectOf(PropTypes.object).isRequired,

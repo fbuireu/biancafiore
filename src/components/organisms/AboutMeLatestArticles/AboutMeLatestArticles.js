@@ -1,15 +1,23 @@
-import Markdown from 'markdown-to-jsx';
-import PropTypes from 'prop-types';
-import SwiperCore, { Navigation } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { useLatestArticles } from '../../../utils/hooks/useLatestArticles';
-import AboutMeLatestArticleCard from '../../atoms/AboutMeLatestArticleCard/AboutMeLatestArticleCard';
-import './AboutMeLatestArticles.scss';
+import Markdown from 'markdown-to-jsx'
+import PropTypes from 'prop-types'
+import SwiperCore, { Navigation } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { useLatestArticles } from '../../../utils/hooks/useLatestArticles'
+import AboutMeLatestArticleCard
+  from '../../atoms/AboutMeLatestArticleCard/AboutMeLatestArticleCard'
+import './AboutMeLatestArticles.scss'
+import React from 'react'
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation])
 
-const AboutMeLatestArticles = ({ latestArticlesData: { title, quote, author } }) => {
-  const latestArticles = useLatestArticles();
+const AboutMeLatestArticles = ({
+  latestArticlesData: {
+    title,
+    quote,
+    author,
+  },
+}) => {
+  const latestArticles = useLatestArticles()
 
   const SLIDER_PARAMETERS = {
     navigation: true,
@@ -17,9 +25,9 @@ const AboutMeLatestArticles = ({ latestArticlesData: { title, quote, author } })
     slidesPerView: 2,
     spaceBetween: 80,
     keyboard: {
-      enabled: true
-    }
-  };
+      enabled: true,
+    },
+  }
 
   return <section className={`about-me__latest-articles__wrapper wrapper`}>
     <Markdown className={`about-me__latest-articles__title`}

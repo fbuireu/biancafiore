@@ -34,14 +34,7 @@ const ARTICLES_QUERY = `{
             tags
             featuredImage {
               childImageSharp {
-                fluid {
-                  aspectRatio
-                  src
-                  srcSet
-                  sizes
-                  originalImg
-                  originalName
-                }
+                  gatsbyImageData(layout: FULL_WIDTH)
               }
             } 
           }
