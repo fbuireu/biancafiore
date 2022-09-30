@@ -1,9 +1,12 @@
-import { VALID_EMAIL } from '../../../utils/form/validateField';
-import { useSocialNetworkItems } from '../../../utils/hooks/useSocialNetworkItems';
-import './Footer.scss';
+import { VALID_EMAIL } from '../../../utils/form/validateField'
+import {
+  useSocialNetworkItems,
+} from '../../../utils/hooks/useSocialNetworkItems'
+import './Footer.scss'
+import React from 'react'
 
 const Footer = () => {
-  const footerItems = useSocialNetworkItems();
+  const footerItems = useSocialNetworkItems()
 
   return <footer>
     <section className={`footer-wrapper`}>

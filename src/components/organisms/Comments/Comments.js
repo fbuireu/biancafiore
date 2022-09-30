@@ -1,35 +1,42 @@
-import { useIntl } from 'gatsby-plugin-intl';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import { validateField } from '../../../utils/form/validateField';
-import { validateForm } from '../../../utils/form/validateForm';
-import { localizeDate } from '../../../utils/localizeDate/localizeDate';
-import FormComponentsTuple from '../../molecules/FormComponentsTuple/FormComponentsTuple';
-import './Comments.scss';
-
+import { useI18next } from 'gatsby-plugin-react-i18next'
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import { validateField } from '../../../utils/form/validateField'
+import { validateForm } from '../../../utils/form/validateForm'
+import { localizeDate } from '../../../utils/localizeDate/localizeDate'
+import FormComponentsTuple
+  from '../../molecules/FormComponentsTuple/FormComponentsTuple'
+import './Comments.scss'
 // todo: create form loop +     empty comment message + Show more button CTA
 const Comments = ({
   comments,
-  commentsContent: { title, subtitle, formInputs, submitCtaMessages, replyCommentCtaMessage, helperMessages },
+  commentsContent: {
+    title,
+    subtitle,
+    formInputs,
+    submitCtaMessages,
+    replyCommentCtaMessage,
+    helperMessages,
+  },
   commentsLoadingStatus,
   handleComments,
-  handleReplies
+  handleReplies,
 }) => {
-  const { locale } = useIntl();
-  const [formState, updateFormState] = useState(formInputs);
+  const { i18n: { language: locale } } = useI18next()
+  const [formState, updateFormState] = useState(formInputs)
   const [submitStatus, setSubmitStatus] = useState({
     initial: true,
     sending: false,
     sent: false,
-    error: false
-  });
+    error: false,
+  })
 
   const handleChange = ({ target }) => {
-    const { name, field } = updateField(target);
-    if (!field.isValid) validateField({ name, field });
-  };
+    const { name, field } = updateField(target)
+    if (!field.isValid) validateField({ name, field })
+  }
 
   const handleBlur = ({ target }) => {
     const { name, field } = updateField(target);

@@ -1,21 +1,27 @@
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { connectRefinementList } from 'react-instantsearch-dom';
-import './RefinementItem.scss';
+import PropTypes from 'prop-types'
+import React, { useEffect, useState } from 'react'
+import { connectRefinementList } from 'react-instantsearch-dom'
+import './RefinementItem.scss'
 
-const CustomRefinementItem = ({ items, refine, selectRefinement, queryStringCriteria, queryString }) => {
-  const [activeRefinements, setActiveRefinements] = useState([]);
-  let isRefinementSelected = false;
+const CustomRefinementItem = ({
+  items,
+  refine,
+  selectRefinement,
+  queryStringCriteria,
+  queryString,
+}) => {
+  const [activeRefinements, setActiveRefinements] = useState([])
+  let isRefinementSelected = false
 
   useEffect(() => {
     if (queryStringCriteria) {
-      refine(queryStringCriteria[queryString]);
-      selectRefinement(true);
+      refine(queryStringCriteria[queryString])
+      selectRefinement(true)
     }
-  }, [refine, queryStringCriteria, selectRefinement]);
+  }, [refine, queryStringCriteria, selectRefinement])
 
   const handleClick = ({ event, value: { value }, index }) => {
-    event.preventDefault();
+    event.preventDefault()
     let isSelectingMoreRefinements = !activeRefinements.includes(index);
 
     if (isSelectingMoreRefinements) {

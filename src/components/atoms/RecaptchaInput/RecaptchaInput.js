@@ -1,30 +1,31 @@
-import PropTypes from 'prop-types';
-import { useEffect, useRef } from 'react';
-import Recaptcha from 'react-google-recaptcha';
-import './RecaptchaInput.scss';
+import PropTypes from 'prop-types'
+import React, { useEffect, useRef } from 'react'
+import Recaptcha from 'react-google-recaptcha'
+import './RecaptchaInput.scss'
 
 const RecaptchaInput = ({ name, value, isValid, errorMessage, onChange }) => {
-  const recaptchaReference = useRef(null);
+  const recaptchaReference = useRef(null)
 
-  useEffect(function resetRecaptcha() {
-    let recaptchaId = recaptchaReference.current.getWidgetId();
+  useEffect(function resetRecaptcha () {
+    let recaptchaId = recaptchaReference.current.getWidgetId()
 
-    if (!value) recaptchaReference.current.reset(recaptchaId);
+    if (!value) recaptchaReference.current.reset(recaptchaId)
 
-  }, [value]);
+  }, [value])
 
   const handleChange = () => {
-    let recaptchaValue = recaptchaReference.current.getValue();
+    let recaptchaValue = recaptchaReference.current.getValue()
     let recaptcha = {
       target: {
         value: recaptchaValue,
         name: `g-recaptcha-response`,
       },
-    };
+    }
 
-    onChange(recaptcha);
-  };
-
+    onChange(recaptcha)
+  }
+  console.log('process.env.GATSBY_SITE_RECAPTCHA_KEY',
+    process.env.GATSBY_SITE_RECAPTCHA_KEY)
   return <div className={`recaptcha-input__wrapper`}>
     <label className={`recaptcha-input__label`} htmlFor={name}>
       <Recaptcha sitekey={process.env.GATSBY_SITE_RECAPTCHA_KEY}
@@ -32,9 +33,10 @@ const RecaptchaInput = ({ name, value, isValid, errorMessage, onChange }) => {
                  onChange={handleChange}
       />
     </label>
-    {!isValid && <small className={`recaptcha-input__error-message`}>{errorMessage}</small>}
-  </div>;
-};
+    {!isValid && <small
+      className={`recaptcha-input__error-message`}>{errorMessage}</small>}
+  </div>
+}
 
 RecaptchaInput.propTypes = {
   name: PropTypes.string.isRequired,
