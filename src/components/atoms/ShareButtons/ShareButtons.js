@@ -17,45 +17,58 @@ import './ShareButtons.scss'
 import React from 'react'
 
 const ShareButtons = ({ shareParameters, tags, classNames }) => {
-  return <section
-    className={`${classNames}__share-buttons share-buttons__wrapper`}>
-    <div className={`share-buttons__inner`}>
-      <TwitterShareButton className={`share-button twitter`}
-                          url={shareParameters.parameters.url}
-                          title={shareParameters.parameters.title}
-                          via={shareParameters.author.split(`@`).join(``)}
-                          hashtags={tags.map(tag => tag.split(` `).join(``))}>
-        <TwitterIcon round={true}/>
-      </TwitterShareButton>
-      <FacebookShareButton className={`share-button facebook`}
-                           url={shareParameters.parameters.url}>
-        <FacebookIcon round={true}/>
-      </FacebookShareButton>
-      <LinkedinShareButton className={`share-button linkedin`}
-                           url={shareParameters.parameters.domain}
-                           summary={shareParameters.parameters.description}
-                           source={shareParameters.parameters.url}
-                           title={shareParameters.parameters.title}>
-        <LinkedinIcon round={true} />
-      </LinkedinShareButton>
-      <WhatsappShareButton className={`share-button whatsapp`}
-                           url={shareParameters.parameters.url}
-                           title={shareParameters.parameters.title}>
-        <WhatsappIcon round={true} />
-      </WhatsappShareButton>
-      <PocketShareButton className={`share-button pocket`}
-                         url={shareParameters.parameters.url}
-                         title={shareParameters.parameters.title}>
-        <PocketIcon round={true} />
-      </PocketShareButton>
-      <EmailShareButton className={`share-button email`}
-                        url={shareParameters.parameters.url}
-                        subject={shareParameters.parameters.title}
-                        body={``}>
-        <EmailIcon round={true} />
-      </EmailShareButton>
-    </div>
-  </section>;
+  return (
+    <section className={`${classNames}__share-buttons share-buttons__wrapper`}>
+      <div className={`share-buttons__inner`}>
+        <TwitterShareButton
+          className={`share-button twitter`}
+          url={shareParameters.parameters.url}
+          title={shareParameters.parameters.title}
+          via={shareParameters.author.split(`@`).join(``)}
+          hashtags={tags.map((tag) => tag.split(` `).join(``))}
+        >
+          <TwitterIcon round={true}/>
+        </TwitterShareButton>
+        <FacebookShareButton
+          className={`share-button facebook`}
+          url={shareParameters.parameters.url}
+        >
+          <FacebookIcon round={true}/>
+        </FacebookShareButton>
+        <LinkedinShareButton
+          className={`share-button linkedin`}
+          url={shareParameters.parameters.domain}
+          summary={shareParameters.parameters.description}
+          source={shareParameters.parameters.url}
+          title={shareParameters.parameters.title}
+        >
+          <LinkedinIcon round={true}/>
+        </LinkedinShareButton>
+        <WhatsappShareButton
+          className={`share-button whatsapp`}
+          url={shareParameters.parameters.url}
+          title={shareParameters.parameters.title}
+        >
+          <WhatsappIcon round={true}/>
+        </WhatsappShareButton>
+        <PocketShareButton
+          className={`share-button pocket`}
+          url={shareParameters.parameters.url}
+          title={shareParameters.parameters.title}
+        >
+          <PocketIcon round={true}/>
+        </PocketShareButton>
+        <EmailShareButton
+          className={`share-button email`}
+          url={shareParameters.parameters.url}
+          subject={shareParameters.parameters.title}
+          body={``}
+        >
+          <EmailIcon round={true}/>
+        </EmailShareButton>
+      </div>
+    </section>
+  )
 };
 
 ShareButtons.propTypes = {

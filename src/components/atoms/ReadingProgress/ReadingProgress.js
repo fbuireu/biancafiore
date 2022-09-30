@@ -14,19 +14,34 @@ const scrollToTop = () => {
 
 const ReadingProgress = ({
   scroll,
-  articleProperties: { offsetTop: articleOffsetTop, offsetHeight: articleHeight }
+  articleProperties: {
+    offsetTop: articleOffsetTop,
+    offsetHeight: articleHeight,
+  },
 }) => {
-  let currentScroll = Math.abs(scroll);
-  const { height: windowHeight } = useWindowSize();
-  const isArticleVisible = currentScroll >= articleOffsetTop;
-  const currentProgress = isArticleVisible ? Math.round(
-    (currentScroll - articleOffsetTop) / (articleHeight - windowHeight) * 100) : 0;
+  let currentScroll = Math.abs(scroll)
+  const { height: windowHeight } = useWindowSize()
+  const isArticleVisible = currentScroll >= articleOffsetTop
+  const currentProgress = isArticleVisible
+    ? Math.round(
+      ((currentScroll - articleOffsetTop) / (articleHeight - windowHeight)) *
+      100,
+    )
+    : 0
 
-  return <div className={`reading-progress ${isArticleVisible ? `--is-visible` : ``}`} onClick={scrollToTop}>
-    <CircularProgressbarWithChildren className={`reading-progress__svg__wrapper`} value={currentProgress}>
-      <ArrowUp className={`arrow-up`} />
-    </CircularProgressbarWithChildren>
-  </div>;
+  return (
+    <div
+      className={`reading-progress ${isArticleVisible ? `--is-visible` : ``}`}
+      onClick={scrollToTop}
+    >
+      <CircularProgressbarWithChildren
+        className={`reading-progress__svg__wrapper`}
+        value={currentProgress}
+      >
+        <ArrowUp className={`arrow-up`}/>
+      </CircularProgressbarWithChildren>
+    </div>
+  )
 };
 
 ReadingProgress.propTypes = {

@@ -16,5 +16,5 @@ export const TAGS_SEARCH_PARAMETERS = [
     attribute: `author`,
     operator: `or`,
     queryString: `author`,
-  }
+  },
 ];

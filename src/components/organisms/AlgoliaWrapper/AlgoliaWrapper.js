@@ -5,20 +5,24 @@ import Filter from '../Filter/Filter'
 import './AlgoliaWrapper.scss'
 import React from 'react'
 
-const SEARCH_CLIENT = algoliasearch(process.env.GATSBY_ALGOLIA_APP_ID,
-  process.env.GATSBY_ALGOLIA_API_KEY)
+const SEARCH_CLIENT = algoliasearch(
+  process.env.GATSBY_ALGOLIA_APP_ID,
+  process.env.GATSBY_ALGOLIA_API_KEY,
+)
 
 const AlgoliaWrapper = ({
   hitsComponent: HitsComponent,
   indexName,
   ...props
 }) => {
-  return <section className={`wrapper algolia__wrapper`}>
-    <InstantSearch searchClient={SEARCH_CLIENT} indexName={indexName}>
-      <Filter defaultRefinement={indexName} {...props} />
-      <HitsComponent/>
-    </InstantSearch>
-  </section>
+  return (
+    <section className={`wrapper algolia__wrapper`}>
+      <InstantSearch searchClient={SEARCH_CLIENT} indexName={indexName}>
+        <Filter defaultRefinement={indexName} {...props} />
+        <HitsComponent/>
+      </InstantSearch>
+    </section>
+  )
 }
 
 AlgoliaWrapper.propTypes = {

@@ -7,32 +7,49 @@ import './Search.scss'
 import React from 'react'
 
 const CustomSearch = ({ currentRefinement, refine }) => {
-  const resetQuery = event => {
+  const resetQuery = (event) => {
     event.preventDefault()
     refine(``)
   }
 
   const searchQuery = ({ currentTarget: { value } }) => refine(value)
 
-  return <div className={`filter__search`}>
-    <form noValidate action={``} role={`search`}>
-      <div className={`filter__search__inner`}>
-        <input id={`filter__search__input`}
-               className={`filter__search__input ${currentRefinement.length ? `--has-value` : ``}`}
-               type={`search`}
-               autoComplete={`off`}
-               value={currentRefinement}
-               onChange={searchQuery} />
-        <label htmlFor={`filter__search__input`}
-               className={`filter__search__label`}>Find anything but Nemo</label>
-        <div className={`filter__search__input__border`} />
-        <div className={`filter__search__buttons`}>
-          {currentRefinement.length ? <Close className={`filter__search__buttons__reset-query`} onClick={resetQuery} /> : <Lens />}
+  return (
+    <div className={`filter__search`}>
+      <form noValidate action={``} role={`search`}>
+        <div className={`filter__search__inner`}>
+          <input
+            id={`filter__search__input`}
+            className={`filter__search__input ${
+              currentRefinement.length ? `--has-value` : ``
+            }`}
+            type={`search`}
+            autoComplete={`off`}
+            value={currentRefinement}
+            onChange={searchQuery}
+          />
+          <label
+            htmlFor={`filter__search__input`}
+            className={`filter__search__label`}
+          >
+            Find anything but Nemo
+          </label>
+          <div className={`filter__search__input__border`}/>
+          <div className={`filter__search__buttons`}>
+            {currentRefinement.length ? (
+              <Close
+                className={`filter__search__buttons__reset-query`}
+                onClick={resetQuery}
+              />
+            ) : (
+              <Lens/>
+            )}
+          </div>
         </div>
-      </div>
-      <SearchStats />
-    </form>
-  </div>;
+        <SearchStats/>
+      </form>
+    </div>
+  )
 };
 
 CustomSearch.propTypes = {
@@ -43,4 +60,3 @@ CustomSearch.propTypes = {
 CustomSearch.defaultProps = {};
 
 export const Search = connectSearchBox(CustomSearch);
-

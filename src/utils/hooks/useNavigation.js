@@ -1,10 +1,11 @@
-import { graphql, useStaticQuery } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby'
 
 export const useNavigation = () => {
   const { navigation } = useStaticQuery(graphql`
       query getAllNavigationData {
           navigation: allMarkdownRemark(
-              filter: { frontmatter: { key: { eq: "navigation" }}}) {
+              filter: { frontmatter: { key: { eq: "navigation" } } }
+          ) {
               edges {
                   node {
                       html
@@ -15,7 +16,7 @@ export const useNavigation = () => {
               }
           }
       }
-    `);
+  `)
 
   return navigation.edges;
 };

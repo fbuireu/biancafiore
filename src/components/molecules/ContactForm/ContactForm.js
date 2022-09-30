@@ -12,12 +12,19 @@ import './ContactForm.scss'
 
 const ContactForm = ({
   form: {
-    formTitle, formDescription, formInputs, submitCtaMessages, helperMessages,
+    formTitle,
+    formDescription,
+    formInputs,
+    submitCtaMessages,
+    helperMessages,
   },
 }) => {
   const [formState, updateFormState] = useState(formInputs)
   const [submitStatus, setSubmitStatus] = useState({
-    initial: true, sending: false, sent: false, error: false,
+    initial: true,
+    sending: false,
+    sent: false,
+    error: false,
   })
   const handleChange = ({ target }) => {
     const { name, field } = updateField(target)
@@ -40,7 +47,7 @@ const ContactForm = ({
     return { name, field }
   }
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault()
     setSubmitStatus({ initial: false, sending: true })
 
@@ -55,7 +62,7 @@ const ContactForm = ({
       return false
     }
 
-    formInputs.forEach(input => data[input.name] = input.value)
+    formInputs.forEach((input) => (data[input.name] = input.value))
 
     const REQUEST_PARAMETERS = {
       method: `POST`,
@@ -69,36 +76,48 @@ const ContactForm = ({
         updateFormState(formInputs)
         setSubmitStatus({ sending: false, sent: true })
       }, 1500)
-    }).catch(error => {
+    }).catch((error) => {
       setSubmitStatus({ sending: false, error: true })
       console.log(error)
     })
   }
 
-  return <section className={`wrapper contact-form__wrapper`}>
-    <h3 className={`contact-form__header`}>{formTitle}</h3>
-    <p className={`contact-form__body`}>{formDescription}</p>
-    <form name={`Contact Form`}
-          className={`contact-form`}
-          method={`POST`}
-          action={`/`}
-          data-netlify={true}
-          data-netlify-honeypot={`bot-field`}
-          data-netlify-recaptcha={true}
-          onSubmit={handleSubmit}>
-      {formState.map(input => {
-        let { type, name } = input
-        let FormComponent = FormComponentsTuple.get(type)
+  return (
+    <section className={`wrapper contact-form__wrapper`}>
+      <h3 className={`contact-form__header`}>{formTitle}</h3>
+      <p className={`contact-form__body`}>{formDescription}</p>
+      <form
+        name={`Contact Form`}
+        className={`contact-form`}
+        method={`POST`}
+        action={`/`}
+        data-netlify={true}
+        data-netlify-honeypot={`bot-field`}
+        data-netlify-recaptcha={true}
+        onSubmit={handleSubmit}
+      >
+        {formState.map((input) => {
+          let { type, name } = input
+          let FormComponent = FormComponentsTuple.get(type)
 
-        return <FormComponent key={name} {...input} onChange={handleChange}
-                              onBlur={handleBlur}/>
-      })}
-      <SubmitButton submitStatus={submitStatus}
-                    submitCtaMessages={submitCtaMessages}
-                    helperMessages={helperMessages}/>
-    </form>
-  </section>
-}
+          return (
+            <FormComponent
+              key={name}
+              {...input}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          )
+        })}
+        <SubmitButton
+          submitStatus={submitStatus}
+          submitCtaMessages={submitCtaMessages}
+          helperMessages={helperMessages}
+        />
+      </form>
+    </section>
+  )
+};
 
 ContactForm.propTypes = {
   form: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -107,4 +126,3 @@ ContactForm.propTypes = {
 ContactForm.defaultProps = {}
 
 export default ContactForm
-

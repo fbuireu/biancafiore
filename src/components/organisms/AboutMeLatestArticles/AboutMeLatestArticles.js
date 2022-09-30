@@ -11,11 +11,7 @@ import React from 'react'
 SwiperCore.use([Navigation])
 
 const AboutMeLatestArticles = ({
-  latestArticlesData: {
-    title,
-    quote,
-    author,
-  },
+  latestArticlesData: { title, quote, author },
 }) => {
   const latestArticles = useLatestArticles()
 
@@ -29,31 +25,43 @@ const AboutMeLatestArticles = ({
     },
   }
 
-  return <section className={`about-me__latest-articles__wrapper wrapper`}>
-    <Markdown className={`about-me__latest-articles__title`}
-              options={{ wrapper: `h2`, forceWrapper: true }}>
-      {title}
-    </Markdown>
-    <div className={`about-me__latest-articles__inner`}>
-      <div className={`about-me__quote__wrapper`}>
-        <Markdown className={`about-me__quote__text`} options={{ wrapper: `h3`, forceWrapper: true }}>{quote}</Markdown>
-        <p className={`about-me__quote__author`}>{author}</p>
+  return (
+    <section className={`about-me__latest-articles__wrapper wrapper`}>
+      <Markdown
+        className={`about-me__latest-articles__title`}
+        options={{ wrapper: `h2`, forceWrapper: true }}
+      >
+        {title}
+      </Markdown>
+      <div className={`about-me__latest-articles__inner`}>
+        <div className={`about-me__quote__wrapper`}>
+          <Markdown
+            className={`about-me__quote__text`}
+            options={{ wrapper: `h3`, forceWrapper: true }}
+          >
+            {quote}
+          </Markdown>
+          <p className={`about-me__quote__author`}>{author}</p>
+        </div>
+        <ul className={`about-me__latest-articles__list`}>
+          <Swiper
+            {...SLIDER_PARAMETERS}
+            className={`about-me__latest-articles__slider`}
+          >
+            {latestArticles.map(({ node: article }) => (
+              <SwiperSlide key={article.frontmatter.content.title}>
+                <AboutMeLatestArticleCard {...article} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </ul>
       </div>
-      <ul className={`about-me__latest-articles__list`}>
-        <Swiper {...SLIDER_PARAMETERS} className={`about-me__latest-articles__slider`}>
-          {latestArticles.map(({ node: article }) => (
-            <SwiperSlide key={article.frontmatter.content.title}>
-              <AboutMeLatestArticleCard {...article} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </ul>
-    </div>
-  </section>;
+    </section>
+  )
 };
 
 AboutMeLatestArticles.propTypes = {
-  latestArticlesData: PropTypes.string.isRequired
+  latestArticlesData: PropTypes.string.isRequired,
 };
 
 AboutMeLatestArticles.defaultProps = {};

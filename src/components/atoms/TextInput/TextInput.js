@@ -13,23 +13,29 @@ const TextInput = ({
   onChange,
   onBlur,
 }) => {
-  return <div
-    className={`text-input__wrapper ${!isValid ? `--is-invalid` : ``} ${value
-      ? `--has-value`
-      : ``} ${type === `hidden` ? `--is-hidden` : ``}`}>
-    <label className={`text-input__label`} htmlFor={name}>
-      <input className={`text-input`}
-             type={type}
-             name={name}
-             value={value}
-             spellCheck={true}
-             onChange={onChange}
-             onBlur={onBlur}
-      />
-      <p className={`text-input__label__text`}>{label ?? placeholder}</p>
-    </label>
-    {!isValid && <small className={`text-input__error-message`}>{errorMessage}</small>}
-  </div>;
+  return (
+    <div
+      className={`text-input__wrapper ${!isValid ? `--is-invalid` : ``} ${
+        value ? `--has-value` : ``
+      } ${type === `hidden` ? `--is-hidden` : ``}`}
+    >
+      <label className={`text-input__label`} htmlFor={name}>
+        <input
+          className={`text-input`}
+          type={type}
+          name={name}
+          value={value}
+          spellCheck={true}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+        <p className={`text-input__label__text`}>{label ?? placeholder}</p>
+      </label>
+      {!isValid && (
+        <small className={`text-input__error-message`}>{errorMessage}</small>
+      )}
+    </div>
+  )
 };
 
 TextInput.propTypes = {

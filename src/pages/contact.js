@@ -14,66 +14,69 @@ const Contact = ({
       edges: [
         {
           node: {
-            frontmatter: {
-              jumbotron,
-              form,
-            },
+            frontmatter: { jumbotron, form },
           },
-        }],
+        },
+      ],
     },
-  }
+  },
 }) => {
-  return <Layout>
-    <SEO title="Contact" />
-    <section className={`wrapper`}>
-      <ContactJumbotron jumbotron={jumbotron} location={location} />
-      <ContactForm form={form} />
-    </section>
-  </Layout>;
+  return (
+    <Layout>
+      <SEO title="Contact"/>
+      <section className={`wrapper`}>
+        <ContactJumbotron jumbotron={jumbotron} location={location}/>
+        <ContactForm form={form}/>
+      </section>
+    </Layout>
+  )
 };
 
-export const contactData = graphql`query getContactData {
-    contact: allMarkdownRemark(filter: {frontmatter: {key: {eq: "contact"}}}) {
-        edges {
-            node {
-                html
-                frontmatter {
-                    jumbotron {
-                        welcomeText
-                        welcomeDescription
-                        image {
-                            childImageSharp {
-                                gatsbyImageData(width: 400, height: 400, layout: FIXED)
+export const contactData = graphql`
+    query getContactData {
+        contact: allMarkdownRemark(
+            filter: { frontmatter: { key: { eq: "contact" } } }
+        ) {
+            edges {
+                node {
+                    html
+                    frontmatter {
+                        jumbotron {
+                            welcomeText
+                            welcomeDescription
+                            image {
+                                childImageSharp {
+                                    gatsbyImageData(width: 400, height: 400, layout: FIXED)
+                                }
                             }
                         }
-                    }
-                    form {
-                        formTitle
-                        formDescription
-                        formInputs {
-                            name
-                            type
-                            isRequired
-                            label
-                            placeholder
-                            value
-                            isValid
-                            errorMessage
-                        }
-                        submitCtaMessages {
-                            status
-                            text
-                        }
-                        helperMessages {
-                            status
-                            message
+                        form {
+                            formTitle
+                            formDescription
+                            formInputs {
+                                name
+                                type
+                                isRequired
+                                label
+                                placeholder
+                                value
+                                isValid
+                                errorMessage
+                            }
+                            submitCtaMessages {
+                                status
+                                text
+                            }
+                            helperMessages {
+                                status
+                                message
+                            }
                         }
                     }
                 }
             }
         }
     }
-}
 `
 
 Contact.propTypes = {
@@ -84,8 +87,3 @@ Contact.propTypes = {
 Contact.defaultProps = {};
 
 export default Contact;
-
-
-
-
-

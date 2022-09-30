@@ -4,9 +4,12 @@ import './HamburgerMenu.scss'
 import React from 'react'
 
 const HamburgerMenu = ({ onClick, isMenuActive }) => {
-  return <Hamburger
-    className={`hamburger-menu ${isMenuActive ? `--is-active` : ``}`}
-    onClick={onClick}/>
+  return (
+    <Hamburger
+      className={`hamburger-menu ${isMenuActive ? `--is-active` : ``}`}
+      onClick={onClick}
+    />
+  )
 }
 
 HamburgerMenu.propTypes = {

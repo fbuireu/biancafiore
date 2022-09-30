@@ -10,7 +10,9 @@ import React from 'react'
 
 const MyWork = ({ title }) => {
   const latestProjects = useLatestProjects()
-  const { i18n: { language: locale } } = useI18next()
+  const {
+    i18n: { language: locale },
+  } = useI18next()
 
   return (
     <section className={`my-work__wrapper wrapper`}>
@@ -22,25 +24,30 @@ const MyWork = ({ title }) => {
               className={`my-work__item`}
               key={latestProject.frontmatter.content.name}
               to={`/${locale}/projects/${slugify(
-                latestProject.frontmatter.content.name)}`}
+                latestProject.frontmatter.content.name,
+              )}`}
             >
               <GatsbyImage
-                image={latestProject.frontmatter.content.featuredImage.childImageSharp.gatsbyImageData}
+                image={
+                  latestProject.frontmatter.content.featuredImage.childImageSharp.gatsbyImageData
+                }
                 className={`my-work__item__image`}
-                alt={latestProject.frontmatter.content.name}/>
-              <h3
-                className={`my-work__item__name`}>{latestProject.frontmatter.content.name}</h3>
+                alt={latestProject.frontmatter.content.name}
+              />
+              <h3 className={`my-work__item__name`}>
+                {latestProject.frontmatter.content.name}
+              </h3>
             </Link>
-          )
+          );
         })}
       </ul>
     </section>
-  )
-}
+  );
+};
 
 MyWork.propTypes = {
   title: PropTypes.string.isRequired,
-  works: PropTypes.arrayOf(PropTypes.object).isRequired
+  works: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 MyWork.defaultProps = {};

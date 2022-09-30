@@ -8,24 +8,31 @@ import React from 'react'
 
 const Tags = ({
   location,
-  data: { allTags: { edges: tags } },
+  data: {
+    allTags: { edges: tags },
+  },
 }) => {
   tags = tags.flatMap(({ node: { frontmatter } }) => frontmatter).
     sort((a, b) => a.name.localeCompare(b.name))
 
-  return <Layout>
-    <SEO title="Tag"/>
-    <section className={`wrapper tags__wrapper`}>
-      <TagsJumbotron location={location}/>
-      <TagsList tags={tags}/>
-    </section>
-  </Layout>
+  return (
+    <Layout>
+      <SEO title="Tag"/>
+      <section className={`wrapper tags__wrapper`}>
+        <TagsJumbotron location={location}/>
+        <TagsList tags={tags}/>
+      </section>
+    </Layout>
+  )
 }
 
 export const tagsData = graphql`
     query getAllTags {
-        allTags: allMarkdownRemark (
-            filter: { frontmatter: { key: { in: ["articleTag", "projectTag", "tag"] }}}) {
+        allTags: allMarkdownRemark(
+            filter: {
+                frontmatter: { key: { in: ["articleTag", "projectTag", "tag"] } }
+            }
+        ) {
             edges {
                 node {
                     frontmatter {
@@ -41,7 +48,7 @@ export const tagsData = graphql`
 
 Tags.propTypes = {
   data: PropTypes.objectOf(PropTypes.object).isRequired,
-  location: PropTypes.objectOf(PropTypes.object).isRequired
+  location: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 Tags.defaultProps = {};

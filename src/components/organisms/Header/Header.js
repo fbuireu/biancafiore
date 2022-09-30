@@ -24,22 +24,24 @@ const Header = () => {
     setIsScrolling(Math.abs(currentVerticalYPosition) > 0)
   })
 
-  return <header className={`${isScrolling ? `--is-scrolling` : ``}`}>
-    <section className={`wrapper`}>
-      <Link className={`logo__link ${isMenuActive ? `--is-active` : ``}`}
-            to={`/`}>
-        <Logo className={`logo`}/>
-      </Link>
-      <HamburgerMenu onClick={toggleMenu} isMenuActive={isMenuActive}/>
-      <Navigation onClick={toggleMenu} isMenuActive={isMenuActive} />
-    </section>
-  </header>;
+  return (
+    <header className={`${isScrolling ? `--is-scrolling` : ``}`}>
+      <section className={`wrapper`}>
+        <Link
+          className={`logo__link ${isMenuActive ? `--is-active` : ``}`}
+          to={`/`}
+        >
+          <Logo className={`logo`}/>
+        </Link>
+        <HamburgerMenu onClick={toggleMenu} isMenuActive={isMenuActive}/>
+        <Navigation onClick={toggleMenu} isMenuActive={isMenuActive}/>
+      </section>
+    </header>
+  )
 };
 
-Header.propTypes = {
-};
+Header.propTypes = {}
 
-Header.defaultProps = {
-};
+Header.defaultProps = {}
 
 export default Header;

@@ -11,20 +11,22 @@ const TimelineCity = ({ year, city, description, image, isActive }) => {
       <GatsbyImage
         image={image?.childImageSharp?.gatsbyImageData}
         className={`timeline-city__image`}
-        alt={city}/>
+        alt={city}
+      />
       <h4 className={`timeline-city__name`}>{city}</h4>
-      <Markdown
-        className={`timeline-city__description`}>{description}</Markdown>
+      <Markdown className={`timeline-city__description`}>
+        {description}
+      </Markdown>
     </article>
-  )
-}
+  );
+};
 
 TimelineCity.propTypes = {
   year: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   image: PropTypes.objectOf(PropTypes.object).isRequired,
-  isActive: PropTypes.bool
+  isActive: PropTypes.bool,
 };
 
 TimelineCity.defaultProps = {};

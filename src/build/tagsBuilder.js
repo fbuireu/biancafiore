@@ -6,8 +6,11 @@ const tagsBuilder = async (graphql, { createPage }, reporter) => {
 
   const tagsQuery = await graphql(`
     query getAllTags {
-      allTags: allMarkdownRemark (
-        filter: { frontmatter: { key: { in: ["articleTag", "projectTag", "tag"] }}}) {
+      allTags: allMarkdownRemark(
+        filter: {
+          frontmatter: { key: { in: ["articleTag", "projectTag", "tag"] } }
+        }
+      ) {
         edges {
           node {
             frontmatter {
@@ -29,7 +32,11 @@ const tagsBuilder = async (graphql, { createPage }, reporter) => {
   }
 
   let tags = { slugs: [], names: [], types: [], keys: [] };
-  const { data: { allTags: { edges: allTags } } } = tagsQuery;
+  const {
+    data: {
+      allTags: { edges: allTags },
+    },
+  } = tagsQuery;
 
   // todo: can be a foreach without return? (avoid && return)
   allTags.map(({ node: tag }) => {
@@ -40,9 +47,13 @@ const tagsBuilder = async (graphql, { createPage }, reporter) => {
     type && tags.types.push(type);
     key && tags.keys.push(key);
 
-    return new Set(tags.slugs) && new Set(tags.names) && new Set(tags.types) && new Set(tags.keys);
+    return (
+      new Set(tags.slugs) &&
+      new Set(tags.names) &&
+      new Set(tags.types) &&
+      new Set(tags.keys)
+    );
   });
-
 
   tags.slugs.forEach((tag, index) => {
     createPage({
@@ -52,9 +63,9 @@ const tagsBuilder = async (graphql, { createPage }, reporter) => {
         tag: {
           name: tags.names[index],
           type: tags.types[index],
-          key: tags.keys[index]
-        }
-      }
+          key: tags.keys[index],
+        },
+      },
     });
   });
 };

@@ -6,10 +6,13 @@ import './ProjectHitCard.scss'
 import React from 'react'
 
 const CustomHit = ({ hits: projects }) => {
-  return <ul className={`projects-card__list`}>
-    {projects.map(project => <FeaturedImageProjectCard
-      key={project.content.title} {...project} />)}
-  </ul>
+  return (
+    <ul className={`projects-card__list`}>
+      {projects.map((project) => (
+        <FeaturedImageProjectCard key={project.content.title} {...project} />
+      ))}
+    </ul>
+  )
 }
 
 CustomHit.propTypes = {

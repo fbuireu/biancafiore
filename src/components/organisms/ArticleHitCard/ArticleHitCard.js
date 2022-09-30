@@ -16,15 +16,21 @@ const ARTICLES_PER_COLUMN = {
 const CustomHit = ({ hits: articles }) => {
   console.log('articles', articles)
 
-  return <Masonry breakpointCols={ARTICLES_PER_COLUMN}
-                  className={`articles-card__list__masonry`}
-                  columnClassName={`articles-card__list__item`}
-  >
-    {articles.map(article => article.content.featuredImageLayout
-      ? <FeaturedImageArticleCard key={article.content.title} {...article} />
-      : <SimpleArticleCard key={article.content.title} {...article} />,
-    )}
-  </Masonry>
+  return (
+    <Masonry
+      breakpointCols={ARTICLES_PER_COLUMN}
+      className={`articles-card__list__masonry`}
+      columnClassName={`articles-card__list__item`}
+    >
+      {articles.map((article) =>
+        article.content.featuredImageLayout ? (
+          <FeaturedImageArticleCard key={article.content.title} {...article} />
+        ) : (
+          <SimpleArticleCard key={article.content.title} {...article} />
+        ),
+      )}
+    </Masonry>
+  )
 }
 
 CustomHit.propTypes = {

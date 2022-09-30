@@ -24,7 +24,9 @@ const Comments = ({
   handleComments,
   handleReplies,
 }) => {
-  const { i18n: { language: locale } } = useI18next()
+  const {
+    i18n: { language: locale },
+  } = useI18next()
   const [formState, updateFormState] = useState(formInputs)
   const [submitStatus, setSubmitStatus] = useState({
     initial: true,
@@ -54,26 +56,29 @@ const Comments = ({
     return { name, field };
   };
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    setSubmitStatus({ initial: false, sending: true });
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setSubmitStatus({ initial: false, sending: true })
 
-    const comment = {};
-    const scopedForm = [...formState];
-    let isValidForm = validateForm(scopedForm);
-    updateFormState([...scopedForm]);
+    const comment = {}
+    const scopedForm = [...formState]
+    let isValidForm = validateForm(scopedForm)
+    updateFormState([...scopedForm])
 
     if (!isValidForm) {
-      setSubmitStatus({ initial: true, sending: false });
+      setSubmitStatus({ initial: true, sending: false })
 
-      return false;
+      return false
     }
 
-    formInputs.forEach(({ name, value }) => name !== `g-recaptcha-response` && (comment[name] = value));
+    formInputs.forEach(
+      ({ name, value }) =>
+        name !== `g-recaptcha-response` && (comment[name] = value),
+    )
 
-    handleComments({ comment });
-    setSubmitStatus({ initial: true, sending: false });
-  };
+    handleComments({ comment })
+    setSubmitStatus({ initial: true, sending: false })
+  }
 
   const addReply = ({ replies, uuid }) => {
     handleReplies({
@@ -86,61 +91,97 @@ const Comments = ({
           {
             comment: `Test reply`,
             author: `Test author reply`,
-            replies: []
-          }]
-      }
+            replies: [],
+          },
+        ],
+      },
     });
   };
 
-  return <section className={`comments__wrapper wrapper`}>
-    <h2 className={`comments__title`}>{title}</h2>
-    {subtitle && <h3 className={`comments__subtitle`}>{subtitle}</h3>}
-    <form name={`Comment Form`}
-          className={`comment__form`}
-          method={`POST`}
-          action={`/`}
-          onSubmit={handleSubmit}>
-      {formState.map(input => {
-        let { type, name } = input;
-        let FormComponent = FormComponentsTuple.get(type);
+  return (
+    <section className={`comments__wrapper wrapper`}>
+      <h2 className={`comments__title`}>{title}</h2>
+      {subtitle && <h3 className={`comments__subtitle`}>{subtitle}</h3>}
+      <form
+        name={`Comment Form`}
+        className={`comment__form`}
+        method={`POST`}
+        action={`/`}
+        onSubmit={handleSubmit}
+      >
+        {formState.map((input) => {
+          let { type, name } = input
+          let FormComponent = FormComponentsTuple.get(type)
 
-        return <FormComponent key={name} {...input} onChange={handleChange} onBlur={handleBlur} />;
-      })}
-      <button>{submitStatus.initial && submitCtaMessages.find(({ status }) => status.toLowerCase() === `initial`).text}</button>
-    </form>
-    {commentsLoadingStatus.loading && <Skeleton count={5} />}
+          return (
+            <FormComponent
+              key={name}
+              {...input}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          )
+        })}
+        <button>
+          {submitStatus.initial &&
+            submitCtaMessages.find(
+              ({ status }) => status.toLowerCase() === `initial`,
+            ).text}
+        </button>
+      </form>
+      {commentsLoadingStatus.loading && <Skeleton count={5}/>}
 
-    {commentsLoadingStatus.loaded && comments.length ?
-      comments
-        ?.sort((a, b) => new Date(b.createdAt.toDate()) - new Date(a.createdAt.toDate()))
-        ?.map(({ uuid, name, comment, createdAt, replies }) => {
-          return <div key={uuid} className={`comment__wrapper`}>
-            <p className={`comment__name`}>{name}</p>
-            <time className={`about-me__latest-articles__date`}
-                  dateTime={localizeDate({ date: createdAt.toDate(), locale })}>
-              {localizeDate({ date: createdAt.toDate(), locale })}
-
-            </time>
-            <p>{comment}</p>
-            <button onClick={() => addReply({ replies, uuid })}>
-              Reply
-            </button>
-            Replies:
-            {replies?.length && replies
-              .sort((a, b) => new Date(b.createdAt.toDate()) - new Date(a.createdAt.toDate()))
-              .map(({ uuid, author, comment, createdAt }) => {
-                return <div key={uuid}>
-                  <p> THIS IS A REPLY:
-                    Author: {author}<br />
-                    Comment: {comment}<br />
-                    uuid: {uuid}<br />
-                    Date: {createdAt.toDate().toLocaleDateString()}<br /><br />
-                  </p>
-                </div>;
-              })}
-          </div>;
-        }) : `Leave a comment.`}
-  </section>;
+      {commentsLoadingStatus.loaded && comments.length
+        ? comments?.sort(
+          (a, b) =>
+            new Date(b.createdAt.toDate()) - new Date(a.createdAt.toDate()),
+        )?.map(({ uuid, name, comment, createdAt, replies }) => {
+          return (
+            <div key={uuid} className={`comment__wrapper`}>
+              <p className={`comment__name`}>{name}</p>
+              <time
+                className={`about-me__latest-articles__date`}
+                dateTime={localizeDate({
+                  date: createdAt.toDate(),
+                  locale,
+                })}
+              >
+                {localizeDate({ date: createdAt.toDate(), locale })}
+              </time>
+              <p>{comment}</p>
+              <button onClick={() => addReply({ replies, uuid })}>
+                Reply
+              </button>
+              Replies:
+              {replies?.length &&
+                replies.sort(
+                  (a, b) =>
+                    new Date(b.createdAt.toDate()) -
+                    new Date(a.createdAt.toDate()),
+                ).map(({ uuid, author, comment, createdAt }) => {
+                  return (
+                    <div key={uuid}>
+                      <p>
+                        {' '}
+                        THIS IS A REPLY: Author: {author}
+                        <br/>
+                        Comment: {comment}
+                        <br/>
+                        uuid: {uuid}
+                        <br/>
+                        Date: {createdAt.toDate().toLocaleDateString()}
+                        <br/>
+                        <br/>
+                      </p>
+                    </div>
+                  )
+                })}
+            </div>
+          )
+        })
+        : `Leave a comment.`}
+    </section>
+  )
 };
 
 Comments.propTypes = {
@@ -148,7 +189,7 @@ Comments.propTypes = {
   commentsContent: PropTypes.objectOf(PropTypes.object).isRequired,
   handleComments: PropTypes.objectOf(PropTypes.object).isRequired,
   handleReplies: PropTypes.objectOf(PropTypes.object).isRequired,
-  commentsLoadingStatus: PropTypes.objectOf(PropTypes.object).isRequired
+  commentsLoadingStatus: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 Comments.defaultProps = {};

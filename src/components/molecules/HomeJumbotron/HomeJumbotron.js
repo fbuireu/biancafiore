@@ -13,8 +13,10 @@ const HomeJumbotron = ({
 }) => (
   <section className={`home__jumbotron__wrapper wrapper`}>
     <div className={`home__jumbotron__text-left`}>
-      <Markdown className={`home__jumbotron__text-left__header`}
-                options={{ wrapper: `h2`, forceWrapper: true }}>
+      <Markdown
+        className={`home__jumbotron__text-left__header`}
+        options={{ wrapper: `h2`, forceWrapper: true }}
+      >
         {welcomeTextLeft}
       </Markdown>
     </div>
@@ -24,11 +26,15 @@ const HomeJumbotron = ({
       </Tilt>
     </div>
     <div className={`home__jumbotron__text-right`}>
-      <Markdown className={`home__jumbotron__text-right__header`}
-                options={{ wrapper: `h2`, forceWrapper: true }}>
+      <Markdown
+        className={`home__jumbotron__text-right__header`}
+        options={{ wrapper: `h2`, forceWrapper: true }}
+      >
         {welcomeTextRight}
       </Markdown>
-      <Markdown className={`home__jumbotron__text-right__body`}>{welcomeDescription}</Markdown>
+      <Markdown className={`home__jumbotron__text-right__body`}>
+        {welcomeDescription}
+      </Markdown>
     </div>
   </section>
 );
@@ -37,7 +43,7 @@ HomeJumbotron.propTypes = {
   welcomeTextLeft: PropTypes.arrayOf(String).isRequired,
   welcomeTextRight: PropTypes.arrayOf(String).isRequired,
   welcomeDescription: PropTypes.arrayOf(String).isRequired,
-  welcomeImage: PropTypes.arrayOf(String).isRequired
+  welcomeImage: PropTypes.arrayOf(String).isRequired,
 };
 
 HomeJumbotron.defaultProps = {};

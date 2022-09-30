@@ -8,12 +8,15 @@ import React from 'react'
 const Author = ({ author }) => {
   return (
     <section className={`author__wrapper`}>
-      <Link className={`author__image__inner`}
-            to={`/tags/${slugify(author.frontmatter.name)}`}>
+      <Link
+        className={`author__image__inner`}
+        to={`/tags/${slugify(author.frontmatter.name)}`}
+      >
         <GatsbyImage
           image={author?.frontmatter?.image?.childImageSharp?.gatsbyImageData}
           className={`author__image`}
-          alt={author.frontmatter.name}/>
+          alt={author.frontmatter.name}
+        />
       </Link>
       <p className={`author__description__wrapper`}>
         <span>Written by &#32;</span>
@@ -21,8 +24,11 @@ const Author = ({ author }) => {
           {author.frontmatter.name}
         </Link>
         <span>
-          {author.frontmatter.description && <p
-            className={`author__description`}>{author.frontmatter.description}</p>}
+          {author.frontmatter.description && (
+            <p className={`author__description`}>
+              {author.frontmatter.description}
+            </p>
+          )}
         </span>
       </p>
     </section>

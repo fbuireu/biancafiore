@@ -11,7 +11,8 @@ const Testimonial = ({ author, quote, description, image, isActive }) => {
       <GatsbyImage
         image={image?.childImageSharp?.gatsbyImageData}
         className={`testimonial__image`}
-        alt={author}/>
+        alt={author}
+      />
       <Quotes className={`testimonial__quote`}/>
       <Markdown className={`testimonial__body`}>{quote}</Markdown>
       <div className={`testimonial__footer`}>
@@ -27,7 +28,7 @@ Testimonial.propTypes = {
   quote: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   image: PropTypes.objectOf(PropTypes.object).isRequired,
-  isActive: PropTypes.bool
+  isActive: PropTypes.bool,
 };
 
 Testimonial.defaultProps = {};

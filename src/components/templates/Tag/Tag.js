@@ -33,40 +33,48 @@ const Tag = ({ location, pageContext: { tag } }) => {
     if (location?.search) {
       let criterias = new URLSearchParams(location.search).getAll(CRITERIA);
 
-      criterias.forEach(criteria => {
-        let value = new URLSearchParams(location.search).get(criteria);
-        setQueryStringCriteria(queryStringCriteria => ({
+      criterias.forEach((criteria) => {
+        let value = new URLSearchParams(location.search).get(criteria)
+        setQueryStringCriteria((queryStringCriteria) => ({
           ...queryStringCriteria,
-          [criteria]: value
-        }));
-      });
+          [criteria]: value,
+        }))
+      })
     } else {
       setQueryStringCriteria({
-        [tag.type]: tag.name
-      });
+        [tag.type]: tag.name,
+      })
     }
   }, []);
 
-  console.log(`queryStringCriteria`, queryStringCriteria);
-  return <Layout>
-    <SEO title="Tag" />
-    <section className={`wrapper`}>
-      <h1 className={`tag__title`}>Tag: <span className={`tag__name`}>{tag.name}</span></h1>
-      <Breadcrumbs location={location} classNames={`blog__jumbotron`} />
-      <AlgoliaWrapper
-        hitsComponent={isProject ? ProjectHitCards : ArticleHitCards}
-        indexName={isProject ? process.env.GATSBY_ALGOLIA_PROJECTS_INDEX_NAME : process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME}
-        filterParameters={FILTER_PARAMETERS}
-        hasRange={isProject}
-        queryStringCriteria={queryStringCriteria}
-      />
-    </section>
-  </Layout>;
+  console.log(`queryStringCriteria`, queryStringCriteria)
+  return (
+    <Layout>
+      <SEO title="Tag"/>
+      <section className={`wrapper`}>
+        <h1 className={`tag__title`}>
+          Tag: <span className={`tag__name`}>{tag.name}</span>
+        </h1>
+        <Breadcrumbs location={location} classNames={`blog__jumbotron`}/>
+        <AlgoliaWrapper
+          hitsComponent={isProject ? ProjectHitCards : ArticleHitCards}
+          indexName={
+            isProject
+              ? process.env.GATSBY_ALGOLIA_PROJECTS_INDEX_NAME
+              : process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME
+          }
+          filterParameters={FILTER_PARAMETERS}
+          hasRange={isProject}
+          queryStringCriteria={queryStringCriteria}
+        />
+      </section>
+    </Layout>
+  )
 };
 
 Tag.propTypes = {
   location: PropTypes.object.isRequired,
-  pageContext: PropTypes.object.isRequired
+  pageContext: PropTypes.object.isRequired,
 };
 
 Tag.defaultProps = {};

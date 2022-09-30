@@ -18,32 +18,37 @@ const SLIDER_PARAMETERS = {
   },
   centeredSlides: true,
   keyboard: {
-    enabled: true
+    enabled: true,
   },
   breakpoints: {
     1024: {
       slidesPerView: 1.85,
-      spaceBetween: 150
+      spaceBetween: 150,
     },
     320: {
-      slidesPerView: 1
-    }
-  }
+      slidesPerView: 1,
+    },
+  },
 };
 
 const Testimonials = ({ title, subtitle, testimonials }) => {
-
-  return <section className={`testimonials__wrapper`}>
-    <h2 className={`testimonials__title`}>{title}</h2>
-    <Markdown className={`testimonials__subtitle`}>{subtitle}</Markdown>
-    <Swiper {...SLIDER_PARAMETERS} className={`testimonials__slider wrapper`}>
-      {testimonials.map(testimonial => {
-        return <SwiperSlide key={testimonial.name}>
-          {({ isActive }) => <Testimonial {...testimonial} isActive={isActive} />}
-        </SwiperSlide>;
-      })}
-    </Swiper>
-  </section>;
+  return (
+    <section className={`testimonials__wrapper`}>
+      <h2 className={`testimonials__title`}>{title}</h2>
+      <Markdown className={`testimonials__subtitle`}>{subtitle}</Markdown>
+      <Swiper {...SLIDER_PARAMETERS} className={`testimonials__slider wrapper`}>
+        {testimonials.map((testimonial) => {
+          return (
+            <SwiperSlide key={testimonial.name}>
+              {({ isActive }) => (
+                <Testimonial {...testimonial} isActive={isActive}/>
+              )}
+            </SwiperSlide>
+          )
+        })}
+      </Swiper>
+    </section>
+  )
 };
 
 Testimonials.propTypes = {
