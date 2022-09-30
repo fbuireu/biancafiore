@@ -1,23 +1,27 @@
-import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
-import 'swiper/components/navigation/navigation.min.css';
-import { Navigation } from 'swiper/core';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper.min.css';
-import 'swiper/swiper.scss';
-import TimelineCity from '../../atoms/TimelineCity/TimelineCity';
-import './Timeline.scss';
+import PropTypes from 'prop-types'
+import React, { useEffect, useRef, useState } from 'react'
+import { Navigation } from 'swiper/core'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import TimelineCity from '../../atoms/TimelineCity/TimelineCity'
+import './Timeline.scss'
+import 'swiper/css'
+import 'swiper/css/navigation'
 
-const Timeline = ({ title, years, findSelectedCityNameByIndex, selectedCityIndex }) => {
-  const [swiperInstance, setSwiperInstance] = useState(null);
-  const sliderReference = useRef(null);
+const Timeline = ({
+  title,
+  years,
+  findSelectedCityNameByIndex,
+  selectedCityIndex,
+}) => {
+  const [swiperInstance, setSwiperInstance] = useState(null)
+  const sliderReference = useRef(null)
 
-  useEffect(function slideToIndex() {
-    swiperInstance?.slideTo(selectedCityIndex);
-  }, [selectedCityIndex, swiperInstance]);
+  useEffect(function slideToIndex () {
+    swiperInstance?.slideTo(selectedCityIndex)
+  }, [selectedCityIndex, swiperInstance])
 
-  function handleOnSlideChange(swiper) {
-    findSelectedCityNameByIndex({ selectedIndex: swiper.activeIndex });
+  function handleOnSlideChange (swiper) {
+    findSelectedCityNameByIndex({ selectedIndex: swiper.activeIndex })
   }
 
   const SLIDER_PARAMETERS = {

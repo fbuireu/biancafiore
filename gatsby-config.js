@@ -1,29 +1,38 @@
 require(`dotenv`).config({
-  path: `.env.${process.env.NODE_ENV}`
-});
+  path: `.env.${process.env.NODE_ENV}`,
+})
 
-const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries/queries`);
+//todos in migration:
+// -cms migrar a strapi/sanity
+// netlify plugins --> migrate to gatsby cloud
+// eslint (gatsby-plugin-eslint?),prettierc etc
+// scss linter (deprecated)
 
-const { GATSBY_ALGOLIA_APP_ID, GATSBY_ALGOLIA_API_KEY, GATSBY_GOOGLE_ANALYTICS_ID } = process.env;
+const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries/queries`)
+
+const {
+  GATSBY_ALGOLIA_APP_ID,
+  GATSBY_ALGOLIA_API_KEY,
+  GATSBY_GOOGLE_ANALYTICS_ID,
+} = process.env
 
 module.exports = {
-  //trailingSlash: `always`,
+  trailingSlash: `always`,
   siteMetadata: {
     title: `Bianca Fiore`,
     description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
     author: `@biancamariola`,
-    url: `https://biancafiore.me`
+    url: `https://biancafiore.me`,
   },
   plugins: [
-    `gatsby-transformer-sharp`,
+    `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
-    `gatsby-plugin-react-helmet`,
+    `gatsby-transformer-sharp`,
     `gatsby-plugin-catch-links`,
     `gatsby-plugin-eslint`,
     `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-sass`,
     `gatsby-plugin-netlify-cms-paths`,
-    `gatsby-plugin-provide-react`,
     {
       resolve: `gatsby-plugin-react-svg`,
       options: {
@@ -43,28 +52,35 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
-        path: `${__dirname}/src/assets/images`
-      }
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `languages`,
-        path: `${__dirname}/content/languages`
-      }
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `menu`,
-        path: `${__dirname}/content/navigation/menu`
+        path: `${__dirname}/src/assets/images`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `social-networks`,
-        path: `${__dirname}/content/navigation/social-networks`
+        name: `languages`,
+        path: `${__dirname}/content/languages`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `translations`,
+        path: `${__dirname}/content/translations`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `menu`,
+        path: `${__dirname}/content/navigation/menu`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `social-networks`, //todo: camelCase
+        path: `${__dirname}/content/navigation/social-networks`,
       },
     },
     {
@@ -128,33 +144,24 @@ module.exports = {
       options: {
         plugins: [
           {
-            resolve: `gatsby-remark-relative-images-v2`,
-            options: {
-              name: `uploads`
-            }
-          },
-          {
-            resolve: `gatsby-plugin-netlify-cms-paths`
+            resolve: `gatsby-plugin-netlify-cms-paths`,
           },
           {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 1200,
-              withWebp: true
-            }
+              withWebp: true,
+            },
           },
           {
             resolve: `gatsby-remark-autolink-headers`,
             options: {
               offsetY: `150`,
-              icon: `<svg aria-hidden="true" height="20" version="1.1" viewBox="0 0 16 16" width="20"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>`,
+              icon: `<svg aria-hidden="true" height="20" viewBox="0 0 16 16" width="20"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>`,
               className: `--is-heading`,
               maintainCase: true,
-              removeAccents: true
+              removeAccents: true,
             }
-          },
-          {
-            resolve: `gatsby-remark-highlight-code`
           },
         ],
       },
@@ -181,13 +188,15 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-intl`,
+      resolve: `gatsby-plugin-react-i18next`,
       options: {
-        path: `${__dirname}/content/translations`,
+        localeJsonSourceName: `translations`,
         languages: [`en`, `it`, `ca`, `es`],
         defaultLanguage: `en`,
-        redirect: true
-      }
+        siteUrl: `https://biancafiore.me`,
+        trailingSlash: 'always',
+        generateDefaultLanguagePage: true,
+      },
     },
     {
       resolve: `gatsby-plugin-algolia`,
@@ -196,7 +205,7 @@ module.exports = {
         apiKey: GATSBY_ALGOLIA_API_KEY,
         queries: ALGOLIA_QUERIES,
         enablePartialUpdates: true,
-        chunkSize: 10000
+        chunkSize: 10000,
       },
     },
     {
@@ -207,12 +216,4 @@ module.exports = {
     },
     `gatsby-plugin-netlify`
   ],
-  flags: {
-    FAST_DEV: true,
-    FAST_REFRESH: true,
-    PARALLEL_SOURCING: true,
-    DEV_SSR: true,
-    PRESERVE_WEBPACK_CACHE: true,
-    PRESERVE_FILE_DOWNLOAD_CACHE: true
-  }
 };

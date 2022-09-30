@@ -1,93 +1,84 @@
-import { graphql } from 'gatsby';
-import PropTypes from 'prop-types';
-import SEO from '../components/atoms/SEO/SEO';
-import HomeJumbotron from '../components/molecules/HomeJumbotron/HomeJumbotron';
-import HomeLatestArticles from '../components/molecules/HomeLatestArticles/HomeLatestArticles';
-import MyWork from '../components/molecules/MyWork/MyWork';
-import Testimonials from '../components/molecules/Testimonials/Testimonials';
-import Layout from '../components/templates/Layout/Layout';
+import { graphql } from 'gatsby'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 const Index = ({
   location,
   data: {
     home: {
-      edges: [{
-        node: {
-          frontmatter: {
-            jumbotron,
-            testimonials,
-            myWork,
-            latestArticles
-          }
-        }
-      }]
-    }
-  }
+      edges: [
+        {
+          node: {
+            frontmatter: {
+              jumbotron,
+              testimonials,
+              myWork,
+              latestArticles,
+            },
+          },
+        }],
+    },
+  },
 }) => {
 
-  // return <h1 style={{
-  //   textAlign: `center`,
-  //   marginTop: `50vh`,
-  //   fontSize: `52px`
-  // }}>Site under construction<br />We&apos;ll be back soon</h1>;
+  return <h1 style={{
+    textAlign: `center`,
+    marginTop: `50vh`,
+    fontSize: `52px`,
+  }}>Site under construction<br/>We&apos;ll be back soon</h1>
 
-  return <Layout>
-    <SEO title="Home" />
-    <HomeJumbotron {...jumbotron} />
-    <Testimonials {...testimonials} />
-    <MyWork {...myWork} />
-    <HomeLatestArticles {...latestArticles} />
-  </Layout>;
+  // return <Layout>
+  //   <SEO title="Home" />
+  //   <HomeJumbotron {...jumbotron} />
+  //   <Testimonials {...testimonials} />
+  //   <MyWork {...myWork} />
+  //   <HomeLatestArticles {...latestArticles} />
+  // </Layout>;
 };
 
-export const homeData = graphql`
-    query getHomeData {
-        home: allMarkdownRemark(filter: { frontmatter: { key: { eq: "home" }}}) {
-            edges {
-                node {
-                    html
-                    frontmatter {
+export const homeData = graphql`query getHomeData {
+    home: allMarkdownRemark(filter: {frontmatter: {key: {eq: "home"}}}) {
+        edges {
+            node {
+                html
+                frontmatter {
+                    title
+                    jumbotron {
+                        welcomeDescription
+                        welcomeTextLeft
+                        welcomeTextRight
+                        welcomeImage {
+                            childImageSharp {
+                                gatsbyImageData(width: 400, height: 400, layout: FIXED)
+                            }
+                        }
+                    }
+                    testimonials {
                         title
-                        jumbotron{
-                            welcomeDescription
-                            welcomeTextLeft
-                            welcomeTextRight
-                            welcomeImage {
-                                childImageSharp {
-                                    fixed(width: 400, height: 400) {
-                                        ...GatsbyImageSharpFixed_withWebp
-                                    }
-                                }
-                            }
-                        }
+                        subtitle
                         testimonials {
-                            title
-                            subtitle
-                            testimonials {
-                                author
-                                quote
-                                description
-                                image {
-                                    childImageSharp {
-                                        fluid {
-                                            ...GatsbyImageSharpFluid
-                                        }
-                                    }
+                            author
+                            quote
+                            description
+                            image {
+                                childImageSharp {
+                                    gatsbyImageData(layout: FULL_WIDTH)
                                 }
                             }
                         }
-                        myWork {
-                            title
-                        }
-                        latestArticles {
-                            title
-                        }
+                    }
+                    myWork {
+                        title
+                    }
+                    latestArticles {
+                        title
                     }
                 }
             }
         }
     }
-`;
+}
+`
 
 Index.propTypes = {
   data: PropTypes.objectOf(PropTypes.object).isRequired,

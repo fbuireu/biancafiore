@@ -1,21 +1,22 @@
-import Markdown from 'markdown-to-jsx';
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { Navigation } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper.scss';
-import { v4 as uuidv4 } from 'uuid';
-import { useLatestArticles } from '../../../utils/hooks/useLatestArticles';
-import { useWindowSize } from '../../../utils/hooks/useWindowSize';
-import HomeLatestArticleCard from '../../atoms/HomeLatestArticleCard/HomeLatestArticleCard';
-import './HomeLatestArticles.scss';
+import Markdown from 'markdown-to-jsx'
+import PropTypes from 'prop-types'
+import React, { useEffect, useState } from 'react'
+import { Navigation } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
+import { v4 as uuidv4 } from 'uuid'
+import { useLatestArticles } from '../../../utils/hooks/useLatestArticles'
+import { useWindowSize } from '../../../utils/hooks/useWindowSize'
+import HomeLatestArticleCard
+  from '../../atoms/HomeLatestArticleCard/HomeLatestArticleCard'
+import './HomeLatestArticles.scss'
 
 const SLIDER_DEFAULT_PARAMETERS = {
   loop: true,
   navigation: true,
   spaceBetween: 32,
   modules: [
-    Navigation
+    Navigation,
   ],
   autoplay: {
     delay: 5000,

@@ -1,17 +1,18 @@
-import PropTypes from 'prop-types';
-import { connectSearchBox } from 'react-instantsearch-dom';
-import Close from '../../../assets/svg-components/close.svg';
-import Lens from '../../../assets/svg-components/lens.svg';
-import SearchStats from '../../molecules/SearchStats/SearchStats';
-import './Search.scss';
+import PropTypes from 'prop-types'
+import { connectSearchBox } from 'react-instantsearch-dom'
+import Close from '../../../assets/svg-components/close.svg'
+import Lens from '../../../assets/svg-components/lens.svg'
+import SearchStats from '../../molecules/SearchStats/SearchStats'
+import './Search.scss'
+import React from 'react'
 
 const CustomSearch = ({ currentRefinement, refine }) => {
   const resetQuery = event => {
-    event.preventDefault();
-    refine(``);
-  };
+    event.preventDefault()
+    refine(``)
+  }
 
-  const searchQuery = ({ currentTarget: { value } }) => refine(value);
+  const searchQuery = ({ currentTarget: { value } }) => refine(value)
 
   return <div className={`filter__search`}>
     <form noValidate action={``} role={`search`}>

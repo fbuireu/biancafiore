@@ -36,22 +36,23 @@ exports.onCreateWebpackConfig = ({ stage, actions, loaders, getConfig }) => {
     ...config.module.rules.filter(rule => String(rule.test) !== String(/\.jsx?$/)),
     {
       test: /canvg/,
-      use: loaders.null()
+      use: loaders.null(),
     },
     {
       test: /\.jsx?$/,
       use: { ...loaders.js() },
-      exclude: modulePath => /node_modules/.test(modulePath)
-    }
+      exclude: modulePath => /node_modules/.test(modulePath),
+    },
   ];
 
-  if (stage === `build-html`) {
-    actions.setWebpackConfig({
-      resolve: {
-        modules: [path.resolve(__dirname, `src`), `node_modules`]
-      }
-    });
-  }
+  actions.setWebpackConfig({
+    resolve: {
+      modules: [path.resolve(__dirname, `src`), `node_modules`],
+      fallback: {
+        path: require.resolve('path-browserify'),
+      },
+    },
+  })
 };
 
 exports.createSchemaCustomization = ({ actions }) => {
