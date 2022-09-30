@@ -18,59 +18,80 @@ const Billboard = ({
   location,
   shareParameters,
 }) => {
-  const { i18n: { language: locale } } = useI18next()
+  const {
+    i18n: { language: locale },
+  } = useI18next()
 
-  let slugName = location?.href?.split(`/`)[location?.href?.split(`/`).length -
-  (location?.href.endsWith(`/`) ? 2 : 1)]
+  let slugName =
+    location?.href?.split(`/`)[
+    location?.href?.split(`/`).length - (location?.href.endsWith(`/`) ? 2 : 1)
+      ]
 
   let customBreadcrumb = {
     position: location?.pathname?.split(`/`).
-      findIndex(slug => slug === slugName),
+      findIndex((slug) => slug === slugName),
     label: frontmatter.content.title,
   }
   return (
     <section>
-      <BackgroundImage className={`article__billboard`}
-                       fluid={frontmatter?.content?.featuredImage?.childImageSharp?.gatsbyImageData}>
-      </BackgroundImage>
+      <BackgroundImage
+        className={`article__billboard`}
+        fluid={
+          frontmatter?.content?.featuredImage?.childImageSharp?.gatsbyImageData
+        }
+      ></BackgroundImage>
       <section className={`wrapper article__information`}>
         <Title title={frontmatter.content.title}/>
-        <Breadcrumbs location={location} customBreadcrumb={customBreadcrumb}
-                     classNames={`article__information`}/>
+        <Breadcrumbs
+          location={location}
+          customBreadcrumb={customBreadcrumb}
+          classNames={`article__information`}
+        />
         <div className={`article__information__readingTime-publishDate`}>
           <p className={`article__information__readingTime`}>
-            <Clock/>{frontmatter.content.readingTime}min</p>
+            <Clock/>
+            {frontmatter.content.readingTime}min
+          </p>
           <span className={`separator`}>|</span>
-          <time className={`article__information__publishDate`}
-                dateTime={localizeDate(
-                  { date: frontmatter.content.publishDate, locale })}>
+          <time
+            className={`article__information__publishDate`}
+            dateTime={localizeDate({
+              date: frontmatter.content.publishDate,
+              locale,
+            })}
+          >
             {localizeDate({ date: frontmatter.content.publishDate, locale })}
           </time>
         </div>
         <ul className={`article__information__tags__list`}>
-          {tags.map(tag => (
+          {tags.map((tag) => (
             <li className={`article__information__tag__item`} key={tag}>
-              <Link to={`/tags/${slugify(tag)}`}
-                    className={`article__information__tag__item__link`}>
+              <Link
+                to={`/tags/${slugify(tag)}`}
+                className={`article__information__tag__item__link`}
+              >
                 #{tag}
               </Link>
             </li>
           ))}
         </ul>
         <Author author={author}/>
-        <ShareButtons classNames={`article__information`}
-                      shareParameters={shareParameters} tags={tags}/>
+        <ShareButtons
+          classNames={`article__information`}
+          shareParameters={shareParameters}
+          tags={tags}
+        />
       </section>
     </section>
   )
-}
+};
 
 Billboard.propTypes = {
   frontmatter: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   shareParameters: PropTypes.object.isRequired,
   author: PropTypes.objectOf(PropTypes.object).isRequired,
-  tags: PropTypes.arrayOf(PropTypes.string)
+  tags: PropTypes.arrayOf(PropTypes.string),
 };
 
 Billboard.defaultProps = {};

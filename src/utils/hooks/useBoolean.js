@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo } from 'react'
 
-import useToggle from './useToggle';
+import useToggle from './useToggle'
 
 function useBoolean(initialValue = false) {
   const [value, toggle] = useToggle(initialValue);
@@ -9,7 +9,7 @@ function useBoolean(initialValue = false) {
     () => ({
       toggle,
       on: () => toggle(true),
-      off: () => toggle(false)
+      off: () => toggle(false),
     }),
     [toggle]
   );

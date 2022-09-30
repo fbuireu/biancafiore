@@ -1,22 +1,19 @@
 const path = require(`path`);
 
 const articlesBuilder = async (graphql, { createPage }, reporter) => {
-  const articleTemplate = path.resolve(`./src/components/templates/Article/Article.js`);
+  const articleTemplate = path.resolve(
+    `./src/components/templates/Article/Article.js`
+  );
 
   const articlesQuery = await graphql(`
     query getAllArticlesOrderedByDate {
-      articles: allMarkdownRemark (
+      articles: allMarkdownRemark(
         filter: {
-          isFuture: { eq: false }, 
-          frontmatter: {
-            key: { eq: "article" }, 
-            isDraft: { eq: false }
-          }
-        }, 
-        sort: { 
-          fields: frontmatter___content___publishDate, 
-          order: DESC 
-        }) {
+          isFuture: { eq: false }
+          frontmatter: { key: { eq: "article" }, isDraft: { eq: false } }
+        }
+        sort: { fields: frontmatter___content___publishDate, order: DESC }
+      ) {
         edges {
           node {
             fields {
@@ -43,7 +40,13 @@ const articlesBuilder = async (graphql, { createPage }, reporter) => {
   let articles = articlesQuery.data.articles.edges;
 
   articles.forEach(({ node: article }) => {
-    let { fields: { slug }, frontmatter: { author, content: { tags } } } = article;
+    let {
+      fields: { slug },
+      frontmatter: {
+        author,
+        content: { tags },
+      },
+    } = article;
 
     createPage({
       path: `/blog${slug}`,
@@ -51,8 +54,8 @@ const articlesBuilder = async (graphql, { createPage }, reporter) => {
       context: {
         slug,
         author,
-        tags
-      }
+        tags,
+      },
     });
   });
 };

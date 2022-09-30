@@ -12,32 +12,37 @@ const Filter = ({
   hasRange,
   queryStringCriteria,
 }) => {
-  return <aside className={`filters__wrapper`}>
-    <Search/>
-    <SortHitsBy defaultRefinement={defaultRefinement}
-                items={filterParameters.SORT_BY}/>
-    {filterParameters.SEARCH_PARAMETERS.map(searchParameter => {
-      let matchCriteria
-      if (queryStringCriteria) {
-        matchCriteria = queryStringCriteria[searchParameter.queryString]
-      }
-
-      return <RefinementsList key={searchParameter.label}
-                              queryStringCriteria={matchCriteria
-                                ? queryStringCriteria
-                                : null}
-                              {...searchParameter}
+  return (
+    <aside className={`filters__wrapper`}>
+      <Search/>
+      <SortHitsBy
+        defaultRefinement={defaultRefinement}
+        items={filterParameters.SORT_BY}
       />
-    })}
-    {hasRange && <RangeSlider attribute="content.readingTime" />}
-  </aside>;
+      {filterParameters.SEARCH_PARAMETERS.map((searchParameter) => {
+        let matchCriteria
+        if (queryStringCriteria) {
+          matchCriteria = queryStringCriteria[searchParameter.queryString]
+        }
+
+        return (
+          <RefinementsList
+            key={searchParameter.label}
+            queryStringCriteria={matchCriteria ? queryStringCriteria : null}
+            {...searchParameter}
+          />
+        )
+      })}
+      {hasRange && <RangeSlider attribute="content.readingTime"/>}
+    </aside>
+  )
 };
 
 Filter.propTypes = {
   filterParameters: PropTypes.array.isRequired,
   defaultRefinement: PropTypes.string.isRequired,
   hasRange: PropTypes.bool.isRequired,
-  queryStringCriteria: PropTypes.object
+  queryStringCriteria: PropTypes.object,
 };
 
 Filter.defaultProps = {};

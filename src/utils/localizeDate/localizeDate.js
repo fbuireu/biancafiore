@@ -1,4 +1,8 @@
-export function localizeDate({ date, locale, options = { dateStyle: `long` } }) {
+export function localizeDate({
+  date,
+  locale,
+  options = { dateStyle: `long` },
+}) {
   if (typeof date === `string`) {
     date = new Date(date);
   }

@@ -25,33 +25,54 @@ const CustomRefinementItem = ({
     let isSelectingMoreRefinements = !activeRefinements.includes(index);
 
     if (isSelectingMoreRefinements) {
-      setActiveRefinements(isActiveRefinement => [...isActiveRefinement, index]);
-      isRefinementSelected = true;
+      setActiveRefinements((isActiveRefinement) => [
+        ...isActiveRefinement,
+        index,
+      ])
+      isRefinementSelected = true
     } else {
-      setActiveRefinements(activeRefinements.filter(item => item !== index));
-      isRefinementSelected = activeRefinements.length - 1 !== 0;
+      setActiveRefinements(activeRefinements.filter((item) => item !== index))
+      isRefinementSelected = activeRefinements.length - 1 !== 0
     }
 
-    selectRefinement(isRefinementSelected);
-    refine(value);
+    selectRefinement(isRefinementSelected)
+    refine(value)
   };
 
-  return <div className={`refinement-list__wrapper`}>
-    <ul className={`refinement-list__list`}>
-      {items.map((item, index) => {
-        return <li
-          key={item.label}
-          className={`refinement-list__item ${activeRefinements.includes(index) ? `--is-selected` : ``} ${item.label === (queryStringCriteria && queryStringCriteria[queryString]) ? `--is-locked` : ``}`}
-          onClick={event => handleClick({ event: event, value: item, index: index })}
-        >
-          <label className={`refinement-list__item__label`}>
-            <input className={`refinement-list__item__checkbox`} type={`checkbox`} />
-            <span className={`refinement-list__item__label-text`}>{item.label} <sub>({item.count})</sub></span>
-          </label>
-        </li>;
-      })}
-    </ul>
-  </div>;
+  return (
+    <div className={`refinement-list__wrapper`}>
+      <ul className={`refinement-list__list`}>
+        {items.map((item, index) => {
+          return (
+            <li
+              key={item.label}
+              className={`refinement-list__item ${
+                activeRefinements.includes(index) ? `--is-selected` : ``
+              } ${
+                item.label ===
+                (queryStringCriteria && queryStringCriteria[queryString])
+                  ? `--is-locked`
+                  : ``
+              }`}
+              onClick={(event) =>
+                handleClick({ event: event, value: item, index: index })
+              }
+            >
+              <label className={`refinement-list__item__label`}>
+                <input
+                  className={`refinement-list__item__checkbox`}
+                  type={`checkbox`}
+                />
+                <span className={`refinement-list__item__label-text`}>
+                  {item.label} <sub>({item.count})</sub>
+                </span>
+              </label>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  )
 };
 
 CustomRefinementItem.propTypes = {
@@ -60,7 +81,7 @@ CustomRefinementItem.propTypes = {
   selectRefinement: PropTypes.string.isRequired,
   attribute: PropTypes.string,
   queryStringCriteria: PropTypes.string,
-  queryString: PropTypes.string
+  queryString: PropTypes.string,
 };
 
 CustomRefinementItem.defaultProps = {};

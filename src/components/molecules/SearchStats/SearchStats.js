@@ -2,7 +2,11 @@ import { Stats } from 'react-instantsearch-dom'
 import './SearchStats.scss'
 import React from 'react'
 
-const SearchStats = () => <div className={`filter__stats`}><Stats/></div>
+const SearchStats = () => (
+  <div className={`filter__stats`}>
+    <Stats/>
+  </div>
+)
 
 SearchStats.propTypes = {}
 

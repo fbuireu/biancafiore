@@ -1,20 +1,19 @@
 require(`dotenv`).config({
   path: `.env.${process.env.NODE_ENV}`,
-})
+});
 
 //todos in migration:
 // -cms migrar a strapi/sanity
-// netlify plugins --> migrate to gatsby cloud
-// eslint (gatsby-plugin-eslint?),prettierc etc
-// scss linter (deprecated)
-
-const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries/queries`)
+// eslint (gatsby-plugin-eslint?),prettierc i hooks, etc -->
+// scss linter (deprecated) --> https://stylelint.io/user-guide/get-started
+//background image in articles
+const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries/queries`);
 
 const {
   GATSBY_ALGOLIA_APP_ID,
   GATSBY_ALGOLIA_API_KEY,
   GATSBY_GOOGLE_ANALYTICS_ID,
-} = process.env
+} = process.env;
 
 module.exports = {
   trailingSlash: `always`,
@@ -37,16 +36,16 @@ module.exports = {
       resolve: `gatsby-plugin-react-svg`,
       options: {
         rule: {
-          include: /svg-components/
-        }
-      }
+          include: /svg-components/,
+        },
+      },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `uploads`,
-        path: `${__dirname}/static/assets/images`
-      }
+        path: `${__dirname}/static/assets/images`,
+      },
     },
     {
       resolve: `gatsby-source-filesystem`,
@@ -108,29 +107,29 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `authors`,
-        path: `${__dirname}/content/authors`
-      }
+        path: `${__dirname}/content/authors`,
+      },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `navigation`,
-        path: `${__dirname}/content/navigation`
-      }
+        path: `${__dirname}/content/navigation`,
+      },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `projects`,
-        path: `${__dirname}/content/projects`
-      }
+        path: `${__dirname}/content/projects`,
+      },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `articles`,
-        path: `${__dirname}/content/articles`
-      }
+        path: `${__dirname}/content/articles`,
+      },
     },
     {
       resolve: `gatsby-source-filesystem`,
@@ -161,7 +160,7 @@ module.exports = {
               className: `--is-heading`,
               maintainCase: true,
               removeAccents: true,
-            }
+            },
           },
         ],
       },
@@ -211,9 +210,9 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingIds: [GATSBY_GOOGLE_ANALYTICS_ID]
-      }
+        trackingIds: [GATSBY_GOOGLE_ANALYTICS_ID],
+      },
     },
-    `gatsby-plugin-netlify`
+    `gatsby-plugin-netlify`,
   ],
 };

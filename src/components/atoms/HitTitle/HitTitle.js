@@ -4,9 +4,11 @@ import './HitTitle.scss'
 import React from 'react'
 
 const HitTitle = ({ hit, attribute }) => {
-  return <h2 className={`hit-card__title`}>
-    <Highlight attribute={attribute} hit={hit} tagName={`mark`}/>
-  </h2>
+  return (
+    <h2 className={`hit-card__title`}>
+      <Highlight attribute={attribute} hit={hit} tagName={`mark`}/>
+    </h2>
+  )
 }
 
 HitTitle.propTypes = {

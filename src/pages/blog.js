@@ -22,72 +22,87 @@ const Blog = ({
   location,
   data: {
     blog: {
-      edges: [{
-        node: {
-          frontmatter: blog
-        }
-      }]
+      edges: [
+        {
+          node: { frontmatter: blog },
+        },
+      ],
     },
     latestFeaturedArticle: {
-      edges: [{
-        node: latestFeaturedArticle
-      }]
-    }
-  }
+      edges: [{ node: latestFeaturedArticle }],
+    },
+  },
 }) => {
-  console.log('process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME',
-    process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME)
-  return <Layout>
-    <SEO title="Blog"/>
-    <BlogJumbotron blog={blog} latestFeaturedArticle={latestFeaturedArticle}
-                   location={location}/>
-    <AlgoliaWrapper hitsComponent={ArticleHitCards}
-                    indexName={process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME}
-                    filterParameters={FILTER_PARAMETERS}
-                    hasRange={true}
-    />
-  </Layout>
+  console.log(
+    'process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME',
+    process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME,
+  )
+  return (
+    <Layout>
+      <SEO title="Blog"/>
+      <BlogJumbotron
+        blog={blog}
+        latestFeaturedArticle={latestFeaturedArticle}
+        location={location}
+      />
+      <AlgoliaWrapper
+        hitsComponent={ArticleHitCards}
+        indexName={process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME}
+        filterParameters={FILTER_PARAMETERS}
+        hasRange={true}
+      />
+    </Layout>
+  )
 };
 
-export const blogData = graphql`query getBlogData {
-    blog: allMarkdownRemark(filter: {frontmatter: {key: {eq: "blog"}}}) {
-        edges {
-            node {
-                frontmatter {
-                    title
-                    jumbotron {
-                        featuredArticle {
-                            cta
-                        }
-                        socialNetworks {
-                            cta
-                            socialNetworks
+export const blogData = graphql`
+    query getBlogData {
+        blog: allMarkdownRemark(filter: { frontmatter: { key: { eq: "blog" } } }) {
+            edges {
+                node {
+                    frontmatter {
+                        title
+                        jumbotron {
+                            featuredArticle {
+                                cta
+                            }
+                            socialNetworks {
+                                cta
+                                socialNetworks
+                            }
                         }
                     }
                 }
             }
         }
-    }
-    latestFeaturedArticle: allMarkdownRemark(
-        filter: {isFuture: {eq: false}, frontmatter: {key: {eq: "article"}, isDraft: {eq: false}, content: {isFeaturedArticle: {eq: true}}}}
-        sort: {fields: frontmatter___content___publishDate, order: DESC}
-        limit: 1
-    ) {
-        edges {
-            node {
-                fields {
-                    slug
+        latestFeaturedArticle: allMarkdownRemark(
+            filter: {
+                isFuture: { eq: false }
+                frontmatter: {
+                    key: { eq: "article" }
+                    isDraft: { eq: false }
+                    content: { isFeaturedArticle: { eq: true } }
                 }
-                frontmatter {
-                    author
-                    content {
-                        title
-                        tags
-                        publishDate
-                        readingTime
-                        featuredImage {
-                            childImageSharp {
-                                gatsbyImageData(layout: FULL_WIDTH)
+            }
+            sort: { fields: frontmatter___content___publishDate, order: DESC }
+            limit: 1
+        ) {
+            edges {
+                node {
+                    fields {
+                        slug
+                    }
+                    frontmatter {
+                        author
+                        content {
+                            title
+                            tags
+                            publishDate
+                            readingTime
+                            featuredImage {
+                                childImageSharp {
+                                    gatsbyImageData(layout: FULL_WIDTH)
+                                }
                             }
                         }
                     }
@@ -95,15 +110,13 @@ export const blogData = graphql`query getBlogData {
             }
         }
     }
-}
 `
 
 Blog.propTypes = {
   data: PropTypes.objectOf(PropTypes.object).isRequired,
-  location: PropTypes.objectOf(PropTypes.object).isRequired
+  location: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 Blog.defaultProps = {};
 
 export default Blog;
-

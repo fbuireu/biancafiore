@@ -17,25 +17,37 @@ const AboutMeLatestArticleCard = ({
     content: { title, summary, publishDate, featuredImage },
   },
 }) => {
-
-  const { i18n: { language: locale } } = useI18next()
+  const {
+    i18n: { language: locale },
+  } = useI18next()
 
   return (
     <li className={`about-me__latest-articles__item`}>
-      <Link className={`about-me__latest-articles__item__card`}
-            to={`/blog${slug}`}>
+      <Link
+        className={`about-me__latest-articles__item__card`}
+        to={`/blog${slug}`}
+      >
         <GatsbyImage
           image={featuredImage?.childImageSharp?.gatsbyImageData}
-          className={`about-me__latest-articles__item__image`}/>
+          className={`about-me__latest-articles__item__image`}
+        />
         <h4 className={`about-me__latest-articles__item__title`}>{title}</h4>
-        <Link className={`about-me__latest-articles__author`}
-              to={`/tags/${slugify(author)}`}>{author}</Link>
-        <time className={`about-me__latest-articles__date`}
-              dateTime={publishDate}>
+        <Link
+          className={`about-me__latest-articles__author`}
+          to={`/tags/${slugify(author)}`}
+        >
+          {author}
+        </Link>
+        <time
+          className={`about-me__latest-articles__date`}
+          dateTime={publishDate}
+        >
           {localizeDate({ date: publishDate, locale })}
         </time>
-        <Markdown className={`about-me__latest-articles__summary`}
-                  options={{ wrapper: `p`, forceWrapper: true }}>
+        <Markdown
+          className={`about-me__latest-articles__summary`}
+          options={{ wrapper: `p`, forceWrapper: true }}
+        >
           {summary ?? excerpt}
         </Markdown>
       </Link>
@@ -46,7 +58,7 @@ const AboutMeLatestArticleCard = ({
 AboutMeLatestArticleCard.propTypes = {
   fields: PropTypes.string.isRequired,
   excerpt: PropTypes.string,
-  frontmatter: PropTypes.string.isRequired
+  frontmatter: PropTypes.string.isRequired,
 };
 
 AboutMeLatestArticleCard.defaultProps = {};

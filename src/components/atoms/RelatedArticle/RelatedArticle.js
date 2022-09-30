@@ -15,19 +15,25 @@ const RelatedArticle = ({
     },
   },
 }) => {
-  const { i18n: { language: locale } } = useI18next()
+  const {
+    i18n: { language: locale },
+  } = useI18next()
 
   return (
     <li className={`related-article__item`}>
       <Link className={`related-article__item__card`} to={`/blog${slug}`}>
         <GatsbyImage
           image={featuredImage?.childImageSharp?.gatsbyImageData}
-          className={`related-article__item__image`}/>
+          className={`related-article__item__image`}
+        />
         <h4 className={`related-article__item__title`}>{title}</h4>
-        <Link className={`related-article__author`}
-              to={`/tags/${slugify(author)}`}>{author}</Link>
-        <time className={`related-article__date`}
-              dateTime={publishDate}>
+        <Link
+          className={`related-article__author`}
+          to={`/tags/${slugify(author)}`}
+        >
+          {author}
+        </Link>
+        <time className={`related-article__date`} dateTime={publishDate}>
           {localizeDate({ date: publishDate, locale })}
         </time>
       </Link>
@@ -36,7 +42,7 @@ const RelatedArticle = ({
 };
 
 RelatedArticle.propTypes = {
-  article: PropTypes.string.isRequired
+  article: PropTypes.string.isRequired,
 };
 
 RelatedArticle.defaultProps = {};

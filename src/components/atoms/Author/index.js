@@ -1,3 +1,3 @@
-import Author from './Author.js';
+import Author from './Author.js'
 
 export default Author;

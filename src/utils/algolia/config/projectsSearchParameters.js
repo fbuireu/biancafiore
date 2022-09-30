@@ -10,5 +10,5 @@ export const PROJECTS_SEARCH_PARAMETERS = [
     attribute: `language`,
     operator: `and`,
     queryString: `language`,
-  }
+  },
 ];

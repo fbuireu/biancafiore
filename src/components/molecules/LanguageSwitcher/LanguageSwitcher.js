@@ -9,27 +9,39 @@ const LanguageSwitcher = () => {
   const [isLanguageSelectorActive, { toggle }] = useBoolean()
 
   const languages = useLanguages()
-  const { i18n: { language: locale }, changeLanguage } = useI18next()
+  const {
+    i18n: { language: locale },
+    changeLanguage,
+  } = useI18next()
 
   const handleLanguage = async (language) => {
     await changeLanguage(language)
   }
 
-  return <li className={`language-switcher__wrapper ${isLanguageSelectorActive
-    ? `--is-open`
-    : ``}`}>
-    <span onClick={toggle} className={`language-switcher__icon`}>
-      <ArrowDown className={`arrow-down`}/>
-    </span>
-    <ul className={`language-switcher__list`}>
-      {languages.map(language => isLanguageSelectorActive &&
-        <li className={`language-switcher__item ${locale ===
-        language.isoCode ? `--is-current-language` : ``}`}
-            onClick={() => handleLanguage(language.isoCode)}>
-        </li>,
-      )}
-    </ul>
-  </li>;
+  return (
+    <li
+      className={`language-switcher__wrapper ${
+        isLanguageSelectorActive ? `--is-open` : ``
+      }`}
+    >
+      <span onClick={toggle} className={`language-switcher__icon`}>
+        <ArrowDown className={`arrow-down`}/>
+      </span>
+      <ul className={`language-switcher__list`}>
+        {languages.map(
+          (language) =>
+            isLanguageSelectorActive && (
+              <li
+                className={`language-switcher__item ${
+                  locale === language.isoCode ? `--is-current-language` : ``
+                }`}
+                onClick={() => handleLanguage(language.isoCode)}
+              ></li>
+            ),
+        )}
+      </ul>
+    </li>
+  )
 };
 
 export default LanguageSwitcher;

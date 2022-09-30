@@ -16,9 +16,12 @@ const Timeline = ({
   const [swiperInstance, setSwiperInstance] = useState(null)
   const sliderReference = useRef(null)
 
-  useEffect(function slideToIndex () {
-    swiperInstance?.slideTo(selectedCityIndex)
-  }, [selectedCityIndex, swiperInstance])
+  useEffect(
+    function slideToIndex () {
+      swiperInstance?.slideTo(selectedCityIndex)
+    },
+    [selectedCityIndex, swiperInstance],
+  )
 
   function handleOnSlideChange (swiper) {
     findSelectedCityNameByIndex({ selectedIndex: swiper.activeIndex })
@@ -33,32 +36,35 @@ const Timeline = ({
     initialSlide: selectedCityIndex,
     spaceBetween: 80,
     keyboard: {
-      enabled: true
-    }
-  };
+      enabled: true,
+    },
+  }
 
-  return <section className={`timeline__wrapper`}>
-    <h2 className={`timeline__title`}>{title}</h2>
-    <Swiper {...SLIDER_PARAMETERS}
-            onSwiper={swiper => setSwiperInstance(swiper)}
-            onSlideChange={swiper => handleOnSlideChange(swiper)}
-            ref={sliderReference}
-            className={`timeline__slider`}
-    >
-      {years.map(year => (
-        <SwiperSlide key={year.name}>
-          {({ isActive }) => <TimelineCity {...year} isActive={isActive} />}
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  </section>;
+  return (
+    <section className={`timeline__wrapper`}>
+      <h2 className={`timeline__title`}>{title}</h2>
+      <Swiper
+        {...SLIDER_PARAMETERS}
+        onSwiper={(swiper) => setSwiperInstance(swiper)}
+        onSlideChange={(swiper) => handleOnSlideChange(swiper)}
+        ref={sliderReference}
+        className={`timeline__slider`}
+      >
+        {years.map((year) => (
+          <SwiperSlide key={year.name}>
+            {({ isActive }) => <TimelineCity {...year} isActive={isActive}/>}
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </section>
+  )
 };
 
 Timeline.propTypes = {
   title: PropTypes.string.isRequired,
   years: PropTypes.arrayOf(PropTypes.object).isRequired,
   findSelectedCityNameByIndex: PropTypes.func.isRequired,
-  selectedCityIndex: PropTypes.number
+  selectedCityIndex: PropTypes.number,
 };
 
 Timeline.defaultProps = {};

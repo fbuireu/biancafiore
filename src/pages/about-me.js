@@ -24,17 +24,17 @@ const AboutMe = ({
               latestArticles: latestArticlesData,
             },
           },
-        }],
-    }, citiesDetails
-  }
+        },
+      ],
+    },
+    citiesDetails,
+  },
 }) => {
   let cities = [];
 
   citiesDetails.edges.forEach(({ node: city }) => {
     let {
-      frontmatter: {
-        name, isInitialCity, coordinates, countryIsoCode
-      }
+      frontmatter: { name, isInitialCity, coordinates, countryIsoCode },
     } = city;
 
     if (mapCities.includes(name)) {
@@ -42,115 +42,122 @@ const AboutMe = ({
         name,
         isInitialCity,
         coordinates: typeof coordinates === `string` && JSON.parse(coordinates),
-        countryIsoCode
+        countryIsoCode,
       });
     }
   });
 
-  let initialCity = cities?.find(({ isInitialCity }) => isInitialCity);
+  let initialCity = cities?.find(({ isInitialCity }) => isInitialCity)
 
-  if (years[years.length - 1].city === initialCity?.name) years.reverse();
+  if (years[years.length - 1].city === initialCity?.name) years.reverse()
 
-  const [selectedCityIndex, setSelectedCityIndex] = useState(years.findIndex(({ city }) => city === initialCity?.name));
-  const [selectedCityName, setSelectedCityName] = useState(initialCity);
+  const [selectedCityIndex, setSelectedCityIndex] = useState(
+    years.findIndex(({ city }) => city === initialCity?.name),
+  )
+  const [selectedCityName, setSelectedCityName] = useState(initialCity)
 
-  function findSelectedCityIndexByName({ selectedCity }) {
-    setSelectedCityIndex(years.findIndex(({ city: name }) => name === selectedCity));
+  function findSelectedCityIndexByName ({ selectedCity }) {
+    setSelectedCityIndex(
+      years.findIndex(({ city: name }) => name === selectedCity),
+    )
   }
 
-  function findSelectedCityNameByIndex({ selectedIndex }) {
-    setSelectedCityName(years[selectedIndex].city);
+  function findSelectedCityNameByIndex ({ selectedIndex }) {
+    setSelectedCityName(years[selectedIndex].city)
   }
 
-  return <Layout>
-    <SEO title="Home" />
-    <AboutMeJumbotron jumbotron={jumbotron} location={location} />
-    <Timeline
-      title={title}
-      years={years}
-      findSelectedCityNameByIndex={findSelectedCityNameByIndex}
-      selectedCityIndex={selectedCityIndex}
-    />
-    <Map
-      cities={cities}
-      findSelectedCityIndexByName={findSelectedCityIndexByName}
-      selectedCityName={selectedCityName}
-    />
-    <AboutMeLatestArticles latestArticlesData={latestArticlesData} />
-  </Layout>;
+  return (
+    <Layout>
+      <SEO title="Home"/>
+      <AboutMeJumbotron jumbotron={jumbotron} location={location}/>
+      <Timeline
+        title={title}
+        years={years}
+        findSelectedCityNameByIndex={findSelectedCityNameByIndex}
+        selectedCityIndex={selectedCityIndex}
+      />
+      <Map
+        cities={cities}
+        findSelectedCityIndexByName={findSelectedCityIndexByName}
+        selectedCityName={selectedCityName}
+      />
+      <AboutMeLatestArticles latestArticlesData={latestArticlesData}/>
+    </Layout>
+  )
 };
 
-export const aboutMeData = graphql`query getAboutMeData {
-    aboutMe: allMarkdownRemark(
-        filter: {frontmatter: {key: {eq: "about-me"}}}
-        sort: {fields: frontmatter___timeline___years___city, order: ASC}
-    ) {
-        edges {
-            node {
-                html
-                frontmatter {
-                    jumbotron {
-                        leftSide {
+export const aboutMeData = graphql`
+    query getAboutMeData {
+        aboutMe: allMarkdownRemark(
+            filter: { frontmatter: { key: { eq: "about-me" } } }
+            sort: { fields: frontmatter___timeline___years___city, order: ASC }
+        ) {
+            edges {
+                node {
+                    html
+                    frontmatter {
+                        jumbotron {
+                            leftSide {
+                                title
+                                welcomeText
+                                welcomeDescription
+                                cta
+                            }
+                            rightSide {
+                                socialNetworks
+                                image {
+                                    childImageSharp {
+                                        gatsbyImageData(width: 400, height: 400, layout: FIXED)
+                                    }
+                                }
+                            }
+                        }
+                        map {
+                            cities
+                        }
+                        timeline {
                             title
-                            welcomeText
-                            welcomeDescription
-                            cta
-                        }
-                        rightSide {
-                            socialNetworks
-                            image {
-                                childImageSharp {
-                                    gatsbyImageData(width: 400, height: 400, layout: FIXED)
+                            years {
+                                year
+                                city
+                                description
+                                image {
+                                    childImageSharp {
+                                        gatsbyImageData(layout: FULL_WIDTH)
+                                    }
                                 }
                             }
                         }
-                    }
-                    map {
-                        cities
-                    }
-                    timeline {
-                        title
-                        years {
-                            year
-                            city
-                            description
-                            image {
-                                childImageSharp {
-                                    gatsbyImageData(layout: FULL_WIDTH)
-                                }
-                            }
+                        latestArticles {
+                            title
+                            quote
+                            author
                         }
                     }
-                    latestArticles {
-                        title
-                        quote
-                        author
+                }
+            }
+        }
+        citiesDetails: allMarkdownRemark(
+            filter: { frontmatter: { key: { eq: "city" } } }
+            sort: { fields: frontmatter___name, order: ASC }
+        ) {
+            edges {
+                node {
+                    frontmatter {
+                        name
+                        isInitialCity
+                        coordinates
+                        countryIsoCode
                     }
                 }
             }
         }
     }
-    citiesDetails: allMarkdownRemark(
-        filter: {frontmatter: {key: {eq: "city"}}}
-        sort: {fields: frontmatter___name, order: ASC}
-    ) {
-        edges {
-            node {
-                frontmatter {
-                    name
-                    isInitialCity
-                    coordinates
-                    countryIsoCode
-                }
-            }
-        }
-    }
-}
 `
 
 AboutMe.propTypes = {
   data: PropTypes.objectOf(PropTypes.object).isRequired,
-  location: PropTypes.objectOf(PropTypes.object).isRequired
+  location: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 AboutMe.defaultProps = {};

@@ -16,16 +16,20 @@ const FILTER_PARAMETERS = {
 }
 
 const Projects = () => {
-  return <Layout>
-    <SEO title="Projects"/>
-    <section className={`wrapper`}>
-      All projects here
-      <AlgoliaWrapper hitsComponent={ProjectHitCards}
-                      indexName={process.env.GATSBY_ALGOLIA_PROJECTS_INDEX_NAME}
-                      filterParameters={FILTER_PARAMETERS}
-                      hasRange={false}/>
-    </section>
-  </Layout>;
+  return (
+    <Layout>
+      <SEO title="Projects"/>
+      <section className={`wrapper`}>
+        All projects here
+        <AlgoliaWrapper
+          hitsComponent={ProjectHitCards}
+          indexName={process.env.GATSBY_ALGOLIA_PROJECTS_INDEX_NAME}
+          filterParameters={FILTER_PARAMETERS}
+          hasRange={false}
+        />
+      </section>
+    </Layout>
+  )
 };
 
 Projects.propTypes = {};
