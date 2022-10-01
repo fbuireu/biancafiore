@@ -1,19 +1,21 @@
 require(`dotenv`).config({
   path: `.env.${process.env.NODE_ENV}`,
-});
+})
 
 //todos in migration:
 // -cms migrar a strapi/sanity
 // eslint (gatsby-plugin-eslint?),prettierc i hooks, etc -->
 // scss linter (deprecated) --> https://stylelint.io/user-guide/get-started
 //background image in articles
-const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries/queries`);
+// blurr effect in images
+
+const ALGOLIA_QUERIES = require(`./src/utils/algolia/queries/queries`)
 
 const {
   GATSBY_ALGOLIA_APP_ID,
   GATSBY_ALGOLIA_API_KEY,
   GATSBY_GOOGLE_ANALYTICS_ID,
-} = process.env;
+} = process.env
 
 module.exports = {
   trailingSlash: `always`,
