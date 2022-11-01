@@ -121,10 +121,10 @@
   resolved "https://registry.yarnpkg.com/@amcharts/amcharts4-geodata/-/amcharts4-geodata-4.1.23.tgz#a46a6a2b5650ae51f76e8b9543f63b8c756a13d7"
   integrity sha512-/hFqTuc2SUB0tAgygc8yj1xvTUdddltI7/15fAT9L5XHGERgF8qAa+AisQQ0UMITvrWIr5awJupWE3vDTlWsjQ==
 
-"@amcharts/amcharts4@^4.10.28":
-  version "4.10.28"
-  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4/-/amcharts4-4.10.28.tgz#c01b54c510f4f5d75513c8a4b00cbd0746cdc0a2"
-  integrity sha512-GGeFEjzyUDzvIyJph3tNMHyPbsJvhpOVJx4mA//XJqnZUjP/BdWFuxcyZlR+QJQxVuegkFofahyBdh/jKZzhrg==
+"@amcharts/amcharts4@^4.10.29":
+  version "4.10.29"
+  resolved "https://registry.yarnpkg.com/@amcharts/amcharts4/-/amcharts4-4.10.29.tgz#be5643a2a1c5ee436438de5a554e0ffc18396c4c"
+  integrity sha512-uDCvm4V0Xs2jtI0Aa7XFH0jqoyEGx9I2ukFEwaaQzYq11vwowhJsgE3sSv2jsfKETYUvPXb32NbzrXZulE2ESg==
   dependencies:
     "@babel/runtime" "^7.6.3"
     core-js "^3.0.0"
