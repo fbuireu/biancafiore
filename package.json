@@ -62,7 +62,7 @@
     "react-parallax-tilt": "^1.7.67",
     "react-scripts": "^5.0.1",
     "react-select": "^5.4.0",
-    "react-share": "^4.1.0",
+    "react-share": "^4.4.1",
     "rheostat": "^4.1.1",
     "swiper": "^8.4.2",
     "uuid": "^9.0.0"
