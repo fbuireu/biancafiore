@@ -39,7 +39,7 @@
     "gatsby-source-filesystem": "^4.24.0",
     "gatsby-transformer-remark": "^5.24.0",
     "gatsby-transformer-sharp": "^4.24.0",
-    "i18next": "^21.9.2",
+    "i18next": "^21.10.0",
     "instantsearch-rheostat-range-slider-react": "^0.0.2",
     "lodash.get": "^4.4.2",
     "lodash.orderby": "^4.6.0",
