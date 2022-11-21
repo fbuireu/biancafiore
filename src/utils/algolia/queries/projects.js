@@ -5,7 +5,7 @@ const PROJECTS_QUERY = `{
       isDraft: { eq: false }
       }
     }, 
-    sort: { fields: frontmatter___content___publishDate, order: DESC }) {
+    sort: { frontmatter: { content: { publishDate: DESC }}}) {
     edges {
       node {
         html

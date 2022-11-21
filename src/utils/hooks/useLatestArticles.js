@@ -1,4 +1,4 @@
-import { graphql, useStaticQuery } from 'gatsby'
+import {graphql, useStaticQuery} from 'gatsby';
 
 export const useLatestArticles = () => {
   const { latestArticles } = useStaticQuery(graphql`
@@ -8,7 +8,7 @@ export const useLatestArticles = () => {
                   isFuture: { eq: false }
                   frontmatter: { key: { eq: "article" }, isDraft: { eq: false } }
               }
-              sort: { fields: frontmatter___content___publishDate, order: DESC }
+              sort: { frontmatter: { content: { publishDate: DESC }}}
           ) {
               edges {
                   node {

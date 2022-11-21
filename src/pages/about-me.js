@@ -1,14 +1,12 @@
-import { graphql } from 'gatsby'
-import PropTypes from 'prop-types'
-import React, { useState } from 'react'
-import Map from '../components/atoms/Map/Map'
-import SEO from '../components/atoms/SEO/SEO'
-import AboutMeJumbotron
-  from '../components/molecules/AboutMeJumbotron/AboutMeJumbotron'
-import Timeline from '../components/molecules/Timeline/Timeline'
-import AboutMeLatestArticles
-  from '../components/organisms/AboutMeLatestArticles/AboutMeLatestArticles'
-import Layout from '../components/templates/Layout/Layout'
+import {graphql} from 'gatsby';
+import PropTypes from 'prop-types';
+import React, {useState} from 'react';
+import Map from '../components/atoms/Map/Map';
+import SEO from '../components/atoms/SEO/SEO';
+import AboutMeJumbotron from '../components/molecules/AboutMeJumbotron/AboutMeJumbotron';
+import Timeline from '../components/molecules/Timeline/Timeline';
+import AboutMeLatestArticles from '../components/organisms/AboutMeLatestArticles/AboutMeLatestArticles';
+import Layout from '../components/templates/Layout/Layout';
 
 const AboutMe = ({
   location,
@@ -90,7 +88,7 @@ export const aboutMeData = graphql`
     query getAboutMeData {
         aboutMe: allMarkdownRemark(
             filter: { frontmatter: { key: { eq: "about-me" } } }
-            sort: { fields: frontmatter___timeline___years___city, order: ASC }
+            sort: { frontmatter: {timeline: {years: { city: ASC }}}}
         ) {
             edges {
                 node {
@@ -139,7 +137,7 @@ export const aboutMeData = graphql`
         }
         citiesDetails: allMarkdownRemark(
             filter: { frontmatter: { key: { eq: "city" } } }
-            sort: { fields: frontmatter___name, order: ASC }
+            sort: { frontmatter: {name: ASC }}
         ) {
             edges {
                 node {

@@ -12,7 +12,7 @@ const articlesBuilder = async (graphql, { createPage }, reporter) => {
           isFuture: { eq: false }
           frontmatter: { key: { eq: "article" }, isDraft: { eq: false } }
         }
-        sort: { fields: frontmatter___content___publishDate, order: DESC }
+        sort: { frontmatter: { content: { publishDate: DESC }}}
       ) {
         edges {
           node {

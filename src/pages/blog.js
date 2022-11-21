@@ -1,22 +1,18 @@
-import { graphql } from 'gatsby'
-import PropTypes from 'prop-types'
-import SEO from '../components/atoms/SEO/SEO'
-import BlogJumbotron from '../components/molecules/BlogJumbotron/BlogJumbotron'
-import AlgoliaWrapper
-  from '../components/organisms/AlgoliaWrapper/AlgoliaWrapper'
-import ArticleHitCards
-  from '../components/organisms/ArticleHitCards/ArticleHitCards'
-import Layout from '../components/templates/Layout/Layout'
-import {
-  ARTICLES_SEARCH_PARAMETERS,
-} from '../utils/algolia/config/articlesSearchParameters'
-import { ARTICLES_SORT_BY } from '../utils/algolia/config/articlesSortBy'
-import React from 'react'
+import {graphql} from 'gatsby';
+import PropTypes from 'prop-types';
+import SEO from '../components/atoms/SEO/SEO';
+import BlogJumbotron from '../components/molecules/BlogJumbotron/BlogJumbotron';
+import AlgoliaWrapper from '../components/organisms/AlgoliaWrapper/AlgoliaWrapper';
+import ArticleHitCards from '../components/organisms/ArticleHitCards/ArticleHitCards';
+import Layout from '../components/templates/Layout/Layout';
+import {ARTICLES_SEARCH_PARAMETERS} from '../utils/algolia/config/articlesSearchParameters';
+import {ARTICLES_SORT_BY} from '../utils/algolia/config/articlesSortBy';
+import React from 'react';
 
 const FILTER_PARAMETERS = {
   SEARCH_PARAMETERS: ARTICLES_SEARCH_PARAMETERS,
   SORT_BY: ARTICLES_SORT_BY,
-}
+};
 
 const Blog = ({
   location,
@@ -84,7 +80,7 @@ export const blogData = graphql`
                     content: { isFeaturedArticle: { eq: true } }
                 }
             }
-            sort: { fields: frontmatter___content___publishDate, order: DESC }
+            sort: { frontmatter: { content: { publishDate: DESC }}}
             limit: 1
         ) {
             edges {
