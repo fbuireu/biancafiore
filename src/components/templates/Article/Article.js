@@ -1,22 +1,22 @@
-import { graphql } from 'gatsby'
-import Markdown from 'markdown-to-jsx'
-import PropTypes from 'prop-types'
-import React, { useEffect, useRef, useState } from 'react'
-import { addComment } from '../../../utils/firebase/addComment'
-import { editComment } from '../../../utils/firebase/editComment'
-import { getComments } from '../../../utils/firebase/getComments'
-import { useScrollPosition } from '../../../utils/hooks/useScrollPosition'
-import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress'
-import SEO from '../../atoms/SEO/SEO'
-import RelatedArticles from '../../molecules/RelatedArticles/RelatedArticles'
-import Billboard from '../../organisms/Billboard/Billboard'
-import Layout from '../Layout/Layout'
-import './Article.scss'
+import {graphql} from 'gatsby';
+import Markdown from 'markdown-to-jsx';
+import PropTypes from 'prop-types';
+import React, {useEffect, useRef, useState} from 'react';
+import {addComment} from '../../../utils/firebase/addComment';
+import {editComment} from '../../../utils/firebase/editComment';
+import {getComments} from '../../../utils/firebase/getComments';
+import {useScrollPosition} from '../../../utils/hooks/useScrollPosition';
+import ReadingProgress from '../../atoms/ReadingProgress/ReadingProgress';
+import SEO from '../../atoms/SEO/SEO';
+import RelatedArticles from '../../molecules/RelatedArticles/RelatedArticles';
+import Billboard from '../../organisms/Billboard/Billboard';
+import Layout from '../Layout/Layout';
+import './Article.scss';
 
-const Article = ({ data, location }) => {
-  const [scroll, setScroll] = useState(0)
-  const [articleProperties, setArticleProperties] = useState({})
-  const [comments, setComments] = useState([])
+const Article = ({data, location}) => {
+  const [scroll, setScroll] = useState(0);
+  const [articleProperties, setArticleProperties] = useState({});
+  const [comments, setComments] = useState([]);
   const [commentsLoadingStatus, setCommentsLoadingStatus] = useState({
     initial: true,
     loading: false,
@@ -221,7 +221,7 @@ export const articleData = graphql`
                 frontmatter: { content: { tags: { in: $tags } } }
                 fields: { slug: { ne: $slug } }
             }
-            sort: { fields: frontmatter___content___publishDate, order: DESC }
+            sort: { frontmatter: { content: { publishDate: DESC }}}
             limit: 3
         ) {
             edges {

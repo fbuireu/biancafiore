@@ -16,7 +16,7 @@ const projectsBuilder = async (graphql, { createPage }, reporter) => {
           isFuture: { eq: false }
           frontmatter: { key: { eq: "project" }, isDraft: { eq: false } }
         }
-        sort: { fields: frontmatter___content___publishDate, order: ASC }
+        sort: { frontmatter: { content: { publishDate: ASC }}}
       ) {
         edges {
           node {
