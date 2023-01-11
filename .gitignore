@@ -63,3 +63,4 @@ build/Release
 .idea/
 .vscode/
 .fleet/
+.history/
