@@ -11,25 +11,25 @@ const SETTINGS = { attributesToSnippet: [`excerpt: 200`] };
 const ALGOLIA_QUERIES = [
   {
     query: ARTICLES_QUERY,
-    transformer: ({ data }) =>
-      data.articles.edges.flatMap(({ node: { frontmatter, ...rest } }) => ({
+    transformer: ({data}) =>
+      data.articles.edges.flatMap(({node: {frontmatter, ...rest}}) => ({
         ...frontmatter,
         ...rest,
       })),
     indexName: GATSBY_ALGOLIA_ARTICLES_INDEX_NAME,
     SETTINGS,
-    matchFields: [`fields.slug`, `content.title`, `content.lastUpdated`],
+    matchFields: [`objectID`],
   },
   {
     query: PROJECTS_QUERY,
-    transformer: ({ data }) =>
-      data.projects.edges.flatMap(({ node: { frontmatter, ...rest } }) => ({
+    transformer: ({data}) =>
+      data.projects.edges.flatMap(({node: {frontmatter, ...rest}}) => ({
         ...frontmatter,
         ...rest,
       })),
     indexName: GATSBY_ALGOLIA_PROJECTS_INDEX_NAME,
     SETTINGS,
-    matchFields: [`content.name`, `content.publishDate`],
+    matchFields: [`objectID`],
   },
 ];
 
