@@ -195,7 +195,7 @@ module.exports = {
         languages: [`en`, `it`, `ca`, `es`],
         defaultLanguage: `en`,
         siteUrl: `https://biancafiore.me`,
-        trailingSlash: 'always',
+        trailingSlash: `always`,
         generateDefaultLanguagePage: true,
       },
     },

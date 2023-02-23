@@ -1,20 +1,12 @@
 const ARTICLES_QUERY = `{
-  articles: allMarkdownRemark (
-    filter: {
-      isFuture: { eq: false }, 
-      frontmatter: {
-        key: { eq: "article" }, 
-        isDraft: { eq: false }
-      }
-    }, 
-    sort: { 
-      fields: frontmatter___content___publishDate, 
-      order: DESC 
-    }) {
+  articles: allMarkdownRemark(
+    filter: {isFuture: {eq: false}, frontmatter: {key: {eq: "article"}, isDraft: {eq: false}}}
+    sort: {frontmatter: {content: {publishDate: DESC}}}
+  ) {
     edges {
       node {
         html
-        excerpt (pruneLength: 350)
+        excerpt(pruneLength: 350)
         fields {
           slug
         }
@@ -34,14 +26,15 @@ const ARTICLES_QUERY = `{
             tags
             featuredImage {
               childImageSharp {
-                  gatsbyImageData(layout: FULL_WIDTH)
+                gatsbyImageData(layout: FULL_WIDTH)
               }
-            } 
+            }
           }
         }
       }
     }
   }
-}`;
+}
+`;
 
 module.exports = ARTICLES_QUERY;

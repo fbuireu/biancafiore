@@ -67,15 +67,16 @@ const Article = ({data, location}) => {
         ...commentsLoadingStatus,
         loading: false,
         loaded: true,
-      })
-    }).catch((error) => {
-      console.log(error)
-      setCommentsLoadingStatus({
-        ...commentsLoadingStatus,
-        loading: false,
-        error: true,
-      })
+      });
     })
+      .catch((error) => {
+        console.log(error);
+        setCommentsLoadingStatus({
+          ...commentsLoadingStatus,
+          loading: false,
+          error: true,
+        });
+      });
   };
 
   useEffect(function initialSetup() {
@@ -99,28 +100,28 @@ const Article = ({data, location}) => {
         ...reply,
         slug: slug,
       },
-    })
-    await fetchComments()
+    });
+    await fetchComments();
   }
 
   useScrollPosition(
-    function setScrollPosition ({ currentPosition }) {
-      let { y: currentYPosition } = currentPosition
+    function setScrollPosition({currentPosition}) {
+      let {y: currentYPosition} = currentPosition;
 
-      setScroll(currentYPosition)
+      setScroll(currentYPosition);
     },
     [scroll],
-  )
-
+  );
+  console.log(`eeee`, article);
   return (
     <Layout>
       <SEO title={title}/>
       <Billboard
-        author={author}
-        tags={tags}
-        location={location}
-        shareParameters={shareParameters}
-        {...article}
+            author={author}
+            tags={tags}
+            location={location}
+            shareParameters={shareParameters}
+            {...article}
       />
       <section className={`wrapper article__wrapper`}>
         <article ref={articleReference}>
