@@ -23,27 +23,27 @@ const Index = ({
     },
   },
 }) => {
-  // return (
-  //   <h1
-  //     style={{
-  //       textAlign: `center`,
-  //       marginTop: `50vh`,
-  //       fontSize: `52px`,
-  //     }}
-  //   >
-  //     Site under construction
-  //     <br/>
-  //     We&apos;ll be back soon
-  //   </h1>
-  // )
+   return (
+     <h1
+       style={{
+         textAlign: `center`,
+         marginTop: `50vh`,
+         fontSize: `52px`,
+     }}
+     >
+       Site under construction
+       <br/>
+       We&apos;ll be back soon
+     </h1>
+   )
 
-  return <Layout>
-    <SEO title="Home"/>
-    <HomeJumbotron {...jumbotron} />
-    <Testimonials {...testimonials} />
-    <MyWork {...myWork} />
-    <HomeLatestArticles {...latestArticles} />
-  </Layout>
+  //return <Layout>
+ //   <SEO title="Home"/>
+ //   <HomeJumbotron {...jumbotron} />
+ //   <Testimonials {...testimonials} />
+  //  <MyWork {...myWork} />
+ //   <HomeLatestArticles //{...latestArticles} />
+//  </Layout>
 };
 
 export const homeData = graphql`
