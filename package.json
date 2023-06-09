@@ -16,7 +16,7 @@
     "eslint-plugin-promise": "^6.0.1",
     "eslint-plugin-react": "^7.31.8",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "gatsby": "^5.0.0",
+    "gatsby": "^5.9.1",
     "gatsby-background-image": "^1.1.1",
     "gatsby-plugin-algolia": "^0.26.0",
     "gatsby-plugin-catch-links": "^5.0.0",
