@@ -44,7 +44,7 @@
     "lodash.orderby": "^4.6.0",
     "markdown-to-jsx": "^7.0.1",
     "netlify-cms-app": "^2.11.29",
-    "node-sass": "^8.0.0",
+    "node-sass": "^9.0.0",
     "path-browserify": "^1.0.1",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
