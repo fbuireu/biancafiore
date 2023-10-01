@@ -1,4 +1,4 @@
-import { Link } from 'gatsby-plugin-react-i18next'
+import { Link } from 'gatsby';
 import Markdown from 'markdown-to-jsx'
 import PropTypes from 'prop-types'
 import React, { useRef } from 'react'

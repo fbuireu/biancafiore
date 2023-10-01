@@ -1,5 +1,5 @@
+import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image'
-import { Link } from 'gatsby-plugin-react-i18next'
 import Markdown from 'markdown-to-jsx'
 import PropTypes from 'prop-types'
 import {

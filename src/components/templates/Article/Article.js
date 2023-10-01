@@ -112,7 +112,7 @@ const Article = ({data, location}) => {
     },
     [scroll],
   );
-  console.log(`eeee`, article);
+
   return (
     <Layout>
       <SEO title={title}/>

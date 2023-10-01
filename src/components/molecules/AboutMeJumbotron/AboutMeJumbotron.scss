@@ -4,16 +4,29 @@
 .about-me__jumbotron__wrapper {
   display: grid;
   gap: .5rem 2rem;
-  grid: 'AboutMeJumbotron-Title AboutMeJumbotron-Image' min-content
+  grid: 'AboutMeJumbotron-Title' 1fr
+        'AboutMeJumbotron-Breadcrumbs' min-content
+        'AboutMeJumbotron-Header' min-content
+        'AboutMeJumbotron-Image' 1fr
+        'AboutMeJumbotron-Description' min-content
+        'AboutMeJumbotron-Social-Networks' min-content
+        'AboutMeJumbotron-Cta' min-content
+        / 100%;
+  justify-items: center;
+  max-width: map-get($grid, 'medium');
+  padding-bottom: 8rem;
+
+  @include breakpoint('small') {
+    justify-items: baseline;
+    grid: 'AboutMeJumbotron-Title AboutMeJumbotron-Image' min-content
         'AboutMeJumbotron-Breadcrumbs AboutMeJumbotron-Image' min-content
         'AboutMeJumbotron-Header AboutMeJumbotron-Image' min-content
         'AboutMeJumbotron-Description AboutMeJumbotron-Image' min-content
         'AboutMeJumbotron-Description AboutMeJumbotron-Social-Networks' min-content
         'AboutMeJumbotron-Cta AboutMeJumbotron-Social-Networks' min-content
         / 50% 1fr;
-  justify-items: baseline;
-  max-width: map-get($grid, 'medium');
-  padding-bottom: 8rem;
+
+  }
 }
 
 .about-me__jumbotron__title,

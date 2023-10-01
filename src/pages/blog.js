@@ -29,10 +29,7 @@ const Blog = ({
     },
   },
 }) => {
-  console.log(
-    'process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME',
-    process.env.GATSBY_ALGOLIA_ARTICLES_INDEX_NAME,
-  )
+
   return (
     <Layout>
       <SEO title="Blog"/>

@@ -1,5 +1,6 @@
+import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image'
-import { Link, useI18next } from 'gatsby-plugin-react-i18next'
+import { useI18next } from 'gatsby-plugin-react-i18next'
 import Markdown from 'markdown-to-jsx'
 import PropTypes from 'prop-types'
 import { localizeDate } from '../../../utils/localizeDate/localizeDate'

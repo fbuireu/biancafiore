@@ -1,5 +1,5 @@
+import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image'
-import { Link } from 'gatsby-plugin-react-i18next'
 import PropTypes from 'prop-types'
 import slugify from '../../../utils/slugify/slugify'
 import './Author.scss'
