@@ -26,6 +26,7 @@ const Header = () => {
 
   return (
     <header className={`${isScrolling ? `--is-scrolling` : ``}`}>
+      <div className='backdrop' />
       <section className={`wrapper`}>
         <Link
           className={`logo__link ${isMenuActive ? `--is-active` : ``}`}
