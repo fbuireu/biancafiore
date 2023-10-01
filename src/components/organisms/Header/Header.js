@@ -1,4 +1,4 @@
-import { Link } from 'gatsby-plugin-react-i18next'
+import { Link } from 'gatsby';
 import React, { useEffect } from 'react'
 import Logo from '../../../assets/svg-components/logo.svg'
 import useBoolean from '../../../utils/hooks/useBoolean'

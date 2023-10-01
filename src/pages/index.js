@@ -1,13 +1,12 @@
-import { graphql } from 'gatsby'
-import PropTypes from 'prop-types'
-import React from 'react'
-import Layout from '../components/templates/Layout/Layout'
-import SEO from '../components/atoms/SEO/SEO'
-import HomeJumbotron from '../components/molecules/HomeJumbotron/HomeJumbotron'
-import Testimonials from '../components/molecules/Testimonials/Testimonials'
-import MyWork from '../components/molecules/MyWork/MyWork'
-import HomeLatestArticles
-  from '../components/molecules/HomeLatestArticles/HomeLatestArticles'
+import {graphql} from 'gatsby';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Layout from '../components/templates/Layout/Layout';
+import SEO from '../components/atoms/SEO/SEO';
+import HomeJumbotron from '../components/molecules/HomeJumbotron/HomeJumbotron';
+import Testimonials from '../components/molecules/Testimonials/Testimonials';
+import MyWork from '../components/molecules/MyWork/MyWork';
+import HomeLatestArticles from '../components/molecules/HomeLatestArticles/HomeLatestArticles';
 
 const Index = ({
   location,
@@ -16,7 +15,7 @@ const Index = ({
       edges: [
         {
           node: {
-            frontmatter: { jumbotron, testimonials, myWork, latestArticles },
+            frontmatter: {jumbotron, testimonials, myWork, latestArticles},
           },
         },
       ],

@@ -12,15 +12,10 @@
       font-size: 400%;
     }
 
-    p {
-      margin-bottom: 1rem;
+    div > * + * {
+      margin-block-start: var(--flow-space, 1em);
     }
-
-    blockquote > p,
-    blockquote > p > p {
-      margin-bottom: 0;
-    }
-
+    
     h1 {
       @include typography-settings(5, 2, 5);
     }
@@ -52,10 +47,6 @@
 
     ul {
       padding-left: 2rem;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-      margin-bottom: 1rem;
     }
 
     ol, ul, li {
