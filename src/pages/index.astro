@@ -3,20 +3,20 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { ViewTransitions } from 'astro:transitions';
 ---
+
+<!-- todo: import alias -->
+<!-- todo: fix env file to load gtag-->
+<!-- todo: prettierc-->
+<!-- todo: eslint-->
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-        <ViewTransitions />
-    </head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	<body>
-		<Header title={SITE_TITLE} />
+		<Header title={SITE_TITLE} client:load/>
 		<main>
 			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-            <input type="search" placeholder="heheheh">
 			<p>
 				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
 				template serves as a lightweight, minimally-styled starting point for anyone looking to

@@ -7,7 +7,12 @@ import netlify from "@astrojs/netlify/functions";
 
 export default defineConfig({
   site: 'https://biancafiore.me',
-  integrations: [mdx(), sitemap(), react(), partytown()],
+  integrations: [mdx(), sitemap(), react(),
+    partytown({
+    config: {
+      forward: ["dataLayer.push"],
+    },
+  })],
   output: "server",
   adapter: netlify(),
   vite: {

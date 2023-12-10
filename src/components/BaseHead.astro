@@ -2,6 +2,8 @@
 import '../styles/index.css'
 import '@fontsource/zilla-slab';
 import '@fontsource-variable/literata';
+import {ViewTransitions} from "astro:transitions";
+import { loadEnv } from "vite";
 
 interface Props {
 	title: string;
@@ -11,8 +13,12 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const { PUBLIC_GOOGLE_ANALYTICS_ID } = loadEnv(process.env.NODE_ENV, process.cwd(), "");
+console.log("PUBLIC_GOOGLE_ANALYTICS_ID", PUBLIC_GOOGLE_ANALYTICS_ID)
 ---
 
+<head>
+<meta name="generator" content={Astro.generator} />
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -31,3 +37,16 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+<ViewTransitions />
+<script
+        type="text/partytown"
+        src=`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID}`></script>
+<script type="text/partytown">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", PUBLIC_GOOGLE_ANALYTICS_ID);
+</script>
+</head>

@@ -3,6 +3,7 @@
   "packageManager": "yarn@4.0.2",
   "description": "A portfolio for the best content writer ever",
   "version": "2.0.0",
+  "type": "module",
   "author": "Ferran Buireu <fbuireu@gmail.com>",
   "engines": {
     "node": ">=20.10.0"
