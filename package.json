@@ -21,6 +21,8 @@
     "@astrojs/react": "^3.0.7",
     "@astrojs/rss": "^4.0.1",
     "@astrojs/sitemap": "^3.0.3",
+    "@fontsource-variable/literata": "^5.0.19",
+    "@fontsource/zilla-slab": "^5.0.8",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "astro": "^4.0.3",

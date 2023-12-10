@@ -7,7 +7,6 @@ import netlify from "@astrojs/netlify/functions";
 
 export default defineConfig({
   site: 'https://biancafiore.me',
-  trailingSlash: 'always',
   integrations: [mdx(), sitemap(), react(), partytown()],
   output: "server",
   adapter: netlify(),
