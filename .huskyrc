@@ -1,5 +1,5 @@
 {
   "hooks": {
-    "pre-commit": "eslint \"**/*.{js, jsx, json, md}\"",
+    "pre-commit": "eslint \"**/*\\.(js*|ts*|json|md*)\"",
   }
 }
