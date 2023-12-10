@@ -60,6 +60,7 @@ dist/
 .netlify/
 
 # IDE/Text editor
+.editorconfig
 .idea/
 .vscode/
 .fleet/
