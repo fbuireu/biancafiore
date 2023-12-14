@@ -26,8 +26,12 @@
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky install",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\" --config ./prettier.config.js",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" --config ./prettier.config.js"
+    "format": "prettier --write \"src/**/*.{ts,js.css}\" --config ./prettier.config.js",
+    "format:check": "yarn format --check",
+    "lint": "eslint $(git diff --name-only HEAD | grep -E '.(js|jsx|ts|tsx|astro)$' | xargs) --max-warnings=0",
+    "lint:typecheck": "tsc --project . --noEmit",
+    "lint:fix": "yarn lint --fix",
+    "lint:all": "eslint . --fix --max-warnings=0"
   },
   "dependencies": {
     "@astrojs/mdx": "^2.0.0",
@@ -45,11 +49,19 @@
     "gsap": "^3.12.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "^6.20.1"
+    "react-router-dom": "^6.20.1",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@testing-library/react": "^14.1.2",
     "@testing-library/react-hooks": "^8.0.1",
+    "@types/eslint": "^8",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "eslint": "^8.55.0",
+    "eslint-plugin-astro": "^0.30.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "prettier": "3.1.1",

@@ -1,13 +1,13 @@
 ---
 import './articleLayout.css';
-import type { CollectionEntry } from 'astro:content';
+//import type { CollectionEntry } from 'astro:content';
 import Footer from '@components/organisms/footer/Footer.astro';
 import SiteHead from '@components/organisms/siteHead/SiteHead.astro';
 import Header from '@components/organisms/header/Header.astro';
 
-type ArticleLayoutProps = CollectionEntry<'blog'>['data'];
+// type ArticleLayoutProps = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, heroImage } = Astro.props;
 ---
 
 <html lang="en">

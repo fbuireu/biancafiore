@@ -5,7 +5,7 @@ const config = {
   trailingComma: 'es5',
   arrowParens: 'always',
   proseWrap: 'always',
-  xmlWhitespaceSensitivity: 'ignore',
+  htmlWhitespaceSensitivity: 'ignore',
   bracketSpacing: true,
 };
 
