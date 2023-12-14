@@ -1,0 +1,6 @@
+@layer overrides {
+  .header__logo__image {
+    all: unset;
+    background-color: transparent;
+  }
+}

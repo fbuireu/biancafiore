@@ -1,0 +1,20 @@
+---
+import Footer from '@components/organisms/footer/Footer.astro';
+import ReactToggleMenu from '@components/atoms/ReactToggleMenu';
+import SiteHead from '@components/organisms/siteHead/SiteHead.astro';
+import Header from '@components/organisms/header/Header.astro';
+
+const { title, description } = Astro.props;
+---
+
+<html lang="en">
+<SiteHead title={title} description={description} />
+<body>
+<Header />
+<main>
+    <slot />
+</main>
+<Footer />
+</body>
+</html>
+<ReactToggleMenu client:only="react" />

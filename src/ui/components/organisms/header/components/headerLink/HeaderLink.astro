@@ -1,0 +1,14 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+type Props = HTMLAttributes<'a'>;
+
+const { href, class: classNames, ...props } = Astro.props;
+
+const { pathname } = Astro.url;
+const isCurrentPage = href === pathname || href === pathname.replace(/\/$/, '');
+---
+
+<a href={href} class:list={[classNames, { '--is-current-page': isCurrentPage }]} {...props}>
+    <slot />
+</a>
+

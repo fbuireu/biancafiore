@@ -1,0 +1,38 @@
+@layer base {
+  html,
+  body {
+    overflow: hidden auto;
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+    font-size: var(--base-font-size);
+    @media (prefers-reduced-motion: reduce) {
+      scroll-behavior: auto;
+    }
+  }
+
+  *::selection {
+    background-color: var(--primary-main);
+    color: var(--white);
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: var(--base-font-size);
+    -webkit-touch-callout: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  a {
+    -webkit-tap-highlight-color: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  summary {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  svg {
+    -webkit-tap-highlight-color: transparent;
+  }
+}

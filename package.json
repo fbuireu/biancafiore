@@ -1,19 +1,33 @@
 {
   "name": "biancafiore",
-  "packageManager": "yarn@4.0.2",
   "description": "A portfolio for the best content writer ever",
-  "version": "2.0.0",
-  "type": "module",
+  "keywords": [
+    "astro",
+    "typescript",
+    "css",
+    "netlify",
+    "blog",
+    "portfolio",
+    "marketing",
+    "content writing",
+    "seo"
+  ],
   "author": "Ferran Buireu <fbuireu@gmail.com>",
+  "version": "2.0.0",
+  "packageManager": "yarn@4.0.2",
+  "type": "module",
   "engines": {
     "node": ">=20.10.0"
   },
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
+    "start": "yarn dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prepare": "husky install",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" --config ./prettier.config.js",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" --config ./prettier.config.js"
   },
   "dependencies": {
     "@astrojs/mdx": "^2.0.0",
@@ -27,10 +41,18 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "astro": "^4.0.3",
+    "astro-imagetools": "^0.9.0",
+    "gsap": "^3.12.3",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.20.1"
   },
-  "resolutions": {
-    "object-inspect": "1.10.2"
+  "devDependencies": {
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/react-hooks": "^8.0.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "3.1.1",
+    "vitest": "^1.0.4"
   }
 }

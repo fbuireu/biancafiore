@@ -1,0 +1,10 @@
+@layer header.menuOverlay {
+  .header__menu-overlay__wrapper {
+    height: 100dvh;
+    inset: -1rem 0 0 0;
+    position: absolute;
+    transition: all 0.3s;
+    width: 100dvw;
+    z-index: -10;
+  }
+}

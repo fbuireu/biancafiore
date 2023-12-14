@@ -1,0 +1,10 @@
+@layer header {
+  header {
+    height: 70px;
+  }
+
+  .header__wrapper {
+    position: relative;
+    height: 100%;
+  }
+}

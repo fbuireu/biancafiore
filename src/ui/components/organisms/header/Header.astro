@@ -1,0 +1,16 @@
+---
+import './header.css';
+import MenuButton from '@components/organisms/header/components/menuButton/MenuButton.astro';
+import MenuOverlay from '@components/organisms/header/components/menuOverlay/MenuOverlay.astro';
+import Logo from '@components/organisms/header/components/logo/Logo.astro';
+import Menu from '@components/organisms/header/components/menu/Menu.astro';
+---
+<header>
+    <section class="common-wrapper flex row-wrap justify-flex-end align-center header__wrapper">
+        <Logo />
+        <MenuButton />
+    </section>
+    <MenuOverlay />
+    <Menu />
+</header>
+

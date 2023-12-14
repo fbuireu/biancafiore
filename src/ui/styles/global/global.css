@@ -1,0 +1,72 @@
+@layer global {
+  body,
+  html {
+    width: 100dvw;
+    height: 100dvh;
+    font-family: 'Literata Variable', serif;
+
+    &.--is-menu-open {
+      overflow: hidden;
+    }
+  }
+
+  body,
+  html,
+  p,
+  article {
+    color: var(--neutral-main);
+    font-size: var(--base-font-size);
+  }
+
+  p,
+  article {
+    font-family: 'Zilla Slab', sans-serif;
+    @supports (text-wrap: pretty) {
+      text-wrap: pretty;
+    }
+  }
+
+  img {
+    height: 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .common-wrapper {
+    max-width: var(--grid-extra-large);
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .row-wrap {
+    flex-flow: row wrap;
+  }
+
+  .column-wrap {
+    flex-flow: column wrap;
+  }
+
+  .justify-flex-end {
+    justify-content: flex-end;
+  }
+
+  .justify-space-between {
+    justify-content: space-between;
+  }
+
+  .align-center {
+    align-content: center;
+  }
+
+  mark {
+    background-color: var(--primary-main);
+  }
+
+  svg {
+    fill: var(--neutral-main);
+  }
+}
