@@ -1,10 +1,36 @@
 @layer header {
-  header {
-    height: 70px;
-  }
+    header {
+        height: var(--header-height);
+        margin-inline: auto;
+        position: fixed;
+        transition: all .3s;
+        width: 100%;
+        z-index: 100;
 
-  .header__wrapper {
-    position: relative;
-    height: 100%;
-  }
+        &.--is-scrolling::after {
+            clip-path: polygon(0 0, 100% 0, 100% 120%, 0 120%);
+        }
+    }
+
+    .header__backdrop {
+        --extended-by: var(--header-height);
+        --cutoff: calc(100% - var(--extended-by));
+        --blur: 1rem;
+        backdrop-filter: blur(var(--blur));
+        pointer-events: none;
+        position: absolute;
+        inset: 0;
+        bottom: calc(-1 * var(--extended-by));
+        -webkit-mask-image: linear-gradient(
+                to bottom,
+                black 0,
+                black var(--cutoff),
+                transparent var(--cutoff)
+        );
+    }
+
+    .header__wrapper {
+        position: relative;
+        height: 100%;
+    }
 }

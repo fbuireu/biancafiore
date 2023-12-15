@@ -1,7 +1,12 @@
 const tsconfig = require('./scripts/get-tsconfig.cjs');
 
 module.exports = {
-  ignorePatterns: ['/scripts'],
+  parser: '@typescript-eslint/parser',
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   env: {
     browser: true,
     es2023: true,
@@ -9,6 +14,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
+    'prettier',
   ],
   overrides: [
     {
@@ -16,6 +22,7 @@ module.exports = {
       parserOptions: {
         project: true,
         tsconfigRootDir: __dirname,
+        extraFileExtensions: ['.astro', '.css'],
       },
     },
     {
@@ -23,10 +30,11 @@ module.exports = {
       parser: 'astro-eslint-parser',
       extends: [
         'plugin:astro/recommended',
+        'prettier',
       ],
       parserOptions: {
         parser: '@typescript-eslint/parser',
-        extraFileExtensions: ['.astro'],
+        extraFileExtensions: ['.astro', '.css'],
       },
       rules: {},
     },
@@ -34,8 +42,8 @@ module.exports = {
       files: ['*.jsx', '*.tsx'],
       extends: [
         'plugin:react/recommended',
-        'plugin:react/jsx-runtime',
         'plugin:react-hooks/recommended',
+        'prettier',
       ],
       plugins: [
         'react',
@@ -46,14 +54,14 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    extraFileExtensions: ['.astro'],
+    extraFileExtensions: ['.astro', '.css'],
     project: './tsconfig.json',
   },
   plugins: ['@typescript-eslint'],
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['warn', {argsIgnorePattern: '^_'}],
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     'no-restricted-imports': ['error'],
   },
 };

@@ -1,12 +1,12 @@
-/** @type {import('prettier').Config} */
 const config = {
+  arrowParens: 'always',
+  bracketSpacing: true,
+  htmlWhitespaceSensitivity: 'ignore',
+  printWidth: 120,
+  proseWrap: 'always',
   semi: true,
   singleQuote: true,
   trailingComma: 'es5',
-  arrowParens: 'always',
-  proseWrap: 'always',
-  htmlWhitespaceSensitivity: 'ignore',
-  bracketSpacing: true,
 };
 
 export default config;

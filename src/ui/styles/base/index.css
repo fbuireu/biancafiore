@@ -1,38 +1,77 @@
 @layer base {
-  html,
-  body {
-    overflow: hidden auto;
-    scroll-behavior: smooth;
-    scrollbar-gutter: stable;
-    font-size: var(--base-font-size);
-    @media (prefers-reduced-motion: reduce) {
-      scroll-behavior: auto;
+    *::selection {
+        background-color: var(--primary-main);
+        color: var(--white);
     }
-  }
 
-  *::selection {
-    background-color: var(--primary-main);
-    color: var(--white);
-  }
+    html,
+    body {
+        width: 100dvw;
+        font-size: var(--base-font-size);
+        font-family: 'Literata Variable', serif;
+        overflow: hidden auto;
+        scroll-behavior: smooth;
+        scrollbar-gutter: stable;
 
-  body {
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: var(--base-font-size);
-    -webkit-touch-callout: none;
-    text-rendering: optimizeLegibility;
-  }
+        @media (prefers-reduced-motion: reduce) {
+            scroll-behavior: auto;
+        }
+    }
 
-  a {
-    -webkit-tap-highlight-color: transparent;
-    color: inherit;
-    cursor: pointer;
-  }
+    main {
+        max-width: var(--grid-extra-large);
+        width: 100%;
+        margin: var(--header-height) auto 0;
+    }
 
-  summary {
-    -webkit-tap-highlight-color: transparent;
-  }
+    body,
+    html,
+    p,
+    article {
+        color: var(--neutral-main);
+        font-size: var(--base-font-size);
+    }
 
-  svg {
-    -webkit-tap-highlight-color: transparent;
-  }
+    p,
+    article {
+        font-family: 'Zilla Slab', sans-serif;
+        font-size: calc(var(--base-font-size) * 3);
+
+        @supports (text-wrap: pretty) {
+            text-wrap: pretty;
+        }
+    }
+
+    img {
+        height: 100%;
+        max-width: 100%;
+        width: 100%;
+    }
+
+
+    body {
+        -webkit-font-smoothing: antialiased;
+        -webkit-tap-highlight-color: var(--base-font-size);
+        -webkit-touch-callout: none;
+        text-rendering: optimizeLegibility;
+    }
+
+    a {
+        -webkit-tap-highlight-color: transparent;
+        color: inherit;
+        cursor: pointer;
+    }
+
+    summary {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    mark {
+        background-color: var(--primary-main);
+    }
+
+    svg {
+        -webkit-tap-highlight-color: transparent;
+        fill: var(--neutral-main);
+    }
 }

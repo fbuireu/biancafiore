@@ -1,72 +1,31 @@
 @layer global {
-  body,
-  html {
-    width: 100dvw;
-    height: 100dvh;
-    font-family: 'Literata Variable', serif;
-
-    &.--is-menu-open {
-      overflow: hidden;
+    .common-wrapper {
+        max-width: var(--grid-extra-large);
+        width: 100%;
+        margin: 0 auto;
     }
-  }
 
-  body,
-  html,
-  p,
-  article {
-    color: var(--neutral-main);
-    font-size: var(--base-font-size);
-  }
-
-  p,
-  article {
-    font-family: 'Zilla Slab', sans-serif;
-    @supports (text-wrap: pretty) {
-      text-wrap: pretty;
+    .flex {
+        display: flex;
     }
-  }
 
-  img {
-    height: 100%;
-    max-width: 100%;
-    width: 100%;
-  }
+    .row-wrap {
+        flex-flow: row wrap;
+    }
 
-  .common-wrapper {
-    max-width: var(--grid-extra-large);
-    width: 100%;
-    margin: 0 auto;
-  }
+    .column-wrap {
+        flex-flow: column wrap;
+    }
 
-  .flex {
-    display: flex;
-  }
+    .justify-flex-end {
+        justify-content: flex-end;
+    }
 
-  .row-wrap {
-    flex-flow: row wrap;
-  }
+    .justify-space-between {
+        justify-content: space-between;
+    }
 
-  .column-wrap {
-    flex-flow: column wrap;
-  }
-
-  .justify-flex-end {
-    justify-content: flex-end;
-  }
-
-  .justify-space-between {
-    justify-content: space-between;
-  }
-
-  .align-center {
-    align-content: center;
-  }
-
-  mark {
-    background-color: var(--primary-main);
-  }
-
-  svg {
-    fill: var(--neutral-main);
-  }
+    .align-center {
+        align-content: center;
+    }
 }

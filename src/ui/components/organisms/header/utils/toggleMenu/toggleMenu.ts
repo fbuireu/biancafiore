@@ -5,9 +5,7 @@ const ANIMATION_CONFIG = {
   POWER2_EASE_OUT: 'power2.easeOut',
   POWER2_EASE_IN: 'power2.easeIn',
   POWER3_OUT: 'power3.out',
-  WHITE:
-    getComputedStyle(document.documentElement).getPropertyValue('--white') ??
-    '#fff',
+  WHITE: getComputedStyle(document.documentElement).getPropertyValue('--white') ?? '#fff',
   PATH_START: 'M0 502S175 272 500 272s500 230 500 230V0H0Z',
   PATH_END: 'M0,1005S175,995,500,995s500,5,500,5V0H0Z',
 };
@@ -16,23 +14,13 @@ export function toggleMenu() {
   let isMenuOpen = false;
   let toggleMenuText = 'Menu';
 
-  const body = document.querySelector('body');
-  const html = document.querySelector('html');
-  const menuOverlay = document.querySelector('.header__menu-overlay__wrapper');
-  const menuDivider = document.querySelector('.navigation__menu__divider');
-  const logo = document.querySelector('.site__logo');
-  const toggleMenuButton = document.querySelector('.header__menu-button');
-  const menuText = document.querySelector('.header__menu-text');
-
-  if (
-    !menuOverlay ||
-    !menuDivider ||
-    !logo ||
-    !toggleMenuButton ||
-    !body ||
-    !html
-  )
-    return;
+  const body = document.querySelector('body')!;
+  const html = document.querySelector('html')!;
+  const menuOverlay = document.querySelector('.header__menu-overlay__wrapper')!;
+  const menuDivider = document.querySelector('.navigation__menu__divider')!;
+  const logo = document.querySelector('.site__logo')!;
+  const toggleMenuButton = document.querySelector('.header__menu-button')!;
+  const menuText = document.querySelector('.header__menu-text')!;
 
   const overlayPath = menuOverlay.querySelector('path');
 
@@ -48,14 +36,7 @@ export function toggleMenu() {
   }
 
   function toggleMenuItems() {
-    const {
-      POWER4_IN_OUT,
-      POWER2_EASE_IN,
-      POWER3_OUT,
-      WHITE,
-      PATH_START,
-      PATH_END,
-    } = ANIMATION_CONFIG;
+    const { POWER4_IN_OUT, POWER2_EASE_IN, POWER3_OUT, WHITE, PATH_START, PATH_END } = ANIMATION_CONFIG;
 
     timeline.to('.header__menu-overlay__wrapper', { zIndex: '0' }, '<');
     timeline.to('.header__menu-text', {
@@ -83,21 +64,9 @@ export function toggleMenu() {
       '<'
     );
     timeline
-      .to(
-        overlayPath,
-        { attr: { d: PATH_START }, ease: POWER2_EASE_IN, duration: 0.8 },
-        '<'
-      )
-      .to(
-        overlayPath,
-        { attr: { d: PATH_END }, ease: POWER2_EASE_IN, duration: 0.8 },
-        '-=0.5'
-      );
-    timeline.to(
-      '.header__menu',
-      { visibility: 'visible', duration: 1 },
-      '-=0.5'
-    );
+      .to(overlayPath, { attr: { d: PATH_START }, ease: POWER2_EASE_IN, duration: 0.8 }, '<')
+      .to(overlayPath, { attr: { d: PATH_END }, ease: POWER2_EASE_IN, duration: 0.8 }, '-=0.5');
+    timeline.to('.header__menu', { visibility: 'visible', duration: 1 }, '-=0.5');
     timeline
       .to(
         '.navigation__menu__item > *',
@@ -127,9 +96,7 @@ export function toggleMenu() {
   toggleMenuButton.addEventListener('click', () => {
     isMenuOpen = !isMenuOpen;
 
-    ELEMENTS_TO_TOGGLE.forEach((element) =>
-      element.classList.toggle('--is-menu-open')
-    );
+    ELEMENTS_TO_TOGGLE.forEach((element) => element.classList.toggle('--is-menu-open'));
 
     timeline.reversed(!timeline.reversed());
   });

@@ -3,3 +3,6 @@ dist
 /scripts/*
 yarn.lock
 .eslintrc.cjs
+.netlify
+commitlint.config.js
+prettier.config.js

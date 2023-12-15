@@ -58,7 +58,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/mdx@npm:^2.0.0":
+"@astrojs/mdx@npm:^2.0.1":
   version: 2.0.1
   resolution: "@astrojs/mdx@npm:2.0.1"
   dependencies:
@@ -1568,7 +1568,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^8":
+"@types/eslint@npm:^8.44.9":
   version: 8.44.9
   resolution: "@types/eslint@npm:8.44.9"
   dependencies:
@@ -1672,7 +1672,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.0.0, @types/react-dom@npm:^18.0.6":
+"@types/react-dom@npm:^18.0.0, @types/react-dom@npm:^18.2.17":
   version: 18.2.17
   resolution: "@types/react-dom@npm:18.2.17"
   dependencies:
@@ -1681,7 +1681,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.0.21":
+"@types/react@npm:*, @types/react@npm:^18.2.45":
   version: 18.2.45
   resolution: "@types/react@npm:18.2.45"
   dependencies:
@@ -2270,9 +2270,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^4.0.3":
-  version: 4.0.4
-  resolution: "astro@npm:4.0.4"
+"astro@npm:^4.0.5":
+  version: 4.0.5
+  resolution: "astro@npm:4.0.5"
   dependencies:
     "@astrojs/compiler": "npm:^2.3.2"
     "@astrojs/internal-helpers": "npm:0.2.1"
@@ -2341,7 +2341,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 078354e1f46958e069587574b3cffbc5f5d8aeb8dc59291d0f86b92bed8fd8832a8480cd2b02df479a8a6a7e830b20af93d2b8ffb00337220f24991961969479
+  checksum: 16c29e75993aae9a03a5f21149fe9bbd65e5a434bb033e0e23814679cef6a90a7cd965400b2ba998f2560f2c6113243c60a744e683700f8f775a24776268f889
   languageName: node
   linkType: hard
 
@@ -2411,7 +2411,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "biancafiore@workspace:."
   dependencies:
-    "@astrojs/mdx": "npm:^2.0.0"
+    "@astrojs/mdx": "npm:^2.0.1"
     "@astrojs/netlify": "npm:^3.1.1"
     "@astrojs/partytown": "npm:^2.0.2"
     "@astrojs/react": "npm:^3.0.7"
@@ -2421,24 +2421,26 @@ __metadata:
     "@fontsource/zilla-slab": "npm:^5.0.8"
     "@testing-library/react": "npm:^14.1.2"
     "@testing-library/react-hooks": "npm:^8.0.1"
-    "@types/eslint": "npm:^8"
-    "@types/react": "npm:^18.0.21"
-    "@types/react-dom": "npm:^18.0.6"
+    "@types/eslint": "npm:^8.44.9"
+    "@types/react": "npm:^18.2.45"
+    "@types/react-dom": "npm:^18.2.17"
     "@typescript-eslint/eslint-plugin": "npm:^6.14.0"
     "@typescript-eslint/parser": "npm:^6.14.0"
-    astro: "npm:^4.0.3"
+    astro: "npm:^4.0.5"
     astro-imagetools: "npm:^0.9.0"
     eslint: "npm:^8.55.0"
+    eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-astro: "npm:^0.30.0"
+    eslint-plugin-prettier: "npm:^5.0.1"
     eslint-plugin-react: "npm:^7.33.2"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     gsap: "npm:^3.12.3"
     husky: "npm:^8.0.3"
     lint-staged: "npm:^15.2.0"
     prettier: "npm:3.1.1"
-    react: "npm:^18.0.0"
-    react-dom: "npm:^18.0.0"
-    react-router-dom: "npm:^6.20.1"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    react-router-dom: "npm:^6.21.0"
     typescript: "npm:^5.3.3"
     vitest: "npm:^1.0.4"
   languageName: unknown
@@ -3245,9 +3247,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.601":
-  version: 1.4.612
-  resolution: "electron-to-chromium@npm:1.4.612"
-  checksum: 4afeae778beb67e81a47e362b72847efc24161b7673818b3d5a36fa0678f006629436a5cfa6b0bb0291927c61d01e58b66330942cc7f4109f170bdec6bfafd73
+  version: 1.4.613
+  resolution: "electron-to-chromium@npm:1.4.613"
+  checksum: 34c1f2a244db7f628373a4f9a25bf7b6e4d16755a92aebea7882434683abe550e72bd06fb3b4c673dffebddc5d4cc6a5aef8fb11cb5cceb37a8d0f1801ca802e
   languageName: node
   linkType: hard
 
@@ -3549,6 +3551,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-config-prettier@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "eslint-config-prettier@npm:9.1.0"
+  peerDependencies:
+    eslint: ">=7.0.0"
+  bin:
+    eslint-config-prettier: bin/cli.js
+  checksum: 6d332694b36bc9ac6fdb18d3ca2f6ac42afa2ad61f0493e89226950a7091e38981b66bac2b47ba39d15b73fff2cd32c78b850a9cf9eed9ca9a96bfb2f3a2f10d
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-astro@npm:^0.30.0":
   version: 0.30.0
   resolution: "eslint-plugin-astro@npm:0.30.0"
@@ -3563,6 +3576,25 @@ __metadata:
   peerDependencies:
     eslint: ">=7.0.0"
   checksum: 0831f97ed871156926fa2ae106cd2a6905149086e79e16bb90f71ef69e8ab160e0dce5cbbaf4230cf84b035ca72b0c77277406fff23dc6cccd923a231801e7dc
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-prettier@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "eslint-plugin-prettier@npm:5.0.1"
+  dependencies:
+    prettier-linter-helpers: "npm:^1.0.0"
+    synckit: "npm:^0.8.5"
+  peerDependencies:
+    "@types/eslint": ">=8.0.0"
+    eslint: ">=8.0.0"
+    prettier: ">=3.0.0"
+  peerDependenciesMeta:
+    "@types/eslint":
+      optional: true
+    eslint-config-prettier:
+      optional: true
+  checksum: 08e2c7bed93d9f7c86e9aa0bd4f5cc51f65233a446ddfda11e821f12819e1e4be62cfbc2a4e17169c76fded1c4de7371e37e5f2525e81695decaf6c652a41fb0
   languageName: node
   linkType: hard
 
@@ -3876,6 +3908,13 @@ __metadata:
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
   checksum: 40dedc862eb8992c54579c66d914635afbec43350afbbe991235fdcb4e3a8d5af1b23ae7e79bef7d4882d0ecee06c3197488026998fb19f72dc95acff1d1b1d0
+  languageName: node
+  linkType: hard
+
+"fast-diff@npm:^1.1.2":
+  version: 1.3.0
+  resolution: "fast-diff@npm:1.3.0"
+  checksum: 5c19af237edb5d5effda008c891a18a585f74bf12953be57923f17a3a4d0979565fc64dbc73b9e20926b9d895f5b690c618cbb969af0cf022e3222471220ad29
   languageName: node
   linkType: hard
 
@@ -4354,9 +4393,9 @@ __metadata:
   linkType: hard
 
 "gsap@npm:^3.12.3":
-  version: 3.12.3
-  resolution: "gsap@npm:3.12.3"
-  checksum: 018ca72c2f8b19be5b890439ec6fa777f650a52806928b0432a739f5141b29592c382d829cc71cec476c8e884dfa47c38b3d15b8e734453eb8c79b60e31ab234
+  version: 3.12.4
+  resolution: "gsap@npm:3.12.4"
+  checksum: 82de60392b722485d22140f7dfd7b99aa26096c234ff64b3269f08f50a1dd24a57d38d6a8807fc36059ef82f7c8da4f32c70d68a918679881004a218be559dea
   languageName: node
   linkType: hard
 
@@ -7310,6 +7349,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prettier-linter-helpers@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "prettier-linter-helpers@npm:1.0.0"
+  dependencies:
+    fast-diff: "npm:^1.1.2"
+  checksum: 81e0027d731b7b3697ccd2129470ed9913ecb111e4ec175a12f0fcfab0096516373bf0af2fef132af50cafb0a905b74ff57996d615f59512bb9ac7378fcc64ab
+  languageName: node
+  linkType: hard
+
 "prettier@npm:3.1.1":
   version: 3.1.1
   resolution: "prettier@npm:3.1.1"
@@ -7456,7 +7504,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^18.0.0":
+"react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
   dependencies:
@@ -7507,7 +7555,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.20.1":
+"react-router-dom@npm:^6.21.0":
   version: 6.21.0
   resolution: "react-router-dom@npm:6.21.0"
   dependencies:
@@ -7531,7 +7579,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.0.0":
+"react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
@@ -8587,7 +8635,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"synckit@npm:^0.8.0":
+"synckit@npm:^0.8.0, synckit@npm:^0.8.5":
   version: 0.8.6
   resolution: "synckit@npm:0.8.6"
   dependencies:
@@ -9225,8 +9273,8 @@ __metadata:
   linkType: hard
 
 "vite@npm:^5.0.0":
-  version: 5.0.8
-  resolution: "vite@npm:5.0.8"
+  version: 5.0.9
+  resolution: "vite@npm:5.0.9"
   dependencies:
     esbuild: "npm:^0.19.3"
     fsevents: "npm:~2.3.3"
@@ -9260,7 +9308,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 74fa546f3eb16bd2c49f8267ec83f1aded8850cd5717b9809cead4c0178ee36462ef7723fe669e5801da86f9220b865689ed6ab94ee1965b92f0b122cdefb298
+  checksum: 3ebc81a4184d5dfcf6a09cd1b4fc48ce92ab145b74e473df7103581f1a9f2b456f6f983a4b115b8d4b29e116df6b5bb3bc15d1623f01a85b1e818aeab6debd26
   languageName: node
   linkType: hard
 
