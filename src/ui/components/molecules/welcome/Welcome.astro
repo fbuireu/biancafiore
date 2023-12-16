@@ -3,8 +3,12 @@ import { Picture } from "astro-imagetools/components";
 import './welcome.css';
 ---
 <section class="welcome flex row-wrap">
-    <h2 class="welcome__text__body --left">Hi! I'm</h2>
-    <Picture class="welcome__image" src="/src/ui/assets/images/jpg/bianca-fiore.jpg" alt="Bianca Fiore" />
-    <h2 class="welcome__text__body --right">Bianca</h2>
-    <p class="welcome__text__description --right">Lorem ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet</p>
+    <h2 class="welcome__text__title --left">Hi! I'm</h2>
+    <Picture src="/src/ui/assets/images/jpg/bianca-fiore.jpg" alt="Bianca Fiore" attributes={{ img: { class:'welcome__image' }}}/>
+    <h1 class="welcome__text__title --right">Bianca Fiore</h1>
+    <p class="welcome__text__body --right">Lorem ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet</p>
 </section>
+
+<script>
+
+</script>

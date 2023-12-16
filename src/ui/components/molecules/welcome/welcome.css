@@ -4,7 +4,7 @@
         grid-template-areas: 'LeftGreeting WelcomeImage RightGreeting';
         grid-template-columns: 1fr 1fr 1fr;
     }
-    .welcome__image{
+    .welcome__image {
             grid-area: WelcomeImage;
             align-self: center;
             justify-self: center;
@@ -13,7 +13,7 @@
             height: auto;
         }
 
-    .welcome__text__body {
+    .welcome__text__title {
         align-self: center;
         text-align: center;
         color: var(--neutral-main);
@@ -42,7 +42,7 @@
             }
         }
     }
-    .welcome__text__description{
+    .welcome__text__body {
         grid-area: RightGreeting;
         padding-inline-start: 1rem;
         align-self: center;

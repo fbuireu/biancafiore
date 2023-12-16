@@ -10,20 +10,22 @@
       border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
     }
   }
+
     @keyframes float-up-close {
         0% {
             transform: translateY(0);
         }
         100% {
-            transform: translateY(-100px);
+            transform: translateY(-50px);
         }
     }
+
     @keyframes float-up-far {
         0% {
             translate: 0 0;
         }
         100% {
-            translate: 0 -400px;
+            translate: 0 -200px;
         }
     }
 }

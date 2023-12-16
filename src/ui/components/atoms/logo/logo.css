@@ -10,7 +10,7 @@
         z-index: 20;
 
         svg {
-            transition: scale .2s;
+            transition: scale 0.2s;
         }
 
         &.--is-scrolling:not(.--is-menu-open) svg{

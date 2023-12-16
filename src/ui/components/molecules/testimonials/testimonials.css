@@ -1,56 +1,18 @@
-@layer welcome {
-    .welcome {
-        display: grid;
-        grid-template-areas: 'LeftGreeting WelcomeImage RightGreeting';
-        grid-template-columns: 1fr 1fr 1fr;
+@layer testimonials {
+    .testimonials__wrapper{
+        margin-top: 9rem;
     }
-    .welcome__image{
-            grid-area: WelcomeImage;
-            align-self: center;
-            justify-self: center;
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-        }
-
-    .welcome__text__body {
-        align-self: center;
+    .testimonials__title,
+    .testimonials__body {
         text-align: center;
-        color: var(--neutral-main);
-
-        &.--right {
-            grid-area: RightGreeting;
-            justify-self: start;
-            margin-left: -3rem;
-            z-index: 10;
-        }
-        &.--left {
-            grid-area: LeftGreeting;
-            justify-self: end;
-            margin-right: -1.5rem;
-            z-index: 10;
-            translate: 0 -100px;
-        }
-        @supports (animation-timeline: scroll(root block)) {
-            &.--right {
-                animation: float-up-far 200ms linear;
-                animation-timeline: scroll(root block);
-            }
-            &.--left {
-                animation: float-up-close linear;
-                animation-timeline: scroll(root block);
-            }
-        }
+        margin: 0 auto;
     }
-    .welcome__text__description{
-        grid-area: RightGreeting;
-        padding-inline-start: 1rem;
-        align-self: center;
-        margin-top: 8rem;
-
-        @supports (animation-timeline: scroll(root block)) {
-            animation: float-up-close linear;
-            animation-timeline: scroll(root block);
-        }
+    .testimonials__title{
+        text-transform: uppercase;
+        letter-spacing: .5rem;
+    }
+    .testimonials__body {
+        max-width: var(--grid-small);
+        width: 100%;
     }
 }

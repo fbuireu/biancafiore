@@ -82,7 +82,12 @@
         fill: var(--neutral-main);
     }
 
-    h1, h2{
+    h1, h2 {
         font-size: clamp(2rem, 5rem, 5rem);
+    }
+
+    h3{
+        font-size: clamp(2rem, 3.5rem, 3.5rem);
+        letter-spacing: 0.35rem;
     }
 }

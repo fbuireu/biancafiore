@@ -1,45 +1,74 @@
-import { gsap } from 'gsap';
+import { gsap, Power2, Power3, Power4 } from 'gsap';
 
 const ANIMATION_CONFIG = {
-  POWER4_IN_OUT: 'power4.inOut',
-  POWER2_EASE_OUT: 'power2.easeOut',
-  POWER2_EASE_IN: 'power2.easeIn',
-  POWER3_OUT: 'power3.out',
+  POWER4_IN_OUT: Power4.easeInOut,
+  POWER2_EASE_OUT: Power2.easeOut,
+  POWER3_OUT: Power3.easeOut,
   WHITE: getComputedStyle(document.documentElement).getPropertyValue('--white') ?? 'var(--white)',
   PATH_START: 'M0 502S175 272 500 272s500 230 500 230V0H0Z',
   PATH_END: 'M0,1005S175,995,500,995s500,5,500,5V0H0Z',
 };
 
+const SELECTORS = {
+  BODY: 'body',
+  HTML: 'html',
+  TOGGLE_MENU_BUTTON: '.header__menu-button',
+  MENU_OVERLAY: '.header__menu-overlay__wrapper',
+  OVERLAY_PATH: '.header__menu-overlay__wrapper path',
+  HEADER_MENU_TEXT: '.header__menu-text',
+  BUTTON_OUTLINE: '.header__menu-button__outline',
+  SITE_LOGO: '.site__logo',
+  SITE_LOGO_SVG: '.site__logo svg',
+  HEADER_MENU: '.header__menu',
+  NAVIGATION_DIVIDER: '.navigation__menu__divider',
+  NAVIGATION_ITEMS: '.navigation__menu__item > *',
+  QUOTE: '.navigation__menu__quote > *',
+};
+
 export function toggleMenu() {
   let isMenuOpen = false;
   let toggleMenuText = 'Menu';
-
-  const BODY = document.querySelector('body')!;
-  const HTML = document.querySelector('html')!;
-  const MENU_OVERLAY = document.querySelector('.header__menu-overlay__wrapper')!;
-  const MENU_DIVIDER = document.querySelector('.navigation__menu__divider')!;
-  const TOGGLE_MENU_BUTTON = document.querySelector('.header__menu-button')!;
-  const LOGO = document.querySelector('.site__logo')!;
-  const MENU_TEXT = document.querySelector('.header__menu-text')!;
-  const OVERLAY_PATH = MENU_OVERLAY.querySelector('path');
-
-  const ELEMENTS_TO_TOGGLE = [BODY, HTML, LOGO, MENU_OVERLAY, MENU_DIVIDER];
-
   const timeline = gsap.timeline({ paused: true });
+
+  const {
+    BODY: BODY_SELECTOR,
+    HTML: HTML_SELECTOR,
+    TOGGLE_MENU_BUTTON: TOGGLE_MENU_BUTTON_SELECTOR,
+    MENU_OVERLAY,
+    OVERLAY_PATH,
+    BUTTON_OUTLINE,
+    SITE_LOGO,
+    SITE_LOGO_SVG,
+    NAVIGATION_DIVIDER,
+    HEADER_MENU,
+    NAVIGATION_ITEMS,
+    QUOTE,
+    HEADER_MENU_TEXT,
+  } = SELECTORS;
+
+  const BODY = document.querySelector(BODY_SELECTOR)!;
+  const HTML = document.querySelector(HTML_SELECTOR)!;
+  const LOGO = document.querySelector(SITE_LOGO)!;
+  const TOGGLE_MENU_BUTTON = document.querySelector(TOGGLE_MENU_BUTTON_SELECTOR)!;
+  const MENU_DIVIDER = document.querySelector(NAVIGATION_DIVIDER)!;
+  const MENU_TEXT = document.querySelector(HEADER_MENU_TEXT)!;
+
+  const ELEMENTS_TO_TOGGLE = [BODY, HTML, LOGO, MENU_DIVIDER];
+
   toggleMenuItems();
 
   function updateButtonContent() {
     if (!MENU_TEXT) return;
     toggleMenuText = isMenuOpen ? 'Close' : 'Menu';
-    const timeout = isMenuOpen ? 500 : 0;
+    const timeout = isMenuOpen ? 300 : 0;
     setTimeout(() => (MENU_TEXT.textContent = toggleMenuText), timeout);
   }
 
   function toggleMenuItems() {
-    const { POWER4_IN_OUT, POWER2_EASE_IN, POWER3_OUT, WHITE, PATH_START, PATH_END } = ANIMATION_CONFIG;
+    const { POWER4_IN_OUT, POWER2_EASE_OUT, POWER3_OUT, WHITE, PATH_START, PATH_END } = ANIMATION_CONFIG;
 
-    timeline.to('.header__menu-overlay__wrapper', { zIndex: '0', display: 'block' }, '<');
-    timeline.to('.header__menu-text', {
+    timeline.to(MENU_OVERLAY, { display: 'block' });
+    timeline.to(MENU_TEXT, {
       top: '1.5rem',
       left: '1rem',
       fontSize: '1.5rem',
@@ -47,11 +76,11 @@ export function toggleMenu() {
       x: 0,
       y: 0,
       ease: POWER4_IN_OUT,
-      duration: 1.25,
+      duration: 1,
     });
     timeline.add(() => updateButtonContent(), '<');
     timeline.to(
-      '.header__menu-button__outline',
+      BUTTON_OUTLINE,
       {
         width: '90px',
         height: '90px',
@@ -59,48 +88,43 @@ export function toggleMenu() {
         x: 0,
         y: 0,
         ease: POWER4_IN_OUT,
-        duration: 1.25,
+        duration: 1,
       },
       '<'
     );
-    timeline.to('.site__logo', { y: '3rem', duration: 0.25 }, '-=0.5');
-    timeline.to('.site__logo svg', { fill: WHITE, duration: 0.25 }, '<');
-    timeline.to('.site__logo .--is-scrolling:not(.--is-menu-open) svg', { scale: 1 }, '<');
+    timeline.to(SITE_LOGO, { y: '3rem', duration: 0.25 }, '<');
+    timeline.to(SITE_LOGO_SVG, { fill: WHITE, duration: 0.25 }, '<');
     timeline
-      .to(OVERLAY_PATH, { attr: { d: PATH_START }, ease: POWER2_EASE_IN, duration: 0.8 }, '<')
-      .to(OVERLAY_PATH, { attr: { d: PATH_END }, ease: POWER2_EASE_IN, duration: 0.8 }, '-=0.5');
-    timeline.to('.header__menu', { visibility: 'visible', duration: 1 }, '-=0.5');
+      .to(OVERLAY_PATH, { attr: { d: PATH_START }, ease: POWER2_EASE_OUT, duration: 1 }, '<')
+      .to(OVERLAY_PATH, { attr: { d: PATH_END }, ease: POWER2_EASE_OUT, duration: 1 }, '-=0.5');
+    timeline.to(HEADER_MENU, { visibility: 'visible', duration: 1 }, '-=0.5');
     timeline
       .to(
-        '.navigation__menu__item > *',
+        NAVIGATION_ITEMS,
         {
           top: 0,
           ease: POWER3_OUT,
           stagger: { amount: 0.5 },
-          duration: 1,
+          duration: 0.75,
         },
         '-=1'
       )
       .reverse();
-    timeline
-      .to(
-        '.navigation__menu__quote > *',
-        {
-          top: 0,
-          ease: POWER3_OUT,
-          stagger: { amount: 0.5 },
-          duration: 1,
-        },
-        '-=1'
-      )
-      .reverse();
+    timeline.to(
+      QUOTE,
+      {
+        top: 0,
+        ease: POWER3_OUT,
+        duration: 0.75,
+      },
+      '-=1'
+    );
   }
 
   TOGGLE_MENU_BUTTON.addEventListener('click', () => {
     isMenuOpen = !isMenuOpen;
+    timeline.reversed(!timeline.reversed());
 
     ELEMENTS_TO_TOGGLE.forEach((element) => element.classList.toggle('--is-menu-open'));
-
-    timeline.reversed(!timeline.reversed());
   });
 }
