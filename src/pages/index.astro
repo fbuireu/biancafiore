@@ -1,16 +1,17 @@
 ---
 import BaseLayout from '@components/templates/baseLayout/BaseLayout.astro';
-// todo: add CIs
-// todo: add vitest
----
+import Welcome from '@components/molecules/welcome/Welcome.astro';
+import Testimonials from '@components/molecules/testimonials/Testimonials.astro';
 
+// todo: acabar welcome (tilt)
+// todo: reveal on enter viewport
+// todo: view transitions
+// todo: add vitest
+// todo: add CIs
+---
 <BaseLayout title="" description="">
-  <h1>Hello, Astronaut!</h1>
-  <p>
-    Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-    template serves as a lightweight, minimally-styled starting point for anyone looking to
-    build a personal website, blog, or portfolio with Astro.
-  </p>
+<Welcome />
+<Testimonials />
   <p>
     This template comes with a few integrations already configured in your
     <code>astro.config.mjs</code> file. You can customize your setup with

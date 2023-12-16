@@ -28,4 +28,13 @@
     .align-center {
         align-content: center;
     }
+
+    .clickable {
+        cursor: pointer;
+        transition: scale .2s;
+
+        &:active{
+            scale: .9;
+        }
+    }
 }

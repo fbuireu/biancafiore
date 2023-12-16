@@ -10,16 +10,11 @@
         z-index: 20;
 
         svg {
-            transition: fill 3s;
+            transition: scale .2s;
         }
 
-        &.--is-menu-open {
-            top: 3rem;
-            transition-delay: 0.5s;
-
-            svg {
-                fill: var(--white);
-            }
+        &.--is-scrolling:not(.--is-menu-open) svg{
+            scale: .85;
         }
     }
 }

@@ -1,7 +1,15 @@
 @layer base {
-    *::selection {
-        background-color: var(--primary-main);
-        color: var(--white);
+    * {
+        &::selection {
+            background-color: var(--primary-main);
+            color: var(--white);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
     }
 
     html,
@@ -21,7 +29,7 @@
     main {
         max-width: var(--grid-extra-large);
         width: 100%;
-        margin: var(--header-height) auto 0;
+        margin: calc(var(--header-height) * 2) auto 0;
     }
 
     body,
@@ -72,5 +80,9 @@
     svg {
         -webkit-tap-highlight-color: transparent;
         fill: var(--neutral-main);
+    }
+
+    h1, h2{
+        font-size: clamp(2rem, 5rem, 5rem);
     }
 }

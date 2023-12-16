@@ -1,5 +1,6 @@
 @layer header.menuOverlay {
   .header__menu-overlay__wrapper {
+  display: none;
     height: 100dvh;
     inset: -1rem 0 0 0;
     position: absolute;

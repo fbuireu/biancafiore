@@ -5,11 +5,19 @@
         position: fixed;
         transition: all .3s;
         width: 100%;
-        z-index: 100;
+        z-index: 1000;
 
-        &.--is-scrolling::after {
+        &.--is-scrolling{
+            box-shadow: 0 0.125rem 0.375rem var(--neutral-light-2);
+
+            &::after {
             clip-path: polygon(0 0, 100% 0, 100% 120%, 0 120%);
         }
+    }
+
+    .header__wrapper {
+        position: relative;
+        height: 100%;
     }
 
     .header__backdrop {
@@ -27,10 +35,5 @@
                 black var(--cutoff),
                 transparent var(--cutoff)
         );
-    }
-
-    .header__wrapper {
-        position: relative;
-        height: 100%;
     }
 }

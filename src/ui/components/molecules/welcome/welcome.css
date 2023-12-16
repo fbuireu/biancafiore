@@ -1,0 +1,56 @@
+@layer welcome {
+    .welcome {
+        display: grid;
+        grid-template-areas: 'LeftGreeting WelcomeImage RightGreeting';
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .welcome__image{
+            grid-area: WelcomeImage;
+            align-self: center;
+            justify-self: center;
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+        }
+
+    .welcome__text__body {
+        align-self: center;
+        text-align: center;
+        color: var(--neutral-main);
+
+        &.--right {
+            grid-area: RightGreeting;
+            justify-self: start;
+            margin-left: -3rem;
+            z-index: 10;
+        }
+        &.--left {
+            grid-area: LeftGreeting;
+            justify-self: end;
+            margin-right: -1.5rem;
+            z-index: 10;
+            translate: 0 -100px;
+        }
+        @supports (animation-timeline: scroll(root block)) {
+            &.--right {
+                animation: float-up-far 200ms linear;
+                animation-timeline: scroll(root block);
+            }
+            &.--left {
+                animation: float-up-close linear;
+                animation-timeline: scroll(root block);
+            }
+        }
+    }
+    .welcome__text__description{
+        grid-area: RightGreeting;
+        padding-inline-start: 1rem;
+        align-self: center;
+        margin-top: 8rem;
+
+        @supports (animation-timeline: scroll(root block)) {
+            animation: float-up-close linear;
+            animation-timeline: scroll(root block);
+        }
+    }
+}

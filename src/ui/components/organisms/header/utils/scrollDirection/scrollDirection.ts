@@ -3,28 +3,28 @@ enum ScrollDirection {
   UP = 'UP',
   DOWN = 'DOWN',
 }
-
-interface ScrollDirectionOptions {
-  target: string;
-}
-
-export function scrollDirection(options: ScrollDirectionOptions): void {
+export function scrollDirection(): void {
   let lastScrollTop = 0;
   let scrollDirection: ScrollDirection = ScrollDirection.NONE;
 
   const handleScroll = () => {
-    const { target } = options;
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const HEADER = document.querySelector('header');
+    const LOGO = document.querySelector('.site__logo');
+    const scrollTop = document.documentElement.scrollTop ?? document.body.scrollTop;
 
     if (scrollTop > lastScrollTop) scrollDirection = ScrollDirection.DOWN;
     else scrollDirection = ScrollDirection.UP;
 
     lastScrollTop = scrollTop;
 
-    const selector = document.querySelector(target);
-    if (selector) {
-      if (scrollTop === 0) selector.classList.remove('--is-scrolling');
-      else if (scrollDirection === ScrollDirection.DOWN) selector.classList.add('--is-scrolling');
+    if (!HEADER || !LOGO) return;
+
+    if (scrollTop === 0) {
+      HEADER.classList.remove('--is-scrolling');
+      LOGO.classList.remove('--is-scrolling');
+    } else if (scrollDirection === ScrollDirection.DOWN) {
+      HEADER.classList.add('--is-scrolling');
+      LOGO.classList.add('--is-scrolling');
     }
   };
 

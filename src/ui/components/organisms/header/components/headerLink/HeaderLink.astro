@@ -8,7 +8,7 @@ const { pathname } = Astro.url;
 const isCurrentPage = href === pathname || href === pathname.replace(/\/$/, '');
 ---
 
-<a href={href} class:list={[classNames, { '--is-current-page': isCurrentPage }]} {...props}>
+<a href={href} class:list={[`clickable ${classNames}`, { '--is-current-page': isCurrentPage }]} {...props}>
     <slot />
 </a>
 

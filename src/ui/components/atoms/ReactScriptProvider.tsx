@@ -5,9 +5,7 @@ import { scrollDirection } from '@components/organisms/header/utils/scrollDirect
 const ReactScriptProvider = () => {
   useEffect(() => {
     toggleMenu();
-    scrollDirection({
-      target: 'header',
-    });
+    scrollDirection();
   }, []);
 
   return null;
