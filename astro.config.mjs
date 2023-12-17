@@ -21,10 +21,5 @@ export default defineConfig({
     define: {
       'import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID': process.env.PUBLIC_GOOGLE_ANALYTICS_ID,
     },
-    server: {
-      fs: {
-        strict: false,
-      },
-    },
   },
 });
