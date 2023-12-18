@@ -3,6 +3,7 @@ enum ScrollDirection {
   UP = 'UP',
   DOWN = 'DOWN',
 }
+
 export function scrollDirection(): void {
   let lastScrollTop = 0;
   let scrollDirection: ScrollDirection = ScrollDirection.NONE;

@@ -1,6 +1,6 @@
 ---
 import Footer from '@components/organisms/footer/Footer.astro';
-import ReactScriptProvider from '@components/atoms/reactScriptProvider/ReactScriptProvider';
+import ReactScriptProvider from 'src/ui/context/reactScriptProvider/ReactScriptProvider';
 import SiteHead from '@components/organisms/siteHead/SiteHead.astro';
 import Header from '@components/organisms/header/Header.astro';
 
@@ -12,7 +12,7 @@ const { title, description } = Astro.props;
 <body>
 <Header />
 <main>
-    <slot />
+  <slot />
 </main>
 <Footer />
 </body>

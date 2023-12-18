@@ -1,0 +1,8 @@
+@layer testimonials.testimonial.description {
+    .testimonial__description {
+        transition-property: translate;
+        transition-duration: 350ms;
+        transition-timing-function: ease-in;
+        grid-area: Testimonial-Description;
+    }
+}

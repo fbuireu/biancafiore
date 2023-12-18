@@ -1,0 +1,20 @@
+@layer testimonials.testimonial {
+    .testimonial__content {
+        cursor: grab;
+        display: grid;
+        gap: 1rem;
+        grid-template-areas:
+          'Testimonial-Image Testimonial-Image . . '
+          'Testimonial-Image Testimonial-Image Testimonial-Quote Testimonial-Quote'
+          'Testimonial-Image Testimonial-Image Testimonial-Quote Testimonial-Quote'
+          'Testimonial-Image Testimonial-Image Testimonial-Author Testimonial-Author'
+          'Testimonial-Image Testimonial-Image Testimonial-Description Testimonial-Description';
+        grid-template-rows: 1fr 1fr auto auto auto;
+        grid-template-columns: repeat(4, 1fr);
+        width: 100%;
+
+        &:not(.--is-active) {
+            opacity: .25;
+        }
+    }
+}

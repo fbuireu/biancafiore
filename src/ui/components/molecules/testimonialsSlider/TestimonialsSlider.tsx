@@ -1,43 +1,90 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import { Testimonial } from '@components/atoms/testimonial';
+import { A11y, FreeMode, Keyboard, Navigation, Pagination, Virtual } from 'swiper/modules';
+import { Testimonial } from '@components/molecules/testimonial';
+import { type SwiperOptions } from 'swiper/types';
+import { TestimonialsNavigation } from '@components/atoms/testimonialsNavigation';
+import './testimonialsSlider.css';
+
+const SLIDER_CONFIG: SwiperOptions = {
+  modules: [Navigation, Pagination, FreeMode, Keyboard, Virtual, A11y],
+  loop: true,
+  centeredSlides: true,
+  slidesPerView: 3,
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: true,
+  },
+  pagination: {
+    clickable: true,
+  },
+  keyboard: {
+    enabled: true,
+  },
+  breakpoints: {
+    1024: {
+      slidesPerView: 1.85,
+      spaceBetween: 150,
+    },
+    320: {
+      slidesPerView: 1,
+    },
+  },
+  containerModifierClass: 'testimonials-',
+};
 
 export const TestimonialsSlider = () => {
   return (
-    <Swiper navigation={true} modules={[Navigation]} className="mySwiper" slidesPerView={3}>
+    <Swiper {...SLIDER_CONFIG}>
       <SwiperSlide>
         <Testimonial>
-          <Testimonial.Name>Name</Testimonial.Name>
+          <Testimonial.Author>Name</Testimonial.Author>
           <Testimonial.Quote>quote</Testimonial.Quote>
-          <Testimonial.Image src="https://via.placeholder.com/50" alt="alt" />
+          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
           <Testimonial.Description>role</Testimonial.Description>
         </Testimonial>
       </SwiperSlide>
       <SwiperSlide>
         <Testimonial>
-          <Testimonial.Name>Name</Testimonial.Name>
+          <Testimonial.Author>Name</Testimonial.Author>
           <Testimonial.Quote>quote</Testimonial.Quote>
-          <Testimonial.Image src="https://via.placeholder.com/50" alt="alt" />
+          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
           <Testimonial.Description>role</Testimonial.Description>
         </Testimonial>
       </SwiperSlide>
       <SwiperSlide>
         <Testimonial>
-          <Testimonial.Name>Name</Testimonial.Name>
+          <Testimonial.Author>Name</Testimonial.Author>
           <Testimonial.Quote>quote</Testimonial.Quote>
-          <Testimonial.Image src="https://via.placeholder.com/50" alt="alt" />
+          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
           <Testimonial.Description>role</Testimonial.Description>
         </Testimonial>
       </SwiperSlide>
       <SwiperSlide>
         <Testimonial>
-          <Testimonial.Name>Name</Testimonial.Name>
+          <Testimonial.Author>Name</Testimonial.Author>
           <Testimonial.Quote>quote</Testimonial.Quote>
-          <Testimonial.Image src="https://via.placeholder.com/50" alt="alt" />
+          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
           <Testimonial.Description>role</Testimonial.Description>
         </Testimonial>
       </SwiperSlide>
+      <SwiperSlide>
+        <Testimonial>
+          <Testimonial.Author>Name</Testimonial.Author>
+          <Testimonial.Quote>quote</Testimonial.Quote>
+          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
+          <Testimonial.Description>role</Testimonial.Description>
+        </Testimonial>
+      </SwiperSlide>
+      <SwiperSlide>
+        <Testimonial>
+          <Testimonial.Author>Name</Testimonial.Author>
+          <Testimonial.Quote>quote</Testimonial.Quote>
+          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
+          <Testimonial.Description>role</Testimonial.Description>
+        </Testimonial>
+      </SwiperSlide>
+      <TestimonialsNavigation />
     </Swiper>
   );
 };

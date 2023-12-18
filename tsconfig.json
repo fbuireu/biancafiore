@@ -1,11 +1,6 @@
 {
-  "include": [
-    "src"
-  ],
-  "extends": [
-    "astro/tsconfigs/strict",
-    "./tsconfig.paths.json"
-  ],
+  "include": ["src"],
+  "extends": ["astro/tsconfigs/strict", "./tsconfig.paths.json"],
   "compilerOptions": {
     "strictNullChecks": true,
     "strict": true,

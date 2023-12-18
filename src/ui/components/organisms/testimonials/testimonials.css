@@ -1,18 +1,22 @@
 @layer testimonials {
-    .testimonials__wrapper{
+    .testimonials__wrapper {
         margin-top: 9rem;
     }
+
     .testimonials__title,
     .testimonials__body {
         text-align: center;
-        margin: 0 auto;
     }
-    .testimonials__title{
+
+    .testimonials__title {
         text-transform: uppercase;
-        letter-spacing: .5rem;
+        letter-spacing: 0.5rem;
+        margin-bottom: 1.5rem;
     }
+
     .testimonials__body {
         max-width: var(--grid-small);
         width: 100%;
+        margin: 0 auto 4rem;
     }
 }

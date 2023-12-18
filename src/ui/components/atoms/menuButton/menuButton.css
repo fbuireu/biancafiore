@@ -1,39 +1,39 @@
 @layer header.menuButton {
-    .header__menu-button {
-        cursor: pointer;
-        padding: 0.5rem;
-        font-size: 1.5rem;
-        position: relative;
-        z-index: 2;
-    }
+  .header__menu-button {
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
 
-    .header__menu-text {
-        translate: 0 -15%;
-        display: block;
-        position: relative;
-    }
+  .header__menu-text {
+    translate: 0 -15%;
+    display: block;
+    position: relative;
+  }
 
-    .header__menu-button__outline {
-        position: absolute;
-        width: calc(var(--header-height) * 0.85);
-        height: calc(var(--header-height) * 0.85);
-        translate: 0 -25%;
-        border: 1px solid var(--neutral-main);
-        z-index: 20;
-    }
+  .header__menu-button__outline {
+    position: absolute;
+    width: calc(var(--header-height) * 0.85);
+    height: calc(var(--header-height) * 0.85);
+    translate: 0 -25%;
+    border: 1px solid var(--neutral-main);
+    z-index: 20;
+  }
 
-    .outline-1 {
-        animation: morph 4s linear infinite;
-        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-        transition: border-radius 0.3s;
+  .outline-1 {
+    animation: morph 4s linear infinite;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transition: border-radius 0.3s;
 
-        &:hover {
-            border-radius: 53% 47% 43% 57% / 51% 39% 61% 49%;
-        }
+    &:hover {
+      border-radius: 53% 47% 43% 57% / 51% 39% 61% 49%;
     }
+  }
 
-    .outline-2 {
-        border-radius: 53% 47% 43% 57% / 51% 39% 61% 49%;
-        z-index: -1;
-    }
+  .outline-2 {
+    border-radius: 53% 47% 43% 57% / 51% 39% 61% 49%;
+    z-index: -1;
+  }
 }

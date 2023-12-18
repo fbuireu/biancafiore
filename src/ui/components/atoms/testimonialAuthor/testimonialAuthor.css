@@ -1,0 +1,8 @@
+@layer testimonials.testimonial.author {
+    .testimonial__author {
+        transition-property: translate;
+        transition-duration: 450ms;
+        transition-timing-function: ease-in;
+        grid-area: Testimonial-Author;
+    }
+}

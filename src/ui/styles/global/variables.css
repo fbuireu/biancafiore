@@ -1,40 +1,16 @@
 @layer theme {
     :root {
-        --primary-light-3: color-mix(
-                in srgb,
-                var(--primary-main),
-                var(--white) 75%
-        );
-        --primary-light-2: color-mix(
-                in srgb,
-                var(--primary-main),
-                var(--white) 50%
-        );
-        --primary-light-1: color-mix(
-                in srgb,
-                var(--primary-main),
-                var(--white) 25%
-        );
+        --primary-light-3: color-mix(in srgb, var(--primary-main), var(--white) 75%);
+        --primary-light-2: color-mix(in srgb, var(--primary-main), var(--white) 50%);
+        --primary-light-1: color-mix(in srgb, var(--primary-main), var(--white) 25%);
         --primary-main: #d4a259;
         --primary-dark-1: color-mix(in srgb, var(--primary-main), var(--black) 25%);
         --primary-dark-2: color-mix(in srgb, var(--primary-main), var(--black) 50%);
         --primary-dark-3: color-mix(in srgb, var(--primary-main), var(--black) 75%);
         --neutral-main: #1e2021;
-        --neutral-light-1: color-mix(
-                in srgb,
-                var(--neutral-main),
-                var(--white) 25%
-        );
-        --neutral-light-2: color-mix(
-                in srgb,
-                var(--neutral-main),
-                var(--white) 50%
-        );
-        --neutral--light-3: color-mix(
-                in srgb,
-                var(--neutral-main),
-                var(--white) 75%
-        );
+        --neutral-light-1: color-mix(in srgb, var(--neutral-main), var(--white) 25%);
+        --neutral-light-2: color-mix(in srgb, var(--neutral-main), var(--white) 50%);
+        --neutral--light-3: color-mix(in srgb, var(--neutral-main), var(--white) 75%);
         --error-main: #d63737;
         --success-main: #008108;
         --x: #000;
@@ -45,6 +21,7 @@
         --white: #fff;
         --black: #000;
         --header-height: 80px;
+        --testimonial-translation: 100px;
         --global-max-width: 1440px;
         --base-font-size: 1rem;
         --base-line-height: calc(var(--base-font-size) * 1.25);

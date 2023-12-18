@@ -9,12 +9,16 @@ import { astroImageTools } from 'astro-imagetools';
 export default defineConfig({
   site: 'https://biancafiore.me',
   integrations: [
-    mdx(), sitemap(), react(), astroImageTools,
+    mdx(),
+    sitemap(),
+    react(),
+    astroImageTools,
     partytown({
       config: {
         forward: ['dataLayer.push'],
       },
-    })],
+    }),
+  ],
   output: 'server',
   adapter: netlify(),
   vite: {

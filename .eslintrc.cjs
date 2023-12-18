@@ -11,11 +11,7 @@ module.exports = {
     browser: true,
     es2023: true,
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'prettier',
-  ],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/eslint-recommended', 'prettier'],
   overrides: [
     {
       files: tsconfig.include,
@@ -28,10 +24,7 @@ module.exports = {
     {
       files: ['*.astro'],
       parser: 'astro-eslint-parser',
-      extends: [
-        'plugin:astro/recommended',
-        'prettier',
-      ],
+      extends: ['plugin:astro/recommended', 'prettier'],
       parserOptions: {
         parser: '@typescript-eslint/parser',
         extraFileExtensions: ['.astro', '.css'],
@@ -40,16 +33,10 @@ module.exports = {
     },
     {
       files: ['*.jsx', '*.tsx'],
-      extends: [
-        'plugin:react/recommended',
-        'plugin:react-hooks/recommended',
-        'prettier',
-      ],
-      plugins: [
-        'react',
-      ],
+      extends: ['plugin:react/recommended', 'plugin:react-hooks/recommended', 'prettier'],
+      plugins: ['react'],
       rules: {
-        "react/prop-types": "off",
+        'react/prop-types': 'off',
       },
     },
   ],
@@ -61,7 +48,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    "react/prop-types": "off",
+    'react/prop-types': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
