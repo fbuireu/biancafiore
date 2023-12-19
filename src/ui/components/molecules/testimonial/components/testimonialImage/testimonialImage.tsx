@@ -1,5 +1,5 @@
 import React, { type FC } from 'react';
-import './testimonialImage.css';
+import 'src/ui/components/molecules/testimonial/components/testimonialImage/testimonialImage.css';
 
 export type TestimonialImageProps = Pick<HTMLImageElement, 'src' | 'alt'>;
 

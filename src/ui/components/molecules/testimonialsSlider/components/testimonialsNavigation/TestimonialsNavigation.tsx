@@ -1,5 +1,5 @@
 import React from 'react';
-import './testimonialsNavigation.css';
+import 'src/ui/components/molecules/testimonialsSlider/components/testimonialsNavigation/testimonialsNavigation.css';
 import { useSwiper } from 'swiper/react';
 import horizontalArrow from '@assets/images/svg/left-arrow.svg';
 

@@ -1,9 +1,21 @@
 import React, { type FC, type ReactNode } from 'react';
 import './testimonial.css';
-import { TestimonialImage, type TestimonialImageProps } from '@components/atoms/testimonialImage';
-import { TestimonialQuote, type TestimonialQuoteProps } from '@components/atoms/testimonialQuote';
-import { TestimonialDescription, type TestimonialDescriptionProps } from '@components/atoms/testimonialDescription';
-import { TestimonialAuthor, type TestimonialAuthorProps } from '@components/atoms/testimonialAuthor';
+import {
+  TestimonialImage,
+  type TestimonialImageProps,
+} from 'src/ui/components/molecules/testimonial/components/testimonialImage';
+import {
+  TestimonialQuote,
+  type TestimonialQuoteProps,
+} from 'src/ui/components/molecules/testimonial/components/testimonialQuote';
+import {
+  TestimonialDescription,
+  type TestimonialDescriptionProps,
+} from 'src/ui/components/molecules/testimonial/components/testimonialDescription';
+import {
+  TestimonialAuthor,
+  type TestimonialAuthorProps,
+} from 'src/ui/components/molecules/testimonial/components/testimonialAuthor';
 import { useSwiperSlide } from 'swiper/react';
 
 interface TestimonialProps {
