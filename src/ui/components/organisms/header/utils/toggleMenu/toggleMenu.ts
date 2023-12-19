@@ -107,7 +107,7 @@ export function toggleMenu() {
           stagger: { amount: 0.5 },
           duration: 0.75,
         },
-        '-=1'
+        '<'
       )
       .reverse();
     timeline.to(
@@ -117,7 +117,7 @@ export function toggleMenu() {
         ease: POWER3_OUT,
         duration: 0.75,
       },
-      '-=1'
+      '<'
     );
   }
 

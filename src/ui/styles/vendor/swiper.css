@@ -29,7 +29,7 @@
   .swiper-pagination {
     --swiper-pagination-color: var(--primary-main);
 
-    bottom: 5rem !important;
+    bottom: 5.5rem !important;
   }
 
   .swiper-pagination-bullet {

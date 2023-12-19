@@ -1,5 +1,6 @@
 @layer testimonials.navigation {
   .testimonials__navigation {
+    gap: 0 1rem;
     position: absolute;
     right: 0;
     z-index: 10;
@@ -14,10 +15,6 @@
 
     &.--right {
       rotate: 180deg;
-    }
-
-    &.--left {
-      translate: 0 -1rem;
     }
   }
 }

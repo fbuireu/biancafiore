@@ -1,19 +1,19 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { A11y, FreeMode, Keyboard, Navigation, Pagination, Virtual } from 'swiper/modules';
+import { A11y, Keyboard, Navigation, Pagination, Virtual } from 'swiper/modules';
 import { Testimonial } from '@components/molecules/testimonial';
 import { type SwiperOptions } from 'swiper/types';
 import { TestimonialsNavigation } from 'src/ui/components/molecules/testimonialsSlider/components/testimonialsNavigation';
 import './testimonialsSlider.css';
 
 const SLIDER_CONFIG: SwiperOptions = {
-  modules: [Navigation, Pagination, FreeMode, Keyboard, Virtual, A11y],
+  modules: [Navigation, Pagination, Keyboard, Virtual, A11y],
   loop: true,
   centeredSlides: true,
   slidesPerView: 3,
   autoplay: {
-    delay: 4000,
-    disableOnInteraction: true,
+    delay: 3000,
+    pauseOnMouseEnter: true,
   },
   pagination: {
     clickable: true,
