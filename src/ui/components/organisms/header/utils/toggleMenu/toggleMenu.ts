@@ -96,8 +96,8 @@ export function toggleMenu() {
     timeline.to(SITE_LOGO_SVG, { fill: WHITE, duration: 0.25 }, '<');
     timeline
       .to(OVERLAY_PATH, { attr: { d: PATH_START }, ease: POWER2_EASE_OUT, duration: 1 }, '<')
-      .to(OVERLAY_PATH, { attr: { d: PATH_END }, ease: POWER2_EASE_OUT, duration: 1 }, '-=0.5');
-    timeline.to(HEADER_MENU, { visibility: 'visible', duration: 1 }, '-=0.5');
+      .to(OVERLAY_PATH, { attr: { d: PATH_END }, ease: POWER2_EASE_OUT, duration: 1 }, '-=.5');
+    timeline.to(HEADER_MENU, { visibility: 'visible', duration: 1 }, '-=.5');
     timeline
       .to(
         NAVIGATION_ITEMS,

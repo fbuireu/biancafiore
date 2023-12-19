@@ -27,7 +27,6 @@
   }
 
   main {
-    max-width: var(--grid-extra-large);
     width: 100%;
     margin: calc(var(--header-height) * 2) auto 0;
   }

@@ -1,21 +1,31 @@
 @layer overrides.swiper {
-    .swiper {
-        padding-bottom: 8rem !important;
-    }
+  .swiper {
+    padding-bottom: 8rem !important;
+  }
 
-    :is(.swiper-slide-prev, .swiper-slide-next) {
-        scale: .8;
+  :is(.swiper-slide-prev, .swiper-slide-next) {
+    scale: 0.8;
 
-        .testimonial__content > *:not(.testimonial__image) {
-            translate: 0;
-        }
+    .testimonial__content > *:not(.testimonial__image) {
+      translate: 0;
     }
+  }
 
-    .swiper-slide-prev .testimonial__content > *:not(.testimonial__image) {
-        translate: calc(var(--testimonial-translation) * -1) 0;
-    }
+  .swiper-slide-prev .testimonial__content > *:not(.testimonial__image) {
+    translate: calc(var(--testimonial-translation) * -1) 0;
+  }
 
-    .swiper-slide-next .testimonial__content > *:not(.testimonial__image) {
-        translate: var(--testimonial-translation) 0;
-    }
+  .swiper-slide-next .testimonial__content > *:not(.testimonial__image) {
+    translate: var(--testimonial-translation) 0;
+  }
+
+  .swiper-pagination {
+    --swiper-pagination-color: var(--primary-main);
+
+    bottom: 5rem !important;
+  }
+
+  .swiper-pagination-bullet-active {
+    scale: 1.5;
+  }
 }

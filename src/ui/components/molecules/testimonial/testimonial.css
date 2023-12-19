@@ -1,20 +1,32 @@
 @layer testimonials.testimonial {
-    .testimonial__content {
-        cursor: grab;
-        display: grid;
-        gap: 1rem;
-        grid-template-areas:
-          'Testimonial-Image Testimonial-Image . . '
-          'Testimonial-Image Testimonial-Image Testimonial-Quote Testimonial-Quote'
-          'Testimonial-Image Testimonial-Image Testimonial-Quote Testimonial-Quote'
-          'Testimonial-Image Testimonial-Image Testimonial-Author Testimonial-Author'
-          'Testimonial-Image Testimonial-Image Testimonial-Description Testimonial-Description';
-        grid-template-rows: 1fr 1fr auto auto auto;
-        grid-template-columns: repeat(4, 1fr);
-        width: 100%;
+  .testimonial__content {
+    background-color: var(--white);
+    cursor: grab;
+    display: grid;
+    gap: 1rem;
+    grid:
+      'Testimonial-Image Testimonial-Image . . ' 1fr
+      'Testimonial-Image Testimonial-Image Testimonial-Quote Testimonial-Quote' 1fr
+      'Testimonial-Image Testimonial-Image Testimonial-Quote Testimonial-Quote' auto
+      'Testimonial-Image Testimonial-Image Testimonial-Author Testimonial-Author' auto
+      'Testimonial-Image Testimonial-Image Testimonial-Description Testimonial-Description' auto
+      / 1fr 1fr 1fr 1fr;
+    width: 100%;
 
-        &:not(.--is-active) {
-            opacity: .25;
-        }
+    &:not(.--is-active) {
+      opacity: 0.25;
     }
+  }
+
+  .swiper-slide-prev {
+    .testimonial__content {
+      grid:
+        '. . Testimonial-Image Testimonial-Image ' 1fr
+        'Testimonial-Quote Testimonial-Quote Testimonial-Image Testimonial-Image' 1fr
+        'Testimonial-Quote Testimonial-Quote Testimonial-Image Testimonial-Image' auto
+        'Testimonial-Author Testimonial-Author Testimonial-Image Testimonial-Image' auto
+        'Testimonial-Description Testimonial-Description Testimonial-Image Testimonial-Image ' auto
+        / 1fr 1fr 1fr 1fr;
+    }
+  }
 }

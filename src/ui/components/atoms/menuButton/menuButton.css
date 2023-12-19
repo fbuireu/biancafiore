@@ -1,24 +1,24 @@
 @layer header.menuButton {
   .header__menu-button {
     cursor: pointer;
-    padding: 0.5rem;
     font-size: 1.5rem;
+    padding: 0.5rem;
     position: relative;
     z-index: 2;
   }
 
   .header__menu-text {
-    translate: 0 -15%;
     display: block;
     position: relative;
+    translate: 0 -15%;
   }
 
   .header__menu-button__outline {
-    position: absolute;
-    width: calc(var(--header-height) * 0.85);
-    height: calc(var(--header-height) * 0.85);
-    translate: 0 -25%;
     border: 1px solid var(--neutral-main);
+    height: calc(var(--header-height) * 0.85);
+    position: absolute;
+    translate: 0 -25%;
+    width: calc(var(--header-height) * 0.85);
     z-index: 20;
   }
 

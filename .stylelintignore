@@ -1,0 +1,4 @@
+src/ui/styles/**/*
+node_modules
+dist
+.netlify

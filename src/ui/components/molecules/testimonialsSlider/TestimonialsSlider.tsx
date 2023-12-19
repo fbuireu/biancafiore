@@ -35,56 +35,58 @@ const SLIDER_CONFIG: SwiperOptions = {
 
 export const TestimonialsSlider = () => {
   return (
-    <Swiper {...SLIDER_CONFIG}>
-      <SwiperSlide>
-        <Testimonial>
-          <Testimonial.Author>Name</Testimonial.Author>
-          <Testimonial.Quote>quote</Testimonial.Quote>
-          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-          <Testimonial.Description>role</Testimonial.Description>
-        </Testimonial>
-      </SwiperSlide>
-      <SwiperSlide>
-        <Testimonial>
-          <Testimonial.Author>Name</Testimonial.Author>
-          <Testimonial.Quote>quote</Testimonial.Quote>
-          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-          <Testimonial.Description>role</Testimonial.Description>
-        </Testimonial>
-      </SwiperSlide>
-      <SwiperSlide>
-        <Testimonial>
-          <Testimonial.Author>Name</Testimonial.Author>
-          <Testimonial.Quote>quote</Testimonial.Quote>
-          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-          <Testimonial.Description>role</Testimonial.Description>
-        </Testimonial>
-      </SwiperSlide>
-      <SwiperSlide>
-        <Testimonial>
-          <Testimonial.Author>Name</Testimonial.Author>
-          <Testimonial.Quote>quote</Testimonial.Quote>
-          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-          <Testimonial.Description>role</Testimonial.Description>
-        </Testimonial>
-      </SwiperSlide>
-      <SwiperSlide>
-        <Testimonial>
-          <Testimonial.Author>Name</Testimonial.Author>
-          <Testimonial.Quote>quote</Testimonial.Quote>
-          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-          <Testimonial.Description>role</Testimonial.Description>
-        </Testimonial>
-      </SwiperSlide>
-      <SwiperSlide>
-        <Testimonial>
-          <Testimonial.Author>Name</Testimonial.Author>
-          <Testimonial.Quote>quote</Testimonial.Quote>
-          <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-          <Testimonial.Description>role</Testimonial.Description>
-        </Testimonial>
-      </SwiperSlide>
-      <TestimonialsNavigation />
-    </Swiper>
+    <div className="testimonials__slider__wrapper common-wrapper">
+      <Swiper {...SLIDER_CONFIG}>
+        <SwiperSlide>
+          <Testimonial>
+            <Testimonial.Author>Name</Testimonial.Author>
+            <Testimonial.Quote>quote</Testimonial.Quote>
+            <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
+            <Testimonial.Description>role</Testimonial.Description>
+          </Testimonial>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Testimonial>
+            <Testimonial.Author>Name</Testimonial.Author>
+            <Testimonial.Quote>quote</Testimonial.Quote>
+            <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
+            <Testimonial.Description>role</Testimonial.Description>
+          </Testimonial>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Testimonial>
+            <Testimonial.Author>Name</Testimonial.Author>
+            <Testimonial.Quote>quote</Testimonial.Quote>
+            <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
+            <Testimonial.Description>role</Testimonial.Description>
+          </Testimonial>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Testimonial>
+            <Testimonial.Author>Name</Testimonial.Author>
+            <Testimonial.Quote>quote</Testimonial.Quote>
+            <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
+            <Testimonial.Description>role</Testimonial.Description>
+          </Testimonial>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Testimonial>
+            <Testimonial.Author>Name</Testimonial.Author>
+            <Testimonial.Quote>quote</Testimonial.Quote>
+            <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
+            <Testimonial.Description>role</Testimonial.Description>
+          </Testimonial>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Testimonial>
+            <Testimonial.Author>Name</Testimonial.Author>
+            <Testimonial.Quote>quote</Testimonial.Quote>
+            <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
+            <Testimonial.Description>role</Testimonial.Description>
+          </Testimonial>
+        </SwiperSlide>
+        <TestimonialsNavigation />
+      </Swiper>
+    </div>
   );
 };

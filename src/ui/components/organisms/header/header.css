@@ -16,20 +16,20 @@
     }
 
     .header__wrapper {
-      position: relative;
       height: 100%;
+      position: relative;
     }
 
     .header__backdrop {
       --extended-by: var(--header-height);
       --cutoff: calc(100% - var(--extended-by));
       --blur: 1rem;
+
       backdrop-filter: blur(var(--blur));
+      inset: 0 0 calc(-1 * var(--extended-by)) 0;
+      mask-image: linear-gradient(to bottom, black 0, black var(--cutoff), transparent var(--cutoff));
       pointer-events: none;
       position: absolute;
-      inset: 0;
-      bottom: calc(-1 * var(--extended-by));
-      -webkit-mask-image: linear-gradient(to bottom, black 0, black var(--cutoff), transparent var(--cutoff));
     }
   }
 }

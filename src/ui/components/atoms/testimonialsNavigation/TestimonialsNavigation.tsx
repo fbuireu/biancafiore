@@ -5,7 +5,7 @@ import horizontalArrow from '@assets/images/svg/left-arrow.svg';
 
 export const TestimonialsNavigation = () => {
   const swiper = useSwiper();
-
+  console.log('swiper', swiper);
   return (
     <div className="testimonials__navigation flex column-nowrap">
       <button className="testimonials__navigation__button --right clickable" onClick={() => swiper.slideNext()}>

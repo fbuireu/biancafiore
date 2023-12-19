@@ -1,52 +1,60 @@
 @layer global {
-    .common-wrapper {
-        max-width: var(--grid-extra-large);
-        width: 100%;
-        margin: 0 auto;
-    }
+  .common-wrapper {
+    max-width: var(--grid-extra-large);
+    width: 100%;
+    margin: 0 auto;
+  }
 
-    .flex {
-        display: flex;
-    }
+  .font-serif {
+    font-family: 'Literata Variable', serif;
+  }
 
-    .row-wrap {
-        flex-flow: row wrap;
-    }
+  .font-sans-serif {
+    font-family: 'Zilla Slab', sans-serif;
+  }
 
-    .column-wrap {
-        flex-flow: column wrap;
-    }
+  .flex {
+    display: flex;
+  }
 
-    .column-nowrap {
-        flex-flow: column nowrap;
-    }
+  .row-wrap {
+    flex-flow: row wrap;
+  }
 
-    .justify-flex-end {
-        justify-content: flex-end;
-    }
+  .column-wrap {
+    flex-flow: column wrap;
+  }
 
-    .justify-space-between {
-        justify-content: space-between;
-    }
+  .column-nowrap {
+    flex-flow: column nowrap;
+  }
 
-    .align-center {
-        align-content: center;
-    }
+  .justify-flex-end {
+    justify-content: flex-end;
+  }
 
-    .clickable {
-        cursor: pointer;
-        transition: scale 0.2s;
+  .justify-space-between {
+    justify-content: space-between;
+  }
 
-        &:active {
-            scale: 0.9;
-        }
-    }
+  .align-center {
+    align-content: center;
+  }
 
-    .reveal {
-        opacity: 1;
-        @supports (animation-timeline: view()) {
-            animation: reveal linear;
-            animation-timeline: view();
-        }
+  .clickable {
+    cursor: pointer;
+    transition: scale 0.2s;
+
+    &:active {
+      scale: 0.9;
     }
+  }
+
+  .reveal {
+    opacity: 1;
+    @supports (animation-timeline: view()) {
+      animation: reveal linear;
+      animation-timeline: view();
+    }
+  }
 }
