@@ -52,14 +52,6 @@ export const TestimonialsSlider = () => {
         <SwiperSlide>
           <Testimonial>
             <Testimonial.Author>Ferran Buireu</Testimonial.Author>
-            <Testimonial.Quote>Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla</Testimonial.Quote>
-            <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-            <Testimonial.Description>role</Testimonial.Description>
-          </Testimonial>
-        </SwiperSlide>
-        <SwiperSlide>
-          <Testimonial>
-            <Testimonial.Author>Ferran Buireu</Testimonial.Author>
             <Testimonial.Quote>
               Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
               lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
@@ -85,9 +77,7 @@ export const TestimonialsSlider = () => {
           <Testimonial>
             <Testimonial.Author>Ferran Buireu</Testimonial.Author>
             <Testimonial.Quote>
-              Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
-              lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
-              Yellow Jack fathom broadside snow clipper quarter.
+              Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye.
             </Testimonial.Quote>
             <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
             <Testimonial.Description>role</Testimonial.Description>
@@ -97,9 +87,7 @@ export const TestimonialsSlider = () => {
           <Testimonial>
             <Testimonial.Author>Ferran Buireu</Testimonial.Author>
             <Testimonial.Quote>
-              Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
-              lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
-              Yellow Jack fathom broadside snow clipper quarter.
+              Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye.
             </Testimonial.Quote>
             <Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
             <Testimonial.Description>role</Testimonial.Description>
