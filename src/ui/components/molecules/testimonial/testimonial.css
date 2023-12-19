@@ -1,32 +1,32 @@
 @layer testimonials.testimonial {
-  .testimonial__content {
-    background-color: var(--white);
-    cursor: grab;
-    display: grid;
-    gap: 1rem;
-    grid:
-      'Testimonial-Image Testimonial-Image . . ' 1fr
-      'Testimonial-Image Testimonial-Image Testimonial-Quote Testimonial-Quote' 1fr
-      'Testimonial-Image Testimonial-Image Testimonial-Quote Testimonial-Quote' auto
-      'Testimonial-Image Testimonial-Image Testimonial-Author Testimonial-Author' auto
-      'Testimonial-Image Testimonial-Image Testimonial-Description Testimonial-Description' auto
-      / 1fr 1fr 1fr 1fr;
-    width: 100%;
-
-    &:not(.--is-active) {
-      opacity: 0.25;
-    }
-  }
-
-  .swiper-slide-prev {
     .testimonial__content {
-      grid:
-        '. . Testimonial-Image Testimonial-Image ' 1fr
-        'Testimonial-Quote Testimonial-Quote Testimonial-Image Testimonial-Image' 1fr
-        'Testimonial-Quote Testimonial-Quote Testimonial-Image Testimonial-Image' auto
-        'Testimonial-Author Testimonial-Author Testimonial-Image Testimonial-Image' auto
-        'Testimonial-Description Testimonial-Description Testimonial-Image Testimonial-Image ' auto
-        / 1fr 1fr 1fr 1fr;
+        background-color: var(--white);
+        cursor: grab;
+        display: grid;
+        gap: 0 1rem;
+        grid:
+            'Testimonial-Image Testimonial-Image . . ' 1rem
+            'Testimonial-Image Testimonial-Image Testimonial-Quote Testimonial-Quote' min-content
+            'Testimonial-Image Testimonial-Image Testimonial-Quote Testimonial-Quote' min-content
+            'Testimonial-Image Testimonial-Image Testimonial-Author Testimonial-Author' 1.5rem
+            'Testimonial-Image Testimonial-Image Testimonial-Description Testimonial-Description' min-content
+            / calc(100% / 4) calc(100% / 4) 1fr 1fr;
+        width: 100%;
+
+        &:not(.--is-active) {
+            opacity: 0.25;
+        }
     }
-  }
+
+    .swiper-slide-prev {
+        .testimonial__content {
+            grid:
+                '. . Testimonial-Image Testimonial-Image ' 1fr
+                'Testimonial-Quote Testimonial-Quote Testimonial-Image Testimonial-Image' 1fr
+                'Testimonial-Quote Testimonial-Quote Testimonial-Image Testimonial-Image' auto
+                'Testimonial-Author Testimonial-Author Testimonial-Image Testimonial-Image' auto
+                'Testimonial-Description Testimonial-Description Testimonial-Image Testimonial-Image ' auto
+                / 1fr 1fr 1fr 1fr;
+        }
+    }
 }

@@ -1,24 +1,25 @@
 @layer testimonials {
-  .testimonials__wrapper {
-    background-color: var(--neutral-light-4);
-    margin: 5rem 0;
-  }
+    .testimonials__wrapper {
+        background-color: var(--neutral-light-4);
+        margin: 5rem 0;
+    }
 
-  .testimonials__title,
-  .testimonials__body {
-    text-align: center;
-  }
+    .testimonials__title,
+    .testimonials__body {
+        text-align: center;
+    }
 
-  .testimonials__title {
-    letter-spacing: 0.5rem;
-    margin-bottom: 1.5rem;
-    padding-top: 3rem;
-    text-transform: uppercase;
-  }
+    .testimonials__title {
+        letter-spacing: 0.5rem;
+        margin-bottom: 1.5rem;
+        padding-top: 3rem;
+        text-transform: uppercase;
+    }
 
-  .testimonials__body {
-    margin: 0 auto 4rem;
-    max-width: var(--grid-small);
-    width: 100%;
-  }
+    .testimonials__body {
+        margin: 0 auto 2rem;
+        max-width: var(--grid-small);
+        padding: 2rem 0;
+        width: 100%;
+    }
 }

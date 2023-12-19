@@ -1,5 +1,6 @@
 @layer testimonials.testimonial.image {
     .testimonial__image {
         grid-area: Testimonial-Image;
+        isolation: isolate;
     }
 }
