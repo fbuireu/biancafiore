@@ -1,5 +1,11 @@
 {
-    "src/**/*.{ts,tsx,css}": ["yarn format:all"],
-    "src/**/*.{ts,tsx}": ["yarn lint:ts"],
-    "src/**/*.{css}": ["yarn lint:styles"]
+    "src/**/*.{ts*|css}": [
+        "yarn format:all"
+    ],
+    "src/**/*.{ts*}": [
+        "yarn lint:ts"
+    ],
+    "src/**/*.css": [
+        "yarn lint:styles"
+    ]
 }
