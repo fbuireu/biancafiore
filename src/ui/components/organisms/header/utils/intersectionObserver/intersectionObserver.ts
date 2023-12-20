@@ -1,39 +1,53 @@
-export function intersectionObserver(): void {
-    function handleScroll() {
-        let hasIntersected = false;
-        const WHITE = getComputedStyle(document.documentElement).getPropertyValue('--white');
-        const BLACK = getComputedStyle(document.documentElement).getPropertyValue("--neutral-main'");
-        const HEADER = document.querySelector('.header') as HTMLElement;
-        const LATEST_ARTICLES = document.querySelector('.latest-articles__wrapper') as HTMLElement;
-        const SITE_LOGO_SVG = document.querySelector('.site__logo svg') as HTMLElement;
-        const HEADER_MENU_TEXT = document.querySelector('.header__menu-text') as HTMLElement;
-        const HEADER_MENU_OUTLINES = document.querySelectorAll(
-            '.header__menu-button__outline'
-        ) as unknown as HTMLElement[];
-        const ELEMENTS_TO_INTERSECT: HTMLElement[] = [LATEST_ARTICLES];
+const SELECTORS = {
+    HEADER: '.header',
+    LATEST_ARTICLES: '.latest-articles__wrapper',
+    SITE_LOGO_SVG: '.site__logo svg',
+    HEADER_MENU_TEXT: '.header',
+    HEADER_MENU_OUTLINES: '.header__menu-button__outline',
+};
 
-        if (!HEADER || !LATEST_ARTICLES) return;
+const getComputedStyleValue = (property: string): string =>
+    getComputedStyle(document.documentElement).getPropertyValue(property);
 
-        ELEMENTS_TO_INTERSECT.forEach(({ offsetTop, offsetHeight }) => {
-            const headerOffsetHeight = HEADER.offsetHeight / 2;
-            const threshold = offsetTop - headerOffsetHeight;
-            const sectionBottom = offsetTop + offsetHeight - headerOffsetHeight;
+function isIntersecting(element: HTMLElement): boolean {
+    const { HEADER: HEADER_SELECTOR } = SELECTORS;
+    const headerOffsetHeight = (document.querySelector(HEADER_SELECTOR) as HTMLElement).offsetHeight / 2;
+    const threshold = element.offsetTop - headerOffsetHeight;
+    const sectionBottom = element.offsetTop + element.offsetHeight - headerOffsetHeight;
 
-            if (window.scrollY >= threshold && window.scrollY < sectionBottom) hasIntersected = true;
-        });
-
-        if (hasIntersected) {
-            HEADER.classList.add('--hue-change');
-            SITE_LOGO_SVG.style.fill = WHITE;
-            HEADER_MENU_TEXT.style.color = WHITE;
-            HEADER_MENU_OUTLINES.forEach((element) => (element.style.borderColor = WHITE));
-        } else {
-            HEADER.classList.remove('--hue-change');
-            SITE_LOGO_SVG.style.fill = BLACK;
-            HEADER_MENU_TEXT.style.color = BLACK;
-            HEADER_MENU_OUTLINES.forEach((element) => (element.style.borderColor = BLACK));
-        }
-    }
-
-    window.addEventListener('scroll', handleScroll);
+    return window.scrollY >= threshold && window.scrollY < sectionBottom;
 }
+
+export function intersectionObserver(): void {
+    const WHITE = getComputedStyleValue('--white');
+    const BLACK = getComputedStyleValue('--neutral-main');
+    const {
+        HEADER: HEADER_SELECTOR,
+        LATEST_ARTICLES: LATEST_ARTICLES_SELECTOR,
+        SITE_LOGO_SVG: SITE_LOGO_SVG_SELECTOR,
+        HEADER_MENU_TEXT: HEADER_MENU_TEXT_SELECTOR,
+        HEADER_MENU_OUTLINES: HEADER_MENU_OUTLINES_SELECTOR,
+    } = SELECTORS;
+
+    const HEADER = document.querySelector(HEADER_SELECTOR) as HTMLElement;
+    const LATEST_ARTICLES = document.querySelector(LATEST_ARTICLES_SELECTOR) as HTMLElement;
+    const SITE_LOGO_SVG = document.querySelector(SITE_LOGO_SVG_SELECTOR) as HTMLElement;
+    const HEADER_MENU_TEXT = document.querySelector(HEADER_MENU_TEXT_SELECTOR) as HTMLElement;
+    const HEADER_MENU_OUTLINES = document.querySelectorAll(HEADER_MENU_OUTLINES_SELECTOR) as unknown as HTMLElement[];
+
+    if (!HEADER || !LATEST_ARTICLES) return;
+
+    const hasIntersected = isIntersecting(LATEST_ARTICLES);
+
+    if (hasIntersected) {
+        SITE_LOGO_SVG.style.fill = WHITE;
+        HEADER_MENU_TEXT.style.color = WHITE;
+        HEADER_MENU_OUTLINES.forEach((element) => (element.style.borderColor = WHITE));
+    } else {
+        SITE_LOGO_SVG.style.fill = BLACK;
+        HEADER_MENU_TEXT.style.color = BLACK;
+        HEADER_MENU_OUTLINES.forEach((element) => (element.style.borderColor = BLACK));
+    }
+}
+
+window.addEventListener('scroll', intersectionObserver);

@@ -18,7 +18,7 @@
         border: 1px solid var(--neutral-main);
         height: calc(var(--header-height) * 0.85);
         position: absolute;
-        transition: border 0.3s;
+        transition: border 0.2s;
         translate: 0 -25%;
         width: calc(var(--header-height) * 0.85);
         z-index: 20;

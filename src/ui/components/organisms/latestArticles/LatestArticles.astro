@@ -1,6 +1,12 @@
 ---
 import './latestArticles.css';
 import { getCollection } from 'astro:content';
+import { DEFAULT_DATE_OPTIONS } from 'src/consts';
+
+const enum ArticleType {
+    FEATURED = 'featured',
+    DEFAULT = 'default',
+}
 
 const MAX_ARTICLES = 4;
 
@@ -10,9 +16,12 @@ posts.sort((a, b) => new Date(b.data.publishDate) - new Date(a.data.publishDate)
 
 <section class="latest-articles__wrapper">
     <h3 class="latest-articles__title section-title">Fresh from <a class="latest-articles__title__link clickable" href="/articles">the blog</a></h3>
-    <ul class="latest__articles__list">
+    <ul class="latest__articles__list common-wrapper flex row-wrap">
     {posts.map(({ slug, data }) => {
-         const href = `/articles/${slug}`;
+        const variant: ArticleType = data.featuredImage ? ArticleType.FEATURED : ArticleType.DEFAULT;
+        const publishedDate = data.publishDate.toLocaleDateString('en', DEFAULT_DATE_OPTIONS);
+        const href = `/articles/${slug}`;
+        console.log(variant)
         return (
             <li class="latest__article__item">
             <article>
@@ -21,9 +30,18 @@ posts.sort((a, b) => new Date(b.data.publishDate) - new Date(a.data.publishDate)
                         <a href={href}>{data.title}</a>
                     </h2>
                 </header>
-                <img src={data.featuredImage} alt={data.title} class="latest__article__item__featured-image" decoding="async" loading="lazy" />
+                {data.featuredImage && (
+                    <img class="latest__article__item__featured-image"
+                         src={data.featuredImage}
+                         alt={data.title}
+                         decoding="async" loading="lazy" />
+                )}
                  <p>{data.description}</p>
-                    <time class="latest__article__item__publish-date">— {data.publishDate}</time>
+                    <time class="latest__article__item__publish-date" datetime={publishedDate}>— {publishedDate}</time>
+                <p>{data.author}</p>
+                {data.tags?.map((tag) => (
+                    <a class="latest__article__item__tag" href={`/tags/${tag}`}>{tag}</a>
+                ))}
             </article>
             </li>
         );

@@ -7,6 +7,8 @@ const articles = defineCollection({
         publishDate: z.coerce.date(),
         updatedDate: z.coerce.date().optional(),
         featuredImage: z.string().optional(),
+        tags: z.string().array().optional(),
+        author: z.string(),
     }),
 });
 

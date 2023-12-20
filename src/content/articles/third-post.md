@@ -3,6 +3,8 @@ title: 'Third post'
 description: 'Lorem ipsum dolor sit amet'
 publishDate: 'Jul 15 2022'
 featuredImage: ''
+tags: []
+author: 'Bianca Fiore'
 slug: 'third-post'
 ---
 

@@ -3,6 +3,8 @@ title: 'First post'
 description: 'Lorem ipsum dolor sit amet'
 publishDate: 'Jul 08 2022'
 featuredImage: ''
+tags: ['first', 'post']
+author: 'Bianca Fiore'
 slug: 'first-post'
 ---
 

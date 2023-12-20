@@ -12,4 +12,10 @@
             display: inline-block;
         }
     }
+
+    .latest__article__item {
+        & > * {
+            color: var(--white);
+        }
+    }
 }

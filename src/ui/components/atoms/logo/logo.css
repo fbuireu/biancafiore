@@ -12,7 +12,7 @@
         svg {
             transition:
                 scale 0.2s,
-                fill 0.2s;
+                fill 0.3s;
         }
 
         &.--is-scrolling:not(.--is-menu-open) svg {
