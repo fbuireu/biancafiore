@@ -3,3 +3,5 @@
     "pre-commit": "eslint \"**/*\\.(js*|ts*|json|md*)\"",
   }
 }
+
+

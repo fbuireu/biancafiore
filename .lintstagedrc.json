@@ -1,8 +1,8 @@
 {
-    "src/**/*.{ts*|css}": [
+    "src/**/*.{ts,tsx,css}": [
         "yarn format:all"
     ],
-    "src/**/*.{ts*}": [
+    "src/**/*.{ts,tsx}": [
         "yarn lint:ts"
     ],
     "src/**/*.css": [
