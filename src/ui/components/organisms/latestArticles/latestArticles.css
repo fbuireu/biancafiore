@@ -1,0 +1,15 @@
+@layer latest-articles {
+    .latest-articles__wrapper {
+        background-color: var(--neutral-main);
+    }
+
+    .latest-articles__title {
+        color: var(--white);
+        padding: 4rem 0;
+
+        .latest-articles__title__link {
+            color: var(--primary-main);
+            display: inline-block;
+        }
+    }
+}

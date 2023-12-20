@@ -1,0 +1,32 @@
+---
+import './latestArticles.css';
+import { getCollection } from 'astro:content';
+
+const MAX_ARTICLES = 4;
+
+const posts = await getCollection('articles');
+posts.sort((a, b) => new Date(b.data.publishDate) - new Date(a.data.publishDate)).slice(0, MAX_ARTICLES);
+---
+
+<section class="latest-articles__wrapper">
+    <h3 class="latest-articles__title section-title">Fresh from <a class="latest-articles__title__link clickable" href="/articles">the blog</a></h3>
+    <ul class="latest__articles__list">
+    {posts.map(({ slug, data }) => {
+         const href = `/articles/${slug}`;
+        return (
+            <li class="latest__article__item">
+            <article>
+                <header class="latest__article__item__header">
+                    <h2 class="latest__article__title">
+                        <a href={href}>{data.title}</a>
+                    </h2>
+                </header>
+                <img src={data.featuredImage} alt={data.title} class="latest__article__item__featured-image" decoding="async" loading="lazy" />
+                 <p>{data.description}</p>
+                    <time class="latest__article__item__publish-date">— {data.publishDate}</time>
+            </article>
+            </li>
+        );
+    })}
+    </ul>
+</section>

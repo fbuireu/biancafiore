@@ -1,8 +1,9 @@
 ---
-title: 'Third post'
+title: 'Second post'
 description: 'Lorem ipsum dolor sit amet'
-pubDate: 'Jul 15 2022'
-heroImage: '/blog-placeholder-2.jpg'
+publishDate: 'Jul 22 2022'
+featuredImage: ''
+slug: 'second-post'
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna

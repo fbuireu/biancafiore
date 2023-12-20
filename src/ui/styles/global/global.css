@@ -1,60 +1,66 @@
 @layer global {
-  .common-wrapper {
-    max-width: var(--grid-extra-large);
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  .font-serif {
-    font-family: 'Literata Variable', serif;
-  }
-
-  .font-sans-serif {
-    font-family: 'Zilla Slab', sans-serif;
-  }
-
-  .flex {
-    display: flex;
-  }
-
-  .row-wrap {
-    flex-flow: row wrap;
-  }
-
-  .column-wrap {
-    flex-flow: column wrap;
-  }
-
-  .column-nowrap {
-    flex-flow: column nowrap;
-  }
-
-  .justify-flex-end {
-    justify-content: flex-end;
-  }
-
-  .justify-space-between {
-    justify-content: space-between;
-  }
-
-  .align-center {
-    align-content: center;
-  }
-
-  .clickable {
-    cursor: pointer;
-    transition: scale 0.2s;
-
-    &:active {
-      scale: 0.9;
+    .common-wrapper {
+        max-width: var(--grid-extra-large);
+        width: 100%;
+        margin: 0 auto;
     }
-  }
 
-  .reveal {
-    opacity: 1;
-    @supports (animation-timeline: view()) {
-      animation: reveal linear;
-      animation-timeline: view();
+    .font-serif {
+        font-family: 'Literata Variable', serif;
     }
-  }
+
+    .font-sans-serif {
+        font-family: 'Zilla Slab', sans-serif;
+    }
+
+    .section-title {
+        letter-spacing: 0.5rem;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .flex {
+        display: flex;
+    }
+
+    .row-wrap {
+        flex-flow: row wrap;
+    }
+
+    .column-wrap {
+        flex-flow: column wrap;
+    }
+
+    .column-nowrap {
+        flex-flow: column nowrap;
+    }
+
+    .justify-flex-end {
+        justify-content: flex-end;
+    }
+
+    .justify-space-between {
+        justify-content: space-between;
+    }
+
+    .align-center {
+        align-content: center;
+    }
+
+    .clickable {
+        cursor: pointer;
+        transition: scale 0.2s;
+
+        &:active {
+            scale: 0.9;
+        }
+    }
+
+    .reveal {
+        opacity: 1;
+        @supports (animation-timeline: view()) {
+            animation: reveal linear;
+            animation-timeline: view();
+        }
+    }
 }

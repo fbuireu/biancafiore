@@ -1,92 +1,96 @@
 @layer base {
-  * {
-    &::selection {
-      background-color: var(--primary-main);
-      color: var(--white);
+    * {
+        &::selection {
+            background-color: var(--primary-main);
+            color: var(--white);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+    html,
+    body {
+        width: 100%;
+        font-size: var(--base-font-size);
+        font-family: 'Literata Variable', serif;
+        scroll-behavior: smooth;
+        scrollbar-gutter: stable;
+
+        @media (prefers-reduced-motion: reduce) {
+            scroll-behavior: auto;
+        }
     }
-  }
 
-  html,
-  body {
-    width: 100dvw;
-    font-size: var(--base-font-size);
-    font-family: 'Literata Variable', serif;
-    overflow: hidden auto;
-    scroll-behavior: smooth;
-    scrollbar-gutter: stable;
-
-    @media (prefers-reduced-motion: reduce) {
-      scroll-behavior: auto;
+    main {
+        width: 100%;
+        margin: calc(var(--header-height) * 2) auto 0;
     }
-  }
 
-  main {
-    width: 100%;
-    margin: calc(var(--header-height) * 2) auto 0;
-  }
-
-  body,
-  html,
-  p,
-  article {
-    color: var(--neutral-main);
-    font-size: var(--base-font-size);
-  }
-
-  p,
-  article {
-    font-family: 'Zilla Slab', sans-serif;
-
-    @supports (text-wrap: pretty) {
-      text-wrap: pretty;
+    body,
+    html,
+    p,
+    article {
+        color: var(--neutral-main);
+        font-size: var(--base-font-size);
     }
-  }
 
-  img {
-    height: 100%;
-    max-width: 100%;
-    width: 100%;
-  }
+    p,
+    article {
+        font-family: 'Zilla Slab', sans-serif;
 
-  body {
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: var(--base-font-size);
-    -webkit-touch-callout: none;
-    text-rendering: optimizeLegibility;
-  }
+        @supports (text-wrap: pretty) {
+            text-wrap: pretty;
+        }
+    }
 
-  a {
-    -webkit-tap-highlight-color: transparent;
-    color: inherit;
-    cursor: pointer;
-  }
+    img {
+        height: 100%;
+        max-width: 100%;
+        width: 100%;
+    }
 
-  summary {
-    -webkit-tap-highlight-color: transparent;
-  }
+    body {
+        -webkit-font-smoothing: antialiased;
+        -webkit-tap-highlight-color: var(--base-font-size);
+        -webkit-touch-callout: none;
+        text-rendering: optimizeLegibility;
+    }
 
-  mark {
-    background-color: var(--primary-main);
-  }
+    a {
+        -webkit-tap-highlight-color: transparent;
+        color: inherit;
+        cursor: pointer;
+    }
 
-  svg {
-    -webkit-tap-highlight-color: transparent;
-    fill: var(--neutral-main);
-  }
+    summary {
+        -webkit-tap-highlight-color: transparent;
+    }
 
-  h1,
-  h2 {
-    font-size: clamp(2rem, 5rem, 5rem);
-  }
+    mark {
+        background-color: var(--primary-main);
+    }
 
-  h3 {
-    font-size: clamp(2rem, 3.5rem, 3.5rem);
-    letter-spacing: 0.35rem;
-  }
+    svg {
+        -webkit-tap-highlight-color: transparent;
+        fill: var(--neutral-main);
+    }
+
+    h1,
+    h2 {
+        font-size: clamp(4rem, 5rem, 5rem);
+    }
+
+    h3 {
+        font-size: clamp(3rem, 3.5rem, 3.5rem);
+        letter-spacing: 0.35rem;
+    }
+
+    h4 {
+        font-size: clamp(2rem, 2rem, 2rem);
+        letter-spacing: 0.35rem;
+    }
 }

@@ -2,9 +2,13 @@
 import BaseLayout from '@components/templates/baseLayout/BaseLayout.astro';
 import Welcome from '@components/molecules/welcome/Welcome.astro';
 import Testimonials from '@components/organisms/testimonials/Testimonials.astro';
+import MyWork from '@components/organisms/myWork/MyWork.astro';
+import LatestArticles from '@components/organisms/latestArticles/LatestArticles.astro';
 
+// current todo: fresh from the blog
 // todo: latest articles following(https://scroll-driven-animations.style/demos/stacking-cards/css/)
 // todo: reveal on enter viewport (check current implementation). add .reveal to test
+// todo: SEO + HTML structure
 // todo: view transitions
 // todo: add vitest
 // todo: add CIs
@@ -12,6 +16,8 @@ import Testimonials from '@components/organisms/testimonials/Testimonials.astro'
 <BaseLayout title="" description="">
     <Welcome />
     <Testimonials />
+    <MyWork />
+    <LatestArticles />
     <br />
     <br />
     <br />
@@ -20,4 +26,5 @@ import Testimonials from '@components/organisms/testimonials/Testimonials.astro'
     <br />
     <br />
     <br />
+    
 </BaseLayout>

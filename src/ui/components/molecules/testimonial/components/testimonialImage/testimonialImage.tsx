@@ -4,5 +4,5 @@ import 'src/ui/components/molecules/testimonial/components/testimonialImage/test
 export type TestimonialImageProps = Pick<HTMLImageElement, 'src' | 'alt'>;
 
 export const TestimonialImage: FC<TestimonialImageProps> = ({ src, alt }) => (
-  <img className="testimonial__image" src={src} alt={alt} decoding="async" loading="lazy" />
+    <img className="testimonial__image" src={src} alt={alt} decoding="async" loading="lazy" />
 );

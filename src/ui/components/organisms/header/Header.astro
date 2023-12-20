@@ -1,11 +1,11 @@
 ---
 import './header.css';
-import MenuButton from 'src/ui/components/organisms/header/components/menuButton/MenuButton.astro';
-import MenuOverlay from 'src/ui/components/organisms/header/components/menuOverlay/MenuOverlay.astro';
-import Logo from 'src/ui/components/atoms/logo/Logo.astro';
-import Menu from 'src/ui/components/organisms/header/components/menu/Menu.astro';
+import MenuButton from '@components/organisms/header/components/menuButton/MenuButton.astro';
+import MenuOverlay from '@components/organisms/header/components/menuOverlay/MenuOverlay.astro';
+import Logo from '@components/atoms/logo/Logo.astro';
+import Menu from '@components/organisms/header/components/menu/Menu.astro';
 ---
-<header>
+<header class="header">
     <div class="header__backdrop" />
     <section class="common-wrapper flex row-wrap justify-flex-end align-center header__wrapper">
         <Logo />

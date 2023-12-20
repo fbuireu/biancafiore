@@ -1,6 +1,6 @@
 /* todo: add native progressbar --> https://developer.chrome.com/docs/css-ui/scroll-driven-animations?hl=es-419#attaching-to-a-non-ancestor-scroll-timeline */
 @supports (initial-letter: 3 2) {
-  article p:first-of-type::first-letter {
-    initial-letter: 3 2;
-  }
+    article p:first-of-type::first-letter {
+        initial-letter: 3 2;
+    }
 }
