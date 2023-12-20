@@ -2,33 +2,15 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@ui/*": [
-                "./src/ui/*"
-            ],
-            "@components/*": [
-                "./src/ui/components/*"
-            ],
-            "@utils/*": [
-                "./src/utils/*"
-            ],
-            "@assets/*": [
-                "./src/ui/assets/*"
-            ],
-            "@styles/*": [
-                "./src/ui/styles/*"
-            ],
-            "@articles/*": [
-                "./src/content//*"
-            ],
-            "@i18n/*": [
-                "./src/i18n/*"
-            ],
-            "@mocks/*": [
-                "./src/mocks/*"
-            ],
-            "@types/*": [
-                "./src/types/*"
-            ]
+            "@ui/*": ["./src/ui/*"],
+            "@components/*": ["./src/ui/components/*"],
+            "@utils/*": ["./src/utils/*"],
+            "@assets/*": ["./src/ui/assets/*"],
+            "@styles/*": ["./src/ui/styles/*"],
+            "@articles/*": ["./src/content//*"],
+            "@i18n/*": ["./src/i18n/*"],
+            "@mocks/*": ["./src/mocks/*"],
+            "@types/*": ["./src/types/*"]
         }
     }
 }
