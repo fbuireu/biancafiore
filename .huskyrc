@@ -1,6 +1,6 @@
 {
   "hooks": {
-    "pre-commit": "eslint \"**/*\\.(js*|ts*|json|md*)\"",
+    "pre-commit": "yarn lint:ts && yarn lint:styles",
   }
 }
 

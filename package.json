@@ -33,7 +33,8 @@
         "lint:ts:fix": "yarn lint:ts --fix",
         "lint:styles": "stylelint --fix \"src/**/*.{css}\" --config ./.stylelintrc.cjs --max-warnings=0",
         "lint:styles:fix": "yarn lint:styles --fix",
-        "lint:typecheck": "tsc --project . --noEmit"
+        "lint:typecheck": "tsc --project . --noEmit",
+        "lint:commit-msg": "commitlint --edit $1"
     },
     "dependencies": {
         "@astrojs/mdx": "^2.0.1",
@@ -56,6 +57,8 @@
         "typescript": "^5.3.3"
     },
     "devDependencies": {
+        "@commitlint/cli": "^18.4.3",
+        "@commitlint/config-conventional": "^18.4.3",
         "@testing-library/react": "^14.1.2",
         "@testing-library/react-hooks": "^8.0.1",
         "@types/eslint": "^8.44.9",
