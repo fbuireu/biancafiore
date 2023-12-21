@@ -2,17 +2,17 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import ArticleLayout from '@components/templates/articleLayout/ArticleLayout.astro';
 
-type Props = CollectionEntry<'articles'>;
+type ArticleProps = CollectionEntry<'articles'>;
 export const prerender = true;
 export async function getStaticPaths() {
     const posts = await getCollection('articles');
-    return posts.map(post => ({
+    return posts.map((post) => ({
         params: { slug: post.slug },
         props: { post },
     }));
 }
 
-const { post } = Astro.props;
+const { post } = Astro.props as ArticleProps;
 const { Content } = await post.render();
 ---
 

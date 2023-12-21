@@ -1,18 +1,4 @@
 @layer animations {
-    @keyframes reveal {
-        0% {
-            opacity: 0;
-            translate: 0 100px;
-        }
-        30% {
-            opacity: 0.5;
-        }
-        100% {
-            opacity: 1;
-            translate: 0 0;
-        }
-    }
-
     @keyframes morph {
         0% {
             border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;

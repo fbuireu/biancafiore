@@ -1,14 +1,15 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
-type Props = HTMLAttributes<'a'>;
 
-const { href, class: classNames, ...props } = Astro.props;
+type HeaderLinkProps = HTMLAttributes<'a'>;
+
+const { href, class: classNames, ...props } = Astro.props as HeaderLinkProps;
+const TRAILING_SLASH_REGEX = /\/$/;
 
 const { pathname } = Astro.url;
-const isCurrentPage = href === pathname || href === pathname.replace(/\/$/, '');
+const isCurrentPage = href === pathname || href === pathname.replace(TRAILING_SLASH_REGEX, '');
 ---
 
 <a href={href} class:list={[`clickable ${classNames}`, { '--is-current-page': isCurrentPage }]} {...props}>
     <slot />
 </a>
-

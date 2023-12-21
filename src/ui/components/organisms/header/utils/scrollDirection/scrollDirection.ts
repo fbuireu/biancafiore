@@ -8,7 +8,7 @@ export function scrollDirection(): void {
     let lastScrollTop = 0;
     let scrollDirection: ScrollDirection = ScrollDirection.NONE;
 
-    const handleScroll = () => {
+    function handleScroll() {
         const HEADER = document.querySelector('header');
         const LOGO = document.querySelector('.site__logo');
         const scrollTop = document.documentElement.scrollTop ?? document.body.scrollTop;
@@ -27,7 +27,7 @@ export function scrollDirection(): void {
             HEADER.classList.add('--is-scrolling');
             LOGO.classList.add('--is-scrolling');
         }
-    };
+    }
 
     window.addEventListener('scroll', handleScroll);
 }

@@ -1,5 +1,4 @@
 // @ts-check
-
 const ts = require('typescript');
 const { readFileSync } = require('node:fs');
 const assert = require('node:assert');

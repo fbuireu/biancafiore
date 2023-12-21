@@ -24,13 +24,15 @@ module.exports = {
         {
             files: ['*.astro'],
             parser: 'astro-eslint-parser',
-            extends: ['plugin:astro/recommended', 'prettier'],
+            extends: ['plugin:astro/recommended', 'plugin:astro/jsx-a11y-recommended', 'prettier'],
             parserOptions: {
                 project: null,
                 parser: '@typescript-eslint/parser',
-                extraFileExtensions: ['.astro', '.css'],
+                extraFileExtensions: ['.astro'],
             },
-            rules: {},
+            rules: {
+                'astro/jsx-a11y/anchor-has-content': 'off',
+            },
         },
         {
             files: ['*.jsx', '*.tsx'],
@@ -51,8 +53,7 @@ module.exports = {
     rules: {
         'react/prop-types': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
-        'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+        '@typescript-eslint/no-unused-vars': ['warn', {argsIgnorePattern: '^_'}],
         'no-restricted-imports': ['error'],
     },
 };

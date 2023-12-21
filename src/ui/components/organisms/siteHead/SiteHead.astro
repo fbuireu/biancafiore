@@ -1,17 +1,17 @@
 ---
 import 'src/ui/styles/index.css';
 import '@fontsource/zilla-slab';
-import '@fontsource-variable/literata';
+import '@fontsource-variable/nunito-sans';
 import { ViewTransitions } from 'astro:transitions';
 
-interface Props {
-  title: string;
-  description: string;
-  image?: string;
+interface SiteHeadProps {
+    title: string;
+    description: string;
+    image?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props as SiteHeadProps;
 ---
 
 <head>
@@ -36,16 +36,17 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
     <ViewTransitions />
 </head>
-<script type="text/partytown"
-        src=`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.VITE_PUBLIC_GOOGLE_ANALYTICS_ID}` />
+<script
+    type="text/partytown"
+    src=`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.VITE_PUBLIC_GOOGLE_ANALYTICS_ID}`
+></script>
 <script type="text/partytown">
-  window.dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || [];
 
-  function gtag() {
-      window.dataLayer.push(arguments);
-  }
+    function gtag() {
+        window.dataLayer.push(arguments);
+    }
 
-  gtag("js", new Date());
-  gtag("config", import.meta.env.VITE_PUBLIC_GOOGLE_ANALYTICS_ID);
+    gtag('js', new Date());
+    gtag('config', import.meta.env.VITE_PUBLIC_GOOGLE_ANALYTICS_ID);
 </script>
-

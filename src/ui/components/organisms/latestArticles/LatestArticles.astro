@@ -2,49 +2,70 @@
 import './latestArticles.css';
 import { getCollection } from 'astro:content';
 import { DEFAULT_DATE_OPTIONS } from 'src/consts';
+import MarkdownIt from 'markdown-it';
+import { createExcerpt } from 'src/ui/shared/utils/createExcerpt';
+import { slugify } from 'src/ui/shared/utils/slugify';
 
 const enum ArticleType {
-    FEATURED = 'featured',
-    DEFAULT = 'default',
+    DEFAULT,
+    NO_IMAGE,
+}
+
+interface LatestArticlesProps {
+    limit?: number;
 }
 
 const MAX_ARTICLES = 4;
 
+const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
+
+const parser : MarkdownIt = MarkdownIt('default', {});
 const posts = await getCollection('articles');
-posts.sort((a, b) => new Date(b.data.publishDate) - new Date(a.data.publishDate)).slice(0, MAX_ARTICLES);
+posts.sort((a, b) => new Date(b.data.publishDate) - new Date(a.data.publishDate)).splice(limit);
 ---
 
 <section class="latest-articles__wrapper">
-    <h3 class="latest-articles__title section-title">Fresh from <a class="latest-articles__title__link clickable" href="/articles">the blog</a></h3>
-    <ul class="latest__articles__list common-wrapper flex row-wrap">
-    {posts.map(({ slug, data }) => {
-        const variant: ArticleType = data.featuredImage ? ArticleType.FEATURED : ArticleType.DEFAULT;
-        const publishedDate = data.publishDate.toLocaleDateString('en', DEFAULT_DATE_OPTIONS);
-        const href = `/articles/${slug}`;
-        console.log(variant)
-        return (
-            <li class="latest__article__item">
-            <article>
-                <header class="latest__article__item__header">
-                    <h2 class="latest__article__title">
-                        <a href={href}>{data.title}</a>
-                    </h2>
-                </header>
-                {data.featuredImage && (
-                    <img class="latest__article__item__featured-image"
-                         src={data.featuredImage}
-                         alt={data.title}
-                         decoding="async" loading="lazy" />
-                )}
-                 <p>{data.description}</p>
-                    <time class="latest__article__item__publish-date" datetime={publishedDate}>— {publishedDate}</time>
-                <p>{data.author}</p>
-                {data.tags?.map((tag) => (
-                    <a class="latest__article__item__tag" href={`/tags/${tag}`}>{tag}</a>
-                ))}
-            </article>
-            </li>
-        );
-    })}
+    <h3 class="latest-articles__title section-title">
+        Fresh from <a class="latest-articles__title__link clickable" href="/articles">the blog</a>
+    </h3>
+    <ul class="latest__articles__list common-wrapper flex row-nowrap space-between">
+        {
+            posts.map(({ slug, data, ...post }) => {
+                const { excerpt } = createExcerpt({ parser, content: post.body });
+                const variant: ArticleType = data.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
+                const publishedDate = data.publishDate.toLocaleDateString('en', DEFAULT_DATE_OPTIONS);
+                const href = `/articles/${slug}`;
+
+                return (
+                    <li class="latest__article__item__wrapper clickable">
+                        <a class="latest__article__link-card" href={href} />
+                        <article class={`latest__article__item ${variant === ArticleType.DEFAULT ? '--default-variant' : '--no-image-variant'}`}>
+                            {data.featuredImage && (
+                                <img
+                                    class="latest__article__item__featured-image"
+                                    src={data.featuredImage}
+                                    alt={data.title}
+                                    decoding="async"
+                                    loading="lazy"
+                                />
+                            )}
+                            <time class="latest__article__item__publish-date" datetime={publishedDate}>
+                                {publishedDate}
+                            </time>
+                            <h3 class="latest__article__title font-serif">{data.title}</h3>
+                            <p class="latest__article__author">by <a href={`/tags/${slugify(data.author)}`}>{data.author}</a></p>
+                            <p class="latest__article__excerpt">{excerpt}</p>
+                            <ul class="latest__article__item__tags__list">
+                                {data.tags?.map((tag) => (
+                                    <a class="latest__article__item__tag" href={`/tags/${slugify(tag)}`}>
+                                        #{tag}
+                                    </a>
+                                ))}
+                            </ul>
+                        </article>
+                    </li>
+                );
+            })
+        }
     </ul>
-</section>
+</section>;

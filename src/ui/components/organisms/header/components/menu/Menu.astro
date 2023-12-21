@@ -1,19 +1,19 @@
 ---
-import 'src/ui/components/organisms/header/components/menu/menu.css';
+import './menu.css';
 import HeaderLink from '@components/atoms/headerLink/HeaderLink.astro';
 ---
+
 <section class="header__menu" popover role="menu" popovertarget="header-menu" id="header-menu">
     <div class="navigation__menu">
         <div class="navigation__menu__inner common-wrapper">
             <blockquote class="navigation__menu__quote flex row-wrap align-center">
-                <span>Lorem ipsum dolor sit amet,
-                consectetur
-                adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolor
+                <span>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolor
                 </span>
             </blockquote>
             <hr class="navigation__menu__divider" />
-            <nav class="navigation__menu__nav row-wrap flex">
+            <nav class="navigation__menu__nav column-nowrap flex">
                 <div class="navigation__menu__item">
                     <span>back to start</span>
                     <HeaderLink href="/" class="navigation__menu__link">Home</HeaderLink>

@@ -34,4 +34,9 @@
         --grid-large: 1024px;
         --grid-extra-large: 1440px;
     }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+        }
+    }
 }

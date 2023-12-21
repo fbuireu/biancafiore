@@ -11,7 +11,7 @@
         display: block;
         position: relative;
         transition: color 0.2s;
-        translate: 0 -15%;
+        translate: 5% 0;
     }
 
     .header__menu-button__outline {

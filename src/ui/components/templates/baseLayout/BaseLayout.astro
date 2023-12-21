@@ -4,17 +4,22 @@ import ReactScriptProvider from 'src/ui/context/reactScriptProvider/ReactScriptP
 import SiteHead from '@components/organisms/siteHead/SiteHead.astro';
 import Header from '@components/organisms/header/Header.astro';
 
-const { title, description } = Astro.props;
+interface BaseLayoutProps {
+    title: string;
+    description: string;
+}
+
+const { title, description } = Astro.props as BaseLayoutProps;
 ---
 
 <html lang="en">
-<SiteHead title={title} description={description} />
-<body>
-<Header />
-<main>
-  <slot />
-</main>
-<Footer />
-</body>
+    <SiteHead title={title} description={description} />
+    <body>
+        <Header />
+        <main>
+            <slot />
+        </main>
+        <Footer />
+        <ReactScriptProvider client:only="react" />
+    </body>
 </html>
-<ReactScriptProvider client:only="react" />

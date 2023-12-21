@@ -101,13 +101,13 @@
 
     .navigation__menu__link {
         display: inline-block;
-        font-size: clamp(2rem, 5rem, 5rem);
+        font-size: clamp(2rem, 4rem, 4rem);
         position: relative;
         text-transform: uppercase;
 
         &::after {
             background-color: currentColor;
-            bottom: -1.25rem;
+            bottom: -0.75rem;
             content: '';
             height: 1px;
             left: 0;
