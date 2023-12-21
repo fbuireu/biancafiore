@@ -19,7 +19,7 @@ const MAX_ARTICLES = 4;
 
 const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
-const parser : MarkdownIt = MarkdownIt('default', {});
+const parser: MarkdownIt = MarkdownIt('default', {});
 const posts = await getCollection('articles');
 posts.sort((a, b) => new Date(b.data.publishDate) - new Date(a.data.publishDate)).splice(limit);
 ---
@@ -39,7 +39,11 @@ posts.sort((a, b) => new Date(b.data.publishDate) - new Date(a.data.publishDate)
                 return (
                     <li class="latest__article__item__wrapper clickable">
                         <a class="latest__article__link-card" href={href} />
-                        <article class={`latest__article__item ${variant === ArticleType.DEFAULT ? '--default-variant' : '--no-image-variant'}`}>
+                        <article
+                            class={`latest__article__item ${
+                                variant === ArticleType.DEFAULT ? '--default-variant' : '--no-image-variant'
+                            }`}
+                        >
                             {data.featuredImage && (
                                 <img
                                     class="latest__article__item__featured-image"
@@ -53,7 +57,9 @@ posts.sort((a, b) => new Date(b.data.publishDate) - new Date(a.data.publishDate)
                                 {publishedDate}
                             </time>
                             <h3 class="latest__article__title font-serif">{data.title}</h3>
-                            <p class="latest__article__author">by <a href={`/tags/${slugify(data.author)}`}>{data.author}</a></p>
+                            <p class="latest__article__author">
+                                by <a href={`/tags/${slugify(data.author)}`}>{data.author}</a>
+                            </p>
                             <p class="latest__article__excerpt">{excerpt}</p>
                             <ul class="latest__article__item__tags__list">
                                 {data.tags?.map((tag) => (
