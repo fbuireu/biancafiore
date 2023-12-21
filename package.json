@@ -36,10 +36,10 @@
         "lint:typecheck": "tsc --project . --noEmit"
     },
     "dependencies": {
-        "@astrojs/mdx": "^2.0.1",
+        "@astrojs/mdx": "^2.0.2",
         "@astrojs/netlify": "^4.0.1",
         "@astrojs/partytown": "^2.0.2",
-        "@astrojs/react": "^3.0.7",
+        "@astrojs/react": "^3.0.8",
         "@astrojs/rss": "^4.0.1",
         "@astrojs/sitemap": "^3.0.3",
         "@fontsource-variable/nunito-sans": "^5.0.9",
@@ -47,7 +47,7 @@
         "@types/node": "^20.10.5",
         "@types/react": "^18.2.45",
         "@types/react-dom": "^18.2.18",
-        "astro": "^4.0.6",
+        "astro": "^4.0.7",
         "astro-imagetools": "^0.9.0",
         "gsap": "^3.12.4",
         "markdown-it": "^14.0.0",
@@ -62,7 +62,7 @@
         "@commitlint/config-conventional": "^18.4.3",
         "@testing-library/react": "^14.1.2",
         "@testing-library/react-hooks": "^8.0.1",
-        "@types/eslint": "^8.44.9",
+        "@types/eslint": "^8.56.0",
         "@types/markdown-it": "^13.0.7",
         "@typescript-eslint/eslint-plugin": "^6.15.0",
         "@typescript-eslint/parser": "^6.15.0",
@@ -70,7 +70,7 @@
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-astro": "^0.31.0",
         "eslint-plugin-jsx-a11y": "^6.8.0",
-        "eslint-plugin-prettier": "^5.0.1",
+        "eslint-plugin-prettier": "^5.1.0",
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0",
         "husky": "^8.0.3",
@@ -80,6 +80,6 @@
         "stylelint": "^16.0.2",
         "stylelint-config-standard-scss": "^12.0.0",
         "stylelint-order": "^6.0.4",
-        "vitest": "^1.0.4"
+        "vitest": "^1.1.0"
     }
 }
