@@ -5,6 +5,8 @@ import { DEFAULT_DATE_OPTIONS } from 'src/consts';
 import MarkdownIt from 'markdown-it';
 import { createExcerpt } from 'src/ui/shared/utils/createExcerpt';
 import { slugify } from 'src/ui/shared/utils/slugify';
+import { Image } from 'astro:assets';
+import placeholder from 'src/ui/assets/images/jpg/stories-of-impact.jpg';
 
 const enum ArticleType {
     DEFAULT,
@@ -45,12 +47,10 @@ posts.sort((a, b) => new Date(b.data.publishDate) - new Date(a.data.publishDate)
                             }`}
                         >
                             {data.featuredImage && (
-                                <img
+                                <Image
                                     class="latest__article__item__featured-image"
-                                    src={data.featuredImage}
+                                    src={placeholder}
                                     alt={data.title}
-                                    decoding="async"
-                                    loading="lazy"
                                 />
                             )}
                             <time class="latest__article__item__publish-date" datetime={publishedDate}>
@@ -70,8 +70,8 @@ posts.sort((a, b) => new Date(b.data.publishDate) - new Date(a.data.publishDate)
                             </ul>
                         </article>
                     </li>
-                );
+                )
             })
         }
     </ul>
-</section>;
+</section>

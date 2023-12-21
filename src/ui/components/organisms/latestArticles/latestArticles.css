@@ -17,6 +17,16 @@
     .latest__articles__list {
         gap: 0 2rem;
         padding: 2rem 0 4rem;
+        position: relative;
+
+        &::after {
+            background-color: var(--white);
+            content: '';
+            height: 1px;
+            inset: 100% 0 0;
+            position: absolute;
+            width: 100%;
+        }
     }
 
     .latest__article__item__wrapper {
@@ -63,7 +73,7 @@
             gap: 0.5rem 0;
             grid:
                 'Publish-Date' auto
-                'Featured-Image' auto
+                'Featured-Image' 200px
                 'Title' auto
                 'Author' auto
                 'Excerpt' auto
@@ -100,6 +110,8 @@
 
     .latest__article__item__featured-image {
         grid-area: Featured-Image;
+        object-fit: cover;
+        z-index: -1;
     }
 
     .latest__article__item__tags__list {

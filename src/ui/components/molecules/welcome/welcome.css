@@ -24,6 +24,7 @@
             grid-template-columns: subgrid;
             justify-self: start;
             margin-left: -3rem;
+            translate: 0 100px;
             z-index: 10;
         }
 

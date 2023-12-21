@@ -1,5 +1,5 @@
 @layer reset {
-    *:where(:not(iframe, canvas, img, svg, video):not(svg *)) {
+    *:where(:not(iframe, canvas, img, svg, video):not(svg *, footer, footer *)) {
         all: unset;
         display: revert;
     }

@@ -16,7 +16,7 @@
             translate: 0 0;
         }
         100% {
-            translate: 0 -600px;
+            translate: 0 -3500%;
         }
     }
 
@@ -25,7 +25,7 @@
             translate: 0 0;
         }
         100% {
-            translate: 0 -1200px;
+            translate: 0 -7000%;
         }
     }
 }

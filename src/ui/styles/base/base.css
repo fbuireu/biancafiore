@@ -19,6 +19,7 @@
         font-family: 'Zilla Slab', serif;
         scroll-behavior: smooth;
         scrollbar-gutter: stable;
+        color: var(--neutral-main);
 
         @media (prefers-reduced-motion: reduce) {
             scroll-behavior: auto;
@@ -30,20 +31,15 @@
         margin: calc(var(--header-height) * 2) auto 0;
     }
 
-    body,
-    html,
-    p,
-    article {
-        color: var(--neutral-main);
-        font-size: var(--base-font-size);
-    }
-
     p,
     article {
         font-family: 'Nunito Sans Variable', sans-serif;
 
         @supports (text-wrap: pretty) {
             text-wrap: pretty;
+        }
+        @supports not (text-wrap: pretty) {
+            text-wrap: balance;
         }
     }
 
@@ -76,7 +72,10 @@
 
     svg {
         -webkit-tap-highlight-color: transparent;
-        fill: var(--neutral-main);
+
+        &:not(.logo) {
+            fill: var(--neutral-main);
+        }
     }
 
     h1,
