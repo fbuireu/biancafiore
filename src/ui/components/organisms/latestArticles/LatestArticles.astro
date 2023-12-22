@@ -1,12 +1,12 @@
 ---
-import './latestArticles.css';
+import './latest-articles.css';
 import { getCollection } from 'astro:content';
 import { DEFAULT_DATE_OPTIONS } from 'src/consts';
 import MarkdownIt from 'markdown-it';
 import { createExcerpt } from 'src/ui/shared/utils/createExcerpt';
 import { slugify } from 'src/ui/shared/utils/slugify';
 import { Image } from 'astro:assets';
-import placeholder from 'src/ui/assets/images/jpg/stories-of-impact.jpg';
+import placeholder from 'src/assets/images/jpg/stories-of-impact.jpg';
 
 const enum ArticleType {
     DEFAULT,

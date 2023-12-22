@@ -4,7 +4,6 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import partytown from '@astrojs/partytown';
 import netlify from '@astrojs/netlify';
-import { astroImageTools } from 'astro-imagetools';
 
 export default defineConfig({
     site: 'https://biancafiore.me',
@@ -12,7 +11,6 @@ export default defineConfig({
         mdx(),
         sitemap(),
         react(),
-        astroImageTools,
         partytown({
             config: {
                 forward: ['dataLayer.push'],

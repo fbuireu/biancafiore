@@ -51,7 +51,13 @@
         align-content: center;
     }
 
-    .clickable {
+    @supports (initial-letter: 3 2) {
+        .article__wrapper > p:first-of-type::first-letter {
+            initial-letter: 3 2;
+        }
+    }
+
+    .clickable:not(canvas) {
         cursor: pointer;
         transition: scale 0.2s;
 

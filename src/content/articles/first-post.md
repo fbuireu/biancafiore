@@ -2,7 +2,7 @@
 title: 'First post'
 description: 'Lorem ipsum dolor sit amet'
 publishDate: 'Jul 08 2022'
-featuredImage: 'https://placehold.co/600x400'
+featuredImage: '/src/assets/images/jpg/stories-of-impact.jpg'
 tags: ['first', 'post']
 author: 'Bianca Fiore'
 slug: 'first-post'

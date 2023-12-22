@@ -1,6 +1,8 @@
 ---
 import { type CollectionEntry, getCollection } from 'astro:content';
-import ArticleLayout from '@components/templates/articleLayout/ArticleLayout.astro';
+import { Image } from 'astro:assets';
+import BaseLayout from 'src/ui/components/templates/baseLayout/BaseLayout.astro';
+import './article.css';
 
 type ArticleProps = CollectionEntry<'articles'>;
 export const prerender = true;
@@ -14,8 +16,12 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props as ArticleProps;
 const { Content } = await post.render();
+const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 ---
 
-<ArticleLayout {...post.data}>
-    <Content />
-</ArticleLayout>
+<BaseLayout {...post.data}>
+    <Image src={images[post.data.featuredImage]()} alt={post.data.title} class="article__featured__image" />
+    <article class="article__wrapper">
+        <Content />
+    </article>
+</BaseLayout>

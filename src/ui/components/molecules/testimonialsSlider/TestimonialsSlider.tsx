@@ -34,7 +34,7 @@ const SLIDER_CONFIG: SwiperOptions = {
 
 export const TestimonialsSlider = () => {
     return (
-        <div className="testimonials__slider__wrapper common-wrapper">
+        <div className="testimonials__slider__wrapper common-wrapper reveal">
             <Swiper {...SLIDER_CONFIG}>
                 <SwiperSlide>
                     <Testimonial>

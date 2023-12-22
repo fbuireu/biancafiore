@@ -8,7 +8,6 @@
     .welcome__image {
         grid-area: WelcomeImage;
         height: auto;
-        max-width: 400px;
         place-self: center;
         width: 100%;
     }

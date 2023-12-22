@@ -1,6 +1,8 @@
 ---
-import { Picture } from 'astro-imagetools/components';
-import './myWork.css';
+import { Image } from 'astro:assets';
+
+import './my-work.css';
+const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 ---
 
 <section class="my-work__wrapper common-wrapper">
@@ -8,25 +10,28 @@ import './myWork.css';
     <ul class="my-work__content__list flex row-wrap justify-space-between">
         <li class="my-work__item">
             <a class="my-work__item__link clickable" href="/projects#stories-of-impact">
-                <Picture src="/src/ui/assets/images/jpg/stories-of-impact.jpg" alt="Stories of Impact" />
+                <Image src={images['/src/assets/images/jpg/stories-of-impact.jpg']()} alt="Stories of Impact" />
                 <h4 class="my-work__item__title section-title">Stories of Impact</h4>
             </a>
         </li>
         <li class="my-work__item">
             <a class="my-work__item__link clickable" href="/projects#reports-and-thought-leadership">
-                <Picture src="/src/ui/assets/images/jpg/thought-leadership.jpg" alt="Reports & Thought Leadership" />
+                <Image
+                    src={images['/src/assets/images/jpg/thought-leadership.jpg']()}
+                    alt="Reports & Thought Leadership"
+                />
                 <h4 class="my-work__item__title section-title">Reports & Thought Leadership</h4>
             </a>
         </li>
         <li class="my-work__item">
             <a class="my-work__item__link clickable" href="/projects#creative-direction">
-                <Picture src="/src/ui/assets/images/jpg/creative-direction.jpg" alt="Creative Direction" />
+                <Image src={images['/src/assets/images/jpg/creative-direction.jpg']()} alt="Creative Direction" />
                 <h4 class="my-work__item__title section-title">Creative Direction</h4>
             </a>
         </li>
         <li class="my-work__item">
             <a class="my-work__item__link clickable" href="/projects#web-content">
-                <Picture src="/src/ui/assets/images/jpg/web-content.jpg" alt="Web Content" />
+                <Image src={images['/src/assets/images/jpg/web-content.jpg']()} alt="Web Content" />
                 <h4 class="my-work__item__title section-title">Web Content</h4>
             </a>
         </li>

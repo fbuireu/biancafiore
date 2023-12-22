@@ -1,17 +1,15 @@
 ---
-import { Picture } from 'astro-imagetools/components';
+import { Image } from 'astro:assets';
+import bianca from '@assets/images/jpg/bianca-fiore.jpg';
+
 import './welcome.css';
 ---
 
-<section class="welcome flex row-wrap common-wrapper">
+<section class="welcome flex row-wrap common-wrapper" transition:name="welcome-section">
     <div class="welcome__text__section --left">
         <h2 class="welcome__text__title">Hi! I'm</h2>
     </div>
-    <Picture
-        src="/src/ui/assets/images/jpg/bianca-fiore.jpg"
-        alt="Bianca Fiore"
-        attributes={{ img: { class: 'welcome__image' } }}
-    />
+    <Image src={bianca} alt="Bianca Fiore" class="welcome__image" />
     <div class="welcome__text__section --right">
         <h1 class="welcome__text__title">Bianca</h1>
         <p class="welcome__text__body --right">
@@ -21,5 +19,3 @@ import './welcome.css';
         </p>
     </div>
 </section>
-
-<script></script>

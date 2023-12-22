@@ -1,4 +1,4 @@
-import React, { type FC, type ReactNode } from 'react';
+import React, { type FunctionComponent, type ReactNode } from 'react';
 import './testimonial.css';
 import {
     TestimonialImage,
@@ -22,24 +22,28 @@ interface TestimonialProps {
     children: ReactNode;
 }
 
-export const Testimonial: FC<TestimonialProps> & {
-    Author: FC<TestimonialAuthorProps>;
-    Quote: FC<TestimonialQuoteProps>;
-    Description: FC<TestimonialDescriptionProps>;
-    Image: FC<TestimonialImageProps>;
+export const Testimonial: FunctionComponent<TestimonialProps> & {
+    Author: FunctionComponent<TestimonialAuthorProps>;
+    Quote: FunctionComponent<TestimonialQuoteProps>;
+    Description: FunctionComponent<TestimonialDescriptionProps>;
+    Image: FunctionComponent<TestimonialImageProps>;
 } = ({ children }) => {
     const { isActive } = useSwiperSlide();
 
     return <article className={`testimonial__content ${isActive ? `--is-active` : ``}`}>{children}</article>;
 };
 
-const Image: FC<TestimonialImageProps> = (props) => <TestimonialImage {...props} />;
+const Image: FunctionComponent<TestimonialImageProps> = (props) => <TestimonialImage {...props} />;
 
-const Quote: FC<TestimonialQuoteProps> = ({ children }) => <TestimonialQuote>{children}</TestimonialQuote>;
+const Quote: FunctionComponent<TestimonialQuoteProps> = ({ children }) => (
+    <TestimonialQuote>{children}</TestimonialQuote>
+);
 
-const Author: FC<TestimonialAuthorProps> = ({ children }) => <TestimonialAuthor>{children}</TestimonialAuthor>;
+const Author: FunctionComponent<TestimonialAuthorProps> = ({ children }) => (
+    <TestimonialAuthor>{children}</TestimonialAuthor>
+);
 
-const Description: FC<TestimonialDescriptionProps> = ({ children }) => (
+const Description: FunctionComponent<TestimonialDescriptionProps> = ({ children }) => (
     <TestimonialDescription>{children}</TestimonialDescription>
 );
 

@@ -1,5 +1,0 @@
-@supports (initial-letter: 3 2) {
-    article p:first-of-type::first-letter {
-        initial-letter: 3 2;
-    }
-}

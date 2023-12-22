@@ -1,10 +1,10 @@
-import React, { type FC, type ReactNode } from 'react';
-import 'src/ui/components/molecules/testimonial/components/testimonialAuthor/testimonialAuthor.css';
+import React, { type FunctionComponent, type ReactNode } from 'react';
+import './testimonialAuthor.css';
 
 export interface TestimonialAuthorProps {
     children: ReactNode;
 }
 
-export const TestimonialAuthor: FC<TestimonialAuthorProps> = ({ children }) => (
+export const TestimonialAuthor: FunctionComponent<TestimonialAuthorProps> = ({ children }) => (
     <h4 className="testimonial__author">{children}</h4>
 );

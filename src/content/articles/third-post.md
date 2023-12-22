@@ -2,7 +2,7 @@
 title: 'Third post'
 description: 'Lorem ipsum dolor sit amet'
 publishDate: 'Jul 15 2022'
-featuredImage: 'https://placehold.co/600x400'
+featuredImage: '/src/assets/images/jpg/stories-of-impact.jpg'
 tags: []
 author: 'Bianca Fiore'
 slug: 'third-post'
