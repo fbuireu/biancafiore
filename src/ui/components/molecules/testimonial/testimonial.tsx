@@ -1,50 +1,45 @@
-import React, { type FunctionComponent, type ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import './testimonial.css';
 import {
-    TestimonialImage,
-    type TestimonialImageProps,
+  TestimonialImage,
+  type TestimonialImageProps,
 } from 'src/ui/components/molecules/testimonial/components/testimonialImage';
 import {
-    TestimonialQuote,
-    type TestimonialQuoteProps,
+  TestimonialQuote,
+  type TestimonialQuoteProps,
 } from 'src/ui/components/molecules/testimonial/components/testimonialQuote';
 import {
-    TestimonialDescription,
-    type TestimonialDescriptionProps,
+  TestimonialDescription,
+  type TestimonialDescriptionProps,
 } from 'src/ui/components/molecules/testimonial/components/testimonialDescription';
 import {
-    TestimonialAuthor,
-    type TestimonialAuthorProps,
+  TestimonialAuthor,
+  type TestimonialAuthorProps,
 } from 'src/ui/components/molecules/testimonial/components/testimonialAuthor';
 import { useSwiperSlide } from 'swiper/react';
 
 interface TestimonialProps {
-    children: ReactNode;
+  children: ReactNode;
+  Author: TestimonialAuthorProps;
+  Quote: TestimonialQuoteProps;
+  Description: TestimonialDescriptionProps;
+  Image: TestimonialImageProps;
 }
 
-export const Testimonial: FunctionComponent<TestimonialProps> & {
-    Author: FunctionComponent<TestimonialAuthorProps>;
-    Quote: FunctionComponent<TestimonialQuoteProps>;
-    Description: FunctionComponent<TestimonialDescriptionProps>;
-    Image: FunctionComponent<TestimonialImageProps>;
-} = ({ children }) => {
-    const { isActive } = useSwiperSlide();
+export const Testimonial = ({ children }: TestimonialProps) => {
+  const { isActive } = useSwiperSlide();
 
-    return <article className={`testimonial__content ${isActive ? `--is-active` : ``}`}>{children}</article>;
+  return <article className={`testimonial__content ${isActive ? `--is-active` : ``}`}>{children}</article>;
 };
 
-const Image: FunctionComponent<TestimonialImageProps> = (props) => <TestimonialImage {...props} />;
+const Image = (props: TestimonialImageProps) => <TestimonialImage {...props} />;
 
-const Quote: FunctionComponent<TestimonialQuoteProps> = ({ children }) => (
-    <TestimonialQuote>{children}</TestimonialQuote>
-);
+const Quote = ({ children }: TestimonialQuoteProps) => <TestimonialQuote>{children}</TestimonialQuote>;
 
-const Author: FunctionComponent<TestimonialAuthorProps> = ({ children }) => (
-    <TestimonialAuthor>{children}</TestimonialAuthor>
-);
+const Author = ({ children }: TestimonialAuthorProps) => <TestimonialAuthor>{children}</TestimonialAuthor>;
 
-const Description: FunctionComponent<TestimonialDescriptionProps> = ({ children }) => (
-    <TestimonialDescription>{children}</TestimonialDescription>
+const Description = ({ children }: TestimonialDescriptionProps) => (
+  <TestimonialDescription>{children}</TestimonialDescription>
 );
 
 Testimonial.Author = Author;

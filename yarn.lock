@@ -1151,10 +1151,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.14.0":
-  version: 1.14.0
-  resolution: "@remix-run/router@npm:1.14.0"
-  checksum: 1a64439087ed77b4eec804f55ba9bbb63275eb756f0c6ef8cfa7d92609e29bb8d87d03f3b5446586130d12d2bd59f799baed167044ee80f6dce5456609c317d4
+"@remix-run/router@npm:1.14.1":
+  version: 1.14.1
+  resolution: "@remix-run/router@npm:1.14.1"
+  checksum: aa179e96fa7da5bdb86e6887219613cbe47b67d6595564b4f8fe7e80f8980f9c76e120524f0864aa8af46ac0f1a06bcdb4d20058d770c9199e5af599f772c0a9
   languageName: node
   linkType: hard
 
@@ -1619,15 +1619,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/three@npm:^0":
-  version: 0.159.0
-  resolution: "@types/three@npm:0.159.0"
+"@types/three@npm:^0.160.0":
+  version: 0.160.0
+  resolution: "@types/three@npm:0.160.0"
   dependencies:
     "@types/stats.js": "npm:*"
     "@types/webxr": "npm:*"
     fflate: "npm:~0.6.10"
     meshoptimizer: "npm:~0.18.1"
-  checksum: c5ec776ba213d148f0ebcce07b7a31514b8676d20e3d19458ba46d286c87c9d95224ee9225872d18c771110563c712f0237ec5d2264ad7ab7b47f2d4c1fd93a9
+  checksum: a2b98a2f2b718851850e09a66553249398a4e6ddf1dd46bbb0a7721a8656f2a38aad4e5a0ef26723f07bdc7c2cd277558e525296d4e482714c5ed100fc7e752a
   languageName: node
   linkType: hard
 
@@ -2415,7 +2415,7 @@ __metadata:
     "@types/node": "npm:^20.10.5"
     "@types/react": "npm:^18.2.45"
     "@types/react-dom": "npm:^18.2.18"
-    "@types/three": "npm:^0"
+    "@types/three": "npm:^0.160.0"
     "@typescript-eslint/eslint-plugin": "npm:^6.15.0"
     "@typescript-eslint/parser": "npm:^6.15.0"
     astro: "npm:^4.0.7"
@@ -2423,7 +2423,7 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-astro: "npm:^0.31.0"
     eslint-plugin-jsx-a11y: "npm:^6.8.0"
-    eslint-plugin-prettier: "npm:^5.1.0"
+    eslint-plugin-prettier: "npm:^5.1.1"
     eslint-plugin-react: "npm:^7.33.2"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     gsap: "npm:^3.12.4"
@@ -2435,12 +2435,12 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-globe.gl: "npm:^2.27.1"
-    react-router-dom: "npm:^6.21.0"
+    react-router-dom: "npm:^6.21.1"
     stylelint: "npm:^16.0.2"
     stylelint-config-standard-scss: "npm:^12.0.0"
     stylelint-order: "npm:^6.0.4"
     swiper: "npm:^11.0.5"
-    three: "npm:^0.159.0"
+    three: "npm:^0.160.0"
     typescript: "npm:^5.3.3"
     vitest: "npm:^1.1.0"
   languageName: unknown
@@ -3897,9 +3897,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "eslint-plugin-prettier@npm:5.1.0"
+"eslint-plugin-prettier@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "eslint-plugin-prettier@npm:5.1.1"
   dependencies:
     prettier-linter-helpers: "npm:^1.0.0"
     synckit: "npm:^0.8.5"
@@ -3913,7 +3913,7 @@ __metadata:
       optional: true
     eslint-config-prettier:
       optional: true
-  checksum: 76b9a6cc5fa8dcc0d5d8aac5e7b717c08c736d2f158ba63709d94526d3152761d36963f930f9c64a29270a107519eca24b41e82b67cc43f0291d43db4a975fd1
+  checksum: cb9fb797e3b872864d9bd4a6154cc0aeccdd9b3d7add510b2077f6d5149fb4b681abd180dacb5dafda603defb6089824a7c6f97faf1f099dba4f4e77f86c46c3
   languageName: node
   linkType: hard
 
@@ -8210,27 +8210,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.21.0":
-  version: 6.21.0
-  resolution: "react-router-dom@npm:6.21.0"
+"react-router-dom@npm:^6.21.1":
+  version: 6.21.1
+  resolution: "react-router-dom@npm:6.21.1"
   dependencies:
-    "@remix-run/router": "npm:1.14.0"
-    react-router: "npm:6.21.0"
+    "@remix-run/router": "npm:1.14.1"
+    react-router: "npm:6.21.1"
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 635b233dd993599954f82fba9f4baa915061a75bfac79fff142aecdfa4ed418efd7de32e0455b50715fc11250951f049bbd3ead4cb55cfe09fe35c1948717359
+  checksum: 2c2b653de8cc90397e5b057c0d32dd780fe894c4bd36397005da169a7422b31988ebc14ef0da3ac3f2b7286b244f97a141974acaa86c731715816e64c8cd2912
   languageName: node
   linkType: hard
 
-"react-router@npm:6.21.0":
-  version: 6.21.0
-  resolution: "react-router@npm:6.21.0"
+"react-router@npm:6.21.1":
+  version: 6.21.1
+  resolution: "react-router@npm:6.21.1"
   dependencies:
-    "@remix-run/router": "npm:1.14.0"
+    "@remix-run/router": "npm:1.14.1"
   peerDependencies:
     react: ">=16.8"
-  checksum: ff499df6994353b79ddd4abf35004c4dce944668fa16b18896a72ba255447d3f5ca50018d90f3034abbe08b87a5757141b09144f8eb17e4f375d8850373a11c3
+  checksum: 81278cf25a999d7c93a31d540102e3b74b696eb4349779e22bba77b633e4e5f8f91b8c6f7946c9572a1e92f64363724150216f5643a6f9817f8bc1643cb8bdbc
   languageName: node
   linkType: hard
 
@@ -9759,10 +9759,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:>=0.118 <1, three@npm:^0.159.0":
+"three@npm:>=0.118 <1":
   version: 0.159.0
   resolution: "three@npm:0.159.0"
   checksum: e5250da9e5c5dab340c8ce68aae812d00e12a238e0f6f581c5dbec399aae30f35f7eec02953147a83365f8cdf58174e39b36c8dc1c26089b141ebdd5b86b9a9b
+  languageName: node
+  linkType: hard
+
+"three@npm:^0.160.0":
+  version: 0.160.0
+  resolution: "three@npm:0.160.0"
+  checksum: d78e9605de6f8072e7fbebe36db7741c13f2ae89be15b4421d2fc7d549e216f53cb3e136d98e9424648f19a42345f47f8186478e038f0046655475166c156b0b
   languageName: node
   linkType: hard
 

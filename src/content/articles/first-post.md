@@ -2,7 +2,7 @@
 title: 'First post'
 description: 'Lorem ipsum dolor sit amet'
 publishDate: 'Jul 08 2022'
-featuredImage: '/src/assets/images/jpg/stories-of-impact.jpg'
+featuredImage: '/src/assets/images/jpg/web-content.jpg'
 tags: ['first', 'post']
 author: 'Bianca Fiore'
 slug: 'first-post'

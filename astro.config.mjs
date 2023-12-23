@@ -6,23 +6,22 @@ import partytown from '@astrojs/partytown';
 import netlify from '@astrojs/netlify';
 
 export default defineConfig({
-    site: 'https://biancafiore.me',
-    integrations: [
-        mdx(),
-        sitemap(),
-        react(),
-        partytown({
-            config: {
-                forward: ['dataLayer.push'],
-            },
-        }),
-    ],
-    prefetch: true,
-    output: 'server',
-    adapter: netlify(),
-    vite: {
-        define: {
-            'import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID': process.env.PUBLIC_GOOGLE_ANALYTICS_ID,
-        },
+  site: 'https://biancafiore.me',
+  integrations: [
+    mdx(),
+    sitemap(),
+    react(),
+    partytown({
+      config: {
+        forward: ['dataLayer.push'],
+      },
+    }),
+  ],
+  output: 'hybrid',
+  adapter: netlify(),
+  vite: {
+    define: {
+      'import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID': process.env.PUBLIC_GOOGLE_ANALYTICS_ID,
     },
+  },
 });

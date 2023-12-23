@@ -5,23 +5,32 @@ import BaseLayout from 'src/ui/components/templates/baseLayout/BaseLayout.astro'
 import './article.css';
 
 type ArticleProps = CollectionEntry<'articles'>;
-export const prerender = true;
+
 export async function getStaticPaths() {
-    const posts = await getCollection('articles');
-    return posts.map((post) => ({
-        params: { slug: post.slug },
-        props: { post },
-    }));
+  const posts = await getCollection('articles');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
 }
 
 const { post } = Astro.props as ArticleProps;
 const { Content } = await post.render();
 const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
+console.log(images);
+console.log(post.data.featuredImage);
 ---
 
 <BaseLayout {...post.data}>
-    <Image src={images[post.data.featuredImage]()} alt={post.data.title} class="article__featured__image" />
-    <article class="article__wrapper">
-        <Content />
-    </article>
+  <section class="common-wrapper">
+    <Image
+      src={images[post.data.featuredImage]()}
+      alt={post.data.title}
+      class="article__featured__image"
+      transition:animate="slide"
+    />
+  </section>
+  <article class="article__wrapper">
+    <Content />
+  </article>
 </BaseLayout>

@@ -3,37 +3,42 @@ import BaseLayout from '@components/templates/baseLayout/BaseLayout.astro';
 import WorldGlobe from '@components/atoms/worldGlobe/WorldGlobe';
 
 const data = [
-    {
-        name: 'Amman',
-        latitude: '31.956578',
-        longitude: '35.945695',
-    },
-    {
-        name: 'Barcelona',
-        latitude: '41.390205',
-        longitude: '2.154007',
-    },
-    {
-        name: 'Sydney',
-        latitude: '-33.865143',
-        longitude: '151.209900',
-    },
-    {
-        name: 'London',
-        latitude: '51.507351',
-        longitude: '-0.127758',
-    },
-    {
-        name: 'Geneva',
-        latitude: '46.204391',
-        longitude: '6.143158',
-    },
+  {
+    name: 'Amman',
+    latitude: '31.956578',
+    longitude: '35.945695',
+  },
+  {
+    name: 'Barcelona',
+    latitude: '41.390205',
+    longitude: '2.154007',
+  },
+  {
+    name: 'Sydney',
+    latitude: '-33.865143',
+    longitude: '151.209900',
+  },
+  {
+    name: 'London',
+    latitude: '51.507351',
+    longitude: '-0.127758',
+  },
+  {
+    name: 'Geneva',
+    latitude: '46.204391',
+    longitude: '6.143158',
+  },
+  {
+    name: 'Verbania',
+    latitude: '45.925232',
+    longitude: '8.551094',
+  },
 ];
 ---
 
 <BaseLayout title="" description="">
-    <section class="common-wrapper">
-        <h1>🧑‍🚀 Hello, About!</h1>
-        <WorldGlobe data={data} client:only="react" />
-    </section>
+  <section class="common-wrapper">
+    <h1>🧑‍🚀 Hello, About!</h1>
+    <WorldGlobe data={data} client:only="react" />
+  </section>
 </BaseLayout>
