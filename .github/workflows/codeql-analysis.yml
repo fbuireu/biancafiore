@@ -1,36 +1,36 @@
 name: CodeQL Analysis
 concurrency:
-    group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-    cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
-    schedule:
-        - cron: '0 0 * * 0'
-    workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
 jobs:
-    analyze:
-        name: Analyze
-        runs-on: ubuntu-latest
-        permissions:
-            actions: read
-            contents: read
-            security-events: write
-        strategy:
-            fail-fast: false
-            matrix:
-                language: ['JavaScript', 'TypeScript']
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v2
-            - name: Initialize CodeQL
-              uses: github/codeql-action/init@v1
-              with:
-                  languages: ${{ matrix.language }}
-                  queries: security-extended, security-and-quality
-            - name: Autobuild
-              uses: github/codeql-action/autobuild@v1
-            - name: Perform CodeQL Analysis
-              uses: github/codeql-action/analyze@v1
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['JavaScript', 'TypeScript']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-extended, security-and-quality
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v1
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1

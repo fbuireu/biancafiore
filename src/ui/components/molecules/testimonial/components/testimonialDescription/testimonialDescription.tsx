@@ -1,5 +1,5 @@
 import React, { type ReactNode } from 'react';
-import './testimonialDescription.css';
+import './testimonial-description.css';
 
 export interface TestimonialDescriptionProps {
   children: ReactNode;

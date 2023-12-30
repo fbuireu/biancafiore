@@ -1,0 +1,91 @@
+@layer about.latest-articles.slider {
+  .about__latest-articles__slider {
+    grid-area: Latest-Articles;
+  }
+
+  .about__latest-article__item__wrapper {
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    height: fit-content;
+    max-width: calc(100% / 4 - 2rem);
+    position: relative;
+    transform: translateZ(0);
+    width: 100%;
+  }
+
+  .about__latest-article__link-card {
+    inset: 0;
+    position: absolute;
+    width: 100%;
+  }
+
+  .about__latest-article__item {
+    display: grid;
+    gap: 0.5rem 0;
+    height: 100%;
+
+    .about__latest-article__title {
+      font-size: clamp(2rem, 3rem, 3rem);
+      grid-area: Title;
+      letter-spacing: normal;
+    }
+
+    &.--no-image-variant {
+      grid:
+        'Publish-Date' auto
+        'Title' 1fr
+        'Author' auto
+        'Excerpt' auto
+        'Tags' auto
+        / 1fr;
+
+      .about__latest-article__title {
+        align-self: center;
+        font-size: clamp(2.5rem, 6rem, 6rem);
+      }
+    }
+
+    &.--default-variant {
+      grid:
+        'Publish-Date' auto
+        'Featured-Image' 1fr
+        'Title' auto
+        'Author' auto
+        'Excerpt' auto
+        'Tags' auto
+        / 1fr;
+    }
+  }
+
+  .about__latest-article__item__publish-date {
+    color: var(--primary-main);
+    grid-area: Publish-Date;
+  }
+
+  .about__latest-article__author {
+    grid-area: Author;
+
+    a {
+      color: var(--primary-main);
+      position: relative;
+      z-index: 10;
+    }
+  }
+
+  .about__latest-article__excerpt {
+    grid-area: Excerpt;
+  }
+
+  .about__latest-article__item__featured-image {
+    grid-area: Featured-Image;
+    object-fit: cover;
+    z-index: -1;
+  }
+
+  .about__latest-article__item__tags__list {
+    font-size: 1.1rem;
+    grid-area: Tags;
+    position: relative;
+    z-index: 10;
+  }
+}

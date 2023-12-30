@@ -8,8 +8,8 @@ type ArticleProps = CollectionEntry<'articles'>;
 
 export async function getStaticPaths() {
   const posts = await getCollection('articles');
-  return posts.map((post) => ({
-    params: { slug: post.slug },
+  return posts.map(({ slug, ...post }) => ({
+    params: { slug },
     props: { post },
   }));
 }
@@ -17,18 +17,20 @@ export async function getStaticPaths() {
 const { post } = Astro.props as ArticleProps;
 const { Content } = await post.render();
 const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
-console.log(images);
-console.log(post.data.featuredImage);
 ---
 
 <BaseLayout {...post.data}>
   <section class="common-wrapper">
-    <Image
-      src={images[post.data.featuredImage]()}
-      alt={post.data.title}
-      class="article__featured__image"
-      transition:animate="slide"
-    />
+    {
+      post.data.featuredImage && (
+        <Image
+          src={images[post.data.featuredImage]()}
+          alt={post.data.title}
+          class="article__featured__image"
+          transition:animate="slide"
+        />
+      )
+    }
   </section>
   <article class="article__wrapper">
     <Content />

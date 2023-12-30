@@ -1,19 +1,19 @@
 {
-    "include": ["src"],
-    "extends": ["astro/tsconfigs/strict", "./tsconfig.paths.json"],
-    "compilerOptions": {
-        "strictNullChecks": true,
-        "strict": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "forceConsistentCasingInFileNames": true,
-        "resolveJsonModule": true,
-        "isolatedModules": false,
-        "noEmit": true,
-        "moduleResolution": "node",
-        "target": "esnext",
-        "module": "esnext",
-        "jsxImportSource": "react",
-        "jsx": "react-jsx"
-    }
+  "include": ["src"],
+  "extends": ["astro/tsconfigs/strict", "./tsconfig.paths.json"],
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "noEmit": true,
+    "moduleResolution": "node",
+    "target": "esnext",
+    "module": "esnext",
+    "jsxImportSource": "react",
+    "jsx": "react-jsx"
+  }
 }

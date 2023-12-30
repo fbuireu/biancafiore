@@ -4,25 +4,25 @@ import BaseLayout from 'src/ui/components/templates/baseLayout/BaseLayout.astro'
 import { slugify } from 'src/ui/shared/utils/slugify';
 
 interface TagProps {
-    tag: string;
+  tag: string;
 }
 
 export async function getStaticPaths() {
-    const allPosts = await getCollection('articles');
-    const uniqueAuthors = [...new Set(allPosts.map((post) => post.data.author).flat())];
-    const uniqueTags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+  const allPosts = await getCollection('articles');
+  const uniqueAuthors = [...new Set(allPosts.map((post) => post.data.author).flat())];
+  const uniqueTags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
 
-    const tags = uniqueTags.map((tag) => ({
-        params: { tag: slugify(tag) },
-        props: { posts: allPosts.filter((post) => post.data.tags.includes(tag)) },
-    }));
+  const tags = uniqueTags.map((tag) => ({
+    params: { tag: slugify(tag) },
+    props: { posts: allPosts.filter((post) => post.data.tags.includes(tag)) },
+  }));
 
-    const authors = uniqueAuthors.map((author) => ({
-        params: { author: slugify(author) },
-        props: { posts: allPosts.filter((post) => post.data.author === author) },
-    }));
+  const authors = uniqueAuthors.map((author) => ({
+    params: { author: slugify(author) },
+    props: { posts: allPosts.filter((post) => post.data.author === author) },
+  }));
 
-    return [...tags, ...authors];
+  return [...tags, ...authors];
 }
 
 const { tag = '' } = Astro.params as TagProps;
@@ -31,8 +31,8 @@ console.log(posts);
 ---
 
 <BaseLayout title={tag}>
-    <p>Posts tagged with {tag}</p>
-    <ul>
-        <!--{posts?.map((post) => <ArticleLayout title={post.data.title} />)}-->
-    </ul>
+  <p>Posts tagged with {tag}</p>
+  <ul>
+    <!--{posts?.map((post) => <ArticleLayout title={post.data.title} />)}-->
+  </ul>
 </BaseLayout>

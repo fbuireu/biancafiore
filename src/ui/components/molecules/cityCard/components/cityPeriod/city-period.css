@@ -1,0 +1,6 @@
+@layer cities.city-card.period {
+  .city-card__content__period {
+    grid-area: City-Period;
+    padding-top: 1rem;
+  }
+}

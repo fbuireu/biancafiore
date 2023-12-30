@@ -1,68 +1,90 @@
 @layer global {
-    .common-wrapper {
-        max-width: var(--grid-extra-large);
-        width: 100%;
-        margin: 0 auto;
-    }
+  .common-wrapper {
+    max-width: var(--grid-extra-large);
+    width: 100%;
+    margin: 0 auto;
+  }
 
-    .font-sans-serif {
-        font-family: 'Nunito Sans Variable', sans-serif;
-    }
+  .font-sans-serif {
+    font-family: 'Nunito Sans Variable', sans-serif;
+  }
 
-    .font-serif {
-        font-family: 'Zilla Slab', serif;
-    }
+  .font-serif {
+    font-family: 'Baskervville', serif;
+  }
 
-    .section-title {
-        letter-spacing: 0.5rem;
-        text-transform: uppercase;
-        text-align: center;
-    }
+  .section-title {
+    letter-spacing: 0.5rem;
+    text-transform: uppercase;
+    text-align: center;
+  }
 
-    .flex {
-        display: flex;
-    }
+  .flex {
+    display: flex;
+  }
 
-    .row-wrap {
-        flex-flow: row wrap;
-    }
+  .row-wrap {
+    flex-flow: row wrap;
+  }
 
-    .column-wrap {
-        flex-flow: column wrap;
-    }
+  .column-wrap {
+    flex-flow: column wrap;
+  }
 
-    .column-nowrap {
-        flex-flow: column nowrap;
-    }
+  .column-nowrap {
+    flex-flow: column nowrap;
+  }
 
-    .justify-flex-end {
-        justify-content: flex-end;
-    }
+  .justify-flex-end {
+    justify-content: flex-end;
+  }
 
-    .justify-space-between {
-        justify-content: space-between;
-    }
+  .justify-space-between {
+    justify-content: space-between;
+  }
 
-    .justify-center {
-        justify-content: center;
-    }
+  .justify-center {
+    justify-content: center;
+  }
 
-    .align-center {
-        align-content: center;
-    }
+  .align-center {
+    align-items: center;
+  }
 
-    @supports (initial-letter: 3 2) {
-        .article__wrapper > p:first-of-type::first-letter {
-            initial-letter: 3 2;
-        }
-    }
+  .clickable:not(canvas) {
+    cursor: pointer;
+    transition: scale 0.2s;
 
-    .clickable:not(canvas) {
-        cursor: pointer;
-        transition: scale 0.2s;
-
-        &:active {
-            scale: 0.9;
-        }
+    &:active {
+      scale: 0.9;
     }
+  }
+
+  .link {
+    position: relative;
+    font-family: 'Literata Variable', serif;
+    border: none;
+    background-color: unset;
+    text-decoration: none;
+    font-size: 1rem;
+    color: var(--white);
+    padding: 0;
+    letter-spacing: 2px;
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: auto auto -3px 0;
+      width: 100%;
+      height: 1px;
+      background-color: currentColor;
+    }
+  }
+
+  @supports (initial-letter: 3 2) {
+    .article__wrapper > p:first-of-type::first-letter {
+      initial-letter: 3 2;
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import React, { type ReactNode } from 'react';
-import './testimonialQuote.css';
+import './testimonial-quote.css';
 import doubleQuote from '@assets/images/svg/double-quote.svg';
 
 export interface TestimonialQuoteProps {

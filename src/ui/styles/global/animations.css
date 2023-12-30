@@ -1,44 +1,37 @@
 @layer animations {
-    @keyframes morph {
-        0% {
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-        }
-        50% {
-            border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-        }
-        100% {
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-        }
+  @keyframes morph {
+    0% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
     }
+    50% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+    100% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+  }
 
-    @keyframes float-up-close {
-        0% {
-            translate: 0 0;
-        }
-        100% {
-            translate: 0 -3500%;
-        }
+  @keyframes float-up-close {
+    0% {
+      translate: 0 0;
     }
+    100% {
+      translate: 0 -3500%;
+    }
+  }
 
-    @keyframes float-up-far {
-        0% {
-            translate: 0 0;
-        }
-        100% {
-            translate: 0 -7000%;
-        }
+  @keyframes float-up-far {
+    0% {
+      translate: 0 0;
     }
-    @keyframes reveal {
-        from {
-            opacity: 0;
-            translate: 0 100px;
-        }
-        50% {
-            opacity: 0.1;
-        }
-        to {
-            opacity: 1;
-            translate: 0 0;
-        }
+    100% {
+      translate: 0 -7000%;
     }
+  }
+
+  @keyframes scale-by-index {
+    to {
+      transform: scale(calc(1.1 - calc(0.05 * var(--reverse-index))));
+    }
+  }
 }

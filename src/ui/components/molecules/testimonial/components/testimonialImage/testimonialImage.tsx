@@ -1,5 +1,5 @@
 import React from 'react';
-import './testimonialImage.css';
+import './testimonial-image.css';
 
 export type TestimonialImageProps = Pick<HTMLImageElement, 'src' | 'alt'>;
 

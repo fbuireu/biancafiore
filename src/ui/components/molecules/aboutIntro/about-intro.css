@@ -1,0 +1,57 @@
+@layer about.intro {
+  .about-me-intro__wrapper {
+    display: grid;
+    gap: 0 8rem;
+    grid: 'AboutMe-Text AboutMe-Image' 1fr / 1fr 1fr;
+  }
+
+  .about-me-intro__section.--left {
+    gap: 2rem 0;
+    grid-area: AboutMe-Text;
+  }
+
+  .about-me-intro__section.--right {
+    gap: 2rem 0;
+    grid-area: AboutMe-Image;
+  }
+
+  .about-me-intro__title {
+    text-transform: uppercase;
+  }
+
+  .about-me-intro__body {
+    gap: 2rem 0;
+    padding-inline-start: 3rem;
+  }
+
+  .about-me-intro__section__social__networks__list {
+    width: 100%;
+  }
+
+  .about-me-intro__section__social__networks__list__item {
+    max-width: calc(100% / 3);
+    width: 100%;
+
+    & > * {
+      color: var(--neutral-main);
+      width: fit-content;
+    }
+  }
+
+  .about-me-intro__body__cta {
+    align-content: center;
+    flex-flow: row wrap;
+    font-weight: 700;
+    gap: 0 1rem;
+    transition: gap 0.2s;
+
+    img {
+      rotate: 0.5turn;
+      width: 2rem;
+    }
+
+    &:hover {
+      gap: 0 1.5rem;
+    }
+  }
+}

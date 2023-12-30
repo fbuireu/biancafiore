@@ -1,5 +1,15 @@
 @layer about.world-globe {
-  .marker {
+  canvas {
+    cursor: grab;
+  }
+
+  .world-globe__wrapper {
+    height: fit-content;
+    position: sticky;
+    top: calc(var(--header-height) + 0.5rem);
+  }
+
+  .marker__wrapper {
     color: var(--primary-dark-1);
     cursor: pointer;
     pointer-events: auto;
@@ -7,6 +17,43 @@
 
     svg circle {
       fill: var(--primary-light-2);
+    }
+
+    &:last-child {
+      svg {
+        rotate: 0.5turn;
+      }
+    }
+  }
+
+  .world-globe__controls {
+    gap: 0 3rem;
+  }
+
+  .world-globe__controls__direction-wrapper {
+    gap: 0 1rem;
+
+    img {
+      height: 3rem;
+      width: 3rem;
+    }
+  }
+
+  .world-globe__controls__zoom-wrapper {
+    gap: 0 1rem;
+
+    img {
+      height: 2rem;
+      width: 2rem;
+    }
+  }
+
+  .world-globe__controls__move {
+    cursor: pointer;
+    gap: 0 1rem;
+
+    &.--right {
+      rotate: 0.5turn;
     }
   }
 }

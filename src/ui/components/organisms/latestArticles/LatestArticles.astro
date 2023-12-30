@@ -21,8 +21,10 @@ const MAX_ARTICLES = 4;
 const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
 const parser: MarkdownIt = MarkdownIt('default', {});
-const posts = await getCollection('articles');
-posts.sort((a, b) => new Date(b.data.publishDate) - new Date(a.data.publishDate)).splice(limit);
+const articles = await getCollection('articles');
+articles
+  .toSorted((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
+  .splice(limit);
 const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 ---
 
@@ -32,12 +34,12 @@ const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
   </h3>
   <ul class="latest__articles__list common-wrapper flex row-nowrap space-between">
     {
-      posts.map(({ slug, data, ...post }) => {
-        const { excerpt } = createExcerpt({ parser, content: post.body });
+      articles.map(({ slug, data, ...article }) => {
+        const { excerpt } = createExcerpt({ parser, content: article.body });
         const variant: ArticleType = data.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
         const publishedDate = data.publishDate.toLocaleDateString('en', DEFAULT_DATE_OPTIONS);
         const href = `/articles/${slug}`;
-        console.log('data', data.featuredImage);
+
         return (
           <li class="latest__article__item__wrapper clickable">
             <a class="latest__article__link-card" href={href} />

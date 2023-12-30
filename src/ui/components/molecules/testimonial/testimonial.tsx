@@ -20,10 +20,6 @@ import { useSwiperSlide } from 'swiper/react';
 
 interface TestimonialProps {
   children: ReactNode;
-  Author: TestimonialAuthorProps;
-  Quote: TestimonialQuoteProps;
-  Description: TestimonialDescriptionProps;
-  Image: TestimonialImageProps;
 }
 
 export const Testimonial = ({ children }: TestimonialProps) => {
