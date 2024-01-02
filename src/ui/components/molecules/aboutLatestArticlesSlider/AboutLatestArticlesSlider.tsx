@@ -43,7 +43,7 @@ const SLIDER_CONFIG: SwiperOptions = {
 };
 const parser: MarkdownIt = MarkdownIt('default', {});
 const articles = await getCollection('articles');
-articles.toSorted((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()).splice(4);
+articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()).splice(4);
 
 // todo: isolate and use composition
 export const AboutLatestArticlesSlider = () => {

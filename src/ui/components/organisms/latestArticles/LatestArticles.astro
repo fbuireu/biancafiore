@@ -22,9 +22,7 @@ const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
 const parser: MarkdownIt = MarkdownIt('default', {});
 const articles = await getCollection('articles');
-articles
-  .toSorted((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
-  .splice(limit);
+articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()).splice(limit);
 const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 ---
 

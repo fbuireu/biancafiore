@@ -9,6 +9,7 @@ const articles = defineCollection({
         featuredImage: z.string().optional(),
         tags: z.string().array().optional(),
         author: z.string(),
+        isFeatured: z.boolean(),
     }),
 });
 

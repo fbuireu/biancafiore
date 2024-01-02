@@ -1,7 +1,22 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '@components/templates/baseLayout/BaseLayout.astro';
+import { Image } from 'astro:assets';
+
+const articles = await getCollection('articles');
+const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
+
+articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf());
+const featuredArticle =
+  articles.find((article) => article.data.isFeatured && article.data.featuredImage) ??
+  articles.find((article) => article.data.featuredImage);
 ---
 
 <BaseLayout title="" description="">
-  <h1>Hello, blog!</h1>
+  <section class="articles__wrapper common-wrapper">
+    <h1 class="section-title">The Blog</h1>
+    <div>
+      <Image src={images[featuredArticle.data.featuredImage]()} alt={featuredArticle.data.title} />
+    </div>
+  </section>
 </BaseLayout>

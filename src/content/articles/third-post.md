@@ -6,6 +6,7 @@ featuredImage: '/src/assets/images/jpg/stories-of-impact.jpg'
 tags: []
 author: 'Bianca Fiore'
 slug: 'third-post'
+isFeatured: false
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna

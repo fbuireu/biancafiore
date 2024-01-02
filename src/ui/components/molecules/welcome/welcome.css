@@ -1,72 +1,72 @@
 @layer welcome {
-    .welcome {
-        display: grid;
-        grid-template-areas: 'LeftGreeting WelcomeImage RightGreeting';
-        grid-template-columns: 1fr 1fr 1fr;
+  .welcome {
+    display: grid;
+    grid-template-areas: 'LeftGreeting WelcomeImage RightGreeting';
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .welcome__image {
+    grid-area: WelcomeImage;
+    height: auto;
+    place-self: center;
+    width: 100%;
+  }
+
+  .welcome__text__section {
+    align-self: center;
+    color: var(--neutral-main);
+    text-align: center;
+
+    &.--right {
+      display: grid;
+      grid-area: RightGreeting;
+      grid-template-columns: subgrid;
+      justify-self: start;
+      margin-left: -3rem;
+      translate: 0 100px;
+      z-index: 10;
     }
 
-    .welcome__image {
-        grid-area: WelcomeImage;
-        height: auto;
-        place-self: center;
-        width: 100%;
+    &.--left {
+      grid-area: LeftGreeting;
+      justify-self: end;
+      margin-right: -1.5rem;
+      translate: 0 -100px;
+      z-index: 10;
+    }
+  }
+
+  .welcome__text__title {
+    text-transform: uppercase;
+  }
+
+  .welcome__text__section.--right .welcome__text__title {
+    text-align: start;
+  }
+
+  .welcome__text__body {
+    align-self: center;
+    grid-area: RightGreeting;
+    padding-inline-start: 3.5rem;
+    text-align: start;
+  }
+
+  @supports (animation-timeline: scroll(root block)) {
+    .welcome__text__section.--left .welcome__text__title {
+      animation: float-up-close linear;
+      animation-timeline: scroll(root block);
     }
 
-    .welcome__text__section {
-        align-self: center;
-        color: var(--neutral-main);
-        text-align: center;
+    .welcome__text__section.--right {
+      .welcome__text__title {
+        animation: float-up-far linear;
+        animation-timeline: scroll(root block);
+      }
 
-        &.--right {
-            display: grid;
-            grid-area: RightGreeting;
-            grid-template-columns: subgrid;
-            justify-self: start;
-            margin-left: -3rem;
-            translate: 0 100px;
-            z-index: 10;
-        }
-
-        &.--left {
-            grid-area: LeftGreeting;
-            justify-self: end;
-            margin-right: -1.5rem;
-            translate: 0 -100px;
-            z-index: 10;
-        }
+      .welcome__text__body {
+        animation: float-up-close linear;
+        animation-timeline: scroll(root block);
+      }
     }
-
-    .welcome__text__title {
-        text-transform: uppercase;
-    }
-
-    .welcome__text__section.--right .welcome__text__title {
-        text-align: start;
-    }
-
-    .welcome__text__body {
-        align-self: center;
-        grid-area: RightGreeting;
-        padding-inline-start: 3.5rem;
-        text-align: start;
-    }
-
-    @supports (animation-timeline: scroll(root block)) {
-        .welcome__text__section.--left .welcome__text__title {
-            animation: float-up-close linear;
-            animation-timeline: scroll(root block);
-        }
-
-        .welcome__text__section.--right {
-            .welcome__text__title {
-                animation: float-up-far linear;
-                animation-timeline: scroll(root block);
-            }
-
-            .welcome__text__body {
-                animation: float-up-close linear;
-                animation-timeline: scroll(root block);
-            }
-        }
-    }
+  }
 }
