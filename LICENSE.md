@@ -13,19 +13,17 @@
 > specified in the public license below. The following considerations are for informational purposes only, are not
 > exhaustive, and do not form part of our licenses.
 >
-> -   **Considerations for licensors:** Our public licenses are intended for use by those authorized to give the public
->     permission to use
-
-    material in ways otherwise restricted by copyright and certain other rights. Our licenses are irrevocable. Licensors should read and
+> - **Considerations for licensors:** Our public licenses are intended for use by those authorized to give the public
+    > permission to use material in ways otherwise restricted by copyright and certain other rights. Our licenses are irrevocable. Licensors
+    should read and
     understand the terms and conditions of the license they choose before applying it. Licensors should also secure all rights necessary
     before applying our licenses so that the public can reuse the material as expected. Licensors should clearly mark any material not
     subject to the license. This includes other CC-licensed material, or material used under an exception or limitation to
     copyright. [More considerations for licensors](http://wiki.creativecommons.org/Considerations_for_licensors_and_licensees#Considerations_for_licensors).
 
-> -   **Considerations for the public:** By using one of our public licenses, a licensor grants the public permission to
->     use the licensed
-
-    material under specified terms and conditions. If the licensor’s permission is not necessary for any reason–for example, because of any
+> - **Considerations for the public:** By using one of our public licenses, a licensor grants the public permission to
+    > use the licensed material under specified terms and conditions. If the licensor’s permission is not necessary for any reason–for
+    example, because of any
     applicable exception or limitation to copyright–then that use is not regulated by the license. Our licenses grant only permissions under
     copyright and certain other rights that a licensor has authority to grant. Use of the licensed material may still be restricted for
     other reasons, including because others have copyright or other rights in the material. A licensor may make special requests, such as
@@ -94,9 +92,9 @@ a. **_License grant._**
 1. Subject to the terms and conditions of this Public License, the Licensor hereby grants You a worldwide, royalty-free,
    non-sublicensable, non-exclusive, irrevocable license to exercise the Licensed Rights in the Licensed Material to:
 
-    A. reproduce and Share the Licensed Material, in whole or in part, for NonCommercial purposes only; and
+   A. reproduce and Share the Licensed Material, in whole or in part, for NonCommercial purposes only; and
 
-    B. produce and reproduce, but not Share, Adapted Material for NonCommercial purposes only.
+   B. produce and reproduce, but not Share, Adapted Material for NonCommercial purposes only.
 
 2. **Exceptions and Limitations.** For the avoidance of doubt, where Exceptions and Limitations apply to Your use, this
    Public License does not apply, and You do not need to comply with its terms and conditions.
@@ -112,12 +110,12 @@ a. **_License grant._**
 
 5. **Downstream recipients.**
 
-    A. **Offer from the Licensor – Licensed Material.** Every recipient of the Licensed Material automatically receives
-    an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.
+   A. **Offer from the Licensor – Licensed Material.** Every recipient of the Licensed Material automatically receives
+   an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.
 
-    B. **No downstream restrictions.** You may not offer or impose any additional or different terms or conditions on,
-    or apply any Effective Technological Measures to, the Licensed Material if doing so restricts exercise of the
-    Licensed Rights by any recipient of the Licensed Material.
+   B. **No downstream restrictions.** You may not offer or impose any additional or different terms or conditions on,
+   or apply any Effective Technological Measures to, the Licensed Material if doing so restricts exercise of the
+   Licensed Rights by any recipient of the Licensed Material.
 
 6. **No endorsement.** Nothing in this Public License constitutes or may be construed as permission to assert or imply
    that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted
@@ -145,25 +143,25 @@ a. **_Attribution._**
 
 1. If You Share the Licensed Material, You must:
 
-    A. retain the following if it is supplied by the Licensor with the Licensed Material:
+   A. retain the following if it is supplied by the Licensor with the Licensed Material:
 
-    i. identification of the creator(s) of the Licensed Material and any others designated to receive attribution, in
-    any reasonable manner requested by the Licensor (including by pseudonym if designated);
+   i. identification of the creator(s) of the Licensed Material and any others designated to receive attribution, in
+   any reasonable manner requested by the Licensor (including by pseudonym if designated);
 
-    ii. a copyright notice;
+   ii. a copyright notice;
 
-    iii. a notice that refers to this Public License;
+   iii. a notice that refers to this Public License;
 
-    iv. a notice that refers to the disclaimer of warranties;
+   iv. a notice that refers to the disclaimer of warranties;
 
-    v. a URI or hyperlink to the Licensed Material to the extent reasonably practicable;
+   v. a URI or hyperlink to the Licensed Material to the extent reasonably practicable;
 
-    B. indicate if You modified the Licensed Material and retain an indication of any previous modifications; and
+   B. indicate if You modified the Licensed Material and retain an indication of any previous modifications; and
 
-    C. indicate the Licensed Material is licensed under this Public License, and include the text of, or the URI or
-    hyperlink to, this Public License.
+   C. indicate the Licensed Material is licensed under this Public License, and include the text of, or the URI or
+   hyperlink to, this Public License.
 
-    For the avoidance of doubt, You do not have permission under this Public License to Share Adapted Material.
+   For the avoidance of doubt, You do not have permission under this Public License to Share Adapted Material.
 
 2. You may satisfy the conditions in Section 3(a)(1) in any reasonable manner based on the medium, means, and context in
    which You Share the Licensed Material. For example, it may be reasonable to satisfy the conditions by providing a URI
