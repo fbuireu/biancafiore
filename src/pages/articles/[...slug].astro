@@ -7,11 +7,11 @@ import './article.css';
 type ArticleProps = CollectionEntry<'articles'>;
 
 export async function getStaticPaths() {
-  const posts = await getCollection('articles');
-  return posts.map(({ slug, ...post }) => ({
-    params: { slug },
-    props: { post },
-  }));
+    const posts = await getCollection('articles');
+    return posts.map(({ slug, ...post }) => ({
+        params: { slug },
+        props: { post },
+    }));
 }
 
 const { post } = Astro.props as ArticleProps;
@@ -20,19 +20,19 @@ const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 ---
 
 <BaseLayout {...post.data}>
-  <section class="common-wrapper">
-    {
-      post.data.featuredImage && (
-        <Image
-          src={images[post.data.featuredImage]()}
-          alt={post.data.title}
-          class="article__featured__image"
-          transition:animate="slide"
-        />
-      )
-    }
-  </section>
-  <article class="article__wrapper">
-    <Content />
-  </article>
+    <section class="common-wrapper">
+        {
+            post.data.featuredImage && (
+                <Image
+                    src={images[post.data.featuredImage]()}
+                    alt={post.data.title}
+                    class="article__featured__image"
+                    transition:animate="slide"
+                />
+            )
+        }
+    </section>
+    <article class="article__wrapper">
+        <Content />
+    </article>
 </BaseLayout>

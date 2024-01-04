@@ -1,30 +1,30 @@
 @layer reset {
-  *:where(:not(iframe, canvas, img, svg, video):not(svg *, footer, footer *)) {
-    all: unset;
-    display: revert;
-  }
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  ol,
-  ul {
-    list-style: none;
-  }
-
-  table {
-    border-collapse: collapse;
-  }
-
-  input[type='search'] {
-    &::-webkit-search-decoration,
-    &::-webkit-search-cancel-button,
-    &::-webkit-search-results-button,
-    &::-webkit-search-results-decoration {
-      display: none;
+    *:where(:not(iframe, canvas, img, svg, video):not(svg *, footer, footer *)) {
+        all: unset;
+        display: revert;
     }
-  }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    ol,
+    ul {
+        list-style: none;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    input[type='search'] {
+        &::-webkit-search-decoration,
+        &::-webkit-search-cancel-button,
+        &::-webkit-search-results-button,
+        &::-webkit-search-results-decoration {
+            display: none;
+        }
+    }
 }

@@ -1,6 +1,6 @@
 @layer cities.city-card.name {
-  .city-card__content__name {
-    grid-area: City-Name;
-    margin-top: -1rem;
-  }
+    .city-card__content__name {
+        grid-area: City-Name;
+        margin-top: -1rem;
+    }
 }

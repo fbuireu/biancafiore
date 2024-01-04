@@ -6,21 +6,21 @@ import { CityImage, type CityImageProps } from '@components/molecules/cityCard/c
 import { CityDescription, type CityDescriptionProps } from '@components/molecules/cityCard/components/cityDescription';
 
 interface CityCardProps {
-  children: ReactNode;
-  index: number;
-  numCards: number;
+    children: ReactNode;
+    index: number;
+    numCards: number;
 }
 
 export const CityCard = ({ children, index, numCards }: CityCardProps) => {
-  const style: CSSProperties & { [key: string]: string } = {
-    '--inline-index': String(index),
-    '--inline-num-cards': String(numCards),
-  };
-  return (
-    <li className={`city-card__item`} style={style}>
-      <article className={`city-card__content`}>{children}</article>
-    </li>
-  );
+    const style: CSSProperties & { [key: string]: string } = {
+        '--inline-index': String(index),
+        '--inline-num-cards': String(numCards),
+    };
+    return (
+        <li className={`city-card__item`} style={style}>
+            <article className={`city-card__content`}>{children}</article>
+        </li>
+    );
 };
 
 const Image = (props: CityImageProps) => <CityImage {...props} />;

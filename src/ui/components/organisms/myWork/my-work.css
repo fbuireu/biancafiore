@@ -1,39 +1,39 @@
 @layer my-work {
-  .my-work__title {
-    margin-bottom: 4rem;
-  }
-
-  .my-work__content__list {
-    margin-bottom: 8rem;
-  }
-
-  .my-work__item {
-    max-width: calc(100% / 4 - 1rem);
-    width: 100%;
-
-    & > a {
-      position: sticky;
-      top: calc(var(--header-height) + 0.5rem);
+    .my-work__title {
+        margin-bottom: 4rem;
     }
 
-    &:nth-child(1) {
-      margin-top: 0;
+    .my-work__content__list {
+        margin-bottom: 8rem;
     }
 
-    &:nth-child(2) {
-      margin-top: 25%;
+    .my-work__item {
+        max-width: calc(100% / 4 - 1rem);
+        width: 100%;
+
+        & > a {
+            position: sticky;
+            top: calc(var(--header-height) + 0.5rem);
+        }
+
+        &:nth-child(1) {
+            margin-top: 0;
+        }
+
+        &:nth-child(2) {
+            margin-top: 25%;
+        }
+
+        &:nth-child(3) {
+            margin-top: 50%;
+        }
+
+        &:nth-child(4) {
+            margin-top: 75%;
+        }
     }
 
-    &:nth-child(3) {
-      margin-top: 50%;
+    .my-work__item__link {
+        display: block;
     }
-
-    &:nth-child(4) {
-      margin-top: 75%;
-    }
-  }
-
-  .my-work__item__link {
-    display: block;
-  }
 }

@@ -7,27 +7,27 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer>
-  <section class="footer__wrapper common-wrapper">
-    <div class="footer__logo flex row-wrap justify-center">
-      <Fragment set:html={logo} />
-    </div>
-    <ul class="footer__social__networks__list flex row-wrap justify-center">
-      <li class="footer__social__networks__item">
-        <a
-          href="https://linkedin.com"
-          target="_blank"
-          rel="noopener noreferer"
-          class="link footer__social__networks__link"
-        >
-          LinkedIn
-        </a>
-      </li>
-      <li class="footer__social__networks__item">
-        <EmailButton classNames={'footer__social__networks__link'} />
-      </li>
-    </ul>
-    <p class="footer__disclaimer flex justify-center">
-      &copy; {currentYear} Bianca Fiore. All rights reserved.
-    </p>
-  </section>
+    <section class="footer__wrapper common-wrapper">
+        <div class="footer__logo flex row-wrap justify-center">
+            <Fragment set:html={logo} />
+        </div>
+        <ul class="footer__social__networks__list flex row-wrap justify-center">
+            <li class="footer__social__networks__item">
+                <a
+                    href="https://linkedin.com"
+                    target="_blank"
+                    rel="noopener noreferer"
+                    class="link footer__social__networks__link"
+                >
+                    LinkedIn
+                </a>
+            </li>
+            <li class="footer__social__networks__item">
+                <EmailButton classNames={'footer__social__networks__link'} />
+            </li>
+        </ul>
+        <p class="footer__disclaimer flex justify-center">
+            &copy; {currentYear} Bianca Fiore. All rights reserved.
+        </p>
+    </section>
 </footer>

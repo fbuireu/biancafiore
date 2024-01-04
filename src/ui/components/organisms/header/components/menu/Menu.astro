@@ -4,37 +4,38 @@ import HeaderLink from '@components/atoms/headerLink/HeaderLink.astro';
 ---
 
 <section class="header__menu" popover role="menu" popovertarget="header-menu" id="header-menu">
-  <div class="navigation__menu">
-    <div class="navigation__menu__inner common-wrapper">
-      <blockquote class="navigation__menu__quote flex row-wrap align-center">
-        <span>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolor
-        </span>
-      </blockquote>
-      <hr class="navigation__menu__divider" />
-      <nav class="navigation__menu__nav column-nowrap flex">
-        <div class="navigation__menu__item">
-          <span>back to start</span>
-          <HeaderLink href="/" class="navigation__menu__link">Home</HeaderLink>
+    <div class="navigation__menu">
+        <div class="navigation__menu__inner common-wrapper">
+            <blockquote class="navigation__menu__quote flex row-wrap align-center">
+                <span>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolor
+                </span>
+            </blockquote>
+            <hr class="navigation__menu__divider" />
+            <nav class="navigation__menu__nav column-nowrap flex">
+                <div class="navigation__menu__item">
+                    <span>back to start</span>
+                    <HeaderLink href="/" class="navigation__menu__link">Home</HeaderLink>
+                </div>
+                <div class="navigation__menu__item">
+                    <HeaderLink href="/projects" class="navigation__menu__link">Projects</HeaderLink>
+                    <span>I worked on</span>
+                </div>
+                <div class="navigation__menu__item">
+                    <span>my</span>
+                    <HeaderLink href="/articles" class="navigation__menu__link">Articles</HeaderLink>
+                </div>
+                <div class="navigation__menu__item">
+                    <span>know more</span>
+                    <HeaderLink href="/about" class="navigation__menu__link">About</HeaderLink>
+                    <span>me</span>
+                </div>
+                <div class="navigation__menu__item">
+                    <HeaderLink href="/contact" class="navigation__menu__link">Contact</HeaderLink>
+                    <span>me</span>
+                </div>
+            </nav>
         </div>
-        <div class="navigation__menu__item">
-          <HeaderLink href="/projects" class="navigation__menu__link">Projects</HeaderLink>
-          <span>I worked on</span>
-        </div>
-        <div class="navigation__menu__item">
-          <span>my</span>
-          <HeaderLink href="/articles" class="navigation__menu__link">Articles</HeaderLink>
-        </div>
-        <div class="navigation__menu__item">
-          <span>know more</span>
-          <HeaderLink href="/about" class="navigation__menu__link">About</HeaderLink>
-          <span>me</span>
-        </div>
-        <div class="navigation__menu__item">
-          <HeaderLink href="/contact" class="navigation__menu__link">Contact</HeaderLink>
-          <span>me</span>
-        </div>
-      </nav>
     </div>
-  </div>
 </section>

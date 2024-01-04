@@ -1,5 +1,5 @@
 @layer cities.city-card.image {
-  .city-card__content__image {
-    grid-area: City-Image;
-  }
+    .city-card__content__image {
+        grid-area: City-Image;
+    }
 }
