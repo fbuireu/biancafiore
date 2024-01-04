@@ -1,6 +1,6 @@
 import type { City } from '@components/atoms/worldGlobe';
 
-interface ReactGlobePoint {
+export interface ReactGlobePoint {
     lat: string;
     lng: string;
     label: string;

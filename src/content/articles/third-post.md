@@ -3,7 +3,7 @@ title: 'Third post'
 description: 'Lorem ipsum dolor sit amet'
 publishDate: 'Jul 15 2022'
 featuredImage: '/src/assets/images/jpg/stories-of-impact.jpg'
-tags: []
+tags: ['test', 'post']
 author: 'Bianca Fiore'
 slug: 'third-post'
 isFeatured: false

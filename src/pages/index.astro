@@ -8,11 +8,11 @@ import LatestArticles from '@components/organisms/latestArticles/LatestArticles.
 // current todo: articles
 // todo: responsive
 // todo: dynamic content
-// todo: theme toggle*
 // todo: breadcrumbs
-// todo: check SEO (script etc=
+// todo: check SEO (script etc)
 // todo: cookies and acceptance
 // todo: custom view transitions (are working)
+// todo: theme toggle*
 // todo: slot skeleton for react scripts ( https://stackoverflow.com/questions/75257905/i-want-to-display-a-spinner-before-loading-the-react-component-in-astro)
 // todo: fix ternary conditions in classnames
 // todo: unify articles (latst and sliders structure to reuse)
@@ -24,10 +24,11 @@ import LatestArticles from '@components/organisms/latestArticles/LatestArticles.
 // todo: add vitest
 // todo: add small transitions & animations
 //        - home articles: show tags staggered in hover
-//        - CTAs with arrow: animate arrow
+//        - CTAs with arrow: animate arrow (with rebound?)
 // todo: globe spins with scroll section ( made with css only: anchor with #top)
 // todo: create social network component (<ul><li> with link and button for social networks and email. It will replace footer and about components)
 // todo: add like system: https://twitter.com/jh3yy/status/1740501273009389943?t=HACFVwPJq343ZjQt3sPaMA&s=19
+// todo: create reusable article details component (with tags, time, etc)
 // todo: add CIs
 // todo: biome?
 // todo: review layers (Sections, isolation, etc)
@@ -40,16 +41,18 @@ import LatestArticles from '@components/organisms/latestArticles/LatestArticles.
 // todo: add native progressbar --> https://developer.chrome.com/docs/css-ui/scroll-driven-animations?hl=es-419#attaching-to-a-non-ancestor-scroll-timeline
 // todo: reveal on scroll (Agafar idees gsap)
 // todo: fer que el globe es mogui segons l'scroll actual
+// todo: check namings
 // todo: svg scroll offset driven animation in background
 // todo: remove ReactScripts and use event listeners in files
+// todo: add jhey animations (for articles: https://twitter.com/jh3yy/status/1742391976517927321?t=tLcf4FgNuuVB1BmfnwsEFA&s=19)
 
 // variants for latest articles (with and without image)
 // button to scroll to top
 ---
 
 <BaseLayout title="" description="">
-  <Welcome />
-  <Testimonials />
-  <MyWork />
-  <LatestArticles />
+    <Welcome />
+    <Testimonials />
+    <MyWork />
+    <LatestArticles />
 </BaseLayout>

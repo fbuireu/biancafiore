@@ -1,7 +1,7 @@
 ---
 title: 'First post'
 description: 'Lorem ipsum dolor sit amet'
-publishDate: 'Jul 08 2022'
+publishDate: 'Jul 08 2024'
 featuredImage: '/src/assets/images/jpg/web-content.jpg'
 tags: ['first', 'post']
 author: 'Bianca Fiore'
