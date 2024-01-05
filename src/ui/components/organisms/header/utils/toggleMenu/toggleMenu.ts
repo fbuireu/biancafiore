@@ -49,12 +49,12 @@ export function toggleMenu() {
         HEADER_MENU_TEXT,
     } = SELECTORS;
 
-    const BODY = document.querySelector(BODY_SELECTOR)!;
-    const HTML = document.querySelector(HTML_SELECTOR)!;
-    const LOGO = document.querySelector(SITE_LOGO)!;
-    const TOGGLE_MENU_BUTTON = document.querySelector(TOGGLE_MENU_BUTTON_SELECTOR)!;
-    const MENU_DIVIDER = document.querySelector(NAVIGATION_DIVIDER)!;
-    const MENU_TEXT = document.querySelector(HEADER_MENU_TEXT)!;
+    const BODY = document.querySelector(BODY_SELECTOR) as HTMLBodyElement;
+    const HTML = document.querySelector(HTML_SELECTOR) as HTMLHtmlElement;
+    const LOGO = document.querySelector(SITE_LOGO) as HTMLElement;
+    const TOGGLE_MENU_BUTTON = document.querySelector(TOGGLE_MENU_BUTTON_SELECTOR) as HTMLElement;
+    const MENU_DIVIDER = document.querySelector(NAVIGATION_DIVIDER) as HTMLElement;
+    const MENU_TEXT = document.querySelector(HEADER_MENU_TEXT) as HTMLElement;
 
     const ELEMENTS_TO_TOGGLE = [BODY, HTML, LOGO, MENU_DIVIDER];
 

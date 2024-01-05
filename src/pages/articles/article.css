@@ -19,10 +19,35 @@
         object-fit: cover;
     }
 
+    .featured-article__details__wrapper {
+        grid-area: Featured-Article-Content;
+        position: relative;
+    }
+
     .featured-article__details {
         align-self: center;
         gap: 2rem 0;
-        grid-area: Featured-Article-Content;
+    }
+
+    .featured-article__share__wrapper {
+        bottom: -0.5rem;
+        position: absolute;
+        translate: 0 100%;
+        width: 100%;
+    }
+
+    .featured-article__share__link__item {
+        color: var(--neutral-main);
+    }
+
+    .featured-article__share__links__list {
+        gap: 0 1rem;
+    }
+
+    .featured-article__share__title {
+        font-weight: 700;
+        letter-spacing: 0.25rem;
+        text-transform: uppercase;
     }
 
     .featured-article__link {
@@ -43,12 +68,79 @@
     }
 
     .articles__grid__list {
-        gap: 2rem;
-        margin-top: 8rem;
+        gap: 5rem 0;
+        margin: 12rem 0;
     }
 
     .articles__grid__item {
-        max-width: calc(100% / 4);
+        max-width: calc(100% / 4 - 2rem);
+        position: relative;
         width: 100%;
+    }
+
+    .article__card__title {
+        font-size: clamp(2rem, 3rem, 3rem);
+        grid-area: Title;
+        letter-spacing: normal;
+    }
+
+    .article__card__wrapper {
+        display: grid;
+        gap: 0.5rem 0;
+        height: 100%;
+
+        &.--no-image-variant {
+            grid:
+                'Publish-Date' auto
+                'Title' 1fr
+                'Author' auto
+                'Excerpt' auto
+                'Tags' auto
+                / 1fr;
+
+            .article__card__title {
+                align-self: center;
+                font-size: clamp(2.5rem, 4rem, 4rem);
+            }
+        }
+
+        &.--default-variant {
+            grid:
+                'Publish-Date' auto
+                'Featured-Image' 1fr
+                'Title' auto
+                'Author' auto
+                'Excerpt' auto
+                'Tags' auto
+                / 1fr;
+        }
+    }
+
+    .article__card__author {
+        grid-area: Author;
+        z-index: 1;
+
+        a {
+            color: var(--primary-main);
+        }
+    }
+
+    .article__card__link {
+        inset: 0;
+        position: absolute;
+        width: 100%;
+    }
+
+    .article__card__publish-date {
+        grid-area: Publish-Date;
+    }
+
+    .article__card__description {
+        grid-area: Excerpt;
+    }
+
+    .article__card__tags__list {
+        grid-area: Tags;
+        z-index: 1;
     }
 }

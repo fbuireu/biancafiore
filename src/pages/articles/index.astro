@@ -9,6 +9,11 @@ import { DEFAULT_DATE_OPTIONS } from 'src/consts';
 import './article.css';
 import horizontalArrow from '@assets/images/svg/left-arrow.svg';
 
+const enum ArticleType {
+    DEFAULT = 'default',
+    NO_IMAGE = 'no_image',
+}
+
 const articles = await getCollection('articles');
 const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 
@@ -25,6 +30,7 @@ const parser: MarkdownIt = MarkdownIt('default', {});
 const { excerpt: featuredArticleExcerpt } = createExcerpt({ parser, content: featuredArticleBody });
 const publishedDate = featuredArticle.publishDate.toLocaleDateString('en', DEFAULT_DATE_OPTIONS);
 const featuredArticleHref = `/articles/${featuredArticleSlug}`;
+const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
 ---
 
 <!-- todo: isolate sections -->
@@ -40,64 +46,97 @@ const featuredArticleHref = `/articles/${featuredArticleSlug}`;
                         alt={featuredArticle.title}
                     />
                 </a>
-                <div class="featured-article__details flex column-wrap">
-                    <time class="featured-article__publish-date font-sans-serif" datetime={publishedDate}>
-                        {publishedDate}
-                    </time>
-                    <h2 class="featured-article__title">{featuredArticle.title}</h2>
-                    <p class="featured-article__description">{featuredArticleExcerpt}</p>
-                    {
-                        featuredArticle.tags?.length > 0 && (
-                            <ul class="featured-article__tags__list">
-                                {featuredArticle.tags.map((tag) => (
-                                    <a class="featured-article__tag__item" href={`/tags/${slugify(tag)}`}>
-                                        #{tag}
-                                    </a>
-                                ))}
-                            </ul>
-                        )
-                    }
-                    <a href={featuredArticleHref} class="featured-article__link flex align-center">
-                        Read More <img src={horizontalArrow.src} alt="Readt more" />
-                    </a>
+                <div class="featured-article__details__wrapper flex row-wrap">
+                    <div class="featured-article__details flex column-wrap">
+                        <time class="featured-article__publish-date font-sans-serif" datetime={publishedDate}>
+                            {publishedDate}
+                        </time>
+                        <h2 class="featured-article__title">{featuredArticle.title}</h2>
+                        <p class="featured-article__description">{featuredArticleExcerpt}</p>
+                        {
+                            featuredArticle.tags?.length > 0 && (
+                                <ul class="featured-article__tags__list">
+                                    {featuredArticle.tags.map((tag) => (
+                                        <a class="featured-article__tag__item" href={`/tags/${slugify(tag)}`}>
+                                            #{tag}
+                                        </a>
+                                    ))}
+                                </ul>
+                            )
+                        }
+                        <a href={featuredArticleHref} class="featured-article__link flex align-center">
+                            Read More <img src={horizontalArrow.src} alt="Readt more" />
+                        </a>
+                    </div>
+                    <div class="featured-article__share__wrapper flex row-nowrap justify-space-between">
+                        <p class="featured-article__share__title font-serif">SHARE IT!</p>
+                        <ul class="featured-article__share__links__list flex row-nowrap">
+                            <li class="featured-article__share__link__item link">
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${featuredArticleShareUrl}`}
+                                >
+                                    Linkedin
+                                </a>
+                            </li>
+                            <li class="featured-article__share__link__item link">
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href={`https://twitter.com/intent/tweet?
+                                    url=${featuredArticleShareUrl}
+                                    &text=${featuredArticle.title}&hashtags=${featuredArticle.tags?.join(',')}`}
+                                >
+                                    X (former Twitter)
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
-    <section class="articles__grid">
-        <ul class="articles__grid__list flex row-wrap">
+    <section class="articles__grid common-wrapper">
+        <ul class="articles__grid__list flex row-wrap justify-space-between">
             {
                 articles.map(({ body, data: article, slug }) => {
                     const { excerpt } = createExcerpt({ parser, content: body });
                     const publishedDate = article.publishDate.toLocaleDateString('en', DEFAULT_DATE_OPTIONS);
+                    const variant: ArticleType = article.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
 
                     return (
                         <li class="articles__grid__item">
-                            <a href={`/articles/${slug}`} aria-label={article.title} />
-                            <article class="article__wrapper">
+                            <a class="article__card__link" href={`/articles/${slug}`} aria-label={article.title} />
+                            <article
+                                class={`article__card__wrapper ${
+                                    variant === ArticleType.DEFAULT ? '--default-variant' : '--no-image-variant'
+                                }`}
+                            >
                                 {article.featuredImage && (
                                     <Image
-                                        class="article__image"
+                                        class="article__card__image"
                                         src={images[article.featuredImage]()}
                                         alt={article.title}
                                     />
                                 )}
-                                <div class="article__details flex column-wrap">
-                                    <time class="article__publish-date font-sans-serif" datetime={publishedDate}>
-                                        {publishedDate}
-                                    </time>
-                                    <h2 class="article__title">{article.title}</h2>
-                                    <p class="article__description">{excerpt}</p>
-                                    {article.tags?.length > 0 && (
-                                        <ul class="article__tags__list">
-                                            {article.tags.map((tag) => (
-                                                <a class="article__tag__item" href={`/tags/${slugify(tag)}`}>
-                                                    #{tag}
-                                                </a>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </div>
+                                <time class="article__card__publish-date font-sans-serif" datetime={publishedDate}>
+                                    {publishedDate}
+                                </time>
+                                <h2 class="article__card__title font-serif">{article.title}</h2>
+                                <p class="article__card__author">
+                                    by <a href={`/tags/${slugify(article.author)}`}>{article.author}</a>
+                                </p>
+                                <p class="article__card__description">{excerpt}</p>
+                                {article.tags?.length > 0 && (
+                                    <ul class="article__card__tags__list">
+                                        {article.tags.map((tag) => (
+                                            <a class="article__card__tag__item" href={`/tags/${slugify(tag)}`}>
+                                                #{tag}
+                                            </a>
+                                        ))}
+                                    </ul>
+                                )}
                             </article>
                         </li>
                     );
