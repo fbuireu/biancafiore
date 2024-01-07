@@ -45,9 +45,9 @@
         "@fontsource-variable/nunito-sans": "^5.0.9",
         "@fontsource/baskervville": "^5.0.18",
         "@types/node": "^20.10.6",
-        "@types/react": "^18.2.46",
+        "@types/react": "^18.2.47",
         "@types/react-dom": "^18.2.18",
-        "astro": "^4.1.0",
+        "astro": "^4.1.1",
         "gsap": "^3.12.4",
         "markdown-it": "^14.0.0",
         "react": "^18.2.0",
@@ -66,8 +66,8 @@
         "@types/eslint": "^8.56.1",
         "@types/markdown-it": "^13.0.7",
         "@types/three": "^0.160.0",
-        "@typescript-eslint/eslint-plugin": "^6.17.0",
-        "@typescript-eslint/parser": "^6.17.0",
+        "@typescript-eslint/eslint-plugin": "^6.18.0",
+        "@typescript-eslint/parser": "^6.18.0",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-astro": "^0.31.0",
@@ -82,6 +82,6 @@
         "stylelint": "^16.1.0",
         "stylelint-config-standard-scss": "^13.0.0",
         "stylelint-order": "^6.0.4",
-        "vitest": "^1.1.2"
+        "vitest": "^1.1.3"
     }
 }
