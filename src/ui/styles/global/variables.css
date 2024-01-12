@@ -24,7 +24,7 @@
         --header-height: 80px;
         --testimonial-translation: 4rem;
         --global-max-width: 1440px;
-        --base-font-size: 1rem;
+        --base-font-size: 16px;
         --base-line-height: calc(var(--base-font-size) * 1.25);
         --global-border-radius: 0.25rem;
         --grid-extra-small: 575px;
@@ -35,8 +35,8 @@
         --grid-extra-large: 1440px;
     }
 
-    @media (prefers-color-scheme: dark) {
-        :root {
-        }
-    }
+    /*@media (prefers-color-scheme: dark) {*/
+    /*    :root {*/
+    /*    }*/
+    /*}*/
 }

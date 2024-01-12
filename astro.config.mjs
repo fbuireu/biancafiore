@@ -17,11 +17,11 @@ export default defineConfig({
             },
         }),
     ],
-    output: 'hybrid',
-    adapter: netlify(),
     vite: {
         define: {
             'import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID': process.env.PUBLIC_GOOGLE_ANALYTICS_ID,
         },
     },
+    output: 'hybrid',
+    adapter: netlify(),
 });
