@@ -1,6 +1,7 @@
 module.exports = {
-    extends: 'stylelint-config-standard-scss',
+    extends: 'stylelint-config-recommended',
     plugins: ['stylelint-order'],
+    allowEmptyInput: true,
     rules: {
         'order/properties-alphabetical-order': true,
         'selector-class-pattern': null,

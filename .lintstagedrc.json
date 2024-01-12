@@ -4,5 +4,8 @@
     ],
     "src/**/*.{ts,tsx}": [
         "yarn lint:ts"
+    ],
+    "src/**/*.css": [
+        "yarn lint:styles"
     ]
 }
