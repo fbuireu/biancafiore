@@ -1,42 +1,240 @@
 @layer theme {
-    :root {
-        --primary-light-3: color-mix(in srgb, var(--primary-main), var(--white) 75%);
-        --primary-light-2: color-mix(in srgb, var(--primary-main), var(--white) 50%);
-        --primary-light-1: color-mix(in srgb, var(--primary-main), var(--white) 25%);
-        --primary-main: oklch(74.41% 0.108 75.17);
-        --primary-dark-1: color-mix(in srgb, var(--primary-main), var(--black) 25%);
-        --primary-dark-2: color-mix(in srgb, var(--primary-main), var(--black) 50%);
-        --primary-dark-3: color-mix(in srgb, var(--primary-main), var(--black) 75%);
-        --neutral-main: oklch(24.18% 0.004 228.95);
-        --neutral-light-1: color-mix(in srgb, var(--neutral-main), var(--white) 25%);
-        --neutral-light-2: color-mix(in srgb, var(--neutral-main), var(--white) 50%);
-        --neutral-light-3: color-mix(in srgb, var(--neutral-main), var(--white) 75%);
-        --neutral-light-4: color-mix(in srgb, var(--neutral-main), var(--white) 95%);
-        --error-main: oklch(58.08% 0.196 25.77);
-        --success-main: oklch(52.29% 0.17558211290701223 142.8999328999691);
-        --x: oklch(0 0 0);
-        --facebook: oklch(47.24% 0.108 263.58);
-        --linkedin: oklch(54.58% 0.13 242.27);
-        --whatsapp: oklch(76.1% 0.201 149.97);
-        --email: oklch(58.97% 0 0);
-        --white: oklch(100% 0 0);
-        --black: oklch(0 0 0);
-        --header-height: 80px;
-        --testimonial-translation: 4rem;
-        --global-max-width: 1440px;
-        --base-font-size: 16px;
-        --base-line-height: calc(var(--base-font-size) * 1.25);
-        --global-border-radius: 0.25rem;
-        --grid-extra-small: 575px;
-        --grid-small: 720px;
-        --grid-medium: 960px;
-        --grid-article: 75ch;
-        --grid-large: 1024px;
-        --grid-extra-large: 1440px;
-    }
+  :root {
+    --primary-light-3: color-mix(in srgb, var(--primary-main), var(--white) 75%);
+    --primary-light-2: color-mix(in srgb, var(--primary-main), var(--white) 50%);
+    --primary-light-1: color-mix(in srgb, var(--primary-main), var(--white) 25%);
+    --primary-main: oklch(74.41% 0.108 75.17);
+    --primary-dark-1: color-mix(in srgb, var(--primary-main), var(--black) 25%);
+    --primary-dark-2: color-mix(in srgb, var(--primary-main), var(--black) 50%);
+    --primary-dark-3: color-mix(in srgb, var(--primary-main), var(--black) 75%);
+    --neutral-main: oklch(24.18% 0.004 228.95);
+    --neutral-light-1: color-mix(in srgb, var(--neutral-main), var(--white) 25%);
+    --neutral-light-2: color-mix(in srgb, var(--neutral-main), var(--white) 50%);
+    --neutral-light-3: color-mix(in srgb, var(--neutral-main), var(--white) 75%);
+    --neutral-light-4: color-mix(in srgb, var(--neutral-main), var(--white) 95%);
+    --error-main: oklch(58.08% 0.196 25.77);
+    --success-main: oklch(52.29% 0.17558211290701223 142.8999328999691);
+    --x: oklch(0 0 0);
+    --facebook: oklch(47.24% 0.108 263.58);
+    --linkedin: oklch(54.58% 0.13 242.27);
+    --whatsapp: oklch(76.1% 0.201 149.97);
+    --email: oklch(58.97% 0 0);
+    --white: oklch(100% 0 0);
+    --black: oklch(0 0 0);
+    --header-height: 80px;
+    --testimonial-translation: 4rem;
+    --global-max-width: 1440px;
+    --base-font-size: 16px;
+    --base-line-height: calc(var(--base-font-size) * 1.25);
+    --global-border-radius: 0.25rem;
+    --grid-extra-small: 575px;
+    --grid-small: 720px;
+    --grid-medium: 960px;
+    --grid-article: 75ch;
+    --grid-large: 1024px;
+    --grid-extra-large: 1440px;
+  }
 
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    :root {*/
-    /*    }*/
-    /*}*/
+  /*@media (prefers-color-scheme: dark) {*/
+  /*    :root {*/
+  /*    }*/
+  /*}*/
+}
+
+@property --primary-light-3 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: color-mix(in srgb, var(--primary-main), var(--white) 75%);
+}
+
+@property --primary-light-2 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: color-mix(in srgb, var(--primary-main), var(--white) 50%);
+}
+
+@property --primary-light-1 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: color-mix(in srgb, var(--primary-main), var(--white) 25%);
+}
+
+@property --primary-main {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(74.41% 0.108 75.17);
+}
+
+@property --primary-dark-1 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: color-mix(in srgb, var(--primary-main), var(--black) 25%);
+}
+
+@property --primary-dark-2 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: color-mix(in srgb, var(--primary-main), var(--black) 50%);
+}
+
+@property --primary-dark-3 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: color-mix(in srgb, var(--primary-main), var(--black) 75%);
+}
+
+@property --neutral-main {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(24.18% 0.004 228.95);
+}
+
+@property --neutral-light-1 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: color-mix(in srgb, var(--neutral-main), var(--white) 25%);
+}
+
+@property --neutral-light-2 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: color-mix(in srgb, var(--neutral-main), var(--white) 50%);
+}
+
+@property --neutral-light-3 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: color-mix(in srgb, var(--neutral-main), var(--white) 75%);
+}
+
+@property --neutral-light-4 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: color-mix(in srgb, var(--neutral-main), var(--white) 95%);
+}
+
+@property --error-main {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(58.08% 0.196 25.77);
+}
+
+@property --success-main {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(52.29% 0.17558211290701223 142.8999328999691);
+}
+
+@property --x {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(0 0 0);
+}
+
+@property --facebook {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(47.24% 0.108 263.58);
+}
+
+@property --linkedin {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(54.58% 0.13 242.27);
+}
+
+@property --whatsapp {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(76.1% 0.201 149.97);
+}
+
+@property --email {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(58.97% 0 0);
+}
+
+@property --white {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(100% 0 0);
+}
+
+@property --black {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: oklch(0 0 0);
+}
+
+@property --header-height {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 80px;
+}
+
+@property --testimonial-translation {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 4rem;
+}
+
+@property --global-max-width {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 1440px;
+}
+
+@property --base-font-size {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 16px;
+}
+
+@property --base-line-height {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: calc(var(--base-font-size) * 1.25);
+}
+
+@property --global-border-radius {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0.25rem;
+}
+
+@property --grid-extra-small {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 575px;
+}
+
+@property --grid-small {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 720px;
+}
+
+@property --grid-medium {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 960px;
+}
+
+@property --grid-article {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 75ch;
+}
+
+@property --grid-large {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 1024px;
+}
+
+@property --grid-extra-large {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 1440px;
 }
