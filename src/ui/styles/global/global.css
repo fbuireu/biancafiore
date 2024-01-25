@@ -65,21 +65,13 @@
         font-family: 'Literata Variable', serif;
         border: none;
         background-color: unset;
-        text-decoration: none;
+        text-decoration: underline;
+        text-underline-offset: 0.4rem;
         font-size: 1rem;
         color: var(--white);
         padding: 0;
         letter-spacing: 2px;
         cursor: pointer;
-
-        &::after {
-            content: '';
-            position: absolute;
-            inset: auto auto -3px 0;
-            width: 100%;
-            height: 1px;
-            background-color: currentColor;
-        }
     }
 
     @supports (initial-letter: 3 2) {

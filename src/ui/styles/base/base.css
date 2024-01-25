@@ -1,118 +1,118 @@
 @layer base {
-  * {
-    &::selection {
-      background-color: var(--primary-main);
-      color: var(--white);
+    * {
+        &::selection {
+            background-color: var(--primary-main);
+            color: var(--white);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+    html,
+    body {
+        width: 100%;
+        font-size: var(--base-font-size);
+        font-family: 'Baskervville', serif;
+        scroll-behavior: smooth;
+        scrollbar-gutter: stable;
+        color: var(--neutral-main);
+
+        @media (prefers-reduced-motion: reduce) {
+            scroll-behavior: auto;
+        }
     }
-  }
 
-  html,
-  body {
-    width: 100%;
-    font-size: var(--base-font-size);
-    font-family: 'Baskervville', serif;
-    scroll-behavior: smooth;
-    scrollbar-gutter: stable;
-    color: var(--neutral-main);
-
-    @media (prefers-reduced-motion: reduce) {
-      scroll-behavior: auto;
+    body {
+        -webkit-font-smoothing: antialiased;
+        -webkit-tap-highlight-color: var(--base-font-size);
+        -webkit-touch-callout: none;
+        min-height: 100dvh;
+        text-rendering: optimizeLegibility;
     }
-  }
 
-  body {
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: var(--base-font-size);
-    -webkit-touch-callout: none;
-    min-height: 100dvh;
-    text-rendering: optimizeLegibility;
-  }
-
-  main {
-    width: 100%;
-    margin: calc(var(--header-height) * 2) auto 0;
-  }
-
-  p,
-  article {
-    font-family: 'Nunito Sans Variable', sans-serif;
-
-    @supports (text-wrap: pretty) {
-      text-wrap: pretty;
+    main {
+        width: 100%;
+        margin: calc(var(--header-height) * 2) auto 0;
     }
-    @supports not (text-wrap: pretty) {
-      text-wrap: balance;
+
+    p,
+    article {
+        font-family: 'Nunito Sans Variable', sans-serif;
+
+        @supports (text-wrap: pretty) {
+            text-wrap: pretty;
+        }
+        @supports not (text-wrap: pretty) {
+            text-wrap: balance;
+        }
     }
-  }
 
-  img {
-    height: 100%;
-    max-width: 100%;
-    width: 100%;
-  }
-
-  a {
-    -webkit-tap-highlight-color: transparent;
-    color: inherit;
-    cursor: pointer;
-  }
-
-  summary {
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  mark {
-    background-color: var(--primary-main);
-  }
-
-  strong,
-  b {
-    font-weight: 700;
-  }
-
-  svg {
-    -webkit-tap-highlight-color: transparent;
-
-    &:not(.logo) {
-      fill: var(--neutral-main);
+    img {
+        height: 100%;
+        max-width: 100%;
+        width: 100%;
     }
-  }
 
-  time {
-    color: var(--primary-main);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.25rem;
-  }
+    a {
+        -webkit-tap-highlight-color: transparent;
+        color: inherit;
+        cursor: pointer;
+    }
 
-  h1,
-  h2,
-  h3,
-  h4 {
-    text-wrap: balance;
-  }
+    summary {
+        -webkit-tap-highlight-color: transparent;
+    }
 
-  h1,
-  h2 {
-    font-size: clamp(4rem, 5rem, 5rem);
-  }
+    mark {
+        background-color: var(--primary-main);
+    }
 
-  h3,
-  h4 {
-    letter-spacing: 0.15rem;
-  }
+    strong,
+    b {
+        font-weight: 700;
+    }
 
-  h3 {
-    font-size: clamp(3rem, 3.5rem, 3.5rem);
-  }
+    svg {
+        -webkit-tap-highlight-color: transparent;
 
-  h4 {
-    font-size: clamp(2rem, 2rem, 2rem);
-  }
+        &:not(.logo) {
+            fill: var(--neutral-main);
+        }
+    }
+
+    time {
+        color: var(--primary-main);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.25rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        text-wrap: balance;
+    }
+
+    h1,
+    h2 {
+        font-size: clamp(4rem, 5rem, 5rem);
+    }
+
+    h3,
+    h4 {
+        letter-spacing: 0.15rem;
+    }
+
+    h3 {
+        font-size: clamp(3rem, 3.5rem, 3.5rem);
+    }
+
+    h4 {
+        font-size: clamp(2rem, 2rem, 2rem);
+    }
 }

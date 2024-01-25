@@ -9,11 +9,11 @@ const HOMEPAGE = '/';
 
 const { pathname } = Astro.url;
 const isCurrentPage =
-  href === pathname ||
-  (href !== HOMEPAGE && pathname.includes(href)) ||
-  href === pathname.replace(TRAILING_SLASH_REGEX, '');
+    href === pathname ||
+    (href !== HOMEPAGE && pathname.includes(href)) ||
+    href === pathname.replace(TRAILING_SLASH_REGEX, '');
 ---
 
 <a href={href} class:list={[`clickable ${classNames}`, { '--is-current-page': isCurrentPage }]} {...props}>
-  <slot />
+    <slot />
 </a>
