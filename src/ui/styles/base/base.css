@@ -14,12 +14,14 @@
 
     html,
     body {
-        width: 100%;
+        color: var(--neutral-main);
         font-size: var(--base-font-size);
         font-family: 'Baskervville', serif;
         scroll-behavior: smooth;
         scrollbar-gutter: stable;
-        color: var(--neutral-main);
+        scrollbar-width: auto;
+        scrollbar-color: var(--primary-dark-3) var(--neutral-light-4);
+        width: 100%;
 
         @media (prefers-reduced-motion: reduce) {
             scroll-behavior: auto;
