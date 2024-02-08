@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import partytown from '@astrojs/partytown';
 import netlify from '@astrojs/netlify';
+import million from 'million/compiler';
 
 export default defineConfig({
     site: 'https://biancafiore.me',
@@ -11,6 +12,7 @@ export default defineConfig({
         mdx(),
         sitemap(),
         react(),
+        million.vite({mode: 'react', server: true, auto: true}),
         partytown({
             config: {
                 forward: ['dataLayer.push'],
