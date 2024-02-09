@@ -1,17 +1,21 @@
 ---
+import { getCollection } from 'astro:content';
+
 import './about-latest-articles.css';
 import { AboutLatestArticlesSlider } from '@components/molecules/aboutLatestArticlesSlider';
+const articles = await getCollection('articles');
+articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()).splice(4);
 ---
 
 <section class="about-latest-articles__wrapper common-wrapper">
-    <h3 class="about-latest-articles__title section-title">
-        Fresh from <a class="clickable" href="/articles">the blog</a>
-    </h3>
-    <div class="about-latest-articles__inner">
-        <div class="about-latest-articles__quote__wrapper">
-            <h3 class="about-latest-articles__quote">Lorem ipsum dolir sit Amet. Dolor sit amet.</h3>
-            <h6 class="about-latest-articles__quote__author">Ferran Buireu</h6>
-        </div>
-        <AboutLatestArticlesSlider client:load />
+  <h3 class="about-latest-articles__title section-title">
+    Fresh from <a class="clickable" href="/articles">the blog</a>
+  </h3>
+  <div class="about-latest-articles__inner">
+    <div class="about-latest-articles__quote__wrapper">
+      <h3 class="about-latest-articles__quote">Lorem ipsum dolir sit Amet. Dolor sit amet.</h3>
+      <h6 class="about-latest-articles__quote__author">Ferran Buireu</h6>
     </div>
+    <AboutLatestArticlesSlider client:load articles={articles} />
+  </div>
 </section>

@@ -1639,12 +1639,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.11.16":
-  version: 20.11.16
-  resolution: "@types/node@npm:20.11.16"
+"@types/node@npm:^20.11.17":
+  version: 20.11.17
+  resolution: "@types/node@npm:20.11.17"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 4886b90278e9c877a84efd3edd4667cd990e032d77268d2a798b99ebc1901ea336fa7dfbe9eaf4ad6ad1da9ce2ec31baf300038a3905838692362eb19904ebde
+  checksum: 1f30dae80b416cbf38f133a619ffb0e9fb9e7bc58f82d900bf73816ae5781740c4640892bf5971dd9c12570d5d05241646be3e7540bb4e059322ec6af4e51e15
   languageName: node
   linkType: hard
 
@@ -2549,7 +2549,7 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/eslint": "npm:^8.56.2"
     "@types/markdown-it": "npm:^13.0.7"
-    "@types/node": "npm:^20.11.16"
+    "@types/node": "npm:^20.11.17"
     "@types/react": "npm:^18.2.55"
     "@types/react-dom": "npm:^18.2.19"
     "@types/three": "npm:^0.161.2"
@@ -2567,12 +2567,12 @@ __metadata:
     husky: "npm:^9.0.10"
     lint-staged: "npm:^15.2.2"
     markdown-it: "npm:^14.0.0"
-    million: "npm:^3.0.2"
+    million: "npm:^3.0.3"
     prettier: "npm:3.2.5"
     prettier-plugin-astro: "npm:^0.13.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    react-globe.gl: "npm:^2.27.1"
+    react-globe.gl: "npm:^2.27.2"
     react-router-dom: "npm:^6.22.0"
     stylelint: "npm:^16.2.1"
     stylelint-config-recommended: "npm:^14.0.0"
@@ -7181,9 +7181,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"million@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "million@npm:3.0.2"
+"million@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "million@npm:3.0.3"
   dependencies:
     "@babel/core": "npm:^7.23.7"
     "@babel/types": "npm:^7.23.6"
@@ -7193,7 +7193,7 @@ __metadata:
     unplugin: "npm:^1.6.0"
   bin:
     million: packages/cli/dist/index.js
-  checksum: 570295e589a790bef3386a9c2354cce7d071e363f6047c57965c279d7c383d9fb514ef2760681a442f4bacb88b4e632943c277d41c93b6be4356010b1a19c245
+  checksum: 3f222a717cd9b10ef8c3d3fd8560407d0663c34c2abfb480225c6167b2df25b2f1cf500e1cf978b2b27a0d216e16285419835f23115ec6f09e77b3eccfc34ce0
   languageName: node
   linkType: hard
 
@@ -8328,16 +8328,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-globe.gl@npm:^2.27.1":
-  version: 2.27.1
-  resolution: "react-globe.gl@npm:2.27.1"
+"react-globe.gl@npm:^2.27.2":
+  version: 2.27.2
+  resolution: "react-globe.gl@npm:2.27.2"
   dependencies:
     globe.gl: "npm:^2.32"
     prop-types: "npm:15"
     react-kapsule: "npm:2"
   peerDependencies:
     react: "*"
-  checksum: 6960574b73d858251b20561cbad58b7e0c8a73871a43f79fdf07614255e74795fff4d5c62c2d88383902d8b0263a4043f34b6c87107b1a1617719b019492c922
+  checksum: 1386868826a6fcfb2a4622ad277f6e9ebf714496929c4f1a4c423acb02cc19e7d4facf6d8ab50e23828d8b4fc880d5f800f55f7907042ab6fad1a764bad8f452
   languageName: node
   linkType: hard
 
