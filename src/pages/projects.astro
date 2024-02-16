@@ -1,20 +1,46 @@
 ---
 import BaseLayout from '@components/templates/baseLayout/BaseLayout.astro';
-import '../ui/components/molecules/welcome/welcome.css';
+import { Image } from 'astro:assets';
+import ProjectSection from 'src/ui/components/atoms/projectSection/ProjectSection.astro';
+
+const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 ---
 
 <BaseLayout title="" description="">
-    <h1>Hello, Projects!</h1>
-    <section id="stories-of-impact">
-        <h2>Stories of Impact</h2>
-    </section>
-    <section id="reports-and-thought-leadership">
-        <h2>Reports and Thought Leadership</h2>
-    </section>
-    <section id="creative-direction">
-        <h2>Creative Direction</h2>
-    </section>
-    <section id="web-content">
-        <h2>Web Content</h2>
-    </section>
+    <ProjectSection id="stories-of-impact">
+        <div class="project-description flex column-wrap justify-center align-center" slot="project-information">
+            <h2 class="project-title">Stories of Impact</h2>
+            <p>Lorem ipsum dolor sit amet</p>
+        </div>
+        <div class="project-image" slot="project-image">
+            <Image src={images['/src/assets/images/jpg/stories-of-impact.jpg']()} alt="Stories of Impact" />
+        </div>
+    </ProjectSection>
+    <ProjectSection id="reports-and-thought-leadership">
+        <div class="project-description flex column-wrap justify-center align-center" slot="project-information">
+            <h2 class="project-title">Reports and Thought Leadership</h2>
+            <p>Lorem ipsum dolor sit amet</p>
+        </div>
+        <div class="project-image" slot="project-image">
+            <Image src={images['/src/assets/images/jpg/thought-leadership.jpg']()} alt="Reports & Thought Leadership" />
+        </div>
+    </ProjectSection>
+    <ProjectSection id="creative-direction">
+        <div class="project-description flex column-wrap justify-center align-center" slot="project-information">
+            <h2 class="project-title">Creative Direction</h2>
+            <p>Lorem ipsum dolor sit amet</p>
+        </div>
+        <div class="project-image" slot="project-image">
+            <Image src={images['/src/assets/images/jpg/creative-direction.jpg']()} alt="Creative Direction" />
+        </div>
+    </ProjectSection>
+    <ProjectSection id="web-content">
+        <div class="project-description flex column-wrap justify-center align-center" slot="project-information">
+            <h2 class="project-title">Web Content</h2>
+            <p>Lorem ipsum dolor sit amet</p>
+        </div>
+        <div class="project-image" slot="project-image">
+            <Image src={images['/src/assets/images/jpg/web-content.jpg']()} alt="Web Content" />
+        </div>
+    </ProjectSection>
 </BaseLayout>

@@ -38,7 +38,10 @@
 
     main {
         width: 100%;
-        margin: calc(var(--header-height) * 2) auto 0;
+
+        &:not(.--is-projects) {
+            margin: calc(var(--header-height) * 2) auto 0;
+        }
     }
 
     p,

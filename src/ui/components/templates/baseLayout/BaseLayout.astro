@@ -8,15 +8,16 @@ interface BaseLayoutProps {
     title: string;
     description: string;
 }
-
 const { title, description } = Astro.props as BaseLayoutProps;
+const { pathname } = Astro.url;
+const isProject = pathname.includes('/projects');
 ---
 
 <html lang="en">
     <SiteHead title={title} description={description} />
     <body>
         <Header />
-        <main>
+        <main class:list={[{ '--is-projects': isProject }]}>
             <slot />
         </main>
         <Footer />

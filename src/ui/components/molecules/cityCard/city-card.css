@@ -30,7 +30,7 @@
 
     .city-card__item:nth-child(even) .city-card__content {
         grid:
-            ' City-Image City-Image City-Period City-Period' min-content
+            'City-Image City-Image City-Period City-Period' min-content
             'City-Image City-Image City-Name City-Name' min-content
             'City-Image City-Image City-Description City-Description' min-content
             / 1fr 1fr 1fr 1fr;
