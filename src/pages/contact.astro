@@ -3,5 +3,45 @@ import BaseLayout from '@components/templates/baseLayout/BaseLayout.astro';
 ---
 
 <BaseLayout title="" description="">
-    <h1>Hello, contact!</h1>
+    <div class="tabs">
+        <div class="tab" data-target="tab1">Make an appointment</div>
+        <div class="tab" data-target="tab2">Email me</div>
+    </div>
+
+    <div id="tab1" class="tab-content">Contenido de la pestaña 1</div>
+
+    <div id="tab2" class="tab-content">Contenido de la pestaña 2</div>
+
+    <script>
+        import { initTabs } from 'src/ui/shared/utils/changeTab';
+
+        initTabs();
+    </script>
+
+    <style>
+        .tabs {
+            display: flex;
+        }
+
+        .tab {
+            cursor: pointer;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+
+        .tab.active {
+            background-color: #f0f0f0;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+        }
+    </style>
 </BaseLayout>

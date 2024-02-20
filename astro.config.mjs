@@ -12,7 +12,7 @@ export default defineConfig({
         mdx(),
         sitemap(),
         react(),
-        million.vite({mode: 'react', server: true, auto: true}),
+        million.vite({ mode: 'react', server: true, auto: true }),
         partytown({
             config: {
                 forward: ['dataLayer.push'],

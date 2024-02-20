@@ -34,12 +34,14 @@
         --grid-large: 1024px;
         --grid-extra-large: 1440px;
     }
-
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    :root {*/
-    /*    }*/
-    /*}*/
 }
+
+/*@container (prefers-color-scheme: dark) {*/
+/*    :root {*/
+/*        --white: oklch(24.18% 0.004 228.95);*/
+/*        --neutral-main: oklch(100% 0 0);*/
+/*    }*/
+/*}*/
 
 @property --primary-light-3 {
     syntax: '<color>';
