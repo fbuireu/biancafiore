@@ -3,7 +3,6 @@ interface Tab {
     target: string;
 }
 
-// Función para cambiar de pestaña
 function changeTab(tabId: Tab['id']): void {
     document.querySelectorAll('.tab-content').forEach((tabContent) => {
         (tabContent as HTMLElement).style.display = 'none';

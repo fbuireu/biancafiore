@@ -8,7 +8,16 @@ import BaseLayout from '@components/templates/baseLayout/BaseLayout.astro';
         <div class="tab" data-target="tab2">Email me</div>
     </div>
 
-    <div id="tab1" class="tab-content">Contenido de la pestaña 1</div>
+    <div id="tab1" class="tab-content">
+        <div
+            class="calendly-inline-widget"
+            data-url="https://calendly.com/fbuireu/45min-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
+            style="min-width:320px;height:700px;"
+        >
+        </div>
+
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+    </div>
 
     <div id="tab2" class="tab-content">Contenido de la pestaña 2</div>
 
