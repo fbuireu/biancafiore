@@ -1,10 +1,14 @@
 /// <reference path="../.astro/types.d.ts" />
-/// <reference types="astro/client" />
+import { z } from 'zod';
 
-interface ImportMetaEnv {
-    readonly VITE_PUBLIC_GOOGLE_ANALYTICS_ID: string;
-}
+const envVariables = z.object({
+    VITE_PUBLIC_GOOGLE_ANALYTICS_ID: z.string(),
+});
 
-interface ImportMeta {
-    readonly env: ImportMetaEnv;
+envVariables.parse(process.env);
+
+declare global {
+    namespace NodeJS {
+        interface ProcessEnv extends z.infer<typeof envVariables> {}
+    }
 }

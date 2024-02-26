@@ -1,0 +1,40 @@
+@layer contact.tabs {
+    .contact-tabs__wrapper {
+        background-color: var(--neutral-light-4);
+        padding: 3rem 0;
+    }
+
+    .contact-tabs__title {
+        border-bottom: 2px solid var(--neutral-light-3);
+        margin: 3rem 0;
+        padding-block-end: 1rem;
+        text-align: start;
+    }
+
+    .contact-tab {
+        cursor: pointer;
+        padding: 1rem;
+
+        &:hover {
+            border-bottom: 2px solid var(--neutral-main);
+        }
+    }
+
+    .contact-tab.--is-active {
+        border-bottom: 2px solid var(--neutral-main);
+        font-weight: bold;
+    }
+
+    .contact-tab__content {
+        display: none;
+        padding: 3rem 0;
+
+        &.--is-active {
+            display: block;
+        }
+    }
+
+    .calendly-inline-widget {
+        height: 700px;
+    }
+}
