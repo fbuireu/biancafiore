@@ -12,7 +12,7 @@ export default defineConfig({
         mdx(),
         sitemap(),
         react(),
-        million.vite({ mode: 'react', server: true, auto: true }),
+        million.vite({mode: 'react', server: true, auto: true}),
         partytown({
             config: {
                 forward: ['dataLayer.push'],
@@ -22,6 +22,8 @@ export default defineConfig({
     vite: {
         define: {
             'import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID': process.env.PUBLIC_GOOGLE_ANALYTICS_ID,
+            'import.meta.env.PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY': process.env.PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY,
+            'import.meta.env.GOOGLE_RECAPTCHA_SECRET_KEY': process.env.GOOGLE_RECAPTCHA_SECRET_KEY,
         },
     },
     output: 'hybrid',

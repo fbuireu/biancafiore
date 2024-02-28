@@ -19,6 +19,11 @@ export const WORLD_GLOBE_CONFIG: Record<string, number | boolean | string | obje
     },
 };
 
+export const CONTACT_FORM_REQUEST_PARAMETERS: RequestInit = {
+    method: `POST`,
+    headers: { 'Content-Type': `application/x-www-form-urlencoded` },
+};
+
 export const DEFAULT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
     weekday: 'long',
     year: 'numeric',

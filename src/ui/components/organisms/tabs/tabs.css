@@ -4,19 +4,43 @@
         padding: 3rem 0;
     }
 
-    .contact-tabs__title {
-        border-bottom: 2px solid var(--neutral-light-3);
+    .contact-tabs__header {
+        gap: 1rem 0;
         margin: 3rem 0;
-        padding-block-end: 1rem;
+    }
+
+    .contact-tabs__divider {
+        background-color: var(--neutral-light-3);
+        height: 1px;
+    }
+
+    .contact-tabs__title {
         text-align: start;
     }
 
     .contact-tab {
         cursor: pointer;
         padding: 1rem;
+        position: relative;
 
-        &:hover {
-            border-bottom: 2px solid var(--neutral-main);
+        &:not(.--is-active) {
+            &::after {
+                background-color: currentColor;
+                bottom: 0;
+                content: '';
+                height: 2px;
+                left: 0;
+                margin: 0 auto;
+                position: absolute;
+                right: 0;
+                transform: scaleX(0);
+                transition: all 0.2s ease;
+                width: 100%;
+            }
+
+            &:hover::after {
+                transform: scaleX(1);
+            }
         }
     }
 

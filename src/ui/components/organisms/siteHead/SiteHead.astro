@@ -38,8 +38,9 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props as
 </head>
 <script
     type="text/partytown"
-    src=`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.VITE_PUBLIC_GOOGLE_ANALYTICS_ID}`
-></script>
+    src=`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID}`
+>
+</script>
 <script type="text/partytown">
     window.dataLayer = window.dataLayer || [];
 
@@ -48,5 +49,5 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props as
     }
 
     gtag('js', new Date());
-    gtag('config', import.meta.env.VITE_PUBLIC_GOOGLE_ANALYTICS_ID);
+    gtag('config', import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID);
 </script>

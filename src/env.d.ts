@@ -1,14 +1,10 @@
 /// <reference path="../.astro/types.d.ts" />
-import { z } from 'zod';
+interface ImportMetaEnv {
+    readonly PUBLIC_GOOGLE_ANALYTICS_ID: string;
+    readonly PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY: string;
+    readonly GOOGLE_RECAPTCHA_SECRET_KEY: string;
+}
 
-const envVariables = z.object({
-    VITE_PUBLIC_GOOGLE_ANALYTICS_ID: z.string(),
-});
-
-envVariables.parse(process.env);
-
-declare global {
-    namespace NodeJS {
-        interface ProcessEnv extends z.infer<typeof envVariables> {}
-    }
+interface ImportMeta {
+    readonly env: ImportMetaEnv;
 }
