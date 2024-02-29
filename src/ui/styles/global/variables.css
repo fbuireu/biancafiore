@@ -22,7 +22,6 @@
         --white: oklch(100% 0 0);
         --black: oklch(0 0 0);
         --header-height: 80px;
-        --testimonial-translation: 4rem;
         --global-max-width: 1440px;
         --base-font-size: 16px;
         --base-line-height: calc(var(--base-font-size) * 1.25);
@@ -173,12 +172,6 @@
     syntax: '<length>';
     inherits: false;
     initial-value: 80px;
-}
-
-@property --testimonial-translation {
-    syntax: '<length>';
-    inherits: false;
-    initial-value: 4rem;
 }
 
 @property --global-max-width {

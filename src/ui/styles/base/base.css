@@ -96,6 +96,12 @@
         letter-spacing: 0.25rem;
     }
 
+    textarea {
+        @supports (form-sizing: content) {
+            form-sizing: content;
+        }
+    }
+
     h1,
     h2,
     h3,
