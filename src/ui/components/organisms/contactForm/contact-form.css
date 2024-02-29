@@ -170,8 +170,7 @@
         --right-body-third-y: 100;
         color: var(--white);
         display: block;
-        min-width: 150px;
-        padding: 0.75rem 0;
+        padding: 0.75rem 1rem;
         position: relative;
         -webkit-tap-highlight-color: transparent;
         text-align: center;
