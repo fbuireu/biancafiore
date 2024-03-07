@@ -24,12 +24,14 @@
         --header-height: 80px;
         --global-max-width: 1440px;
         --base-font-size: 16px;
-        --base-line-height: calc(var(--base-font-size) * 1.25);
+        --base-vertical-rhythm-factor: 2.75;
+        --base-vertical-rhythm: 0.725rem;
+        --base-line-height: 2rem;
         --global-border-radius: 0.25rem;
         --grid-extra-small: 575px;
         --grid-small: 720px;
         --grid-medium: 960px;
-        --grid-article: 75ch;
+        --grid-article: 65ch;
         --grid-large: 1024px;
         --grid-extra-large: 1440px;
     }
@@ -186,10 +188,22 @@
     initial-value: 16px;
 }
 
+@property --base-vertical-rhythm-factor {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 2.75;
+}
+
+@property --base-vertical-rhythm {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0.725rem;
+}
+
 @property --base-line-height {
     syntax: '<length>';
     inherits: false;
-    initial-value: calc(var(--base-font-size) * 1.25);
+    initial-value: calc(var(--base-font-size) * var(--base-vertical-rhythm-factor) * var(--base-vertical-rhythm));
 }
 
 @property --global-border-radius {

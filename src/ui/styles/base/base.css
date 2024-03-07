@@ -40,7 +40,7 @@
         width: 100%;
 
         &:not(.--is-projects) {
-            margin: calc(var(--header-height) * 2) auto 0;
+            margin: calc(var(--header-height)) auto 0;
         }
     }
 
