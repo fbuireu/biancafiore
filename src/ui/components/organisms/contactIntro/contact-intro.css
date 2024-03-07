@@ -1,5 +1,20 @@
 @layer contact.intro {
-    .contact-intro {
+    .contact-intro__wrapper {
         display: grid;
+        gap: 0 8rem;
+        grid: 'AboutMe-Text AboutMe-Image' 1fr / 1fr 1fr;
+        justify-items: center;
+    }
+
+    .contact-intro__section.--left {
+        gap: 2rem 0;
+        grid-area: AboutMe-Text;
+        margin-block-end: 3rem;
+        max-width: 400px;
+    }
+
+    .contact-intro__section.--right {
+        gap: 2rem 0;
+        grid-area: AboutMe-Image;
     }
 }
