@@ -44,6 +44,18 @@
         }
     }
 
+    article {
+        & > p:first-letter {
+            padding-right: 0.25rem;
+        }
+
+        @supports (initial-letter: 3 2) {
+            & > p:first-of-type::first-letter {
+                initial-letter: 3 2;
+            }
+        }
+    }
+
     p,
     article {
         font-family: 'Nunito Sans Variable', sans-serif;

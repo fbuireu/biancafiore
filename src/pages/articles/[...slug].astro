@@ -3,42 +3,58 @@ import { type CollectionEntry, getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from 'src/ui/components/templates/baseLayout/BaseLayout.astro';
 import './_article.css';
+import { DEFAULT_DATE_OPTIONS } from 'src/consts';
+import { slugify } from 'src/ui/shared/utils/slugify';
 
 type ArticleProps = CollectionEntry<'articles'>;
 
 export async function getStaticPaths() {
-    const posts = await getCollection('articles');
-    return posts.map(({ slug, ...post }) => ({
+    const articles = await getCollection('articles');
+    return articles.map(({ slug, ...article }) => ({
         params: { slug },
-        props: { post },
+        props: { article },
     }));
 }
 
-const { post } = Astro.props as ArticleProps;
-const { Content } = await post.render();
 const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
+const { article } = Astro.props as ArticleProps;
+const { featuredImage, author, title, publishDate, tags } = article.data;
+const { Content } = await article.render();
 ---
 
-<BaseLayout {...post.data}>
+<BaseLayout {...article.data}>
     {
-        post.data.featuredImage && (
+        featuredImage && (
             <section class="article__featured__image__wrapper">
                 <Image
-                    src={images[post.data.featuredImage]()}
-                    alt={post.data.title}
+                    src={images[featuredImage]()}
+                    alt={title}
                     class="article__featured__image"
-                    transition:animate="slide"
+                    transition:name="article-featured-image"
                 />
             </section>
         )
     }
-    <h1 class="article__title">
-        {post.data.title}
-    </h1>
-    <p>by {post.data.author}</p>
-    <time class="font-sans-serif" datetime={post.data.publishDate}>
-        {post.data.publishDate}
-    </time>
+    <div>
+        <h1 class="article__title">
+            {title}
+        </h1>
+        <p>by <a href={`/tags/${slugify(author)}`}>{author}</a></p>
+        <time class="font-sans-serif" datetime={publishDate}>
+            {publishDate.toLocaleDateString('en', DEFAULT_DATE_OPTIONS)}
+        </time>
+        {
+            tags.length > 0 && (
+                <ul>
+                    {tags.map((tag) => (
+                        <li>
+                            <a href={`/tags/${slugify(tag)}`}>#{tag}</a>
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+    </div>
     <article class="article__wrapper">
         <Content />
     </article>

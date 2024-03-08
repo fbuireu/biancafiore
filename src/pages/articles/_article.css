@@ -1,16 +1,19 @@
 @layer article {
-    article {
-        display: grid;
-        gap: 0 2rem;
-        grid-template-columns:
-            1fr
-            min(var(--grid-article), 100%)
-            1fr;
-        line-height: var(--base-line-height);
+    .article__featured__image {
+        max-height: 60dvh;
+        object-fit: cover;
     }
 
-    article > p {
-        grid-column: 2;
+    .article__wrapper {
+        display: grid;
+        gap: 0 2rem;
+        grid: '. Main-Content .' / 1fr min(var(--grid-article), 100%) 1fr;
+        line-height: var(--base-line-height);
+        margin: 2rem 0;
+    }
+
+    .article__wrapper > p {
+        grid-area: auto / Main-Content;
         line-height: var(--base-line-height);
     }
 

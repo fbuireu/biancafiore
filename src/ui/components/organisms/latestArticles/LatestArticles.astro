@@ -51,7 +51,7 @@ const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
                                     class="latest__article__item__featured-image"
                                     src={images[`${article.featuredImage}`]()}
                                     alt={article.title}
-                                    transition:animate="slide"
+                                    transition:name="article-featured-image"
                                 />
                             )}
                             <time class="latest__article__item__publish-date" datetime={publishedDate}>
