@@ -1,141 +1,129 @@
 @layer base {
-    * {
-        &::selection {
-            background-color: var(--primary-main);
-            color: var(--white);
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-        }
+  * {
+    &::selection {
+      background-color: var(--primary-main);
+      color: var(--white);
     }
 
-    html,
-    body {
-        color: var(--neutral-main);
-        font-size: var(--base-font-size);
-        font-family: 'Baskervville', serif;
-        scroll-behavior: smooth;
-        scrollbar-gutter: stable;
-        scrollbar-width: auto;
-        scrollbar-color: var(--primary-dark-3) var(--neutral-light-4);
-        width: 100%;
-
-        @media (prefers-reduced-motion: reduce) {
-            scroll-behavior: auto;
-        }
+    @media (prefers-reduced-motion: reduce) {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
     }
+  }
 
-    body {
-        -webkit-font-smoothing: antialiased;
-        -webkit-tap-highlight-color: var(--base-font-size);
-        -webkit-touch-callout: none;
-        min-height: 100dvh;
-        text-rendering: optimizeLegibility;
+  html,
+  body {
+    color: var(--neutral-main);
+    font-size: var(--base-font-size);
+    font-family: 'Baskervville', serif;
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+    scrollbar-width: auto;
+    scrollbar-color: var(--primary-dark-3) var(--neutral-light-4);
+    width: 100%;
+
+    @media (prefers-reduced-motion: reduce) {
+      scroll-behavior: auto;
     }
+  }
 
-    main {
-        width: 100%;
+  body {
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: var(--base-font-size);
+    -webkit-touch-callout: none;
+    min-height: 100dvh;
+    text-rendering: optimizeLegibility;
+  }
 
-        &:not(.--is-projects) {
-            margin: calc(var(--header-height)) auto 0;
-        }
+  main {
+    width: 100%;
+
+    &:not(.--is-projects) {
+      margin: calc(var(--header-height)) auto 0;
     }
+  }
 
-    article {
-        & > p:first-letter {
-            padding-right: 0.25rem;
-        }
+  p,
+  article {
+    font-family: 'Nunito Sans Variable', sans-serif;
 
-        @supports (initial-letter: 3 2) {
-            & > p:first-of-type::first-letter {
-                initial-letter: 3 2;
-            }
-        }
+    @supports (text-wrap: pretty) {
+      text-wrap: pretty;
     }
-
-    p,
-    article {
-        font-family: 'Nunito Sans Variable', sans-serif;
-
-        @supports (text-wrap: pretty) {
-            text-wrap: pretty;
-        }
-        @supports not (text-wrap: pretty) {
-            text-wrap: balance;
-        }
+    @supports not (text-wrap: pretty) {
+      text-wrap: balance;
     }
+  }
 
-    img {
-        height: 100%;
-        max-width: 100%;
-        width: 100%;
+  img {
+    height: 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  a {
+    -webkit-tap-highlight-color: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  summary {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  mark {
+    background-color: var(--primary-main);
+  }
+
+  strong,
+  b {
+    font-weight: 700;
+  }
+
+  svg {
+    -webkit-tap-highlight-color: transparent;
+
+    &:not(.logo) {
+      fill: var(--neutral-main);
     }
+  }
 
-    a {
-        -webkit-tap-highlight-color: transparent;
-        color: inherit;
-        cursor: pointer;
+  time {
+    color: var(--primary-main);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25rem;
+  }
+
+  textarea {
+    @supports (form-sizing: content) {
+      form-sizing: content;
     }
+  }
 
-    summary {
-        -webkit-tap-highlight-color: transparent;
-    }
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
 
-    mark {
-        background-color: var(--primary-main);
-    }
+  h1,
+  h2 {
+    font-size: clamp(4rem, 5rem, 5rem);
+  }
 
-    strong,
-    b {
-        font-weight: 700;
-    }
+  h3,
+  h4 {
+    letter-spacing: 0.15rem;
+  }
 
-    svg {
-        -webkit-tap-highlight-color: transparent;
+  h3 {
+    font-size: clamp(3rem, 3.5rem, 3.5rem);
+  }
 
-        &:not(.logo) {
-            fill: var(--neutral-main);
-        }
-    }
-
-    time {
-        color: var(--primary-main);
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.25rem;
-    }
-
-    textarea {
-        @supports (form-sizing: content) {
-            form-sizing: content;
-        }
-    }
-
-    h1,
-    h2,
-    h3,
-    h4 {
-        text-wrap: balance;
-    }
-
-    h1,
-    h2 {
-        font-size: clamp(4rem, 5rem, 5rem);
-    }
-
-    h3,
-    h4 {
-        letter-spacing: 0.15rem;
-    }
-
-    h3 {
-        font-size: clamp(3rem, 3.5rem, 3.5rem);
-    }
-
-    h4 {
-        font-size: clamp(2rem, 2rem, 2rem);
-    }
+  h4 {
+    font-size: clamp(2rem, 2rem, 2rem);
+  }
 }
