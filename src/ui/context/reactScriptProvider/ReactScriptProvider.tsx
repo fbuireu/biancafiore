@@ -6,15 +6,15 @@ import { backgroundObserver } from '@components/organisms/header/utils/backgroun
 import { mailTo } from '@shared/utils/mailTo';
 
 const ReactScriptProvider = () => {
-    useEffect(() => {
-        toggleMenu();
-        scrollDirection();
-        initializeParallax();
-        backgroundObserver();
-        mailTo();
-    }, []);
+  useEffect(() => {
+    toggleMenu();
+    scrollDirection();
+    initializeParallax();
+    backgroundObserver();
+    mailTo();
+  }, []);
 
-    return null;
+  return null;
 };
 
 export default ReactScriptProvider;

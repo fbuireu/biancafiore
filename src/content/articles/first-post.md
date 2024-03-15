@@ -1,5 +1,5 @@
 ---
-title: 'First post'
+title: 'First post without dying in it'
 description: 'Lorem ipsum dolor sit amet'
 publishDate: 'Jul 08 2024'
 featuredImage: '/src/assets/images/jpg/web-content.jpg'

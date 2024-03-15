@@ -1,30 +1,30 @@
 @layer projects.section {
-    .project-description {
-        grid-area: Project-Information;
+  .project-description {
+    grid-area: Project-Information;
+  }
+
+  .project-image {
+    grid-area: Project-Image;
+  }
+
+  .project-title {
+    position: sticky;
+    text-align: center;
+    top: var(--header-height);
+  }
+
+  .project-section {
+    display: grid;
+    grid: 'Project-Image Project-Information' 1fr / 50% 50%;
+
+    &:nth-child(odd) {
+      grid: 'Project-Information Project-Image' 1fr / 50% 50%;
     }
 
-    .project-image {
-        grid-area: Project-Image;
+    &:first-child {
+      .project-description {
+        margin-top: calc(-1 * var(--header-height));
+      }
     }
-
-    .project-title {
-        position: sticky;
-        text-align: center;
-        top: var(--header-height);
-    }
-
-    .project-section {
-        display: grid;
-        grid: 'Project-Image Project-Information' 1fr / 50% 50%;
-
-        &:nth-child(odd) {
-            grid: 'Project-Information Project-Image' 1fr / 50% 50%;
-        }
-
-        &:first-child {
-            .project-description {
-                margin-top: calc(-1 * var(--header-height));
-            }
-        }
-    }
+  }
 }

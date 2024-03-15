@@ -9,53 +9,71 @@ import { slugify } from 'src/ui/shared/utils/slugify';
 type ArticleProps = CollectionEntry<'articles'>;
 
 export async function getStaticPaths() {
-    const articles = await getCollection('articles');
-    return articles.map(({ slug, ...article }) => ({
-        params: { slug },
-        props: { article },
-    }));
+  const articles = await getCollection('articles');
+  return articles.map(({ slug, ...article }) => {
+    return {
+      params: { slug },
+      props: { article },
+    };
+  });
 }
 
+const MAX_RELATED_ARTICLES = 3;
 const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
-const { article } = Astro.props as ArticleProps;
-const { featuredImage, author, title, publishDate, tags } = article.data;
-const { Content } = await article.render();
+const articles = await getCollection('articles');
+
+const { article: currentArticle } = Astro.props as ArticleProps;
+const { featuredImage, author, title, publishDate, tags } = currentArticle.data;
+const { Content } = await currentArticle.render();
+const relatedArticles = articles
+  .filter(({ data }) => data.tags.some((tag) => data.title !== currentArticle.data.title && tags?.includes(tag)))
+  .sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
+  .splice(0, MAX_RELATED_ARTICLES);
 ---
 
-<BaseLayout {...article.data}>
+<BaseLayout {...currentArticle.data}>
+  {
+    featuredImage && (
+      <section class="article__featured__image__wrapper">
+        <Image
+          src={images[featuredImage]()}
+          alt={title}
+          class="article__featured__image"
+          transition:name="article-featured-image"
+        />
+      </section>
+    )
+  }
+  <div class="article__details">
+    <h1 class="article__title">
+      {title}
+    </h1>
+    <p class="article__author">by <a href={`/tags/${slugify(author)}`}>{author}</a></p>
+    <time class="article__publish-date font-sans-serif" datetime={publishDate}>
+      {publishDate.toLocaleDateString('en', DEFAULT_DATE_OPTIONS)}
+    </time>
     {
-        featuredImage && (
-            <section class="article__featured__image__wrapper">
-                <Image
-                    src={images[featuredImage]()}
-                    alt={title}
-                    class="article__featured__image"
-                    transition:name="article-featured-image"
-                />
-            </section>
-        )
+      tags.length > 0 && (
+        <ul class="article__tags__list flex row-wrap">
+          {tags.map((tag) => (
+            <li class="article__tag__item">
+              <a href={`/tags/${slugify(tag)}`}>#{tag}</a>
+            </li>
+          ))}
+        </ul>
+      )
     }
-    <div>
-        <h1 class="article__title">
-            {title}
-        </h1>
-        <p>by <a href={`/tags/${slugify(author)}`}>{author}</a></p>
-        <time class="font-sans-serif" datetime={publishDate}>
-            {publishDate.toLocaleDateString('en', DEFAULT_DATE_OPTIONS)}
-        </time>
-        {
-            tags.length > 0 && (
-                <ul>
-                    {tags.map((tag) => (
-                        <li>
-                            <a href={`/tags/${slugify(tag)}`}>#{tag}</a>
-                        </li>
-                    ))}
-                </ul>
-            )
-        }
-    </div>
-    <article class="article__wrapper">
-        <Content />
-    </article>
+  </div>
+  <article class="article__wrapper">
+    <Content />
+  </article>
+  {
+    relatedArticles.length > 0 &&
+      relatedArticles.map((article) => (
+        <a href={`/articles/${article.slug}`} class="related__article__link">
+          <h2 class="related__article__title">{article.data.title}</h2>
+          <p class="related__article__author">by {article.data.author}</p>
+        </a>
+      ))
+  }
 </BaseLayout>

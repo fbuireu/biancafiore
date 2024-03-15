@@ -1,24 +1,24 @@
 @layer header.logo {
-    .site__logo {
-        display: block;
-        height: fit-content;
-        inset: 1rem 0 0;
-        margin: 0 auto;
-        position: absolute;
-        transition:
-            top 0.3s linear 1.75s,
-            scale 0.2s;
-        width: 307px;
-        z-index: 20;
+  .site__logo {
+    display: block;
+    height: fit-content;
+    inset: 1rem 0 0;
+    margin: 0 auto;
+    position: absolute;
+    transition:
+      top 0.3s linear 1.75s,
+      scale 0.2s;
+    width: 307px;
+    z-index: 20;
 
-        svg {
-            transition:
-                scale 0.2s,
-                fill 0.3s;
-        }
-
-        &.--is-scrolling:not(.--is-menu-open) svg {
-            scale: 0.85;
-        }
+    svg {
+      transition:
+        scale 0.2s,
+        fill 0.3s;
     }
+
+    &.--is-scrolling:not(.--is-menu-open) svg {
+      scale: 0.85;
+    }
+  }
 }

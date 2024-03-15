@@ -1,6 +1,6 @@
 @layer cities.city-card.image {
-    .city-card__content__description {
-        grid-area: City-Description;
-        padding-bottom: 2rem;
-    }
+  .city-card__content__description {
+    grid-area: City-Description;
+    padding-bottom: 2rem;
+  }
 }

@@ -1,47 +1,47 @@
 @layer about.latest-articles {
-    .about-latest-articles__wrapper {
-        margin-bottom: 12rem;
+  .about-latest-articles__wrapper {
+    margin-bottom: 12rem;
+  }
+
+  .about-latest-articles__title {
+    margin-bottom: 5rem;
+
+    a {
+      color: var(--primary-main);
+      display: inline-block;
     }
+  }
 
-    .about-latest-articles__title {
-        margin-bottom: 5rem;
+  .about-latest-articles__inner {
+    display: grid;
+    gap: 0 5rem;
+    grid: 'Quote Latest-Articles' 1fr / calc(30% - 2rem) calc(70% - 2rem);
+    justify-content: flex-end;
+  }
 
-        a {
-            color: var(--primary-main);
-            display: inline-block;
-        }
+  .about-latest-articles__quote__wrapper {
+    align-items: flex-end;
+    align-self: self-start;
+    display: flex;
+    flex-flow: column;
+    gap: 2rem 0;
+    grid-area: Quote;
+    justify-content: flex-end;
+    text-align: end;
+    text-transform: uppercase;
+  }
+
+  .about-latest-articles__quote {
+    position: relative;
+
+    &::after {
+      background-color: var(--neutral-main);
+      content: '';
+      height: 50%;
+      inset: 0 -2.5rem auto auto;
+      position: absolute;
+      transform: translateY(50%);
+      width: 1px;
     }
-
-    .about-latest-articles__inner {
-        display: grid;
-        gap: 0 5rem;
-        grid: 'Quote Latest-Articles' 1fr / calc(30% - 2rem) calc(70% - 2rem);
-        justify-content: flex-end;
-    }
-
-    .about-latest-articles__quote__wrapper {
-        align-items: flex-end;
-        align-self: self-start;
-        display: flex;
-        flex-flow: column;
-        gap: 2rem 0;
-        grid-area: Quote;
-        justify-content: flex-end;
-        text-align: end;
-        text-transform: uppercase;
-    }
-
-    .about-latest-articles__quote {
-        position: relative;
-
-        &::after {
-            background-color: var(--neutral-main);
-            content: '';
-            height: 50%;
-            inset: 0 -2.5rem auto auto;
-            position: absolute;
-            transform: translateY(50%);
-            width: 1px;
-        }
-    }
+  }
 }

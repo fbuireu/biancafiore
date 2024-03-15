@@ -5,8 +5,8 @@ import SiteHead from '@components/organisms/siteHead/SiteHead.astro';
 import Header from '@components/organisms/header/Header.astro';
 
 interface BaseLayoutProps {
-    title: string;
-    description: string;
+  title: string;
+  description: string;
 }
 const { title, description } = Astro.props as BaseLayoutProps;
 const { pathname } = Astro.url;
@@ -14,13 +14,13 @@ const isProject = pathname.includes('/projects');
 ---
 
 <html lang="en">
-    <SiteHead title={title} description={description} />
-    <body>
-        <Header />
-        <main class:list={[{ '--is-projects': isProject }]}>
-            <slot />
-        </main>
-        <Footer />
-        <ReactScriptProvider client:only="react" />
-    </body>
+  <SiteHead title={title} description={description} />
+  <body>
+    <Header />
+    <main class:list={[{ '--is-projects': isProject }]}>
+      <slot />
+    </main>
+    <Footer />
+    <ReactScriptProvider client:only="react" />
+  </body>
 </html>
