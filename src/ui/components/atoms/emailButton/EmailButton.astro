@@ -1,0 +1,9 @@
+---
+interface EmailButtonProps {
+  classNames?: string;
+}
+
+const { classNames } = Astro.props as EmailButtonProps;
+---
+
+<button class={`${classNames} link mailTo__button`}>Email</button>

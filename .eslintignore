@@ -1,8 +1,8 @@
-coverage
-bower_components
-build/Release
-node_modules/
-jspm_packages/
-build/
-.cache/
-public/
+node_modules
+dist
+/scripts/*
+yarn.lock
+.eslintrc.cjs
+.netlify
+commitlint.config.js
+prettier.config.js

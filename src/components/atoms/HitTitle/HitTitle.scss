@@ -1,8 +1,0 @@
-@import '../../../styles/global/functions';
-
-.hit-card__title {
-  @include typography-settings(3, 2, 3);
-  font-family: Zilla Slab, sans-serif;
-  margin: .5rem 0;
-  text-align: start;
-}

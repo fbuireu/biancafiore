@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" id="zoom-out">
+    <g fill="none" fill-rule="evenodd" stroke="#232326" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+       transform="translate(1 1)">
+        <circle cx="8" cy="8" r="8"/>
+        <path d="m18 18-4.35-4.35M5 8h6"/>
+    </g>
+</svg>

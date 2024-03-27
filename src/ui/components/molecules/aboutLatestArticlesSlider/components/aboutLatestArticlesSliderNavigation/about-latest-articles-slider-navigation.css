@@ -1,0 +1,20 @@
+@layer about.latest-articles.slider.navigation {
+  .about__latest-articles__slider__navigation {
+    gap: 0 1rem;
+    position: absolute;
+    right: 0;
+    z-index: 10;
+
+    img {
+      width: 3rem;
+    }
+  }
+
+  .about__latest-articles__slider__navigation__button {
+    cursor: pointer;
+
+    &.--right {
+      rotate: 0.5turn;
+    }
+  }
+}
