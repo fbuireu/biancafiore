@@ -11,21 +11,9 @@
     }
   }
 
-  @keyframes float-up-close {
-    0% {
-      translate: 0 0;
-    }
+  @keyframes float-up {
     100% {
-      translate: 0 -75cqi;
-    }
-  }
-
-  @keyframes float-up-far {
-    0% {
-      translate: 0 0;
-    }
-    100% {
-      translate: 0 -200cqi;
+      translate: 0 var(--origin-y, -200cqi);
     }
   }
 

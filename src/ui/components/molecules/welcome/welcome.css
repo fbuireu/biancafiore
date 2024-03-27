@@ -19,11 +19,9 @@
 
     &.--right {
       display: grid;
-      grid-area: RightGreeting;
-      grid-template-columns: subgrid;
       justify-self: start;
       margin-left: -3rem;
-      translate: 0 100px;
+      translate: 0 4rem;
       z-index: 10;
     }
 
@@ -46,25 +44,27 @@
 
   .welcome__text__body {
     align-self: center;
-    grid-area: RightGreeting;
     padding-inline-start: 3.5rem;
     text-align: start;
   }
 
   @supports (animation-timeline: scroll(root block)) {
     .welcome__text__section.--left .welcome__text__title {
-      animation: float-up-close linear;
+      --origin-y: -200cqi;
+      animation: float-up linear;
       animation-timeline: scroll(root block);
     }
 
     .welcome__text__section.--right {
       .welcome__text__title {
-        animation: float-up-far linear;
+        --origin-y: 70cqi;
+        animation: float-up linear;
         animation-timeline: scroll(root block);
       }
 
       .welcome__text__body {
-        animation: float-up-close linear;
+        --origin-y: -200cqi;
+        animation: float-up linear;
         animation-timeline: scroll(root block);
       }
     }

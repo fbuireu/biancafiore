@@ -15,7 +15,7 @@ const schema = z.object({
   message: z.string().trim().min(1, 'Please insert a valid message'),
 });
 
-enum FormStatus {
+const enum FormStatus {
   INITIAL = 'initial',
   LOADING = 'loading',
   SUCCESS = 'success',

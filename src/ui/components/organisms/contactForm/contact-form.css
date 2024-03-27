@@ -64,14 +64,16 @@
   }
 
   .contact-form__textarea {
+    field-sizing: content;
     min-height: 4rem;
     resize: vertical;
     text-align: start;
     width: 100%;
 
-    &:is(:focus, :not(:placeholder-shown), :focus-within) + .contact-form__textarea-label {
+
+    &:is(:focus, :focus-within, :not(:placeholder-shown)) ~ .contact-form__textarea-label {
       font-size: 1rem;
-      top: -1rem;
+      top: -1.25rem;
     }
   }
 
@@ -96,7 +98,7 @@
       -webkit-text-fill-color: var(--neutral-main);
     }
 
-    &:is(:focus, :not(:placeholder-shown), :focus-within) + .contact-form__input-label {
+    &:is(:focus, :not(:placeholder-shown), :focus-within) ~ .contact-form__input-label {
       font-size: 1rem;
       top: -1.5rem;
     }
