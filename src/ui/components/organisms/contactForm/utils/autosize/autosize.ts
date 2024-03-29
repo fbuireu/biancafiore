@@ -1,7 +1,7 @@
 import type { KeyboardEvent } from 'react';
 
 export function autosize(event: KeyboardEvent<HTMLTextAreaElement>): void {
-    if (CSS.supports('field-sizing: content')) return
+    if (CSS.supports('field-sizing: content')) return;
 
     const { currentTarget } = event;
 

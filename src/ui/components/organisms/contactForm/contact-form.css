@@ -70,7 +70,6 @@
     text-align: start;
     width: 100%;
 
-
     &:is(:focus, :focus-within, :not(:placeholder-shown)) ~ .contact-form__textarea-label {
       font-size: 1rem;
       top: -1.25rem;
