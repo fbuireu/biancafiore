@@ -43,10 +43,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/internal-helpers@npm:0.3.0":
-  version: 0.3.0
-  resolution: "@astrojs/internal-helpers@npm:0.3.0"
-  checksum: 5208199c237feec67ef0f708744484448a3eb57c9950f3ab2fd0020f501985099ebf5db80fb0728817968c17d6da692fb6767d7229b1bc413155224c132dca50
+"@astrojs/internal-helpers@npm:0.4.0":
+  version: 0.4.0
+  resolution: "@astrojs/internal-helpers@npm:0.4.0"
+  checksum: 52f760cad24a18aac3a73342b0e2e89fe787e79a7cbe83d7a49063d2b11fc37721324005e0020fb517a7264a08b8e7c590493dc6c41c6d9c0dbddc16f3b92036
   languageName: node
   linkType: hard
 
@@ -2718,12 +2718,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.2.22":
-  version: 18.2.22
-  resolution: "@types/react-dom@npm:18.2.22"
+"@types/react-dom@npm:^18.2.23":
+  version: 18.2.23
+  resolution: "@types/react-dom@npm:18.2.23"
   dependencies:
     "@types/react": "npm:*"
-  checksum: cd85b5f402126e44b8c7b573e74737389816abcc931b2b14d8f946ba81cce8637ea490419488fcae842efb1e2f69853bc30522e43fd8359e1007d4d14b8d8146
+  checksum: 9348e93558aa67b4b237bd0eab62e72e85f3e17a1c45fde04d874476269730f7c671b3d62390c4fca588da2a026e90cc74148abc349dbfd4ee5535a82ccdf38e
   languageName: node
   linkType: hard
 
@@ -2738,13 +2738,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.2.72":
-  version: 18.2.72
-  resolution: "@types/react@npm:18.2.72"
+"@types/react@npm:^18.2.73":
+  version: 18.2.73
+  resolution: "@types/react@npm:18.2.73"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: fe8a17a4067ab9d432ab1034967a8b2a773125e47ae84ee00e428a8b6c48912ab22d244ae6128663b119a38716a642bc5be019fcd2b3b2f4ab3c9b0200a6cc2d
+  checksum: b6645ab3c20efa41cfccf58ce0be45419517a0ba4594e323dd400342fb1c1f9589d169cf9bfa85b5b0605e9097fe9de7734b6d0c533f5b9bc32aaadb624537a4
   languageName: node
   linkType: hard
 
@@ -3459,12 +3459,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^4.5.10":
-  version: 4.5.10
-  resolution: "astro@npm:4.5.10"
+"astro@npm:^4.5.12":
+  version: 4.5.12
+  resolution: "astro@npm:4.5.12"
   dependencies:
     "@astrojs/compiler": "npm:^2.7.0"
-    "@astrojs/internal-helpers": "npm:0.3.0"
+    "@astrojs/internal-helpers": "npm:0.4.0"
     "@astrojs/markdown-remark": "npm:4.3.2"
     "@astrojs/telemetry": "npm:3.0.4"
     "@babel/core": "npm:^7.24.3"
@@ -3531,7 +3531,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: bd610b9810756cd5b66f099a36227a8962828c9c5426d028dab0398211883f1b76fb3279578f9fbbac0ed65b6098fe36d25cf213be83b42922761825098037b9
+  checksum: 9963135ca5722c90fa4b8492c302a9fe7b260ea5ec05495258821902802930d07b86b3db20193bd489f0dd1bdbeedd96a8f183e052710ae12b1665ae6dad4ddc
   languageName: node
   linkType: hard
 
@@ -3677,12 +3677,12 @@ __metadata:
     "@types/eslint": "npm:^8.56.6"
     "@types/markdown-it": "npm:^13.0.7"
     "@types/node": "npm:^20.11.30"
-    "@types/react": "npm:^18.2.72"
-    "@types/react-dom": "npm:^18.2.22"
+    "@types/react": "npm:^18.2.73"
+    "@types/react-dom": "npm:^18.2.23"
     "@types/three": "npm:^0.162.0"
     "@typescript-eslint/eslint-plugin": "npm:^7.4.0"
     "@typescript-eslint/parser": "npm:^7.4.0"
-    astro: "npm:^4.5.10"
+    astro: "npm:^4.5.12"
     eslint: "npm:^8.57.0"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-astro: "npm:^0.33.1"
@@ -3706,8 +3706,8 @@ __metadata:
     stylelint: "npm:^16.3.1"
     stylelint-config-recommended: "npm:^14.0.0"
     stylelint-order: "npm:^6.0.4"
-    swiper: "npm:^11.0.7"
-    three: "npm:^0.162.0"
+    swiper: "npm:^11.1.0"
+    three: "npm:^0.163.0"
     typescript: "npm:^5.4.3"
     vitest: "npm:^1.4.0"
     zod: "npm:^3.22.4"
@@ -11221,10 +11221,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^11.0.7":
-  version: 11.0.7
-  resolution: "swiper@npm:11.0.7"
-  checksum: d27b8c3b5deccde730317c2fe868350fad039e9776c8c6dfd11a89d9e732a66c1292292ca635141a7e0bbb363fcac1291c9fd716bf7a8e3b85d320e58ff94eba
+"swiper@npm:^11.1.0":
+  version: 11.1.0
+  resolution: "swiper@npm:11.1.0"
+  checksum: dd144b3580146508f01b551ce4c5895d2d7f4fa49dd98f361ba549dcca17f440eff603669a5416f98d21ac9ce828c11c5eed966a96434b3fda101bc332714992
   languageName: node
   linkType: hard
 
@@ -11424,10 +11424,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:^0.162.0":
-  version: 0.162.0
-  resolution: "three@npm:0.162.0"
-  checksum: ca97c30ecca94defa932ae8cb9423af66cd9b31f2d3c93b902d8b1022caaf322a022e59eca9e4ae0fd09deb03b3614c5f5114163cf9d0efac501bdc27c10445d
+"three@npm:^0.163.0":
+  version: 0.163.0
+  resolution: "three@npm:0.163.0"
+  checksum: 6e38928faa00580259302b7515229ca2a710f05ed4672e1c56f19f30f76d02bac535dcbd8d4ef4445f7a8436ffe5939b0c70d61ea01d4fc7b31c794cbd10bfaf
   languageName: node
   linkType: hard
 
