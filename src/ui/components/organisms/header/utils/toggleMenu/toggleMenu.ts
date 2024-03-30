@@ -96,7 +96,7 @@ export function toggleMenu() {
             },
             '<'
         );
-        timeline.to(SITE_LOGO, { y: '3rem', duration: 0.25 }, '-=0.5');
+        timeline.to(SITE_LOGO, { y: '2rem', duration: 0.25 }, '-=0.5');
         timeline.to(SITE_LOGO_SVG, { fill: WHITE, duration: 0.25 }, '-=1');
         timeline
             .to(OVERLAY_PATH, { attr: { d: PATH_START }, ease: POWER2_EASE_IN, duration: 1 }, '<')

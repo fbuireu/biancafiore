@@ -1,5 +1,8 @@
 @layer header.logo {
   .site__logo {
+    animation: shrink linear both;
+    animation-range: 0 5vw;
+    animation-timeline: scroll();
     display: block;
     height: fit-content;
     inset: 1rem 0 0;
@@ -7,17 +10,18 @@
     position: absolute;
     transition:
       top 0.3s linear 1.75s,
-      scale 0.2s;
+      scale 0.2s linear 0.3s,
+      transform 0.2s linear;
     width: 307px;
     z-index: 20;
 
     svg {
       transition:
-        scale 0.2s,
-        fill 0.3s;
+        top 0.3s linear 1.75s,
+        scale 0.2s linear;
     }
 
-    &.--is-scrolling:not(.--is-menu-open) svg {
+    :not(.--is-menu-open) svg {
       scale: 0.85;
     }
   }

@@ -1,5 +1,8 @@
 @layer header {
   .header {
+    animation: add-shadow linear both;
+    animation-range: 0 1vw;
+    animation-timeline: scroll();
     height: var(--header-height);
     margin-inline: auto;
     position: fixed;
@@ -8,12 +11,8 @@
     width: 100%;
     z-index: 1000;
 
-    &.--is-scrolling {
-      box-shadow: 0 0.125rem 0.375rem var(--neutral-light-2);
-
-      &::after {
-        clip-path: polygon(0 0, 100% 0, 100% 120%, 0 120%);
-      }
+    &::after {
+      clip-path: polygon(0 0, 100% 0, 100% 120%, 0 120%);
     }
 
     .header__wrapper {
