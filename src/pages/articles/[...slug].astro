@@ -67,13 +67,21 @@ const relatedArticles = articles
   <article class="article__wrapper">
     <Content />
   </article>
+
   {
     relatedArticles.length > 0 &&
-      relatedArticles.map((article) => (
-        <a href={`/articles/${article.slug}`} class="related__article__link">
-          <h2 class="related__article__title">{article.data.title}</h2>
-          <p class="related__article__author">by {article.data.author}</p>
-        </a>
-      ))
+    <section class="related-articles__wrapper">
+      <ul class="related-articles__list flex">
+        {relatedArticles.map((article) => (
+          <li class="related-articles__item">
+              <a href={`/articles/${article.slug}`} class="related__article__link">
+                <h2 class="related__article__title">{article.data.title}</h2>
+                <p class="related__article__author">by {article.data.author}</p>
+              </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   }
+
 </BaseLayout>

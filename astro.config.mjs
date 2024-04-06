@@ -3,7 +3,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import partytown from '@astrojs/partytown';
-import netlify from '@astrojs/netlify';
+import cloudflare from '@astrojs/cloudflare';
 import million from 'million/compiler';
 
 export default defineConfig({
@@ -27,5 +27,5 @@ export default defineConfig({
     },
   },
   output: 'hybrid',
-  adapter: netlify(),
+  adapter: cloudflare(),
 });
