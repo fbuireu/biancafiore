@@ -6,6 +6,8 @@ import './_article.css';
 import { DEFAULT_DATE_OPTIONS } from 'src/consts';
 import { slugify } from 'src/ui/shared/utils/slugify';
 
+export const prerender = true;
+
 type ArticleProps = CollectionEntry<'articles'>;
 
 export async function getStaticPaths() {
@@ -23,6 +25,7 @@ const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
 const articles = await getCollection('articles');
 
 const { article: currentArticle } = Astro.props as ArticleProps;
+console.log("currentArticle",currentArticle)
 const { featuredImage, author, title, publishDate, tags } = currentArticle.data;
 const { Content } = await currentArticle.render();
 const relatedArticles = articles

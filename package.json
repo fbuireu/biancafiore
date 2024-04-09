@@ -36,10 +36,11 @@
         "lint:typecheck": "tsc --project . --noEmit"
     },
     "dependencies": {
+        "@astrojs/check": "^0.5.10",
         "@astrojs/cloudflare": "^10.0.3",
         "@astrojs/mdx": "^2.2.4",
         "@astrojs/partytown": "^2.0.4",
-        "@astrojs/react": "^3.1.1",
+        "@astrojs/react": "^3.2.0",
         "@astrojs/rss": "^4.0.5",
         "@astrojs/sitemap": "^3.1.2",
         "@fontsource-variable/nunito-sans": "^5.0.13",
@@ -49,7 +50,9 @@
         "@types/node": "^20.12.6",
         "@types/react": "^18.2.75",
         "@types/react-dom": "^18.2.24",
-        "astro": "^4.5.16",
+        "astro": "^4.5.17",
+        "firebase": "^10.10.0",
+        "firebase-admin": "^12.0.0",
         "gsap": "^3.12.5",
         "markdown-it": "^14.1.0",
         "million": "^3.0.6",

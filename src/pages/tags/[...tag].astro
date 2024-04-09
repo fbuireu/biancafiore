@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content';
 import BaseLayout from 'src/ui/components/templates/baseLayout/BaseLayout.astro';
 import { slugify } from 'src/ui/shared/utils/slugify';
 
+export const prerender = true;
+
 interface TagProps {
   tag: string;
 }

@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import type { APIRoute } from "astro";
 import { DEFAULT_LOCALE_STRING } from '../../consts.ts';
+import { app } from '../../firebase/server.ts';
+import { getFirestore } from "firebase-admin/firestore";
 
 const ContactFormSchema = z.object({
   id: z.string(),
@@ -31,15 +33,25 @@ if(!result.success) {
   );
 }
 
-
-  // todo: send to firebase
-  const date = new Date().toLocaleString(DEFAULT_LOCALE_STRING)
-  const id= crypto.randomUUID();
-
-  return new Response(
-    JSON.stringify({
-      message: "Success!"
-    }),
-    { status: 200 }
-  );
+  try {
+    const database = getFirestore(app);
+    const contactsRef = database.collection("contacts");
+    await contactsRef.add({
+      id: crypto.randomUUID(),
+      name: result.data.name,
+      email: result.data.email,
+      message: result.data.message,
+      date: new Date().toLocaleString(DEFAULT_LOCALE_STRING)
+    });
+    return new Response(
+      JSON.stringify({
+        message: "Success!"
+      }),
+      { status: 200 }
+    );
+  } catch (error) {
+    return new Response("Something went wrong", {
+      status: 500,
+    });
+  }
 }
