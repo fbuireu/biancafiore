@@ -49,6 +49,7 @@ yarn-error.log
 
 # Environment variables files
 .env*
+!.env.example
 
 # Astro files
 .cache

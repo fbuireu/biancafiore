@@ -1,7 +1,7 @@
 @layer header {
   .header {
     animation: add-shadow linear both;
-    animation-range: 0 1vw;
+    animation-range: 0 1cqi;
     animation-timeline: scroll();
     height: var(--header-height);
     margin-inline: auto;

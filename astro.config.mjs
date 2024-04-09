@@ -26,6 +26,6 @@ export default defineConfig({
       'import.meta.env.GOOGLE_RECAPTCHA_SECRET_KEY': process.env.GOOGLE_RECAPTCHA_SECRET_KEY,
     },
   },
-  output: 'hybrid',
+  output: 'server',
   adapter: cloudflare(),
 });

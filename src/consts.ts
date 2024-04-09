@@ -19,6 +19,8 @@ export const WORLD_GLOBE_CONFIG: Record<string, number | boolean | string | obje
     },
 };
 
+export const DEFAULT_LOCALE_STRING: Intl.LocalesArgument= 'es-ES'
+
 export const CONTACT_FORM_REQUEST_PARAMETERS: RequestInit = {
     method: `POST`,
     headers: { 'Content-Type': `application/x-www-form-urlencoded` },

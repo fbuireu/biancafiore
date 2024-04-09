@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { type FormEvent, useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -69,8 +69,8 @@ export const ContactForm = () => {
         body: encode({ ...data }),
       };
 
-      const response = await fetch(`/`, requestParams);
-
+      const response = await fetch(`/api/contact-form`, requestParams);
+console.log(await response.json())
       if (response.ok) {
         flyPlane(submitRef.current!);
         setTimeout(() => {
@@ -91,10 +91,6 @@ export const ContactForm = () => {
       {formStatus !== FormStatus.SUCCESS ? (
         <form
           className="contact-form"
-          method={`POST`}
-          action={`/`}
-          data-netlify={true}
-          data-netlify-honeypot={`bot-field`}
           onSubmit={(event) => handleSubmit((data) => verifyRecaptcha(data, event))(event)}
         >
           <p className="contact-form__text"> My name is</p>
@@ -144,7 +140,6 @@ export const ContactForm = () => {
           </div>
           <div className="contact-form__recaptcha-wrapper">
             <input type="hidden" {...register('recaptcha')} />
-            <input type="hidden" name="bot-field" />
             {errors.recaptcha && <p className="contact-form__recaptcha__error-message">{errors.recaptcha.message}</p>}
           </div>
           <button ref={submitRef} className="contact-form__submit plane clickable" type="submit">
