@@ -3,13 +3,15 @@
 	"organizeImports": {
 		"enabled": true
 	},
+	"files": {
+		"ignore": ["src/data/*"]
+	},
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
 		"defaultBranch": "main"
 	},
 	"linter": {
-		"enabled": true,
 		"rules": {
 			"recommended": true,
 			"complexity": {
@@ -19,8 +21,7 @@
 				"useExhaustiveDependencies": "off"
 			},
 			"style": {
-				"noUnusedTemplateLiteral": "off",
-				"noNonNullAssertion": "off"
+				"noUnusedTemplateLiteral": "off"
 			},
 			"suspicious": {
 				"noAssignInExpressions": "off"
