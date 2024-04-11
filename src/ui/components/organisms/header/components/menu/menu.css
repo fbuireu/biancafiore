@@ -29,7 +29,6 @@
   }
 
   .navigation__menu__inner {
-    container-type: inline-size;
     display: grid;
     gap: 1rem;
     grid: 'Header-Quote Divider Navigation' / 50% 1fr 50%;
