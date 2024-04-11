@@ -29,10 +29,16 @@
   }
 
   .navigation__menu__inner {
+    container-type: inline-size;
     display: grid;
     gap: 1rem;
-    grid-template-areas: 'Header-Quote Divider Navigation';
-    grid-template-columns: 50% 1fr 50%;
+    grid: 'Header-Quote Divider Navigation' / 50% 1fr 50%;
+
+    @media (max-width: 1024px) {
+      grid: 'Navigation' 1fr
+            'Divider' min-content
+            'Header-Quote' 1fr / 1fr;
+    }
   }
 
   .navigation__menu__nav {

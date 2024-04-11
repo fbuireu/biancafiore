@@ -2,9 +2,9 @@ import { Resend } from "resend";
 import { CONTACT_DETAILS } from "../../consts.ts";
 import type { FormData } from "@components/organisms/contactForm";
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
-
 type ContactDetails = Omit<FormData, "recaptcha">;
+
+const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export const sendEmail = async ({ name, message, email }: ContactDetails) => {
 	const { data, error } = await resend.emails.send({
@@ -18,5 +18,6 @@ export const sendEmail = async ({ name, message, email }: ContactDetails) => {
 							CONTACT_DETAILS.EMAIL_SUBJECT,
 						)} from biancafiore.me">Reply</a>`,
 	});
+
 	return { data, error };
 };
