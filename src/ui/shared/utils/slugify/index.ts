@@ -1,1 +1,1 @@
-export * from './slugify';
+export * from "./slugify";

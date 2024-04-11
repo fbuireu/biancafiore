@@ -1,10 +1,10 @@
-import React, { type ReactNode } from 'react';
-import './city-description.css';
+import React, { type ReactNode } from "react";
+import "./city-description.css";
 
 export interface CityDescriptionProps {
-  children: ReactNode;
+	children: ReactNode;
 }
 
 export const CityDescription = ({ children }: CityDescriptionProps) => (
-  <p className="city-card__content__description">{children}</p>
+	<p className="city-card__content__description">{children}</p>
 );

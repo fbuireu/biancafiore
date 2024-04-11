@@ -1,1 +1,1 @@
-export * from './initializeParallax';
+export * from "./initializeParallax";

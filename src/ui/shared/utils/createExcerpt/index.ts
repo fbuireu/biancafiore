@@ -1,1 +1,1 @@
-export * from './createExcerpt';
+export * from "./createExcerpt";

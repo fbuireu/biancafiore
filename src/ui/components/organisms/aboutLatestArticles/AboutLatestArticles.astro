@@ -1,10 +1,16 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 
-import './about-latest-articles.css';
-import { AboutLatestArticlesSlider } from '@components/molecules/aboutLatestArticlesSlider';
-const articles = await getCollection('articles');
-articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()).splice(4);
+import "./about-latest-articles.css";
+import { AboutLatestArticlesSlider } from "@components/molecules/aboutLatestArticlesSlider";
+const articles = await getCollection("articles");
+articles
+	.sort(
+		(a, b) =>
+			new Date(b.data.publishDate).valueOf() -
+			new Date(a.data.publishDate).valueOf(),
+	)
+	.splice(4);
 ---
 
 <section class="about-latest-articles__wrapper common-wrapper">

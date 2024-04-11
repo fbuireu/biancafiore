@@ -1,1 +1,1 @@
-export * from './testimonialAuthor.tsx';
+export * from "./testimonialAuthor.tsx";

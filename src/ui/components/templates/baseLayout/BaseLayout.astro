@@ -1,16 +1,16 @@
 ---
-import Footer from '@components/organisms/footer/Footer.astro';
-import ReactScriptProvider from 'src/ui/context/reactScriptProvider/ReactScriptProvider';
-import SiteHead from '@components/organisms/siteHead/SiteHead.astro';
-import Header from '@components/organisms/header/Header.astro';
+import Footer from "@components/organisms/footer/Footer.astro";
+import ReactScriptProvider from "src/ui/context/reactScriptProvider/ReactScriptProvider";
+import SiteHead from "@components/organisms/siteHead/SiteHead.astro";
+import Header from "@components/organisms/header/Header.astro";
 
 interface BaseLayoutProps {
-  title: string;
-  description: string;
+	title: string;
+	description: string;
 }
 const { title, description } = Astro.props as BaseLayoutProps;
 const { pathname } = Astro.url;
-const isProject = pathname.includes('/projects');
+const isProject = pathname.includes("/projects");
 ---
 
 <html lang="en">

@@ -1,29 +1,35 @@
 ---
-import './latest-articles.css';
-import { getCollection } from 'astro:content';
-import { DEFAULT_DATE_FORMAT } from 'src/consts';
-import MarkdownIt from 'markdown-it';
-import { createExcerpt } from 'src/ui/shared/utils/createExcerpt';
-import { slugify } from 'src/ui/shared/utils/slugify';
-import { Image } from 'astro:assets';
+import "./latest-articles.css";
+import { getCollection } from "astro:content";
+import { DEFAULT_DATE_FORMAT } from "src/consts";
+import MarkdownIt from "markdown-it";
+import { createExcerpt } from "src/ui/shared/utils/createExcerpt";
+import { slugify } from "src/ui/shared/utils/slugify";
+import { Image } from "astro:assets";
 
-const enum ArticleType {
-  DEFAULT = 'default',
-  NO_IMAGE = 'no_image',
+enum ArticleType {
+	DEFAULT = "default",
+	NO_IMAGE = "no_image",
 }
 
 interface LatestArticlesProps {
-  limit?: number;
+	limit?: number;
 }
 
 const MAX_ARTICLES = 4;
 
 const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
-const parser: MarkdownIt = MarkdownIt('default', {});
-const articles = await getCollection('articles');
-articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()).splice(limit);
-const images = import.meta.glob('/src/assets/**/*.{jpeg,jpg,png,gif}');
+const parser: MarkdownIt = MarkdownIt("default", {});
+const articles = await getCollection("articles");
+articles
+	.sort(
+		(a, b) =>
+			new Date(b.data.publishDate).valueOf() -
+			new Date(a.data.publishDate).valueOf(),
+	)
+	.splice(limit);
+const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
 ---
 
 <section class="latest-articles__wrapper">

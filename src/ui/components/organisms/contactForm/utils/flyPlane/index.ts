@@ -1,1 +1,1 @@
-export * from './flyPlane.ts';
+export * from "./flyPlane.ts";

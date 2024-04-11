@@ -1,1 +1,1 @@
-export * from 'src/ui/components/molecules/aboutLatestArticlesSlider/components/aboutLatestArticlesSliderNavigation/AboutLatestArticlesSliderNavigation.tsx';
+export * from "src/ui/components/molecules/aboutLatestArticlesSlider/components/aboutLatestArticlesSliderNavigation/AboutLatestArticlesSliderNavigation.tsx";
