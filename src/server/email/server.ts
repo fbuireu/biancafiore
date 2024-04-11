@@ -8,7 +8,7 @@ type ContactDetails = Omit<FormData, "recaptcha">;
 
 export const sendEmail = async ({ name, message, email }: ContactDetails) => {
 	const { data, error } = await resend.emails.send({
-		from: atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM),
+		from: `${name} <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`,
 		to: atob(CONTACT_DETAILS.ENCODED_BIANCA_EMAIL),
 		subject: `${CONTACT_DETAILS.EMAIL_SUBJECT} from ${name} (${email})`,
 		html: `Hello sweetheart! <br /><br/>
