@@ -18,6 +18,6 @@ const serviceAccount = {
 export const app =
 	activeApps.length === 0
 		? initializeApp({
-				credential: cert(serviceAccount as ServiceAccount),
+				credential: cert(serviceAccount as ServiceAccount)
 			})
 		: activeApps[0];
