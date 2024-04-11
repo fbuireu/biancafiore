@@ -1,14 +1,14 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y, Keyboard, Navigation, Virtual } from "swiper/modules";
-import type { SwiperOptions } from "swiper/types";
+import type { CollectionEntry } from "astro:content";
 import { AboutLatestArticlesSliderNavigation } from "@components/molecules/aboutLatestArticlesSlider/components/aboutLatestArticlesSliderNavigation";
 import { createExcerpt } from "@shared/utils/createExcerpt";
-import { DEFAULT_DATE_FORMAT } from "src/consts.ts";
-import MarkdownIt from "markdown-it";
 import { slugify } from "@shared/utils/slugify";
+import MarkdownIt from "markdown-it";
+import React from "react";
+import { DEFAULT_DATE_FORMAT } from "src/consts.ts";
+import { A11y, Keyboard, Navigation, Virtual } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import type { SwiperOptions } from "swiper/types";
 import "./about-latest-articles-slider.css";
-import type { CollectionEntry } from "astro:content";
 
 interface AboutLatestArticlesSLiderProps {
 	articles: CollectionEntry<"articles">[];
@@ -112,7 +112,7 @@ export const AboutLatestArticlesSlider = ({
 										</p>
 										<p className="about__latest-article__excerpt">{excerpt}</p>
 										<ul className="about__latest-article__item__tags__list">
-											{article.tags?.map((tag) => (
+											{article.tags?.map((tag: string ) => (
 												<a
 													className="about__latest-article__item__tag"
 													href={`/tags/${slugify(tag)}`}
