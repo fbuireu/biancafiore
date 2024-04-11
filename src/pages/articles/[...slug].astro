@@ -9,7 +9,7 @@ import { slugify } from "src/ui/shared/utils/slugify";
 export const prerender = true;
 
 interface ArticleProps {
-  currentArticle: CollectionEntry<"articles">
+	currentArticle: CollectionEntry<"articles">;
 }
 
 export async function getStaticPaths() {
@@ -37,7 +37,8 @@ const relatedArticles = articles
 	)
 	.sort(
 		(a, b) =>
-			new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf(),
+			new Date(b.data.publishDate).valueOf() -
+			new Date(a.data.publishDate).valueOf(),
 	)
 	.splice(0, MAX_RELATED_ARTICLES);
 ---
