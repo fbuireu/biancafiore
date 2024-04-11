@@ -37,9 +37,9 @@ export const POST: APIRoute = async ({ request }) => {
 
 		const { data } = contactValidation;
 		const database = getFirestore(app);
-		const contactsRef = database.collection("contacts");
+		const databaseRef = database.collection("contacts");
 
-		await contactsRef.add({
+		await databaseRef.add({
 			id: crypto.randomUUID(),
 			name: data.name,
 			email: data.email,

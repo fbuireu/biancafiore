@@ -64,6 +64,8 @@ export const ContactForm = () => {
 	const submitForm = useCallback(
 		async (data: FormData, event: React.FormEvent<HTMLFormElement>) => {
 			event.preventDefault();
+			if (!submitRef.current) return;
+
 			try {
 				setFormStatus(FormStatus.LOADING);
 				const requestParams: RequestInit = {
@@ -72,9 +74,9 @@ export const ContactForm = () => {
 				};
 
 				const response = await fetch(`/api/contact-form`, requestParams);
-				console.log("response", response);
+
 				if (response.ok) {
-					flyPlane(submitRef.current!);
+					flyPlane(submitRef.current);
 					setTimeout(() => {
 						setFormStatus(FormStatus.SUCCESS);
 						reset();
