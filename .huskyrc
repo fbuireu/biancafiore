@@ -1,6 +1,6 @@
 {
   "hooks": {
-    "pre-commit": "yarn lint:ts:changed && yarn format:all:changed && && yarn lint:styles",
+    "pre-commit": "yarn lint:ts:changed && yarn format:all:changed && yarn lint:styles",
   }
 }
 
