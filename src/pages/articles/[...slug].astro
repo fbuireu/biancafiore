@@ -9,39 +9,37 @@ import { slugify } from "src/ui/shared/utils/slugify";
 export const prerender = true;
 
 interface ArticleProps {
-  currentArticle: CollectionEntry<"articles">,
-  relatedArticles: CollectionEntry<"articles">[]
+  currentArticle: CollectionEntry<"articles">
 }
 
 export async function getStaticPaths() {
 	const articles = await getCollection("articles");
-  const MAX_RELATED_ARTICLES = 3;
-
-  const getRelatedArticles = ({ articles, currentArticle }) =>{
-    return articles
-      .filter(({ data }) => data.tags.some((tag) => data.title !== currentArticle.data.title && data.tags?.includes(tag)))
-      .sort(
-        (a, b) =>
-          new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf(),
-      )
-      .splice(0, MAX_RELATED_ARTICLES);
-  }
-
-
-	return articles.map(({ slug, ...currentArticle }) => {
-    const relatedArticles = getRelatedArticles({articles, currentArticle})
+	return articles.map(({ slug, ...article }) => {
 		return {
 			params: { slug },
-			props: { currentArticle, relatedArticles },
+			props: { currentArticle: article },
 		};
 	});
 }
 
+const MAX_RELATED_ARTICLES = 3;
 const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
+const articles = await getCollection("articles");
 
-const { currentArticle, relatedArticles } = Astro.props as ArticleProps;
+const { currentArticle } = Astro.props as ArticleProps;
 const { featuredImage, author, title, publishDate, tags } = currentArticle.data;
 const { Content } = await currentArticle.render();
+const relatedArticles = articles
+	.filter(({ data }) =>
+		data.tags.some(
+			(tag) => data.title !== currentArticle.data.title && tags?.includes(tag),
+		),
+	)
+	.sort(
+		(a, b) =>
+			new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf(),
+	)
+	.splice(0, MAX_RELATED_ARTICLES);
 ---
 
 <BaseLayout {...currentArticle.data}>
@@ -96,4 +94,5 @@ const { Content } = await currentArticle.render();
       </ul>
     </section>
   }
+
 </BaseLayout>
