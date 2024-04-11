@@ -171,7 +171,7 @@ export const ContactForm = () => {
 						<span>Send email</span>
 						<div className="plane__left-wing" />
 						<div className="plane__right-wing" />
-						<span></span>
+						<span />
 					</button>
 				</form>
 			) : (

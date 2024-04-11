@@ -112,7 +112,7 @@ export const AboutLatestArticlesSlider = ({
 										</p>
 										<p className="about__latest-article__excerpt">{excerpt}</p>
 										<ul className="about__latest-article__item__tags__list">
-											{article.tags?.map((tag: string ) => (
+											{article.tags?.map((tag: string) => (
 												<a
 													className="about__latest-article__item__tag"
 													href={`/tags/${slugify(tag)}`}

@@ -14,9 +14,7 @@ export async function getStaticPaths() {
 	const uniqueAuthors = [
 		...new Set(allPosts.flatMap((post) => post.data.author)),
 	];
-	const uniqueTags = [
-		...new Set(allPosts.flatMap((post) => post.data.tags)),
-	];
+	const uniqueTags = [...new Set(allPosts.flatMap((post) => post.data.tags))];
 
 	const tags = uniqueTags.map((tag) => ({
 		params: { tag: slugify(tag) },

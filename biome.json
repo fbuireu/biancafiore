@@ -12,8 +12,22 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
+			"complexity": {
+				"noForEach": "off"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "off"
+			},
+			"style": {
+				"noUnusedTemplateLiteral": "off",
+				"noNonNullAssertion": "off"
+			},
+			"suspicious": {
+				"noAssignInExpressions": "off"
+			},
 			"a11y": {
-				"useAnchorContent": "off"
+				"useAnchorContent": "off",
+				"noSvgWithoutTitle": "off"
 			}
 		}
 	}

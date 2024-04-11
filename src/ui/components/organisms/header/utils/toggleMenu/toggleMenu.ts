@@ -1,4 +1,4 @@
-import { gsap, Power2, Power3, Power4 } from "gsap";
+import { Power2, Power3, Power4, gsap } from "gsap";
 import { backgroundObserver } from "src/ui/components/organisms/header/utils/backgroundObserver";
 
 const ANIMATION_CONFIG = {

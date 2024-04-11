@@ -132,6 +132,7 @@ const WorldGlobe = memo(({ cities, width = 680 }: GlobeAllCitiesProps) => {
 				<div className="world-globe__controls__direction-wrapper flex row-wrap">
 					<button
 						className="world-globe__controls__move --left flex clickable"
+						type="button"
 						onClick={() =>
 							handleAction({
 								movementDirection: Direction.CLOCKWISE,
@@ -143,6 +144,7 @@ const WorldGlobe = memo(({ cities, width = 680 }: GlobeAllCitiesProps) => {
 					</button>
 					<button
 						className="world-globe__controls__move --right flex clickable"
+						type="button"
 						onClick={() =>
 							handleAction({
 								movementDirection: Direction.COUNTERCLOCKWISE,
@@ -156,6 +158,7 @@ const WorldGlobe = memo(({ cities, width = 680 }: GlobeAllCitiesProps) => {
 				<div className="world-globe__controls__zoom-wrapper flex row-wrap">
 					<button
 						className="world-globe__controls__move --zoom-in clickable"
+						type="button"
 						onClick={() =>
 							handleAction({
 								movementDirection: Zoom.IN,
@@ -167,6 +170,7 @@ const WorldGlobe = memo(({ cities, width = 680 }: GlobeAllCitiesProps) => {
 					</button>
 					<button
 						className="world-globe__controls__move --zoom-out clickable"
+						type="button"
 						onClick={() =>
 							handleAction({
 								movementDirection: Zoom.OUT,
