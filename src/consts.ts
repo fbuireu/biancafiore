@@ -1,7 +1,11 @@
 export const SITE_TITLE = 'Bianca Fiore';
 export const SITE_DESCRIPTION = 'Welcome to my website!';
 
-export const ENCODED_BIANCA_EMAIL = btoa('biancamaria.fiore@gmail.com');
+export const CONTACT_DETAILS: Record<string, string> = {
+    EMAIL_SUBJECT: 'Contact form submission',
+    ENCODED_EMAIL_FROM: btoa('hello@biancafiore.me'),
+    ENCODED_BIANCA_EMAIL: btoa('biancamaria.fiore@gmail.com')
+}
 
 export const WORLD_GLOBE_CONFIG: Record<string, number | boolean | string | object> = {
     ANIMATION_DURATION: 500,
@@ -26,7 +30,7 @@ export const CONTACT_FORM_REQUEST_PARAMETERS: RequestInit = {
     headers: { 'Content-Type': `application/x-www-form-urlencoded` },
 };
 
-export const DEFAULT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
+export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = {
     weekday: 'long',
     year: 'numeric',
     month: 'long',

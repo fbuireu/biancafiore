@@ -4,7 +4,7 @@ import { A11y, Keyboard, Navigation, Virtual } from 'swiper/modules';
 import { type SwiperOptions } from 'swiper/types';
 import { AboutLatestArticlesSliderNavigation } from '@components/molecules/aboutLatestArticlesSlider/components/aboutLatestArticlesSliderNavigation';
 import { createExcerpt } from '@shared/utils/createExcerpt';
-import { DEFAULT_DATE_OPTIONS } from 'src/consts.ts';
+import { DEFAULT_DATE_FORMAT } from 'src/consts.ts';
 import MarkdownIt from 'markdown-it';
 import { slugify } from '@shared/utils/slugify';
 import './about-latest-articles-slider.css';
@@ -55,7 +55,7 @@ export const AboutLatestArticlesSlider = ({ articles }: AboutLatestArticlesSLide
           {articles.map(({ slug, data: article, ...content }) => {
             const { excerpt } = createExcerpt({ parser, content: content.body });
             const variant: ArticleType = article.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
-            const publishedDate = article.publishDate.toLocaleDateString('en', DEFAULT_DATE_OPTIONS);
+            const publishedDate = article.publishDate.toLocaleDateString('en', DEFAULT_DATE_FORMAT);
             const href = `/articles/${slug}`;
 
             return (

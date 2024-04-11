@@ -22,7 +22,7 @@ const enum FormStatus {
   ERROR = 'error',
 }
 
-interface FormData {
+export interface FormData {
   name: string;
   email: string;
   message: string;
@@ -70,7 +70,7 @@ export const ContactForm = () => {
       };
 
       const response = await fetch(`/api/contact-form`, requestParams);
-console.log(await response.json())
+      console.log("response", response)
       if (response.ok) {
         flyPlane(submitRef.current!);
         setTimeout(() => {
@@ -81,7 +81,6 @@ console.log(await response.json())
         throw new Error('Failed to submit form');
       }
     } catch (error) {
-      console.error(error);
       setFormStatus(FormStatus.ERROR);
     }
   }, []);
