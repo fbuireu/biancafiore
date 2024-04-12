@@ -62,6 +62,11 @@ export const ContactForm = () => {
 		[executeRecaptcha],
 	);
 
+	const resetForm = useCallback(
+		() => setFormStatus(FormStatus.INITIAL),
+		[formStatus],
+	);
+
 	const submitForm = useCallback(
 		async (data: FormData, event: FormEvent<HTMLFormElement>) => {
 			event.preventDefault();
@@ -169,6 +174,7 @@ export const ContactForm = () => {
 					<button
 						ref={submitRef}
 						className="contact-form__submit plane clickable"
+						disabled={formStatus === FormStatus.LOADING}
 						type="submit"
 					>
 						<span>
@@ -184,9 +190,17 @@ export const ContactForm = () => {
 					</button>
 				</form>
 			) : (
-				<h4 className="contact-form__success-message">
-					Form sent correctly! Will be in touch soon
-				</h4>
+				<div className="contact-form__success-message flex column-wrap">
+					<h4>Form sent correctly! Will be in touch soon</h4>
+					<p>Did you forgot something to say?</p>
+					<button
+						type="button"
+						className="contact-form__success__reset-button clickable"
+						onClick={resetForm}
+					>
+						Make a new inquiry
+					</button>
+				</div>
 			)}
 		</>
 	);

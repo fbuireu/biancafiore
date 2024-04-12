@@ -1,9 +1,11 @@
 @layer spinner {
     .spinner {
+        --line-width: 3px;
+        --cover-width: 40px;
         animation: spinner 0.75s infinite ease-in-out;
-        background: linear-gradient(var(--neutral-main) 0 0) left -40px top 0/40px 100% no-repeat var(--white);
+        background: linear-gradient(var(--neutral-main) 0 0) left calc(-1 * var(--cover-width)) top 0/var(--cover-width) 100% no-repeat var(--white);
         height: 20px;
-        -webkit-mask: conic-gradient(from 90deg at 3px 3px, #0000 25%, #000 0) 0 0/calc((100% - 3px) / 3) calc(100% - 3px);
+        -webkit-mask: conic-gradient(from 90deg at var(--line-width) var(--line-width), transparent 25%, var(--neutral-main) 0) 0 0/calc((100% - var(--line-width)) / 3) calc(100% - var(--line-width));
         width: 75px;
     }
 }

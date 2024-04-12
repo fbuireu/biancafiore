@@ -1,59 +1,58 @@
 @layer about.world-globe {
-  canvas {
-    cursor: grab;
-  }
-
-  .world-globe__wrapper {
-    height: fit-content;
-    position: sticky;
-    top: calc(var(--header-height) + 0.5rem);
-  }
-
-  .marker__wrapper {
-    color: var(--primary-dark-1);
-    cursor: pointer;
-    pointer-events: auto;
-    width: 1.5rem;
-
-    svg circle {
-      fill: var(--primary-light-2);
+    canvas {
+        cursor: grab;
     }
 
-    &.--is-sydney {
-      svg {
-        rotate: 0.5turn;
-      }
+    .world-globe__wrapper {
+        height: fit-content;
+        position: sticky;
+        top: calc(var(--header-height) + 0.5rem);
     }
-  }
 
-  .world-globe__controls {
-    gap: 0 3rem;
-  }
+    .marker__wrapper {
+        color: var(--primary-dark-1);
+        cursor: pointer;
+        pointer-events: auto;
+        width: 1.5rem;
 
-  .world-globe__controls__direction-wrapper {
-    gap: 0 1rem;
+        svg circle {
+            fill: var(--primary-light-2);
+        }
 
-    img {
-      height: 3rem;
-      width: 3rem;
+        &.--is-sydney {
+            svg {
+                rotate: 0.5turn;
+            }
+        }
     }
-  }
 
-  .world-globe__controls__zoom-wrapper {
-    gap: 0 1rem;
-
-    img {
-      height: 2rem;
-      width: 2rem;
+    .world-globe__controls {
+        gap: 0 3rem;
     }
-  }
 
-  .world-globe__controls__move {
-    cursor: pointer;
-    gap: 0 1rem;
+    .world-globe__controls__direction-wrapper {
+        gap: 0 1rem;
 
-    &.--right {
-      rotate: 0.5turn;
+        img {
+            height: 3rem;
+            width: 3rem;
+        }
     }
-  }
+
+    .world-globe__controls__zoom-wrapper {
+        gap: 0 1rem;
+
+        img {
+            height: 2rem;
+            width: 2rem;
+        }
+    }
+
+    .world-globe__controls__move {
+        gap: 0 1rem;
+
+        &.--right {
+            rotate: 0.5turn;
+        }
+    }
 }

@@ -1,89 +1,89 @@
 @layer global {
-  .common-wrapper {
-    max-width: var(--grid-extra-large);
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  .font-sans-serif {
-    font-family: 'Nunito Sans Variable', sans-serif;
-  }
-
-  .font-serif {
-    font-family: 'Baskervville', serif;
-  }
-
-  .section-title {
-    letter-spacing: 0.5rem;
-    text-transform: uppercase;
-    text-align: center;
-  }
-
-  .flex {
-    display: flex;
-  }
-
-  .row-wrap {
-    flex-flow: row wrap;
-  }
-
-  .column-wrap {
-    flex-flow: column wrap;
-  }
-
-  .column-nowrap {
-    flex-flow: column nowrap;
-  }
-
-  .justify-flex-start {
-    justify-content: flex-start;
-  }
-
-  .justify-flex-end {
-    justify-content: flex-end;
-  }
-
-  .justify-space-between {
-    justify-content: space-between;
-  }
-
-  .justify-center {
-    justify-content: center;
-  }
-
-  .align-center {
-    align-items: center;
-  }
-
-  .clickable:not(canvas) {
-    cursor: pointer;
-    transition: scale 0.2s;
-
-    &:active {
-      scale: 0.9;
+    .common-wrapper {
+        max-width: var(--grid-extra-large);
+        width: 100%;
+        margin: 0 auto;
     }
-  }
 
-  .article__wrapper {
-    @supports (initial-letter: 3 2) {
-      & > p:first-of-type::first-letter {
-        initial-letter: 3 2;
-        padding-right: 0.25rem;
-      }
+    .font-sans-serif {
+        font-family: 'Nunito Sans Variable', sans-serif;
     }
-  }
 
-  .link {
-    position: relative;
-    font-family: 'Literata Variable', serif;
-    border: none;
-    background-color: unset;
-    text-decoration: underline;
-    text-underline-offset: 0.4rem;
-    font-size: 1rem;
-    color: var(--white);
-    padding: 0;
-    letter-spacing: 2px;
-    cursor: pointer;
-  }
+    .font-serif {
+        font-family: 'Baskervville', serif;
+    }
+
+    .section-title {
+        letter-spacing: 0.5rem;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .flex {
+        display: flex;
+    }
+
+    .row-wrap {
+        flex-flow: row wrap;
+    }
+
+    .column-wrap {
+        flex-flow: column wrap;
+    }
+
+    .column-nowrap {
+        flex-flow: column nowrap;
+    }
+
+    .justify-flex-start {
+        justify-content: flex-start;
+    }
+
+    .justify-flex-end {
+        justify-content: flex-end;
+    }
+
+    .justify-space-between {
+        justify-content: space-between;
+    }
+
+    .justify-center {
+        justify-content: center;
+    }
+
+    .align-center {
+        align-items: center;
+    }
+
+    .clickable:not(canvas):not(:disabled) {
+        cursor: pointer;
+        transition: scale 0.2s;
+
+        &:active {
+            scale: 0.9;
+        }
+    }
+
+    .article__wrapper {
+        @supports (initial-letter: 3 2) {
+            & > p:first-of-type::first-letter {
+                initial-letter: 3 2;
+                padding-right: 0.25rem;
+            }
+        }
+    }
+
+    .link {
+        position: relative;
+        font-family: 'Literata Variable', serif;
+        border: none;
+        background-color: unset;
+        text-decoration: underline;
+        text-underline-offset: 0.4rem;
+        font-size: 1rem;
+        color: var(--white);
+        padding: 0;
+        letter-spacing: 2px;
+        cursor: pointer;
+    }
 }
