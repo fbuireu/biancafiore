@@ -1,0 +1,9 @@
+@layer spinner {
+    .spinner {
+        animation: spinner 0.75s infinite ease-in-out;
+        background: linear-gradient(var(--neutral-main) 0 0) left -40px top 0/40px 100% no-repeat var(--white);
+        height: 20px;
+        -webkit-mask: conic-gradient(from 90deg at 3px 3px, #0000 25%, #000 0) 0 0/calc((100% - 3px) / 3) calc(100% - 3px);
+        width: 75px;
+    }
+}

@@ -9,6 +9,7 @@ import { autosize } from "@components/organisms/contactForm/utils/autosize";
 import { CONTACT_FORM_REQUEST_PARAMETERS } from "src/consts.ts";
 import { encode } from "@components/organisms/contactForm/utils/encode";
 import { flyPlane } from "@components/organisms/contactForm/utils/flyPlane";
+import Spinner from "@components/atoms/spinner/Spinner.tsx";
 
 const schema = z.object({
 	name: z.string().trim().min(1, "Please insert your name"),
@@ -45,7 +46,7 @@ export const ContactForm = () => {
 	const submitRef = useRef<HTMLButtonElement>(null);
 
 	const verifyRecaptcha = useCallback(
-		async (data: FormData, event: React.FormEvent<HTMLFormElement>) => {
+		async (data: FormData, event: FormEvent<HTMLFormElement>) => {
 			if (!executeRecaptcha) return;
 			const token = await executeRecaptcha();
 
@@ -62,7 +63,7 @@ export const ContactForm = () => {
 	);
 
 	const submitForm = useCallback(
-		async (data: FormData, event: React.FormEvent<HTMLFormElement>) => {
+		async (data: FormData, event: FormEvent<HTMLFormElement>) => {
 			event.preventDefault();
 			if (!submitRef.current) return;
 
@@ -170,7 +171,13 @@ export const ContactForm = () => {
 						className="contact-form__submit plane clickable"
 						type="submit"
 					>
-						<span>Send email</span>
+						<span>
+							{formStatus !== FormStatus.LOADING ? (
+								<>Send email </>
+							) : (
+								<Spinner />
+							)}
+						</span>
 						<div className="plane__left-wing" />
 						<div className="plane__right-wing" />
 						<span />
