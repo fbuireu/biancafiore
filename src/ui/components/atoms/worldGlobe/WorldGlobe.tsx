@@ -72,28 +72,15 @@ const WorldGlobe = memo(({ cities, width = 680 }: GlobeAllCitiesProps) => {
 	const handleAction = useCallback(
 		({ movementDirection, type }: HandleActionParams) => {
 			if (!worldGlobeReference.current) return;
-			const { lng: currentLongitude, altitude: currentZoom } =
-				worldGlobeReference.current.pointOfView();
+			const { lng: currentLongitude, altitude: currentZoom } = worldGlobeReference.current.pointOfView();
 
 			if (type === MovementType.MOVE) {
-				const offset =
-					movementDirection === Direction.CLOCKWISE
-						? MOVEMENT_OFFSET
-						: -MOVEMENT_OFFSET;
+				const offset = movementDirection === Direction.CLOCKWISE ? MOVEMENT_OFFSET : -MOVEMENT_OFFSET;
 				const newLongitude = currentLongitude + offset;
-				worldGlobeReference.current.pointOfView(
-					{ lng: newLongitude },
-					ANIMATION_DURATION,
-				);
+				worldGlobeReference.current.pointOfView({ lng: newLongitude }, ANIMATION_DURATION);
 			} else if (type === MovementType.ZOOM) {
-				const newZoom =
-					movementDirection === Zoom.IN
-						? currentZoom - ZOOM_OFFSET
-						: currentZoom + ZOOM_OFFSET;
-				worldGlobeReference.current.pointOfView(
-					{ altitude: newZoom },
-					ANIMATION_DURATION,
-				);
+				const newZoom = movementDirection === Zoom.IN ? currentZoom - ZOOM_OFFSET : currentZoom + ZOOM_OFFSET;
+				worldGlobeReference.current.pointOfView({ altitude: newZoom }, ANIMATION_DURATION);
 			}
 		},
 		[worldGlobeReference],
@@ -124,9 +111,7 @@ const WorldGlobe = memo(({ cities, width = 680 }: GlobeAllCitiesProps) => {
 				pointRadius="radius"
 				pointColor="color"
 				htmlElementsData={refineCities(cities)}
-				htmlElement={(data) =>
-					renderPin({ markerData: data as ReactGlobePoint })
-				}
+				htmlElement={(data) => renderPin({ markerData: data as ReactGlobePoint })}
 			/>
 			<div className="world-globe__controls flex row-wrap justify-center">
 				<div className="world-globe__controls__direction-wrapper flex row-wrap">

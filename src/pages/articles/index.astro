@@ -17,18 +17,13 @@ enum ArticleType {
 const articles = await getCollection("articles");
 const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
 
-articles.sort(
-	(a, b) =>
-		new Date(b.data.publishDate).valueOf() -
-		new Date(a.data.publishDate).valueOf(),
-);
+articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf());
 const {
 	body: featuredArticleBody,
 	data: featuredArticle,
 	slug: featuredArticleSlug,
-} = articles.find(
-	(article) => article.data.isFeatured && article.data.featuredImage,
-) ?? articles.find((article) => article.data.featuredImage);
+} = articles.find((article) => article.data.isFeatured && article.data.featuredImage) ??
+articles.find((article) => article.data.featuredImage);
 
 const parser: MarkdownIt = MarkdownIt("default", {});
 
@@ -36,10 +31,7 @@ const { excerpt: featuredArticleExcerpt } = createExcerpt({
 	parser,
 	content: featuredArticleBody,
 });
-const publishedDate = featuredArticle.publishDate.toLocaleDateString(
-	"en",
-	DEFAULT_DATE_FORMAT,
-);
+const publishedDate = featuredArticle.publishDate.toLocaleDateString("en", DEFAULT_DATE_FORMAT);
 const featuredArticleHref = `/articles/${featuredArticleSlug}`;
 const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
 ---

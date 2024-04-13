@@ -6,9 +6,7 @@ const ANIMATION_CONFIG = {
 	POWER2_EASE_OUT: Power2.easeOut,
 	POWER2_EASE_IN: Power2.easeIn,
 	POWER3_OUT: Power3.easeOut,
-	WHITE:
-		getComputedStyle(document.documentElement).getPropertyValue("--white") ??
-		"var(--white)",
+	WHITE: getComputedStyle(document.documentElement).getPropertyValue("--white") ?? "var(--white)",
 	PATH_START: "M0 502S175 272 500 272s500 230 500 230V0H0Z",
 	PATH_END: "M0,1005S175,995,500,995s500,5,500,5V0H0Z",
 };
@@ -54,12 +52,8 @@ export function toggleMenu() {
 	const BODY = document.querySelector(BODY_SELECTOR) as HTMLBodyElement;
 	const HTML = document.querySelector(HTML_SELECTOR) as HTMLHtmlElement;
 	const LOGO = document.querySelector(SITE_LOGO) as HTMLElement;
-	const TOGGLE_MENU_BUTTON = document.querySelector(
-		TOGGLE_MENU_BUTTON_SELECTOR,
-	) as HTMLElement;
-	const MENU_DIVIDER = document.querySelector(
-		NAVIGATION_DIVIDER,
-	) as HTMLElement;
+	const TOGGLE_MENU_BUTTON = document.querySelector(TOGGLE_MENU_BUTTON_SELECTOR) as HTMLElement;
+	const MENU_DIVIDER = document.querySelector(NAVIGATION_DIVIDER) as HTMLElement;
 	const MENU_TEXT = document.querySelector(HEADER_MENU_TEXT) as HTMLElement;
 
 	const ELEMENTS_TO_TOGGLE = [BODY, HTML, LOGO, MENU_DIVIDER];
@@ -74,15 +68,8 @@ export function toggleMenu() {
 	}
 
 	function toggleMenuItems() {
-		const {
-			POWER4_IN_OUT,
-			POWER2_EASE_IN,
-			POWER2_EASE_OUT,
-			POWER3_OUT,
-			WHITE,
-			PATH_START,
-			PATH_END,
-		} = ANIMATION_CONFIG;
+		const { POWER4_IN_OUT, POWER2_EASE_IN, POWER2_EASE_OUT, POWER3_OUT, WHITE, PATH_START, PATH_END } =
+			ANIMATION_CONFIG;
 
 		timeline.to(MENU_OVERLAY, { display: "block" });
 		timeline.to(MENU_TEXT, {
@@ -112,16 +99,8 @@ export function toggleMenu() {
 		timeline.to(SITE_LOGO, { y: "2rem", duration: 0.25 }, "-=0.5");
 		timeline.to(SITE_LOGO_SVG, { fill: WHITE, duration: 0.25 }, "-=1");
 		timeline
-			.to(
-				OVERLAY_PATH,
-				{ attr: { d: PATH_START }, ease: POWER2_EASE_IN, duration: 1 },
-				"<",
-			)
-			.to(
-				OVERLAY_PATH,
-				{ attr: { d: PATH_END }, ease: POWER2_EASE_OUT, duration: 1 },
-				"-=0.5",
-			);
+			.to(OVERLAY_PATH, { attr: { d: PATH_START }, ease: POWER2_EASE_IN, duration: 1 }, "<")
+			.to(OVERLAY_PATH, { attr: { d: PATH_END }, ease: POWER2_EASE_OUT, duration: 1 }, "-=0.5");
 		timeline.to(HEADER_MENU, { visibility: "visible", duration: 1 }, "-=0.5");
 		timeline
 			.to(
@@ -150,8 +129,6 @@ export function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
 		timeline.reversed(!timeline.reversed());
 
-		ELEMENTS_TO_TOGGLE.forEach((element) =>
-			element.classList.toggle("--is-menu-open"),
-		);
+		ELEMENTS_TO_TOGGLE.forEach((element) => element.classList.toggle("--is-menu-open"));
 	});
 }

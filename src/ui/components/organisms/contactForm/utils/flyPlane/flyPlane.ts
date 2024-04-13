@@ -4,8 +4,7 @@ export const flyPlane = (button: HTMLButtonElement) => {
 	if (!button.classList.contains("--is-active")) {
 		button.classList.add("--is-active");
 
-		const getPropertyValue = (variable: string) =>
-			window.getComputedStyle(button).getPropertyValue(variable);
+		const getPropertyValue = (variable: string) => window.getComputedStyle(button).getPropertyValue(variable);
 
 		gsap.timeline().to(button, {
 			keyframes: [

@@ -62,49 +62,41 @@ export const ContactForm = () => {
 		[executeRecaptcha],
 	);
 
-	const resetForm = useCallback(
-		() => setFormStatus(FormStatus.INITIAL),
-		[formStatus],
-	);
+	const resetForm = useCallback(() => setFormStatus(FormStatus.INITIAL), [formStatus]);
 
-	const submitForm = useCallback(
-		async (data: FormData, event: FormEvent<HTMLFormElement>) => {
-			event.preventDefault();
-			if (!submitRef.current) return;
+	const submitForm = useCallback(async (data: FormData, event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		if (!submitRef.current) return;
 
-			try {
-				setFormStatus(FormStatus.LOADING);
-				const requestParams: RequestInit = {
-					...CONTACT_FORM_REQUEST_PARAMETERS,
-					body: encode({ ...data }),
-				};
+		try {
+			setFormStatus(FormStatus.LOADING);
+			const requestParams: RequestInit = {
+				...CONTACT_FORM_REQUEST_PARAMETERS,
+				body: encode({ ...data }),
+			};
 
-				const response = await fetch(`/api/contact-form`, requestParams);
+			const response = await fetch(`/api/contact-form`, requestParams);
 
-				if (response.ok) {
-					flyPlane(submitRef.current);
-					setTimeout(() => {
-						setFormStatus(FormStatus.SUCCESS);
-						reset();
-					}, 2000);
-				} else {
-					throw new Error("Failed to submit form");
-				}
-			} catch (error) {
-				setFormStatus(FormStatus.ERROR);
+			if (response.ok) {
+				flyPlane(submitRef.current);
+				setTimeout(() => {
+					setFormStatus(FormStatus.SUCCESS);
+					reset();
+				}, 2000);
+			} else {
+				throw new Error("Failed to submit form");
 			}
-		},
-		[],
-	);
+		} catch (error) {
+			setFormStatus(FormStatus.ERROR);
+		}
+	}, []);
 
 	return (
 		<>
 			{formStatus !== FormStatus.SUCCESS ? (
 				<form
 					className="contact-form"
-					onSubmit={(event) =>
-						handleSubmit((data) => verifyRecaptcha(data, event))(event)
-					}
+					onSubmit={(event) => handleSubmit((data) => verifyRecaptcha(data, event))(event)}
 				>
 					<p className="contact-form__text"> My name is</p>
 					<div className="contact-form__input-wrapper">
@@ -118,11 +110,7 @@ export const ContactForm = () => {
 						<label htmlFor="name" className="contact-form__input-label">
 							(your name)
 						</label>
-						{errors.name && (
-							<p className="contact-form__input__error-message">
-								{errors.name.message}
-							</p>
-						)}
+						{errors.name && <p className="contact-form__input__error-message">{errors.name.message}</p>}
 					</div>
 					<p className="contact-form__text">and my email is</p>
 					<div className="contact-form__input-wrapper">
@@ -136,15 +124,11 @@ export const ContactForm = () => {
 						<label htmlFor="email" className="contact-form__input-label">
 							(your email)
 						</label>
-						{errors.email && (
-							<p className="contact-form__input__error-message">
-								{errors.email.message}
-							</p>
-						)}
+						{errors.email && <p className="contact-form__input__error-message">{errors.email.message}</p>}
 					</div>
 					<p className="contact-form__text">
-						I look forward to hearing from you within the next 24 hours to
-						discuss further. <br />I have a message for you,
+						I look forward to hearing from you within the next 24 hours to discuss further. <br />I have a message for
+						you,
 					</p>
 					<div className="contact-form__textarea-wrapper flex column-wrap justify-flex-start">
 						<textarea
@@ -157,33 +141,27 @@ export const ContactForm = () => {
 						<label htmlFor="message" className="contact-form__textarea-label">
 							(your message)
 						</label>
-						{errors.message && (
-							<p className="contact-form__textarea__error-message">
-								{errors.message.message}
-							</p>
-						)}
+						{errors.message && <p className="contact-form__textarea__error-message">{errors.message.message}</p>}
 					</div>
 					<div className="contact-form__recaptcha-wrapper">
 						<input type="hidden" {...register("recaptcha")} />
-						{errors.recaptcha && (
-							<p className="contact-form__recaptcha__error-message">
-								{errors.recaptcha.message}
-							</p>
-						)}
+						{errors.recaptcha && <p className="contact-form__recaptcha__error-message">{errors.recaptcha.message}</p>}
 					</div>
+					{formStatus === FormStatus.ERROR && (
+						<div className="contact-form__recaptcha-wrapper">
+							<p className="contact-form__recaptcha__error-message">
+								Whoopsie! Something went wrong. It's my fault (or actually my boyfriend's). Please try again in a few
+								minutes after refreshing the page.
+							</p>
+						</div>
+					)}
 					<button
 						ref={submitRef}
 						className="contact-form__submit plane clickable"
 						disabled={formStatus === FormStatus.LOADING}
 						type="submit"
 					>
-						<span>
-							{formStatus !== FormStatus.LOADING ? (
-								<>Send email </>
-							) : (
-								<Spinner />
-							)}
-						</span>
+						<span>{formStatus !== FormStatus.LOADING ? <>Send email </> : <Spinner />}</span>
 						<div className="plane__left-wing" />
 						<div className="plane__right-wing" />
 						<span />
@@ -193,11 +171,7 @@ export const ContactForm = () => {
 				<div className="contact-form__success-message flex column-wrap">
 					<h4>Form sent correctly! Will be in touch soon</h4>
 					<p>Did you forgot something to say?</p>
-					<button
-						type="button"
-						className="contact-form__success__reset-button clickable"
-						onClick={resetForm}
-					>
+					<button type="button" className="contact-form__success__reset-button clickable" onClick={resetForm}>
 						Make a new inquiry
 					</button>
 				</div>

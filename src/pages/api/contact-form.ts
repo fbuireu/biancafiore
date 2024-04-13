@@ -30,10 +30,7 @@ export const POST: APIRoute = async ({ request }) => {
 			message: formData.get("message"),
 		});
 
-		if (!contactValidation.success)
-			throw new Error(
-				contactValidation.error?.errors.join(", ") || "Invalid data",
-			);
+		if (!contactValidation.success) throw new Error(contactValidation.error?.errors.join(", ") || "Invalid data");
 
 		const { data } = contactValidation;
 		const database = getFirestore(app);
@@ -50,9 +47,7 @@ export const POST: APIRoute = async ({ request }) => {
 		const { data: emailData, error: emailError } = await sendEmail(data);
 
 		if (emailError && !emailData) {
-			throw new Error(
-				`Something went wrong sending the email. Error: ${emailError.message} (${emailError.name})`,
-			);
+			throw new Error(`Something went wrong sending the email. Error: ${emailError.message} (${emailError.name})`);
 		}
 
 		return new Response(null, { status: 200 });

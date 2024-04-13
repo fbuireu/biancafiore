@@ -11,6 +11,9 @@
 		"clientKind": "git",
 		"defaultBranch": "main"
 	},
+	"formatter": {
+		"lineWidth": 120
+	},
 	"linter": {
 		"rules": {
 			"recommended": true,

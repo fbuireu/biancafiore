@@ -1,21 +1,9 @@
 import React, { type CSSProperties, type ReactNode } from "react";
 import "./city-card.css";
-import {
-	CityPeriod,
-	type CityPeriodProps,
-} from "src/ui/components/molecules/cityCard/components/cityPeriod";
-import {
-	CityName,
-	type CityTitleProps,
-} from "src/ui/components/molecules/cityCard/components/cityName";
-import {
-	CityImage,
-	type CityImageProps,
-} from "@components/molecules/cityCard/components/cityImage";
-import {
-	CityDescription,
-	type CityDescriptionProps,
-} from "@components/molecules/cityCard/components/cityDescription";
+import { CityPeriod, type CityPeriodProps } from "src/ui/components/molecules/cityCard/components/cityPeriod";
+import { CityName, type CityTitleProps } from "src/ui/components/molecules/cityCard/components/cityName";
+import { CityImage, type CityImageProps } from "@components/molecules/cityCard/components/cityImage";
+import { CityDescription, type CityDescriptionProps } from "@components/molecules/cityCard/components/cityDescription";
 
 interface CityCardProps {
 	children: ReactNode;
@@ -36,13 +24,9 @@ export const CityCard = ({ children, index, numCards }: CityCardProps) => {
 };
 
 const Image = (props: CityImageProps) => <CityImage {...props} />;
-const Period = ({ children }: CityPeriodProps) => (
-	<CityPeriod>{children}</CityPeriod>
-);
+const Period = ({ children }: CityPeriodProps) => <CityPeriod>{children}</CityPeriod>;
 const Title = ({ children }: CityTitleProps) => <CityName>{children}</CityName>;
-const Description = ({ children }: CityDescriptionProps) => (
-	<CityDescription>{children}</CityDescription>
-);
+const Description = ({ children }: CityDescriptionProps) => <CityDescription>{children}</CityDescription>;
 
 CityCard.Period = Period;
 CityCard.Title = Title;

@@ -13,11 +13,9 @@ function getComputedStyleValue(property: string): string {
 
 function isIntersecting(element: HTMLElement): boolean {
 	const { HEADER: HEADER_SELECTOR } = SELECTORS;
-	const headerOffsetHeight =
-		(document.querySelector(HEADER_SELECTOR) as HTMLElement).offsetHeight / 2;
+	const headerOffsetHeight = (document.querySelector(HEADER_SELECTOR) as HTMLElement).offsetHeight / 2;
 	const threshold = element.offsetTop - headerOffsetHeight;
-	const sectionBottom =
-		element.offsetTop + element.offsetHeight - headerOffsetHeight;
+	const sectionBottom = element.offsetTop + element.offsetHeight - headerOffsetHeight;
 
 	return window.scrollY >= threshold && window.scrollY < sectionBottom;
 }
@@ -35,19 +33,11 @@ export function backgroundObserver(): void {
 	} = SELECTORS;
 
 	const HEADER = document.querySelector(HEADER_SELECTOR) as HTMLElement;
-	const LATEST_ARTICLES = document.querySelector(
-		LATEST_ARTICLES_SELECTOR,
-	) as HTMLElement;
-	const SITE_LOGO_SVG = document.querySelector(
-		SITE_LOGO_SVG_SELECTOR,
-	) as HTMLElement;
+	const LATEST_ARTICLES = document.querySelector(LATEST_ARTICLES_SELECTOR) as HTMLElement;
+	const SITE_LOGO_SVG = document.querySelector(SITE_LOGO_SVG_SELECTOR) as HTMLElement;
 	const SITE_LOGO = document.querySelector(SITE_LOGO_SELECTOR) as HTMLElement;
-	const HEADER_MENU_TEXT = document.querySelector(
-		HEADER_MENU_TEXT_SELECTOR,
-	) as HTMLElement;
-	const HEADER_MENU_OUTLINES = document.querySelectorAll(
-		HEADER_MENU_OUTLINES_SELECTOR,
-	) as unknown as HTMLElement[];
+	const HEADER_MENU_TEXT = document.querySelector(HEADER_MENU_TEXT_SELECTOR) as HTMLElement;
+	const HEADER_MENU_OUTLINES = document.querySelectorAll(HEADER_MENU_OUTLINES_SELECTOR) as unknown as HTMLElement[];
 	const isMenuOpen = SITE_LOGO.classList.contains("--is-menu-open");
 
 	if (!HEADER || !LATEST_ARTICLES || isMenuOpen) return;
@@ -56,15 +46,11 @@ export function backgroundObserver(): void {
 	if (hasIntersected) {
 		SITE_LOGO_SVG.style.fill = WHITE;
 		HEADER_MENU_TEXT.style.color = WHITE;
-		HEADER_MENU_OUTLINES.forEach(
-			(element) => (element.style.borderColor = WHITE),
-		);
+		HEADER_MENU_OUTLINES.forEach((element) => (element.style.borderColor = WHITE));
 	} else {
 		SITE_LOGO_SVG.style.fill = BLACK;
 		HEADER_MENU_TEXT.style.color = BLACK;
-		HEADER_MENU_OUTLINES.forEach(
-			(element) => (element.style.borderColor = BLACK),
-		);
+		HEADER_MENU_OUTLINES.forEach((element) => (element.style.borderColor = BLACK));
 	}
 }
 

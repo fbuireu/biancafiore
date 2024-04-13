@@ -11,9 +11,7 @@ interface TagProps {
 
 export async function getStaticPaths() {
 	const allPosts = await getCollection("articles");
-	const uniqueAuthors = [
-		...new Set(allPosts.flatMap((post) => post.data.author)),
-	];
+	const uniqueAuthors = [...new Set(allPosts.flatMap((post) => post.data.author))];
 	const uniqueTags = [...new Set(allPosts.flatMap((post) => post.data.tags))];
 
 	const tags = uniqueTags.map((tag) => ({

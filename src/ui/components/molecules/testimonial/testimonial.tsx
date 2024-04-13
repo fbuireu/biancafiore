@@ -25,24 +25,14 @@ interface TestimonialProps {
 export const Testimonial = ({ children }: TestimonialProps) => {
 	const { isActive } = useSwiperSlide();
 
-	return (
-		<article
-			className={`testimonial__content ${isActive ? `--is-active` : ``}`}
-		>
-			{children}
-		</article>
-	);
+	return <article className={`testimonial__content ${isActive ? `--is-active` : ``}`}>{children}</article>;
 };
 
 const Image = (props: TestimonialImageProps) => <TestimonialImage {...props} />;
 
-const Quote = ({ children }: TestimonialQuoteProps) => (
-	<TestimonialQuote>{children}</TestimonialQuote>
-);
+const Quote = ({ children }: TestimonialQuoteProps) => <TestimonialQuote>{children}</TestimonialQuote>;
 
-const Author = ({ children }: TestimonialAuthorProps) => (
-	<TestimonialAuthor>{children}</TestimonialAuthor>
-);
+const Author = ({ children }: TestimonialAuthorProps) => <TestimonialAuthor>{children}</TestimonialAuthor>;
 
 const Description = ({ children }: TestimonialDescriptionProps) => (
 	<TestimonialDescription>{children}</TestimonialDescription>

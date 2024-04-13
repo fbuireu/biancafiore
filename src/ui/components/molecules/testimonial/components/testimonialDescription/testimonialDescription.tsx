@@ -5,8 +5,6 @@ export interface TestimonialDescriptionProps {
 	children: ReactNode;
 }
 
-export const TestimonialDescription = ({
-	children,
-}: TestimonialDescriptionProps) => (
+export const TestimonialDescription = ({ children }: TestimonialDescriptionProps) => (
 	<p className="testimonial__description">{children}</p>
 );

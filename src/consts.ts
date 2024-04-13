@@ -7,10 +7,7 @@ export const CONTACT_DETAILS: Record<string, string> = {
 	ENCODED_BIANCA_EMAIL: btoa("biancamaria.fiore@gmail.com"),
 };
 
-export const WORLD_GLOBE_CONFIG: Record<
-	string,
-	number | boolean | string | object
-> = {
+export const WORLD_GLOBE_CONFIG: Record<string, number | boolean | string | object> = {
 	ANIMATION_DURATION: 500,
 	MOVEMENT_OFFSET: 20,
 	ZOOM_OFFSET: 0.1,

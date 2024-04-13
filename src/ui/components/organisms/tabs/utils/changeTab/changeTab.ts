@@ -8,15 +8,11 @@ const SELECTORS = {
 };
 
 function changeTab(tabId: Tab["id"]): void {
-	const tabs: NodeListOf<HTMLElement> = document.querySelectorAll(
-		SELECTORS.TAB,
-	);
+	const tabs: NodeListOf<HTMLElement> = document.querySelectorAll(SELECTORS.TAB);
 
 	tabs.forEach((tab) => {
 		const tabContentId = tab.dataset.target;
-		const tabContent: HTMLElement | null = document.querySelector(
-			`#${tabContentId}`,
-		);
+		const tabContent: HTMLElement | null = document.querySelector(`#${tabContentId}`);
 
 		if (!tabContent) return;
 
@@ -28,9 +24,7 @@ function changeTab(tabId: Tab["id"]): void {
 }
 
 export function initTabs(): void {
-	const tabs: NodeListOf<HTMLElement> = document.querySelectorAll(
-		SELECTORS.TAB,
-	);
+	const tabs: NodeListOf<HTMLElement> = document.querySelectorAll(SELECTORS.TAB);
 	tabs.forEach((tab) => {
 		tab.addEventListener("click", () => {
 			changeTab(tab.dataset.target || "");

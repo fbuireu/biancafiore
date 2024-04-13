@@ -2997,13 +2997,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/markdown-it@npm:^14.0.0":
-  version: 14.0.0
-  resolution: "@types/markdown-it@npm:14.0.0"
+"@types/markdown-it@npm:^14.0.1":
+  version: 14.0.1
+  resolution: "@types/markdown-it@npm:14.0.1"
   dependencies:
     "@types/linkify-it": "npm:*"
     "@types/mdurl": "npm:*"
-  checksum: 10c0/c37633088b3dbd1d6928cbe35a1246fb0d32842dd93f723797eaac0701300e0fa5ff34840d8d7dd1a1ab4f4e932bfd9aadb32e2dcdfd77a73b8fdc45b443f4a3
+  checksum: 10c0/d1f9fde06f6511d4518040fac296d14f2b3c42e00bb955545ef0db4e7063208f60ff7fc766305f66b539de4393f027dcdc83db53f5c0672ffd97c04409437b2c
   languageName: node
   linkType: hard
 
@@ -3715,9 +3715,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^4.6.0":
-  version: 4.6.0
-  resolution: "astro@npm:4.6.0"
+"astro@npm:^4.6.1":
+  version: 4.6.1
+  resolution: "astro@npm:4.6.1"
   dependencies:
     "@astrojs/compiler": "npm:^2.7.1"
     "@astrojs/internal-helpers": "npm:0.4.0"
@@ -3787,7 +3787,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/97d45b683d43d5d899ce2da25bb535bf9a22c1a7e26dcf25e8bfbbdaf1172f6640bb5d6f56a2087a913781523522e417e81d850e1aee85deba179623a64955f9
+  checksum: 10c0/142f2f01e185b863e1a3b0ecac81a6c8bcadc10bccc4f12c0a0161b013522d54369f7766c48761b2e4d47b5c17deabf7d46cd9ed0a71c4715468f789ce0833c6
   languageName: node
   linkType: hard
 
@@ -3877,12 +3877,12 @@ __metadata:
     "@hookform/resolvers": "npm:^3.3.4"
     "@testing-library/react": "npm:^15.0.1"
     "@testing-library/react-hooks": "npm:^8.0.1"
-    "@types/markdown-it": "npm:^14.0.0"
+    "@types/markdown-it": "npm:^14.0.1"
     "@types/node": "npm:^20.12.7"
     "@types/react": "npm:^18.2.77"
     "@types/react-dom": "npm:^18.2.25"
     "@types/three": "npm:^0.163.0"
-    astro: "npm:^4.6.0"
+    astro: "npm:^4.6.1"
     firebase: "npm:^10.11.0"
     firebase-admin: "npm:^12.0.0"
     gsap: "npm:^3.12.5"

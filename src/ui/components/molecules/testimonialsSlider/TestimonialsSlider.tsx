@@ -1,12 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-	A11y,
-	Keyboard,
-	Navigation,
-	Pagination,
-	Virtual,
-} from "swiper/modules";
+import { A11y, Keyboard, Navigation, Pagination, Virtual } from "swiper/modules";
 import { Testimonial } from "@components/molecules/testimonial";
 import type { SwiperOptions } from "swiper/types";
 import { TestimonialsNavigation } from "src/ui/components/molecules/testimonialsSlider/components/testimonialsNavigation";
@@ -46,29 +40,19 @@ export const TestimonialsSlider = () => {
 					<Testimonial>
 						<Testimonial.Author>Ferran Buireu</Testimonial.Author>
 						<Testimonial.Quote>
-							Careen red ensign marooned Pirate Round Buccaneer spirits yard
-							Corsair pink aye. Galleon scuppers gabion lanyard trysail fluke to
-							go on account Sea Legs Brethren of the Coast keelhaul. Tender
-							topsail cable cog Yellow Jack fathom broadside snow clipper
-							quarter.
+							Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
+							lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
+							Yellow Jack fathom broadside snow clipper quarter.
 						</Testimonial.Quote>
-						<Testimonial.Image
-							src="https://via.placeholder.com/150"
-							alt="alt"
-						/>
+						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
 						<Testimonial.Description>role</Testimonial.Description>
 					</Testimonial>
 				</SwiperSlide>
 				<SwiperSlide>
 					<Testimonial>
 						<Testimonial.Author>Ferran Buireu</Testimonial.Author>
-						<Testimonial.Quote>
-							Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla
-						</Testimonial.Quote>
-						<Testimonial.Image
-							src="https://via.placeholder.com/150"
-							alt="alt"
-						/>
+						<Testimonial.Quote>Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla</Testimonial.Quote>
+						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
 						<Testimonial.Description>Role</Testimonial.Description>
 					</Testimonial>
 				</SwiperSlide>
@@ -76,16 +60,11 @@ export const TestimonialsSlider = () => {
 					<Testimonial>
 						<Testimonial.Author>Ferran Buireu</Testimonial.Author>
 						<Testimonial.Quote>
-							Careen red ensign marooned Pirate Round Buccaneer spirits yard
-							Corsair pink aye. Galleon scuppers gabion lanyard trysail fluke to
-							go on account Sea Legs Brethren of the Coast keelhaul. Tender
-							topsail cable cog Yellow Jack fathom broadside snow clipper
-							quarter.
+							Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
+							lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
+							Yellow Jack fathom broadside snow clipper quarter.
 						</Testimonial.Quote>
-						<Testimonial.Image
-							src="https://via.placeholder.com/150"
-							alt="alt"
-						/>
+						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
 						<Testimonial.Description>Role</Testimonial.Description>
 					</Testimonial>
 				</SwiperSlide>
@@ -93,16 +72,11 @@ export const TestimonialsSlider = () => {
 					<Testimonial>
 						<Testimonial.Author>Ferran Buireu</Testimonial.Author>
 						<Testimonial.Quote>
-							Careen red ensign marooned Pirate Round Buccaneer spirits yard
-							Corsair pink aye. Galleon scuppers gabion lanyard trysail fluke to
-							go on account Sea Legs Brethren of the Coast keelhaul. Tender
-							topsail cable cog Yellow Jack fathom broadside snow clipper
-							quarter.
+							Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
+							lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
+							Yellow Jack fathom broadside snow clipper quarter.
 						</Testimonial.Quote>
-						<Testimonial.Image
-							src="https://via.placeholder.com/150"
-							alt="alt"
-						/>
+						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
 						<Testimonial.Description>Role</Testimonial.Description>
 					</Testimonial>
 				</SwiperSlide>
@@ -110,16 +84,11 @@ export const TestimonialsSlider = () => {
 					<Testimonial>
 						<Testimonial.Author>Ferran Buireu</Testimonial.Author>
 						<Testimonial.Quote>
-							Careen red ensign marooned Pirate Round Buccaneer spirits yard
-							Corsair pink aye. Galleon scuppers gabion lanyard trysail fluke to
-							go on account Sea Legs Brethren of the Coast keelhaul. Tender
-							topsail cable cog Yellow Jack fathom broadside snow clipper
-							quarter.
+							Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
+							lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
+							Yellow Jack fathom broadside snow clipper quarter.
 						</Testimonial.Quote>
-						<Testimonial.Image
-							src="https://via.placeholder.com/150"
-							alt="alt"
-						/>
+						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
 						<Testimonial.Description>Role</Testimonial.Description>
 					</Testimonial>
 				</SwiperSlide>
@@ -127,16 +96,11 @@ export const TestimonialsSlider = () => {
 					<Testimonial>
 						<Testimonial.Author>Ferran Buireu</Testimonial.Author>
 						<Testimonial.Quote>
-							Careen red ensign marooned Pirate Round Buccaneer spirits yard
-							Corsair pink aye. Galleon scuppers gabion lanyard trysail fluke to
-							go on account Sea Legs Brethren of the Coast keelhaul. Tender
-							topsail cable cog Yellow Jack fathom broadside snow clipper
-							quarter.
+							Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
+							lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
+							Yellow Jack fathom broadside snow clipper quarter.
 						</Testimonial.Quote>
-						<Testimonial.Image
-							src="https://via.placeholder.com/150"
-							alt="alt"
-						/>
+						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
 						<Testimonial.Description>Role</Testimonial.Description>
 					</Testimonial>
 				</SwiperSlide>
