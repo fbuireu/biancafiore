@@ -8,6 +8,14 @@ import million from "million/compiler";
 
 export default defineConfig({
 	site: "https://biancafiore.me",
+	vite: {
+		ssr: {
+			external: ["firebase-admin"],
+		},
+		build: {
+			external: ["firebase-admin"],
+		},
+	},
 	integrations: [
 		mdx(),
 		sitemap(),

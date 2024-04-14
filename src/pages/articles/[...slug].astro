@@ -53,7 +53,7 @@ const relatedArticles = articles
       {title}
     </h1>
     <p class="article__author">by <a href={`/tags/${slugify(author)}`}>{author}</a></p>
-    <time class="article__publish-date font-sans-serif" datetime={new Date(publishDate)}>
+    <time class="article__publish-date font-sans-serif" datetime={String(publishDate)}>
       {publishDate.toLocaleDateString('en', DEFAULT_DATE_FORMAT)}
     </time>
     {

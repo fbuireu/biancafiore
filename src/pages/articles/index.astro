@@ -1,4 +1,5 @@
 ---
+// @ts-nocheck
 import { getCollection } from "astro:content";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { Image } from "astro:assets";
@@ -17,13 +18,14 @@ enum ArticleType {
 const articles = await getCollection("articles");
 const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
 
-articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf());
+articles.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf());
+
 const {
 	body: featuredArticleBody,
 	data: featuredArticle,
 	slug: featuredArticleSlug,
-} = articles.find((article) => article.data.isFeatured && article.data.featuredImage) ??
-articles.find((article) => article.data.featuredImage);
+} = articles.find((article) => article.data?.isFeatured && article.data?.featuredImage) ??
+articles.find((article) => article.data?.featuredImage);
 
 const parser: MarkdownIt = MarkdownIt("default", {});
 

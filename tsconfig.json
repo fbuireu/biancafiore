@@ -1,8 +1,8 @@
 {
-	"include": ["src"],
 	"extends": ["astro/tsconfigs/base", "./tsconfig.paths.json"],
 	"compilerOptions": {
 		"strict": true,
+		"strictNullChecks": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,

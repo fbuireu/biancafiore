@@ -10,6 +10,8 @@ interface CustomError {
 	status?: number;
 }
 
+const database = getFirestore(app);
+
 const contactFormSchema = z.object({
 	id: z.string(),
 	name: z.string(),
@@ -33,7 +35,7 @@ export const POST: APIRoute = async ({ request }) => {
 		if (!contactValidation.success) throw new Error(contactValidation.error?.errors.join(", ") || "Invalid data");
 
 		const { data } = contactValidation;
-		const database = getFirestore(app);
+
 		const databaseRef = database.collection("contacts");
 
 		await databaseRef.add({

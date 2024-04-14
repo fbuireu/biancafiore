@@ -37,11 +37,12 @@ const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props as
   <meta property="twitter:image" content={new URL(image, Astro.url)} />
 </head>
 <script
+    is:inline
   type="text/partytown"
   src=`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID}`
 >
 </script>
-<script type="text/partytown">
+<script     is:inline type="text/partytown" >
   window.dataLayer = window.dataLayer || [];
 
   function gtag() {
