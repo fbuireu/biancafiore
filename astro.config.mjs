@@ -1,18 +1,15 @@
-import { defineConfig } from "astro/config";
-import mdx from "@astrojs/mdx";
-import sitemap from "@astrojs/sitemap";
-import react from "@astrojs/react";
-import partytown from "@astrojs/partytown";
-import cloudflare from "@astrojs/cloudflare";
-import million from "million/compiler";
+import { defineConfig } from 'astro/config';
+import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
+import react from '@astrojs/react';
+import partytown from '@astrojs/partytown';
+import cloudflare from '@astrojs/cloudflare';
+import million from 'million/compiler';
 
 export default defineConfig({
 	site: "https://biancafiore.me",
 	vite: {
 		ssr: {
-			external: ["firebase-admin"],
-		},
-		build: {
 			external: ["firebase-admin"],
 		},
 	},
