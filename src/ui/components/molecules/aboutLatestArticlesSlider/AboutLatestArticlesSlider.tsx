@@ -3,7 +3,6 @@ import { AboutLatestArticlesSliderNavigation } from "@components/molecules/about
 import { createExcerpt } from "@shared/utils/createExcerpt";
 import { slugify } from "@shared/utils/slugify";
 import MarkdownIt from "markdown-it";
-import React from "react";
 import { DEFAULT_DATE_FORMAT } from "src/consts.ts";
 import { A11y, Keyboard, Navigation, Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";

@@ -1,6 +1,6 @@
-import React, { type ReactNode } from "react";
 import "./testimonial-quote.css";
 import doubleQuote from "@assets/images/svg/double-quote.svg";
+import type { ReactNode } from "react";
 
 export interface TestimonialQuoteProps {
 	children: ReactNode;

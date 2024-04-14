@@ -1,4 +1,3 @@
-import React, { type ReactNode } from "react";
 import "./testimonial.css";
 import {
 	TestimonialImage,
@@ -17,6 +16,7 @@ import {
 	type TestimonialAuthorProps,
 } from "src/ui/components/molecules/testimonial/components/testimonialAuthor";
 import { useSwiperSlide } from "swiper/react";
+import type { ReactNode } from "react";
 
 interface TestimonialProps {
 	children: ReactNode;

@@ -1,5 +1,3 @@
-import React from "react";
-
 export const Pin = () => {
 	return (
 		<svg viewBox="-4 0 36 36">

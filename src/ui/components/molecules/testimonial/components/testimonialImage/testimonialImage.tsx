@@ -1,4 +1,3 @@
-import React from "react";
 import "./testimonial-image.css";
 
 export type TestimonialImageProps = Pick<HTMLImageElement, "src" | "alt">;

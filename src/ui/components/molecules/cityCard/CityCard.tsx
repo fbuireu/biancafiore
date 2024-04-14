@@ -1,9 +1,9 @@
-import React, { type CSSProperties, type ReactNode } from "react";
 import "./city-card.css";
 import { CityPeriod, type CityPeriodProps } from "src/ui/components/molecules/cityCard/components/cityPeriod";
 import { CityName, type CityTitleProps } from "src/ui/components/molecules/cityCard/components/cityName";
 import { CityImage, type CityImageProps } from "@components/molecules/cityCard/components/cityImage";
 import { CityDescription, type CityDescriptionProps } from "@components/molecules/cityCard/components/cityDescription";
+import type { CSSProperties, ReactNode } from "react";
 
 interface CityCardProps {
 	children: ReactNode;

@@ -1,5 +1,5 @@
-import React, { type ReactNode } from "react";
 import "./city-period.css";
+import type { ReactNode } from "react";
 
 export interface CityPeriodProps {
 	children: ReactNode;

@@ -22,13 +22,7 @@ const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
 const parser: MarkdownIt = MarkdownIt("default", {});
 const articles = await getCollection("articles");
-articles
-	.sort(
-		(a, b) =>
-			new Date(b.data.publishDate).valueOf() -
-			new Date(a.data.publishDate).valueOf(),
-	)
-	.splice(limit);
+articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()).splice(limit);
 const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
 ---
 
@@ -55,7 +49,7 @@ const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
               {article.featuredImage && (
                 <Image
                   class="latest__article__item__featured-image"
-                  src={images[`${article.featuredImage}`]()}
+                   src={images[`${article.featuredImage}`]() as ImageType}
                   alt={article.title}
                   transition:name="featured-image"
                 />
@@ -68,13 +62,13 @@ const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
                 by <a href={`/tags/${slugify(article.author)}`}>{article.author}</a>
               </p>
               <p class="latest__article__excerpt">{excerpt}</p>
-              <ul class="latest__article__item__tags__list">
-                {article.tags?.map((tag) => (
-                  <a class="latest__article__item__tag" href={`/tags/${slugify(tag)}`}>
-                    #{tag}
-                  </a>
-                ))}
-              </ul>
+              <!--<ul class="latest__article__item__tags__list">-->
+              <!--  {article.tags?.map((tag) => (-->
+              <!--    <a class="latest__article__item__tag" href={`/tags/${slugify(tag)}`}>-->
+              <!--      #{tag}-->
+              <!--    </a>-->
+              <!--  ))}-->
+              <!--</ul>-->
             </article>
           </li>
         );

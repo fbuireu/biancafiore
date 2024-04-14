@@ -13,7 +13,7 @@ const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
       <p>Lorem ipsum dolor sit amet</p>
     </div>
     <div class="project-image" slot="project-image">
-      <Image src={images['/src/assets/images/jpg/stories-of-impact.jpg']()} alt="Stories of Impact" />
+      <Image src={images['/src/assets/images/jpg/stories-of-impact.jpg']() as ImageType} alt="Stories of Impact" />
     </div>
   </ProjectSection>
   <ProjectSection id="reports-and-thought-leadership">
@@ -22,7 +22,7 @@ const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
       <p>Lorem ipsum dolor sit amet</p>
     </div>
     <div class="project-image" slot="project-image">
-      <Image src={images['/src/assets/images/jpg/thought-leadership.jpg']()} alt="Reports & Thought Leadership" />
+      <Image src={images['/src/assets/images/jpg/thought-leadership.jpg']() as ImageType} alt="Reports & Thought Leadership" />
     </div>
   </ProjectSection>
   <ProjectSection id="creative-direction">
@@ -31,7 +31,7 @@ const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
       <p>Lorem ipsum dolor sit amet</p>
     </div>
     <div class="project-image" slot="project-image">
-      <Image src={images['/src/assets/images/jpg/creative-direction.jpg']()} alt="Creative Direction" />
+      <Image src={images['/src/assets/images/jpg/creative-direction.jpg']() as ImageType} alt="Creative Direction" />
     </div>
   </ProjectSection>
   <ProjectSection id="web-content">
@@ -40,7 +40,7 @@ const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
       <p>Lorem ipsum dolor sit amet</p>
     </div>
     <div class="project-image" slot="project-image">
-      <Image src={images['/src/assets/images/jpg/web-content.jpg']()} alt="Web Content" />
+      <Image src={images['/src/assets/images/jpg/web-content.jpg']() as ImageType} alt="Web Content" />
     </div>
   </ProjectSection>
 </BaseLayout>

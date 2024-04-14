@@ -1,4 +1,3 @@
-import React from "react";
 import { CityCard } from "@components/molecules/cityCard";
 import "./cities.css";
 

@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useRef } from "react";
+import { memo, useCallback, useRef } from "react";
 import Globe, { type GlobeMethods } from "react-globe.gl";
 import * as Three from "three";
 import countries from "@data/countries.geojson.json";
@@ -75,12 +75,13 @@ const WorldGlobe = memo(({ cities, width = 680 }: GlobeAllCitiesProps) => {
 			const { lng: currentLongitude, altitude: currentZoom } = worldGlobeReference.current.pointOfView();
 
 			if (type === MovementType.MOVE) {
-				const offset = movementDirection === Direction.CLOCKWISE ? MOVEMENT_OFFSET : -MOVEMENT_OFFSET;
+				const offset = movementDirection === Direction.CLOCKWISE ? (MOVEMENT_OFFSET as number) : -MOVEMENT_OFFSET;
 				const newLongitude = currentLongitude + offset;
-				worldGlobeReference.current.pointOfView({ lng: newLongitude }, ANIMATION_DURATION);
+				worldGlobeReference.current.pointOfView({ lng: newLongitude }, ANIMATION_DURATION as number);
 			} else if (type === MovementType.ZOOM) {
-				const newZoom = movementDirection === Zoom.IN ? currentZoom - ZOOM_OFFSET : currentZoom + ZOOM_OFFSET;
-				worldGlobeReference.current.pointOfView({ altitude: newZoom }, ANIMATION_DURATION);
+				const newZoom =
+					movementDirection === Zoom.IN ? currentZoom - (ZOOM_OFFSET as number) : currentZoom + (ZOOM_OFFSET as number);
+				worldGlobeReference.current.pointOfView({ altitude: newZoom }, ANIMATION_DURATION as number);
 			}
 		},
 		[worldGlobeReference],

@@ -1,4 +1,3 @@
-import React from "react";
 import "./city-image.css";
 
 export type CityImageProps = Pick<HTMLImageElement, "src" | "alt">;

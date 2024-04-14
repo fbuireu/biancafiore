@@ -1,11 +1,11 @@
-import type { CityValue } from "@components/atoms/worldGlobe";
+import type { City } from "@components/atoms/worldGlobe";
 
 interface CalculateCenterReturnType {
 	latitude: number;
 	longitude: number;
 }
 
-export function calculateCenter(data: CityValue[]): CalculateCenterReturnType {
+export function calculateCenter(data: City[]): CalculateCenterReturnType {
 	const latitudes = data.map((point) => Number.parseFloat(point.latitude));
 	const longitudes = data.map((point) => Number.parseFloat(point.longitude));
 

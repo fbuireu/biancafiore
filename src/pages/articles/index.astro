@@ -45,7 +45,7 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
         <a href={`/articles/${featuredArticleSlug}`}>
           <Image
             class="featured-article__image"
-            src={images[featuredArticle.featuredImage]()}
+            src={images[featuredArticle.featuredImage]() as ImageType}
             alt={featuredArticle.title}
           />
         </a>
@@ -117,7 +117,7 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
                 }`}
               >
                 {article.featuredImage && (
-                  <Image class="article__card__image" src={images[article.featuredImage]()} alt={article.title} />
+                  <Image class="article__card__image" src={images[article.featuredImage]() as ImageType} alt={article.title} />
                 )}
                 <time class="article__card__publish-date font-sans-serif" datetime={publishedDate}>
                   {publishedDate}
@@ -127,7 +127,7 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
                   by <a href={`/tags/${slugify(article.author)}`}>{article.author}</a>
                 </p>
                 <p class="article__card__description">{excerpt}</p>
-                {article.tags?.length > 0 && (
+                {(articles.tags && article.tags?.length > 0) && (
                   <ul class="article__card__tags__list">
                     {article.tags.map((tag) => (
                       <a class="article__card__tag__item" href={`/tags/${slugify(tag)}`}>

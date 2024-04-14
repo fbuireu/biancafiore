@@ -1,8 +1,7 @@
 {
 	"include": ["src"],
-	"extends": ["astro/tsconfigs/strict", "./tsconfig.paths.json"],
+	"extends": ["astro/tsconfigs/base", "./tsconfig.paths.json"],
 	"compilerOptions": {
-		"strictNullChecks": true,
 		"strict": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
@@ -14,6 +13,11 @@
 		"target": "esnext",
 		"module": "esnext",
 		"jsxImportSource": "react",
-		"jsx": "react-jsx"
+		"jsx": "react-jsx",
+		"plugins": [
+			{
+				"name": "@astrojs/ts-plugin"
+			}
+		]
 	}
 }

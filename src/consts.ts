@@ -7,7 +7,25 @@ export const CONTACT_DETAILS: Record<string, string> = {
 	ENCODED_BIANCA_EMAIL: btoa("biancamaria.fiore@gmail.com"),
 };
 
-export const WORLD_GLOBE_CONFIG: Record<string, number | boolean | string | object> = {
+interface MeshPhongMaterialConfig {
+	TRANSPARENT: boolean;
+	COLOR: string;
+	OPACITY: number;
+}
+
+interface WorldGlobeConfig {
+	ANIMATION_DURATION: number;
+	MOVEMENT_OFFSET: number;
+	ZOOM_OFFSET: number;
+	POINTS_MERGE: boolean;
+	ANIMATE_IN: boolean;
+	SHOW_ATMOSPHERE: boolean;
+	BACKGROUND_COLOR: string;
+	HEXAGON_POLYGON_COLOR: string;
+	MESH_PHONG_MATERIAL_CONFIG: MeshPhongMaterialConfig;
+}
+
+export const WORLD_GLOBE_CONFIG: WorldGlobeConfig = {
 	ANIMATION_DURATION: 500,
 	MOVEMENT_OFFSET: 20,
 	ZOOM_OFFSET: 0.1,

@@ -1,4 +1,3 @@
-import React from "react";
 import "./testimonials-navigation.css";
 import { useSwiper } from "swiper/react";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";

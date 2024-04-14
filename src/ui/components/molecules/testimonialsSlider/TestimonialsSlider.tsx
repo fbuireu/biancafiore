@@ -1,4 +1,3 @@
-import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Keyboard, Navigation, Pagination, Virtual } from "swiper/modules";
 import { Testimonial } from "@components/molecules/testimonial";
