@@ -30,7 +30,7 @@ const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
   <h3 class="latest-articles__title section-title">
     Fresh from <a class="latest-articles__title__link clickable" href="/articles">the blog</a>
   </h3>
-  <ul class="latest__articles__list common-wrapper flex row-nowrap justify-space-between">
+  <ul class="latest__articles__list common-wrapper flex row-wrap justify-space-between">
     {
       articles.map(({ slug, data: article, ...content }) => {
         const { excerpt } = createExcerpt({ parser, content: content.body });

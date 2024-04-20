@@ -7,15 +7,15 @@ interface ParallaxParams {
 	movement: number;
 }
 
-const MOVEMENT = 30;
-
 export function initializeParallax() {
 	const WELCOME = document.querySelector(".welcome") as HTMLElement;
 
 	if (!(WELCOME instanceof HTMLElement)) return;
 
 	WELCOME.addEventListener("mousemove", (event) => {
-		attachParallax({ event, target: ".welcome__image", movement: MOVEMENT });
+		attachParallax({ event, target: ".welcome__image", movement: 30 });
+		attachParallax({ event, target: ".welcome__text__section.--left", movement: 50 });
+		attachParallax({ event, target: ".welcome__text__section.--right", movement: -30 });
 	});
 
 	function attachParallax({ event, target, movement }: ParallaxParams) {

@@ -1,72 +1,90 @@
 @layer welcome {
-  .welcome {
-    display: grid;
-    grid-template-areas: 'LeftGreeting WelcomeImage RightGreeting';
-    grid-template-columns: 1fr 1fr 1fr;
-  }
+    .welcome {
+        display: grid;
+        grid: 'LeftGreeting WelcomeImage RightGreeting'  auto / 1fr 1fr 1fr;
 
-  .welcome__image {
-    grid-area: WelcomeImage;
-    height: auto;
-    place-self: center;
-    width: 100%;
-  }
-
-  .welcome__text__section {
-    align-self: center;
-    color: var(--neutral-main);
-    text-align: center;
-
-    &.--right {
-      display: grid;
-      justify-self: start;
-      margin-left: -3rem;
-      translate: 0 4rem;
-      z-index: 10;
+        @media (max-width: 960px) {
+            grid: 'LeftGreeting LeftGreeting LeftGreeting' auto
+            'WelcomeImage WelcomeImage WelcomeImage' auto
+            'RightGreeting RightGreeting RightGreeting' auto / 1fr;
+        }
     }
 
-    &.--left {
-      grid-area: LeftGreeting;
-      justify-self: end;
-      margin-right: -1.5rem;
-      translate: 0 -100px;
-      z-index: 10;
-    }
-  }
+    .welcome__image {
+        grid-area: WelcomeImage;
+        height: auto;
+        place-self: center;
+        width: 100%;
 
-  .welcome__text__title {
-    text-transform: uppercase;
-  }
-
-  .welcome__text__section.--right .welcome__text__title {
-    text-align: start;
-  }
-
-  .welcome__text__body {
-    align-self: center;
-    padding-inline-start: 3.5rem;
-    text-align: start;
-  }
-
-  @supports (animation-timeline: scroll(root block)) {
-    .welcome__text__section.--left .welcome__text__title {
-      --origin-y: -200cqi;
-      animation: float-up linear;
-      animation-timeline: scroll(root block);
+        @media (max-width: 960px) and (min-width: 575px) {
+            width: 50%;
+        }
     }
 
-    .welcome__text__section.--right {
-      .welcome__text__title {
-        --origin-y: 70cqi;
-        animation: float-up linear;
-        animation-timeline: scroll(root block);
-      }
+    .welcome__text__section {
+        align-self: center;
+        color: var(--neutral-main);
+        text-align: center;
 
-      .welcome__text__body {
-        --origin-y: -200cqi;
-        animation: float-up linear;
-        animation-timeline: scroll(root block);
-      }
+        &.--right {
+            display: grid;
+            justify-self: start;
+            margin-left: -3rem;
+            translate: 0 4rem;
+            z-index: 10;
+
+            @media (max-width: 960px) {
+                justify-self: start;
+                margin-left: 0;
+            }
+        }
+
+        &.--left {
+            grid-area: LeftGreeting;
+            justify-self: end;
+            margin-right: -1.5rem;
+            translate: 0 -100px;
+            z-index: 10;
+            @media (max-width: 960px) {
+                justify-self: start;
+                translate: 0;
+            }
+        }
     }
-  }
+
+    .welcome__text__title {
+        text-transform: uppercase;
+    }
+
+    .welcome__text__section.--right .welcome__text__title {
+        text-align: start;
+    }
+
+    .welcome__text__body {
+        align-self: center;
+        padding-inline-start: 3.5rem;
+        text-align: start;
+    }
+
+    @supports (animation-timeline: scroll(root block)) {
+        .welcome__text__section.--left .welcome__text__title {
+            --origin-y: -200cqi;
+            animation: float-up linear;
+            animation-timeline: scroll(root block);
+        }
+
+        .welcome__text__section.--right {
+            .welcome__text__title {
+                --origin-y: 70cqi;
+                animation: float-up linear;
+                animation-timeline: scroll(root block);
+            }
+
+            .welcome__text__body {
+                --origin-y: -200cqi;
+                animation: float-up linear;
+                animation-timeline: scroll(root block);
+            }
+        }
+    }
 }

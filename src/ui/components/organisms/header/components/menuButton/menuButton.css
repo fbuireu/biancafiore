@@ -16,6 +16,11 @@
         position: relative;
         transition: color 0.2s;
         translate: 5% 0;
+
+        @media (min-width: 575px) {
+            margin-right: 1rem;
+
+        }
     }
 
     .header__menu-button__outline {

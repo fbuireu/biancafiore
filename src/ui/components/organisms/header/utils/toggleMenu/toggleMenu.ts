@@ -1,4 +1,4 @@
-import { Power2, Power3, Power4, gsap } from "gsap";
+import { gsap, Power2, Power3, Power4 } from "gsap";
 import { backgroundObserver } from "src/ui/components/organisms/header/utils/backgroundObserver";
 
 const ANIMATION_CONFIG = {
@@ -60,11 +60,16 @@ export function toggleMenu() {
 
 	toggleMenuItems();
 
-	function updateButtonContent() {
+	function updateButton() {
 		if (!MENU_TEXT) return;
 		toggleMenuText = isMenuOpen ? "Close" : "Menu";
 		const timeout = isMenuOpen ? 300 : 0;
-		setTimeout(() => (MENU_TEXT.textContent = toggleMenuText), timeout);
+
+		document.documentElement.style.overflow = isMenuOpen ? "hidden" : "initial";
+
+		setTimeout(() => {
+			MENU_TEXT.textContent = toggleMenuText;
+		}, timeout);
 	}
 
 	function toggleMenuItems() {
@@ -82,7 +87,7 @@ export function toggleMenu() {
 			ease: POWER4_IN_OUT,
 			duration: 1,
 		});
-		timeline.add(() => updateButtonContent(), "<");
+		timeline.add(() => updateButton(), "<");
 		timeline.to(
 			BUTTON_OUTLINE,
 			{

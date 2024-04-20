@@ -34,6 +34,13 @@
         & > * {
             color: var(--white);
         }
+
+        @media (max-width: 1024px) {
+            max-width: calc(100% / 2 - 1rem);
+        }
+        @media (max-width: 720px) {
+            max-width: 100%;
+        }
     }
 
     .latest__article__link-card {
