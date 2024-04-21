@@ -1980,17 +1980,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource-variable/nunito-sans@npm:^5.0.13":
-  version: 5.0.13
-  resolution: "@fontsource-variable/nunito-sans@npm:5.0.13"
-  checksum: 10c0/2c165510428092d66351f8b603a4cdfcb2a708456f035e6a28af2b8a6716fde21cd597e6fc5dd57659fd4a8420414fb8acb1dc71f08b8ce0d6940383bc125256
+"@fontsource-variable/nunito-sans@npm:^5.0.14":
+  version: 5.0.14
+  resolution: "@fontsource-variable/nunito-sans@npm:5.0.14"
+  checksum: 10c0/57fd9cde0eed73b05506a9ccc36099d839cdfe1c7e1c463d47db768cbe4f6d60606e449bacabfe2680db6d4e6a070d28c0fe3157ff4be55c2f835c56697b758d
   languageName: node
   linkType: hard
 
-"@fontsource/baskervville@npm:^5.0.19":
-  version: 5.0.19
-  resolution: "@fontsource/baskervville@npm:5.0.19"
-  checksum: 10c0/08de95df71fc28f89d340dc996a8aff59a876ae7ce48f16904605d8526728e6e8d58ef8df2c1f5fb9a7d870f83e1f471abd083acd492465bf41083b00c7d1a62
+"@fontsource/baskervville@npm:^5.0.20":
+  version: 5.0.20
+  resolution: "@fontsource/baskervville@npm:5.0.20"
+  checksum: 10c0/f9ff0622d7265ca8f423258e88bbed51f45b63e083b5136bd3688d2656f4f64b016d69d0c9334585da20f0a5e4894095b3b76c6cbe39daf8db205f7c0f54efc3
   languageName: node
   linkType: hard
 
@@ -3662,8 +3662,8 @@ __metadata:
     "@biomejs/biome": "npm:1.7.0"
     "@commitlint/cli": "npm:^19.2.2"
     "@commitlint/config-conventional": "npm:^19.2.2"
-    "@fontsource-variable/nunito-sans": "npm:^5.0.13"
-    "@fontsource/baskervville": "npm:^5.0.19"
+    "@fontsource-variable/nunito-sans": "npm:^5.0.14"
+    "@fontsource/baskervville": "npm:^5.0.20"
     "@hookform/resolvers": "npm:^3.3.4"
     "@testing-library/react": "npm:^15.0.2"
     "@testing-library/react-hooks": "npm:^8.0.1"

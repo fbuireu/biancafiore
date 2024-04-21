@@ -34,7 +34,7 @@
             z-index: 10;
 
             @media (max-width: 960px) {
-                justify-self: start;
+                justify-items: end;
                 margin-left: 0;
             }
         }
@@ -64,6 +64,10 @@
         align-self: center;
         padding-inline-start: 3.5rem;
         text-align: start;
+
+        @media (max-width: 960px) {
+            text-align: end;
+        }
     }
 
     @supports (animation-timeline: scroll(root block)) {
