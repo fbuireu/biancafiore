@@ -11,20 +11,24 @@
         transition: top 0.3s linear 1.75s,
         scale 0.2s linear 0.3s,
         transform 0.2s ease-out;
-        width: 307px;
+        width: fit-content;
         z-index: 20;
 
         svg {
             transition: top 0.3s ease-out 1.75s,
             scale 0.2s linear;
+
+            @media (max-width: 525px) {
+                width: 75%;
+            }
         }
 
         :not(.--is-menu-open) svg {
             scale: 0.85;
         }
 
-        @media (max-width: 720px) {
-            width: fit-content;
+        @media (max-width: 525px) {
+            inset: auto 0;
         }
     }
 }

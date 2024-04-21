@@ -8,8 +8,6 @@
     }
 
     .my-work__item {
-        container-name: sidebar;
-        container-type: inline-size;
         max-width: calc(100% / 4 - 1rem);
         width: 100%;
 
@@ -49,6 +47,13 @@
         }
         @media (max-width: 720px) {
             max-width: 100%;
+            
+            &:nth-child(1),
+            &:nth-child(2),
+            &:nth-child(3),
+            &:nth-child(4) {
+                margin-top: 0;
+            }
         }
     }
 
