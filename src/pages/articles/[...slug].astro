@@ -31,7 +31,7 @@ const { featuredImage, author, title, publishDate, tags } = currentArticle.data;
 const { Content } = await currentArticle.render();
 const relatedArticles = articles
 	.filter(({ data }) => data.tags?.some((tag) => data.title !== currentArticle.data.title && tags?.includes(tag)))
-	.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf())
+	.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
 	.splice(0, MAX_RELATED_ARTICLES);
 ---
 
