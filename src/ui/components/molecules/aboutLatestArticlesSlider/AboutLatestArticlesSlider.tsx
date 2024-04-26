@@ -45,7 +45,6 @@ const SLIDER_CONFIG: SwiperOptions = {
 };
 const parser: MarkdownIt = MarkdownIt("default", {});
 
-// todo: isolate and use composition
 export const AboutLatestArticlesSlider = ({ articles }: AboutLatestArticlesSLiderProps) => {
 	return (
 		<div className="about__latest-articles__slider">

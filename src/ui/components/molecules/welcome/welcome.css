@@ -36,6 +36,7 @@
             @media (max-width: 960px) {
                 justify-items: end;
                 margin-left: 0;
+                translate: 0;
             }
         }
 
@@ -67,6 +68,10 @@
 
         @media (max-width: 960px) {
             text-align: end;
+        }
+        @media (max-width: 575px) {
+            padding-inline-start: 1rem;
+            text-align: start;
         }
     }
 

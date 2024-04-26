@@ -1,6 +1,10 @@
 @layer my-work {
     .my-work__title {
         margin-bottom: 4rem;
+
+        @media (max-width: 720px) {
+            margin-bottom: 0;
+        }
     }
 
     .my-work__content__list {
@@ -47,12 +51,12 @@
         }
         @media (max-width: 720px) {
             max-width: 100%;
-            
+
             &:nth-child(1),
             &:nth-child(2),
             &:nth-child(3),
             &:nth-child(4) {
-                margin-top: 0;
+                margin-top: 2rem;
             }
         }
     }
