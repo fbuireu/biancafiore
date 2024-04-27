@@ -2,7 +2,7 @@
     .testimonials__wrapper {
         background-color: var(--neutral-light-4);
         margin: 5rem 0;
-        
+
         @media (max-width: 960px) {
             margin: 0;
         }
@@ -27,5 +27,8 @@
         max-width: var(--grid-small);
         padding: 2rem 0;
         width: 100%;
+        @media (max-width: 960px) {
+            padding: 0;
+        }
     }
 }

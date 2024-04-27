@@ -75,11 +75,12 @@ const relatedArticles = articles
   {
     relatedArticles.length > 0 &&
     <section class="related-articles__wrapper">
-      <ul class="related-articles__list flex">
+      <h3 class="related-articles__title section-title">You might also like</h3>
+      <ul class="related-articles__list flex row-wrap">
         {relatedArticles.map((article) => (
-          <li class="related-articles__item">
+          <li class="related-articles__item flex">
               <a href={`/articles/${article.slug}`} class="related__article__link">
-                <h2 class="related__article__title">{article.data.title}</h2>
+                <h4 class="related__article__title">{article.data.title}</h4>
                 <p class="related__article__author">by {article.data?.author}</p>
               </a>
           </li>

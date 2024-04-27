@@ -17,6 +17,7 @@
         letter-spacing: 0.5rem;
         text-transform: uppercase;
         text-align: center;
+        font-size: clamp(2rem, 3vw, 5rem);
     }
 
     .flex {
