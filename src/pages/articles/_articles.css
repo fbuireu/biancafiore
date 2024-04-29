@@ -84,6 +84,9 @@
     letter-spacing: normal;
   }
 
+  .article__card__image{
+    object-fit: none;
+  }
   .article__card__wrapper {
     display: grid;
     gap: 0.5rem 0;

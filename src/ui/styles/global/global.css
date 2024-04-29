@@ -17,7 +17,12 @@
         letter-spacing: 0.5rem;
         text-transform: uppercase;
         text-align: center;
-        font-size: clamp(2rem, 3vw, 5rem);
+        font-size: clamp(2rem, 2.5vw, 5rem);
+    }
+
+    .inner-section-title {
+        font-size: clamp(2rem, 1vw, 3rem);
+        text-transform: uppercase;
     }
 
     .flex {

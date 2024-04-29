@@ -1,7 +1,6 @@
 @layer my-work {
     .my-work__title {
         margin-bottom: 4rem;
-
         @media (max-width: 720px) {
             margin-bottom: 0;
         }
@@ -9,6 +8,10 @@
 
     .my-work__content__list {
         margin-bottom: 8rem;
+    }
+
+    .my-work__item__title {
+        text-align: center;
     }
 
     .my-work__item {

@@ -89,10 +89,7 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={`https://twitter.com/intent/tweet?
-                                    url=${featuredArticleShareUrl}
-                                    &text=${featuredArticle.title}&hashtags=${featuredArticle.tags?.join(',')}`}
-                >
+                  href={`https://twitter.com/intent/tweet?url=${featuredArticleShareUrl}&text=${featuredArticle.title}&hashtags=${featuredArticle.tags?.join(',')}`}>
                   X (former Twitter)
                 </a>
               </li>

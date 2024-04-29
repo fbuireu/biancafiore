@@ -57,7 +57,7 @@ const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
               <time class="latest__article__item__publish-date" datetime={publishedDate}>
                 {publishedDate}
               </time>
-              <h3 class="latest__article__title font-serif">{article.title}</h3>
+              <h3 class="latest__article__title font-serif inner-section-title">{article.title}</h3>
               <p class="latest__article__author">
                 by <a href={`/tags/${slugify(article.author)}`}>{article.author}</a>
               </p>
