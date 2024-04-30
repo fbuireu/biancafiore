@@ -1,8 +1,14 @@
 @layer about.intro {
   .about-me-intro__wrapper {
     display: grid;
-    gap: 0 8rem;
+    gap: 0 10%;
     grid: 'AboutMe-Text AboutMe-Image' 1fr / 1fr 1fr;
+
+    @media (max-width: 960px) {
+      gap: 0;
+      grid: 'AboutMe-Text AboutMe-Text' min-content
+      'AboutMe-Image AboutMe-Image' 1fr / 1fr;
+    }
   }
 
   .about-me-intro__section.--left {
@@ -13,28 +19,39 @@
   .about-me-intro__section.--right {
     gap: 2rem 0;
     grid-area: AboutMe-Image;
+
+    @media (max-width: 960px) {
+     padding: 0 1rem;
+    }
   }
 
   .about-me-intro__title {
     text-transform: uppercase;
+
+    @media (max-width: 1440px) {
+      padding-inline-start: 3rem;
+    }
+    @media (max-width: 960px) {
+      padding-inline-start: 1rem;
+    }
   }
 
   .about-me-intro__body {
     gap: 2rem 0;
     padding-inline-start: 3rem;
+
+    @media (max-width: 960px) {
+      padding-inline-start: 1rem;
+    }
   }
 
   .about-me-intro__section__social__networks__list {
+    gap: 0 1rem;
     width: 100%;
   }
 
   .about-me-intro__section__social__networks__list__item {
-    max-width: calc(100% / 4);
-    width: 100%;
-
     &:nth-child(2) {
-      display: contents;
-
       & > button::after {
         content: '';
         inset: auto auto -2px 0;

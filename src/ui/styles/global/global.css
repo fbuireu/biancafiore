@@ -18,6 +18,12 @@
         text-transform: uppercase;
         text-align: center;
         font-size: clamp(2rem, 2.5vw, 5rem);
+        font-variation-settings: "wght" 200;
+        transition: font-variation-settings .5s;
+
+        &:hover{
+            font-variation-settings: "wght" 600;
+        }
     }
 
     .inner-section-title {
