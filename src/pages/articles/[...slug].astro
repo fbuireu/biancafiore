@@ -5,6 +5,7 @@ import BaseLayout from "src/ui/components/templates/baseLayout/BaseLayout.astro"
 import "./_article.css";
 import { DEFAULT_DATE_FORMAT } from "src/consts";
 import { slugify } from "src/ui/shared/utils/slugify";
+import { ImageMetadata } from "astro";
 
 export const prerender = true;
 
@@ -23,7 +24,7 @@ export async function getStaticPaths() {
 }
 
 const MAX_RELATED_ARTICLES = 3;
-const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
+const images = import.meta.glob<{ default: ImageMetadata }>("/src/assets/**/*.{jpeg,jpg,png,gif}");
 const articles = await getCollection("articles");
 
 const { currentArticle } = Astro.props as ArticleProps;
@@ -40,7 +41,7 @@ const relatedArticles = articles
     featuredImage && (
       <section class="article__featured__image__wrapper">
         <Image
-          src={images[featuredImage]() as ImageType}
+          src={images[featuredImage]()}
           alt={title}
           class="article__featured__image"
           transition:name="article-featured-image"

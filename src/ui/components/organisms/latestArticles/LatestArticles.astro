@@ -49,7 +49,7 @@ const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
               {article.featuredImage && (
                 <Image
                   class="latest__article__item__featured-image"
-                   src={images[`${article.featuredImage}`]() as ImageType}
+                   src={images[`${article.featuredImage}`]()}
                   alt={article.title}
                   transition:name="featured-image"
                 />

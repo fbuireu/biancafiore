@@ -1,8 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import "./my-work.css";
+import type { ImageMetadata } from "astro";
 
-const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
+const images = import.meta.glob<{ default: ImageMetadata }>("/src/assets/**/*.{jpeg,jpg,png,gif}");
 ---
 
 <section class="my-work__wrapper common-wrapper">
@@ -10,25 +11,25 @@ const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
   <ul class="my-work__content__list flex row-wrap justify-space-between">
     <li class="my-work__item">
       <a class="my-work__item__link clickable" href="/projects#stories-of-impact">
-        <Image src={images['/src/assets/images/jpg/stories-of-impact.jpg']() as  ImageType} alt="Stories of Impact" />
+        <Image src={images['/src/assets/images/jpg/stories-of-impact.jpg']()} alt="Stories of Impact" />
         <h4 class="my-work__item__title inner-section-title">Stories of Impact</h4>
       </a>
     </li>
     <li class="my-work__item">
       <a class="my-work__item__link clickable" href="/projects#reports-and-thought-leadership">
-        <Image src={images['/src/assets/images/jpg/thought-leadership.jpg']() as ImageType} alt="Reports & Thought Leadership" />
+        <Image src={images['/src/assets/images/jpg/thought-leadership.jpg']()} alt="Reports & Thought Leadership" />
         <h4 class="my-work__item__title inner-section-title">Reports & Thought Leadership</h4>
       </a>
     </li>
     <li class="my-work__item">
       <a class="my-work__item__link clickable" href="/projects#creative-direction">
-        <Image src={images['/src/assets/images/jpg/creative-direction.jpg']() as ImageType} alt="Creative Direction" />
+        <Image src={images['/src/assets/images/jpg/creative-direction.jpg']()} alt="Creative Direction" />
         <h4 class="my-work__item__title inner-section-title">Creative Direction</h4>
       </a>
     </li>
     <li class="my-work__item">
       <a class="my-work__item__link clickable" href="/projects#web-content">
-        <Image src={images['/src/assets/images/jpg/web-content.jpg']() as  ImageType} alt="Web Content" />
+        <Image src={images['/src/assets/images/jpg/web-content.jpg']()} alt="Web Content" />
         <h4 class="my-work__item__title inner-section-title">Web Content</h4>
       </a>
     </li>
