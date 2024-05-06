@@ -9,7 +9,7 @@
     top: calc(var(--header-height) + 0.5rem);
 
     @media (max-width: 960px) {
-padding-inline: 1rem;
+      padding-inline: 1rem;
     }
   }
 
