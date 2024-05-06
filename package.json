@@ -61,7 +61,7 @@
 		"react-dom": "^18.3.1",
 		"react-globe.gl": "^2.27.2",
 		"react-google-recaptcha-v3": "^1.10.1",
-		"react-hook-form": "^7.51.3",
+		"react-hook-form": "^7.51.4",
 		"react-router-dom": "^6.23.0",
 		"resend": "^3.2.0",
 		"swiper": "^11.1.1",
@@ -86,6 +86,6 @@
 		"stylelint-config-recommended": "^14.0.0",
 		"stylelint-order": "^6.0.4",
 		"typescript": "^5.4.5",
-		"vitest": "^1.5.3"
+		"vitest": "^1.6.0"
 	}
 }

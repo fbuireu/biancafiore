@@ -9,5 +9,9 @@
     max-width: calc(100% / 2);
     padding-bottom: calc(var(--inline-index) * 0.5rem);
     view-timeline-name: --cities-scales-in-view;
+
+    @media (max-width: 960px) {
+      max-width:100%;
+    }
   }
 }

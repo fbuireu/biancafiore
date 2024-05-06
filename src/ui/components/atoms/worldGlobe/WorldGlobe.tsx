@@ -42,7 +42,7 @@ interface HandleActionParams {
 	type: MovementType;
 }
 
-const WorldGlobe = memo(({ cities, width = 680 }: GlobeAllCitiesProps) => {
+const WorldGlobe = memo(({ cities, width }: GlobeAllCitiesProps) => {
 	const worldGlobeReference = useRef<GlobeMethods | undefined>(undefined);
 	const {
 		MESH_PHONG_MATERIAL_CONFIG,

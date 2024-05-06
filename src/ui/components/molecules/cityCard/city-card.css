@@ -7,6 +7,10 @@
     padding-top: calc(var(--inline-index) * 0.5rem);
     position: sticky;
     top: calc(var(--header-height) + 0.5rem);
+
+    @media (max-width: 960px) {
+padding-inline: 1rem;
+    }
   }
 
   .city-card__content {
