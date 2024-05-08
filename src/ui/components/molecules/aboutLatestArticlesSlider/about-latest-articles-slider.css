@@ -28,6 +28,9 @@
       font-size: clamp(2rem, 3rem, 3rem);
       grid-area: Title;
       letter-spacing: normal;
+      @media (max-width: 720px) {
+        padding-inline: 1rem;
+      }
     }
 
     &.--no-image-variant {
@@ -59,10 +62,16 @@
 
   .about__latest-article__item__publish-date {
     grid-area: Publish-Date;
+    @media (max-width: 720px) {
+      padding-inline: 1rem;
+    }
   }
 
   .about__latest-article__author {
     grid-area: Author;
+    @media (max-width: 720px) {
+      padding-inline: 1rem;
+    }
 
     a {
       color: var(--primary-main);
@@ -73,6 +82,9 @@
 
   .about__latest-article__excerpt {
     grid-area: Excerpt;
+    @media (max-width: 720px) {
+      padding-inline: 1rem;
+    }
   }
 
   .about__latest-article__item__featured-image {
@@ -86,5 +98,8 @@
     grid-area: Tags;
     position: relative;
     z-index: 10;
+    @media (max-width: 720px) {
+      padding-inline: 1rem;
+    }
   }
 }

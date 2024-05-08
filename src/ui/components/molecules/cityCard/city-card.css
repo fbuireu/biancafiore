@@ -30,6 +30,10 @@
     overflow: hidden;
     transform-origin: 50% 0;
     will-change: transform;
+
+    @media (max-width: 720px) {
+      gap: 0.5rem;
+    }
   }
 
   .city-card__item:nth-child(even) .city-card__content {
@@ -39,6 +43,15 @@
       'City-Image City-Image City-Description City-Description' min-content
       / 1fr 1fr 1fr 1fr;
     padding-inline-end: 2rem;
+    @media (max-width: 960px) {
+      grid:
+  'City-Image' auto
+  'City-Period' auto
+  'City-Name' auto
+  'City-Description' auto
+  / 1fr;
+      padding-inline-end: 0;
+    }
   }
 
   .city-card__item:nth-child(odd) .city-card__content {
@@ -48,5 +61,15 @@
       'City-Description City-Description City-Image City-Image' min-content
       / 1fr 1fr 1fr 1fr;
     padding-inline-start: 1rem;
+
+    @media (max-width: 960px) {
+      grid:
+  'City-Image' auto
+  'City-Period' auto
+  'City-Name' auto
+  'City-Description' auto
+  / 1fr;
+      padding-inline-start: 0;
+    }
   }
 }

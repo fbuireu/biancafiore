@@ -7,8 +7,6 @@
             grid: 'LeftGreeting LeftGreeting LeftGreeting' auto
             'WelcomeImage WelcomeImage WelcomeImage' auto
             'RightGreeting RightGreeting RightGreeting' auto / 1fr;
-        }
-        @media (max-width: 960px) {
             margin-bottom: 3rem;
         }
     }

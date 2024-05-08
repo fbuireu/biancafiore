@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import Globe, { type GlobeMethods } from "react-globe.gl";
 import * as Three from "three";
 import countries from "@data/countries.geojson.json";
@@ -10,6 +10,7 @@ import { type ReactGlobePoint, refineCities } from "./utils/refineCities";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import zoomIn from "@assets/images/svg/zoom-in.svg";
 import zoomOut from "@assets/images/svg/zoom-out.svg";
+import useTabVisibility, { TabVisibility } from "@ui/hooks/useTabVisibility/useTabVisibility.ts";
 
 export interface City {
 	latitude: string;
@@ -42,7 +43,13 @@ interface HandleActionParams {
 	type: MovementType;
 }
 
-const WorldGlobe = memo(({ cities, width }: GlobeAllCitiesProps) => {
+const worldGlobeSize = {
+	width: window.innerWidth > 720 ? 680 : undefined,
+	height: 458,
+};
+
+const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitiesProps) => {
+	const tabVisibility = useTabVisibility();
 	const worldGlobeReference = useRef<GlobeMethods | undefined>(undefined);
 	const {
 		MESH_PHONG_MATERIAL_CONFIG,
@@ -69,6 +76,11 @@ const WorldGlobe = memo(({ cities, width }: GlobeAllCitiesProps) => {
 		});
 	};
 
+	useEffect(() => {
+		if (!worldGlobeReference.current) return;
+		worldGlobeReference.current.controls().autoRotate = document.visibilityState === TabVisibility.VISIBLE;
+	}, [tabVisibility]);
+
 	const handleAction = useCallback(
 		({ movementDirection, type }: HandleActionParams) => {
 			if (!worldGlobeReference.current) return;
@@ -91,7 +103,7 @@ const WorldGlobe = memo(({ cities, width }: GlobeAllCitiesProps) => {
 		<aside className="world-globe__wrapper">
 			<Globe
 				ref={worldGlobeReference}
-				height={458}
+				height={worldGlobeSize.height}
 				width={width}
 				onGlobeReady={onGlobeReady}
 				pointsMerge={POINTS_MERGE}
