@@ -37,7 +37,7 @@
             grid: '.' calc(var(--header-height) + 2rem)
                     'Navigation' max-content
                     'Divider' min-content
-                    'Header-Quote' 20vh / 1fr;
+                    'Header-Quote' 20dvh / 1fr;
         }
     }
 
