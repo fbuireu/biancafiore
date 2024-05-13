@@ -1,2 +1,1 @@
-
-export * from './useTabVisibility.ts'
+export * from "./useTabVisibility.ts";

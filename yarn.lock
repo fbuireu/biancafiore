@@ -32,9 +32,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/cloudflare@npm:^10.2.5":
-  version: 10.2.5
-  resolution: "@astrojs/cloudflare@npm:10.2.5"
+"@astrojs/cloudflare@npm:^10.2.6":
+  version: 10.2.6
+  resolution: "@astrojs/cloudflare@npm:10.2.6"
   dependencies:
     "@astrojs/internal-helpers": "npm:0.3.0"
     "@astrojs/underscore-redirects": "npm:^0.3.3"
@@ -47,7 +47,7 @@ __metadata:
     wrangler: "npm:^3.39.0"
   peerDependencies:
     astro: ^4.2.0
-  checksum: 10c0/fee114e3bc39d80655c8757e8d54885b85f3cc7db7a01e0da45dca11320f5dc958318cbb65314f5922b34eb31cee7e1b4af02e28d917ce488c52bd40b8e1009f
+  checksum: 10c0/d586635bd81f6e35cd24964bf42de36db20016520ec255784afe33f9e639e1b83512cee14d1d4309b13d8300fb41635a7a4fa5a967f6104da000970662c9eedb
   languageName: node
   linkType: hard
 
@@ -183,18 +183,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:^3.3.3":
-  version: 3.3.3
-  resolution: "@astrojs/react@npm:3.3.3"
+"@astrojs/react@npm:^3.3.4":
+  version: 3.3.4
+  resolution: "@astrojs/react@npm:3.3.4"
   dependencies:
     "@vitejs/plugin-react": "npm:^4.2.1"
     ultrahtml: "npm:^1.5.3"
   peerDependencies:
-    "@types/react": "*"
-    "@types/react-dom": "*"
+    "@types/react": ^17.0.50 || ^18.0.21
+    "@types/react-dom": ^17.0.17 || ^18.0.6
     react: ^17.0.2 || ^18.0.0 || ^19.0.0-beta
     react-dom: ^17.0.2 || ^18.0.0 || ^19.0.0-beta
-  checksum: 10c0/62037b82b025a8217d62676933222bea80c5190c1b2ee187dd06cf3704bbc9bd7f41742869991a2599df9944f0b8e9489f18e45e4b6e0608de91df513cd73c7e
+  checksum: 10c0/f09c94a1c56460956b70c65ebfd491d1c1e2e04421611a211aec81347d14c9a0957a70a8312f9692fc441e0fde420ee24277655e2120d2d86e4c8cb906f67808
   languageName: node
   linkType: hard
 
@@ -2837,10 +2837,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.16.0":
-  version: 1.16.0
-  resolution: "@remix-run/router@npm:1.16.0"
-  checksum: 10c0/234e66b4d7266aff6d111a43f5560f00ffdc91de0b5cd447f1fdf1de1a8b3a6ac326eb52302356e23b095e71a8f4da914e40239af5f121de2ec2994f101b8db0
+"@remix-run/router@npm:1.16.1":
+  version: 1.16.1
+  resolution: "@remix-run/router@npm:1.16.1"
+  checksum: 10c0/5f1b0aef4924830eeab9c86dcaa5af8157066e5de65b449e7fdf406532b2384828a46a447c31b0735fd713a06938dd88bfd4e566d9989be70c770457dda16c92
   languageName: node
   linkType: hard
 
@@ -3434,13 +3434,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.3.1":
-  version: 18.3.1
-  resolution: "@types/react@npm:18.3.1"
+"@types/react@npm:^18.3.2":
+  version: 18.3.2
+  resolution: "@types/react@npm:18.3.2"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/18d856c12a4ec93f3cda2d58ef3d77a9480818afd3af895f812896fb82cfca1f35a692ab1add4ce826a4eb58a071624c7d1c8c6c4ccfb81c100d2916dc607614
+  checksum: 10c0/9fb2f1fcf7e889ee4ea7c3c5978df595c66e770e5fd3a245dbdd2589b9b911524c11dab25a6275d8af4e336e4cb5fa850d447884b84c335a187a338c89df99ba
   languageName: node
   linkType: hard
 
@@ -3985,9 +3985,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^4.8.0":
-  version: 4.8.0
-  resolution: "astro@npm:4.8.0"
+"astro@npm:^4.8.2":
+  version: 4.8.2
+  resolution: "astro@npm:4.8.2"
   dependencies:
     "@astrojs/compiler": "npm:^2.8.0"
     "@astrojs/internal-helpers": "npm:0.4.0"
@@ -4058,7 +4058,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/d6f7313e3a69ac10b860f68369f97772a7f008b510d9080653992d6ca8f3b06a81857b1f44a6a29d04a37587629e86f7f40fea788c2fd86259f887ca2f7c4b43
+  checksum: 10c0/4d47efceef6762c5e510f9f45d30fa2828b3a147dc678d475a185324edf4bb886f6813d973da79dcfbea24fb1dc9558e4b36e1ff4bb03d2c78070ce74322abe0
   languageName: node
   linkType: hard
 
@@ -4127,10 +4127,10 @@ __metadata:
   resolution: "biancafiore@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.6.0"
-    "@astrojs/cloudflare": "npm:^10.2.5"
+    "@astrojs/cloudflare": "npm:^10.2.6"
     "@astrojs/mdx": "npm:^3.0.0"
     "@astrojs/partytown": "npm:^2.1.0"
-    "@astrojs/react": "npm:^3.3.3"
+    "@astrojs/react": "npm:^3.3.4"
     "@astrojs/rss": "npm:^4.0.5"
     "@astrojs/sitemap": "npm:^3.1.4"
     "@astrojs/ts-plugin": "npm:^1.7.0"
@@ -4144,10 +4144,10 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.1"
     "@types/node": "npm:^20.12.11"
-    "@types/react": "npm:^18.3.1"
+    "@types/react": "npm:^18.3.2"
     "@types/react-dom": "npm:^18.3.0"
     "@types/three": "npm:^0.164.0"
-    astro: "npm:^4.8.0"
+    astro: "npm:^4.8.2"
     firebase: "npm:^10.11.1"
     firebase-admin: "npm:^12.1.0"
     gsap: "npm:^3.12.5"
@@ -4160,7 +4160,7 @@ __metadata:
     react-globe.gl: "npm:^2.27.2"
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.51.4"
-    react-router-dom: "npm:^6.23.0"
+    react-router-dom: "npm:^6.23.1"
     resend: "npm:^3.2.0"
     stylelint: "npm:^16.5.0"
     stylelint-config-recommended: "npm:^14.0.0"
@@ -9723,27 +9723,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.23.0":
-  version: 6.23.0
-  resolution: "react-router-dom@npm:6.23.0"
+"react-router-dom@npm:^6.23.1":
+  version: 6.23.1
+  resolution: "react-router-dom@npm:6.23.1"
   dependencies:
-    "@remix-run/router": "npm:1.16.0"
-    react-router: "npm:6.23.0"
+    "@remix-run/router": "npm:1.16.1"
+    react-router: "npm:6.23.1"
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 10c0/c249f3ca44a9e73cb931665563273c7d69709e9dbc9532f145cb6d9a3b3874f18c0752e2d949090b6d139d915ae14a3cbdfedb351c731a8202e20bbcfc800fd4
+  checksum: 10c0/01b954d7d0ff4c53bb2edbc816458f3fad1ce9ee49a4dfdc5c866065c23026c9cce429b46b754cbaebb83b22cfe5f605bbf441acf515e3c377cbdf021b0bec4c
   languageName: node
   linkType: hard
 
-"react-router@npm:6.23.0":
-  version: 6.23.0
-  resolution: "react-router@npm:6.23.0"
+"react-router@npm:6.23.1":
+  version: 6.23.1
+  resolution: "react-router@npm:6.23.1"
   dependencies:
-    "@remix-run/router": "npm:1.16.0"
+    "@remix-run/router": "npm:1.16.1"
   peerDependencies:
     react: ">=16.8"
-  checksum: 10c0/567eb764d0814a9af2ea83c7d0bcf8a0a49d7070b4a7fffbbe8a4e4a376ca4e6adaa762b47760b110993eb2773fc617da7e26ab564d59cfd768130671a1b990e
+  checksum: 10c0/091949805745136350ab049b2a96281bf38742c9d3651019fb48ea79c5eafbfb0379f1d3e636602dd56b0ef278389e8fd25be983dc2c0ffd1103d06dfa8019f3
   languageName: node
   linkType: hard
 
