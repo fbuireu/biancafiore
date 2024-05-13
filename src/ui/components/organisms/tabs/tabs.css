@@ -4,6 +4,11 @@
     margin: 2rem 0;
     padding: 3rem 0;
   }
+.contact-tabs__inner__wrapper{
+  @media (max-width: 960px) {
+    padding-inline: 1rem;
+  }
+}
 
   .contact-tabs__header {
     gap: 1rem 0;

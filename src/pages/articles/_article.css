@@ -8,6 +8,10 @@
         margin: 0 auto;
         max-width: var(--grid-small);
         width: 100%;
+
+        @media (max-width: 960px) {
+            padding-inline: 1rem;
+        }
     }
 
     .article__title {
@@ -41,21 +45,35 @@
         gap: 0 2rem;
         grid: '. Main-Content .' / 1fr min(var(--grid-article), 100%) 1fr;
         margin: 2rem 0;
+        @media (max-width: 960px) {
+            gap: 2rem 0 ;
+            padding-inline: 1rem;
+        }
     }
 
     .article__wrapper > *:not(.full-bleed) {
         grid-area: auto / Main-Content;
         /*line-height: var(--base-line-height, 3rem);*/
-        line-height: normal;
+        line-height: 3vh;
     }
 
     .full-bleed {
         grid-column: 1 / -1;
     }
 
+    .related-articles__wrapper{
+        @media (max-width: 960px) {
+            margin-top: 6rem;
+        }
+    }
+
     .related-articles__list {
         gap: 1rem 0;
         padding: 0 1rem;
+
+        @media (max-width: 960px) {
+            margin: 2rem 0;
+        }
     }
 
     .related-articles__item {
