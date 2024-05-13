@@ -18,12 +18,14 @@
     }
 
     @media (max-width: 575px) {
+      gap: 0.5rem 0;
       grid:
       'Testimonial-Image' auto
       'Testimonial-Quote' min-content
       'Testimonial-Author' 1.5rem
       'Testimonial-Description' min-content
       / 1fr;
+      padding-inline: 1rem;
     }
   }
 
@@ -36,15 +38,6 @@
         'Testimonial-Author Testimonial-Author Testimonial-Image Testimonial-Image' 1.5rem
         'Testimonial-Description Testimonial-Description Testimonial-Image Testimonial-Image' min-content
         / 1fr 1fr calc(100% / 4) calc(100% / 4);
-
-      @media (max-width: 575px) {
-        grid:
-      'Testimonial-Image' auto
-      'Testimonial-Quote' min-content
-      'Testimonial-Author' 1.5rem
-      'Testimonial-Description' min-content
-      / 1fr;
-      }
     }
   }
 }

@@ -9,6 +9,10 @@
     grid-area: Testimonial-Quote;
     isolation: isolate;
     padding-inline-end: 2rem;
+
+    @media (max-width: 1024px) {
+      padding-inline-end: 1rem;
+    }
   }
 
   .testimonial__quote {
