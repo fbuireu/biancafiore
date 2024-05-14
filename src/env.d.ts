@@ -1,3 +1,4 @@
+/// <reference path="../.astro/actions.d.ts" />
 /// <reference path="../.astro/types.d.ts" />
 interface ImportMetaEnv {
 	readonly PUBLIC_GOOGLE_ANALYTICS_ID: string;

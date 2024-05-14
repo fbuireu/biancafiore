@@ -9,6 +9,7 @@ import { CONTACT_FORM_REQUEST_PARAMETERS } from "src/consts.ts";
 import { encode } from "@components/organisms/contactForm/utils/encode";
 import { flyPlane } from "@components/organisms/contactForm/utils/flyPlane";
 import Spinner from "@components/atoms/spinner/Spinner.tsx";
+import { actions } from "astro:actions";
 
 const schema = z.object({
 	name: z.string().trim().min(1, "Please insert your name"),
@@ -69,12 +70,12 @@ export const ContactForm = () => {
 
 		try {
 			setFormStatus(FormStatus.LOADING);
-			const requestParams: RequestInit = {
-				...CONTACT_FORM_REQUEST_PARAMETERS,
-				body: encode({ ...data }),
-			};
+			const contactData = new FormData();
+			contactData.append("name", data.name);
+			contactData.append("email", data.email);
+			contactData.append("message", data.message);
 
-			const response = await fetch(`/api/contact-form`, requestParams);
+			const response = await actions.contact(contactData);
 
 			if (response.ok) {
 				flyPlane(submitRef.current);

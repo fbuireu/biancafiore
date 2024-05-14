@@ -7,6 +7,9 @@ import cloudflare from "@astrojs/cloudflare";
 import million from "million/compiler";
 
 export default defineConfig({
+	experimental: {
+		actions: true,
+	},
 	site: "https://biancafiore.me",
 	vite: {
 		ssr: {
