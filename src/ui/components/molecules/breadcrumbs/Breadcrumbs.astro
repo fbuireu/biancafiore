@@ -1,0 +1,39 @@
+---
+import { generateBreadcrumbs } from './utils/generateBreadcrumbs';
+
+const { pathname:currentPath }= Astro.url;
+
+const breadcrumbs = generateBreadcrumbs({ currentPath });
+---
+
+<div class="flex justify-center align-center">
+  {breadcrumbs?.map(({ link, label }) => {
+      const isLast = breadcrumbs.at(-1).link === link
+
+      return (
+        <>
+          {!isLast ? (
+          <a href={link}>{label}</a>
+            ) : (
+            <span>{label}</span>
+            )}
+          {!isLast && " / "}
+        </>
+      );
+    })}
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org/",
+  "@type": "BreadcrumbList",
+  "itemListElement": breadcrumbs.map(({ link, label }, index) => {
+    const isLast = breadcrumbs.at(-1).link === link
+    
+    return {
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": label,
+      "item": isLast ? undefined : link
+    };
+  })
+})}/>

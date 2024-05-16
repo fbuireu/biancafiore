@@ -7,7 +7,7 @@ import { A11y, Keyboard, Navigation, Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperOptions } from "swiper/types";
 import "./latest-articles-slider.css";
-import { LatestArticlesSliderNavigation } from './components/latestArticlesSliderNavigation';
+import { LatestArticlesSliderNavigation } from "./components/latestArticlesSliderNavigation";
 
 interface LatestArticlesSLiderProps {
 	articles: CollectionEntry<"articles">[];
@@ -52,7 +52,7 @@ const parser: MarkdownIt = MarkdownIt("default", {});
 export const LatestArticlesSlider = ({ articles }: LatestArticlesSLiderProps) => {
 	return (
 		<div className="latest-articles__slider common-wrapper">
-			<Swiper onResize={(e)=> console.log(e)} {...SLIDER_CONFIG}>
+			<Swiper {...SLIDER_CONFIG}>
 				<ul className="latest__articles__list flex row-wrap justify-space-between">
 					{articles.map(({ slug, data: article, ...content }) => {
 						const { excerpt } = createExcerpt({
@@ -69,7 +69,7 @@ export const LatestArticlesSlider = ({ articles }: LatestArticlesSLiderProps) =>
 									<a className="latest__article__link-card" href={href} aria-label={article.title} />
 									<article
 										className={`latest__article__item ${
-											variant === ArticleType.DEFAULT ? '--default-variant' : '--no-image-variant'
+											variant === ArticleType.DEFAULT ? "--default-variant" : "--no-image-variant"
 										}`}
 									>
 										{article.featuredImage && (

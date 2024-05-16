@@ -10,6 +10,7 @@ import { DEFAULT_DATE_FORMAT } from "src/consts";
 import "./_articles.css";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import type { ImageMetadata } from "astro";
+import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 
 enum ArticleType {
 	DEFAULT = "default",
@@ -42,6 +43,7 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
 <!-- todo: isolate sections -->
 <BaseLayout title="" description="">
   <h1 class="articles__title section-title">The Blog</h1>
+  <Breadcrumbs />
   <div class="articles__wrapper">
     <section class="articles__wrapper__inner common-wrapper">
       <div class="featured-article__wrapper">

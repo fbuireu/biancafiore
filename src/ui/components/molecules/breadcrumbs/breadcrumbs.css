@@ -1,0 +1,5 @@
+@layer breadcrumbs {
+    .breadcrumbs{
+        gap:2rem;
+    }
+}
