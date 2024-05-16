@@ -3,6 +3,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"@server/*": ["./src/server/*"],
+			"@actions/*": ["./src/actions/*"],
 			"@ui/*": ["./src/ui/*"],
 			"@components/*": ["./src/ui/components/*"],
 			"@utils/*": ["./src/utils/*"],
@@ -10,7 +11,7 @@
 			"@styles/*": ["./src/ui/styles/*"],
 			"@data/*": ["./src/data/*"],
 			"@shared/*": ["./src/ui/shared/*"],
-			"@articles/*": ["./src/content//*"],
+			"@content/*": ["./src/content/*"],
 			"@i18n/*": ["./src/i18n/*"],
 			"@mocks/*": ["./src/mocks/*"],
 			"@types/*": ["./src/types/*"]

@@ -1,0 +1,29 @@
+@layer latest-articles.slider.navigation {
+    .latest-articles__slider__navigation {
+        gap: 0 1rem;
+        position: absolute;
+        right: 0;
+        z-index: 10;
+
+        img {
+            width: 3rem;
+        }
+
+        @media (min-width: 1024px) {
+         display: none;
+        }
+    }
+
+    .latest-articles__slider__navigation__button {
+        height: 3rem;
+        width: 3rem;
+
+        svg{
+            height: 100%;
+            width: 100%;
+        }
+        &.--right {
+            rotate: 0.5turn;
+        }
+    }
+}

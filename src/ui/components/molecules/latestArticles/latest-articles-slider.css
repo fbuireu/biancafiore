@@ -1,0 +1,104 @@
+@layer latest-articles.slider {
+  .latest-articles__title {
+    color: var(--white);
+    padding: 2rem 0;
+
+    .latest-articles__title__link {
+      color: var(--primary-main);
+      display: inline-block;
+    }
+  }
+
+  .latest__articles__list {
+    align-items: stretch;
+    gap: 0 2rem;
+    padding: 2rem 0 4rem;
+    position: relative;
+  }
+
+  .latest__article__item__wrapper {
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    max-width: calc(100% / 4 - 2rem);
+    position: relative;
+    transform: translateZ(0);
+    transition: 0.2s scale;
+    width: 100%;
+    will-change: transform;
+  }
+
+  .latest__article__link-card {
+    inset: 0;
+    position: absolute;
+    width: 100%;
+  }
+
+  .latest__article__item {
+    display: grid;
+    gap: 0.5rem 0;
+    height: 100%;
+
+    &.--no-image-variant {
+      grid:
+        'Publish-Date' auto
+        'Title' 1fr
+        'Author' auto
+        'Excerpt' auto
+        'Tags' auto
+        / 1fr;
+    }
+
+    &.--default-variant {
+      grid:
+        'Publish-Date' auto
+        'Featured-Image' 1fr
+        'Title' auto
+        'Author' auto
+        'Excerpt' auto
+        'Tags' auto
+        / 1fr;
+    }
+  }
+
+  .latest__article__title {
+    align-self: center;
+    color: var(--white);
+    grid-area: Title;
+    letter-spacing: normal;
+  }
+
+  .latest__article__item__publish-date {
+    grid-area: Publish-Date;
+  }
+
+  .latest__article__author {
+    color: var(--white);
+    grid-area: Author;
+
+    a {
+      color: var(--primary-main);
+      position: relative;
+      z-index: 10;
+    }
+  }
+
+  .latest__article__excerpt {
+    color: var(--white);
+    grid-area: Excerpt;
+  }
+
+  .latest__article__item__featured-image {
+    grid-area: Featured-Image;
+    object-fit: cover;
+    z-index: -1;
+  }
+
+  .latest__article__tags__list {
+    color: var(--white);
+    font-size: 1.1rem;
+    gap: 0 1rem;
+    grid-area: Tags;
+    position: relative;
+    z-index: 10;
+  }
+}

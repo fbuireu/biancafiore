@@ -6,6 +6,7 @@ import MarkdownIt from "markdown-it";
 import { createExcerpt } from "src/ui/shared/utils/createExcerpt";
 import { slugify } from "src/ui/shared/utils/slugify";
 import { Image } from "astro:assets";
+import { LatestArticlesSlider } from "@components/molecules/latestArticles";
 
 enum ArticleType {
 	DEFAULT = "default",
@@ -30,49 +31,5 @@ const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
   <h3 class="latest-articles__title section-title">
     Fresh from <a class="latest-articles__title__link clickable" href="/articles">the blog</a>
   </h3>
-  <ul class="latest__articles__list common-wrapper flex row-wrap justify-space-between">
-    {
-      articles.map(({ slug, data: article, ...content }) => {
-        const { excerpt } = createExcerpt({ parser, content: content.body });
-        const variant: ArticleType = article.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
-        const publishedDate = article.publishDate.toLocaleDateString('en', DEFAULT_DATE_FORMAT);
-        const href = `/articles/${slug}`;
-
-        return (
-          <li class="latest__article__item__wrapper article__item clickable">
-            <a class="latest__article__link-card" href={href} aria-label={article.title} />
-            <article
-              class={`latest__article__item ${
-                variant === ArticleType.DEFAULT ? '--default-variant' : '--no-image-variant'
-              }`}
-            >
-              {article.featuredImage && (
-                <Image
-                  class="latest__article__item__featured-image"
-                   src={images[`${article.featuredImage}`]()}
-                  alt={article.title}
-                  transition:name="featured-image"
-                />
-              )}
-              <time class="latest__article__item__publish-date" datetime={publishedDate}>
-                {publishedDate}
-              </time>
-              <h3 class="latest__article__title font-serif inner-section-title">{article.title}</h3>
-              <p class="latest__article__author">
-                by <a href={`/tags/${slugify(article.author)}`}>{article.author}</a>
-              </p>
-              <p class="latest__article__excerpt">{excerpt}</p>
-              <!--<ul class="latest__article__item__tags__list">-->
-              <!--  {article.tags?.map((tag) => (-->
-              <!--    <a class="latest__article__item__tag" href={`/tags/${slugify(tag)}`}>-->
-              <!--      #{tag}-->
-              <!--    </a>-->
-              <!--  ))}-->
-              <!--</ul>-->
-            </article>
-          </li>
-        );
-      })
-    }
-  </ul>
+  <LatestArticlesSlider client:load articles={articles} />
 </section>
