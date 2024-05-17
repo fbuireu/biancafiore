@@ -43,12 +43,6 @@ export const WORLD_GLOBE_CONFIG: WorldGlobeConfig = {
 
 export const DEFAULT_LOCALE_STRING: Intl.LocalesArgument = "es-ES";
 
-export const CONTACT_FORM_REQUEST_PARAMETERS: RequestInit = {
-	method: `POST`,
-	headers: { "Content-Type": `application/x-www-form-urlencoded` },
-	signal: AbortSignal.timeout(10000),
-};
-
 export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = {
 	weekday: "long",
 	year: "numeric",

@@ -51,7 +51,7 @@
 		"@fontsource-variable/nunito-sans": "^5.0.14",
 		"@fontsource/baskervville": "^5.0.20",
 		"@hookform/resolvers": "^3.4.0",
-		"astro": "^4.8.4",
+		"astro": "^4.8.5",
 		"firebase": "^10.12.0",
 		"firebase-admin": "^12.1.0",
 		"gsap": "^3.12.5",

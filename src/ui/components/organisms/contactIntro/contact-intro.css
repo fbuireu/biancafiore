@@ -3,7 +3,7 @@
     display: grid;
     gap: 0 8rem;
     grid: 'AboutMe-Text AboutMe-Image' 1fr / 1fr 1fr;
-    justify-items: center;
+    justify-items: self-start;
 
     @media (max-width: 960px) {
       gap: 2rem 0;

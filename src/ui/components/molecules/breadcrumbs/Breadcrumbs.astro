@@ -1,27 +1,34 @@
 ---
-import { generateBreadcrumbs } from './utils/generateBreadcrumbs';
+import { generateBreadcrumbs } from "./utils/generateBreadcrumbs";
+import "./breadcrumbs.css";
 
-const { pathname:currentPath }= Astro.url;
+interface BreadcrumbProps {
+	classNames?: string;
+}
+
+const { classNames } = Astro.props as BreadcrumbProps;
+const { pathname: currentPath, origin } = Astro.url;
 
 const breadcrumbs = generateBreadcrumbs({ currentPath });
 ---
 
-<div class="flex justify-center align-center">
+<section class:list={[`breadcrumbs__wrapper ${classNames}`, { 'common-wrapper': classNames }]}>
+<ul class="breadcrumbs__list flex justify-center align-center font-sans-serif">
   {breadcrumbs?.map(({ link, label }) => {
       const isLast = breadcrumbs.at(-1).link === link
 
       return (
-        <>
+        <li class="breadcrumb__item flex">
           {!isLast ? (
-          <a href={link}>{label}</a>
+              <a href={link}>{label}</a><span>/</span>
             ) : (
-            <span>{label}</span>
+            <strong class="--is-current-page">{label}</strong>
             )}
-          {!isLast && " / "}
-        </>
+        </li>
       );
     })}
-</div>
+</ul>
+</section>
 
 <script type="application/ld+json" set:html={JSON.stringify({
   "@context": "https://schema.org/",
@@ -33,7 +40,7 @@ const breadcrumbs = generateBreadcrumbs({ currentPath });
       "@type": "ListItem",
       "position": index + 1,
       "name": label,
-      "item": isLast ? undefined : link
+      "item": !isLast ? `${origin}${link}`: undefined
     };
   })
 })}/>

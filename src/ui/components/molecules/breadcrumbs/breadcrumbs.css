@@ -1,5 +1,13 @@
 @layer breadcrumbs {
-    .breadcrumbs{
-        gap:2rem;
+    .breadcrumb__item,
+    .breadcrumbs__list{
+        gap: 1rem;
+    }
+    .--is-current-page{
+        color: var(--primary-main)
+    }
+    .contact-page .breadcrumbs__list {
+        justify-content: flex-start;
+        padding-top: 2rem;
     }
 }

@@ -1,6 +1,6 @@
 import "./latest-articles-slider-navigation.css";
 import { useSwiper } from "swiper/react";
-import { LeftArrow } from '@assets/images/svg-components/leftArrow';
+import { LeftArrow } from "@assets/images/svg-components/leftArrow";
 
 export const LatestArticlesSliderNavigation = () => {
 	const swiper = useSwiper();
@@ -12,14 +12,14 @@ export const LatestArticlesSliderNavigation = () => {
 				type="button"
 				onClick={() => swiper.slidePrev()}
 			>
-				<LeftArrow fill="#ffffff"/>
+				<LeftArrow fill="#ffffff" />
 			</button>
 			<button
 				className="latest-articles__slider__navigation__button --right clickable"
 				type="button"
 				onClick={() => swiper.slideNext()}
 			>
-				<LeftArrow fill="#ffffff"/>
+				<LeftArrow fill="#ffffff" />
 			</button>
 		</div>
 	);

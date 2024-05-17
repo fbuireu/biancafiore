@@ -5,8 +5,6 @@ import { z } from "zod";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import "./contact-form.css";
 import { autosize } from "@components/organisms/contactForm/utils/autosize";
-import { CONTACT_FORM_REQUEST_PARAMETERS } from "src/consts.ts";
-import { encode } from "@components/organisms/contactForm/utils/encode";
 import { flyPlane } from "@components/organisms/contactForm/utils/flyPlane";
 import Spinner from "@components/atoms/spinner/Spinner.tsx";
 import { actions } from "astro:actions";
