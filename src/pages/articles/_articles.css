@@ -1,135 +1,131 @@
 @layer articles {
-  .articles__wrapper {
-    background-color: var(--neutral-light-4);
-  }
-
-  .articles__title {
-    color: var(--primary-main);
-    margin-bottom: 5rem;
-
-    @media (max-width: 960px) {
-      margin-bottom: 2rem;
+    .articles__wrapper {
+        background-color: var(--neutral-light-4);
     }
-  }
 
-  .featured-article__wrapper {
-    display: grid;
-    gap: 0 2rem;
-    grid: 'Featured-Article-Image Featured-Article-Content' minmax(auto, 70dvh) / minmax(70%, 1fr) 1fr;
+    .articles__title {
+        color: var(--primary-main);
+    }
 
-    @media (max-width: 960px) {
-      gap: 1rem 0;
-      grid: 'Featured-Article-Image Featured-Article-Image ' minmax(auto, 50dvh)
+    .featured-article__wrapper {
+        display: grid;
+        gap: 0 2rem;
+        grid: 'Featured-Article-Image Featured-Article-Content' minmax(auto, 70dvh) / minmax(70%, 1fr) 1fr;
+
+        @media (max-width: 960px) {
+            gap: 1rem 0;
+            grid: 'Featured-Article-Image Featured-Article-Image ' minmax(auto, 50dvh)
       'Featured-Article-Content Featured-Article-Content ' 1fr
       / 1fr;
-      padding-block-end: 1rem;
-    }
-  }
-
-  .featured-article__image {
-    grid-area: Featured-Article-Image;
-    object-fit: cover;
-  }
-
-  .featured-article__details__wrapper {
-    grid-area: Featured-Article-Content;
-    padding-inline-end: 1rem;
-    position: relative;
-  }
-
-  .featured-article__details {
-    align-self: center;
-    gap: 2rem 0;
-
-    @media (max-width: 960px) {
-      gap: 1rem 0;
-      padding-inline: 1rem;
-    }
-  }
-
-  .featured-article__share__wrapper {
-    bottom: -0.5rem;
-    gap: 1rem 0;
-  justify-content: space-between;
-    position: absolute;
-    translate: 0 100%;
-    width: 100%;
-
-    @media (max-width: 960px) {
-      bottom: -1.5rem;
-      gap: 0.5rem 1rem;
-      justify-content: flex-start;
-      padding-inline: 1rem;
-    }
-  }
-
-  .featured-article__share__link__item {
-    color: var(--neutral-main);
-  }
-
-  .featured-article__share__links__list {
-    gap: 0 1rem;
-  }
-
-  .featured-article__share__title {
-    font-weight: 700;
-    letter-spacing: 0.25rem;
-    text-transform: uppercase;
-  }
-
-  .featured-article__link {
-    align-content: center;
-    flex-flow: row wrap;
-    font-weight: 700;
-    gap: 0 1rem;
-    transition: gap 0.2s;
-
-    img {
-      rotate: 0.5turn;
-      width: 2rem;
+            padding-block-end: 1rem;
+        }
     }
 
-    &:hover {
-      gap: 0 1.5rem;
+    .featured-article__image {
+        grid-area: Featured-Article-Image;
+        object-fit: cover;
     }
-  }
 
-  .articles__grid__list {
-    gap: 5rem 0;
-    margin: 12rem 0;
-
-    @media (max-width: 960px) {
-      justify-content: center;
-      margin: 7rem 0;
+    .featured-article__details__wrapper {
+        grid-area: Featured-Article-Content;
+        padding-inline-end: 1rem;
+        position: relative;
     }
-  }
 
-  .articles__grid__item {
-    max-width: calc(100% / 4 - 2rem);
-    position: relative;
-    width: 100%;
+    .featured-article__details {
+        align-self: center;
+        gap: 2rem 0;
 
-    @media (max-width: 960px) {
-      max-width: calc(100% / 1 - 2rem);
+        @media (max-width: 960px) {
+            gap: 1rem 0;
+            padding-inline: 1rem;
+        }
     }
-  }
 
-  .article__card__title {
-    font-size: clamp(2rem, 3rem, 3rem);
-    grid-area: Title;
-    letter-spacing: normal;
-  }
+    .featured-article__share__wrapper {
+        bottom: -0.5rem;
+        gap: 1rem 0;
+        justify-content: space-between;
+        position: absolute;
+        translate: 0 100%;
+        width: 100%;
 
-  .article__card__image{
-    object-fit: none;
-  }
-  .article__card__wrapper {
-    display: grid;
-    gap: 0.5rem 0;
-    height: 100%;
+        @media (max-width: 960px) {
+            bottom: -1.5rem;
+            gap: 0.5rem 1rem;
+            justify-content: flex-start;
+            padding-inline: 1rem;
+        }
+    }
 
-    &.--no-image-variant {
-      grid:
+    .featured-article__share__link__item {
+        color: var(--neutral-main);
+    }
+
+    .featured-article__share__links__list {
+        gap: 0 1rem;
+    }
+
+    .featured-article__share__title {
+        font-weight: 700;
+        letter-spacing: 0.25rem;
+        text-transform: uppercase;
+    }
+
+    .featured-article__link {
+        align-content: center;
+        flex-flow: row wrap;
+        font-weight: 700;
+        gap: 0 1rem;
+        transition: gap 0.2s;
+
+        img {
+            rotate: 0.5turn;
+            width: 2rem;
+        }
+
+        &:hover {
+            gap: 0 1.5rem;
+        }
+    }
+
+    .articles__grid__list {
+        gap: 5rem 0;
+        margin: 12rem 0;
+
+        @media (max-width: 960px) {
+            justify-content: center;
+            margin: 7rem 0;
+        }
+    }
+
+    .articles__grid__item {
+        max-width: calc(100% / 4 - 2rem);
+        position: relative;
+        width: 100%;
+
+        @media (max-width: 960px) {
+            max-width: calc(100% / 1 - 2rem);
+        }
+    }
+
+    .article__card__title {
+        font-size: clamp(2rem, 3rem, 3rem);
+        grid-area: Title;
+        letter-spacing: normal;
+    }
+
+    .article__card__image {
+        object-fit: none;
+    }
+
+    .article__card__wrapper {
+        display: grid;
+        gap: 0.5rem 0;
+        height: 100%;
+
+        &.--no-image-variant {
+            grid:
         'Publish-Date' auto
         'Title' 1fr
         'Author' auto
@@ -137,14 +133,14 @@
         'Tags' auto
         / 1fr;
 
-      .article__card__title {
-        align-self: center;
-        font-size: clamp(2.5rem, 4rem, 4rem);
-      }
-    }
+            .article__card__title {
+                align-self: center;
+                font-size: clamp(2.5rem, 4rem, 4rem);
+            }
+        }
 
-    &.--default-variant {
-      grid:
+        &.--default-variant {
+            grid:
         'Publish-Date' auto
         'Featured-Image' 1fr
         'Title' auto
@@ -152,34 +148,34 @@
         'Excerpt' auto
         'Tags' auto
         / 1fr;
+        }
     }
-  }
 
-  .article__card__author {
-    grid-area: Author;
-    z-index: 1;
+    .article__card__author {
+        grid-area: Author;
+        z-index: 1;
 
-    a {
-      color: var(--primary-main);
+        a {
+            color: var(--primary-main);
+        }
     }
-  }
 
-  .article__card__link {
-    inset: 0;
-    position: absolute;
-    width: 100%;
-  }
+    .article__card__link {
+        inset: 0;
+        position: absolute;
+        width: 100%;
+    }
 
-  .article__card__publish-date {
-    grid-area: Publish-Date;
-  }
+    .article__card__publish-date {
+        grid-area: Publish-Date;
+    }
 
-  .article__card__description {
-    grid-area: Excerpt;
-  }
+    .article__card__description {
+        grid-area: Excerpt;
+    }
 
-  .article__card__tags__list {
-    grid-area: Tags;
-    z-index: 1;
-  }
+    .article__card__tags__list {
+        grid-area: Tags;
+        z-index: 1;
+    }
 }
