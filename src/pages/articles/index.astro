@@ -43,7 +43,7 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
 <!-- todo: isolate sections -->
 <BaseLayout title="" description="">
   <h1 class="articles__title section-title">The Blog</h1>
-  <Breadcrumbs />
+  <Breadcrumbs classNames="articles-page" />
   <div class="articles__wrapper">
     <section class="articles__wrapper__inner common-wrapper">
       <div class="featured-article__wrapper">

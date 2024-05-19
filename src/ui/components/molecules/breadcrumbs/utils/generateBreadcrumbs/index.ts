@@ -1,1 +1,1 @@
-export * from './generateBreadcrumbs'
+export * from "./generateBreadcrumbs";
