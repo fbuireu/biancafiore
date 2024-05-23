@@ -24,6 +24,10 @@
         }
     }
 
+    .projects-page .breadcrumbs__list{
+        display: none;
+    }
+
     .about-page .breadcrumbs__list,
     .contact-page .breadcrumbs__list {
         justify-content: flex-start;

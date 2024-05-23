@@ -1,0 +1,5 @@
+@layer projects.intro{
+  .articles__title{
+    display: none;
+  }
+}

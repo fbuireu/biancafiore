@@ -3,13 +3,13 @@ import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { Image } from "astro:assets";
 import ProjectSection from "@components/atoms/projectSection/ProjectSection.astro";
 import type { ImageMetadata } from "astro";
-import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
+import ProjectsIntro from "@components/organisms/projectsIntro/ProjectsIntro.astro";
 
 const images = import.meta.glob<{ default: ImageMetadata }>("/src/assets/**/*.{jpeg,jpg,png,gif}");
 ---
 
 <BaseLayout title="" description="">
-  <Breadcrumbs classNames="projects-page"/>
+  <ProjectsIntro />
   <ProjectSection id="stories-of-impact">
     <div class="project-description flex column-wrap justify-center align-center" slot="project-information">
       <h2 class="project-title">Stories of Impact</h2>
