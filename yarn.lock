@@ -198,9 +198,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:^3.3.4":
-  version: 3.3.4
-  resolution: "@astrojs/react@npm:3.3.4"
+"@astrojs/react@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "@astrojs/react@npm:3.4.0"
   dependencies:
     "@vitejs/plugin-react": "npm:^4.2.1"
     ultrahtml: "npm:^1.5.3"
@@ -209,7 +209,7 @@ __metadata:
     "@types/react-dom": ^17.0.17 || ^18.0.6
     react: ^17.0.2 || ^18.0.0 || ^19.0.0-beta
     react-dom: ^17.0.2 || ^18.0.0 || ^19.0.0-beta
-  checksum: 10c0/f09c94a1c56460956b70c65ebfd491d1c1e2e04421611a211aec81347d14c9a0957a70a8312f9692fc441e0fde420ee24277655e2120d2d86e4c8cb906f67808
+  checksum: 10c0/87ccd8e54246da36ed5af4e3e1d7b193661bf95ff15f6c60878d8efab2855b5708dd1b8641866cc8009d0c36b1f80d802723ce3ff7f5664f4cb58fde5696b8c4
   languageName: node
   linkType: hard
 
@@ -2887,9 +2887,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@million/install@npm:^0.0.3":
-  version: 0.0.3
-  resolution: "@million/install@npm:0.0.3"
+"@million/install@npm:^0.0.5":
+  version: 0.0.5
+  resolution: "@million/install@npm:0.0.5"
   dependencies:
     "@antfu/ni": "npm:^0.21.12"
     "@axiomhq/js": "npm:1.0.0-rc.3"
@@ -2898,11 +2898,12 @@ __metadata:
     "@clack/prompts": "npm:^0.7.0"
     cli-high: "npm:^0.4.1"
     diff: "npm:^5.1.0"
+    nanoid: "npm:^5.0.7"
     posthog-node: "npm:^3.6.3"
     xycolors: "npm:^0.1.1"
   bin:
     install: bin/index.js
-  checksum: 10c0/016f72778c77a3ba638e75a4f9ddb6d8e75f7802b59e8a274957cd77ea5d6d43e6cb887fe8b2f5e3b42f1321221d65624537b0945c23b8faa6b1cc7380b065c6
+  checksum: 10c0/b546f2e806d79d6bb448028b974ca3b7984467043a70e3a328b8db0ee27dac2dadbfa9d7ec32c6299358cfb8a7251e659e2b3c5b66f54f13c74a45c5e0daa018
   languageName: node
   linkType: hard
 
@@ -3651,13 +3652,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.3.2":
-  version: 18.3.2
-  resolution: "@types/react@npm:18.3.2"
+"@types/react@npm:^18.3.3":
+  version: 18.3.3
+  resolution: "@types/react@npm:18.3.3"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/9fb2f1fcf7e889ee4ea7c3c5978df595c66e770e5fd3a245dbdd2589b9b911524c11dab25a6275d8af4e336e4cb5fa850d447884b84c335a187a338c89df99ba
+  checksum: 10c0/fe455f805c5da13b89964c3d68060cebd43e73ec15001a68b34634604a78140e6fc202f3f61679b9d809dde6d7a7c2cb3ed51e0fd1462557911db09879b55114
   languageName: node
   linkType: hard
 
@@ -4202,9 +4203,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^4.8.7":
-  version: 4.8.7
-  resolution: "astro@npm:4.8.7"
+"astro@npm:^4.9.1":
+  version: 4.9.1
+  resolution: "astro@npm:4.9.1"
   dependencies:
     "@astrojs/compiler": "npm:^2.8.0"
     "@astrojs/internal-helpers": "npm:0.4.0"
@@ -4275,7 +4276,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/95643cb713802aaf53116ad807b859c99df8d1fd3d675d28a4546f1e1857f3bbe1588f06c51cda8eaddbe55558bfd73380345520dc6d567b77c7037ba5df911f
+  checksum: 10c0/0a8c9cd0fb5eeb9abe0bce34b70a605b183ab2a94545ff93ee807d4b9984a4a2e663dcd4258351d1c2e2f4e3ebfdfdeae54ca1ea75a7efaea6e5117655c9d815
   languageName: node
   linkType: hard
 
@@ -4358,7 +4359,7 @@ __metadata:
     "@astrojs/cloudflare": "npm:^10.2.6"
     "@astrojs/mdx": "npm:^3.0.1"
     "@astrojs/partytown": "npm:^2.1.0"
-    "@astrojs/react": "npm:^3.3.4"
+    "@astrojs/react": "npm:^3.4.0"
     "@astrojs/rss": "npm:^4.0.6"
     "@astrojs/sitemap": "npm:^3.1.5"
     "@astrojs/ts-plugin": "npm:^1.8.0"
@@ -4372,17 +4373,17 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.1"
     "@types/node": "npm:^20.12.12"
-    "@types/react": "npm:^18.3.2"
+    "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@types/three": "npm:^0.164.1"
-    astro: "npm:^4.8.7"
+    astro: "npm:^4.9.1"
     firebase: "npm:^10.12.1"
     firebase-admin: "npm:^12.1.1"
     gsap: "npm:^3.12.5"
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.4"
     markdown-it: "npm:^14.1.0"
-    million: "npm:^3.1.1"
+    million: "npm:^3.1.4"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-globe.gl: "npm:^2.27.2"
@@ -8857,20 +8858,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"million@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "million@npm:3.1.1"
+"million@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "million@npm:3.1.4"
   dependencies:
     "@babel/core": "npm:^7.23.7"
     "@babel/types": "npm:^7.23.6"
-    "@million/install": "npm:^0.0.3"
+    "@million/install": "npm:^0.0.5"
     "@rollup/pluginutils": "npm:^5.1.0"
     kleur: "npm:^4.1.5"
     undici: "npm:^6.3.0"
     unplugin: "npm:^1.6.0"
   bin:
     million: packages/cli/dist/index.js
-  checksum: 10c0/14b7074b375f138909db471dba4774945309ae2e7f8901f78e15f740e33f6592e4ec93553a241e8b500c1bdf75fb9dc5293b14df131f8d33bb607928d48617a9
+  checksum: 10c0/66068a7a0e15887a3b3478dbc91812044d303f33554b5678f299a3af9b671a84551f0896da334b4bc174ffcf3554055dee63be6f4d08a6b88e352b3fd9c808b6
   languageName: node
   linkType: hard
 
@@ -9131,6 +9132,15 @@ __metadata:
   bin:
     nanoid: bin/nanoid.cjs
   checksum: 10c0/e3fb661aa083454f40500473bb69eedb85dc160e763150b9a2c567c7e9ff560ce028a9f833123b618a6ea742e311138b591910e795614a629029e86e180660f3
+  languageName: node
+  linkType: hard
+
+"nanoid@npm:^5.0.7":
+  version: 5.0.7
+  resolution: "nanoid@npm:5.0.7"
+  bin:
+    nanoid: bin/nanoid.js
+  checksum: 10c0/a3fb1c157e3e35378f44e5a7130c70f80c9037f66c9a37285e5e3d8298e8405fcb2399baaa420980b0fe5fd9c2e4186a6a31c3526f21de03cf34c1b459871401
   languageName: node
   linkType: hard
 
