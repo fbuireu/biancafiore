@@ -28,7 +28,28 @@
     .contact-form__input-label {
         text-align: center;
     }
+    .contact-form__submit .plane__left-wing,
+    .contact-form__submit .plane__right-wing {
+        inset: 0;
+        opacity: var(--plane-opacity);
+        position: absolute;
+        transform: translate(calc(var(--plane-x) * 1px), calc(var(--plane-y) * 1px)) translateZ(0);
 
+        &::after,
+        &::before {
+            background: var(--background, var(--left-wing-background));
+            clip-path: polygon(
+                    calc(var(--first-x, var(--left-wing-first-x)) * 1%) calc(var(--first-y, var(--left-wing-first-y)) * 1%),
+                    calc(var(--second-x, var(--left-wing-second-x)) * 1%) calc(var(--second-y, var(--left-wing-second-y)) * 1%),
+                    calc(var(--third-x, var(--left-wing-third-x)) * 1%) calc(var(--third-y, var(--left-wing-third-y)) * 1%)
+            );
+            content: '';
+            inset: 0;
+            position: absolute;
+            transform: translate(var(--inner-x, 0.4%), var(--inner-y, 0)) translateZ(0);
+            z-index: var(--z-index, 2);
+        }
+    }
     .contact-form__input-label,
     .contact-form__textarea-label {
         color: var(--neutral-light-1);
@@ -192,29 +213,6 @@
         }
     }
 
-    .contact-form__submit .plane__left-wing,
-    .contact-form__submit .plane__right-wing {
-        inset: 0;
-        opacity: var(--plane-opacity);
-        position: absolute;
-        transform: translate(calc(var(--plane-x) * 1px), calc(var(--plane-y) * 1px)) translateZ(0);
-
-        &::after,
-        &::before {
-            background: var(--background, var(--left-wing-background));
-            clip-path: polygon(
-                    calc(var(--first-x, var(--left-wing-first-x)) * 1%) calc(var(--first-y, var(--left-wing-first-y)) * 1%),
-                    calc(var(--second-x, var(--left-wing-second-x)) * 1%) calc(var(--second-y, var(--left-wing-second-y)) * 1%),
-                    calc(var(--third-x, var(--left-wing-third-x)) * 1%) calc(var(--third-y, var(--left-wing-third-y)) * 1%)
-            );
-            content: '';
-            inset: 0;
-            position: absolute;
-            transform: translate(var(--inner-x, 0.4%), var(--inner-y, 0)) translateZ(0);
-            z-index: var(--z-index, 2);
-        }
-    }
-
     .plane__left-wing:after {
         --inner-x: 0;
         --z-index: 1;
@@ -258,4 +256,5 @@
         text-shadow: 0 0 0 var(--white);
         z-index: 1;
     }
+
 }

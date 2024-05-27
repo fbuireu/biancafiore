@@ -41,4 +41,12 @@
             transform: scale(calc(1.1 - calc(0.05 * var(--reverse-index))));
         }
     }
+    @keyframes pop-in {
+        from {
+            scale: 0;
+        }
+        to {
+            scale: 1;
+        }
+    }
 }

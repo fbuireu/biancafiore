@@ -1,0 +1,16 @@
+@layer scroll-top{
+    .scroll-top__wrapper{
+        animation: pop-in 1s var(--ease-elastic) forwards;
+        animation-range: 0 50cqi;
+        animation-timeline: scroll();
+        bottom: 3rem;
+        position: fixed;
+        right: 2rem;
+
+        svg{
+            height: 3rem;
+            rotate: 0.25turn;
+            width: 3rem;
+        }
+    }
+}

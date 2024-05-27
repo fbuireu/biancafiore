@@ -3,6 +3,7 @@ import Footer from "@components/organisms/footer/Footer.astro";
 import ReactScriptProvider from "src/ui/context/reactScriptProvider/ReactScriptProvider";
 import SiteHead from "@components/organisms/siteHead/SiteHead.astro";
 import Header from "@components/organisms/header/Header.astro";
+import ScrollTop from "../../atoms/scrollTop/ScrollTop.astro";
 
 interface BaseLayoutProps {
 	title: string;
@@ -17,6 +18,7 @@ const isProject = pathname.includes("/projects");
   <SiteHead title={title} description={description} />
   <body>
     <Header />
+    <ScrollTop />
     <main class:list={[{ '--is-projects': isProject }]}>
       <slot />
     </main>
