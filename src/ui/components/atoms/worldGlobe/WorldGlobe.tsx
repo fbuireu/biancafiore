@@ -1,12 +1,14 @@
 import { memo, useCallback, useEffect, useRef } from "react";
-import Globe, { type GlobeMethods } from "react-globe.gl";
+import Globe from "react-globe.gl";
+import type { GlobeMethods } from "react-globe.gl";
 import * as Three from "three";
 import countries from "@data/countries.geojson.json";
 import "./world-globe.css";
 import { calculateCenter } from "@components/atoms/worldGlobe/utils/calculateCenter";
 import { WORLD_GLOBE_CONFIG } from "src/consts.ts";
 import { renderPin } from "@components/atoms/worldGlobe/utils/renderPin";
-import { type ReactGlobePoint, refineCities } from "./utils/refineCities";
+import type { ReactGlobePoint } from "./utils/refineCities";
+import { refineCities } from "./utils/refineCities";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import zoomIn from "@assets/images/svg/zoom-in.svg";
 import zoomOut from "@assets/images/svg/zoom-out.svg";
