@@ -1,13 +1,11 @@
 @layer welcome {
     .welcome {
         display: grid;
-        grid: 'LeftGreeting WelcomeImage RightGreeting'  auto / 1fr 1fr 1fr;
+        grid: 'LeftGreeting WelcomeImage RightGreeting' auto / 1fr 1fr 1fr;
         overflow: hidden;
 
         @media (max-width: 960px) {
-            grid: 'LeftGreeting LeftGreeting LeftGreeting' auto
-            'WelcomeImage WelcomeImage WelcomeImage' auto
-            'RightGreeting RightGreeting RightGreeting' auto / 1fr;
+            grid: 'LeftGreeting LeftGreeting LeftGreeting' auto 'WelcomeImage WelcomeImage WelcomeImage' auto 'RightGreeting RightGreeting RightGreeting' auto / 1fr;
             margin-bottom: 3rem;
         }
     }
@@ -72,6 +70,7 @@
         @media (max-width: 960px) {
             text-align: end;
         }
+
         @media (max-width: 575px) {
             padding-inline-start: 1rem;
             text-align: start;
@@ -82,7 +81,7 @@
         text-align: end;
     }
 
-        @supports (animation-timeline: scroll(root block)) {
+    @supports (animation-timeline: scroll(root block)) {
         .welcome__text__section.--left .welcome__text__title {
             --origin-x: -200cqi;
             animation: float-side linear;
