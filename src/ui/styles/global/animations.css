@@ -30,9 +30,9 @@
         }
     }
 
-    @keyframes float-up {
+    @keyframes float-side {
         100% {
-            translate: 0 var(--origin-y, -200cqi);
+            translate: var(--origin-x, -200cqi) var(--origin-y, 0);
         }
     }
 

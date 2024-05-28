@@ -62,8 +62,9 @@
     }
 
     .related-articles__wrapper{
+        margin: 6rem 0;
         @media (max-width: 960px) {
-            margin-top: 6rem;
+            margin: 4rem 0;
         }
     }
 

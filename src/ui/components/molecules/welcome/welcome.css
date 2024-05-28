@@ -2,6 +2,7 @@
     .welcome {
         display: grid;
         grid: 'LeftGreeting WelcomeImage RightGreeting'  auto / 1fr 1fr 1fr;
+        overflow: hidden;
 
         @media (max-width: 960px) {
             grid: 'LeftGreeting LeftGreeting LeftGreeting' auto
@@ -47,6 +48,7 @@
             margin-right: -1.5rem;
             translate: 0 -100px;
             z-index: 10;
+
             @media (max-width: 960px) {
                 justify-self: start;
                 translate: 0;
@@ -76,24 +78,40 @@
         }
     }
 
-    @supports (animation-timeline: scroll(root block)) {
+    @media (max-width: 960px) {
+        text-align: end;
+    }
+
+        @supports (animation-timeline: scroll(root block)) {
         .welcome__text__section.--left .welcome__text__title {
-            --origin-y: -200cqi;
-            animation: float-up linear;
+            --origin-x: -200cqi;
+            animation: float-side linear;
             animation-timeline: scroll(root block);
+
+            @media (max-width: 960px) {
+                --origin-x: 0;
+            }
         }
 
         .welcome__text__section.--right {
             .welcome__text__title {
-                --origin-y: 70cqi;
-                animation: float-up linear;
+                --origin-x: -70cqi;
+                animation: float-side linear;
                 animation-timeline: scroll(root block);
+
+                @media (max-width: 960px) {
+                    --origin-x: 0;
+                }
             }
 
             .welcome__text__body {
-                --origin-y: -200cqi;
-                animation: float-up linear;
+                --origin-x: 200cqi;
+                animation: float-side linear;
                 animation-timeline: scroll(root block);
+
+                @media (max-width: 960px) {
+                    --origin-x: 0;
+                }
             }
         }
     }

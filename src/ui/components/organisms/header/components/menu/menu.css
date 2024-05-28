@@ -34,7 +34,7 @@
         grid: 'Header-Quote Divider Navigation' / 50% 1fr 50%;
 
         @media (max-width: 1024px) {
-            grid: '.' calc(var(--header-height) + 2rem)
+            grid: '.' calc(var(--header-height) - 1.5rem)
                     'Navigation' max-content
                     'Divider' min-content
                     'Header-Quote' 20dvh / 1fr;
@@ -49,6 +49,9 @@
         @media (max-width: 1024px) {
             align-items: center;
             padding-left: 0;
+        }
+        @media (max-width: 720px) {
+            gap: 2rem 0;
         }
     }
 

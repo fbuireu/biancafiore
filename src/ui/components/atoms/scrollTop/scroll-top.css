@@ -3,14 +3,23 @@
         animation: pop-in 1s var(--ease-elastic) forwards;
         animation-range: 0 50cqi;
         animation-timeline: scroll();
-        bottom: 3rem;
+        inset: auto 2rem 3rem auto;
         position: fixed;
-        right: 2rem;
-
-        svg{
+        z-index: 100;
+        svg {
             height: 3rem;
             rotate: 0.25turn;
             width: 3rem;
         }
+        @media (max-width: 575px) {
+            inset: auto 1rem 1rem auto;
+        }
+    }
+    .scroll-top {
+        background: var(--primary-light-2);
+        height: fit-content;
+        padding: 0.25rem;
+        transition: background-color 2s;
+        width: fit-content;
     }
 }
