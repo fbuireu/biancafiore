@@ -38,7 +38,7 @@
 
     main {
         width: 100%;
-
+        background-color: var(--background-main);
         &:not(.--is-projects) {
             margin: calc(var(--header-height)) auto 0;
         }
