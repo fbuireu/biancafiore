@@ -52,6 +52,7 @@
 		"@fontsource/baskervville": "^5.0.20",
 		"@hookform/resolvers": "^3.4.2",
 		"astro": "^4.9.2",
+		"clsx": "^2.1.1",
 		"firebase": "^10.12.2",
 		"firebase-admin": "^12.1.1",
 		"gsap": "^3.12.5",

@@ -114,9 +114,10 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
             <li class="articles__grid__item">
               <a class="article__card__link" href={`/articles/${slug}`} aria-label={article.title} />
               <article
-                class={`article__card__wrapper ${
-                  variant === ArticleType.DEFAULT ? '--default-variant' : '--no-image-variant'
-                }`}
+                class:list={[`article__card__wrapper`, {
+                  '--default-variant': variant === ArticleType.DEFAULT,
+                  '--no-image-variant': variant === ArticleType.NO_IMAGE
+                }]}
               >
                 {article.featuredImage && (
                   <Image class="article__card__image" src={images[article.featuredImage]()} alt={article.title} />

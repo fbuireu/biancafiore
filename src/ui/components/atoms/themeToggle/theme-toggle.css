@@ -18,6 +18,7 @@
 
     .theme-toggle {
         --theme-toggle-animation-duration: 500ms;
+        cursor: pointer;
     }
 
     .theme_toggle_inner {

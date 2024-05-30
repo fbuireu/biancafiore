@@ -8,6 +8,7 @@ import { A11y, Keyboard, Navigation, Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperOptions } from "swiper/types";
 import "./about-latest-articles-slider.css";
+import clsx from "clsx";
 
 interface AboutLatestArticlesSLiderProps {
 	articles: CollectionEntry<"articles">[];
@@ -64,9 +65,10 @@ export const AboutLatestArticlesSlider = ({ articles }: AboutLatestArticlesSLide
 								<SwiperSlide key={slug}>
 									<a className="about__latest-article__link-card" href={href} aria-label={article.title} />
 									<article
-										className={`about__latest-article__item ${
-											variant === ArticleType.DEFAULT ? "--default-variant" : "--no-image-variant"
-										}`}
+										className={clsx("about__latest-article__item", {
+											"--default-variant": variant === ArticleType.DEFAULT,
+											"--no-image-variant": variant === ArticleType.NO_IMAGE,
+										})}
 									>
 										{article.featuredImage && (
 											<img
