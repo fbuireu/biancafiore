@@ -7,6 +7,9 @@ export const CONTACT_DETAILS: Record<string, string> = {
 	ENCODED_BIANCA_EMAIL: btoa("biancamaria.fiore@gmail.com"),
 };
 
+export const THEME_STORAGE_KEY = "theme";
+
+//todo: isolate types
 interface MeshPhongMaterialConfig {
 	TRANSPARENT: boolean;
 	COLOR: string;

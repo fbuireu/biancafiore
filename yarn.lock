@@ -4395,7 +4395,7 @@ __metadata:
     stylelint: "npm:^16.6.1"
     stylelint-config-recommended: "npm:^14.0.0"
     stylelint-order: "npm:^6.0.4"
-    swiper: "npm:^11.1.3"
+    swiper: "npm:^11.1.4"
     three: "npm:^0.164.1"
     typescript: "npm:^5.4.5"
     vitest: "npm:^1.6.0"
@@ -11325,10 +11325,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^11.1.3":
-  version: 11.1.3
-  resolution: "swiper@npm:11.1.3"
-  checksum: 10c0/add208824c4986ede3b000a884073b2a31ba7656f7f8362d4cdcd40d79e75b55bb57e7b7d5e1dd88c6118a11b4cf5c102d49429653b1c7d7edd5cb25b811ccd7
+"swiper@npm:^11.1.4":
+  version: 11.1.4
+  resolution: "swiper@npm:11.1.4"
+  checksum: 10c0/a1e4b87f414f67f5da6a07b33d5ee20e54062d21f8bed88195d5d56decff6afddf683e130118b7fa12668de221f794ae63f6c073761b683a4b90bbd5eb585202
   languageName: node
   linkType: hard
 

@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { CONTACT_DETAILS } from "../../consts.ts";
+import { CONTACT_DETAILS } from "src/consts.ts";
 import type { FormData } from "@components/organisms/contactForm";
 
 type ContactDetails = Omit<FormData, "recaptcha">;

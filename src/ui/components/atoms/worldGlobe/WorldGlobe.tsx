@@ -5,7 +5,7 @@ import * as Three from "three";
 import countries from "@data/countries.geojson.json";
 import "./world-globe.css";
 import { calculateCenter } from "@components/atoms/worldGlobe/utils/calculateCenter";
-import { WORLD_GLOBE_CONFIG } from "src/consts.ts";
+import { THEME_STORAGE_KEY, WORLD_GLOBE_CONFIG } from "src/consts.ts";
 import { renderPin } from "@components/atoms/worldGlobe/utils/renderPin";
 import type { ReactGlobePoint } from "./utils/refineCities";
 import { refineCities } from "./utils/refineCities";
@@ -13,6 +13,7 @@ import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import zoomIn from "@assets/images/svg/zoom-in.svg";
 import zoomOut from "@assets/images/svg/zoom-out.svg";
 import useTabVisibility, { TabVisibility } from "@ui/hooks/useTabVisibility/useTabVisibility.ts";
+import { ThemeType } from "@components/atoms/themeToggle/utils/themeSetter";
 
 export interface City {
 	latitude: string;
@@ -78,6 +79,8 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 		});
 	};
 
+	const isDarkMode = () => localStorage.getItem(THEME_STORAGE_KEY) === ThemeType.DARK;
+
 	useEffect(() => {
 		if (!worldGlobeReference.current) return;
 		worldGlobeReference.current.controls().autoRotate = document.visibilityState === TabVisibility.VISIBLE;
@@ -111,7 +114,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 				pointsMerge={POINTS_MERGE}
 				animateIn={ANIMATE_IN}
 				showAtmosphere={SHOW_ATMOSPHERE}
-				backgroundColor={BACKGROUND_COLOR}
+				backgroundColor={isDarkMode() ? "#1E2021FF" : BACKGROUND_COLOR}
 				hexPolygonsData={countries.features}
 				hexPolygonColor={() => HEXAGON_POLYGON_COLOR}
 				globeMaterial={

@@ -1,5 +1,5 @@
 import { defineAction, z, ActionError } from "astro:actions";
-import { DEFAULT_LOCALE_STRING } from "../consts.ts";
+import { DEFAULT_LOCALE_STRING } from "src/consts.ts";
 import { sendEmail } from "@server/email/server.ts";
 import { app } from "@server/firebase/server.ts";
 import { getFirestore } from "firebase-admin/firestore";
@@ -7,15 +7,10 @@ import type { FormData } from "@components/organisms/contactForm";
 
 type ContactDetails = Omit<FormData, "recaptcha">;
 
-const contactFormSchema = z
-	.object({
-		id: z.string(),
-		name: z.string(),
-		email: z.string().email(),
-		message: z.string(),
-		date: z.union([z.date(), z.string()]),
-	})
-	.omit({ id: true, date: true });
+const contactFormSchema = z.object({
+	name: z.string(),
+	email: z.string().email(),
+});
 
 const database = getFirestore(app);
 
