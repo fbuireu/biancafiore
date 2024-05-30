@@ -1,1 +1,1 @@
-export * from './themeSetter'
+export * from "./themeSetter";
