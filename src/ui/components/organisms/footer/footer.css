@@ -7,8 +7,14 @@
 
   .footer__wrapper {
     padding: 2rem 0 1rem;
+
     @media (max-width: 720px) {
       padding: 0;
+    }
+
+    @media (max-width: 575px) {
+      display: flex;
+      flex-flow: column wrap;
     }
   }
 
@@ -30,6 +36,7 @@
     margin: 4rem auto;
     max-width: var(--grid-extra-small);
     padding-inline-start: 0;
+    width: 100%;
 
     @media (max-width: 720px) {
       margin: 2rem auto;

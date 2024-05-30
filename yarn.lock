@@ -2887,9 +2887,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@million/install@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "@million/install@npm:0.0.7"
+"@million/install@npm:latest":
+  version: 0.0.8
+  resolution: "@million/install@npm:0.0.8"
   dependencies:
     "@antfu/ni": "npm:^0.21.12"
     "@axiomhq/js": "npm:1.0.0-rc.3"
@@ -2903,7 +2903,7 @@ __metadata:
     xycolors: "npm:^0.1.1"
   bin:
     install: bin/index.js
-  checksum: 10c0/7500a8e771c0796bd97b338bd1c6adc31b48c6cf7bfbcddab678697dd6ecde0c70f64e2a52e8427f3c58cb0f5950c3138e8c28fe102d06322e1a3b41e90ea7a7
+  checksum: 10c0/2a66afa52ed732ec37d75489b610ed99d017a1ca874482612a58cdc285a2ac023e6942123ca2a1d99dd8958c329138974a7901c8bc2b35538e9dd85b4e9b5d17
   languageName: node
   linkType: hard
 
@@ -3594,12 +3594,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.12.12":
-  version: 20.12.12
-  resolution: "@types/node@npm:20.12.12"
+"@types/node@npm:^20.12.13":
+  version: 20.12.13
+  resolution: "@types/node@npm:20.12.13"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 10c0/f374b763c744e8f16e4f38cf6e2c0eef31781ec9228c9e43a6f267880fea420fab0a238b59f10a7cb3444e49547c5e3785787e371fc242307310995b21988812
+  checksum: 10c0/2ac92bb631dbddfb560eb3ba4eedbb1c688044a0130bc1ef032f5c0f20148ac7c9aa3c5aaa5a9787b6c4c6299847d754b96ee8c9def951481ba6628c46b683f5
   languageName: node
   linkType: hard
 
@@ -4372,7 +4372,7 @@ __metadata:
     "@testing-library/react": "npm:^15.0.7"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.1"
-    "@types/node": "npm:^20.12.12"
+    "@types/node": "npm:^20.12.13"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@types/three": "npm:^0.164.1"
@@ -4383,7 +4383,7 @@ __metadata:
     husky: "npm:^9.0.11"
     lint-staged: "npm:^15.2.5"
     markdown-it: "npm:^14.1.0"
-    million: "npm:^3.1.6"
+    million: "npm:^3.1.7"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-globe.gl: "npm:^2.27.2"
@@ -8858,20 +8858,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"million@npm:^3.1.6":
-  version: 3.1.6
-  resolution: "million@npm:3.1.6"
+"million@npm:^3.1.7":
+  version: 3.1.7
+  resolution: "million@npm:3.1.7"
   dependencies:
     "@babel/core": "npm:^7.23.7"
     "@babel/types": "npm:^7.23.6"
-    "@million/install": "npm:^0.0.7"
+    "@million/install": "npm:latest"
     "@rollup/pluginutils": "npm:^5.1.0"
     kleur: "npm:^4.1.5"
     undici: "npm:^6.3.0"
     unplugin: "npm:^1.6.0"
   bin:
     million: packages/cli/dist/index.js
-  checksum: 10c0/ef3703cbc76f722ddfaa3851fef5b8da67cfc158e3d9c2a3e47ae891eae4abff4e588856c8f2722758a18150bc297bd8cd088af490552743723c6a7a50a0f6b0
+  checksum: 10c0/44380bcb5f02e6eb1fa061c757199a7dfb771782bceee46334ec546a8e84a9821af55dabff0482897855d9e31a1042ba202228fe0162bedf9ca6c53fe1525150
   languageName: node
   linkType: hard
 

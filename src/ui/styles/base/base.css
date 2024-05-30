@@ -28,6 +28,10 @@
         }
     }
 
+    body, main{
+        background-color: var(--background-main);
+    }
+
     body {
         -webkit-font-smoothing: antialiased;
         -webkit-tap-highlight-color: var(--base-font-size);
@@ -38,7 +42,6 @@
 
     main {
         width: 100%;
-        background-color: var(--background-main);
         &:not(.--is-projects) {
             margin: calc(var(--header-height)) auto 0;
         }
@@ -88,7 +91,7 @@
     svg {
         -webkit-tap-highlight-color: transparent;
 
-        &:not(.logo) {
+        &:not(.logo, .theme_toggle_inner) {
             fill: var(--neutral-main);
         }
     }

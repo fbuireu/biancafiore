@@ -39,6 +39,7 @@ jspm_packages/
 
 # npm
 .npm
+.yarn
 *.tgz
 
 # Yarn

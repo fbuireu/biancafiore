@@ -2,6 +2,7 @@
 import "./footer.css";
 import logo from "@assets/images/svg/logo.svg?raw";
 import EmailButton from "@components/atoms/emailButton/EmailButton.astro";
+import ThemeToggle from "@components/atoms/themeToggle/ThemeToggle.astro";
 
 const currentYear = new Date().getFullYear();
 ---
@@ -11,6 +12,7 @@ const currentYear = new Date().getFullYear();
     <div class="footer__logo flex row-wrap justify-center">
       <Fragment set:html={logo} />
     </div>
+    <ThemeToggle />
     <ul class="footer__social__networks__list flex row-wrap justify-center">
       <li class="footer__social__networks__item">
         <a

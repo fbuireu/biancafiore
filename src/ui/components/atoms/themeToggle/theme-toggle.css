@@ -1,0 +1,82 @@
+@layer theme-toggle {
+    .theme-toggle_wrapper{
+        position: absolute;
+        right: 2rem;
+        transform: translateY(-75%);
+
+        @media (max-width: 575px) {
+            margin-top: 2rem;
+            order: -1;
+            position: inherit;
+            transform: translateY(-50%);
+        }
+    }
+
+    .theme-toggle__input{
+        display: none;
+    }
+
+    .theme-toggle {
+        --theme-toggle-animation-duration: 500ms;
+    }
+
+    .theme_toggle_inner {
+        fill: var(--white);
+        height: 2rem;
+        width: 2rem;
+    }
+
+    .--untoggled .theme_toggle_inner{
+        fill: var(--primary-main);
+    }
+
+    .theme_toggle_inner * {
+        transform-origin: center;
+        transition: transform calc(var(--theme-toggle-animation-duration) * 0.6) ease;
+    }
+
+    .theme_toggle_inner > g g circle {
+        transition-delay: calc(var(--theme-toggle-animation-duration) * (var(--inline-index) * 0.095 + 0.158));
+        transition-duration: calc(var(--theme-toggle-animation-duration) * 0.2);
+    }
+
+    .theme_toggle_inner > *:first-child path {
+        transition-property: transform, d;
+    }
+
+    .--toggled.theme-toggle .theme_toggle_inner,
+    .--is-dark .theme-toggle:not(.--untoggled) .theme_toggle_inner {
+        transition-delay: 0s;
+        transition-duration: var(--theme-toggle-animation-duration);
+    }
+
+    .--toggled.theme-toggle .theme_toggle_inner > g > circle,
+    .--is-dark .theme-toggle:not(.--untoggled) .theme_toggle_inner > g > circle {
+        transform: scale(1.4);
+    }
+
+    /* stylelint-disable no-descending-specificity */
+    .--is-dark .theme-toggle:not(.--untoggled) .theme_toggle_inner > g > circle,
+    .--toggled.theme-toggle .theme_toggle_inner > g g circle {
+        transform: scale(0);
+        transition-delay: 0s;
+        transition-duration: calc(var(--theme-toggle-animation-duration) * 0.4);
+    }
+
+    .--toggled.theme-toggle .theme_toggle_inner > *:first-child,
+    .--is-dark .theme-toggle:not(.--untoggled) .theme_toggle_inner > *:first-child {
+        rotate: -0.25turn;
+    }
+
+    .--toggled.theme-toggle .theme_toggle_inner > *:first-child path,
+    .--is-dark .theme-toggle:not(.--untoggled) .theme_toggle_inner > *:first-child path {
+        d: path("M-12-14h42v30a1 1 0 00-16 13H0Z");
+    }
+
+    @supports not (d: path("")) {
+        .theme-toggle--toggled.theme-toggle .theme_toggle_inner:first-child path,
+        .--is-dark .theme-toggle:not(.--untoggled) .theme_toggle_inner:first-child path {
+            transform: translate3d(-0.75rem, 1rem, 0);
+        }
+    }
+}
