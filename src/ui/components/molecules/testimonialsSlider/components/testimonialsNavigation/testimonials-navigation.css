@@ -1,5 +1,6 @@
 @layer testimonials.navigation {
     .testimonials__navigation {
+        display: flex;
         gap: 0 1rem;
         position: absolute;
         right: 0;
@@ -11,8 +12,19 @@
     }
 
     .testimonials__navigation__button {
+        transition: transform 0.2s ease;
+
+        &.--left,
+        &.--right {
+            cursor: pointer;
+        }
+
         &.--right {
             rotate: 0.5turn;
+        }
+
+        &.--force-clickable {
+            transform: scale(0.9);
         }
     }
 }

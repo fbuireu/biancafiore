@@ -22,10 +22,12 @@ const applyTheme = (theme: ThemeType) => {
 
 	if (!THEME_TOGGLE || !THEME_TOGGLE_INPUT) return;
 
-	THEME_TOGGLE_INPUT.checked = theme === ThemeType.DARK;
-	THEME_TOGGLE.classList.toggle("dark", theme === ThemeType.DARK);
-	THEME_TOGGLE.classList.toggle("--toggled", theme === ThemeType.DARK);
-	THEME_TOGGLE.classList.toggle("--untoggled", theme !== ThemeType.DARK);
+	const isDarkMode = theme === ThemeType.DARK;
+
+	THEME_TOGGLE_INPUT.checked = isDarkMode;
+	THEME_TOGGLE.classList.toggle("dark", isDarkMode);
+	THEME_TOGGLE.classList.toggle("--toggled", isDarkMode);
+	THEME_TOGGLE.classList.toggle("--untoggled", !isDarkMode);
 };
 
 const handleThemeChange = (toggleSwitch: HTMLInputElement) => {

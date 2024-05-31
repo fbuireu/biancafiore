@@ -30,9 +30,6 @@ const SLIDER_CONFIG: SwiperOptions = {
 	pagination: {
 		clickable: true,
 	},
-	keyboard: {
-		enabled: true,
-	},
 	breakpoints: {
 		1024: {
 			slidesPerView: 2,

@@ -14,5 +14,8 @@
         &.--right {
             rotate: 0.5turn;
         }
+        &.--force-clickable {
+            transform: scale(0.9);
+        }
     }
 }
