@@ -4,7 +4,7 @@ import ReactScriptProvider from "src/ui/context/reactScriptProvider/ReactScriptP
 import SiteHead from "@components/organisms/siteHead/SiteHead.astro";
 import Header from "@components/organisms/header/Header.astro";
 import ScrollTop from "@components/atoms/scrollTop/ScrollTop.astro";
-import CookieConsent from "@components/molecules/cookieConsent/CookieConsent.astro";
+import CookieConsent from "@components/molecules/cookieConsent/CookieConsent";
 
 interface BaseLayoutProps {
 	title: string;
@@ -20,9 +20,9 @@ const isProject = pathname.includes("/projects");
   <body>
     <Header />
     <ScrollTop />
+    <CookieConsent client:only="react" />
     <main class:list={[{ '--is-projects': isProject }]}>
       <slot />
-      <CookieConsent />
     </main>
     <Footer />
     <ReactScriptProvider client:only="react" />

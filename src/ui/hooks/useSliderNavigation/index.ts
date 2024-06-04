@@ -1,1 +1,1 @@
-export * from './useSliderNavigation.ts'
+export * from "./useSliderNavigation.ts";

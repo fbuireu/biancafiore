@@ -91,7 +91,7 @@
     svg {
         -webkit-tap-highlight-color: transparent;
 
-        &:not(.logo, .theme_toggle_inner) {
+        &:not(.logo, .theme_toggle_inner, .cookie_consent_icon) {
             fill: var(--neutral-main);
         }
     }

@@ -46,9 +46,7 @@ const { Content } = await currentArticle.render();
         <Image
           src={images[featuredImage]()}
           alt={title}
-          class="article__featured__image"
-          transition:name={`article-featured-image_${slug}`}
-        />
+          class="article__featured__image" />
       </section>
     )
   }
