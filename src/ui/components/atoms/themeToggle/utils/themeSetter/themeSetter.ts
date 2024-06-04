@@ -4,40 +4,39 @@ export enum ThemeType {
 	DARK = "dark",
 	LIGHT = "light",
 }
-
 const PREFERS_DARK_SCHEME = window.matchMedia("(prefers-color-scheme: dark)");
-const THEME_TOGGLE_INPUT = document.querySelector<HTMLInputElement>('.theme-toggle input[type="checkbox"]');
-const THEME_TOGGLE = document.querySelector<HTMLInputElement>(".theme-toggle");
 
-const getInitialTheme = (): ThemeType => {
+export const getInitialTheme = (): ThemeType => {
 	const cachedTheme = localStorage.getItem(THEME_STORAGE_KEY) as ThemeType | null;
 	const prefersDarkScheme = PREFERS_DARK_SCHEME.matches;
 
 	return cachedTheme ?? (prefersDarkScheme ? ThemeType.DARK : ThemeType.LIGHT);
 };
 
-const applyTheme = (theme: ThemeType) => {
-	document.documentElement.setAttribute(`data-${THEME_STORAGE_KEY}`, theme);
-	localStorage.setItem(THEME_STORAGE_KEY, theme);
-
-	if (!THEME_TOGGLE || !THEME_TOGGLE_INPUT) return;
-
-	const isDarkMode = theme === ThemeType.DARK;
-
-	THEME_TOGGLE_INPUT.checked = isDarkMode;
-	THEME_TOGGLE.classList.toggle("dark", isDarkMode);
-	THEME_TOGGLE.classList.toggle("--toggled", isDarkMode);
-	THEME_TOGGLE.classList.toggle("--untoggled", !isDarkMode);
-};
-
-const handleThemeChange = (toggleSwitch: HTMLInputElement) => {
-	const newTheme = toggleSwitch.checked ? ThemeType.DARK : ThemeType.LIGHT;
-	applyTheme(newTheme);
-};
-
 export const initializeThemeSetter = () => {
+	const THEME_TOGGLE_INPUT = document.querySelector<HTMLInputElement>('.theme-toggle input[type="checkbox"]');
+	const THEME_TOGGLE = document.querySelector<HTMLInputElement>(".theme-toggle");
+
 	const initialTheme = getInitialTheme();
 
+	const handleThemeChange = (toggleSwitch: HTMLInputElement) => {
+		const newTheme = toggleSwitch.checked ? ThemeType.DARK : ThemeType.LIGHT;
+		applyTheme(newTheme);
+	};
+
+	const applyTheme = (theme: ThemeType) => {
+		document.documentElement.setAttribute(`data-${THEME_STORAGE_KEY}`, theme);
+		localStorage.setItem(THEME_STORAGE_KEY, theme);
+
+		if (!THEME_TOGGLE || !THEME_TOGGLE_INPUT) return;
+
+		const isDarkMode = theme === ThemeType.DARK;
+
+		THEME_TOGGLE_INPUT.checked = isDarkMode;
+		THEME_TOGGLE.classList.toggle("dark", isDarkMode);
+		THEME_TOGGLE.classList.toggle("--toggled", isDarkMode);
+		THEME_TOGGLE.classList.toggle("--untoggled", !isDarkMode);
+	};
 	applyTheme(initialTheme);
 
 	if (!THEME_TOGGLE_INPUT) return;

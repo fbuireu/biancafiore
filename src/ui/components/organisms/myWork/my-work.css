@@ -15,7 +15,9 @@
     }
 
     .my-work__item {
-        max-width: calc(100% / 4 - 1rem);
+        --items-per-row: 4;
+        --gap: 1rem;
+        max-width: calc(100% / var(--items-per-row) - var(--gap));
         width: 100%;
 
         & > a {
@@ -40,7 +42,7 @@
         }
 
         @media (max-width: 1024px) {
-            max-width: calc(100% / 2 - 1rem);
+            --items-per-row: 2;
 
             &:nth-child(1),
             &:nth-child(2) {
@@ -53,7 +55,8 @@
             }
         }
         @media (max-width: 720px) {
-            max-width: 100%;
+            --items-per-row: 1;
+            --gap: 0;
 
             &:nth-child(1),
             &:nth-child(2),

@@ -29,6 +29,7 @@ const MAX_RELATED_ARTICLES = 3;
 const images = import.meta.glob<{ default: ImageMetadata }>("/src/assets/**/*.{jpeg,jpg,png,gif}");
 const articles = await getCollection("articles");
 
+const { slug } = Astro.params;
 const { currentArticle } = Astro.props as ArticleProps;
 const { featuredImage, author, title, publishDate, tags } = currentArticle.data;
 const relatedArticles = articles
@@ -46,7 +47,7 @@ const { Content } = await currentArticle.render();
           src={images[featuredImage]()}
           alt={title}
           class="article__featured__image"
-          transition:name="article-featured-image"
+          transition:name={`article-featured-image_${slug}`}
         />
       </section>
     )

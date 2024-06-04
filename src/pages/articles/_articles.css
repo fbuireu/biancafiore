@@ -100,12 +100,13 @@
     }
 
     .articles__grid__item {
-        max-width: calc(100% / 4 - 2rem);
+        --items-per-row: 4;
+        max-width: calc(100% / var(--items-per-row) - 2rem);
         position: relative;
         width: 100%;
 
         @media (max-width: 960px) {
-            max-width: calc(100% / 1 - 2rem);
+            --items-per-row: 1;
         }
     }
 

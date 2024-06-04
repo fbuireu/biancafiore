@@ -3,7 +3,6 @@
     animation: add-shadow linear both;
     animation-range: 0 1cqi;
     animation-timeline: scroll();
-    background-color: var(--background-main);
     height: var(--header-height);
     margin-inline: auto;
     position: fixed;
