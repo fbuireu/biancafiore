@@ -5,7 +5,7 @@ import * as Three from "three";
 import countries from "@data/countries.geojson.json";
 import "./world-globe.css";
 import { calculateCenter } from "@components/atoms/worldGlobe/utils/calculateCenter";
-import { THEME_STORAGE_KEY, WORLD_GLOBE_CONFIG } from "src/consts.ts";
+import { WORLD_GLOBE_CONFIG } from "src/consts.ts";
 import { renderPin } from "@components/atoms/worldGlobe/utils/renderPin";
 import type { ReactGlobePoint } from "./utils/refineCities";
 import { refineCities } from "./utils/refineCities";
@@ -13,7 +13,7 @@ import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import zoomIn from "@assets/images/svg/zoom-in.svg";
 import zoomOut from "@assets/images/svg/zoom-out.svg";
 import useTabVisibility, { TabVisibility } from "@ui/hooks/useTabVisibility/useTabVisibility.ts";
-import { ThemeType } from "@components/atoms/themeToggle/utils/themeSetter";
+import { getCurrentTheme, ThemeType } from "@components/atoms/themeToggle/utils/themeSetter";
 
 export interface City {
 	latitude: string;
@@ -50,21 +50,21 @@ const worldGlobeSize = {
 	width: window.innerWidth > 720 ? 680 : undefined,
 	height: 458,
 };
+const {
+	MESH_PHONG_MATERIAL_CONFIG,
+	HEXAGON_POLYGON_COLOR,
+	BACKGROUND_COLOR,
+	SHOW_ATMOSPHERE,
+	ANIMATE_IN,
+	POINTS_MERGE,
+	ANIMATION_DURATION,
+	MOVEMENT_OFFSET,
+	ZOOM_OFFSET,
+} = WORLD_GLOBE_CONFIG;
 
 const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitiesProps) => {
 	const tabVisibility = useTabVisibility();
 	const worldGlobeReference = useRef<GlobeMethods | undefined>(undefined);
-	const {
-		MESH_PHONG_MATERIAL_CONFIG,
-		HEXAGON_POLYGON_COLOR,
-		BACKGROUND_COLOR,
-		SHOW_ATMOSPHERE,
-		ANIMATE_IN,
-		POINTS_MERGE,
-		ANIMATION_DURATION,
-		MOVEMENT_OFFSET,
-		ZOOM_OFFSET,
-	} = WORLD_GLOBE_CONFIG;
 
 	const onGlobeReady = () => {
 		if (!worldGlobeReference.current || !cities) return;
@@ -78,8 +78,6 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 			altitude: 1.5,
 		});
 	};
-
-	const isDarkMode = () => localStorage.getItem(THEME_STORAGE_KEY) === ThemeType.DARK;
 
 	useEffect(() => {
 		if (!worldGlobeReference.current) return;
@@ -114,7 +112,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 				pointsMerge={POINTS_MERGE}
 				animateIn={ANIMATE_IN}
 				showAtmosphere={SHOW_ATMOSPHERE}
-				backgroundColor={isDarkMode() ? "#1E2021FF" : BACKGROUND_COLOR}
+				backgroundColor={BACKGROUND_COLOR}
 				hexPolygonsData={countries.features}
 				hexPolygonColor={() => HEXAGON_POLYGON_COLOR}
 				globeMaterial={

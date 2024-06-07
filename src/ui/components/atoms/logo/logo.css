@@ -8,15 +8,20 @@
         inset: 1.25rem 0 1rem 0;
         margin: 0 auto;
         position: absolute;
-        transition: top 0.3s linear 1.75s,
+        transition: top 0.3s 0.95s, linear 1.75s,
         scale 0.2s linear 0.3s,
         transform 0.2s ease-out;
         width: fit-content;
         z-index: 20;
 
         svg {
+            fill: var(--neutral-main);
             transition: top 0.3s ease-out 1.75s,
             scale 0.2s linear;
+
+            &.--has-intersected{
+                fill: var(--white);
+         }
 
             @media (max-width: 525px) {
                 width: 75%;
@@ -26,7 +31,13 @@
         :not(.--is-menu-open) svg {
             scale: 0.85;
         }
-
+        &.--is-menu-open {
+            transform: translateY(2rem);
+            transition-delay: 0.85s;
+            svg > g > g:nth-child(1){
+                fill:var(--white);
+            }
+        }
         @media (max-width: 525px) {
             inset: auto 0;
         }

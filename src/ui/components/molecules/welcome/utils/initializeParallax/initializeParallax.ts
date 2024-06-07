@@ -15,7 +15,8 @@ export function initializeParallax() {
 	WELCOME.addEventListener("mousemove", (event) => {
 		attachParallax({ event, target: ".welcome__image", movement: 30 });
 		attachParallax({ event, target: ".welcome__text__section.--left", movement: 50 });
-		attachParallax({ event, target: ".welcome__text__section.--right", movement: -20 });
+		attachParallax({ event, target: ".welcome__text__section.--right .welcome__text__title", movement: -20 });
+		attachParallax({ event, target: ".welcome__text__section.--right .welcome__text__body", movement: -15 });
 	});
 
 	function attachParallax({ event, target, movement }: ParallaxParams) {

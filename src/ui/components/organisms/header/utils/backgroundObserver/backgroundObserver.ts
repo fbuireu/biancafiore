@@ -4,15 +4,12 @@ const SELECTORS = {
 	SITE_LOGO_SVG: ".site__logo svg",
 	SITE_LOGO: ".site__logo",
 	HEADER_MENU_TEXT: ".header__menu-text",
+	HEADER_MENU_BUTTON: ".header__menu-button ",
 	HEADER_MENU_OUTLINES: ".header__menu-button__outline",
 };
 
-function getComputedStyleValue(property: string): string {
-	return getComputedStyle(document.documentElement).getPropertyValue(property);
-}
-
 function isIntersecting(element: HTMLElement): boolean {
-	const { HEADER: HEADER_SELECTOR } = SELECTORS;
+	const { HEADER: HEADER_SELECTOR, HEADER_MENU_BUTTON } = SELECTORS;
 	const headerOffsetHeight = (document.querySelector(HEADER_SELECTOR) as HTMLElement).offsetHeight / 2;
 	const threshold = element.offsetTop - headerOffsetHeight;
 	const sectionBottom = element.offsetTop + element.offsetHeight - headerOffsetHeight;
@@ -21,8 +18,6 @@ function isIntersecting(element: HTMLElement): boolean {
 }
 
 export function backgroundObserver(): void {
-	const WHITE = getComputedStyleValue("--white");
-	const BLACK = getComputedStyleValue("--neutral-main");
 	const {
 		HEADER: HEADER_SELECTOR,
 		LATEST_ARTICLES: LATEST_ARTICLES_SELECTOR,
@@ -43,15 +38,9 @@ export function backgroundObserver(): void {
 	if (!HEADER || !LATEST_ARTICLES || isMenuOpen) return;
 	const hasIntersected = isIntersecting(LATEST_ARTICLES);
 
-	if (hasIntersected) {
-		SITE_LOGO_SVG.style.fill = WHITE;
-		HEADER_MENU_TEXT.style.color = WHITE;
-		HEADER_MENU_OUTLINES.forEach((element) => (element.style.borderColor = WHITE));
-	} else {
-		SITE_LOGO_SVG.style.fill = BLACK;
-		HEADER_MENU_TEXT.style.color = BLACK;
-		HEADER_MENU_OUTLINES.forEach((element) => (element.style.borderColor = BLACK));
-	}
+	HEADER_MENU_OUTLINES.forEach((element) => element.classList.toggle("--has-intersected", hasIntersected));
+	HEADER_MENU_TEXT.classList.toggle("--has-intersected", hasIntersected);
+	SITE_LOGO_SVG.classList.toggle("--has-intersected", hasIntersected);
 }
 
 window.addEventListener("scroll", backgroundObserver);

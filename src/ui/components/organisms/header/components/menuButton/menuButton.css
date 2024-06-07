@@ -1,21 +1,14 @@
 @layer header.menuButton {
-    .header__menu-button {
-        font-size: 1.5rem;
-        padding: 0.5rem;
-        position: relative;
-        z-index: 2;
-
-        @media (max-width: 1440px) {
-            margin-right: 1rem;
-            padding: 0;
-        }
-    }
-
     .header__menu-text {
+        color: var(--neutral-main);
         display: block;
         position: relative;
         transition: color 0.2s;
         translate: 5% 0;
+
+        &.--has-intersected {
+            color: var(--white);
+        }
 
         @media (min-width: 575px) {
             margin-right: 1rem;
@@ -30,6 +23,35 @@
         translate: 0 -25%;
         width: calc(var(--header-height) * 0.85);
         z-index: 20;
+
+        &.--has-intersected {
+            border-color: var(--white);
+        }
+    }
+
+    .header__menu-button {
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        position: relative;
+        z-index: 2;
+
+        &.--is-menu-open {
+            .header__menu-button__outline {
+                border-color: var(--white);
+                transition: border-color;
+                transition-delay: 1s;
+            }
+            .header__menu-text {
+                color: var(--white);
+                transition: color;
+                transition-delay: 1s;
+            }
+        }
+
+        @media (max-width: 1440px) {
+            margin-right: 1rem;
+            padding: 0;
+        }
     }
 
     .outline-1 {

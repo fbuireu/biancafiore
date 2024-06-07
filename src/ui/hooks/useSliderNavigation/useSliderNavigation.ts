@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import type { RefObject } from "react";
 import type { Swiper } from "swiper";
 

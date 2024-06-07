@@ -8,11 +8,14 @@
         width: fit-content;
         z-index: 100;
 
-        .cookie_consent_icon {
-            fill: var(--primary-dark-3);
-            height:3rem;
-            padding: .5rem;
-            width:3rem;
+        @media (max-width: 575px) {
+            inset: auto 0 1rem 1rem;
         }
+    }
+    .cookie_consent_icon {
+        fill: var(--primary-dark-3);
+        height: 3rem;
+        padding: .5rem;
+        width:3rem;
     }
 }

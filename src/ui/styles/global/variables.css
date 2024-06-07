@@ -54,7 +54,7 @@
   --neutral-light-3: color-mix(in srgb, var(--neutral-main), var(--black) 75%);
   --neutral-light-4: color-mix(in srgb, var(--neutral-main), var(--black) 95%);
   --background-main: oklch(24.18% 0.004 228.95);
-  --white:  oklch(0 0 0);
+  --white:  var(--background-main);
   --black: oklch(100% 0 0);
 }
 

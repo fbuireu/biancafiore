@@ -4,7 +4,7 @@ import { createExcerpt } from "@shared/utils/createExcerpt";
 import { slugify } from "@shared/utils/slugify";
 import MarkdownIt from "markdown-it";
 import { DEFAULT_DATE_FORMAT } from "src/consts.ts";
-import { A11y, Keyboard, Navigation, Virtual } from "swiper/modules";
+import { A11y, Keyboard, Navigation, Autoplay, Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperOptions } from "swiper/types";
 import "./about-latest-articles-slider.css";
@@ -20,11 +20,11 @@ enum ArticleType {
 }
 
 const SLIDER_CONFIG: SwiperOptions = {
-	modules: [Navigation, Keyboard, Virtual, A11y],
+	modules: [Navigation, Keyboard, Virtual, Autoplay, A11y],
 	loop: true,
 	slidesPerView: 2,
 	autoplay: {
-		delay: 3000,
+		delay: 10000,
 		pauseOnMouseEnter: true,
 	},
 	pagination: {

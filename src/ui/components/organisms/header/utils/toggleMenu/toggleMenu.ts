@@ -6,7 +6,6 @@ const ANIMATION_CONFIG = {
 	POWER2_EASE_OUT: Power2.easeOut,
 	POWER2_EASE_IN: Power2.easeIn,
 	POWER3_OUT: Power3.easeOut,
-	WHITE: getComputedStyle(document.documentElement).getPropertyValue("--white") ?? "var(--white)",
 	PATH_START: "M0 502S175 272 500 272s500 230 500 230V0H0Z",
 	PATH_END: "M0,1005S175,995,500,995s500,5,500,5V0H0Z",
 };
@@ -41,7 +40,6 @@ export function toggleMenu() {
 		OVERLAY_PATH,
 		BUTTON_OUTLINE,
 		SITE_LOGO,
-		SITE_LOGO_SVG,
 		NAVIGATION_DIVIDER,
 		HEADER_MENU,
 		NAVIGATION_ITEMS,
@@ -56,7 +54,7 @@ export function toggleMenu() {
 	const MENU_DIVIDER = document.querySelector(NAVIGATION_DIVIDER) as HTMLElement;
 	const MENU_TEXT = document.querySelector(HEADER_MENU_TEXT) as HTMLElement;
 
-	const ELEMENTS_TO_TOGGLE = [BODY, HTML, LOGO, MENU_DIVIDER];
+	const ELEMENTS_TO_TOGGLE = [BODY, HTML, LOGO, MENU_DIVIDER, TOGGLE_MENU_BUTTON];
 
 	toggleMenuItems();
 
@@ -73,15 +71,13 @@ export function toggleMenu() {
 	}
 
 	function toggleMenuItems() {
-		const { POWER4_IN_OUT, POWER2_EASE_IN, POWER2_EASE_OUT, POWER3_OUT, WHITE, PATH_START, PATH_END } =
-			ANIMATION_CONFIG;
+		const { POWER4_IN_OUT, POWER2_EASE_IN, POWER2_EASE_OUT, POWER3_OUT, PATH_START, PATH_END } = ANIMATION_CONFIG;
 
 		timeline.to(MENU_OVERLAY, { display: "block" });
 		timeline.to(MENU_TEXT, {
 			top: "1.75rem",
 			left: "1.25rem",
 			fontSize: "1.5rem",
-			color: WHITE,
 			x: "-1rem",
 			y: 0,
 			ease: POWER4_IN_OUT,
@@ -93,7 +89,6 @@ export function toggleMenu() {
 			{
 				width: "90px",
 				height: "90px",
-				border: `1px solid ${WHITE}`,
 				x: "-1rem",
 				y: 0,
 				ease: POWER4_IN_OUT,
@@ -101,8 +96,6 @@ export function toggleMenu() {
 			},
 			"<",
 		);
-		timeline.to(SITE_LOGO, { y: "2rem", duration: 0.25 }, "-=0.5");
-		timeline.to(SITE_LOGO_SVG, { fill: WHITE, duration: 0.25 }, "-=1");
 		timeline
 			.to(OVERLAY_PATH, { attr: { d: PATH_START }, ease: POWER2_EASE_IN, duration: 1 }, "<")
 			.to(OVERLAY_PATH, { attr: { d: PATH_END }, ease: POWER2_EASE_OUT, duration: 1 }, "-=0.5");

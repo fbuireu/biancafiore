@@ -1,6 +1,9 @@
 @layer articles {
     .articles__wrapper {
         background-color: var(--neutral-light-4);
+        [data-theme="dark"] & {
+            background-color: var(--background-main);
+        }
     }
 
     .articles__title {
