@@ -1,30 +1,30 @@
-import clsx from 'clsx';
-import type { SVGProps } from 'react';
+import clsx from "clsx";
+import type { SVGProps } from "react";
 
 interface CookieProps extends SVGProps<SVGSVGElement> {
-  classNames?: string;
+	classNames?: string;
 }
 
 export const Cookie = ({ fill = "currentColor", classNames, ...props }: CookieProps) => {
-  return (
-    <svg
-      className={clsx(classNames)}
-      version="1.1"
-      id="Layer_1"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      x="0px"
-      y="0px"
-      viewBox="0 0 120.23 122.88"
-      xmlSpace="preserve"
-      fill={fill}
-      {...props}
-    >
-      <g>
-        <path
-          style={{ fillRule: "evenodd", clipRule: "evenodd" }}
-          className="st0"
-          d="M98.18,0c3.3,0,5.98,2.68,5.98,5.98c0,3.3-2.68,5.98-5.98,5.98c-3.3,0-5.98-2.68-5.98-5.98
+	return (
+		<svg
+			className={clsx(classNames)}
+			version="1.1"
+			id="Layer_1"
+			xmlns="http://www.w3.org/2000/svg"
+			xmlnsXlink="http://www.w3.org/1999/xlink"
+			x="0px"
+			y="0px"
+			viewBox="0 0 120.23 122.88"
+			xmlSpace="preserve"
+			fill={fill}
+			{...props}
+		>
+			<g>
+				<path
+					style={{ fillRule: "evenodd", clipRule: "evenodd" }}
+					className="st0"
+					d="M98.18,0c3.3,0,5.98,2.68,5.98,5.98c0,3.3-2.68,5.98-5.98,5.98c-3.3,0-5.98-2.68-5.98-5.98
           C92.21,2.68,94.88,0,98.18,0L98.18,0z M99.78,52.08c5.16,7.7,11.69,10.06,20.17,4.85c0.28,2.9,0.35,5.86,0.2,8.86
           c-1.67,33.16-29.9,58.69-63.06,57.02C23.94,121.13-1.59,92.9,0.08,59.75C1.74,26.59,30.95,0.78,64.1,2.45
           c-2.94,9.2-0.45,17.37,7.03,20.15C64.35,44.38,79.49,58.63,99.78,52.08L99.78,52.08z M30.03,47.79c4.97,0,8.99,4.03,8.99,8.99
@@ -35,8 +35,8 @@ export const Cookie = ({ fill = "currentColor", classNames, ...props }: CookiePr
           C44.54,34.45,46.76,32.23,49.49,32.23L49.49,32.23z M76.39,82.8c4.59,0,8.3,3.72,8.3,8.3c0,4.59-3.72,8.3-8.3,8.3
           c-4.59,0-8.3-3.72-8.3-8.3C68.09,86.52,71.81,82.8,76.39,82.8L76.39,82.8z M93.87,23.1c3.08,0,5.58,2.5,5.58,5.58
           c0,3.08-2.5,5.58-5.58,5.58s-5.58-2.5-5.58-5.58C88.29,25.6,90.79,23.1,93.87,23.1L93.87,23.1z"
-        />
-      </g>
-    </svg>
-  );
+				/>
+			</g>
+		</svg>
+	);
 };

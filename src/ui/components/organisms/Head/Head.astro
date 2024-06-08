@@ -1,5 +1,5 @@
 ---
-import "@ui/styles/index.css";
+import "@styles/index.css";
 import "@fontsource-variable/nunito-sans";
 import "@fontsource/baskervville";
 import { ViewTransitions } from "astro:transitions";
@@ -37,15 +37,17 @@ const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props as
   <meta property="twitter:description" content={description} />
   <meta property="twitter:image" content={new URL(image, Astro.url)} />
 </head>
-<script type="text/partytown" src=`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`>
-</script>
-<script define:vars={{ googleAnalyticsId }} type="text/partytown">
+<script type="text/partytown" async src=`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}` /> 
+<script define:vars={{ googleAnalyticsId }}>
   window.dataLayer = window.dataLayer || [];
 
-  function gtag() {
-    window.dataLayer.push(arguments);
+  function gtag(){
+    dataLayer.push(arguments);
   }
-
   gtag('js', new Date());
   gtag('config', googleAnalyticsId);
+  gtag('consent', 'default', {
+    analytics_storage: 'denied',
+    wait_for_update: 400,
+  });
 </script>

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { reset, showPreferences, run } from "vanilla-cookieconsent";
+import { reset, run, showPreferences } from "vanilla-cookieconsent";
 import { Cookie } from "@assets/images/svg-components/cookie";
 import { config } from "./utils/config.ts";
 import "./cookie-consent.css";

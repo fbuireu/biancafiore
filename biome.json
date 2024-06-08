@@ -1,35 +1,40 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.6.4/schema.json",
-	"files": {
-		"ignore": ["src/data/*"]
-	},
-	"vcs": {
-		"enabled": true,
-		"clientKind": "git",
-		"defaultBranch": "main"
-	},
-	"formatter": {
-		"lineWidth": 120
-	},
-	"linter": {
-		"rules": {
-			"recommended": true,
-			"complexity": {
-				"noForEach": "off"
-			},
-			"correctness": {
-				"useExhaustiveDependencies": "off"
-			},
-			"style": {
-				"noUnusedTemplateLiteral": "off"
-			},
-			"suspicious": {
-				"noAssignInExpressions": "off"
-			},
-			"a11y": {
-				"useAnchorContent": "off",
-				"noSvgWithoutTitle": "off"
-			}
-		}
-	}
+    "$schema": "https://biomejs.dev/schemas/1.6.4/schema.json",
+    "files": {
+        "ignore": [
+            "src/data/*"
+        ]
+    },
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "defaultBranch": "main"
+    },
+    "formatter": {
+        "lineWidth": 120
+    },
+    "linter": {
+        "ignore": [
+            "*.d.ts*"
+        ],
+        "rules": {
+            "recommended": true,
+            "complexity": {
+                "noForEach": "off"
+            },
+            "correctness": {
+                "useExhaustiveDependencies": "off"
+            },
+            "style": {
+                "noUnusedTemplateLiteral": "off"
+            },
+            "suspicious": {
+                "noAssignInExpressions": "off"
+            },
+            "a11y": {
+                "useAnchorContent": "off",
+                "noSvgWithoutTitle": "off"
+            }
+        }
+    }
 }

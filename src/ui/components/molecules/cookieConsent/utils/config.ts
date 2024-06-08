@@ -1,4 +1,5 @@
 import type { CookieConsentConfig } from "vanilla-cookieconsent";
+import { acceptedCategory, acceptedService } from "vanilla-cookieconsent";
 
 export const config: CookieConsentConfig = {
 	cookie: {
@@ -23,22 +24,20 @@ export const config: CookieConsentConfig = {
 			services: {
 				ga4: {
 					label:
-						'<a href="https://marketingplatform.google.com/about/analytics/terms/us/" target="_blank">Google Analytics 4 (dummy)</a>',
+						'<a href="https://marketingplatform.google.com/about/analytics/terms/us/" target="_blank">Google Analytics 4</a>',
 					onAccept: () => {
-						console.log("ga4 accepted");
-						// TODO: load ga4
+						if (acceptedCategory("analytics")) {
+						}
+
+						if (acceptedService("Google Analytics", "analytics")) {
+						}
 					},
-					onReject: () => {
-						console.log("ga4 rejected");
-					},
+					onReject: () => {},
 					cookies: [
 						{
 							name: /^_ga/,
 						},
 					],
-				},
-				another: {
-					label: "Another one (dummy)",
 				},
 			},
 		},

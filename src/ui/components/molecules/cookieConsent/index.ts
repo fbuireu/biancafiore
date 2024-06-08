@@ -1,1 +1,1 @@
-export * from './CookieConsent'
+export * from "./CookieConsent";

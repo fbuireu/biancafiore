@@ -16,7 +16,7 @@
 	"author": "Ferran Buireu <fbuireu@gmail.com>",
 	"version": "2.0.0",
 	"type": "module",
-	"packageManager": "yarn@4.1.1",
+	"packageManager": "yarn@4.2.2",
 	"engines": {
 		"node": ">=20.10.0"
 	},
