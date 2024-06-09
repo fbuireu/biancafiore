@@ -1,4 +1,4 @@
-import type { CookieValue } from 'vanilla-cookieconsent';
+import type { CookieValue } from "vanilla-cookieconsent";
 
 type ConsentStatus = "granted" | "denied";
 

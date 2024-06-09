@@ -1,5 +1,5 @@
-import type { CookieConsentConfig } from 'vanilla-cookieconsent';
-import { updatePreferences } from '@components/molecules/cookieConsent/utils/updatePreferences';
+import type { CookieConsentConfig } from "vanilla-cookieconsent";
+import { updatePreferences } from "../utils/updatePreferences";
 
 export const config: CookieConsentConfig = {
 	onFirstConsent: ({ cookie }) => updatePreferences(cookie),
