@@ -1,10 +1,9 @@
-import type { CookieConsentConfig } from "vanilla-cookieconsent";
-import { acceptedCategory, acceptedService } from "vanilla-cookieconsent";
+import type { CookieConsentConfig } from 'vanilla-cookieconsent';
+import { updatePreferences } from '@components/molecules/cookieConsent/utils/updatePreferences';
 
 export const config: CookieConsentConfig = {
-	cookie: {
-		useLocalStorage: true,
-	},
+	onFirstConsent: ({ cookie }) => updatePreferences(cookie),
+	onChange: ({ cookie }) => updatePreferences(cookie),
 	guiOptions: {
 		consentModal: {
 			layout: "box inline",
@@ -16,23 +15,11 @@ export const config: CookieConsentConfig = {
 		},
 	},
 	categories: {
-		necessary: {
-			readOnly: true,
-		},
-		functionality: {},
 		analytics: {
 			services: {
 				ga4: {
 					label:
 						'<a href="https://marketingplatform.google.com/about/analytics/terms/us/" target="_blank">Google Analytics 4</a>',
-					onAccept: () => {
-						if (acceptedCategory("analytics")) {
-						}
-
-						if (acceptedService("Google Analytics", "analytics")) {
-						}
-					},
-					onReject: () => {},
 					cookies: [
 						{
 							name: /^_ga/,
@@ -46,6 +33,7 @@ export const config: CookieConsentConfig = {
 		default: "en",
 		autoDetect: "browser",
 		translations: {
+			// en: '/assets/translations/en.json',
 			en: {
 				consentModal: {
 					title: "Hello traveller, it's cookie time!",
@@ -69,18 +57,6 @@ export const config: CookieConsentConfig = {
 							title: "Cookie Usage",
 							description:
 								"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-						},
-						{
-							title: 'Strictly Necessary Cookies <span class="pm__badge">Always Enabled</span>',
-							description:
-								"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-							linkedCategory: "necessary",
-						},
-						{
-							title: "Functionality Cookies",
-							description:
-								"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-							linkedCategory: "functionality",
 						},
 						{
 							title: "Analytics Cookies",

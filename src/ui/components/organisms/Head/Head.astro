@@ -16,38 +16,45 @@ const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props as
 ---
 
 <head lang="en">
-  <ViewTransitions />
-  <meta name="generator" content={Astro.generator} />
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name='color-scheme' content='light dark'>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="canonical" href={canonicalURL} />
-  <title>{title}</title>
-  <meta name="title" content={title} />
-  <meta name="description" content={description} />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={Astro.url} />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:image" content={new URL(image, Astro.url)} />
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content={Astro.url} />
-  <meta property="twitter:title" content={title} />
-  <meta property="twitter:description" content={description} />
-  <meta property="twitter:image" content={new URL(image, Astro.url)} />
+    <ViewTransitions />
+    <meta name="generator" content={Astro.generator} />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
 </head>
-<script type="text/partytown" async src=`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}` /> 
 <script define:vars={{ googleAnalyticsId }}>
   window.dataLayer = window.dataLayer || [];
 
-  function gtag(){
+  function gtag() {
     dataLayer.push(arguments);
   }
+
   gtag('js', new Date());
   gtag('config', googleAnalyticsId);
   gtag('consent', 'default', {
-    analytics_storage: 'denied',
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'functionality_storage': 'denied',
+    'personalization_storage': 'denied',
     wait_for_update: 400,
   });
 </script>
+<script type="text/partytown" async src=`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}` />
+
