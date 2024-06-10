@@ -3,9 +3,10 @@ import clsx from "clsx";
 
 interface PinProps extends SVGProps<SVGSVGElement> {
 	classNames?: string;
+	fill?: string;
 }
 
-export const Pin = ({ fill = "currentColor", classNames, ...props }: PinProps) => {
+export const Pin = ({ fill, classNames, ...props }: PinProps) => {
 	return (
 		<svg viewBox="-4 0 36 36" className={clsx(classNames)} {...props}>
 			<path

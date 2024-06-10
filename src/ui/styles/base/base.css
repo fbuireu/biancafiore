@@ -1,5 +1,7 @@
 @layer base {
     * {
+        transition-behavior: allow-discrete;
+
         &::selection {
             background-color: var(--primary-main);
             color: var(--white);

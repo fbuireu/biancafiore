@@ -15,14 +15,27 @@ export const config: CookieConsentConfig = {
 		},
 	},
 	categories: {
+		necessary: {
+			enabled: true,
+		},
 		analytics: {
+			autoClear: {
+				cookies: [
+					{
+						name: /^_ga/,
+					},
+					{
+						name: "_gid",
+					},
+				],
+			},
 			services: {
 				ga4: {
 					label:
-						'<a href="https://marketingplatform.google.com/about/analytics/terms/us/" target="_blank">Google Analytics 4</a>',
+						'<a href="https://marketingplatform.google.com/about/analytics/terms/us/" target="_blank">Google Analytics 4 ga</a>',
 					cookies: [
 						{
-							name: /^_ga/,
+							name: /^(_ga|_gid)/,
 						},
 					],
 				},
@@ -31,43 +44,65 @@ export const config: CookieConsentConfig = {
 	},
 	language: {
 		default: "en",
-		autoDetect: "browser",
 		translations: {
-			// en: '/assets/translations/en.json',
 			en: {
 				consentModal: {
-					title: "Hello traveller, it's cookie time!",
+					title: "We use cookies",
 					description:
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+						"Cookie modal description Cookie modal description Cookie modal description Cookie modal description",
 					acceptAllBtn: "Accept all",
 					acceptNecessaryBtn: "Reject all",
-					showPreferencesBtn: "Manage preferences",
-					footer:
-						'<a href="/privacy-policy">Privacy Policy</a>\n<a href="/terms-and-conditions">Terms and conditions</a>',
+					showPreferencesBtn: "Manage Individual preferences",
 				},
 				preferencesModal: {
-					title: "Consent Preferences Center",
+					title: "Manage cookie preferences",
 					acceptAllBtn: "Accept all",
 					acceptNecessaryBtn: "Reject all",
-					savePreferencesBtn: "Save preferences",
+					savePreferencesBtn: "Accept current selection",
 					closeIconLabel: "Close modal",
-					serviceCounterLabel: "Service|Services",
 					sections: [
 						{
-							title: "Cookie Usage",
+							title: "Cookie usage",
 							description:
-								"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+								"We use cookies to ensure the basic functionalities of the website and to enhance your online experience ...",
 						},
 						{
-							title: "Analytics Cookies",
-							description:
-								"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+							title: "Performance and Analytics cookies",
+							description: "These cookies allow the website to remember the choices you have made in the past",
 							linkedCategory: "analytics",
+							cookieTable: {
+								headers: {
+									name: "Name",
+									domain: "Service",
+									description: "Description",
+									expiration: "Expiration",
+								},
+								body: [
+									{
+										name: "_ga",
+										domain: "Google Analytics",
+										description: 'Cookie set by <a href="#das">Google Analytics</a>',
+										expiration: "Expires after 12 days",
+									},
+									{
+										name: "_gid",
+										domain: "Google Analytics",
+										description: 'Cookie set by <a href="#das">Google Analytics</a>',
+										expiration: "Session",
+									},
+								],
+							},
+						},
+						{
+							title: "Targeting and Advertising",
+							description:
+								"These cookies are used to make advertising messages more relevant to you and your interests. The intention is to display ads that are relevant and engaging for the individual user and thereby more valuable for publishers and third party advertisers.",
+							linkedCategory: "targeting",
 						},
 						{
 							title: "More information",
 							description:
-								'For any query in relation to my policy on cookies and your choices, please <a class="cc__link" href="/contact">contact me</a>.',
+								'For any queries in relation to my policy on cookies and your choices, please <a href="/contact">contact us</a>',
 						},
 					],
 				},

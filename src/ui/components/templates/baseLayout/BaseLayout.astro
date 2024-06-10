@@ -18,6 +18,12 @@ const isProjects = pathname.includes("/projects");
 <html lang="en">
   <Head title={title} description={description} />
   <body>
+  <noscript>
+    <iframe src=`https://www.googletagmanager.com/ns.html?id=${import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID}`
+                    height="0" width="0" style="display:none;visibility:hidden">
+
+    </iframe>
+  </noscript>
     <Header />
     <ScrollTop />
     <CookieConsent client:only="react" />

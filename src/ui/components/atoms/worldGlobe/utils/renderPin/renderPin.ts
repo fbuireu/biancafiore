@@ -12,7 +12,7 @@ export function renderPin({ markerData }: RenderPinParams): HTMLElement {
 	markerWrapper.classList.add(`--is-${markerData.label.toLowerCase()}`);
 	const marker = document.createElement("div");
 	const root = createRoot(marker);
-	root.render(pin());
+	root.render(pin({ fill: "currentColor" }));
 	markerWrapper.appendChild(marker);
 	markerWrapper.onclick = () => console.info(markerData);
 
