@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import { Image } from "astro:assets";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import "./_article.css";
@@ -8,6 +8,7 @@ import { DEFAULT_DATE_FORMAT } from "src/consts";
 import { slugify } from "@shared/utils/slugify";
 import type { ImageMetadata } from "astro";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
+import { generateExcerpt } from "@shared/utils/generateExcerpt";
 
 export const prerender = true;
 
@@ -31,7 +32,11 @@ const articles = await getCollection("articles");
 
 const { slug } = Astro.params;
 const { currentArticle } = Astro.props as ArticleProps;
-const { featuredImage, author, title, publishDate, tags } = currentArticle.data;
+const { featuredImage, title, author: authorData, publishDate, tags } = currentArticle.data;
+const description =
+	currentArticle.data.description ?? generateExcerpt({ parser, content: currentArticle.body }).excerpt;
+const author = await getEntry(authorData.collection, authorData.slug);
+
 const relatedArticles = articles
 	.filter(({ data }) => data.tags?.some((tag) => data.title !== currentArticle.data.title && tags?.includes(tag)))
 	.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
@@ -55,12 +60,12 @@ const { Content } = await currentArticle.render();
     <h1 class="article__title">
       {title}
     </h1>
-    <p class="article__author">by <a href={`/tags/${slugify(author)}`}>{author}</a></p>
+    <p class="article__author">by <a href={`/tags/${author.data.id}`}>{author.data.name}</a></p>
     <time class="article__publish-date font-sans-serif" datetime={String(publishDate)}>
       {publishDate.toLocaleDateString('en', DEFAULT_DATE_FORMAT)}
     </time>
     {
-      (tags && tags?.length > 0) && (
+      tags?.length > 0 && (
         <ul class="article__tags__list flex row-wrap">
           {tags.map((tag) => (
             <li class="article__tag__item">
@@ -74,22 +79,53 @@ const { Content } = await currentArticle.render();
   <article class="article__wrapper">
     <Content />
   </article>
-
+  <script type="application/ld+json" set:html={JSON.stringify(  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "description": description,
+    ...(featuredImage && {"image": featuredImage}),
+    "datePublished": new Date(publishDate).toISOString(),
+    "dateModified": new Date(publishDate).toISOString(),
+    "author": {
+      "@type": "Person",
+      "name": author.data.name,
+      "jobTitle": author.data.jobTitle,
+      "url": new URL("/about", import.meta.env.PUBLIC_SITE_URL)
+    },
+    "publisher": {
+      "name": author.data.name,
+      "url": new URL(import.meta.env.PUBLIC_SITE_URL)
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": Astro.url.href
+    }
+  })}/>
   {
-    relatedArticles.length > 0 &&
-    <section class="related-articles__wrapper">
-      <h3 class="related-articles__title section-title">You might also like</h3>
-      <ul class="related-articles__list flex row-wrap">
-        {relatedArticles.map((article) => (
-          <li class="related-articles__item flex">
+    relatedArticles.length > 0 && (
+      <section class="related-articles__wrapper">
+        <h3 class="related-articles__title section-title">You might also like</h3>
+        <ul class="related-articles__list flex row-wrap">
+          {relatedArticles.map(async (article) => {
+            const author = await getEntry(authorData.collection, authorData.slug)
+           return <li class="related-articles__item flex">
               <a href={`/articles/${article.slug}`} class="related__article__link">
                 <h4 class="related__article__title">{article.data.title}</h4>
-                <p class="related__article__author">by {article.data?.author}</p>
+                <p class="related__article__author">by {author.data.name}</p>
               </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-  }
-
+            </li>
+          })}
+        </ul>
+      </section>
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": relatedArticles.map((article, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "url": new URL(article.slug, Astro.url).href
+        }))
+      })}/>
+    )}
 </BaseLayout>

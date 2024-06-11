@@ -22,17 +22,14 @@ export const config: CookieConsentConfig = {
 			autoClear: {
 				cookies: [
 					{
-						name: /^_ga/,
-					},
-					{
-						name: "_gid",
+						name: /^(_ga|_gid)/,
 					},
 				],
 			},
 			services: {
 				ga4: {
 					label:
-						'<a href="https://marketingplatform.google.com/about/analytics/terms/us/" target="_blank">Google Analytics 4 ga</a>',
+						'<a href="https://marketingplatform.google.com/about/analytics/terms/us/" target="_blank">Google Analytics 4</a>',
 					cookies: [
 						{
 							name: /^(_ga|_gid)/,
@@ -58,13 +55,13 @@ export const config: CookieConsentConfig = {
 					title: "Manage cookie preferences",
 					acceptAllBtn: "Accept all",
 					acceptNecessaryBtn: "Reject all",
-					savePreferencesBtn: "Accept current selection",
+					savePreferencesBtn: "Save preferences",
 					closeIconLabel: "Close modal",
 					sections: [
 						{
 							title: "Cookie usage",
 							description:
-								"We use cookies to ensure the basic functionalities of the website and to enhance your online experience ...",
+								"We use cookies to ensure the basic functionalities of the website and to enhance your online experience...",
 						},
 						{
 							title: "Performance and Analytics cookies",

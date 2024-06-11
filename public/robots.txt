@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /terms-and-conditions
+Disallow: /privacy-policy
+
+Sitemap: https://www.biancafiore.me/sitemap-index.xml

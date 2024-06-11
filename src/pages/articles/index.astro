@@ -1,10 +1,9 @@
 ---
-// @ts-nocheck
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { Image } from "astro:assets";
 import MarkdownIt from "markdown-it";
-import { createExcerpt } from "@shared/utils/createExcerpt";
+import { generateExcerpt } from "src/ui/shared/utils/generateExcerpt";
 import { slugify } from "@shared/utils/slugify";
 import { DEFAULT_DATE_FORMAT } from "src/consts";
 import "./_articles.css";
@@ -31,10 +30,13 @@ articles.find((article) => article.data?.featuredImage);
 
 const parser: MarkdownIt = MarkdownIt("default", {});
 
-const { excerpt: featuredArticleExcerpt } = createExcerpt({
-	parser,
-	content: featuredArticleBody,
-});
+const featuredArticleDescription =
+	featuredArticle.description ??
+	generateExcerpt({
+		parser,
+		content: featuredArticleBody,
+	}).excerpt;
+
 const publishedDate = featuredArticle.publishDate.toLocaleDateString("en", DEFAULT_DATE_FORMAT);
 const featuredArticleHref = `/articles/${featuredArticleSlug}`;
 const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
@@ -47,7 +49,7 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
   <div class="articles__wrapper">
     <section class="articles__wrapper__inner common-wrapper">
       <div class="featured-article__wrapper">
-        <a href={`/articles/${featuredArticleSlug}`}>
+        <a href={featuredArticleHref}>
           <Image
             class="featured-article__image"
             src={images[featuredArticle.featuredImage]()}
@@ -60,7 +62,7 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
               {publishedDate}
             </time>
             <h2 class="featured-article__title">{featuredArticle.title}</h2>
-            <p class="featured-article__description">{featuredArticleExcerpt}</p>
+            <p class="featured-article__description">{featuredArticleDescription}</p>
             {
               featuredArticle.tags?.length > 0 && (
                 <ul class="featured-article__tags__list">
@@ -100,13 +102,23 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
           </div>
         </div>
       </div>
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": {
+          "@type": "ListItem",
+          "position": 0,
+          "url": new URL(featuredArticleSlug, Astro.url).href
+        }
+      })}/>
     </section>
   </div>
   <section class="articles__grid common-wrapper">
     <ul class="articles__grid__list flex row-wrap justify-space-between">
       {
-        articles.map(({ body, data: article, slug }) => {
-          const { excerpt } = createExcerpt({ parser, content: body });
+        articles.filter(({ slug }) => slug !== featuredArticleSlug).map(async ({ body, data: article, slug }) => {
+          const author = await getEntry(article.author.collection, article.author.slug)
+          const description = article.description ?? generateExcerpt({ parser, content: body }).excerpt;
           const publishedDate = article.publishDate.toLocaleDateString('en', DEFAULT_DATE_FORMAT);
           const variant: ArticleType = article.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
 
@@ -127,9 +139,9 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
                 </time>
                 <h2 class="article__card__title font-serif">{article.title}</h2>
                 <p class="article__card__author">
-                  by <a href={`/tags/${slugify(article.author)}`}>{article.author}</a>
+                  by <a href={`/tags/${author.data.id}`}>{author.data.name}</a>
                 </p>
-                <p class="article__card__description">{excerpt}</p>
+                <p class="article__card__excerpt">{description}</p>
                 {(articles.tags && article.tags?.length > 0) && (
                   <ul class="article__card__tags__list">
                     {article.tags.map((tag) => (

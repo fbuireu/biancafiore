@@ -1,7 +1,9 @@
 /// <reference path="../.astro/actions.d.ts" />
 /// <reference path="../.astro/types.d.ts" />
 interface ImportMetaEnv {
+	readonly PUBLIC_SITE_URL: string;
 	readonly PUBLIC_GOOGLE_ANALYTICS_ID: string;
+	readonly PUBLIC_GOOGLE_TAG_MANAGER_ID: string;
 	readonly PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY: string;
 	readonly GOOGLE_RECAPTCHA_SECRET_KEY: string;
 	readonly FIREBASE_PRIVATE_KEY_ID: string;

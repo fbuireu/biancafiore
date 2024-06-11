@@ -1,9 +1,18 @@
 ---
+import { CONTACT_DETAILS } from "../consts";
+import { getCollection } from "astro:content";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import AboutIntro from "@components/molecules/aboutIntro/AboutIntro.astro";
 import LittleMoreOfMe from "@components/organisms/littleMoreOfMe/LittleMoreOfMe.astro";
 import AboutLatestArticles from "@components/organisms/aboutLatestArticles/AboutLatestArticles.astro";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
+
+const authors = await getCollection("authors");
+const articles = await getCollection("articles");
+const bianca = authors.find((author) => author.data.name === CONTACT_DETAILS.NAME);
+const latestArticleByBianca = articles
+	.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
+	.find((article) => article.data.author.slug === bianca.data.id);
 ---
 
 <BaseLayout title="" description="">
@@ -11,4 +20,28 @@ import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
   <AboutIntro />
   <LittleMoreOfMe />
   <AboutLatestArticles />
+  <script type="application/ld+json" set:html= {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "mainEntity": {
+      "@id": "#bianca",
+      "@type": "Person",
+      "name": bianca.data.name,
+      "url": new URL(Astro.url).href,
+      "image": new URL(bianca.data.profileImage, Astro.url).href,
+      "jobTitle": bianca.data.jobTitle,
+      "worksFor": {
+        "@type": "Organization",
+        "name": bianca.data.currentCompany
+      }
+    },
+    "hasPart": [{
+      "@type": "Article",
+      "headline": latestArticleByBianca.data.title,
+      "url": new URL(`articles/${latestArticleByBianca.slug}`, Astro.url).href,
+      "datePublished": latestArticleByBianca.data.publishDate,
+      "author": { "@id": "#bianca" }
+    }],
+    "sameAs":[...bianca.data.socialNetworks]
+  })}/>
 </BaseLayout>

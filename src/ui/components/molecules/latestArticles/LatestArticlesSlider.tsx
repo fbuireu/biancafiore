@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import { createExcerpt } from "@shared/utils/createExcerpt";
+import { generateExcerpt } from "src/ui/shared/utils/generateExcerpt";
 import { slugify } from "@shared/utils/slugify";
 import MarkdownIt from "markdown-it";
 import { DEFAULT_DATE_FORMAT } from "src/consts.ts";
@@ -45,7 +45,6 @@ const SLIDER_CONFIG: SwiperOptions = {
 	},
 	containerModifierClass: "latest-articles-",
 };
-const parser: MarkdownIt = MarkdownIt("default", {});
 
 export const LatestArticlesSlider = ({ articles }: LatestArticlesSLiderProps) => {
 	return (
@@ -53,12 +52,7 @@ export const LatestArticlesSlider = ({ articles }: LatestArticlesSLiderProps) =>
 			<Swiper {...SLIDER_CONFIG}>
 				<ul className="latest__articles__list flex row-wrap justify-space-between">
 					{articles.map(({ slug, data: article, ...content }) => {
-						const { excerpt } = createExcerpt({
-							parser,
-							content: content.body,
-						});
 						const variant: ArticleType = article.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
-						const publishedDate = article.publishDate.toLocaleDateString("en", DEFAULT_DATE_FORMAT);
 						const href = `/articles/${slug}`;
 
 						return (
@@ -80,14 +74,14 @@ export const LatestArticlesSlider = ({ articles }: LatestArticlesSLiderProps) =>
 												decoding="async"
 											/>
 										)}
-										<time className="latest__article__item__publish-date" dateTime={publishedDate}>
-											{publishedDate}
+										<time className="latest__article__item__publish-date" dateTime={article.publishDate}>
+											{article.publishDate}
 										</time>
 										<h3 className="latest__article__title font-serif inner-section-title">{article.title}</h3>
 										<p className="latest__article__author">
-											by <a href={`/tags/${slugify(article.author)}`}>{article.author}</a>
+											by <a href={`/tags/${article.author.data?.id}`}>{article.author.data.name}</a>
 										</p>
-										<p className="latest__article__excerpt">{excerpt}</p>
+										<p className="latest__article__excerpt">{article.description}</p>
 										<ul className="latest__article__tags__list flex">
 											{article.tags?.map((tag: string) => (
 												<a className="latest__article__tag__item" href={`/tags/${slugify(tag)}`} key={tag}>

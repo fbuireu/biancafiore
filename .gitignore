@@ -43,10 +43,10 @@ jspm_packages/
 *.tgz
 
 # Yarn
-yarn-error.log
 .yarn-integrity
 .pnp/
 .pnp.js
+yarn-error.log
 
 # Environment variables files
 .env*
@@ -54,9 +54,8 @@ yarn-error.log
 
 # Astro files
 .cache
-public
-dist/
 .astro/
+dist/
 
 # Local Netlify folder
 .netlify/

@@ -13,7 +13,7 @@ interface ExcerptReturnType {
 const EXCERPT_LIMIT = 140;
 const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 
-export function createExcerpt({ parser, content, limit = EXCERPT_LIMIT }: ExcerptParams): ExcerptReturnType {
+export function generateExcerpt({ parser, content, limit = EXCERPT_LIMIT }: ExcerptParams): ExcerptReturnType {
 	const excerpt = parser
 		.render(content)
 		.split("\n")

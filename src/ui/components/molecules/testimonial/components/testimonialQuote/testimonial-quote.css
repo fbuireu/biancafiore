@@ -17,17 +17,10 @@
 
   .testimonial__quote {
     grid-area: Testimonial-Quote;
+    text-wrap: pretty;
     transition-duration: 350ms;
     transition-property: translate;
     transition-timing-function: ease-in;
-
-    @supports (text-wrap: pretty) {
-      text-wrap: pretty;
-    }
-
-    @supports not (text-wrap: pretty) {
-      text-wrap: balance;
-    }
   }
 
   .testimonial__quote-symbol {

@@ -63,7 +63,7 @@ export const initializeThemeSetter = () => {
 	PREFERS_DARK_SCHEME.addEventListener("change", (event) => {
 		const newTheme = event.matches ? ThemeType.DARK : ThemeType.LIGHT;
 		const currentTheme = getCurrentTheme();
-		console.log(newTheme, currentTheme);
+
 		if (newTheme !== currentTheme) applyTheme(newTheme);
 	});
 };

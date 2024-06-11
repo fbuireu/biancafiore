@@ -174,7 +174,7 @@
         grid-area: Publish-Date;
     }
 
-    .article__card__description {
+    .article__card__excerpt {
         grid-area: Excerpt;
     }
 

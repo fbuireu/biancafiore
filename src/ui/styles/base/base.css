@@ -6,12 +6,6 @@
             background-color: var(--primary-main);
             color: var(--white);
         }
-
-        @media (prefers-reduced-motion: reduce) {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-        }
     }
 
     html,
@@ -52,13 +46,7 @@
     p,
     article {
         font-family: 'Nunito Sans Variable', sans-serif;
-
-        @supports (text-wrap: pretty) {
-            text-wrap: pretty;
-        }
-        @supports not (text-wrap: pretty) {
-            text-wrap: balance;
-        }
+        text-wrap: pretty;
     }
 
     img {
@@ -79,11 +67,6 @@
 
     mark {
         background-color: var(--primary-main);
-    }
-
-    strong,
-    b {
-        font-weight: 700;
     }
 
     button {
@@ -115,7 +98,9 @@
     h1,
     h2,
     h3,
-    h4 {
+    h4,
+    h5,
+    h6 {
         text-wrap: balance;
     }
 

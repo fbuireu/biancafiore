@@ -4,7 +4,7 @@ description: 'Lorem ipsum dolor sit amet'
 publishDate: 'Jul 08 2024'
 featuredImage: '/src/assets/images/jpg/web-content.jpg'
 tags: ['first', 'post']
-author: 'Bianca Fiore'
+author: 'bianca-fiore'
 slug: 'first-post'
 isFeatured: false
 ---

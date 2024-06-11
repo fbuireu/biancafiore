@@ -4,7 +4,7 @@ description: 'Lorem ipsum dolor sit amet'
 publishDate: 'Jul 15 2022'
 featuredImage: '/src/assets/images/jpg/stories-of-impact.jpg'
 tags: ['test', 'post']
-author: 'Bianca Fiore'
+author: 'bianca-fiore'
 slug: 'third-post'
 isFeatured: false
 ---

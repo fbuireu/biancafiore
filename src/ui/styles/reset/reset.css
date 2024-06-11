@@ -9,6 +9,25 @@
   *::after {
     box-sizing: border-box;
     min-width: 0;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    min-height: 100dvh;
+  }
+
+  input, button, textarea, select {
+    font: inherit;
+  }
+
+  strong,
+  b {
+    font-weight: 700;
   }
 
   ol,

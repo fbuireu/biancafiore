@@ -1,10 +1,33 @@
 ---
-import { getCollection } from "astro:content";
-
+import MarkdownIt from "markdown-it";
+import { generateExcerpt } from "../../../shared/utils/generateExcerpt";
+import { DEFAULT_DATE_FORMAT } from "../../../../consts";
+import { getCollection, getEntry } from "astro:content";
 import "./about-latest-articles.css";
 import { AboutLatestArticlesSlider } from "@components/molecules/aboutLatestArticlesSlider";
-const articles = await getCollection("articles");
+
+const parser: MarkdownIt = MarkdownIt("default", {});
+const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
+let articles = await getCollection("articles");
 articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()).splice(4);
+
+articles = await Promise.all(
+	articles.map(async (article) => {
+		const author = await getEntry(article.data.author.collection, article.data.author.slug);
+		const description = article.data.description ?? generateExcerpt({ parser, content: article.body }).excerpt;
+		const publishDate = new Date(article.data.publishDate).toLocaleDateString("en", DEFAULT_DATE_FORMAT);
+
+		return {
+			...article,
+			data: {
+				...article.data,
+				author,
+				description,
+				publishDate,
+			},
+		};
+	}),
+);
 ---
 
 <section class="about-latest-articles__wrapper common-wrapper">
@@ -17,5 +40,14 @@ articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data
       <h6 class="about-latest-articles__quote__author">Ferran Buireu</h6>
     </div>
     <AboutLatestArticlesSlider client:load articles={articles} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": articles.map((article, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": new URL(article.slug, Astro.url).href
+      }))
+    })}/>
   </div>
 </section>

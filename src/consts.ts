@@ -2,6 +2,7 @@ export const SITE_TITLE = "Bianca Fiore";
 export const SITE_DESCRIPTION = "Welcome to my website!";
 
 export const CONTACT_DETAILS: Record<string, string> = {
+	NAME: "Bianca Fiore",
 	EMAIL_SUBJECT: "Contact form submission",
 	ENCODED_EMAIL_FROM: btoa("hello@biancafiore.me"),
 	ENCODED_BIANCA_EMAIL: btoa("biancamaria.fiore@gmail.com"),

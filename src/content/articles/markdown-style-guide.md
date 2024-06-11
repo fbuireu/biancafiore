@@ -4,7 +4,7 @@ description: 'Here is a sample of some basic Markdown syntax that can be used wh
 publishDate: 'Jul 01 2022'
 featuredImage: ''
 tags: ['second', 'post']
-author: 'Bianca Fiore'
+author: 'bianca-fiore'
 slug: 'markdown-style-guide'
 isFeatured: true
 ---
