@@ -8,18 +8,18 @@
         inset: 1.25rem 0 1rem 0;
         margin: 0 auto;
         position: absolute;
-        transition: top 0.3s 0.95s, linear 1.75s,
-        scale 0.2s linear 0.3s,
-        transform 0.2s ease-out;
+        transition: top 0.3s 1.75s, scale 0.2s 1.5s, transform 0.2s 1.5s;
         width: fit-content;
         z-index: 20;
 
         svg {
             fill: var(--neutral-main);
-            transition: top 0.3s ease-out 1.75s,
-            scale 0.2s linear;
 
-            &.--has-intersected{
+            & g > g:nth-child(1) {
+                transition-delay: 1.75s;
+            }
+
+            &.--has-intersected {
                 fill: var(--white);
          }
 
@@ -33,9 +33,11 @@
         }
         &.--is-menu-open {
             transform: translateY(2rem);
-            transition-delay: 0.85s;
+            transition: top 0.3s .75s, scale 0.3s linear 2s, transform 0.2s 1s;
+
             svg > g > g:nth-child(1){
                 fill:var(--white);
+                transition-delay: .75s;
             }
         }
         @media (max-width: 525px) {

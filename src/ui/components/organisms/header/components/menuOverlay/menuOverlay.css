@@ -4,7 +4,6 @@
         height: 100dvh;
         inset: -0.5rem 0 0;
         position: absolute;
-        transition: all 0.3s;
         width: 100dvw;
     }
 }

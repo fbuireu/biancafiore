@@ -55,7 +55,7 @@
         color: var(--neutral-light-1);
         inset: 0;
         position: absolute;
-        transition: all 0.2s;
+        transition: inset 0.2s;
     }
 
     .contact-form__input-wrapper,

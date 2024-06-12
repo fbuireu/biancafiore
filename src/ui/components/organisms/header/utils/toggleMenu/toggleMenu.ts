@@ -61,7 +61,7 @@ export function toggleMenu() {
 	function updateButton() {
 		if (!MENU_TEXT) return;
 		toggleMenuText = isMenuOpen ? "Close" : "Menu";
-		const timeout = isMenuOpen ? 300 : 0;
+		const timeout = isMenuOpen ? 500 : 0;
 
 		document.documentElement.style.overflow = isMenuOpen ? "hidden" : "initial";
 
@@ -74,15 +74,19 @@ export function toggleMenu() {
 		const { POWER4_IN_OUT, POWER2_EASE_IN, POWER2_EASE_OUT, POWER3_OUT, PATH_START, PATH_END } = ANIMATION_CONFIG;
 
 		timeline.to(MENU_OVERLAY, { display: "block" });
-		timeline.to(MENU_TEXT, {
-			top: "1.75rem",
-			left: "1.25rem",
-			fontSize: "1.5rem",
-			x: "-1rem",
-			y: 0,
-			ease: POWER4_IN_OUT,
-			duration: 1,
-		});
+		timeline.to(
+			MENU_TEXT,
+			{
+				top: "1.75rem",
+				left: "1.25rem",
+				fontSize: "1.5rem",
+				x: "-1rem",
+				y: 0,
+				ease: POWER4_IN_OUT,
+				duration: 1,
+			},
+			"<",
+		);
 		timeline.add(() => updateButton(), "<");
 		timeline.to(
 			BUTTON_OUTLINE,

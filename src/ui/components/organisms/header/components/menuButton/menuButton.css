@@ -3,7 +3,7 @@
         color: var(--neutral-main);
         display: block;
         position: relative;
-        transition: color 0.2s;
+        transition: color 1s;
         translate: 5% 0;
 
         @media (min-width: 575px) {
@@ -15,10 +15,11 @@
         border: 1px solid var(--neutral-main);
         height: calc(var(--header-height) * 0.85);
         position: absolute;
-        transition: border 0.2s;
+        transition: border 1s;
         translate: 0 -25%;
         width: calc(var(--header-height) * 0.85);
         z-index: 20;
+
     }
 
     .header__menu-button {
@@ -30,6 +31,7 @@
         &.--has-intersected {
             .header__menu-button__outline {
                 border-color: var(--white);
+
             }
 
             .header__menu-text {
@@ -40,14 +42,12 @@
         &.--is-menu-open {
             .header__menu-button__outline {
                 border-color: var(--white);
-                transition: border-color;
-                transition-delay: 1s;
+                transition: border-color 1s;
             }
 
             .header__menu-text {
                 color: var(--white);
-                transition: color;
-                transition-delay: 1s;
+                transition: color 1s;
             }
         }
 

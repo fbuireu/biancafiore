@@ -45,7 +45,7 @@ export const LatestArticlesSlider = ({ articles }: LatestArticlesSLiderProps) =>
 				<ul className="latest__articles__list flex row-wrap justify-space-between">
 					{articles.map(({ slug, data: article }) => {
 						const href = `/articles/${slug}`;
-						console.log("article", article);
+
 						return (
 							<li key={slug} className="latest__article__item__wrapper article__item clickable">
 								<SwiperSlide key={slug}>

@@ -6,7 +6,6 @@ import ThemeToggle from "@components/atoms/themeToggle/ThemeToggle.astro";
 
 const currentYear = new Date().getFullYear();
 ---
-
 <footer>
   <section class="footer__wrapper common-wrapper">
     <div class="footer__logo flex row-wrap justify-center">
@@ -18,7 +17,7 @@ const currentYear = new Date().getFullYear();
         <a
           href="https://linkedin.com"
           target="_blank"
-          rel="noopener noreferer"
+          rel="noopener noreferrer"
           class="link footer__social__networks__link"
         >
           LinkedIn
@@ -30,6 +29,10 @@ const currentYear = new Date().getFullYear();
     </ul>
     <p class="footer__disclaimer flex justify-center">
       &copy; {currentYear} Bianca Fiore. All rights reserved.
+    </p>
+    <p class="footer__legal-pages flex justify-center">
+      <a href="/terms-and-conditions" rel="nofollow noreferrer">Terms and Conditions</a>
+      <a href="/privacy-policy" rel="nofollow noreferrer">Privacy Policy</a>
     </p>
   </section>
 </footer>
