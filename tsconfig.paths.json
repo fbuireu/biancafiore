@@ -5,6 +5,7 @@
 			"@server/*": ["./src/server/*"],
 			"@actions/*": ["./src/actions/*"],
 			"@ui/*": ["./src/ui/*"],
+			"@application/*": ["./src/application/*"],
 			"@components/*": ["./src/ui/components/*"],
 			"@utils/*": ["./src/utils/*"],
 			"@assets/*": ["./src/assets/*"],

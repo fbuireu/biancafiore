@@ -1,17 +1,8 @@
 ---
 import "./latest-articles.css";
 import { getCollection, getEntry } from "astro:content";
-import { DEFAULT_DATE_FORMAT } from "src/consts";
-import MarkdownIt from "markdown-it";
-import { generateExcerpt } from "src/ui/shared/utils/generateExcerpt";
-import { slugify } from "src/ui/shared/utils/slugify";
-import { Image } from "astro:assets";
+import { articleDTO } from "@application/dto/articleDTO";
 import { LatestArticlesSlider } from "@components/molecules/latestArticles";
-
-enum ArticleType {
-	DEFAULT = "default",
-	NO_IMAGE = "no_image",
-}
 
 interface LatestArticlesProps {
 	limit?: number;
@@ -21,28 +12,10 @@ const MAX_ARTICLES = 4;
 
 const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
-const parser: MarkdownIt = MarkdownIt("default", {});
 const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
 let articles = await getCollection("articles");
 articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()).splice(limit);
-
-articles = await Promise.all(
-	articles.map(async (article) => {
-		const author = await getEntry(article.data.author.collection, article.data.author.slug);
-		const description = article.data.description ?? generateExcerpt({ parser, content: article.body }).excerpt;
-		const publishDate = new Date(article.data.publishDate).toLocaleDateString("en", DEFAULT_DATE_FORMAT);
-
-		return {
-			...article,
-			data: {
-				...article.data,
-				author,
-				description,
-				publishDate,
-			},
-		};
-	}),
-);
+articles = await Promise.all(articles.map(articleDTO.render));
 ---
 
 <section class="latest-articles__wrapper">

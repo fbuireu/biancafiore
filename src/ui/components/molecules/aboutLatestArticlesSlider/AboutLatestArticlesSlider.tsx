@@ -1,9 +1,6 @@
-import { type CollectionEntry, getEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import { AboutLatestArticlesSliderNavigation } from "@components/molecules/aboutLatestArticlesSlider/components/aboutLatestArticlesSliderNavigation";
-import { generateExcerpt } from "src/ui/shared/utils/generateExcerpt";
-import { slugify } from "@shared/utils/slugify";
-import MarkdownIt from "markdown-it";
-import { DEFAULT_DATE_FORMAT } from "src/consts.ts";
+import { slugify } from "src/ui/shared/ui/utils/slugify";
 import { A11y, Keyboard, Navigation, Autoplay, Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperOptions } from "swiper/types";
@@ -41,7 +38,6 @@ const SLIDER_CONFIG: SwiperOptions = {
 	},
 	containerModifierClass: "latest-articles-",
 };
-const parser: MarkdownIt = MarkdownIt("default", {});
 
 export const AboutLatestArticlesSlider = ({ articles }: AboutLatestArticlesSLiderProps) => {
 	return (

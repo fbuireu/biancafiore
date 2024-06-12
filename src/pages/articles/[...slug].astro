@@ -5,10 +5,10 @@ import { Image } from "astro:assets";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import "./_article.css";
 import { DEFAULT_DATE_FORMAT } from "src/consts";
-import { slugify } from "@shared/utils/slugify";
+import { slugify } from "../../ui/shared/ui/utils/slugify";
 import type { ImageMetadata } from "astro";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
-import { generateExcerpt } from "@shared/utils/generateExcerpt";
+import { generateExcerpt } from "../../ui/shared/application/utils/generateExcerpt";
 
 export const prerender = true;
 

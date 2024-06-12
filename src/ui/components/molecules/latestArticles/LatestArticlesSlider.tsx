@@ -1,22 +1,14 @@
-import type { CollectionEntry } from "astro:content";
-import { generateExcerpt } from "src/ui/shared/utils/generateExcerpt";
-import { slugify } from "@shared/utils/slugify";
-import MarkdownIt from "markdown-it";
-import { DEFAULT_DATE_FORMAT } from "src/consts.ts";
+import { slugify } from "src/ui/shared/ui/utils/slugify";
 import { A11y, Keyboard, Navigation, Virtual, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperOptions } from "swiper/types";
 import "./latest-articles-slider.css";
 import { LatestArticlesSliderNavigation } from "./components/latestArticlesSliderNavigation";
 import clsx from "clsx";
+import { type ArticleDTO, ArticleType } from "@application/dto/articleDTO.ts";
 
 interface LatestArticlesSLiderProps {
-	articles: CollectionEntry<"articles">[];
-}
-
-enum ArticleType {
-	DEFAULT = "default",
-	NO_IMAGE = "no_image",
+	articles: ArticleDTO[];
 }
 
 const SLIDER_CONFIG: SwiperOptions = {
@@ -51,18 +43,17 @@ export const LatestArticlesSlider = ({ articles }: LatestArticlesSLiderProps) =>
 		<div className="latest-articles__slider common-wrapper">
 			<Swiper {...SLIDER_CONFIG}>
 				<ul className="latest__articles__list flex row-wrap justify-space-between">
-					{articles.map(({ slug, data: article, ...content }) => {
-						const variant: ArticleType = article.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
+					{articles.map(({ slug, data: article }) => {
 						const href = `/articles/${slug}`;
-
+						console.log("article", article);
 						return (
 							<li key={slug} className="latest__article__item__wrapper article__item clickable">
 								<SwiperSlide key={slug}>
 									<a className="latest__article__link-card" href={href} aria-label={article.title} />
 									<article
 										className={clsx("latest__article__item", {
-											"--default-variant": variant === ArticleType.DEFAULT,
-											"--no-image-variant": variant === ArticleType.NO_IMAGE,
+											"--default-variant": article.variant === ArticleType.DEFAULT,
+											"--no-image-variant": article.variant === ArticleType.NO_IMAGE,
 										})}
 									>
 										{article.featuredImage && (

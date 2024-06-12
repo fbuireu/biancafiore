@@ -1,45 +1,22 @@
 ---
-import { getCollection, getEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { Image } from "astro:assets";
-import MarkdownIt from "markdown-it";
-import { generateExcerpt } from "src/ui/shared/utils/generateExcerpt";
-import { slugify } from "@shared/utils/slugify";
-import { DEFAULT_DATE_FORMAT } from "src/consts";
+import { slugify } from "../../ui/shared/ui/utils/slugify";
 import "./_articles.css";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import type { ImageMetadata } from "astro";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
+import { articleDTO } from "@application/dto/articleDTO";
+import { getFeaturedArticle } from "../../ui/shared/application/utils/getFeaturedArticle";
+import { ArticleType } from "../../application/dto/articleDTO";
 
-enum ArticleType {
-	DEFAULT = "default",
-	NO_IMAGE = "no_image",
-}
-
-const articles = await getCollection("articles");
 const images = import.meta.glob<{ default: ImageMetadata }>("/src/assets/**/*.{jpeg,jpg,png,gif}");
-
+let articles = await getCollection("articles");
 articles.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf());
-
-const {
-	body: featuredArticleBody,
-	data: featuredArticle,
-	slug: featuredArticleSlug,
-} = articles.find((article) => article.data?.isFeatured && article.data?.featuredImage) ??
-articles.find((article) => article.data?.featuredImage);
-
-const parser: MarkdownIt = MarkdownIt("default", {});
-
-const featuredArticleDescription =
-	featuredArticle.description ??
-	generateExcerpt({
-		parser,
-		content: featuredArticleBody,
-	}).excerpt;
-
-const publishedDate = featuredArticle.publishDate.toLocaleDateString("en", DEFAULT_DATE_FORMAT);
-const featuredArticleHref = `/articles/${featuredArticleSlug}`;
-const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
+articles = await Promise.all(articles.map(articleDTO.render));
+const featuredArticle = await articleDTO.render(getFeaturedArticle(articles));
+const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Astro.url).href;
 ---
 
 <!-- todo: isolate sections -->
@@ -49,24 +26,24 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
   <div class="articles__wrapper">
     <section class="articles__wrapper__inner common-wrapper">
       <div class="featured-article__wrapper">
-        <a href={featuredArticleHref}>
+        <a href={`/articles/${featuredArticle.slug}`}>
           <Image
             class="featured-article__image"
-            src={images[featuredArticle.featuredImage]()}
-            alt={featuredArticle.title}
+            src={images[featuredArticle.data.featuredImage]()}
+            alt={featuredArticle.data.title}
           />
         </a>
         <div class="featured-article__details__wrapper flex row-wrap">
           <div class="featured-article__details flex column-wrap">
-            <time class="featured-article__publish-date font-sans-serif" datetime={publishedDate}>
-              {publishedDate}
+            <time class="featured-article__publish-date font-sans-serif" datetime={featuredArticle.data.publishDate}>
+              {featuredArticle.data.publishDate}
             </time>
-            <h2 class="featured-article__title">{featuredArticle.title}</h2>
-            <p class="featured-article__description">{featuredArticleDescription}</p>
+            <h2 class="featured-article__title">{featuredArticle.data.title}</h2>
+            <p class="featured-article__description">{featuredArticle.data.description}</p>
             {
               featuredArticle.tags?.length > 0 && (
                 <ul class="featured-article__tags__list">
-                  {featuredArticle.tags.map((tag) => (
+                  {featuredArticle.data.tags.map((tag) => (
                     <a class="featured-article__tag__item" href={`/tags/${slugify(tag)}`}>
                       #{tag}
                     </a>
@@ -74,7 +51,7 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
                 </ul>
               )
             }
-            <a href={featuredArticleHref} class="featured-article__link flex align-center">
+            <a href={`/articles/${featuredArticle.slug}`} class="featured-article__link flex align-center">
               Read More <img src={horizontalArrow.src} alt="Readt more" />
             </a>
           </div>
@@ -108,7 +85,7 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
         "itemListElement": {
           "@type": "ListItem",
           "position": 0,
-          "url": new URL(featuredArticleSlug, Astro.url).href
+          "url": new URL(`/articles/${featuredArticle.slug}`, Astro.url).href
         }
       })}/>
     </section>
@@ -116,33 +93,29 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
   <section class="articles__grid common-wrapper">
     <ul class="articles__grid__list flex row-wrap justify-space-between">
       {
-        articles.filter(({ slug }) => slug !== featuredArticleSlug).map(async ({ body, data: article, slug }) => {
-          const author = await getEntry(article.author.collection, article.author.slug)
-          const description = article.description ?? generateExcerpt({ parser, content: body }).excerpt;
-          const publishedDate = article.publishDate.toLocaleDateString('en', DEFAULT_DATE_FORMAT);
-          const variant: ArticleType = article.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
+        articles.filter(({ slug }) => slug !== featuredArticle.slug).map(async ({ data: article, slug }, index) => {
 
           return (
             <li class="articles__grid__item">
               <a class="article__card__link" href={`/articles/${slug}`} aria-label={article.title} />
               <article
                 class:list={[`article__card__wrapper`, {
-                  '--default-variant': variant === ArticleType.DEFAULT,
-                  '--no-image-variant': variant === ArticleType.NO_IMAGE
+                  '--default-variant': article.variant === ArticleType.DEFAULT,
+                  '--no-image-variant': article.variant === ArticleType.NO_IMAGE
                 }]}
               >
                 {article.featuredImage && (
                   <Image class="article__card__image" src={images[article.featuredImage]()} alt={article.title} />
                 )}
-                <time class="article__card__publish-date font-sans-serif" datetime={publishedDate}>
-                  {publishedDate}
+                <time class="article__card__publish-date font-sans-serif" datetime={article.publishedDate}>
+                  {article.publishedDate}
                 </time>
                 <h2 class="article__card__title font-serif">{article.title}</h2>
                 <p class="article__card__author">
-                  by <a href={`/tags/${author.data.id}`}>{author.data.name}</a>
+                  by <a href={`/tags/${article.author.data.id}`}>{article.author.data.name}</a>
                 </p>
-                <p class="article__card__excerpt">{description}</p>
-                {(articles.tags && article.tags?.length > 0) && (
+                <p class="article__card__excerpt">{article.description}</p>
+                {article.tags?.length > 0 && (
                   <ul class="article__card__tags__list">
                     {article.tags.map((tag) => (
                       <a class="article__card__tag__item" href={`/tags/${slugify(tag)}`}>
@@ -152,6 +125,15 @@ const featuredArticleShareUrl = new URL(featuredArticleHref, Astro.url).href;
                   </ul>
                 )}
               </article>
+              <script type="application/ld+json" set:html={JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "itemListElement": {
+                  "@type": "ListItem",
+                  "position": index + 1,
+                  "url": new URL(`/articles/${slug}`, Astro.url).href
+                }
+              })}/>
             </li>
           );
         })

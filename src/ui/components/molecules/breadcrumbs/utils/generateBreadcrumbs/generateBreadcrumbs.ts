@@ -1,4 +1,4 @@
-import { deSlugify } from "@shared/utils/deSlugify";
+import { deSlugify } from "src/ui/shared/ui/utils/deSlugify";
 
 interface GenerateBreadcrumbsProps {
 	currentPath: string;
