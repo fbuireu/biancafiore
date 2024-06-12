@@ -1,1 +1,1 @@
-export * from './getFeaturedArticle'
+export * from "./getFeaturedArticle";
