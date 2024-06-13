@@ -5,9 +5,11 @@ import "./about-latest-articles.css";
 import { AboutLatestArticlesSlider } from "@components/molecules/aboutLatestArticlesSlider";
 
 const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
-let articles = await getCollection("articles");
-articles.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()).splice(4);
-articles = await Promise.all(articles.map(articleDTO.render));
+const articles = await Promise.all(
+	(await getCollection("articles"))
+		.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf())
+		.map(articleDTO.render),
+);
 ---
 
 <section class="about-latest-articles__wrapper common-wrapper">
@@ -23,10 +25,10 @@ articles = await Promise.all(articles.map(articleDTO.render));
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "ItemList",
-      "itemListElement": articles.map((article, index) => ({
+      "itemListElement": articles.map(({ slug }, index) => ({
         "@type": "ListItem",
         "position": index + 1,
-        "url": new URL(article.slug, Astro.url).href
+        "url": new URL(slug, Astro.url).href
       }))
     })}/>
   </div>

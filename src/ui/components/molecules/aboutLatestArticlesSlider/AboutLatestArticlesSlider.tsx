@@ -44,39 +44,38 @@ export const AboutLatestArticlesSlider = ({ articles }: AboutLatestArticlesSLide
 		<div className="about__latest-articles__slider">
 			<Swiper {...SLIDER_CONFIG}>
 				<ul>
-					{articles.map(({ slug, data: article, ...content }) => {
-						const variant: ArticleType = article.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
+					{articles.map(({ slug, data: { title, description, variant, featuredImage, publishDate, author, tags } }) => {
 						const href = `/articles/${slug}`;
 
 						return (
 							<li key={slug} className="about__latest-article__item__wrapper clickable">
 								<SwiperSlide key={slug}>
-									<a className="about__latest-article__link-card" href={href} aria-label={article.title} />
+									<a className="about__latest-article__link-card" href={href} aria-label={title} />
 									<article
 										className={clsx("about__latest-article__item", {
 											"--default-variant": variant === ArticleType.DEFAULT,
 											"--no-image-variant": variant === ArticleType.NO_IMAGE,
 										})}
 									>
-										{article.featuredImage && (
+										{featuredImage && (
 											<img
 												className="about__latest-article__item__featured-image"
-												src={article.featuredImage}
-												alt={article.title}
+												src={featuredImage}
+												alt={title}
 												loading="lazy"
 												decoding="async"
 											/>
 										)}
-										<time className="about__latest-article__item__publish-date" dateTime={article.publishDate}>
-											{article.publishDate}
+										<time className="about__latest-article__item__publish-date" dateTime={publishDate}>
+											{publishDate}
 										</time>
-										<h3 className="about__latest-article__title font-serif">{article.title}</h3>
+										<h3 className="about__latest-article__title font-serif">{title}</h3>
 										<p className="about__latest-article__author">
-											by <a href={`/tags/${article.author.data.id}`}>{article.author.data.name}</a>
+											by <a href={`/tags/${author.data.id}`}>{author.data.name}</a>
 										</p>
-										<p className="about__latest-article__excerpt">{article.description}</p>
-										<ul className="about__latest-article__item__tags__list">
-											{article.tags?.map((tag: string) => (
+										<p className="about__latest-article__excerpt">{description}</p>
+										<ul className="about__latest-article__item__tags__list flex">
+											{tags?.map((tag: string) => (
 												<a className="about__latest-article__item__tag" href={`/tags/${slugify(tag)}`} key={tag}>
 													#{tag}
 												</a>

@@ -12,9 +12,12 @@ import { getFeaturedArticle } from "../../ui/shared/application/utils/getFeature
 import { ArticleType } from "../../application/dto/articleDTO";
 
 const images = import.meta.glob<{ default: ImageMetadata }>("/src/assets/**/*.{jpeg,jpg,png,gif}");
-let articles = await getCollection("articles");
-articles.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf());
-articles = await Promise.all(articles.map(articleDTO.render));
+const articles = await Promise.all(
+	(await getCollection("articles"))
+		.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf())
+		.map(articleDTO.render),
+);
+
 const featuredArticle = await articleDTO.render(getFeaturedArticle(articles));
 const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Astro.url).href;
 ---
@@ -93,9 +96,9 @@ const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Ast
   <section class="articles__grid common-wrapper">
     <ul class="articles__grid__list flex row-wrap justify-space-between">
       {
-        articles.filter(({ slug }) => slug !== featuredArticle.slug).map(async ({ data: article, slug }, index) => {
-
-          return (
+        articles
+          .filter(({ slug }) => slug !== featuredArticle.slug)
+          .map(({ data: article, slug }, index) => (
             <li class="articles__grid__item">
               <a class="article__card__link" href={`/articles/${slug}`} aria-label={article.title} />
               <article
@@ -135,9 +138,7 @@ const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Ast
                 }
               })}/>
             </li>
-          );
-        })
-      }
+          ))}
     </ul>
   </section>
 </BaseLayout>

@@ -5,7 +5,6 @@ import * as Three from "three";
 import countries from "@data/countries.geojson.json";
 import "./world-globe.css";
 import { calculateCenter } from "@components/atoms/worldGlobe/utils/calculateCenter";
-import { WORLD_GLOBE_CONFIG } from "src/consts.ts";
 import { renderPin } from "@components/atoms/worldGlobe/utils/renderPin";
 import type { ReactGlobePoint } from "./utils/refineCities";
 import { refineCities } from "./utils/refineCities";
@@ -13,7 +12,7 @@ import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import zoomIn from "@assets/images/svg/zoom-in.svg";
 import zoomOut from "@assets/images/svg/zoom-out.svg";
 import useTabVisibility, { TabVisibility } from "@ui/hooks/useTabVisibility/useTabVisibility.ts";
-import { getCurrentTheme, ThemeType } from "@components/atoms/themeToggle/utils/themeSetter";
+import { WORLD_GLOBE_CONFIG } from "@const/index.ts";
 
 export interface City {
 	latitude: string;
@@ -51,15 +50,15 @@ const worldGlobeSize = {
 	height: 458,
 };
 const {
-	MESH_PHONG_MATERIAL_CONFIG,
-	HEXAGON_POLYGON_COLOR,
-	BACKGROUND_COLOR,
-	SHOW_ATMOSPHERE,
-	ANIMATE_IN,
-	POINTS_MERGE,
-	ANIMATION_DURATION,
-	MOVEMENT_OFFSET,
-	ZOOM_OFFSET,
+	meshPhongMaterialConfig,
+	hexagonPolygonColor,
+	backgroundColor,
+	showAtmosphere,
+	animateIn,
+	pointsMerge,
+	animationDuration,
+	movementOffset,
+	zoomOffset,
 } = WORLD_GLOBE_CONFIG;
 
 const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitiesProps) => {
@@ -80,9 +79,16 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 	};
 
 	useEffect(() => {
-		if (!worldGlobeReference.current) return;
-		worldGlobeReference.current.controls().autoRotate = document.visibilityState === TabVisibility.VISIBLE;
-	}, [tabVisibility]);
+		const handleVisibilityChange = () => {
+			if (!worldGlobeReference.current) return;
+			worldGlobeReference.current.controls().autoRotate = document.visibilityState === TabVisibility.VISIBLE;
+		};
+
+		handleVisibilityChange();
+
+		document.addEventListener("visibilitychange", handleVisibilityChange);
+		return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+	}, [tabVisibility, worldGlobeReference]);
 
 	const handleAction = useCallback(
 		({ movementDirection, type }: HandleActionParams) => {
@@ -90,13 +96,14 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 			const { lng: currentLongitude, altitude: currentZoom } = worldGlobeReference.current.pointOfView();
 
 			if (type === MovementType.MOVE) {
-				const offset = movementDirection === Direction.CLOCKWISE ? (MOVEMENT_OFFSET as number) : -MOVEMENT_OFFSET;
+				const offset = movementDirection === Direction.CLOCKWISE ? movementOffset : -movementOffset;
 				const newLongitude = currentLongitude + offset;
-				worldGlobeReference.current.pointOfView({ lng: newLongitude }, ANIMATION_DURATION as number);
+
+				worldGlobeReference.current.pointOfView({ lng: newLongitude }, animationDuration);
 			} else if (type === MovementType.ZOOM) {
-				const newZoom =
-					movementDirection === Zoom.IN ? currentZoom - (ZOOM_OFFSET as number) : currentZoom + (ZOOM_OFFSET as number);
-				worldGlobeReference.current.pointOfView({ altitude: newZoom }, ANIMATION_DURATION as number);
+				const newZoom = movementDirection === Zoom.IN ? currentZoom - zoomOffset : currentZoom + zoomOffset;
+
+				worldGlobeReference.current.pointOfView({ altitude: newZoom }, animationDuration);
 			}
 		},
 		[worldGlobeReference],
@@ -109,17 +116,17 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 				height={worldGlobeSize.height}
 				width={width}
 				onGlobeReady={onGlobeReady}
-				pointsMerge={POINTS_MERGE}
-				animateIn={ANIMATE_IN}
-				showAtmosphere={SHOW_ATMOSPHERE}
-				backgroundColor={BACKGROUND_COLOR}
+				pointsMerge={pointsMerge}
+				animateIn={animateIn}
+				showAtmosphere={showAtmosphere}
+				backgroundColor={backgroundColor}
 				hexPolygonsData={countries.features}
-				hexPolygonColor={() => HEXAGON_POLYGON_COLOR}
+				hexPolygonColor={() => hexagonPolygonColor}
 				globeMaterial={
 					new Three.MeshPhongMaterial({
-						color: MESH_PHONG_MATERIAL_CONFIG.COLOR,
-						opacity: MESH_PHONG_MATERIAL_CONFIG.OPACITY,
-						transparent: MESH_PHONG_MATERIAL_CONFIG.TRANSPARENT,
+						color: meshPhongMaterialConfig.color,
+						opacity: meshPhongMaterialConfig.opacity,
+						transparent: meshPhongMaterialConfig.transparent,
 					})
 				}
 				pointsData={refineCities(cities)}

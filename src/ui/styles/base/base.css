@@ -121,4 +121,11 @@
     h4 {
         font-size: clamp(1.25rem, 3vw, 2rem);
     }
+
+    h5 {
+        font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+    }
+    h6 {
+        font-size: clamp(1.075rem, 2vw, 1.25rem);
+    }
 }

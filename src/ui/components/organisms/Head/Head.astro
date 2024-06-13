@@ -1,19 +1,20 @@
 ---
+import type { SeoMetadata } from "@const/const";
 import "@styles/index.css";
 import "@fontsource-variable/nunito-sans";
 import "@fontsource/baskervville";
 import { ViewTransitions } from "astro:transitions";
+import { DEFAULT_SEO_PARAMS } from "@const/index";
 
-interface SiteHeadProps {
-	title: string;
-	description: string;
-	image?: string;
-}
+type SiteHeadProps = SeoMetadata;
 
+const defaultImage = "/blog-placeholder-1.jpg";
 const googleAnalyticsId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 const googleTagManagerId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props as SiteHeadProps;
+
+const { title, description, image = defaultImage, robots } = Astro.props as SiteHeadProps;
+const metaRobots = { ...DEFAULT_SEO_PARAMS.robots, ...robots } as SeoMetadata["robots"];
 ---
 
 <head lang="en">
@@ -33,6 +34,7 @@ const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props as
     <link rel="canonical" href={canonicalURL} />
     <title>{title}</title>
     <meta name="title" content={title} />
+    <meta name="robots" content={`${metaRobots.index ? 'index' : 'noindex'}, ${metaRobots.follow ? 'follow' : 'nofollow'}`} />
     <meta name="description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />

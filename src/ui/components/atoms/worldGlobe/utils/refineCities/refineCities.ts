@@ -7,11 +7,9 @@ export interface ReactGlobePoint {
 }
 
 export function refineCities(cities: City[]): ReactGlobePoint[] {
-	return cities.map(({ latitude, longitude, name }) => {
-		return {
-			lat: latitude,
-			lng: longitude,
-			label: name,
-		};
-	});
+	return cities.map(({ latitude, longitude, name }) => ({
+		lat: latitude,
+		lng: longitude,
+		label: name,
+	}));
 }

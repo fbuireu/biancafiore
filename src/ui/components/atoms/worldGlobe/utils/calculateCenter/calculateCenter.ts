@@ -6,8 +6,8 @@ interface CalculateCenterReturnType {
 }
 
 export function calculateCenter(data: City[]): CalculateCenterReturnType {
-	const latitudes = data.map((point) => Number.parseFloat(point.latitude));
-	const longitudes = data.map((point) => Number.parseFloat(point.longitude));
+	const latitudes = data.map(({ latitude }) => Number.parseFloat(latitude));
+	const longitudes = data.map(({ longitude }) => Number.parseFloat(longitude));
 
 	const centerLatitude = latitudes.reduce((acc, latitude) => acc + latitude, 0) / latitudes.length;
 	const centerLongitude = longitudes.reduce((acc, longitude) => acc + longitude, 0) / longitudes.length;

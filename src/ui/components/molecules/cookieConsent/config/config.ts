@@ -46,7 +46,7 @@ export const config: CookieConsentConfig = {
 				consentModal: {
 					title: "We use cookies",
 					description:
-						"Cookie modal description Cookie modal description Cookie modal description Cookie modal description",
+						"We use cookies to ensure the basic functionalities of the website and to enhance your online experience.",
 					acceptAllBtn: "Accept all",
 					acceptNecessaryBtn: "Reject all",
 					showPreferencesBtn: "Manage Individual preferences",
@@ -61,11 +61,11 @@ export const config: CookieConsentConfig = {
 						{
 							title: "Cookie usage",
 							description:
-								"We use cookies to ensure the basic functionalities of the website and to enhance your online experience...",
+								"We use cookies to ensure the basic functionalities of the website and to enhance your online experience. You can opt-out at anytime",
 						},
 						{
 							title: "Performance and Analytics cookies",
-							description: "These cookies allow the website to remember the choices you have made in the past",
+							description: "These cookies allow the website to remember the choices you have made in the past.",
 							linkedCategory: "analytics",
 							cookieTable: {
 								headers: {
@@ -78,28 +78,24 @@ export const config: CookieConsentConfig = {
 									{
 										name: "_ga",
 										domain: "Google Analytics",
-										description: 'Cookie set by <a href="#das">Google Analytics</a>',
+										description:
+											'Cookie set by <a href="https://policies.google.com/technologies/cookies?hl=en-US" target="_blank" rel="external noopener noreferrer">Google Analytics</a>',
 										expiration: "Expires after 12 days",
 									},
 									{
 										name: "_gid",
 										domain: "Google Analytics",
-										description: 'Cookie set by <a href="#das">Google Analytics</a>',
+										description:
+											'Cookie set by <a href="https://policies.google.com/technologies/cookies?hl=en-US" target="_blank" rel="external noopener noreferrer">Google Analytics</a>',
 										expiration: "Session",
 									},
 								],
 							},
 						},
 						{
-							title: "Targeting and Advertising",
-							description:
-								"These cookies are used to make advertising messages more relevant to you and your interests. The intention is to display ads that are relevant and engaging for the individual user and thereby more valuable for publishers and third party advertisers.",
-							linkedCategory: "targeting",
-						},
-						{
 							title: "More information",
 							description:
-								'For any queries in relation to my policy on cookies and your choices, please <a href="/contact">contact us</a>',
+								'For any queries in relation to our policy on cookies and your choices, please <a href="/contact">contact us</a>.',
 						},
 					],
 				},

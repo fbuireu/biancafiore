@@ -95,6 +95,7 @@
 
   .about__latest-article__item__tags__list {
     font-size: 1.1rem;
+    gap: 0 0.5rem;
     grid-area: Tags;
     position: relative;
     z-index: 10;

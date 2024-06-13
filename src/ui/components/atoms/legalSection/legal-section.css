@@ -1,0 +1,27 @@
+@layer legal-pages.section {
+    .legal-section {
+        margin-bottom: 2rem;
+    }
+
+    .legal-section li{
+        list-style: disc;
+    }
+    .legal-section ul{
+        padding-left: 1rem;
+    }
+
+    .legal-page__email{
+        letter-spacing: normal;
+        text-decoration: none;
+    }
+
+    .legal-page__email,
+    .legal-section li  {
+        font-family: 'Nunito Sans Variable', sans-serif;
+    }
+
+    .legal-page__email,
+    .legal-section {
+        color: var(--neutral-main);
+    }
+}
