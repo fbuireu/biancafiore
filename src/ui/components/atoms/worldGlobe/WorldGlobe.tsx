@@ -12,7 +12,7 @@ import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import zoomIn from "@assets/images/svg/zoom-in.svg";
 import zoomOut from "@assets/images/svg/zoom-out.svg";
 import useTabVisibility, { TabVisibility } from "@ui/hooks/useTabVisibility/useTabVisibility.ts";
-import { WORLD_GLOBE_CONFIG } from "@const/index.ts";
+import { WORLD_GLOBE_CONFIG } from "@const/index";
 
 export interface City {
 	latitude: string;
@@ -50,15 +50,15 @@ const worldGlobeSize = {
 	height: 458,
 };
 const {
-	meshPhongMaterialConfig,
-	hexagonPolygonColor,
-	backgroundColor,
-	showAtmosphere,
-	animateIn,
-	pointsMerge,
-	animationDuration,
-	movementOffset,
-	zoomOffset,
+	MESH_PHONG_MATERIAL_CONFIG,
+	HEXAGON_POLYGON_COLOR,
+	BACKGROUND_COLOR,
+	SHOW_ATMOSPHERE,
+	ANIMATE_IN,
+	POINTS_MERGE,
+	ANIMATION_DURATION,
+	MOVEMENT_OFFSET,
+	ZOOM_OFFSET,
 } = WORLD_GLOBE_CONFIG;
 
 const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitiesProps) => {
@@ -96,14 +96,14 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 			const { lng: currentLongitude, altitude: currentZoom } = worldGlobeReference.current.pointOfView();
 
 			if (type === MovementType.MOVE) {
-				const offset = movementDirection === Direction.CLOCKWISE ? movementOffset : -movementOffset;
+				const offset = movementDirection === Direction.CLOCKWISE ? MOVEMENT_OFFSET : -MOVEMENT_OFFSET;
 				const newLongitude = currentLongitude + offset;
 
-				worldGlobeReference.current.pointOfView({ lng: newLongitude }, animationDuration);
+				worldGlobeReference.current.pointOfView({ lng: newLongitude }, ANIMATION_DURATION);
 			} else if (type === MovementType.ZOOM) {
-				const newZoom = movementDirection === Zoom.IN ? currentZoom - zoomOffset : currentZoom + zoomOffset;
+				const newZoom = movementDirection === Zoom.IN ? currentZoom - ZOOM_OFFSET : currentZoom + ZOOM_OFFSET;
 
-				worldGlobeReference.current.pointOfView({ altitude: newZoom }, animationDuration);
+				worldGlobeReference.current.pointOfView({ altitude: newZoom }, ANIMATION_DURATION);
 			}
 		},
 		[worldGlobeReference],
@@ -116,17 +116,17 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 				height={worldGlobeSize.height}
 				width={width}
 				onGlobeReady={onGlobeReady}
-				pointsMerge={pointsMerge}
-				animateIn={animateIn}
-				showAtmosphere={showAtmosphere}
-				backgroundColor={backgroundColor}
+				pointsMerge={POINTS_MERGE}
+				animateIn={ANIMATE_IN}
+				showAtmosphere={SHOW_ATMOSPHERE}
+				backgroundColor={BACKGROUND_COLOR}
 				hexPolygonsData={countries.features}
-				hexPolygonColor={() => hexagonPolygonColor}
+				hexPolygonColor={() => HEXAGON_POLYGON_COLOR}
 				globeMaterial={
 					new Three.MeshPhongMaterial({
-						color: meshPhongMaterialConfig.color,
-						opacity: meshPhongMaterialConfig.opacity,
-						transparent: meshPhongMaterialConfig.transparent,
+						color: MESH_PHONG_MATERIAL_CONFIG.COLOR,
+						opacity: MESH_PHONG_MATERIAL_CONFIG.OPACITY,
+						transparent: MESH_PHONG_MATERIAL_CONFIG.TRANSPARENT,
 					})
 				}
 				pointsData={refineCities(cities)}

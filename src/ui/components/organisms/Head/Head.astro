@@ -1,5 +1,5 @@
 ---
-import type { SeoMetadata } from "@const/const";
+import type { SeoMetadata } from "@const/types";
 import "@styles/index.css";
 import "@fontsource-variable/nunito-sans";
 import "@fontsource/baskervville";
@@ -14,7 +14,7 @@ const googleTagManagerId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = defaultImage, robots } = Astro.props as SiteHeadProps;
-const metaRobots = { ...DEFAULT_SEO_PARAMS.robots, ...robots } as SeoMetadata["robots"];
+const metaRobots = { ...DEFAULT_SEO_PARAMS.ROBOTS, ...robots } as SeoMetadata["robots"];
 ---
 
 <head lang="en">

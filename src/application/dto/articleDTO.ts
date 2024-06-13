@@ -3,7 +3,7 @@ import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
 import MarkdownIt from "markdown-it";
 import { generateExcerpt } from "@shared/application/utils/generateExcerpt";
 import { getEntry } from "astro:content";
-import { DEFAULT_DATE_FORMAT } from "@const/index.ts";
+import { DEFAULT_DATE_FORMAT } from "@const/index";
 
 export enum ArticleType {
 	DEFAULT = "default",

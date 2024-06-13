@@ -1,8 +1,8 @@
 ---
-import { DEFAULT_DATE_FORMAT, CONTACT_DETAILS  } from '@const/index';
-import BaseLayout from '@components/templates/baseLayout/BaseLayout.astro';
-import EmailButton from '@components/atoms/emailButton/EmailButton.astro';
-import LegalSection from '@components/atoms/legalSection/LegalSection.astro';
+import { DEFAULT_DATE_FORMAT, CONTACT_DETAILS } from "@const/index";
+import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
+import EmailButton from "@components/atoms/emailButton/EmailButton.astro";
+import LegalSection from "@components/atoms/legalSection/LegalSection.astro";
 
 const today = new Date().toLocaleDateString("en", DEFAULT_DATE_FORMAT);
 ---
@@ -75,7 +75,7 @@ const today = new Date().toLocaleDateString("en", DEFAULT_DATE_FORMAT);
       <div slot="legal-section">
         <h4>6. Your Rights</h4>
         <p>You have the right to access, rectify, delete, restrict, or object to the processing of your personal data. You can
-          exercise these rights by emailing us at <EmailButton classNames="legal-page__email" text={atob(CONTACT_DETAILS.encodedBiancaEmail)} />.</p>
+          exercise these rights by emailing us at <EmailButton classNames="legal-page__email" text={atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA)} />.</p>
       </div>
     </LegalSection>
     <LegalSection>
