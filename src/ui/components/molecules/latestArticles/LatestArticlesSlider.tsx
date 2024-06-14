@@ -5,7 +5,7 @@ import type { SwiperOptions } from "swiper/types";
 import "./latest-articles-slider.css";
 import { LatestArticlesSliderNavigation } from "./components/latestArticlesSliderNavigation";
 import clsx from "clsx";
-import { type ArticleDTO, ArticleType } from "@application/dto/articleDTO.ts";
+import { type ArticleDTO, ArticleType } from "@application/dto/article/articleDTO.ts";
 
 interface LatestArticlesSLiderProps {
 	articles: ArticleDTO[];

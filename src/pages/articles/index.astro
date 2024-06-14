@@ -2,17 +2,17 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { Image } from "astro:assets";
-import { slugify } from "../../ui/shared/ui/utils/slugify";
+import { slugify } from "@shared/ui/utils/slugify";
 import "./_articles.css";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import type { ImageMetadata } from "astro";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
-import { articleDTO } from "@application/dto/articleDTO";
-import { getFeaturedArticle } from "../../ui/shared/application/utils/getFeaturedArticle";
-import { ArticleType } from "../../application/dto/articleDTO";
+import { getFeaturedArticle } from "@shared/application/utils/getFeaturedArticle";
+import { ArticleType, articleDTO } from "@application/dto/article/articleDTO";
+import type { ArticleDTO } from "@application/dto/article/articleDTO";
 
 const images = import.meta.glob<{ default: ImageMetadata }>("/src/assets/**/*.{jpeg,jpg,png,gif}");
-const articles = await Promise.all(
+const articles: ArticleDTO[] = await Promise.all(
 	(await getCollection("articles"))
 		.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf())
 		.map(articleDTO.render),

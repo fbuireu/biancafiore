@@ -1,11 +1,12 @@
 ---
-import { articleDTO } from "@application/dto/articleDTO";
+import { articleDTO } from "@application/dto/article/articleDTO";
 import { getCollection } from "astro:content";
 import "./about-latest-articles.css";
 import { AboutLatestArticlesSlider } from "@components/molecules/aboutLatestArticlesSlider";
+import type { ArticleDTO } from "@application/dto/article/articleDTO";
 
 const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
-const articles = await Promise.all(
+const articles: ArticleDTO[] = await Promise.all(
 	(await getCollection("articles"))
 		.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf())
 		.map(articleDTO.render),

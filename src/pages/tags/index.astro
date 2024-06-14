@@ -1,7 +1,35 @@
 ---
+import type { ArticleDTO } from "../../application/dto/article/articleDTO";
+import { articleDTO } from "@application/dto/article/articleDTO";
+import { getCollection } from "astro:content";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
+import { tagDTO } from "@application/dto/tag/tagDTO";
+import { slugify } from "@shared/ui/utils/slugify";
+import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
+import "./_tags.css";
+
+const articles: ArticleDTO[] = await Promise.all((await getCollection("articles")).map(articleDTO.render));
+const tags = tagDTO.render(articles);
 ---
 
 <BaseLayout title="" description="">
-  <h1>Hello, tags!</h1>
+<Breadcrumbs classNames="tags-page" />
+<section class="common-wrapper">
+  <h1>All the tags</h1>
+  <ul class="tags__list flex row-wrap">
+    {Object.keys(tags).map(letter => (
+      <li class="tags__item">
+        <h2 class="tags__item__letter">{letter}</h2>
+        <ul class="tags__item__list flex column-wrap">
+          {tags[letter].map(({ name, count }) => (
+            <li class="tag__item font-sans-serif">
+              <a href={`/tags/${slugify(name)}`}>{name}</a>
+              ({count})
+            </li>
+          ))}
+        </ul>
+      </li>
+    ))}
+  </ul>
+</section>
 </BaseLayout>

@@ -1,8 +1,9 @@
 ---
 import "./latest-articles.css";
-import { getCollection, getEntry } from "astro:content";
-import { articleDTO } from "@application/dto/articleDTO";
+import { getCollection } from "astro:content";
+import { articleDTO } from "@application/dto/article/articleDTO";
 import { LatestArticlesSlider } from "@components/molecules/latestArticles";
+import type { ArticleDTO } from '@application/dto/article/articleDTO';
 
 interface LatestArticlesProps {
 	limit?: number;
@@ -13,7 +14,7 @@ const MAX_ARTICLES = 4;
 const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
 const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
-const articles = await Promise.all(
+const articles: ArticleDTO[] = await Promise.all(
   (await getCollection("articles"))
     .sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
     .slice(0, limit)
