@@ -32,7 +32,7 @@ const tags = tagDTO.render(articles);
                 "itemListElement": {
                   "@type": "ListItem",
                   "position": index +1,
-                  "url": new URL(slugify(name), Astro.url).href
+                  "url": new URL(`/tags/${slugify(name)}`, Astro.url).href
                 }
               })}/>
           ))}

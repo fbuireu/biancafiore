@@ -1,10 +1,9 @@
 ---
-import { TagType } from "@application/dto/tag/tagDTO";
+import { getArticlesByTag } from "src/ui/shared/application/utils/getArticlesByTag";
 import { getCollection } from "astro:content";
 import { articleDTO } from "@application/dto/article/articleDTO";
 import type { ArticleDTO } from "@application/dto/article/articleDTO";
 import { tagDTO } from "@application/dto/tag/tagDTO";
-import { deSlugify } from "@shared/ui/utils/deSlugify";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 
@@ -15,23 +14,26 @@ const tags = tagDTO.render(articles);
 const currentTag = Object.values(tags)
 	.flat()
 	.find(({ name }) => name === tag);
-const articlesBySlug = articles.filter((article) => {
-	const { author, tags } = article.data;
-	const { name } = currentTag;
-
-	if (currentTag.type === TagType.AUTHOR) return author.data.name === deSlugify(name);
-	return tags.includes(name);
-});
+const articlesBySlug = getArticlesByTag({ articles, currentTag });
 ---
 <BaseLayout>
 <Breadcrumbs />
 hello darkness my old friend #{tag}
 
-{articlesBySlug.map(article => {
+{articlesBySlug.map((article, index) => {
   return (
     <div>
       <h1>{article.data.title}</h1>
       <p>{article.data.description}</p>
+        <script type="application/ld+json" set:html={JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "itemListElement": {
+            "@type": "ListItem",
+            "position": index +1,
+            "url": new URL(`/articles/${article.slug}`, Astro.url).href
+          }
+        })}/>
     </div>
   );
   })}
