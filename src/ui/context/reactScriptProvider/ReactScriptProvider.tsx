@@ -7,14 +7,14 @@ import { mailTo } from "@shared/ui/utils/mailTo";
 
 const ReactScriptProvider = () => {
 	useEffect(() => {
+		initializeThemeSetter();
 		toggleMenu();
 		initializeParallax();
 		backgroundObserver();
 		mailTo();
-		initializeThemeSetter();
 	}, []);
 
-	return null;
+	return <></>;
 };
 
 export default ReactScriptProvider;

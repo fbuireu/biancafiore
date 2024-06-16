@@ -46,24 +46,39 @@ export const initializeThemeSetter = () => {
 		THEME_TOGGLE.classList.toggle("--toggled", isDarkMode);
 		THEME_TOGGLE.classList.toggle("--untoggled", !isDarkMode);
 	};
+
 	applyTheme(initialTheme);
 
 	if (!THEME_TOGGLE_INPUT) return;
 
 	THEME_TOGGLE_INPUT.addEventListener("change", () => handleThemeChange(THEME_TOGGLE_INPUT));
 
-	window.addEventListener("storage", (event) => {
-		if (event.key === THEME_STORAGE_KEY && event.newValue) {
-			const newTheme = event.newValue as ThemeType;
+	window.addEventListener("storage", ({ key, newValue }) => {
+		if (key === THEME_STORAGE_KEY && newValue) {
+			const newTheme = newValue as ThemeType;
 			const currentTheme = getCurrentTheme();
 			if (newTheme !== currentTheme) applyTheme(newTheme);
 		}
 	});
 
-	PREFERS_DARK_SCHEME.addEventListener("change", (event) => {
-		const newTheme = event.matches ? ThemeType.DARK : ThemeType.LIGHT;
+	PREFERS_DARK_SCHEME.addEventListener("change", ({ matches }) => {
+		const newTheme = matches ? ThemeType.DARK : ThemeType.LIGHT;
 		const currentTheme = getCurrentTheme();
 
 		if (newTheme !== currentTheme) applyTheme(newTheme);
+	});
+	PREFERS_DARK_SCHEME.addEventListener("change", ({ matches }) => {
+		const newTheme = matches ? ThemeType.DARK : ThemeType.LIGHT;
+		const currentTheme = getCurrentTheme();
+
+		if (newTheme !== currentTheme) applyTheme(newTheme);
+	});
+	document.addEventListener("astro:before-swap", ({ newDocument }) => {
+		const initialTheme = getInitialTheme();
+		const currentTheme = getCurrentTheme();
+		const theme = currentTheme ?? initialTheme;
+
+		applyTheme(theme);
+		newDocument.documentElement.setAttribute(`data-${THEME_STORAGE_KEY}`, theme);
 	});
 };

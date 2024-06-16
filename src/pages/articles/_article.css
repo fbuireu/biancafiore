@@ -60,32 +60,4 @@
     .full-bleed {
         grid-column: 1 / -1;
     }
-
-    .related-articles__wrapper{
-        margin: 6rem 0;
-        @media (max-width: 960px) {
-            margin: 4rem 0;
-        }
-    }
-
-    .related-articles__item {
-        --items-per-row: 3;
-        justify-content: center;
-        max-width: calc(100% / var(--items-per-row) - 1rem);
-        width: 100%;
-
-        @media (max-width: 960px) {
-            --items-per-row: 1;
-            justify-content: flex-start;
-        }
-    }
-
-    .related-articles__list {
-        gap: 1rem 0;
-        padding: 0 1rem;
-
-        @media (max-width: 960px) {
-            margin: 2rem 0;
-        }
-    }
 }

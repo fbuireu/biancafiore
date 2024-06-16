@@ -8,7 +8,7 @@ export interface TestimonialQuoteProps {
 
 export const TestimonialQuote = ({ children }: TestimonialQuoteProps) => (
 	<div className="testimonial__quote__wrapper">
-		<img className="testimonial__quote-symbol" src={doubleQuote.src} alt={"Quote"} />
+		<img className="testimonial__quote-symbol" src={doubleQuote.src} alt={"Quote"} loading="lazy" decoding="async" />
 		<blockquote className="testimonial__quote">{children}</blockquote>
 	</div>
 );

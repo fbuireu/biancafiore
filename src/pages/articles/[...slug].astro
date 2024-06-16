@@ -8,14 +8,13 @@ import type { ImageMetadata } from "astro";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import { articleDTO } from "@application/dto/article/articleDTO";
 import type { ArticleDTO } from "@application/dto/article/articleDTO";
+import RelatedArticles from "@components/organisms/relatedArticles/RelatedArticles.astro";
 
 export const prerender = true;
 
 interface ArticleProps {
-	currentArticle: ArticleDTO;
+	currentArticle: Promise<ArticleDTO>;
 }
-
-const MAX_RELATED_ARTICLES = 3;
 
 export async function getStaticPaths() {
 	const articles = await getCollection("articles");
@@ -36,21 +35,13 @@ const images = import.meta.glob<{ default: ImageMetadata }>("/src/assets/**/*.{j
 const articles = await getCollection("articles");
 
 const { slug } = Astro.params;
-const { currentArticle } = Astro.props;
+const { currentArticle } = Astro.props as ArticleProps;
 
 const {
-	data: { featuredImage, title, description, author, publishDate, tags, rest },
+	data: { featuredImage, title, description, author, publishDate, tags, ...rest },
 	render,
 } = await currentArticle;
 const { Content } = await render();
-
-const relatedArticles = await Promise.all(
-	articles
-		.filter(({ data }) => data.tags?.some((tag) => data.title !== title && tags?.includes(tag)))
-		.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
-		.splice(0, MAX_RELATED_ARTICLES)
-		.map(articleDTO.render),
-);
 ---
 
 <BaseLayout {...rest}>
@@ -60,7 +51,8 @@ const relatedArticles = await Promise.all(
         <Image
           src={images[featuredImage]()}
           alt={title}
-          class="article__featured__image" />
+          class="article__featured__image"
+        />
       </section>
     )
   }
@@ -69,7 +61,7 @@ const relatedArticles = await Promise.all(
     <h1 class="article__title">
       {title}
     </h1>
-    <p class="article__author">by <a href={`/tags/${author.id}`}>{author.name}</a></p>
+    <p class="article__author">by <a href={`/tags/${author.data.id}`}>{author.data.name}</a></p>
     <time class="article__publish-date font-sans-serif" datetime={publishDate}>
       {publishDate}
     </time>
@@ -111,29 +103,5 @@ const relatedArticles = await Promise.all(
       "@id": Astro.url.href
     }
   })}/>
-  {
-    relatedArticles.length > 0 && (
-      <section class="related-articles__wrapper">
-        <h3 class="related-articles__title section-title">You might also like</h3>
-        <ul class="related-articles__list flex row-wrap">
-          {relatedArticles.map(({ slug, data: { title, author } }, index) => (
-           <li class="related-articles__item flex">
-              <a href={`/articles/${slug}`} class="related__article__link">
-                <h4 class="related__article__title">{title}</h4>
-                <p class="related__article__author">by {author.data.name}</p>
-              </a>
-            </li>
-            <script type="application/ld+json" set:html={JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "ItemList",
-              "itemListElement": {
-                "@type": "ListItem",
-                "position": index + 1,
-                "url": new URL(slug, Astro.url).href
-              }
-            })}/>
-          ))}
-        </ul>
-      </section>
-    )}
+  <RelatedArticles currentArticle={currentArticle} />
 </BaseLayout>

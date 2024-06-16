@@ -51,6 +51,7 @@
         --swiper-pagination-bullet-height: 0.75rem;
         --swiper-pagination-bullet-horizontal-gap: 0.35rem;
         --swiper-pagination-bullet-border-radius: 1rem;
+        --swiper-pagination-bullet-inactive-color: var(--neutral-light-1);
         transition: width 0.3s;
     }
 

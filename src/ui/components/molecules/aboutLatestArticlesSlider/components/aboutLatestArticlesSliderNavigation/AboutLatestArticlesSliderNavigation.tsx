@@ -18,7 +18,7 @@ export const AboutLatestArticlesSliderNavigation = () => {
 				type="button"
 				onClick={() => swiper.slidePrev()}
 			>
-				<img src={horizontalArrow.src} alt={"Previous Article"} />
+				<img src={horizontalArrow.src} alt={"Previous Article"} loading="lazy" decoding="async" />
 			</button>
 			<button
 				ref={rightButtonRef}
@@ -26,7 +26,7 @@ export const AboutLatestArticlesSliderNavigation = () => {
 				type="button"
 				onClick={() => swiper.slideNext()}
 			>
-				<img src={horizontalArrow.src} alt={"Next Article"} />
+				<img src={horizontalArrow.src} alt={"Next Article"} loading="lazy" decoding="async" />
 			</button>
 		</div>
 	);

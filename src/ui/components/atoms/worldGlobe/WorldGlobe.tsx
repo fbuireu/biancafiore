@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useRef } from "react";
-import Globe from "react-globe.gl";
 import type { GlobeMethods } from "react-globe.gl";
+import Globe from "react-globe.gl";
 import * as Three from "three";
 import countries from "@data/countries.geojson.json";
 import "./world-globe.css";
@@ -148,7 +148,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<img src={horizontalArrow.src} alt="Move left" />
+						<img src={horizontalArrow.src} alt="Move left" loading="lazy" decoding="async" />
 					</button>
 					<button
 						className="world-globe__controls__move --right flex clickable"
@@ -160,7 +160,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<img src={horizontalArrow.src} alt="Move Right" />
+						<img src={horizontalArrow.src} alt="Move Right" loading="lazy" decoding="async" />
 					</button>
 				</div>
 				<div className="world-globe__controls__zoom-wrapper flex row-wrap">
@@ -174,7 +174,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<img src={zoomIn.src} alt="Zoom in" />
+						<img src={zoomIn.src} alt="Zoom in" loading="lazy" decoding="async" />
 					</button>
 					<button
 						className="world-globe__controls__move --zoom-out clickable"
@@ -186,7 +186,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<img src={zoomOut.src} alt="Zoom out" />
+						<img src={zoomOut.src} alt="Zoom out" loading="lazy" decoding="async" />
 					</button>
 				</div>
 			</div>

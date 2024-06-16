@@ -20,6 +20,7 @@ export const Cookie = ({ fill = "currentColor", classNames, ...props }: CookiePr
 			fill={fill}
 			{...props}
 		>
+			<title>Cookie</title>
 			<g>
 				<path
 					style={{ fillRule: "evenodd", clipRule: "evenodd" }}

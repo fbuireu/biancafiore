@@ -1,0 +1,62 @@
+---
+import type { ArticleDTO } from "@application/dto/article/articleDTO";
+import { getCollection } from "astro:content";
+import { articleDTO } from "@application/dto/article/articleDTO";
+import { slugify } from "src/ui/shared/ui/utils/slugify";
+import "./related-articles.css";
+
+interface RelatedArticleProps {
+	currentArticle: Promise<ArticleDTO>;
+}
+
+const MAX_RELATED_ARTICLES = 3;
+
+const { currentArticle } = Astro.props as RelatedArticleProps;
+const {
+	data: { title, description, author, publishDate, tags },
+	render,
+} = await currentArticle;
+
+const articles: ArticleDTO[] = await Promise.all(
+	(await getCollection("articles"))
+		.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf())
+		.map(articleDTO.render),
+);
+
+const relatedArticles = await Promise.all(
+	articles
+		.filter(({ data }) => data.tags?.some((tag) => data.title !== title && tags?.includes(tag)))
+		.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
+		.splice(0, MAX_RELATED_ARTICLES)
+		.map(articleDTO.render),
+);
+---
+{
+    relatedArticles.length > 0 && (
+    <section class="related-articles__wrapper common-wrapper">
+        <h3 class="related-articles__title section-title">You might also like</h3>
+        <ul class="related-articles__list flex row-wrap">
+          {relatedArticles.map(({ slug, data: { title, author } }, index) => (
+              <li class="related-article__item flex column-wrap">
+                  <time class="related-article__item__publish-date font-sans-serif" datetime={publishDate}>
+                    {publishDate}
+                  </time>
+                  <a href={`/articles/${slug}`} class="related__article__link">
+                      <h4 class="related__article__title">{title}</h4>
+                      <p>{description}</p>
+                      <a href={`/tags/${slugify(author.data.name)}`} class="related__article__author">by {author.data.name}</a>
+                  </a>
+              </li>
+              <script type="application/ld+json" set:html={JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "itemListElement": {
+                  "@type": "ListItem",
+                  "position": index + 1,
+                  "url": new URL(slug, Astro.url).href
+                }
+              })}/>
+          ))}
+        </ul>
+    </section>
+)}

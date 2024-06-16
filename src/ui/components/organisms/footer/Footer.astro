@@ -9,7 +9,9 @@ const currentYear = new Date().getFullYear();
 <footer>
   <section class="footer__wrapper common-wrapper">
     <div class="footer__logo flex row-wrap justify-center">
-      <Fragment set:html={logo} />
+      <a href="/">
+          <Fragment set:html={logo} />
+      </a>
     </div>
     <ThemeToggle />
     <ul class="footer__social__networks__list flex row-wrap justify-center">

@@ -18,7 +18,7 @@ export const TestimonialsNavigation = () => {
 				type="button"
 				onClick={() => swiper.slidePrev()}
 			>
-				<img src={horizontalArrow.src} alt="Previous testimonial" />
+				<img src={horizontalArrow.src} alt="Previous testimonial" loading="lazy" decoding="async" />
 			</button>
 			<button
 				ref={rightButtonRef}
@@ -26,7 +26,7 @@ export const TestimonialsNavigation = () => {
 				type="button"
 				onClick={() => swiper.slideNext()}
 			>
-				<img src={horizontalArrow.src} alt="Next testimonial" />
+				<img src={horizontalArrow.src} alt="Next testimonial" loading="lazy" decoding="async" />
 			</button>
 		</div>
 	);

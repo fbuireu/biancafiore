@@ -1,5 +1,5 @@
 ---
-import type { ArticleDTO } from "../../application/dto/article/articleDTO";
+import type { ArticleDTO } from "@application/dto/article/articleDTO";
 import { articleDTO } from "@application/dto/article/articleDTO";
 import { getCollection } from "astro:content";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
@@ -17,7 +17,7 @@ const tags = tagDTO.render(articles);
 <section class="common-wrapper">
   <h1>All the tags</h1>
   <ul class="tags__list flex row-wrap">
-    {Object.keys(tags).map(letter => (
+    {Object.keys(tags).map((letter, index) => (
       <li class="tags__item">
         <h2 class="tags__item__letter">{letter}</h2>
         <ul class="tags__item__list flex column-wrap">
@@ -26,6 +26,15 @@ const tags = tagDTO.render(articles);
               <a href={`/tags/${slugify(name)}`}>{name}</a>
               ({count})
             </li>
+              <script type="application/ld+json" set:html={JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "itemListElement": {
+                  "@type": "ListItem",
+                  "position": index +1,
+                  "url": new URL(slugify(name), Astro.url).href
+                }
+              })}/>
           ))}
         </ul>
       </li>

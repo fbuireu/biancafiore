@@ -24,121 +24,125 @@ const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Ast
 
 <!-- todo: isolate sections -->
 <BaseLayout title="" description="">
-  <h1 class="articles__title section-title">The Blog</h1>
-  <Breadcrumbs classNames="articles-page" />
-  <div class="articles__wrapper">
-    <section class="articles__wrapper__inner common-wrapper">
-      <div class="featured-article__wrapper">
-        <a href={`/articles/${featuredArticle.slug}`}>
-          <Image
-            class="featured-article__image"
-            src={images[featuredArticle.data.featuredImage]()}
-            alt={featuredArticle.data.title}
-          />
-        </a>
-        <div class="featured-article__details__wrapper flex row-wrap">
-          <div class="featured-article__details flex column-wrap">
-            <time class="featured-article__publish-date font-sans-serif" datetime={featuredArticle.data.publishDate}>
-              {featuredArticle.data.publishDate}
-            </time>
-            <h2 class="featured-article__title">{featuredArticle.data.title}</h2>
-            <p class="featured-article__description">{featuredArticle.data.description}</p>
-            {
-              featuredArticle.tags?.length > 0 && (
-                <ul class="featured-article__tags__list">
-                  {featuredArticle.data.tags.map((tag) => (
-                    <a class="featured-article__tag__item" href={`/tags/${slugify(tag)}`}>
-                      #{tag}
-                    </a>
-                  ))}
-                </ul>
-              )
-            }
-            <a href={`/articles/${featuredArticle.slug}`} class="featured-article__link flex align-center">
-              Read More <img src={horizontalArrow.src} alt="Readt more" />
-            </a>
-          </div>
-          <div class="featured-article__share__wrapper flex row-wrap">
-            <p class="featured-article__share__title font-serif">SHARE IT!</p>
-            <ul class="featured-article__share__links__list flex row-nowrap">
-              <li class="featured-article__share__link__item link">
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${featuredArticleShareUrl}`}
-                >
-                  Linkedin
+    <h1 class="articles__title section-title">The Blog</h1>
+    <Breadcrumbs classNames="articles-page" />
+    <div class="articles__wrapper">
+        <section class="articles__wrapper__inner common-wrapper">
+            <div class="featured-article__wrapper">
+                <a href={`/articles/${featuredArticle.slug}`}>
+                    <Image
+                        class="featured-article__image"
+                        src={images[featuredArticle.data.featuredImage]()}
+                        alt={featuredArticle.data.title}
+                    />
                 </a>
-              </li>
-              <li class="featured-article__share__link__item link">
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={`https://twitter.com/intent/tweet?url=${featuredArticleShareUrl}&text=${featuredArticle.title}&hashtags=${featuredArticle.tags?.join(',')}`}>
-                  X (former Twitter)
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <script type="application/ld+json" set:html={JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "itemListElement": {
-          "@type": "ListItem",
-          "position": 0,
-          "url": new URL(`/articles/${featuredArticle.slug}`, Astro.url).href
-        }
-      })}/>
+                <div class="featured-article__details__wrapper flex row-wrap">
+                    <div class="featured-article__details flex column-wrap">
+                        <time class="featured-article__publish-date font-sans-serif"
+                              datetime={featuredArticle.data.publishDate}>
+                          {featuredArticle.data.publishDate}
+                        </time>
+                        <h2 class="featured-article__title">{featuredArticle.data.title}</h2>
+                        <p class="featured-article__description">{featuredArticle.data.description}</p>
+                      {
+                          featuredArticle.tags?.length > 0 && (
+                              <ul class="featured-article__tags__list">
+                                {featuredArticle.data.tags.map((tag) => (
+                                    <a class="featured-article__tag__item" href={`/tags/${slugify(tag)}`}>
+                                        #{tag}
+                                    </a>
+                                ))}
+                              </ul>
+                          )
+                      }
+                        <a href={`/articles/${featuredArticle.slug}`} class="featured-article__link flex align-center">
+                            Read More <img src={horizontalArrow.src} alt="Readt more" />
+                        </a>
+                    </div>
+                    <div class="featured-article__share__wrapper flex row-wrap">
+                        <p class="featured-article__share__title font-serif">SHARE IT!</p>
+                        <ul class="featured-article__share__links__list flex row-nowrap">
+                            <li class="featured-article__share__link__item link">
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${featuredArticleShareUrl}`}
+                                >
+                                    Linkedin
+                                </a>
+                            </li>
+                            <li class="featured-article__share__link__item link">
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href={`https://twitter.com/intent/tweet?url=${featuredArticleShareUrl}&text=${featuredArticle.data.title}&hashtags=${featuredArticle.data.tags?.join(
+                                        ',')}`}>
+                                    X (former Twitter)
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <script type="application/ld+json" set:html={JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'ItemList',
+              'itemListElement': {
+                '@type': 'ListItem',
+                'position': 1,
+                'url': new URL(`/articles/${featuredArticle.slug}`, Astro.url).href,
+              },
+            })} />
+        </section>
+    </div>
+    <section class="articles__grid common-wrapper">
+        <ul class="articles__grid__list flex row-wrap justify-space-between">
+          {
+            articles
+                .filter(({ slug }) => slug !== featuredArticle.slug)
+                .map(({ data: article, slug }, index) => (
+                    <li class="articles__grid__item">
+                        <a class="article__card__link" href={`/articles/${slug}`} aria-label={article.title} />
+                        <article
+                            class:list={[
+                              `article__card__wrapper`, {
+                                '--default-variant': article.variant === ArticleType.DEFAULT,
+                                '--no-image-variant': article.variant === ArticleType.NO_IMAGE,
+                              }]}
+                        >
+                          {article.featuredImage && (
+                              <Image class="article__card__image" src={images[article.featuredImage]()}
+                                     alt={article.title} />
+                          )}
+                            <time class="article__card__publish-date font-sans-serif" datetime={article.publishDate}>
+                              {article.publishDate}
+                            </time>
+                            <h2 class="article__card__title font-serif">{article.title}</h2>
+                            <p class="article__card__author">
+                                by <a href={`/tags/${article.author.data.id}`}>{article.author.data.name}</a>
+                            </p>
+                            <p class="article__card__excerpt">{article.description}</p>
+                          {article.tags?.length > 0 && (
+                              <ul class="article__card__tags__list">
+                                {article.tags.map((tag) => (
+                                    <a class="article__card__tag__item" href={`/tags/${slugify(tag)}`}>
+                                        #{tag}
+                                    </a>
+                                ))}
+                              </ul>
+                          )}
+                        </article>
+                        <script type="application/ld+json" set:html={JSON.stringify({
+                          '@context': 'https://schema.org',
+                          '@type': 'ItemList',
+                          'itemListElement': {
+                            '@type': 'ListItem',
+                            'position': index + 2,
+                            'url': new URL(`/articles/${slug}`, Astro.url).href,
+                          },
+                        })} />
+                    </li>
+                ))}
+        </ul>
     </section>
-  </div>
-  <section class="articles__grid common-wrapper">
-    <ul class="articles__grid__list flex row-wrap justify-space-between">
-      {
-        articles
-          .filter(({ slug }) => slug !== featuredArticle.slug)
-          .map(({ data: article, slug }, index) => (
-            <li class="articles__grid__item">
-              <a class="article__card__link" href={`/articles/${slug}`} aria-label={article.title} />
-              <article
-                class:list={[`article__card__wrapper`, {
-                  '--default-variant': article.variant === ArticleType.DEFAULT,
-                  '--no-image-variant': article.variant === ArticleType.NO_IMAGE
-                }]}
-              >
-                {article.featuredImage && (
-                  <Image class="article__card__image" src={images[article.featuredImage]()} alt={article.title} />
-                )}
-                <time class="article__card__publish-date font-sans-serif" datetime={article.publishedDate}>
-                  {article.publishedDate}
-                </time>
-                <h2 class="article__card__title font-serif">{article.title}</h2>
-                <p class="article__card__author">
-                  by <a href={`/tags/${article.author.data.id}`}>{article.author.data.name}</a>
-                </p>
-                <p class="article__card__excerpt">{article.description}</p>
-                {article.tags?.length > 0 && (
-                  <ul class="article__card__tags__list">
-                    {article.tags.map((tag) => (
-                      <a class="article__card__tag__item" href={`/tags/${slugify(tag)}`}>
-                        #{tag}
-                      </a>
-                    ))}
-                  </ul>
-                )}
-              </article>
-              <script type="application/ld+json" set:html={JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "ItemList",
-                "itemListElement": {
-                  "@type": "ListItem",
-                  "position": index + 1,
-                  "url": new URL(`/articles/${slug}`, Astro.url).href
-                }
-              })}/>
-            </li>
-          ))}
-    </ul>
-  </section>
 </BaseLayout>
