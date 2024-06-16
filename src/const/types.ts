@@ -24,8 +24,8 @@ export interface SeoMetadata {
 	title: string;
 	description: string;
 	robots?: {
-		index?: boolean;
-		follow?: boolean;
+		index: boolean;
+		follow: boolean;
 	};
 	image: string;
 }

@@ -1,6 +1,6 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
-import { DEFAULT_SEO_PARAMS } from '@const/index.js';
+import { DEFAULT_SEO_PARAMS } from "@const/index.js";
 
 export async function GET(context) {
 	const posts = await getCollection("articles");
