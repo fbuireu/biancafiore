@@ -15,3 +15,10 @@ import Menu from "@components/organisms/header/components/menu/Menu.astro";
   <MenuOverlay />
   <Menu />
 </header>
+<script is:inline data-astro-rerun type="module">
+  import { toggleMenu } from '/src/ui/components/organisms/header/utils/toggleMenu';
+  import { backgroundObserver } from '/src/ui/components/organisms/header/utils/backgroundObserver';
+
+  backgroundObserver();
+  toggleMenu()
+</script>

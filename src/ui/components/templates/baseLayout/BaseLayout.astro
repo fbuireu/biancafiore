@@ -1,7 +1,6 @@
 ---
 import type { SeoMetadata } from "@const/types";
 import Footer from "@components/organisms/footer/Footer.astro";
-import ReactScriptProvider from "@ui/context/reactScriptProvider/ReactScriptProvider";
 import Head from "@components/organisms/Head/Head.astro";
 import Header from "@components/organisms/header/Header.astro";
 import ScrollTop from "@components/atoms/scrollTop/ScrollTop.astro";
@@ -30,6 +29,5 @@ const isProjects = pathname.includes("/projects");
       <slot />
     </main>
     <Footer />
-    <ReactScriptProvider client:only="react" />
   </body>
 </html>

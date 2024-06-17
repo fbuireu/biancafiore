@@ -32,9 +32,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/cloudflare@npm:^10.4.0":
-  version: 10.4.0
-  resolution: "@astrojs/cloudflare@npm:10.4.0"
+"@astrojs/cloudflare@npm:^10.4.1":
+  version: 10.4.1
+  resolution: "@astrojs/cloudflare@npm:10.4.1"
   dependencies:
     "@astrojs/internal-helpers": "npm:0.3.0"
     "@astrojs/underscore-redirects": "npm:^0.3.3"
@@ -47,7 +47,7 @@ __metadata:
     wrangler: "npm:^3.39.0"
   peerDependencies:
     astro: ^4.2.0
-  checksum: 10c0/d3c46983f5f2e949817d3600574e705fdaa7034adaa5e48df5e1d967d21d1cdcd4683d821ba104c3a980c42fcbe3b434077800ba0b2699111205a5cec3e82229
+  checksum: 10c0/bdc445bba8ce65c615c49aa566dfbb30317256324c0ee15663c96e5c7330da03f3c0fc92745cb7bda98a7cc67c7aacf6775c318e3ce6c4efbd443e194dd08c16
   languageName: node
   linkType: hard
 
@@ -4005,7 +4005,7 @@ __metadata:
   resolution: "biancafiore@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.7.0"
-    "@astrojs/cloudflare": "npm:^10.4.0"
+    "@astrojs/cloudflare": "npm:^10.4.1"
     "@astrojs/mdx": "npm:^3.1.0"
     "@astrojs/partytown": "npm:^2.1.1"
     "@astrojs/react": "npm:^3.5.0"
@@ -4039,7 +4039,7 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-globe.gl: "npm:^2.27.2"
     react-google-recaptcha-v3: "npm:^1.10.1"
-    react-hook-form: "npm:^7.51.5"
+    react-hook-form: "npm:^7.52.0"
     react-router-dom: "npm:^6.23.1"
     resend: "npm:^3.3.0"
     stylelint: "npm:^16.6.1"
@@ -9462,12 +9462,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.51.5":
-  version: 7.51.5
-  resolution: "react-hook-form@npm:7.51.5"
+"react-hook-form@npm:^7.52.0":
+  version: 7.52.0
+  resolution: "react-hook-form@npm:7.52.0"
   peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 10c0/5b13f99a125d92ee618f2d4e218d5ec854f8cac1b568e83b4b125efb002cc79eef0f5c06b54015c78e16a830cf1ea356a646e8c6abb00b7ca8225dba9a92091e
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 10c0/058bf5596f314c071863bb133979deb56d0a7817d5bf1908a569c003fe03a15736402b040d3e18aeb259723c6e15c243fe75d2d887ea47ff4be87fc472f31ad5
   languageName: node
   linkType: hard
 

@@ -1,7 +1,6 @@
-import type { ArticleDTO } from '@application/dto/article/articleDTO.ts';
-import type { TagDTOItem } from '@application/dto/tag/tagDTO.ts';
-import { TagType } from '@application/dto/tag/tagDTO.ts';
-import { deSlugify } from '@shared/ui/utils/deSlugify';
+import type { ArticleDTO } from "@application/dto/article/articleDTO.ts";
+import type { TagDTOItem } from "@application/dto/tag/tagDTO.ts";
+import { TagType } from "@application/dto/tag/tagDTO.ts";
 
 interface GetArticlesByTagProps {
 	articles: ArticleDTO[];
@@ -9,11 +8,11 @@ interface GetArticlesByTagProps {
 }
 
 export function getArticlesByTag({ articles, currentTag }: GetArticlesByTagProps): ArticleDTO[] {
-	return articles.filter((article) => {
+	return articles.filter((article): ArticleDTO[] => {
 		const { author, tags } = article.data;
-		const { name } = currentTag;
+		const { slug } = currentTag;
 
-		if (currentTag.type === TagType.AUTHOR) return author.data.name === deSlugify(name);
-		return tags.includes(name);
+		if (currentTag.type === TagType.AUTHOR) return author.data.id.includes(slug);
+		return tags.includes(slug);
 	});
 }

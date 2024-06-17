@@ -32,3 +32,8 @@ import "./theme-toggle.css";
     </svg>
   </label>
 </div>
+<script is:inline data-astro-rerun type="module">
+  import { initializeThemeSetter } from '/src/ui/components/atoms/themeToggle/utils/themeSetter';
+
+  initializeThemeSetter()
+</script>

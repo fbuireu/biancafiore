@@ -13,12 +13,13 @@ const articles: ArticleDTO[] = await Promise.all((await getCollection("articles"
 const tags = tagDTO.render(articles);
 const currentTag = Object.values(tags)
 	.flat()
-	.find(({ name }) => name === tag);
+	.find(({ slug }) => slug === tag);
+
 const articlesBySlug = getArticlesByTag({ articles, currentTag });
 ---
 <BaseLayout>
 <Breadcrumbs />
-hello darkness my old friend #{tag}
+  <h1>#{tag}</h1>
 
 {articlesBySlug.map((article, index) => {
   return (

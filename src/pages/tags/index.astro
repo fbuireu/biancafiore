@@ -7,6 +7,7 @@ import { tagDTO } from "@application/dto/tag/tagDTO";
 import { slugify } from "@shared/ui/utils/slugify";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import "./_tags.css";
+import { deSlugify } from "../../ui/shared/ui/utils/deSlugify";
 
 const articles: ArticleDTO[] = await Promise.all((await getCollection("articles")).map(articleDTO.render));
 const tags = tagDTO.render(articles);
@@ -21,10 +22,10 @@ const tags = tagDTO.render(articles);
       <li class="tags__item">
         <h2 class="tags__item__letter">{letter}</h2>
         <ul class="tags__item__list flex column-wrap">
-          {tags[letter].map(({ name, count }) => (
+          {tags[letter].map(({ name, slug, count }) => (
             <li class="tag__item font-sans-serif">
-              <a href={`/tags/${slugify(name)}`}>{name}</a>
-              ({count})
+              <a href={`/tags/${slug}`}>{name}</a>
+              ({count > 1 ? "articles" : "article"}
             </li>
               <script type="application/ld+json" set:html={JSON.stringify({
                 "@context": "https://schema.org",
@@ -32,7 +33,7 @@ const tags = tagDTO.render(articles);
                 "itemListElement": {
                   "@type": "ListItem",
                   "position": index +1,
-                  "url": new URL(`/tags/${slugify(name)}`, Astro.url).href
+                  "url": new URL(`/tags/${slug}`, Astro.url).href
                 }
               })}/>
           ))}
