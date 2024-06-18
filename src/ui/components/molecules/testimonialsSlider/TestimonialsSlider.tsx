@@ -1,20 +1,16 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y, Keyboard, Navigation, Pagination, Virtual, Autoplay } from "swiper/modules";
 import { Testimonial } from "@components/molecules/testimonial";
 import type { SwiperOptions } from "swiper/types";
-import { TestimonialsNavigation } from "src/ui/components/molecules/testimonialsSlider/components/testimonialsNavigation";
+import { TestimonialsNavigation } from "./components/testimonialsNavigation";
+import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
 
 const SLIDER_CONFIG: SwiperOptions = {
-	modules: [Navigation, Pagination, Keyboard, Autoplay, Virtual, A11y],
-	loop: true,
+	...DEFAULT_SWIPER_CONFIG,
 	centeredSlides: true,
 	slidesPerView: 3,
 	autoplay: {
 		delay: 5000,
 		pauseOnMouseEnter: true,
-	},
-	pagination: {
-		clickable: true,
 	},
 	breakpoints: {
 		1024: {
@@ -25,7 +21,6 @@ const SLIDER_CONFIG: SwiperOptions = {
 			slidesPerView: 1,
 		},
 	},
-	touchEventsTarget: "wrapper",
 	containerModifierClass: "testimonials-",
 };
 

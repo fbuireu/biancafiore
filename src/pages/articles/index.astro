@@ -3,13 +3,14 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { Image } from "astro:assets";
 import { slugify } from "@shared/ui/utils/slugify";
-import "./_articles.css";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
-import type { ImageMetadata } from "astro";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import { getFeaturedArticle } from "@shared/application/utils/getFeaturedArticle";
-import { ArticleType, articleDTO } from "@application/dto/article/articleDTO";
+import { articleDTO } from "@application/dto/article/articleDTO";
 import type { ArticleDTO } from "@application/dto/article/articleDTO";
+import ArticleCard from "@components/organisms/articleCard/ArticleCard.astro";
+import "./_articles.css";
+import type { ImageMetadata } from "astro";
 
 const images = import.meta.glob<{ default: ImageMetadata }>("/src/assets/**/*.{jpeg,jpg,png,gif}");
 const articles: ArticleDTO[] = await Promise.all(
@@ -90,7 +91,7 @@ const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Ast
               'itemListElement': {
                 '@type': 'ListItem',
                 'position': 1,
-                'url': new URL(`/articles/${featuredArticle.slug}`, Astro.url).href,
+                'url': new URL(`${Astro.url}/${featuredArticle.slug}`, Astro.url).href,
               },
             })} />
         </section>
@@ -100,49 +101,23 @@ const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Ast
           {
             articles
                 .filter(({ slug }) => slug !== featuredArticle.slug)
-                .map(({ data: article, slug }, index) => (
-                    <li class="articles__grid__item">
-                        <a class="article__card__link" href={`/articles/${slug}`} aria-label={article.title} />
-                        <article
-                            class:list={[
-                              `article__card__wrapper`, {
-                                '--default-variant': article.variant === ArticleType.DEFAULT,
-                                '--no-image-variant': article.variant === ArticleType.NO_IMAGE,
-                              }]}
-                        >
-                          {article.featuredImage && (
-                              <Image class="article__card__image" src={images[article.featuredImage]()}
-                                     alt={article.title} />
-                          )}
-                            <time class="article__card__publish-date font-sans-serif" datetime={article.publishDate}>
-                              {article.publishDate}
-                            </time>
-                            <h2 class="article__card__title font-serif">{article.title}</h2>
-                            <p class="article__card__author">
-                                by <a href={`/tags/${article.author.data.id}`}>{article.author.data.name}</a>
-                            </p>
-                            <p class="article__card__excerpt">{article.description}</p>
-                          {article.tags?.length > 0 && (
-                              <ul class="article__card__tags__list">
-                                {article.tags.map((tag) => (
-                                    <a class="article__card__tag__item" href={`/tags/${slugify(tag)}`}>
-                                        #{tag}
-                                    </a>
-                                ))}
-                              </ul>
-                          )}
-                        </article>
+                .map(({ data: article, slug }, index) => {
+                    const href=`/articles/${slug}`;
+                    const props= {...article, href}
+
+                    return <li class="articles__grid__item">
+                        <ArticleCard {...props}/>
                         <script type="application/ld+json" set:html={JSON.stringify({
                           '@context': 'https://schema.org',
                           '@type': 'ItemList',
                           'itemListElement': {
                             '@type': 'ListItem',
                             'position': index + 2,
-                            'url': new URL(`/articles/${slug}`, Astro.url).href,
+                            'url': new URL(`${Astro.url}/${slug}`, Astro.url).href,
                           },
                         })} />
                     </li>
-                ))}
+                })}
         </ul>
     </section>
 </BaseLayout>

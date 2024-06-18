@@ -3,7 +3,7 @@ import "./latest-articles.css";
 import { getCollection } from "astro:content";
 import { articleDTO } from "@application/dto/article/articleDTO";
 import { LatestArticlesSlider } from "@components/molecules/latestArticles";
-import type { ArticleDTO } from '@application/dto/article/articleDTO';
+import type { ArticleDTO } from "@application/dto/article/articleDTO";
 
 interface LatestArticlesProps {
 	limit?: number;
@@ -15,17 +15,18 @@ const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
 const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
 const articles: ArticleDTO[] = await Promise.all(
-  (await getCollection("articles"))
-    .sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
-    .slice(0, limit)
-    .map(articleDTO.render)
-);---
+	(await getCollection("articles"))
+		.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
+		.slice(0, limit)
+		.map(articleDTO.render),
+);
+---
 
 <section class="latest-articles__wrapper">
   <h3 class="latest-articles__title section-title">
     Fresh from <a class="latest-articles__title__link clickable" href="/articles">the blog</a>
   </h3>
-  <LatestArticlesSlider client:load articles={articles} />
+  <LatestArticlesSlider client:load articles={articles} origin={Astro.url} />
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "ItemList",

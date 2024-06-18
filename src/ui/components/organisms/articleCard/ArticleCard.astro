@@ -1,0 +1,49 @@
+---
+import type { ImageMetadata } from 'astro';
+import clsx from 'clsx';
+import { ArticleType } from '@application/dto/article/articleDTO';
+import { slugify } from '@shared/ui/utils/slugify';
+import type { ArticleDTO } from '@application/dto/article/articleDTO';
+import { Image } from "astro:assets";
+import './article-card.css'
+import { getLocation } from './utils/getLocation';
+
+const images = import.meta.glob<{default: ImageMetadata}>("/src/assets/**/*.{jpeg,jpg,png,gif}");
+const { href, title, description, variant, featuredImage, publishDate, author, tags } = Astro.props as ArticleDTO['data'];
+const origin = getLocation(Astro.url)
+---
+
+<a class="article__link-card" href={href} aria-label={title} />
+<article
+  class={clsx(
+    "article__item",
+    {
+      "--default-variant": variant === ArticleType.DEFAULT,
+      "--no-image-variant": variant === ArticleType.NO_IMAGE,
+    },
+    origin && `--is-${origin}`
+  )}
+>
+  {featuredImage && (
+    <Image
+      class="article__item__featured-image"
+      src={images[featuredImage]()}
+      alt={title}
+    />
+  )}
+  <time class="article__item__publish-date" dateTime={publishDate}>
+    {publishDate}
+  </time>
+  <h3 class="article__title font-serif inner-section-title">{title}</h3>
+  <p class="article__author">
+    by <a href={`/tags/${author.data?.id}`}>{author.data.name}</a>
+  </p>
+  <p class="article__excerpt">{description}</p>
+  <ul class="article__tags__list flex">
+    {tags?.map((tag: string) => (
+      <a class="article__tag__item" href={`/tags/${slugify(tag)}`}>
+        #{tag}
+      </a>
+    ))}
+  </ul>
+</article>

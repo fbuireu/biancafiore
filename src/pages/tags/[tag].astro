@@ -21,18 +21,18 @@ const articlesBySlug = getArticlesByTag({ articles, currentTag });
 <Breadcrumbs />
   <h1>#{tag}</h1>
 
-{articlesBySlug.map((article, index) => {
+{articlesBySlug.map(({ slug, data }, index) => {
   return (
     <div>
-      <h1>{article.data.title}</h1>
-      <p>{article.data.description}</p>
+      <h1>{data.title}</h1>
+      <p>{data.description}</p>
         <script type="application/ld+json" set:html={JSON.stringify({
           "@context": "https://schema.org",
           "@type": "ItemList",
           "itemListElement": {
             "@type": "ListItem",
             "position": index +1,
-            "url": new URL(`/articles/${article.slug}`, Astro.url).href
+            "url": new URL(`/articles/${slug}`, Astro.url).href
           }
         })}/>
     </div>

@@ -29,11 +29,12 @@ export const tagDTO: BaseDTO<ArticleDTO[], TagDTO> = {
 			.map((name) => {
 				const type = tags.find((tag) => tag.name === name)?.type ?? TagType.TAG;
 				const count = tags.filter((tag) => tag.name === name).length;
+				const slug = slugify(name);
 
-				return { name, type, count, slug: slugify(name) };
+				return { name, type, count, slug };
 			})
 			.sort((a, b) => a.name.localeCompare(b.name));
 
-		return groupBy(uniqueTags, (item) => item.name.charAt(0).toUpperCase());
+		return groupBy(uniqueTags, ({ name }) => name.charAt(0).toUpperCase());
 	},
 };

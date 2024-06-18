@@ -1,4 +1,6 @@
 import type { CapitalizeKeys, SeoMetadata, WorldGlobeConfig } from "./types.ts";
+import type { SwiperOptions } from "swiper/types";
+import { A11y, Autoplay, Keyboard, Navigation, Virtual } from "swiper/modules";
 
 export const DEFAULT_SEO_PARAMS: CapitalizeKeys<SeoMetadata> = {
 	TITLE: "Bianca Fiore",
@@ -30,6 +32,14 @@ export const WORLD_GLOBE_CONFIG: WorldGlobeConfig = {
 		TRANSPARENT: true,
 		COLOR: "#f7ecd6",
 		OPACITY: 0.7,
+	},
+};
+
+export const DEFAULT_SWIPER_CONFIG: SwiperOptions = {
+	modules: [Navigation, Keyboard, Virtual, Autoplay, A11y],
+	loop: true,
+	pagination: {
+		clickable: true,
 	},
 };
 

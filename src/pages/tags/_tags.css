@@ -7,11 +7,15 @@
     max-width: 50%;
     width: 100%;
   }
-  .tags__item__letter{
+  .tags__item__letter {
     color: var(--primary-main);
   }
 
-  .tag__item{
+.tags__item__list {
+  gap: 0.5rem 0;
+}
+
+  .tag__item {
     text-transform: capitalize;
   }
 }

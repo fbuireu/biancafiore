@@ -4,6 +4,7 @@ import MarkdownIt from "markdown-it";
 import { generateExcerpt } from "@shared/application/utils/generateExcerpt";
 import { getEntry } from "astro:content";
 import { DEFAULT_DATE_FORMAT } from "@const/index.ts";
+import type { ImageMetadata } from "astro";
 
 export enum ArticleType {
 	DEFAULT = "default",
