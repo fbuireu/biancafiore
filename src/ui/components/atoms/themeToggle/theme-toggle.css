@@ -1,5 +1,5 @@
+/* stylelint-disable no-descending-specificity */
 @layer theme-toggle {
-    /* stylelint-disable no-descending-specificity */
     .theme-toggle_wrapper {
         position: absolute;
         right: 2rem;
