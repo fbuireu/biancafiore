@@ -1,16 +1,17 @@
 ---
-import type { ImageMetadata } from 'astro';
-import clsx from 'clsx';
-import { ArticleType } from '@application/dto/article/articleDTO';
-import { slugify } from '@shared/ui/utils/slugify';
-import type { ArticleDTO } from '@application/dto/article/articleDTO';
+import type { ImageMetadata } from "astro";
+import clsx from "clsx";
+import { ArticleType } from "@application/dto/article/articleDTO";
+import { slugify } from "@shared/ui/utils/slugify";
+import type { ArticleDTO } from "@application/dto/article/articleDTO";
 import { Image } from "astro:assets";
-import './article-card.css'
-import { getLocation } from './utils/getLocation';
+import "./article-card.css";
+import { getLocation } from "./utils/getLocation";
 
-const images = import.meta.glob<{default: ImageMetadata}>("/src/assets/**/*.{jpeg,jpg,png,gif}");
-const { href, title, description, variant, featuredImage, publishDate, author, tags } = Astro.props as ArticleDTO['data'];
-const origin = getLocation(Astro.url)
+const images = import.meta.glob<{ default: ImageMetadata }>("/src/assets/**/*.{jpeg,jpg,png,gif}");
+const { href, title, description, variant, featuredImage, publishDate, author, tags } =
+	Astro.props as ArticleDTO["data"];
+const origin = getLocation(Astro.url);
 ---
 
 <a class="article__link-card" href={href} aria-label={title} />
