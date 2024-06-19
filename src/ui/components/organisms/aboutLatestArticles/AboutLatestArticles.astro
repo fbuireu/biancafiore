@@ -5,7 +5,6 @@ import "./about-latest-articles.css";
 import { AboutLatestArticlesSlider } from "@components/molecules/aboutLatestArticlesSlider";
 import type { ArticleDTO } from "@application/dto/article/articleDTO";
 
-const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
 const articles: ArticleDTO[] = await Promise.all(
 	(await getCollection("articles"))
 		.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf())

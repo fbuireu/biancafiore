@@ -22,42 +22,42 @@ const getInitialTheme = (): ThemeType => {
 };
 
 export const initializeThemeSetter = () => {
-	const { THEME_INPUT, TOGGLE } = SELECTORS;
-	const THEME_TOGGLE_INPUT = document.querySelector<HTMLInputElement>(THEME_INPUT);
-	const THEME_TOGGLE = document.querySelector<HTMLInputElement>(TOGGLE);
+	const { THEME_INPUT: THEME_INPUT_SELECTOR, TOGGLE: TOGGLE_SELECTOR } = SELECTORS;
+	const THEME_INPUT = document.querySelector<HTMLInputElement>(THEME_INPUT_SELECTOR);
+	const TOGGLE = document.querySelector<HTMLInputElement>(TOGGLE_SELECTOR);
 
 	const initialTheme = getInitialTheme();
 
 	const handleThemeChange = (toggleSwitch: HTMLInputElement) => {
 		const newTheme = toggleSwitch.checked ? ThemeType.DARK : ThemeType.LIGHT;
-		applyTheme(newTheme);
+		applyTheme({ theme: newTheme, document });
 	};
 
-	const applyTheme = (theme: ThemeType) => {
+	const applyTheme = ({ theme, document }: { theme: ThemeType; document: Document }) => {
 		document.documentElement.setAttribute(`data-${THEME_STORAGE_KEY}`, theme);
 		localStorage.setItem(THEME_STORAGE_KEY, theme);
 
-		if (!THEME_TOGGLE || !THEME_TOGGLE_INPUT) return;
+		if (!TOGGLE || !THEME_INPUT) return;
 
 		const isDarkMode = theme === ThemeType.DARK;
 
-		THEME_TOGGLE_INPUT.checked = isDarkMode;
-		THEME_TOGGLE.classList.toggle("dark", isDarkMode);
-		THEME_TOGGLE.classList.toggle("--toggled", isDarkMode);
-		THEME_TOGGLE.classList.toggle("--untoggled", !isDarkMode);
+		THEME_INPUT.checked = isDarkMode;
+		TOGGLE.classList.toggle("dark", isDarkMode);
+		TOGGLE.classList.toggle("--toggled", isDarkMode);
+		TOGGLE.classList.toggle("--untoggled", !isDarkMode);
 	};
 
-	applyTheme(initialTheme);
+	applyTheme({ theme: initialTheme, document });
 
-	if (!THEME_TOGGLE_INPUT) return;
+	if (!THEME_INPUT) return;
 
-	THEME_TOGGLE_INPUT.addEventListener("change", () => handleThemeChange(THEME_TOGGLE_INPUT));
+	THEME_INPUT.addEventListener("change", () => handleThemeChange(THEME_INPUT));
 
 	window.addEventListener("storage", ({ key, newValue }) => {
 		if (key === THEME_STORAGE_KEY && newValue) {
 			const newTheme = newValue as ThemeType;
 			const currentTheme = getCurrentTheme();
-			if (newTheme !== currentTheme) applyTheme(newTheme);
+			if (newTheme !== currentTheme) applyTheme({ theme: newTheme, document });
 		}
 	});
 
@@ -65,20 +65,13 @@ export const initializeThemeSetter = () => {
 		const newTheme = matches ? ThemeType.DARK : ThemeType.LIGHT;
 		const currentTheme = getCurrentTheme();
 
-		if (newTheme !== currentTheme) applyTheme(newTheme);
-	});
-	PREFERS_DARK_SCHEME.addEventListener("change", ({ matches }) => {
-		const newTheme = matches ? ThemeType.DARK : ThemeType.LIGHT;
-		const currentTheme = getCurrentTheme();
-
-		if (newTheme !== currentTheme) applyTheme(newTheme);
+		if (newTheme !== currentTheme) applyTheme({ theme: newTheme, document });
 	});
 	document.addEventListener("astro:before-swap", ({ newDocument }) => {
 		const initialTheme = getInitialTheme();
 		const currentTheme = getCurrentTheme();
 		const theme = currentTheme ?? initialTheme;
 
-		applyTheme(theme);
-		newDocument.documentElement.setAttribute(`data-${THEME_STORAGE_KEY}`, theme);
+		applyTheme({ theme, document: newDocument });
 	});
 };
