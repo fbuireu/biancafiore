@@ -5,7 +5,7 @@
     grid: 'AboutMe-Text AboutMe-Image' 1fr / 1fr 1fr;
     justify-items: self-start;
 
-    @media (max-width: 960px) {
+    @media (width <=960px) {
       gap: 2rem 0;
       grid: 'AboutMe-Text AboutMe-Text' min-content
       'AboutMe-Image AboutMe-Image' 1fr / 1fr 1fr;
@@ -18,7 +18,7 @@
     margin-block-end: 3rem;
     max-width: var(--grid-extra-small);
 
-    @media (max-width: 960px) {
+    @media (width <=960px) {
       margin-block-end: 0;
       max-width: 100%;
       padding-inline: 1rem;

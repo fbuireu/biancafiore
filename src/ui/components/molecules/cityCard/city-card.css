@@ -8,7 +8,7 @@
     position: sticky;
     top: calc(var(--header-height) + 0.5rem);
 
-    @media (max-width: 960px) {
+    @media (width <= 960px) {
       padding-inline: 1rem;
     }
   }
@@ -31,7 +31,7 @@
     transform-origin: 50% 0;
     will-change: transform;
 
-    @media (max-width: 720px) {
+    @media (width <= 720px) {
       gap: 0.5rem;
     }
   }
@@ -43,7 +43,7 @@
       'City-Image City-Image City-Description City-Description' min-content
       / 1fr 1fr 1fr 1fr;
     padding-inline-end: 2rem;
-    @media (max-width: 960px) {
+    @media (width <= 960px) {
       grid:
   'City-Image' auto
   'City-Period' auto
@@ -62,7 +62,7 @@
       / 1fr 1fr 1fr 1fr;
     padding-inline-start: 1rem;
 
-    @media (max-width: 960px) {
+    @media (width <= 960px) {
       grid:
   'City-Image' auto
   'City-Period' auto

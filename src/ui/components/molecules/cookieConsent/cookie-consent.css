@@ -8,7 +8,7 @@
         width: fit-content;
         z-index: 100;
 
-        @media (max-width: 575px) {
+        @media (width <= 575px) {
             inset: auto 0 1rem 1rem;
         }
     }

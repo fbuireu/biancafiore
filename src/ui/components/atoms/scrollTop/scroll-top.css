@@ -7,7 +7,7 @@
         position: fixed;
         z-index: 100;
 
-        @media (max-width: 575px) {
+        @media (width <= 575px) {
             inset: auto 1rem 1rem auto;
         }
     }

@@ -1,0 +1,35 @@
+@layer slider.navigation {
+    .slider__navigation {
+        gap: 0 1rem;
+        position: absolute;
+        right: 0;
+        z-index: 10;
+
+        img {
+            width: 3rem;
+        }
+
+        &.--is-latest-articles-slider {
+            @media (width >= 1024px) {
+                display: none;
+            }
+        }
+    }
+
+    .slider__navigation__button {
+        height: 3rem;
+        transition: transform 0.2s ease;
+        width: 3rem;
+
+        &.--right {
+            rotate: 0.5turn;
+        }
+        &.--force-clickable {
+            transform: scale(0.9);
+        }
+        &.--is-latest-articles-slider svg {
+                height: 100%;
+                width: 100%;
+        }
+    }
+}

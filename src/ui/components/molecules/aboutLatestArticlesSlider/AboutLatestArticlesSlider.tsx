@@ -1,10 +1,9 @@
 import type { CollectionEntry } from "astro:content";
-import { AboutLatestArticlesSliderNavigation } from "./components/aboutLatestArticlesSliderNavigation";
-import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperOptions } from "swiper/types";
 import { ArticleCard } from "@components/organisms/articleCard/ArticleCard.tsx";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
 import "./about-latest-articles-slider.css";
+import { Slider } from "@components/organisms/slider";
 
 interface AboutLatestArticlesSLiderProps {
 	articles: CollectionEntry<"articles">[];
@@ -33,23 +32,17 @@ const SLIDER_CONFIG: SwiperOptions = {
 export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArticlesSLiderProps) => {
 	return (
 		<div className="about__latest-articles__slider">
-			<Swiper {...SLIDER_CONFIG}>
-				<ul>
-					{articles.map(({ slug, data: article }) => {
-						const href = `/articles/${slug}`;
-						const props = { ...article, href };
+			<Slider
+				items={articles}
+				swiperOptions={SLIDER_CONFIG}
+				classNames="--is-about__latest-articles-slider"
+				renderItem={({ slug, data: article }) => {
+					const href = `/articles/${slug}`;
+					const props = { ...article, href, origin };
 
-						return (
-							<li key={slug} className="about__latest-article__item__wrapper clickable">
-								<SwiperSlide key={slug}>
-									<ArticleCard {...props} origin={origin} />
-								</SwiperSlide>
-							</li>
-						);
-					})}
-				</ul>
-				<AboutLatestArticlesSliderNavigation />
-			</Swiper>
+					return <ArticleCard {...props} />;
+				}}
+			/>
 		</div>
 	);
 };

@@ -7,7 +7,7 @@
     margin: 10rem auto;
   }
   .little-more-of-me__inner{
-    @media (max-width: 960px) {
+    @media (width <= 960px) {
       flex-wrap: wrap;
     }
   }

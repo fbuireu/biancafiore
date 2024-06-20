@@ -33,7 +33,7 @@
         gap: 1rem;
         grid: 'Header-Quote Divider Navigation' / 50% 1fr 50%;
 
-        @media (max-width: 1024px) {
+        @media (width <= 1024px) {
             grid: '.' min-content
                     'Navigation' max-content
                     'Divider' min-content
@@ -46,11 +46,11 @@
         grid-area: Navigation;
         padding-left: 4rem;
 
-        @media (max-width: 1024px) {
+        @media (width <=1024px) {
             align-items: center;
             padding-left: 0;
         }
-        @media (max-width: 720px) {
+        @media (width <= 720px) {
             gap: 2rem 0;
         }
     }
@@ -69,7 +69,7 @@
             width: 120%;
         }
 
-        @media (max-width: 1024px) {
+        @media (width <=1024px) {
             &::after {
                 height: 125%;
                 width: 100vw;
@@ -102,12 +102,13 @@
         &::after {
             top: 330px;
             width: 100%;
-            @media (max-width: 1024px) {
+
+            @media (width <=1024px) {
                 bottom: 0;
             }
         }
 
-        @media (max-width: 1024px) {
+        @media (width <=1024px) {
             padding-inline: 2rem;
             text-align: center;
         }
@@ -127,14 +128,14 @@
             transition-delay: 2.5s;
         }
 
-        @media (max-width: 1024px) {
+        @media (width <= 1024px) {
             height: 1px;
             margin: 0 auto;
             translate: 0 3rem;
             width: calc(100% - 4rem);
             z-index: 20;
         }
-        @media (max-width: 525px) {
+        @media (width <= 525px) {
             translate: 0;
         }
     }

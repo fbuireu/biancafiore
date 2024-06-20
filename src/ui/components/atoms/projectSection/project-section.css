@@ -21,7 +21,7 @@
             grid: 'Project-Information Project-Image' 1fr / 50% 50%;
         }
 
-        @media (max-width: 720px) {
+        @media (width <= 720px) {
             grid: 'Project-Image' 1fr
             'Project-Information' 1fr / 1fr;
 

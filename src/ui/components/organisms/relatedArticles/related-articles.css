@@ -1,7 +1,8 @@
 @layer related-articles {
     .related-articles__wrapper {
         margin: 6rem auto;
-        @media (max-width: 960px) {
+
+        @media (width <= 960px) {
             margin: 4rem auto;
         }
     }
@@ -17,7 +18,7 @@
         max-width: calc(100% / var(--items-per-row) - 1rem);
         width: 100%;
 
-        @media (max-width: 960px) {
+        @media (width <= 960px) {
             --items-per-row: 1;
         }
     }
@@ -26,7 +27,7 @@
         gap: 1rem 0;
         padding: 0 1rem;
 
-        @media (max-width: 960px) {
+        @media (width <= 960px) {
             margin: 2rem 0;
         }
     }

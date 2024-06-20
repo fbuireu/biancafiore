@@ -6,7 +6,7 @@
         transition: color 1s;
         translate: 5% 0;
 
-        @media (min-width: 575px) {
+        @media (width <= 575px) {
             margin-right: 1rem;
         }
     }
@@ -26,7 +26,7 @@
         font-size: 1.5rem;
         padding: 0.5rem;
         position: relative;
-        z-index: 2;
+        z-index: 100;
 
         &.--has-intersected {
             .header__menu-button__outline {
@@ -51,7 +51,7 @@
             }
         }
 
-        @media (max-width: 1440px) {
+        @media (width <= 1440px) {
             margin-right: 1rem;
             padding: 0;
         }

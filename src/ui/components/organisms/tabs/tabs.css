@@ -5,7 +5,7 @@
     padding: 3rem 0;
   }
 .contact-tabs__inner__wrapper{
-  @media (max-width: 960px) {
+  @media (width <= 960px) {
     padding-inline: 1rem;
   }
 }

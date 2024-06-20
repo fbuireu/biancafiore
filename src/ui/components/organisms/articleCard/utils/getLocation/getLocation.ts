@@ -1,6 +1,7 @@
 const PATHS_MAP = {
 	articles: "/articles",
 	about: "/about",
+	tags: "/tags",
 	home: "/",
 };
 

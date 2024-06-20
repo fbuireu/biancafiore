@@ -1,7 +1,8 @@
 @layer my-work {
     .my-work__title {
         margin-bottom: 4rem;
-        @media (max-width: 720px) {
+
+        @media (width <=720px) {
             margin-bottom: 0;
         }
     }
@@ -41,7 +42,7 @@
             margin-top: 75%;
         }
 
-        @media (max-width: 1024px) {
+        @media (width <= 1024px) {
             --items-per-row: 2;
 
             &:nth-child(1),
@@ -54,7 +55,7 @@
                 margin-top: 25%;
             }
         }
-        @media (max-width: 720px) {
+        @media (width <=720px) {
             --items-per-row: 1;
             --gap: 0;
 

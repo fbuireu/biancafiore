@@ -5,7 +5,7 @@
         right: 2rem;
         transform: translateY(-75%);
 
-        @media (max-width: 575px) {
+        @media (width <= 575px) {
             margin-top: 2rem;
             order: -1;
             position: inherit;

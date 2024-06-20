@@ -1,13 +1,28 @@
-import { Swiper, SwiperSlide } from "swiper/react";
 import { Testimonial } from "@components/molecules/testimonial";
 import type { SwiperOptions } from "swiper/types";
-import { TestimonialsNavigation } from "./components/testimonialsNavigation";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
+import { Slider } from "@components/organisms/slider";
+import { Pagination } from "swiper/modules";
+
+export interface TestimonialEntity {
+	author: string;
+	quote: string;
+	imageSrc: string;
+	description: string;
+}
+
+interface TestimonialSliderProps extends Slider<TestimonialSliderProps> {
+	testimonials: TestimonialEntity[];
+}
 
 const SLIDER_CONFIG: SwiperOptions = {
 	...DEFAULT_SWIPER_CONFIG,
+	modules: [...(DEFAULT_SWIPER_CONFIG.modules ?? []), Pagination],
 	centeredSlides: true,
 	slidesPerView: 3,
+	pagination: {
+		clickable: true,
+	},
 	autoplay: {
 		delay: 5000,
 		pauseOnMouseEnter: true,
@@ -24,80 +39,20 @@ const SLIDER_CONFIG: SwiperOptions = {
 	containerModifierClass: "testimonials-",
 };
 
-export const TestimonialsSlider = () => {
+export const TestimonialsSlider = ({ testimonials }: TestimonialSliderProps) => {
 	return (
-		<div className="testimonials__slider__wrapper common-wrapper">
-			<Swiper {...SLIDER_CONFIG}>
-				<SwiperSlide>
-					<Testimonial>
-						<Testimonial.Author>Ferran Buireu 1</Testimonial.Author>
-						<Testimonial.Quote>
-							Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
-							lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
-							Yellow Jack fathom broadside snow clipper quarter.
-						</Testimonial.Quote>
-						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-						<Testimonial.Description>role</Testimonial.Description>
-					</Testimonial>
-				</SwiperSlide>
-				<SwiperSlide>
-					<Testimonial>
-						<Testimonial.Author>Ferran Buireu 2</Testimonial.Author>
-						<Testimonial.Quote>Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla</Testimonial.Quote>
-						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-						<Testimonial.Description>Role</Testimonial.Description>
-					</Testimonial>
-				</SwiperSlide>
-				<SwiperSlide>
-					<Testimonial>
-						<Testimonial.Author>Ferran Buireu 3</Testimonial.Author>
-						<Testimonial.Quote>
-							Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
-							lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
-							Yellow Jack fathom broadside snow clipper quarter.
-						</Testimonial.Quote>
-						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-						<Testimonial.Description>Role</Testimonial.Description>
-					</Testimonial>
-				</SwiperSlide>
-				<SwiperSlide>
-					<Testimonial>
-						<Testimonial.Author>Ferran Buireu 4</Testimonial.Author>
-						<Testimonial.Quote>
-							Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
-							lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
-							Yellow Jack fathom broadside snow clipper quarter.
-						</Testimonial.Quote>
-						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-						<Testimonial.Description>Role</Testimonial.Description>
-					</Testimonial>
-				</SwiperSlide>
-				<SwiperSlide>
-					<Testimonial>
-						<Testimonial.Author>Ferran Buireu 5</Testimonial.Author>
-						<Testimonial.Quote>
-							Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
-							lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
-							Yellow Jack fathom broadside snow clipper quarter.
-						</Testimonial.Quote>
-						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-						<Testimonial.Description>Role</Testimonial.Description>
-					</Testimonial>
-				</SwiperSlide>
-				<SwiperSlide>
-					<Testimonial>
-						<Testimonial.Author>Ferran Buireu 6</Testimonial.Author>
-						<Testimonial.Quote>
-							Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion
-							lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog
-							Yellow Jack fathom broadside snow clipper quarter.
-						</Testimonial.Quote>
-						<Testimonial.Image src="https://via.placeholder.com/150" alt="alt" />
-						<Testimonial.Description>Role</Testimonial.Description>
-					</Testimonial>
-				</SwiperSlide>
-				<TestimonialsNavigation />
-			</Swiper>
-		</div>
+		<Slider
+			items={testimonials}
+			swiperOptions={SLIDER_CONFIG}
+			classNames="--is-testimonials-slider"
+			renderItem={(testimonial: TestimonialEntity) => (
+				<Testimonial>
+					<Testimonial.Author>{testimonial.author}</Testimonial.Author>
+					<Testimonial.Quote>{testimonial.quote}</Testimonial.Quote>
+					<Testimonial.Image src={testimonial.imageSrc} alt="alt" />
+					<Testimonial.Description>{testimonial.description}</Testimonial.Description>
+				</Testimonial>
+			)}
+		/>
 	);
 };

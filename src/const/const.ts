@@ -38,9 +38,6 @@ export const WORLD_GLOBE_CONFIG: WorldGlobeConfig = {
 export const DEFAULT_SWIPER_CONFIG: SwiperOptions = {
 	modules: [Navigation, Keyboard, Virtual, Autoplay, A11y],
 	loop: true,
-	pagination: {
-		clickable: true,
-	},
 };
 
 export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = {

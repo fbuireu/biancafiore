@@ -4,8 +4,8 @@
         margin: 5rem 0;
         transition: background-color 0.3s ease;
 
-        @media (max-width: 960px) {
-            margin: 0;
+        @media (width <= 960px) {
+            margin: 2rem;
         }
     }
 
@@ -18,7 +18,7 @@
         margin-bottom: 1.5rem;
         padding-top: 3rem;
 
-        @media (max-width: 960px) {
+        @media (width <= 960px) {
             padding-top: 1.5rem;
         }
     }
@@ -29,7 +29,7 @@
         padding: 2rem 0;
         width: 100%;
 
-        @media (max-width: 960px) {
+        @media (width <= 960px) {
             padding: 0;
         }
     }

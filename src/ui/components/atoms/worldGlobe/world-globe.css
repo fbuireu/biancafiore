@@ -1,7 +1,8 @@
 @layer about.world-globe {
     canvas {
         cursor: grab;
-        @media (max-width: 960px) {
+
+        @media (width <= 960px) {
             width: 100%;
         }
     }
@@ -10,7 +11,8 @@
         height: fit-content;
         position: sticky;
         top: calc(var(--header-height) + 0.5rem);
-        @media (max-width: 960px) {
+
+        @media (width <= 960px) {
             order: 2;
             position: relative;
             top: unset;

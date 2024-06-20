@@ -9,7 +9,7 @@
         max-width: var(--grid-small);
         width: 100%;
 
-        @media (max-width: 960px) {
+        @media (width <= 960px) {
             padding-inline: 1rem;
         }
     }
@@ -45,7 +45,8 @@
         gap: 0 2rem;
         grid: '. Main-Content .' / 1fr min(var(--grid-article), 100%) 1fr;
         margin: 2rem 0;
-        @media (max-width: 960px) {
+
+        @media (width <= 960px) {
             gap: 2rem 0 ;
             padding-inline: 1rem;
         }

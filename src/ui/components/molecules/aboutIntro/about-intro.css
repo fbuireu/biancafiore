@@ -4,7 +4,7 @@
     gap: 0 10%;
     grid: 'AboutMe-Text AboutMe-Image' 1fr / 1fr 1fr;
 
-    @media (max-width: 960px) {
+    @media (width <= 960px) {
       gap: 0;
       grid: 'AboutMe-Text AboutMe-Text' min-content
       'AboutMe-Image AboutMe-Image' 1fr / 1fr;
@@ -20,7 +20,7 @@
     gap: 2rem 0;
     grid-area: AboutMe-Image;
 
-    @media (max-width: 960px) {
+    @media (width <= 960px) {
      padding: 0 1rem;
     }
   }
@@ -28,10 +28,10 @@
   .about-me-intro__title {
     text-transform: uppercase;
 
-    @media (max-width: 1440px) {
+    @media (width <= 1440px) {
       padding-inline-start: 3rem;
     }
-    @media (max-width: 960px) {
+    @media (width <= 960px) {
       padding-inline-start: 1rem;
     }
   }
@@ -40,7 +40,7 @@
     gap: 2rem 0;
     padding-inline-start: 3rem;
 
-    @media (max-width: 960px) {
+    @media (width <= 960px) {
       padding-inline-start: 1rem;
     }
   }

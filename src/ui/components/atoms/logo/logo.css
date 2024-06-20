@@ -31,7 +31,7 @@
                 }
          }
 
-            @media (max-width: 525px) {
+            @media (width <= 525px) {
                 width: 75%;
             }
         }
@@ -48,7 +48,7 @@
                 transition-delay: .75s;
             }
         }
-        @media (max-width: 525px) {
+        @media (width >= 525px) {
             inset: auto 0;
         }
     }

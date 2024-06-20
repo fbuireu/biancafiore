@@ -19,7 +19,7 @@
     .articles-page .breadcrumbs__list {
         margin-bottom: 5rem;
 
-        @media (max-width: 960px) {
+        @media (width <= 960px) {
             margin-bottom: 2rem;
         }
     }
