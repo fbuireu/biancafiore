@@ -1,5 +1,5 @@
 ---
-import { generateBreadcrumbs } from "./utils/generateBreadcrumbs";
+import { breadcrumbDTO } from "@application/dto/breadcrumb/breadcrumbDTO";
 import "./breadcrumbs.css";
 
 interface BreadcrumbProps {
@@ -9,12 +9,12 @@ interface BreadcrumbProps {
 const { classNames } = Astro.props as BreadcrumbProps;
 const { pathname: currentPath, origin } = Astro.url;
 
-const breadcrumbs = generateBreadcrumbs({ currentPath });
+const breadcrumbs = breadcrumbDTO.render({ currentPath });
 ---
 
 <section class:list={[`breadcrumbs__wrapper ${classNames}`, { 'common-wrapper': classNames }]}>
 <ul class="breadcrumbs__list flex justify-center align-center font-sans-serif">
-  {breadcrumbs?.map(({ link, label }) => {
+  {breadcrumbs?.map(({ link, label }, index) => {
       const isLast = breadcrumbs.at(-1).link === link
 
       return (
@@ -24,23 +24,17 @@ const breadcrumbs = generateBreadcrumbs({ currentPath });
             ) : (
             <strong class="--is-current-page">{label}</strong>
             )}
+          <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+              "@id": `${origin}${link}`,
+              "name": label
+            }
+          })}/>
         </li>
       );
     })}
 </ul>
 </section>
-
-<script type="application/ld+json" set:html={JSON.stringify({
-  "@context": "https://schema.org/",
-  "@type": "BreadcrumbList",
-  "itemListElement": breadcrumbs.map(({ link, label }, index) => {
-    const isLast = breadcrumbs.at(-1).link === link
-    
-    return {
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": label,
-      "item": !isLast ? `${origin}${link}`: undefined
-    };
-  })
-})}/>

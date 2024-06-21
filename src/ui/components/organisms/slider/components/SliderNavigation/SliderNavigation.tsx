@@ -1,8 +1,8 @@
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import { useRef } from "react";
 import useSliderNavigation from "@ui/hooks/useSliderNavigation/useSliderNavigation.ts";
-import type { Swiper as SwiperClass } from 'swiper/types';
-import clsx from 'clsx';
+import type { Swiper as SwiperClass } from "swiper/types";
+import clsx from "clsx";
 import "./slider-navigation.css";
 
 interface SliderNavigationProps {

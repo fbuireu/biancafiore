@@ -39,7 +39,7 @@ export const articleDTO: BaseDTO<
 	Promise<ArticleDTO>,
 	ArticleDTOConfiguration
 > = {
-	render: async (raw: CollectionEntry<"articles">, configuration?: ArticleDTOConfiguration): Promise<ArticleDTO> => {
+	render: async (raw, configuration): Promise<ArticleDTO> => {
 		const author = await getEntry(raw.data.author.collection, raw.data.author.slug);
 		const description = raw.data.description ?? generateExcerpt({ parser, content: raw.body }).excerpt;
 		const publishDate = new Date(raw.data.publishDate).toLocaleDateString("en", DEFAULT_DATE_FORMAT);

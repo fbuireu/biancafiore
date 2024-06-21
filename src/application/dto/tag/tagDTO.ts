@@ -19,7 +19,7 @@ export interface TagDTOItem {
 export type TagDTO = Record<string, TagDTOItem[]>;
 
 export const tagDTO: BaseDTO<ArticleDTO[], TagDTO> = {
-	render: (raw: ArticleDTO[]): TagDTO => {
+	render: (raw) => {
 		const tags: TagDTOItem[] = raw.flatMap((article) => [
 			...article.data.tags.map((tag: string) => ({ name: deSlugify(tag), type: "tag" })),
 			{ name: deSlugify(article.data.author.data.name), type: "author" },

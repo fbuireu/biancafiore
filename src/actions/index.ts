@@ -37,12 +37,13 @@ export const server = {
 					date: new Date().toLocaleString(DEFAULT_LOCALE_STRING),
 				});
 				const { data: emailData, error: emailError } = await sendEmail(data);
-				if (emailError && !emailData) {
+				const success = emailData && !emailError;
+				if (!success) {
 					throw new Error(`Something went wrong sending the email. Error: ${emailError.message} (${emailError.name})`);
 				}
 
 				return {
-					ok: true,
+					ok: success,
 				};
 			} catch (error: unknown) {
 				const actionError = error as ActionError;
