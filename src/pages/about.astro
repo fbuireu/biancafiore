@@ -6,45 +6,40 @@ import LittleMoreOfMe from "@components/organisms/littleMoreOfMe/LittleMoreOfMe.
 import AboutLatestArticles from "@components/organisms/aboutLatestArticles/AboutLatestArticles.astro";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import { CONTACT_DETAILS } from "@const/index";
-import { articleDTO } from "../application/dto/article";
-import { authorDTO } from "../application/dto/author";
+import { authorDTO } from "@application/dto/author";
 
-const authors = await getCollection("authors");
-const articles = await getCollection("articles");
+const authors = await Promise.all((await getCollection("authors")).map(authorDTO.render));
 const bianca = authors.find((author) => author.data.name === CONTACT_DETAILS.NAME);
-const latestArticleByBianca = articles
-	.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
-	.find((article) => article.data.author.slug === bianca.data.id);
-console.log(await authors.map(authorDTO.render));
 ---
 
 <BaseLayout title="" description="">
-  <Breadcrumbs classNames="about-page" />
-  <AboutIntro />
-  <LittleMoreOfMe />
-  <AboutLatestArticles />
-  <script type="application/ld+json" set:html= {JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "ProfilePage",
-    "mainEntity": {
-      "@id": "#bianca",
-      "@type": "Person",
-      "name": bianca.data.name,
-      "url": new URL(Astro.url).href,
-      "image": new URL(bianca.data.profileImage, Astro.url).href,
-      "jobTitle": bianca.data.jobTitle,
-      "worksFor": {
-        "@type": "Organization",
-        "name": bianca.data.currentCompany
-      }
-    },
-    "hasPart": [{
-      "@type": "Article",
-      "headline": latestArticleByBianca.data.title,
-      "url": new URL(`articles/${latestArticleByBianca.slug}`, Astro.url).href,
-      "datePublished": latestArticleByBianca.data.publishDate,
-      "author": { "@id": "#bianca" }
-    }],
-    "sameAs":[...bianca.data.socialNetworks]
-  })}/>
+    <Breadcrumbs classNames="about-page" />
+    <AboutIntro />
+    <LittleMoreOfMe />
+    <AboutLatestArticles />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ProfilePage',
+      'mainEntity': {
+        '@id': '#bianca',
+        '@type': 'Person',
+        'name': bianca.data.name,
+        'url': new URL(Astro.url).href,
+        'image': new URL(bianca.data.profileImage, Astro.url).href,
+        'jobTitle': bianca.data.jobTitle,
+        'worksFor': {
+          '@type': 'Organization',
+          'name': bianca.data.currentCompany,
+        },
+      },
+      'hasPart': [
+        {
+          '@type': 'Article',
+          'headline': bianca.data.latestArticle.title,
+          'url': new URL(`articles/${bianca.data.latestArticle.slug}`, Astro.url).href,
+          'datePublished': bianca.data.latestArticle.publishDate,
+          'author': { '@id': '#bianca' },
+        }],
+      'sameAs': [...bianca.data.socialNetworks],
+    })} />
 </BaseLayout>

@@ -1,1 +1,1 @@
-export * from './authorDTO.ts'
+export * from "./authorDTO.ts";
