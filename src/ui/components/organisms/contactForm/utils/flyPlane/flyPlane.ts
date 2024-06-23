@@ -1,6 +1,6 @@
 import { gsap } from "gsap";
 
-export const flyPlane = (button: HTMLButtonElement) => {
+export function flyPlane(button: HTMLButtonElement) {
 	if (!button.classList.contains("--is-active")) {
 		button.classList.add("--is-active");
 
@@ -90,4 +90,4 @@ export const flyPlane = (button: HTMLButtonElement) => {
 			],
 		});
 	}
-};
+}

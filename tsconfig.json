@@ -9,11 +9,13 @@
 		"resolveJsonModule": true,
 		"isolatedModules": false,
 		"noEmit": true,
+		"verbatimModuleSyntax": true,
 		"moduleResolution": "node",
 		"target": "esnext",
 		"module": "esnext",
 		"jsxImportSource": "react",
 		"jsx": "react-jsx",
+		"types": ["vite/client"],
 		"plugins": [
 			{
 				"name": "@astrojs/ts-plugin"

@@ -56,21 +56,7 @@ export function toggleMenu() {
 
 	const ELEMENTS_TO_TOGGLE = [BODY, HTML, LOGO, MENU_DIVIDER, TOGGLE_MENU_BUTTON];
 
-	toggleMenuItems();
-
-	function updateButton() {
-		if (!MENU_TEXT) return;
-		toggleMenuText = isMenuOpen ? "Close" : "Menu";
-		const timeout = isMenuOpen ? 500 : 0;
-
-		document.documentElement.style.overflow = isMenuOpen ? "hidden" : "initial";
-
-		setTimeout(() => {
-			MENU_TEXT.textContent = toggleMenuText;
-		}, timeout);
-	}
-
-	function toggleMenuItems() {
+	const toggleMenuItems = () => {
 		const { POWER4_IN_OUT, POWER2_EASE_IN, POWER2_EASE_OUT, POWER3_OUT, PATH_START, PATH_END } = ANIMATION_CONFIG;
 
 		timeline.to(MENU_OVERLAY, { display: "block" });
@@ -125,7 +111,21 @@ export function toggleMenu() {
 			},
 			"<",
 		);
-	}
+	};
+
+	toggleMenuItems();
+
+	const updateButton = () => {
+		if (!MENU_TEXT) return;
+		toggleMenuText = isMenuOpen ? "Close" : "Menu";
+		const timeout = isMenuOpen ? 500 : 0;
+
+		document.documentElement.style.overflow = isMenuOpen ? "hidden" : "initial";
+
+		setTimeout(() => {
+			MENU_TEXT.textContent = toggleMenuText;
+		}, timeout);
+	};
 
 	TOGGLE_MENU_BUTTON.addEventListener("click", () => {
 		isMenuOpen = !isMenuOpen;

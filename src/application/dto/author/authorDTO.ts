@@ -18,7 +18,7 @@ export const authorDTO: BaseDTO<CollectionEntry<"authors">, AuthorDTO, Promise<A
 		const articles = await getCollection("articles");
 		const profileImage = IMAGES[`${raw.data.profileImage}`];
 		const articlesByAuthor = await Promise.all(
-			getArticlesByAuthor(articles, raw.data.id)
+			getArticlesByAuthor({ articles, author: raw.data.id })
 				.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf())
 				.map((article) => articleDTO.render(article, { type: ConfigurationTypes.ASTRO })),
 		);

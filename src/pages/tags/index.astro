@@ -8,7 +8,7 @@ import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import "./_tags.css";
 
 const articles: ArticleDTO[] = await Promise.all((await getCollection("articles")).map(articleDTO.render));
-const tags = tagDTO.render(articles);
+const tags = await tagDTO.render(articles);
 ---
 
 <BaseLayout title="" description="">

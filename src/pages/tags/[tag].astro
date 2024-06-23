@@ -1,6 +1,7 @@
 ---
+import { getArticlesByAuthor } from "src/application/dto/author/utils/getArticlesByAuthor";
+
 import { ConfigurationTypes } from "@application/dto/article/articleDTO";
-import { getArticlesByTag } from "src/ui/shared/application/utils/getArticlesByTag";
 import { getCollection } from "astro:content";
 import { articleDTO } from "@application/dto/article/articleDTO";
 import type { ArticleDTO } from "@application/dto/article/articleDTO";
@@ -14,18 +15,16 @@ const { tag } = Astro.params;
 const articles: ArticleDTO[] = await Promise.all(
 	(await getCollection("articles")).map((article) => articleDTO.render(article, { type: ConfigurationTypes.ASTRO })),
 );
-const tags = tagDTO.render(articles);
+const tags = await tagDTO.render(articles);
 const currentTag = Object.values(tags)
 	.flat()
 	.find(({ slug }) => slug === tag);
-
-const articlesBySlug = getArticlesByTag({ articles, currentTag });
 ---
 <BaseLayout>
 <Breadcrumbs />
   <h1>#{tag}</h1>
 
-{articlesBySlug.map(({ slug, data: article }, index) => {
+{currentTag.articles?.map(({ slug, data: article }, index) => {
   const href=`/articles/${slug}`;
   const props= {...article, href}
 

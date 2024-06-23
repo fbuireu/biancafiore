@@ -3,6 +3,10 @@ import { groupBy } from "./utils/groupBy";
 import { getUniqueTags } from "./utils/getUniqueValues";
 import type { ArticleDTO } from "@application/dto/article/articleDTO.ts";
 import { deSlugify } from "@shared/ui/utils/deSlugify";
+import {
+	getArticlesByTag,
+	type GetArticlesByTagProps,
+} from "@application/dto/tag/utils/getArticlesByTag/getArticlesByTag.ts";
 
 export enum TagType {
 	TAG = "tag",
@@ -14,19 +18,28 @@ export interface TagDTOItem {
 	slug: string;
 	type: TagType;
 	count: number;
+	articles: ArticleDTO[];
 }
 
 export type TagDTO = Record<string, TagDTOItem[]>;
 
-export const tagDTO: BaseDTO<ArticleDTO[], TagDTO> = {
-	render: (raw) => {
+export const tagDTO: BaseDTO<ArticleDTO[], Promise<TagDTO>> = {
+	render: async (raw) => {
 		const tags: TagDTOItem[] = raw.flatMap((article) => [
-			...article.data.tags.map((tag: string) => ({ name: deSlugify(tag), type: "tag" })),
-			{ name: deSlugify(article.data.author.data.name), type: "author" },
+			...article.data.tags.map((tag: string) => ({ name: deSlugify(tag), type: TagType.TAG })),
+			{ name: deSlugify(article.data.author.data.name), type: TagType.AUTHOR },
 		]);
 
-		const uniqueTags: TagDTOItem[] = getUniqueTags(tags).sort((a, b) => a.name.localeCompare(b.name));
+		const uniqueTags: TagDTOItem[] = getUniqueTags(tags)
+			.sort((a, b) => a.name.localeCompare(b.name))
+			.map((tag) => ({
+				...tag,
+				articles: getArticlesByTag(<GetArticlesByTagProps>{ articles: raw, tag }),
+			}));
 
-		return groupBy(uniqueTags, ({ name }) => name.charAt(0).toUpperCase());
+		return groupBy({
+			array: uniqueTags,
+			keyFn: ({ name }) => name.charAt(0).toUpperCase(),
+		});
 	},
 };

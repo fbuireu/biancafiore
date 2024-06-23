@@ -7,7 +7,7 @@ const SELECTORS = {
 	TAB: ".contact-tab",
 };
 
-function changeTab(tabId: Tab["id"]): void {
+const changeTab = (tabId: Tab["id"]) => {
 	const tabs: NodeListOf<HTMLElement> = document.querySelectorAll(SELECTORS.TAB);
 
 	tabs.forEach((tab) => {
@@ -21,9 +21,9 @@ function changeTab(tabId: Tab["id"]): void {
 		tabContent.classList.toggle("--is-active", isActive);
 		tabContent.classList.toggle("--is-hidden", !isActive);
 	});
-}
+};
 
-export function initTabs(): void {
+export function initTabs() {
 	const tabs: NodeListOf<HTMLElement> = document.querySelectorAll(SELECTORS.TAB);
 	tabs.forEach((tab) => {
 		tab.addEventListener("click", () => {

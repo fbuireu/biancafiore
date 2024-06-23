@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export enum TabVisibility {
 	VISIBLE = "visible",
@@ -6,7 +6,7 @@ export enum TabVisibility {
 	UNDEFINED = "undefined",
 }
 
-const useTabVisibility = (): TabVisibility => {
+function useTabVisibility(): TabVisibility {
 	const [tabVisibility, setTabVisibility] = useState<TabVisibility>(document.visibilityState as TabVisibility);
 
 	useEffect(() => {
@@ -20,6 +20,6 @@ const useTabVisibility = (): TabVisibility => {
 	}, []);
 
 	return tabVisibility;
-};
+}
 
 export default useTabVisibility;

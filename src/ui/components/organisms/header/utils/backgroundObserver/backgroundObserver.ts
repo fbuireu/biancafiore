@@ -7,14 +7,14 @@ const SELECTORS = {
 	FOOTER: "footer",
 };
 
-function isIntersecting(element: HTMLElement): boolean {
+const isIntersecting = (element: HTMLElement): boolean => {
 	const { HEADER: HEADER_SELECTOR } = SELECTORS;
 	const headerOffsetHeight = (document.querySelector(HEADER_SELECTOR) as HTMLElement).offsetHeight / 2;
 	const threshold = element.offsetTop - headerOffsetHeight;
 	const sectionBottom = element.offsetTop + element.offsetHeight - headerOffsetHeight;
 
 	return window.scrollY >= threshold && window.scrollY < sectionBottom;
-}
+};
 
 export function backgroundObserver(): void {
 	const {

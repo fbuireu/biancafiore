@@ -19,7 +19,7 @@ export function initializeParallax() {
 		attachParallax({ event, target: ".welcome__text__section.--right .welcome__text__body", movement: -15 });
 	});
 
-	function attachParallax({ event, target, movement }: ParallaxParams) {
+	const attachParallax = ({ event, target, movement }: ParallaxParams) => {
 		if (!(WELCOME instanceof HTMLElement)) return;
 		const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = WELCOME;
 		const relativeX = event.pageX - offsetLeft;
@@ -30,5 +30,5 @@ export function initializeParallax() {
 			x: ((relativeX - offsetWidth / 2) / offsetWidth) * movement,
 			y: ((relativeY - offsetHeight / 2) / offsetHeight) * movement,
 		});
-	}
+	};
 }

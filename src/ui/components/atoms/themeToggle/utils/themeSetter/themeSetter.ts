@@ -14,14 +14,14 @@ const PREFERS_DARK_SCHEME = window.matchMedia("(prefers-color-scheme: dark)");
 
 export const getCurrentTheme = () => localStorage.getItem(THEME_STORAGE_KEY) as ThemeType | null;
 
-const getInitialTheme = (): ThemeType => {
+function getInitialTheme() {
 	const cachedTheme = getCurrentTheme();
 	const prefersDarkScheme = PREFERS_DARK_SCHEME.matches;
 
 	return cachedTheme ?? (prefersDarkScheme ? ThemeType.DARK : ThemeType.LIGHT);
-};
+}
 
-export const initializeThemeSetter = () => {
+export function initializeThemeSetter() {
 	const { THEME_INPUT: THEME_INPUT_SELECTOR, TOGGLE: TOGGLE_SELECTOR } = SELECTORS;
 	const THEME_INPUT = document.querySelector<HTMLInputElement>(THEME_INPUT_SELECTOR);
 	const TOGGLE = document.querySelector<HTMLInputElement>(TOGGLE_SELECTOR);
@@ -74,4 +74,4 @@ export const initializeThemeSetter = () => {
 
 		applyTheme({ theme, document: newDocument });
 	});
-};
+}

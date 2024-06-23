@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import type { RefObject } from "react";
+import { useEffect } from "react";
 import type { Swiper } from "swiper";
 
 enum ArrowTypes {
@@ -13,7 +13,7 @@ interface UseSliderNavigationProps {
 	rightButtonRef: RefObject<HTMLButtonElement>;
 }
 
-const useSliderNavigation = ({ swiper, leftButtonRef, rightButtonRef }: UseSliderNavigationProps) => {
+function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSliderNavigationProps) {
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (!leftButtonRef.current || !rightButtonRef.current) return;
@@ -32,6 +32,6 @@ const useSliderNavigation = ({ swiper, leftButtonRef, rightButtonRef }: UseSlide
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
 	}, [swiper]);
-};
+}
 
 export default useSliderNavigation;
