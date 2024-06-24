@@ -9,6 +9,7 @@ import "./article-card.css";
 
 const { href, title, description, variant, featuredImage, publishDate, author, tags } =
 	Astro.props as ArticleDTO["data"];
+const { pathname } = Astro.url;
 const origin = getLocation(Astro.url);
 ---
 
@@ -28,6 +29,7 @@ const origin = getLocation(Astro.url);
           class="article__item__featured-image"
           src={featuredImage()}
           alt={title}
+          transition:name=`featured-image-${pathname}`
       />
   )}
     <time class="article__item__publish-date" dateTime={publishDate}>

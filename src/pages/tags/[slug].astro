@@ -7,11 +7,11 @@ import { tagDTO } from "@application/dto/tag/tagDTO";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import ArticleCard from "@components/organisms/articleCard/ArticleCard.astro";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
+import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import type { TagDTOItem } from "src/application/dto/tag";
 
-interface TagProps {
-	tags: Promise<TagDTOItem[]>;
-}
+type TagProps = InferGetStaticPropsType<typeof getStaticPaths>;
+type TagParams = InferGetStaticParamsType<typeof getStaticPaths>;
 
 export async function getStaticPaths() {
 	const articles: ArticleDTO[] = await Promise.all(
@@ -33,10 +33,10 @@ export async function getStaticPaths() {
 	);
 }
 
-const { slug } = Astro.params;
+const { slug } = Astro.params as TagParams;
 const { tags } = Astro.props as TagProps;
 
-const currentTag = await Object.values(tags)
+const currentTag: TagDTOItem = await Object.values(tags)
 	.flat()
 	.find((tag) => tag.slug === slug);
 ---

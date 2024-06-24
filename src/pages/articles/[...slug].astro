@@ -5,23 +5,26 @@ import { ConfigurationTypes } from "@application/dto/article/articleDTO";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import "./_article.css";
 import { articleDTO } from "@application/dto/article/articleDTO";
-import type { ArticleDTO } from "@application/dto/article/articleDTO";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import RelatedArticles from "@components/organisms/relatedArticles/RelatedArticles.astro";
 import { slugify } from "@shared/ui/utils/slugify";
+import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 
-interface ArticleProps {
-	currentArticle: Promise<ArticleDTO>;
-}
+type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;
+type ArticleParams = InferGetStaticParamsType<typeof getStaticPaths>;
 
 export async function getStaticPaths() {
 	const articles = await getCollection("articles");
 
-	return articles.map(({ slug, ...article }) => {
-		const currentArticle = articleDTO.render(article, { type: ConfigurationTypes.ASTRO });
+	return articles.map((article) => {
+		const currentArticle = articleDTO.render(article, {
+			type: ConfigurationTypes.ASTRO,
+		});
 
 		return {
-			params: { slug },
+			params: {
+				slug: article.slug,
+			},
 			props: {
 				currentArticle,
 			},
@@ -29,8 +32,8 @@ export async function getStaticPaths() {
 	});
 }
 
-const { slug } = Astro.params;
 const { pathname } = Astro.url;
+const { slug } = Astro.params as ArticleParams;
 const { currentArticle } = Astro.props as ArticleProps;
 
 const {
@@ -45,10 +48,10 @@ const { Content } = await render();
       featuredImage && (
           <section class="article__featured__image__wrapper">
               <Image
-                  transition:name=`image-${pathname}`
                   src={featuredImage()}
                   alt={title}
                   class="article__featured__image"
+                  transition:name=`featured-image-${pathname}`
               />
           </section>
       )
