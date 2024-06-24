@@ -1,6 +1,6 @@
-import { Resend } from "resend";
 import type { FormData } from "@components/organisms/contactForm";
 import { CONTACT_DETAILS } from "@const/index";
+import { Resend } from "resend";
 
 type ContactDetails = Omit<FormData, "recaptcha">;
 

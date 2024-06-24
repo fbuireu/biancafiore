@@ -1,4 +1,4 @@
-@layer contact.tabs {
+
   .contact-tabs__wrapper {
     background-color: var(--neutral-light-4);
     margin: 2rem 0;
@@ -67,4 +67,4 @@
   .calendly-inline-widget {
     height: 700px;
   }
-}
+

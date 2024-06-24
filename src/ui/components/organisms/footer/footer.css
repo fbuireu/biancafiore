@@ -1,4 +1,3 @@
-@layer footer {
   footer {
     background-color: var(--neutral-main);
     color: var(--white);
@@ -60,4 +59,4 @@
       border-right: 1px solid var(--primary-main);
     }
   }
-}
+

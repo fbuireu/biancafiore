@@ -1,4 +1,3 @@
-@layer articles {
     .articles__wrapper {
         background-color: var(--neutral-light-4);
         [data-theme="dark"] & {
@@ -102,13 +101,13 @@
         }
     }
     .articles__grid__list > li {
-        --items-per-row: 4;
         max-width: calc(100% / var(--items-per-row) - 2rem);
         position: relative;
         width: 100%;
+        --items-per-row: 4;
 
         @media (width <= 960px) {
             --items-per-row: 1;
         }
     }
-}
+

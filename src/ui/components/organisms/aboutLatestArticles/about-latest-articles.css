@@ -1,4 +1,4 @@
-@layer about.latest-articles {
+
   .about-latest-articles__wrapper {
     margin-bottom: 12rem;
 
@@ -66,4 +66,4 @@
       }
     }
   }
-}
+

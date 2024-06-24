@@ -14,23 +14,7 @@
 	"linter": {
 		"ignore": ["*.d.ts*"],
 		"rules": {
-			"recommended": true,
-			"complexity": {
-				"noForEach": "off"
-			},
-			"correctness": {
-				"useExhaustiveDependencies": "off"
-			},
-			"style": {
-				"noUnusedTemplateLiteral": "off"
-			},
-			"suspicious": {
-				"noAssignInExpressions": "off"
-			},
-			"a11y": {
-				"useAnchorContent": "off",
-				"noSvgWithoutTitle": "off"
-			}
+			"recommended": true
 		}
 	}
 }

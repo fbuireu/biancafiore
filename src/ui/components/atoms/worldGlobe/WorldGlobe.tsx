@@ -1,18 +1,18 @@
+import countries from "@data/countries.geojson.json";
 import { memo, useCallback, useEffect, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
-import countries from "@data/countries.geojson.json";
 import "./world-globe.css";
-import { calculateCenter } from "@components/atoms/worldGlobe/utils/calculateCenter";
-import { renderPin } from "@components/atoms/worldGlobe/utils/renderPin";
-import type { ReactGlobePoint } from "./utils/refineCities";
-import { refineCities } from "./utils/refineCities";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import zoomIn from "@assets/images/svg/zoom-in.svg";
 import zoomOut from "@assets/images/svg/zoom-out.svg";
-import useTabVisibility, { TabVisibility } from "@ui/hooks/useTabVisibility/useTabVisibility.ts";
+import { calculateCenter } from "@components/atoms/worldGlobe/utils/calculateCenter";
+import { renderPin } from "@components/atoms/worldGlobe/utils/renderPin";
 import { WORLD_GLOBE_CONFIG } from "@const/index";
+import useTabVisibility, { TabVisibility } from "@ui/hooks/useTabVisibility/useTabVisibility.ts";
+import type { ReactGlobePoint } from "./utils/refineCities";
+import { refineCities } from "./utils/refineCities";
 
 export interface City {
 	latitude: string;
@@ -88,26 +88,23 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 
 		document.addEventListener("visibilitychange", handleVisibilityChange);
 		return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
-	}, [tabVisibility, worldGlobeReference]);
+	}, []);
 
-	const handleAction = useCallback(
-		({ movementDirection, type }: HandleActionParams) => {
-			if (!worldGlobeReference.current) return;
-			const { lng: currentLongitude, altitude: currentZoom } = worldGlobeReference.current.pointOfView();
+	const handleAction = useCallback(({ movementDirection, type }: HandleActionParams) => {
+		if (!worldGlobeReference.current) return;
+		const { lng: currentLongitude, altitude: currentZoom } = worldGlobeReference.current.pointOfView();
 
-			if (type === MovementType.MOVE) {
-				const offset = movementDirection === Direction.CLOCKWISE ? MOVEMENT_OFFSET : -MOVEMENT_OFFSET;
-				const newLongitude = currentLongitude + offset;
+		if (type === MovementType.MOVE) {
+			const offset = movementDirection === Direction.CLOCKWISE ? MOVEMENT_OFFSET : -MOVEMENT_OFFSET;
+			const newLongitude = currentLongitude + offset;
 
-				worldGlobeReference.current.pointOfView({ lng: newLongitude }, ANIMATION_DURATION);
-			} else if (type === MovementType.ZOOM) {
-				const newZoom = movementDirection === Zoom.IN ? currentZoom - ZOOM_OFFSET : currentZoom + ZOOM_OFFSET;
+			worldGlobeReference.current.pointOfView({ lng: newLongitude }, ANIMATION_DURATION);
+		} else if (type === MovementType.ZOOM) {
+			const newZoom = movementDirection === Zoom.IN ? currentZoom - ZOOM_OFFSET : currentZoom + ZOOM_OFFSET;
 
-				worldGlobeReference.current.pointOfView({ altitude: newZoom }, ANIMATION_DURATION);
-			}
-		},
-		[worldGlobeReference],
-	);
+			worldGlobeReference.current.pointOfView({ altitude: newZoom }, ANIMATION_DURATION);
+		}
+	}, []);
 
 	return (
 		<aside className="world-globe__wrapper">

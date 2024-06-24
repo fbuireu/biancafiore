@@ -1,4 +1,14 @@
 import "./testimonial.css";
+import clsx from "clsx";
+import type { ReactNode } from "react";
+import {
+	TestimonialAuthor,
+	type TestimonialAuthorProps,
+} from "src/ui/components/molecules/testimonial/components/testimonialAuthor";
+import {
+	TestimonialDescription,
+	type TestimonialDescriptionProps,
+} from "src/ui/components/molecules/testimonial/components/testimonialDescription";
 import {
 	TestimonialImage,
 	type TestimonialImageProps,
@@ -7,16 +17,7 @@ import {
 	TestimonialQuote,
 	type TestimonialQuoteProps,
 } from "src/ui/components/molecules/testimonial/components/testimonialQuote";
-import {
-	TestimonialDescription,
-	type TestimonialDescriptionProps,
-} from "src/ui/components/molecules/testimonial/components/testimonialDescription";
-import {
-	TestimonialAuthor,
-	type TestimonialAuthorProps,
-} from "src/ui/components/molecules/testimonial/components/testimonialAuthor";
 import { useSwiperSlide } from "swiper/react";
-import type { ReactNode } from "react";
 
 interface TestimonialProps {
 	children: ReactNode;
@@ -25,7 +26,7 @@ interface TestimonialProps {
 export const Testimonial = ({ children }: TestimonialProps) => {
 	const { isActive } = useSwiperSlide();
 
-	return <article className={`testimonial__content ${isActive ? `--is-active` : ``}`}>{children}</article>;
+	return <article className={clsx("testimonial__content", { "--is-active": isActive })}>{children}</article>;
 };
 
 const Image = (props: TestimonialImageProps) => <TestimonialImage {...props} />;

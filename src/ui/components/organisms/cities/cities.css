@@ -1,4 +1,4 @@
-@layer cities {
+
   .city-card__list {
     --num-columns: 2;
     display: grid;
@@ -15,4 +15,4 @@
       --num-columns: 1;
     }
   }
-}
+

@@ -1,4 +1,3 @@
-@layer header.logo {
     .site__logo {
         animation: shrink linear both;
         animation-range: 0 5vw;
@@ -52,4 +51,4 @@
             inset: auto 0;
         }
     }
-}
+

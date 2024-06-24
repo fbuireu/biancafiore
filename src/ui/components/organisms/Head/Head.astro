@@ -49,16 +49,16 @@ const metaRobots = { ...DEFAULT_SEO_PARAMS.ROBOTS, ...robots };
 <script define:vars={{ GOOGLE_ANALYTICS_ID }}>
     window.dataLayer = window.dataLayer || [];
 
-    function gtag() {
+    const gtag = ()=> {
         dataLayer.push(arguments);
     }
 
-    function getCookieValue(name) {
+    const getCookieValue = (name)=> {
         const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
         return match ? decodeURIComponent(match[2]) : null;
     }
 
-    function getConsentStatusFromCookie(cookieName) {
+    const getConsentStatusFromCookie =(cookieName) => {
         let consentStatus = "denied";
 
         try {

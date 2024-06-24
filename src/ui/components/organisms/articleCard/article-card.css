@@ -1,4 +1,4 @@
-@layer article-card {
+
     .article__item__wrapper {
         backface-visibility: hidden;
         -webkit-font-smoothing: subpixel-antialiased;
@@ -89,4 +89,3 @@
         position: relative;
         z-index: 10;
     }
-}

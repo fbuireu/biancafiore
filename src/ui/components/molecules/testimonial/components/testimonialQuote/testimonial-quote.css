@@ -1,4 +1,4 @@
-@layer testimonials.testimonial.quote {
+
   .testimonial__quote__wrapper {
     display: grid;
     gap: 1rem 0;
@@ -28,5 +28,5 @@
     height: 4rem;
     transition: opacity 200ms linear 400ms;
     width: 4rem;
-  }
+
 }

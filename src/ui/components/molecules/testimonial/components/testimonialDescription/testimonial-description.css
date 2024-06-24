@@ -1,4 +1,4 @@
-@layer testimonials.testimonial.description {
+
   .testimonial__description {
     color: var(--neutral-light-2);
     grid-area: Testimonial-Description;
@@ -8,4 +8,4 @@
     transition-property: translate;
     transition-timing-function: ease-in;
   }
-}
+

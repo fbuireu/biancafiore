@@ -1,4 +1,4 @@
-@layer welcome {
+
     .welcome {
         display: grid;
         grid: 'LeftGreeting WelcomeImage RightGreeting' auto / 1fr 1fr 1fr;
@@ -114,4 +114,3 @@
             }
         }
     }
-}

@@ -1,12 +1,12 @@
-import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
-import { groupBy } from "./utils/groupBy";
-import { getUniqueTags } from "./utils/getUniqueValues";
 import type { ArticleDTO } from "@application/dto/article/articleDTO.ts";
-import { deSlugify } from "@shared/ui/utils/deSlugify";
 import {
-	getArticlesByTag,
 	type GetArticlesByTagProps,
+	getArticlesByTag,
 } from "@application/dto/tag/utils/getArticlesByTag/getArticlesByTag.ts";
+import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
+import { deSlugify } from "@shared/ui/utils/deSlugify";
+import { getUniqueTags } from "./utils/getUniqueValues";
+import { groupBy } from "./utils/groupBy";
 
 export enum TagType {
 	TAG = "tag",

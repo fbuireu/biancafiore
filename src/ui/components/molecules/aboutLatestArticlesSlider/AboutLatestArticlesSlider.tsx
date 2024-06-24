@@ -1,7 +1,7 @@
 import type { CollectionEntry } from "astro:content";
-import type { SwiperOptions } from "swiper/types";
 import { ArticleCard } from "@components/organisms/articleCard/ArticleCard.tsx";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
+import type { SwiperOptions } from "swiper/types";
 import "./about-latest-articles-slider.css";
 import { Slider } from "@components/organisms/slider";
 

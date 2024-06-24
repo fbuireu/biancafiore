@@ -1,4 +1,3 @@
-@layer article {
     .article__details {
         display: grid;
         grid:
@@ -61,4 +60,4 @@
     .full-bleed {
         grid-column: 1 / -1;
     }
-}
+

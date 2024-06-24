@@ -1,4 +1,4 @@
-@layer header {
+
   .header {
     animation: add-shadow linear both;
     animation-range: 0 1cqi;
@@ -21,15 +21,15 @@
     }
 
     .header__backdrop {
-      --extended-by: var(--header-height);
-      --cutoff: calc(100% - var(--extended-by));
       --blur: 1rem;
-
+      --cutoff: calc(100% - var(--extended-by));
       backdrop-filter: blur(var(--blur));
       inset: 0 0 calc(-1 * var(--extended-by)) 0;
       mask-image: linear-gradient(to bottom, black 0, black var(--cutoff), transparent var(--cutoff));
       pointer-events: none;
       position: absolute;
+
+      --extended-by: var(--header-height);
     }
   }
-}
+

@@ -1,4 +1,4 @@
-@layer about.little-more-of-me {
+
   .little-more-of-me__title {
     margin-bottom: 4rem;
   }
@@ -11,4 +11,4 @@
       flex-wrap: wrap;
     }
   }
-}
+

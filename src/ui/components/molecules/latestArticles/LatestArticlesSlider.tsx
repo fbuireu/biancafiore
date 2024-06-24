@@ -1,7 +1,7 @@
-import type { SwiperOptions } from "swiper/types";
 import type { ArticleDTO } from "@application/dto/article/articleDTO.ts";
 import { ArticleCard } from "@components/organisms/articleCard/ArticleCard.tsx";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
+import type { SwiperOptions } from "swiper/types";
 import "./latest-articles-slider.css";
 import { Slider } from "@components/organisms/slider";
 

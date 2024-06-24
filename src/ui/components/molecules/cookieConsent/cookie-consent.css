@@ -1,4 +1,3 @@
-@layer cookie-consent{
     .cookies_consent_button {
         background-color: var(--primary-light-2);
         box-shadow: 0.125rem 0.125rem 0.175rem var(--neutral-light-2);
@@ -18,4 +17,3 @@
         padding: .5rem;
         width:3rem;
     }
-}

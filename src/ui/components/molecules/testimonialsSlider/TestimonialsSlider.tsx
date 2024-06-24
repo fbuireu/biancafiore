@@ -1,8 +1,8 @@
 import { Testimonial } from "@components/molecules/testimonial";
-import type { SwiperOptions } from "swiper/types";
-import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
 import { Slider } from "@components/organisms/slider";
+import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
 import { Pagination } from "swiper/modules";
+import type { SwiperOptions } from "swiper/types";
 
 export interface TestimonialEntity {
 	author: string;

@@ -31,7 +31,7 @@ function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSlide
 
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [swiper]);
+	}, [leftButtonRef, rightButtonRef, swiper]);
 }
 
 export default useSliderNavigation;

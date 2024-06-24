@@ -1,5 +1,5 @@
-import { deSlugify } from "@shared/ui/utils/deSlugify";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
+import { deSlugify } from "@shared/ui/utils/deSlugify";
 
 interface BreadcrumbDTOInput {
 	currentPath: string;

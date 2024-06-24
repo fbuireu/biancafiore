@@ -1,4 +1,3 @@
-@layer projects.section {
     .project-description {
         grid-area: Project-Information;
     }
@@ -37,4 +36,4 @@
             }
         }
     }
-}
+

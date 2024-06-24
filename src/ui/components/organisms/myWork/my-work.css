@@ -1,4 +1,4 @@
-@layer my-work {
+
     .my-work__title {
         margin-bottom: 4rem;
 
@@ -16,10 +16,10 @@
     }
 
     .my-work__item {
-        --items-per-row: 4;
         --gap: 1rem;
         max-width: calc(100% / var(--items-per-row) - var(--gap));
         width: 100%;
+        --items-per-row: 4;
 
         & > a {
             position: sticky;
@@ -56,8 +56,8 @@
             }
         }
         @media (width <=720px) {
-            --items-per-row: 1;
             --gap: 0;
+            --items-per-row: 1;
 
             &:nth-child(1),
             &:nth-child(2),
@@ -71,4 +71,4 @@
     .my-work__item__link {
         display: block;
     }
-}
+

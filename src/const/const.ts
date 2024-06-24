@@ -1,6 +1,6 @@
-import type { CapitalizeKeys, SeoMetadata, WorldGlobeConfig } from "./types.ts";
-import type { SwiperOptions } from "swiper/types";
 import { A11y, Autoplay, Keyboard, Navigation, Virtual } from "swiper/modules";
+import type { SwiperOptions } from "swiper/types";
+import type { CapitalizeKeys, SeoMetadata, WorldGlobeConfig } from "./types.ts";
 
 export const DEFAULT_SEO_PARAMS: CapitalizeKeys<SeoMetadata> = {
 	TITLE: "Bianca Fiore",

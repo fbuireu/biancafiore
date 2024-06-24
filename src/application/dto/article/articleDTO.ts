@@ -1,9 +1,9 @@
 import type { CollectionEntry } from "astro:content";
 import { getEntry } from "astro:content";
-import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
-import MarkdownIt from "markdown-it";
-import { generateExcerpt } from "@shared/application/utils/generateExcerpt";
 import { DEFAULT_DATE_FORMAT } from "@const/index.ts";
+import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
+import { generateExcerpt } from "@shared/application/utils/generateExcerpt";
+import MarkdownIt from "markdown-it";
 
 export enum ArticleType {
 	DEFAULT = "default",

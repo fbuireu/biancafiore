@@ -1,4 +1,4 @@
-@layer testimonials.testimonial {
+
   .testimonial__content {
     background-color: var(--white);
     cursor: grab;
@@ -40,4 +40,4 @@
         / 1fr 1fr calc(100% / 4) calc(100% / 4);
     }
   }
-}
+

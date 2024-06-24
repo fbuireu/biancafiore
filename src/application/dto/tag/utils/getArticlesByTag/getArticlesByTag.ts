@@ -1,5 +1,5 @@
-import type { ArticleDTO } from '@application/dto/article/articleDTO.ts';
-import { type TagDTOItem, TagType } from '@application/dto/tag/tagDTO.ts';
+import type { ArticleDTO } from "@application/dto/article/articleDTO.ts";
+import { type TagDTOItem, TagType } from "@application/dto/tag/tagDTO.ts";
 
 export interface GetArticlesByTagProps {
 	articles: ArticleDTO[];

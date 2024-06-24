@@ -1,5 +1,5 @@
-import type { SVGProps } from "react";
 import clsx from "clsx";
+import type { SVGProps } from "react";
 
 interface LeftArrowProps extends SVGProps<SVGSVGElement> {
 	classNames?: string;

@@ -1,4 +1,4 @@
-import { gsap, Power2, Power3, Power4 } from "gsap";
+import { Power2, Power3, Power4, gsap } from "gsap";
 import { backgroundObserver } from "src/ui/components/organisms/header/utils/backgroundObserver";
 
 const ANIMATION_CONFIG = {
@@ -131,6 +131,8 @@ export function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
 		timeline.reversed(!timeline.reversed());
 
-		ELEMENTS_TO_TOGGLE.forEach((element) => element.classList.toggle("--is-menu-open"));
+		for (const element of ELEMENTS_TO_TOGGLE) {
+			element.classList.toggle("--is-menu-open");
+		}
 	});
 }

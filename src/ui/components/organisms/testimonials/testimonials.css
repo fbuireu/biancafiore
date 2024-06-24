@@ -1,4 +1,4 @@
-@layer testimonials {
+
     .testimonials__wrapper {
         background-color: light-dark(var(--neutral-light-4), var(--background-main));
         margin: 5rem 0;
@@ -33,4 +33,4 @@
             padding: 0;
         }
     }
-}
+

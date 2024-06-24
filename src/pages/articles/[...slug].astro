@@ -1,16 +1,14 @@
 ---
-import { ConfigurationTypes } from "@application/dto/article/articleDTO";
-import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { ConfigurationTypes } from "@application/dto/article/articleDTO";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import "./_article.css";
-import { slugify } from "@shared/ui/utils/slugify";
-import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import { articleDTO } from "@application/dto/article/articleDTO";
 import type { ArticleDTO } from "@application/dto/article/articleDTO";
+import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import RelatedArticles from "@components/organisms/relatedArticles/RelatedArticles.astro";
-
-export const prerender = true;
+import { slugify } from "@shared/ui/utils/slugify";
 
 interface ArticleProps {
 	currentArticle: Promise<ArticleDTO>;
@@ -20,7 +18,7 @@ export async function getStaticPaths() {
 	const articles = await getCollection("articles");
 
 	return articles.map(({ slug, ...article }) => {
-		const currentArticle: Promise<ArticleDTO> = articleDTO.render(article, { type: ConfigurationTypes.ASTRO });
+		const currentArticle = articleDTO.render(article, { type: ConfigurationTypes.ASTRO });
 
 		return {
 			params: { slug },
@@ -31,9 +29,8 @@ export async function getStaticPaths() {
 	});
 }
 
-const articles = await getCollection("articles");
-
 const { slug } = Astro.params;
+const { pathname } = Astro.url;
 const { currentArticle } = Astro.props as ArticleProps;
 
 const {
@@ -45,62 +42,63 @@ const { Content } = await render();
 
 <BaseLayout {...rest}>
   {
-    featuredImage && (
-      <section class="article__featured__image__wrapper">
-        <Image
-          src={featuredImage()}
-          alt={title}
-          class="article__featured__image"
-        />
-      </section>
-    )
-  }
-  <Breadcrumbs classNames="article-page" />
-  <div class="article__details">
-    <h1 class="article__title">
-      {title}
-    </h1>
-    <p class="article__author">by <a href={`/tags/${author.data.id}`}>{author.data.name}</a></p>
-    <time class="article__publish-date font-sans-serif" datetime={publishDate}>
-      {publishDate}
-    </time>
-    {
-      tags?.length > 0 && (
-        <ul class="article__tags__list flex row-wrap">
-          {tags.map((tag) => (
-            <li class="article__tag__item">
-              <a href={`/tags/${slugify(tag)}`}>#{tag}</a>
-            </li>
-          ))}
-        </ul>
+      featuredImage && (
+          <section class="article__featured__image__wrapper">
+              <Image
+                  transition:name=`image-${pathname}`
+                  src={featuredImage()}
+                  alt={title}
+                  class="article__featured__image"
+              />
+          </section>
       )
-    }
-  </div>
-  <article class="article__wrapper"> 
-    <Content />
-  </article>
-  <script type="application/ld+json" set:html={JSON.stringify(  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": title,
-    "description": description,
-    ...(featuredImage && {"image": featuredImage}),
-    "datePublished": new Date(publishDate).toISOString(),
-    "dateModified": new Date(publishDate).toISOString(),
-    "author": {
-      "@type": "Person",
-      "name": author.data.name,
-      "jobTitle": author.data.jobTitle,
-      "url": new URL("/about", import.meta.env.PUBLIC_SITE_URL)
-    },
-    "publisher": {
-      "name": author.data.name,
-      "url": new URL(import.meta.env.PUBLIC_SITE_URL)
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": Astro.url.href
-    }
-  })}/>
-  <RelatedArticles currentArticle={currentArticle} />
+  }
+    <Breadcrumbs classNames="article-page" />
+    <div class="article__details">
+        <h1 class="article__title">
+          {title}
+        </h1>
+        <p class="article__author">by <a href={`/tags/${author.data.id}`}>{author.data.name}</a></p>
+        <time class="article__publish-date font-sans-serif" datetime={publishDate}>
+          {publishDate}
+        </time>
+      {
+          tags?.length > 0 && (
+              <ul class="article__tags__list flex row-wrap">
+                {tags.map((tag) => (
+                    <li class="article__tag__item">
+                        <a href={`/tags/${slugify(tag)}`}>#{tag}</a>
+                    </li>
+                ))}
+              </ul>
+          )
+      }
+    </div>
+    <article class="article__wrapper">
+        <Content />
+    </article>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      'headline': title,
+      'description': description,
+      ...(featuredImage && { 'image': featuredImage }),
+      'datePublished': new Date(publishDate).toISOString(),
+      'dateModified': new Date(publishDate).toISOString(),
+      'author': {
+        '@type': 'Person',
+        'name': author.data.name,
+        'jobTitle': author.data.jobTitle,
+        'url': new URL('/about', import.meta.env.PUBLIC_SITE_URL),
+      },
+      'publisher': {
+        'name': author.data.name,
+        'url': new URL(import.meta.env.PUBLIC_SITE_URL),
+      },
+      'mainEntityOfPage': {
+        '@type': 'WebPage',
+        '@id': Astro.url.href,
+      },
+    })} />
+    <RelatedArticles currentArticle={currentArticle} />
 </BaseLayout>

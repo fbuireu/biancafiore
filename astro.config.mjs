@@ -1,9 +1,9 @@
-import { defineConfig } from "astro/config";
-import mdx from "@astrojs/mdx";
-import sitemap from "@astrojs/sitemap";
-import react from "@astrojs/react";
-import partytown from "@astrojs/partytown";
 import cloudflare from "@astrojs/cloudflare";
+import mdx from "@astrojs/mdx";
+import partytown from "@astrojs/partytown";
+import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
+import { defineConfig } from "astro/config";
 import million from "million/compiler";
 
 export default defineConfig({
@@ -27,7 +27,7 @@ export default defineConfig({
 			},
 		}),
 	],
-	output: "server",
+	output: "hybrid",
 	adapter: cloudflare({
 		imageService: "cloudflare",
 	}),

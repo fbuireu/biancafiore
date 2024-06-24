@@ -1,10 +1,10 @@
 ---
+import { getCollection } from "astro:content";
 import type { ArticleDTO } from "@application/dto/article/articleDTO";
 import { articleDTO } from "@application/dto/article/articleDTO";
-import { getCollection } from "astro:content";
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { tagDTO } from "@application/dto/tag/tagDTO";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
+import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import "./_tags.css";
 
 const articles: ArticleDTO[] = await Promise.all((await getCollection("articles")).map(articleDTO.render));

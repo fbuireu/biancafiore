@@ -1,4 +1,3 @@
-@layer tags {
   .tags__list{
     text-align: center;
   }
@@ -18,4 +17,3 @@
   .tag__item {
     text-transform: capitalize;
   }
-}

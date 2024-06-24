@@ -1,4 +1,4 @@
-@layer testimonials.testimonial.author {
+
   .testimonial__author {
     font-size: 1.25rem;
     grid-area: Testimonial-Author;
@@ -8,4 +8,4 @@
     transition-property: translate;
     transition-timing-function: ease-in;
   }
-}
+

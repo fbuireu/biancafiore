@@ -1,4 +1,4 @@
-@layer contact.tabs.contact-form {
+
     .contact-form {
         display: flex;
         flex-flow: row wrap;
@@ -165,39 +165,21 @@
     }
 
     .contact-form__submit {
-        --text-opacity: 1;
         --overflow: hidden;
         --rotate: 0;
-        --plane-x: 0;
-        --plane-y: 0;
-        --plane-opacity: 1;
-        --left-wing-background: var(--neutral-main);
-        --left-wing-first-x: 0;
-        --left-wing-first-y: 0;
-        --left-wing-second-x: 50;
-        --left-wing-second-y: 0;
-        --left-wing-third-x: 0;
-        --left-wing-third-y: 100;
         --left-body-background: var(--neutral-main);
-        --left-body-first-x: 50;
-        --left-body-first-y: 0;
-        --left-body-second-x: 50;
-        --left-body-second-y: 100;
-        --left-body-third-x: 0;
-        --left-body-third-y: 100;
-        --right-wing-background: var(--neutral-main);
-        --right-wing-first-x: 50;
-        --right-wing-first-y: 0;
-        --right-wing-second-x: 100;
-        --right-wing-second-y: 0;
-        --right-wing-third-x: 100;
-        --right-wing-third-y: 100;
         --right-body-background: var(--neutral-main);
+        --left-body-first-x: 50;
         --right-body-first-x: 50;
+        --left-body-first-y: 0;
         --right-body-first-y: 0;
+        --left-body-second-x: 50;
         --right-body-second-x: 50;
+        --left-body-second-y: 100;
         --right-body-second-y: 100;
+        --left-body-third-x: 0;
         --right-body-third-x: 100;
+        --left-body-third-y: 100;
         --right-body-third-y: 100;
         color: var(--white);
         display: block;
@@ -206,6 +188,24 @@
         -webkit-tap-highlight-color: transparent;
         text-align: center;
         transform: rotate(calc(var(--rotate) * 1deg)) translateZ(0);
+        --plane-opacity: 1;
+        --text-opacity: 1;
+        --left-wing-background: var(--neutral-main);
+        --right-wing-background: var(--neutral-main);
+        --left-wing-first-x: 0;
+        --right-wing-first-x: 50;
+        --left-wing-first-y: 0;
+        --right-wing-first-y: 0;
+        --left-wing-second-x: 50;
+        --right-wing-second-x: 100;
+        --left-wing-second-y: 0;
+        --right-wing-second-y: 0;
+        --left-wing-third-x: 0;
+        --right-wing-third-x: 100;
+        --left-wing-third-y: 100;
+        --right-wing-third-y: 100;
+        --plane-x: 0;
+        --plane-y: 0;
 
         &:disabled {
             cursor: initial;
@@ -214,38 +214,38 @@
     }
 
     .plane__left-wing:after {
-        --inner-x: 0;
-        --z-index: 1;
         --background: var(--left-body-background);
+        --z-index: 1;
         --first-x: var(--left-body-first-x);
-        --first-y: var(--left-body-first-y);
+        --inner-x: 0;
         --second-x: var(--left-body-second-x);
-        --second-y: var(--left-body-second-y);
         --third-x: var(--left-body-third-x);
+        --first-y: var(--left-body-first-y);
+        --second-y: var(--left-body-second-y);
         --third-y: var(--left-body-third-y);
     }
 
     .plane__right-wing:before {
-        --inner-x: -0.4%;
-        --z-index: 2;
         --background: var(--right-wing-background);
+        --z-index: 2;
         --first-x: var(--right-wing-first-x);
-        --first-y: var(--right-wing-first-y);
+        --inner-x: -0.4%;
         --second-x: var(--right-wing-second-x);
-        --second-y: var(--right-wing-second-y);
         --third-x: var(--right-wing-third-x);
+        --first-y: var(--right-wing-first-y);
+        --second-y: var(--right-wing-second-y);
         --third-y: var(--right-wing-third-y);
     }
 
     .plane__right-wing:after {
-        --inner-x: 0;
-        --z-index: 1;
         --background: var(--right-body-background);
+        --z-index: 1;
         --first-x: var(--right-body-first-x);
-        --first-y: var(--right-body-first-y);
+        --inner-x: 0;
         --second-x: var(--right-body-second-x);
-        --second-y: var(--right-body-second-y);
         --third-x: var(--right-body-third-x);
+        --first-y: var(--right-body-first-y);
+        --second-y: var(--right-body-second-y);
         --third-y: var(--right-body-third-y);
     }
 
@@ -257,4 +257,3 @@
         z-index: 1;
     }
 
-}

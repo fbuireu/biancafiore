@@ -28,7 +28,7 @@
 		"build": "astro check && astro build",
 		"preview": "astro preview",
 		"sync": "astro sync",
-		"format": "biome format --write",
+		"format": "biome check --write",
 		"format:check": "yarn format --check",
 		"format:all": "yarn format .",
 		"format:all:changed": "yarn format --changed",

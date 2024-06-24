@@ -1,12 +1,12 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
-import AboutIntro from "@components/molecules/aboutIntro/AboutIntro.astro";
-import LittleMoreOfMe from "@components/organisms/littleMoreOfMe/LittleMoreOfMe.astro";
-import AboutLatestArticles from "@components/organisms/aboutLatestArticles/AboutLatestArticles.astro";
-import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
-import { CONTACT_DETAILS } from "@const/index";
 import { authorDTO } from "@application/dto/author";
+import AboutIntro from "@components/molecules/aboutIntro/AboutIntro.astro";
+import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
+import AboutLatestArticles from "@components/organisms/aboutLatestArticles/AboutLatestArticles.astro";
+import LittleMoreOfMe from "@components/organisms/littleMoreOfMe/LittleMoreOfMe.astro";
+import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
+import { CONTACT_DETAILS } from "@const/index";
 
 const authors = await Promise.all((await getCollection("authors")).map(authorDTO.render));
 const bianca = authors.find((author) => author.data.name === CONTACT_DETAILS.NAME);

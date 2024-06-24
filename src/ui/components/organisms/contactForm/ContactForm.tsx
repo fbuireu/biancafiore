@@ -1,14 +1,14 @@
-import { useCallback, useRef, useState } from "react";
-import type { FormEvent } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import type { FormEvent } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import "./contact-form.css";
+import { actions } from "astro:actions";
+import Spinner from "@components/atoms/spinner/Spinner.tsx";
 import { autosize } from "@components/organisms/contactForm/utils/autosize";
 import { flyPlane } from "@components/organisms/contactForm/utils/flyPlane";
-import Spinner from "@components/atoms/spinner/Spinner.tsx";
-import { actions } from "astro:actions";
 
 const schema = z.object({
 	name: z.string().trim().min(1, "Please insert your name"),
@@ -58,37 +58,40 @@ export const ContactForm = () => {
 			}
 			await submitForm(data, event);
 		},
-		[executeRecaptcha],
+		[executeRecaptcha, setError],
 	);
 
-	const resetForm = useCallback(() => setFormStatus(FormStatus.INITIAL), [formStatus]);
+	const resetForm = useCallback(() => setFormStatus(FormStatus.INITIAL), []);
 
-	const submitForm = useCallback(async (data: FormData, event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		if (!submitRef.current) return;
+	const submitForm = useCallback(
+		async (data: FormData, event: FormEvent<HTMLFormElement>) => {
+			event.preventDefault();
+			if (!submitRef.current) return;
 
-		try {
-			setFormStatus(FormStatus.LOADING);
-			const contactData = new FormData();
-			contactData.append("name", data.name);
-			contactData.append("email", data.email);
-			contactData.append("message", data.message);
+			try {
+				setFormStatus(FormStatus.LOADING);
+				const contactData = new FormData();
+				contactData.append("name", data.name);
+				contactData.append("email", data.email);
+				contactData.append("message", data.message);
 
-			const response = await actions.contact(contactData);
+				const response = await actions.contact(contactData);
 
-			if (response.ok) {
-				flyPlane(submitRef.current);
-				setTimeout(() => {
-					setFormStatus(FormStatus.SUCCESS);
-					reset();
-				}, 2000);
-			} else {
-				throw new Error("Failed to submit form");
+				if (response.ok) {
+					flyPlane(submitRef.current);
+					setTimeout(() => {
+						setFormStatus(FormStatus.SUCCESS);
+						reset();
+					}, 2000);
+				} else {
+					throw new Error("Failed to submit form");
+				}
+			} catch (error) {
+				setFormStatus(FormStatus.ERROR);
 			}
-		} catch (error) {
-			setFormStatus(FormStatus.ERROR);
-		}
-	}, []);
+		},
+		[reset],
+	);
 
 	return (
 		<>

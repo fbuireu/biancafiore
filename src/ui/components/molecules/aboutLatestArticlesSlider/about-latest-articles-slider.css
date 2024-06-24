@@ -1,4 +1,3 @@
-@layer about.latest-articles.slider {
   .about__latest-articles__slider {
     grid-area: Latest-Articles;
   }
@@ -12,4 +11,4 @@
     transform: translateZ(0);
     width: 100%;
   }
-}
+

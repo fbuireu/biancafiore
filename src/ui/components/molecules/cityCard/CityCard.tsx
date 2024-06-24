@@ -1,9 +1,9 @@
 import "./city-card.css";
-import { CityPeriod, type CityPeriodProps } from "src/ui/components/molecules/cityCard/components/cityPeriod";
-import { CityName, type CityTitleProps } from "src/ui/components/molecules/cityCard/components/cityName";
-import { CityImage, type CityImageProps } from "@components/molecules/cityCard/components/cityImage";
 import { CityDescription, type CityDescriptionProps } from "@components/molecules/cityCard/components/cityDescription";
+import { CityImage, type CityImageProps } from "@components/molecules/cityCard/components/cityImage";
 import type { CSSProperties, ReactNode } from "react";
+import { CityName, type CityTitleProps } from "src/ui/components/molecules/cityCard/components/cityName";
+import { CityPeriod, type CityPeriodProps } from "src/ui/components/molecules/cityCard/components/cityPeriod";
 
 interface CityCardProps {
 	children: ReactNode;
@@ -17,8 +17,8 @@ export const CityCard = ({ children, index, numCards }: CityCardProps) => {
 		"--inline-num-cards": String(numCards),
 	};
 	return (
-		<li className={`city-card__item`} style={style}>
-			<article className={`city-card__content`}>{children}</article>
+		<li className={"city-card__item"} style={style}>
+			<article className={"city-card__content"}>{children}</article>
 		</li>
 	);
 };

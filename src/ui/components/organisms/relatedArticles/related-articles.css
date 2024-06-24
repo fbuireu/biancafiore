@@ -1,4 +1,4 @@
-@layer related-articles {
+
     .related-articles__wrapper {
         margin: 6rem auto;
 
@@ -12,11 +12,11 @@
     }
 
     .related-article__item {
-        --items-per-row: 3;
         justify-content: flex-start;
         margin: 0 auto;
         max-width: calc(100% / var(--items-per-row) - 1rem);
         width: 100%;
+        --items-per-row: 3;
 
         @media (width <= 960px) {
             --items-per-row: 1;
@@ -31,4 +31,4 @@
             margin: 2rem 0;
         }
     }
-}
+

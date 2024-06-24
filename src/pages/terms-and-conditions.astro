@@ -1,8 +1,8 @@
 ---
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
-import LegalSection from "@components/atoms/legalSection/LegalSection.astro";
-import { DEFAULT_DATE_FORMAT, CONTACT_DETAILS } from "@const/index";
 import EmailButton from "@components/atoms/emailButton/EmailButton.astro";
+import LegalSection from "@components/atoms/legalSection/LegalSection.astro";
+import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
+import { CONTACT_DETAILS, DEFAULT_DATE_FORMAT } from "@const/index";
 
 const today = new Date().toLocaleDateString("en", DEFAULT_DATE_FORMAT);
 ---

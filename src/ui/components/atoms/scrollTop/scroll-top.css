@@ -1,4 +1,3 @@
-@layer scroll-top{
     .scroll-top__wrapper{
         animation: pop-in 1s var(--ease-elastic) forwards;
         animation-range: 0 50dvw;
@@ -25,4 +24,3 @@
             width: 3rem;
         }
     }
-}

@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { reset, run, showPreferences } from "vanilla-cookieconsent";
 import { Cookie } from "@assets/images/svg-components/cookie";
+import { useEffect } from "react";
 import { config } from "src/ui/components/molecules/cookieConsent/config/config.ts";
+import { reset, run, showPreferences } from "vanilla-cookieconsent";
 import "./cookie-consent.css";
 
 const CookieConsent = () => {

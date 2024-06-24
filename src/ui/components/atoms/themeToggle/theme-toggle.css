@@ -1,5 +1,4 @@
 /* stylelint-disable no-descending-specificity */
-@layer theme-toggle {
     .theme-toggle_wrapper {
         position: absolute;
         right: 2rem;
@@ -18,8 +17,8 @@
     }
 
     .theme-toggle {
-        --theme-toggle-animation-duration: 500ms;
         cursor: pointer;
+        --theme-toggle-animation-duration: 500ms;
 
         &:hover .theme_toggle_inner{
             scale: 1.1;
@@ -81,4 +80,4 @@
             }
         }
     }
-}
+

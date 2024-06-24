@@ -1,4 +1,4 @@
-@layer slider.navigation {
+
     .slider__navigation {
         gap: 0 1rem;
         position: absolute;
@@ -32,4 +32,3 @@
                 width: 100%;
         }
     }
-}

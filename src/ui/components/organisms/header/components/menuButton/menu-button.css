@@ -1,4 +1,4 @@
-@layer header.menuButton {
+
     .header__menu-text {
         color: var(--neutral-main);
         display: block;
@@ -70,4 +70,4 @@
         border-radius: 53% 47% 43% 57% / 51% 39% 61% 49%;
         z-index: -1;
     }
-}
+

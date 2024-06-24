@@ -1,6 +1,6 @@
 import { type CollectionEntry, getCollection } from "astro:content";
+import { ConfigurationTypes, articleDTO } from "@application/dto/article";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
-import { articleDTO, ConfigurationTypes } from "@application/dto/article";
 import { getArticlesByAuthor } from "./utils/getArticlesByAuthor";
 
 export interface AuthorData {
