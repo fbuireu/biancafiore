@@ -23,6 +23,7 @@ export interface WorldGlobeConfig {
 export interface SeoMetadata {
 	title: string;
 	description: string;
+	site: string;
 	robots?: {
 		index: boolean;
 		follow: boolean;

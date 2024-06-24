@@ -1,13 +1,13 @@
 import type { FormData } from "@components/organisms/contactForm";
-import { CONTACT_DETAILS } from "@const/index";
+import { CONTACT_DETAILS } from "@const/index.ts";
 import { Resend } from "resend";
 
 type ContactDetails = Omit<FormData, "recaptcha">;
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
+const RESEND = new Resend(import.meta.env.RESEND_API_KEY);
 
 export async function sendEmail({ name, message, email }: ContactDetails) {
-	const { data, error } = await resend.emails.send({
+	const { data, error } = await RESEND.emails.send({
 		from: `${name} <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`,
 		to: atob(CONTACT_DETAILS.ENCODED_BIANCA_EMAIL),
 		subject: `${CONTACT_DETAILS.EMAIL_SUBJECT} from ${name} (${email})`,

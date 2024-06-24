@@ -1,8 +1,8 @@
 import { ActionError, defineAction, z } from "astro:actions";
 import type { FormData } from "@components/organisms/contactForm";
 import { DEFAULT_LOCALE_STRING } from "@const/index.ts";
-import { sendEmail } from "@server/email/server.ts";
-import { app } from "@server/firebase/server.ts";
+import { sendEmail } from "@infrastructure/email/server.ts";
+import { app } from "@infrastructure/firebase/server.ts";
 import { getFirestore } from "firebase-admin/firestore";
 
 type ContactDetails = Omit<FormData, "recaptcha">;

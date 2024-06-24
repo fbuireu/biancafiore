@@ -3,7 +3,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"@const/*": ["./src/const/*"],
-			"@server/*": ["./src/server/*"],
+			"@infrastructure/*": ["./src/infrastructure/*"],
 			"@actions/*": ["./src/actions/*"],
 			"@ui/*": ["./src/ui/*"],
 			"@application/*": ["./src/application/*"],

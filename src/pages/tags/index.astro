@@ -1,43 +1,42 @@
 ---
 import { getCollection } from "astro:content";
-import type { ArticleDTO } from "@application/dto/article/articleDTO";
 import { articleDTO } from "@application/dto/article/articleDTO";
 import { tagDTO } from "@application/dto/tag/tagDTO";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import "./_tags.css";
 
-const articles: ArticleDTO[] = await Promise.all((await getCollection("articles")).map(articleDTO.render));
+const articles = await Promise.all((await getCollection("articles")).map(articleDTO.render));
 const tags = await tagDTO.render(articles);
 ---
 
 <BaseLayout title="" description="">
-<Breadcrumbs classNames="tags-page" />
-<section class="common-wrapper">
-  <h1 class="flex justify-center">All tags</h1>
-  <ul class="tags__list flex row-wrap">
-    {Object.keys(tags).map((letter, index) => (
-      <li class="tags__item">
-        <h2 class="tags__item__letter">{letter}</h2>
-        <ul class="tags__item__list flex column-wrap">
-          {tags[letter].map(({ name, slug, count }) => (
-            <li class="tag__item font-sans-serif">
-              <a href={`/tags/${slug}`}>{name}</a>
-              ({count})
-            </li>
-              <script type="application/ld+json" set:html={JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "ItemList",
-                "itemListElement": {
-                  "@type": "ListItem",
-                  "position": index +1,
-                  "url": new URL(`${Astro.url}/${slug}`, Astro.url).href
-                }
-              })}/>
+    <Breadcrumbs classNames="tags-page" />
+    <section class="common-wrapper">
+        <h1 class="flex justify-center">All tags</h1>
+        <ul class="tags__list flex row-wrap">
+          {Object.keys(tags).map((letter, index) => (
+              <li class="tags__item">
+                  <h2 class="tags__item__letter">{letter}</h2>
+                  <ul class="tags__item__list flex column-wrap">
+                    {tags[letter].map(({ name, slug, count }) => (
+                        <li class="tag__item font-sans-serif">
+                            <a href={`/tags/${slug}`}>{name}</a>
+                            ({count})
+                        </li>
+                        <script type="application/ld+json" set:html={JSON.stringify({
+                          '@context': 'https://schema.org',
+                          '@type': 'ItemList',
+                          'itemListElement': {
+                            '@type': 'ListItem',
+                            'position': index + 1,
+                            'url': new URL(`${Astro.url}/${slug}`, Astro.url).href,
+                          },
+                        })}/>
+                    ))}
+                  </ul>
+              </li>
           ))}
         </ul>
-      </li>
-    ))}
-  </ul>
-</section>
+    </section>
 </BaseLayout>

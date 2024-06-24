@@ -10,6 +10,8 @@ import RelatedArticles from "@components/organisms/relatedArticles/RelatedArticl
 import { slugify } from "@shared/ui/utils/slugify";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 
+export const prerender = true;
+
 type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;
 type ArticleParams = InferGetStaticParamsType<typeof getStaticPaths>;
 

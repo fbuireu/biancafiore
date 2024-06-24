@@ -4,6 +4,7 @@ import type { CapitalizeKeys, SeoMetadata, WorldGlobeConfig } from "./types.ts";
 
 export const DEFAULT_SEO_PARAMS: CapitalizeKeys<SeoMetadata> = {
 	TITLE: "Bianca Fiore",
+	SITE: "biancafiore.me",
 	DESCRIPTION: "Welcome to my website!",
 	ROBOTS: {
 		index: true,

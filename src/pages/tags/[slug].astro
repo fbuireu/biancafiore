@@ -10,6 +10,8 @@ import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import type { TagDTOItem } from "src/application/dto/tag";
 
+export const prerender = true;
+
 type TagProps = InferGetStaticPropsType<typeof getStaticPaths>;
 type TagParams = InferGetStaticParamsType<typeof getStaticPaths>;
 

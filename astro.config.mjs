@@ -13,13 +13,13 @@ export default defineConfig({
 	site: "https://biancafiore.me",
 	vite: {
 		ssr: {
-			external: ["firebase-admin"],
+			external: ["firebase-admin", "node:async_hooks"],
 		},
 	},
 	integrations: [
 		mdx(),
 		sitemap(),
-		react(),
+		react({ compat: true }),
 		million.vite({ mode: "react", server: true, auto: true }),
 		partytown({
 			config: {
@@ -27,8 +27,10 @@ export default defineConfig({
 			},
 		}),
 	],
-	output: "hybrid",
+	output: "server",
 	adapter: cloudflare({
-		imageService: "cloudflare",
+		platformProxy: {
+			enabled: true,
+		},
 	}),
 });
