@@ -9,6 +9,7 @@ import ArticleCard from "@components/organisms/articleCard/ArticleCard.astro";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import type { TagDTOItem } from "src/application/dto/tag";
+import "./_tag.css";
 
 export const prerender = true;
 
@@ -22,10 +23,10 @@ export async function getStaticPaths() {
 	const tags = await tagDTO.render(articles);
 
 	return Object.keys(tags).flatMap((letter) =>
-		tags[letter].map((tag) => {
+		tags[letter].map(({ slug }) => {
 			return {
 				params: {
-					slug: tag.slug,
+					slug,
 				},
 				props: {
 					tags,
@@ -44,14 +45,15 @@ const currentTag: TagDTOItem = await Object.values(tags)
 ---
 <BaseLayout>
     <Breadcrumbs />
-    <h1>#{slug}</h1>
-  
+    <h1 class="flex justify-center">#{slug}</h1>
+    <section class="common-wrapper">
+  <ul class="tag__article__list flex row-wrap justify-space-between">
   {currentTag.articles?.map(({ slug, data: article }, index) => {
     const href = `/articles/${slug}`;
     const props = { ...article, href };
 
     return (
-        <div>
+        <li class="tag__article__item">
             <ArticleCard {...props} />
             <script type="application/ld+json" set:html={JSON.stringify({
               '@context': 'https://schema.org',
@@ -62,7 +64,9 @@ const currentTag: TagDTOItem = await Object.values(tags)
                 'url': new URL(`/articles/${slug}`, Astro.url).href,
               },
             })} />
-        </div>
+        </li>
     );
   })}
+  </ul>
+    </section>
 </BaseLayout>

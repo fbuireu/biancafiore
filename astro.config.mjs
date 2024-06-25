@@ -6,6 +6,8 @@ import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 import million from "million/compiler";
 
+const isProd = import.meta.env.PROD;
+
 export default defineConfig({
 	experimental: {
 		actions: true,
@@ -19,7 +21,7 @@ export default defineConfig({
 	integrations: [
 		mdx(),
 		sitemap(),
-		react({ compat: true }),
+		react(),
 		million.vite({ mode: "react", server: true, auto: true }),
 		partytown({
 			config: {
@@ -30,7 +32,7 @@ export default defineConfig({
 	output: "server",
 	adapter: cloudflare({
 		platformProxy: {
-			enabled: true,
+			enabled: isProd,
 		},
 	}),
 });

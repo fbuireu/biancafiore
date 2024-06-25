@@ -1,0 +1,22 @@
+.tag__article__list{
+  margin-block: 2rem;
+  position: relative;
+
+  @media (width <= 960px) {
+    margin-inline: 1rem;
+  }
+}
+
+.tag__article__item{
+  max-width: calc(100% / var(--items-per-row) - var(--gap));
+  position: relative;
+  width: 100%;
+  --items-per-row: 4;
+  --gap: 2rem;
+
+  @media (width <= 960px) {
+    --items-per-row: 1;
+    --gap: 0;
+    margin-block-end: 3rem;
+  }
+}

@@ -44,7 +44,7 @@
         / 1fr;
         }
 
-        &.--is-articles, &.--is-about{
+        &.--is-articles, &.--is-about, &.--is-tag{
             color: var(--neutral-main)
         }
     }
