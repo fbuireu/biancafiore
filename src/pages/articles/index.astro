@@ -12,11 +12,9 @@ import { getFeaturedArticle } from "@shared/application/utils/getFeaturedArticle
 import { slugify } from "@shared/ui/utils/slugify";
 import "./_articles.css";
 
-const articles: ArticleDTO[] = await Promise.all(
-	(await getCollection("articles"))
-		.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf())
-		.map((article) => articleDTO.render(article, { type: ConfigurationTypes.ASTRO })),
-);
+const articles: ArticleDTO[] = (
+	await articleDTO.render(await getCollection("articles"), { type: ConfigurationTypes.ASTRO })
+).sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf());
 
 const featuredArticle = getFeaturedArticle(articles);
 const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Astro.url).href;

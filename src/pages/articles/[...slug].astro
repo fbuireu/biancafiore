@@ -16,19 +16,15 @@ type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;
 type ArticleParams = InferGetStaticParamsType<typeof getStaticPaths>;
 
 export async function getStaticPaths() {
-	const articles = await getCollection("articles");
+	const articles = await articleDTO.render(await getCollection("articles"), { type: ConfigurationTypes.ASTRO });
 
 	return articles.map((article) => {
-		const currentArticle = articleDTO.render(article, {
-			type: ConfigurationTypes.ASTRO,
-		});
-
 		return {
 			params: {
 				slug: article.slug,
 			},
 			props: {
-				currentArticle,
+				articles,
 			},
 		};
 	});
@@ -36,12 +32,14 @@ export async function getStaticPaths() {
 
 const { pathname } = Astro.url;
 const { slug } = Astro.params as ArticleParams;
-const { currentArticle } = Astro.props as ArticleProps;
+const { articles } = Astro.props as ArticleProps;
+const currentArticle = articles.find((article) => article.slug === slug);
 
 const {
 	data: { featuredImage, title, description, author, publishDate, tags, ...rest },
 	render,
-} = await currentArticle;
+} = currentArticle;
+
 const { Content } = await render();
 ---
 

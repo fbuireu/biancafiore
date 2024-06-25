@@ -1,9 +1,9 @@
 import type { ArticleDTO } from "@application/dto/article/articleDTO.ts";
 import { ArticleType } from "@application/dto/article/articleDTO.ts";
-import { slugify } from "@shared/ui/utils/slugify";
 import clsx from "clsx";
 import "./article-card.css";
 import { getLocation } from "@components/organisms/articleCard/utils/getLocation";
+import { slugify } from "@shared/ui/utils/slugify";
 
 type ArticleCardProps = {
 	origin: Location;

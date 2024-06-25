@@ -1,3 +1,4 @@
+import type { CollectionEntry } from "astro:content";
 import type { ArticleDTO } from "@application/dto/article/articleDTO.ts";
 import {
 	type GetArticlesByTagProps,

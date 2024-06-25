@@ -5,7 +5,7 @@ import { DEFAULT_SEO_PARAMS } from "@const/const.ts";
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async (context) => {
-	const articles = await Promise.all((await getCollection("articles")).map(articleDTO.render));
+	const articles = await articleDTO.render(await getCollection("articles"));
 
 	return rss({
 		title: DEFAULT_SEO_PARAMS.TITLE,

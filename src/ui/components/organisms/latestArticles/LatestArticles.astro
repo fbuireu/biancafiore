@@ -13,12 +13,9 @@ const MAX_ARTICLES = 4;
 
 const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
-const articles: ArticleDTO[] = await Promise.all(
-	(await getCollection("articles"))
-		.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
-		.slice(0, limit)
-		.map(articleDTO.render),
-);
+const articles = (await articleDTO.render(await getCollection("articles")))
+	.slice(0, limit)
+	.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf());
 ---
 
 <section class="latest-articles__wrapper">

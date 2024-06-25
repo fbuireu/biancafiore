@@ -17,9 +17,9 @@ type TagProps = InferGetStaticPropsType<typeof getStaticPaths>;
 type TagParams = InferGetStaticParamsType<typeof getStaticPaths>;
 
 export async function getStaticPaths() {
-	const articles: ArticleDTO[] = await Promise.all(
-		(await getCollection("articles")).map((article) => articleDTO.render(article, { type: ConfigurationTypes.ASTRO })),
-	);
+	const articles: ArticleDTO[] = await articleDTO.render(await getCollection("articles"), {
+		type: ConfigurationTypes.ASTRO,
+	});
 	const tags = await tagDTO.render(articles);
 
 	return Object.keys(tags).flatMap((letter) =>
@@ -47,26 +47,26 @@ const currentTag: TagDTOItem = await Object.values(tags)
     <Breadcrumbs />
     <h1 class="flex justify-center">#{slug}</h1>
     <section class="common-wrapper">
-  <ul class="tag__article__list flex row-wrap justify-space-between">
-  {currentTag.articles?.map(({ slug, data: article }, index) => {
-    const href = `/articles/${slug}`;
-    const props = { ...article, href };
+      <ul class="tag__article__list flex row-wrap justify-space-between">
+        {currentTag.articles?.map(({ slug, data: article }, index) => {
+          const href = `/articles/${slug}`;
+          const props = { ...article, href };
 
-    return (
-        <li class="tag__article__item">
-            <ArticleCard {...props} />
-            <script type="application/ld+json" set:html={JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'ItemList',
-              'itemListElement': {
-                '@type': 'ListItem',
-                'position': index + 1,
-                'url': new URL(`/articles/${slug}`, Astro.url).href,
-              },
-            })} />
-        </li>
-    );
-  })}
-  </ul>
+          return (
+              <li class="tag__article__item">
+                  <ArticleCard {...props} />
+                  <script type="application/ld+json" set:html={JSON.stringify({
+                    '@context': 'https://schema.org',
+                    '@type': 'ItemList',
+                    'itemListElement': {
+                      '@type': 'ListItem',
+                      'position': index + 1,
+                      'url': new URL(`/articles/${slug}`, Astro.url).href,
+                    },
+                  })} />
+              </li>
+          );
+        })}
+      </ul>
     </section>
 </BaseLayout>

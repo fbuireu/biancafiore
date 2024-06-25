@@ -17,19 +17,13 @@ const {
 	render,
 } = await currentArticle;
 
-const articles: ArticleDTO[] = await Promise.all(
-	(await getCollection("articles"))
-		.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf())
-		.map(articleDTO.render),
+const articles: ArticleDTO[] = (await articleDTO.render(await getCollection("articles"))).sort(
+	(a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf(),
 );
 
-const relatedArticles = await Promise.all(
-	articles
-		.filter(({ data }) => data.tags?.some((tag) => data.title !== title && tags?.includes(tag)))
-		.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
-		.splice(0, MAX_RELATED_ARTICLES)
-		.map(articleDTO.render),
-);
+const relatedArticles = articles
+	.filter(({ data }) => data.tags?.some((tag) => data.title !== title && tags?.includes(tag)))
+	.splice(0, MAX_RELATED_ARTICLES);
 ---
 {
     relatedArticles.length > 0 && (
