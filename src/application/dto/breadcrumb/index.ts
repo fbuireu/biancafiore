@@ -1,1 +1,1 @@
-export * from "./breadcrumbDTO.ts";
+export * from "./breadcrumbDTO";

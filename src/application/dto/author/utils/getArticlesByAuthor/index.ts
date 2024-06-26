@@ -1,1 +1,1 @@
-export * from "./getArticlesByAuthor.ts";
+export * from "./getArticlesByAuthor";

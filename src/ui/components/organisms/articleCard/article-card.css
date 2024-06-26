@@ -1,4 +1,3 @@
-
     .article__item__wrapper {
         backface-visibility: hidden;
         -webkit-font-smoothing: subpixel-antialiased;
@@ -47,45 +46,4 @@
         &.--is-articles, &.--is-about, &.--is-tag{
             color: var(--neutral-main)
         }
-    }
-
-    .article__title {
-        align-self: center;
-        color: currentColor;
-        grid-area: Title;
-        letter-spacing: normal;
-    }
-
-    .article__item__publish-date {
-        grid-area: Publish-Date;
-    }
-
-    .article__author {
-        color: currentColor;
-        grid-area: Author;
-
-        a {
-            color: var(--primary-main);
-            position: relative;
-            z-index: 10;
-        }
-    }
-
-    .article__excerpt {
-        color: currentColor;
-        grid-area: Excerpt;
-    }
-
-    .article__item__featured-image {
-        grid-area: Featured-Image;
-        object-fit: cover;
-        z-index: 0;
-    }
-
-    .article__tags__list {
-        color: currentColor;
-        gap: 0 1rem;
-        grid-area: Tags;
-        position: relative;
-        z-index: 10;
     }

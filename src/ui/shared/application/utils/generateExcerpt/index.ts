@@ -1,1 +1,1 @@
-export * from "./generateExcerpt.ts";
+export * from "./generateExcerpt";

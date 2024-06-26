@@ -49,4 +49,40 @@
             scale: 1;
         }
     }
+    @keyframes filter-out {
+        100% {
+            filter: brightness(2);
+            translate: 0 -60%;
+        }
+    }
+
+    @keyframes in-and-out {
+        0%,
+        100% {
+            opacity: 0;
+        }
+        10%,
+        60% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes brighten {
+        0% {
+            filter: brightness(2);
+        }
+        100% {
+            filter: brightness(1);
+        }
+    }
+
+    @keyframes clip-out {
+        0% {
+            clip-path: inset(0 0 0 0);
+        }
+        100% {
+            filter: brightness(0.5);
+            clip-path: inset(100% 0 0 0);
+        }
+    }
 }

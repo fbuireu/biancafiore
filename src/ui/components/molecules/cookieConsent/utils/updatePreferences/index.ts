@@ -1,1 +1,1 @@
-export * from "./updatePreferences.ts";
+export * from "./updatePreferences";

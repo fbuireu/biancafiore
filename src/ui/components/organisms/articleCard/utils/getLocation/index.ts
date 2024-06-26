@@ -1,1 +1,1 @@
-export * from "./getLocation.ts";
+export * from "./getLocation";

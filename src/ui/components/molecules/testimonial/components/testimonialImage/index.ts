@@ -1,1 +1,1 @@
-export * from "./testimonialImage.tsx";
+export * from "./TestimonialImage";

@@ -1,1 +1,1 @@
-export * from "@components/molecules/cityCard/components/cityPeriod/CityPeriod.tsx";
+export * from "./CityPeriod";

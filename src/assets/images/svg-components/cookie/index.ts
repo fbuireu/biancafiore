@@ -1,1 +1,1 @@
-export * from "./Cookie.tsx";
+export * from "./Cookie";

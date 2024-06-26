@@ -1,1 +1,1 @@
-export * from "./getUniqueTags.ts";
+export * from "./getUniqueTags";

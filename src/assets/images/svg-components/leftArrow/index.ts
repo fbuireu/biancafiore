@@ -1,1 +1,1 @@
-export * from "./LeftArrow.tsx";
+export * from "./LeftArrow";

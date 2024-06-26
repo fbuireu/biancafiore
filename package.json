@@ -42,7 +42,7 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.7.0",
-		"@astrojs/cloudflare": "^11.0.0",
+		"@astrojs/cloudflare": "^11.0.1",
 		"@astrojs/mdx": "^3.1.2",
 		"@astrojs/partytown": "^2.1.1",
 		"@astrojs/react": "^3.6.0",
@@ -51,7 +51,7 @@
 		"@fontsource-variable/nunito-sans": "^5.0.14",
 		"@fontsource/baskervville": "^5.0.20",
 		"@hookform/resolvers": "^3.6.0",
-		"astro": "^4.11.1",
+		"astro": "^4.11.2",
 		"clsx": "^2.1.1",
 		"firebase": "^10.12.2",
 		"firebase-admin": "^12.2.0",
@@ -64,7 +64,7 @@
 		"react-google-recaptcha-v3": "^1.10.1",
 		"react-hook-form": "^7.52.0",
 		"react-router-dom": "^6.24.0",
-		"resend": "^3.3.0",
+		"resend": "^3.4.0",
 		"swiper": "^11.1.4",
 		"three": "^0.165.0",
 		"vanilla-cookieconsent": "^3.0.1",
@@ -79,7 +79,7 @@
 		"@testing-library/react-hooks": "^8.0.1",
 		"@types/add": "^2.0.3",
 		"@types/markdown-it": "^14.1.1",
-		"@types/node": "^20.14.8",
+		"@types/node": "^20.14.9",
 		"@types/react": "^18.3.3",
 		"@types/react-dom": "^18.3.0",
 		"@types/three": "^0.165.0",
@@ -90,6 +90,6 @@
 		"stylelint-order": "^6.0.4",
 		"typescript": "^5.5.2",
 		"vitest": "^1.6.0",
-		"wrangler": "^3.61.0"
+		"wrangler": "^3.62.0"
 	}
 }

@@ -9,6 +9,5 @@ const { id } = Astro.props as ProjectSectionProps;
 ---
 
 <section id={id} class="project-section">
-  <slot name="project-image" />
-  <slot name="project-information" />
+  <slot />
 </section>
