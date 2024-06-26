@@ -16,6 +16,7 @@ import type { ArticleCardTitleProps } from "@components/organisms/articleCard/co
 import { ArticleCardTitle } from "@components/organisms/articleCard/components/articleCardTitle";
 import { getLocation } from "@components/organisms/articleCard/utils/getLocation";
 import clsx from "clsx";
+import "./article-card.css";
 
 type ArticleCardProps = {
 	origin: Location;
