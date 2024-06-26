@@ -1,33 +1,21 @@
-import type { ArticleDTO } from "@application/dto/article/articleDTO.ts";
-import { ArticleType } from "@application/dto/article/articleDTO.ts";
+import { ArticleType } from "@application/dto/article/articleDTO";
+import type { ArticleDTO } from "@application/dto/article/articleDTO";
+import type { ArticleCardAuthorProps } from "@components/organisms/articleCard/components/articleCardAuthor";
+import { ArticleCardAuthor } from "@components/organisms/articleCard/components/articleCardAuthor";
+import type { ArticleCardExcerptProps } from "@components/organisms/articleCard/components/articleCardExcerpt";
 import { ArticleCardExcerpt } from "@components/organisms/articleCard/components/articleCardExcerpt";
-import {
-	ArticleCardImage,
-	type ArticleCardImageProps,
-} from "@components/organisms/articleCard/components/articleCardImage";
+import { ArticleCardImage } from "@components/organisms/articleCard/components/articleCardImage";
+import type { ArticleCardImageProps } from "@components/organisms/articleCard/components/articleCardImage";
+import type { ArticleCardPublishDateProps } from "@components/organisms/articleCard/components/articleCardPublishDate";
+import { ArticleCardPublishDate } from "@components/organisms/articleCard/components/articleCardPublishDate";
+import type { ArticleCardTagItemProps } from "@components/organisms/articleCard/components/articleCardTagItem";
+import { ArticleCardTagItem } from "@components/organisms/articleCard/components/articleCardTagItem";
+import type { ArticleCardTagsListProps } from "@components/organisms/articleCard/components/articleCardTagsList";
+import { ArticleCardTagsList } from "@components/organisms/articleCard/components/articleCardTagsList";
+import type { ArticleCardTitleProps } from "@components/organisms/articleCard/components/articleCardTitle";
+import { ArticleCardTitle } from "@components/organisms/articleCard/components/articleCardTitle";
 import { getLocation } from "@components/organisms/articleCard/utils/getLocation";
 import clsx from "clsx";
-import "./article-card.css";
-import {
-	ArticleCardAuthor,
-	type ArticleCardAuthorProps,
-} from "@components/organisms/articleCard/components/articleCardAuthor";
-import {
-	ArticleCardPublishDate,
-	type ArticleCardPublishDateProps,
-} from "@components/organisms/articleCard/components/articleCardPublishDate";
-import {
-	ArticleCardTagItem,
-	type ArticleCardTagItemProps,
-} from "@components/organisms/articleCard/components/articleCardTagItem";
-import {
-	ArticleCardTagsList,
-	type ArticleCardTagsListProps,
-} from "@components/organisms/articleCard/components/articleCardTagsList";
-import {
-	ArticleCardTitle,
-	type ArticleCardTitleProps,
-} from "@components/organisms/articleCard/components/articleCardTitle";
 
 type ArticleCardProps = {
 	origin: Location;
@@ -62,7 +50,7 @@ const Title = ({ children }: ArticleCardTitleProps) => <ArticleCardTitle>{childr
 const Author = ({ children, slug }: ArticleCardAuthorProps) => (
 	<ArticleCardAuthor slug={slug}>{children}</ArticleCardAuthor>
 );
-const Excerpt = ({ children }: ArticleCardExcerpt) => <ArticleCardExcerpt>{children}</ArticleCardExcerpt>;
+const Excerpt = ({ children }: ArticleCardExcerptProps) => <ArticleCardExcerpt>{children}</ArticleCardExcerpt>;
 const PublishDate = ({ children, publishDate }: ArticleCardPublishDateProps) => (
 	<ArticleCardPublishDate publishDate={publishDate}>{children}</ArticleCardPublishDate>
 );
