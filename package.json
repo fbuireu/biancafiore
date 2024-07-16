@@ -65,7 +65,7 @@
 		"react-hook-form": "^7.52.1",
 		"react-router-dom": "^6.24.1",
 		"resend": "^3.4.0",
-		"swiper": "^11.1.4",
+		"swiper": "^11.1.5",
 		"three": "^0.166.1",
 		"vanilla-cookieconsent": "^3.0.1",
 		"zod": "^3.23.8"
@@ -89,7 +89,7 @@
 		"stylelint-config-recommended": "^14.0.1",
 		"stylelint-order": "^6.0.4",
 		"typescript": "^5.5.3",
-		"vitest": "^2.0.2",
+		"vitest": "^2.0.3",
 		"wrangler": "^3.64.0"
 	}
 }

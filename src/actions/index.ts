@@ -38,7 +38,7 @@ export const server = {
 				});
 				const { data: emailData, error: emailError } = await sendEmail(data);
 				const success = emailData && !emailError;
-				if (!success) {
+				if (!success && emailError) {
 					throw new Error(`Something went wrong sending the email. Error: ${emailError.message} (${emailError.name})`);
 				}
 
