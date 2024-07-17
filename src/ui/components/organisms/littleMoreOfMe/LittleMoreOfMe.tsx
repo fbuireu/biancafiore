@@ -1,7 +1,7 @@
----
 import WorldGlobe from "@components/atoms/worldGlobe/WorldGlobe";
 import { Cities } from "@components/organisms/cities";
 import "./little-more-of-me.css";
+import { useCallback, useState } from "react";
 
 const data = [
 	{
@@ -79,12 +79,15 @@ const cities = [
 		image: "https://via.placeholder.com/400x300",
 	},
 ];
----
 
-<section class="little-more-of-me__wrapper common-wrapper">
-  <h3 class="little-more-of-me__title section-title">A little more of me</h3>
-  <div class="little-more-of-me__inner flex row-nowrap justify-space-between">
-    <WorldGlobe cities={data} client:only="react" />
-    <Cities cities={cities} client:load />
-  </div>
-</section>
+export const LittleMoreOfMe = () => {
+	return (
+		<section className="little-more-of-me__wrapper common-wrapper">
+			<h3 className="little-more-of-me__title section-title">A little more of me</h3>
+			<div className="little-more-of-me__inner flex row-nowrap justify-space-between">
+				<WorldGlobe cities={data} />
+				<Cities cities={cities} />
+			</div>
+		</section>
+	);
+};

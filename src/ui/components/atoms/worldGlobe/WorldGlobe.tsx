@@ -79,16 +79,9 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 	};
 
 	useEffect(() => {
-		const handleVisibilityChange = () => {
-			if (!worldGlobeReference.current) return;
-			worldGlobeReference.current.controls().autoRotate = document.visibilityState === TabVisibility.VISIBLE;
-		};
-
-		handleVisibilityChange();
-
-		document.addEventListener("visibilitychange", handleVisibilityChange);
-		return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
-	}, []);
+		if (!worldGlobeReference.current) return;
+		worldGlobeReference.current.controls().autoRotate = tabVisibility === TabVisibility.VISIBLE;
+	}, [tabVisibility]);
 
 	const handleAction = useCallback(({ movementDirection, type }: HandleActionParams) => {
 		if (!worldGlobeReference.current) return;
