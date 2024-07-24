@@ -1,5 +1,3 @@
-import { ArticleType } from "@application/dto/article/articleDTO";
-import type { ArticleDTO } from "@application/dto/article/articleDTO";
 import type { ArticleCardAuthorProps } from "@components/organisms/articleCard/components/articleCardAuthor";
 import { ArticleCardAuthor } from "@components/organisms/articleCard/components/articleCardAuthor";
 import type { ArticleCardExcerptProps } from "@components/organisms/articleCard/components/articleCardExcerpt";
@@ -16,11 +14,16 @@ import type { ArticleCardTitleProps } from "@components/organisms/articleCard/co
 import { ArticleCardTitle } from "@components/organisms/articleCard/components/articleCardTitle";
 import { getLocation } from "@components/organisms/articleCard/utils/getLocation";
 import clsx from "clsx";
+import type { ReactNode } from "react";
 import "./article-card.css";
+import type { ArticleDTO } from "@application/dto/article/types";
+import { ArticleType } from "@application/dto/article/types";
 
 type ArticleCardProps = {
-	origin: Location;
-} & ArticleDTO["data"];
+	origin: URL;
+	children: ReactNode;
+	href: string;
+} & ArticleDTO;
 
 export const ArticleCard = ({ children, origin, href, title, variant }: ArticleCardProps) => {
 	const location = getLocation(origin);

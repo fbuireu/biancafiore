@@ -1,14 +1,13 @@
-import type { CollectionEntry } from "astro:content";
 import { ArticleCard } from "@components/organisms/articleCard/ArticleCard.tsx";
+import { Slider } from "@components/organisms/slider";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
 import type { SwiperOptions } from "swiper/types";
 import "./about-latest-articles-slider.css";
-import { Slider } from "@components/organisms/slider";
-import { slugify } from "@shared/ui/utils/slugify";
+import type { ArticleDTO } from "@application/dto/article/types.ts";
 
 interface AboutLatestArticlesSLiderProps {
-	articles: CollectionEntry<"articles">[];
-	origin: Location;
+	articles: ArticleDTO[];
+	origin: URL;
 }
 
 const SLIDER_CONFIG: SwiperOptions = {
@@ -37,8 +36,8 @@ export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArtic
 				items={articles}
 				swiperOptions={SLIDER_CONFIG}
 				classNames="--is-about__latest-articles-slider"
-				renderItem={({ slug, data: article }) => {
-					const href = `/articles/${slug}`;
+				renderItem={(article) => {
+					const href = `/articles/${article.slug}`;
 					const props = { ...article, href, origin };
 
 					return (
@@ -47,13 +46,11 @@ export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArtic
 							{article.featuredImage && <ArticleCard.Image src={article.featuredImage} alt={article.title} />}
 							<ArticleCard.Title>{article.title}</ArticleCard.Title>
 							<ArticleCard.Excerpt>{article.description}</ArticleCard.Excerpt>
-							<ArticleCard.Author slug={slugify(article.author.data.name)}>
-								{article.author.data.name}
-							</ArticleCard.Author>
+							<ArticleCard.Author slug={article.author.slug}>{article.author.name}</ArticleCard.Author>
 							<ArticleCard.Tags>
-								{article.tags?.map((tag: string) => (
-									<ArticleCard.Tag tag={tag} key={tag}>
-										{tag}
+								{article.tags?.map((tag) => (
+									<ArticleCard.Tag key={tag.name} tag={tag}>
+										{tag.name}
 									</ArticleCard.Tag>
 								))}
 							</ArticleCard.Tags>

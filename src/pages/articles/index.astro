@@ -1,105 +1,38 @@
 ---
-import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
-import { ConfigurationTypes } from "@application/dto/article/articleDTO";
 import { articleDTO } from "@application/dto/article/articleDTO";
-import type { ArticleDTO } from "@application/dto/article/articleDTO";
+import type { RawArticle } from "@application/dto/article/types";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import ArticleCard from "@components/organisms/articleCard/ArticleCard.astro";
+import FeaturedArticle from "@components/organisms/featuredArticle/FeaturedArticle.astro";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
+import { client } from "@lib/contentful";
 import { getFeaturedArticle } from "@shared/application/utils/getFeaturedArticle";
-import { slugify } from "@shared/ui/utils/slugify";
 import "./_articles.css";
 
-const articles: ArticleDTO[] = (
-	await articleDTO.render(await getCollection("articles"), { type: ConfigurationTypes.ASTRO })
-).sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf());
+const { items: rawArticles } = await client.getEntries<RawArticle>({
+	content_type: "articles",
+});
+
+const articles = articleDTO
+	.render(rawArticles as RawArticle[])
+	.sort((a, b) => new Date(b.publishDate).valueOf() - new Date(a.publishDate).valueOf());
 
 const featuredArticle = getFeaturedArticle(articles);
-const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Astro.url).href;
 ---
 
 <!-- todo: isolate sections -->
 <BaseLayout title="" description="">
     <h1 class="articles__title section-title">The Blog</h1>
     <Breadcrumbs classNames="articles-page" />
-    <div class="articles__wrapper">
-        <section class="articles__wrapper__inner common-wrapper">
-            <div class="featured-article__wrapper">
-                <a href={`/articles/${featuredArticle.slug}`}>
-                    <Image
-                        class="featured-article__image"
-                        src={featuredArticle.data.featuredImage()}
-                        alt={featuredArticle.data.title}
-                    />
-                </a>
-                <div class="featured-article__details__wrapper flex row-wrap">
-                    <div class="featured-article__details flex column-wrap">
-                        <time class="featured-article__publish-date font-sans-serif"
-                              datetime={featuredArticle.data.publishDate}>
-                          {featuredArticle.data.publishDate}
-                        </time>
-                        <h2 class="featured-article__title">{featuredArticle.data.title}</h2>
-                        <p class="featured-article__description">{featuredArticle.data.description}</p>
-                      {
-                          featuredArticle.tags?.length > 0 && (
-                              <ul class="featured-article__tags__list">
-                                {featuredArticle.data.tags.map((tag) => (
-                                    <a class="featured-article__tag__item" href={`/tags/${slugify(tag)}`}>
-                                        #{tag}
-                                    </a>
-                                ))}
-                              </ul>
-                          )
-                      }
-                        <a href={`/articles/${featuredArticle.slug}`} class="featured-article__link flex align-center">
-                            Read More <img src={horizontalArrow.src} alt="Readt more" />
-                        </a>
-                    </div>
-                    <div class="featured-article__share__wrapper flex row-wrap">
-                        <p class="featured-article__share__title font-serif">SHARE IT!</p>
-                        <ul class="featured-article__share__links__list flex row-nowrap">
-                            <li class="featured-article__share__link__item link">
-                                <a
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${featuredArticleShareUrl}`}
-                                >
-                                    Linkedin
-                                </a>
-                            </li>
-                            <li class="featured-article__share__link__item link">
-                                <a
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    href={`https://twitter.com/intent/tweet?url=${featuredArticleShareUrl}&text=${featuredArticle.data.title}&hashtags=${featuredArticle.data.tags?.join(
-                                        ',')}`}>
-                                    X (former Twitter)
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <script type="application/ld+json" set:html={JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'ItemList',
-              'itemListElement': {
-                '@type': 'ListItem',
-                'position': 1,
-                'url': new URL(`${Astro.url}/${featuredArticle.slug}`, Astro.url).href,
-              },
-            })} />
-        </section>
-    </div>
+    <FeaturedArticle featuredArticle={featuredArticle} />
     <section class="articles__grid common-wrapper">
         <ul class="articles__grid__list flex row-wrap justify-space-between">
           {
             articles
                 .filter(({ slug }) => slug !== featuredArticle.slug)
-                .map(({ data: article, slug }, index) => {
-                    const href=`/articles/${slug}`;
+                .map((article, index) => {
+                    const href=`/articles/${article.slug}`;
                     const props= {...article, href}
 
                     return <li class="articles__grid__item">
@@ -110,7 +43,7 @@ const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Ast
                           'itemListElement': {
                             '@type': 'ListItem',
                             'position': index + 2,
-                            'url': new URL(`${Astro.url}/${slug}`, Astro.url).href,
+                            'url': new URL(`${Astro.url}/${article.slug}`, Astro.url).href,
                           },
                         })} />
                     </li>

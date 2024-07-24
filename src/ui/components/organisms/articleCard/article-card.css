@@ -1,3 +1,10 @@
+@import url('./components/articleCardAuthor/article-card-author.css');
+@import url('./components/articleCardExcerpt/article-card-excerpt.css');
+@import url('./components/articleCardImage/article-card-image.css');
+@import url('./components/articleCardPublishDate/article-card-publish-date.css');
+@import url('./components/articleCardTagsList/article-card-tags-list.css');
+@import url('./components/articleCardTitle/article-card-title.css');
+
     .article__item__wrapper {
         backface-visibility: hidden;
         -webkit-font-smoothing: subpixel-antialiased;

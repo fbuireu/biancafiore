@@ -1,14 +1,18 @@
 ---
-import { Image } from "astro:assets";
-import { ArticleType } from "@application/dto/article/articleDTO";
-import type { ArticleDTO } from "@application/dto/article/articleDTO";
-import { slugify } from "@shared/ui/utils/slugify";
+import type { ArticleDTO } from "@application/dto/article/types";
+import { ArticleType } from "@application/dto/article/types";
 import clsx from "clsx";
 import { getLocation } from "./utils/getLocation";
 import "./article-card.css";
 
-const { href, title, description, variant, featuredImage, publishDate, author, tags } =
-	Astro.props as ArticleDTO["data"];
+type ArticleCardProps = {
+	origin: URL;
+	children: React.ReactNode;
+	href: string;
+} & ArticleDTO;
+
+const { href, title, description, variant, featuredImage, publishDate, author, tags } = Astro.props as ArticleCardProps;
+
 const { pathname } = Astro.url;
 const origin = getLocation(Astro.url);
 ---
@@ -25,10 +29,12 @@ const origin = getLocation(Astro.url);
     )}
 >
   {featuredImage && (
-      <Image
+      <img
           class="article__item__featured-image"
-          src={featuredImage()}
+          src={featuredImage}
           alt={title}
+          decoding="async"
+          loading="lazy"
           transition:name=`featured-image-${pathname}`
       />
   )}
@@ -37,13 +43,13 @@ const origin = getLocation(Astro.url);
     </time>
     <h3 class="article__title font-serif inner-section-title">{title}</h3>
     <p class="article__author">
-        by <a href={`/tags/${author.data?.id}`}>{author.data.name}</a>
+        by <a href={`/tags/${author.slug}`}>{author.name}</a>
     </p>
     <p class="article__excerpt">{description}</p>
     <ul class="article__tags__list flex">
-      {tags?.map((tag: ArticleDTO['data']['tags']) => (
-          <a class="article__tag__item" href={`/tags/${slugify(tag)}`}>
-              #{tag}
+      {tags?.map(({slug, name}) => (
+          <a class="article__tag__item" href={`/tags/${slug}`}>
+              #{name}
           </a>
       ))}
     </ul>

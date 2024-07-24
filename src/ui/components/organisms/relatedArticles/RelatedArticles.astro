@@ -1,44 +1,28 @@
 ---
-import { getCollection } from "astro:content";
-import type { ArticleDTO } from "@application/dto/article/articleDTO";
-import { articleDTO } from "@application/dto/article/articleDTO";
-import { slugify } from "src/ui/shared/ui/utils/slugify";
+import type { ArticleDTO } from "@application/dto/article/types";
 import "./related-articles.css";
 
 interface RelatedArticleProps {
-	currentArticle: Promise<ArticleDTO>;
+	article: ArticleDTO;
 }
 
-const MAX_RELATED_ARTICLES = 3;
-
-const { currentArticle } = Astro.props as RelatedArticleProps;
-const {
-	data: { title, description, author, publishDate, tags },
-	render,
-} = await currentArticle;
-
-const articles: ArticleDTO[] = (await articleDTO.render(await getCollection("articles"))).sort(
-	(a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf(),
-);
-
-const relatedArticles = articles
-	.filter(({ data }) => data.tags?.some((tag) => data.title !== title && tags?.includes(tag)))
-	.splice(0, MAX_RELATED_ARTICLES);
+const { article } = Astro.props as RelatedArticleProps;
+const { relatedArticles } = article;
 ---
 {
     relatedArticles.length > 0 && (
     <section class="related-articles__wrapper common-wrapper">
         <h3 class="related-articles__title section-title">You might also like</h3>
         <ul class="related-articles__list flex row-wrap">
-          {relatedArticles.map(({ slug, data: { title, author } }, index) => (
+          {relatedArticles.map((relatedArticle, index) => (
               <li class="related-article__item flex column-wrap">
-                  <time class="related-article__item__publish-date font-sans-serif" datetime={publishDate}>
-                    {publishDate}
+                  <time class="related-article__item__publish-date font-sans-serif" datetime={relatedArticle.publishDate}>
+                    {relatedArticle.publishDate}
                   </time>
-                  <a href={`/articles/${slug}`} class="related__article__link">
-                      <h4 class="related__article__title">{title}</h4>
-                      <p>{description}</p>
-                      <a href={`/tags/${slugify(author.data.name)}`} class="related__article__author">by {author.data.name}</a>
+                  <a href={`/articles/${relatedArticle.slug}`} class="related__article__link">
+                      <h4 class="related__article__title">{relatedArticle.title}</h4>
+                      <p>{relatedArticle.description}</p>
+                      <a href={`/tags/${relatedArticle.slug}`} class="related__article__author">by {relatedArticle.author.name}</a>
                   </a>
               </li>
               <script type="application/ld+json" set:html={JSON.stringify({
@@ -47,7 +31,7 @@ const relatedArticles = articles
                 "itemListElement": {
                   "@type": "ListItem",
                   "position": index + 1,
-                  "url": new URL(slug, Astro.url).href
+                  "url": new URL(relatedArticle.slug, Astro.url).href
                 }
               })}/>
           ))}

@@ -1,14 +1,12 @@
 ---
-import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
-import { ConfigurationTypes } from "@application/dto/article/articleDTO";
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
-import "./_article.css";
 import { articleDTO } from "@application/dto/article/articleDTO";
+import type { RawArticle } from "@application/dto/article/types";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import RelatedArticles from "@components/organisms/relatedArticles/RelatedArticles.astro";
-import { slugify } from "@shared/ui/utils/slugify";
+import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
+import { client } from "@lib/contentful";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
+import "./_article.css";
 
 export const prerender = true;
 
@@ -16,15 +14,17 @@ type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;
 type ArticleParams = InferGetStaticParamsType<typeof getStaticPaths>;
 
 export async function getStaticPaths() {
-	const articles = await articleDTO.render(await getCollection("articles"), { type: ConfigurationTypes.ASTRO });
+	const { items: rawArticles } = (await client.getEntries<RawArticle>({
+		content_type: "articles",
+	})) as RawArticle[];
 
-	return articles.map((article) => {
+	return articleDTO.render(rawArticles).map((article) => {
 		return {
 			params: {
 				slug: article.slug,
 			},
 			props: {
-				articles,
+				article,
 			},
 		};
 	});
@@ -32,25 +32,19 @@ export async function getStaticPaths() {
 
 const { pathname } = Astro.url;
 const { slug } = Astro.params as ArticleParams;
-const { articles } = Astro.props as ArticleProps;
-const currentArticle = articles.find((article) => article.slug === slug);
-
-const {
-	data: { featuredImage, title, description, author, publishDate, tags, ...rest },
-	render,
-} = currentArticle;
-
-const { Content } = await render();
+const { article } = Astro.props as ArticleProps;
 ---
 
-<BaseLayout {...rest}>
+<BaseLayout {...article}>
   {
-      featuredImage && (
+    article.featuredImage && (
           <section class="article__featured__image__wrapper">
-              <Image
-                  src={featuredImage()}
-                  alt={title}
+              <img
+                  src={article.featuredImage}
+                  alt={article.title}
                   class="article__featured__image"
+                  decoding="async"
+                  loading="lazy"
                   transition:name=`featured-image-${pathname}`
               />
           </section>
@@ -59,43 +53,41 @@ const { Content } = await render();
     <Breadcrumbs classNames="article-page" />
     <div class="article__details">
         <h1 class="article__title">
-          {title}
+          {article.title}
         </h1>
-        <p class="article__author">by <a href={`/tags/${author.data.id}`}>{author.data.name}</a></p>
-        <time class="article__publish-date font-sans-serif" datetime={publishDate}>
-          {publishDate}
+        <p class="article__author">by <a href={`/tags/${article.author.slug}`}>{article.author.name}</a></p>
+        <time class="article__publish-date font-sans-serif" datetime={article.publishDate}>
+          {article.publishDate}
         </time>
       {
-          tags?.length > 0 && (
+        article.tags?.length > 0 && (
               <ul class="article__tags__list flex row-wrap">
-                {tags.map((tag) => (
+                {article.tags.map(({ slug, name }) => (
                     <li class="article__tag__item">
-                        <a href={`/tags/${slugify(tag)}`}>#{tag}</a>
+                        <a href={`/tags/${slug}`}>#{name}</a>
                     </li>
                 ))}
               </ul>
           )
       }
     </div>
-    <article class="article__wrapper">
-        <Content />
-    </article>
+  <article class="article__wrapper" set:html={article.content} />
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Article',
-      'headline': title,
-      'description': description,
-      ...(featuredImage && { 'image': featuredImage }),
-      'datePublished': new Date(publishDate).toISOString(),
-      'dateModified': new Date(publishDate).toISOString(),
+      'headline': article.title,
+      'description': article.description,
+      ...(article.featuredImage && { 'image': article.featuredImage }),
+      'datePublished': new Date(String(article.publishDate)).toISOString(),
+      'dateModified': new Date(String(article.publishDate)).toISOString(),
       'author': {
         '@type': 'Person',
-        'name': author.data.name,
-        'jobTitle': author.data.jobTitle,
+        'name': article.author.name,
+        'jobTitle': article.author.jobTitle,
         'url': new URL('/about', import.meta.env.PUBLIC_SITE_URL),
       },
       'publisher': {
-        'name': author.data.name,
+        'name': article.author.name,
         'url': new URL(import.meta.env.PUBLIC_SITE_URL),
       },
       'mainEntityOfPage': {
@@ -103,5 +95,5 @@ const { Content } = await render();
         '@id': Astro.url.href,
       },
     })} />
-    <RelatedArticles currentArticle={currentArticle} />
+    <RelatedArticles article={article} />
 </BaseLayout>

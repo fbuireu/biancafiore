@@ -1,14 +1,6 @@
+import type { BreadcrumbDTOInput, BreadcrumbDTOItem } from "@application/dto/breadcrumb/types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
 import { deSlugify } from "@shared/ui/utils/deSlugify";
-
-interface BreadcrumbDTOInput {
-	currentPath: string;
-}
-
-export interface BreadcrumbDTOItem {
-	label: string;
-	link: string;
-}
 
 export type BreadcrumbDTO = BreadcrumbDTOItem[];
 

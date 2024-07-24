@@ -17,6 +17,9 @@ interface ImportMetaEnv {
 	readonly FIREBASE_AUTH_CERT_URL: string;
 	readonly FIREBASE_CLIENT_CERT_URL: string;
 	readonly RESEND_API_KEY: string;
+	readonly CONTENTFUL_SPACE_ID: string;
+	readonly CONTENTFUL_DELIVERY_TOKEN: string;
+	readonly CONTENTFUL_PREVIEW_TOKEN: string;
 }
 
 interface ImportMeta {

@@ -1,15 +1,20 @@
 ---
-import { getCollection } from "astro:content";
 import { authorDTO } from "@application/dto/author";
+import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
 import AboutIntro from "@components/molecules/aboutIntro/AboutIntro.astro";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import AboutLatestArticles from "@components/organisms/aboutLatestArticles/AboutLatestArticles.astro";
 import { LittleMoreOfMe } from "@components/organisms/littleMoreOfMe/index";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { CONTACT_DETAILS } from "@const/index";
+import { client } from "@lib/contentful";
 
-const authors = await Promise.all((await getCollection("authors")).map(authorDTO.render));
-const bianca = authors.find((author) => author.data.name === CONTACT_DETAILS.NAME);
+const { items: rawAuthors } = await client.getEntries<RawAuthor>({
+	content_type: "authors",
+});
+const bianca = (await authorDTO.render(rawAuthors as RawAuthor[]))
+	.filter((author) => author.name === CONTACT_DETAILS.NAME)
+	.at(0) as AuthorDTO;
 ---
 
 <BaseLayout title="" description="">
@@ -23,23 +28,23 @@ const bianca = authors.find((author) => author.data.name === CONTACT_DETAILS.NAM
       'mainEntity': {
         '@id': '#bianca',
         '@type': 'Person',
-        'name': bianca.data.name,
+        'name': bianca.name,
         'url': new URL(Astro.url).href,
-        'image': new URL(bianca.data.profileImage, Astro.url).href,
-        'jobTitle': bianca.data.jobTitle,
+        'image': new URL(bianca.profileImage, Astro.url).href,
+        'jobTitle': bianca.jobTitle,
         'worksFor': {
           '@type': 'Organization',
-          'name': bianca.data.currentCompany,
+          'name': bianca.currentCompany,
         },
       },
       'hasPart': [
         {
           '@type': 'Article',
-          'headline': bianca.data.latestArticle.title,
-          'url': new URL(`articles/${bianca.data.latestArticle.slug}`, Astro.url).href,
-          'datePublished': bianca.data.latestArticle.publishDate,
+          'headline': bianca.latestArticle.title,
+          'url': new URL(`articles/${bianca.latestArticle.slug}`, Astro.url).href,
+          'datePublished': bianca.latestArticle.publishDate,
           'author': { '@id': '#bianca' },
         }],
-      'sameAs': [...bianca.data.socialNetworks],
+      'sameAs': [...bianca.socialNetworks],
     })} />
 </BaseLayout>

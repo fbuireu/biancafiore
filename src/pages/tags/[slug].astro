@@ -1,14 +1,11 @@
 ---
-import { getCollection } from "astro:content";
-import { ConfigurationTypes } from "@application/dto/article/articleDTO";
-import { articleDTO } from "@application/dto/article/articleDTO";
-import type { ArticleDTO } from "@application/dto/article/articleDTO";
 import { tagDTO } from "@application/dto/tag/tagDTO";
+import type { RawTag } from "@application/dto/tag/types";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import ArticleCard from "@components/organisms/articleCard/ArticleCard.astro";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
+import { client } from "@lib/contentful";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
-import type { TagDTOItem } from "src/application/dto/tag";
 import "./_tag.css";
 
 export const prerender = true;
@@ -17,19 +14,20 @@ type TagProps = InferGetStaticPropsType<typeof getStaticPaths>;
 type TagParams = InferGetStaticParamsType<typeof getStaticPaths>;
 
 export async function getStaticPaths() {
-	const articles: ArticleDTO[] = await articleDTO.render(await getCollection("articles"), {
-		type: ConfigurationTypes.ASTRO,
+	const { items: rawTags } = await client.getEntries<RawTag>({
+		content_type: "tags",
 	});
-	const tags = await tagDTO.render(articles);
+
+	const tags = await tagDTO.render(rawTags as RawTag[]);
 
 	return Object.keys(tags).flatMap((letter) =>
-		tags[letter].map(({ slug }) => {
+		tags[letter].map((tag) => {
 			return {
 				params: {
-					slug,
+					slug: tag.slug,
 				},
 				props: {
-					tags,
+					tag,
 				},
 			};
 		}),
@@ -37,19 +35,15 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params as TagParams;
-const { tags } = Astro.props as TagProps;
-
-const currentTag: TagDTOItem = await Object.values(tags)
-	.flat()
-	.find((tag) => tag.slug === slug);
+const { tag } = Astro.props as TagProps;
 ---
 <BaseLayout>
     <Breadcrumbs />
     <h1 class="flex justify-center">#{slug}</h1>
     <section class="common-wrapper">
       <ul class="tag__article__list flex row-wrap justify-space-between">
-        {currentTag.articles?.map(({ slug, data: article }, index) => {
-          const href = `/articles/${slug}`;
+        {tag.articles?.map((article, index) => {
+          const href = `/articles/${article.slug}`;
           const props = { ...article, href };
 
           return (
@@ -61,7 +55,7 @@ const currentTag: TagDTOItem = await Object.values(tags)
                     'itemListElement': {
                       '@type': 'ListItem',
                       'position': index + 1,
-                      'url': new URL(`/articles/${slug}`, Astro.url).href,
+                      'url': new URL(`/articles/${article.slug}`, Astro.url).href,
                     },
                   })} />
               </li>

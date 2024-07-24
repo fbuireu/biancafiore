@@ -6,6 +6,7 @@
 			"@infrastructure/*": ["./src/infrastructure/*"],
 			"@actions/*": ["./src/actions/*"],
 			"@ui/*": ["./src/ui/*"],
+			"@lib/*": ["./src/lib/*"],
 			"@application/*": ["./src/application/*"],
 			"@components/*": ["./src/ui/components/*"],
 			"@utils/*": ["./src/utils/*"],

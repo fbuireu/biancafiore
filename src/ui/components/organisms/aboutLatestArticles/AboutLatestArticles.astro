@@ -1,13 +1,17 @@
 ---
-import { getCollection } from "astro:content";
 import { articleDTO } from "@application/dto/article/articleDTO";
+import { client } from "@lib/contentful";
 import "./about-latest-articles.css";
-import type { ArticleDTO } from "@application/dto/article/articleDTO";
+import type { RawArticle } from "@application/dto/article/types";
 import { AboutLatestArticlesSlider } from "@components/molecules/aboutLatestArticlesSlider";
 
-const articles = (await articleDTO.render(await getCollection("articles"))).sort(
-	(a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf(),
-);
+const { items: rawArticles } = await client.getEntries<RawArticle>({
+	content_type: "articles",
+});
+
+const articles = articleDTO
+	.render(rawArticles as RawArticle[])
+	.sort((a, b) => new Date(b.publishDate).valueOf() - new Date(a.publishDate).valueOf());
 ---
 
 <section class="about-latest-articles__wrapper common-wrapper">

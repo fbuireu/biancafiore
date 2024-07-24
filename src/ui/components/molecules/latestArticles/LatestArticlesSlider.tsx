@@ -1,14 +1,13 @@
-import type { ArticleDTO } from "@application/dto/article/articleDTO.ts";
 import { ArticleCard } from "@components/organisms/articleCard/ArticleCard.tsx";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
 import type { SwiperOptions } from "swiper/types";
 import "./latest-articles-slider.css";
+import type { ArticleDTO } from "@application/dto/article/types.ts";
 import { Slider } from "@components/organisms/slider";
-import { slugify } from "@shared/ui/utils/slugify";
 
 interface LatestArticlesSLiderProps {
 	articles: ArticleDTO[];
-	origin: string;
+	origin: URL;
 }
 const SLIDER_CONFIG: SwiperOptions = {
 	...DEFAULT_SWIPER_CONFIG,
@@ -40,8 +39,8 @@ export const LatestArticlesSlider = ({ articles, origin }: LatestArticlesSLiderP
 				items={articles}
 				swiperOptions={SLIDER_CONFIG}
 				classNames="--is-latest-articles-slider"
-				renderItem={({ slug, data: article }) => {
-					const href = `/articles/${slug}`;
+				renderItem={(article) => {
+					const href = `/articles/${article.slug}`;
 					const props = { ...article, href, origin };
 
 					return (
@@ -50,13 +49,11 @@ export const LatestArticlesSlider = ({ articles, origin }: LatestArticlesSLiderP
 							{article.featuredImage && <ArticleCard.Image src={article.featuredImage} alt={article.title} />}
 							<ArticleCard.Title>{article.title}</ArticleCard.Title>
 							<ArticleCard.Excerpt>{article.description}</ArticleCard.Excerpt>
-							<ArticleCard.Author slug={slugify(article.author.data.name)}>
-								{article.author.data.name}
-							</ArticleCard.Author>
+							<ArticleCard.Author slug={article.author.slug}>{article.author.name}</ArticleCard.Author>
 							<ArticleCard.Tags>
-								{article.tags?.map((tag: string) => (
-									<ArticleCard.Tag tag={tag} key={tag}>
-										{tag}
+								{article.tags?.map((tag) => (
+									<ArticleCard.Tag tag={tag} key={tag.name}>
+										{tag.name}
 									</ArticleCard.Tag>
 								))}
 							</ArticleCard.Tags>

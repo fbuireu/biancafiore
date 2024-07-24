@@ -1,9 +1,9 @@
 ---
-import "./latest-articles.css";
-import { getCollection } from "astro:content";
 import { articleDTO } from "@application/dto/article/articleDTO";
-import type { ArticleDTO } from "@application/dto/article/articleDTO";
+import type { RawArticle } from "@application/dto/article/types";
 import { LatestArticlesSlider } from "@components/molecules/latestArticles";
+import { client } from "@lib/contentful";
+import "./latest-articles.css";
 
 interface LatestArticlesProps {
 	limit?: number;
@@ -13,9 +13,12 @@ const MAX_ARTICLES = 4;
 
 const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
-const articles = (await articleDTO.render(await getCollection("articles")))
-	.slice(0, limit)
-	.sort((a, b) => new Date(b.data?.publishDate).valueOf() - new Date(a.data?.publishDate).valueOf());
+const { items: rawArticles } = await client.getEntries<RawArticle>({
+	content_type: "articles",
+});
+const articles = articleDTO
+	.render(rawArticles as RawArticle[])
+	.sort((a, b) => new Date(b.publishDate).valueOf() - new Date(a.publishDate).valueOf());
 ---
 
 <section class="latest-articles__wrapper">

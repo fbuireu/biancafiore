@@ -1,69 +1,44 @@
-import type { CollectionEntry } from "astro:content";
-import { getEntry } from "astro:content";
+import { type ArticleDTO, ArticleType, type RawArticle } from "@application/dto/article/types";
+import { getRelatedArticles } from "@application/dto/article/utils/getRelatedArticles/getRelatedArticles.ts";
 import { DEFAULT_DATE_FORMAT } from "@const/index.ts";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { Document } from "@contentful/rich-text-types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
 import { generateExcerpt } from "@shared/application/utils/generateExcerpt";
+import type { Asset } from "contentful";
 import MarkdownIt from "markdown-it";
+import { getAuthor } from "./utils/getAuthor";
+import { getTags } from "./utils/getTags";
 
-export enum ArticleType {
-	DEFAULT = "default",
-	NO_IMAGE = "no_image",
-}
-
-export interface ArticleData {
-	author: CollectionEntry<"authors">;
-	description: string;
-	publishDate: string;
-	variant: ArticleType;
-}
-
-export type ArticleDTO = {
-	data: ArticleData;
-} & CollectionEntry<"articles">;
-
-export enum ConfigurationTypes {
-	ASTRO = "astro",
-	REACT = "react",
-}
-
-interface ArticleDTOConfiguration {
-	type: ConfigurationTypes;
-}
-
-const IMAGES = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
 const PARSER: MarkdownIt = new MarkdownIt();
 
-export const articleDTO: BaseDTO<
-	CollectionEntry<"articles">[],
-	ArticleDTO[],
-	Promise<ArticleDTO[]>,
-	ArticleDTOConfiguration
-> = {
-	render: async (raw, configuration) => {
-		return await Promise.all(
-			raw.map(async (article) => {
-				const author = await getEntry(article.data.author.collection, article.data.author.slug);
-				const description =
-					article.data.description ?? generateExcerpt({ parser: PARSER, content: article.body }).excerpt;
-				const publishDate = new Date(article.data.publishDate).toLocaleDateString("en", DEFAULT_DATE_FORMAT);
-				const variant: ArticleType = article.data.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
-				const featuredImage =
-					configuration?.type === ConfigurationTypes.ASTRO
-						? IMAGES[`${article.data.featuredImage}`]
-						: article.data.featuredImage;
+export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
+	render: (raw) => {
+		return raw.map((article) => {
+			const description =
+				article.fields.description ??
+				generateExcerpt({
+					parser: PARSER,
+					content: documentToHtmlString(article.fields.content as unknown as Document),
+				}).excerpt;
 
-				return {
-					...article,
-					data: {
-						...article.data,
-						author,
-						description,
-						publishDate,
-						featuredImage,
-						variant,
-					},
-				};
-			}),
-		);
+			const tags = getTags(article.fields.tags);
+
+			const relatedArticles = article.fields.relatedArticles ?? getRelatedArticles({ article, allArticles: raw });
+
+			return {
+				title: article.fields.title,
+				author: getAuthor(article.fields.author),
+				slug: article.fields.slug,
+				description,
+				publishDate: new Date(String(article.fields.publishDate)).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
+				featuredImage: (article.fields.featuredImage as unknown as Asset).fields.file?.url,
+				variant: article.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
+				content: documentToHtmlString(article.fields.content as unknown as Document),
+				isFeaturedArticle: article.fields.featuredArticle,
+				tags,
+				relatedArticles,
+			} as unknown as ArticleDTO;
+		});
 	},
 };
