@@ -46,7 +46,7 @@ export const LatestArticlesSlider = ({ articles, origin }: LatestArticlesSLiderP
 					return (
 						<ArticleCard {...props}>
 							<ArticleCard.PublishDate publishDate={article.publishDate}>{article.publishDate}</ArticleCard.PublishDate>
-							{article.featuredImage && <ArticleCard.Image src={article.featuredImage} alt={article.title} />}
+							{article.featuredImage && <ArticleCard.Image src={article.featuredImage.url} alt={article.title} />}
 							<ArticleCard.Title>{article.title}</ArticleCard.Title>
 							<ArticleCard.Excerpt>{article.description}</ArticleCard.Excerpt>
 							<ArticleCard.Author slug={article.author.slug}>{article.author.name}</ArticleCard.Author>

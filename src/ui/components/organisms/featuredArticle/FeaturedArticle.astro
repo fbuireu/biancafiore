@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import type { ArticleDTO } from "@application/dto/article/types";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import "./featured-article.css";
@@ -15,11 +16,11 @@ const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Ast
   <section class="articles__wrapper__inner common-wrapper">
     <div class="featured-article__wrapper">
       <a href={`/articles/${featuredArticle.slug}`}>
-        <img
-          decoding="async"
-          loading="lazy"
+        <Image
           class="featured-article__image"
-          src={featuredArticle.featuredImage}
+          src={featuredArticle.featuredImage.url}
+          width={featuredArticle.featuredImage.details.width}
+          height={featuredArticle.featuredImage.details.height}
           alt={"featuredArticle.title"}
         />
       </a>
@@ -43,7 +44,7 @@ const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Ast
             )
           }
           <a href={`/articles/${featuredArticle.slug}`} class="featured-article__link flex align-center">
-            Read More <img src={horizontalArrow.src} alt="Readt more" />
+            Read More <Image src={horizontalArrow} alt="Read more" />
           </a>
         </div>
         <div class="featured-article__share__wrapper flex row-wrap">

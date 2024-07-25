@@ -2,8 +2,8 @@
 import { Image } from "astro:assets";
 import bianca from "@assets/images/jpg/bianca-fiore.jpg";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
-import "./about-intro.css";
 import EmailButton from "@components/atoms/emailButton/EmailButton.astro";
+import "./about-intro.css";
 ---
 
 <section class="about-me-intro__wrapper common-wrapper" transition:name="about-me-section">
@@ -19,7 +19,7 @@ import EmailButton from "@components/atoms/emailButton/EmailButton.astro";
         facias, cum mori.
       </p>
       <a href="/projects" class="about-me-intro__body__cta flex align-center">
-        See my work <img src={horizontalArrow.src} alt="See my work" loading="lazy" decoding="async" />
+        See my work <Image src={horizontalArrow} alt="See my work" />
       </a>
     </div>
   </div>

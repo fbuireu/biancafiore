@@ -1,15 +1,15 @@
 ---
+import { Image } from "astro:assets";
 import type { ArticleDTO } from "@application/dto/article/types";
 import { ArticleType } from "@application/dto/article/types";
 import clsx from "clsx";
 import { getLocation } from "./utils/getLocation";
 import "./article-card.css";
 
-type ArticleCardProps = {
+export interface ArticleCardProps extends ArticleDTO {
 	origin: URL;
-	children: React.ReactNode;
 	href: string;
-} & ArticleDTO;
+}
 
 const { href, title, description, variant, featuredImage, publishDate, author, tags } = Astro.props as ArticleCardProps;
 
@@ -29,12 +29,12 @@ const origin = getLocation(Astro.url);
     )}
 >
   {featuredImage && (
-      <img
+      <Image
           class="article__item__featured-image"
-          src={featuredImage}
+          src={featuredImage.url}
+          width={featuredImage.details.width}
+          height={featuredImage.details.height}
           alt={title}
-          decoding="async"
-          loading="lazy"
           transition:name=`featured-image-${pathname}`
       />
   )}

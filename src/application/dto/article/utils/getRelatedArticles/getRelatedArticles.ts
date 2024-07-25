@@ -1,10 +1,9 @@
-import type { ArticleDTO, RawArticle } from "@application/dto/article/types";
+import type { ArticleDTO, ContentfulImageAsset, RawArticle } from "@application/dto/article/types";
 import { ArticleType } from "@application/dto/article/types";
 import { getAuthor } from "@application/dto/article/utils/getAuthor";
 import { DEFAULT_DATE_FORMAT } from "@const/const.ts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Document } from "@contentful/rich-text-types";
-import type { Asset } from "contentful";
 
 const MAX_RELATED_ARTICLES = 3;
 
@@ -28,7 +27,15 @@ export const getRelatedArticles = ({ article, allArticles }: GetRelatedArticlesP
 			content: documentToHtmlString(relatedArticle.fields.content as unknown as Document),
 			description: relatedArticle.fields.description,
 			publishDate: new Date(String(relatedArticle.fields.publishDate)).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
-			featuredImage: (relatedArticle.fields.featuredImage as unknown as Asset).fields.file?.url,
+			featuredImage: {
+				url: relatedArticle.fields.featuredImage.fields.file.url,
+				details: {
+					width: (relatedArticle.fields.featuredImage as unknown as ContentfulImageAsset).fields.file.details.image
+						.width,
+					height: (relatedArticle.fields.featuredImage as unknown as ContentfulImageAsset).fields.file.details.image
+						.height,
+				},
+			},
 			variant: relatedArticle.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
 			isFeaturedArticle: relatedArticle.fields.featuredArticle,
 			author: getAuthor(relatedArticle.fields.author),

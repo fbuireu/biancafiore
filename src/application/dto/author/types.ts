@@ -1,5 +1,5 @@
-import type { ArticleDTO } from "@application/dto/article/types";
-import type { EntryFieldTypes } from "contentful";
+import type { ArticleDTO, ContentfulImageAsset } from "@application/dto/article/types";
+import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawAuthor {
 	contentTypeId: "authors";
@@ -9,7 +9,7 @@ export interface RawAuthor {
 		description: EntryFieldTypes.Text;
 		jobTitle: EntryFieldTypes.Text;
 		currentCompany: EntryFieldTypes.Text;
-		profileImage: EntryFieldTypes.AssetLink;
+		profileImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
 		socialNetworks: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
 	};
 }
@@ -20,8 +20,16 @@ export interface AuthorDTO {
 	description: string;
 	jobTitle: string;
 	currentCompany: string;
-	profileImage: string;
+	profileImage: ProfileImage;
 	socialNetworks: string[];
 	articles: ArticleDTO[];
 	latestArticle: ArticleDTO;
+}
+
+export interface ProfileImage {
+	url: string;
+	details: {
+		width: number;
+		height: number;
+	};
 }

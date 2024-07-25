@@ -1087,20 +1087,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@contentful/rich-text-html-renderer@npm:^16.6.6":
-  version: 16.6.6
-  resolution: "@contentful/rich-text-html-renderer@npm:16.6.6"
+"@contentful/rich-text-html-renderer@npm:^16.6.7":
+  version: 16.6.7
+  resolution: "@contentful/rich-text-html-renderer@npm:16.6.7"
   dependencies:
-    "@contentful/rich-text-types": "npm:^16.8.1"
+    "@contentful/rich-text-types": "npm:^16.8.2"
     escape-html: "npm:^1.0.3"
-  checksum: 10c0/2ba8abe96dec825e76b0d255f8ab8175d4a7ee33826b1bd90984cfcd7e270f2fbf61a03c33a73aa7dde7cb30aa6088ad7ded0f06e6823df1618f20efb5a2a504
+  checksum: 10c0/41b2d97a0a6d783d5503d1154e0047cbb245fb2e30db5df7ac3985d7a6373005afccc8341e865272e60e9691421ebcba5df6dbfdac5110b9d5d58583c2457a5f
   languageName: node
   linkType: hard
 
-"@contentful/rich-text-types@npm:^16.0.2, @contentful/rich-text-types@npm:^16.8.1":
+"@contentful/rich-text-types@npm:^16.0.2":
   version: 16.8.1
   resolution: "@contentful/rich-text-types@npm:16.8.1"
   checksum: 10c0/c3d44ddc1088ebd4b195aff217b759c4a9713f432d54f392411860f708ace7faa98366a75dcc62fa9fc422942eeeb953134af02d813c83aba8ebffe73bd35d8e
+  languageName: node
+  linkType: hard
+
+"@contentful/rich-text-types@npm:^16.8.2":
+  version: 16.8.2
+  resolution: "@contentful/rich-text-types@npm:16.8.2"
+  checksum: 10c0/5b813a5751378934be206d5c9388a56f93f6c10f1c1c87fceee65e32892264f4d497ff87b617f8d259ea665c033b97576170cd483e9721e909eb0728067375e0
   languageName: node
   linkType: hard
 
@@ -3443,13 +3450,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/markdown-it@npm:^14.1.1":
-  version: 14.1.1
-  resolution: "@types/markdown-it@npm:14.1.1"
+"@types/markdown-it@npm:^14.1.2":
+  version: 14.1.2
+  resolution: "@types/markdown-it@npm:14.1.2"
   dependencies:
     "@types/linkify-it": "npm:^5"
     "@types/mdurl": "npm:^2"
-  checksum: 10c0/f029e471d6927c78879de8de085302544cd43643e2435775fbe0d49be998d4a23890555b0c090c154925e3a9df01ba48514582671e4f8488d8dcf992e2d155ef
+  checksum: 10c0/34f709f0476bd4e7b2ba7c3341072a6d532f1f4cb6f70aef371e403af8a08a7c372ba6907ac426bc618d356dab660c5b872791ff6c1ead80c483e0d639c6f127
   languageName: node
   linkType: hard
 
@@ -4283,21 +4290,21 @@ __metadata:
     "@biomejs/biome": "npm:1.8.3"
     "@commitlint/cli": "npm:^19.3.0"
     "@commitlint/config-conventional": "npm:^19.2.2"
-    "@contentful/rich-text-html-renderer": "npm:^16.6.6"
+    "@contentful/rich-text-html-renderer": "npm:^16.6.7"
     "@fontsource-variable/nunito-sans": "npm:^5.0.14"
     "@fontsource/baskervville": "npm:^5.0.20"
     "@hookform/resolvers": "npm:^3.9.0"
     "@testing-library/react": "npm:^16.0.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
-    "@types/markdown-it": "npm:^14.1.1"
+    "@types/markdown-it": "npm:^14.1.2"
     "@types/node": "npm:^20.14.12"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@types/three": "npm:^0.166.0"
     astro: "npm:^4.12.2"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^10.12.14"
+    contentful: "npm:^10.12.15"
     firebase: "npm:^10.12.4"
     firebase-admin: "npm:^12.2.0"
     gsap: "npm:^3.12.5"
@@ -4315,7 +4322,7 @@ __metadata:
     stylelint: "npm:^16.7.0"
     stylelint-config-recommended: "npm:^14.0.1"
     stylelint-order: "npm:^6.0.4"
-    swiper: "npm:^11.1.6"
+    swiper: "npm:^11.1.7"
     three: "npm:^0.166.1"
     vanilla-cookieconsent: "npm:^3.0.1"
     vitest: "npm:^2.0.4"
@@ -4815,9 +4822,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^10.12.14":
-  version: 10.12.14
-  resolution: "contentful@npm:10.12.14"
+"contentful@npm:^10.12.15":
+  version: 10.12.15
+  resolution: "contentful@npm:10.12.15"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.6.0"
     "@contentful/rich-text-types": "npm:^16.0.2"
@@ -4826,7 +4833,7 @@ __metadata:
     contentful-sdk-core: "npm:^8.1.0"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/17b38ee28ff0fb32629a7a02a8e6cc47f2900df9c971ed9a80042481c5dfc70135fc92bdf27df4f374df6b9a9600465d7c267d21fbe45cd448fbc150580ac85d
+  checksum: 10c0/94277f780a831285cf937294c6647beda6a08e02675769833c2e6561a4dc57f2de47f735dd0ada8025d439e8a7ef58765a1b8753921d3e1b32e360deaf5c8c06
   languageName: node
   linkType: hard
 
@@ -10937,10 +10944,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^11.1.6":
-  version: 11.1.6
-  resolution: "swiper@npm:11.1.6"
-  checksum: 10c0/f5df7daf70e879a3cb1ce91ebcc3d6bd6863e3ec085c12fc4d49239f0f27eee6059b182db02e57b1127a5ecaedd5125f116a73929c79bdab36c660eacc9f8ebd
+"swiper@npm:^11.1.7":
+  version: 11.1.7
+  resolution: "swiper@npm:11.1.7"
+  checksum: 10c0/de95baf25fbe092f92b9ad216f47e9363052532b6fcb1af396258b5dc3cee41bc2eb8011669fe5a0aef9410bb9496dba1c655b111e0064d61a91664c87bc1ad8
   languageName: node
   linkType: hard
 

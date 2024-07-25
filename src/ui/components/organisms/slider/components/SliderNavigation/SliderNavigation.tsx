@@ -1,4 +1,5 @@
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
+import { Image } from "@components/atoms/Image";
 import useSliderNavigation from "@ui/hooks/useSliderNavigation/useSliderNavigation.ts";
 import clsx from "clsx";
 import { useRef } from "react";
@@ -23,7 +24,7 @@ export const SliderNavigation: React.FC<SliderNavigationProps> = ({ swiper, base
 				type="button"
 				onClick={() => swiper.slidePrev()}
 			>
-				<img src={horizontalArrow.src} alt="Previous Article" loading="lazy" decoding="async" />
+				<Image src={(horizontalArrow as unknown as ProtoImage).src} alt="Previous Article" />
 			</button>
 			<button
 				ref={rightButtonRef}
@@ -31,7 +32,7 @@ export const SliderNavigation: React.FC<SliderNavigationProps> = ({ swiper, base
 				type="button"
 				onClick={() => swiper.slideNext()}
 			>
-				<img src={horizontalArrow.src} alt="Next Article" loading="lazy" decoding="async" />
+				<Image src={(horizontalArrow as unknown as ProtoImage).src} alt="Next Article" />
 			</button>
 		</div>
 	);

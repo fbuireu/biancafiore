@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { articleDTO } from "@application/dto/article/articleDTO";
 import type { RawArticle } from "@application/dto/article/types";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
@@ -39,12 +40,12 @@ const { article } = Astro.props as ArticleProps;
   {
     article.featuredImage && (
           <section class="article__featured__image__wrapper">
-              <img
-                  src={article.featuredImage}
+              <Image
+                  src={article.featuredImage.url}
+                  width={article.featuredImage.details.width}
+                  height={article.featuredImage.details.height}
                   alt={article.title}
                   class="article__featured__image"
-                  decoding="async"
-                  loading="lazy"
                   transition:name=`featured-image-${pathname}`
               />
           </section>

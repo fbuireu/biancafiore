@@ -1,11 +1,15 @@
-import { type ArticleDTO, ArticleType, type RawArticle } from "@application/dto/article/types";
+import {
+	type ArticleDTO,
+	ArticleType,
+	type ContentfulImageAsset,
+	type RawArticle,
+} from "@application/dto/article/types";
 import { getRelatedArticles } from "@application/dto/article/utils/getRelatedArticles/getRelatedArticles.ts";
 import { DEFAULT_DATE_FORMAT } from "@const/index.ts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Document } from "@contentful/rich-text-types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
 import { generateExcerpt } from "@shared/application/utils/generateExcerpt";
-import type { Asset } from "contentful";
 import MarkdownIt from "markdown-it";
 import { getAuthor } from "./utils/getAuthor";
 import { getTags } from "./utils/getTags";
@@ -25,6 +29,13 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 			const tags = getTags(article.fields.tags);
 
 			const relatedArticles = article.fields.relatedArticles ?? getRelatedArticles({ article, allArticles: raw });
+			const featuredImage = {
+				url: article.fields.featuredImage.fields.file.url,
+				details: {
+					width: (article.fields.featuredImage as unknown as ContentfulImageAsset).fields.file.details?.image?.width,
+					height: (article.fields.featuredImage as unknown as ContentfulImageAsset).fields.file.details?.image?.height,
+				},
+			};
 
 			return {
 				title: article.fields.title,
@@ -32,7 +43,7 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 				slug: article.fields.slug,
 				description,
 				publishDate: new Date(String(article.fields.publishDate)).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
-				featuredImage: (article.fields.featuredImage as unknown as Asset).fields.file?.url,
+				featuredImage,
 				variant: article.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
 				content: documentToHtmlString(article.fields.content as unknown as Document),
 				isFeaturedArticle: article.fields.featuredArticle,

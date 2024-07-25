@@ -1,6 +1,6 @@
 import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
 import type { BaseTagDTO } from "@application/dto/tag/types.ts";
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { Asset, Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawArticle {
 	contentTypeId: "articles";
@@ -10,7 +10,7 @@ export interface RawArticle {
 		content: EntryFieldTypes.RichText;
 		description: EntryFieldTypes.Text;
 		publishDate: EntryFieldTypes.Date;
-		featuredImage: EntryFieldTypes.AssetLink;
+		featuredImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
 		featuredArticle: EntryFieldTypes.Boolean;
 		author: Entry<EntrySkeletonType<RawAuthor["fields"]>>;
 		tags: Entry<EntrySkeletonType<BaseTagDTO>>[];
@@ -24,7 +24,7 @@ export interface ArticleDTO {
 	content: string;
 	description: string;
 	publishDate: string;
-	featuredImage: string;
+	featuredImage: FeaturedImage;
 	variant: ArticleType;
 	isFeaturedArticle: boolean;
 	author: AuthorDTO;
@@ -36,3 +36,29 @@ export enum ArticleType {
 	DEFAULT = "default",
 	NO_IMAGE = "no_image",
 }
+
+interface FeaturedImage {
+	url: string;
+	details: {
+		width: number;
+		height: number;
+	};
+}
+
+interface FileDetails {
+	image: {
+		width: number;
+		height: number;
+	};
+}
+
+interface AssetFile {
+	url: string;
+	details: FileDetails;
+}
+
+export type ContentfulImageAsset = Asset & {
+	fields: {
+		file: AssetFile;
+	};
+};

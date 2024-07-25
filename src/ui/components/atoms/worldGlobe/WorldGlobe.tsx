@@ -1,18 +1,19 @@
+import horizontalArrow from "@assets/images/svg/left-arrow.svg";
+import zoomIn from "@assets/images/svg/zoom-in.svg";
+import zoomOut from "@assets/images/svg/zoom-out.svg";
+import { Image } from "@components/atoms/Image/Image.tsx";
+import { calculateCenter } from "@components/atoms/worldGlobe/utils/calculateCenter";
+import { renderPin } from "@components/atoms/worldGlobe/utils/renderPin";
+import { WORLD_GLOBE_CONFIG } from "@const/index";
 import countries from "@data/countries.geojson.json";
+import useTabVisibility, { TabVisibility } from "@ui/hooks/useTabVisibility/useTabVisibility.ts";
 import { memo, useCallback, useEffect, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
-import "./world-globe.css";
-import horizontalArrow from "@assets/images/svg/left-arrow.svg";
-import zoomIn from "@assets/images/svg/zoom-in.svg";
-import zoomOut from "@assets/images/svg/zoom-out.svg";
-import { calculateCenter } from "@components/atoms/worldGlobe/utils/calculateCenter";
-import { renderPin } from "@components/atoms/worldGlobe/utils/renderPin";
-import { WORLD_GLOBE_CONFIG } from "@const/index";
-import useTabVisibility, { TabVisibility } from "@ui/hooks/useTabVisibility/useTabVisibility.ts";
 import type { ReactGlobePoint } from "./utils/refineCities";
 import { refineCities } from "./utils/refineCities";
+import "./world-globe.css";
 
 export interface City {
 	latitude: string;
@@ -138,7 +139,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<img src={horizontalArrow.src} alt="Move left" loading="lazy" decoding="async" />
+						<Image src={(horizontalArrow as unknown as ProtoImage).src} alt="Move left" />
 					</button>
 					<button
 						className="world-globe__controls__move --right flex clickable"
@@ -150,7 +151,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<img src={horizontalArrow.src} alt="Move Right" loading="lazy" decoding="async" />
+						<Image src={(horizontalArrow as unknown as ProtoImage).src} alt="Move Right" />
 					</button>
 				</div>
 				<div className="world-globe__controls__zoom-wrapper flex row-wrap">
@@ -164,7 +165,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<img src={zoomIn.src} alt="Zoom in" loading="lazy" decoding="async" />
+						<Image src={(zoomIn as unknown as ProtoImage).src} alt="Zoom in" />
 					</button>
 					<button
 						className="world-globe__controls__move --zoom-out clickable"
@@ -176,7 +177,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<img src={zoomOut.src} alt="Zoom out" loading="lazy" decoding="async" />
+						<Image src={(zoomOut as unknown as ProtoImage).src} alt="Zoom out" />
 					</button>
 				</div>
 			</div>

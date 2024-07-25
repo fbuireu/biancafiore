@@ -30,7 +30,7 @@ const bianca = (await authorDTO.render(rawAuthors as RawAuthor[]))
         '@type': 'Person',
         'name': bianca.name,
         'url': new URL(Astro.url).href,
-        'image': new URL(bianca.profileImage, Astro.url).href,
+        'image': new URL(bianca.profileImage.url, Astro.url).href,
         'jobTitle': bianca.jobTitle,
         'worksFor': {
           '@type': 'Organization',

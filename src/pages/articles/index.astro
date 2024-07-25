@@ -1,7 +1,6 @@
 ---
 import { articleDTO } from "@application/dto/article/articleDTO";
 import type { RawArticle } from "@application/dto/article/types";
-import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import ArticleCard from "@components/organisms/articleCard/ArticleCard.astro";
 import FeaturedArticle from "@components/organisms/featuredArticle/FeaturedArticle.astro";
@@ -21,7 +20,6 @@ const articles = articleDTO
 const featuredArticle = getFeaturedArticle(articles);
 ---
 
-<!-- todo: isolate sections -->
 <BaseLayout title="" description="">
     <h1 class="articles__title section-title">The Blog</h1>
     <Breadcrumbs classNames="articles-page" />
