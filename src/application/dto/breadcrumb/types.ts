@@ -1,4 +1,4 @@
-export interface BreadcrumbDTOInput {
+export interface RawBreadcrumb {
 	currentPath: string;
 }
 

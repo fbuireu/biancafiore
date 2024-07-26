@@ -1,41 +1,26 @@
 ---
+import type { RawTestimonial } from "@application/dto/testimonial/types";
 import { TestimonialsSlider } from "@components/molecules/testimonialsSlider";
-import type { TestimonialEntity } from "@components/molecules/testimonialsSlider";
+import { testimonialDTO } from "src/application/dto/testimonial";
+import { client } from "src/lib/contentful";
 import "./testimonials.css";
 
-const testimonials: TestimonialEntity[] = [
-	{
-		author: "Ferran Buireu 1",
-		quote:
-			"Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog Yellow Jack fathom broadside snow clipper quarter.",
-		imageSrc: "https://via.placeholder.com/150",
-		description: "role",
-	},
-	{
-		author: "Ferran Buireu 2",
-		quote:
-			"Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog Yellow Jack fathom broadside snow clipper quarter.",
-		imageSrc: "https://via.placeholder.com/150",
-		description: "role",
-	},
-	{
-		author: "Ferran Buireu 3",
-		quote:
-			"Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion lanyard trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog Yellow Jack fathom broadside snow clipper quarter.",
-		imageSrc: "https://via.placeholder.com/150",
-		description: "role",
-	},
-];
+const { items: rawTestimonials } = await client.getEntries<RawTestimonial>({
+	content_type: "testimonial",
+});
+const testimonials = testimonialDTO.render(rawTestimonials as RawTestimonial[]);
 ---
 
 <section class="testimonials__wrapper">
-  <h3 class="testimonials__title section-title">Testimonials</h3>
-  <p class="testimonials__body">
-    Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion lanyard
-    trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog Yellow Jack fathom
-    broadside snow clipper quarter. This template comes with a few integrations already configured in your
-    astro.config.mjs file. You can customize your setup with Astro Integrations to add tools like Tailwind, React, or
-    Vue to your project.
-  </p>
-  <TestimonialsSlider client:load testimonials={testimonials} />
+    <h3 class="testimonials__title section-title">Testimonials</h3>
+    <p class="testimonials__body">
+        Careen red ensign marooned Pirate Round Buccaneer spirits yard Corsair pink aye. Galleon scuppers gabion lanyard
+        trysail fluke to go on account Sea Legs Brethren of the Coast keelhaul. Tender topsail cable cog Yellow Jack
+        fathom
+        broadside snow clipper quarter. This template comes with a few integrations already configured in your
+        astro.config.mjs file. You can customize your setup with Astro Integrations to add tools like Tailwind, React,
+        or
+        Vue to your project.
+    </p>
+    <TestimonialsSlider client:load testimonials={testimonials} />
 </section>

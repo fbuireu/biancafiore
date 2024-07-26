@@ -1,18 +1,12 @@
+import type { TestimonialDTO } from "@application/dto/testimonial/types.ts";
 import { Testimonial } from "@components/molecules/testimonial";
 import { Slider } from "@components/organisms/slider";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
 import { Pagination } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";
 
-export interface TestimonialEntity {
-	author: string;
-	quote: string;
-	imageSrc: string;
-	description: string;
-}
-
 interface TestimonialSliderProps extends Slider<TestimonialSliderProps> {
-	testimonials: TestimonialEntity[];
+	testimonials: TestimonialDTO[];
 }
 
 const SLIDER_CONFIG: SwiperOptions = {
@@ -45,12 +39,12 @@ export const TestimonialsSlider = ({ testimonials }: TestimonialSliderProps) => 
 			items={testimonials}
 			swiperOptions={SLIDER_CONFIG}
 			classNames="--is-testimonials-slider"
-			renderItem={(testimonial: TestimonialEntity) => (
+			renderItem={(testimonial) => (
 				<Testimonial>
 					<Testimonial.Author>{testimonial.author}</Testimonial.Author>
 					<Testimonial.Quote>{testimonial.quote}</Testimonial.Quote>
-					<Testimonial.Image src={testimonial.imageSrc} alt="alt" />
-					<Testimonial.Description>{testimonial.description}</Testimonial.Description>
+					<Testimonial.Image src={testimonial.image.url} alt={testimonial.author} />
+					<Testimonial.Description>{testimonial.role}</Testimonial.Description>
 				</Testimonial>
 			)}
 		/>

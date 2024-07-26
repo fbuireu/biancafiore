@@ -1,10 +1,10 @@
-import type { BreadcrumbDTOInput, BreadcrumbDTOItem } from "@application/dto/breadcrumb/types";
+import type { BreadcrumbDTOItem, RawBreadcrumb } from "@application/dto/breadcrumb/types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
 import { deSlugify } from "@shared/ui/utils/deSlugify";
 
 export type BreadcrumbDTO = BreadcrumbDTOItem[];
 
-export const breadcrumbDTO: BaseDTO<BreadcrumbDTOInput, BreadcrumbDTO> = {
+export const breadcrumbDTO: BaseDTO<RawBreadcrumb, BreadcrumbDTO> = {
 	render: ({ currentPath }): BreadcrumbDTO => {
 		const pathSegments = currentPath.split("/").filter((segment) => segment.trim() !== "");
 		const breadcrumbs: BreadcrumbDTOItem[] = pathSegments.map((_, index) => {
