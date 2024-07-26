@@ -13,7 +13,7 @@
 			"@assets/*": ["./src/assets/*"],
 			"@styles/*": ["./src/ui/styles/*"],
 			"@data/*": ["./src/data/*"],
-			"@shared/*": ["./src/ui/shared/*"],
+			"@shared/*": ["./src/shared/*"],
 			"@content/*": ["./src/content/*"],
 			"@i18n/*": ["./src/i18n/*"],
 			"@mocks/*": ["./src/mocks/*"],

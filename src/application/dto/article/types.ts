@@ -1,9 +1,13 @@
 import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
 import type { BaseTagDTO } from "@application/dto/tag/types.ts";
-import type { Asset, Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { ContentfulImageAsset } from "@shared/application/types";
+import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawArticle {
 	contentTypeId: "articles";
+	sys: {
+		id: string;
+	};
 	fields: {
 		title: EntryFieldTypes.Text;
 		slug: EntryFieldTypes.Text;
@@ -44,21 +48,3 @@ interface FeaturedImage {
 		height: number;
 	};
 }
-
-interface FileDetails {
-	image: {
-		width: number;
-		height: number;
-	};
-}
-
-interface AssetFile {
-	url: string;
-	details: FileDetails;
-}
-
-export type ContentfulImageAsset = Asset & {
-	fields: {
-		file: AssetFile;
-	};
-};

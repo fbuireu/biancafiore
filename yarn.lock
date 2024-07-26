@@ -15,11 +15,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/check@npm:^0.8.2":
-  version: 0.8.2
-  resolution: "@astrojs/check@npm:0.8.2"
+"@astrojs/check@npm:^0.8.3":
+  version: 0.8.3
+  resolution: "@astrojs/check@npm:0.8.3"
   dependencies:
-    "@astrojs/language-server": "npm:^2.12.1"
+    "@astrojs/language-server": "npm:^2.12.7"
     chokidar: "npm:^3.5.3"
     fast-glob: "npm:^3.3.1"
     kleur: "npm:^4.1.5"
@@ -28,7 +28,7 @@ __metadata:
     typescript: ^5.0.0
   bin:
     astro-check: dist/bin.js
-  checksum: 10c0/81c0e094124ec3fad73ad87af733d037b802dbdf8a602aea21ed3bc8bdd7652a1c3cde9d9f09fabfd8170d6584abf0d54fc7f71f94f632ead8a2ae744e97238f
+  checksum: 10c0/4bc9b084e39770ec89264cdc871dbdda48a010c18469f4373cb4fae6a990bd596b10eb89f3d9ee4dc6762a259383d68d40252043e40af92676f85d697f9a4ee1
   languageName: node
   linkType: hard
 
@@ -79,9 +79,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/language-server@npm:^2.12.1":
-  version: 2.12.1
-  resolution: "@astrojs/language-server@npm:2.12.1"
+"@astrojs/language-server@npm:^2.12.7":
+  version: 2.12.8
+  resolution: "@astrojs/language-server@npm:2.12.8"
   dependencies:
     "@astrojs/compiler": "npm:^2.9.1"
     "@jridgewell/sourcemap-codec": "npm:^1.4.15"
@@ -110,7 +110,7 @@ __metadata:
       optional: true
   bin:
     astro-ls: bin/nodeServer.js
-  checksum: 10c0/dbcbcf120c8a5542672b9673d31f16c4f5a0b9470ed4bbae39d2aa721b9ed85d7b5b7dbd745e6b791ecd6d8182551873b090d70f98e455efe1b21beef046809b
+  checksum: 10c0/26b96aed9c4e80b918eedb863ccdbb6c444efe8a0d60235f3425e51d93fa65ada82947e98aeb66aa41464dac76749adecd262c6d3dbdc01da69bc036bf87ad6a
   languageName: node
   linkType: hard
 
@@ -1887,10 +1887,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fastify/busboy@npm:^2.0.0, @fastify/busboy@npm:^2.1.0":
+"@fastify/busboy@npm:^2.0.0":
   version: 2.1.1
   resolution: "@fastify/busboy@npm:2.1.1"
   checksum: 10c0/6f8027a8cba7f8f7b736718b013f5a38c0476eea67034c94a0d3c375e2b114366ad4419e6a6fa7ffc2ef9c6d3e0435d76dd584a7a1cbac23962fda7650b579e3
+  languageName: node
+  linkType: hard
+
+"@fastify/busboy@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@fastify/busboy@npm:3.0.0"
+  checksum: 10c0/ecc23afc7ca5c2c1d82fa7baf88c0847dc238d3020d11462e5c8e49fd380a4c90f5b7744b9efe013fb866f1eb34972d472e54fcc83b480f99bf7ee498daa6617
   languageName: node
   linkType: hard
 
@@ -3629,16 +3636,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/three@npm:^0.166.0":
-  version: 0.166.0
-  resolution: "@types/three@npm:0.166.0"
+"@types/three@npm:^0.167.0":
+  version: 0.167.0
+  resolution: "@types/three@npm:0.167.0"
   dependencies:
     "@tweenjs/tween.js": "npm:~23.1.2"
     "@types/stats.js": "npm:*"
     "@types/webxr": "npm:*"
     fflate: "npm:~0.8.2"
     meshoptimizer: "npm:~0.18.1"
-  checksum: 10c0/e79d3280bcd802b3bcb283455eb0d3d5790053d1921345bf27ff4258a17c5f3839870781d0e979de73398735ded85a51c4c5c1139a9e8d306d47f30d05e1c3b3
+  checksum: 10c0/aa7ed7a76cb13c3676edaed803eda71c10b5919b888ff183ff4aa3cc47913881930e8ffa13d5cd67aac6cd9f3978ed91c2699b9cf170318350e7b0cfc907e4ba
   languageName: node
   linkType: hard
 
@@ -4279,7 +4286,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "biancafiore@workspace:."
   dependencies:
-    "@astrojs/check": "npm:^0.8.2"
+    "@astrojs/check": "npm:^0.8.3"
     "@astrojs/cloudflare": "npm:^11.0.1"
     "@astrojs/mdx": "npm:^3.1.3"
     "@astrojs/partytown": "npm:^2.1.1"
@@ -4301,14 +4308,14 @@ __metadata:
     "@types/node": "npm:^20.14.12"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
-    "@types/three": "npm:^0.166.0"
+    "@types/three": "npm:^0.167.0"
     astro: "npm:^4.12.2"
     clsx: "npm:^2.1.1"
     contentful: "npm:^10.12.15"
     firebase: "npm:^10.12.4"
-    firebase-admin: "npm:^12.2.0"
+    firebase-admin: "npm:^12.3.0"
     gsap: "npm:^3.12.5"
-    husky: "npm:^9.1.1"
+    husky: "npm:^9.1.2"
     lint-staged: "npm:^15.2.7"
     markdown-it: "npm:^14.1.0"
     million: "npm:^3.1.11"
@@ -4323,10 +4330,10 @@ __metadata:
     stylelint-config-recommended: "npm:^14.0.1"
     stylelint-order: "npm:^6.0.4"
     swiper: "npm:^11.1.7"
-    three: "npm:^0.166.1"
+    three: "npm:^0.167.0"
     vanilla-cookieconsent: "npm:^3.0.1"
     vitest: "npm:^2.0.4"
-    wrangler: "npm:^3.66.0"
+    wrangler: "npm:^3.67.0"
     zod: "npm:^3.23.8"
   languageName: unknown
   linkType: soft
@@ -6092,11 +6099,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firebase-admin@npm:^12.2.0":
-  version: 12.2.0
-  resolution: "firebase-admin@npm:12.2.0"
+"firebase-admin@npm:^12.3.0":
+  version: 12.3.0
+  resolution: "firebase-admin@npm:12.3.0"
   dependencies:
-    "@fastify/busboy": "npm:^2.1.0"
+    "@fastify/busboy": "npm:^3.0.0"
     "@firebase/database-compat": "npm:^1.0.2"
     "@firebase/database-types": "npm:^1.0.0"
     "@google-cloud/firestore": "npm:^7.7.0"
@@ -6105,7 +6112,6 @@ __metadata:
     farmhash-modern: "npm:^1.1.0"
     jsonwebtoken: "npm:^9.0.0"
     jwks-rsa: "npm:^3.1.0"
-    long: "npm:^5.2.3"
     node-forge: "npm:^1.3.1"
     uuid: "npm:^10.0.0"
   dependenciesMeta:
@@ -6113,7 +6119,7 @@ __metadata:
       optional: true
     "@google-cloud/storage":
       optional: true
-  checksum: 10c0/1f011e556c055da6d0e2822deee1c8d3b00566d1c4ef3525a5bc6604fad62d49114be18d12a39d039a415b71b2b4404c5eab93e4f9811965f2c663f52391c346
+  checksum: 10c0/f7dd1dac01781f0db53cba2e4d7f2400fed22966c87d12ae5ea17e84cedf779c44038b641370acd982e8bfac96ccd51eab27471d927ea9cf4def1e8f62541f95
   languageName: node
   linkType: hard
 
@@ -6950,12 +6956,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"husky@npm:^9.1.1":
-  version: 9.1.1
-  resolution: "husky@npm:9.1.1"
+"husky@npm:^9.1.2":
+  version: 9.1.2
+  resolution: "husky@npm:9.1.2"
   bin:
     husky: bin.js
-  checksum: 10c0/56394f5a08201badece23a8599bd76fe8c41e4510a956022fe54897645900c5c5a96a740ffb0604e99e808dffc3714bae982f1cbda4a069082cc713414f17ad3
+  checksum: 10c0/7e25c31ef98ac35d357147005d6e5d87db2abca7297e7c5aac931de3699acd32a3f1a9f8e53f101daeab818f0cfe9d18fa7e34f7cf5c9c4437c3665123456dea
   languageName: node
   linkType: hard
 
@@ -7857,7 +7863,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"long@npm:^5.0.0, long@npm:^5.2.3":
+"long@npm:^5.0.0":
   version: 5.2.3
   resolution: "long@npm:5.2.3"
   checksum: 10c0/6a0da658f5ef683b90330b1af76f06790c623e148222da9d75b60e266bbf88f803232dd21464575681638894a84091616e7f89557aa087fd14116c0f4e0e43d9
@@ -11086,10 +11092,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:^0.166.1":
-  version: 0.166.1
-  resolution: "three@npm:0.166.1"
-  checksum: 10c0/a0ab08ead10d249fed621dcf0d55daec192f3f029ee4c5b8626d35e0eced69d3af078b423e7e8980da6512d565ff7789eead4012a48e0cfafda4cac0906002dc
+"three@npm:^0.167.0":
+  version: 0.167.0
+  resolution: "three@npm:0.167.0"
+  checksum: 10c0/2e6f3afb1b3430444a1212e1de27f0c43f9ae095506617f1852f2159026b74ffb174ff79ad9a5a3b66d01800aee0e31b7c2d029f7e83d0e2722404a33323ec5b
   languageName: node
   linkType: hard
 
@@ -12141,9 +12147,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrangler@npm:^3.66.0":
-  version: 3.66.0
-  resolution: "wrangler@npm:3.66.0"
+"wrangler@npm:^3.67.0":
+  version: 3.67.0
+  resolution: "wrangler@npm:3.67.0"
   dependencies:
     "@cloudflare/kv-asset-handler": "npm:0.3.4"
     "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.3"
@@ -12174,7 +12180,7 @@ __metadata:
   bin:
     wrangler: bin/wrangler.js
     wrangler2: bin/wrangler.js
-  checksum: 10c0/5c672b157ebc1f6ff1c64bd540e8008b0794bf5c6406b4b8613b0d3a707d91ef07da66446d3256485333884e307d407d0486af3ad9d862d32df3b445641e51a9
+  checksum: 10c0/935d4d23fce4da0cdc0da58a012ec2d4ac7dcaa672a9f991f72e6947a91ace2611586885ff6636cdc4969c539843dcf7d2e63de5268872fdcc91ccd1dc96937f
   languageName: node
   linkType: hard
 

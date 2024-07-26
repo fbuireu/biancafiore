@@ -1,5 +1,5 @@
-import type { ContentfulImageAsset } from "@application/dto/article/types.ts";
 import type { AuthorDTO, ProfileImage, RawAuthor } from "@application/dto/author/types.ts";
+import type { ContentfulImageAsset } from "@shared/application/types";
 import type { Asset, Entry, EntrySkeletonType } from "contentful";
 
 type GetAuthorReturnType = Omit<AuthorDTO, "articles" | "latestArticle">;

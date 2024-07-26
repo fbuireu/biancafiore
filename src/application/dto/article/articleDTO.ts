@@ -1,14 +1,10 @@
-import {
-	type ArticleDTO,
-	ArticleType,
-	type ContentfulImageAsset,
-	type RawArticle,
-} from "@application/dto/article/types";
+import { type ArticleDTO, ArticleType, type RawArticle } from "@application/dto/article/types";
 import { getRelatedArticles } from "@application/dto/article/utils/getRelatedArticles/getRelatedArticles.ts";
 import { DEFAULT_DATE_FORMAT } from "@const/index.ts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Document } from "@contentful/rich-text-types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
+import type { ContentfulImageAsset } from "@shared/application/types";
 import { generateExcerpt } from "@shared/application/utils/generateExcerpt";
 import MarkdownIt from "markdown-it";
 import { getAuthor } from "./utils/getAuthor";

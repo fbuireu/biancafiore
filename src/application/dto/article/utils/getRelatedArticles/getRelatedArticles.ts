@@ -1,9 +1,10 @@
-import type { ArticleDTO, ContentfulImageAsset, RawArticle } from "@application/dto/article/types";
+import type { ArticleDTO, RawArticle } from "@application/dto/article/types";
 import { ArticleType } from "@application/dto/article/types";
 import { getAuthor } from "@application/dto/article/utils/getAuthor";
 import { DEFAULT_DATE_FORMAT } from "@const/const.ts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Document } from "@contentful/rich-text-types";
+import type { ContentfulImageAsset } from "@shared/application/types";
 
 const MAX_RELATED_ARTICLES = 3;
 

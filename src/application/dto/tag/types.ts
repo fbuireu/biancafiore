@@ -3,6 +3,9 @@ import type { EntryFieldTypes } from "contentful";
 
 export interface RawTag {
 	contentTypeId: "tags";
+	sys: {
+		id: string;
+	};
 	fields: {
 		name: EntryFieldTypes.Text;
 		slug: EntryFieldTypes.Text;

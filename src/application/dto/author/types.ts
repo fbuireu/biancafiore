@@ -1,8 +1,12 @@
-import type { ArticleDTO, ContentfulImageAsset } from "@application/dto/article/types";
+import type { ArticleDTO } from "@application/dto/article/types";
+import type { ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawAuthor {
 	contentTypeId: "authors";
+	sys: {
+		id: string;
+	};
 	fields: {
 		name: EntryFieldTypes.Text;
 		slug: EntryFieldTypes.Text;
