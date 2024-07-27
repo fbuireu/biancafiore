@@ -1,5 +1,5 @@
 import type { ArticleDTO } from "@application/dto/article/types";
-import type { ContentfulImageAsset } from "@shared/application/types";
+import type { ContentfulImageAsset, Image } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawAuthor {
@@ -24,16 +24,8 @@ export interface AuthorDTO {
 	description: string;
 	jobTitle: string;
 	currentCompany: string;
-	profileImage: ProfileImage;
+	profileImage: Image;
 	socialNetworks: string[];
 	articles: ArticleDTO[];
 	latestArticle: ArticleDTO;
-}
-
-export interface ProfileImage {
-	url: string;
-	details: {
-		width: number;
-		height: number;
-	};
 }

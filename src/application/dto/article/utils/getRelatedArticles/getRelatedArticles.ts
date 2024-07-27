@@ -4,7 +4,7 @@ import { getAuthor } from "@application/dto/article/utils/getAuthor";
 import { DEFAULT_DATE_FORMAT } from "@const/const.ts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Document } from "@contentful/rich-text-types";
-import type { ContentfulImageAsset } from "@shared/application/types";
+import { createImage } from "@shared/application/dto/utils/createImage";
 
 const MAX_RELATED_ARTICLES = 3;
 
@@ -13,7 +13,7 @@ interface GetRelatedArticlesProps {
 	allArticles: RawArticle[];
 }
 
-export const getRelatedArticles = ({ article, allArticles }: GetRelatedArticlesProps): ArticleDTO[] => {
+export function getRelatedArticles({ article, allArticles }: GetRelatedArticlesProps): ArticleDTO[] {
 	const articleTagsSlugs = article.fields.tags.map((tag) => tag.fields.slug);
 
 	return allArticles
@@ -28,15 +28,7 @@ export const getRelatedArticles = ({ article, allArticles }: GetRelatedArticlesP
 			content: documentToHtmlString(relatedArticle.fields.content as unknown as Document),
 			description: relatedArticle.fields.description,
 			publishDate: new Date(String(relatedArticle.fields.publishDate)).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
-			featuredImage: {
-				url: relatedArticle.fields.featuredImage.fields.file.url,
-				details: {
-					width: (relatedArticle.fields.featuredImage as unknown as ContentfulImageAsset).fields.file.details.image
-						.width,
-					height: (relatedArticle.fields.featuredImage as unknown as ContentfulImageAsset).fields.file.details.image
-						.height,
-				},
-			},
+			featuredImage: createImage(relatedArticle.fields.featuredImage),
 			variant: relatedArticle.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
 			isFeaturedArticle: relatedArticle.fields.featuredArticle,
 			author: getAuthor(relatedArticle.fields.author),
@@ -46,4 +38,4 @@ export const getRelatedArticles = ({ article, allArticles }: GetRelatedArticlesP
 			})),
 			relatedArticles: [],
 		})) as unknown as ArticleDTO[];
-};
+}

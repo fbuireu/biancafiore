@@ -1,6 +1,6 @@
 import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
 import type { BaseTagDTO } from "@application/dto/tag/types.ts";
-import type { ContentfulImageAsset } from "@shared/application/types";
+import type { ContentfulImageAsset, Image } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawArticle {
@@ -28,7 +28,7 @@ export interface ArticleDTO {
 	content: string;
 	description: string;
 	publishDate: string;
-	featuredImage: FeaturedImage;
+	featuredImage: Image;
 	variant: ArticleType;
 	isFeaturedArticle: boolean;
 	author: AuthorDTO;
@@ -39,12 +39,4 @@ export interface ArticleDTO {
 export enum ArticleType {
 	DEFAULT = "default",
 	NO_IMAGE = "no_image",
-}
-
-interface FeaturedImage {
-	url: string;
-	details: {
-		width: number;
-		height: number;
-	};
 }

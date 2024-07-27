@@ -17,3 +17,11 @@ export type ContentfulImageAsset = Asset & {
 		file: AssetFile;
 	};
 };
+
+export interface Image {
+	url: string;
+	details: {
+		width: number;
+		height: number;
+	};
+}

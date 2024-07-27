@@ -1,17 +1,13 @@
-import type { AuthorDTO, ProfileImage, RawAuthor } from "@application/dto/author/types.ts";
-import type { ContentfulImageAsset } from "@shared/application/types";
-import type { Asset, Entry, EntrySkeletonType } from "contentful";
+import type { AuthorDTO, RawAuthor } from "@application/dto/author/types.ts";
+import { createImage } from "@shared/application/dto/utils/createImage";
+import type { Entry, EntrySkeletonType } from "contentful";
 
 type GetAuthorReturnType = Omit<AuthorDTO, "articles" | "latestArticle">;
 
 export function getAuthor(author: Entry<EntrySkeletonType<RawAuthor["fields"]>>): GetAuthorReturnType {
-	const profileImage = {
-		url: (author.fields.profileImage as unknown as Asset).fields.file?.url,
-		details: {
-			width: (author.fields.profileImage as unknown as ContentfulImageAsset).fields.file.details?.image?.width,
-			height: (author.fields.profileImage as unknown as ContentfulImageAsset).fields.file.details?.image?.height,
-		},
-	} as ProfileImage;
+	const profileImage = createImage(
+		author.fields.profileImage as unknown as Entry<EntrySkeletonType<RawAuthor["fields"]["profileImage"]["fields"]>>,
+	);
 
 	return {
 		name: author.fields.name as unknown as string,

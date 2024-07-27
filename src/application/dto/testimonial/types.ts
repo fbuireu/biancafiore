@@ -1,5 +1,5 @@
-import type { ContentfulImageAsset } from '@shared/application/types';
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from 'contentful';
+import type { ContentfulImageAsset, Image } from "@shared/application/types";
+import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawTestimonial {
 	contentTypeId: "testimonial";
@@ -16,12 +16,4 @@ export interface TestimonialDTO {
 	quote: string;
 	image: Image;
 	role: string;
-}
-
-interface Image {
-	url: string;
-	details: {
-		width: number;
-		height: number;
-	};
 }

@@ -4,7 +4,7 @@ import { DEFAULT_DATE_FORMAT } from "@const/index.ts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Document } from "@contentful/rich-text-types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
-import type { ContentfulImageAsset } from "@shared/application/types";
+import { createImage } from "@shared/application/dto/utils/createImage";
 import { generateExcerpt } from "@shared/application/utils/generateExcerpt";
 import MarkdownIt from "markdown-it";
 import { getAuthor } from "./utils/getAuthor";
@@ -25,13 +25,7 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 			const tags = getTags(article.fields.tags);
 
 			const relatedArticles = article.fields.relatedArticles ?? getRelatedArticles({ article, allArticles: raw });
-			const featuredImage = {
-				url: article.fields.featuredImage.fields.file.url,
-				details: {
-					width: (article.fields.featuredImage as unknown as ContentfulImageAsset).fields.file.details?.image?.width,
-					height: (article.fields.featuredImage as unknown as ContentfulImageAsset).fields.file.details?.image?.height,
-				},
-			};
+			const featuredImage = createImage(article.fields.featuredImage);
 
 			return {
 				title: article.fields.title,
