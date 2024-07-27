@@ -12,7 +12,7 @@
 .featured-article__wrapper {
     display: grid;
     gap: 0 2rem;
-    grid: 'Featured-Article-Image Featured-Article-Content' minmax(auto, 70dvh) / minmax(70%, 1fr) 1fr;
+    grid: 'Featured-Article-Image Featured-Article-Content' minmax(auto, 70dvh) / minmax(60%, 1fr) 1fr;
 
     @media (width <= 960px) {
         gap: 1rem 0;

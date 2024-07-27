@@ -1,5 +1,5 @@
-import type { ContentfulImageAsset, Image } from '@shared/application/types';
-import type { Entry, EntrySkeletonType } from 'contentful';
+import type { ContentfulImageAsset, Image } from "@shared/application/types";
+import type { Entry, EntrySkeletonType } from "contentful";
 
 export function createImage(rawImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>): Image {
 	return {

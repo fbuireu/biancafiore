@@ -41,7 +41,7 @@ const { tag } = Astro.props as TagProps;
     <Breadcrumbs />
     <h1 class="flex justify-center">#{slug}</h1>
     <section class="common-wrapper">
-      <ul class="tag__article__list flex row-wrap justify-space-between">
+      <ul class="tag__article__list flex row-wrap">
         {tag.articles?.map((article, index) => {
           const href = `/articles/${article.slug}`;
           const props = { ...article, href };
