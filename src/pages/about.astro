@@ -1,6 +1,7 @@
 ---
 import { authorDTO } from "@application/dto/author";
 import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
+import type { RawCity } from "@application/dto/city/types";
 import AboutIntro from "@components/molecules/aboutIntro/AboutIntro.astro";
 import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
 import AboutLatestArticles from "@components/organisms/aboutLatestArticles/AboutLatestArticles.astro";
@@ -8,10 +9,18 @@ import { LittleMoreOfMe } from "@components/organisms/littleMoreOfMe/index";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { CONTACT_DETAILS } from "@const/index";
 import { client } from "@lib/contentful";
+import { cityDTO } from "src/application/dto/city";
 
-const { items: rawAuthors } = await client.getEntries<RawAuthor>({
-	content_type: "authors",
-});
+const [{ items: rawAuthors }, { items: rawCities }] = await Promise.all([
+	client.getEntries<RawAuthor>({ content_type: "authors" }) as Iterable<PromiseLike<RawAuthor[]> | RawAuthor[]>,
+	client.getEntries<RawCity>({
+		content_type: "city",
+		order: ["fields.startDate"],
+	}) as Iterable<PromiseLike<RawCity[]> | RawCity[]>,
+]);
+
+const cities = cityDTO.render(rawCities);
+
 const bianca = (await authorDTO.render(rawAuthors as RawAuthor[]))
 	.filter((author) => author.name === CONTACT_DETAILS.NAME)
 	.at(0) as AuthorDTO;
@@ -20,7 +29,7 @@ const bianca = (await authorDTO.render(rawAuthors as RawAuthor[]))
 <BaseLayout title="" description="">
     <Breadcrumbs classNames="about-page" />
     <AboutIntro />
-    <LittleMoreOfMe client:only="react" />
+    <LittleMoreOfMe client:only="react" cities={cities} />
     <AboutLatestArticles />
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',

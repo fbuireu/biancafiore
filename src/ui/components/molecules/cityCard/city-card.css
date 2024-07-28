@@ -15,7 +15,6 @@
   .city-card__content {
     align-items: stretch;
     animation: linear scale-by-index forwards;
-
     animation-range: exit-crossing var(--start-range) exit-crossing var(--end-range);
     animation-timeline: --cities-scales-in-view;
     background: var(--white);

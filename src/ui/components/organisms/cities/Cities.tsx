@@ -1,23 +1,19 @@
+import type { CityDTO } from "@application/dto/city/types.ts";
 import { CityCard } from "@components/molecules/cityCard";
 import "./cities.css";
 
-interface CitiesData {
-	cities: {
-		name: string;
-		period: string;
-		image: string;
-		description: string;
-	}[];
+interface CitiesProps {
+	cities: CityDTO[];
 }
 
-export const Cities = ({ cities }: CitiesData) => {
+export const Cities = ({ cities }: CitiesProps) => {
 	return (
 		<ul className="city-card__list">
 			{cities.map(({ name, period, description, image }, index) => (
 				<CityCard key={name} index={index + 1} numCards={cities.length + 1}>
-					<CityCard.Image src={image} alt={name} />
+					<CityCard.Image src={image.url} alt={name} />
 					<CityCard.Period>{period}</CityCard.Period>
-					<CityCard.Title>{name}</CityCard.Title>
+					<CityCard.Title city={name}>{name}</CityCard.Title>
 					<CityCard.Description>{description}</CityCard.Description>
 				</CityCard>
 			))}

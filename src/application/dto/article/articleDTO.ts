@@ -5,8 +5,8 @@ import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Document } from "@contentful/rich-text-types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
 import { createImage } from "@shared/application/dto/utils/createImage";
-import { generateExcerpt } from "@shared/application/utils/generateExcerpt";
 import MarkdownIt from "markdown-it";
+import { generateExcerpt } from "./utils/generateExcerpt";
 import { getAuthor } from "./utils/getAuthor";
 import { getTags } from "./utils/getTags";
 

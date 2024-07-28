@@ -1,3 +1,4 @@
+import type { CityDTO } from "@application/dto/city/types.ts";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import zoomIn from "@assets/images/svg/zoom-in.svg";
 import zoomOut from "@assets/images/svg/zoom-out.svg";
@@ -11,19 +12,18 @@ import { memo, useCallback, useEffect, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
-import type { ReactGlobePoint } from "./utils/refineCities";
 import { refineCities } from "./utils/refineCities";
 import "./world-globe.css";
 
-export interface City {
-	latitude: string;
-	longitude: string;
-	name: string;
+interface GlobeAllCitiesProps {
+	cities: CityDTO[];
+	width?: number;
 }
 
-interface GlobeAllCitiesProps {
-	cities: City[];
-	width?: number;
+export interface ReactGlobePoint {
+	lat: number;
+	lng: number;
+	label: string;
 }
 
 enum MovementType {
@@ -50,6 +50,7 @@ const worldGlobeSize = {
 	width: window.innerWidth > 720 ? 680 : undefined,
 	height: 458,
 };
+
 const {
 	MESH_PHONG_MATERIAL_CONFIG,
 	HEXAGON_POLYGON_COLOR,
@@ -71,7 +72,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 		const { latitude, longitude } = calculateCenter(cities);
 		worldGlobeReference.current.controls().autoRotate = true;
 		worldGlobeReference.current.controls().enableZoom = false;
-		worldGlobeReference.current.controls().autoRotateSpeed = 0.5;
+		worldGlobeReference.current.controls().autoRotateSpeed = 0.25;
 		worldGlobeReference.current.pointOfView({
 			lat: latitude,
 			lng: longitude,

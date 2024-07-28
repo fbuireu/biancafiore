@@ -1,15 +1,10 @@
-import type { City } from "@components/atoms/worldGlobe";
+import type { CityDTO } from "@application/dto/city/types.ts";
+import type { ReactGlobePoint } from "@components/atoms/worldGlobe";
 
-export interface ReactGlobePoint {
-	lat: string;
-	lng: string;
-	label: string;
-}
-
-export function refineCities(cities: City[]): ReactGlobePoint[] {
-	return cities.map(({ latitude, longitude, name }) => ({
-		lat: latitude,
-		lng: longitude,
+export function refineCities(cities: CityDTO[]): ReactGlobePoint[] {
+	return cities.map(({ coordinates, name }) => ({
+		lat: coordinates.latitude,
+		lng: coordinates.longitude,
 		label: name,
 	}));
 }

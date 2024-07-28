@@ -25,7 +25,7 @@ export const CityCard = ({ children, index, numCards }: CityCardProps) => {
 
 const Image = (props: CityImageProps) => <CityImage {...props} />;
 const Period = ({ children }: CityPeriodProps) => <CityPeriod>{children}</CityPeriod>;
-const Title = ({ children }: CityTitleProps) => <CityName>{children}</CityName>;
+const Title = ({ children, city }: CityTitleProps) => <CityName city={city}>{children}</CityName>;
 const Description = ({ children }: CityDescriptionProps) => <CityDescription>{children}</CityDescription>;
 
 CityCard.Period = Period;

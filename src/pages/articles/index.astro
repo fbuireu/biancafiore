@@ -6,7 +6,7 @@ import ArticleCard from "@components/organisms/articleCard/ArticleCard.astro";
 import FeaturedArticle from "@components/organisms/featuredArticle/FeaturedArticle.astro";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { client } from "@lib/contentful";
-import { getFeaturedArticle } from "@shared/application/utils/getFeaturedArticle";
+import { getFeaturedArticle } from "src/shared/ui/utils/getFeaturedArticle";
 import "./_articles.css";
 
 const { items: rawArticles } = await client.getEntries<RawArticle>({

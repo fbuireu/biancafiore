@@ -1,91 +1,18 @@
-import WorldGlobe from "@components/atoms/worldGlobe/WorldGlobe";
+import type { CityDTO } from "@application/dto/city/types.ts";
+import WorldGlobe from "@components/atoms/worldGlobe/WorldGlobe.tsx";
 import { Cities } from "@components/organisms/cities";
 import "./little-more-of-me.css";
-import { useCallback, useState } from "react";
 
-const data = [
-	{
-		name: "Amman",
-		latitude: "31.956578",
-		longitude: "35.945695",
-	},
-	{
-		name: "Barcelona",
-		latitude: "41.390205",
-		longitude: "2.154007",
-	},
-	{
-		name: "Sydney",
-		latitude: "-33.865143",
-		longitude: "151.209900",
-	},
-	{
-		name: "London",
-		latitude: "51.507351",
-		longitude: "-0.127758",
-	},
-	{
-		name: "Geneva",
-		latitude: "46.204391",
-		longitude: "6.143158",
-	},
-	{
-		name: "Verbania",
-		latitude: "45.925232",
-		longitude: "8.551094",
-	},
-];
-const cities = [
-	{
-		name: "Verbania",
-		period: "1992-2007",
-		description:
-			"I moved to Verbania in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Verbania in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Verbania in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Verbania in 2021. I started working as a Frontend Developer at a startup called Badi.",
-		image: "https://via.placeholder.com/400x300",
-	},
-	{
-		name: "Geneva",
-		period: "2008-2013",
-		description:
-			"I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi.",
-		image: "https://via.placeholder.com/400x300",
-	},
-	{
-		name: "Amman",
-		period: "2001-2002",
-		description:
-			"I was born in Amman, Jordan. I lived there for 18 years. I went to school there and I graduated from the University of Jordan with a bachelor degree in Computer Science. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi.",
-		image: "https://via.placeholder.com/400x300",
-	},
-	{
-		name: "Sydney",
-		period: "2013-2016",
-		description:
-			"I moved to Sydney in 2020. I started working as a Frontend Developer at a startup called Badi. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi.",
-		image: "https://via.placeholder.com/400x300",
-	},
-	{
-		name: "London",
-		period: "2016-2017",
-		description:
-			"I moved to London in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi. I moved to Geneva in 2021. I started working as a Frontend Developer at a startup called Badi.",
-		image: "https://via.placeholder.com/400x300",
-	},
-	{
-		name: "Barcelona",
-		period: "2017-Forever",
-		description:
-			"I moved to Barcelona in 2019. I started my master degree in Mobile Application Development at UPC. I also started working as a Frontend Developer at a startup called Badi.I moved to Barcelona in 2019. I started my master degree in Mobile Application Development at UPC. I also started working as a Frontend Developer at a startup called Badi. I moved to Barcelona in 2019. I started my master degree in Mobile Application Development at UPC. I also started working as a Frontend Developer at a startup called Badi.",
-		image: "https://via.placeholder.com/400x300",
-	},
-];
+interface LittleMoreOfMeProps {
+	cities: CityDTO[];
+}
 
-export const LittleMoreOfMe = () => {
+export const LittleMoreOfMe = ({ cities }: LittleMoreOfMeProps) => {
 	return (
 		<section className="little-more-of-me__wrapper common-wrapper">
 			<h3 className="little-more-of-me__title section-title">A little more of me</h3>
 			<div className="little-more-of-me__inner flex row-nowrap justify-space-between">
-				<WorldGlobe cities={data} />
+				<WorldGlobe cities={cities} />
 				<Cities cities={cities} />
 			</div>
 		</section>

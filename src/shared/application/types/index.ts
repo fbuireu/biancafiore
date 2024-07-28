@@ -25,3 +25,17 @@ export interface Image {
 		height: number;
 	};
 }
+
+export interface ContenfulLocation {
+	fields: {
+		coordinates: {
+			lat: number;
+			lon: number;
+		};
+	};
+}
+
+export interface Location {
+	latitude: number;
+	longitude: number;
+}

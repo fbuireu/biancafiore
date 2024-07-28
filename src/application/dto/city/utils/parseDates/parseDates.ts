@@ -1,0 +1,11 @@
+interface ParseDatesProps {
+	startDate: string;
+	endDate?: string;
+}
+
+export function parseDates({ startDate, endDate }: ParseDatesProps) {
+	return {
+		startDate: new Date(startDate).getFullYear(),
+		endDate: endDate ? new Date(endDate).getFullYear() : "Present",
+	};
+}

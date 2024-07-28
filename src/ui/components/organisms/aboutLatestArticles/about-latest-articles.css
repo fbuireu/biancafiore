@@ -8,7 +8,7 @@
   }
 
   .about-latest-articles__title {
-    margin-bottom: 5rem;
+    margin: 5rem 0;
 
     a {
       color: var(--primary-main);
