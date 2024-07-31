@@ -10,7 +10,7 @@ export const authorDTO: BaseDTO<RawAuthor[], Promise<AuthorDTO[]>> = {
 		return Promise.all(
 			raw.map(async (author) => {
 				const { items: rawArticles } = await client.getEntries({
-					content_type: "articles",
+					content_type: "article",
 					"fields.author.sys.id": author.sys.id,
 					order: ["-fields.publishDate"],
 				});

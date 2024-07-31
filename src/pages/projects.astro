@@ -1,41 +1,16 @@
 ---
 import { Image } from "astro:assets";
+import { projectDTO } from "@application/dto/project";
+import type { RawProject } from "@application/dto/project/types";
 import ProjectSection from "@components/atoms/projectSection/ProjectSection.astro";
 import ProjectsIntro from "@components/organisms/projectsIntro/ProjectsIntro.astro";
 import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
+import { client } from "@lib/contentful";
 
-const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
-
-const projects = [
-	{
-		id: "stories-of-impact",
-		title: "Stories of Impact",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		image: images["/src/assets/images/jpg/stories-of-impact.jpg"](),
-	},
-	{
-		id: "reports-and-thought-leadership",
-		title: "Reports and Thought Leadership",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		image: images["/src/assets/images/jpg/thought-leadership.jpg"](),
-	},
-	{
-		id: "creative-direction",
-		title: "Creative Direction",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		image: images["/src/assets/images/jpg/creative-direction.jpg"](),
-	},
-	{
-		id: "web-content",
-		title: "Web Content",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		image: images["/src/assets/images/jpg/web-content.jpg"](),
-	},
-];
+const { items: rawProjects } = await client.getEntries<RawProject>({
+	content_type: "project",
+});
+const projects = projectDTO.render(rawProjects as RawProject[]);
 ---
 
 <BaseLayout title="" description="">
@@ -45,11 +20,11 @@ const projects = [
       <ProjectSection id={project.id}>
         <article style={`--index: ${index}`} class="project__wrapper">
           <div class="project-image__wrapper" slot="project-image">
-            <Image class="project-image" src={project.image} alt={project.title} />
+            <Image class="project-image" src={project.image.url} alt={project.name} width={project.image.details.width} height={project.image.details.height} />
           </div>
           <div class="project-information" slot="project-information">
-            <h2 class="project-title font-serif">{project.title}</h2>
-            <p>{project.description}</p>
+            <h2 class="project-title font-serif">{project.name}</h2>
+            <article set:html={project.description} />
           </div>
         </article>
       </ProjectSection>

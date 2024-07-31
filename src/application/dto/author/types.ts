@@ -3,7 +3,7 @@ import type { ContentfulImageAsset, Image } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawAuthor {
-	contentTypeId: "authors";
+	contentTypeId: "author";
 	sys: {
 		id: string;
 	};

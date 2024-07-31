@@ -16,7 +16,7 @@ type ArticleParams = InferGetStaticParamsType<typeof getStaticPaths>;
 
 export async function getStaticPaths() {
 	const { items: rawArticles } = (await client.getEntries<RawArticle>({
-		content_type: "articles",
+		content_type: "article",
 	})) as RawArticle[];
 
 	return articleDTO.render(rawArticles).map((article) => {

@@ -2,7 +2,7 @@ import type { ArticleDTO } from "@application/dto/article/types";
 import type { EntryFieldTypes } from "contentful";
 
 export interface RawTag {
-	contentTypeId: "tags";
+	contentTypeId: "tag";
 	sys: {
 		id: string;
 	};

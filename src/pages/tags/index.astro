@@ -7,7 +7,7 @@ import { client } from "@lib/contentful";
 import "./_tags.css";
 
 const { items: rawTags } = await client.getEntries<RawTag>({
-	content_type: "tags",
+	content_type: "tag",
 });
 
 const tags = await tagDTO.render(rawTags as RawTag[]);

@@ -14,7 +14,7 @@ const MAX_ARTICLES = 4;
 const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
 const { items: rawArticles } = await client.getEntries<RawArticle>({
-	content_type: "articles",
+	content_type: "article",
 });
 const articles = articleDTO
 	.render(rawArticles as RawArticle[])

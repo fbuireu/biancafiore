@@ -10,7 +10,7 @@ import { getFeaturedArticle } from "src/shared/ui/utils/getFeaturedArticle";
 import "./_articles.css";
 
 const { items: rawArticles } = await client.getEntries<RawArticle>({
-	content_type: "articles",
+	content_type: "article",
 });
 
 const articles = articleDTO

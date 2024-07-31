@@ -1,36 +1,42 @@
 ---
 import { Image } from "astro:assets";
+import { projectDTO } from "@application/dto/project";
+import type { RawProject } from "@application/dto/project/types";
+import { client } from "@lib/contentful";
 import "./my-work.css";
 
-const images = import.meta.glob("/src/assets/**/*.{jpeg,jpg,png,gif}");
+const { items: rawProjects } = await client.getEntries<RawProject>({
+	content_type: "project",
+});
+const projects = projectDTO.render(rawProjects as RawProject[]);
 ---
 
 <section class="my-work__wrapper common-wrapper">
   <h3 class="my-work__title section-title">My Work</h3>
   <ul class="my-work__content__list flex row-wrap justify-space-between">
-    <li class="my-work__item">
-      <a class="my-work__item__link clickable" href="/projects#stories-of-impact">
-        <Image src={images['/src/assets/images/jpg/stories-of-impact.jpg']()} alt="Stories of Impact" />
-        <h4 class="my-work__item__title inner-section-title">Stories of Impact</h4>
-      </a>
-    </li>
-    <li class="my-work__item">
-      <a class="my-work__item__link clickable" href="/projects#reports-and-thought-leadership">
-        <Image src={images['/src/assets/images/jpg/thought-leadership.jpg']()} alt="Reports & Thought Leadership" />
-        <h4 class="my-work__item__title inner-section-title">Reports & Thought Leadership</h4>
-      </a>
-    </li>
-    <li class="my-work__item">
-      <a class="my-work__item__link clickable" href="/projects#creative-direction">
-        <Image src={images['/src/assets/images/jpg/creative-direction.jpg']()} alt="Creative Direction" />
-        <h4 class="my-work__item__title inner-section-title">Creative Direction</h4>
-      </a>
-    </li>
-    <li class="my-work__item">
-      <a class="my-work__item__link clickable" href="/projects#web-content">
-        <Image src={images['/src/assets/images/jpg/web-content.jpg']()} alt="Web Content" />
-        <h4 class="my-work__item__title inner-section-title">Web Content</h4>
-      </a>
-    </li>
+    {projects.map((project, index) => {
+      return (
+        <li class="my-work__item">
+          <a class="my-work__item__link clickable" href={`/projects#${project.id}`}>
+            <Image
+              src={project.image.url}
+              alt={project.name}
+              width={project.image.details.width}
+              height={project.image.details.height}
+            />
+            <h4 class="my-work__item__title inner-section-title">{project.name}</h4>
+          </a>
+        </li>
+        <script type="application/ld+json" set:html={JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          'itemListElement': {
+            '@type': 'ListItem',
+            'position': index + 1,
+            'url': new URL(`${Astro.url}projects#${project.id}`, Astro.url).href,
+          },
+        })} />
+      );
+    })}
   </ul>
 </section>

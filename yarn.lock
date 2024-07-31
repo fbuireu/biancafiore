@@ -58,10 +58,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/compiler@npm:^2.9.0, @astrojs/compiler@npm:^2.9.1":
+"@astrojs/compiler@npm:^2.9.1":
   version: 2.9.2
   resolution: "@astrojs/compiler@npm:2.9.2"
   checksum: 10c0/a714c3b818f965abddbdab27dfd0abcdf1533b0e186802a9ae21f6ae35cbdf847463443e23b985d3fa728eb2c94e258ed4d5f315cf626c1a07460c1d360adf4e
+  languageName: node
+  linkType: hard
+
+"@astrojs/compiler@npm:^2.9.2":
+  version: 2.10.0
+  resolution: "@astrojs/compiler@npm:2.10.0"
+  checksum: 10c0/a13d1186bd891d4bda41235f350308fb50d353cbc2ca84e5b73e2759dc8fd6ec8ae7a908f576c875f4bc3fdb8340e4451ac4d9adbeedfc172407d81b3101e920
   languageName: node
   linkType: hard
 
@@ -184,9 +191,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "@astrojs/react@npm:3.6.0"
+"@astrojs/react@npm:^3.6.1":
+  version: 3.6.1
+  resolution: "@astrojs/react@npm:3.6.1"
   dependencies:
     "@vitejs/plugin-react": "npm:^4.3.1"
     ultrahtml: "npm:^1.5.3"
@@ -195,7 +202,7 @@ __metadata:
     "@types/react-dom": ^17.0.17 || ^18.0.6
     react: ^17.0.2 || ^18.0.0 || ^19.0.0-beta
     react-dom: ^17.0.2 || ^18.0.0 || ^19.0.0-beta
-  checksum: 10c0/0e450de66d2c333a10e11c5c277f67bba943d6e06f38ca31d5ba5d30c43deb8954f31c788b794d03345138260624ea7a91ebfd9c21e7c7093061a8264306a191
+  checksum: 10c0/3a165dfd6204ac0c9adfcb257aa9e3639068694e5bee49910d7197814e6c0b29d27339ae3c3efcd2fc09e12dc9e4813f2892ded6dcb03e31f082b8f875def116
   languageName: node
   linkType: hard
 
@@ -1087,13 +1094,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@contentful/rich-text-html-renderer@npm:^16.6.7":
-  version: 16.6.7
-  resolution: "@contentful/rich-text-html-renderer@npm:16.6.7"
+"@contentful/rich-text-html-renderer@npm:^16.6.8":
+  version: 16.6.8
+  resolution: "@contentful/rich-text-html-renderer@npm:16.6.8"
   dependencies:
-    "@contentful/rich-text-types": "npm:^16.8.2"
+    "@contentful/rich-text-types": "npm:^16.8.3"
     escape-html: "npm:^1.0.3"
-  checksum: 10c0/41b2d97a0a6d783d5503d1154e0047cbb245fb2e30db5df7ac3985d7a6373005afccc8341e865272e60e9691421ebcba5df6dbfdac5110b9d5d58583c2457a5f
+  checksum: 10c0/8eb59af50651bacf5f5c388994f09519dad4326a12c46f73a0e81129d6da5d18dc5dffed309fedba5997442f80bbd454ae556de15b9bab0574ed817c4de7ae97
   languageName: node
   linkType: hard
 
@@ -1104,10 +1111,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@contentful/rich-text-types@npm:^16.8.2":
-  version: 16.8.2
-  resolution: "@contentful/rich-text-types@npm:16.8.2"
-  checksum: 10c0/5b813a5751378934be206d5c9388a56f93f6c10f1c1c87fceee65e32892264f4d497ff87b617f8d259ea665c033b97576170cd483e9721e909eb0728067375e0
+"@contentful/rich-text-types@npm:^16.8.3":
+  version: 16.8.3
+  resolution: "@contentful/rich-text-types@npm:16.8.3"
+  checksum: 10c0/99505d421841eb5033e61dd2221fcb18ee59331b758e1b3dd8dd306f08b5dc56cc52cbc37d059dc59813ab6fef7e684f1e77e3cda1a9a03a9aae621795f0533d
   languageName: node
   linkType: hard
 
@@ -3188,6 +3195,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@shikijs/core@npm:1.12.0":
+  version: 1.12.0
+  resolution: "@shikijs/core@npm:1.12.0"
+  dependencies:
+    "@types/hast": "npm:^3.0.4"
+  checksum: 10c0/5db2b0f3c9e2429f7da77bfe9ae6ea4206293797c7f7e51e0b1a9ee89bcfd6940b68896a3564ad462640c4931387c82baa43434439d4ed1915e49657588d2d85
+  languageName: node
+  linkType: hard
+
 "@testing-library/react-hooks@npm:^8.0.1":
   version: 8.0.1
   resolution: "@testing-library/react-hooks@npm:8.0.1"
@@ -3538,12 +3554,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.14.12":
-  version: 20.14.12
-  resolution: "@types/node@npm:20.14.12"
+"@types/node@npm:^22.0.0":
+  version: 22.0.0
+  resolution: "@types/node@npm:22.0.0"
   dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 10c0/59bc5fa11fdd23fd517f859063118f54a1ab53d3399ef63c926f8902429d7453abc0db22ef4b0a6110026b6ab81b6472fee894e1d235c24b01a0b3e10cfae0bb
+    undici-types: "npm:~6.11.1"
+  checksum: 10c0/af26a8ec7266c857b0ced75dc3a93c6b65280d1fa40d1b4488c814d30831c5c752489c99ecb5698daec1376145b1a9ddd08350882dc2e07769917a5f22a460bc
   languageName: node
   linkType: hard
 
@@ -4137,11 +4153,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^4.12.2":
-  version: 4.12.2
-  resolution: "astro@npm:4.12.2"
+"astro@npm:^4.12.3":
+  version: 4.12.3
+  resolution: "astro@npm:4.12.3"
   dependencies:
-    "@astrojs/compiler": "npm:^2.9.0"
+    "@astrojs/compiler": "npm:^2.9.2"
     "@astrojs/internal-helpers": "npm:0.4.1"
     "@astrojs/markdown-remark": "npm:5.2.0"
     "@astrojs/telemetry": "npm:3.1.0"
@@ -4190,9 +4206,9 @@ __metadata:
     preferred-pm: "npm:^4.0.0"
     prompts: "npm:^2.4.2"
     rehype: "npm:^13.0.1"
-    semver: "npm:^7.6.2"
+    semver: "npm:^7.6.3"
     sharp: "npm:^0.33.3"
-    shiki: "npm:^1.10.3"
+    shiki: "npm:^1.11.0"
     string-width: "npm:^7.2.0"
     strip-ansi: "npm:^7.1.0"
     tsconfck: "npm:^3.1.1"
@@ -4209,7 +4225,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/7e6cbca224e65958ed7ceb68ec1ae6795aac62c5fae64103ab2700abf96e2e48a29dff465ce0af3cd55db8acd9dc2b99b13e4cddaf93b04710d686ff5c50293b
+  checksum: 10c0/0f17075f4b6d1d7dc91ef17e43495dc6a5f9a443b06572e92be85624b8e4dd672ff9ae7d2a6cef2dc7b71589107e6c468eba7b874ead323ebbda5c72427dac72
   languageName: node
   linkType: hard
 
@@ -4290,14 +4306,14 @@ __metadata:
     "@astrojs/cloudflare": "npm:^11.0.1"
     "@astrojs/mdx": "npm:^3.1.3"
     "@astrojs/partytown": "npm:^2.1.1"
-    "@astrojs/react": "npm:^3.6.0"
+    "@astrojs/react": "npm:^3.6.1"
     "@astrojs/rss": "npm:^4.0.7"
     "@astrojs/sitemap": "npm:^3.1.6"
     "@astrojs/ts-plugin": "npm:^1.9.0"
     "@biomejs/biome": "npm:1.8.3"
     "@commitlint/cli": "npm:^19.3.0"
     "@commitlint/config-conventional": "npm:^19.2.2"
-    "@contentful/rich-text-html-renderer": "npm:^16.6.7"
+    "@contentful/rich-text-html-renderer": "npm:^16.6.8"
     "@fontsource-variable/nunito-sans": "npm:^5.0.14"
     "@fontsource/baskervville": "npm:^5.0.20"
     "@hookform/resolvers": "npm:^3.9.0"
@@ -4305,17 +4321,17 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^20.14.12"
+    "@types/node": "npm:^22.0.0"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@types/three": "npm:^0.167.1"
-    astro: "npm:^4.12.2"
+    astro: "npm:^4.12.3"
     clsx: "npm:^2.1.1"
     contentful: "npm:^10.12.15"
     firebase: "npm:^10.12.4"
     firebase-admin: "npm:^12.3.0"
     gsap: "npm:^3.12.5"
-    husky: "npm:^9.1.3"
+    husky: "npm:^9.1.4"
     lint-staged: "npm:^15.2.7"
     markdown-it: "npm:^14.1.0"
     million: "npm:^3.1.11"
@@ -4326,7 +4342,7 @@ __metadata:
     react-hook-form: "npm:^7.52.1"
     react-router-dom: "npm:^6.25.1"
     resend: "npm:^3.5.0"
-    stylelint: "npm:^16.7.0"
+    stylelint: "npm:^16.8.1"
     stylelint-config-recommended: "npm:^14.0.1"
     stylelint-order: "npm:^6.0.4"
     swiper: "npm:^11.1.8"
@@ -5123,6 +5139,18 @@ __metadata:
     supports-color:
       optional: true
   checksum: 10c0/082c375a2bdc4f4469c99f325ff458adad62a3fc2c482d59923c260cb08152f34e2659f72b3767db8bb2f21ca81a60a42d1019605a412132d7b9f59363a005cc
+  languageName: node
+  linkType: hard
+
+"debug@npm:^4.3.6":
+  version: 4.3.6
+  resolution: "debug@npm:4.3.6"
+  dependencies:
+    ms: "npm:2.1.2"
+  peerDependenciesMeta:
+    supports-color:
+      optional: true
+  checksum: 10c0/3293416bff072389c101697d4611c402a6bacd1900ac20c0492f61a9cdd6b3b29750fc7f5e299f8058469ef60ff8fb79b86395a30374fbd2490113c1c7112285
   languageName: node
   linkType: hard
 
@@ -6956,12 +6984,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"husky@npm:^9.1.3":
-  version: 9.1.3
-  resolution: "husky@npm:9.1.3"
+"husky@npm:^9.1.4":
+  version: 9.1.4
+  resolution: "husky@npm:9.1.4"
   bin:
     husky: bin.js
-  checksum: 10c0/3fb8657ff97f529dab0b9a0afa6b818ec604f60c39abc13e8e3f4263ea30a3aa6fff7a1b625b8a53700899ce0ea2f5f656981c46b8f1837cfd84ddb6da883fb2
+  checksum: 10c0/f5185003bef9ad9ec3f40e821963e4c12409b993fdcab89e3d660bed7d8c9d8bfd399f05222e27e0ead6589601fb1bb08d1a589c51751a4ab0547ead3429b8de
   languageName: node
   linkType: hard
 
@@ -9473,10 +9501,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-resolve-nested-selector@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "postcss-resolve-nested-selector@npm:0.1.1"
-  checksum: 10c0/e86412064c5d805fbee20f4e851395304102addd7d583b6a991adaa5616e8d5f45549864eb6292d4cf15075cd261c289f069acdf6a2556689fc44fe72bcb306e
+"postcss-resolve-nested-selector@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "postcss-resolve-nested-selector@npm:0.1.4"
+  checksum: 10c0/c265c35ddd474968bc4efbe4027e33f28910ef3931ffae9c448878d7c02735aeeea6d33aa6f89902e4c111e6fe87f2cc2aa72dcb3ac242d58809f1f932baa2b6
   languageName: node
   linkType: hard
 
@@ -9489,13 +9517,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-selector-parser@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "postcss-selector-parser@npm:6.1.0"
+"postcss-selector-parser@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "postcss-selector-parser@npm:6.1.1"
   dependencies:
     cssesc: "npm:^3.0.0"
     util-deprecate: "npm:^1.0.2"
-  checksum: 10c0/91e9c6434772506bc7f318699dd9d19d32178b52dfa05bed24cb0babbdab54f8fb765d9920f01ac548be0a642aab56bce493811406ceb00ae182bbb53754c473
+  checksum: 10c0/5608765e033fee35d448e1f607ffbaa750eb86901824a8bc4a911ea8bc137cb82f29239330787427c5d3695afd90d8721e190f211dbbf733e25033d8b3100763
   languageName: node
   linkType: hard
 
@@ -9534,6 +9562,17 @@ __metadata:
     picocolors: "npm:^1.0.1"
     source-map-js: "npm:^1.2.0"
   checksum: 10c0/16f5ac3c4e32ee76d1582b3c0dcf1a1fdb91334a45ad755eeb881ccc50318fb8d64047de4f1601ac96e30061df203f0f2e2edbdc0bfc49b9c57bc9fb9bedaea3
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.40":
+  version: 8.4.40
+  resolution: "postcss@npm:8.4.40"
+  dependencies:
+    nanoid: "npm:^3.3.7"
+    picocolors: "npm:^1.0.1"
+    source-map-js: "npm:^1.2.0"
+  checksum: 10c0/65ed67573e5443beaeb582282ff27a6be7c7fe3b4d9fa15761157616f2b97510cb1c335023c26220b005909f007337026d6e3ff092f25010b484ad484e80ea7f
   languageName: node
   linkType: hard
 
@@ -10326,6 +10365,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"semver@npm:^7.6.3":
+  version: 7.6.3
+  resolution: "semver@npm:7.6.3"
+  bin:
+    semver: bin/semver.js
+  checksum: 10c0/88f33e148b210c153873cb08cfe1e281d518aaa9a666d4d148add6560db5cd3c582f3a08ccb91f38d5f379ead256da9931234ed122057f40bb5766e65e58adaf
+  languageName: node
+  linkType: hard
+
 "set-function-length@npm:^1.2.1":
   version: 1.2.2
   resolution: "set-function-length@npm:1.2.2"
@@ -10432,6 +10480,16 @@ __metadata:
     "@shikijs/core": "npm:1.10.3"
     "@types/hast": "npm:^3.0.4"
   checksum: 10c0/b2f7db15a837c24973d4906cbfc6ad7d2c32931e610470d129b85c372da1561f57370676e23a63d889341450359befdfdacbbab0230fe3c222dc59c5f52e5623
+  languageName: node
+  linkType: hard
+
+"shiki@npm:^1.11.0":
+  version: 1.12.0
+  resolution: "shiki@npm:1.12.0"
+  dependencies:
+    "@shikijs/core": "npm:1.12.0"
+    "@types/hast": "npm:^3.0.4"
+  checksum: 10c0/266331be32e5dc2258cf701cc0260204e401dfdd5c2ee76ddabcbb35179cfa833eab52c2a3dc91a853489aa22ed1136797f00d0d605fd5744b1c826fb0981d1b
   languageName: node
   linkType: hard
 
@@ -10859,9 +10917,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stylelint@npm:^16.7.0":
-  version: 16.7.0
-  resolution: "stylelint@npm:16.7.0"
+"stylelint@npm:^16.8.1":
+  version: 16.8.1
+  resolution: "stylelint@npm:16.8.1"
   dependencies:
     "@csstools/css-parser-algorithms": "npm:^2.7.1"
     "@csstools/css-tokenizer": "npm:^2.4.1"
@@ -10873,7 +10931,7 @@ __metadata:
     cosmiconfig: "npm:^9.0.0"
     css-functions-list: "npm:^3.2.2"
     css-tree: "npm:^2.3.1"
-    debug: "npm:^4.3.5"
+    debug: "npm:^4.3.6"
     fast-glob: "npm:^3.3.2"
     fastest-levenshtein: "npm:^1.0.16"
     file-entry-cache: "npm:^9.0.0"
@@ -10890,10 +10948,10 @@ __metadata:
     micromatch: "npm:^4.0.7"
     normalize-path: "npm:^3.0.0"
     picocolors: "npm:^1.0.1"
-    postcss: "npm:^8.4.39"
-    postcss-resolve-nested-selector: "npm:^0.1.1"
+    postcss: "npm:^8.4.40"
+    postcss-resolve-nested-selector: "npm:^0.1.4"
     postcss-safe-parser: "npm:^7.0.0"
-    postcss-selector-parser: "npm:^6.1.0"
+    postcss-selector-parser: "npm:^6.1.1"
     postcss-value-parser: "npm:^4.2.0"
     resolve-from: "npm:^5.0.0"
     string-width: "npm:^4.2.3"
@@ -10904,7 +10962,7 @@ __metadata:
     write-file-atomic: "npm:^5.0.1"
   bin:
     stylelint: bin/stylelint.mjs
-  checksum: 10c0/98cb36037684433d991a0c507bbf8155309e96470177487f493e66de098631e5303b235470fc5c8086cd98013385b669c4e3cb68ad01421b898e1da6848e5d78
+  checksum: 10c0/7bc6b0193f83420b2170026078b427d7fb22a07d3345fc99a16241625a572f2fc3e1fa1999e54c01cc2b15bd59d135715c2b140b089c17aa7f4e377ded1fc1b5
   languageName: node
   linkType: hard
 
@@ -11264,6 +11322,13 @@ __metadata:
   version: 5.26.5
   resolution: "undici-types@npm:5.26.5"
   checksum: 10c0/bb673d7876c2d411b6eb6c560e0c571eef4a01c1c19925175d16e3a30c4c428181fb8d7ae802a261f283e4166a0ac435e2f505743aa9e45d893f9a3df017b501
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.11.1":
+  version: 6.11.1
+  resolution: "undici-types@npm:6.11.1"
+  checksum: 10c0/d8f5739a8e6c779d72336c82deb49c56d5ac9f9f6e0eb2e8dd4d3f6929ae9db7cde370d2e46516fe6cad04ea53e790c5e16c4c75eed7cd0f9bd31b0763bb2fa3
   languageName: node
   linkType: hard
 

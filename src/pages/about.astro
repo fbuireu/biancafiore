@@ -12,7 +12,7 @@ import { client } from "@lib/contentful";
 import { cityDTO } from "src/application/dto/city";
 
 const [{ items: rawAuthors }, { items: rawCities }] = await Promise.all([
-	client.getEntries<RawAuthor>({ content_type: "authors" }) as Iterable<PromiseLike<RawAuthor[]> | RawAuthor[]>,
+	client.getEntries<RawAuthor>({ content_type: "author" }) as Iterable<PromiseLike<RawAuthor[]> | RawAuthor[]>,
 	client.getEntries<RawCity>({
 		content_type: "city",
 		order: ["fields.startDate"],
