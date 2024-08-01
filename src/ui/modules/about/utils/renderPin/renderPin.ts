@@ -1,5 +1,5 @@
 import { Pin as pin } from "@assets/images/svg-components/pin";
-import type { ReactGlobePoint } from "@components/modules/about/components/worldGlobe";
+import type { ReactGlobePoint } from "@modules/about/components/worldGlobe";
 import { createRoot } from "react-dom/client";
 
 interface RenderPinProps {

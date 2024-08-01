@@ -1,6 +1,6 @@
 import type { TestimonialDTO } from "@application/dto/testimonial/types.ts";
-import { Testimonial } from "@components/modules/home/components/testimonial";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
+import { Testimonial } from "@modules/home/components/testimonial";
 import { Slider } from "@shared/ui/components/slider";
 import { Pagination } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";

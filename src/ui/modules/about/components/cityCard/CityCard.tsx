@@ -1,11 +1,11 @@
-import { CityDescription } from "@components/modules/about/components/cityCard/atoms/cityDescription";
-import type { CityDescriptionProps } from "@components/modules/about/components/cityCard/atoms/cityDescription";
-import { CityImage } from "@components/modules/about/components/cityCard/atoms/cityImage";
-import type { CityImageProps } from "@components/modules/about/components/cityCard/atoms/cityImage";
-import { CityName } from "@components/modules/about/components/cityCard/atoms/cityName";
-import type { CityTitleProps } from "@components/modules/about/components/cityCard/atoms/cityName";
-import { CityPeriod } from "@components/modules/about/components/cityCard/atoms/cityPeriod";
-import type { CityPeriodProps } from "@components/modules/about/components/cityCard/atoms/cityPeriod";
+import { CityDescription } from "@modules/about/components/cityCard/atoms/cityDescription";
+import type { CityDescriptionProps } from "@modules/about/components/cityCard/atoms/cityDescription";
+import { CityImage } from "@modules/about/components/cityCard/atoms/cityImage";
+import type { CityImageProps } from "@modules/about/components/cityCard/atoms/cityImage";
+import { CityName } from "@modules/about/components/cityCard/atoms/cityName";
+import type { CityTitleProps } from "@modules/about/components/cityCard/atoms/cityName";
+import { CityPeriod } from "@modules/about/components/cityCard/atoms/cityPeriod";
+import type { CityPeriodProps } from "@modules/about/components/cityCard/atoms/cityPeriod";
 import type { CSSProperties, ReactNode } from "react";
 import "./city-card.css";
 

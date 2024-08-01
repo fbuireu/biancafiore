@@ -2,14 +2,14 @@ import "./testimonial.css";
 import clsx from "clsx";
 import type { ReactNode } from "react";
 
-import { TestimonialAuthor } from "@components/modules/home/components/testimonial/atoms/testimonialAuthor";
-import type { TestimonialAuthorProps } from "@components/modules/home/components/testimonial/atoms/testimonialAuthor";
-import { TestimonialDescription } from "@components/modules/home/components/testimonial/atoms/testimonialDescription";
-import type { TestimonialDescriptionProps } from "@components/modules/home/components/testimonial/atoms/testimonialDescription";
-import { TestimonialImage } from "@components/modules/home/components/testimonial/atoms/testimonialImage";
-import type { TestimonialImageProps } from "@components/modules/home/components/testimonial/atoms/testimonialImage";
-import { TestimonialQuote } from "@components/modules/home/components/testimonial/atoms/testimonialQuote";
-import type { TestimonialQuoteProps } from "@components/modules/home/components/testimonial/atoms/testimonialQuote";
+import { TestimonialAuthor } from "@modules/home/components/testimonial/atoms/testimonialAuthor";
+import type { TestimonialAuthorProps } from "@modules/home/components/testimonial/atoms/testimonialAuthor";
+import { TestimonialDescription } from "@modules/home/components/testimonial/atoms/testimonialDescription";
+import type { TestimonialDescriptionProps } from "@modules/home/components/testimonial/atoms/testimonialDescription";
+import { TestimonialImage } from "@modules/home/components/testimonial/atoms/testimonialImage";
+import type { TestimonialImageProps } from "@modules/home/components/testimonial/atoms/testimonialImage";
+import { TestimonialQuote } from "@modules/home/components/testimonial/atoms/testimonialQuote";
+import type { TestimonialQuoteProps } from "@modules/home/components/testimonial/atoms/testimonialQuote";
 import { useSwiperSlide } from "swiper/react";
 
 interface TestimonialProps {

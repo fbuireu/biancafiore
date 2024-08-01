@@ -1,4 +1,4 @@
-import { ContactForm } from "@components/modules/contact/components/contactForm";
+import { ContactForm } from "@modules/contact/components/contactForm";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 export const ContactFormProvider = () => {

@@ -1,6 +1,6 @@
 import type { CityDTO } from "@application/dto/city/types.ts";
-import { Cities } from "@components/modules/about/components/cities";
-import WorldGlobe from "@components/modules/about/components/worldGlobe/WorldGlobe.tsx";
+import { Cities } from "@modules/about/components/cities";
+import WorldGlobe from "@modules/about/components/worldGlobe/WorldGlobe.tsx";
 import "./little-more-of-me.css";
 
 interface LittleMoreOfMeProps {

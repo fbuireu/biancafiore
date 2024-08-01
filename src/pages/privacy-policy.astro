@@ -1,8 +1,8 @@
 ---
 import { CONTACT_DETAILS, DEFAULT_DATE_FORMAT } from "@const/index";
+import LegalSection from "@modules/legal/components/legalSection/LegalSection.astro";
 import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
 import EmailButton from "@shared/ui/components/emailButton/EmailButton.astro";
-import LegalSection from "@ui/components/modules/legal/components/legalSection/LegalSection.astro";
 
 const today = new Date().toLocaleDateString("en", DEFAULT_DATE_FORMAT);
 ---

@@ -1,7 +1,7 @@
 import { actions } from "astro:actions";
-import { autosize } from "@components/modules/contact/utils/autosize";
-import { flyPlane } from "@components/modules/contact/utils/flyPlane";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { autosize } from "@modules/contact/utils/autosize";
+import { flyPlane } from "@modules/contact/utils/flyPlane";
 import Spinner from "@shared/ui/components/spinner/Spinner.tsx";
 import type { FormEvent } from "react";
 import { useCallback, useRef, useState } from "react";

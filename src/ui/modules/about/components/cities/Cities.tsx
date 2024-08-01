@@ -1,5 +1,5 @@
 import type { CityDTO } from "@application/dto/city/types.ts";
-import { CityCard } from "@components/modules/about/components/cityCard";
+import { CityCard } from "@modules/about/components/cityCard";
 import "./cities.css";
 
 interface CitiesProps {
