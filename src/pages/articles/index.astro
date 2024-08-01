@@ -1,11 +1,11 @@
 ---
 import { articleDTO } from "@application/dto/article/articleDTO";
 import type { RawArticle } from "@application/dto/article/types";
-import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
-import ArticleCard from "@components/organisms/articleCard/ArticleCard.astro";
-import FeaturedArticle from "@components/organisms/featuredArticle/FeaturedArticle.astro";
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { client } from "@lib/contentful";
+import ArticleCard from "@shared/ui/components/articleCard/ArticleCard.astro";
+import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
+import Breadcrumbs from "@shared/ui/components/breadcrumbs/Breadcrumbs.astro";
+import FeaturedArticle from "@ui/components/modules/articles/components/featuredArticle/FeaturedArticle.astro";
 import { getFeaturedArticle } from "src/shared/ui/utils/getFeaturedArticle";
 import "./_articles.css";
 

@@ -10,7 +10,7 @@
 			"@application/*": ["./src/application/*"],
 			"@components/*": ["./src/ui/components/*"],
 			"@utils/*": ["./src/utils/*"],
-			"@assets/*": ["./src/assets/*"],
+			"@assets/*": ["./src/ui/assets/*"],
 			"@styles/*": ["./src/ui/styles/*"],
 			"@data/*": ["./src/data/*"],
 			"@shared/*": ["./src/shared/*"],

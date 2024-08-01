@@ -2,10 +2,10 @@
 import { Image } from "astro:assets";
 import { articleDTO } from "@application/dto/article/articleDTO";
 import type { RawArticle } from "@application/dto/article/types";
-import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
-import RelatedArticles from "@components/organisms/relatedArticles/RelatedArticles.astro";
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { client } from "@lib/contentful";
+import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
+import Breadcrumbs from "@shared/ui/components/breadcrumbs/Breadcrumbs.astro";
+import RelatedArticles from "@shared/ui/components/relatedArticles/RelatedArticles.astro";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import "./_article.css";
 

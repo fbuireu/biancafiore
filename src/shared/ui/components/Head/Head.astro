@@ -1,0 +1,87 @@
+---
+import type { SeoMetadata } from "@const/types";
+import "@fontsource-variable/nunito-sans";
+import "@fontsource/baskervville";
+import { ViewTransitions } from "astro:transitions";
+import { DEFAULT_SEO_PARAMS } from "@const/index";
+import "@ui/styles/index.css";
+
+type SiteHeadProps = SeoMetadata;
+
+const GOOGLE_ANALYTICS_ID = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
+const GOOGLE_TAG_MANAGER_ID = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const { title, description, image = DEFAULT_SEO_PARAMS.IMAGE, robots } = Astro.props as SiteHeadProps;
+const metaRobots = { ...DEFAULT_SEO_PARAMS.ROBOTS, ...robots };
+---
+
+<head lang="en">
+    <script define:vars={{ GOOGLE_TAG_MANAGER_ID }}>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer',GOOGLE_TAG_MANAGER_ID);
+</script>
+    <ViewTransitions />
+    <meta name="generator" content={Astro.generator} />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="robots" content={`${metaRobots.index ? 'index' : 'noindex'}, ${metaRobots.follow ? 'follow' : 'nofollow'}`} />
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+</head>
+<script define:vars={{ GOOGLE_ANALYTICS_ID }}>
+    window.dataLayer = window.dataLayer || [];
+
+    const gtag = ()=> {
+        dataLayer.push(arguments);
+    }
+
+    const getCookieValue = (name)=> {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
+    }
+
+    const getConsentStatusFromCookie =(cookieName) => {
+        let consentStatus = "denied";
+
+        try {
+            const cookieValue = getCookieValue(cookieName);
+            if (cookieValue) {
+                const cookieData = JSON.parse(cookieValue);
+                if (Array.isArray(cookieData.categories) && cookieData.categories.includes("analytics")) {
+                    consentStatus = "granted";
+                }
+            }
+        } catch (error) {
+            console.warn("Failed to parse cookie data", error);
+        }
+
+        return consentStatus;
+    }
+
+    const analyticsConsentStatus = getConsentStatusFromCookie("cc_cookie");
+
+    gtag('js', new Date());
+    gtag('config', GOOGLE_ANALYTICS_ID);
+    gtag('consent', 'default', {
+        'analytics_storage': analyticsConsentStatus
+    });
+</script>
+<script type="text/partytown" async src=`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}` />

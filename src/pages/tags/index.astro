@@ -1,9 +1,9 @@
 ---
 import { tagDTO } from "@application/dto/tag/tagDTO";
 import type { RawTag } from "@application/dto/tag/types";
-import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { client } from "@lib/contentful";
+import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
+import Breadcrumbs from "@shared/ui/components/breadcrumbs/Breadcrumbs.astro";
 import "./_tags.css";
 
 const { items: rawTags } = await client.getEntries<RawTag>({

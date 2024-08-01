@@ -1,10 +1,10 @@
 ---
 import { tagDTO } from "@application/dto/tag/tagDTO";
 import type { RawTag } from "@application/dto/tag/types";
-import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
-import ArticleCard from "@components/organisms/articleCard/ArticleCard.astro";
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { client } from "@lib/contentful";
+import ArticleCard from "@shared/ui/components/articleCard/ArticleCard.astro";
+import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
+import Breadcrumbs from "@shared/ui/components/breadcrumbs/Breadcrumbs.astro";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import "./_tag.css";
 
@@ -36,7 +36,6 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params as TagParams;
 const { tag } = Astro.props as TagProps;
-console.log("t", tag);
 ---
 <BaseLayout>
     <Breadcrumbs />

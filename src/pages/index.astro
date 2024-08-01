@@ -1,11 +1,11 @@
 ---
-import Welcome from "@components/molecules/welcome/Welcome.astro";
-import LatestArticles from "@components/organisms/latestArticles/LatestArticles.astro";
-import MyWork from "@components/organisms/myWork/MyWork.astro";
-import Testimonials from "@components/organisms/testimonials/Testimonials.astro";
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
+import MyWork from "@components/modules/home/components/myWork/MyWork.astro";
+import Testimonials from "@components/modules/home/components/testimonials/Testimonials.astro";
+import Welcome from "@components/modules/home/components/welcome/Welcome.astro";
+import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
+import LatestArticles from "../shared/ui/components/latestArticles/LatestArticles.astro";
 
-// todo
+// todo: use location for breadrumbs instead of passing the classname
 // todo: add related articles card?
 // todo: how to deploy cloudfare pages
 // todo: add thinner svg lines

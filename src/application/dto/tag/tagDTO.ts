@@ -3,9 +3,9 @@ import type { RawArticle } from "@application/dto/article/types";
 import { authorDTO } from "@application/dto/author";
 import type { RawAuthor } from "@application/dto/author/types";
 import { type RawTag, type TagDTO, TagType } from "@application/dto/tag/types";
-import { getArticles } from "@application/dto/tag/utils/getArticles";
 import { client } from "@lib/contentful.ts";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
+import { getArticlesByTag } from "./utils/getArticlesByTag";
 import { groupBy } from "./utils/groupBy";
 
 export const tagDTO: BaseDTO<RawTag[], Promise<TagDTO>> = {
@@ -27,7 +27,7 @@ export const tagDTO: BaseDTO<RawTag[], Promise<TagDTO>> = {
 					slug: tag.fields.slug,
 					type: TagType.TAG,
 					count: articles.length,
-					articles: getArticles({ tag, articles }),
+					articles: getArticlesByTag({ tag, articles }),
 				};
 			}),
 		);

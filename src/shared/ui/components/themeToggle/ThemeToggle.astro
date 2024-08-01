@@ -1,0 +1,39 @@
+---
+import "./theme-toggle.css";
+---
+
+<div class="theme-toggle_wrapper">
+  <label class="theme-toggle font-sans-serif flex column-wrap justify-center align-center" title="Toggle theme">
+    <input type="checkbox" class="theme-toggle__input" />
+    <span class="theme-toggle__text">You are now in</span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      width="1em"
+      height="1em"
+      fill="currentColor"
+      viewBox="0 0 32 32"
+      class="theme_toggle_inner"
+    >
+      <clipPath id="theme_toggle_inner__cutout">
+        <path d="M0 0h42v30a1 1 0 00-16 13H0Z" />
+      </clipPath>
+      <g clip-path="url(#theme_toggle_inner__cutout)">
+        <circle cx="16" cy="16" r="8.4" />
+        <g>
+          <circle cx="16" cy="3.3" r="2.3" style="--inline-index: 1"/>
+          <circle cx="27" cy="9.7" r="2.3" style="--inline-index: 2"/>
+          <circle cx="27" cy="22.3" r="2.3" style="--inline-index: 3"/>
+          <circle cx="16" cy="28.7" r="2.3" style="--inline-index: 4"/>
+          <circle cx="5" cy="22.3" r="2.3" style="--inline-index: 5"/>
+          <circle cx="5" cy="9.7" r="2.3" style="--inline-index: 6"/>
+        </g>
+      </g>
+    </svg>
+  </label>
+</div>
+<script is:inline data-astro-rerun type="module">
+  import { initializeThemeSetter } from '/src/shared/ui/components/themeToggle/utils/themeSetter';
+
+  initializeThemeSetter()
+</script>

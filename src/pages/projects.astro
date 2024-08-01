@@ -2,10 +2,10 @@
 import { Image } from "astro:assets";
 import { projectDTO } from "@application/dto/project";
 import type { RawProject } from "@application/dto/project/types";
-import ProjectSection from "@components/atoms/projectSection/ProjectSection.astro";
-import ProjectsIntro from "@components/organisms/projectsIntro/ProjectsIntro.astro";
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { client } from "@lib/contentful";
+import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
+import ProjectSection from "@ui/components/modules/projects/components/projectSection/ProjectSection.astro";
+import ProjectsIntro from "@ui/components/modules/projects/components/projectsIntro/ProjectsIntro.astro";
 
 const { items: rawProjects } = await client.getEntries<RawProject>({
 	content_type: "project",

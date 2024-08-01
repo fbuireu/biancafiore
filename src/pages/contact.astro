@@ -1,10 +1,9 @@
 ---
-import ContactIntro from "@components/organisms/contactIntro/ContactIntro.astro";
-import Tabs from "@components/organisms/tabs/Tabs.astro";
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
-import LatestArticles from "src/ui/components/organisms/latestArticles/LatestArticles.astro";
-import Breadcrumbs from "../ui/components/molecules/breadcrumbs/Breadcrumbs.astro";
----
+import BaseLayout from '@shared/ui/components/baseLayout/BaseLayout.astro';
+import ContactIntro from '@ui/components/modules/contact/components/contactIntro/ContactIntro.astro';
+import Tabs from '@ui/components/modules/contact/components/tabs/Tabs.astro';
+import Breadcrumbs from '@shared/ui/components/breadcrumbs/Breadcrumbs.astro';
+import LatestArticles from '@shared/ui/components/latestArticles/LatestArticles.astro';---
 
 <BaseLayout title="" description="">
   <Breadcrumbs classNames="contact-page" />

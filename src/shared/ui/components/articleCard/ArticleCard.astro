@@ -1,0 +1,56 @@
+---
+import { Image } from "astro:assets";
+import type { ArticleDTO } from "@application/dto/article/types";
+import { ArticleType } from "@application/dto/article/types";
+import clsx from "clsx";
+import { getLocation } from "./utils/getLocation";
+import "./article-card.css";
+
+export interface ArticleCardProps extends ArticleDTO {
+	origin: URL;
+	href: string;
+}
+
+const { href, title, description, variant, featuredImage, publishDate, author, tags } = Astro.props as ArticleCardProps;
+
+const { pathname } = Astro.url;
+const origin = getLocation(Astro.url);
+---
+
+<a class="article__link-card" href={href} aria-label={title}>{" "}</a>
+<article
+    class={clsx(
+        'article__item',
+        {
+          '--default-variant': variant === ArticleType.DEFAULT,
+          '--no-image-variant': variant === ArticleType.NO_IMAGE,
+        },
+        origin && `--is-${origin}`,
+    )}
+>
+  {featuredImage && (
+      <Image
+          class="article__item__featured-image"
+          src={featuredImage.url}
+          width={featuredImage.details.width}
+          height={featuredImage.details.height}
+          alt={title}
+          transition:name=`featured-image-${pathname}`
+      />
+  )}
+    <time class="article__item__publish-date" dateTime={publishDate}>
+      {publishDate}
+    </time>
+    <h3 class="article__title font-serif inner-section-title">{title}</h3>
+    <p class="article__author">
+        by <a href={`/tags/${author.slug}`}>{author.name}</a>
+    </p>
+    <p class="article__excerpt">{description}</p>
+    <ul class="article__tags__list flex">
+      {tags?.map(({slug, name}) => (
+          <a class="article__tag__item" href={`/tags/${slug}`}>
+              #{name}
+          </a>
+      ))}
+    </ul>
+</article>

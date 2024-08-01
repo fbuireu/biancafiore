@@ -1,5 +1,5 @@
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from 'contentful';
-import type { ContenfulLocation, ContentfulImageAsset, Image, Location } from '@shared/application/types';
+import type { ContenfulLocation, ContentfulImageAsset, Image, Location } from "@shared/application/types";
+import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawCity {
 	contentTypeId: "city";

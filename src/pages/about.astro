@@ -1,15 +1,15 @@
 ---
 import { authorDTO } from "@application/dto/author";
 import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
+import { cityDTO } from "@application/dto/city";
 import type { RawCity } from "@application/dto/city/types";
-import AboutIntro from "@components/molecules/aboutIntro/AboutIntro.astro";
-import Breadcrumbs from "@components/molecules/breadcrumbs/Breadcrumbs.astro";
-import AboutLatestArticles from "@components/organisms/aboutLatestArticles/AboutLatestArticles.astro";
-import { LittleMoreOfMe } from "@components/organisms/littleMoreOfMe/index";
-import BaseLayout from "@components/templates/baseLayout/BaseLayout.astro";
 import { CONTACT_DETAILS } from "@const/index";
 import { client } from "@lib/contentful";
-import { cityDTO } from "src/application/dto/city";
+import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
+import Breadcrumbs from "@shared/ui/components/breadcrumbs/Breadcrumbs.astro";
+import AboutIntro from "@ui/components/modules/about/components/aboutIntro/AboutIntro.astro";
+import AboutLatestArticles from "@ui/components/modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
+import { LittleMoreOfMe } from "@ui/components/modules/about/components/littleMoreOfMe/LittleMoreOfMe.tsx";
 
 const [{ items: rawAuthors }, { items: rawCities }] = await Promise.all([
 	client.getEntries<RawAuthor>({ content_type: "author" }) as Iterable<PromiseLike<RawAuthor[]> | RawAuthor[]>,
