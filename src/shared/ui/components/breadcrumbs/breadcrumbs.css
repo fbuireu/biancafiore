@@ -7,7 +7,8 @@
         color: var(--primary-main)
     }
 
-    .article-page .breadcrumbs__list {
+
+    .--is-article .breadcrumbs__list {
         justify-content: flex-start;
         margin: 0 auto;
         max-width: var(--grid-small);
@@ -15,7 +16,7 @@
         width: 100%;
     }
 
-    .articles-page .breadcrumbs__list {
+    .--is-articles .breadcrumbs__list {
         margin-bottom: 5rem;
 
         @media (width <= 960px) {
@@ -23,12 +24,12 @@
         }
     }
 
-    .projects-page .breadcrumbs__list{
+    .--is-projects .breadcrumbs__list{
         display: none;
     }
 
-    .about-page .breadcrumbs__list,
-    .contact-page .breadcrumbs__list {
+    .--is-about .breadcrumbs__list,
+    .--is-contact .breadcrumbs__list {
         justify-content: flex-start;
         padding-top: 2rem;
     }

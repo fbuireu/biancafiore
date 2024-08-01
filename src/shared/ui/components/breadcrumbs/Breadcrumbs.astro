@@ -1,18 +1,13 @@
 ---
 import { breadcrumbDTO } from "@application/dto/breadcrumb/breadcrumbDTO";
+import { getLocation } from "../articleCard/utils/getLocation";
 import "./breadcrumbs.css";
 
-interface BreadcrumbProps {
-	classNames?: string;
-}
-
-const { classNames } = Astro.props as BreadcrumbProps;
-const { pathname: currentPath, origin } = Astro.url;
-
-const breadcrumbs = breadcrumbDTO.render({ currentPath });
+const breadcrumbs = breadcrumbDTO.render({ currentPath: Astro.url.pathname });
+const origin = getLocation(Astro.url);
 ---
 
-<section class:list={[`breadcrumbs__wrapper ${classNames}`, { 'common-wrapper': classNames }]}>
+<section class:list={[`breadcrumbs__wrapper common-wrapper`, `--is-${origin}` ]}>
 <ul class="breadcrumbs__list flex justify-center align-center font-sans-serif">
   {breadcrumbs?.map(({ link, label }, index) => {
       const isLast = breadcrumbs.at(-1).link === link
@@ -29,7 +24,7 @@ const breadcrumbs = breadcrumbDTO.render({ currentPath });
             "@type": "ListItem",
             "position": index + 1,
             "item": {
-              "@id": `${origin}${link}`,
+              "@id": `${Astro.url.origin}${link}`,
               "name": label
             }
           })}/>

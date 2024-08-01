@@ -1,8 +1,10 @@
 const PATHS_MAP = {
+	article: "/articles/",
 	articles: "/articles",
 	about: "/about",
 	tag: "/tag",
 	tags: "/tags",
+	contact: "/contact",
 	home: "/",
 };
 

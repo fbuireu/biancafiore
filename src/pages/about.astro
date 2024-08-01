@@ -27,7 +27,7 @@ const bianca = (await authorDTO.render(rawAuthors as RawAuthor[]))
 ---
 
 <BaseLayout title="" description="">
-    <Breadcrumbs classNames="about-page" />
+    <Breadcrumbs />
     <AboutIntro />
     <LittleMoreOfMe client:only="react" cities={cities} />
     <AboutLatestArticles />
