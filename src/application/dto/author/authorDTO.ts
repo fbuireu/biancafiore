@@ -1,7 +1,7 @@
 import { articleDTO } from "@application/dto/article";
 import type { RawArticle } from "@application/dto/article/types";
 import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
-import { client } from "@lib/contentful.ts";
+import { client } from "@infrastructure/cms/client";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
 import { createImage } from "@shared/application/dto/utils/createImage";
 

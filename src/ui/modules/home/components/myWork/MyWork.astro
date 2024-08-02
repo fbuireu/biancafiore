@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { projectDTO } from "@application/dto/project";
 import type { RawProject } from "@application/dto/project/types";
-import { client } from "@lib/contentful";
+import { client } from "@infrastructure/cms/client";
 import "./my-work.css";
 
 const { items: rawProjects } = await client.getEntries<RawProject>({

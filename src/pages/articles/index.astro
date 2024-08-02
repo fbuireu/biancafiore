@@ -1,7 +1,7 @@
 ---
 import { articleDTO } from "@application/dto/article/articleDTO";
 import type { RawArticle } from "@application/dto/article/types";
-import { client } from "@lib/contentful";
+import { client } from "@infrastructure/cms/client";
 import FeaturedArticle from "@modules/articles/components/featuredArticle/FeaturedArticle.astro";
 import ArticleCard from "@shared/ui/components/articleCard/ArticleCard.astro";
 import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";

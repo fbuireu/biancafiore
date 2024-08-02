@@ -4,7 +4,7 @@ import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
 import { cityDTO } from "@application/dto/city";
 import type { RawCity } from "@application/dto/city/types";
 import { CONTACT_DETAILS } from "@const/index";
-import { client } from "@lib/contentful";
+import { client } from "@infrastructure/cms/client";
 import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@shared/ui/components/breadcrumbs/Breadcrumbs.astro";
 import AboutIntro from "@ui/modules/about/components/aboutIntro/AboutIntro.astro";

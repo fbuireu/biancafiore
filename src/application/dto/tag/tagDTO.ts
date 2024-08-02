@@ -3,7 +3,7 @@ import type { RawArticle } from "@application/dto/article/types";
 import { authorDTO } from "@application/dto/author";
 import type { RawAuthor } from "@application/dto/author/types";
 import { type RawTag, type TagDTO, TagType } from "@application/dto/tag/types";
-import { client } from "@lib/contentful.ts";
+import { client } from "@infrastructure/cms/client";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
 import { getArticlesByTag } from "./utils/getArticlesByTag";
 import { groupBy } from "./utils/groupBy";

@@ -16,18 +16,18 @@ const schema = z.object({
 	message: z.string().trim().min(1, "Please insert a valid message"),
 });
 
+export interface FormData {
+	name: string;
+	email: string;
+	message: string;
+	recaptcha: string;
+}
+
 enum FormStatus {
 	INITIAL = "initial",
 	LOADING = "loading",
 	SUCCESS = "success",
 	ERROR = "error",
-}
-
-interface FormData {
-	name: string;
-	email: string;
-	message: string;
-	recaptcha: string;
 }
 
 export const ContactForm = () => {
