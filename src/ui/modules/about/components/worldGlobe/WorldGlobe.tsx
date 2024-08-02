@@ -8,7 +8,7 @@ import useTabVisibility, { TabVisibility } from "@modules/about/hooks/useTabVisi
 import { calculateCenter } from "@modules/about/utils/calculateCenter";
 import { refineCities } from "@modules/about/utils/refineCities";
 import { renderPin } from "@modules/about/utils/renderPin";
-import { Image } from "@shared/ui/components/Image";
+import { Image } from "@shared/ui/components/image";
 import { memo, useCallback, useEffect, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";

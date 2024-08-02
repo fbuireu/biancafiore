@@ -1,4 +1,4 @@
-import { Image } from "@shared/ui/components/Image";
+import { Image } from "@shared/ui/components/image";
 import "./testimonial-image.css";
 
 export type TestimonialImageProps = Pick<HTMLImageElement, "src" | "alt">;

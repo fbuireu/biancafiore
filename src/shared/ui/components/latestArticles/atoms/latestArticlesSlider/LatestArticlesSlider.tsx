@@ -40,8 +40,7 @@ export const LatestArticlesSlider = ({ articles, origin }: LatestArticlesSLiderP
 				swiperOptions={SLIDER_CONFIG}
 				classNames="--is-latest-articles-slider"
 				renderItem={(article) => {
-					const href = `/articles/${article.slug}`;
-					const props = { ...article, href, origin };
+					const props = { ...article, origin };
 
 					return (
 						<ArticleCard {...props}>

@@ -30,11 +30,8 @@ const featuredArticle = getFeaturedArticle(articles);
             articles
                 .filter(({ slug }) => slug !== featuredArticle.slug)
                 .map((article, index) => {
-                    const href=`/articles/${article.slug}`;
-                    const props= {...article, href}
-
                     return <li class="articles__grid__item">
-                        <ArticleCard {...props}/>
+                        <ArticleCard {...article} />
                         <script type="application/ld+json" set:html={JSON.stringify({
                           '@context': 'https://schema.org',
                           '@type': 'ItemList',

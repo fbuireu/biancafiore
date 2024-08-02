@@ -23,7 +23,7 @@ enum FormStatus {
 	ERROR = "error",
 }
 
-export interface FormData {
+interface FormData {
 	name: string;
 	email: string;
 	message: string;

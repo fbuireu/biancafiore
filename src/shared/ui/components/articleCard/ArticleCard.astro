@@ -2,22 +2,19 @@
 import { Image } from "astro:assets";
 import type { ArticleDTO } from "@application/dto/article/types";
 import { ArticleType } from "@application/dto/article/types";
+import { getLocation } from "@shared//ui/utils/getLocation";
 import clsx from "clsx";
-import { getLocation } from "./utils/getLocation";
 import "./article-card.css";
 
-export interface ArticleCardProps extends ArticleDTO {
-	origin: URL;
-	href: string;
-}
+type ArticleCardProps = ArticleDTO;
 
-const { href, title, description, variant, featuredImage, publishDate, author, tags } = Astro.props as ArticleCardProps;
+const { title, description, variant, featuredImage, publishDate, author, tags, slug } = Astro.props as ArticleCardProps;
 
 const { pathname } = Astro.url;
 const origin = getLocation(Astro.url);
 ---
 
-<a class="article__link-card" href={href} aria-label={title}>{" "}</a>
+<a class="article__link-card" href={`/articles/${slug}`} aria-label={title}>{" "}</a>
 <article
     class={clsx(
         'article__item',

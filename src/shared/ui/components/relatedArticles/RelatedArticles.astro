@@ -1,10 +1,9 @@
 ---
 import type { ArticleDTO } from "@application/dto/article/types";
+import RelatedArticleCard from "./atoms/relatedArticleCard/RelatedArticleCard.astro";
 import "./related-articles.css";
 
-interface RelatedArticleProps {
-	article: ArticleDTO;
-}
+type RelatedArticleProps = ArticleDTO;
 
 const { article } = Astro.props as RelatedArticleProps;
 const { relatedArticles } = article;
@@ -13,17 +12,10 @@ const { relatedArticles } = article;
     relatedArticles.length > 0 && (
     <section class="related-articles__wrapper common-wrapper">
         <h3 class="related-articles__title section-title">You might also like</h3>
-        <ul class="related-articles__list flex row-wrap">
+        <ul class="related-articles__grid__list flex row-wrap">
           {relatedArticles.map((relatedArticle, index) => (
-              <li class="related-article__item flex column-wrap">
-                  <time class="related-article__item__publish-date font-sans-serif" datetime={relatedArticle.publishDate}>
-                    {relatedArticle.publishDate}
-                  </time>
-                  <a href={`/articles/${relatedArticle.slug}`} class="related__article__link">
-                      <h4 class="related__article__title">{relatedArticle.title}</h4>
-                      <p>{relatedArticle.description}</p>
-                      <a href={`/tags/${relatedArticle.slug}`} class="related__article__author">by {relatedArticle.author.name}</a>
-                  </a>
+              <li class="related-articles__grid__item">
+                  <RelatedArticleCard {...relatedArticle} />
               </li>
               <script type="application/ld+json" set:html={JSON.stringify({
                 "@context": "https://schema.org",

@@ -1,5 +1,6 @@
 import type { ArticleDTO } from "@application/dto/article/types.ts";
 import { ArticleType } from "@application/dto/article/types.ts";
+import { getLocation } from "@shared//ui/utils/getLocation";
 import { ArticleCardAuthor } from "@shared/ui/components/articleCard/atoms/articleCardAuthor";
 import type { ArticleCardAuthorProps } from "@shared/ui/components/articleCard/atoms/articleCardAuthor";
 import { ArticleCardExcerpt } from "@shared/ui/components/articleCard/atoms/articleCardExcerpt";
@@ -16,21 +17,19 @@ import { ArticleCardTitle } from "@shared/ui/components/articleCard/atoms/articl
 import type { ArticleCardTitleProps } from "@shared/ui/components/articleCard/atoms/articleCardTitle";
 import clsx from "clsx";
 import type { ReactNode } from "react";
-import { getLocation } from "./utils/getLocation";
 import "./article-card.css";
 
-export interface ArticleCardProps extends ArticleDTO {
+interface ArticleCardProps extends ArticleDTO {
 	origin: URL;
 	children: ReactNode;
-	href: string;
 }
 
-export const ArticleCard = ({ children, origin, href, title, variant }: ArticleCardProps) => {
+export const ArticleCard = ({ children, origin, title, slug, variant }: ArticleCardProps) => {
 	const location = getLocation(origin);
 
 	return (
 		<>
-			<a className={"article__link-card"} href={href} aria-label={title}>
+			<a className={"article__link-card"} href={`/articles/${slug}`} aria-label={title}>
 				{" "}
 			</a>
 			<article

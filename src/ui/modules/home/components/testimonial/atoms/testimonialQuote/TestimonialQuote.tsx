@@ -1,5 +1,5 @@
 import doubleQuote from "@assets/images/svg/double-quote.svg";
-import { Image } from "@shared/ui/components/Image";
+import { Image } from "@shared/ui/components/image";
 import type { ReactNode } from "react";
 import "./testimonial-quote.css";
 

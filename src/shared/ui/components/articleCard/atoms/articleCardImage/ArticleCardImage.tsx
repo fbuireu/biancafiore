@@ -1,4 +1,4 @@
-import { Image } from "@shared/ui/components/Image";
+import { Image } from "@shared/ui/components/image";
 import "./article-card-image.css";
 
 export type ArticleCardImageProps = Pick<HTMLImageElement, "src" | "alt">;

@@ -2,7 +2,7 @@
 import { articleDTO } from "@application/dto/article";
 import type { RawArticle } from "@application/dto/article/types";
 import { client } from "@lib/contentful";
-import { LatestArticlesSlider } from "@shared/ui/components/latestArticlesSlider/LatestArticlesSlider.tsx";
+import { LatestArticlesSlider } from "./atoms/latestArticlesSlider/LatestArticlesSlider.tsx";
 import "./latest-articles.css";
 
 interface LatestArticlesProps {
@@ -15,10 +15,9 @@ const { limit = MAX_ARTICLES } = Astro.props as LatestArticlesProps;
 
 const { items: rawArticles } = await client.getEntries<RawArticle>({
 	content_type: "article",
+	order: ["-fields.publishDate"],
 });
-const articles = articleDTO
-	.render(rawArticles as RawArticle[])
-	.sort((a, b) => new Date(b.publishDate).valueOf() - new Date(a.publishDate).valueOf());
+const articles = articleDTO.render(rawArticles as RawArticle[]);
 ---
 
 <section class="latest-articles__wrapper">
