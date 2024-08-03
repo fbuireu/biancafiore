@@ -10,6 +10,7 @@ import MarkdownIt from "markdown-it";
 import { createTags } from "./utils/createTags";
 import { generateExcerpt } from "./utils/generateExcerpt";
 import { getAuthor } from "./utils/getAuthor";
+import { getReadingTime } from "./utils/getReadingTime";
 
 const PARSER: MarkdownIt = new MarkdownIt();
 
@@ -27,6 +28,7 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 
 			const relatedArticles = article.fields.relatedArticles ?? getRelatedArticles({ article, allArticles: raw });
 			const featuredImage = createImage(article.fields.featuredImage);
+			const content = documentToHtmlString(article.fields.content as unknown as Document);
 
 			return {
 				title: article.fields.title,
@@ -36,8 +38,9 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 				publishDate: new Date(String(article.fields.publishDate)).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
 				featuredImage,
 				variant: article.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
-				content: documentToHtmlString(article.fields.content as unknown as Document),
+				content,
 				isFeaturedArticle: article.fields.featuredArticle,
+				readingTime: getReadingTime(content),
 				tags,
 				relatedArticles,
 			} as unknown as ArticleDTO;

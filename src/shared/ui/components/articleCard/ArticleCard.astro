@@ -8,7 +8,8 @@ import "./article-card.css";
 
 type ArticleCardProps = ArticleDTO;
 
-const { title, description, variant, featuredImage, publishDate, author, tags, slug } = Astro.props as ArticleCardProps;
+const { title, description, variant, featuredImage, publishDate, author, tags, slug, readingTime } =
+	Astro.props as ArticleCardProps;
 
 const { pathname } = Astro.url;
 const origin = getLocation(Astro.url);
@@ -43,6 +44,8 @@ const origin = getLocation(Astro.url);
         by <a href={`/tags/${author.slug}`}>{author.name}</a>
     </p>
     <p class="article__excerpt">{description}</p>
+    <p class="article__excerpt">{description}</p>
+    <p class="article__reading-time">{readingTime} min. reading</p>
     <ul class="article__tags__list flex">
       {tags?.map(({slug, name}) => (
           <a class="article__tag__item" href={`/tags/${slug}`}>

@@ -1,6 +1,6 @@
 import type { ArticleDTO } from "@application/dto/article/types.ts";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
-import { ArticleCard } from "@shared/ui/components/articleCard/ArticleCard.tsx";
+import { ArticleCard } from "@shared/ui/components/articleCard/ArticleCard";
 import { Slider } from "@shared/ui/components/slider";
 import type { SwiperOptions } from "swiper/types";
 import "./latest-articles-slider.css";
@@ -41,7 +41,6 @@ export const LatestArticlesSlider = ({ articles, origin }: LatestArticlesSLiderP
 				classNames="--is-latest-articles-slider"
 				renderItem={(article) => {
 					const props = { ...article, origin };
-
 					return (
 						<ArticleCard {...props}>
 							<ArticleCard.PublishDate publishDate={article.publishDate}>{article.publishDate}</ArticleCard.PublishDate>
@@ -49,6 +48,7 @@ export const LatestArticlesSlider = ({ articles, origin }: LatestArticlesSLiderP
 							<ArticleCard.Title>{article.title}</ArticleCard.Title>
 							<ArticleCard.Excerpt>{article.description}</ArticleCard.Excerpt>
 							<ArticleCard.Author slug={article.author.slug}>{article.author.name}</ArticleCard.Author>
+							<ArticleCard.ReadingTime>{article.readingTime} min. reading</ArticleCard.ReadingTime>
 							<ArticleCard.Tags>
 								{article.tags?.map((tag) => (
 									<ArticleCard.Tag tag={tag} key={tag.name}>

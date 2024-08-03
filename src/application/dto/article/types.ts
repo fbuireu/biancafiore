@@ -31,6 +31,7 @@ export interface ArticleDTO {
 	featuredImage: Image;
 	variant: ArticleType;
 	isFeaturedArticle: boolean;
+	readingTime: number;
 	author: AuthorDTO;
 	tags: BaseTagDTO[];
 	relatedArticles: ArticleDTO[];
