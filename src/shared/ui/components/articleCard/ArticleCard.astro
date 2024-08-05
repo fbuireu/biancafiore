@@ -45,7 +45,7 @@ const origin = getLocation(Astro.url);
     </p>
     <p class="article__excerpt">{description}</p>
     <p class="article__excerpt">{description}</p>
-    <p class="article__reading-time">{readingTime} min. reading</p>
+    <p class="article__reading-time">{readingTime} min.</p>
     <ul class="article__tags__list flex">
       {tags?.map(({slug, name}) => (
           <a class="article__tag__item" href={`/tags/${slug}`}>

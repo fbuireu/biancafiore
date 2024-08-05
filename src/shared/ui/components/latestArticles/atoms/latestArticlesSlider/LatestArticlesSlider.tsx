@@ -48,7 +48,7 @@ export const LatestArticlesSlider = ({ articles, origin }: LatestArticlesSLiderP
 							<ArticleCard.Title>{article.title}</ArticleCard.Title>
 							<ArticleCard.Excerpt>{article.description}</ArticleCard.Excerpt>
 							<ArticleCard.Author slug={article.author.slug}>{article.author.name}</ArticleCard.Author>
-							<ArticleCard.ReadingTime>{article.readingTime} min. reading</ArticleCard.ReadingTime>
+							<ArticleCard.ReadingTime>{article.readingTime} min.</ArticleCard.ReadingTime>
 							<ArticleCard.Tags>
 								{article.tags?.map((tag) => (
 									<ArticleCard.Tag tag={tag} key={tag.name}>
