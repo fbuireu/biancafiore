@@ -36,6 +36,9 @@ yarn-error.log
 .astro/
 dist/
 
+# Million files
+.million/
+
 # IDE/Text editor
 .editorconfig
 .idea/

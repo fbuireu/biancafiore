@@ -3,8 +3,8 @@ import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
+import MillionLint from "@million/lint";
 import { defineConfig } from "astro/config";
-import million from "million/compiler";
 
 const isProd = import.meta.env.PROD;
 
@@ -15,14 +15,14 @@ export default defineConfig({
 	site: "https://biancafiore.me",
 	vite: {
 		ssr: {
-			external: ["firebase-admin", "node:async_hooks"],
+			external: ["firebase-admin", "node:async_hooks", "contentful"],
 		},
 	},
 	integrations: [
 		mdx(),
 		sitemap(),
 		react(),
-		million.vite({ mode: "react", server: true, auto: true }),
+		MillionLint.astro(),
 		partytown({
 			config: {
 				forward: ["dataLayer.push"],
