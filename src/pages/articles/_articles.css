@@ -1,5 +1,5 @@
     .articles__grid__list {
-        gap: 5rem 0;
+        gap: 5rem 3rem;
         margin: 12rem 0;
 
         @media (width <= 960px) {

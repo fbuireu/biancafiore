@@ -12,7 +12,7 @@ const { relatedArticles } = article;
     relatedArticles.length > 0 && (
     <section class="related-articles__wrapper common-wrapper">
         <h3 class="related-articles__title section-title">You might also like</h3>
-        <ul class="related-articles__grid__list flex row-wrap">
+        <ul class="related-articles__grid__list flex row-wrap justify-space-between">
           {relatedArticles.map((relatedArticle, index) => (
               <li class="related-articles__grid__item">
                   <RelatedArticleCard {...relatedArticle} />

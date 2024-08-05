@@ -23,23 +23,23 @@
 
     &.--no-image-variant {
         grid:
-        'Publish-Date' auto
-        'Title' 1fr
-        'Author' auto
-        'Excerpt' auto
-        'Tags' auto
-        / 1fr;
+        'Publish-Date Publish-Date' auto
+        'Title Title' auto
+        'Author Reading-Time' auto
+        'Excerpt Excerpt' auto
+        'Tags Tags' auto
+        / 1fr 1fr;
     }
 
     &.--default-variant {
         grid:
-        'Publish-Date' auto
-        'Featured-Image' 1fr
-        'Title' auto
-        'Author' auto
-        'Excerpt' auto
-        'Tags' auto
-        / 1fr;
+        'Publish-Date Publish-Date' auto
+        'Featured-Image Featured-Image' 1fr
+        'Title Title' auto
+        'Author Reading-Time' auto
+        'Excerpt Excerpt' auto
+        'Tags Tags' auto
+        / 1fr 1fr;
     }
 }
 

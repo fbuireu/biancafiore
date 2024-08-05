@@ -11,11 +11,10 @@ import "./_articles.css";
 
 const { items: rawArticles } = await client.getEntries<RawArticle>({
 	content_type: "article",
+	order: ["-fields.publishDate"],
 });
 
-const articles = articleDTO
-	.render(rawArticles as RawArticle[])
-	.sort((a, b) => new Date(b.publishDate).valueOf() - new Date(a.publishDate).valueOf());
+const articles = articleDTO.render(rawArticles as RawArticle[]);
 
 const featuredArticle = getFeaturedArticle(articles);
 ---
@@ -25,7 +24,7 @@ const featuredArticle = getFeaturedArticle(articles);
     <Breadcrumbs />
     <FeaturedArticle featuredArticle={featuredArticle} />
     <section class="articles__grid common-wrapper">
-        <ul class="articles__grid__list flex row-wrap justify-space-between">
+        <ul class="articles__grid__list flex row-wrap">
           {
             articles
                 .filter(({ slug }) => slug !== featuredArticle.slug)

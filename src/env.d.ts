@@ -20,6 +20,9 @@ interface ImportMetaEnv {
 	readonly CONTENTFUL_SPACE_ID: string;
 	readonly CONTENTFUL_DELIVERY_TOKEN: string;
 	readonly CONTENTFUL_PREVIEW_TOKEN: string;
+	readonly CONTENTFUL_SIGNIN_TOKEN: string;
+	readonly ALGOLIA_API_KEY: string;
+	readonly ALGOLIA_APP_ID: string;
 }
 
 interface ImportMeta {

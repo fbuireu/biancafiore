@@ -1,9 +1,10 @@
+// @ts-ignore
 import { ActionError, defineAction, z } from "astro:actions";
 import { DEFAULT_LOCALE_STRING } from "@const/index.ts";
+import { app } from "@infrastructure/database/server.ts";
 import { sendEmail } from "@infrastructure/email/server.ts";
-import { app } from "@infrastructure/firebase/server.ts";
+import type { FormData } from "@ui/modules/contact/components/contactForm";
 import { getFirestore } from "firebase-admin/firestore";
-import type { FormData } from "src/ui/components/contact/contactForm";
 
 type ContactDetails = Omit<FormData, "recaptcha">;
 

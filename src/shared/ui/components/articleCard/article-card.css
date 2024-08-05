@@ -4,6 +4,7 @@
 @import url('atoms/articleCardPublishDate/article-card-publish-date.css');
 @import url('atoms/articleCardTagsList/article-card-tags-list.css');
 @import url('atoms/articleCardTitle/article-card-title.css');
+@import url('atoms/articleCardReadingTime/article-card-reading-time.css');
 
     .article__item__wrapper {
         backface-visibility: hidden;
@@ -31,25 +32,23 @@
 
         &.--no-image-variant {
             grid:
-        'Publish-Date' auto
-        'Title' 1fr
-        'Author' auto
-        'Excerpt' auto
-        'Tags' auto
-        'Reading-Time' auto
-        / 1fr;
+        'Publish-Date Publish-Date' auto
+        'Title Title' auto
+        'Author Reading-Time' auto
+        'Excerpt Excerpt' auto
+        'Tags Tags' auto
+        / 1fr 1fr;
         }
 
         &.--default-variant {
             grid:
-        'Publish-Date' auto
-        'Featured-Image' 1fr
-        'Title' auto
-        'Author' auto
-        'Excerpt' auto
-        'Tags' auto
-        'Reading-Time' auto
-        / 1fr;
+        'Publish-Date Publish-Date' auto
+        'Featured-Image Featured-Image' 1fr
+        'Title Title' auto
+        'Author Reading-Time' auto
+        'Excerpt Excerpt' auto
+        'Tags Tags' auto
+        / 1fr 1fr;
         }
 
         &.--is-articles, &.--is-about, &.--is-tag{

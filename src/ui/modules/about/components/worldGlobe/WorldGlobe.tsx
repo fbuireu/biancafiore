@@ -135,7 +135,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 						type="button"
 						onClick={() =>
 							handleAction({
-								movementDirection: Direction.CLOCKWISE,
+								movementDirection: Direction.COUNTERCLOCKWISE,
 								type: MovementType.MOVE,
 							})
 						}
@@ -147,7 +147,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 						type="button"
 						onClick={() =>
 							handleAction({
-								movementDirection: Direction.COUNTERCLOCKWISE,
+								movementDirection: Direction.CLOCKWISE,
 								type: MovementType.MOVE,
 							})
 						}
