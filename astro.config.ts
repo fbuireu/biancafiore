@@ -22,7 +22,7 @@ export default defineConfig({
 		mdx(),
 		sitemap(),
 		react(),
-		MillionLint.astro(),
+		MillionLint.astro({ lite: true }),
 		partytown({
 			config: {
 				forward: ["dataLayer.push"],

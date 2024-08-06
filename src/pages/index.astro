@@ -5,15 +5,15 @@ import Welcome from "@modules/home/components/welcome/Welcome.astro";
 import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
 import LatestArticles from "@shared/ui/components/latestArticles/LatestArticles.astro";
 
-// todo: add Algolia + filters (+ URL filtering) https://www.algolia.com/developers/contentful-search-algolia/ (webhook problem)
+// todo: add native progressbar --> https://developer.chrome.com/docs/css-ui/scroll-driven-animations?hl=es-419#attaching-to-a-non-ancestor-scroll-timeline
 // todo: check tags semantics (buttons clickable, etc)
+// todo: wait for wrangler webhook -->  add Algolia + filters (+ URL filtering) https://www.algolia.com/developers/contentful-search-algolia/ (webhook problem)
 // todo: SEO meta desc and baseLayout data, ARIA, ...
 // todo: how to deploy cloudfare pages
 // todo: add thinner svg lines (// todo: replace arrows and icons for a finest ones) (// todo: refer logo (original + finet)
 // todo: add resume (PDF) in about?
 // todo: custom view transitions (are working) (https://www.smashingmagazine.com/2024/01/view-transitions-api-ui-animations-part2/)
 // todo: add reading time (in latest articles as well)
-// todo: jsonLD reuse (this implies creating DTOs for everything. Breadcrumbs, etc)
 // todo: multilanguage*
 // todo: add vitest
 // todo: add signature email
@@ -21,22 +21,17 @@ import LatestArticles from "@shared/ui/components/latestArticles/LatestArticles.
 //        - home articles: show tags staggered in hover
 //        - CTAs with arrow: animate arrow
 //        - Latest articles (https://codepen.io/jh3y/pen/MWLyGxo)
-// todo: globe spins with scroll section ( made with css only: anchor with #top)
 // todo: create social network component (<ul><li> with link and button for social networks and email. It will replace footer and about components)
 // todo: add like system: https://twitter.com/jh3yy/status/1740501273009389943?t=HACFVwPJq343ZjQt3sPaMA&s=19
-// todo: create reusable article details component (with tags, time, etc)
 // todo: add CIs
 // todo: add padding to overlapping items in cards(author, tags etc)
 // todo: add container queries
 // todo: review layers (Sections, isolation, etc)
-// todo: Reusability (latest articles in different sections, slider)
 // todo: review classNames (-wraper or __wrapper, etc)
 //
-// todo: *: both in menu
 //
 // other ideas:
 // todo: check notion
-// todo: add native progressbar --> https://developer.chrome.com/docs/css-ui/scroll-driven-animations?hl=es-419#attaching-to-a-non-ancestor-scroll-timeline
 // todo: reveal on scroll (Agafar idees gsap)
 // todo: fer que el globe es mogui segons l'scroll actual
 // todo: check namings
