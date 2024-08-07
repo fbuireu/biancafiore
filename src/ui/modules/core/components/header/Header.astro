@@ -1,0 +1,24 @@
+---
+import Logo from "@ui/modules/core/components/logo/Logo.astro";
+import Menu from "./atoms/menu/Menu.astro";
+import MenuButton from "./atoms/menuButton/MenuButton.astro";
+import MenuOverlay from "./atoms/menuOverlay/MenuOverlay.astro";
+import "./header.css";
+---
+
+<header class="header">
+    <div class="header__backdrop"></div>
+    <section class="header__wrapper common-wrapper flex row-wrap justify-flex-end align-center">
+        <Logo />
+        <MenuButton />
+    </section>
+    <MenuOverlay />
+    <Menu />
+</header>
+<script is:inline data-astro-rerun type="module">
+  import { toggleMenu } from '/src/shared/ui/components/header/utils/toggleMenu';
+  import { backgroundObserver } from '/src/shared/ui/components/header/utils/backgroundObserver';
+
+  backgroundObserver();
+  toggleMenu();
+</script>

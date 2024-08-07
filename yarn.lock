@@ -188,11 +188,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/check@npm:^0.9.1":
-  version: 0.9.1
-  resolution: "@astrojs/check@npm:0.9.1"
+"@astrojs/check@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@astrojs/check@npm:0.9.2"
   dependencies:
-    "@astrojs/language-server": "npm:^2.13.1"
+    "@astrojs/language-server": "npm:^2.13.2"
     chokidar: "npm:^3.5.3"
     fast-glob: "npm:^3.3.1"
     kleur: "npm:^4.1.5"
@@ -201,7 +201,7 @@ __metadata:
     typescript: ^5.0.0
   bin:
     astro-check: dist/bin.js
-  checksum: 10c0/3aa2d0c464a8cb76b7a7203617772d99e791451efe063fe1b776a96ce0b0ff955bfc8c9a4b8b0e512422420f202f06046d8403e6f04b43084b990a1e2f2db02a
+  checksum: 10c0/dcd3bbe6c3132da0d936f725416dff66653a27dfbdc4ac762782d43ea1fde1aa4e06afa61b7d1997fb697d54d048a5e80528d55250e6f4e1a8495bbd5b703855
   languageName: node
   linkType: hard
 
@@ -232,6 +232,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@astrojs/compiler@npm:^2.10.2":
+  version: 2.10.2
+  resolution: "@astrojs/compiler@npm:2.10.2"
+  checksum: 10c0/fb2ea61bd6d091b93b9e35b208b10f07cd3ae3415f02ed68deac2f3ac57f85d107f9073790954c552c30f74cca36ede2ae44babdd4881a1c322b659d51699d76
+  languageName: node
+  linkType: hard
+
 "@astrojs/internal-helpers@npm:0.4.1":
   version: 0.4.1
   resolution: "@astrojs/internal-helpers@npm:0.4.1"
@@ -239,11 +246,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/language-server@npm:^2.13.1":
-  version: 2.13.1
-  resolution: "@astrojs/language-server@npm:2.13.1"
+"@astrojs/language-server@npm:^2.13.2":
+  version: 2.13.2
+  resolution: "@astrojs/language-server@npm:2.13.2"
   dependencies:
-    "@astrojs/compiler": "npm:^2.10.1"
+    "@astrojs/compiler": "npm:^2.10.2"
     "@jridgewell/sourcemap-codec": "npm:^1.4.15"
     "@volar/kit": "npm:~2.4.0-alpha.15"
     "@volar/language-core": "npm:~2.4.0-alpha.15"
@@ -270,7 +277,7 @@ __metadata:
       optional: true
   bin:
     astro-ls: bin/nodeServer.js
-  checksum: 10c0/ee52a9d6128484246bbe0e3532bf40e0c7aaf0ccb4165b437fcf9e477a278787ef1bb814459201490f0ee96835addac7e5475b6c80965e6c07f3f96e820af4ad
+  checksum: 10c0/17d2d5c6c24f98b8a63a09e57c0b7b13b830d516c956292d0064183e8f423d45329dda18955624f3726d5db56b7f2e94afe266b9c469fbc33e586cb4af7d5e1b
   languageName: node
   linkType: hard
 
@@ -4765,7 +4772,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "biancafiore@workspace:."
   dependencies:
-    "@astrojs/check": "npm:^0.9.1"
+    "@astrojs/check": "npm:^0.9.2"
     "@astrojs/cloudflare": "npm:^11.0.4"
     "@astrojs/mdx": "npm:^3.1.3"
     "@astrojs/partytown": "npm:^2.1.1"
@@ -4805,7 +4812,7 @@ __metadata:
     react-globe.gl: "npm:^2.27.2"
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.52.2"
-    react-instantsearch: "npm:^7.12.3"
+    react-instantsearch: "npm:^7.12.4"
     react-router-dom: "npm:^6.26.0"
     resend: "npm:^3.5.0"
     stylelint: "npm:^16.8.1"
@@ -7535,9 +7542,9 @@ __metadata:
   linkType: hard
 
 "hono@npm:^4.3.2":
-  version: 4.5.3
-  resolution: "hono@npm:4.5.3"
-  checksum: 10c0/360fec2ea66b85d688dd9ce50eb6cdf94f6a2b8508e0b37b688fda3a94e7438cc4c143c0282b7aea41f7be8fa69f0b6d0039931fc8e1526c11ae09303dccce30
+  version: 4.5.4
+  resolution: "hono@npm:4.5.4"
+  checksum: 10c0/980accb9567fe5ba4533c1378d175a95a0eef0a1fa8a03ceb1f9296d88d4ee8ff0e1447f5e69eb56150a8b6cc66f4a663ec9d1c1135f005f44f61353b58e276f
   languageName: node
   linkType: hard
 
@@ -7798,9 +7805,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"instantsearch.js@npm:4.73.3":
-  version: 4.73.3
-  resolution: "instantsearch.js@npm:4.73.3"
+"instantsearch.js@npm:4.73.4":
+  version: 4.73.4
+  resolution: "instantsearch.js@npm:4.73.4"
   dependencies:
     "@algolia/events": "npm:^4.0.1"
     "@types/dom-speech-recognition": "npm:^0.0.1"
@@ -7816,7 +7823,7 @@ __metadata:
     search-insights: "npm:^2.15.0"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
-  checksum: 10c0/feed70b8d4be9983502de4b4af0dbb03848454c3ff904aacc0ef3d94ab998a742b5fb5879a7e5699040537758b36a075c24c753ba9bc997023965aa0a90205cd
+  checksum: 10c0/f975fa7b6ade5c1a59b72f369e05024a6c6bdd0ccdf4c4669097918bba19b679e5fa404e9acec74a6d58301b8380e24c78756bd8a28e25cd5923ba28cb809d9d
   languageName: node
   linkType: hard
 
@@ -10713,34 +10720,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-instantsearch-core@npm:7.12.3":
-  version: 7.12.3
-  resolution: "react-instantsearch-core@npm:7.12.3"
+"react-instantsearch-core@npm:7.12.4":
+  version: 7.12.4
+  resolution: "react-instantsearch-core@npm:7.12.4"
   dependencies:
     "@babel/runtime": "npm:^7.1.2"
     algoliasearch-helper: "npm:3.22.3"
-    instantsearch.js: "npm:4.73.3"
+    instantsearch.js: "npm:4.73.4"
     use-sync-external-store: "npm:^1.0.0"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
     react: ">= 16.8.0 < 19"
-  checksum: 10c0/66d889995c7408161a7bae95a5f9fbbb13f03a75ef1012688c08fdb5ee56ada7ecd7517b7627717d383c2793a8262c02467d07324c65e8680d3e4e14fb785b38
+  checksum: 10c0/70bdd6d88e749f7ef00fffcfdc22d5b419d737e031855362c691c10a840fc91efb9dce5bc7e9a2c780a9a5ac840f1bfee092714a8ad2df542ac3e0ce7cbf583b
   languageName: node
   linkType: hard
 
-"react-instantsearch@npm:^7.12.3":
-  version: 7.12.3
-  resolution: "react-instantsearch@npm:7.12.3"
+"react-instantsearch@npm:^7.12.4":
+  version: 7.12.4
+  resolution: "react-instantsearch@npm:7.12.4"
   dependencies:
     "@babel/runtime": "npm:^7.1.2"
     instantsearch-ui-components: "npm:0.8.0"
-    instantsearch.js: "npm:4.73.3"
-    react-instantsearch-core: "npm:7.12.3"
+    instantsearch.js: "npm:4.73.4"
+    react-instantsearch-core: "npm:7.12.4"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
     react: ">= 16.8.0 < 19"
     react-dom: ">= 16.8.0 < 19"
-  checksum: 10c0/fa8460ae8f330bd0e33f5a45ec1c79772d87d9a2f62d2a7a0c8c76a0394409ad6d48fbb090bcf642dda2848ced02c6ef3a2c976dd7fb209cf506eb22733ade89
+  checksum: 10c0/ee60566ce12cdbdd1120496959a787c9ecb3e993c2b338b6e8113d833a30f9cfc06c1247d750a96ed0e2ac4a0b9a25af0a46f2842180e022a1dded5d85089dea
   languageName: node
   linkType: hard
 
