@@ -5,11 +5,11 @@ import { cityDTO } from "@application/dto/city";
 import type { RawCity } from "@application/dto/city/types";
 import { CONTACT_DETAILS } from "@const/index";
 import { client } from "@infrastructure/cms/client";
+import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
+import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
+import { LittleMoreOfMe } from "@modules/about/components/littleMoreOfMe/LittleMoreOfMe.tsx";
 import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@shared/ui/components/breadcrumbs/Breadcrumbs.astro";
-import AboutIntro from "@ui/modules/about/components/aboutIntro/AboutIntro.astro";
-import AboutLatestArticles from "@ui/modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
-import { LittleMoreOfMe } from "@ui/modules/about/components/littleMoreOfMe/LittleMoreOfMe.tsx";
 
 const [{ items: rawAuthors }, { items: rawCities }] = await Promise.all([
 	client.getEntries<RawAuthor>({ content_type: "author" }) as Iterable<PromiseLike<RawAuthor[]> | RawAuthor[]>,

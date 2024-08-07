@@ -1,5 +1,5 @@
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
-import { Image } from "@ui/modules/core/components/image";
+import { Image } from "@modules/core/components/image";
 import clsx from "clsx";
 import { useRef } from "react";
 import type { Swiper as SwiperClass } from "swiper/types";

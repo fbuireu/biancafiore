@@ -3,9 +3,9 @@ import { Image } from "astro:assets";
 import { articleDTO } from "@application/dto/article/articleDTO";
 import type { RawArticle } from "@application/dto/article/types";
 import { client } from "@infrastructure/cms/client";
-import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
-import Breadcrumbs from "@shared/ui/components/breadcrumbs/Breadcrumbs.astro";
-import RelatedArticles from "@shared/ui/components/relatedArticles/RelatedArticles.astro";
+import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import "./_article.css";
 

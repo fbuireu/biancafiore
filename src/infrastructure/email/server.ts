@@ -1,5 +1,5 @@
 import { CONTACT_DETAILS } from "@const/index.ts";
-import type { FormData } from "@ui/modules/contact/components/contactForm/ContactForm.tsx";
+import type { FormData } from "@modules/contact/components/contactForm/ContactForm.tsx";
 import { Resend } from "resend";
 
 type ContactDetails = Omit<FormData, "recaptcha">;

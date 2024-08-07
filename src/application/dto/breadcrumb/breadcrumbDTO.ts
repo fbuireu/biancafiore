@@ -1,6 +1,6 @@
 import type { BreadcrumbDTOItem, RawBreadcrumb } from "@application/dto/breadcrumb/types";
+import { deSlugify } from "@modules/core/utils/deSlugify";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
-import { deSlugify } from "@shared/ui/utils/deSlugify";
 
 export type BreadcrumbDTO = BreadcrumbDTOItem[];
 

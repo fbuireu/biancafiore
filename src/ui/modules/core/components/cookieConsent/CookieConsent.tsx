@@ -1,5 +1,5 @@
 import { Cookie } from "@assets/images/svg-components/cookie";
-import { config } from "@ui/modules/core/components/cookieConsent/config";
+import { config } from "@modules/core/components/cookieConsent/config";
 import { useEffect } from "react";
 import { reset, run, showPreferences } from "vanilla-cookieconsent";
 import "./cookie-consent.css";

@@ -3,7 +3,7 @@ import { ActionError, defineAction, z } from "astro:actions";
 import { DEFAULT_LOCALE_STRING } from "@const/index.ts";
 import { app } from "@infrastructure/database/server.ts";
 import { sendEmail } from "@infrastructure/email/server.ts";
-import type { FormData } from "@ui/modules/contact/components/contactForm";
+import type { FormData } from "@modules/contact/components/contactForm";
 import { getFirestore } from "firebase-admin/firestore";
 
 type ContactDetails = Omit<FormData, "recaptcha">;
