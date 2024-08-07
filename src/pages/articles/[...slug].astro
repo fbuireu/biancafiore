@@ -3,9 +3,11 @@ import { Image } from "astro:assets";
 import { articleDTO } from "@application/dto/article/articleDTO";
 import type { RawArticle } from "@application/dto/article/types";
 import { client } from "@infrastructure/cms/client";
+import ReadingProgress from "@modules/articles/components/readingProgress/ReadingProgress.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
+
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import "./_article.css";
 
@@ -51,50 +53,51 @@ const { article } = Astro.props as ArticleProps;
           </section>
       )
   }
-    <Breadcrumbs />
-    <div class="article__details">
-        <h1 class="article__title">
-          {article.title}
-        </h1>
-        <p class="article__author">by <a href={`/tags/${article.author.slug}`}>{article.author.name}</a></p>
-        <time class="article__publish-date font-sans-serif" datetime={article.publishDate}>
-          {article.publishDate}
-        </time>
-      {
-        article.tags?.length > 0 && (
-              <ul class="article__tags__list flex row-wrap">
-                {article.tags.map(({ slug, name }) => (
-                    <li class="article__tag__item">
-                        <a href={`/tags/${slug}`}>#{name}</a>
-                    </li>
-                ))}
-              </ul>
-          )
-      }
-    </div>
+  <Breadcrumbs />
+  <ReadingProgress />
+  <div class="article__details">
+      <h1 class="article__title">
+        {article.title}
+      </h1>
+      <p class="article__author">by <a href={`/tags/${article.author.slug}`}>{article.author.name}</a></p>
+      <time class="article__publish-date font-sans-serif" datetime={article.publishDate}>
+        {article.publishDate}
+      </time>
+    {
+      article.tags?.length > 0 && (
+            <ul class="article__tags__list flex row-wrap">
+              {article.tags.map(({ slug, name }) => (
+                  <li class="article__tag__item">
+                      <a href={`/tags/${slug}`}>#{name}</a>
+                  </li>
+              ))}
+            </ul>
+        )
+    }
+  </div>
   <article class="article__wrapper" set:html={article.content} />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Article',
-      'headline': article.title,
-      'description': article.description,
-      ...(article.featuredImage && { 'image': article.featuredImage }),
-      'datePublished': new Date(String(article.publishDate)).toISOString(),
-      'dateModified': new Date(String(article.publishDate)).toISOString(),
-      'author': {
-        '@type': 'Person',
-        'name': article.author.name,
-        'jobTitle': article.author.jobTitle,
-        'url': new URL('/about', import.meta.env.PUBLIC_SITE_URL),
-      },
-      'publisher': {
-        'name': article.author.name,
-        'url': new URL(import.meta.env.PUBLIC_SITE_URL),
-      },
-      'mainEntityOfPage': {
-        '@type': 'WebPage',
-        '@id': Astro.url.href,
-      },
-    })} />
-    <RelatedArticles article={article} />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    'headline': article.title,
+    'description': article.description,
+    ...(article.featuredImage && { 'image': article.featuredImage }),
+    'datePublished': new Date(String(article.publishDate)).toISOString(),
+    'dateModified': new Date(String(article.publishDate)).toISOString(),
+    'author': {
+      '@type': 'Person',
+      'name': article.author.name,
+      'jobTitle': article.author.jobTitle,
+      'url': new URL('/about', import.meta.env.PUBLIC_SITE_URL),
+    },
+    'publisher': {
+      'name': article.author.name,
+      'url': new URL(import.meta.env.PUBLIC_SITE_URL),
+    },
+    'mainEntityOfPage': {
+      '@type': 'WebPage',
+      '@id': Astro.url.href,
+    },
+  })} />
+  <RelatedArticles article={article} />
 </BaseLayout>

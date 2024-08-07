@@ -24,6 +24,7 @@ const SELECTORS = {
 	NAVIGATION_DIVIDER: ".navigation__menu__divider",
 	NAVIGATION_ITEMS: ".navigation__menu__item > *",
 	QUOTE: ".navigation__menu__quote > *",
+	READING_PROGRESS: ".reading-progress",
 };
 
 export function toggleMenu() {
@@ -45,6 +46,7 @@ export function toggleMenu() {
 		NAVIGATION_ITEMS,
 		QUOTE,
 		HEADER_MENU_TEXT,
+		READING_PROGRESS: READING_PROGRESS_SELECTOR,
 	} = SELECTORS;
 
 	const BODY = document.querySelector(BODY_SELECTOR) as HTMLBodyElement;
@@ -53,8 +55,9 @@ export function toggleMenu() {
 	const TOGGLE_MENU_BUTTON = document.querySelector(TOGGLE_MENU_BUTTON_SELECTOR) as HTMLElement;
 	const MENU_DIVIDER = document.querySelector(NAVIGATION_DIVIDER) as HTMLElement;
 	const MENU_TEXT = document.querySelector(HEADER_MENU_TEXT) as HTMLElement;
+	const READING_PROGRESS = document.querySelector(READING_PROGRESS_SELECTOR) as HTMLElement;
 
-	const ELEMENTS_TO_TOGGLE = [BODY, HTML, LOGO, MENU_DIVIDER, TOGGLE_MENU_BUTTON];
+	const ELEMENTS_TO_TOGGLE = [BODY, HTML, LOGO, MENU_DIVIDER, TOGGLE_MENU_BUTTON, READING_PROGRESS];
 
 	const toggleMenuItems = () => {
 		const { POWER4_IN_OUT, POWER2_EASE_IN, POWER2_EASE_OUT, POWER3_OUT, PATH_START, PATH_END } = ANIMATION_CONFIG;
@@ -132,6 +135,7 @@ export function toggleMenu() {
 		timeline.reversed(!timeline.reversed());
 
 		for (const element of ELEMENTS_TO_TOGGLE) {
+			if (!element) return;
 			element.classList.toggle("--is-menu-open");
 		}
 	});

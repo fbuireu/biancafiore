@@ -14,14 +14,13 @@ export interface Slider<T> {
 
 export const Slider = <T,>({ items, renderItem, swiperOptions, classNames }: Slider<T>) => {
 	const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(null);
-	const key = items.map((item) => String(item)).join("-");
 
 	return (
 		<div className={clsx(`slider__wrapper common-wrapper ${classNames}`)}>
 			<Swiper {...swiperOptions} onSwiper={setSwiperInstance}>
 				<ul className={clsx(`slider__list flex row-wrap justify-space-between ${classNames}`)}>
 					{items.map((item, index) => (
-						<li key={`${index}-${classNames}-${key}`} className={clsx(`item__wrapper clickable ${classNames}`)}>
+						<li key={crypto.randomUUID()} className={clsx(`item__wrapper clickable ${classNames}`)}>
 							<SwiperSlide>{renderItem(item, index)}</SwiperSlide>
 						</li>
 					))}
