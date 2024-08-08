@@ -15,6 +15,8 @@ interface UseSliderNavigationProps {
 
 function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSliderNavigationProps) {
 	useEffect(() => {
+		const controller = new AbortController();
+
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (!leftButtonRef.current || !rightButtonRef.current) return;
 
@@ -30,7 +32,8 @@ function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSlide
 		};
 
 		window.addEventListener("keydown", handleKeyDown);
-		return () => window.removeEventListener("keydown", handleKeyDown);
+
+		return () => controller.abort();
 	}, [leftButtonRef, rightButtonRef, swiper]);
 }
 

@@ -10,13 +10,15 @@ function useTabVisibility(): TabVisibility {
 	const [tabVisibility, setTabVisibility] = useState<TabVisibility>(document.visibilityState as TabVisibility);
 
 	useEffect(() => {
+		const controller = new AbortController();
+
 		const handleVisibilityChange = () => {
 			setTabVisibility(document.visibilityState as TabVisibility);
 		};
 
 		document.addEventListener("visibilitychange", handleVisibilityChange);
 
-		return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+		return () => controller.abort();
 	}, []);
 
 	return tabVisibility;

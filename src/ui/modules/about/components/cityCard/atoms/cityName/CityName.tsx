@@ -1,4 +1,4 @@
-import { slugify } from "@shared/ui/utils/slugify";
+import { slugify } from "@modules/core/utils/slugify";
 import type { ReactNode } from "react";
 import "./city-name.css";
 

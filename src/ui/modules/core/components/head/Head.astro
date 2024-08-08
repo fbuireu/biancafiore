@@ -2,14 +2,14 @@
 import type { SeoMetadata } from "@const/types";
 import "@fontsource-variable/nunito-sans";
 import "@fontsource/baskervville";
+import { GOOGLE_ANALYTICS_ID, GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
+
 import { ViewTransitions } from "astro:transitions";
 import { DEFAULT_SEO_PARAMS } from "@const/index";
 import "@ui/styles/index.css";
 
 type SiteHeadProps = SeoMetadata;
 
-const GOOGLE_ANALYTICS_ID = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
-const GOOGLE_TAG_MANAGER_ID = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = DEFAULT_SEO_PARAMS.IMAGE, robots } = Astro.props as SiteHeadProps;

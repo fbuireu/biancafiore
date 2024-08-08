@@ -1,4 +1,5 @@
 ---
+import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
 import type { SeoMetadata } from "@const/types";
 import CookieConsent from "@modules/core/components/cookieConsent/CookieConsent";
 import Footer from "@modules/core/components/footer/Footer.astro";
@@ -17,7 +18,7 @@ const isProjects = pathname.includes("/projects");
   <Head title={title} description={description} robots={robots} />
   <body>
   <noscript>
-    <iframe src=`https://www.googletagmanager.com/ns.html?id=${import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID}`
+    <iframe src=`https://www.googletagmanager.com/ns.html?id=${GOOGLE_ANALYTICS_ID}`
                     height="0" width="0" style="display:none;visibility:hidden">
 
     </iframe>

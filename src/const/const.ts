@@ -1,3 +1,4 @@
+import { BIANCA_EMAIL } from "astro:env/client";
 import { A11y, Autoplay, Keyboard, Navigation, Virtual } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";
 import type { CapitalizeKeys, SeoMetadata, WorldGlobeConfig } from "./types.ts";
@@ -17,7 +18,7 @@ export const CONTACT_DETAILS: Record<string, string> = {
 	NAME: "Bianca Fiore",
 	EMAIL_SUBJECT: "Contact form submission",
 	ENCODED_EMAIL_FROM: btoa("hello@biancafiore.me"),
-	ENCODED_EMAIL_BIANCA: btoa(import.meta.env.PUBLIC_BIANCA_EMAIL),
+	ENCODED_EMAIL_BIANCA: btoa(BIANCA_EMAIL),
 };
 
 export const WORLD_GLOBE_CONFIG: WorldGlobeConfig = {

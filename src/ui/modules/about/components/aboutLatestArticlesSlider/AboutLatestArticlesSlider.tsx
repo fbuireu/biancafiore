@@ -1,7 +1,7 @@
 import type { ArticleDTO } from "@application/dto/article/types.ts";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
-import { ArticleCard } from "@shared/ui/components/articleCard/ArticleCard.tsx";
-import { Slider } from "@shared/ui/components/slider";
+import { ArticleCard } from "@modules/core/components/articleCard/ArticleCard.tsx";
+import { Slider } from "@modules/core/components/slider";
 import type { SwiperOptions } from "swiper/types";
 import "./about-latest-articles-slider.css";
 
@@ -37,8 +37,7 @@ export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArtic
 				swiperOptions={SLIDER_CONFIG}
 				classNames="--is-about__latest-articles-slider"
 				renderItem={(article) => {
-					const href = `/articles/${article.slug}`;
-					const props = { ...article, href, origin };
+					const props = { ...article, origin };
 
 					return (
 						<ArticleCard {...props}>

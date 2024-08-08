@@ -2,7 +2,7 @@ import { actions } from "astro:actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { autosize } from "@modules/contact/utils/autosize";
 import { flyPlane } from "@modules/contact/utils/flyPlane";
-import Spinner from "@shared/ui/components/spinner/Spinner.tsx";
+import Spinner from "@modules/core/components/spinner/Spinner";
 import type { FormEvent } from "react";
 import { useCallback, useRef, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";

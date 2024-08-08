@@ -1,4 +1,4 @@
-import { Image } from "@shared/ui/components/image";
+import { Image } from "@modules/core/components/image";
 import "./city-image.css";
 
 export type CityImageProps = Pick<HTMLImageElement, "src" | "alt">;

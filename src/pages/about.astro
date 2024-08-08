@@ -8,8 +8,8 @@ import { client } from "@infrastructure/cms/client";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
 import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
 import { LittleMoreOfMe } from "@modules/about/components/littleMoreOfMe/LittleMoreOfMe.tsx";
-import BaseLayout from "@shared/ui/components/baseLayout/BaseLayout.astro";
-import Breadcrumbs from "@shared/ui/components/breadcrumbs/Breadcrumbs.astro";
+import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 
 const [{ items: rawAuthors }, { items: rawCities }] = await Promise.all([
 	client.getEntries<RawAuthor>({ content_type: "author" }) as Iterable<PromiseLike<RawAuthor[]> | RawAuthor[]>,

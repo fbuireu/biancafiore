@@ -81,8 +81,11 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 	};
 
 	useEffect(() => {
+		const controller = new AbortController();
 		if (!worldGlobeReference.current) return;
 		worldGlobeReference.current.controls().autoRotate = tabVisibility === TabVisibility.VISIBLE;
+
+		return () => controller.abort();
 	}, [tabVisibility]);
 
 	const handleAction = useCallback(({ movementDirection, type }: HandleActionParams) => {

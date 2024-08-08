@@ -17,7 +17,7 @@ const { items: rawArticles } = await client.getEntries<RawArticle>({
 	content_type: "article",
 	order: ["-fields.publishDate"],
 });
-const articles = articleDTO.render(rawArticles as RawArticle[]);
+const articles = articleDTO.render(rawArticles as RawArticle[]).splice(0, limit);
 ---
 
 <section class="latest-articles__wrapper">
