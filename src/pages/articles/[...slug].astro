@@ -37,9 +37,13 @@ export async function getStaticPaths() {
 const { pathname } = Astro.url;
 const { slug } = Astro.params as ArticleParams;
 const { article } = Astro.props as ArticleProps;
+const metadata = {
+	...article,
+	...(article.featuredImage && { image: article.featuredImage.url }),
+};
 ---
 
-<BaseLayout {...article}>
+<BaseLayout {...metadata}>
   {
     article.featuredImage && (
           <section class="article__featured__image__wrapper">

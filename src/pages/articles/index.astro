@@ -19,7 +19,7 @@ const articles = articleDTO.render(rawArticles as RawArticle[]);
 const featuredArticle = getFeaturedArticle(articles);
 ---
 
-<BaseLayout title="" description="">
+<BaseLayout>
     <h1 class="articles__title section-title">The Blog</h1>
     <Breadcrumbs />
     <FeaturedArticle featuredArticle={featuredArticle} />

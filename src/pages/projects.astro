@@ -13,21 +13,19 @@ const { items: rawProjects } = await client.getEntries<RawProject>({
 const projects = projectDTO.render(rawProjects as RawProject[]);
 ---
 
-<BaseLayout title="" description="">
+<BaseLayout>
   <ProjectsIntro />
-  {projects.map((project, index) =>{
-    return (
-      <ProjectSection id={project.id}>
-        <article style={`--index: ${index}`} class="project__wrapper">
-          <div class="project-image__wrapper" slot="project-image">
-            <Image class="project-image" src={project.image.url} alt={project.name} width={project.image.details.width} height={project.image.details.height} />
-          </div>
-          <div class="project-information" slot="project-information">
-            <h2 class="project-title font-serif">{project.name}</h2>
-            <article set:html={project.description} />
-          </div>
-        </article>
-      </ProjectSection>
-    )
-  })}
+  {projects.map((project, index) =>(
+    <ProjectSection id={project.id}>
+      <article style={`--index: ${index}`} class="project__wrapper">
+        <div class="project-image__wrapper" slot="project-image">
+          <Image class="project-image" src={project.image.url} alt={project.name} width={project.image.details.width} height={project.image.details.height} />
+        </div>
+        <div class="project-information" slot="project-information">
+          <h2 class="project-title font-serif">{project.name}</h2>
+          <article set:html={project.description} />
+        </div>
+      </article>
+    </ProjectSection>
+  ))}
 </BaseLayout>

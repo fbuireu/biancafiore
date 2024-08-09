@@ -3,17 +3,23 @@ import type { SeoMetadata } from "@const/types";
 import "@fontsource-variable/nunito-sans";
 import "@fontsource/baskervville";
 import { GOOGLE_ANALYTICS_ID, GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
-
 import { ViewTransitions } from "astro:transitions";
+yarn;
 import { DEFAULT_SEO_PARAMS } from "@const/index";
-import "@ui/styles/index.css";
+import "@styles/index.css";
 
 type SiteHeadProps = SeoMetadata;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = DEFAULT_SEO_PARAMS.IMAGE, robots } = Astro.props as SiteHeadProps;
-const metaRobots = { ...DEFAULT_SEO_PARAMS.ROBOTS, ...robots };
+const { IMAGE, TITLE, DESCRIPTION, ROBOTS } = DEFAULT_SEO_PARAMS;
+
+const {
+	title = TITLE,
+	description = DESCRIPTION,
+	image = IMAGE,
+	robots = { ...ROBOTS, ...Astro.props },
+} = Astro.props as SiteHeadProps;
 ---
 
 <head lang="en">
@@ -33,7 +39,7 @@ const metaRobots = { ...DEFAULT_SEO_PARAMS.ROBOTS, ...robots };
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
     <meta name="title" content={title} />
-    <meta name="robots" content={`${metaRobots.index ? 'index' : 'noindex'}, ${metaRobots.follow ? 'follow' : 'nofollow'}`} />
+    <meta name="robots" content={`${robots.index ? 'index' : 'noindex'}, ${robots.follow ? 'follow' : 'nofollow'}`} />
     <meta name="description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />

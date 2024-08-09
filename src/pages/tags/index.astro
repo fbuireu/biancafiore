@@ -13,7 +13,7 @@ const { items: rawTags } = await client.getEntries<RawTag>({
 const tags = await tagDTO.render(rawTags as RawTag[]);
 ---
 
-<BaseLayout title="" description="">
+<BaseLayout>
     <Breadcrumbs />
     <section class="common-wrapper">
         <h1 class="flex justify-center">All tags</h1>

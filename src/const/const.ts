@@ -1,4 +1,5 @@
 import { BIANCA_EMAIL } from "astro:env/client";
+import biancaImage from "@assets/images/jpg/bianca-fiore.jpg";
 import { A11y, Autoplay, Keyboard, Navigation, Virtual } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";
 import type { CapitalizeKeys, SeoMetadata, WorldGlobeConfig } from "./types.ts";
@@ -11,7 +12,7 @@ export const DEFAULT_SEO_PARAMS: CapitalizeKeys<SeoMetadata> = {
 		index: true,
 		follow: true,
 	},
-	IMAGE: "/blog-placeholder-1.jpg",
+	IMAGE: (biancaImage as unknown as ProtoImage).src,
 };
 
 export const CONTACT_DETAILS: Record<string, string> = {
