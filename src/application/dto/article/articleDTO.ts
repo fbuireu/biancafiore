@@ -25,7 +25,6 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 				}).excerpt;
 
 			const tags = createTags(article.fields.tags);
-
 			const relatedArticles = article.fields.relatedArticles ?? getRelatedArticles({ article, allArticles: raw });
 			const featuredImage = createImage(article.fields.featuredImage);
 			const content = documentToHtmlString(article.fields.content as unknown as Document);
