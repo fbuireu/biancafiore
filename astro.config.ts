@@ -24,7 +24,7 @@ export default defineConfig({
 					context: "client",
 					default: import.meta.env.BIANCA_EMAIL,
 				}),
-                TWITTER_HANDLE: envField.string({
+				TWITTER_HANDLE: envField.string({
 					access: "public",
 					context: "client",
 					default: import.meta.TWITTER_HANDLE,
