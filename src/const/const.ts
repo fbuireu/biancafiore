@@ -20,7 +20,6 @@ export const CONTACT_DETAILS: Record<string, string> = {
 	EMAIL_SUBJECT: "Contact form submission",
 	ENCODED_EMAIL_FROM: btoa("hello@biancafiore.me"),
 	ENCODED_EMAIL_BIANCA: btoa(BIANCA_EMAIL),
-	TWITTER_HANDLE: "@biancamariola",
 };
 
 export const WORLD_GLOBE_CONFIG: WorldGlobeConfig = {

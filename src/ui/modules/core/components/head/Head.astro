@@ -1,10 +1,11 @@
 ---
+import { TWITTER_HANDLE } from "astro:env/client";
 import type { SeoMetadata } from "@const/types";
 import "@fontsource-variable/nunito-sans";
 import "@fontsource/baskervville";
 import { GOOGLE_ANALYTICS_ID, GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
 import { ViewTransitions } from "astro:transitions";
-import { CONTACT_DETAILS, DEFAULT_SEO_PARAMS } from "@const/index";
+import { DEFAULT_SEO_PARAMS } from "@const/index";
 import "@styles/index.css";
 
 type SiteHeadProps = SeoMetadata;
@@ -36,6 +37,7 @@ const {
     <meta name="color-scheme" content="light dark">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="robots" content={`${robots.index ? 'index' : 'noindex'}, ${robots.follow ? 'follow' : 'nofollow'}`} />
@@ -50,8 +52,8 @@ const {
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
-    <meta property="twitter:creator" content={CONTACT_DETAILS.TWITTER_HANDLE} />
-    <meta property="twitter:site" content={CONTACT_DETAILS.TWITTER_HANDLE} />
+    <meta property="twitter:creator" content={TWITTER_HANDLE} />
+    <meta property="twitter:site" content={TWITTER_HANDLE} />
 </head>
 <script define:vars={{ GOOGLE_ANALYTICS_ID }}>
     window.dataLayer = window.dataLayer || [];

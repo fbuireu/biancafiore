@@ -4,9 +4,10 @@
 interface ImportMetaEnv {
 	readonly PUBLIC_SITE_URL: string;
 	readonly BIANCA_EMAIL: string;
-	readonly PUBLIC_GOOGLE_ANALYTICS_ID: string;
-	readonly PUBLIC_GOOGLE_TAG_MANAGER_ID: string;
-	readonly PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY: string;
+	readonly TWITTER_HANDLE: string;
+	readonly GOOGLE_ANALYTICS_ID: string;
+	readonly GOOGLE_TAG_MANAGER_ID: string;
+	readonly GOOGLE_RECAPTCHA_SITE_KEY: string;
 	readonly GOOGLE_RECAPTCHA_SECRET_KEY: string;
 	readonly FIREBASE_PRIVATE_KEY_ID: string;
 	readonly FIREBASE_PRIVATE_KEY: string;

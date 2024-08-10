@@ -351,9 +351,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:^3.6.1":
-  version: 3.6.1
-  resolution: "@astrojs/react@npm:3.6.1"
+"@astrojs/react@npm:^3.6.2":
+  version: 3.6.2
+  resolution: "@astrojs/react@npm:3.6.2"
   dependencies:
     "@vitejs/plugin-react": "npm:^4.3.1"
     ultrahtml: "npm:^1.5.3"
@@ -362,7 +362,7 @@ __metadata:
     "@types/react-dom": ^17.0.17 || ^18.0.6
     react: ^17.0.2 || ^18.0.0 || ^19.0.0-beta
     react-dom: ^17.0.2 || ^18.0.0 || ^19.0.0-beta
-  checksum: 10c0/3a165dfd6204ac0c9adfcb257aa9e3639068694e5bee49910d7197814e6c0b29d27339ae3c3efcd2fc09e12dc9e4813f2892ded6dcb03e31f082b8f875def116
+  checksum: 10c0/161f458ecc6b6174bc85326a80889170150953c0343dcb2f141caa8e5406a00b0eddf9cadf5c39b7742538c091550af9d221186ae2817a005a1586f562918c24
   languageName: node
   linkType: hard
 
@@ -3147,9 +3147,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@million/lint@npm:1.0.0-rc.82-beta.35":
-  version: 1.0.0-rc.82-beta.35
-  resolution: "@million/lint@npm:1.0.0-rc.82-beta.35"
+"@million/lint@npm:1.0.0-rc.84":
+  version: 1.0.0-rc.84
+  resolution: "@million/lint@npm:1.0.0-rc.84"
   dependencies:
     "@axiomhq/js": "npm:1.0.0-rc.3"
     "@babel/core": "npm:7.24.6"
@@ -3161,7 +3161,7 @@ __metadata:
     babel-plugin-syntax-hermes-parser: "npm:^0.21.1"
     ci-info: "npm:^4.0.0"
     esbuild: "npm:^0.20.1"
-    hono: "npm:4.3.2"
+    hono: "npm:^4.3.2"
     isomorphic-fetch: "npm:^3.0.0"
     nanoid: "npm:^5.0.7"
     pako: "npm:^2.1.0"
@@ -3177,7 +3177,7 @@ __metadata:
     update-notifier-cjs: "npm:^5.1.6"
   bin:
     lint: cli.js
-  checksum: 10c0/0f225e141ceb95bd9dad92650d6179720c684093ca72a7fead2ebd274765a1cc0beae572f386fb3b8ce0878e0205874208cab40697273ae046f7ff2244cd6d0d
+  checksum: 10c0/fadf5ca0695939ee10cc28ae7585d8c4e67ec94901e1fd13842ced2739f501690c2c06448374713dd5f121a84cfa88a64521fa2c056a61a1b11b2656c2005660
   languageName: node
   linkType: hard
 
@@ -3938,12 +3938,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.0.1, @types/node@npm:^22.1.0":
+"@types/node@npm:^22.0.1":
   version: 22.1.0
   resolution: "@types/node@npm:22.1.0"
   dependencies:
     undici-types: "npm:~6.13.0"
   checksum: 10c0/553dafcb842b889c036d43b390d464e8ffcf3ca455ddd5b1a1ef98396381eafbeb0c112a15cc6bf9662b72bc25fc45efc4b6f604760e1e84c410f1b7936c488b
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.2.0":
+  version: 22.2.0
+  resolution: "@types/node@npm:22.2.0"
+  dependencies:
+    undici-types: "npm:~6.13.0"
+  checksum: 10c0/c17900b34faecfec204f72970bd658d0c217aaf739c1bf7690c969465b6b26b77a8be1cd9ba735aadbd1dd20b5c3e4f406ec33528bf7c6eec90744886c5d5608
   languageName: node
   linkType: hard
 
@@ -4608,9 +4617,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^4.13.2":
-  version: 4.13.2
-  resolution: "astro@npm:4.13.2"
+"astro@npm:^4.13.3":
+  version: 4.13.3
+  resolution: "astro@npm:4.13.3"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.1"
     "@astrojs/internal-helpers": "npm:0.4.1"
@@ -4679,7 +4688,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/6d91abff7e260669b0277d49f72a206cbd95e74c613d64e3a63c752b1ccd5170f54587e1c5176e1b1af8f2ff0ff5f8cb577bad9e3293af70f727360abe5e210e
+  checksum: 10c0/b36e0cfae8a880f1faabf702282e8b2ef987b492394349c9bfc3ed8bfe1eeb9faf262ffe9f988debfec53f4f0768acbd1de814da30ca458e1b69467ad81767a5
   languageName: node
   linkType: hard
 
@@ -4776,7 +4785,7 @@ __metadata:
     "@astrojs/cloudflare": "npm:^11.0.4"
     "@astrojs/mdx": "npm:^3.1.3"
     "@astrojs/partytown": "npm:^2.1.1"
-    "@astrojs/react": "npm:^3.6.1"
+    "@astrojs/react": "npm:^3.6.2"
     "@astrojs/rss": "npm:^4.0.7"
     "@astrojs/sitemap": "npm:^3.1.6"
     "@astrojs/ts-plugin": "npm:^1.9.1"
@@ -4787,17 +4796,17 @@ __metadata:
     "@fontsource-variable/nunito-sans": "npm:^5.0.14"
     "@fontsource/baskervville": "npm:^5.0.20"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@million/lint": "npm:1.0.0-rc.82-beta.35"
+    "@million/lint": "npm:1.0.0-rc.84"
     "@testing-library/react": "npm:^16.0.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^22.1.0"
+    "@types/node": "npm:^22.2.0"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@types/three": "npm:^0.167.1"
     algoliasearch: "npm:^4.24.0"
-    astro: "npm:^4.13.2"
+    astro: "npm:^4.13.3"
     clsx: "npm:^2.1.1"
     contentful: "npm:^10.13.2"
     firebase: "npm:^10.12.5"
@@ -7541,10 +7550,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hono@npm:4.3.2":
-  version: 4.3.2
-  resolution: "hono@npm:4.3.2"
-  checksum: 10c0/a87ed147773620f2f37317e5074a04046b6c13f099da8f2393a3c017d41708a3b5e34e46c9303665cfdfb1a36bbb992d3136cbfc5dd8ce6c6b19ea46d9419156
+"hono@npm:^4.3.2":
+  version: 4.5.4
+  resolution: "hono@npm:4.5.4"
+  checksum: 10c0/980accb9567fe5ba4533c1378d175a95a0eef0a1fa8a03ceb1f9296d88d4ee8ff0e1447f5e69eb56150a8b6cc66f4a663ec9d1c1135f005f44f61353b58e276f
   languageName: node
   linkType: hard
 
