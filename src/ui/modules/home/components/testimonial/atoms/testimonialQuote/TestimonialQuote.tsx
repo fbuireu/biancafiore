@@ -9,7 +9,12 @@ export interface TestimonialQuoteProps {
 
 export const TestimonialQuote = ({ children }: TestimonialQuoteProps) => (
 	<div className="testimonial__quote__wrapper">
-		<Image classNames="testimonial__quote-symbol" src={(doubleQuote as unknown as ProtoImage).src} alt={"Quote"} />
+		<Image
+			classNames="testimonial__quote-symbol"
+			src={(doubleQuote as unknown as ProtoImage).src}
+			alt="Quote"
+			loading="eager"
+		/>
 		<blockquote className="testimonial__quote">{children}</blockquote>
 	</div>
 );

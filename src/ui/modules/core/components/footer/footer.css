@@ -39,26 +39,3 @@
       }
     }
   }
-
-  .footer__social__networks__list {
-    margin: 4rem auto;
-    max-width: var(--grid-extra-small);
-    padding-inline-start: 0;
-    width: 100%;
-
-    @media (width <= 720px) {
-      margin: 2rem auto;
-    }
-  }
-
-  .footer__social__networks__item {
-    max-width: calc(100% / 4);
-    padding: 0.25rem 0;
-    text-align: center;
-    width: 100%;
-
-    &:not(:last-child) {
-      border-right: 1px solid var(--primary-main);
-    }
-  }
-

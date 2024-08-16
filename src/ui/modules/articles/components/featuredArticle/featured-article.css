@@ -9,6 +9,12 @@
     color: var(--primary-main);
 }
 
+.featured-article__link-card {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
 .featured-article__wrapper {
     display: grid;
     gap: 0 2rem;
@@ -80,13 +86,13 @@
     text-transform: uppercase;
 }
 
-.featured-article__link {
+.featured-article__cta {
     align-content: center;
     flex-flow: row wrap;
     font-weight: 700;
     gap: 0 1rem;
     transition: gap 0.2s;
-
+    z-index: 10;
     img {
         rotate: 0.5turn;
         width: 2rem;

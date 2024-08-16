@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import bianca from "@assets/images/jpg/bianca-fiore.jpg";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
+import SocialMedia from "@modules/core/components/socialMedia/SocialMedia.astro";
 import "./about-intro.css";
 ---
 
@@ -19,26 +20,12 @@ import "./about-intro.css";
         facias, cum mori.
       </p>
       <a href="/projects" class="about-me-intro__body__cta flex align-center">
-        See my work <Image src={horizontalArrow} alt="See my work" />
+        See my work <Image src={horizontalArrow} alt="See my work" loading="eager" />
       </a>
     </div>
   </div>
   <div class="about-me-intro__section --right flex row-wrap">
     <Image src={bianca} alt="Bianca Fiore" class="about-me-intro__image" loading="eager"/>
-    <ul class="about-me-intro__section__social__networks__list flex row-nowrap">
-      <li class="about-me-intro__section__social__networks__list__item">
-        <a
-          href="https://linkedin.com"
-          target="_blank"
-          rel="noopener noreferer"
-          class="link footer__social__networks__link"
-        >
-          LinkedIn
-        </a>
-      </li>
-      <li class="about-me-intro__section__social__networks__list__item">
-        <EmailButton classNames={'about-me-intro__section__social__networks__list__item mailTo__button'} />
-      </li>
-    </ul>
+    <SocialMedia origin={Astro.url} />
   </div>
 </section>

@@ -1,0 +1,28 @@
+---
+import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
+import { getLocation } from "@modules/core/utils/getLocation";
+import "./social-media.css";
+
+interface SocialMediaProps {
+	origin?: URL;
+}
+
+const { origin } = Astro.props as SocialMediaProps;
+const location = origin ? getLocation(origin) : "footer";
+---
+
+<ul class:list={[`social__networks__list flex`, { [`--is-${location}`]: location}]}>
+  <li class:list={[`social__networks__item`, { [`--is-${location}`]: location}]}>
+    <a
+      href="https://www.linkedin.com/in/bianca-fiore-88b83199"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="social__networks__link link"
+    >
+      LinkedIn
+    </a>
+  </li>
+  <li class:list={[`social__networks__item`, { [`--is-${location}`]: location}]}>
+    <EmailButton classNames="social__networks__link" />
+  </li>
+</ul>

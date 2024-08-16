@@ -44,25 +44,6 @@
     }
   }
 
-  .about-me-intro__section__social__networks__list {
-    gap: 0 1rem;
-    width: 100%;
-  }
-
-  .about-me-intro__section__social__networks__list__item {
-    &:nth-child(2) {
-      & > button::after {
-        content: '';
-        inset: auto auto -2px 0;
-      }
-    }
-
-    & > * {
-      color: var(--neutral-main);
-      width: fit-content;
-    }
-  }
-
   .about-me-intro__body__cta {
     align-content: center;
     flex-flow: row wrap;
@@ -77,6 +58,9 @@
 
     &:hover {
       gap: 0 1.5rem;
+    }
+    @media (width <= 960px) {
+      margin-bottom: 1rem;
     }
   }
 

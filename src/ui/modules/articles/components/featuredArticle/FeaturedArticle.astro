@@ -22,9 +22,11 @@ const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Ast
           width={featuredArticle.featuredImage.details.width}
           height={featuredArticle.featuredImage.details.height}
           alt={"featuredArticle.title"}
+          loading="eager"
         />
       </a>
       <div class="featured-article__details__wrapper flex row-wrap">
+        <a class="featured-article__link-card" href={`/articles/${featuredArticle.slug}`} aria-label={featuredArticle.title}>{' '}</a>
         <div class="featured-article__details flex column-wrap">
           <time class="featured-article__publish-date font-sans-serif"
                 datetime={featuredArticle.publishDate}>
@@ -43,8 +45,8 @@ const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.slug}`, Ast
               </ul>
             )
           }
-          <a href={`/articles/${featuredArticle.slug}`} class="featured-article__link flex align-center">
-            Read More <Image src={horizontalArrow} alt="Read more" />
+          <a href={`/articles/${featuredArticle.slug}`} class="featured-article__cta flex align-center">
+            Read More <Image src={horizontalArrow} alt="Read more" loading="eager"/>
           </a>
         </div>
         <div class="featured-article__share__wrapper flex row-wrap">
