@@ -2,8 +2,7 @@
 import { Image } from "astro:assets";
 import bianca from "@assets/images/jpg/bianca-fiore.jpg";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
-import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
-import SocialMedia from "@modules/core/components/socialMedia/SocialMedia.astro";
+import SocialNetworks from "@modules/core/components/socialNetworks/SocialNetworks.astro";
 import "./about-intro.css";
 ---
 
@@ -26,6 +25,6 @@ import "./about-intro.css";
   </div>
   <div class="about-me-intro__section --right flex row-wrap">
     <Image src={bianca} alt="Bianca Fiore" class="about-me-intro__image" loading="eager"/>
-    <SocialMedia origin={Astro.url} />
+    <SocialNetworks origin={Astro.url} />
   </div>
 </section>
