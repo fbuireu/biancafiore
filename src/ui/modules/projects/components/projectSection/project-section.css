@@ -17,9 +17,9 @@
     left: 0;
     position: sticky;
     right: 0;
-    top: 0; 
+    top: 0;
 }
-    
+
 .project-image{
     animation: filter-out both linear;
     animation-range: exit 0% cover 100%;

@@ -47,7 +47,7 @@
                 color: var(--white);
                 transition: color 1s;
             }
-            
+
         }
 
         @media (width <= 1440px) {
@@ -69,4 +69,3 @@
         border-radius: 53% 47% 43% 57% / 51% 39% 61% 49%;
         z-index: -1;
     }
-
