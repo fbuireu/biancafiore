@@ -1,4 +1,5 @@
 ---
+import { SOCIAL_NETWORKS } from "@const/index";
 import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
 import { getLocation } from "@modules/core/utils/getLocation";
 import "./social-networks.css";
@@ -11,18 +12,18 @@ const { origin } = Astro.props as SocialMediaProps;
 const location = origin ? getLocation(origin) : "footer";
 ---
 
-<ul class:list={[`social__networks__list flex`, { [`--is-${location}`]: location}]}>
-  <li class:list={[`social__networks__item`, { [`--is-${location}`]: location}]}>
-    <a
-      href="https://www.linkedin.com/in/bianca-fiore-88b83199"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="social__networks__link link"
-    >
-      LinkedIn
-    </a>
-  </li>
-  <li class:list={[`social__networks__item`, { [`--is-${location}`]: location}]}>
-    <EmailButton classNames="social__networks__link" />
-  </li>
+<ul class:list={[`social__networks__list flex`, { [`--is-${location}`]: location }]}>
+    <li class:list={[`social__networks__item`, { [`--is-${location}`]: location }]}>
+        <a
+            href={SOCIAL_NETWORKS.LINKEDIN}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social__networks__link link"
+        >
+            LinkedIn
+        </a>
+    </li>
+    <li class:list={[`social__networks__item`, { [`--is-${location}`]: location }]}>
+        <EmailButton classNames="social__networks__link" />
+    </li>
 </ul>

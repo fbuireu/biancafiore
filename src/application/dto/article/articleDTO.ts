@@ -11,34 +11,36 @@ import { createTags } from "./utils/createTags";
 import { generateExcerpt } from "./utils/generateExcerpt";
 import { getAuthor } from "./utils/getAuthor";
 import { getReadingTime } from "./utils/getReadingTime";
+import { renderOptions } from "./utils/renderOptions";
 
 const PARSER: MarkdownIt = new MarkdownIt();
 
 export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 	render: (raw) => {
-		return raw.map((article) => {
+		return raw.map((rawArticle) => {
 			const description =
-				article.fields.description ??
+				rawArticle.fields.description ??
 				generateExcerpt({
 					parser: PARSER,
-					content: documentToHtmlString(article.fields.content as unknown as Document),
+					content: documentToHtmlString(rawArticle.fields.content as unknown as Document),
 				}).excerpt;
 
-			const tags = createTags(article.fields.tags);
-			const relatedArticles = article.fields.relatedArticles ?? getRelatedArticles({ article, allArticles: raw });
-			const featuredImage = createImage(article.fields.featuredImage);
-			const content = documentToHtmlString(article.fields.content as unknown as Document);
+			const tags = createTags(rawArticle.fields.tags);
+			const relatedArticles =
+				rawArticle.fields.relatedArticles ?? getRelatedArticles({ rawArticle, allRawArticles: raw });
+			const featuredImage = createImage(rawArticle.fields.featuredImage);
+			const content = documentToHtmlString(rawArticle.fields.content as unknown as Document, renderOptions(rawArticle));
 
 			return {
-				title: article.fields.title,
-				author: getAuthor(article.fields.author),
-				slug: article.fields.slug,
+				title: rawArticle.fields.title,
+				author: getAuthor(rawArticle.fields.author),
+				slug: rawArticle.fields.slug,
 				description,
-				publishDate: new Date(String(article.fields.publishDate)).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
+				publishDate: new Date(String(rawArticle.fields.publishDate)).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
 				featuredImage,
-				variant: article.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
+				variant: rawArticle.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
 				content,
-				isFeaturedArticle: article.fields.featuredArticle,
+				isFeaturedArticle: rawArticle.fields.featuredArticle,
 				readingTime: getReadingTime(content),
 				tags,
 				relatedArticles,

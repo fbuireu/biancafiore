@@ -10,17 +10,17 @@ import { getReadingTime } from "../getReadingTime";
 const MAX_RELATED_ARTICLES = 3;
 
 interface GetRelatedArticlesProps {
-	article: RawArticle;
-	allArticles: RawArticle[];
+	rawArticle: RawArticle;
+	allRawArticles: RawArticle[];
 }
 
-export function getRelatedArticles({ article, allArticles }: GetRelatedArticlesProps): ArticleDTO[] {
-	const articleTagsSlugs = article.fields.tags.map((tag) => tag.fields.slug);
+export function getRelatedArticles({ rawArticle, allRawArticles }: GetRelatedArticlesProps): ArticleDTO[] {
+	const articleTagsSlugs = rawArticle.fields.tags.map((tag) => tag.fields.slug);
 
-	return allArticles
+	return allRawArticles
 		.filter(({ fields }) => {
 			const allTagsSlugs = fields.tags?.map((tag) => tag.fields.slug);
-			return fields.title !== article.fields.title && allTagsSlugs?.some((slug) => articleTagsSlugs.includes(slug));
+			return fields.title !== rawArticle.fields.title && allTagsSlugs?.some((slug) => articleTagsSlugs.includes(slug));
 		})
 		.slice(0, MAX_RELATED_ARTICLES)
 		.map((relatedArticle) => {

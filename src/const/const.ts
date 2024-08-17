@@ -22,6 +22,10 @@ export const CONTACT_DETAILS: Record<string, string> = {
 	ENCODED_EMAIL_BIANCA: btoa(BIANCA_EMAIL),
 };
 
+export const SOCIAL_NETWORKS: Record<string, string> = {
+	LINKEDIN: "https://www.linkedin.com/in/bianca-fiore-88b83199",
+};
+
 export const WORLD_GLOBE_CONFIG: WorldGlobeConfig = {
 	ANIMATION_DURATION: 500,
 	MOVEMENT_OFFSET: 20,

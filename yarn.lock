@@ -331,17 +331,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/ts-plugin@npm:^1.9.3":
-  version: 1.9.3
-  resolution: "@astrojs/ts-plugin@npm:1.9.3"
+"@astrojs/ts-plugin@npm:^1.10.0":
+  version: 1.10.0
+  resolution: "@astrojs/ts-plugin@npm:1.10.0"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
+    "@astrojs/yaml2ts": "npm:^0.2.0"
     "@jridgewell/sourcemap-codec": "npm:^1.4.15"
     "@volar/language-core": "npm:~2.4.0-alpha.15"
     "@volar/typescript": "npm:~2.4.0-alpha.15"
     semver: "npm:^7.3.8"
     vscode-languageserver-textdocument: "npm:^1.0.11"
-  checksum: 10c0/f6c5a654ee24069622abd0fc79a740f8f21416f95cb6e74359963cea4a5ad445bb1cc4443fa284b0e9ab5afc8c52713effda6a791f3ffe90526835a272a664ed
+  checksum: 10c0/6399a7934e8ee4a307c252cb8a6ec9ac6494ad84e73d9a0d808aefc66a29f2a6b42da178a2aaabef5860067ca193da0839dd06fd1bb5c10bc2910b3b4c209ce8
   languageName: node
   linkType: hard
 
@@ -349,6 +350,15 @@ __metadata:
   version: 0.3.4
   resolution: "@astrojs/underscore-redirects@npm:0.3.4"
   checksum: 10c0/f3b727b4bda93a749fd84f85f4cf8ca6a919ca72a417377f2b4f8e0c90a1f0f232749d1ff4e9a4f513291b71a337591bf78d44a586952598cb84249c33e7052c
+  languageName: node
+  linkType: hard
+
+"@astrojs/yaml2ts@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@astrojs/yaml2ts@npm:0.2.0"
+  dependencies:
+    yaml: "npm:^2.5.0"
+  checksum: 10c0/f905b96130702c0abcf22bf45e871e8a052f05fef5c3beeec930cf2609c753588e1a53f7ea0dc8d54642accbbf2c4cd1918d7e52c3f42acbc057dac6ce436cf8
   languageName: node
   linkType: hard
 
@@ -1263,38 +1273,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@csstools/css-parser-algorithms@npm:^2.7.1":
-  version: 2.7.1
-  resolution: "@csstools/css-parser-algorithms@npm:2.7.1"
+"@csstools/css-parser-algorithms@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@csstools/css-parser-algorithms@npm:3.0.0"
   peerDependencies:
-    "@csstools/css-tokenizer": ^2.4.1
-  checksum: 10c0/7d29bef6f5790ddb67d922ad232253bf910e4fa5293f5e4a5ed8b920ae9bd4e8171942df7d8943af23b42fd4e9fb460181394d20c97da9562e6ce98a875e8c47
+    "@csstools/css-tokenizer": ^3.0.0
+  checksum: 10c0/ffa06c9d883e6bbb6198c98b5a395abe9847ff63ae41db54d75812e52764f550b36625fdb427c9a4ea6dfd71362aa98194ccd63afad0e521f6f3470c7515d241
   languageName: node
   linkType: hard
 
-"@csstools/css-tokenizer@npm:^2.4.1":
-  version: 2.4.1
-  resolution: "@csstools/css-tokenizer@npm:2.4.1"
-  checksum: 10c0/fe71cee85ec7372da07083d088b6a704f43e5d3d2d8071c4b8a86fae60408b559a218a43f8625bf2f0be5c7f90c8f3ad20a1aae1921119a1c02b51c310cc2b6b
+"@csstools/css-tokenizer@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@csstools/css-tokenizer@npm:3.0.0"
+  checksum: 10c0/6d0f3e44bfb4b309bc4e260e6399163653f5715b16ebf1f2907ec98a2b31e9b2de94c09012b6d291c6f4229cc2a521e4f66594cac1b6276a4eb205e8e23e446b
   languageName: node
   linkType: hard
 
-"@csstools/media-query-list-parser@npm:^2.1.13":
-  version: 2.1.13
-  resolution: "@csstools/media-query-list-parser@npm:2.1.13"
+"@csstools/media-query-list-parser@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@csstools/media-query-list-parser@npm:3.0.0"
   peerDependencies:
-    "@csstools/css-parser-algorithms": ^2.7.1
-    "@csstools/css-tokenizer": ^2.4.1
-  checksum: 10c0/8bf72342c15581b8f658633436d83c26a214056f6b960ff121b940271f4b1b5b07e9cc3990a73e684fb72319592f0c392408b4f0e08bbe242b2065aa456e2733
+    "@csstools/css-parser-algorithms": ^3.0.0
+    "@csstools/css-tokenizer": ^3.0.0
+  checksum: 10c0/0a83ab7cba4fec5543c5abf3f7145ab5742c44e0ed3349d41787739a1bd897a8cf27f35f3bc714d1d02a44b2a34f28b3b82ce6d0cb6b9c4fbb679dc034f8a152
   languageName: node
   linkType: hard
 
-"@csstools/selector-specificity@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "@csstools/selector-specificity@npm:3.1.1"
+"@csstools/selector-specificity@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@csstools/selector-specificity@npm:4.0.0"
   peerDependencies:
-    postcss-selector-parser: ^6.0.13
-  checksum: 10c0/1d4a3f8015904d6aeb3203afe0e1f6db09b191d9c1557520e3e960c9204ad852df9db4cbde848643f78a26f6ea09101b4e528dbb9193052db28258dbcc8a6e1d
+    postcss-selector-parser: ^6.1.0
+  checksum: 10c0/6f4d4ecfdcd37f950100de8ffe0b4c1b1cc8c004aab2c2ebaa5c3e2bca2412d15b17d4628435f47a62d2c56db41bcbf985cb9c69e74b89964d48e421e93e75ba
   languageName: node
   linkType: hard
 
@@ -2132,16 +2142,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/app-compat@npm:0.2.38":
-  version: 0.2.38
-  resolution: "@firebase/app-compat@npm:0.2.38"
+"@firebase/app-compat@npm:0.2.39":
+  version: 0.2.39
+  resolution: "@firebase/app-compat@npm:0.2.39"
   dependencies:
-    "@firebase/app": "npm:0.10.8"
+    "@firebase/app": "npm:0.10.9"
     "@firebase/component": "npm:0.6.8"
     "@firebase/logger": "npm:0.4.2"
     "@firebase/util": "npm:1.9.7"
     tslib: "npm:^2.1.0"
-  checksum: 10c0/cbd391576ffc6dce0102ac4373feee044e877897fefca44fd8dbbeb746710ef8cdcfdb3069fa668765a7e85c1240907e9ab4694af62004ae5ca09a67f714e4a8
+  checksum: 10c0/2890eb447962c30fd4cf550d33dc5df17a50069e459c52f931dd97380e3ccb105f51aea8713f126f5a0396648dda8b0d3cecd491e7bd895092a949c762ab0d17
   languageName: node
   linkType: hard
 
@@ -2152,24 +2162,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/app@npm:0.10.8":
-  version: 0.10.8
-  resolution: "@firebase/app@npm:0.10.8"
+"@firebase/app@npm:0.10.9":
+  version: 0.10.9
+  resolution: "@firebase/app@npm:0.10.9"
   dependencies:
     "@firebase/component": "npm:0.6.8"
     "@firebase/logger": "npm:0.4.2"
     "@firebase/util": "npm:1.9.7"
     idb: "npm:7.1.1"
     tslib: "npm:^2.1.0"
-  checksum: 10c0/55dddd7b06746d06ef4d83ea09597bbfdabc42532ae5189615793d9944f77eeb140e7d348ba1195ea7c3f0dc7eb1572baaed6a70baff1580c49b699beb3f06b3
+  checksum: 10c0/2ddef3f5b70dca7e0fc014e8d5bddfef74a4adcb141aaf001d7e98d0209530dcf87dbb2d98c9168aa21329596140e59c09686e9717ce59823da49d765bc04a53
   languageName: node
   linkType: hard
 
-"@firebase/auth-compat@npm:0.5.11":
-  version: 0.5.11
-  resolution: "@firebase/auth-compat@npm:0.5.11"
+"@firebase/auth-compat@npm:0.5.12":
+  version: 0.5.12
+  resolution: "@firebase/auth-compat@npm:0.5.12"
   dependencies:
-    "@firebase/auth": "npm:1.7.6"
+    "@firebase/auth": "npm:1.7.7"
     "@firebase/auth-types": "npm:0.12.2"
     "@firebase/component": "npm:0.6.8"
     "@firebase/util": "npm:1.9.7"
@@ -2177,7 +2187,7 @@ __metadata:
     undici: "npm:5.28.4"
   peerDependencies:
     "@firebase/app-compat": 0.x
-  checksum: 10c0/34b990c387de1d4b06a10f102833b7295b7a785fecfb4662ce9ab3bee0c2f589550a7309958f23a6a043ddfe761db5ad592da8e20bfe04b9888f57c3801364f7
+  checksum: 10c0/08f25b7412d9ebde1444b0ed2751f4888d427ceadac91d4e46672556b1313791a3b891f6ebeceb20c437829eafd6f6a02510a9022d7760e1c5b67b6457c65728
   languageName: node
   linkType: hard
 
@@ -2198,9 +2208,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/auth@npm:1.7.6":
-  version: 1.7.6
-  resolution: "@firebase/auth@npm:1.7.6"
+"@firebase/auth@npm:1.7.7":
+  version: 1.7.7
+  resolution: "@firebase/auth@npm:1.7.7"
   dependencies:
     "@firebase/component": "npm:0.6.8"
     "@firebase/logger": "npm:0.4.2"
@@ -2213,7 +2223,7 @@ __metadata:
   peerDependenciesMeta:
     "@react-native-async-storage/async-storage":
       optional: true
-  checksum: 10c0/0f8f0ceaefae72a9a78c94756213bde10d68d91ef6cbda62d6a6657b358e80ec76f42f6e7738ed7a66606b37c5d73bad45b7413224e4db1938d0715b644454f2
+  checksum: 10c0/0095393e8626b8b840435648c27bf042fb64b0bb8e5d3f6d6f188efc11917a659778c346115b132575dd6f3c3c8912aa07fabc1a241cf74533ea6eb0d9ce7e8c
   languageName: node
   linkType: hard
 
@@ -2315,18 +2325,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/firestore-compat@npm:0.3.34":
-  version: 0.3.34
-  resolution: "@firebase/firestore-compat@npm:0.3.34"
+"@firebase/firestore-compat@npm:0.3.35":
+  version: 0.3.35
+  resolution: "@firebase/firestore-compat@npm:0.3.35"
   dependencies:
     "@firebase/component": "npm:0.6.8"
-    "@firebase/firestore": "npm:4.6.5"
+    "@firebase/firestore": "npm:4.7.0"
     "@firebase/firestore-types": "npm:3.0.2"
     "@firebase/util": "npm:1.9.7"
     tslib: "npm:^2.1.0"
   peerDependencies:
     "@firebase/app-compat": 0.x
-  checksum: 10c0/95ccc568f11a9d0bd5284f660ab44a5aef1972d0b1be7c8ea01c6ff80120e2df554bf95b50a097c6613aeb23452925a04ba54647940c1f5b4d20bd5be26e5991
+  checksum: 10c0/3806a079a3675f76ab8c3fd1eef8c4fe4efec603f5ac05a99147219143211cfcb789cab2136bcd54c5676da59f1d5401116e432bbd2b1800b2e2e87c4edd3c11
   languageName: node
   linkType: hard
 
@@ -2340,9 +2350,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/firestore@npm:4.6.5":
-  version: 4.6.5
-  resolution: "@firebase/firestore@npm:4.6.5"
+"@firebase/firestore@npm:4.7.0":
+  version: 4.7.0
+  resolution: "@firebase/firestore@npm:4.7.0"
   dependencies:
     "@firebase/component": "npm:0.6.8"
     "@firebase/logger": "npm:0.4.2"
@@ -2354,7 +2364,7 @@ __metadata:
     undici: "npm:5.28.4"
   peerDependencies:
     "@firebase/app": 0.x
-  checksum: 10c0/eac1d2ab4e3b2a6a9348d7392a4da266354790625841cb23924a3dac8cb930e7b62f393e7d5dd05f2076c2e8cc9e5a1d77fffce86cf88d9c0d27857041a2afa6
+  checksum: 10c0/874ecc9e3b2c62e2a89ff8e427637e316ce451ef19127d13d29b5d2a1ef5ebccafe991787f741a1a83a912616226b9086d8ecc6aa4bde7cf2dd43d38c103b8db
   languageName: node
   linkType: hard
 
@@ -2557,18 +2567,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/storage-compat@npm:0.3.9":
-  version: 0.3.9
-  resolution: "@firebase/storage-compat@npm:0.3.9"
+"@firebase/storage-compat@npm:0.3.10":
+  version: 0.3.10
+  resolution: "@firebase/storage-compat@npm:0.3.10"
   dependencies:
     "@firebase/component": "npm:0.6.8"
-    "@firebase/storage": "npm:0.12.6"
+    "@firebase/storage": "npm:0.13.0"
     "@firebase/storage-types": "npm:0.8.2"
     "@firebase/util": "npm:1.9.7"
     tslib: "npm:^2.1.0"
   peerDependencies:
     "@firebase/app-compat": 0.x
-  checksum: 10c0/65a8ca66050cea4bd78d89753f6d3917c0bff01435c99c3ddbf0297087c081cb1260c019e947ed195062d2abf3c65205a20f374c257ef3495766bd6f7b488643
+  checksum: 10c0/ebf5afdff27bc79a039bc8a5fa8de012a7af8de2e32f411e8056069112260371e974e9f8bcf9ba2ed352996200ce0fd7612d9e51800eaed3b9f969a48f7a37fb
   languageName: node
   linkType: hard
 
@@ -2582,9 +2592,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/storage@npm:0.12.6":
-  version: 0.12.6
-  resolution: "@firebase/storage@npm:0.12.6"
+"@firebase/storage@npm:0.13.0":
+  version: 0.13.0
+  resolution: "@firebase/storage@npm:0.13.0"
   dependencies:
     "@firebase/component": "npm:0.6.8"
     "@firebase/util": "npm:1.9.7"
@@ -2592,7 +2602,7 @@ __metadata:
     undici: "npm:5.28.4"
   peerDependencies:
     "@firebase/app": 0.x
-  checksum: 10c0/d46553887873f6e28dbb8c92ed13a37f3c0748d53437d3ba7c939a8d18bbdea80655fa680ae16d1a2955c1e048c31642e3e952fac2d90415514c06b1307490d2
+  checksum: 10c0/56b554cc33b5689cb213bc1b5318b5dec8f536b94f2fb355b7c9f54b8ccf2df35bb353c3a69b737230b6c8362aa501b5808302b6e8e9cd93ad74ff8bd4aa8ae2
   languageName: node
   linkType: hard
 
@@ -3076,9 +3086,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@million/lint@npm:1.0.0-rc.84":
-  version: 1.0.0-rc.84
-  resolution: "@million/lint@npm:1.0.0-rc.84"
+"@million/lint@npm:1.0.0-rc.82-beta.50":
+  version: 1.0.0-rc.82-beta.50
+  resolution: "@million/lint@npm:1.0.0-rc.82-beta.50"
   dependencies:
     "@axiomhq/js": "npm:1.0.0-rc.3"
     "@babel/core": "npm:7.24.6"
@@ -3090,7 +3100,8 @@ __metadata:
     babel-plugin-syntax-hermes-parser: "npm:^0.21.1"
     ci-info: "npm:^4.0.0"
     esbuild: "npm:^0.20.1"
-    hono: "npm:^4.3.2"
+    faster-babel-types: "npm:^0.1.0"
+    hono: "npm:4.3.2"
     isomorphic-fetch: "npm:^3.0.0"
     nanoid: "npm:^5.0.7"
     pako: "npm:^2.1.0"
@@ -3106,7 +3117,7 @@ __metadata:
     update-notifier-cjs: "npm:^5.1.6"
   bin:
     lint: cli.js
-  checksum: 10c0/fadf5ca0695939ee10cc28ae7585d8c4e67ec94901e1fd13842ced2739f501690c2c06448374713dd5f121a84cfa88a64521fa2c056a61a1b11b2656c2005660
+  checksum: 10c0/8b78bce261c043d54abd76a44666202fba9003106660b1f3b9cb458c66c41d404d49a54c62e0fc9a8453a38b8722d617f15c98635b38a4f9d5d715ce24dd3f9a
   languageName: node
   linkType: hard
 
@@ -3280,9 +3291,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-email/render@npm:0.0.16":
-  version: 0.0.16
-  resolution: "@react-email/render@npm:0.0.16"
+"@react-email/render@npm:0.0.17":
+  version: 0.0.17
+  resolution: "@react-email/render@npm:0.0.17"
   dependencies:
     html-to-text: "npm:9.0.5"
     js-beautify: "npm:^1.14.11"
@@ -3290,14 +3301,14 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
-  checksum: 10c0/1cc3479f674f070f8564b8944dcb86081b7f52b67742d0c255d79b6cea989be0e2207d2adcd5a920ff4b41fbe360d655ac97a71f8ebd5e6d78441cafcfc668dc
+  checksum: 10c0/34a1c5a55586d7cd723638d8cd5328fddf30015e5065a2e9d5204772e0532e84d63af1b2b1b8ec02cef52a8f57d34871200c0075a9ed7b2861362d8138d3db5e
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.19.0":
-  version: 1.19.0
-  resolution: "@remix-run/router@npm:1.19.0"
-  checksum: 10c0/8c1503a535035f43747fea063b027aa841690c19a6bd8b6251c53d3aab4d4cae89b0bd4809dc7ab69fdbe61897f43c2683b82fc4cdc5785f9166cf2ea60e5932
+"@remix-run/router@npm:1.19.1":
+  version: 1.19.1
+  resolution: "@remix-run/router@npm:1.19.1"
+  checksum: 10c0/9101fc96646e5107b6b0ef248d4c93bd965590c37ac02d35bcc57d1902467db7fc6eeec0a1fb97d0ce5bc96fae58e75239555e44a983239a61badba18e82d3b8
   languageName: node
   linkType: hard
 
@@ -3883,12 +3894,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.3.0":
-  version: 22.3.0
-  resolution: "@types/node@npm:22.3.0"
+"@types/node@npm:^22.4.0":
+  version: 22.4.0
+  resolution: "@types/node@npm:22.4.0"
   dependencies:
-    undici-types: "npm:~6.18.2"
-  checksum: 10c0/855be3b97f4262a84818f889ff898e147dcef4f72b866e3551a8367380cdb63a45cf3929f09d9a0647f62706f8d4772e91a1ecd1bd7c6a80d6744c2b0cbca608
+    undici-types: "npm:~6.19.2"
+  checksum: 10c0/84cd094b19a27e0db425f1d02614e4f7ac59b5eb3b21e288c8f8d4d0a4c9ad370107bc1a649d4c2b4e810cd133feea26e0bbf7e7c617f93e9e139d6d2568cf50
   languageName: node
   linkType: hard
 
@@ -4638,14 +4649,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:~1.6.8":
-  version: 1.6.8
-  resolution: "axios@npm:1.6.8"
+"axios@npm:^1.7.4":
+  version: 1.7.4
+  resolution: "axios@npm:1.7.4"
   dependencies:
     follow-redirects: "npm:^1.15.6"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 10c0/0f22da6f490335479a89878bc7d5a1419484fbb437b564a80c34888fc36759ae4f56ea28d55a191695e5ed327f0bad56e7ff60fb6770c14d1be6501505d47ab9
+  checksum: 10c0/5ea1a93140ca1d49db25ef8e1bd8cfc59da6f9220159a944168860ad15a2743ea21c5df2967795acb15cbe81362f5b157fdebbea39d53117ca27658bab9f7f17
   languageName: node
   linkType: hard
 
@@ -4718,7 +4729,7 @@ __metadata:
     "@astrojs/react": "npm:^3.6.2"
     "@astrojs/rss": "npm:^4.0.7"
     "@astrojs/sitemap": "npm:^3.1.6"
-    "@astrojs/ts-plugin": "npm:^1.9.3"
+    "@astrojs/ts-plugin": "npm:^1.10.0"
     "@biomejs/biome": "npm:1.8.3"
     "@commitlint/cli": "npm:^19.4.0"
     "@commitlint/config-conventional": "npm:^19.2.2"
@@ -4726,20 +4737,20 @@ __metadata:
     "@fontsource-variable/nunito-sans": "npm:^5.0.14"
     "@fontsource/baskervville": "npm:^5.0.20"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@million/lint": "npm:1.0.0-rc.84"
+    "@million/lint": "npm:1.0.0-rc.82-beta.50"
     "@testing-library/react": "npm:^16.0.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^22.3.0"
+    "@types/node": "npm:^22.4.0"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@types/three": "npm:^0.167.1"
     algoliasearch: "npm:^5.0.0"
     astro: "npm:^4.13.4"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^10.13.2"
-    firebase: "npm:^10.12.5"
+    contentful: "npm:^10.14.0"
+    firebase: "npm:^10.13.0"
     firebase-admin: "npm:^12.3.1"
     gsap: "npm:^3.12.5"
     husky: "npm:^9.1.4"
@@ -4752,9 +4763,9 @@ __metadata:
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.52.2"
     react-instantsearch: "npm:^7.12.4"
-    react-router-dom: "npm:^6.26.0"
-    resend: "npm:^3.5.0"
-    stylelint: "npm:^16.8.1"
+    react-router-dom: "npm:^6.26.1"
+    resend: "npm:^4.0.0"
+    stylelint: "npm:^16.8.2"
     stylelint-config-recommended: "npm:^14.0.1"
     stylelint-order: "npm:^6.0.4"
     swiper: "npm:^11.1.9"
@@ -5327,7 +5338,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful-sdk-core@npm:^8.1.0":
+"contentful-sdk-core@npm:^8.3.1":
   version: 8.3.1
   resolution: "contentful-sdk-core@npm:8.3.1"
   dependencies:
@@ -5340,18 +5351,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^10.13.2":
-  version: 10.13.2
-  resolution: "contentful@npm:10.13.2"
+"contentful@npm:^10.14.0":
+  version: 10.14.0
+  resolution: "contentful@npm:10.14.0"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.6.0"
     "@contentful/rich-text-types": "npm:^16.0.2"
-    axios: "npm:~1.6.8"
+    axios: "npm:^1.7.4"
     contentful-resolve-response: "npm:^1.9.0"
-    contentful-sdk-core: "npm:^8.1.0"
+    contentful-sdk-core: "npm:^8.3.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/60a24608d14cfd0f13a8e74a2e310a6b709ddb1a3122664f8ee37cbf451b2a4f78a2cde932ce49dadad5aba11be26232ed06050d66399bf463cd80bf76d55bbe
+  checksum: 10c0/68e679ac480e1fd901957fc5b99a03b4522d0241bfe48bf711886ec1034a4afd7d22f24bca318cfec9c43d98749e9d8e292970ad42d0c8262016cdb42953bf96
   languageName: node
   linkType: hard
 
@@ -6585,6 +6596,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"faster-babel-types@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "faster-babel-types@npm:0.1.0"
+  peerDependencies:
+    "@babel/types": ^7
+  checksum: 10c0/e73f27146458d8af39582231e2b65643f1d74a3cc184ed68a684c3c74cb8b8d054773c174fb6a0bb7a85523af91f10a11ae6f542766d5be6d7b570680c2bb256
+  languageName: node
+  linkType: hard
+
 "fastest-levenshtein@npm:^1.0.16":
   version: 1.0.16
   resolution: "fastest-levenshtein@npm:1.0.16"
@@ -6711,23 +6731,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firebase@npm:^10.12.5":
-  version: 10.12.5
-  resolution: "firebase@npm:10.12.5"
+"firebase@npm:^10.13.0":
+  version: 10.13.0
+  resolution: "firebase@npm:10.13.0"
   dependencies:
     "@firebase/analytics": "npm:0.10.7"
     "@firebase/analytics-compat": "npm:0.2.13"
-    "@firebase/app": "npm:0.10.8"
+    "@firebase/app": "npm:0.10.9"
     "@firebase/app-check": "npm:0.8.7"
     "@firebase/app-check-compat": "npm:0.3.14"
-    "@firebase/app-compat": "npm:0.2.38"
+    "@firebase/app-compat": "npm:0.2.39"
     "@firebase/app-types": "npm:0.9.2"
-    "@firebase/auth": "npm:1.7.6"
-    "@firebase/auth-compat": "npm:0.5.11"
+    "@firebase/auth": "npm:1.7.7"
+    "@firebase/auth-compat": "npm:0.5.12"
     "@firebase/database": "npm:1.0.7"
     "@firebase/database-compat": "npm:1.0.7"
-    "@firebase/firestore": "npm:4.6.5"
-    "@firebase/firestore-compat": "npm:0.3.34"
+    "@firebase/firestore": "npm:4.7.0"
+    "@firebase/firestore-compat": "npm:0.3.35"
     "@firebase/functions": "npm:0.11.6"
     "@firebase/functions-compat": "npm:0.3.12"
     "@firebase/installations": "npm:0.6.8"
@@ -6738,11 +6758,11 @@ __metadata:
     "@firebase/performance-compat": "npm:0.2.8"
     "@firebase/remote-config": "npm:0.4.8"
     "@firebase/remote-config-compat": "npm:0.2.8"
-    "@firebase/storage": "npm:0.12.6"
-    "@firebase/storage-compat": "npm:0.3.9"
+    "@firebase/storage": "npm:0.13.0"
+    "@firebase/storage-compat": "npm:0.3.10"
     "@firebase/util": "npm:1.9.7"
     "@firebase/vertexai-preview": "npm:0.0.3"
-  checksum: 10c0/eb2e978f1cbdac305c652c8fc26c9d662a1b032c5627bd2414b388b9dfad85fe56fe00cebb50b4d3d9701a6235ed343d85eb8f4556e332281435211b1f93ac06
+  checksum: 10c0/d2c9272e8fc1c202976191c3746a96b7479c682334cd28b3591dcd8da83b8b955679c68d3a417a880d55727c5551599c243fd31d7ea1d84dd7c7e3be1c45922d
   languageName: node
   linkType: hard
 
@@ -7480,10 +7500,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hono@npm:^4.3.2":
-  version: 4.5.5
-  resolution: "hono@npm:4.5.5"
-  checksum: 10c0/df1f3c651f1b66d3dcca310de03bdeca43b01be69506cdc47801a74870d5b1db2f9610daf72eb7603384477a8bfd5444de6ca22cde891f7991cdee254d46a29e
+"hono@npm:4.3.2":
+  version: 4.3.2
+  resolution: "hono@npm:4.3.2"
+  checksum: 10c0/a87ed147773620f2f37317e5074a04046b6c13f099da8f2393a3c017d41708a3b5e34e46c9303665cfdfb1a36bbb992d3136cbfc5dd8ce6c6b19ea46d9419156
   languageName: node
   linkType: hard
 
@@ -7634,10 +7654,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ignore@npm:^5.2.0, ignore@npm:^5.3.1":
+"ignore@npm:^5.2.0":
   version: 5.3.1
   resolution: "ignore@npm:5.3.1"
   checksum: 10c0/703f7f45ffb2a27fb2c5a8db0c32e7dee66b33a225d28e8db4e1be6474795f606686a6e3bcc50e1aa12f2042db4c9d4a7d60af3250511de74620fbed052ea4cd
+  languageName: node
+  linkType: hard
+
+"ignore@npm:^5.3.2":
+  version: 5.3.2
+  resolution: "ignore@npm:5.3.2"
+  checksum: 10c0/f9f652c957983634ded1e7f02da3b559a0d4cc210fca3792cb67f1b153623c9c42efdc1c4121af171e295444459fc4a9201101fb041b1104a3c000bccb188337
   languageName: node
   linkType: hard
 
@@ -10324,10 +10351,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-resolve-nested-selector@npm:^0.1.4":
-  version: 0.1.4
-  resolution: "postcss-resolve-nested-selector@npm:0.1.4"
-  checksum: 10c0/c265c35ddd474968bc4efbe4027e33f28910ef3931ffae9c448878d7c02735aeeea6d33aa6f89902e4c111e6fe87f2cc2aa72dcb3ac242d58809f1f932baa2b6
+"postcss-resolve-nested-selector@npm:^0.1.6":
+  version: 0.1.6
+  resolution: "postcss-resolve-nested-selector@npm:0.1.6"
+  checksum: 10c0/84213a2bccce481b1569c595a3c547b25c6ef1cca839fbd6c82c12ab407559966e968613c7454b573aa54f38cfd7e900c1fd603f0efc9f51939ab9f93f115455
   languageName: node
   linkType: hard
 
@@ -10340,13 +10367,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-selector-parser@npm:^6.1.1":
-  version: 6.1.1
-  resolution: "postcss-selector-parser@npm:6.1.1"
+"postcss-selector-parser@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "postcss-selector-parser@npm:6.1.2"
   dependencies:
     cssesc: "npm:^3.0.0"
     util-deprecate: "npm:^1.0.2"
-  checksum: 10c0/5608765e033fee35d448e1f607ffbaa750eb86901824a8bc4a911ea8bc137cb82f29239330787427c5d3695afd90d8721e190f211dbbf733e25033d8b3100763
+  checksum: 10c0/523196a6bd8cf660bdf537ad95abd79e546d54180f9afb165a4ab3e651ac705d0f8b8ce6b3164fb9e3279ce482c5f751a69eb2d3a1e8eb0fd5e82294fb3ef13e
   languageName: node
   linkType: hard
 
@@ -10385,6 +10412,17 @@ __metadata:
     picocolors: "npm:^1.0.1"
     source-map-js: "npm:^1.2.0"
   checksum: 10c0/65ed67573e5443beaeb582282ff27a6be7c7fe3b4d9fa15761157616f2b97510cb1c335023c26220b005909f007337026d6e3ff092f25010b484ad484e80ea7f
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.41":
+  version: 8.4.41
+  resolution: "postcss@npm:8.4.41"
+  dependencies:
+    nanoid: "npm:^3.3.7"
+    picocolors: "npm:^1.0.1"
+    source-map-js: "npm:^1.2.0"
+  checksum: 10c0/c1828fc59e7ec1a3bf52b3a42f615dba53c67960ed82a81df6441b485fe43c20aba7f4e7c55425762fd99c594ecabbaaba8cf5b30fd79dfec5b52a9f63a2d690
   languageName: node
   linkType: hard
 
@@ -10714,27 +10752,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.26.0":
-  version: 6.26.0
-  resolution: "react-router-dom@npm:6.26.0"
+"react-router-dom@npm:^6.26.1":
+  version: 6.26.1
+  resolution: "react-router-dom@npm:6.26.1"
   dependencies:
-    "@remix-run/router": "npm:1.19.0"
-    react-router: "npm:6.26.0"
+    "@remix-run/router": "npm:1.19.1"
+    react-router: "npm:6.26.1"
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 10c0/f59a5b72b1dab6480f97f20fa49b601cb1366e6e1c8def7fd727ccbc4e8cf527f64f7aedd2889534de222dc86634a23e2ed108b99e5443e7b5401a4db104e611
+  checksum: 10c0/9d9d8ed54d1c95497c6fa35a6ab46992efeccf1cfc6f0f6089c6c9b040af3eae09568fbb80c690bae08051a955d92d7aa3a0e730f626eb69285114993d31d430
   languageName: node
   linkType: hard
 
-"react-router@npm:6.26.0":
-  version: 6.26.0
-  resolution: "react-router@npm:6.26.0"
+"react-router@npm:6.26.1":
+  version: 6.26.1
+  resolution: "react-router@npm:6.26.1"
   dependencies:
-    "@remix-run/router": "npm:1.19.0"
+    "@remix-run/router": "npm:1.19.1"
   peerDependencies:
     react: ">=16.8"
-  checksum: 10c0/498b97cac077170096715609e65e0039b64e497612ed585b8d3b88733310d23e7ca76ce189b09b6fbc65ca8df1595ca20ccac05a84006803843dfa05107d9540
+  checksum: 10c0/463078e740462b42bb5ba8004448f33fc9e63778f432a4ed55c57b93c5b519e25fb17913ee8435b0fda33c6b9f75df8ef6fcb2c3a4f8db84fb546d202e29aa51
   languageName: node
   linkType: hard
 
@@ -10943,12 +10981,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resend@npm:^3.5.0":
-  version: 3.5.0
-  resolution: "resend@npm:3.5.0"
+"resend@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "resend@npm:4.0.0"
   dependencies:
-    "@react-email/render": "npm:0.0.16"
-  checksum: 10c0/9920a456b926ef7be165a550c1c02355a8390fb215f05778118e3758a636411d49e4fa1ce3c648f42499e5928e7e159e2ebcce89b991c5708ae8b3393a84c242
+    "@react-email/render": "npm:0.0.17"
+  checksum: 10c0/45934a4a044ead8afe17e9d9982f468f66979b4078b15d512b440354467bc50946a856e1eb8e7fe5af9113cf32e0495995ab00a039692d7e2778022041f50105
   languageName: node
   linkType: hard
 
@@ -11954,14 +11992,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stylelint@npm:^16.8.1":
-  version: 16.8.1
-  resolution: "stylelint@npm:16.8.1"
+"stylelint@npm:^16.8.2":
+  version: 16.8.2
+  resolution: "stylelint@npm:16.8.2"
   dependencies:
-    "@csstools/css-parser-algorithms": "npm:^2.7.1"
-    "@csstools/css-tokenizer": "npm:^2.4.1"
-    "@csstools/media-query-list-parser": "npm:^2.1.13"
-    "@csstools/selector-specificity": "npm:^3.1.1"
+    "@csstools/css-parser-algorithms": "npm:^3.0.0"
+    "@csstools/css-tokenizer": "npm:^3.0.0"
+    "@csstools/media-query-list-parser": "npm:^3.0.0"
+    "@csstools/selector-specificity": "npm:^4.0.0"
     "@dual-bundle/import-meta-resolve": "npm:^4.1.0"
     balanced-match: "npm:^2.0.0"
     colord: "npm:^2.9.3"
@@ -11976,7 +12014,7 @@ __metadata:
     globby: "npm:^11.1.0"
     globjoin: "npm:^0.1.4"
     html-tags: "npm:^3.3.1"
-    ignore: "npm:^5.3.1"
+    ignore: "npm:^5.3.2"
     imurmurhash: "npm:^0.1.4"
     is-plain-object: "npm:^5.0.0"
     known-css-properties: "npm:^0.34.0"
@@ -11985,10 +12023,10 @@ __metadata:
     micromatch: "npm:^4.0.7"
     normalize-path: "npm:^3.0.0"
     picocolors: "npm:^1.0.1"
-    postcss: "npm:^8.4.40"
-    postcss-resolve-nested-selector: "npm:^0.1.4"
+    postcss: "npm:^8.4.41"
+    postcss-resolve-nested-selector: "npm:^0.1.6"
     postcss-safe-parser: "npm:^7.0.0"
-    postcss-selector-parser: "npm:^6.1.1"
+    postcss-selector-parser: "npm:^6.1.2"
     postcss-value-parser: "npm:^4.2.0"
     resolve-from: "npm:^5.0.0"
     string-width: "npm:^4.2.3"
@@ -11999,7 +12037,7 @@ __metadata:
     write-file-atomic: "npm:^5.0.1"
   bin:
     stylelint: bin/stylelint.mjs
-  checksum: 10c0/7bc6b0193f83420b2170026078b427d7fb22a07d3345fc99a16241625a572f2fc3e1fa1999e54c01cc2b15bd59d135715c2b140b089c17aa7f4e377ded1fc1b5
+  checksum: 10c0/898cde9b5d981f249133df709458eebf2af0a525e72410ddfafd76a7308f7da493578b6a909c593cc70061556b9eda1fed4f477385ee615435f0996d9e18d8df
   languageName: node
   linkType: hard
 
@@ -12406,10 +12444,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.18.2":
-  version: 6.18.2
-  resolution: "undici-types@npm:6.18.2"
-  checksum: 10c0/dea28163891a5af7624c120107dc07a74c369ee94c6dd1d0de29af061ee129fac4846f97130589f4436b85f6102c73d30328ca908be02626dd8ab9fec5642aba
+"undici-types@npm:~6.19.2":
+  version: 6.19.6
+  resolution: "undici-types@npm:6.19.6"
+  checksum: 10c0/9b2264c5700e7169c6c62c643aac56cd8984c5fd7e18ed31ff11780260e137f6340dee8317a2e6e0ae3c49f5e5ef6fa577ea07193cbaa535265cba76a267cae9
   languageName: node
   linkType: hard
 
@@ -13464,7 +13502,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:~2.5.0":
+"yaml@npm:^2.5.0, yaml@npm:~2.5.0":
   version: 2.5.0
   resolution: "yaml@npm:2.5.0"
   bin:

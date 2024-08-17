@@ -5,8 +5,6 @@ export function mailTo() {
 	if (!SELECTOR) return;
 
 	SELECTOR.addEventListener("click", (event) => {
-		console.log("in", event.isTrusted);
-		console.log("in", CONTACT_DETAILS.ENCODED_EMAIL_BIANCA);
 		event.preventDefault();
 		if (!event.isTrusted) return;
 		const mailto = encodeURIComponent(`"${CONTACT_DETAILS.NAME}"<${atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA)}>`);

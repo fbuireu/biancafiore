@@ -28,8 +28,8 @@
         --base-font-size: 16px;
         --base-vertical-rhythm-factor: 2.75;
         --base-vertical-rhythm: 0.725rem;
-        /*--base-line-height: calc(var(--base-font-size) * var(--base-vertical-rhythm-factor) * var(--base-vertical-rhythm));*/
-        --base-line-height: 3rem;
+        --base-line-height: calc(var(--base-font-size) * var(--base-vertical-rhythm-factor) * var(--base-vertical-rhythm));
+        /*--base-line-height: 3rem;*/
         --global-border-radius: 0.25rem;
         --grid-extra-small: 575px;
         --grid-small: 720px;
@@ -224,8 +224,8 @@
 
 @property --base-line-height {
     syntax: '<calc-product>';
-    inherits: false;
-    initial-value: calc(var(--base-font-size) * var(--base-vertical-rhythm-factor) * var(--base-vertical-rhythm));
+    inherits: true;
+    initial-value: normal;
 }
 
 @property --global-border-radius {
