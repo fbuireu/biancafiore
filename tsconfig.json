@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "astro/tsconfigs/base",
-    "./tsconfig.paths.json"
-  ],
+  "extends": ["astro/tsconfigs/base", "./tsconfig.paths.json"],
   "compilerOptions": {
     "strict": true,
     "strictNullChecks": true,
@@ -18,9 +15,7 @@
     "module": "esnext",
     "jsxImportSource": "react",
     "jsx": "react-jsx",
-    "types": [
-      "vite/client"
-    ],
+    "types": ["vite/client"],
     "plugins": [
       {
         "name": "@astrojs/ts-plugin"
