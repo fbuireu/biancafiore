@@ -1,20 +1,24 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.6.4/schema.json",
-	"files": {
-		"ignore": ["src/data/*"]
-	},
-	"vcs": {
-		"enabled": true,
-		"clientKind": "git",
-		"defaultBranch": "main"
-	},
-	"formatter": {
-		"lineWidth": 120
-	},
-	"linter": {
-		"ignore": ["*.d.ts*"],
-		"rules": {
-			"recommended": true
-		}
-	}
+  "$schema": "https://biomejs.dev/schemas/1.6.4/schema.json",
+  "files": {
+    "ignore": [
+      "src/data/*"
+    ]
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "defaultBranch": "main"
+  },
+  "formatter": {
+    "lineWidth": 120
+  },
+  "linter": {
+    "ignore": [
+      "*.d.ts*"
+    ],
+    "rules": {
+      "recommended": true
+    }
+  }
 }
