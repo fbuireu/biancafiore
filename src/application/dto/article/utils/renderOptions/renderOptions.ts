@@ -1,38 +1,38 @@
-import type { Block, Inline } from '@contentful/rich-text-types';
-import { BLOCKS, INLINES } from '@contentful/rich-text-types';
-import type { RawArticle } from '@application/dto/article/types.ts';
+import type { RawArticle } from "@application/dto/article/types.ts";
+import type { Block, Inline } from "@contentful/rich-text-types";
+import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 
 type Node = Block | Inline;
 
 export const renderOptions = (rawArticle: RawArticle) => ({
-    renderNode: {
-        [INLINES.EMBEDDED_ENTRY]: (node: Node) => {
-            const contentTypeId = node.data.target.sys.contentType.sys.id;
-            const { slug, title } = node.data.target.fields;
+	renderNode: {
+		[INLINES.EMBEDDED_ENTRY]: (node: Node) => {
+			const contentTypeId = node.data.target.sys.contentType.sys.id;
+			const { slug, title } = node.data.target.fields;
 
-            if (contentTypeId === 'article' && slug && title) {
-                return `
+			if (contentTypeId === "article" && slug && title) {
+				return `
                     <a href="/articles/${slug}">
                         ${title}
                     </a>
                 `;
-            }
-            return '';
-        },
-        [BLOCKS.EMBEDDED_ENTRY]: (node: Node) => {
-            const contentTypeId = node.data.target.sys.contentType.sys.id;
-            const { code, embedUrl, title } = node.data.target.fields;
+			}
+			return "";
+		},
+		[BLOCKS.EMBEDDED_ENTRY]: (node: Node) => {
+			const contentTypeId = node.data.target.sys.contentType.sys.id;
+			const { code, embedUrl, title } = node.data.target.fields;
 
-            if (contentTypeId === 'codeBlock' && code) {
-                return `
+			if (contentTypeId === "codeBlock" && code) {
+				return `
                     <pre>
                         <code>${code}</code>
                     </pre>
                 `;
-            }
+			}
 
-            if (contentTypeId === 'videoEmbed' && embedUrl && title) {
-                return `
+			if (contentTypeId === "videoEmbed" && embedUrl && title) {
+				return `
                     <iframe
                         src="${embedUrl}"
                         height="100%"
@@ -41,31 +41,31 @@ export const renderOptions = (rawArticle: RawArticle) => ({
                         allowfullscreen
                     ></iframe>
                 `;
-            }
-            return '';
-        },
-        [BLOCKS.EMBEDDED_ASSET]: (node: Node) => {
-            const { file, description } = node.data.target.fields;
-            const { url, details } = file || {};
-            const { image } = details || {};
-            const { height, width } = image || {};
+			}
+			return "";
+		},
+		[BLOCKS.EMBEDDED_ASSET]: (node: Node) => {
+			const { file, description } = node.data.target.fields;
+			const { url, details } = file || {};
+			const { image } = details || {};
+			const { height, width } = image || {};
 
-            if (url) {
-                return `
+			if (url) {
+				return `
                     <figure class="full-bleed">
                         <img
                             src="https:${url}"
-                            height="${height || ''}"
-                            width="${width || ''}"
+                            height="${height || ""}"
+                            width="${width || ""}"
                             alt="${description || rawArticle.fields.title}"
                             loading="lazy"
                             decoding="async"
                         />
-                        ${description ? `<figcaption>${description}</figcaption>` : ''}
+                        ${description ? `<figcaption>${description}</figcaption>` : ""}
                     </figure>
                 `;
-            }
-            return '';
-        },
-    },
+			}
+			return "";
+		},
+	},
 });
