@@ -8,23 +8,23 @@ import { createImage } from "@shared/application/dto/utils/createImage";
 export const authorDTO: BaseDTO<RawAuthor[], Promise<AuthorDTO[]>> = {
 	render: async (raw) => {
 		return Promise.all(
-			raw.map(async (author) => {
+			raw.map(async (rawAuthor) => {
 				const { items: rawArticles } = await client.getEntries({
 					content_type: "article",
-					"fields.author.sys.id": author.sys.id,
+					"fields.author.sys.id": rawAuthor.sys.id,
 					order: ["-fields.publishDate"],
 				});
 
 				const articles = articleDTO.render(rawArticles as unknown as RawArticle[]);
 
 				return {
-					name: author.fields.name,
-					slug: author.fields.slug,
-					description: author.fields.description,
-					jobTitle: author.fields.jobTitle,
-					currentCompany: author.fields.currentCompany,
-					profileImage: createImage(author.fields.profileImage),
-					socialNetworks: author.fields.socialNetworks,
+					name: rawAuthor.fields.name,
+					slug: rawAuthor.fields.slug,
+					description: rawAuthor.fields.description,
+					jobTitle: rawAuthor.fields.jobTitle,
+					currentCompany: rawAuthor.fields.currentCompany,
+					profileImage: createImage(rawAuthor.fields.profileImage),
+					socialNetworks: rawAuthor.fields.socialNetworks,
 					articles,
 					latestArticle: articles[0],
 				} as unknown as AuthorDTO;

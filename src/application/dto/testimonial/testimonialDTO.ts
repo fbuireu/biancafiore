@@ -4,12 +4,12 @@ import { createImage } from "@shared/application/dto/utils/createImage";
 
 export const testimonialDTO: BaseDTO<RawTestimonial[], TestimonialDTO[]> = {
 	render: (raw) => {
-		return raw.map((testimonial) => {
+		return raw.map((rawTestimonial) => {
 			return {
-				author: testimonial.fields.author,
-				quote: testimonial.fields.quote,
-				image: createImage(testimonial.fields.image),
-				role: testimonial.fields.role,
+				author: rawTestimonial.fields.author,
+				quote: rawTestimonial.fields.quote,
+				image: createImage(rawTestimonial.fields.image),
+				role: rawTestimonial.fields.role,
 			} as unknown as TestimonialDTO;
 		});
 	},

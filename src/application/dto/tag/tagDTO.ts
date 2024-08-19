@@ -21,12 +21,12 @@ export const tagDTO: BaseDTO<RawTag[], Promise<TagDTO>> = {
 		const articles = articleDTO.render(rawArticlesByTag as unknown as RawArticle[]);
 
 		const tags = await Promise.all(
-			raw.map(async (tag) => {
-				const articlesByTag = getArticlesByTag({ tag, articles });
+			raw.map(async (rawTag) => {
+				const articlesByTag = getArticlesByTag({ rawTag, articles });
 
 				return {
-					name: tag.fields.name as unknown as string,
-					slug: tag.fields.slug,
+					name: rawTag.fields.name as unknown as string,
+					slug: rawTag.fields.slug,
 					type: TagType.TAG,
 					count: articlesByTag.length,
 					articles: articlesByTag,

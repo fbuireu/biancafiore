@@ -6,12 +6,12 @@ import { createImage } from "@shared/application/dto/utils/createImage";
 
 export const projectDTO: BaseDTO<RawProject[], ProjectDTO[]> = {
 	render: (raw) => {
-		return raw.map((project) => {
+		return raw.map((rawProject) => {
 			return {
-				id: project.fields.id,
-				name: project.fields.name,
-				description: documentToHtmlString(project.fields.description as unknown as Document),
-				image: createImage(project.fields.image),
+				id: rawProject.fields.id,
+				name: rawProject.fields.name,
+				description: documentToHtmlString(rawProject.fields.description as unknown as Document),
+				image: createImage(rawProject.fields.image),
 			} as unknown as ProjectDTO;
 		});
 	},

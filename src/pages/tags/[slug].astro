@@ -8,10 +8,10 @@ import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro"
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import "./_tag.css";
 
-export const prerender = true;
-
 type TagProps = InferGetStaticPropsType<typeof getStaticPaths>;
 type TagParams = InferGetStaticParamsType<typeof getStaticPaths>;
+
+// export const prerender = true;
 
 export async function getStaticPaths() {
 	const { items: rawTags } = await client.getEntries<RawTag>({

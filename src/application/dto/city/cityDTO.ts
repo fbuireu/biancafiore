@@ -6,23 +6,23 @@ import { createDate } from "./utils/createDate";
 
 export const cityDTO: BaseDTO<RawCity[], CityDTO[]> = {
 	render: (raw) => {
-		return raw.map((city) => {
+		return raw.map((rawCity) => {
 			const coordinates = {
-				latitude: (city.fields.coordinates as unknown as ContenfulLocation["fields"]["coordinates"]).lat,
-				longitude: (city.fields.coordinates as unknown as ContenfulLocation["fields"]["coordinates"]).lon,
+				latitude: (rawCity.fields.coordinates as unknown as ContenfulLocation["fields"]["coordinates"]).lat,
+				longitude: (rawCity.fields.coordinates as unknown as ContenfulLocation["fields"]["coordinates"]).lon,
 			};
 
 			const { startDate, endDate } = createDate({
-				startDate: String(city.fields.startDate),
-				...(city.fields.endDate && { endDate: String(city.fields.endDate) }),
+				startDate: String(rawCity.fields.startDate),
+				...(rawCity.fields.endDate && { endDate: String(rawCity.fields.endDate) }),
 			});
 
 			return {
-				name: city.fields.name,
+				name: rawCity.fields.name,
 				coordinates,
 				period: `${startDate}-${endDate}`,
-				description: city.fields.description,
-				image: createImage(city.fields.image),
+				description: rawCity.fields.description,
+				image: createImage(rawCity.fields.image),
 			} as unknown as CityDTO;
 		});
 	},

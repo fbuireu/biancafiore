@@ -8,13 +8,12 @@ import ReadingProgress from "@modules/articles/components/readingProgress/Readin
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
+import type { InferGetStaticPropsType } from "astro";
 import "./_article.css";
 
-import type { InferGetStaticPropsType } from "astro";
-
-export const prerender = true;
-
 type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;
+
+// export const prerender = true;
 
 export async function getStaticPaths() {
 	const { items: rawArticles } = await client.getEntries<RawArticle>({
