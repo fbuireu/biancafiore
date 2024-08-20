@@ -1,29 +1,19 @@
 ---
-import { TWITTER_HANDLE } from "astro:env/client";
 import type { SeoMetadata } from "@const/types";
 import "@fontsource-variable/nunito-sans";
 import "@fontsource/baskervville";
 import { GOOGLE_ANALYTICS_ID, GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
 import { ViewTransitions } from "astro:transitions";
-import { DEFAULT_SEO_PARAMS } from "@const/index";
+import Seo from "@modules/core/components/seo/Seo.astro";
 import "@styles/index.css";
 
-type SiteHeadProps = SeoMetadata;
+type HeadProps = SeoMetadata;
 
-const canonical = new URL(Astro.url.pathname, Astro.site);
-
-const { IMAGE, TITLE, DESCRIPTION, ROBOTS } = DEFAULT_SEO_PARAMS;
-
-const {
-	title = TITLE,
-	description = DESCRIPTION,
-	image = IMAGE,
-	robots = { ...ROBOTS, ...Astro.props },
-} = Astro.props as SiteHeadProps;
+const props = Astro.props as HeadProps;
 ---
 
 <head lang="en">
-    <script define:vars={{ GOOGLE_TAG_MANAGER_ID }}>
+<script define:vars={{ GOOGLE_TAG_MANAGER_ID }}>
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -31,29 +21,7 @@ const {
     })(window,document,'script','dataLayer',GOOGLE_TAG_MANAGER_ID);
 </script>
     <ViewTransitions />
-    <meta name="generator" content={Astro.generator} />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="color-scheme" content="light dark">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="canonical" href={canonical} />
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <title>{title}</title>
-    <meta name="title" content={title} />
-    <meta name="robots" content={`${robots.index ? 'index' : 'noindex'}, ${robots.follow ? 'follow' : 'nofollow'}`} />
-    <meta name="description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.url)} />
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, Astro.url)} />
-    <meta property="twitter:creator" content={TWITTER_HANDLE} />
-    <meta property="twitter:site" content={TWITTER_HANDLE} />
+    <Seo {...props} />
 </head>
 <script define:vars={{ GOOGLE_ANALYTICS_ID }}>
     window.dataLayer = window.dataLayer || [];

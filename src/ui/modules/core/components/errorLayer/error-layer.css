@@ -1,0 +1,17 @@
+.error-layer__wrapper {
+    height: 100vh;
+    position: relative;
+    text-align: center;
+    translate: 0 -25%;
+    width: 100vw;
+    z-index: 1;
+}
+
+.travolta {
+    background: url('https://assets-9gag-fun.9cache.com/s/fab0aa49/033037194a549b0bf83e2ac4ba90706a52a9132e/static/dist/web6/img/404/bg.gif') center center / cover no-repeat; 
+    height: 120%;
+    inset: 0;
+    opacity: 0.5;
+    position: absolute;
+    width: 100%;
+}

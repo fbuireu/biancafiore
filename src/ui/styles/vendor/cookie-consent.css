@@ -6,7 +6,7 @@
     --cc-btn-primary-bg: none !important;
     --cc-btn-primary-color: oklch(24.18% 0.004 228.95) !important;
     --cc-btn-primary-hover-bg: var(--primary-main)  !important;
-        --cc-btn-primary-hover-border-color: var(--cc-btn-primary-hover-bg) !important;
+    --cc-btn-primary-hover-border-color: var(--cc-btn-primary-hover-bg) !important;
     --cc-btn-primary-hover-color: var(--cc-btn-primary-color) !important;
     --cc-btn-primary-border-color: var(--neutral-main) !important;
     --cc-btn-secondary-bg: var(--background-main) !important;
@@ -40,7 +40,7 @@
     --cc-footer-border-color: var(--neutral-light-3) !important;
 
     .cm,
-    .pm {
+    .pm { 
       color-scheme: light;
     }
     .pm__section-arrow svg {
@@ -98,10 +98,10 @@
             --cc-footer-color: var(--cc-primary-color);
             --cc-footer-border-color: color-mix(in srgb, var(--neutral-main), var(--white) 70%);
         }
-        .pm__section--expandable.is-expanded{
+        .pm__section--expandable.is-expanded {
             background-color: var(--primary-dark-3) !important;
         }
-         .cc__link{
+         .cc__link {
              color: var(--neutral-main) !important
          }
         .pm__close-btn:hover {

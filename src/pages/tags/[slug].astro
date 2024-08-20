@@ -42,23 +42,20 @@ const { tag } = Astro.props as TagProps;
     <h1 class="flex justify-center">#{slug}</h1>
     <section class="common-wrapper">
       <ul class="tag__article__list flex row-wrap">
-        {tag.articles?.map((article, index) => {
-
-          return (
-              <li class="tag__article__item">
-                  <ArticleCard {...article} />
-                  <script type="application/ld+json" set:html={JSON.stringify({
-                    '@context': 'https://schema.org',
-                    '@type': 'ItemList',
-                    'itemListElement': {
-                      '@type': 'ListItem',
-                      'position': index + 1,
-                      'url': new URL(`/articles/${article.slug}`, Astro.url).href,
-                    },
-                  })} />
-              </li>
-          );
-        })}
+        {tag.articles?.map((article, index) => (
+            <li class="tag__article__item">
+                <ArticleCard {...article} />
+                <script type="application/ld+json" set:html={JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'ItemList',
+                  'itemListElement': {
+                    '@type': 'ListItem',
+                    'position': index + 1,
+                    'url': new URL(`/articles/${article.slug}`, Astro.url).href,
+                  },
+                })} />
+            </li>
+          ))}
       </ul>
     </section>
 </BaseLayout>

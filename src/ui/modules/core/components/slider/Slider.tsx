@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperClass, SwiperOptions } from "swiper/types";
 import { SliderNavigation } from "./atoms/SliderNavigation";
+import "swiper/css/bundle";
 
 export interface Slider<T> {
 	items: T[];

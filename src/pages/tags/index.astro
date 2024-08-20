@@ -25,7 +25,7 @@ const tags = await tagDTO.render(rawTags as RawTag[]);
                     {tags[letter].map(({ name, slug, count }) => (
                         <li class="tag__item font-sans-serif">
                             <a href={`/tags/${slug}`}>{name}</a>
-                            ({count})
+                            (&times;{count})
                         </li>
                         <script type="application/ld+json" set:html={JSON.stringify({
                           '@context': 'https://schema.org',
