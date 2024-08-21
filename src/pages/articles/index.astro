@@ -14,7 +14,7 @@ const { items: rawArticles } = await client.getEntries<RawArticle>({
 	order: ["-fields.publishDate"],
 });
 
-const articles = articleDTO.render(rawArticles as RawArticle[]);
+const articles = articleDTO.render(rawArticles as unknown as RawArticle[]);
 
 const featuredArticle = getFeaturedArticle(articles);
 ---
@@ -31,7 +31,7 @@ const featuredArticle = getFeaturedArticle(articles);
                 .map((article, index) => {
                     return <li class="articles__grid__item">
                         <ArticleCard {...article} />
-                        <script type="application/ld+json" set:html={JSON.stringify({
+                        <script is:inline type="application/ld+json" set:html={JSON.stringify({
                           '@context': 'https://schema.org',
                           '@type': 'ItemList',
                           'itemListElement': {

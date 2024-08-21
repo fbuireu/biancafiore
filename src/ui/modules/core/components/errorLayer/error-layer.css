@@ -1,10 +1,16 @@
 .error-layer__wrapper {
+    gap: 1rem 0;
     height: 100vh;
     position: relative;
     text-align: center;
     translate: 0 -25%;
     width: 100vw;
     z-index: 1;
+}
+
+.error-layer__link {
+    font-weight: bold;
+    letter-spacing: normal;
 }
 
 .travolta {

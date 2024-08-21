@@ -8,7 +8,7 @@ import "./testimonials.css";
 const { items: rawTestimonials } = await client.getEntries<RawTestimonial>({
 	content_type: "testimonial",
 });
-const testimonials = testimonialDTO.render(rawTestimonials as RawTestimonial[]);
+const testimonials = testimonialDTO.render(rawTestimonials as unknown as RawTestimonial[]);
 ---
 
 <section class="testimonials__wrapper">

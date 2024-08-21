@@ -17,7 +17,7 @@ const { items: rawArticles } = await client.getEntries<RawArticle>({
 	content_type: "article",
 	order: ["-fields.publishDate"],
 });
-const articles = articleDTO.render(rawArticles as RawArticle[]).splice(0, limit);
+const articles = articleDTO.render(rawArticles as unknown as RawArticle[]).splice(0, limit);
 ---
 
 <section class="latest-articles__wrapper">
@@ -25,7 +25,7 @@ const articles = articleDTO.render(rawArticles as RawArticle[]).splice(0, limit)
     Fresh from <a class="latest-articles__title__link clickable" href="/articles">the blog</a>
   </h3>
   <LatestArticlesSlider client:load articles={articles} origin={Astro.url} />
-  <script type="application/ld+json" set:html={JSON.stringify({
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "ItemList",
     "itemListElement": articles.map(({ slug }, index) => ({

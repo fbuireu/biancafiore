@@ -12,7 +12,7 @@ const origin = getLocation(Astro.url);
 <section class:list={[`breadcrumbs__wrapper common-wrapper`, { [`--is-${origin}`]: origin}]}>
 <ul class="breadcrumbs__list flex justify-center align-center font-sans-serif">
   {breadcrumbs?.map(({ link, label }, index) => {
-      const isLast = breadcrumbs.at(-1).link === link
+      const isLast = breadcrumbs.at(-1)?.link === link
 
       return (
         <li class="breadcrumb__item flex">
@@ -21,7 +21,7 @@ const origin = getLocation(Astro.url);
             ) : (
             <strong class="--is-current-page">{label}</strong>
             )}
-          <script type="application/ld+json" set:html={JSON.stringify({
+          <script is:inline type="application/ld+json" set:html={JSON.stringify({
             "@context": "https://schema.org",
             "@type": "ListItem",
             "position": index + 1,

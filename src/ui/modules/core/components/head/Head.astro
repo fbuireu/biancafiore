@@ -13,7 +13,7 @@ const props = Astro.props as HeadProps;
 ---
 
 <head lang="en">
-<script define:vars={{ GOOGLE_TAG_MANAGER_ID }}>
+<script is:inline define:vars={{ GOOGLE_TAG_MANAGER_ID }}>
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -23,7 +23,7 @@ const props = Astro.props as HeadProps;
     <ViewTransitions />
     <Seo {...props} />
 </head>
-<script define:vars={{ GOOGLE_ANALYTICS_ID }}>
+<script is:inline define:vars={{ GOOGLE_ANALYTICS_ID }}>
     window.dataLayer = window.dataLayer || [];
 
     const gtag = ()=> {
@@ -61,4 +61,4 @@ const props = Astro.props as HeadProps;
         'analytics_storage': analyticsConsentStatus
     });
 </script>
-<script type="text/partytown" async src=`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}` />
+<script is:inline type="text/partytown" async src=`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}` />

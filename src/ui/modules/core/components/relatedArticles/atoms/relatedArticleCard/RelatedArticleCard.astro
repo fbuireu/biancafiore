@@ -32,7 +32,7 @@ const { title, description, variant, featuredImage, publishDate, author, tags, s
       transition:name=`featured-image-${pathname}`
     />
   )}
-  <time class="related-article__item__publish-date" dateTime={publishDate}>
+  <time class="related-article__item__publish-date" datetime={publishDate}>
     {publishDate}
   </time>
   <h3 class="related-article__title font-serif inner-section-title">{title}</h3>

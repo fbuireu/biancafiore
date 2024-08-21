@@ -36,7 +36,7 @@ const origin = getLocation(Astro.url);
           transition:name=`featured-image-${pathname}`
       />
   )}
-    <time class="article__item__publish-date" dateTime={publishDate}>
+    <time class="article__item__publish-date" datetime={publishDate}>
       {publishDate}
     </time>
     <h3 class="article__title font-serif inner-section-title">{title}</h3>

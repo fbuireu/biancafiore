@@ -7,9 +7,11 @@ export function updatePreferences(cookie: CookieValue) {
 		window.dataLayer.push(arguments);
 	}
 
+	const category = cookie.categories[0] ?? "analytics";
+
 	//@ts-ignore
 	gtag("consent", "update", {
-		analytics_storage: acceptedCategory("analytics") ? "granted" : "denied",
+		analytics_storage: acceptedCategory(category) ? "granted" : "denied",
 		wait_for_update: 500,
 	});
 }

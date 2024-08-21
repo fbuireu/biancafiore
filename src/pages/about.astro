@@ -11,13 +11,15 @@ import { LittleMoreOfMe } from "@modules/about/components/littleMoreOfMe/LittleM
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 
-const [{ items: rawAuthors }, { items: rawCities }] = await Promise.all([
-	client.getEntries<RawAuthor>({ content_type: "author" }) as Iterable<PromiseLike<RawAuthor[]> | RawAuthor[]>,
-	client.getEntries<RawCity>({
-		content_type: "city",
-		order: ["fields.startDate"],
-	}) as Iterable<PromiseLike<RawCity[]> | RawCity[]>,
-]);
+const [{ items: rawAuthors }, { items: rawCities }]: [{ items: RawAuthor[] }, { items: RawCity[] }] = await Promise.all(
+	[
+		client.getEntries({ content_type: "author" }) as unknown as { items: RawAuthor[] },
+		client.getEntries({
+			content_type: "city",
+			order: ["fields.startDate"],
+		}) as unknown as { items: RawCity[] },
+	],
+);
 
 const cities = cityDTO.render(rawCities);
 
@@ -31,7 +33,7 @@ const bianca = (await authorDTO.render(rawAuthors as RawAuthor[]))
     <AboutIntro />
     <LittleMoreOfMe client:only="react" cities={cities} />
     <AboutLatestArticles />
-    <script type="application/ld+json" set:html={JSON.stringify({
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'ProfilePage',
       'mainEntity': {

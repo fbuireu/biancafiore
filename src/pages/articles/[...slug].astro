@@ -13,7 +13,7 @@ import "./_article.css";
 
 type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;
 
-// export const prerender = true;
+export const prerender = true;
 
 export async function getStaticPaths() {
 	const { items: rawArticles } = await client.getEntries<RawArticle>({
@@ -78,7 +78,7 @@ const metadata = {
       }
     </div>
     <article class="article__wrapper" set:html={article.content} />
-    <script type="application/ld+json" set:html={JSON.stringify({
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Article',
       'headline': article.title,

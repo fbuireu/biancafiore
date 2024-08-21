@@ -1,6 +1,5 @@
-/// <reference path="../.astro/env.d.ts" />
-/// <reference path="../.astro/actions.d.ts" />
 /// <reference path="../.astro/types.d.ts" />
+
 interface ImportMetaEnv {
 	readonly PUBLIC_SITE_URL: string;
 	readonly BIANCA_EMAIL: string;

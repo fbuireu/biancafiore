@@ -3,7 +3,9 @@ import type { ArticleDTO } from "@application/dto/article/types";
 import RelatedArticleCard from "./atoms/relatedArticleCard/RelatedArticleCard.astro";
 import "./related-articles.css";
 
-type RelatedArticleProps = ArticleDTO;
+interface RelatedArticleProps {
+	article: ArticleDTO;
+}
 
 const { article } = Astro.props as RelatedArticleProps;
 const { relatedArticles } = article;
@@ -17,7 +19,7 @@ const { relatedArticles } = article;
               <li class="related-articles__grid__item">
                   <RelatedArticleCard {...relatedArticle} />
               </li>
-              <script type="application/ld+json" set:html={JSON.stringify({
+              <script is:inline type="application/ld+json" set:html={JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "ItemList",
                 "itemListElement": {

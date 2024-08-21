@@ -10,7 +10,7 @@ import ProjectsIntro from "@modules/projects/components/projectsIntro/ProjectsIn
 const { items: rawProjects } = await client.getEntries<RawProject>({
 	content_type: "project",
 });
-const projects = projectDTO.render(rawProjects as RawProject[]);
+const projects = projectDTO.render(rawProjects as unknown as RawProject[]);
 ---
 
 <BaseLayout>

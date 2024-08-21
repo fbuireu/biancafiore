@@ -10,7 +10,7 @@ const { items: rawArticles } = await client.getEntries<RawArticle>({
 });
 
 const articles = articleDTO
-	.render(rawArticles as RawArticle[])
+	.render(rawArticles as unknown as RawArticle[])
 	.sort((a, b) => new Date(b.publishDate).valueOf() - new Date(a.publishDate).valueOf());
 ---
 
@@ -24,7 +24,7 @@ const articles = articleDTO
       <h6 class="about-latest-articles__quote__author">Ferran Buireu</h6>
     </div>
     <AboutLatestArticlesSlider client:load articles={articles} origin={Astro.url} />
-    <script type="application/ld+json" set:html={JSON.stringify({
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "ItemList",
       "itemListElement": articles.map(({ slug }, index) => ({

@@ -27,7 +27,7 @@ export default defineConfig({
 				TWITTER_HANDLE: envField.string({
 					access: "public",
 					context: "client",
-					default: import.meta.TWITTER_HANDLE,
+					default: import.meta.env.TWITTER_HANDLE,
 				}),
 				GOOGLE_ANALYTICS_ID: envField.string({
 					access: "public",

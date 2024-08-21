@@ -4,6 +4,6 @@ export function getFeaturedArticle(articles: ArticleDTO[]) {
 	return (
 		articles.find((article) => article.isFeaturedArticle && article.featuredImage) ??
 		articles.find((article) => article.featuredImage) ??
-		articles.at(0)
+		(articles.at(0) as ArticleDTO)
 	);
 }

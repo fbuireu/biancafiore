@@ -10,7 +10,7 @@ const { items: rawTags } = await client.getEntries<RawTag>({
 	content_type: "tag",
 });
 
-const tags = await tagDTO.render(rawTags as RawTag[]);
+const tags = await tagDTO.render(rawTags as unknown as RawTag[]);
 ---
 
 <BaseLayout>
@@ -27,7 +27,7 @@ const tags = await tagDTO.render(rawTags as RawTag[]);
                             <a href={`/tags/${slug}`}>{name}</a>
                             (&times;{count})
                         </li>
-                        <script type="application/ld+json" set:html={JSON.stringify({
+                        <script is:inline type="application/ld+json" set:html={JSON.stringify({
                           '@context': 'https://schema.org',
                           '@type': 'ItemList',
                           'itemListElement': {

@@ -5,7 +5,7 @@ import { Testimonial } from "@modules/home/components/testimonial";
 import { Pagination } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";
 
-interface TestimonialSliderProps extends Slider<TestimonialSliderProps> {
+interface TestimonialSliderProps extends Partial<Slider<TestimonialSliderProps>> {
 	testimonials: TestimonialDTO[];
 }
 

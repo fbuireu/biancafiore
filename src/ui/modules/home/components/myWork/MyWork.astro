@@ -8,7 +8,7 @@ import "./my-work.css";
 const { items: rawProjects } = await client.getEntries<RawProject>({
 	content_type: "project",
 });
-const projects = projectDTO.render(rawProjects as RawProject[]);
+const projects = projectDTO.render(rawProjects as unknown as RawProject[]);
 ---
 
 <section class="my-work__wrapper common-wrapper">
@@ -27,7 +27,7 @@ const projects = projectDTO.render(rawProjects as RawProject[]);
             <h4 class="my-work__item__title inner-section-title">{project.name}</h4>
           </a>
         </li>
-        <script type="application/ld+json" set:html={JSON.stringify({
+        <script is:inline type="application/ld+json" set:html={JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'ItemList',
           'itemListElement': {

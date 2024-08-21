@@ -1,5 +1,6 @@
 {
-	"extends": ["astro/tsconfigs/base", "./tsconfig.paths.json"],
+	"extends": ["astro/tsconfigs/base"],
+	"exclude": ["dist"],
 	"compilerOptions": {
 		"strict": true,
 		"strictNullChecks": true,
@@ -16,6 +17,24 @@
 		"jsxImportSource": "react",
 		"jsx": "react-jsx",
 		"types": ["vite/client"],
+		"baseUrl": ".",
+		"paths": {
+			"@const/*": ["./src/const/*"],
+			"@infrastructure/*": ["./src/infrastructure/*"],
+			"@actions/*": ["./src/actions/*"],
+			"@ui/*": ["./src/ui/*"],
+			"@application/*": ["./src/application/*"],
+			"@modules/*": ["./src/ui/modules/*"],
+			"@utils/*": ["./src/utils/*"],
+			"@assets/*": ["./src/ui/assets/*"],
+			"@styles/*": ["./src/ui/styles/*"],
+			"@data/*": ["./src/data/*"],
+			"@shared/*": ["./src/shared/*"],
+			"@content/*": ["./src/content/*"],
+			"@i18n/*": ["./src/i18n/*"],
+			"@mocks/*": ["./src/mocks/*"],
+			"@types/*": ["./src/types/*"]
+		},
 		"plugins": [
 			{
 				"name": "@astrojs/ts-plugin"
