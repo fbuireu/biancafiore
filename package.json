@@ -16,9 +16,9 @@
 	"author": "Ferran Buireu <fbuireu@gmail.com>",
 	"version": "2.0.0",
 	"type": "module",
-	"packageManager": "yarn@4.3.0",
+	"packageManager": "yarn@4.4.0",
 	"engines": {
-		"node": ">=20.10.0"
+		"node": ">=22.6.0"
 	},
 	"scripts": {
 		"astro": "astro",
@@ -51,7 +51,7 @@
 		"@fontsource-variable/nunito-sans": "^5.0.15",
 		"@fontsource/baskervville": "^5.0.21",
 		"@hookform/resolvers": "^3.9.0",
-		"@million/lint": "1.0.0-rc.82-beta.50",
+		"@million/lint": "1.0.0-rc.84",
 		"algoliasearch": "^5.1.0",
 		"astro": "^4.14.3",
 		"clsx": "^2.1.1",
@@ -69,7 +69,7 @@
 		"react-instantsearch": "^7.13.0",
 		"react-router-dom": "^6.26.1",
 		"resend": "^4.0.0",
-		"swiper": "^11.1.9",
+		"swiper": "^11.1.10",
 		"three": "^0.167.1",
 		"typescript": "^5.5.4",
 		"vanilla-cookieconsent": "^3.0.1",
