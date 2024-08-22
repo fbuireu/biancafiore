@@ -11,15 +11,18 @@ import { LittleMoreOfMe } from "@modules/about/components/littleMoreOfMe/LittleM
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 
-const [{ items: rawAuthors }, { items: rawCities }]: [{ items: RawAuthor[] }, { items: RawCity[] }] = await Promise.all(
-	[
-		client.getEntries({ content_type: "author" }) as unknown as { items: RawAuthor[] },
+interface AboutFetchData<T> {
+	items: T[];
+}
+
+const [{ items: rawAuthors }, { items: rawCities }]: [AboutFetchData<RawAuthor>, AboutFetchData<RawCity>] =
+	await Promise.all([
+		client.getEntries({ content_type: "author" }) as unknown as AboutFetchData<RawAuthor>,
 		client.getEntries({
 			content_type: "city",
 			order: ["fields.startDate"],
-		}) as unknown as { items: RawCity[] },
-	],
-);
+		}) as unknown as AboutFetchData<RawCity>,
+	]);
 
 const cities = cityDTO.render(rawCities);
 

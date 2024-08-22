@@ -1,13 +1,11 @@
 import type { ArticleDTO, RawArticle } from "@application/dto/article/types";
 import { ArticleType } from "@application/dto/article/types";
-import { DEFAULT_DATE_FORMAT } from "@const/const.ts";
+import { DEFAULT_DATE_FORMAT, MAX_RELATED_ARTICLES } from "@const/index";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Document } from "@contentful/rich-text-types";
 import { createImage } from "@shared/application/dto/utils/createImage";
 import { getAuthor } from "../getAuthor";
 import { getReadingTime } from "../getReadingTime";
-
-const MAX_RELATED_ARTICLES = 3;
 
 interface GetRelatedArticlesProps {
 	rawArticle: RawArticle;

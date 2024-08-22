@@ -57,3 +57,7 @@ export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = {
 export const THEME_STORAGE_KEY = "theme";
 
 export const DEFAULT_LOCALE_STRING: Intl.LocalesArgument = "es-ES";
+
+export const MAX_RELATED_ARTICLES = 3;
+
+export const MAX_LATEST_ARTICLES = 4;

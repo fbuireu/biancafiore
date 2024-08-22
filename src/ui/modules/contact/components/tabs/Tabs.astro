@@ -1,6 +1,6 @@
 ---
-import "./tabs.css";
 import { ContactFormProvider } from "../contactFormProvider/ContactFormProvider";
+import "./tabs.css";
 ---
 
 <section class="contact-tabs__wrapper">
@@ -15,7 +15,7 @@ import { ContactFormProvider } from "../contactFormProvider/ContactFormProvider"
       <li class="contact-tab" data-target="tab2">Make an appointment</li>
     </ul>
     <div id="tab1" class="contact-tab__content --is-active">
-      <ContactFormProvider client:only="react" />
+      <ContactFormProvider client:load />
     </div>
     <div id="tab2" class="contact-tab__content">
       <div

@@ -7,6 +7,6 @@ export function autosize(event: KeyboardEvent<HTMLTextAreaElement>): void {
 
 	setTimeout(() => {
 		currentTarget.style.cssText = "height:auto; padding:0";
-		currentTarget.style.cssText = `height:${currentTarget.scrollHeight}px`;
+		currentTarget.style.cssText = `height: ${currentTarget.scrollHeight}px`;
 	}, 0);
 }
