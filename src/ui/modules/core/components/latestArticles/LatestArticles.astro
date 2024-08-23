@@ -1,8 +1,6 @@
 ---
-import { articleDTO } from "@application/dto/article";
-import type { RawArticle } from "@application/dto/article/types";
+import { getCollection } from "astro:content";
 import { MAX_LATEST_ARTICLES } from "@const/index";
-import { client } from "@infrastructure/cms/client";
 import { LatestArticlesSlider } from "./atoms/latestArticlesSlider/LatestArticlesSlider.tsx";
 import "./latest-articles.css";
 
@@ -12,11 +10,7 @@ interface LatestArticlesProps {
 
 const { limit = MAX_LATEST_ARTICLES } = Astro.props as LatestArticlesProps;
 
-const { items: rawArticles } = await client.getEntries<RawArticle>({
-	content_type: "article",
-	order: ["-fields.publishDate"],
-});
-const articles = articleDTO.render(rawArticles as unknown as RawArticle[]).splice(0, limit);
+const articles = (await getCollection("articles")).slice(0, limit);
 ---
 
 <section class="latest-articles__wrapper">
@@ -27,7 +21,7 @@ const articles = articleDTO.render(rawArticles as unknown as RawArticle[]).splic
   <script is:inline type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "itemListElement": articles.map(({ slug }, index) => ({
+    "itemListElement": articles.map(({ data: {slug} }, index) => ({
       "@type": "ListItem",
       "position": index + 1,
       "url": new URL(slug, Astro.url).href

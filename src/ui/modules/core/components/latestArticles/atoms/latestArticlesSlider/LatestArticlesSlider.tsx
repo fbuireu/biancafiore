@@ -1,4 +1,4 @@
-import type { ArticleDTO } from "@application/dto/article/types.ts";
+import type { CollectionEntry } from "astro:content";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
 import { ArticleCard } from "@modules/core/components/articleCard/ArticleCard";
 import { Slider } from "@modules/core/components/slider";
@@ -6,7 +6,7 @@ import type { SwiperOptions } from "swiper/types";
 import "./latest-articles-slider.css";
 
 interface LatestArticlesSLiderProps {
-	articles: ArticleDTO[];
+	articles: CollectionEntry<"articles">[];
 	origin: URL;
 }
 const SLIDER_CONFIG: SwiperOptions = {
@@ -41,16 +41,21 @@ export const LatestArticlesSlider = ({ articles, origin }: LatestArticlesSLiderP
 				classNames="--is-latest-articles-slider"
 				renderItem={(article) => {
 					const props = { ...article, origin };
+
 					return (
 						<ArticleCard {...props}>
-							<ArticleCard.PublishDate publishDate={article.publishDate}>{article.publishDate}</ArticleCard.PublishDate>
-							{article.featuredImage && <ArticleCard.Image src={article.featuredImage.url} alt={article.title} />}
-							<ArticleCard.Title>{article.title}</ArticleCard.Title>
-							<ArticleCard.Excerpt>{article.description}</ArticleCard.Excerpt>
-							<ArticleCard.Author slug={article.author.slug}>{article.author.name}</ArticleCard.Author>
-							<ArticleCard.ReadingTime>{article.readingTime} min.</ArticleCard.ReadingTime>
+							<ArticleCard.PublishDate publishDate={article.data.publishDate}>
+								{article.data.publishDate}
+							</ArticleCard.PublishDate>
+							{article.data.featuredImage && (
+								<ArticleCard.Image src={article.data.featuredImage.url} alt={article.data.title} />
+							)}
+							<ArticleCard.Title>{article.data.title}</ArticleCard.Title>
+							<ArticleCard.Excerpt>{article.data.description}</ArticleCard.Excerpt>
+							<ArticleCard.Author slug={article.data.author.slug}>{article.data.author.name}</ArticleCard.Author>
+							<ArticleCard.ReadingTime>{article.data.readingTime} min.</ArticleCard.ReadingTime>
 							<ArticleCard.Tags>
-								{article.tags?.map((tag) => (
+								{article.data.tags?.map((tag) => (
 									<ArticleCard.Tag tag={tag} key={tag.name}>
 										{tag.name}
 									</ArticleCard.Tag>

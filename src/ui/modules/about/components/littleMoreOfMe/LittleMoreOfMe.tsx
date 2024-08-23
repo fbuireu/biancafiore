@@ -1,10 +1,10 @@
-import type { CityDTO } from "@application/dto/city/types.ts";
+import type { CollectionEntry } from "astro:content";
 import { Cities } from "@modules/about/components/cities";
 import WorldGlobe from "@modules/about/components/worldGlobe/WorldGlobe.tsx";
 import "./little-more-of-me.css";
 
 interface LittleMoreOfMeProps {
-	cities: CityDTO[];
+	cities: CollectionEntry<"cities">[];
 }
 
 export const LittleMoreOfMe = ({ cities }: LittleMoreOfMeProps) => {

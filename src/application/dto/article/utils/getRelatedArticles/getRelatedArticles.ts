@@ -1,4 +1,5 @@
-import type { ArticleDTO, RawArticle } from "@application/dto/article/types";
+import type { CollectionEntry } from "astro:content";
+import type { RawArticle } from "@application/dto/article/types";
 import { ArticleType } from "@application/dto/article/types";
 import { DEFAULT_DATE_FORMAT, MAX_RELATED_ARTICLES } from "@const/index";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
@@ -12,12 +13,16 @@ interface GetRelatedArticlesProps {
 	allRawArticles: RawArticle[];
 }
 
-export function getRelatedArticles({ rawArticle, allRawArticles }: GetRelatedArticlesProps): ArticleDTO[] {
+export function getRelatedArticles({
+	rawArticle,
+	allRawArticles,
+}: GetRelatedArticlesProps): CollectionEntry<"articles">[] {
 	const articleTagsSlugs = rawArticle.fields.tags.map((tag) => tag.fields.slug);
 
 	return allRawArticles
 		.filter(({ fields }) => {
 			const allTagsSlugs = fields.tags?.map((tag) => tag.fields.slug);
+
 			return fields.title !== rawArticle.fields.title && allTagsSlugs?.some((slug) => articleTagsSlugs.includes(slug));
 		})
 		.slice(0, MAX_RELATED_ARTICLES)
@@ -25,21 +30,26 @@ export function getRelatedArticles({ rawArticle, allRawArticles }: GetRelatedArt
 			const content = documentToHtmlString(relatedArticle.fields.content as unknown as Document);
 
 			return {
-				title: relatedArticle.fields.title,
-				slug: relatedArticle.fields.slug,
-				content,
-				description: relatedArticle.fields.description,
-				publishDate: new Date(String(relatedArticle.fields.publishDate)).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
-				featuredImage: createImage(relatedArticle.fields.featuredImage),
-				variant: relatedArticle.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
-				isFeaturedArticle: relatedArticle.fields.featuredArticle,
-				author: getAuthor(relatedArticle.fields.author),
-				readingTime: getReadingTime(content),
-				tags: relatedArticle.fields.tags.map((tag) => ({
-					name: tag.fields.name,
-					slug: tag.fields.slug,
-				})),
-				relatedArticles: [],
+				data: {
+					title: relatedArticle.fields.title,
+					slug: relatedArticle.fields.slug,
+					content,
+					description: relatedArticle.fields.description,
+					publishDate: new Date(String(relatedArticle.fields.publishDate)).toLocaleDateString(
+						"en",
+						DEFAULT_DATE_FORMAT,
+					),
+					featuredImage: createImage(relatedArticle.fields.featuredImage),
+					variant: relatedArticle.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
+					isFeaturedArticle: relatedArticle.fields.featuredArticle,
+					author: getAuthor(relatedArticle.fields.author),
+					readingTime: getReadingTime(content),
+					tags: relatedArticle.fields.tags.map((tag) => ({
+						name: tag.fields.name,
+						slug: tag.fields.slug,
+					})),
+					relatedArticles: [],
+				},
 			};
-		}) as unknown as ArticleDTO[];
+		}) as unknown as CollectionEntry<"articles">[];
 }

@@ -1,10 +1,10 @@
-import type { CityDTO } from "@application/dto/city/types.ts";
+import type { CollectionEntry } from "astro:content";
 import type { ReactGlobePoint } from "@modules/about/components/worldGlobe";
 
-export function refineCities(cities: CityDTO[]): ReactGlobePoint[] {
-	return cities.map(({ coordinates, name }) => ({
-		lat: coordinates.latitude,
-		lng: coordinates.longitude,
-		label: name,
+export function refineCities(cities: CollectionEntry<"cities">[]): ReactGlobePoint[] {
+	return cities.map(({ data }) => ({
+		lat: data.coordinates.latitude,
+		lng: data.coordinates.longitude,
+		label: data.name,
 	}));
 }

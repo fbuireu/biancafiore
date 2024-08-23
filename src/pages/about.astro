@@ -1,34 +1,27 @@
 ---
-import { authorDTO } from "@application/dto/author";
-import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
-import { cityDTO } from "@application/dto/city";
-import type { RawCity } from "@application/dto/city/types";
+import { getCollection, getEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import { CONTACT_DETAILS } from "@const/index";
-import { client } from "@infrastructure/cms/client";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
 import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
 import { LittleMoreOfMe } from "@modules/about/components/littleMoreOfMe/LittleMoreOfMe.tsx";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 
-interface AboutFetchData<T> {
-	items: T[];
-}
+const cities = await getCollection("cities");
+const authors = await getCollection("authors");
 
-const [{ items: rawAuthors }, { items: rawCities }]: [AboutFetchData<RawAuthor>, AboutFetchData<RawCity>] =
-	await Promise.all([
-		client.getEntries({ content_type: "author" }) as unknown as AboutFetchData<RawAuthor>,
-		client.getEntries({
-			content_type: "city",
-			order: ["fields.startDate"],
-		}) as unknown as AboutFetchData<RawCity>,
-	]);
+const author = authors
+	.filter((author) => author.data.name === CONTACT_DETAILS.NAME)
+	.at(0) as CollectionEntry<"authors">;
 
-const cities = cityDTO.render(rawCities);
-
-const bianca = (await authorDTO.render(rawAuthors as RawAuthor[]))
-	.filter((author) => author.name === CONTACT_DETAILS.NAME)
-	.at(0) as AuthorDTO;
+const bianca = {
+	...author,
+	data: {
+		...author.data,
+		latestArticle: await getEntry(author.data.latestArticle.collection, author.data.latestArticle.id),
+	},
+};
 ---
 
 <BaseLayout>
@@ -42,23 +35,23 @@ const bianca = (await authorDTO.render(rawAuthors as RawAuthor[]))
       'mainEntity': {
         '@id': '#bianca',
         '@type': 'Person',
-        'name': bianca.name,
+        'name': bianca.data.name,
         'url': new URL(Astro.url).href,
-        'image': new URL(bianca.profileImage.url, Astro.url).href,
-        'jobTitle': bianca.jobTitle,
+        'image': new URL(bianca.data.profileImage.url, Astro.url).href,
+        'jobTitle': bianca.data.jobTitle,
         'worksFor': {
           '@type': 'Organization',
-          'name': bianca.currentCompany,
+          'name': bianca.data.currentCompany,
         },
       },
       'hasPart': [
         {
           '@type': 'Article',
-          'headline': bianca.latestArticle.title,
-          'url': new URL(`articles/${bianca.latestArticle.slug}`, Astro.url).href,
-          'datePublished': bianca.latestArticle.publishDate,
+          'headline': bianca.data.latestArticle.data.title,
+          'url': new URL(`articles/${bianca.data.latestArticle.data.slug}`, Astro.url).href,
+          'datePublished': bianca.data.latestArticle.data.publishDate,
           'author': { '@id': '#bianca' },
         }],
-      'sameAs': [...bianca.socialNetworks],
+      'sameAs': [...bianca.data.socialNetworks],
     })} />
 </BaseLayout>

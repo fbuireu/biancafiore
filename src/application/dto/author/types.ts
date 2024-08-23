@@ -4,9 +4,6 @@ import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawAuthor {
 	contentTypeId: "author";
-	sys: {
-		id: string;
-	};
 	fields: {
 		name: EntryFieldTypes.Text;
 		slug: EntryFieldTypes.Text;

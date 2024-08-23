@@ -1,53 +1,50 @@
 ---
 import { Image } from "astro:assets";
-import type { ArticleDTO } from "@application/dto/article/types";
+import type { CollectionEntry } from "astro:content";
 import { ArticleType } from "@application/dto/article/types";
 import { getLocation } from "@modules/core/utils/getLocation";
 import clsx from "clsx";
 import "./article-card.css";
 
-type ArticleCardProps = ArticleDTO;
+type ArticleCardProps = CollectionEntry<"articles">;
 
-const { title, description, variant, featuredImage, publishDate, author, tags, slug, readingTime } =
-	Astro.props as ArticleCardProps;
-
+const article = Astro.props as ArticleCardProps;
 const { pathname } = Astro.url;
 const origin = getLocation(Astro.url);
 ---
 
-<a class="article__link-card" href={`/articles/${slug}`} aria-label={title}>{" "}</a>
+<a class="article__link-card" href={`/articles/${article.data.slug}`} aria-label={article.data.title}>{" "}</a>
 <article
     class={clsx(
         'article__item',
         {
-          '--default-variant': variant === ArticleType.DEFAULT,
-          '--no-image-variant': variant === ArticleType.NO_IMAGE,
+          '--default-variant': article.data.variant === ArticleType.DEFAULT,
+          '--no-image-variant': article.data.variant === ArticleType.NO_IMAGE,
         },
         origin && `--is-${origin}`,
     )}
 >
-  {featuredImage && (
+  {article.data.featuredImage && (
       <Image
           class="article__item__featured-image"
-          src={featuredImage.url}
-          width={featuredImage.details.width}
-          height={featuredImage.details.height}
-          alt={title}
+          src={article.data.featuredImage.url}
+          width={article.data.featuredImage.details.width}
+          height={article.data.featuredImage.details.height}
+          alt={article.data.title}
           transition:name=`featured-image-${pathname}`
       />
   )}
-    <time class="article__item__publish-date" datetime={publishDate}>
-      {publishDate}
+    <time class="article__item__publish-date" datetime={article.data.publishDate}>
+      {article.data.publishDate}
     </time>
-    <h3 class="article__title font-serif inner-section-title">{title}</h3>
+    <h3 class="article__title font-serif inner-section-title">{article.data.title}</h3>
     <p class="article__author">
-        by <a href={`/tags/${author.slug}`}>{author.name}</a>
+        by <a href={`/tags/${article.data.author.slug}`}>{article.data.author.name}</a>
     </p>
-    <p class="article__excerpt">{description}</p>
-    <p class="article__excerpt">{description}</p>
-    <p class="article__reading-time">{readingTime} min.</p>
+    <p class="article__excerpt">{article.data.description}</p>
+    <p class="article__reading-time">{article.data.readingTime} min.</p>
     <ul class="article__tags__list flex">
-      {tags?.map(({slug, name}) => (
+      {article.data.tags?.map(({slug, name}) => (
           <a class="article__tag__item" href={`/tags/${slug}`}>
               #{name}
           </a>

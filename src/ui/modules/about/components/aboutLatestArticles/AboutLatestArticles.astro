@@ -1,17 +1,9 @@
 ---
-import { articleDTO } from "@application/dto/article";
-import type { RawArticle } from "@application/dto/article/types";
-import { client } from "@infrastructure/cms/client";
+import { getCollection } from "astro:content";
 import { AboutLatestArticlesSlider } from "../aboutLatestArticlesSlider";
 import "./about-latest-articles.css";
 
-const { items: rawArticles } = await client.getEntries<RawArticle>({
-	content_type: "article",
-});
-
-const articles = articleDTO
-	.render(rawArticles as unknown as RawArticle[])
-	.sort((a, b) => new Date(b.publishDate).valueOf() - new Date(a.publishDate).valueOf());
+const articles = await getCollection("articles");
 ---
 
 <section class="about-latest-articles__wrapper common-wrapper">
@@ -27,10 +19,10 @@ const articles = articleDTO
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "ItemList",
-      "itemListElement": articles.map(({ slug }, index) => ({
+      "itemListElement": articles.map((article, index) => ({
         "@type": "ListItem",
         "position": index + 1,
-        "url": new URL(slug, Astro.url).href
+        "url": new URL(article.data.slug, Astro.url).href
       }))
     })}/>
   </div>

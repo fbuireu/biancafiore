@@ -1,7 +1,5 @@
-import { articleDTO } from "@application/dto/article";
-import type { RawArticle } from "@application/dto/article/types";
+import { getCollection } from "astro:content";
 import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
-import { client } from "@infrastructure/cms/client.ts";
 import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
 import { createImage } from "@shared/application/dto/utils/createImage";
 
@@ -9,13 +7,9 @@ export const authorDTO: BaseDTO<RawAuthor[], Promise<AuthorDTO[]>> = {
 	render: async (raw) => {
 		return Promise.all(
 			raw.map(async (rawAuthor) => {
-				const { items: rawArticles } = await client.getEntries({
-					content_type: "article",
-					"fields.author.sys.id": rawAuthor.sys.id,
-					order: ["-fields.publishDate"],
-				});
-
-				const articles = articleDTO.render(rawArticles as unknown as RawArticle[]);
+				const articles = (await getCollection("articles")).filter(
+					(article) => article.data.author?.name === String(rawAuthor.fields.name),
+				);
 
 				return {
 					name: rawAuthor.fields.name,

@@ -1,14 +1,9 @@
 ---
-import { testimonialDTO } from "@application/dto/testimonial";
-import type { RawTestimonial } from "@application/dto/testimonial/types";
-import { client } from "@infrastructure/cms/client";
+import { getCollection } from "astro:content";
 import { TestimonialsSlider } from "../testimonialsSlider";
 import "./testimonials.css";
 
-const { items: rawTestimonials } = await client.getEntries<RawTestimonial>({
-	content_type: "testimonial",
-});
-const testimonials = testimonialDTO.render(rawTestimonials as unknown as RawTestimonial[]);
+const testimonials = await getCollection("testimonials");
 ---
 
 <section class="testimonials__wrapper">

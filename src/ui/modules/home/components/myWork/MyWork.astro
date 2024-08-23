@@ -1,14 +1,9 @@
 ---
 import { Image } from "astro:assets";
-import { projectDTO } from "@application/dto/project";
-import type { RawProject } from "@application/dto/project/types";
-import { client } from "@infrastructure/cms/client";
+import { getCollection } from "astro:content";
 import "./my-work.css";
 
-const { items: rawProjects } = await client.getEntries<RawProject>({
-	content_type: "project",
-});
-const projects = projectDTO.render(rawProjects as unknown as RawProject[]);
+const projects = await getCollection("projects");
 ---
 
 <section class="my-work__wrapper common-wrapper">
@@ -17,14 +12,14 @@ const projects = projectDTO.render(rawProjects as unknown as RawProject[]);
     {projects.map((project, index) => {
       return (
         <li class="my-work__item">
-          <a class="my-work__item__link clickable" href={`/projects#${project.id}`}>
+          <a class="my-work__item__link clickable" href={`/projects#${project.data.id}`}>
             <Image
-              src={project.image.url}
-              alt={project.name}
-              width={project.image.details.width}
-              height={project.image.details.height}
+              src={project.data.image.url}
+              alt={project.data.name}
+              width={project.data.image.details.width}
+              height={project.data.image.details.height}
             />
-            <h4 class="my-work__item__title inner-section-title">{project.name}</h4>
+            <h4 class="my-work__item__title inner-section-title">{project.data.name}</h4>
           </a>
         </li>
         <script is:inline type="application/ld+json" set:html={JSON.stringify({
@@ -33,7 +28,7 @@ const projects = projectDTO.render(rawProjects as unknown as RawProject[]);
           'itemListElement': {
             '@type': 'ListItem',
             'position': index + 1,
-            'url': new URL(`${Astro.url}projects#${project.id}`, Astro.url).href,
+            'url': new URL(`${Astro.url}projects#${project.data.id}`, Astro.url).href,
           },
         })} />
       );

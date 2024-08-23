@@ -1,4 +1,4 @@
-import type { CityDTO } from "@application/dto/city/types.ts";
+import type { CollectionEntry } from "astro:content";
 import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import zoomIn from "@assets/images/svg/zoom-in.svg";
 import zoomOut from "@assets/images/svg/zoom-out.svg";
@@ -16,7 +16,7 @@ import * as Three from "three";
 import "./world-globe.css";
 
 interface GlobeAllCitiesProps {
-	cities: CityDTO[];
+	cities: CollectionEntry<"cities">[];
 	width?: number;
 }
 

@@ -1,4 +1,4 @@
-import type { TestimonialDTO } from "@application/dto/testimonial/types.ts";
+import type { CollectionEntry } from "astro:content";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
 import { Slider } from "@modules/core/components/slider";
 import { Testimonial } from "@modules/home/components/testimonial";
@@ -6,7 +6,7 @@ import { Pagination } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";
 
 interface TestimonialSliderProps extends Partial<Slider<TestimonialSliderProps>> {
-	testimonials: TestimonialDTO[];
+	testimonials: CollectionEntry<"testimonials">[];
 }
 
 const SLIDER_CONFIG: SwiperOptions = {
@@ -41,10 +41,10 @@ export const TestimonialsSlider = ({ testimonials }: TestimonialSliderProps) => 
 			classNames="--is-testimonials-slider"
 			renderItem={(testimonial) => (
 				<Testimonial>
-					<Testimonial.Author>{testimonial.author}</Testimonial.Author>
-					<Testimonial.Quote>{testimonial.quote}</Testimonial.Quote>
-					<Testimonial.Image src={testimonial.image.url} alt={testimonial.author} />
-					<Testimonial.Description>{testimonial.role}</Testimonial.Description>
+					<Testimonial.Author>{testimonial.data.author}</Testimonial.Author>
+					<Testimonial.Quote>{testimonial.data.quote}</Testimonial.Quote>
+					<Testimonial.Image src={testimonial.data.image.url} alt={testimonial.data.author} />
+					<Testimonial.Description>{testimonial.data.role}</Testimonial.Description>
 				</Testimonial>
 			)}
 		/>

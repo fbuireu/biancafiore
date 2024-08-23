@@ -1,4 +1,4 @@
-import type { ArticleDTO } from "@application/dto/article/types.ts";
+import type { CollectionEntry } from "astro:content";
 import { ArticleType } from "@application/dto/article/types.ts";
 import type { ArticleCardAuthorProps } from "@modules/core/components/articleCard/atoms/articleCardAuthor";
 import { ArticleCardAuthor } from "@modules/core/components/articleCard/atoms/articleCardAuthor";
@@ -21,25 +21,25 @@ import clsx from "clsx";
 import type { ReactNode } from "react";
 import "./article-card.css";
 
-interface ArticleCardProps extends ArticleDTO {
+interface ArticleCardProps extends CollectionEntry<"articles"> {
 	origin: URL;
 	children: ReactNode;
 }
 
-export const ArticleCard = ({ children, origin, title, slug, variant }: ArticleCardProps) => {
+export const ArticleCard = ({ children, origin, data }: ArticleCardProps) => {
 	const location = getLocation(origin);
 
 	return (
 		<>
-			<a className={"article__link-card"} href={`/articles/${slug}`} aria-label={title}>
+			<a className={"article__link-card"} href={`/articles/${data.slug}`} aria-label={data.title}>
 				{" "}
 			</a>
 			<article
 				className={clsx(
 					"article__item",
 					{
-						"--default-variant": variant === ArticleType.DEFAULT,
-						"--no-image-variant": variant === ArticleType.NO_IMAGE,
+						"--default-variant": data.variant === ArticleType.DEFAULT,
+						"--no-image-variant": data.variant === ArticleType.NO_IMAGE,
 					},
 					location && `--is-${location}`,
 				)}

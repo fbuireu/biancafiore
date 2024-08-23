@@ -1,9 +1,7 @@
 ---
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 import { SITE_URL } from "astro:env/client";
-import { articleDTO } from "@application/dto/article/articleDTO";
-import type { RawArticle } from "@application/dto/article/types";
-import { client } from "@infrastructure/cms/client";
 import ReadingProgress from "@modules/articles/components/readingProgress/ReadingProgress.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
@@ -16,14 +14,12 @@ type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;
 export const prerender = true;
 
 export async function getStaticPaths() {
-	const { items: rawArticles } = await client.getEntries<RawArticle>({
-		content_type: "article",
-	});
+	const articles = await getCollection("articles");
 
-	return articleDTO.render(rawArticles as unknown as RawArticle[]).map((article) => {
+	return articles.map((article) => {
 		return {
 			params: {
-				slug: article.slug,
+				slug: article.data.slug,
 			},
 			props: {
 				article,
@@ -36,19 +32,20 @@ const { pathname } = Astro.url;
 const { article } = Astro.props as ArticleProps;
 const metadata = {
 	...article,
-	...(article.featuredImage && { image: article.featuredImage.url }),
+	...(article.data.featuredImage && { image: article.data.featuredImage.url }),
 };
+throw Error("meme");
 ---
 
 <BaseLayout {...metadata}>
   {
-      article.featuredImage && (
+      article.data.featuredImage && (
           <section class="article__featured__image__wrapper">
               <Image
-                  src={article.featuredImage.url}
-                  width={article.featuredImage.details.width}
-                  height={article.featuredImage.details.height}
-                  alt={article.title}
+                  src={article.data.featuredImage.url}
+                  width={article.data.featuredImage.details.width}
+                  height={article.data.featuredImage.details.height}
+                  alt={article.data.title}
                   class="article__featured__image"
                   transition:name=`featured-image-${pathname}`
               />
@@ -59,16 +56,16 @@ const metadata = {
     <ReadingProgress />
     <div class="article__details">
         <h1 class="article__title">
-          {article.title}
+          {article.data.title}
         </h1>
-        <p class="article__author">by <a href={`/tags/${article.author.slug}`}>{article.author.name}</a></p>
-        <time class="article__publish-date font-sans-serif" datetime={article.publishDate}>
-          {article.publishDate}
+        <p class="article__author">by <a href={`/tags/${article.data.author.slug}`}>{article.data.author.name}</a></p>
+        <time class="article__publish-date font-sans-serif" datetime={article.data.publishDate}>
+          {article.data.publishDate}
         </time>
       {
-          article.tags?.length > 0 && (
+          article.data.tags?.length > 0 && (
               <ul class="article__tags__list flex row-wrap">
-                {article.tags.map(({ slug, name }) => (
+                {article.data.tags.map(({ slug, name }) => (
                     <li class="article__tag__item">
                         <a href={`/tags/${slug}`}>#{name}</a>
                     </li>
@@ -77,23 +74,23 @@ const metadata = {
           )
       }
     </div>
-    <article class="article__wrapper" set:html={article.content} />
+    <!--<article class="article__wrapper" set:html={article.data.content} />-->
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Article',
-      'headline': article.title,
-      'description': article.description,
-      ...(article.featuredImage && { 'image': article.featuredImage }),
-      'datePublished': new Date(String(article.publishDate)).toISOString(),
-      'dateModified': new Date(String(article.publishDate)).toISOString(),
+      'headline': article.data.title,
+      'description': article.data.description,
+      ...(article.data.featuredImage && { 'image': article.data.featuredImage }),
+      'datePublished': new Date(String(article.data.publishDate)).toISOString(),
+      'dateModified': new Date(String(article.data.publishDate)).toISOString(),
       'author': {
         '@type': 'Person',
-        'name': article.author.name,
-        'jobTitle': article.author.jobTitle,
+        'name': article.data.author.name,
+        'jobTitle': article.data.author.jobTitle,
         'url': new URL('/about', SITE_URL),
       },
       'publisher': {
-        'name': article.author.name,
+        'name': article.data.author.name,
         'url': new URL(SITE_URL),
       },
       'mainEntityOfPage': {
