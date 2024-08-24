@@ -9,6 +9,6 @@
     }
 
     &:has(a:hover) ~ .article__tags__list .article__tag__item {
-        transform: translateY(0);
+        translate: 0 0;
     }
 }
