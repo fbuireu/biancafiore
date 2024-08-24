@@ -20,7 +20,7 @@ node_modules/
 
 # Dependency managers
 .npm
-.yarn
+.yarn/
 *.tgz
 .yarn-integrity
 .pnp/
