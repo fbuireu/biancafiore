@@ -2,7 +2,7 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-    test: {
-        include: ["src/**/*.test.{ts,tsx}", "src/**/*.spec.{ts,tsx}"],
-    },
+	test: {
+		include: ["src/**/*.test.{ts,tsx}", "src/**/*.spec.{ts,tsx}"],
+	},
 });
