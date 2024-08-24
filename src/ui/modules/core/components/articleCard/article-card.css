@@ -3,55 +3,61 @@
 @import url('atoms/articleCardImage/article-card-image.css');
 @import url('atoms/articleCardPublishDate/article-card-publish-date.css');
 @import url('atoms/articleCardTagsList/article-card-tags-list.css');
+@import url('atoms/articleCardTagItem/article-card-tag-item.css');
 @import url('atoms/articleCardTitle/article-card-title.css');
 @import url('atoms/articleCardReadingTime/article-card-reading-time.css');
 
-    .article__item__wrapper {
-        backface-visibility: hidden;
-        -webkit-font-smoothing: subpixel-antialiased;
-        max-width: calc(100% / 4 - 2rem);
-        position: relative;
-        transform: translateZ(0);
-        transition: 0.2s scale;
-        width: 100%;
-        will-change: transform;
+.article__item__wrapper {
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    max-width: calc(100% / 4 - 2rem);
+    position: relative;
+    transform: translateZ(0);
+    transition: 0.2s scale;
+    width: 100%;
+    will-change: transform;
+}
+
+.article__link-card {
+    inset: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+
+    &:hover ~ .article__item .article__tag__item {
+        transform: translateY(0);
+    }
+}
+
+.article__item {
+    color: var(--white);
+    display: grid;
+    gap: 0.5rem 0;
+    height: 100%;
+    overflow: hidden;
+
+    &.--no-image-variant {
+        grid:
+    'Publish-Date Publish-Date' auto
+    'Title Title' auto
+    'Author Reading-Time' auto
+    'Excerpt Excerpt' auto
+    'Tags Tags' auto
+    / 1fr 1fr;
     }
 
-    .article__link-card {
-        inset: 0;
-        position: absolute;
-        width: 100%;
-        z-index: 1;
+    &.--default-variant {
+        grid:
+    'Publish-Date Publish-Date' auto
+    'Featured-Image Featured-Image' 1fr
+    'Title Title' auto
+    'Author Reading-Time' auto
+    'Excerpt Excerpt' auto
+    'Tags Tags' auto
+    / 1fr 1fr;
     }
 
-    .article__item {
-        color: var(--white);
-        display: grid;
-        gap: 0.5rem 0;
-        height: 100%;
-
-        &.--no-image-variant {
-            grid:
-        'Publish-Date Publish-Date' auto
-        'Title Title' auto
-        'Author Reading-Time' auto
-        'Excerpt Excerpt' auto
-        'Tags Tags' auto
-        / 1fr 1fr;
-        }
-
-        &.--default-variant {
-            grid:
-        'Publish-Date Publish-Date' auto
-        'Featured-Image Featured-Image' 1fr
-        'Title Title' auto
-        'Author Reading-Time' auto
-        'Excerpt Excerpt' auto
-        'Tags Tags' auto
-        / 1fr 1fr;
-        }
-
-        &.--is-articles, &.--is-about, &.--is-tag{
-            color: var(--neutral-main)
-        }
+    &.--is-articles, &.--is-about, &.--is-tag {
+        color: var(--neutral-main)
     }
+}

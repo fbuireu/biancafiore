@@ -4,6 +4,7 @@ import { ArticleCard } from "@modules/core/components/articleCard/ArticleCard.ts
 import { Slider } from "@modules/core/components/slider";
 import type { SwiperOptions } from "swiper/types";
 import "./about-latest-articles-slider.css";
+import type { CSSProperties } from "react";
 
 interface AboutLatestArticlesSLiderProps {
 	articles: CollectionEntry<"articles">[];
@@ -52,11 +53,17 @@ export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArtic
 							<ArticleCard.Author slug={article.data.author.slug}>{article.data.author.name}</ArticleCard.Author>
 							<ArticleCard.ReadingTime>{article.data.readingTime} min.</ArticleCard.ReadingTime>
 							<ArticleCard.Tags>
-								{article.data.tags?.map((tag) => (
-									<ArticleCard.Tag tag={tag} key={tag.name}>
-										{tag.name}
-									</ArticleCard.Tag>
-								))}
+								{article.data.tags?.map((tag, index) => {
+									const style: CSSProperties & { [key: string]: string } = {
+										"--inline-index": String(index),
+									};
+
+									return (
+										<ArticleCard.Tag key={tag.name} tag={tag} style={style}>
+											{tag.name}
+										</ArticleCard.Tag>
+									);
+								})}
 							</ArticleCard.Tags>
 						</ArticleCard>
 					);
