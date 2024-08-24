@@ -20,8 +20,7 @@ const featuredArticle = getFeaturedArticle(articles);
           {
             articles
                 .filter((article) => article.data.slug !== featuredArticle.data.slug)
-                .map((article, index) => {
-                  return;
+                .map((article, index) => (
                     <li class="articles__grid__item">
                         <ArticleCard {...article} />
                         <script is:inline type="application/ld+json" set:html={JSON.stringify({
@@ -33,8 +32,8 @@ const featuredArticle = getFeaturedArticle(articles);
                             'url': new URL(`${Astro.url}/${article.data.slug}`, Astro.url).href,
                           },
                         })} />
-                    </li>;
-                })}
+                    </li>
+                ))}
         </ul>
     </section>
 </BaseLayout>

@@ -13,7 +13,7 @@ const { pathname } = Astro.url;
 const origin = getLocation(Astro.url);
 ---
 
-<a class="article__link-card" href={`/articles/${article.data.slug}`} aria-label={article.data.title}>{" "}</a>
+<a class="article__link-card" href={`/articles/${article.data.slug}`} aria-label={article.data.title}>{' '}</a>
 <article
     class={clsx(
         'article__item',
@@ -44,8 +44,8 @@ const origin = getLocation(Astro.url);
     <p class="article__excerpt">{article.data.description}</p>
     <p class="article__reading-time">{article.data.readingTime} min.</p>
     <ul class="article__tags__list flex">
-      {article.data.tags?.map(({slug, name}) => (
-          <a class="article__tag__item" href={`/tags/${slug}`}>
+      {article.data.tags?.map(({ slug, name }, index) => (
+          <a class="article__tag__item" href={`/tags/${slug}`} style={`--inline-index: ${String(index)}`}>
               #{name}
           </a>
       ))}

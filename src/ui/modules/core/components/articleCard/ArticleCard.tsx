@@ -63,8 +63,8 @@ const ReadingTime = ({ children }: ArticleCardReadingTimeProps) => (
 	<ArticleCardReadingTime>{children}</ArticleCardReadingTime>
 );
 const Tags = ({ children }: ArticleCardTagsListProps) => <ArticleCardTagsList>{children}</ArticleCardTagsList>;
-const Tag = ({ children, tag }: ArticleCardTagItemProps) => (
-	<ArticleCardTagItem tag={tag}>{children}</ArticleCardTagItem>
+const Tag = ({ children, ...props }: ArticleCardTagItemProps) => (
+	<ArticleCardTagItem {...props}>{children}</ArticleCardTagItem>
 );
 
 ArticleCard.Title = Title;
