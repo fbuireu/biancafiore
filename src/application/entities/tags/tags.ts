@@ -1,7 +1,7 @@
 import { defineCollection, reference, z } from "astro:content";
 import { tagDTO } from "@application/dto/tag";
-import { TagType } from "@application/dto/tag/types.ts";
 import type { RawTag } from "@application/dto/tag/types.ts";
+import { TagType } from "@application/dto/tag/types.ts";
 import { tagSchema } from "@application/entities/tags/schema.ts";
 import { client } from "@infrastructure/cms/client.ts";
 
@@ -13,10 +13,10 @@ export const tags = defineCollection({
 
 		const tags = await tagDTO.render(rawTags as unknown as RawTag[]);
 
-		return Object.keys(tags).map((key) => ({
-			id: key,
-			name: key,
-			tags: tags[key],
+		return Object.keys(tags).map((letter) => ({
+			id: letter,
+			name: letter,
+			tags: tags[letter],
 		}));
 	},
 	schema: z.object({

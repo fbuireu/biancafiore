@@ -1,5 +1,7 @@
-import type { ContentfulImageAsset, Image } from "@shared/application/types";
+import type { projectsSchema } from "@application/entities/projects";
+import type { ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { z } from "zod";
 
 export interface RawProject {
 	contentTypeId: "project";
@@ -11,9 +13,4 @@ export interface RawProject {
 	};
 }
 
-export interface ProjectDTO {
-	id: string;
-	name: string;
-	description: string;
-	image: Image;
-}
+export type ProjectDTO = z.infer<typeof projectsSchema>;

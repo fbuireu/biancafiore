@@ -1,5 +1,6 @@
-import type { ArticleDTO } from "@application/dto/article/types";
+import type { tagSchema } from "@application/entities/tags/schema.ts";
 import type { EntryFieldTypes } from "contentful";
+import type { z } from "zod";
 
 export interface RawTag {
 	contentTypeId: "tag";
@@ -22,10 +23,6 @@ export interface BaseTagDTO {
 	slug: string;
 }
 
-export interface TagDTOItem extends BaseTagDTO {
-	type: TagType;
-	count: number;
-	articles: ArticleDTO[];
-}
-
-export type TagDTO = Record<string, TagDTOItem[]>;
+export type TagDTO = {
+	[key: string]: z.infer<typeof tagSchema>[];
+};

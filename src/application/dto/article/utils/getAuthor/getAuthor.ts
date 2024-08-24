@@ -10,12 +10,12 @@ export function getAuthor(author: Entry<EntrySkeletonType<RawAuthor["fields"]>>)
 	);
 
 	return {
-		name: author.fields.name as unknown as string,
-		slug: author.fields.slug as unknown as string,
-		description: author.fields.description as unknown as string,
-		jobTitle: author.fields.jobTitle as unknown as string,
-		currentCompany: author.fields.currentCompany as unknown as string,
+		name: author.fields.name as string,
+		slug: author.fields.slug as string,
+		description: author.fields.description as string,
+		jobTitle: author.fields.jobTitle as string,
+		currentCompany: author.fields.currentCompany as string,
 		profileImage,
-		socialNetworks: author.fields.socialNetworks as unknown as string[],
+		socialNetworks: author.fields.socialNetworks as string[],
 	};
 }

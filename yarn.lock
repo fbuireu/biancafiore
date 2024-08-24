@@ -2819,9 +2819,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@million/lint@npm:1.0.0-rc.82-beta.50":
-  version: 1.0.0-rc.82-beta.50
-  resolution: "@million/lint@npm:1.0.0-rc.82-beta.50"
+"@million/lint@npm:1.0.0-rc.84":
+  version: 1.0.0-rc.84
+  resolution: "@million/lint@npm:1.0.0-rc.84"
   dependencies:
     "@axiomhq/js": "npm:1.0.0-rc.3"
     "@babel/core": "npm:7.24.6"
@@ -2833,8 +2833,7 @@ __metadata:
     babel-plugin-syntax-hermes-parser: "npm:^0.21.1"
     ci-info: "npm:^4.0.0"
     esbuild: "npm:^0.20.1"
-    faster-babel-types: "npm:^0.1.0"
-    hono: "npm:4.3.2"
+    hono: "npm:^4.3.2"
     isomorphic-fetch: "npm:^3.0.0"
     nanoid: "npm:^5.0.7"
     pako: "npm:^2.1.0"
@@ -2850,7 +2849,7 @@ __metadata:
     update-notifier-cjs: "npm:^5.1.6"
   bin:
     lint: cli.js
-  checksum: 10c0/8b78bce261c043d54abd76a44666202fba9003106660b1f3b9cb458c66c41d404d49a54c62e0fc9a8453a38b8722d617f15c98635b38a4f9d5d715ce24dd3f9a
+  checksum: 10c0/fadf5ca0695939ee10cc28ae7585d8c4e67ec94901e1fd13842ced2739f501690c2c06448374713dd5f121a84cfa88a64521fa2c056a61a1b11b2656c2005660
   languageName: node
   linkType: hard
 
@@ -4439,7 +4438,7 @@ __metadata:
     "@fontsource-variable/nunito-sans": "npm:^5.0.15"
     "@fontsource/baskervville": "npm:^5.0.21"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@million/lint": "npm:1.0.0-rc.82-beta.50"
+    "@million/lint": "npm:1.0.0-rc.84"
     "@testing-library/react": "npm:^16.0.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
@@ -4463,7 +4462,7 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-globe.gl: "npm:^2.27.2"
     react-google-recaptcha-v3: "npm:^1.10.1"
-    react-hook-form: "npm:^7.52.2"
+    react-hook-form: "npm:^7.53.0"
     react-instantsearch: "npm:^7.13.0"
     react-router-dom: "npm:^6.26.1"
     resend: "npm:^4.0.0"
@@ -6273,15 +6272,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"faster-babel-types@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "faster-babel-types@npm:0.1.0"
-  peerDependencies:
-    "@babel/types": ^7
-  checksum: 10c0/e73f27146458d8af39582231e2b65643f1d74a3cc184ed68a684c3c74cb8b8d054773c174fb6a0bb7a85523af91f10a11ae6f542766d5be6d7b570680c2bb256
-  languageName: node
-  linkType: hard
-
 "fastest-levenshtein@npm:^1.0.16":
   version: 1.0.16
   resolution: "fastest-levenshtein@npm:1.0.16"
@@ -7178,10 +7168,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hono@npm:4.3.2":
-  version: 4.3.2
-  resolution: "hono@npm:4.3.2"
-  checksum: 10c0/a87ed147773620f2f37317e5074a04046b6c13f099da8f2393a3c017d41708a3b5e34e46c9303665cfdfb1a36bbb992d3136cbfc5dd8ce6c6b19ea46d9419156
+"hono@npm:^4.3.2":
+  version: 4.5.8
+  resolution: "hono@npm:4.5.8"
+  checksum: 10c0/873f9d901d6df7bc482997fc60d99261b566756be80146d1f901b71d64c89379b31e145ff4ea19b57ddca026730249c64a3ef641e4c29019eebcb9aa9f8c9cfc
   languageName: node
   linkType: hard
 
@@ -10340,12 +10330,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.52.2":
-  version: 7.52.2
-  resolution: "react-hook-form@npm:7.52.2"
+"react-hook-form@npm:^7.53.0":
+  version: 7.53.0
+  resolution: "react-hook-form@npm:7.53.0"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10c0/2b8d37239d40f4326a24609c1bf5b4ba2cf66bc4a988213ccd7eb92a254dd5bf9c4b94caa353bce4b1d6d8a9ecd2ea3103e25c6d2d72d53f7be26f09053a8b2f
+  checksum: 10c0/6d62b150618a833c17d59e669b707661499e2bb516a8d340ca37699f99eb448bbba7b5b78324938c8948014e21efaa32e3510c2ba246fd5e97a96fca0cfa7c98
   languageName: node
   linkType: hard
 

@@ -6,7 +6,9 @@ import { client } from "@infrastructure/cms/client.ts";
 
 export const authors = defineCollection({
 	loader: async () => {
-		const { items: rawAuthors } = await client.getEntries<RawAuthor>({ content_type: "author" });
+		const { items: rawAuthors } = await client.getEntries<RawAuthor>({
+			content_type: "author",
+		});
 		const authors = await authorDTO.render(rawAuthors as unknown as RawAuthor[]);
 
 		return authors.map((author) => ({

@@ -34,7 +34,6 @@ const metadata = {
 	...article,
 	...(article.data.featuredImage && { image: article.data.featuredImage.url }),
 };
-throw Error("meme");
 ---
 
 <BaseLayout {...metadata}>
@@ -74,7 +73,7 @@ throw Error("meme");
           )
       }
     </div>
-    <!--<article class="article__wrapper" set:html={article.data.content} />-->
+    <article class="article__wrapper" set:html={article.data.content} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Article',

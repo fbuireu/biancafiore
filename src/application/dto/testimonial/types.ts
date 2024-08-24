@@ -1,5 +1,7 @@
-import type { ContentfulImageAsset, Image } from "@shared/application/types";
+import type { testimonialsSchema } from "@application/entities/testimonials";
+import type { ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { z } from "zod";
 
 export interface RawTestimonial {
 	contentTypeId: "testimonial";
@@ -11,9 +13,4 @@ export interface RawTestimonial {
 	};
 }
 
-export interface TestimonialDTO {
-	author: string;
-	quote: string;
-	image: Image;
-	role: string;
-}
+export type TestimonialDTO = z.infer<typeof testimonialsSchema>;

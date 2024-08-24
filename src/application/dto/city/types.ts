@@ -1,5 +1,7 @@
-import type { ContenfulLocation, ContentfulImageAsset, Image, Location } from "@shared/application/types";
+import type { citiesSchema } from "@application/entities/cities";
+import type { ContenfulLocation, ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { z } from "zod";
 
 export interface RawCity {
 	contentTypeId: "city";
@@ -13,10 +15,4 @@ export interface RawCity {
 	};
 }
 
-export interface CityDTO {
-	name: string;
-	coordinates: Location;
-	period: string;
-	description: string;
-	image: Image;
-}
+export type CityDTO = z.infer<typeof citiesSchema>;

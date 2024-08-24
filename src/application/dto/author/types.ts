@@ -1,6 +1,7 @@
-import type { ArticleDTO } from "@application/dto/article/types";
-import type { ContentfulImageAsset, Image } from "@shared/application/types";
+import type { authorSchema } from "@application/entities/authors";
+import type { ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { z } from "zod";
 
 export interface RawAuthor {
 	contentTypeId: "author";
@@ -15,14 +16,4 @@ export interface RawAuthor {
 	};
 }
 
-export interface AuthorDTO {
-	name: string;
-	slug: string;
-	description: string;
-	jobTitle: string;
-	currentCompany: string;
-	profileImage: Image;
-	socialNetworks: string[];
-	articles: ArticleDTO[];
-	latestArticle: ArticleDTO;
-}
+export type AuthorDTO = z.infer<typeof authorSchema>;
