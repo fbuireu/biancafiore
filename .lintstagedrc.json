@@ -1,5 +1,14 @@
 {
-	"src/**/*.{ts,tsx,css,astro}": ["yarn format:all:changed"],
-	"src/**/*.{ts,tsx,astro}": ["yarn lint:ts:changed"],
-	"src/**/*.css": ["yarn lint:styles"]
+    "src/**/*.{ts,tsx,css,astro}": [
+        "yarn format:all:changed"
+    ],
+    "src/**/*.{ts,tsx,astro}": [
+        "yarn lint:ts:changed"
+    ],
+    "src/**/*.css": [
+        "yarn lint:styles"
+    ],
+    "src/**/*.{test,spec}.{ts,tsx}": [
+        "yarn test --bail --findRelatedTests"
+    ]
 }
