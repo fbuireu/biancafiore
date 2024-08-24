@@ -1,0 +1,24 @@
+.tag__article__list {
+    gap: 0 3rem;
+    margin-block: 2rem;
+    position: relative;
+
+    @media (width <= 960px) {
+        margin-inline: 1rem;
+    }
+}
+
+.tag__article__item {
+    --gap: 2rem;
+    margin-bottom: 3rem;
+    max-width: calc(100% / var(--items-per-row) - var(--gap));
+    position: relative;
+    width: 100%;
+    --items-per-row: 4;
+
+    @media (width <= 960px) {
+        --gap: 0;
+        margin-block-end: 3rem;
+        --items-per-row: 1;
+    }
+}

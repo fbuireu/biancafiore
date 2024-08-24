@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content";
+import { AboutLatestArticlesSlider } from "../aboutLatestArticlesSlider";
+import "./about-latest-articles.css";
+
+const articles = await getCollection("articles");
+---
+
+<section class="about-latest-articles__wrapper common-wrapper">
+  <h3 class="about-latest-articles__title section-title">
+    Fresh from <a class="clickable" href="/articles">the blog</a>
+  </h3>
+  <div class="about-latest-articles__inner">
+    <div class="about-latest-articles__quote__wrapper">
+      <h4 class="about-latest-articles__quote">Lorem ipsum dolir sit Amet. Dolor sit amet.</h4>
+      <h6 class="about-latest-articles__quote__author">Ferran Buireu</h6>
+    </div>
+    <AboutLatestArticlesSlider client:load articles={articles} origin={Astro.url} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": articles.map((article, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": new URL(article.data.slug, Astro.url).href
+      }))
+    })}/>
+  </div>
+</section>

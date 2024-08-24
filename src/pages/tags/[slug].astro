@@ -1,0 +1,67 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
+import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
+import "./_tag.css";
+
+type TagProps = InferGetStaticPropsType<typeof getStaticPaths>;
+type TagParams = InferGetStaticParamsType<typeof getStaticPaths>;
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+	const tags = await getCollection("tags");
+
+	return await Promise.all(
+		tags
+			.flatMap((tag) => tag.data.tags)
+			.map(async (tag) => {
+				const articles = await Promise.all(
+					tag.articles.map(async (article) => await getEntry(article.collection, article.id)),
+				);
+
+				return {
+					params: {
+						slug: tag.slug,
+					},
+					props: {
+						tag: {
+							...tag,
+							articles,
+						},
+					},
+				};
+			}),
+	);
+}
+
+const { slug } = Astro.params as TagParams;
+const { tag } = Astro.props as TagProps;
+---
+
+<BaseLayout>
+    <Breadcrumbs />
+    <h1 class="flex justify-center">#{slug}</h1>
+    <section class="common-wrapper">
+      <ul class="tag__article__list flex row-wrap">
+        {tag.articles?.map((article, index) => {
+          return (
+            <li class="tag__article__item">
+              <ArticleCard {...article} />
+              <script is:inline type="application/ld+json" set:html={JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'ItemList',
+                'itemListElement': {
+                  '@type': 'ListItem',
+                  'position': index + 1,
+                  'url': new URL(`/articles/${article.data.slug}`, Astro.url).href,
+                },
+              })} />
+            </li>
+          )
+        })}
+      </ul>
+    </section>
+</BaseLayout>

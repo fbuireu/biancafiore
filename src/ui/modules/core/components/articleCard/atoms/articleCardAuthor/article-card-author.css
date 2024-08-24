@@ -1,0 +1,10 @@
+.article__author {
+    color: currentColor;
+    grid-area: Author;
+
+    a {
+        color: var(--primary-main);
+        position: relative;
+        z-index: 10;
+    }
+}

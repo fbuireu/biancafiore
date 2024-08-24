@@ -1,0 +1,49 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { ArticleType } from "@application/dto/article/types";
+import clsx from "clsx";
+import "./related-article-card.css";
+
+type RelatedArticleCardProps = CollectionEntry<"articles">;
+
+const { pathname } = Astro.url;
+const relatedArticle = Astro.props as RelatedArticleCardProps;
+---
+
+<a class="related-article__link-card" href={`/articles/${relatedArticle.data.slug}`} aria-label={relatedArticle.data.title}>{" "}</a>
+<article
+  class={clsx(
+    'related-article__item',
+    {
+      '--default-variant': relatedArticle.data.variant === ArticleType.DEFAULT,
+      '--no-image-variant': relatedArticle.data.variant === ArticleType.NO_IMAGE,
+    }
+  )}
+>
+  {relatedArticle.data.featuredImage && (
+    <Image
+      class="related-article__item__featured-image"
+      src={relatedArticle.data.featuredImage.url}
+      width={relatedArticle.data.featuredImage.details.width}
+      height={relatedArticle.data.featuredImage.details.height}
+      alt={relatedArticle.data.title}
+      transition:name=`featured-image-${pathname}`
+    />
+  )}
+  <time class="related-article__item__publish-date" datetime={relatedArticle.data.publishDate}>
+    {relatedArticle.data.publishDate}
+  </time>
+  <h3 class="related-article__title font-serif inner-section-title">{relatedArticle.data.title}</h3>
+  <p class="related-article__author">
+    by <a href={`/tags/${relatedArticle.data.author.slug}`}>{relatedArticle.data.author.name}</a>
+  </p>
+  <p class="related-article__excerpt">{relatedArticle.data.description}</p>
+  <ul class="related-article__tags__list flex">
+    {relatedArticle.data.tags?.map(({slug, name}) => (
+      <a class="related-article__tag__item" href={`/tags/${slug}`}>
+        #{name}
+      </a>
+    ))}
+  </ul>
+</article>

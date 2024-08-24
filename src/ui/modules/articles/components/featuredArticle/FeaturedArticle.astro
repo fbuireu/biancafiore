@@ -1,0 +1,87 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import horizontalArrow from "@assets/images/svg/left-arrow.svg";
+import "./featured-article.css";
+
+interface FeaturedArticleProps {
+	featuredArticle: CollectionEntry<"articles">;
+}
+
+const { featuredArticle } = Astro.props as FeaturedArticleProps;
+const featuredArticleShareUrl = new URL(`/articles/${featuredArticle.data.slug}`, Astro.url).href;
+---
+
+<div class="articles__wrapper">
+  <section class="articles__wrapper__inner common-wrapper">
+    <div class="featured-article__wrapper">
+      <a href={`/articles/${featuredArticle.data.slug}`}>
+        <Image
+          class="featured-article__image"
+          src={featuredArticle.data.featuredImage.url}
+          width={featuredArticle.data.featuredImage.details.width}
+          height={featuredArticle.data.featuredImage.details.height}
+          alt={"featuredArticle.title"}
+          loading="eager"
+        />
+      </a>
+      <div class="featured-article__details__wrapper flex row-wrap">
+        <a class="featured-article__link-card" href={`/articles/${featuredArticle.data.slug}`} aria-label={featuredArticle.data.title}>{' '}</a>
+        <div class="featured-article__details flex column-wrap">
+          <time class="featured-article__publish-date font-sans-serif"
+                datetime={featuredArticle.data.publishDate}>
+            {featuredArticle.data.publishDate}
+          </time>
+          <h2 class="featured-article__title">{featuredArticle.data.title}</h2>
+          <p class="featured-article__description" set:html={featuredArticle.data.description} />
+          {
+            featuredArticle.data.tags?.length > 0 && (
+              <ul class="featured-article__tags__list flex">
+                {featuredArticle.data.tags.map(({ name, slug }) => (
+                  <a class="featured-article__tag__item" href={`/tags/${slug}`}>
+                    #{name}
+                  </a>
+                ))}
+              </ul>
+            )
+          }
+          <a href={`/articles/${featuredArticle.data.slug}`} class="featured-article__cta flex align-center">
+            Read More <Image src={horizontalArrow} alt="Read more" loading="eager"/>
+          </a>
+        </div>
+        <div class="featured-article__share__wrapper flex row-wrap">
+          <p class="featured-article__share__title font-serif">SHARE IT!</p>
+          <ul class="featured-article__share__links__list flex row-nowrap">
+            <li class="featured-article__share__link__item link">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${featuredArticleShareUrl}`}
+              >
+                Linkedin
+              </a>
+            </li>
+            <li class="featured-article__share__link__item link">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`https://twitter.com/intent/tweet?url=${featuredArticleShareUrl}&text=${featuredArticle.data.title}&hashtags=${featuredArticle.data.tags?.join(
+                  ',')}`}>
+                X (former Twitter)
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      'itemListElement': {
+        '@type': 'ListItem',
+        'position': 1,
+        'url': new URL(`${Astro.url}/${featuredArticle.data.slug}`, Astro.url).href,
+      },
+    })} />
+  </section>
+</div>

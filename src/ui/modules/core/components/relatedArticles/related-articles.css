@@ -1,0 +1,31 @@
+.related-articles__wrapper {
+    margin: 6rem auto;
+
+    @media (width <= 960px) {
+        margin: 4rem auto;
+    }
+}
+
+.related-articles__title {
+    margin-block-end: 2rem;
+}
+
+.related-articles__list {
+    gap: 1rem 0;
+    padding: 0 1rem;
+
+    @media (width <= 960px) {
+        margin: 2rem 0;
+    }
+}
+
+.related-articles__grid__list > li {
+    max-width: calc(100% / var(--items-per-row) - 2rem);
+    position: relative;
+    width: 100%;
+    --items-per-row: 3;
+
+    @media (width <= 960px) {
+        --items-per-row: 1;
+    }
+}

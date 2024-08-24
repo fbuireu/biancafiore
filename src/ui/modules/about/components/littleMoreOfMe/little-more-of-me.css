@@ -1,0 +1,14 @@
+
+  .little-more-of-me__title {
+    margin-bottom: 4rem;
+  }
+
+  .little-more-of-me__wrapper {
+    margin: 10rem auto;
+  }
+  .little-more-of-me__inner{
+    @media (width <= 960px) {
+      flex-wrap: wrap;
+    }
+  }
+

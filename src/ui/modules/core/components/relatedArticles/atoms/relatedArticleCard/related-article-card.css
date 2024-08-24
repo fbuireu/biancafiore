@@ -1,0 +1,86 @@
+.related-article__item__wrapper {
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    max-width: calc(100% / 4 - 2rem);
+    position: relative;
+    transform: translateZ(0);
+    transition: 0.2s scale;
+    width: 100%;
+    will-change: transform;
+}
+
+.related-article__link-card {
+    inset: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+}
+
+.related-article__item {
+    display: grid;
+    gap: 0.5rem 0;
+    height: 100%;
+
+    &.--no-image-variant {
+        grid:
+        'Publish-Date Publish-Date' auto
+        'Title Title' auto
+        'Author Reading-Time' auto
+        'Excerpt Excerpt' auto
+        'Tags Tags' auto
+        / 1fr 1fr;
+    }
+
+    &.--default-variant {
+        grid:
+        'Publish-Date Publish-Date' auto
+        'Featured-Image Featured-Image' 1fr
+        'Title Title' auto
+        'Author Reading-Time' auto
+        'Excerpt Excerpt' auto
+        'Tags Tags' auto
+        / 1fr 1fr;
+    }
+}
+
+.related-article__author {
+    color: currentColor;
+    grid-area: Author;
+
+    a {
+        color: var(--primary-main);
+        position: relative;
+        z-index: 10;
+    }
+}
+
+.related-article__excerpt {
+    color: currentColor;
+    grid-area: Excerpt;
+}
+
+.related-article__item__featured-image {
+    grid-area: Featured-Image;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.related-article__item__publish-date {
+    grid-area: Publish-Date;
+}
+
+.related-article__tags__list {
+    color: currentColor;
+    gap: 0 1rem;
+    grid-area: Tags;
+    position: relative;
+    text-transform: lowercase;
+    z-index: 10;
+}
+
+.related-article__title {
+    align-self: center;
+    color: currentColor;
+    grid-area: Title;
+    letter-spacing: normal;
+}

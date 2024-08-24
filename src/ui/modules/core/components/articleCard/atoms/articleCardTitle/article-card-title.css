@@ -1,0 +1,6 @@
+.article__title {
+    align-self: center;
+    color: currentColor;
+    grid-area: Title;
+    letter-spacing: normal;
+}

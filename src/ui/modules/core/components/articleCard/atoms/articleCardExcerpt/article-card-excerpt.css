@@ -1,0 +1,4 @@
+.article__excerpt {
+    color: currentColor;
+    grid-area: Excerpt;
+}

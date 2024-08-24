@@ -1,0 +1,101 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { SITE_URL } from "astro:env/client";
+import ReadingProgress from "@modules/articles/components/readingProgress/ReadingProgress.astro";
+import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
+import type { InferGetStaticPropsType } from "astro";
+import "./_article.css";
+
+type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+	const articles = await getCollection("articles");
+
+	return articles.map((article) => {
+		return {
+			params: {
+				slug: article.data.slug,
+			},
+			props: {
+				article,
+			},
+		};
+	});
+}
+
+const { pathname } = Astro.url;
+const { article } = Astro.props as ArticleProps;
+const metadata = {
+	...article,
+	...(article.data.featuredImage && { image: article.data.featuredImage.url }),
+};
+---
+
+<BaseLayout {...metadata}>
+  {
+      article.data.featuredImage && (
+          <section class="article__featured__image__wrapper">
+              <Image
+                  src={article.data.featuredImage.url}
+                  width={article.data.featuredImage.details.width}
+                  height={article.data.featuredImage.details.height}
+                  alt={article.data.title}
+                  class="article__featured__image"
+                  transition:name=`featured-image-${pathname}`
+              />
+          </section>
+      )
+  }
+    <Breadcrumbs />
+    <ReadingProgress />
+    <div class="article__details">
+        <h1 class="article__title">
+          {article.data.title}
+        </h1>
+        <p class="article__author">by <a href={`/tags/${article.data.author.slug}`}>{article.data.author.name}</a></p>
+        <time class="article__publish-date font-sans-serif" datetime={article.data.publishDate}>
+          {article.data.publishDate}
+        </time>
+      {
+          article.data.tags?.length > 0 && (
+              <ul class="article__tags__list flex row-wrap">
+                {article.data.tags.map(({ slug, name }) => (
+                    <li class="article__tag__item">
+                        <a href={`/tags/${slug}`}>#{name}</a>
+                    </li>
+                ))}
+              </ul>
+          )
+      }
+    </div>
+    <article class="article__wrapper" set:html={article.data.content} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      'headline': article.data.title,
+      'description': article.data.description,
+      ...(article.data.featuredImage && { 'image': article.data.featuredImage }),
+      'datePublished': new Date(String(article.data.publishDate)).toISOString(),
+      'dateModified': new Date(String(article.data.publishDate)).toISOString(),
+      'author': {
+        '@type': 'Person',
+        'name': article.data.author.name,
+        'jobTitle': article.data.author.jobTitle,
+        'url': new URL('/about', SITE_URL),
+      },
+      'publisher': {
+        'name': article.data.author.name,
+        'url': new URL(SITE_URL),
+      },
+      'mainEntityOfPage': {
+        '@type': 'WebPage',
+        '@id': Astro.url.href,
+      },
+    })} />
+    <RelatedArticles article={article} />
+</BaseLayout>

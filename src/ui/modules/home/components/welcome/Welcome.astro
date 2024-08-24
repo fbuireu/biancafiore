@@ -1,0 +1,25 @@
+---
+import { Image } from "astro:assets";
+import bianca from "@assets/images/jpg/bianca-fiore.jpg";
+import "./welcome.css";
+---
+
+<section class="welcome flex row-wrap common-wrapper" transition:name="welcome-section">
+  <div class="welcome__text__section --left">
+    <h2 class="welcome__text__title">Hi! I'm</h2>
+  </div>
+  <Image src={bianca} alt="Bianca Fiore" class="welcome__image" loading="eager" />
+  <div class="welcome__text__section --right">
+      <h1 class="welcome__text__title" translate="no"><strong>Bianca</strong></h1>
+    <p class="welcome__text__body">
+      Lorem ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet
+      ipsum dolor sit amet ipsum dolor sit amet. Lorem ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet
+      ipsum dolor sit amet
+    </p>
+  </div>
+</section>
+<script is:inline data-astro-rerun type="module">
+  import { initializeParallax } from '/src/ui/modules/home/utils/initializeParallax';
+
+  initializeParallax()
+</script>
