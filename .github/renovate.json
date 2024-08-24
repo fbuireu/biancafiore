@@ -11,5 +11,6 @@
     "schedule": [
         "every weekend"
     ],
-    "assigneesFromCodeOwners": true
+    "assigneesFromCodeOwners": true,
+    "reviewersFromCodeOwners": true
 }
