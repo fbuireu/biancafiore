@@ -1,4 +1,4 @@
-import { z } from "astro:content";
+import { reference, z } from "astro:content";
 import { ArticleType } from "@application/dto/article/types.ts";
 import { authorSchema } from "@application/entities/authors";
 import { tagSchema } from "@application/entities/tags/schema.ts";
@@ -16,5 +16,5 @@ export const articleSchema = z.object({
 	isFeaturedArticle: z.boolean(),
 	readingTime: z.number(),
 	tags: z.array(tagSchema),
-	relatedArticles: z.array(z.any()).default([]),
+	relatedArticles: z.array(reference("articles")).default([]),
 });

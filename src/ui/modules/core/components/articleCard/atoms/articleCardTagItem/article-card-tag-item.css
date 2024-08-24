@@ -1,5 +1,5 @@
 .article__tag__item {
-    transform: translateY(100px);
-    transition: transform 0.3s ease;
+    transition: translate 0.3s ease;
     transition-delay: calc(var(--inline-index) * 0.1s);
+    translate: 0 100px;
 }

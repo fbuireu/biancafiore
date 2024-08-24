@@ -9,48 +9,31 @@
     will-change: transform;
 }
 
-.related-article__link-card {
-    inset: 0;
-    position: absolute;
-    width: 100%;
-    z-index: 1;
-}
-
 .related-article__item {
     display: grid;
     gap: 0.5rem 0;
     height: 100%;
+    overflow: hidden;
 
     &.--no-image-variant {
         grid:
-        'Publish-Date Publish-Date' auto
-        'Title Title' auto
-        'Author Reading-Time' auto
-        'Excerpt Excerpt' auto
-        'Tags Tags' auto
-        / 1fr 1fr;
+            'Publish-Date Publish-Date' auto
+            'Title Title' auto
+            'Author Reading-Time' auto
+            'Excerpt Excerpt' auto
+            'Tags Tags' auto
+            / 1fr 1fr;
     }
 
     &.--default-variant {
         grid:
-        'Publish-Date Publish-Date' auto
-        'Featured-Image Featured-Image' 1fr
-        'Title Title' auto
-        'Author Reading-Time' auto
-        'Excerpt Excerpt' auto
-        'Tags Tags' auto
-        / 1fr 1fr;
-    }
-}
-
-.related-article__author {
-    color: currentColor;
-    grid-area: Author;
-
-    a {
-        color: var(--primary-main);
-        position: relative;
-        z-index: 10;
+            'Publish-Date Publish-Date' auto
+            'Featured-Image Featured-Image' 1fr
+            'Title Title' auto
+            'Author Reading-Time' auto
+            'Excerpt Excerpt' auto
+            'Tags Tags' auto
+            / 1fr 1fr;
     }
 }
 
@@ -69,13 +52,40 @@
     grid-area: Publish-Date;
 }
 
-.related-article__tags__list {
+.related-article__tag__item {
+    transition: translate 0.3s ease;
+    transition-delay: calc(var(--inline-index) * 0.1s);
+    translate: 0 100px;
+}
+
+.related-article__tags__list:hover .related-article__tag__item {
+    translate: 0 0;
+}
+
+.related-article__link-card {
+    inset: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+
+    &:hover ~ .related-article__item .related-article__tag__item {
+        translate: 0 0;
+    }
+}
+
+.related-article__author {
     color: currentColor;
-    gap: 0 1rem;
-    grid-area: Tags;
-    position: relative;
-    text-transform: lowercase;
-    z-index: 10;
+    grid-area: Author;
+
+    a {
+        color: var(--primary-main);
+        position: relative;
+        z-index: 10;
+    }
+
+    &:has(a:hover) ~ .related-article__tags__list .related-article__tag__item {
+        translate: 0 0;
+    }
 }
 
 .related-article__title {
@@ -83,4 +93,13 @@
     color: currentColor;
     grid-area: Title;
     letter-spacing: normal;
+}
+
+.related-article__tags__list {
+    color: currentColor;
+    gap: 0 1rem;
+    grid-area: Tags;
+    position: relative;
+    text-transform: lowercase;
+    z-index: 10;
 }

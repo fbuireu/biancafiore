@@ -8,5 +8,5 @@ export const authorSchema = z.object({
 	jobTitle: z.string(),
 	currentCompany: z.string(),
 	profileImage: imageSchema,
-	socialNetworks: z.array(z.string()),
+	socialNetworks: z.array(z.string().url()),
 });
