@@ -1,0 +1,12 @@
+@layer overrides {
+  .site__logo {
+    &.--is-menu-open {
+      scale: 1 !important;
+      transition: scale 0.2s;
+
+      &:active {
+        scale: 0.9 !important;
+      }
+    }
+  }
+}

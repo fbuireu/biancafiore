@@ -1,0 +1,10 @@
+  .city-card__content__description {
+    grid-area: City-Description;
+    padding-bottom: 2rem;
+
+    @media (width <= 720px) {
+      padding-bottom: 1rem;
+      padding-inline: 1rem;
+    }
+  }
+

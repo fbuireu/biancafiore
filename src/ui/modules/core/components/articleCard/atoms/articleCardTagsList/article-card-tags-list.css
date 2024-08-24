@@ -1,0 +1,8 @@
+.article__tags__list {
+    color: currentColor;
+    gap: 0 1rem;
+    grid-area: Tags;
+    position: relative;
+    text-transform: lowercase;
+    z-index: 10;
+}

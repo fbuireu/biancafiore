@@ -1,0 +1,66 @@
+  .about-me-intro__wrapper {
+    display: grid;
+    gap: 0 10%;
+    grid: 'AboutMe-Text AboutMe-Image' 1fr / 1fr 1fr;
+
+    @media (width <= 960px) {
+      gap: 0;
+      grid: 'AboutMe-Text AboutMe-Text' min-content
+      'AboutMe-Image AboutMe-Image' 1fr / 1fr;
+    }
+  }
+
+  .about-me-intro__section.--left {
+    gap: 2rem 0;
+    grid-area: AboutMe-Text;
+  }
+
+  .about-me-intro__section.--right {
+    gap: 2rem 0;
+    grid-area: AboutMe-Image;
+
+    @media (width <= 960px) {
+     padding: 0 1rem;
+    }
+  }
+
+  .about-me-intro__title {
+    text-transform: uppercase;
+
+    @media (width <= 1440px) {
+      padding-inline-start: 3rem;
+    }
+    @media (width <= 960px) {
+      padding-inline-start: 1rem;
+    }
+  }
+
+  .about-me-intro__body {
+    gap: 2rem 0;
+    padding-inline-start: 3rem;
+
+    @media (width <= 960px) {
+      padding-inline-start: 1rem;
+    }
+  }
+
+  .about-me-intro__body__cta {
+    align-content: center;
+    flex-flow: row wrap;
+    font-weight: 700;
+    gap: 0 1rem;
+    transition: gap 0.2s;
+
+    img {
+      rotate: 0.5turn;
+      width: 2rem;
+    }
+
+    &:hover {
+      gap: 0 1.5rem;
+    }
+    @media (width <= 960px) {
+      margin-bottom: 1rem;
+    }
+  }
+

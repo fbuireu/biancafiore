@@ -1,0 +1,69 @@
+
+  .about-latest-articles__wrapper {
+    margin-bottom: 12rem;
+
+    @media (width <= 720px) {
+      margin-bottom: 5rem;
+    }
+  }
+
+  .about-latest-articles__title {
+    margin: 5rem 0;
+
+    a {
+      color: var(--primary-main);
+      display: inline-block;
+    }
+    @media (width <= 720px) {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .about-latest-articles__inner {
+    display: grid;
+    gap: 0 5rem;
+    grid: 'Quote Latest-Articles' 1fr / calc(30% - 2rem) calc(70% - 2rem);
+    justify-content: flex-end;
+
+    @media (width <= 720px) {
+      gap: 3rem 0;
+      grid: 'Quote Quote' min-content
+      'Latest-Articles Latest-Articles' 1fr / auto;
+    }
+  }
+
+  .about-latest-articles__quote__wrapper {
+    align-items: flex-end;
+    align-self: self-start;
+    display: flex;
+    flex-flow: column;
+    gap: 1rem 0;
+    grid-area: Quote;
+    justify-content: flex-end;
+    position: relative;
+    text-align: end;
+    text-transform: uppercase;
+
+    &::after {
+      background-color: var(--neutral-main);
+      content: '';
+      height: 100%;
+      inset: 0 -2.5rem auto auto;
+      position: absolute;
+      top: 0;
+      width: 1px;
+    }
+    @media (width <= 720px) {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      &::after {
+      height: 1px;
+      inset: auto 0 -1rem 0;
+      margin: 0 auto;
+      width: 4rem;
+      }
+    }
+  }
+

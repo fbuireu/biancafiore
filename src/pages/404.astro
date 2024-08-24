@@ -1,0 +1,24 @@
+---
+import type { SeoMetadata } from "@const/types";
+import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import ErrorLayer from "@modules/core/components/errorLayer/ErrorLayer.astro";
+
+const title = "404: Not Found";
+const description = "It seems you've stumbled upon a page that doesn't exist.";
+
+const metadata: Partial<SeoMetadata> = {
+	title,
+	description,
+	robots: {
+		index: false,
+		follow: false,
+	},
+};
+---
+
+<BaseLayout {...metadata}>
+  <ErrorLayer>
+    <h1>{title}</h1>
+    <p>{description}</p>
+  </ErrorLayer>
+</BaseLayout>

@@ -1,0 +1,4 @@
+.article__reading-time {
+    grid-area: Reading-Time;
+    justify-self: flex-end;
+}

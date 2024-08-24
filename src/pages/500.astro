@@ -1,0 +1,29 @@
+---
+import type { SeoMetadata } from "@const/types";
+import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import ErrorLayer from "@modules/core/components/errorLayer/ErrorLayer.astro";
+
+interface FiveHundredProps {
+	error: unknown;
+}
+
+const { error } = Astro.props as FiveHundredProps;
+const title = "500: Whoops!";
+const description = `For full transparency this is the error: ${error instanceof Error ? error.message : "Unknown error"}`;
+const metadata: Partial<SeoMetadata> = {
+	title,
+	description,
+	robots: {
+		index: false,
+		follow: false,
+	},
+};
+---
+
+<BaseLayout {...metadata}>
+  <ErrorLayer>
+    <h1>{title}</h1>
+    <p>Clearly something went wrong... Oh gosh this is embarrassing...</p>
+    <p>{description}</p>
+  </ErrorLayer>
+</BaseLayout>

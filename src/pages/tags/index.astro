@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import "./_tags.css";
+
+const tags = await getCollection("tags");
+---
+
+<BaseLayout>
+    <Breadcrumbs />
+    <section class="common-wrapper">
+        <h1 class="flex justify-center">All tags</h1>
+        <ul class="tags__list flex row-wrap">
+          {tags.map((letter, index) => {
+              return <li class="tags__item">
+                  <h2 class="tags__item__letter">{letter.data.name}</h2>
+                  <ul class="tags__item__list flex column-wrap">
+                    {tags[index].data.tags.map((tag) => (
+                        <li class="tag__item font-sans-serif">
+                            <a href={`/tags/${tag.slug}`}>{tag.name}</a>
+                            (&times;{tag.count})
+                        </li>
+                        <script is:inline type="application/ld+json" set:html={JSON.stringify({
+                          '@context': 'https://schema.org',
+                          '@type': 'ItemList',
+                          'itemListElement': {
+                            '@type': 'ListItem',
+                            'position': index + 1,
+                            'url': new URL(`${Astro.url}/${tag.slug}`, Astro.url).href,
+                          },
+                        })}/>
+                    ))}
+                  </ul>
+              </li>
+          })}
+        </ul>
+    </section>
+</BaseLayout>

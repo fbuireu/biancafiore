@@ -1,0 +1,35 @@
+
+  .header {
+    animation: add-shadow linear both;
+    animation-range: 0 1cqi;
+    animation-timeline: scroll();
+    height: var(--header-height);
+    margin-inline: auto;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 1000;
+
+    &::after {
+      clip-path: polygon(0 0, 100% 0, 100% 120%, 0 120%);
+    }
+
+    .header__wrapper {
+      height: 100%;
+      position: relative;
+      width: 100vw;
+    }
+
+    .header__backdrop {
+      --blur: 1rem;
+      --cutoff: calc(100% - var(--extended-by));
+      backdrop-filter: blur(var(--blur));
+      inset: 0 0 calc(-1 * var(--extended-by)) 0;
+      mask-image: linear-gradient(to bottom, black 0, black var(--cutoff), transparent var(--cutoff));
+      pointer-events: none;
+      position: absolute;
+
+      --extended-by: var(--header-height);
+    }
+  }
+

@@ -1,0 +1,73 @@
+  .city-card__item {
+    --index0: calc(var(--inline-index) - 1);
+    --reverse-index: calc(var(--inline-num-cards) - var(--index0));
+    --reverse-index0: calc(var(--reverse-index) - 1);
+
+    padding-top: calc(var(--inline-index) * 0.5rem);
+    position: sticky;
+    top: calc(var(--header-height) + 0.5rem);
+
+    @media (width <= 960px) {
+      padding-inline: 1rem;
+    }
+  }
+
+  .city-card__content {
+    align-items: stretch;
+    animation: linear scale-by-index forwards;
+    animation-range: exit-crossing var(--start-range) exit-crossing var(--end-range);
+    animation-timeline: --cities-scales-in-view;
+    background: var(--white);
+    box-shadow:
+      0 0.2rem 1rem var(--neutral-light-2),
+      0 1em 2em var(--neutral-light-4);
+    display: grid;
+    gap: 1rem;
+    overflow: hidden;
+    transform-origin: 50% 0;
+    will-change: transform;
+    --end-range: calc((var(--inline-index)) / var(--inline-num-cards) * 100%);
+    --start-range: calc(var(--index0) / var(--inline-num-cards) * 100%);
+
+    @media (width <= 720px) {
+      gap: 0.5rem;
+    }
+  }
+
+  .city-card__item:nth-child(even) .city-card__content {
+    grid:
+      'City-Image City-Image City-Period City-Period' min-content
+      'City-Image City-Image City-Name City-Name' min-content
+      'City-Image City-Image City-Description City-Description' min-content
+      / 1fr 1fr 1fr 1fr;
+    padding-inline-end: 2rem;
+    @media (width <= 960px) {
+      grid:
+  'City-Image' auto
+  'City-Period' auto
+  'City-Name' auto
+  'City-Description' auto
+  / 1fr;
+      padding-inline-end: 0;
+    }
+  }
+
+  .city-card__item:nth-child(odd) .city-card__content {
+    grid:
+      'City-Period City-Period City-Image City-Image' min-content
+      'City-Name City-Name City-Image City-Image' min-content
+      'City-Description City-Description City-Image City-Image' min-content
+      / 1fr 1fr 1fr 1fr;
+    padding-inline-start: 1rem;
+
+    @media (width <= 960px) {
+      grid:
+  'City-Image' auto
+  'City-Period' auto
+  'City-Name' auto
+  'City-Description' auto
+  / 1fr;
+      padding-inline-start: 0;
+    }
+  }
+

@@ -1,0 +1,14 @@
+  .about__latest-articles__slider {
+    grid-area: Latest-Articles;
+  }
+
+  .about__latest-article__item__wrapper {
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    height: fit-content;
+    max-width: calc(100% / 4 - 2rem);
+    position: relative;
+    transform: translateZ(0);
+    width: 100%;
+  }
+
