@@ -1,41 +1,36 @@
 import type { Asset } from "contentful";
 
 interface FileDetails {
-	image: {
-		width: number;
-		height: number;
-	};
+    image: {
+        width: number;
+        height: number;
+    };
 }
 
 interface AssetFile {
-	url: string;
-	details: FileDetails;
+    url: string;
+    details: FileDetails;
 }
 
 export type ContentfulImageAsset = Asset & {
-	fields: {
-		file: AssetFile;
-	};
+    fields: {
+        file: AssetFile;
+    };
 };
 
 export interface Image {
-	url: string;
-	details: {
-		width: number;
-		height: number;
-	};
+    url: string;
+    details: {
+        width: number;
+        height: number;
+    };
 }
 
 export interface ContenfulLocation {
-	fields: {
-		coordinates: {
-			lat: number;
-			lon: number;
-		};
-	};
-}
-
-export interface Location {
-	latitude: number;
-	longitude: number;
+    fields: {
+        coordinates: {
+            lat: number;
+            lon: number;
+        };
+    };
 }
