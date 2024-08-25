@@ -1,25 +1,28 @@
 ---
-import { getCollection } from "astro:content";
-import FeaturedArticle from "@modules/articles/components/featuredArticle/FeaturedArticle.astro";
-import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
-import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
-import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
-import { getFeaturedArticle } from "@modules/core/utils/getFeaturedArticle";
-import "./_articles.css";
+import { getCollection } from 'astro:content';
+import FeaturedArticle from '@modules/articles/components/featuredArticle/FeaturedArticle.astro';
+import ArticleCard from '@modules/core/components/articleCard/ArticleCard.astro';
+import BaseLayout from '@modules/core/components/baseLayout/BaseLayout.astro';
+import Breadcrumbs from '@modules/core/components/breadcrumbs/Breadcrumbs.astro';
+import { getFeaturedArticle } from '@modules/core/utils/getFeaturedArticle';
+import './_articles.css';
 
-const articles = await getCollection("articles");
+const articles = await getCollection('articles');
 const featuredArticle = getFeaturedArticle(articles);
 ---
 
 <BaseLayout>
     <h1 class="articles__title section-title">The Blog</h1>
     <Breadcrumbs />
-    <FeaturedArticle featuredArticle={featuredArticle} />
+  {
+      featuredArticle &&
+      <FeaturedArticle featuredArticle={featuredArticle} />
+  }
     <section class="articles__grid common-wrapper">
         <ul class="articles__grid__list flex row-wrap">
           {
             articles
-                .filter((article) => article.data.slug !== featuredArticle.data.slug)
+                .filter((article) => article.data.slug !== featuredArticle?.data.slug)
                 .map((article, index) => (
                     <li class="articles__grid__item">
                         <ArticleCard {...article} />
