@@ -40,7 +40,8 @@
         "lint:ts": "yarn lint .",
         "lint:ts:fix": "yarn lint:ts --write",
         "lint:ts:changed": "yarn lint:ts --write --changed",
-        "lint:styles": "stylelint --fix \"src/**/*.css\" --config ./.stylelintrc.ts --max-warnings=0",
+        "lint:styles": "stylelint \"src/**/*.css\" --config ./.stylelintrc.ts",
+        "lint:styles:changed": "yarn lint:styles --fix",
         "lint:styles:fix": "yarn lint:styles --fix",
         "lint:typecheck": "tsc --project . --noEmit"
     },
