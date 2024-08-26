@@ -1,11 +1,11 @@
 ---
-import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
-import { ArticleType } from '@application/dto/article/types';
-import clsx from 'clsx';
-import './related-article-card.css';
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { ArticleType } from "@application/dto/article/types";
+import clsx from "clsx";
+import "./related-article-card.css";
 
-type RelatedArticleCardProps = CollectionEntry<'articles'>;
+type RelatedArticleCardProps = CollectionEntry<"articles">;
 
 const { pathname } = Astro.url;
 const relatedArticle = Astro.props as RelatedArticleCardProps;

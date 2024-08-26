@@ -1,11 +1,11 @@
 ---
-import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
-import horizontalArrow from '@assets/images/svg/left-arrow.svg';
-import './featured-article.css';
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import horizontalArrow from "@assets/images/svg/left-arrow.svg";
+import "./featured-article.css";
 
 interface FeaturedArticleProps {
-  featuredArticle: CollectionEntry<'articles'>;
+	featuredArticle: CollectionEntry<"articles">;
 }
 
 const { featuredArticle } = Astro.props as FeaturedArticleProps;
