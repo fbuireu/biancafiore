@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { PAGES_ROUTES } from 'src/const';
+import './article-details.css'
+
+interface ArticleDetailsProps {
+  article: CollectionEntry<"articles">
+}
+
+const { article } = Astro.props as ArticleDetailsProps;
+---
+<div class="article__details">
+    <h1 class="article__title">
+      {article.data.title}
+    </h1>
+    <p class="article__author">by <a href={`${PAGES_ROUTES.tags}/${article.data.author.slug}`}>{article.data.author.name}</a></p>
+    <time class="article__publish-date font-sans-serif" datetime={article.data.publishDate}>
+      {article.data.publishDate}
+    </time>
+  {
+      article.data.tags?.length && (
+          <ul class="article__tags__list flex row-wrap">
+            {article.data.tags?.map(({ slug, name }) => (
+                <li class="article__tag__item">
+                    <a href={`${PAGES_ROUTES.tags}/${slug}`} class="underline-on-action">#{name}</a>
+                </li>
+            ))}
+          </ul>
+      )
+  }
+</div>

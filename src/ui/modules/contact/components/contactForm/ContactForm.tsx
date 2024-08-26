@@ -101,7 +101,7 @@ export const ContactForm = () => {
 					onSubmit={(event) => handleSubmit((data) => verifyRecaptcha(data, event))(event)}
 				>
 					<p className="contact-form__text"> My name is</p>
-					<div className="contact-form__input-wrapper">
+					<div className="contact-form__input-wrapper underline-on-action">
 						<input
 							id="name"
 							type="text"
@@ -115,7 +115,7 @@ export const ContactForm = () => {
 						{errors.name && <p className="contact-form__input__error-message">{errors.name.message}</p>}
 					</div>
 					<p className="contact-form__text">and my email is</p>
-					<div className="contact-form__input-wrapper">
+					<div className="contact-form__input-wrapper underline-on-action">
 						<input
 							id="email"
 							type="text"
@@ -132,7 +132,7 @@ export const ContactForm = () => {
 						I look forward to hearing from you within the next 24 hours to discuss further. <br />I have a message for
 						you,
 					</p>
-					<div className="contact-form__textarea-wrapper flex column-wrap justify-flex-start">
+					<div className="contact-form__textarea-wrapper flex column-wrap justify-flex-start underline-on-action">
 						<textarea
 							id="message"
 							placeholder="Why you contact me?"

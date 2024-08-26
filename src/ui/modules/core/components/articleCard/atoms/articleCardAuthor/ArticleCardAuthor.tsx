@@ -1,3 +1,4 @@
+import { PAGES_ROUTES } from "@const/const.ts";
 import type { ReactNode } from "react";
 import "./article-card-author.css";
 
@@ -8,6 +9,9 @@ export interface ArticleCardAuthorProps {
 
 export const ArticleCardAuthor = ({ children, slug }: ArticleCardAuthorProps) => (
 	<p className={"article__author"}>
-		by <a href={`/tags/${slug}`}>{children}</a>
+		by{" "}
+		<a href={`${PAGES_ROUTES.tags}/${slug}`} className="underline-on-action">
+			{children}
+		</a>
 	</p>
 );

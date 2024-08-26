@@ -3,6 +3,7 @@ import logo from "@assets/images/svg/logo.svg?raw";
 import SocialNetworks from "@modules/core/components/socialNetworks/SocialNetworks.astro";
 import ThemeToggle from "@modules/core/components/themeToggle/ThemeToggle.astro";
 import "./footer.css";
+import { PAGES_ROUTES } from '@const/index';
 
 const currentYear = new Date().getFullYear();
 ---
@@ -20,8 +21,8 @@ const currentYear = new Date().getFullYear();
       &copy; {currentYear} &nbsp; <span translate="no">Bianca Fiore</span>. All rights reserved.
     </p>
     <p class="footer__legal-pages flex justify-center">
-      <a href="/terms-and-conditions" rel="nofollow noreferrer">Terms and Conditions</a>
-      <a href="/privacy-policy" rel="nofollow noreferrer">Privacy Policy</a>
+      <a href={PAGES_ROUTES['terms-and-conditions']} rel="nofollow noreferrer" class="underline-on-action">Terms and Conditions</a>
+      <a href={PAGES_ROUTES['privacy-policy']}  rel="nofollow noreferrer" class="underline-on-action">Privacy Policy</a>
     </p>
   </section>
 </footer>

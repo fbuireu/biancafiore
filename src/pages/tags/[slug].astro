@@ -4,6 +4,7 @@ import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro"
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
+import { PAGES_ROUTES } from '@const/index';
 import "./_tag.css";
 
 type TagProps = InferGetStaticPropsType<typeof getStaticPaths>;
@@ -56,7 +57,7 @@ const { tag } = Astro.props as TagProps;
                 'itemListElement': {
                   '@type': 'ListItem',
                   'position': index + 1,
-                  'url': new URL(`/articles/${article.data.slug}`, Astro.url).href,
+                  'url': new URL(`${PAGES_ROUTES.articles}/${article.data.slug}`, Astro.url).href,
                 },
               })} />
             </li>

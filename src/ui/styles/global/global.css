@@ -85,17 +85,31 @@
         }
     }
 
-    .link {
+    .underline-on-action {
+        --border-width: 1px;
         position: relative;
-        font-family: 'Baskervville', serif;
         border: none;
         background-color: unset;
-        text-decoration: underline;
-        text-underline-offset: 0.4rem;
-        font-size: 1rem;
-        color: var(--white);
+        text-decoration: none;
+        color: currentColor;
         padding: 0;
-        letter-spacing: 2px;
         cursor: pointer;
+
+        &:not(.--is-active)::after {
+            border-bottom: var(--border-width) solid currentColor;
+            content: '';
+            inset: 0;
+            position: absolute;
+            transition: width 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+            width: 0;
+        }
+
+        &:hover::after {
+            width: 100%;
+        }
+    }
+
+    .letter-spacing {
+        letter-spacing: 2px;
     }
 }

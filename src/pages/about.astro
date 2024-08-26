@@ -1,7 +1,7 @@
 ---
 import { getCollection, getEntry } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import { CONTACT_DETAILS } from "@const/index";
+import { CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
 import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
 import { LittleMoreOfMe } from "@modules/about/components/littleMoreOfMe/LittleMoreOfMe.tsx";
@@ -47,7 +47,7 @@ const bianca = {
         {
           '@type': 'Article',
           'headline': bianca.data.latestArticle.data.title,
-          'url': new URL(`articles/${bianca.data.latestArticle.data.slug}`, Astro.url).href,
+          'url': new URL(`${PAGES_ROUTES.articles}/${bianca.data.latestArticle.data.slug}`, Astro.url).href,
           'datePublished': bianca.data.latestArticle.data.publishDate,
           'author': { '@id': '#bianca' },
         }],

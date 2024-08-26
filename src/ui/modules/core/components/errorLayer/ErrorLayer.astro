@@ -1,9 +1,10 @@
 ---
 import "./error-layer.css";
+import { PAGES_ROUTES } from '@const/index';
 ---
 
 <section class="error-layer__wrapper common-wrapper flex column-nowrap justify-center align-center">
   <slot />
-  <p>Why not try going back to the <a href="/" class="error-layer__link link">homepage</a>?</p>
+  <p>Why not try going back to the <a href={PAGES_ROUTES.home} class="error-layer__link underline-on-action">homepage</a>?</p>
 </section>
 <div class="travolta" />
