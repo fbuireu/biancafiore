@@ -22,7 +22,7 @@ export const PAGES_ROUTES = {
 	[Pages.ABOUT]: "/about",
 	[Pages.TAGS]: "/tags",
 	[Pages.CONTACT]: "/contact",
-	[Pages.PROJECTS]: "/contact",
+	[Pages.PROJECTS]: "/projects",
 	[Pages.TERMS_AND_CONDITIONS]: "/terms-and-conditions",
 	[Pages.PRIVACY_POLICY]: "/privacy-policy",
 	[Pages.HOME]: "/",

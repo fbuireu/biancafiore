@@ -131,7 +131,10 @@ export default defineConfig({
 		}),
 	],
 	redirects: {
-		"/home": "/",
+		"/home": {
+			status: 301,
+			destination: "/",
+		},
 	},
 	output: "hybrid",
 	adapter: cloudflare({

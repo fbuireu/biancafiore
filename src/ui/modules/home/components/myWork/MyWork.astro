@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import "./my-work.css";
+import { PAGES_ROUTES } from 'src/const';
 
 const projects = await getCollection("projects");
 ---
@@ -10,9 +11,10 @@ const projects = await getCollection("projects");
   <h3 class="my-work__title section-title">My Work</h3>
   <ul class="my-work__content__list flex row-wrap justify-space-between">
     {projects.map((project, index) => {
-      return (
-        <li class="my-work__item">
-          <a class="my-work__item__link clickable" href={`/projects#${project.data.id}`}>
+      const projectUrl=`${PAGES_ROUTES.projects}#${project.data.id}#${project.data.id}`
+
+        return <li class="my-work__item">
+          <a class="my-work__item__link clickable" href={projectUrl}>
             <Image
               src={project.data.image.url}
               alt={project.data.name}
@@ -28,10 +30,9 @@ const projects = await getCollection("projects");
           'itemListElement': {
             '@type': 'ListItem',
             'position': index + 1,
-            'url': new URL(`${Astro.url}projects#${project.data.id}`, Astro.url).href,
+            'url': new URL(projectUrl, Astro.url).href,
           },
         })} />
-      );
     })}
   </ul>
 </section>
