@@ -1,5 +1,6 @@
 ---
 import HeaderLink from "../headerLink/HeaderLink.astro";
+import { PAGES_ROUTES } from '@const/index';
 import "./menu.css";
 ---
 
@@ -15,23 +16,23 @@ import "./menu.css";
       <nav class="navigation__menu__nav column-nowrap flex">
         <div class="navigation__menu__item">
           <span>back to start</span>
-          <HeaderLink href="/" class="navigation__menu__link" aria-label="Home" title="home">Home</HeaderLink>
+          <HeaderLink href={`${PAGES_ROUTES.home}`}class="navigation__menu__link" aria-label="Home" title="home">Home</HeaderLink>
         </div>
         <div class="navigation__menu__item">
-          <HeaderLink href="/projects" class="navigation__menu__link" aria-label="Projects">Projects</HeaderLink>
+          <HeaderLink href={`${PAGES_ROUTES.projects}`} class="navigation__menu__link" aria-label="Projects">Projects</HeaderLink>
           <span>I worked on</span>
         </div>
         <div class="navigation__menu__item">
           <span>my</span>
-          <HeaderLink href="/articles" class="navigation__menu__link" aria-label="Articles">Articles</HeaderLink>
+          <HeaderLink href={`${PAGES_ROUTES.articles}`} class="navigation__menu__link" aria-label="Articles">Articles</HeaderLink>
         </div>
         <div class="navigation__menu__item">
           <span>know more</span>
-          <HeaderLink href="/about" class="navigation__menu__link" aria-label="About">About</HeaderLink>
+          <HeaderLink href={`${PAGES_ROUTES.about}`} class="navigation__menu__link" aria-label="About">About</HeaderLink>
           <span>me</span>
         </div>
         <div class="navigation__menu__item">
-          <HeaderLink href="/contact" class="navigation__menu__link" aria-label="Contact">Contact</HeaderLink>
+          <HeaderLink href={`${PAGES_ROUTES.contact}`} class="navigation__menu__link" aria-label="Contact">Contact</HeaderLink>
           <span>me</span>
         </div>
       </nav>

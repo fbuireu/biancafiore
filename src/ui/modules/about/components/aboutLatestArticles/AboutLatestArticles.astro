@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { AboutLatestArticlesSlider } from "../aboutLatestArticlesSlider";
+import { PAGES_ROUTES } from '@const/index';
 import "./about-latest-articles.css";
 
 const articles = await getCollection("articles");
@@ -8,7 +9,7 @@ const articles = await getCollection("articles");
 
 <section class="about-latest-articles__wrapper common-wrapper">
   <h3 class="about-latest-articles__title section-title">
-    Fresh from <a class="clickable" href="/articles">the blog</a>
+    Fresh from <a class="clickable" href={`${PAGES_ROUTES.articles}`}>the blog</a>
   </h3>
   <div class="about-latest-articles__inner">
     <div class="about-latest-articles__quote__wrapper">

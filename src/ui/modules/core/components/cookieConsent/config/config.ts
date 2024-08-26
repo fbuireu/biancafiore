@@ -1,3 +1,4 @@
+import { PAGES_ROUTES } from "@const/const.ts";
 import type { CookieConsentConfig } from "vanilla-cookieconsent";
 import { updatePreferences } from "../utils/updatePreferences";
 
@@ -94,8 +95,7 @@ export const config: CookieConsentConfig = {
 						},
 						{
 							title: "More information",
-							description:
-								'For any queries in relation to our policy on cookies and your choices, please <a href="/contact">contact us</a>.',
+							description: `For any queries in relation to our policy on cookies and your choices, please <a href="${PAGES_ROUTES.contact}">contact us</a>.`,
 						},
 					],
 				},

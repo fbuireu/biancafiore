@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { ArticleType } from "@application/dto/article/types";
 import clsx from "clsx";
+import { PAGES_ROUTES } from '@const/index';
 import "./related-article-card.css";
 
 type RelatedArticleCardProps = CollectionEntry<"articles">;
@@ -11,7 +12,7 @@ const { pathname } = Astro.url;
 const relatedArticle = Astro.props as RelatedArticleCardProps;
 ---
 
-<a class="related-article__link-card" href={`/articles/${relatedArticle.data.slug}`}
+<a class="related-article__link-card" href={`${PAGES_ROUTES.articles}/${relatedArticle.data.slug}`}
    aria-label={relatedArticle.data.title}>{' '}</a>
 <article
     class={clsx(
@@ -37,12 +38,12 @@ const relatedArticle = Astro.props as RelatedArticleCardProps;
     </time>
     <h3 class="related-article__title font-serif inner-section-title">{relatedArticle.data.title}</h3>
     <p class="related-article__author">
-        by <a href={`/tags/${relatedArticle.data.author.slug}`}>{relatedArticle.data.author.name}</a>
+        by <a href={`${PAGES_ROUTES.tags}/${relatedArticle.data.author.slug}`} class="underline-on-action">{relatedArticle.data.author.name}</a>
     </p>
     <p class="related-article__excerpt">{relatedArticle.data.description}</p>
     <ul class="related-article__tags__list flex">
       {relatedArticle.data.tags?.map(({ slug, name }, index) => (
-          <a class="related-article__tag__item" href={`/tags/${slug}`} style={`--inline-index: ${String(index)}`}>
+          <a class="related-article__tag__item underline-on-action" href={`/tags/${slug}`} style={`--inline-index: ${String(index)}`}>
               #{name}
           </a>
       ))}

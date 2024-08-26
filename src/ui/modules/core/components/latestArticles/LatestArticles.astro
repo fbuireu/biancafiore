@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { MAX_LATEST_ARTICLES } from "@const/index";
+import { MAX_LATEST_ARTICLES, PAGES_ROUTES } from "@const/index";
 import { LatestArticlesSlider } from "./atoms/latestArticlesSlider/LatestArticlesSlider.tsx";
 import "./latest-articles.css";
 
@@ -15,7 +15,7 @@ const articles = (await getCollection("articles")).slice(0, limit);
 
 <section class="latest-articles__wrapper">
   <h3 class="latest-articles__title section-title">
-    Fresh from <a class="latest-articles__title__link clickable" href="/articles">the blog</a>
+    Fresh from <a class="latest-articles__title__link clickable underline-on-action" href={`${PAGES_ROUTES.articles}`}>the blog</a>
   </h3>
   <LatestArticlesSlider client:load articles={articles} origin={Astro.url} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify({

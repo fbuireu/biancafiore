@@ -22,7 +22,6 @@
 			"@const/*": ["./src/const/*"],
 			"@infrastructure/*": ["./src/infrastructure/*"],
 			"@actions/*": ["./src/actions/*"],
-			"@ui/*": ["./src/ui/*"],
 			"@application/*": ["./src/application/*"],
 			"@modules/*": ["./src/ui/modules/*"],
 			"@utils/*": ["./src/utils/*"],

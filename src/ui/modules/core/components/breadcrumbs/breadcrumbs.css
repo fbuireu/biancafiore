@@ -7,7 +7,6 @@
         color: var(--primary-main)
     }
 
-
     .--is-article .breadcrumbs__list {
         justify-content: flex-start;
         margin: 0 auto;

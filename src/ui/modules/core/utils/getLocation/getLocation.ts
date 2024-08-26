@@ -1,17 +1,9 @@
-const PATHS_MAP = {
-	article: "/articles/",
-	articles: "/articles",
-	about: "/about",
-	tag: "/tag",
-	tags: "/tags",
-	contact: "/contact",
-	home: "/",
-};
+import { PAGES_ROUTES } from "@const/const.ts";
 
-type PathKeys = keyof typeof PATHS_MAP;
+type PathKeys = keyof typeof PAGES_ROUTES;
 
 export function getLocation(url: URL): PathKeys | undefined {
-	return Object.keys(PATHS_MAP).find((key) => url.pathname.includes(PATHS_MAP[key as PathKeys])) as
+	return Object.keys(PAGES_ROUTES).find((key) => url.pathname.includes(PAGES_ROUTES[key as PathKeys])) as
 		| PathKeys
 		| undefined;
 }

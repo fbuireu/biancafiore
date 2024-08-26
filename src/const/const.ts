@@ -4,6 +4,30 @@ import { A11y, Autoplay, Keyboard, Navigation, Virtual } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";
 import type { CapitalizeKeys, SeoMetadata, WorldGlobeConfig } from "./types.ts";
 
+export enum Pages {
+	HOME = "home",
+	PROJECTS = "projects",
+	ABOUT = "about",
+	ARTICLES = "articles",
+	ARTICLE = "article",
+	CONTACT = "contact",
+	TAGS = "tags",
+	TERMS_AND_CONDITIONS = "terms-and-conditions",
+	PRIVACY_POLICY = "privacy-policy",
+}
+
+export const PAGES_ROUTES = {
+	[Pages.ARTICLE]: "/articles/",
+	[Pages.ARTICLES]: "/articles",
+	[Pages.ABOUT]: "/about",
+	[Pages.TAGS]: "/tags",
+	[Pages.CONTACT]: "/contact",
+	[Pages.PROJECTS]: "/contact",
+	[Pages.TERMS_AND_CONDITIONS]: "/terms-and-conditions",
+	[Pages.PRIVACY_POLICY]: "/privacy-policy",
+	[Pages.HOME]: "/",
+} as const;
+
 export const DEFAULT_SEO_PARAMS: CapitalizeKeys<SeoMetadata> = {
 	TITLE: "Bianca Fiore",
 	SITE: "biancafiore.me",

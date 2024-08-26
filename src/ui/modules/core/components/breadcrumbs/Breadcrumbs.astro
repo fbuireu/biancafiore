@@ -17,7 +17,7 @@ const origin = getLocation(Astro.url);
       return (
         <li class="breadcrumb__item flex">
           {!isLast ? (
-              <a href={link}>{label}</a><span>/</span>
+              <a href={link} class="underline-on-action">{label}</a><span>/</span>
             ) : (
             <strong class="--is-current-page">{label}</strong>
             )}

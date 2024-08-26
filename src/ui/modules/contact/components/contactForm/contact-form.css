@@ -61,20 +61,11 @@
     .contact-form__input-wrapper,
     .contact-form__textarea-wrapper {
         border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+        color: var(--neutral-main);
         font-size: 1.25rem;
         font-style: italic;
         margin-bottom: 1.5rem;
         position: relative;
-
-        &:after {
-            border-bottom: 1px solid var(--neutral-main);
-            bottom: 0;
-            content: '';
-            left: 0;
-            position: absolute;
-            transition: width 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-            width: 0;
-        }
 
         &:is(
         :has(.contact-form__input:focus, .contact-form__input:not(:placeholder-shown)),
