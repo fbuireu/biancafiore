@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import ProjectSection from "@modules/projects/components/projectSection/ProjectSection.astro";
 import ProjectsIntro from "@modules/projects/components/projectsIntro/ProjectsIntro.astro";
+import { PAGES_ROUTES } from 'src/const';
 
 const projects = await getCollection("projects");
 ---
@@ -21,6 +22,15 @@ const projects = await getCollection("projects");
           <article set:html={project.data.description} />
         </div>
       </article>
+        <script is:inline type="application/ld+json" set:html={JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          'itemListElement': {
+            '@type': 'ListItem',
+            'position': index + 1,
+            'url': new URL(`${PAGES_ROUTES.projects}#${project.data.id}#${project.data.id}`, Astro.url).href,
+          },
+        })} />
     </ProjectSection>
   ))}
 </BaseLayout>
