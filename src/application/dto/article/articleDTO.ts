@@ -16,50 +16,36 @@ import { renderOptions } from "./utils/renderOptions";
 const PARSER: MarkdownIt = new MarkdownIt();
 
 export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
-    render: (raw) => {
-        return raw.map((rawArticle) => {
-            const description =
-                rawArticle.fields.description ??
-                generateExcerpt({
-                    parser: PARSER,
-                    content: documentToHtmlString(
-                        rawArticle.fields.content as unknown as Document
-                    ),
-                }).excerpt;
+	render: (raw) => {
+		return raw.map((rawArticle) => {
+			const description =
+				rawArticle.fields.description ??
+				generateExcerpt({
+					parser: PARSER,
+					content: documentToHtmlString(rawArticle.fields.content as unknown as Document),
+				}).excerpt;
 
-            const tags = createTags(rawArticle.fields.tags);
-            const relatedArticles = rawArticle.fields.relatedArticles
-                ? articleDTO.render(
-                      rawArticle.fields
-                          .relatedArticles as unknown as RawArticle[]
-                  )
-                : getRelatedArticles({ rawArticle, allRawArticles: raw });
-            const featuredImage =
-                rawArticle.fields.featuredImage &&
-                createImage(rawArticle.fields.featuredImage);
-            const content = documentToHtmlString(
-                rawArticle.fields.content as unknown as Document,
-                renderOptions(rawArticle)
-            );
+			const tags = createTags(rawArticle.fields.tags);
+			const relatedArticles = rawArticle.fields.relatedArticles
+				? articleDTO.render(rawArticle.fields.relatedArticles as unknown as RawArticle[])
+				: getRelatedArticles({ rawArticle, allRawArticles: raw });
+			const featuredImage = rawArticle.fields.featuredImage && createImage(rawArticle.fields.featuredImage);
+			const content = documentToHtmlString(rawArticle.fields.content as unknown as Document, renderOptions(rawArticle));
 
-            return {
-                title: rawArticle.fields.title,
-                author: getAuthor(rawArticle.fields.author),
-                slug: rawArticle.fields.slug,
-                description,
-                publishDate: new Date(
-                    String(rawArticle.fields.publishDate)
-                ).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
-                featuredImage,
-                variant: rawArticle.fields.featuredImage
-                    ? ArticleType.DEFAULT
-                    : ArticleType.NO_IMAGE,
-                content,
-                isFeaturedArticle: rawArticle.fields.featuredArticle,
-                readingTime: getReadingTime(content),
-                tags,
-                relatedArticles,
-            } as unknown as ArticleDTO;
-        });
-    },
+			return {
+				title: rawArticle.fields.title,
+				author: getAuthor(rawArticle.fields.author),
+				slug: rawArticle.fields.slug,
+				description,
+				publishDate: new Date(String(rawArticle.fields.publishDate)).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
+				featuredImage,
+				variant: rawArticle.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
+				content,
+				isFeaturedArticle: rawArticle.fields.featuredArticle,
+				readingTime: getReadingTime(content),
+				tags,
+				relatedArticles,
+			} as unknown as ArticleDTO;
+		});
+	},
 };

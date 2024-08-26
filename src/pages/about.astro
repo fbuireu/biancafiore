@@ -8,8 +8,7 @@ import { LittleMoreOfMe } from "@modules/about/components/littleMoreOfMe/LittleM
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 
-const cities = await getCollection("cities");
-const authors = await getCollection("authors");
+const [cities, authors] = await Promise.all([getCollection("cities"), getCollection("authors")]);
 
 const author = authors
 	.filter((author) => author.data.name === CONTACT_DETAILS.NAME)
