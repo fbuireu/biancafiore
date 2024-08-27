@@ -12,7 +12,7 @@ const { pathname } = Astro.url;
 const relatedArticle = Astro.props as RelatedArticleCardProps;
 ---
 
-<a class="related-article__link-card" href={`${PAGES_ROUTES.articles}/${relatedArticle.data.slug}`}
+<a class="related-article__link-card" href={`${PAGES_ROUTES.ARTICLES}/${relatedArticle.data.slug}`}
    aria-label={relatedArticle.data.title}>{' '}</a>
 <article
     class={clsx(
@@ -38,9 +38,10 @@ const relatedArticle = Astro.props as RelatedArticleCardProps;
     </time>
     <h3 class="related-article__title font-serif inner-section-title">{relatedArticle.data.title}</h3>
     <p class="related-article__author">
-        by <a href={`${PAGES_ROUTES.tags}/${relatedArticle.data.author.slug}`} class="underline-on-action">{relatedArticle.data.author.name}</a>
+        by <a href={`${PAGES_ROUTES.TAGS}/${relatedArticle.data.author.slug}`} class="underline-on-action">{relatedArticle.data.author.name}</a>
     </p>
     <p class="related-article__excerpt">{relatedArticle.data.description}</p>
+    <p class="related-article__reading-time">{relatedArticle.data.readingTime} min.</p>
     <ul class="related-article__tags__list flex">
       {relatedArticle.data.tags?.map(({ slug, name }, index) => (
           <a class="related-article__tag__item underline-on-action" href={`/tags/${slug}`} style={`--inline-index: ${String(index)}`}>

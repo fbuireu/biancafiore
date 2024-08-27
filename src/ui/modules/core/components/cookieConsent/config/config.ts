@@ -95,7 +95,7 @@ export const config: CookieConsentConfig = {
 						},
 						{
 							title: "More information",
-							description: `For any queries in relation to our policy on cookies and your choices, please <a href="${PAGES_ROUTES.contact}">contact us</a>.`,
+							description: `For any queries in relation to our policy on cookies and your choices, please <a href="${PAGES_ROUTES.CONTACT}">contact us</a>.`,
 						},
 					],
 				},

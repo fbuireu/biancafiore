@@ -11,7 +11,7 @@ const projects = await getCollection("projects");
   <h3 class="my-work__title section-title">My Work</h3>
   <ul class="my-work__content__list flex row-wrap justify-space-between">
     {projects.map((project, index) => {
-      const projectUrl=`${PAGES_ROUTES.projects}#${project.data.id}#${project.data.id}`
+      const projectUrl=`${PAGES_ROUTES.PROJECTS}#${project.data.id}`
 
         return <li class="my-work__item">
           <a class="my-work__item__link clickable" href={projectUrl}>

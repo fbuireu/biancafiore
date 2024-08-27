@@ -13,7 +13,7 @@ export const ArticleCardTagItem = ({ children, tag, style }: ArticleCardTagItemP
 	<a
 		key={tag.name}
 		className="article__tag__item underline-on-action"
-		href={`${PAGES_ROUTES.tags}/${tag.slug}`}
+		href={`${PAGES_ROUTES.TAGS}/${tag.slug}`}
 		style={style}
 	>
 		#{children}

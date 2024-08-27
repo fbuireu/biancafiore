@@ -1,9 +1,9 @@
 import { PAGES_ROUTES } from "@const/const.ts";
 
-type PathKeys = keyof typeof PAGES_ROUTES;
+type GetLocationReturnType = Lowercase<keyof typeof PAGES_ROUTES> | undefined;
 
-export function getLocation(url: URL): PathKeys | undefined {
-	return Object.keys(PAGES_ROUTES).find((key) => url.pathname.includes(PAGES_ROUTES[key as PathKeys])) as
-		| PathKeys
-		| undefined;
+export function getLocation(url: URL): GetLocationReturnType {
+	return Object.keys(PAGES_ROUTES)
+		.find((key) => url.pathname.includes(PAGES_ROUTES[key as keyof typeof PAGES_ROUTES]))
+		?.toLowerCase() as GetLocationReturnType;
 }

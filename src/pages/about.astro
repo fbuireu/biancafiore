@@ -47,7 +47,7 @@ const bianca = {
         {
           '@type': 'Article',
           'headline': bianca.data.latestArticle.data.title,
-          'url': new URL(`${PAGES_ROUTES.articles}/${bianca.data.latestArticle.data.slug}`, Astro.url).href,
+          'url': new URL(`${PAGES_ROUTES.ARTICLES}/${bianca.data.latestArticle.data.slug}`, Astro.url).href,
           'datePublished': bianca.data.latestArticle.data.publishDate,
           'author': { '@id': '#bianca' },
         }],
