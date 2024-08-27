@@ -2,22 +2,26 @@ export type CapitalizeKeys<T> = {
 	[K in keyof T as Uppercase<K & string>]: T[K] extends object ? CapitalizeKeys<T[K]> : T[K];
 };
 
+export type LowercaseKeys<T> = {
+	[K in keyof T as Lowercase<K & string>]: T[K] extends object ? LowercaseKeys<T[K]> : T[K];
+};
+
 interface MeshPhongMaterialConfig {
-	TRANSPARENT: boolean;
-	COLOR: string;
-	OPACITY: number;
+	transparent: boolean;
+	color: string;
+	opacity: number;
 }
 
 export interface WorldGlobeConfig {
-	ANIMATION_DURATION: number;
-	MOVEMENT_OFFSET: number;
-	ZOOM_OFFSET: number;
-	POINTS_MERGE: boolean;
-	ANIMATE_IN: boolean;
-	SHOW_ATMOSPHERE: boolean;
-	BACKGROUND_COLOR: string;
-	HEXAGON_POLYGON_COLOR: string;
-	MESH_PHONG_MATERIAL_CONFIG: MeshPhongMaterialConfig;
+	animation_duration: number;
+	movement_offset: number;
+	zoom_offset: number;
+	points_merge: boolean;
+	animate_in: boolean;
+	show_atmosphere: boolean;
+	background_color: string;
+	hexagon_polygon_color: string;
+	mesh_phong_material_config: MeshPhongMaterialConfig;
 }
 
 export interface SeoMetadata {

@@ -10,19 +10,14 @@ const today = new Date().toLocaleDateString("en", DEFAULT_DATE_FORMAT);
 <BaseLayout robots={{ index: false, follow: false }}>
   <div class="privacy-policy-wrapper common-wrapper">
     <LegalSection>
-      <div slot="legal-section">
         <h1>Privacy Policy</h1>
-      </div>
     </LegalSection>
+    <LegalSection><p>Last updated: {today}</p></LegalSection>
     <LegalSection>
-      <div slot="legal-section">
-        <p>Last updated: {today}</p>
         <p>Thank you for visiting biancafiore.me ("Website"). Your privacy is important to us. This Privacy Policy explains
           what personal data we collect, how we use and share it, and your rights regarding this data.</p>
-      </div>
     </LegalSection>
     <LegalSection>
-      <div slot="legal-section">
         <h4>1. Personal Data We Collect</h4>
         <p>a) <strong>Automatically Collected Data:</strong> When you visit our Website, we automatically collect certain
           information from your device. This includes your IP address, browser type, pages visited, and the date and time of
@@ -38,10 +33,8 @@ const today = new Date().toLocaleDateString("en", DEFAULT_DATE_FORMAT);
 
         <p>d) <strong>Contact Form:</strong> When you use our contact form, we collect your name, email address, and message.
           This data is securely sent to and stored in Firebase.</p>
-      </div>
     </LegalSection>
     <LegalSection>
-      <div slot="legal-section">
         <h4>2. Use of Information</h4>
         <p>We use the collected information to:</p>
         <ul>
@@ -49,42 +42,31 @@ const today = new Date().toLocaleDateString("en", DEFAULT_DATE_FORMAT);
           <li>Analyze Website usage through Google Analytics to improve our services and content.</li>
           <li>Respond to your inquiries and provide requested information via the contact form.</li>
         </ul>
-      </div>
     </LegalSection>
     <LegalSection>
-      <div slot="legal-section">
         <h4>3. Legal Basis for Processing</h4>
         <p>The legal basis for processing your personal data is your consent, which you provide by using our Website and
           accepting our privacy practices through the cookie banner.</p>
-      </div>
     </LegalSection>
     <LegalSection>
-      <div slot="legal-section">
         <h4>4. Sharing of Information</h4>
         <p>We do not share your personal data with third parties, except when necessary to comply with legal obligations or in
           response to legitimate requests from public authorities.</p>
-      </div>
     </LegalSection>
     <LegalSection>
-      <div slot="legal-section">
         <h4>5. Data Security</h4>
         <p>We implement appropriate technical and organizational measures to protect your personal data against unauthorized or
           unlawful access and against accidental loss, destruction, or damage.</p>
-      </div>
     </LegalSection>
     <LegalSection>
-      <div slot="legal-section">
         <h4>6. Your Rights</h4>
         <p>You have the right to access, rectify, delete, restrict, or object to the processing of your personal data. You can
           exercise these rights by emailing us at <EmailButton classNames="legal-page__email" text={atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA)} />.</p>
-      </div>
     </LegalSection>
     <LegalSection>
-      <div slot="legal-section">
         <h4>7. Changes to this Privacy Policy</h4>
         <p>We reserve the right to update this Privacy Policy at any time. The updated version will be posted on the Website
           along with the last updated date.</p>
-      </div>
     </LegalSection>
   </div>
 </BaseLayout>

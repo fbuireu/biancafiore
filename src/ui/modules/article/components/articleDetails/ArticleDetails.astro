@@ -13,7 +13,7 @@ const { article } = Astro.props as ArticleDetailsProps;
     <h1 class="article__title">
       {article.data.title}
     </h1>
-    <p class="article__author">by <a href={`${PAGES_ROUTES.tags}/${article.data.author.slug}`}>{article.data.author.name}</a></p>
+    <p class="article__author">by <a href={`${PAGES_ROUTES.TAGS}/${article.data.author.slug}`}>{article.data.author.name}</a></p>
     <time class="article__publish-date font-sans-serif" datetime={article.data.publishDate}>
       {article.data.publishDate}
     </time>
@@ -22,7 +22,7 @@ const { article } = Astro.props as ArticleDetailsProps;
           <ul class="article__tags__list flex row-wrap">
             {article.data.tags?.map(({ slug, name }) => (
                 <li class="article__tag__item">
-                    <a href={`${PAGES_ROUTES.tags}/${slug}`} class="underline-on-action">#{name}</a>
+                    <a href={`${PAGES_ROUTES.TAGS}/${slug}`} class="underline-on-action">#{name}</a>
                 </li>
             ))}
           </ul>

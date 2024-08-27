@@ -15,7 +15,7 @@ const articles = (await getCollection("articles")).slice(0, limit);
 
 <section class="latest-articles__wrapper">
   <h3 class="latest-articles__title section-title">
-    Fresh from <a class="latest-articles__title__link clickable underline-on-action" href={`${PAGES_ROUTES.articles}`}>the blog</a>
+    Fresh from <a class="latest-articles__title__link clickable underline-on-action" href={`${PAGES_ROUTES.ARTICLES}`}>the blog</a>
   </h3>
   <LatestArticlesSlider client:load articles={articles} origin={Astro.url} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify({

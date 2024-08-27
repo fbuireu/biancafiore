@@ -10,7 +10,7 @@ interface FeaturedArticleProps {
 }
 
 const { featuredArticle } = Astro.props as FeaturedArticleProps;
-const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.articles}/${featuredArticle.data.slug}`, Astro.url).href;
+const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`, Astro.url).href;
 ---
 
 <div class="articles__wrapper">
@@ -40,14 +40,14 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.articles}/${featuredArti
                       featuredArticle.data.tags?.length && (
                           <ul class="featured-article__tags__list flex">
                             {featuredArticle.data.tags?.map(({ name, slug }) => (
-                                <a class="featured-article__tag__item underline-on-action" href={`${PAGES_ROUTES.tags}/${slug}`}>
+                                <a class="featured-article__tag__item underline-on-action" href={`${PAGES_ROUTES.TAGS}/${slug}`}>
                                     #{name}
                                 </a>
                             ))}
                           </ul>
                       )
                   }
-                    <a href={`${PAGES_ROUTES.articles}/${featuredArticle.data.slug}`} class="featured-article__cta flex underline-on-action align-center">
+                    <a href={`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`} class="featured-article__cta flex underline-on-action align-center">
                         Read More
                         <Image src={horizontalArrow} alt="Read more" loading="eager" />
                     </a>

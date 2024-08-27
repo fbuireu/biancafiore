@@ -57,7 +57,7 @@ const { tag } = Astro.props as TagProps;
                 'itemListElement': {
                   '@type': 'ListItem',
                   'position': index + 1,
-                  'url': new URL(`${PAGES_ROUTES.articles}/${article.data.slug}`, Astro.url).href,
+                  'url': new URL(`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`, Astro.url).href,
                 },
               })} />
             </li>

@@ -28,7 +28,7 @@ const projects = await getCollection("projects");
           'itemListElement': {
             '@type': 'ListItem',
             'position': index + 1,
-            'url': new URL(`${PAGES_ROUTES.projects}#${project.data.id}#${project.data.id}`, Astro.url).href,
+            'url': new URL(`${PAGES_ROUTES.PROJECTS}#${project.data.id}#${project.data.id}`, Astro.url).href,
           },
         })} />
     </ProjectSection>

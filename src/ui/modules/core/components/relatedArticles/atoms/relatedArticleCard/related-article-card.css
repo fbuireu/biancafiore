@@ -52,6 +52,11 @@
     grid-area: Publish-Date;
 }
 
+.related-article__reading-time {
+    grid-area: Reading-Time;
+    justify-self: flex-end;
+}
+
 .related-article__tag__item {
     transition: translate 0.3s ease;
     transition-delay: calc(var(--inline-index) * 0.1s);
