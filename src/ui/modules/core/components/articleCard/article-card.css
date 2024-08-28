@@ -39,7 +39,7 @@
     &.--no-image-variant {
         grid:
     'Publish-Date Publish-Date' auto
-    'Title Title' auto
+    'Title Title' 1fr
     'Author Reading-Time' auto
     'Excerpt Excerpt' auto
     'Tags Tags' auto

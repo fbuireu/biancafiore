@@ -43,7 +43,7 @@ const origin = getLocation(Astro.url);
         by <a href={`${PAGES_ROUTES.TAGS}/${article.data.author.slug}`} class="underline-on-action">{article.data.author.name}</a>
     </p>
     <p class="article__excerpt">{article.data.description}</p>
-    <p class="article__reading-time">{article.data.readingTime} min.</p>
+    <p class="article__reading-time">{article.data.readingTime} minutes read</p>
     <ul class="article__tags__list flex">
       {article.data.tags?.map(({ slug, name }, index) => (
           <a class="article__tag__item underline-on-action" href={`${PAGES_ROUTES.TAGS}/${slug}`} style={`--inline-index: ${String(index)}`}>

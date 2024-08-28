@@ -17,6 +17,7 @@ const { article } = Astro.props as ArticleDetailsProps;
     <time class="article__publish-date font-sans-serif" datetime={article.data.publishDate}>
       {article.data.publishDate}
     </time>
+    <p class="article__reading-time">{article.data.readingTime} minutes read</p>
   {
       article.data.tags?.length && (
           <ul class="article__tags__list flex row-wrap">

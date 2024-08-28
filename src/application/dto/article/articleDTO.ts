@@ -1,5 +1,6 @@
 import type { ArticleDTO, RawArticle } from "@application/dto/article/types";
 import { ArticleType } from "@application/dto/article/types";
+import { createRelatedArticles } from "@application/dto/article/utils/createRelatedArticles";
 import { getRelatedArticles } from "@application/dto/article/utils/getRelatedArticles/getRelatedArticles.ts";
 import { DEFAULT_DATE_FORMAT } from "@const/index.ts";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
@@ -23,11 +24,11 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 				generateExcerpt({
 					parser: PARSER,
 					content: documentToHtmlString(rawArticle.fields.content as unknown as Document),
-				}).excerpt;
+				});
 
 			const tags = createTags(rawArticle.fields.tags);
 			const relatedArticles = rawArticle.fields.relatedArticles
-				? articleDTO.render(rawArticle.fields.relatedArticles as unknown as RawArticle[])
+				? createRelatedArticles(rawArticle.fields.relatedArticles)
 				: getRelatedArticles({ rawArticle, allRawArticles: raw });
 			const featuredImage = rawArticle.fields.featuredImage && createImage(rawArticle.fields.featuredImage);
 			const content = documentToHtmlString(rawArticle.fields.content as unknown as Document, renderOptions(rawArticle));

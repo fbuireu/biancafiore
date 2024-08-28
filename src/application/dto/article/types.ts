@@ -7,9 +7,6 @@ import type { z } from "zod";
 
 export interface RawArticle {
 	contentTypeId: "article";
-	sys: {
-		id: string;
-	};
 	fields: {
 		title: EntryFieldTypes.Text;
 		slug: EntryFieldTypes.Text;

@@ -7,13 +7,13 @@ enum ArrowTypes {
 	ARROW_RIGHT = "ArrowRight",
 }
 
-interface UseSliderNavigationProps {
+interface UseSliderNavigationParams {
 	swiper: Swiper;
 	leftButtonRef: RefObject<HTMLButtonElement>;
 	rightButtonRef: RefObject<HTMLButtonElement>;
 }
 
-function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSliderNavigationProps) {
+function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSliderNavigationParams) {
 	useEffect(() => {
 		const controller = new AbortController();
 
