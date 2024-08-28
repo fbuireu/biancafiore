@@ -101,7 +101,7 @@ export const ContactForm = () => {
 					onSubmit={(event) => handleSubmit((data) => verifyRecaptcha(data, event))(event)}
 				>
 					<p className="contact-form__text"> My name is</p>
-					<div className="contact-form__input-wrapper --underline-on-hover">
+					<div className="contact-form__input__wrapper --underline-on-hover">
 						<input
 							id="name"
 							type="text"
@@ -115,7 +115,7 @@ export const ContactForm = () => {
 						{errors.name && <p className="contact-form__input__error-message">{errors.name.message}</p>}
 					</div>
 					<p className="contact-form__text">and my email is</p>
-					<div className="contact-form__input-wrapper --underline-on-hover">
+					<div className="contact-form__input__wrapper --underline-on-hover">
 						<input
 							id="email"
 							type="text"
@@ -132,7 +132,7 @@ export const ContactForm = () => {
 						I look forward to hearing from you within the next 24 hours to discuss further. <br />I have a message for
 						you,
 					</p>
-					<div className="contact-form__textarea-wrapper flex column-wrap justify-flex-start --underline-on-hover">
+					<div className="contact-form__textarea__wrapper flex column-wrap justify-flex-start --underline-on-hover">
 						<textarea
 							id="message"
 							placeholder="Why you contact me?"
@@ -145,12 +145,12 @@ export const ContactForm = () => {
 						</label>
 						{errors.message && <p className="contact-form__textarea__error-message">{errors.message.message}</p>}
 					</div>
-					<div className="contact-form__recaptcha-wrapper">
+					<div className="contact-form__recaptcha__wrapper">
 						<input type="hidden" {...register("recaptcha")} />
 						{errors.recaptcha && <p className="contact-form__recaptcha__error-message">{errors.recaptcha.message}</p>}
 					</div>
 					{formStatus === FormStatus.ERROR && (
-						<div className="contact-form__recaptcha-wrapper">
+						<div className="contact-form__recaptcha__wrapper">
 							<p className="contact-form__recaptcha__error-message">
 								Whoopsie! Something went wrong. It's my fault (or actually my boyfriend's). Please try again in a few
 								minutes after refreshing the page.

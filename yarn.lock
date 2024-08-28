@@ -4528,7 +4528,7 @@ __metadata:
     stylelint: "npm:^16.9.0"
     stylelint-config-recommended: "npm:^14.0.1"
     stylelint-order: "npm:^6.0.4"
-    swiper: "npm:^11.1.10"
+    swiper: "npm:^11.1.11"
     three: "npm:^0.167.1"
     typescript: "npm:^5.5.4"
     vanilla-cookieconsent: "npm:^3.0.1"
@@ -11779,10 +11779,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^11.1.10":
-  version: 11.1.10
-  resolution: "swiper@npm:11.1.10"
-  checksum: 10c0/51b20151c919924d49f5c61e08efa33a3f250fc5adb8f851e2520eaa67ba9c4f64a9f761d27c34d34377a73d136d777a0bfc3c7460070b98a51dac49671a37b5
+"swiper@npm:^11.1.11":
+  version: 11.1.11
+  resolution: "swiper@npm:11.1.11"
+  checksum: 10c0/109e05d8d04de7453da87e49e714f0ecf742999938901eba533a4f2082a5a6b8c5fba036b2e3ccbc3da74a7770d2ff1cd610cff0fccefffb7f6dd3e0238f4935
   languageName: node
   linkType: hard
 
