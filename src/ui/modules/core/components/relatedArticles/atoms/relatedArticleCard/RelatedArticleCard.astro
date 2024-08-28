@@ -41,7 +41,7 @@ const relatedArticle = Astro.props as RelatedArticleCardProps;
         by <a href={`${PAGES_ROUTES.TAGS}/${relatedArticle.data.author.slug}`} class="underline-on-action">{relatedArticle.data.author.name}</a>
     </p>
     <p class="related-article__excerpt">{relatedArticle.data.description}</p>
-    <p class="related-article__reading-time">{relatedArticle.data.readingTime} min.</p>
+    <p class="related-article__reading-time">{relatedArticle.data.readingTime} minutes read</p>
     <ul class="related-article__tags__list flex">
       {relatedArticle.data.tags?.map(({ slug, name }, index) => (
           <a class="related-article__tag__item underline-on-action" href={`/tags/${slug}`} style={`--inline-index: ${String(index)}`}>

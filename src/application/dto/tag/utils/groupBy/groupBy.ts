@@ -1,9 +1,9 @@
-interface GroupByProps<T, K> {
+interface GroupByParams<T, K> {
 	array: T[];
 	keyFn: (item: T) => K;
 }
 
-export function groupBy<T, K extends string>({ array, keyFn }: GroupByProps<T, K>): Record<K, T[]> {
+export function groupBy<T, K extends string>({ array, keyFn }: GroupByParams<T, K>): Record<K, T[]> {
 	const grouped = array.reduce(
 		(acc, currentItem) => {
 			const key = keyFn(currentItem);

@@ -6,14 +6,10 @@ interface ExcerptParams {
 	limit?: number;
 }
 
-interface ExcerptReturnType {
-	excerpt: string;
-}
-
 const EXCERPT_LIMIT = 140;
 const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 
-export function generateExcerpt({ parser, content, limit = EXCERPT_LIMIT }: ExcerptParams): ExcerptReturnType {
+export function generateExcerpt({ parser, content, limit = EXCERPT_LIMIT }: ExcerptParams) {
 	const excerpt = parser
 		.render(content)
 		.split("\n")
@@ -23,5 +19,5 @@ export function generateExcerpt({ parser, content, limit = EXCERPT_LIMIT }: Exce
 		.substring(0, limit)
 		.trim();
 
-	return { excerpt: `${excerpt}...` };
+	return `${excerpt}...`;
 }
