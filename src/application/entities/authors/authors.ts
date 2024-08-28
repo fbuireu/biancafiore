@@ -9,7 +9,7 @@ export const authors = defineCollection({
 		const { items: rawAuthors } = await client.getEntries<RawAuthor>({
 			content_type: "author",
 		});
-		const authors = await authorDTO.render(rawAuthors as unknown as RawAuthor[]);
+		const authors = await authorDTO.create(rawAuthors as unknown as RawAuthor[]);
 
 		return authors.map((author) => ({
 			id: author.name,

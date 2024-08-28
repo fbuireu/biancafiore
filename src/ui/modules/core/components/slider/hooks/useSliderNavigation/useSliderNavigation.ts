@@ -13,6 +13,8 @@ interface UseSliderNavigationParams {
 	rightButtonRef: RefObject<HTMLButtonElement>;
 }
 
+const CLASSNAME = "--is-force-clickable";
+
 function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSliderNavigationParams) {
 	useEffect(() => {
 		const controller = new AbortController();
@@ -22,12 +24,12 @@ function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSlide
 
 			if (event.key === ArrowTypes.ARROW_LEFT) {
 				swiper.slidePrev();
-				leftButtonRef.current.classList.add("--force-clickable");
-				setTimeout(() => leftButtonRef.current?.classList.remove("--force-clickable"), 200);
+				leftButtonRef.current.classList.add(CLASSNAME);
+				setTimeout(() => leftButtonRef.current?.classList.remove(CLASSNAME), 200);
 			} else if (event.key === ArrowTypes.ARROW_RIGHT) {
 				swiper.slideNext();
-				rightButtonRef.current.classList.add("--force-clickable");
-				setTimeout(() => rightButtonRef.current?.classList.remove("--force-clickable"), 200);
+				rightButtonRef.current.classList.add(CLASSNAME);
+				setTimeout(() => rightButtonRef.current?.classList.remove(CLASSNAME), 200);
 			}
 		};
 

@@ -10,7 +10,7 @@ export const projects = defineCollection({
 			content_type: "project",
 		});
 
-		return projectDTO.render(rawProjects as unknown as RawProject[]);
+		return projectDTO.create(rawProjects as unknown as RawProject[]);
 	},
 	schema: projectsSchema,
 });

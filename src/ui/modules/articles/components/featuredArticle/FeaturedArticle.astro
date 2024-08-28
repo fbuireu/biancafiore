@@ -40,14 +40,14 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                       featuredArticle.data.tags?.length && (
                           <ul class="featured-article__tags__list flex">
                             {featuredArticle.data.tags?.map(({ name, slug }) => (
-                                <a class="featured-article__tag__item underline-on-action" href={`${PAGES_ROUTES.TAGS}/${slug}`}>
+                                <a class="featured-article__tag__item --underline-on-hover" href={`${PAGES_ROUTES.TAGS}/${slug}`}>
                                     #{name}
                                 </a>
                             ))}
                           </ul>
                       )
                   }
-                    <a href={`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`} class="featured-article__cta flex underline-on-action align-center">
+                    <a href={`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`} class="featured-article__cta flex --underline-on-hover align-center">
                         Read More
                         <Image src={horizontalArrow} alt="Read more" loading="eager" />
                     </a>
@@ -55,7 +55,7 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                 <div class="featured-article__share__wrapper flex row-wrap">
                     <p class="featured-article__share__title font-serif">SHARE IT!</p>
                     <ul class="featured-article__share__links__list flex row-nowrap">
-                        <li class="featured-article__share__link__item underline-on-action">
+                        <li class="featured-article__share__link__item --underline-on-hover">
                             <a
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -64,7 +64,7 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                                 Linkedin
                             </a>
                         </li>
-                        <li class="featured-article__share__link__item underline-on-action">
+                        <li class="featured-article__share__link__item --underline-on-hover">
                             <a
                                 target="_blank"
                                 rel="noopener noreferrer"

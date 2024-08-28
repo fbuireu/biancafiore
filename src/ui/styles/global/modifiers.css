@@ -1,0 +1,34 @@
+@layer modifiers{
+    .--is-clickable:not(canvas):not(:disabled) {
+        cursor: pointer;
+        transition: scale 0.2s;
+
+        &:active {
+            scale: 0.9;
+        }
+    }
+
+    .--underline-on-hover {
+        --border-width: 1px;
+        position: relative;
+        border: none;
+        background-color: unset;
+        text-decoration: none;
+        color: currentColor;
+        padding: 0;
+        cursor: pointer;
+
+        &:not(.--is-active)::after {
+            border-bottom: var(--border-width) solid currentColor;
+            content: '';
+            inset: 0;
+            position: absolute;
+            transition: width 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+            width: 0;
+        }
+
+        &:hover::after {
+            width: 100%;
+        }
+    }
+}

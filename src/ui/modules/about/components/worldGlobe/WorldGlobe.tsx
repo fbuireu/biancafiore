@@ -134,7 +134,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 			<div className="world-globe__controls flex row-wrap justify-center">
 				<div className="world-globe__controls__direction-wrapper flex row-wrap">
 					<button
-						className="world-globe__controls__move --left flex clickable"
+						className="world-globe__controls__move --left flex --is-clickable"
 						type="button"
 						onClick={() =>
 							handleAction({
@@ -146,7 +146,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 						<Image src={(horizontalArrow as unknown as ProtoImage).src} alt="Move left" />
 					</button>
 					<button
-						className="world-globe__controls__move --right flex clickable"
+						className="world-globe__controls__move --right flex --is-clickable"
 						type="button"
 						onClick={() =>
 							handleAction({
@@ -160,7 +160,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 				</div>
 				<div className="world-globe__controls__zoom-wrapper flex row-wrap">
 					<button
-						className="world-globe__controls__move --zoom-in clickable"
+						className="world-globe__controls__move --zoom-in --is-clickable"
 						type="button"
 						onClick={() =>
 							handleAction({
@@ -172,7 +172,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 						<Image src={(zoomIn as unknown as ProtoImage).src} alt="Zoom in" />
 					</button>
 					<button
-						className="world-globe__controls__move --zoom-out clickable"
+						className="world-globe__controls__move --zoom-out --is-clickable"
 						type="button"
 						onClick={() =>
 							handleAction({

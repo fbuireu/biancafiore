@@ -14,7 +14,7 @@ const projects = await getCollection("projects");
       const projectUrl=`${PAGES_ROUTES.PROJECTS}#${project.data.id}`
 
         return <li class="my-work__item">
-          <a class="my-work__item__link clickable" href={projectUrl}>
+          <a class="my-work__item__link --is-clickable" href={projectUrl}>
             <Image
               src={project.data.image.url}
               alt={project.data.name}

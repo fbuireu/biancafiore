@@ -3,7 +3,7 @@ import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
 import { createImage } from "@shared/application/dto/utils/createImage";
 
 export const testimonialDTO: BaseDTO<RawTestimonial[], TestimonialDTO[]> = {
-	render: (raw) => {
+	create: (raw) => {
 		return raw.map((rawTestimonial) => {
 			return {
 				author: rawTestimonial.fields.author,

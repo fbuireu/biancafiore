@@ -10,7 +10,7 @@ export const articles = defineCollection({
 			content_type: "article",
 			order: ["-fields.publishDate"],
 		});
-		const articles = articleDTO.render(rawArticles as unknown as RawArticle[]);
+		const articles = articleDTO.create(rawArticles as unknown as RawArticle[]);
 
 		return articles.map((article) => ({
 			id: article.slug,

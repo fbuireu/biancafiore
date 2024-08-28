@@ -11,7 +11,7 @@ export const tags = defineCollection({
 			content_type: "tag",
 		});
 
-		const tags = await tagDTO.render(rawTags as unknown as RawTag[]);
+		const tags = await tagDTO.create(rawTags as unknown as RawTag[]);
 
 		return Object.keys(tags).map((letter) => ({
 			id: letter,
