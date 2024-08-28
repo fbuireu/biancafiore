@@ -101,7 +101,7 @@ export const ContactForm = () => {
 					onSubmit={(event) => handleSubmit((data) => verifyRecaptcha(data, event))(event)}
 				>
 					<p className="contact-form__text"> My name is</p>
-					<div className="contact-form__input-wrapper underline-on-action">
+					<div className="contact-form__input-wrapper --underline-on-hover">
 						<input
 							id="name"
 							type="text"
@@ -115,7 +115,7 @@ export const ContactForm = () => {
 						{errors.name && <p className="contact-form__input__error-message">{errors.name.message}</p>}
 					</div>
 					<p className="contact-form__text">and my email is</p>
-					<div className="contact-form__input-wrapper underline-on-action">
+					<div className="contact-form__input-wrapper --underline-on-hover">
 						<input
 							id="email"
 							type="text"
@@ -132,7 +132,7 @@ export const ContactForm = () => {
 						I look forward to hearing from you within the next 24 hours to discuss further. <br />I have a message for
 						you,
 					</p>
-					<div className="contact-form__textarea-wrapper flex column-wrap justify-flex-start underline-on-action">
+					<div className="contact-form__textarea-wrapper flex column-wrap justify-flex-start --underline-on-hover">
 						<textarea
 							id="message"
 							placeholder="Why you contact me?"
@@ -159,7 +159,7 @@ export const ContactForm = () => {
 					)}
 					<button
 						ref={submitRef}
-						className="contact-form__submit plane clickable"
+						className="contact-form__submit plane --is-clickable"
 						disabled={formStatus === FormStatus.LOADING}
 						type="submit"
 					>
@@ -173,7 +173,7 @@ export const ContactForm = () => {
 				<div className="contact-form__success-message flex column-wrap">
 					<h4>Form sent correctly! Will be in touch soon</h4>
 					<p>Did you forgot something to say?</p>
-					<button type="button" className="contact-form__success__reset-button clickable" onClick={resetForm}>
+					<button type="button" className="contact-form__success__reset-button --is-clickable" onClick={resetForm}>
 						Make a new inquiry
 					</button>
 				</div>

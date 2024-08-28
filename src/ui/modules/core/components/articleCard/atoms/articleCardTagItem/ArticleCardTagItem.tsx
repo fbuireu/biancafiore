@@ -12,7 +12,7 @@ export interface ArticleCardTagItemProps {
 export const ArticleCardTagItem = ({ children, tag, style }: ArticleCardTagItemProps) => (
 	<a
 		key={tag.name}
-		className="article__tag__item underline-on-action"
+		className="article__tag__item --underline-on-hover"
 		href={`${PAGES_ROUTES.TAGS}/${tag.slug}`}
 		style={style}
 	>

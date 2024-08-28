@@ -9,7 +9,7 @@ export const testimonials = defineCollection({
 		const { items: rawTestimonials } = await client.getEntries<RawTestimonial>({
 			content_type: "testimonial",
 		});
-		const testimonials = testimonialDTO.render(rawTestimonials as unknown as RawTestimonial[]);
+		const testimonials = testimonialDTO.create(rawTestimonials as unknown as RawTestimonial[]);
 
 		return testimonials.map((testimonial) => ({
 			id: testimonial.author,

@@ -5,6 +5,13 @@
     line-height: var(--base-line-height);
     margin: 2rem 0;
 
+    @supports (initial-letter: 3 2) {
+        & > p:first-of-type::first-letter {
+            initial-letter: 3 2;
+            padding-right: 0.25rem;
+        }
+    }
+
     @media (width <= 960px) {
         gap: 2rem 0 ;
         padding-inline: 1rem;

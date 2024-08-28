@@ -10,7 +10,7 @@ export const cities = defineCollection({
 			content_type: "city",
 			order: ["fields.startDate"],
 		});
-		const cities = cityDTO.render(rawCities as unknown as RawCity[]);
+		const cities = cityDTO.create(rawCities as unknown as RawCity[]);
 
 		return cities.map((city) => ({
 			id: city.name,

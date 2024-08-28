@@ -21,7 +21,7 @@ export const Slider = <T,>({ items, renderItem, swiperOptions, classNames }: Sli
 			<Swiper {...swiperOptions} onSwiper={setSwiperInstance}>
 				<ul className={clsx(`slider__list flex row-wrap justify-space-between ${classNames}`)}>
 					{items.map((item, index) => (
-						<li key={crypto.randomUUID()} className={clsx(`item__wrapper clickable ${classNames}`)}>
+						<li key={crypto.randomUUID()} className={clsx(`item__wrapper --is-clickable ${classNames}`)}>
 							<SwiperSlide key={crypto.randomUUID()}>{renderItem(item, index)}</SwiperSlide>
 						</li>
 					))}

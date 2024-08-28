@@ -19,7 +19,7 @@ const tags = await getCollection("tags");
                   <ul class="tags__item__list flex column-wrap">
                     {tags[index].data.tags.map((tag) => (
                         <li class="tag__item font-sans-serif">
-                            <a href={`${PAGES_ROUTES.TAGS}/${tag.slug}`} class="underline-on-action">{tag.name}(&times;{tag.count})</a>
+                            <a href={`${PAGES_ROUTES.TAGS}/${tag.slug}`} class="--underline-on-hover">{tag.name}(&times;{tag.count})</a>
                         </li>
                         <script is:inline type="application/ld+json" set:html={JSON.stringify({
                           '@context': 'https://schema.org',

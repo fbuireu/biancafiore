@@ -7,7 +7,7 @@ interface EmailButtonProps {
 const { classNames, text = "Email" } = Astro.props as EmailButtonProps;
 ---
 
-<button class:list={[`${classNames} underline-on-action letter-spacing let mailTo__button`]}>{text}</button>
+<button class:list={[`${classNames} --underline-on-hover --add-letter-spacing let mailTo__button`]}>{text}</button>
 
 <script is:inline data-astro-rerun type="module">
   import { mailTo } from '/src/ui/modules/core/components/emailButton/utils/mailTo';

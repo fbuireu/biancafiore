@@ -40,13 +40,13 @@ const origin = getLocation(Astro.url);
     </time>
     <h3 class="article__title font-serif inner-section-title">{article.data.title}</h3>
     <p class="article__author">
-        by <a href={`${PAGES_ROUTES.TAGS}/${article.data.author.slug}`} class="underline-on-action">{article.data.author.name}</a>
+        by <a href={`${PAGES_ROUTES.TAGS}/${article.data.author.slug}`} class="--underline-on-hover">{article.data.author.name}</a>
     </p>
     <p class="article__excerpt">{article.data.description}</p>
     <p class="article__reading-time">{article.data.readingTime} minutes read</p>
     <ul class="article__tags__list flex">
       {article.data.tags?.map(({ slug, name }, index) => (
-          <a class="article__tag__item underline-on-action" href={`${PAGES_ROUTES.TAGS}/${slug}`} style={`--inline-index: ${String(index)}`}>
+          <a class="article__tag__item --underline-on-hover" href={`${PAGES_ROUTES.TAGS}/${slug}`} style={`--inline-index: ${String(index)}`}>
               #{name}
           </a>
       ))}

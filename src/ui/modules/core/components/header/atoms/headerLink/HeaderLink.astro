@@ -14,6 +14,6 @@ const isCurrentPage =
 	href === pathname.replace(TRAILING_SLASH_REGEX, "");
 ---
 
-<a href={href} class:list={[`clickable ${classNames}`, { '--is-current-page': isCurrentPage }]} {...props}>
+<a href={href} class:list={[`--is-clickable ${classNames}`, { '--is-current-page': isCurrentPage }]} {...props}>
   <slot />
 </a>

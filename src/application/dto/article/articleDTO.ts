@@ -17,7 +17,7 @@ import { renderOptions } from "./utils/renderOptions";
 const PARSER: MarkdownIt = new MarkdownIt();
 
 export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
-	render: (raw) => {
+	create: (raw) => {
 		return raw.map((rawArticle) => {
 			const description =
 				rawArticle.fields.description ??

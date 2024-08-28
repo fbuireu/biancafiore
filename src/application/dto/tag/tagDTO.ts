@@ -6,7 +6,7 @@ import { getArticlesByTag } from "./utils/getArticlesByTag";
 import { groupBy } from "./utils/groupBy";
 
 export const tagDTO: BaseDTO<RawTag[], Promise<TagDTO>> = {
-	render: async (raw) => {
+	create: async (raw) => {
 		const articles = await getCollection("articles");
 
 		const tags = await Promise.all(

@@ -12,7 +12,11 @@ const CookieConsent = () => {
 	}, []);
 
 	return (
-		<button type="button" className="cookies_consent_button flex justify-center clickable" onClick={showPreferences}>
+		<button
+			type="button"
+			className="cookies_consent_button flex justify-center --is-clickable"
+			onClick={showPreferences}
+		>
 			<Cookie classNames={"cookie_consent_icon"} />
 		</button>
 	);
