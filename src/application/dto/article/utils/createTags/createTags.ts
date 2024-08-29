@@ -1,4 +1,4 @@
-import type { BaseTagDTO } from "@application/dto/tag/types.ts";
+import type { BaseTagDTO } from "@application/dto/tag/types";
 import type { Entry, EntrySkeletonType } from "contentful";
 
 export function createTags(tags: Array<Entry<EntrySkeletonType<BaseTagDTO>>>): BaseTagDTO[] {

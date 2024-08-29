@@ -1,6 +1,6 @@
 import { getSecret } from "astro:env/server";
-import { CONTACT_DETAILS } from "@const/index.ts";
-import type { FormData } from "@modules/contact/components/contactForm/ContactForm.tsx";
+import { CONTACT_DETAILS } from "@const/index";
+import type { FormData } from "@modules/contact/components/contactForm/ContactForm";
 import { Resend } from "resend";
 
 type ContactDetails = Omit<FormData, "recaptcha">;

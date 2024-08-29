@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
+import { DEFAULT_SWIPER_CONFIG } from "@const/const";
 import { Slider } from "@modules/core/components/slider";
 import { Testimonial } from "@modules/home/components/testimonial";
 import { Pagination } from "swiper/modules";

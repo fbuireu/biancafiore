@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import type { RawAuthor } from "@application/dto/author/types.ts";
+import type { RawAuthor } from "@application/dto/author/types";
 import type { Reference } from "@shared/application/types";
 
 export async function getArticlesByAuthor(rawAuthor: RawAuthor): Promise<Reference<"articles">[]> {

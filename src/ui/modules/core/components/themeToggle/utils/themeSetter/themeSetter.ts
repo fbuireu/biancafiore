@@ -1,4 +1,4 @@
-import { THEME_STORAGE_KEY } from "@const/index.ts";
+import { THEME_STORAGE_KEY } from "@const/index";
 
 export enum ThemeType {
 	DARK = "dark",

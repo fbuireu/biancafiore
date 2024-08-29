@@ -1,4 +1,4 @@
-import { PAGES_ROUTES } from "@const/const.ts";
+import { PAGES_ROUTES } from "@const/index";
 import type { ReactNode } from "react";
 import "./article-card-author.css";
 

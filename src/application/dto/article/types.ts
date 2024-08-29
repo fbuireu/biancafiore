@@ -1,5 +1,5 @@
 import type { RawAuthor } from "@application/dto/author/types";
-import type { BaseTagDTO } from "@application/dto/tag/types.ts";
+import type { BaseTagDTO } from "@application/dto/tag/types";
 import type { articleSchema } from "@application/entities/articles";
 import type { ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";

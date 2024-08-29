@@ -1,1 +1,1 @@
-export * from "./initializeParallax.ts";
+export * from "./initializeParallax";

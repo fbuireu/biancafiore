@@ -1,1 +1,1 @@
-export * from "./autosize.ts";
+export * from "./autosize";

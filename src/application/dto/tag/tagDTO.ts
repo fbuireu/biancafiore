@@ -1,7 +1,7 @@
 import { getCollection } from "astro:content";
 import { TagType } from "@application/dto/tag/types";
 import type { RawTag, TagDTO } from "@application/dto/tag/types";
-import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
+import type { BaseDTO } from "@shared/application/dto/baseDTO";
 import { getArticlesByTag } from "./utils/getArticlesByTag";
 import { groupBy } from "./utils/groupBy";
 

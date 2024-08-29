@@ -1,11 +1,11 @@
 import type { ArticleDTO, RawArticle } from "@application/dto/article/types";
 import { ArticleType } from "@application/dto/article/types";
 import { createRelatedArticles } from "@application/dto/article/utils/createRelatedArticles";
-import { getRelatedArticles } from "@application/dto/article/utils/getRelatedArticles/getRelatedArticles.ts";
-import { DEFAULT_DATE_FORMAT } from "@const/index.ts";
+import { getRelatedArticles } from "@application/dto/article/utils/getRelatedArticles/getRelatedArticles";
+import { DEFAULT_DATE_FORMAT } from "@const/index";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Document } from "@contentful/rich-text-types";
-import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
+import type { BaseDTO } from "@shared/application/dto/baseDTO";
 import { createImage } from "@shared/application/dto/utils/createImage";
 import MarkdownIt from "markdown-it";
 import { createTags } from "./utils/createTags";

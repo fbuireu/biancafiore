@@ -1,6 +1,6 @@
 import { getCollection } from "astro:content";
 import rss from "@astrojs/rss";
-import { DEFAULT_SEO_PARAMS } from "@const/const.ts";
+import { DEFAULT_SEO_PARAMS } from "@const/const";
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async (context) => {

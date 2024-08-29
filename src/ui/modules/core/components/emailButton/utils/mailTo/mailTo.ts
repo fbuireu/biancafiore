@@ -1,4 +1,4 @@
-import { CONTACT_DETAILS } from "@const/index.ts";
+import { CONTACT_DETAILS } from "@const/index";
 
 export function mailTo() {
 	const SELECTOR = document.querySelector(".mailTo__button");

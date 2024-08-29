@@ -1,1 +1,1 @@
-export * from "./changeTab.ts";
+export * from "./changeTab";

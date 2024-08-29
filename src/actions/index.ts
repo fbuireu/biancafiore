@@ -1,17 +1,13 @@
 // @ts-ignore
-import { ActionError, defineAction, z } from "astro:actions";
-import { DEFAULT_LOCALE_STRING } from "@const/index.ts";
-import { app } from "@infrastructure/database/server.ts";
-import { sendEmail } from "@infrastructure/email/server.ts";
+import { ActionError, defineAction } from "astro:actions";
+import { DEFAULT_LOCALE_STRING } from "@const/index";
+import { app } from "@infrastructure/database/server";
+import { sendEmail } from "@infrastructure/email/server";
 import type { FormData } from "@modules/contact/components/contactForm";
 import { getFirestore } from "firebase-admin/firestore";
+import { contactFormSchema } from '@application/entities/contact/schema';
 
 type ContactDetails = Omit<FormData, "recaptcha">;
-
-const contactFormSchema = z.object({
-	name: z.string(),
-	email: z.string().email(),
-});
 
 const database = getFirestore(app);
 

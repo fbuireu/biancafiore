@@ -1,1 +1,1 @@
-export * from "./deSlugify.ts";
+export * from "./deSlugify";

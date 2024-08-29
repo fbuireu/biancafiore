@@ -1,1 +1,1 @@
-export * from "./mailTo.ts";
+export * from "./mailTo";

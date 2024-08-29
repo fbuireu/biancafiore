@@ -1,4 +1,4 @@
-import type { tagSchema } from "@application/entities/tags/schema.ts";
+import type { tagSchema } from "@application/entities/tags/schema";
 import type { EntryFieldTypes } from "contentful";
 import type { z } from "zod";
 
