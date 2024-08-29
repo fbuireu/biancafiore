@@ -1,1 +1,1 @@
-export * from "./getReadingTime.ts";
+export * from "./getReadingTime";

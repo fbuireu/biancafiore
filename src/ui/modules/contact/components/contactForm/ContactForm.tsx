@@ -7,14 +7,8 @@ import type { FormEvent } from "react";
 import { useCallback, useRef, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { contactFormSchema } from '@application/entities/contact/schema';
 import "./contact-form.css";
-
-const schema = z.object({
-	name: z.string().trim().min(1, "Please insert your name"),
-	email: z.string().trim().min(1, "Please insert a valid email").email(),
-	message: z.string().trim().min(1, "Please insert a valid message"),
-});
 
 export interface FormData {
 	name: string;
@@ -38,7 +32,7 @@ export const ContactForm = () => {
 		formState: { errors },
 		reset,
 	} = useForm<FormData>({
-		resolver: zodResolver(schema),
+		resolver: zodResolver(contactFormSchema),
 	});
 	const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.INITIAL);
 	const { executeRecaptcha } = useGoogleReCaptcha();
@@ -75,9 +69,9 @@ export const ContactForm = () => {
 				contactData.append("email", data.email);
 				contactData.append("message", data.message);
 
-				const response = await actions.contact(contactData);
+				const { data: response, error } = await actions.contact(contactData);
 
-				if (response.ok) {
+				if (response.ok && !error) {
 					flyPlane(submitRef.current);
 					setTimeout(() => {
 						setFormStatus(FormStatus.SUCCESS);

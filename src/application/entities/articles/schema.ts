@@ -1,7 +1,7 @@
 import { reference, z } from "astro:content";
-import { ArticleType } from "@application/dto/article/types.ts";
+import { ArticleType } from "@application/dto/article/types";
 import { authorSchema } from "@application/entities/authors";
-import { tagSchema } from "@application/entities/tags/schema.ts";
+import { tagSchema } from "@application/entities/tags/schema";
 import { imageSchema } from "@shared/application/entities";
 
 export const articleSchema = z.object({

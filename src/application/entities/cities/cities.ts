@@ -1,8 +1,8 @@
 import { defineCollection } from "astro:content";
 import { cityDTO } from "@application/dto/city";
-import type { RawCity } from "@application/dto/city/types.ts";
-import { citiesSchema } from "@application/entities/cities/schema.ts";
-import { client } from "@infrastructure/cms/client.ts";
+import type { RawCity } from "@application/dto/city/types";
+import { citiesSchema } from "@application/entities/cities/schema";
+import { client } from "@infrastructure/cms/client";
 
 export const cities = defineCollection({
 	loader: async () => {

@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import { ArticleType } from "@application/dto/article/types.ts";
+import { ArticleType } from "@application/dto/article/types";
 import type { ArticleCardAuthorProps } from "@modules/core/components/articleCard/atoms/articleCardAuthor";
 import { ArticleCardAuthor } from "@modules/core/components/articleCard/atoms/articleCardAuthor";
 import type { ArticleCardExcerptProps } from "@modules/core/components/articleCard/atoms/articleCardExcerpt";

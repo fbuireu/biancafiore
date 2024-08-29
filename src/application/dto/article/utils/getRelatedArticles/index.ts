@@ -1,1 +1,1 @@
-export * from "./getRelatedArticles.ts";
+export * from "./getRelatedArticles";

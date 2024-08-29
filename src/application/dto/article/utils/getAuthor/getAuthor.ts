@@ -1,4 +1,4 @@
-import type { AuthorDTO, RawAuthor } from "@application/dto/author/types.ts";
+import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
 import { createImage } from "@shared/application/dto/utils/createImage";
 import type { Entry, EntrySkeletonType } from "contentful";
 

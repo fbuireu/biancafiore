@@ -1,9 +1,9 @@
 import { defineCollection, reference, z } from "astro:content";
 import { tagDTO } from "@application/dto/tag";
-import type { RawTag } from "@application/dto/tag/types.ts";
-import { TagType } from "@application/dto/tag/types.ts";
-import { tagSchema } from "@application/entities/tags/schema.ts";
-import { client } from "@infrastructure/cms/client.ts";
+import type { RawTag } from "@application/dto/tag/types";
+import { TagType } from "@application/dto/tag/types";
+import { tagSchema } from "@application/entities/tags/schema";
+import { client } from "@infrastructure/cms/client";
 
 export const tags = defineCollection({
 	loader: async () => {

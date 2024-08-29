@@ -1,5 +1,5 @@
-import type { CityDTO, RawCity } from "@application/dto/city/types.ts";
-import type { BaseDTO } from "@shared/application/dto/baseDTO.ts";
+import type { CityDTO, RawCity } from "@application/dto/city/types";
+import type { BaseDTO } from "@shared/application/dto/baseDTO";
 import { createImage } from "@shared/application/dto/utils/createImage";
 import type { ContenfulLocation } from "@shared/application/types";
 import { createDate } from "./utils/createDate";

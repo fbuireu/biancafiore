@@ -4,7 +4,7 @@ import { capitalizeKeys } from "@const/utils/capitalizeKeys";
 import { lowercaseKeys } from "@const/utils/lowercaseKeys";
 import { A11y, Autoplay, Keyboard, Navigation, Virtual } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";
-import type { CapitalizeKeys, SeoMetadata, WorldGlobeConfig } from "./types.ts";
+import type { CapitalizeKeys, SeoMetadata, WorldGlobeConfig } from "./types";
 
 export enum Pages {
 	HOME = "home",

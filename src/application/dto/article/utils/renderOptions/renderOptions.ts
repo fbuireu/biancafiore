@@ -1,4 +1,4 @@
-import type { RawArticle } from "@application/dto/article/types.ts";
+import type { RawArticle } from "@application/dto/article/types";
 import type { Block, Inline } from "@contentful/rich-text-types";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 

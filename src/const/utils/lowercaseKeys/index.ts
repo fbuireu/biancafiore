@@ -1,1 +1,1 @@
-export * from "src/const/utils/lowercaseKeys/lowecaseKeys.ts";
+export * from "src/const/utils/lowercaseKeys/lowecaseKeys";

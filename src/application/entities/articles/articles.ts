@@ -1,8 +1,8 @@
 import { defineCollection } from "astro:content";
 import { articleDTO } from "@application/dto/article";
-import type { RawArticle } from "@application/dto/article/types.ts";
-import { articleSchema } from "@application/entities/articles/schema.ts";
-import { client } from "@infrastructure/cms/client.ts";
+import type { RawArticle } from "@application/dto/article/types";
+import { articleSchema } from "@application/entities/articles/schema";
+import { client } from "@infrastructure/cms/client";
 
 export const articles = defineCollection({
 	loader: async () => {

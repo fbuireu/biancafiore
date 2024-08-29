@@ -1,1 +1,1 @@
-export * from "./getArticlesByTag.ts";
+export * from "./getArticlesByTag";

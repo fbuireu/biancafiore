@@ -10,7 +10,6 @@ const isProd = import.meta.env.PROD;
 
 export default defineConfig({
 	experimental: {
-		actions: true,
 		contentLayer: true,
 		env: {
 			validateSecrets: true,

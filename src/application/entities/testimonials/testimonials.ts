@@ -1,8 +1,8 @@
 import { defineCollection } from "astro:content";
 import { testimonialDTO } from "@application/dto/testimonial";
-import type { RawTestimonial } from "@application/dto/testimonial/types.ts";
-import { testimonialsSchema } from "@application/entities/testimonials/schema.ts";
-import { client } from "@infrastructure/cms/client.ts";
+import type { RawTestimonial } from "@application/dto/testimonial/types";
+import { testimonialsSchema } from "@application/entities/testimonials/schema";
+import { client } from "@infrastructure/cms/client";
 
 export const testimonials = defineCollection({
 	loader: async () => {

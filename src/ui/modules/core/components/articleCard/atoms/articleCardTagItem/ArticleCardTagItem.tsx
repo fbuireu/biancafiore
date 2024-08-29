@@ -1,5 +1,5 @@
-import type { BaseTagDTO } from "@application/dto/tag/types.ts";
-import { PAGES_ROUTES } from "@const/const.ts";
+import type { BaseTagDTO } from "@application/dto/tag/types";
+import { PAGES_ROUTES } from "@const/index";
 import type { CSSProperties, ReactNode } from "react";
 import "./article-card-tag-item.css";
 

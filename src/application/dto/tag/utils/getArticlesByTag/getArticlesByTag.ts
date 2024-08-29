@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import type { RawTag } from "@application/dto/tag/types.ts";
+import type { RawTag } from "@application/dto/tag/types";
 import type { Reference } from "@shared/application/types";
 
 interface GetArticlesParams {

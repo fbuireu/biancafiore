@@ -1,8 +1,8 @@
 import { defineCollection, reference, z } from "astro:content";
 import { authorDTO } from "@application/dto/author";
-import type { RawAuthor } from "@application/dto/author/types.ts";
-import { authorSchema } from "@application/entities/authors/schema.ts";
-import { client } from "@infrastructure/cms/client.ts";
+import type { RawAuthor } from "@application/dto/author/types";
+import { authorSchema } from "@application/entities/authors/schema";
+import { client } from "@infrastructure/cms/client";
 
 export const authors = defineCollection({
 	loader: async () => {

@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import { DEFAULT_SWIPER_CONFIG } from "@const/const.ts";
+import { DEFAULT_SWIPER_CONFIG } from "@const/index";
 import { ArticleCard } from "@modules/core/components/articleCard/ArticleCard";
 import { Slider } from "@modules/core/components/slider";
 import type { CSSProperties } from "react";

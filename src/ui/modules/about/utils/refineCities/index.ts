@@ -1,1 +1,1 @@
-export * from "./refineCities.ts";
+export * from "./refineCities";

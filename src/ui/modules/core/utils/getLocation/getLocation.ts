@@ -1,4 +1,4 @@
-import { PAGES_ROUTES } from "@const/const.ts";
+import { PAGES_ROUTES } from "@const/index";
 
 type GetLocationReturnType = Lowercase<keyof typeof PAGES_ROUTES> | undefined;
 
