@@ -1,14 +1,10 @@
-import { slugify } from "@modules/core/utils/slugify";
 import type { ReactNode } from "react";
 import "./city-name.css";
 
-export interface CityTitleProps {
+export interface CityNameProps {
 	children: ReactNode;
-	city: string;
 }
 
-export const CityName = ({ city, children }: CityTitleProps) => (
-	<h3 className="city-card__content__name font-serif" id={slugify(city)}>
-		{children}
-	</h3>
+export const CityName = ({ children }: CityNameProps) => (
+	<h3 className="city-card__content__name font-serif">{children}</h3>
 );
