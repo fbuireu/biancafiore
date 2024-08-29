@@ -1,68 +1,88 @@
-    canvas {
-        cursor: grab;
+canvas {
+    cursor: grab;
 
-        @media (width <= 960px) {
-            width: 100%;
+    @media (width <= 960px) {
+        width: 100%;
+    }
+}
+
+.world-globe__wrapper {
+    height: fit-content;
+    position: sticky;
+    top: calc(var(--header-height) + 0.5rem);
+
+    @media (width <= 960px) {
+        order: 2;
+        position: relative;
+        top: unset;
+        width: 100%;
+    }
+}
+
+.marker__label{
+    background: var(--neutral-main);
+    border-radius: 0.5rem;
+    color: var(--white);
+    display: none;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    z-index: 100;
+}
+
+.marker__wrapper {
+    color: var(--primary-dark-1);
+    cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+    transition: width 0.2s;
+    width: 1.5rem;
+
+    &:hover {
+        width: 2rem;
+
+        .marker__label{
+            display: block
         }
     }
 
-    .world-globe__wrapper {
-        height: fit-content;
-        position: sticky;
-        top: calc(var(--header-height) + 0.5rem);
-
-        @media (width <= 960px) {
-            order: 2;
-            position: relative;
-            top: unset;
-            width: 100%;
-        }
+    svg circle {
+        fill: var(--primary-light-2);
     }
 
-    .marker__wrapper {
-        color: var(--primary-dark-1);
-        cursor: pointer;
-        pointer-events: auto;
-        width: 1.5rem;
-
-        svg circle {
-            fill: var(--primary-light-2);
-        }
-
-        &.--is-sydney {
-            svg {
-                rotate: 0.5turn;
-            }
-        }
-    }
-
-    .world-globe__controls {
-        gap: 0 3rem;
-    }
-
-    .world-globe__controls__direction__wrapper {
-        gap: 0 1rem;
-
-        img {
-            height: 3rem;
-            width: 3rem;
-        }
-    }
-
-    .world-globe__controls__zoom__wrapper {
-        gap: 0 1rem;
-
-        img {
-            height: 2rem;
-            width: 2rem;
-        }
-    }
-
-    .world-globe__controls__move {
-        gap: 0 1rem;
-
-        &.--right {
+    &.--is-sydney {
+        svg {
             rotate: 0.5turn;
         }
     }
+}
+
+.world-globe__controls {
+    gap: 0 3rem;
+}
+
+.world-globe__controls__direction__wrapper {
+    gap: 0 1rem;
+
+    img {
+        height: 3rem;
+        width: 3rem;
+    }
+}
+
+.world-globe__controls__zoom__wrapper {
+    gap: 0 1rem;
+
+    img {
+        height: 2rem;
+        width: 2rem;
+    }
+}
+
+.world-globe__controls__move {
+    gap: 0 1rem;
+
+    &.--right {
+        rotate: 0.5turn;
+    }
+}
 

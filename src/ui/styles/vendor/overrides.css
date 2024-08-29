@@ -1,4 +1,11 @@
 @layer overrides {
+  .marker__wrapper{
+    z-index: inherit;
+    &:hover{
+      z-index: 5 !important;
+    }
+  }
+
   .site__logo {
     &.--is-menu-open {
       scale: 1 !important;

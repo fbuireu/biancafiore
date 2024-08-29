@@ -129,7 +129,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 				pointRadius="radius"
 				pointColor="color"
 				htmlElementsData={refineCities(cities)}
-				htmlElement={(data) => renderPin({ markerData: data as ReactGlobePoint })}
+				htmlElement={(data) => renderPin({ markerData: data as ReactGlobePoint, cities })}
 			/>
 			<div className="world-globe__controls flex row-wrap justify-center">
 				<div className="world-globe__controls__direction__wrapper flex row-wrap">
