@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
+import { PAGES_ROUTES } from "@const/index";
 import { AboutLatestArticlesSlider } from "../aboutLatestArticlesSlider";
-import { PAGES_ROUTES } from '@const/index';
 import "./about-latest-articles.css";
 
 const articles = await getCollection("articles");
@@ -16,7 +16,7 @@ const articles = await getCollection("articles");
       <h4 class="about-latest-articles__quote">Lorem ipsum dolir sit Amet. Dolor sit amet.</h4>
       <h6 class="about-latest-articles__quote__author">Ferran Buireu</h6>
     </div>
-    <AboutLatestArticlesSlider client:load articles={articles} origin={Astro.url} />
+    <AboutLatestArticlesSlider client:load articles={articles} location={Astro.url} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "ItemList",

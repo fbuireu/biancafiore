@@ -8,7 +8,7 @@ import type { CSSProperties } from "react";
 
 interface AboutLatestArticlesSLiderProps {
 	articles: CollectionEntry<"articles">[];
-	origin: URL;
+	location: URL;
 }
 
 const SLIDER_CONFIG: SwiperOptions = {
@@ -30,7 +30,7 @@ const SLIDER_CONFIG: SwiperOptions = {
 	containerModifierClass: "latest-articles-",
 };
 
-export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArticlesSLiderProps) => {
+export const AboutLatestArticlesSlider = ({ articles, location }: AboutLatestArticlesSLiderProps) => {
 	return (
 		<div className="about__latest-articles__slider">
 			<Slider
@@ -38,7 +38,7 @@ export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArtic
 				swiperOptions={SLIDER_CONFIG}
 				classNames="--is-about__latest-articles-slider"
 				renderItem={(article) => {
-					const props = { ...article, origin };
+					const props = { ...article, location };
 
 					return (
 						<ArticleCard {...props}>
