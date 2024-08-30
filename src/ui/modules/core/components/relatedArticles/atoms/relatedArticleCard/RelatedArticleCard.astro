@@ -2,8 +2,8 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { ArticleType } from "@application/dto/article/types";
+import { PAGES_ROUTES } from "@const/index";
 import clsx from "clsx";
-import { PAGES_ROUTES } from '@const/index';
 import "./related-article-card.css";
 
 type RelatedArticleCardProps = CollectionEntry<"articles">;
@@ -38,13 +38,13 @@ const relatedArticle = Astro.props as RelatedArticleCardProps;
     </time>
     <h3 class="related-article__title font-serif inner-section-title">{relatedArticle.data.title}</h3>
     <p class="related-article__author">
-        by <a href={`${PAGES_ROUTES.TAGS}/${relatedArticle.data.author.slug}`} class="--underline-on-hover">{relatedArticle.data.author.name}</a>
+        by <a href={`${PAGES_ROUTES.TAGS}/${relatedArticle.data.author.slug}`} class="related-article__author__name --underline-on-hover --is-clickable">{relatedArticle.data.author.name}</a>
     </p>
     <p class="related-article__excerpt">{relatedArticle.data.description}</p>
     <p class="related-article__reading-time">{relatedArticle.data.readingTime} minutes read</p>
     <ul class="related-article__tags__list flex">
       {relatedArticle.data.tags?.map(({ slug, name }, index) => (
-          <a class="related-article__tag__item --underline-on-hover" href={`/tags/${slug}`} style={`--inline-index: ${String(index)}`}>
+          <a class="related-article__tag__item --underline-on-hover --is-clickable" href={`${PAGES_ROUTES.TAGS}/${slug}`} style={`--inline-index: ${String(index)}`}>
               #{name}
           </a>
       ))}

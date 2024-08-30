@@ -1,13 +1,13 @@
 // @ts-ignore
 import { ActionError, defineAction } from "astro:actions";
+import { contactFormSchema } from "@application/entities/contact/schema";
 import { DEFAULT_LOCALE_STRING } from "@const/index";
 import { app } from "@infrastructure/database/server";
 import { sendEmail } from "@infrastructure/email/server";
-import type { FormData } from "@modules/contact/components/contactForm";
+import type { ContactFormData } from "@shared/ui/types.ts";
 import { getFirestore } from "firebase-admin/firestore";
-import { contactFormSchema } from '@application/entities/contact/schema';
 
-type ContactDetails = Omit<FormData, "recaptcha">;
+type ActionHandlerParams = Omit<ContactFormData, "recaptcha">;
 
 const database = getFirestore(app);
 
@@ -15,7 +15,7 @@ export const server = {
 	contact: defineAction({
 		accept: "form",
 		input: contactFormSchema,
-		handler: async ({ name, email, message }: ContactDetails) => {
+		handler: async ({ name, email, message }: ActionHandlerParams) => {
 			try {
 				const contactValidation = contactFormSchema.safeParse({
 					name,
@@ -35,6 +35,7 @@ export const server = {
 				});
 				const { data: emailData, error: emailError } = await sendEmail(data);
 				const success = emailData && !emailError;
+
 				if (!success && emailError) {
 					throw new Error(`Something went wrong sending the email. Error: ${emailError.message} (${emailError.name})`);
 				}

@@ -18,14 +18,6 @@ export type ContentfulImageAsset = Asset & {
 	};
 };
 
-export interface Image {
-	url: string;
-	details: {
-		width: number;
-		height: number;
-	};
-}
-
 export interface ContenfulLocation {
 	fields: {
 		coordinates: {

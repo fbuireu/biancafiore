@@ -1,6 +1,6 @@
 import type { UserConfig } from "@commitlint/types";
 
-const Configuration: UserConfig = {
+const configuration: UserConfig = {
 	extends: ["@commitlint/config-conventional"],
 	parserPreset: "conventional-changelog-atom",
 	formatter: "@commitlint/format",
@@ -11,4 +11,4 @@ const Configuration: UserConfig = {
 	},
 };
 
-export default Configuration;
+export default configuration;

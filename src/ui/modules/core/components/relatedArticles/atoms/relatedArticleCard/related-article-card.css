@@ -58,7 +58,7 @@
 }
 
 .related-article__tag__item {
-    transition: translate 0.3s ease;
+    transition: all 0.3s ease;
     transition-delay: calc(var(--inline-index) * 0.1s);
     translate: 0 100px;
 }
@@ -107,4 +107,8 @@
     position: relative;
     text-transform: lowercase;
     z-index: 10;
+}
+
+.related-article__author__name {
+    display: inline-block;
 }
