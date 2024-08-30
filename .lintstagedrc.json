@@ -1,5 +1,6 @@
 {
 	"src/**/*.{ts,tsx,css,astro}": ["yarn format:changed"],
 	"src/**/*.{ts,tsx,astro}": ["yarn lint:ts:changed"],
+	"src/**/*.css": ["yarn lint:styles:fix"],
 	"src/**/*.{test,spec}.{ts,tsx}": ["yarn test:changed"]
 }
