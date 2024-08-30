@@ -1,5 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 import { ArticleType } from "@application/dto/article/types";
+import { PAGES_ROUTES } from "@const/const.ts";
 import type { ArticleCardAuthorProps } from "@modules/core/components/articleCard/atoms/articleCardAuthor";
 import { ArticleCardAuthor } from "@modules/core/components/articleCard/atoms/articleCardAuthor";
 import type { ArticleCardExcerptProps } from "@modules/core/components/articleCard/atoms/articleCardExcerpt";
@@ -31,7 +32,7 @@ export const ArticleCard = ({ children, origin, data }: ArticleCardProps) => {
 
 	return (
 		<>
-			<a className={"article__link-card"} href={`/articles/${data.slug}`} aria-label={data.title}>
+			<a className={"article__link-card"} href={`${PAGES_ROUTES.ARTICLES}/${data.slug}`} aria-label={data.title}>
 				{" "}
 			</a>
 			<article

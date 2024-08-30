@@ -12,3 +12,7 @@
         translate: 0 0;
     }
 }
+
+.article__author__name {
+    display: inline-block;
+}

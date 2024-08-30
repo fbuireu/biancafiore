@@ -1,28 +1,16 @@
 import { actions } from "astro:actions";
+import { contactFormSchema } from "@application/entities/contact/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { autosize } from "@modules/contact/utils/autosize";
 import { flyPlane } from "@modules/contact/utils/flyPlane";
 import Spinner from "@modules/core/components/spinner/Spinner";
+import { FormStatus } from "@shared/ui/types.ts";
+import type { ContactFormData } from "@shared/ui/types.ts";
 import type { FormEvent } from "react";
 import { useCallback, useRef, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
-import { contactFormSchema } from '@application/entities/contact/schema';
 import "./contact-form.css";
-
-export interface FormData {
-	name: string;
-	email: string;
-	message: string;
-	recaptcha: string;
-}
-
-enum FormStatus {
-	INITIAL = "initial",
-	LOADING = "loading",
-	SUCCESS = "success",
-	ERROR = "error",
-}
 
 export const ContactForm = () => {
 	const {
@@ -31,7 +19,7 @@ export const ContactForm = () => {
 		setError,
 		formState: { errors },
 		reset,
-	} = useForm<FormData>({
+	} = useForm<ContactFormData>({
 		resolver: zodResolver(contactFormSchema),
 	});
 	const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.INITIAL);
@@ -39,7 +27,7 @@ export const ContactForm = () => {
 	const submitRef = useRef<HTMLButtonElement>(null);
 
 	const verifyRecaptcha = useCallback(
-		async (data: FormData, event: FormEvent<HTMLFormElement>) => {
+		async (data: ContactFormData, event: FormEvent<HTMLFormElement>) => {
 			if (!executeRecaptcha) return;
 			const token = await executeRecaptcha();
 
@@ -58,7 +46,7 @@ export const ContactForm = () => {
 	const resetForm = useCallback(() => setFormStatus(FormStatus.INITIAL), []);
 
 	const submitForm = useCallback(
-		async (data: FormData, event: FormEvent<HTMLFormElement>) => {
+		async (data: ContactFormData, event: FormEvent<HTMLFormElement>) => {
 			event.preventDefault();
 			if (!submitRef.current) return;
 

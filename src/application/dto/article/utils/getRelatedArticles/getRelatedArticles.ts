@@ -8,13 +8,14 @@ interface GetRelatedArticlesParams {
 }
 
 export function getRelatedArticles({ rawArticle, allRawArticles }: GetRelatedArticlesParams): Reference<"articles">[] {
-	const articleTagsSlugs = rawArticle.fields.tags.map((tag) => tag.fields.slug);
+	const articleTags = new Set(rawArticle.fields.tags.map((tag) => tag.fields.slug));
 
 	return allRawArticles
 		.filter(({ fields }) => {
-			const allTagsSlugs = fields.tags?.map((tag) => tag.fields.slug);
+			if (fields.title === rawArticle.fields.title) return;
 
-			return fields.title !== rawArticle.fields.title && allTagsSlugs?.some((slug) => articleTagsSlugs.includes(slug));
+			const allTags = fields.tags?.map((tag) => tag.fields.slug) || [];
+			return allTags.some((slug) => articleTags.has(slug));
 		})
 		.slice(0, MAX_RELATED_ARTICLES)
 		.map((relatedArticle) => ({

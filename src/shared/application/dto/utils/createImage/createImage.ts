@@ -1,7 +1,15 @@
-import type { ContentfulImageAsset, Image } from "@shared/application/types";
+import type { ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntrySkeletonType } from "contentful";
 
-export function createImage(rawImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>): Image {
+interface CreateImageReturnType {
+	url: string;
+	details: {
+		width: number;
+		height: number;
+	};
+}
+
+export function createImage(rawImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>): CreateImageReturnType {
 	return {
 		url: rawImage.fields.file.url as unknown as string,
 		details: {
