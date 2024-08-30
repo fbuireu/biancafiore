@@ -23,11 +23,11 @@ import type { ReactNode } from "react";
 import "./article-card.css";
 
 interface ArticleCardProps extends CollectionEntry<"articles"> {
-	origin: URL;
+	location: URL;
 	children: ReactNode;
 }
 
-export const ArticleCard = ({ children, origin, data }: ArticleCardProps) => {
+export const ArticleCard = ({ children, location: origin, data }: ArticleCardProps) => {
 	const location = getLocation(origin);
 
 	return (

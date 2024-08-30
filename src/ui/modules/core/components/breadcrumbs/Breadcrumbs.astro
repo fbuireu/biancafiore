@@ -6,10 +6,10 @@ import "./breadcrumbs.css";
 const { pathname: currentPath, origin: originPath } = Astro.url;
 
 const breadcrumbs = breadcrumbDTO.create({ currentPath });
-const origin = getLocation(Astro.url);
+const location = getLocation(Astro.url);
 ---
 
-<section class:list={[`breadcrumbs__wrapper common-wrapper`, { [`--is-${origin}`]: origin}]}>
+<section class:list={[`breadcrumbs__wrapper common-wrapper`, { [`--is-${location}`]: location}]}>
 <ul class="breadcrumbs__list flex justify-center align-center font-sans-serif">
   {breadcrumbs?.map(({ link, label }, index) => {
       const isLast = breadcrumbs.at(-1)?.link === link

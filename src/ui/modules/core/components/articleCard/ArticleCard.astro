@@ -11,7 +11,7 @@ type ArticleCardProps = CollectionEntry<"articles">;
 
 const article = Astro.props as ArticleCardProps;
 const { pathname } = Astro.url;
-const origin = getLocation(Astro.url);
+const location = getLocation(Astro.url);
 ---
 
 <a class="article__link-card" href={`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`} aria-label={article.data.title}>{' '}</a>
@@ -22,7 +22,7 @@ const origin = getLocation(Astro.url);
           '--default-variant': article.data.variant === ArticleType.DEFAULT,
           '--no-image-variant': article.data.variant === ArticleType.NO_IMAGE,
         },
-        origin && `--is-${origin}`,
+        location && `--is-${location}`,
     )}
 >
   {article.data.featuredImage && (
