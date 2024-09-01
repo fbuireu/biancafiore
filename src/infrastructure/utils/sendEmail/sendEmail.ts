@@ -2,6 +2,7 @@ import type { CreateEmailResponse } from "resend";
 import type { ContactFormData } from "@shared/ui/types";
 import { emails } from "@infrastructure/email/server";
 import { CONTACT_DETAILS } from "@const/index";
+import { createException } from "@domain/errors/utils";
 
 type SendEmailParams = Omit<ContactFormData, "recaptcha">;
 
@@ -9,7 +10,7 @@ export async function sendEmail({
     name,
     message,
     email,
-}: SendEmailParams): Promise<CreateEmailResponse> {
+}: SendEmailParams): Promise<Omit<CreateEmailResponse, "error">> {
     const { data, error } = await emails.send({
         from: `${name} <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`,
         to: atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA),
@@ -20,9 +21,12 @@ export async function sendEmail({
             Reply directly by clicking: <a href="mailto:${email}?subject=Re: ${encodeURIComponent(
             CONTACT_DETAILS.EMAIL_SUBJECT
         )} from biancafiore.me">Reply
-           </a>
-`,
+           </a></p>`,
     });
-
-    return { data, error };
+    if (error) {
+        throw createException({
+            message: `Something went wrong sending the email. Error: ${error.message} (${error.name})`,
+        });
+    }
+    return { data };
 }
