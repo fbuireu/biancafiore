@@ -5,17 +5,19 @@ import { articleSchema } from "@application/entities/articles/schema";
 import { client } from "@infrastructure/cms/client";
 
 export const articles = defineCollection({
-	loader: async () => {
-		const { items: rawArticles } = await client.getEntries<RawArticle>({
-			content_type: "article",
-			order: ["-fields.publishDate"],
-		});
-		const articles = articleDTO.create(rawArticles as unknown as RawArticle[]);
+    loader: async () => {
+        const { items: rawArticles } = await client.getEntries<RawArticle>({
+            content_type: "article",
+            order: ["-fields.publishDate"],
+        });
 
-		return articles.map((article) => ({
-			id: article.slug,
-			...article,
-		}));
-	},
-	schema: articleSchema,
+        const articles = articleDTO.create(
+            rawArticles as unknown as RawArticle[]
+        );
+        return articles.map((article) => ({
+            id: article.slug,
+            ...article,
+        }));
+    },
+    schema: articleSchema,
 });

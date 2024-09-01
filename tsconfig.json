@@ -21,6 +21,7 @@
 		"paths": {
 			"@const/*": ["./src/const/*"],
 			"@infrastructure/*": ["./src/infrastructure/*"],
+			"@domain/*": ["./src/domain/*"],
 			"@actions/*": ["./src/actions/*"],
 			"@application/*": ["./src/application/*"],
 			"@modules/*": ["./src/ui/modules/*"],
