@@ -1,1 +1,1 @@
-export * from "./LittleMoreOfMe.tsx";
+export * from "./LittleMoreOfMe";

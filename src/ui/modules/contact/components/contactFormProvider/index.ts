@@ -1,1 +1,1 @@
-export * from "./ContactFormProvider.tsx";
+export * from "./ContactFormProvider";

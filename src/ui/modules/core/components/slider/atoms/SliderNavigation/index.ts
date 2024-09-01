@@ -1,1 +1,1 @@
-export * from "./SliderNavigation.tsx";
+export * from "./SliderNavigation";

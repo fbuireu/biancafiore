@@ -1,1 +1,1 @@
-export * from "./CityDescription.tsx";
+export * from "./CityDescription";

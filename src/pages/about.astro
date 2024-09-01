@@ -1,25 +1,25 @@
 ---
-import { getCollection, getEntry } from "astro:content";
-import type { CollectionEntry } from "astro:content";
-import { CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
-import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
-import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
-import { LittleMoreOfMe } from "@modules/about/components/littleMoreOfMe/LittleMoreOfMe.tsx";
-import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
-import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import { getCollection, getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { CONTACT_DETAILS, PAGES_ROUTES } from '@const/index';
+import AboutIntro from '@modules/about/components/aboutIntro/AboutIntro.astro';
+import AboutLatestArticles from '@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro';
+import { LittleMoreOfMe } from '@modules/about/components/littleMoreOfMe/LittleMoreOfMe';
+import BaseLayout from '@modules/core/components/baseLayout/BaseLayout.astro';
+import Breadcrumbs from '@modules/core/components/breadcrumbs/Breadcrumbs.astro';
 
-const [cities, authors] = await Promise.all([getCollection("cities"), getCollection("authors")]);
+const [cities, authors] = await Promise.all([getCollection('cities'), getCollection('authors')]);
 
 const author = authors
-	.filter((author) => author.data.name === CONTACT_DETAILS.NAME)
-	.at(0) as CollectionEntry<"authors">;
+    .filter((author) => author.data.name === CONTACT_DETAILS.NAME)
+    .at(0) as CollectionEntry<'authors'>;
 
 const bianca = {
-	...author,
-	data: {
-		...author.data,
-		latestArticle: await getEntry(author.data.latestArticle.collection, author.data.latestArticle.id),
-	},
+  ...author,
+  data: {
+    ...author.data,
+    latestArticle: await getEntry(author.data.latestArticle.collection, author.data.latestArticle.id),
+  },
 };
 ---
 

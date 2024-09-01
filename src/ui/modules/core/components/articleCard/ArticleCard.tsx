@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 import { ArticleType } from "@application/dto/article/types";
-import { PAGES_ROUTES } from "@const/const.ts";
+import { PAGES_ROUTES } from "@const/index";
 import type { ArticleCardAuthorProps } from "@modules/core/components/articleCard/atoms/articleCardAuthor";
 import { ArticleCardAuthor } from "@modules/core/components/articleCard/atoms/articleCardAuthor";
 import type { ArticleCardExcerptProps } from "@modules/core/components/articleCard/atoms/articleCardExcerpt";
@@ -23,49 +23,68 @@ import type { ReactNode } from "react";
 import "./article-card.css";
 
 interface ArticleCardProps extends CollectionEntry<"articles"> {
-	location: URL;
-	children: ReactNode;
+  location: URL;
+  children: ReactNode;
 }
 
-export const ArticleCard = ({ children, location: origin, data }: ArticleCardProps) => {
-	const location = getLocation(origin);
+export const ArticleCard = ({
+  children,
+  location: origin,
+  data,
+}: ArticleCardProps) => {
+  const location = getLocation(origin);
 
-	return (
-		<>
-			<a className={"article__link-card"} href={`${PAGES_ROUTES.ARTICLES}/${data.slug}`} aria-label={data.title}>
-				{" "}
-			</a>
-			<article
-				className={clsx(
-					"article__item",
-					{
-						"--default-variant": data.variant === ArticleType.DEFAULT,
-						"--no-image-variant": data.variant === ArticleType.NO_IMAGE,
-					},
-					location && `--is-${location}`,
-				)}
-			>
-				{children}
-			</article>
-		</>
-	);
+  return (
+    <>
+      <a
+        className={"article__link-card"}
+        href={`${PAGES_ROUTES.ARTICLES}/${data.slug}`}
+        aria-label={data.title}
+      >
+        {" "}
+      </a>
+      <article
+        className={clsx(
+          "article__item",
+          {
+            "--default-variant": data.variant === ArticleType.DEFAULT,
+            "--no-image-variant": data.variant === ArticleType.NO_IMAGE,
+          },
+          location && `--is-${location}`
+        )}
+      >
+        {children}
+      </article>
+    </>
+  );
 };
 
 const Image = (props: ArticleCardImageProps) => <ArticleCardImage {...props} />;
-const Title = ({ children }: ArticleCardTitleProps) => <ArticleCardTitle>{children}</ArticleCardTitle>;
-const Author = ({ children, slug }: ArticleCardAuthorProps) => (
-	<ArticleCardAuthor slug={slug}>{children}</ArticleCardAuthor>
+const Title = ({ children }: ArticleCardTitleProps) => (
+  <ArticleCardTitle>{children}</ArticleCardTitle>
 );
-const Excerpt = ({ children }: ArticleCardExcerptProps) => <ArticleCardExcerpt>{children}</ArticleCardExcerpt>;
-const PublishDate = ({ children, publishDate }: ArticleCardPublishDateProps) => (
-	<ArticleCardPublishDate publishDate={publishDate}>{children}</ArticleCardPublishDate>
+const Author = ({ children, slug }: ArticleCardAuthorProps) => (
+  <ArticleCardAuthor slug={slug}>{children}</ArticleCardAuthor>
+);
+const Excerpt = ({ children }: ArticleCardExcerptProps) => (
+  <ArticleCardExcerpt>{children}</ArticleCardExcerpt>
+);
+const PublishDate = ({
+  children,
+  publishDate,
+}: ArticleCardPublishDateProps) => (
+  <ArticleCardPublishDate publishDate={publishDate}>
+    {children}
+  </ArticleCardPublishDate>
 );
 const ReadingTime = ({ children }: ArticleCardReadingTimeProps) => (
-	<ArticleCardReadingTime>{children}</ArticleCardReadingTime>
+  <ArticleCardReadingTime>{children}</ArticleCardReadingTime>
 );
-const Tags = ({ children }: ArticleCardTagsListProps) => <ArticleCardTagsList>{children}</ArticleCardTagsList>;
+const Tags = ({ children }: ArticleCardTagsListProps) => (
+  <ArticleCardTagsList>{children}</ArticleCardTagsList>
+);
 const Tag = ({ children, ...props }: ArticleCardTagItemProps) => (
-	<ArticleCardTagItem {...props}>{children}</ArticleCardTagItem>
+  <ArticleCardTagItem {...props}>{children}</ArticleCardTagItem>
 );
 
 ArticleCard.Title = Title;
