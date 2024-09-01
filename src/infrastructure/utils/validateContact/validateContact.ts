@@ -1,6 +1,6 @@
-import { contactFormSchema } from "@application/entities/contact/schema.ts";
+import { contactFormSchema } from "@application/entities/contact/schema";
 import { createException } from "@domain/errors/utils";
-import type { ContactFormData } from "@shared/ui/types.ts";
+import type { ContactFormData } from "@shared/ui/types";
 
 type ValidateContact = Omit<ContactFormData, "recaptcha">;
 

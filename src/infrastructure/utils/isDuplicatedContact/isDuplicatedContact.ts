@@ -1,4 +1,5 @@
 import type { ContactFormData } from "@shared/ui/types";
+import { createException } from "@domain/errors/utils";
 
 interface IsDuplicatedContactParams {
     databaseRef: FirebaseFirestore.CollectionReference<
@@ -11,11 +12,17 @@ interface IsDuplicatedContactParams {
 export async function isDuplicatedContact({
     databaseRef,
     data,
-}: IsDuplicatedContactParams): Promise<
-    FirebaseFirestore.QuerySnapshot<
-        FirebaseFirestore.DocumentData,
-        FirebaseFirestore.DocumentData
-    >
-> {
-    return await databaseRef.where("email", "==", data.email).limit(1).get();
+}: IsDuplicatedContactParams): Promise<void> {
+    const querySnapshot = await databaseRef
+        .where("email", "==", data.email)
+        .limit(1)
+        .get();
+
+    if (!querySnapshot.empty) {
+        throw createException({
+            message:
+                "Please be patient, we have already received your message.",
+            code: "UNAUTHORIZED",
+        });
+    }
 }
