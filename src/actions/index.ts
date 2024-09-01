@@ -6,60 +6,14 @@ import { app } from "@infrastructure/database/server";
 import type { ContactFormData } from "@shared/ui/types";
 import { getFirestore } from "firebase-admin/firestore";
 import { sendEmail } from "@infrastructure/utils/sendEmail";
-import { getContactData } from "@infrastructure/utils/getContactData";
 import { Exception } from "@domain/errors";
+import { createException } from "@domain/errors/utils";
+import { validateContact } from "@infrastructure/utils/validateContact";
+import { isDuplicatedContact } from "@infrastructure/utils/isDuplicatedContact";
 
 type ActionHandlerParams = Omit<ContactFormData, "recaptcha">;
 
 const database = getFirestore(app);
-
-// todo: isolate
-const createException = (message: string, code: string) =>
-    new Exception({ message, code });
-
-const handleValidation = (data: ActionHandlerParams) => {
-    const result = contactFormSchema.safeParse(data);
-    if (!result.success) {
-        throw createException(
-            result.error?.errors.join(", ") || "Invalid data",
-            "BAD_REQUEST"
-        );
-    }
-    return result.data;
-};
-
-const processContact = async (data: ActionHandlerParams) => {
-    const databaseRef = database.collection("contacts");
-    const existingContact = await getContactData({ databaseRef, data });
-
-    if (!existingContact.empty) {
-        throw createException(
-            "Please be patient, we have already received your message.",
-            "UNAUTHORIZED"
-        );
-    }
-
-    const { data: emailData, error: emailError } = await sendEmail(data);
-
-    if (emailError) {
-        throw createException(
-            `Something went wrong sending the email. Error: ${emailError.message} (${emailError.name})`,
-            "EMAIL_ERROR"
-        );
-    }
-
-    await databaseRef.add({
-        id: emailData?.id,
-        name: data.name,
-        email: data.email,
-        message: data.message,
-        date: new Date().toLocaleString(DEFAULT_LOCALE_STRING),
-    });
-
-    return { ok: !!emailData && !emailError };
-};
-
-// todo: isolate
 
 export const server = {
     contact: defineAction({
@@ -67,12 +21,44 @@ export const server = {
         input: contactFormSchema,
         handler: async ({ name, email, message }: ActionHandlerParams) => {
             try {
-                const validatedData = handleValidation({
+                const data = validateContact({
                     name,
                     email,
                     message,
                 });
-                return await processContact(validatedData);
+                const databaseRef = database.collection("contacts");
+                const querySnapshot = await isDuplicatedContact({
+                    databaseRef,
+                    data,
+                });
+
+                if (!querySnapshot.empty) {
+                    throw createException({
+                        message:
+                            "Please be patient, we have already received your message.",
+                        code: "UNAUTHORIZED",
+                    });
+                }
+
+                const { data: emailData, error: emailError } = await sendEmail(
+                    data
+                );
+
+                if (emailError) {
+                    throw createException({
+                        message: `Something went wrong sending the email. Error: ${emailError.message} (${emailError.name})`,
+                    });
+                }
+
+                await databaseRef.add({
+                    id: emailData?.id,
+                    name: data.name,
+                    email: data.email,
+                    message: data.message,
+                    date: new Date().toLocaleString(DEFAULT_LOCALE_STRING),
+                });
+
+                return { ok: !!emailData && !emailError };
             } catch (error: unknown) {
                 if (error instanceof Exception) {
                     throw new ActionError({

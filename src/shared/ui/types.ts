@@ -10,5 +10,5 @@ export enum FormStatus {
     LOADING = "loading",
     SUCCESS = "success",
     ERROR = "error",
-    EXCEPTION = "exception",
+    UNAUTHORIZED = "unauthorized",
 }

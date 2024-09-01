@@ -11,26 +11,9 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
 import { Exception } from "@domain/errors";
 import { flyPlane } from "@modules/contact/utils/flyPlane";
-import "./contact-form.css";
 import clsx from "clsx";
-
-// isolate
-const getErrorMessage = (error: unknown) => {
-  if (error instanceof Error) {
-    return error.message;
-  }
-  return error;
-};
-
-const handleFormSubmission = async (data: ContactFormData) => {
-  const contactData = new FormData();
-  contactData.append("name", data.name);
-  contactData.append("email", data.email);
-  contactData.append("message", data.message);
-
-  return actions.contact(contactData);
-};
-// isolate
+import { getErrorMessage } from "@modules/contact/utils/getErrorMessage";
+import "./contact-form.css";
 
 export const ContactForm = () => {
   const {
@@ -72,7 +55,12 @@ export const ContactForm = () => {
       try {
         setFormStatus(FormStatus.LOADING);
 
-        const { data: response, error } = await handleFormSubmission(data);
+        const contactData = new FormData();
+        contactData.append("name", data.name);
+        contactData.append("email", data.email);
+        contactData.append("message", data.message);
+
+        const { data: response, error } = await actions.contact(contactData);
 
         if (response?.ok) {
           flyPlane(submitRef.current);
@@ -81,17 +69,17 @@ export const ContactForm = () => {
             reset();
           }, 2000);
         } else if (error) {
-          if (error.status === 401) throw new Exception(error);
+          if (error.status === 401) {
+            setFormStatus(FormStatus.UNAUTHORIZED);
+            throw new Exception(error);
+          }
+
+          setFormStatus(FormStatus.ERROR);
           throw new Error(error.message);
         }
       } catch (error) {
-        setFormStatus(
-          error instanceof Exception ? FormStatus.EXCEPTION : FormStatus.ERROR
-        );
-
         const errorMessage = getErrorMessage(error);
-        console.log(error);
-        console.log(errorMessage);
+
         setError("root", {
           type: "manual",
           message: errorMessage as string,
@@ -175,7 +163,7 @@ export const ContactForm = () => {
               </p>
             )}
           </div>
-          {[FormStatus.ERROR, FormStatus.EXCEPTION].includes(formStatus) && (
+          {[FormStatus.ERROR, FormStatus.UNAUTHORIZED].includes(formStatus) && (
             <div className="contact-form__recaptcha__wrapper">
               <p className="contact-form__recaptcha__error-message">
                 {errors.root?.message}
@@ -189,7 +177,7 @@ export const ContactForm = () => {
             })}
             disabled={[
               FormStatus.ERROR,
-              FormStatus.EXCEPTION,
+              FormStatus.UNAUTHORIZED,
               FormStatus.LOADING,
             ].includes(formStatus)}
             type="submit"

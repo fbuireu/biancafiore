@@ -1,6 +1,6 @@
 import type { ContactFormData } from "@shared/ui/types";
 
-interface GetContactDataParams {
+interface IsDuplicatedContactParams {
     databaseRef: FirebaseFirestore.CollectionReference<
         FirebaseFirestore.DocumentData,
         FirebaseFirestore.DocumentData
@@ -8,10 +8,10 @@ interface GetContactDataParams {
     data: Omit<ContactFormData, "recaptcha">;
 }
 
-export async function getContactData({
+export async function isDuplicatedContact({
     databaseRef,
     data,
-}: GetContactDataParams): Promise<
+}: IsDuplicatedContactParams): Promise<
     FirebaseFirestore.QuerySnapshot<
         FirebaseFirestore.DocumentData,
         FirebaseFirestore.DocumentData
