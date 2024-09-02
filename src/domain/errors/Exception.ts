@@ -1,14 +1,14 @@
 interface ExceptionParams {
-    message: string;
-    code: string;
+	message: string;
+	code?: string;
 }
 
 export class Exception extends Error {
-    code: string;
+	code: string;
 
-    constructor({ message, code }: ExceptionParams) {
-        super(message);
-        this.name = "Exception";
-        this.code = code;
-    }
+	constructor({ message, code = "INTERNAL_SERVER_ERROR" }: ExceptionParams) {
+		super(message);
+		this.name = "Exception";
+		this.code = code;
+	}
 }

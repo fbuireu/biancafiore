@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
+import { PAGES_ROUTES } from "@const/index";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
-import { PAGES_ROUTES } from '@const/index';
 import "./_tags.css";
 
 const tags = await getCollection("tags");
