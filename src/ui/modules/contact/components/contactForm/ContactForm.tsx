@@ -1,204 +1,176 @@
 import { actions } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
+import { Exception } from "@domain/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { autosize } from "@modules/contact/utils/autosize";
+import { flyPlane } from "@modules/contact/utils/flyPlane";
+import { getErrorMessage } from "@modules/contact/utils/getErrorMessage";
 import Spinner from "@modules/core/components/spinner/Spinner";
 import type { ContactFormData } from "@shared/ui/types";
 import { FormStatus } from "@shared/ui/types";
+import clsx from "clsx";
 import type { FormEvent } from "react";
 import { useCallback, useRef, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
-import { Exception } from "@domain/errors";
-import { flyPlane } from "@modules/contact/utils/flyPlane";
-import clsx from "clsx";
-import { getErrorMessage } from "@modules/contact/utils/getErrorMessage";
 import "./contact-form.css";
 
 export const ContactForm = () => {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-    reset,
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactFormSchema),
-  });
+	const {
+		register,
+		handleSubmit,
+		setError,
+		formState: { errors },
+		reset,
+	} = useForm<ContactFormData>({
+		resolver: zodResolver(contactFormSchema),
+	});
 
-  const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.INITIAL);
-  const { executeRecaptcha } = useGoogleReCaptcha();
-  const submitRef = useRef<HTMLButtonElement>(null);
+	const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.INITIAL);
+	const { executeRecaptcha } = useGoogleReCaptcha();
+	const submitRef = useRef<HTMLButtonElement>(null);
 
-  const verifyRecaptcha = useCallback(
-    async (data: ContactFormData, event: FormEvent<HTMLFormElement>) => {
-      if (!executeRecaptcha) return;
-      const token = await executeRecaptcha();
+	const verifyRecaptcha = useCallback(
+		async (data: ContactFormData, event: FormEvent<HTMLFormElement>) => {
+			if (!executeRecaptcha) return;
+			const token = await executeRecaptcha();
 
-      if (!token) {
-        setError("recaptcha", {
-          type: "manual",
-          message: "Mr. Robot, is that you?",
-        });
-        return;
-      }
-      await submitForm(data, event);
-    },
-    [executeRecaptcha, setError]
-  );
+			if (!token) {
+				setError("recaptcha", {
+					type: "manual",
+					message: "Mr. Robot, is that you?",
+				});
+				return;
+			}
+			await submitForm(data, event);
+		},
+		[executeRecaptcha, setError],
+	);
 
-  const submitForm = useCallback(
-    async (data: ContactFormData, event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      if (!submitRef.current) return;
+	const submitForm = useCallback(
+		async (data: ContactFormData, event: FormEvent<HTMLFormElement>) => {
+			event.preventDefault();
+			if (!submitRef.current) return;
 
-      try {
-        setFormStatus(FormStatus.LOADING);
+			try {
+				setFormStatus(FormStatus.LOADING);
 
-        const contactData = new FormData();
-        contactData.append("name", data.name);
-        contactData.append("email", data.email);
-        contactData.append("message", data.message);
+				const contactData = new FormData();
+				contactData.append("name", data.name);
+				contactData.append("email", data.email);
+				contactData.append("message", data.message);
 
-        const { data: response, error } = await actions.contact(contactData);
+				const { data: response, error } = await actions.contact(contactData);
 
-        if (response?.ok) {
-          flyPlane(submitRef.current);
-          setTimeout(() => {
-            setFormStatus(FormStatus.SUCCESS);
-            reset();
-          }, 2000);
-        } else if (error) {
-          if (error.status === 401) {
-            setFormStatus(FormStatus.UNAUTHORIZED);
-            throw new Exception(error);
-          }
+				if (response?.ok) {
+					flyPlane(submitRef.current);
+					setTimeout(() => {
+						setFormStatus(FormStatus.SUCCESS);
+						reset();
+					}, 2000);
+				} else if (error) {
+					if (error.status === 401) {
+						setFormStatus(FormStatus.UNAUTHORIZED);
+						throw new Exception(error);
+					}
 
-          setFormStatus(FormStatus.ERROR);
-          throw new Error(error.message);
-        }
-      } catch (error) {
-        const errorMessage = getErrorMessage(error);
+					setFormStatus(FormStatus.ERROR);
+					throw new Error(error.message);
+				}
+			} catch (error) {
+				const errorMessage = getErrorMessage(error);
 
-        setError("root", {
-          type: "manual",
-          message: errorMessage as string,
-        });
-      }
-    },
-    [reset, setError]
-  );
+				setError("root", {
+					type: "manual",
+					message: errorMessage as string,
+				});
+			}
+		},
+		[reset, setError],
+	);
 
-  return (
-    <>
-      {formStatus !== FormStatus.SUCCESS ? (
-        <form
-          className="contact-form"
-          onSubmit={(event) =>
-            handleSubmit((data) => verifyRecaptcha(data, event))(event)
-          }
-        >
-          <p className="contact-form__text"> My name is</p>
-          <div className="contact-form__input__wrapper --underline-on-hover">
-            <input
-              id="name"
-              type="text"
-              placeholder="Your name"
-              className="contact-form__input"
-              {...register("name")}
-            />
-            <label htmlFor="name" className="contact-form__input-label">
-              (your name)
-            </label>
-            {errors.name && (
-              <p className="contact-form__input__error-message">
-                {errors.name.message}
-              </p>
-            )}
-          </div>
-          <p className="contact-form__text">and my email is</p>
-          <div className="contact-form__input__wrapper --underline-on-hover">
-            <input
-              id="email"
-              type="text"
-              placeholder="Your email"
-              className="contact-form__input"
-              {...register("email")}
-            />
-            <label htmlFor="email" className="contact-form__input-label">
-              (your email)
-            </label>
-            {errors.email && (
-              <p className="contact-form__input__error-message">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
-          <p className="contact-form__text">
-            I look forward to hearing from you within the next 24 hours to
-            discuss further. <br />I have a message for you,
-          </p>
-          <div className="contact-form__textarea__wrapper flex column-wrap justify-flex-start --underline-on-hover">
-            <textarea
-              id="message"
-              placeholder="Why you contact me?"
-              className="contact-form__textarea"
-              onKeyDown={autosize}
-              {...register("message")}
-            />
-            <label htmlFor="message" className="contact-form__textarea-label">
-              (your message)
-            </label>
-            {errors.message && (
-              <p className="contact-form__textarea__error-message">
-                {errors.message.message}
-              </p>
-            )}
-          </div>
-          <div className="contact-form__recaptcha__wrapper">
-            <input type="hidden" {...register("recaptcha")} />
-            {errors.recaptcha && (
-              <p className="contact-form__recaptcha__error-message">
-                {errors.recaptcha.message}
-              </p>
-            )}
-          </div>
-          {[FormStatus.ERROR, FormStatus.UNAUTHORIZED].includes(formStatus) && (
-            <div className="contact-form__recaptcha__wrapper">
-              <p className="contact-form__recaptcha__error-message">
-                {errors.root?.message}
-              </p>
-            </div>
-          )}
-          <button
-            ref={submitRef}
-            className={clsx("contact-form__submit plane --is-clickable", {
-              "--is-loading": formStatus === FormStatus.LOADING,
-            })}
-            disabled={[
-              FormStatus.ERROR,
-              FormStatus.UNAUTHORIZED,
-              FormStatus.LOADING,
-            ].includes(formStatus)}
-            type="submit"
-          >
-            <span>
-              {formStatus !== FormStatus.LOADING ? (
-                <>Send email </>
-              ) : (
-                <Spinner />
-              )}
-            </span>
-            <div className="plane__left-wing" />
-            <div className="plane__right-wing" />
-            <span />
-          </button>
-        </form>
-      ) : (
-        <div className="contact-form__success-message flex column-wrap">
-          <h4>Form sent correctly! Will be in touch soon</h4>
-        </div>
-      )}
-    </>
-  );
+	return (
+		<>
+			{formStatus !== FormStatus.SUCCESS ? (
+				<form
+					className={clsx("contact-form", {
+						"--is-disabled": formStatus === FormStatus.UNAUTHORIZED,
+					})}
+					onSubmit={(event) => handleSubmit((data) => verifyRecaptcha(data, event))(event)}
+				>
+					<p className="contact-form__text"> My name is</p>
+					<div className="contact-form__input__wrapper --underline-on-hover">
+						<input
+							id="name"
+							type="text"
+							placeholder="Your name"
+							className="contact-form__input"
+							{...register("name")}
+						/>
+						<label htmlFor="name" className="contact-form__input-label">
+							(your name)
+						</label>
+						{errors.name && <p className="contact-form__input__error-message">{errors.name.message}</p>}
+					</div>
+					<p className="contact-form__text">and my email is</p>
+					<div className="contact-form__input__wrapper --underline-on-hover">
+						<input
+							id="email"
+							type="text"
+							placeholder="Your email"
+							className="contact-form__input"
+							{...register("email")}
+						/>
+						<label htmlFor="email" className="contact-form__input-label">
+							(your email)
+						</label>
+						{errors.email && <p className="contact-form__input__error-message">{errors.email.message}</p>}
+					</div>
+					<p className="contact-form__text">
+						I look forward to hearing from you within the next 24 hours to discuss further. <br />I have a message for
+						you,
+					</p>
+					<div className="contact-form__textarea__wrapper flex column-wrap justify-flex-start --underline-on-hover">
+						<textarea
+							id="message"
+							placeholder="Why you contact me?"
+							className="contact-form__textarea"
+							onKeyDown={autosize}
+							{...register("message")}
+						/>
+						<label htmlFor="message" className="contact-form__textarea-label">
+							(your message)
+						</label>
+						{errors.message && <p className="contact-form__textarea__error-message">{errors.message.message}</p>}
+					</div>
+					<div className="contact-form__recaptcha__wrapper">
+						<input type="hidden" {...register("recaptcha")} />
+						{errors.recaptcha && <p className="contact-form__recaptcha__error-message">{errors.recaptcha.message}</p>}
+					</div>
+					{[FormStatus.ERROR, FormStatus.UNAUTHORIZED].includes(formStatus) && (
+						<div className="contact-form__recaptcha__wrapper">
+							<p className="contact-form__recaptcha__error-message">{errors.root?.message}</p>
+						</div>
+					)}
+					<button
+						ref={submitRef}
+						className={clsx("contact-form__submit plane --is-clickable", {
+							"--is-loading": formStatus === FormStatus.LOADING,
+						})}
+						disabled={[FormStatus.ERROR, FormStatus.UNAUTHORIZED, FormStatus.LOADING].includes(formStatus)}
+						type="submit"
+					>
+						<span>{formStatus !== FormStatus.LOADING ? <>Send email</> : <Spinner />}</span>
+						<div className="plane__left-wing" />
+						<div className="plane__right-wing" />
+						<span />
+					</button>
+				</form>
+			) : (
+				<div className="contact-form__success-message flex column-wrap">
+					<h4>Form sent correctly! Will be in touch soon</h4>
+				</div>
+			)}
+		</>
+	);
 };
