@@ -85,4 +85,14 @@
             clip-path: inset(100% 0 0 0);
         }
     }
+
+    @keyframes travel {
+        0% {
+            stroke-dashoffset: 0;
+        }
+
+        100% {
+            stroke-dashoffset: 100;
+        }
+    }
 }
