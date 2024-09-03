@@ -85,22 +85,3 @@
     letter-spacing: 0.25rem;
     text-transform: uppercase;
 }
-
-.featured-article__cta {
-    align-content: center;
-    flex-flow: row wrap;
-    font-weight: 700;
-    gap: 0 1rem;
-    transition: gap 0.2s;
-    width: fit-content;
-    z-index: 10;
-
-    img {
-        rotate: 0.5turn;
-        width: 2rem;
-    }
-
-    &:hover {
-        gap: 0 1.5rem;
-    }
-}
