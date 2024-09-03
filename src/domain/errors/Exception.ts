@@ -1,10 +1,12 @@
+import type { ActionErrorCode } from "astro/dist/actions/runtime/virtual/shared";
+
 interface ExceptionParams {
 	message: string;
-	code?: string;
+	code?: ActionErrorCode;
 }
 
 export class Exception extends Error {
-	code: string;
+	code: ActionErrorCode;
 
 	constructor({ message, code = "INTERNAL_SERVER_ERROR" }: ExceptionParams) {
 		super(message);

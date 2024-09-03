@@ -6,8 +6,7 @@ import { autosize } from "@modules/contact/utils/autosize";
 import { flyPlane } from "@modules/contact/utils/flyPlane";
 import { getErrorMessage } from "@modules/contact/utils/getErrorMessage";
 import Spinner from "@modules/core/components/spinner/Spinner";
-import type { ContactFormData } from "@shared/ui/types";
-import { FormStatus } from "@shared/ui/types";
+import { type ContactFormData, FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
 import type { FormEvent } from "react";
 import { useCallback, useRef, useState } from "react";
@@ -99,12 +98,17 @@ export const ContactForm = () => {
 					onSubmit={(event) => handleSubmit((data) => verifyRecaptcha(data, event))(event)}
 				>
 					<p className="contact-form__text"> My name is</p>
-					<div className="contact-form__input__wrapper --underline-on-hover">
+					<div
+						className={clsx("contact-form__input__wrapper", {
+							"--underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
+						})}
+					>
 						<input
 							id="name"
 							type="text"
 							placeholder="Your name"
 							className="contact-form__input"
+							disabled={formStatus === FormStatus.UNAUTHORIZED}
 							{...register("name")}
 						/>
 						<label htmlFor="name" className="contact-form__input-label">
@@ -113,12 +117,17 @@ export const ContactForm = () => {
 						{errors.name && <p className="contact-form__input__error-message">{errors.name.message}</p>}
 					</div>
 					<p className="contact-form__text">and my email is</p>
-					<div className="contact-form__input__wrapper --underline-on-hover">
+					<div
+						className={clsx("contact-form__input__wrapper", {
+							"--underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
+						})}
+					>
 						<input
 							id="email"
 							type="text"
 							placeholder="Your email"
 							className="contact-form__input"
+							disabled={formStatus === FormStatus.UNAUTHORIZED}
 							{...register("email")}
 						/>
 						<label htmlFor="email" className="contact-form__input-label">
@@ -130,12 +139,17 @@ export const ContactForm = () => {
 						I look forward to hearing from you within the next 24 hours to discuss further. <br />I have a message for
 						you,
 					</p>
-					<div className="contact-form__textarea__wrapper flex column-wrap justify-flex-start --underline-on-hover">
+					<div
+						className={clsx("contact-form__textarea__wrapper flex column-wrap justify-flex-start", {
+							"--underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
+						})}
+					>
 						<textarea
 							id="message"
 							placeholder="Why you contact me?"
 							className="contact-form__textarea"
 							onKeyDown={autosize}
+							disabled={formStatus === FormStatus.UNAUTHORIZED}
 							{...register("message")}
 						/>
 						<label htmlFor="message" className="contact-form__textarea-label">
@@ -157,10 +171,10 @@ export const ContactForm = () => {
 						className={clsx("contact-form__submit plane --is-clickable", {
 							"--is-loading": formStatus === FormStatus.LOADING,
 						})}
-						disabled={[FormStatus.ERROR, FormStatus.UNAUTHORIZED, FormStatus.LOADING].includes(formStatus)}
+						disabled={[FormStatus.UNAUTHORIZED].includes(formStatus)}
 						type="submit"
 					>
-						<span>{formStatus !== FormStatus.LOADING ? <>Send email</> : <Spinner />}</span>
+						<span className="flex">{formStatus !== FormStatus.LOADING ? <>Send email</> : <Spinner />}</span>
 						<div className="plane__left-wing" />
 						<div className="plane__right-wing" />
 						<span />

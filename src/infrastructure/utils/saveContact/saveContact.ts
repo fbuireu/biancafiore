@@ -1,8 +1,9 @@
 import { DEFAULT_LOCALE_STRING } from "@const/index";
 import type { ContactFormData } from "@shared/ui/types";
+import type { CreateEmailResponseSuccess } from "resend";
 
 interface SaveContactParams {
-	contactData: Omit<ContactFormData, "recaptcha"> & { id: string };
+	contactData: Omit<ContactFormData, "recaptcha"> & CreateEmailResponseSuccess;
 	databaseRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>;
 }
 

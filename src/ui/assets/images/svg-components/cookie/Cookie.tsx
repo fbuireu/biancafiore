@@ -3,9 +3,10 @@ import type { SVGProps } from "react";
 
 interface CookieProps extends SVGProps<SVGSVGElement> {
 	classNames?: string;
+	title?: string;
 }
 
-export const Cookie = ({ fill = "currentColor", classNames, ...props }: CookieProps) => {
+export const Cookie = ({ fill = "currentColor", title = "Cookie", classNames, ...props }: CookieProps) => {
 	return (
 		<svg
 			className={clsx(classNames)}
@@ -20,7 +21,7 @@ export const Cookie = ({ fill = "currentColor", classNames, ...props }: CookiePr
 			fill={fill}
 			{...props}
 		>
-			<title>Cookie</title>
+			<title>{title}</title>
 			<g>
 				<path
 					style={{ fillRule: "evenodd", clipRule: "evenodd" }}

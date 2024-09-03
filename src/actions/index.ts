@@ -3,7 +3,7 @@ import { ActionError, defineAction } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
 import { Exception } from "@domain/errors";
 import { app } from "@infrastructure/database/server";
-import { isDuplicatedContact } from "@infrastructure/utils/isDuplicatedContact";
+import { checkDuplicatedEntries } from "@infrastructure/utils/checkDuplicatedEntries";
 import { saveContact } from "@infrastructure/utils/saveContact";
 import { sendEmail } from "@infrastructure/utils/sendEmail";
 import { validateContact } from "@infrastructure/utils/validateContact";
@@ -11,7 +11,6 @@ import type { ContactFormData } from "@shared/ui/types";
 import { getFirestore } from "firebase-admin/firestore";
 
 type ActionHandlerParams = Omit<ContactFormData, "recaptcha">;
-
 const database = getFirestore(app);
 
 export const server = {
@@ -25,8 +24,9 @@ export const server = {
 					email,
 					message,
 				});
+
 				const databaseRef = database.collection("contacts");
-				await isDuplicatedContact({ databaseRef, data });
+				await checkDuplicatedEntries({ databaseRef, data });
 
 				const { id: mailId } = await sendEmail(data);
 
