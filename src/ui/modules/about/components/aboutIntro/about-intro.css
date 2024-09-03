@@ -43,25 +43,3 @@
       padding-inline-start: 1rem;
     }
   }
-
-  .about-me-intro__body__cta {
-    align-content: center;
-    flex-flow: row wrap;
-    font-weight: 700;
-    gap: 0 1rem;
-    transition: gap 0.2s;
-    width: fit-content;
-
-    img {
-      rotate: 0.5turn;
-      width: 2rem;
-    }
-
-    &:hover {
-      gap: 0 1.5rem;
-    }
-    @media (width <= 960px) {
-      margin-bottom: 1rem;
-    }
-  }
-

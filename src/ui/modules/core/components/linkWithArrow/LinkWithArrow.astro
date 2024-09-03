@@ -1,0 +1,18 @@
+---
+import horizontalArrowRaw from "@assets/images/svg/left-arrow.svg?raw";
+import "./link-with-arrow.css";
+
+interface LinkWithArrowProps {
+	title: string;
+	href: string;
+	classNames: string;
+}
+
+const { href, classNames, title } = Astro.props as LinkWithArrowProps;
+---
+
+<a href={href} class:list={[`${classNames} link-with-arrow flex align-center --underline-on-hover --is-clickable`]}>
+    {title}
+    <Fragment set:html={horizontalArrowRaw} />
+</a>
+

@@ -1,8 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import bianca from "@assets/images/jpg/bianca-fiore.jpg";
-import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import SocialNetworks from "@modules/core/components/socialNetworks/SocialNetworks.astro";
+import { PAGES_ROUTES } from "src/const";
+import LinkWithArrow from "src/ui/modules/core/components/linkWithArrow/LinkWithArrow.astro";
 import "./about-intro.css";
 ---
 
@@ -18,9 +19,7 @@ import "./about-intro.css";
         Quid de Platone aut de Democrito loquar? Summus dolor plures dies manere non potest? Si enim ita est, vide ne facinus
         facias, cum mori.
       </p>
-      <a href="/projects" class="about-me-intro__body__cta flex align-center --underline-on-hover">
-        See my work <Image src={horizontalArrow} alt="See my work" loading="eager" />
-      </a>
+        <LinkWithArrow title="See my work" href={`${PAGES_ROUTES.PROJECTS}`} classNames="about-me-intro__body__cta" />
     </div>
   </div>
   <div class="about-me-intro__section --right flex row-wrap">

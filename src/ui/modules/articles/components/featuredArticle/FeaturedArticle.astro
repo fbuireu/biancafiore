@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
-import horizontalArrow from "@assets/images/svg/left-arrow.svg";
 import { PAGES_ROUTES } from "@const/index";
+import LinkWithArrow from "@modules/core/components/linkWithArrow/LinkWithArrow.astro";
 import "./featured-article.css";
 
 interface FeaturedArticleProps {
@@ -47,10 +47,7 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                           </ul>
                       )
                   }
-                    <a href={`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`} class="featured-article__cta flex --underline-on-hover align-center">
-                        Read More
-                        <Image src={horizontalArrow} alt="Read more" loading="eager" />
-                    </a>
+                <LinkWithArrow title="Read More" href={`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`} classNames="featured-article__cta" />
                 </div>
                 <div class="featured-article__share__wrapper flex row-wrap">
                     <p class="featured-article__share__title font-serif">SHARE IT!</p>
