@@ -12,7 +12,7 @@ const { href, classNames, title } = Astro.props as LinkWithArrowProps;
 ---
 
 <a href={href} class:list={[`${classNames} link-with-arrow flex align-center --underline-on-hover --is-clickable`]}>
-    {title}
+    <slot />
     <Fragment set:html={horizontalArrowRaw} />
 </a>
 

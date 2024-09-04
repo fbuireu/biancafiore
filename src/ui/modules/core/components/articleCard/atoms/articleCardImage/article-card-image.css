@@ -1,5 +1,5 @@
 .article__item__featured-image {
-    grid-area: Featured-Image;
+    grid-area: Article-Card-Featured-Image;
     object-fit: cover;
     z-index: 0;
 }

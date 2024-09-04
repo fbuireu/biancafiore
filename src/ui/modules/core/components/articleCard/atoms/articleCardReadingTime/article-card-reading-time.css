@@ -1,4 +1,4 @@
 .article__reading-time {
-    grid-area: Reading-Time;
+    grid-area: Article-Card-Reading-Time;
     justify-self: flex-end;
 }
