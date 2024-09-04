@@ -13,7 +13,6 @@ const article = Astro.props as ArticleCardProps;
 const { pathname } = Astro.url;
 const location = getLocation(Astro.url);
 ---
-
 <a class="article__link-card" href={`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`} aria-label={article.data.title}>{' '}</a>
 <article
     class={clsx(

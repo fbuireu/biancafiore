@@ -11,7 +11,6 @@ type RelatedArticleCardProps = CollectionEntry<"articles">;
 const { pathname } = Astro.url;
 const relatedArticle = Astro.props as RelatedArticleCardProps;
 ---
-
 <a class="related-article__link-card" href={`${PAGES_ROUTES.ARTICLES}/${relatedArticle.data.slug}`}
    aria-label={relatedArticle.data.title}>{' '}</a>
 <article
