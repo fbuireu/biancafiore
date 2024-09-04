@@ -1,4 +1,4 @@
-.article__title {
+.article-card__title {
     align-self: center;
     color: currentColor;
     grid-area: Article-Card-Title;

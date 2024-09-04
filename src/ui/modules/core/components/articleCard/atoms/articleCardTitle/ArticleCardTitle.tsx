@@ -6,5 +6,5 @@ export interface ArticleCardTitleProps {
 }
 
 export const ArticleCardTitle = ({ children }: ArticleCardTitleProps) => (
-	<h3 className="article__title font-serif inner-section-title">{children}</h3>
+	<h3 className="article-card__title font-serif inner-section-title">{children}</h3>
 );
