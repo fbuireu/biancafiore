@@ -1,14 +1,17 @@
 ---
 import { getCollection } from "astro:content";
 import { PAGES_ROUTES } from "@const/index";
+import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import "./_tags.css";
 
 const tags = await getCollection("tags");
+const metadata: Partial<SeoMetadata> = {
+	title: tag.title,
+};
 ---
-
-<BaseLayout>
+<BaseLayout {...metadata}>
     <Breadcrumbs />
     <section class="common-wrapper">
         <h1 class="flex justify-center">All tags</h1>

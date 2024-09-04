@@ -12,7 +12,6 @@ interface FeaturedArticleProps {
 const { featuredArticle } = Astro.props as FeaturedArticleProps;
 const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`, Astro.url).href;
 ---
-
 <div class="articles__wrapper">
     <section class="articles__wrapper__inner common-wrapper">
         <div class="featured-article__wrapper">

@@ -1,8 +1,7 @@
 ---
-import "./error-layer.css";
 import { PAGES_ROUTES } from "@const/index";
+import "./error-layer.css";
 ---
-
 <section class="error-layer__wrapper common-wrapper flex column-nowrap justify-center align-center">
   <slot />
   <p>Why not try going back to the <a href={PAGES_ROUTES.HOME} class="error-layer__link --underline-on-hover">homepage</a>?</p>

@@ -2,6 +2,7 @@
 import { getCollection, getEntry } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import { CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
+import type { SeoMetadata } from "@const/types";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
 import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
 import { LittleMoreOfMe } from "@modules/about/components/littleMoreOfMe/LittleMoreOfMe";
@@ -21,9 +22,11 @@ const bianca = {
 		latestArticle: await getEntry(author.data.latestArticle.collection, author.data.latestArticle.id),
 	},
 };
+const metadata: Partial<SeoMetadata> = {
+	title: "About me",
+};
 ---
-
-<BaseLayout>
+<BaseLayout {...metadata}>
     <Breadcrumbs />
     <AboutIntro />
     <LittleMoreOfMe client:only="react" cities={cities} />

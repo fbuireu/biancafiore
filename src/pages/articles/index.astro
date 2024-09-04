@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import type { SeoMetadata } from "@const/types";
 import FeaturedArticle from "@modules/articles/components/featuredArticle/FeaturedArticle.astro";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
@@ -10,13 +11,12 @@ import "./_articles.css";
 const articles = await getCollection("articles");
 const featuredArticle = getFeaturedArticle(articles);
 
-const metadata = {
+const metadata: Partial<SeoMetadata> = {
 	title: "Articles",
 	description: "Articles I wrote while drinking coffee",
 	...(featuredArticle?.data.featuredImage && { image: featuredArticle.data.featuredImage.url }),
 };
 ---
-
 <BaseLayout {...metadata}>
     <h1 class="articles__title section-title">The Blog</h1>
     <Breadcrumbs />

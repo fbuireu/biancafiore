@@ -13,7 +13,6 @@ const relatedArticles = await Promise.all(
 	article.data.relatedArticles.map(async (article) => await getEntry(article.collection, article.id)),
 );
 ---
-
 {
     relatedArticles.length > 0 && (
     <section class="related-articles__wrapper common-wrapper">
