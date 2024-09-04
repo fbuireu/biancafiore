@@ -18,18 +18,18 @@
     will-change: transform;
 }
 
-.article__link-card {
+.article-card__link {
     inset: 0;
     position: absolute;
     width: 100%;
     z-index: 1;
 
-    &:hover ~ .article__item .article__tag__item {
+    &:hover ~ .article-card__item .article-card__tag__item {
         translate: 0 0;
     }
 }
 
-.article__item {
+.article-card__item {
     color: var(--white);
     display: grid;
     gap: 0.5rem 0;

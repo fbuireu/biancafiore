@@ -1,4 +1,4 @@
-.article__author {
+.article-card__author {
     color: currentColor;
     grid-area: Article-Card-Author;
 
@@ -8,11 +8,11 @@
         z-index: 10;
     }
 
-    &:has(a:hover) ~ .article__tags__list .article__tag__item {
+    &:has(a:hover) ~ .article-card__tags__list .article-card__tag__item {
         translate: 0 0;
     }
 }
 
-.article__author__name {
+.article-card__author__name {
     display: inline-block;
 }

@@ -12,7 +12,7 @@ const metadata: Partial<SeoMetadata> = {
 	title: "Projects",
 };
 ---
-<BaseLayout>
+<BaseLayout {...metadata}>
   <ProjectsIntro />
   {projects.map((project, index) =>(
     <ProjectSection id={project.data.id}>

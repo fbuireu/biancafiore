@@ -42,7 +42,7 @@ export async function getStaticPaths() {
 const { slug } = Astro.params as TagParams;
 const { tag } = Astro.props as TagProps;
 const metadata: Partial<SeoMetadata> = {
-	title: tag.title,
+	title: `#${slug}`,
 };
 ---
 <BaseLayout {...metadata}>

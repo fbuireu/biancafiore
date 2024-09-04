@@ -6,5 +6,5 @@ export interface ArticleCardTagsListProps {
 }
 
 export const ArticleCardTagsList = ({ children }: ArticleCardTagsListProps) => (
-	<ul className="article__tags__list flex">{children}</ul>
+	<ul className="article-card__tags__list flex">{children}</ul>
 );

@@ -32,12 +32,12 @@ export const ArticleCard = ({ children, location: origin, data }: ArticleCardPro
 
 	return (
 		<>
-			<a className={"article__link-card"} href={`${PAGES_ROUTES.ARTICLES}/${data.slug}`} aria-label={data.title}>
+			<a className={"article-card__link"} href={`${PAGES_ROUTES.ARTICLES}/${data.slug}`} aria-label={data.title}>
 				{" "}
 			</a>
 			<article
 				className={clsx(
-					"article__item",
+					"article-card__item",
 					{
 						"--default-variant": data.variant === ArticleType.DEFAULT,
 						"--no-image-variant": data.variant === ArticleType.NO_IMAGE,

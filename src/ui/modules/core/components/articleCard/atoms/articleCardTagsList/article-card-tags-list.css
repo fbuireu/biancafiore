@@ -1,4 +1,4 @@
-.article__tags__list {
+.article-card__tags__list {
     color: currentColor;
     gap: 0 1rem;
     grid-area: Article-Card-Tags;
@@ -6,7 +6,7 @@
     text-transform: lowercase;
     z-index: 10;
 
-    &:hover .article__tag__item {
+    &:hover .article-card__tag__item {
         translate: 0 0;
     }
 }

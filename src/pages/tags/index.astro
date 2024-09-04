@@ -8,7 +8,7 @@ import "./_tags.css";
 
 const tags = await getCollection("tags");
 const metadata: Partial<SeoMetadata> = {
-	title: tag.title,
+	title: "Tags",
 };
 ---
 <BaseLayout {...metadata}>
@@ -21,7 +21,7 @@ const metadata: Partial<SeoMetadata> = {
                   <h2 class="tags__item__letter">{letter.data.name}</h2>
                   <ul class="tags__item__list flex column-wrap">
                     {tags[index].data.tags.map((tag) => (
-                        <li class="tag__item font-sans-serif">
+                        <li class="tag__item font-sans-serif --is-clickable">
                             <a href={`${PAGES_ROUTES.TAGS}/${tag.slug}`} class="--underline-on-hover">{tag.name}(&times;{tag.count})</a>
                         </li>
                         <script is:inline type="application/ld+json" set:html={JSON.stringify({

@@ -6,5 +6,5 @@ export interface ArticleCardReadingTimeProps {
 }
 
 export const ArticleCardReadingTime = ({ children }: ArticleCardReadingTimeProps) => (
-	<p className={"article__reading-time"}>{children}</p>
+	<p className={"article-card__reading-time"}>{children}</p>
 );
