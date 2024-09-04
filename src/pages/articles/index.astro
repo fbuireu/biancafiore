@@ -9,14 +9,19 @@ import "./_articles.css";
 
 const articles = await getCollection("articles");
 const featuredArticle = getFeaturedArticle(articles);
+
+const metadata = {
+	title: "Articles",
+	description: "Articles I wrote while drinking coffee",
+	...(featuredArticle?.data.featuredImage && { image: featuredArticle.data.featuredImage.url }),
+};
 ---
 
-<BaseLayout>
+<BaseLayout {...metadata}>
     <h1 class="articles__title section-title">The Blog</h1>
     <Breadcrumbs />
   {
-      featuredArticle &&
-      <FeaturedArticle featuredArticle={featuredArticle} />
+      featuredArticle && <FeaturedArticle featuredArticle={featuredArticle} />
   }
     <section class="articles__grid common-wrapper">
         <ul class="articles__grid__list flex row-wrap">

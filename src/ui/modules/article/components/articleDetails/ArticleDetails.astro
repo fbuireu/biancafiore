@@ -9,20 +9,21 @@ interface ArticleDetailsProps {
 
 const { article } = Astro.props as ArticleDetailsProps;
 ---
-<div class="article__details">
-    <h1 class="article__title">
+
+<div class="article-details">
+    <h1 class="article-details__title">
       {article.data.title}
     </h1>
-    <p class="article__author">by <a class="--underline-on-hover" href={`${PAGES_ROUTES.TAGS}/${article.data.author.slug}`}>{article.data.author.name}</a></p>
-    <time class="article__publish-date font-sans-serif" datetime={article.data.publishDate}>
+    <p class="article-details__author">by <a class="--underline-on-hover" href={`${PAGES_ROUTES.TAGS}/${article.data.author.slug}`}>{article.data.author.name}</a></p>
+    <time class="article-details__publish-date font-sans-serif" datetime={article.data.publishDate}>
       {article.data.publishDate}
     </time>
-    <p class="article__reading-time">{article.data.readingTime} minutes read</p>
+    <p class="article-details__reading-time">{article.data.readingTime} minutes read</p>
   {
       article.data.tags?.length && (
-          <ul class="article__tags__list flex row-wrap">
+          <ul class="article-details__tags__list flex row-wrap">
             {article.data.tags?.map(({ slug, name }) => (
-                <li class="article__tag__item">
+                <li class="article-details__tag__item">
                     <a href={`${PAGES_ROUTES.TAGS}/${slug}`} class="--underline-on-hover">#{name}</a>
                 </li>
             ))}

@@ -47,12 +47,14 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                           </ul>
                       )
                   }
-                <LinkWithArrow title="Read More" href={`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`} classNames="featured-article__cta" />
+                <LinkWithArrow href={`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`} classNames="featured-article__cta">
+                    Read more
+                </LinkWithArrow>
                 </div>
                 <div class="featured-article__share__wrapper flex row-wrap">
                     <p class="featured-article__share__title font-serif">SHARE IT!</p>
                     <ul class="featured-article__share__links__list flex row-nowrap">
-                        <li class="featured-article__share__link__item --underline-on-hover">
+                        <li class="featured-article__share__link__item --underline-on-hover --is-clickable">
                             <a
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -61,7 +63,7 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                                 Linkedin
                             </a>
                         </li>
-                        <li class="featured-article__share__link__item --underline-on-hover">
+                        <li class="featured-article__share__link__item --underline-on-hover --is-clickable">
                             <a
                                 target="_blank"
                                 rel="noopener noreferrer"
