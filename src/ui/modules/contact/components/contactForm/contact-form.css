@@ -217,6 +217,7 @@
     &:disabled:not(.--is-loading) .plane__left-wing::after{
         background-color: var(--neutral-light-1);
     }
+
     &:hover,
     &:focus{
         box-shadow: 0 0.5rem 0.5em -0.4rem var(--neutral-light-1);
