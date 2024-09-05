@@ -6,7 +6,7 @@
 .article__wrapper {
     display: grid;
     gap: 0 1rem;
-    grid: '. Main-Content .' / 1fr min(var(--grid-article), 100%) 1fr;
+    grid: '. Article-Content .' / 1fr min(var(--grid-article), 100%) 1fr;
     line-height: var(--base-line-height);
     margin: 4rem 0;
 
@@ -24,7 +24,7 @@
 }
 
 .article__wrapper > *:not(.full-bleed) {
-    grid-area: auto / Main-Content;
+    grid-area: auto / Article-Content;
 }
 
 .full-bleed {

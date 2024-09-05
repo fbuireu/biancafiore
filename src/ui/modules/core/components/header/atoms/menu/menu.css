@@ -30,19 +30,19 @@
 .navigation__menu__inner {
     display: grid;
     gap: 1rem;
-    grid: 'Header-Quote Divider Navigation' / 50% 1fr 50%;
+    grid: 'Header-Quote Header-Divider Header-Navigation' / 50% 1fr 50%;
 
     @media (width <= 1024px) {
         grid: '.' min-content
-                'Navigation' max-content
-                'Divider' min-content
+                'Header-Navigation' max-content
+                'Header-Divider' min-content
                 'Header-Quote' 20dvh / 1fr;
     }
 }
 
 .navigation__menu__nav {
     gap: 3rem 0;
-    grid-area: Navigation;
+    grid-area: Header-Navigation;
     padding-left: 4rem;
 
     @media (width <=1024px) {
@@ -77,10 +77,10 @@
 }
 
 .navigation__menu__item {
-    span:first-child {
+    & span:first-child {
         margin-inline-end: 0.5rem;
     }
-
+ 
     &::after {
         top: 125%;
     }
@@ -115,7 +115,7 @@
 
 .navigation__menu__divider {
     background-color: var(--white);
-    grid-area: Divider;
+    grid-area: Header-Divider;
     height: 150%;
     opacity: 0;
     transition: 0.3s opacity;

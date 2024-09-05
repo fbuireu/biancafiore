@@ -110,7 +110,8 @@
         -webkit-box-shadow: 0 0 0 0 var(--neutral-light-3);
         -webkit-text-fill-color: var(--neutral-main);
     }
-    &:disabled {
+    &:disabled,
+    &:disabled:hover {
         -webkit-text-fill-color: var(--neutral-light-1);
     }
     &:is(:focus, :not(:placeholder-shown), :focus-within) ~ .contact-form__input-label {
@@ -201,6 +202,8 @@
     -webkit-tap-highlight-color: transparent;
     text-align: center;
     transform: rotate(calc(var(--rotate) * 1deg)) translateZ(0);
+    transition: all .2s;
+    will-change: translate, box-shadow;
 
     &:disabled {
         background-color: var(--neutral-light-1);
@@ -213,6 +216,11 @@
     &:disabled:not(.--is-loading) .plane__left-wing::before,
     &:disabled:not(.--is-loading) .plane__left-wing::after{
         background-color: var(--neutral-light-1);
+    }
+    &:hover,
+    &:focus{
+        box-shadow: 0 0.5rem 0.5em -0.4rem var(--neutral-light-1);
+        translate:  0 -0.25rem;
     }
 }
 

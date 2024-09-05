@@ -3621,12 +3621,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.5.3":
-  version: 22.5.3
-  resolution: "@types/node@npm:22.5.3"
+"@types/node@npm:^22.5.4":
+  version: 22.5.4
+  resolution: "@types/node@npm:22.5.4"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 10c0/a068e31dd424a0eadfba7d9a5c5b415b76cfd729f3caa299674ad257f59df85c5fe77f1d0a343e811864c790baefb9003d7627618ee3cf85400af338481ba29f
+  checksum: 10c0/b445daa7eecd761ad4d778b882d6ff7bcc3b4baad2086ea9804db7c5d4a4ab0298b00d7f5315fc640a73b5a1d52bbf9628e09c9fec0cf44dbf9b4df674a8717d
   languageName: node
   linkType: hard
 
@@ -4274,9 +4274,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^4.15.2":
-  version: 4.15.2
-  resolution: "astro@npm:4.15.2"
+"astro@npm:^4.15.3":
+  version: 4.15.3
+  resolution: "astro@npm:4.15.3"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/internal-helpers": "npm:0.4.1"
@@ -4338,7 +4338,7 @@ __metadata:
     unist-util-visit: "npm:^5.0.0"
     vfile: "npm:^6.0.3"
     vite: "npm:^5.4.2"
-    vitefu: "npm:^0.2.5"
+    vitefu: "npm:^1.0.2"
     which-pm: "npm:^3.0.0"
     xxhash-wasm: "npm:^1.0.2"
     yargs-parser: "npm:^21.1.1"
@@ -4350,7 +4350,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/ee2720feadc0e1ef27f7f84666009216ef7b7ab9848d862436e508a943a503ad471676b78822244adeb3c5bfdfec75218d53fe2d0e063ffadeaffa582707836e
+  checksum: 10c0/41a10fc1f86b3e0d0971425804132f400a0ba0a6c4324363cdafc8653853d21669b8d50aa794db15dde5178e15ebdf673be282b28b743609a86bcc4912f81909
   languageName: node
   linkType: hard
 
@@ -4464,12 +4464,12 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^22.5.3"
+    "@types/node": "npm:^22.5.4"
     "@types/react": "npm:^18.3.5"
     "@types/react-dom": "npm:^18.3.0"
     "@types/three": "npm:^0.168.0"
     algoliasearch: "npm:^5.2.5"
-    astro: "npm:^4.15.2"
+    astro: "npm:^4.15.3"
     clsx: "npm:^2.1.1"
     contentful: "npm:^10.15.0"
     conventional-changelog-atom: "npm:^5.0.0"
@@ -12437,15 +12437,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitefu@npm:^0.2.5":
-  version: 0.2.5
-  resolution: "vitefu@npm:0.2.5"
+"vitefu@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "vitefu@npm:1.0.2"
   peerDependencies:
     vite: ^3.0.0 || ^4.0.0 || ^5.0.0
   peerDependenciesMeta:
     vite:
       optional: true
-  checksum: 10c0/5781ece3025b6be0eb87ee7d97760a7721b1c6c5ad60ede5f37c86393ece3c8fce4245472f62368eb192448034086e25bdcadf098eefc271277176ab9a430204
+  checksum: 10c0/8e9f0ed5aff93df7ee7f035a43e2b7d6faeaea201252a52d04181c193b06b53f66e0f26bf20c0e590ee23fe66b329b188c483bdf18b2c45994897394c22a1e6f
   languageName: node
   linkType: hard
 
