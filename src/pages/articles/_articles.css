@@ -1,10 +1,10 @@
 .articles__grid__list {
     gap: 5rem 3rem;
-    margin: 12rem 0;
+    margin-block: 12rem;
 
     @media (width <= 960px) {
         justify-content: center;
-        margin: 7rem 0;
+        margin-block: 7rem;
     }
 }
 .articles__grid__list > li {

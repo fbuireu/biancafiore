@@ -3,7 +3,7 @@
     --speed: 1.3s;
     --opacity: .1;
     height: calc(var(--size) * (2.1 / 5));
-    margin: 0 1rem;
+    margin-inline: 1rem;
     overflow: visible;
     transform-origin: center;
     width: var(--size);

@@ -16,10 +16,10 @@
     }
 
     .--is-articles .breadcrumbs__list {
-        margin-bottom: 5rem;
+        margin-block-end: 5rem;
 
         @media (width <= 960px) {
-            margin-bottom: 2rem;
+            margin-block-end: 2rem;
         }
     }
 
