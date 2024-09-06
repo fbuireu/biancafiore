@@ -60,7 +60,4 @@
     &.--is-articles, &.--is-about, &.--is-tags {
         color: var(--neutral-main)
     }
-    @media (max-width: 1440px) {
-        margin-inline: 1rem;
-    }
 }
