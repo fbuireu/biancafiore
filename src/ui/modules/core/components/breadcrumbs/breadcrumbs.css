@@ -13,6 +13,10 @@
         max-width: var(--grid-small);
         padding-block-start: 2rem;
         width: 100%;
+
+        @media (width <= 960px) {
+            margin-inline-start: 1rem;
+        }
     }
 
     .--is-articles .breadcrumbs__list {
@@ -31,5 +35,9 @@
     .--is-contact .breadcrumbs__list {
         justify-content: flex-start;
         padding-top: 2rem;
+
+        @media (width <= 960px) {
+            margin-inline-start: 1rem;
+        }
     }
 

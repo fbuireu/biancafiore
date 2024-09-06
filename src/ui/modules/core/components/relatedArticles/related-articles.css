@@ -29,3 +29,7 @@
         --items-per-row: 1;
     }
 }
+
+.related-articles__grid__item{
+    margin-block-end: 2rem;
+}

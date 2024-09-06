@@ -54,6 +54,9 @@
             margin-inline-end: 2rem;
             padding: 0;
         }
+        @media (width <= 575px) {
+            margin-inline-end: 0.5rem;
+        }
     }
 
     .outline-1 {
