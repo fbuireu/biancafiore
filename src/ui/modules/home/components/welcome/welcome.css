@@ -6,7 +6,7 @@
 
         @media (width <= 960px) {
             grid: 'Left-Greeting Left-Greeting Left-Greeting' auto 'Welcome-Image Welcome-Image Welcome-Image' auto 'Right-Greeting Right-Greeting Right-Greeting' auto / 1fr;
-            margin-bottom: 3rem;
+            margin-block-end: 3rem;
         }
     }
 
@@ -29,13 +29,13 @@
         &.--right {
             display: grid;
             justify-self: start;
-            margin-left: -3rem;
+            margin-inline-start: -3rem;
             translate: 0 4rem;
             z-index: 10;
 
             @media (width <= 960px) {
                 justify-items: end;
-                margin-left: 0;
+                margin-inline-start: 0;
                 translate: 0;
             }
         }
@@ -43,7 +43,7 @@
         &.--left {
             grid-area: Left-Greeting;
             justify-self: end;
-            margin-right: -1.5rem;
+            margin-inline-end: -1.5rem;
             translate: 0 -100px;
             z-index: 10;
 
@@ -55,6 +55,7 @@
     }
 
     .welcome__text__title {
+        font-size: clamp(4rem, 4.25vw, 5.25rem);
         text-transform: uppercase;
     }
 

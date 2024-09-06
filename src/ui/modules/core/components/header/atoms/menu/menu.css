@@ -116,7 +116,7 @@
 .navigation__menu__divider {
     background-color: var(--white);
     grid-area: Header-Divider;
-    height: 150%;
+    height: 125%;
     opacity: 0;
     transition: 0.3s opacity;
     translate: 0 -3rem;

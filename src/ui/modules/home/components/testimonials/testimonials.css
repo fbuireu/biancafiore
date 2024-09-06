@@ -1,12 +1,8 @@
 
     .testimonials__wrapper {
         background-color: light-dark(var(--neutral-light-4), var(--background-main));
-        margin: 5rem 0;
+        margin-block: 5rem;
         transition: background-color 0.3s ease;
-
-        @media (width <= 960px) {
-            margin: 2rem;
-        }
     }
 
     .testimonials__title,
@@ -15,7 +11,7 @@
     }
 
     .testimonials__title {
-        margin-bottom: 1.5rem;
+        margin-block-end: 1.5rem;
         padding-top: 3rem;
 
         @media (width <= 960px) {

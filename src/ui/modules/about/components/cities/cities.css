@@ -6,7 +6,7 @@
     grid-template-columns: 1fr;
     grid-template-rows: repeat(var(--inline-num-cards), 400px);
     list-style: none;
-    margin-bottom: 3rem;
+    margin-block-end: 3rem;
     max-width: calc(100% / var(--num-columns));
     padding-bottom: calc(var(--inline-index) * 0.5rem);
     view-timeline-name: --cities-scales-in-view;
