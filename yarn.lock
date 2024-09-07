@@ -326,8 +326,8 @@ __metadata:
   linkType: hard
 
 "@astrojs/ts-plugin@npm:^1.10.1":
-  version: 1.10.1
-  resolution: "@astrojs/ts-plugin@npm:1.10.1"
+  version: 1.10.2
+  resolution: "@astrojs/ts-plugin@npm:1.10.2"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/yaml2ts": "npm:^0.2.1"
@@ -336,7 +336,7 @@ __metadata:
     "@volar/typescript": "npm:~2.4.0"
     semver: "npm:^7.3.8"
     vscode-languageserver-textdocument: "npm:^1.0.11"
-  checksum: 10c0/d35064ec75a7c81ab9fcefeb20ea373adfcacdc098390c73e9fb90389b70bb79136e9e0066d8a49a804b9b006710c1e52970d67fb91a86cb2ec246e6835680a2
+  checksum: 10c0/07397233d9ecc7a369cbd296707078831ab9e3b938a731696795001f8cd12227834a391f967d79b96317a01f3bf9e4c52617ed03761364e3de410865d4822468
   languageName: node
   linkType: hard
 
