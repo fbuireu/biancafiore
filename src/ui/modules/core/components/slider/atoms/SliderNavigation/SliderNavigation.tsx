@@ -7,19 +7,19 @@ import "./slider-navigation.css";
 
 interface SliderNavigationProps {
 	swiper: SwiperClass;
-	baseClassName: string;
+	locationClassName?: string;
 }
 
-export const SliderNavigation: React.FC<SliderNavigationProps> = ({ swiper, baseClassName }) => {
+export const SliderNavigation: React.FC<SliderNavigationProps> = ({ swiper, locationClassName }) => {
 	const leftButtonRef = useRef<HTMLButtonElement>(null);
 	const rightButtonRef = useRef<HTMLButtonElement>(null);
 	useSliderNavigation({ swiper, leftButtonRef, rightButtonRef });
 
 	return (
-		<div className={clsx(`slider__navigation flex row-nowrap ${baseClassName}`)}>
+		<div className={clsx(`slider__navigation flex row-nowrap ${locationClassName}`)}>
 			<button
 				ref={leftButtonRef}
-				className={clsx(`slider__navigation__button --is-left --is-clickable ${baseClassName}`)}
+				className={clsx(`slider__navigation__button --is-left --is-clickable ${locationClassName}`)}
 				type="button"
 				onClick={() => swiper.slidePrev()}
 			>
@@ -27,7 +27,7 @@ export const SliderNavigation: React.FC<SliderNavigationProps> = ({ swiper, base
 			</button>
 			<button
 				ref={rightButtonRef}
-				className={clsx(`slider__navigation__button --is-right --is-clickable ${baseClassName}`)}
+				className={clsx(`slider__navigation__button --is-right --is-clickable ${locationClassName}`)}
 				type="button"
 				onClick={() => swiper.slideNext()}
 			>

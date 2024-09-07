@@ -8,7 +8,7 @@ import "./latest-articles-slider.css";
 
 interface LatestArticlesSLiderProps {
 	articles: CollectionEntry<"articles">[];
-	location: URL;
+	origin: URL;
 }
 
 const SLIDER_CONFIG: SwiperOptions = {
@@ -34,15 +34,15 @@ const SLIDER_CONFIG: SwiperOptions = {
 	containerModifierClass: "latest-articles-",
 };
 
-export const LatestArticlesSlider = ({ articles, location }: LatestArticlesSLiderProps) => {
+export const LatestArticlesSlider = ({ articles, origin }: LatestArticlesSLiderProps) => {
 	return (
 		<div className="latest-articles__slider common-wrapper">
 			<Slider
 				items={articles}
 				swiperOptions={SLIDER_CONFIG}
-				classNames="--is-latest-articles-slider"
+				origin={origin}
 				renderItem={(article) => {
-					const props = { ...article, location };
+					const props = { ...article, origin };
 
 					return (
 						<ArticleCard {...props}>

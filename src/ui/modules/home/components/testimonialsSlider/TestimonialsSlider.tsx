@@ -7,6 +7,7 @@ import type { SwiperOptions } from "swiper/types";
 
 interface TestimonialSliderProps extends Partial<Slider<TestimonialSliderProps>> {
 	testimonials: CollectionEntry<"testimonials">[];
+	origin: URL;
 }
 
 const SLIDER_CONFIG: SwiperOptions = {
@@ -33,12 +34,12 @@ const SLIDER_CONFIG: SwiperOptions = {
 	containerModifierClass: "testimonials-",
 };
 
-export const TestimonialsSlider = ({ testimonials }: TestimonialSliderProps) => {
+export const TestimonialsSlider = ({ testimonials, origin }: TestimonialSliderProps) => {
 	return (
 		<Slider
 			items={testimonials}
 			swiperOptions={SLIDER_CONFIG}
-			classNames="--is-testimonials-slider"
+			origin={origin}
 			renderItem={(testimonial) => (
 				<Testimonial>
 					<Testimonial.Author>{testimonial.data.author}</Testimonial.Author>
