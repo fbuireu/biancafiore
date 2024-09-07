@@ -1,3 +1,4 @@
+import { getLocation } from "@modules/core/utils/getLocation";
 import clsx from "clsx";
 import type { ReactNode } from "react";
 import { useState } from "react";
@@ -5,7 +6,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperClass, SwiperOptions } from "swiper/types";
 import { SliderNavigation } from "./atoms/SliderNavigation";
 import "swiper/css/bundle";
-import { getLocation } from "@modules/core/utils/getLocation";
 
 export interface Slider<T> {
 	items: T[];

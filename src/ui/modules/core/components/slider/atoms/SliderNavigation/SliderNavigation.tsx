@@ -7,7 +7,7 @@ import "./slider-navigation.css";
 
 interface SliderNavigationProps {
 	swiper: SwiperClass;
-	locationClassName?: string;
+	locationClassName: string;
 }
 
 export const SliderNavigation: React.FC<SliderNavigationProps> = ({ swiper, locationClassName }) => {
