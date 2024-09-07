@@ -12,10 +12,10 @@
         margin: 0 auto;
         max-width: var(--grid-small);
         padding-block-start: 2rem;
-        width: 100%;
 
         @media (width <= 960px) {
             margin-inline-start: 1rem;
+            max-width: 100%;
         }
     }
 

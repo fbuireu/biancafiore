@@ -8,7 +8,7 @@ import type { CreateEmailResponseSuccess } from "resend";
 type SendEmailParams = Omit<ContactFormData, "recaptcha">;
 
 export async function sendEmail(params: SendEmailParams): Promise<CreateEmailResponseSuccess> {
-	const emailContent = createEmail({ ...params });
+	const email = createEmail({ ...params });
 
 	const { data, error } = await emails.send({
 		from: `${params.name} <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`,
@@ -20,7 +20,7 @@ export async function sendEmail(params: SendEmailParams): Promise<CreateEmailRes
 				value: "web_contact_form",
 			},
 		],
-		html: emailContent,
+		html: email,
 	});
 
 	if (error || !data) {

@@ -11,6 +11,7 @@ const isProd = import.meta.env.PROD;
 export default defineConfig({
 	experimental: {
 		contentLayer: true,
+		contentCollectionCache: true,
 		env: {
 			validateSecrets: true,
 			schema: {
