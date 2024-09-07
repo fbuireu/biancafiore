@@ -1,11 +1,11 @@
 ---
 import { Image } from "astro:assets";
 import bianca from "@assets/images/jpg/bianca-fiore.jpg";
-import horizontalArrow from "@assets/images/svg/left-arrow.svg";
+import { PAGES_ROUTES } from "@const/index";
+import LinkWithArrow from "@modules/core/components/linkWithArrow/LinkWithArrow.astro";
 import SocialNetworks from "@modules/core/components/socialNetworks/SocialNetworks.astro";
 import "./about-intro.css";
 ---
-
 <section class="about-me-intro__wrapper common-wrapper" transition:name="about-me-section">
   <div class="about-me-intro__section --left flex column-wrap">
     <h1 class="about-me-intro__title">Hi! I'm <br /><strong translate="no">Bianca</strong></h1>
@@ -18,9 +18,9 @@ import "./about-intro.css";
         Quid de Platone aut de Democrito loquar? Summus dolor plures dies manere non potest? Si enim ita est, vide ne facinus
         facias, cum mori.
       </p>
-      <a href="/projects" class="about-me-intro__body__cta flex align-center --underline-on-hover">
-        See my work <Image src={horizontalArrow} alt="See my work" loading="eager" />
-      </a>
+        <LinkWithArrow href={`${PAGES_ROUTES.PROJECTS}`} classNames="about-me-intro__body__cta">
+            See my work
+        </LinkWithArrow>
     </div>
   </div>
   <div class="about-me-intro__section --right flex row-wrap">

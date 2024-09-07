@@ -1,9 +1,9 @@
   .city-card__content__name {
     grid-area: City-Name;
-    margin-top: -1rem;
+    margin-block-start: -1rem;
 
     @media (width <= 720px) {
-      margin-top: 0;
+        margin-block-start: 0;
       padding-inline: 1rem;
     }
   }

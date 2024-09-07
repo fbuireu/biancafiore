@@ -1,14 +1,17 @@
 ---
 import { getCollection } from "astro:content";
+import { PAGES_ROUTES } from "@const/index";
+import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
-import { PAGES_ROUTES } from '@const/index';
 import "./_tags.css";
 
 const tags = await getCollection("tags");
+const metadata: Partial<SeoMetadata> = {
+	title: "Tags",
+};
 ---
-
-<BaseLayout>
+<BaseLayout {...metadata}>
     <Breadcrumbs />
     <section class="common-wrapper">
         <h1 class="flex justify-center">All tags</h1>
@@ -18,7 +21,7 @@ const tags = await getCollection("tags");
                   <h2 class="tags__item__letter">{letter.data.name}</h2>
                   <ul class="tags__item__list flex column-wrap">
                     {tags[index].data.tags.map((tag) => (
-                        <li class="tag__item font-sans-serif">
+                        <li class="tag__item font-sans-serif --is-clickable">
                             <a href={`${PAGES_ROUTES.TAGS}/${tag.slug}`} class="--underline-on-hover">{tag.name}(&times;{tag.count})</a>
                         </li>
                         <script is:inline type="application/ld+json" set:html={JSON.stringify({

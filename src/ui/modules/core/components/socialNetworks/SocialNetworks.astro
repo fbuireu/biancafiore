@@ -11,7 +11,6 @@ interface SocialMediaProps {
 const { origin } = Astro.props as SocialMediaProps;
 const location = origin ? getLocation(origin) : "footer";
 ---
-
 <ul class:list={[`social__networks__list flex`, { [`--is-${location}`]: location }]}>
     <li class:list={[`social__networks__item`, { [`--is-${location}`]: location }]}>
         <a

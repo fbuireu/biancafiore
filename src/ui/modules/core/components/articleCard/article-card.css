@@ -18,18 +18,18 @@
     will-change: transform;
 }
 
-.article__link-card {
+.article-card__link {
     inset: 0;
     position: absolute;
     width: 100%;
     z-index: 1;
 
-    &:hover ~ .article__item .article__tag__item {
+    &:hover ~ .article-card__item .article-card__tag__item {
         translate: 0 0;
     }
 }
 
-.article__item {
+.article-card__item {
     color: var(--white);
     display: grid;
     gap: 0.5rem 0;
@@ -38,22 +38,22 @@
 
     &.--no-image-variant {
         grid:
-    'Publish-Date Publish-Date' auto
-    'Title Title' 1fr
-    'Author Reading-Time' auto
-    'Excerpt Excerpt' auto
-    'Tags Tags' auto
+    'Article-Card-Publish-Date Article-Card-Publish-Date' auto
+    'Article-Card-Title Article-Card-Title' 1fr
+    'Article-Card-Author Article-Card-Reading-Time' auto
+    'Article-Card-Excerpt Article-Card-Excerpt' auto
+    'Article-Card-Tags Article-Card-Tags' auto
     / 1fr 1fr;
     }
 
     &.--default-variant {
         grid:
-    'Publish-Date Publish-Date' auto
-    'Featured-Image Featured-Image' 1fr
-    'Title Title' auto
-    'Author Reading-Time' auto
-    'Excerpt Excerpt' auto
-    'Tags Tags' auto
+    'Article-Card-Publish-Date Article-Card-Publish-Date' auto
+    'Article-Card-Featured-Image Article-Card-Featured-Image' 1fr
+    'Article-Card-Title Article-Card-Title' auto
+    'Article-Card-Author Article-Card-Reading-Time' auto
+    'Article-Card-Excerpt Article-Card-Excerpt' auto
+    'Article-Card-Tags Article-Card-Tags' auto
     / 1fr 1fr;
     }
 

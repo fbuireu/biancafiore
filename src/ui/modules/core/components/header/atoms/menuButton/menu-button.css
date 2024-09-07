@@ -6,7 +6,7 @@
         translate: 5% 0;
 
         @media (width <= 575px) {
-            margin-right: 1rem;
+            margin-inline-end: 1rem;
         }
     }
 
@@ -50,9 +50,12 @@
             
         }
 
-        @media (width <= 1440px) {
-            margin-right: 1rem;
+        @media (width <= 1500px) {
+            margin-inline-end: 2rem;
             padding: 0;
+        }
+        @media (width <= 575px) {
+            margin-inline-end: 0.5rem;
         }
     }
 

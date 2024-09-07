@@ -1,10 +1,11 @@
 ---
 import { getCollection, getEntry } from "astro:content";
+import { PAGES_ROUTES } from "@const/index";
+import type { SeoMetadata } from "@const/types";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
-import { PAGES_ROUTES } from '@const/index';
 import "./_tag.css";
 
 type TagProps = InferGetStaticPropsType<typeof getStaticPaths>;
@@ -40,9 +41,11 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params as TagParams;
 const { tag } = Astro.props as TagProps;
+const metadata: Partial<SeoMetadata> = {
+	title: `#${slug}`,
+};
 ---
-
-<BaseLayout>
+<BaseLayout {...metadata}>
     <Breadcrumbs />
     <h1 class="flex justify-center">#{slug}</h1>
     <section class="common-wrapper">

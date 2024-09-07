@@ -2,11 +2,10 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import "./my-work.css";
-import { PAGES_ROUTES } from 'src/const';
+import { PAGES_ROUTES } from "src/const";
 
 const projects = await getCollection("projects");
 ---
-
 <section class="my-work__wrapper common-wrapper">
   <h3 class="my-work__title section-title">My Work</h3>
   <ul class="my-work__content__list flex row-wrap justify-space-between">

@@ -6,7 +6,10 @@
     max-width: var(--grid-medium);
 
     button {
-        margin-top: 2rem;
+        margin-block-start: 2rem;
+    }
+    &.--is-disabled > *:not(.contact-form__submit) {
+        color: var(--neutral-light-1);
     }
 }
 
@@ -63,7 +66,7 @@
     color: var(--neutral-main);
     font-size: 1.25rem;
     font-style: italic;
-    margin-bottom: 1.5rem;
+    margin-block-end: 1.5rem;
     position: relative;
 
     &:is(
@@ -107,7 +110,10 @@
         -webkit-box-shadow: 0 0 0 0 var(--neutral-light-3);
         -webkit-text-fill-color: var(--neutral-main);
     }
-
+    &:disabled,
+    &:disabled:hover {
+        -webkit-text-fill-color: var(--neutral-light-1);
+    }
     &:is(:focus, :not(:placeholder-shown), :focus-within) ~ .contact-form__input-label {
         font-size: 1rem;
         top: -1.5rem;
@@ -171,13 +177,6 @@
     --right-body-third-x: 100;
     --left-body-third-y: 100;
     --right-body-third-y: 100;
-    color: var(--white);
-    display: block;
-    padding: 0.75rem 1rem;
-    position: relative;
-    -webkit-tap-highlight-color: transparent;
-    text-align: center;
-    transform: rotate(calc(var(--rotate) * 1deg)) translateZ(0);
     --plane-opacity: 1;
     --text-opacity: 1;
     --left-wing-background: var(--neutral-main);
@@ -196,10 +195,33 @@
     --right-wing-third-y: 100;
     --plane-x: 0;
     --plane-y: 0;
+    color: var(--white);
+    display: block;
+    padding: 0.75rem 1rem;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    text-align: center;
+    transform: rotate(calc(var(--rotate) * 1deg)) translateZ(0);
+    transition: all .2s;
+    will-change: translate, box-shadow;
 
     &:disabled {
+        background-color: var(--neutral-light-1);
         cursor: initial;
         pointer-events: none;
+    }
+
+    &:disabled:not(.--is-loading) .plane__right-wing::before,
+    &:disabled:not(.--is-loading) .plane__right-wing::after,
+    &:disabled:not(.--is-loading) .plane__left-wing::before,
+    &:disabled:not(.--is-loading) .plane__left-wing::after{
+        background-color: var(--neutral-light-1);
+    }
+
+    &:hover,
+    &:focus{
+        box-shadow: 0 0.5rem 0.5em -0.4rem var(--neutral-light-1);
+        translate:  0 -0.25rem;
     }
 }
 
@@ -240,7 +262,6 @@
 }
 
 .contact-form__submit span {
-    display: block;
     opacity: var(--text-opacity);
     position: relative;
     text-shadow: 0 0 0 var(--white);

@@ -1,9 +1,14 @@
+.article__featured__image {
+    max-height: 50vh;
+    object-fit: cover;
+}
+
 .article__wrapper {
     display: grid;
     gap: 0 1rem;
-    grid: '. Main-Content .' / 1fr min(var(--grid-article), 100%) 1fr;
+    grid: '. Article-Content .' / 1fr min(var(--grid-article), 100%) 1fr;
     line-height: var(--base-line-height);
-    margin: 2rem 0;
+    margin-block: 4rem;
 
     @supports (initial-letter: 3 2) {
         & > p:first-of-type::first-letter {
@@ -19,7 +24,7 @@
 }
 
 .article__wrapper > *:not(.full-bleed) {
-    grid-area: auto / Main-Content;
+    grid-area: auto / Article-Content;
 }
 
 .full-bleed {

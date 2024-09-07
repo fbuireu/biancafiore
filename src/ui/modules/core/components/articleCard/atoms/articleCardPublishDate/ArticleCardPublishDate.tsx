@@ -7,7 +7,7 @@ export interface ArticleCardPublishDateProps {
 }
 
 export const ArticleCardPublishDate = ({ children, publishDate }: ArticleCardPublishDateProps) => (
-	<time className={"article__item__publish-date"} dateTime={publishDate}>
+	<time className={"article-card__publish-date"} dateTime={publishDate}>
 		{children}
 	</time>
 );

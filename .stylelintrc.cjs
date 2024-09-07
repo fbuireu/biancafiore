@@ -1,6 +1,6 @@
-import type { Config } from "stylelint";
+/** @type {import('stylelint').Config} */
 
-const config: Config = {
+module.exports = {
 	extends: "stylelint-config-recommended",
 	plugins: ["stylelint-order"],
 	allowEmptyInput: true,
@@ -8,5 +8,3 @@ const config: Config = {
 		"order/properties-alphabetical-order": true,
 	},
 };
-
-export default config;
