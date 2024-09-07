@@ -6,5 +6,5 @@ export interface ArticleCardExcerptProps {
 }
 
 export const ArticleCardExcerpt = ({ children }: ArticleCardExcerptProps) => (
-	<p className="article__excerpt">{children}</p>
+	<p className="article-card__excerpt">{children}</p>
 );

@@ -1,15 +1,18 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import ProjectSection from "@modules/projects/components/projectSection/ProjectSection.astro";
 import ProjectsIntro from "@modules/projects/components/projectsIntro/ProjectsIntro.astro";
-import { PAGES_ROUTES } from 'src/const';
+import { PAGES_ROUTES } from "src/const";
 
 const projects = await getCollection("projects");
+const metadata: Partial<SeoMetadata> = {
+	title: "Projects",
+};
 ---
-
-<BaseLayout>
+<BaseLayout {...metadata}>
   <ProjectsIntro />
   {projects.map((project, index) =>(
     <ProjectSection id={project.data.id}>

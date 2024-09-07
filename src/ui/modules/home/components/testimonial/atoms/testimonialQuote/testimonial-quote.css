@@ -21,6 +21,10 @@
     transition-duration: 350ms;
     transition-property: translate;
     transition-timing-function: ease-in;
+
+    @media (width <= 575px) {
+      padding-inline:1rem;
+    }
   }
 
   .testimonial__quote-symbol {

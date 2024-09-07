@@ -1,8 +1,8 @@
 ---
-import { PAGES_ROUTES } from '@const/index';
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
-import horizontalArrow from "@assets/images/svg/left-arrow.svg";
+import { PAGES_ROUTES } from "@const/index";
+import LinkWithArrow from "@modules/core/components/linkWithArrow/LinkWithArrow.astro";
 import "./featured-article.css";
 
 interface FeaturedArticleProps {
@@ -12,7 +12,6 @@ interface FeaturedArticleProps {
 const { featuredArticle } = Astro.props as FeaturedArticleProps;
 const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`, Astro.url).href;
 ---
-
 <div class="articles__wrapper">
     <section class="articles__wrapper__inner common-wrapper">
         <div class="featured-article__wrapper">
@@ -47,15 +46,14 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                           </ul>
                       )
                   }
-                    <a href={`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`} class="featured-article__cta flex --underline-on-hover align-center">
-                        Read More
-                        <Image src={horizontalArrow} alt="Read more" loading="eager" />
-                    </a>
+                <LinkWithArrow href={`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`} classNames="featured-article__cta">
+                    Read more
+                </LinkWithArrow>
                 </div>
                 <div class="featured-article__share__wrapper flex row-wrap">
                     <p class="featured-article__share__title font-serif">SHARE IT!</p>
                     <ul class="featured-article__share__links__list flex row-nowrap">
-                        <li class="featured-article__share__link__item --underline-on-hover">
+                        <li class="featured-article__share__link__item --underline-on-hover --is-clickable">
                             <a
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -64,7 +62,7 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                                 Linkedin
                             </a>
                         </li>
-                        <li class="featured-article__share__link__item --underline-on-hover">
+                        <li class="featured-article__share__link__item --underline-on-hover --is-clickable">
                             <a
                                 target="_blank"
                                 rel="noopener noreferrer"

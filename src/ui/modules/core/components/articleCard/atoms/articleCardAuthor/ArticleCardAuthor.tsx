@@ -8,9 +8,9 @@ export interface ArticleCardAuthorProps {
 }
 
 export const ArticleCardAuthor = ({ children, slug }: ArticleCardAuthorProps) => (
-	<p className={"article__author"}>
+	<p className={"article-card__author"}>
 		by{" "}
-		<a href={`${PAGES_ROUTES.TAGS}/${slug}`} className="article__author__name --underline-on-hover --is-clickable">
+		<a href={`${PAGES_ROUTES.TAGS}/${slug}`} className="article-card__author__name --underline-on-hover --is-clickable">
 			{children}
 		</a>
 	</p>

@@ -1,21 +1,21 @@
 
   .about-latest-articles__wrapper {
-    margin-bottom: 12rem;
+    margin-block-end: 12rem;
 
     @media (width <= 720px) {
-      margin-bottom: 5rem;
+      margin-block-end: 5rem;
     }
   }
 
   .about-latest-articles__title {
-    margin: 5rem 0;
+    margin-block: 5rem;
 
     a {
       color: var(--primary-main);
       display: inline-block;
     }
     @media (width <= 720px) {
-      margin-bottom: 2rem;
+      margin-block-end: 2rem;
     }
   }
 

@@ -2,12 +2,13 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "astro:env/client";
-import { PAGES_ROUTES } from '@const/index';
+import { PAGES_ROUTES } from "@const/index";
+import type { SeoMetadata } from "@const/types";
+import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
 import ReadingProgress from "@modules/articles/components/readingProgress/ReadingProgress.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
-import ArticleDetails from '@modules/article/components/articleDetails/ArticleDetails.astro';
 import type { InferGetStaticPropsType } from "astro";
 import "./_article.css";
 
@@ -32,12 +33,11 @@ export async function getStaticPaths() {
 
 const { pathname } = Astro.url;
 const { article } = Astro.props as ArticleProps;
-const metadata = {
+const metadata: Partial<SeoMetadata> = {
 	...article,
 	...(article.data.featuredImage && { image: article.data.featuredImage.url }),
 };
 ---
-
 <BaseLayout {...metadata}>
   {
       article.data.featuredImage && (

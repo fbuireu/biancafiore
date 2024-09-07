@@ -10,7 +10,7 @@
 
 .tag__article__item {
     --gap: 2rem;
-    margin-bottom: 3rem;
+    margin-block-end: 3rem;
     max-width: calc(100% / var(--items-per-row) - var(--gap));
     position: relative;
     width: 100%;

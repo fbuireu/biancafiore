@@ -1,18 +1,17 @@
 ---
-import { getCollection } from 'astro:content';
-import { MAX_LATEST_ARTICLES, PAGES_ROUTES } from '@const/index';
-import { LatestArticlesSlider } from './atoms/latestArticlesSlider/LatestArticlesSlider';
-import './latest-articles.css';
+import { getCollection } from "astro:content";
+import { MAX_LATEST_ARTICLES, PAGES_ROUTES } from "@const/index";
+import { LatestArticlesSlider } from "./atoms/latestArticlesSlider/LatestArticlesSlider";
+import "./latest-articles.css";
 
 interface LatestArticlesProps {
-  limit?: number;
+	limit?: number;
 }
 
 const { limit = MAX_LATEST_ARTICLES } = Astro.props as LatestArticlesProps;
 
-const articles = (await getCollection('articles')).slice(0, limit);
+const articles = (await getCollection("articles")).slice(0, limit);
 ---
-
 <section class="latest-articles__wrapper">
     <h3 class="latest-articles__title section-title">
         Fresh from <a class="latest-articles__title__link --is-clickable --underline-on-hover"

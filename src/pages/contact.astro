@@ -1,12 +1,17 @@
 ---
+import type { SeoMetadata } from "@const/types";
 import ContactIntro from "@modules/contact/components/contactIntro/ContactIntro.astro";
 import Tabs from "@modules/contact/components/tabs/Tabs.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import LatestArticles from "@modules/core/components/latestArticles/LatestArticles.astro";
----
 
-<BaseLayout>
+const metadata: Partial<SeoMetadata> = {
+	title: "Cotnact",
+	description: "Get in touch with me",
+};
+---
+<BaseLayout {...metadata}>
   <Breadcrumbs />
   <ContactIntro />
   <Tabs />

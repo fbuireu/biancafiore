@@ -1,5 +1,4 @@
 ---
-import { PAGES_ROUTES } from 'src/const';
 import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
 import type { SeoMetadata } from "@const/types";
 import CookieConsent from "@modules/core/components/cookieConsent/CookieConsent";
@@ -7,6 +6,7 @@ import Footer from "@modules/core/components/footer/Footer.astro";
 import Head from "@modules/core/components/head/Head.astro";
 import Header from "@modules/core/components/header/Header.astro";
 import ScrollTop from "@modules/core/components/scrollTop/ScrollTop.astro";
+import { PAGES_ROUTES } from "src/const";
 
 type BaseLayoutProps = SeoMetadata;
 
@@ -14,7 +14,6 @@ const props = Astro.props as BaseLayoutProps;
 const { pathname } = Astro.url;
 const isProjects = pathname.includes(PAGES_ROUTES.PROJECTS);
 ---
-
 <html lang="en">
   <Head {...props} />
   <body>
