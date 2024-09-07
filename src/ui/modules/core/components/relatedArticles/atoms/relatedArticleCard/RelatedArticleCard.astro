@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
-import { ArticleType } from "@application/dto/article/types";
 import { PAGES_ROUTES } from "@const/index";
+import { articleVariantToClass } from "@modules/core/utils/articleVariantToClass";
 import clsx from "clsx";
 import "./related-article-card.css";
 
@@ -16,14 +16,11 @@ const relatedArticle = Astro.props as RelatedArticleCardProps;
 <article
     class={clsx(
         'related-article-card__item',
-        {
-          '--default-variant': relatedArticle.data.variant === ArticleType.DEFAULT,
-          '--no-image-variant': relatedArticle.data.variant === ArticleType.NO_IMAGE,
-        },
+        articleVariantToClass(relatedArticle.data.variant)
     )}
 >
   {relatedArticle.data.featuredImage && (
-      <Image
+      <Image    
           class="related-article-card__item__featured-image"
           src={relatedArticle.data.featuredImage.url}
           width={relatedArticle.data.featuredImage.details.width}

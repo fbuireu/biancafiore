@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
-import { ArticleType } from "@application/dto/article/types";
 import { PAGES_ROUTES } from "@const/index";
+import { articleVariantToClass } from "@modules/core/utils/articleVariantToClass";
 import { getLocation } from "@modules/core/utils/getLocation";
 import clsx from "clsx";
 import "./article-card.css";
@@ -17,10 +17,7 @@ const location = getLocation(Astro.url);
 <article
     class={clsx(
         'article-card__item',
-        {
-          '--default-variant': article.data.variant === ArticleType.DEFAULT,
-          '--no-image-variant': article.data.variant === ArticleType.NO_IMAGE,
-        },
+        articleVariantToClass(article.data.variant),
         location && `--is-${location}`,
     )}
 >
