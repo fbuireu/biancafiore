@@ -1,5 +1,4 @@
 import type { CollectionEntry } from "astro:content";
-import { ArticleType } from "@application/dto/article/types";
 import { PAGES_ROUTES } from "@const/index";
 import type { ArticleCardAuthorProps } from "@modules/core/components/articleCard/atoms/articleCardAuthor";
 import { ArticleCardAuthor } from "@modules/core/components/articleCard/atoms/articleCardAuthor";
@@ -17,6 +16,7 @@ import type { ArticleCardTagsListProps } from "@modules/core/components/articleC
 import { ArticleCardTagsList } from "@modules/core/components/articleCard/atoms/articleCardTagsList";
 import type { ArticleCardTitleProps } from "@modules/core/components/articleCard/atoms/articleCardTitle";
 import { ArticleCardTitle } from "@modules/core/components/articleCard/atoms/articleCardTitle";
+import { articleVariantToClass } from "@modules/core/utils/articleVariantToClass";
 import { getLocation } from "@modules/core/utils/getLocation";
 import clsx from "clsx";
 import type { ReactNode } from "react";
@@ -36,14 +36,7 @@ export const ArticleCard = ({ children, location: origin, data }: ArticleCardPro
 				{" "}
 			</a>
 			<article
-				className={clsx(
-					"article-card__item",
-					{
-						"--default-variant": data.variant === ArticleType.DEFAULT,
-						"--no-image-variant": data.variant === ArticleType.NO_IMAGE,
-					},
-					location && `--is-${location}`,
-				)}
+				className={clsx("article-card__item", articleVariantToClass(data.variant), location && `--is-${location}`)}
 			>
 				{children}
 			</article>

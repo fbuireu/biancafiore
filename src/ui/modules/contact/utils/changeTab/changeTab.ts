@@ -28,8 +28,8 @@ export function initTabs() {
 
 	for (const tab of tabs) {
 		tab.addEventListener("click", () => {
-			changeTab(tab.dataset.target || "");
+			changeTab(tab.dataset.target ?? "");
 		});
 	}
-	changeTab(tabs[0].dataset.target || "");
+	changeTab(tabs[0].dataset.target ?? "");
 }
