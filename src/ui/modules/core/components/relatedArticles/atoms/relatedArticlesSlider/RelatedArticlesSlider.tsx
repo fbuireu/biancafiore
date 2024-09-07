@@ -1,25 +1,28 @@
 import type { CollectionEntry } from "astro:content";
-import { DEFAULT_SWIPER_CONFIG } from "@const/const";
+import { DEFAULT_SWIPER_CONFIG } from "@const/index";
 import { ArticleCard } from "@modules/core/components/articleCard/ArticleCard";
 import { Slider } from "@modules/core/components/slider";
 import type { CSSProperties } from "react";
 import type { SwiperOptions } from "swiper/types";
-import "./about-latest-articles-slider.css";
 
-interface AboutLatestArticlesSLiderProps {
+interface RelatedArticlesSliderProps {
 	articles: CollectionEntry<"articles">[];
 	origin: URL;
 }
 
 const SLIDER_CONFIG: SwiperOptions = {
 	...DEFAULT_SWIPER_CONFIG,
-	slidesPerView: 2,
+	slidesPerView: 3,
 	autoplay: {
 		delay: 10000,
 		pauseOnMouseEnter: true,
 	},
 	breakpoints: {
 		1024: {
+			slidesPerView: 3,
+			spaceBetween: 32,
+		},
+		720: {
 			slidesPerView: 2,
 			spaceBetween: 32,
 		},
@@ -27,12 +30,12 @@ const SLIDER_CONFIG: SwiperOptions = {
 			slidesPerView: 1,
 		},
 	},
-	containerModifierClass: "latest-articles-",
+	containerModifierClass: "related-articles-",
 };
 
-export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArticlesSLiderProps) => {
+export const RelatedArticlesSlider = ({ articles, origin }: RelatedArticlesSliderProps) => {
 	return (
-		<div className="about__latest-articles__slider">
+		<div className="related-articles__slider common-wrapper">
 			<Slider
 				items={articles}
 				swiperOptions={SLIDER_CONFIG}
@@ -51,7 +54,7 @@ export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArtic
 							<ArticleCard.Title>{article.data.title}</ArticleCard.Title>
 							<ArticleCard.Excerpt>{article.data.description}</ArticleCard.Excerpt>
 							<ArticleCard.Author slug={article.data.author.slug}>{article.data.author.name}</ArticleCard.Author>
-							<ArticleCard.ReadingTime>{article.data.readingTime} min.</ArticleCard.ReadingTime>
+							<ArticleCard.ReadingTime>{article.data.readingTime} minutes read</ArticleCard.ReadingTime>
 							<ArticleCard.Tags>
 								{article.data.tags?.map((tag, index) => {
 									const style: CSSProperties & { [key: string]: string } = {

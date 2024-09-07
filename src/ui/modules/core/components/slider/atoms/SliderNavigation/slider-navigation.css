@@ -8,9 +8,12 @@
         width: 3rem;
     }
 
-    &.--is-latest-articles-slider {
+    &.--is-home{
         color: light-dark(var(--background-main), var(--white));
+    }
 
+    &.--is-home,
+    &.--is-article {
         @media (width >= 1024px) {
             display: none;
         }

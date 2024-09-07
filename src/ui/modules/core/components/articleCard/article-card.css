@@ -57,7 +57,7 @@
     / 1fr 1fr;
     }
 
-    &.--is-articles, &.--is-about, &.--is-tags {
+    &.--is-articles, &.--is-about, &.--is-tags, &.--is-article {
         color: var(--neutral-main)
     }
 }

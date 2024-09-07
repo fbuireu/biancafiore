@@ -3,7 +3,8 @@
         padding-bottom: 8rem !important;
     }
 
-    .latest-articles-initialized {
+    .latest-articles-initialized,
+    .related-articles-initialized {
         .swiper-wrapper {
             align-items: stretch;
         }

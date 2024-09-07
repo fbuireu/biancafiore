@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { getEntry } from "astro:content";
-import RelatedArticleCard from "./atoms/relatedArticleCard/RelatedArticleCard.astro";
+import { RelatedArticlesSlider } from "@modules/core/components/relatedArticles/atoms/relatedArticlesSlider";
 import "./related-articles.css";
 
 interface RelatedArticleProps {
@@ -17,22 +17,16 @@ const relatedArticles = await Promise.all(
     relatedArticles.length > 0 && (
     <section class="related-articles__wrapper common-wrapper">
         <h3 class="related-articles__title section-title">You might also like</h3>
-        <ul class="related-articles__grid__list flex row-wrap justify-space-between">
-          {relatedArticles.map((relatedArticle, index) => (
-              <li class="related-articles__grid__item">
-                  <RelatedArticleCard {...relatedArticle} />
-              </li>
-              <script is:inline type="application/ld+json" set:html={JSON.stringify({
-                '@context': 'https://schema.org',
-                '@type': 'ItemList',
-                'itemListElement': {
-                  '@type': 'ListItem',
-                  'position': index + 1,
-                  'url': new URL(relatedArticle.data.slug, Astro.url).href,
-                },
-              })}/>
-          ))}
-        </ul>
+        <RelatedArticlesSlider client:only="react" articles={relatedArticles} origin={Astro.url} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          'itemListElement': relatedArticles.map(({ data: { slug } }, index) => ({
+            '@type': 'ListItem',
+            'position': index + 1,
+            'url': new URL(slug, Astro.url).href,
+          })),
+        })} />
     </section>
         )
     }

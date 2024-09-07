@@ -15,7 +15,7 @@ const articles = await getCollection("articles");
       <h4 class="about-latest-articles__quote">Lorem ipsum dolir sit Amet. Dolor sit amet.</h4>
       <h6 class="about-latest-articles__quote__author">Ferran Buireu</h6>
     </div>
-    <AboutLatestArticlesSlider client:load articles={articles} location={Astro.url} />
+    <AboutLatestArticlesSlider client:load articles={articles} origin={Astro.url} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "ItemList",
