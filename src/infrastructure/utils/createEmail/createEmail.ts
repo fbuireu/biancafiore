@@ -3,15 +3,17 @@ import type { ContactFormData } from "@shared/ui/types.ts";
 
 type GenerateHtmlParams = Omit<ContactFormData, "recaptcha">;
 
+const URL_ENCODED_SPACE_REGEX = /%20/g;
+
 export function createEmail({ name, email, message }: GenerateHtmlParams): string {
 	const date = new Date().toLocaleString(DEFAULT_LOCALE_STRING);
 	const mailTo =
 		`mailto:${email}?subject=Re: ${encodeURIComponent(CONTACT_DETAILS.EMAIL_SUBJECT)} from biancafiore.me`.replace(
-			/%20/g,
+			URL_ENCODED_SPACE_REGEX,
 			" ",
 		);
 
-	return `<html lang="en">
+	return `<html lang="en"> 
   <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

@@ -18,6 +18,6 @@ export const authors = defineCollection({
 	},
 	schema: authorSchema.extend({
 		articles: z.array(reference("articles")),
-		latestArticle: reference("articles"),
+		latestArticle: reference("articles").default(""),
 	}),
 });
