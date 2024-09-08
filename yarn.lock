@@ -2388,16 +2388,16 @@ __metadata:
   linkType: hard
 
 "@fontsource-variable/nunito-sans@npm:^5.0.15":
-  version: 5.0.15
-  resolution: "@fontsource-variable/nunito-sans@npm:5.0.15"
-  checksum: 10c0/b437d0bb71faa493ea3c9c228d63729ada9c091517830caf0affc728abf138593360510d7c73646a5d4a1f1842731be0564949040fcf1e3a058db357f7212d7a
+  version: 5.0.16
+  resolution: "@fontsource-variable/nunito-sans@npm:5.0.16"
+  checksum: 10c0/7e112b64fa0bae2c441759533a0c915c8f75097239b489b78264bf5bf8e07e0bbc3f47b0107fc30bd6a2a732cb6b5a84d042e128e25cc912a85cec4ff005dd1b
   languageName: node
   linkType: hard
 
 "@fontsource/baskervville@npm:^5.0.21":
-  version: 5.0.21
-  resolution: "@fontsource/baskervville@npm:5.0.21"
-  checksum: 10c0/a87195e2362bec1bf7f4f945f25f8d96f7e7d3aab324fd76ad9a91958c67e17c0d09c2fc8a1f1de8b2a5f539178478baa56639f85cc80b5e2d4b9bdeaaea0dde
+  version: 5.0.22
+  resolution: "@fontsource/baskervville@npm:5.0.22"
+  checksum: 10c0/87ffa3cbfe3377b0cfc694b53a2f040ed59510cf3a469385e5532adb3db000ab16fb7cee1e0b8031e757d87510ed0f5daa171e18b5d2d4b52695a57d5a94d847
   languageName: node
   linkType: hard
 
