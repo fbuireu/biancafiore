@@ -9,7 +9,7 @@ import "swiper/css/bundle";
 
 export interface Slider<T> {
 	items: T[];
-	renderItem: (item: T, index: number) => ReactNode;
+	renderItem: (item: T) => ReactNode;
 	swiperOptions: SwiperOptions;
 	origin: URL;
 }
@@ -23,9 +23,9 @@ export const Slider = <T,>({ items, renderItem, swiperOptions, origin }: Slider<
 		<div className={clsx("slider__wrapper common-wrapper", locationClassName)}>
 			<Swiper {...swiperOptions} onSwiper={setSwiperInstance}>
 				<ul className={clsx("slider__list flex row-wrap justify-space-between", locationClassName)}>
-					{items.map((item, index) => (
+					{items.map((item) => (
 						<li key={crypto.randomUUID()} className={clsx("item__wrapper --is-clickable", locationClassName)}>
-							<SwiperSlide key={crypto.randomUUID()}>{renderItem(item, index)}</SwiperSlide>
+							<SwiperSlide key={crypto.randomUUID()}>{renderItem(item)}</SwiperSlide>
 						</li>
 					))}
 				</ul>
