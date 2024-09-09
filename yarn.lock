@@ -1045,20 +1045,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@contentful/rich-text-html-renderer@npm:^16.6.9":
-  version: 16.6.9
-  resolution: "@contentful/rich-text-html-renderer@npm:16.6.9"
+"@contentful/rich-text-html-renderer@npm:^16.6.10":
+  version: 16.6.10
+  resolution: "@contentful/rich-text-html-renderer@npm:16.6.10"
   dependencies:
-    "@contentful/rich-text-types": "npm:^16.8.4"
+    "@contentful/rich-text-types": "npm:^16.8.5"
     escape-html: "npm:^1.0.3"
-  checksum: 10c0/d90e4cc6845ed0f5cb02e6162f6bcbc946e44139387c9e62594c5a3f685d720488d85c427478eee53edd64aca54a1baebbdeae56028ab8831593c92b8c42fa5f
+  checksum: 10c0/275062abacc9ad842110330c28a1975dfa82ae17db46eb05458c8beca0783465e0a217a7d6c0a62df2685568c56e58ab818d625816380fd52d0f38f61f38fda3
   languageName: node
   linkType: hard
 
-"@contentful/rich-text-types@npm:^16.0.2, @contentful/rich-text-types@npm:^16.8.4":
+"@contentful/rich-text-types@npm:^16.0.2":
   version: 16.8.4
   resolution: "@contentful/rich-text-types@npm:16.8.4"
   checksum: 10c0/0ace818272e790d60c56ad0cb723120a6e4cf49d387c707bf72e760ab50c76194aa1c51f938d83207afd7e5e736bce24242165fc839ffc59cf89cb946115622f
+  languageName: node
+  linkType: hard
+
+"@contentful/rich-text-types@npm:^16.8.5":
+  version: 16.8.5
+  resolution: "@contentful/rich-text-types@npm:16.8.5"
+  checksum: 10c0/0af82d501bb26d854fa3bc68136db1f0738428135066876062370637f219cd51f10abecf8e02a72c2cf9eb012523add21f4a3f72af4981a7ad4c95a9bbcb237f
   languageName: node
   linkType: hard
 
@@ -4445,7 +4452,7 @@ __metadata:
     "@commitlint/cli": "npm:^19.4.1"
     "@commitlint/config-conventional": "npm:^19.4.1"
     "@commitlint/format": "npm:^19.3.0"
-    "@contentful/rich-text-html-renderer": "npm:^16.6.9"
+    "@contentful/rich-text-html-renderer": "npm:^16.6.10"
     "@fontsource-variable/nunito-sans": "npm:^5.0.16"
     "@fontsource/baskervville": "npm:^5.0.22"
     "@hookform/resolvers": "npm:^3.9.0"
