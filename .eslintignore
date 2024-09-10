@@ -1,7 +1,0 @@
-node_modules
-dist
-/scripts/*
-yarn.lock
-.eslintrc.cjs
-.netlify
-commitlint.config.ts
