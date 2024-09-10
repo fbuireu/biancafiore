@@ -7,17 +7,6 @@
 @import url('atoms/articleCardTitle/article-card-title.css');
 @import url('atoms/articleCardReadingTime/article-card-reading-time.css');
 
-.article__item__wrapper {
-    backface-visibility: hidden;
-    -webkit-font-smoothing: subpixel-antialiased;
-    max-width: calc(100% / 4 - 2rem);
-    position: relative;
-    transform: translateZ(0);
-    transition: 0.2s scale;
-    width: 100%;
-    will-change: transform;
-}
-
 .article-card__link {
     inset: 0;
     position: absolute;

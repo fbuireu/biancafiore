@@ -1,0 +1,22 @@
+name: Unit Tests - Vitest
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+env:
+  CI: true
+jobs:
+  ut-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js version from .nvmrc
+        id: nvmrc
+        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Execute Unit tests
+        run: yarn test:ut
