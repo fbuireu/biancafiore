@@ -8,6 +8,7 @@ env:
     E2E_URL: ${{ github.event_name == 'workflow_dispatch' && 'https://biancafiore.me' || 'http://localhost:4321' }}
 jobs:
     e2e-tests:
+        name: E2E tests
         timeout-minutes: 60
         runs-on: ubuntu-latest
         steps:
@@ -18,6 +19,15 @@ jobs:
             -   uses: actions/setup-node@v4
                 with:
                     node-version: ${{ env.NODE_VERSION }}
+            -   name: Enable Corepack
+                run: corepack enable
+            -   name: Get Yarn version from package.json
+                id: yarn_version
+                run: |
+                    YARN_VERSION=$(jq -r '.packageManager' package.json | grep -o 'yarn@[0-9]*\.[0-9]*\.[0-9]*')
+                    echo "YARN_VERSION=${YARN_VERSION}" >> $GITHUB_ENV
+            -   name: Install correct Yarn version
+                run: corepack prepare ${{ env.YARN_VERSION }} --activate
             -   name: Install dependencies
                 run: yarn install --frozen-lockfile
             -   name: Install Playwright Browsers
