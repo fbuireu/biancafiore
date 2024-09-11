@@ -16,7 +16,7 @@ function useTabVisibility(): TabVisibility {
 
 	const getSnapshot = () => document.visibilityState as TabVisibility;
 
-	return <TabVisibility>useSyncExternalStore(subscribe, getSnapshot);
+	return useSyncExternalStore(subscribe, getSnapshot);
 }
 
 export default useTabVisibility;
