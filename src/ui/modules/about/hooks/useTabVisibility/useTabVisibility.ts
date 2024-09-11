@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 export enum TabVisibility {
 	VISIBLE = "visible",
@@ -7,21 +7,16 @@ export enum TabVisibility {
 }
 
 function useTabVisibility(): TabVisibility {
-	const [tabVisibility, setTabVisibility] = useState<TabVisibility>(document.visibilityState as TabVisibility);
-
-	useEffect(() => {
-		const controller = new AbortController();
-
-		const handleVisibilityChange = () => {
-			setTabVisibility(document.visibilityState as TabVisibility);
+	const subscribe = (callback: () => void) => {
+		document.addEventListener("visibilitychange", callback);
+		return () => {
+			document.removeEventListener("visibilitychange", callback);
 		};
+	};
 
-		document.addEventListener("visibilitychange", handleVisibilityChange);
+	const getSnapshot = () => document.visibilityState as TabVisibility;
 
-		return () => controller.abort();
-	}, []);
-
-	return tabVisibility;
+	return <TabVisibility>useSyncExternalStore(subscribe, getSnapshot);
 }
 
 export default useTabVisibility;
