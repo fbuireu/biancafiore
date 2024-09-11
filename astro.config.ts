@@ -114,6 +114,7 @@ export default defineConfig({
 		},
 	},
 	site: "https://biancafiore.me",
+    prefetch: true,
 	vite: {
 		ssr: {
 			external: ["firebase-admin", "node:async_hooks", "contentful"],
