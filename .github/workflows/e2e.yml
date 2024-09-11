@@ -1,56 +1,56 @@
-name: E2E Tests - Playwright
+name: E2E Tests
 on:
-  workflow_dispatch:
-  pull_request:
-    branches: [main]
+    workflow_dispatch:
+    pull_request:
+        branches: [main]
 env:
-  CI: true
-  E2E_URL: ${{ github.event_name == 'workflow_dispatch' && 'https://biancafiore.me' || 'http://localhost:4321' }}
+    CI: true
+    E2E_URL: ${{ github.event_name == 'workflow_dispatch' && 'https://biancafiore.me' || 'http://localhost:4321' }}
 jobs:
-  e2e-tests:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js version from .nvmrc
-        id: nvmrc
-        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
-      - name: Start application (for PRs only)
-        if: github.event_name != 'workflow_dispatch'
-        run: |
-          yarn start &
-          echo $! > .pidfile
-      - name: Wait for application to be ready (for PRs only)
-        if: github.event_name != 'workflow_dispatch'
-        run: |
-          echo "Waiting for application to start..."
-          npx wait-on ${{ env.E2E_URL }}
-      - name: Run E2E Tests - Playwright for PRs
-        if: github.event_name == 'pull_request'
-        run: yarn test:e2e:changed
-        env:
-          CI: ${{ env.CI }}
-          E2E_URL: ${{ env.E2E_URL }}
-      - name: Run E2E Tests - Playwright for Workflow Dispatch event
-        if: github.event_dispatch == 'workflow_dispatch'
-        run: yarn test:e2e
-        env:
-          CI: ${{ env.CI }}
-          E2E_URL: ${{ env.E2E_URL }}
-      - name: Stop application (for PRs only)
-        if: always() && github.event_name != 'workflow_dispatch'
-        run: |
-          kill $(cat .pidfile)
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+    e2e-tests:
+        timeout-minutes: 60
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Use Node.js version from .nvmrc
+                id: nvmrc
+                run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
+            -   uses: actions/setup-node@v4
+                with:
+                    node-version: ${{ env.NODE_VERSION }}
+            -   name: Install dependencies
+                run: yarn install --frozen-lockfile
+            -   name: Install Playwright Browsers
+                run: yarn playwright install --with-deps
+            -   name: Start application (for PRs only)
+                if: github.event_name != 'workflow_dispatch'
+                run: |
+                    yarn start &
+                    echo $! > .pidfile
+            -   name: Wait for application to be ready (for PRs only)
+                if: github.event_name != 'workflow_dispatch'
+                run: |
+                    echo "Waiting for application to start..."
+                    npx wait-on ${{ env.E2E_URL }}
+            -   name: Run E2E Tests - Playwright for PRs
+                if: github.event_name == 'pull_request'
+                run: yarn test:e2e:changed
+                env:
+                    CI: ${{ env.CI }}
+                    E2E_URL: ${{ env.E2E_URL }}
+            -   name: Run E2E Tests - Playwright for Workflow Dispatch event
+                if: github.event_dispatch == 'workflow_dispatch'
+                run: yarn test:e2e
+                env:
+                    CI: ${{ env.CI }}
+                    E2E_URL: ${{ env.E2E_URL }}
+            -   name: Stop application (for PRs only)
+                if: always() && github.event_name != 'workflow_dispatch'
+                run: |
+                    kill $(cat .pidfile)
+            -   uses: actions/upload-artifact@v4
+                if: always()
+                with:
+                    name: playwright-report
+                    path: playwright-report/
+                    retention-days: 30
