@@ -5,7 +5,7 @@ on:
         branches: [main]
 jobs:
     ut-tests:
-        name: Unit tests
+        name: Run unit tests
         runs-on: ubuntu-latest
         steps:
             -   uses: actions/checkout@v4

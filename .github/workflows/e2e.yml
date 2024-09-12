@@ -8,7 +8,7 @@ env:
     E2E_URL: ${{ github.event_name == 'workflow_dispatch' && 'https://biancafiore.me' || 'http://localhost:4321' }}
 jobs:
     e2e-tests:
-        name: E2E tests
+        name: Run E2E tests
         timeout-minutes: 60
         runs-on: ubuntu-latest
         steps:
