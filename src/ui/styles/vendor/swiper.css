@@ -1,8 +1,9 @@
 @layer overrides.swiper {
     .swiper {
         padding-bottom: 8rem !important;
+        overflow: clip;
     }
-
+    
     .latest-articles-initialized,
     .related-articles-initialized {
         .swiper-wrapper {

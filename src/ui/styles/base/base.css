@@ -3,8 +3,12 @@
         transition-behavior: allow-discrete;
 
         &::selection {
-            background-color: var(--primary-main);
-            color: var(--white);
+            background-color: var(--primary-light-2);
+            color: var(--neutral-main);
+        }
+        &:focus-visible {
+            outline: 2px solid var(--primary-main);
+            outline-offset: 2px;
         }
     }
 

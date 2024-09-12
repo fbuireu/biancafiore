@@ -18,6 +18,9 @@
     width: fit-content;
 
     svg {
+        --color: light-dark(inherit, var(--white));
+        color: var(--color);
+        fill: var(--color);
         height: 3rem;
         padding: 0.50rem;
         rotate: 0.25turn;
