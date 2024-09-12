@@ -12,8 +12,8 @@
     position: absolute;
     width: 100%;
     z-index: 1;
-
-    &:hover ~ .article-card__item .article-card__tag__item {
+    
+    &:is(:hover, :focus-visible) ~ .article-card__item .article-card__tag__item {
         translate: 0 0;
     }
 }

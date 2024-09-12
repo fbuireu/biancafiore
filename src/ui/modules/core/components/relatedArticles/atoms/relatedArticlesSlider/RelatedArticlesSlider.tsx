@@ -21,10 +21,12 @@ const SLIDER_CONFIG: SwiperOptions = {
 		1024: {
 			slidesPerView: 3,
 			spaceBetween: 32,
+			loop: false,
 		},
 		720: {
 			slidesPerView: 2,
 			spaceBetween: 32,
+			loop: true,
 		},
 		320: {
 			slidesPerView: 1,

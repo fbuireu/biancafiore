@@ -27,7 +27,7 @@
         --global-max-width: 1440px;
         --base-font-size: 16px;
         --base-vertical-rhythm-factor: 2.75;
-        --base-vertical-rhythm: 0.725rem;
+        --base-vertical-rhythm: 1.125;
         --base-line-height: calc(var(--base-font-size) * var(--base-vertical-rhythm-factor) * var(--base-vertical-rhythm));
         --global-border-radius: 0.25rem;
         --grid-extra-small: 575px;
