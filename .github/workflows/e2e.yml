@@ -1,13 +1,11 @@
 name: E2E Tests
 on:
     workflow_dispatch:
-    push:
-        branches: [main]
     pull_request:
         branches: [main]
 env:
     CI: true
-    E2E_URL: ${{ github.event_name == 'workflow_dispatch' && 'https://biancafiore.me' || 'http://localhost:4321' }}
+    E2E_URL: ${{ github.event_name == 'workflow_dispatch' && vars.E2E_PRODUCTION_URL || vars.E2E_SELF_HOSTED_URL }}
 jobs:
     e2e-tests:
         name: Run E2E tests
