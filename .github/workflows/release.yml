@@ -1,4 +1,4 @@
-name: Release ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag_name || github.ref_name }}
+name: Release ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.tag_name) || github.ref_name }}
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
