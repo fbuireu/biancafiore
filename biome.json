@@ -19,7 +19,10 @@
 	"linter": {
 		"ignore": ["*.d.ts*"],
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"correctness": {
+				"noUnknownProperty": "off"
+			}
 		}
 	}
 }

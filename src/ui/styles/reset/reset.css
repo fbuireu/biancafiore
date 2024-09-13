@@ -1,50 +1,53 @@
 @layer reset {
-  *:where(:not(iframe, canvas, img, svg, video):not(svg *, footer, footer *)) {
-    all: unset;
-    display: revert;
-  }
+	*:where(:not(iframe, canvas, img, svg, video):not(svg *, footer, footer *)) {
+		all: unset;
+		display: revert;
+	}
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    min-width: 0;
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+		min-width: 0;
 
-    @media (prefers-reduced-motion: reduce) {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
+		@media (prefers-reduced-motion: reduce) {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
 
-  body {
-    min-height: 100dvh;
-  }
+	body {
+		min-height: 100dvh;
+	}
 
-  input, button, textarea, select {
-    font: inherit;
-  }
+	input,
+	button,
+	textarea,
+	select {
+		font: inherit;
+	}
 
-  strong,
-  b {
-    font-weight: 700;
-  }
+	strong,
+	b {
+		font-weight: 700;
+	}
 
-  ol,
-  ul {
-    list-style: none;
-  }
+	ol,
+	ul {
+		list-style: none;
+	}
 
-  table {
-    border-collapse: collapse;
-  }
+	table {
+		border-collapse: collapse;
+	}
 
-  input[type='search'] {
-    &::-webkit-search-decoration,
-    &::-webkit-search-cancel-button,
-    &::-webkit-search-results-button,
-    &::-webkit-search-results-decoration {
-      display: none;
-    }
-  }
+	input[type="search"] {
+		&::-webkit-search-decoration,
+		&::-webkit-search-cancel-button,
+		&::-webkit-search-results-button,
+		&::-webkit-search-results-decoration {
+			display: none;
+		}
+	}
 }

@@ -1,8 +1,7 @@
 .header__menu-overlay__wrapper {
-display: none;
-height: 100dvh;
-inset: -0.5rem 0 0;
-position: absolute;
-width: 100dvw;
+	display: none;
+	height: 100dvh;
+	inset: -0.5rem 0 0;
+	position: absolute;
+	width: 100dvw;
 }
-

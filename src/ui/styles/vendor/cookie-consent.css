@@ -1,115 +1,115 @@
 @layer overrides.cookie-consent {
-    [data-theme='light'] {
-    --cc-bg: var(--background-main) !important;
-    --cc-primary-color: var(--neutral-main) !important;
-    --cc-secondary-color: var(--neutral-main) !important;
-    --cc-btn-primary-bg: none !important;
-    --cc-btn-primary-color: oklch(24.18% 0.004 228.95) !important;
-    --cc-btn-primary-hover-bg: var(--primary-main)  !important;
-    --cc-btn-primary-hover-border-color: var(--cc-btn-primary-hover-bg) !important;
-    --cc-btn-primary-hover-color: var(--cc-btn-primary-color) !important;
-    --cc-btn-primary-border-color: var(--neutral-main) !important;
-    --cc-btn-secondary-bg: var(--background-main) !important;
-    --cc-btn-secondary-color: var(--neutral-main) !important;
-    --cc-btn-secondary-border-color: none !important;
-    --cc-btn-secondary-hover-bg: var(--primary-main) !important;
-    --cc-btn-secondary-hover-color: var(--neutral-main) !important;
-    --cc-btn-secondary-hover-border-color: var(--primary-light-1) !important;
-    --cc-cookie-category-block-bg: var(--primary-light-3)  !important;
-    --cc-cookie-category-block-border: var(--primary-main) !important;
-    --cc-cookie-category-block-hover-bg: var(--primary-light-2) !important;
-    --cc-cookie-category-block-hover-border: var(--cc-cookie-category-block-hover-bg) !important;
-    --cc-cookie-category-expanded-block-hover-bg: var(--cc-cookie-category-block-border) !important;
-    --cc-cookie-category-expanded-block-bg: var(--background-main);
-    --cc-toggle-readonly-bg: var(--primary-light-1) !important;
-    --cc-overlay-bg: color-mix(in srgb, var(--x) 90%, transparent) !important;
-    --cc-toggle-on-bg: var(--primary-main) !important;
-    --cc-toggle-off-bg: var(--primary-dark-3) !important;
-    --cc-toggle-on-knob-bg: var(--white) !important;
-    --cc-toggle-off-knob-bg: var(--white) !important;
-    --cc-toggle-readonly-knob-bg: var(--cc-cookie-category-block-bg) !important;
-    --cc-toggle-enabled-icon-color: var(--cc-btn-primary-color) !important;
-    --cc-toggle-disabled-icon-color: var(--cc-btn-primary-color) !important;
-    --cc-toggle-readonly-knob-icon-color: var(--cc-toggle-readonly-bg) !important;
-    --cc-section-category-border: var(--cc-primary-color) !important;
-    --cc-webkit-scrollbar-bg: var(--cc-section-category-border) !important;
-    --cc-webkit-scrollbar-hover-bg: var(--cc-btn-primary-hover-bg);
-    --cc-separator-border-color: transparent !important;
-    --cc-footer-bg: transparent !important;
-    --cc-footer-color: var(--cc-primary-color) !important;
-    --cc-footer-border-color: var(--neutral-light-3) !important;
+	[data-theme="light"] {
+		--cc-bg: var(--background-main) !important;
+		--cc-primary-color: var(--neutral-main) !important;
+		--cc-secondary-color: var(--neutral-main) !important;
+		--cc-btn-primary-bg: none !important;
+		--cc-btn-primary-color: oklch(24.18% 0.004 228.95) !important;
+		--cc-btn-primary-hover-bg: var(--primary-main) !important;
+		--cc-btn-primary-hover-border-color: var(--cc-btn-primary-hover-bg) !important;
+		--cc-btn-primary-hover-color: var(--cc-btn-primary-color) !important;
+		--cc-btn-primary-border-color: var(--neutral-main) !important;
+		--cc-btn-secondary-bg: var(--background-main) !important;
+		--cc-btn-secondary-color: var(--neutral-main) !important;
+		--cc-btn-secondary-border-color: none !important;
+		--cc-btn-secondary-hover-bg: var(--primary-main) !important;
+		--cc-btn-secondary-hover-color: var(--neutral-main) !important;
+		--cc-btn-secondary-hover-border-color: var(--primary-light-1) !important;
+		--cc-cookie-category-block-bg: var(--primary-light-3) !important;
+		--cc-cookie-category-block-border: var(--primary-main) !important;
+		--cc-cookie-category-block-hover-bg: var(--primary-light-2) !important;
+		--cc-cookie-category-block-hover-border: var(--cc-cookie-category-block-hover-bg) !important;
+		--cc-cookie-category-expanded-block-hover-bg: var(--cc-cookie-category-block-border) !important;
+		--cc-cookie-category-expanded-block-bg: var(--background-main);
+		--cc-toggle-readonly-bg: var(--primary-light-1) !important;
+		--cc-overlay-bg: color-mix(in srgb, var(--x) 90%, transparent) !important;
+		--cc-toggle-on-bg: var(--primary-main) !important;
+		--cc-toggle-off-bg: var(--primary-dark-3) !important;
+		--cc-toggle-on-knob-bg: var(--white) !important;
+		--cc-toggle-off-knob-bg: var(--white) !important;
+		--cc-toggle-readonly-knob-bg: var(--cc-cookie-category-block-bg) !important;
+		--cc-toggle-enabled-icon-color: var(--cc-btn-primary-color) !important;
+		--cc-toggle-disabled-icon-color: var(--cc-btn-primary-color) !important;
+		--cc-toggle-readonly-knob-icon-color: var(--cc-toggle-readonly-bg) !important;
+		--cc-section-category-border: var(--cc-primary-color) !important;
+		--cc-webkit-scrollbar-bg: var(--cc-section-category-border) !important;
+		--cc-webkit-scrollbar-hover-bg: var(--cc-btn-primary-hover-bg);
+		--cc-separator-border-color: transparent !important;
+		--cc-footer-bg: transparent !important;
+		--cc-footer-color: var(--cc-primary-color) !important;
+		--cc-footer-border-color: var(--neutral-light-3) !important;
 
-    .cm,
-    .pm { 
-      color-scheme: light;
-    }
-    .pm__section-arrow svg {
-        stroke: var(--primary-dark-3) !important;
-    }
-    .pm__section--expandable.is-expanded{
-        background-color: var(--primary-light-3) !important;
-    }
-     .pm__close-btn:hover {
-        background: var(--primary-light-3) !important;
-    }
-  }
+		.cm,
+		.pm {
+			color-scheme: light;
+		}
+		.pm__section-arrow svg {
+			stroke: var(--primary-dark-3) !important;
+		}
+		.pm__section--expandable.is-expanded {
+			background-color: var(--primary-light-3) !important;
+		}
+		.pm__close-btn:hover {
+			background: var(--primary-light-3) !important;
+		}
+	}
 
-    [data-theme="dark"] {
-       .pm__section-arrow svg {
-            stroke: var(--primary-dark-3) !important;
-        }
-        #cc-main {
-            --cc-bg: var(--background-main);
-            --cc-primary-color: var(--neutral-main);
-            --cc-secondary-color: var(--neutral-main);
-            --cc-btn-primary-bg: none;
-            --cc-btn-primary-color: var(--neutral-main);
-            --cc-btn-primary-hover-bg: var(--primary-dark-2);
-            --cc-btn-primary-hover-color: var(--cc-btn-primary-color);
-            --cc-btn-primary-hover-border-color: var(--cc-btn-primary-hover-bg);
-            --cc-btn-primary-border-color: var(--neutral-main);
-            --cc-btn-secondary-bg: var(--background-main);
-            --cc-btn-secondary-color: var(--neutral-main);
-            --cc-btn-secondary-border-color: none;
-            --cc-btn-secondary-hover-bg: var(--cc-btn-primary-hover-bg);
-            --cc-btn-secondary-hover-color: var(--neutral-main);
-            --cc-btn-secondary-hover-border-color: var(--cc-btn-primary-hover-bg);
-            --cc-cookie-category-block-bg: var(--primary-dark-3);
-            --cc-cookie-category-block-border: var(--primary-main);
-            --cc-cookie-category-block-hover-bg: var(--cc-cookie-category-block-border);
-            --cc-cookie-category-block-hover-border: var(--cc-cookie-category-block-hover-bg);
-            --cc-cookie-category-expanded-block-hover-bg: var(--primary-dark-2);
-            --cc-cookie-category-expanded-block-bg: transparent;
-            --cc-toggle-readonly-bg: var(--primary-dark-2);
-            --cc-overlay-bg: color-mix(in srgb, var(--x) 90%, transparent);
-            --cc-toggle-on-bg: var(--primary-light-1);
-            --cc-toggle-off-bg: var(--primary-dark-2);
-            --cc-toggle-on-knob-bg: var(--white);
-            --cc-toggle-off-knob-bg: var(--white);
-            --cc-toggle-readonly-knob-bg: var(--cc-cookie-category-block-bg);
-            --cc-toggle-enabled-icon-color: var(--cc-btn-primary-color);
-            --cc-toggle-disabled-icon-color: var(--cc-btn-primary-color);
-            --cc-toggle-readonly-knob-icon-color: var(--cc-toggle-readonly-bg);
-            --cc-section-category-border: var(--cc-primary-color);
-            --cc-webkit-scrollbar-bg: var(--cc-section-category-border);
-            --cc-webkit-scrollbar-hover-bg: var(--cc-btn-primary-hover-bg);
-            --cc-separator-border-color: transparent;
-            --cc-footer-bg: transparent;
-            --cc-footer-color: var(--cc-primary-color);
-            --cc-footer-border-color: color-mix(in srgb, var(--neutral-main), var(--white) 70%);
-        }
-        .pm__section--expandable.is-expanded {
-            background-color: var(--primary-dark-3) !important;
-        }
-         .cc__link {
-             color: var(--neutral-main) !important
-         }
-        .pm__close-btn:hover {
-            background: var(--primary-dark-3) !important;
-        }
-      .cm,
-      .pm {
-        color-scheme: dark;
-      }
-    }
-  }
+	[data-theme="dark"] {
+		.pm__section-arrow svg {
+			stroke: var(--primary-dark-3) !important;
+		}
+		#cc-main {
+			--cc-bg: var(--background-main);
+			--cc-primary-color: var(--neutral-main);
+			--cc-secondary-color: var(--neutral-main);
+			--cc-btn-primary-bg: none;
+			--cc-btn-primary-color: var(--neutral-main);
+			--cc-btn-primary-hover-bg: var(--primary-dark-2);
+			--cc-btn-primary-hover-color: var(--cc-btn-primary-color);
+			--cc-btn-primary-hover-border-color: var(--cc-btn-primary-hover-bg);
+			--cc-btn-primary-border-color: var(--neutral-main);
+			--cc-btn-secondary-bg: var(--background-main);
+			--cc-btn-secondary-color: var(--neutral-main);
+			--cc-btn-secondary-border-color: none;
+			--cc-btn-secondary-hover-bg: var(--cc-btn-primary-hover-bg);
+			--cc-btn-secondary-hover-color: var(--neutral-main);
+			--cc-btn-secondary-hover-border-color: var(--cc-btn-primary-hover-bg);
+			--cc-cookie-category-block-bg: var(--primary-dark-3);
+			--cc-cookie-category-block-border: var(--primary-main);
+			--cc-cookie-category-block-hover-bg: var(--cc-cookie-category-block-border);
+			--cc-cookie-category-block-hover-border: var(--cc-cookie-category-block-hover-bg);
+			--cc-cookie-category-expanded-block-hover-bg: var(--primary-dark-2);
+			--cc-cookie-category-expanded-block-bg: transparent;
+			--cc-toggle-readonly-bg: var(--primary-dark-2);
+			--cc-overlay-bg: color-mix(in srgb, var(--x) 90%, transparent);
+			--cc-toggle-on-bg: var(--primary-light-1);
+			--cc-toggle-off-bg: var(--primary-dark-2);
+			--cc-toggle-on-knob-bg: var(--white);
+			--cc-toggle-off-knob-bg: var(--white);
+			--cc-toggle-readonly-knob-bg: var(--cc-cookie-category-block-bg);
+			--cc-toggle-enabled-icon-color: var(--cc-btn-primary-color);
+			--cc-toggle-disabled-icon-color: var(--cc-btn-primary-color);
+			--cc-toggle-readonly-knob-icon-color: var(--cc-toggle-readonly-bg);
+			--cc-section-category-border: var(--cc-primary-color);
+			--cc-webkit-scrollbar-bg: var(--cc-section-category-border);
+			--cc-webkit-scrollbar-hover-bg: var(--cc-btn-primary-hover-bg);
+			--cc-separator-border-color: transparent;
+			--cc-footer-bg: transparent;
+			--cc-footer-color: var(--cc-primary-color);
+			--cc-footer-border-color: color-mix(in srgb, var(--neutral-main), var(--white) 70%);
+		}
+		.pm__section--expandable.is-expanded {
+			background-color: var(--primary-dark-3) !important;
+		}
+		.cc__link {
+			color: var(--neutral-main) !important;
+		}
+		.pm__close-btn:hover {
+			background: var(--primary-dark-3) !important;
+		}
+		.cm,
+		.pm {
+			color-scheme: dark;
+		}
+	}
+}

@@ -1,6 +1,6 @@
 .article-card__title {
-    align-self: center;
-    color: currentColor;
-    grid-area: Article-Card-Title;
-    letter-spacing: normal;
+	align-self: center;
+	color: currentColor;
+	grid-area: Article-Card-Title;
+	letter-spacing: normal;
 }

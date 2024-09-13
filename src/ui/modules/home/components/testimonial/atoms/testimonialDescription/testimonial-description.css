@@ -1,15 +1,13 @@
+.testimonial__description {
+	color: var(--neutral-light-2);
+	grid-area: Testimonial-Description;
+	isolation: isolate;
+	padding-bottom: 1rem;
+	transition-duration: 350ms;
+	transition-property: translate;
+	transition-timing-function: ease-in;
 
-  .testimonial__description {
-    color: var(--neutral-light-2);
-    grid-area: Testimonial-Description;
-    isolation: isolate;
-    padding-bottom: 1rem;
-    transition-duration: 350ms;
-    transition-property: translate;
-    transition-timing-function: ease-in;
-
-    @media (width <= 575px) {
-      padding-inline:1rem;
-    }
-  }
-
+	@media (width <= 575px) {
+		padding-inline: 1rem;
+	}
+}

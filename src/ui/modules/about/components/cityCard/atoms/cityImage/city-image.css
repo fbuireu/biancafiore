@@ -1,6 +1,4 @@
-
-  .city-card__content__image {
-    grid-area: City-Image;
-    object-fit: cover;
-  }
-
+.city-card__content__image {
+	grid-area: City-Image;
+	object-fit: cover;
+}

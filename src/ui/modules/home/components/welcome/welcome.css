@@ -1,117 +1,112 @@
+.welcome {
+	display: grid;
+	grid: "Left-Greeting Welcome-Image Right-Greeting" auto / 1fr 1fr 1fr;
+	overflow: hidden;
 
-    .welcome {
-        display: grid;
-        grid: 'Left-Greeting Welcome-Image Right-Greeting' auto / 1fr 1fr 1fr;
-        overflow: hidden;
+	@media (width <= 960px) {
+		grid: "Left-Greeting Left-Greeting Left-Greeting" auto "Welcome-Image Welcome-Image Welcome-Image" auto "Right-Greeting Right-Greeting Right-Greeting" auto / 1fr;
+		margin-block-end: 3rem;
+	}
+}
 
-        @media (width <= 960px) {
-            grid: 'Left-Greeting Left-Greeting Left-Greeting' auto 'Welcome-Image Welcome-Image Welcome-Image' auto 'Right-Greeting Right-Greeting Right-Greeting' auto / 1fr;
-            margin-block-end: 3rem;
-        }
-    }
+.welcome__image {
+	grid-area: Welcome-Image;
+	height: auto;
+	place-self: center;
+	width: 100%;
 
-    .welcome__image {
-        grid-area: Welcome-Image;
-        height: auto;
-        place-self: center;
-        width: 100%;
+	@media (960px <= width <=575px) {
+		width: 50%;
+	}
+}
 
-        @media (960px <= width <= 575px) {
-            width: 50%;
-        }
-    }
+.welcome__text__section {
+	align-self: center;
+	color: var(--neutral-main);
+	text-align: center;
 
-    .welcome__text__section {
-        align-self: center;
-        color: var(--neutral-main);
-        text-align: center;
+	&.--right {
+		display: grid;
+		justify-self: start;
+		margin-inline-start: -3rem;
+		translate: 0 4rem;
+		z-index: 10;
 
-        &.--right {
-            display: grid;
-            justify-self: start;
-            margin-inline-start: -3rem;
-            translate: 0 4rem;
-            z-index: 10;
+		@media (width <= 960px) {
+			justify-items: end;
+			margin-inline-start: 0;
+			translate: 0;
+		}
+	}
 
-            @media (width <= 960px) {
-                justify-items: end;
-                margin-inline-start: 0;
-                translate: 0;
-            }
-        }
+	&.--left {
+		grid-area: Left-Greeting;
+		justify-self: end;
+		margin-inline-end: -1.5rem;
+		translate: 0 -100px;
+		z-index: 10;
 
-        &.--left {
-            grid-area: Left-Greeting;
-            justify-self: end;
-            margin-inline-end: -1.5rem;
-            translate: 0 -100px;
-            z-index: 10;
+		@media (width <= 960px) {
+			justify-self: start;
+			translate: 0;
+		}
+	}
+}
 
-            @media (width <=960px) {
-                justify-self: start;
-                translate: 0;
-            }
-        }
-    }
+.welcome__text__title {
+	font-size: clamp(4rem, 4.25vw, 5.25rem);
+	text-transform: uppercase;
+}
 
-    .welcome__text__title {
-        font-size: clamp(4rem, 4.25vw, 5.25rem);
-        text-transform: uppercase;
-    }
+.welcome__text__section.--right .welcome__text__title {
+	text-align: start;
+}
 
-    .welcome__text__section.--right .welcome__text__title {
-        text-align: start;
-    }
+.welcome__text__body {
+	align-self: center;
+	padding-inline-start: 3.5rem;
+	text-align: start;
 
-    .welcome__text__body {
-        align-self: center;
-        padding-inline-start: 3.5rem;
-        text-align: start;
+	@media (width <= 960px) {
+		text-align: end;
+	}
 
-        @media (width <= 960px) {
-            text-align: end;
-        }
+	@media (width <= 575px) {
+		padding-inline-start: 1rem;
+		text-align: start;
+	}
+}
 
-        @media (width <= 575px) {
-            padding-inline-start: 1rem;
-            text-align: start;
-        }
-    }
+@supports (animation-timeline: scroll(root block)) {
+	.welcome__text__section.--left .welcome__text__title {
+		--origin-x: -200cqi;
+		animation: float-side linear;
+		animation-timeline: scroll(root block);
 
-    @media (width <= 960px) {
-        text-align: end;
-    }
+		@media (width <= 960px) {
+			--origin-x: 0;
+		}
+	}
 
-    @supports (animation-timeline: scroll(root block)) {
-        .welcome__text__section.--left .welcome__text__title {
-            --origin-x: -200cqi;
-            animation: float-side linear;
-            animation-timeline: scroll(root block);
+	.welcome__text__section.--right {
+		.welcome__text__title {
+			--origin-x: -70cqi;
+			animation: float-side linear;
+			animation-timeline: scroll(root block);
 
-            @media (width <= 960px) {
-                --origin-x: 0;
-            }
-        }
+			@media (width <= 960px) {
+				--origin-x: 0;
+			}
+		}
 
-        .welcome__text__section.--right {
-            .welcome__text__title {
-                --origin-x: -70cqi;
-                animation: float-side linear;
-                animation-timeline: scroll(root block);
+		.welcome__text__body {
+			--origin-x: 200cqi;
+			animation: float-side linear;
+			animation-timeline: scroll(root block);
 
-                @media (width <= 960px) {
-                    --origin-x: 0;
-                }
-            }
-
-            .welcome__text__body {
-                --origin-x: 200cqi;
-                animation: float-side linear;
-                animation-timeline: scroll(root block);
-
-                @media (width <=960px) {
-                    --origin-x: 0;
-                }
-            }
-        }
-    }
+			@media (width <= 960px) {
+				--origin-x: 0;
+			}
+		}
+	}
+}

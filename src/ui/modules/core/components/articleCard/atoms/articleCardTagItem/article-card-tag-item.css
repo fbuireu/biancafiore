@@ -1,5 +1,5 @@
 .article-card__tag__item {
-    transition: all 0.3s ease;
-    transition-delay: calc(var(--inline-index) * 0.1s);
-    translate: 0 100px;
+	transition: all 0.3s ease;
+	transition-delay: calc(var(--inline-index) * 0.1s);
+	translate: 0 100px;
 }
