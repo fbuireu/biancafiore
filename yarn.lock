@@ -4434,7 +4434,7 @@ __metadata:
     contentful: "npm:^10.15.1"
     conventional-changelog-atom: "npm:^5.0.0"
     firebase: "npm:^10.13.1"
-    firebase-admin: "npm:^12.4.0"
+    firebase-admin: "npm:^12.5.0"
     gsap: "npm:^3.12.5"
     husky: "npm:^9.1.6"
     instantsearch.css: "npm:^8.5.1"
@@ -6295,9 +6295,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firebase-admin@npm:^12.4.0":
-  version: 12.4.0
-  resolution: "firebase-admin@npm:12.4.0"
+"firebase-admin@npm:^12.5.0":
+  version: 12.5.0
+  resolution: "firebase-admin@npm:12.5.0"
   dependencies:
     "@fastify/busboy": "npm:^3.0.0"
     "@firebase/database-compat": "npm:^1.0.2"
@@ -6315,7 +6315,7 @@ __metadata:
       optional: true
     "@google-cloud/storage":
       optional: true
-  checksum: 10c0/d6378201f60b2ab79c44b43bbe6441c88365860f14ed15d9e60e0867a8851fb5aebf3677f435cfdcfc3cbc26088431d86b6c9c3bc464a5c3ee04dbf1b586dcfe
+  checksum: 10c0/da961e3a44bac301926950b359859a2af50bcc4c0adaa8cc924a900abfe9861347ac6effa6b383f600ed1be0e56aa270ba5efd28a8d2de5ea8396e6e0666871d
   languageName: node
   linkType: hard
 
