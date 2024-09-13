@@ -1,16 +1,16 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "saturday"
-    assignees: [fbuireu]
-    labels: [dependencies, dependabot, bot]
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "saturday"
-    assignees: [fbuireu]
-    labels: [dependencies, dependabot, bot]
+    -   package-ecosystem: github-actions
+        directory: "/"
+        schedule:
+            interval: weekly
+            day: saturday
+        assignees: [fbuireu]
+        labels: [dependencies, dependabot, bot]
+    -   package-ecosystem: npm
+        directory: "/"
+        schedule:
+            interval: weekly
+            day: saturday
+        assignees: [fbuireu]
+        labels: [dependencies, dependabot, bot]
