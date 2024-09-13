@@ -80,7 +80,7 @@ jobs:
                     git config user.email "github-actions@github.com"
                     git checkout -b update-version-${{ env.TAG_NAME }}
                     git commit -am "chore: update package.json version to ${{ env.TAG_NAME }}"
-                    git pull origin update-version-${{ env.TAG_NAME }} 
+                    git pull origin update-version-${{ env.TAG_NAME }} --rebase
                     git push origin HEAD
             -   name: Create PR
                 env:
