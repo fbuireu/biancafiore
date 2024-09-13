@@ -82,14 +82,16 @@ jobs:
                     git commit -am "chore: update package.json version to ${{ env.TAG_NAME }}"
                     git push origin HEAD
             -   name: Create PR
+                env:
+                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 run: |
                     gh pr create --title "chore: update package.json version to ${{ env.TAG_NAME }}" --body "Automatically created PR for version update to ${{ env.TAG_NAME }}" --head update-version-${{ env.TAG_NAME }} --base main
             -   name: Merge PR
+                env:
+                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 run: |
                     PR_URL=$(gh pr list --head update-version-${{ env.TAG_NAME }} --json url -q .[0].url)
                     gh pr merge $PR_URL --merge --admin
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     create-release:
         name: Create Release
         runs-on: ubuntu-latest
