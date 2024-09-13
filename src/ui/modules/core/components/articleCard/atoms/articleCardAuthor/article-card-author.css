@@ -1,18 +1,18 @@
 .article-card__author {
-    color: currentColor;
-    grid-area: Article-Card-Author;
+	color: currentColor;
+	grid-area: Article-Card-Author;
 
-    a {
-        color: var(--primary-main);
-        position: relative;
-        z-index: 10;
-    }
+	a {
+		color: var(--primary-main);
+		position: relative;
+		z-index: 10;
+	}
 
-    :has(a:is(:hover, :focus-visible)) ~ .article-card__tags__list .article-card__tag__item {
-        translate: 0 0;
-    }
+	:has(a:is(:hover, :focus-visible)) ~ .article-card__tags__list .article-card__tag__item {
+		translate: 0 0;
+	}
 }
 
 .article-card__author__name {
-    display: inline-block;
+	display: inline-block;
 }

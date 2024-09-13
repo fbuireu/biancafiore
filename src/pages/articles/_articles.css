@@ -1,20 +1,19 @@
 .articles__grid__list {
-    gap: 5rem 3rem;
-    margin-block: 12rem;
+	gap: 5rem 3rem;
+	margin-block: 12rem;
 
-    @media (width <= 960px) {
-        justify-content: center;
-        margin-block: 7rem;
-    }
+	@media (width <= 960px) {
+		justify-content: center;
+		margin-block: 7rem;
+	}
 }
 .articles__grid__list > li {
-    max-width: calc(100% / var(--items-per-row) - 2rem);
-    position: relative;
-    width: 100%;
-    --items-per-row: 4;
+	max-width: calc(100% / var(--items-per-row) - 2rem);
+	position: relative;
+	width: 100%;
+	--items-per-row: 4;
 
-    @media (width <= 960px) {
-        --items-per-row: 1;
-    }
+	@media (width <= 960px) {
+		--items-per-row: 1;
+	}
 }
-

@@ -1,52 +1,55 @@
-@import url('atoms/articleCardAuthor/article-card-author.css');
-@import url('atoms/articleCardExcerpt/article-card-excerpt.css');
-@import url('atoms/articleCardImage/article-card-image.css');
-@import url('atoms/articleCardPublishDate/article-card-publish-date.css');
-@import url('atoms/articleCardTagsList/article-card-tags-list.css');
-@import url('atoms/articleCardTagItem/article-card-tag-item.css');
-@import url('atoms/articleCardTitle/article-card-title.css');
-@import url('atoms/articleCardReadingTime/article-card-reading-time.css');
+@import url("atoms/articleCardAuthor/article-card-author.css");
+@import url("atoms/articleCardExcerpt/article-card-excerpt.css");
+@import url("atoms/articleCardImage/article-card-image.css");
+@import url("atoms/articleCardPublishDate/article-card-publish-date.css");
+@import url("atoms/articleCardTagsList/article-card-tags-list.css");
+@import url("atoms/articleCardTagItem/article-card-tag-item.css");
+@import url("atoms/articleCardTitle/article-card-title.css");
+@import url("atoms/articleCardReadingTime/article-card-reading-time.css");
 
 .article-card__link {
-    inset: 0;
-    position: absolute;
-    width: 100%;
-    z-index: 1;
-    
-    &:is(:hover, :focus-visible) ~ .article-card__item .article-card__tag__item {
-        translate: 0 0;
-    }
+	inset: 0;
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+
+	&:is(:hover, :focus-visible) ~ .article-card__item .article-card__tag__item {
+		translate: 0 0;
+	}
 }
 
 .article-card__item {
-    color: var(--white);
-    display: grid;
-    gap: 0.5rem 0;
-    height: 100%;
-    overflow: hidden;
+	color: var(--white);
+	display: grid;
+	gap: 0.5rem 0;
+	height: 100%;
+	overflow: hidden;
 
-    &.--no-image-variant {
-        grid:
-    'Article-Card-Publish-Date Article-Card-Publish-Date' auto
-    'Article-Card-Title Article-Card-Title' 1fr
-    'Article-Card-Author Article-Card-Reading-Time' auto
-    'Article-Card-Excerpt Article-Card-Excerpt' auto
-    'Article-Card-Tags Article-Card-Tags' auto
-    / 1fr 1fr;
-    }
+	&.--no-image-variant {
+		grid:
+			"Article-Card-Publish-Date Article-Card-Publish-Date" auto
+			"Article-Card-Title Article-Card-Title" 1fr
+			"Article-Card-Author Article-Card-Reading-Time" auto
+			"Article-Card-Excerpt Article-Card-Excerpt" auto
+			"Article-Card-Tags Article-Card-Tags" auto
+			/ 1fr 1fr;
+	}
 
-    &.--default-variant {
-        grid:
-    'Article-Card-Publish-Date Article-Card-Publish-Date' auto
-    'Article-Card-Featured-Image Article-Card-Featured-Image' 1fr
-    'Article-Card-Title Article-Card-Title' auto
-    'Article-Card-Author Article-Card-Reading-Time' auto
-    'Article-Card-Excerpt Article-Card-Excerpt' auto
-    'Article-Card-Tags Article-Card-Tags' auto
-    / 1fr 1fr;
-    }
+	&.--default-variant {
+		grid:
+			"Article-Card-Publish-Date Article-Card-Publish-Date" auto
+			"Article-Card-Featured-Image Article-Card-Featured-Image" 1fr
+			"Article-Card-Title Article-Card-Title" auto
+			"Article-Card-Author Article-Card-Reading-Time" auto
+			"Article-Card-Excerpt Article-Card-Excerpt" auto
+			"Article-Card-Tags Article-Card-Tags" auto
+			/ 1fr 1fr;
+	}
 
-    &.--is-articles, &.--is-about, &.--is-tags, &.--is-article {
-        color: var(--neutral-main)
-    }
+	&.--is-articles,
+	&.--is-about,
+	&.--is-tags,
+	&.--is-article {
+		color: var(--neutral-main);
+	}
 }

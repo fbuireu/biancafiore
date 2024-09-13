@@ -1,13 +1,13 @@
 .article-card__tags__list {
-    color: currentColor;
-    gap: 0 1rem;
-    grid-area: Article-Card-Tags;
-    position: relative;
-    text-transform: lowercase;
-    z-index: 10;
+	color: currentColor;
+	gap: 0 1rem;
+	grid-area: Article-Card-Tags;
+	position: relative;
+	text-transform: lowercase;
+	z-index: 10;
 
-    &:hover .article-card__tag__item,
-    &:has(.article-card__tag__item:focus-visible) .article-card__tag__item{
-        translate: 0 0;
-    }
+	&:hover .article-card__tag__item,
+	&:has(.article-card__tag__item:focus-visible) .article-card__tag__item {
+		translate: 0 0;
+	}
 }

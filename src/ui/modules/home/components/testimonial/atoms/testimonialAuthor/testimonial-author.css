@@ -1,15 +1,13 @@
+.testimonial__author {
+	font-size: 1.25rem;
+	grid-area: Testimonial-Author;
+	isolation: isolate;
+	text-transform: uppercase;
+	transition-duration: 450ms;
+	transition-property: translate;
+	transition-timing-function: ease-in;
 
-  .testimonial__author {
-    font-size: 1.25rem;
-    grid-area: Testimonial-Author;
-    isolation: isolate;
-    text-transform: uppercase;
-    transition-duration: 450ms;
-    transition-property: translate;
-    transition-timing-function: ease-in;
-
-    @media (width <= 575px) {
-      padding-inline:1rem;
-    }
-  }
-
+	@media (width <= 575px) {
+		padding-inline: 1rem;
+	}
+}

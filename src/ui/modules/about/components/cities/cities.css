@@ -1,18 +1,16 @@
+.city-card__list {
+	--num-columns: 2;
+	display: grid;
+	gap: 3rem;
+	grid-template-columns: 1fr;
+	grid-template-rows: repeat(var(--inline-num-cards), 400px);
+	list-style: none;
+	margin-block-end: 3rem;
+	max-width: calc(100% / var(--num-columns));
+	padding-bottom: calc(var(--inline-index) * 0.5rem);
+	view-timeline-name: --cities-scales-in-view;
 
-  .city-card__list {
-    --num-columns: 2;
-    display: grid;
-    gap: 3rem;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(var(--inline-num-cards), 400px);
-    list-style: none;
-    margin-block-end: 3rem;
-    max-width: calc(100% / var(--num-columns));
-    padding-bottom: calc(var(--inline-index) * 0.5rem);
-    view-timeline-name: --cities-scales-in-view;
-
-    @media (width <=960px) {
-      --num-columns: 1;
-    }
-  }
-
+	@media (width <= 960px) {
+		--num-columns: 1;
+	}
+}

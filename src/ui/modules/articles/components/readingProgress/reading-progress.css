@@ -1,13 +1,13 @@
-.reading-progress{
-    background-color: var(--primary-main);
-    height: 0.25rem;
-    left: 0;
-    position: fixed;
-    top: 0;
-    transition: width 0.3s;
-    z-index: 1000;
+.reading-progress {
+	background-color: var(--primary-main);
+	height: 0.25rem;
+	left: 0;
+	position: fixed;
+	top: 0;
+	transition: width 0.3s;
+	z-index: 1000;
 
-    &.--is-menu-open {
-        z-index: 0;
-    }
+	&.--is-menu-open {
+		z-index: 0;
+	}
 }

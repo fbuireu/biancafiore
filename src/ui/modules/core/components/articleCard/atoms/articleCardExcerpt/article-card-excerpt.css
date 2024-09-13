@@ -1,4 +1,4 @@
 .article-card__excerpt {
-    color: currentColor;
-    grid-area: Article-Card-Excerpt;
+	color: currentColor;
+	grid-area: Article-Card-Excerpt;
 }

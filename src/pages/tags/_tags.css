@@ -1,19 +1,19 @@
-  .tags__list{
-    text-align: center;
-  }
-  .tags__item {
-    margin-block-end: 1rem;
-    max-width: 50%;
-    width: 100%;
-  }
-  .tags__item__letter {
-    color: var(--primary-main);
-  }
-
-.tags__item__list {
-  gap: 0.5rem 0;
+.tags__list {
+	text-align: center;
+}
+.tags__item {
+	margin-block-end: 1rem;
+	max-width: 50%;
+	width: 100%;
+}
+.tags__item__letter {
+	color: var(--primary-main);
 }
 
-  .tag__item {
-    text-transform: capitalize;
-  }
+.tags__item__list {
+	gap: 0.5rem 0;
+}
+
+.tag__item {
+	text-transform: capitalize;
+}

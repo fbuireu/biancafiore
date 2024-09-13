@@ -1,22 +1,20 @@
 .link-with-arrow {
-    --gap: 1.25rem;
-    align-content: center;
-    flex-flow: row wrap;
-    font-weight: 700;
-    gap: 0 1rem;
-    position: relative;
-    transition: all 0.2s;
-    width: fit-content;
-    z-index: 10;
+	--gap: 1.25rem;
+	align-content: center;
+	flex-flow: row wrap;
+	font-weight: 700;
+	gap: 0 1rem;
+	position: relative;
+	transition: all 0.2s;
+	width: fit-content;
+	z-index: 10;
 
-    svg {
-        rotate: 0.5turn;
-        width: 2rem;
-    }
+	svg {
+		rotate: 0.5turn;
+		width: 2rem;
+	}
 
-    &:hover {
-        gap: 0 1.5rem;
-    }
-
+	&:hover {
+		gap: 0 1.5rem;
+	}
 }
-
