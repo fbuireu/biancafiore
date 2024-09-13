@@ -1,5 +1,5 @@
 .contact-tabs__wrapper {
-	background-color: var(--neutral-light-4);
+	background-color: light-dark(var(--neutral-light-4), var(--background-main));
 	margin: 2rem 0;
 	padding: 3rem 0;
 }

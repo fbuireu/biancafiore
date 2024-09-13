@@ -20,8 +20,8 @@
 		"ignore": ["*.d.ts*"],
 		"rules": {
 			"recommended": true,
-			"correctness": {
-				"noUnknownProperty": "off"
+			"suspicious": {
+				"noConsole": "error"
 			}
 		}
 	}
