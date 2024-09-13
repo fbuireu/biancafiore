@@ -1,118 +1,106 @@
 name: Release
 run-name: Release ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag_name || github.ref_name }}
 concurrency:
-    group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-    cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 on:
-    workflow_dispatch:
-        inputs:
-            tag_name:
-                description: 'Tag name for the release (semver format required: x.x.x)'
-                required: true
-    push:
-        tags:
-            - '*'
-    workflow_run:
-        workflows: ["E2E Tests", "Unit Tests"]
-        types: [completed]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name for the release (semver format required: x.x.x)'
+        required: true
+  push:
+    tags:
+      - '*'
+  workflow_run:
+    workflows: ["E2E Tests", "Unit Tests"]
+    types: [completed]
 env:
-    TAG_NAME: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag_name || github.ref_name }}
+  TAG_NAME: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag_name || github.ref_name }}
 jobs:
-    validate-tag:
-        name: Validate tag
-        runs-on: ubuntu-latest
-        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
-        steps:
-            -   name: Validate tag Format
-                run: |
-                    if [[ ! "${{ env.TAG_NAME }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                      echo "Error: Invalid tag format. Please use semver format (x.x.x)."
-                      exit 1
-                    fi
-    check-tag:
-        name: Check tag
-        runs-on: ubuntu-latest
-        needs: validate-tag
-        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
-        steps:
-            -   name: Check out the repository
-                uses: actions/checkout@v4
-            -   name: Check if tag exists
-                id: check_tag
-                run: |
-                    git fetch --tags
-                    if git rev-parse "${{ env.TAG_NAME }}" >/dev/null 2>&1; then
-                      echo "Tag already exists. Cancelling the release."
-                      exit 1
-                    fi
-    check-version:
-        name: Check Version
-        runs-on: ubuntu-latest
-        needs: check-tag
-        steps:
-            -   name: Check out the repository
-                uses: actions/checkout@v4
-            -   name: Install semver
-                run: npm install -g semver
-            -   name: Verify new version
-                run: |
-                    CURRENT_VERSION=$(jq -r '.version' package.json)
-                    echo "Current version: $CURRENT_VERSION"
-                    if ! semver -r ">$CURRENT_VERSION" "${{ env.TAG_NAME }}"; then
-                      echo "Error: The new version ${{ env.TAG_NAME }} is not greater than the current version $CURRENT_VERSION."
-                      exit 1
-                    fi
-                shell: bash
-    update-version:
-        name: Update version
-        runs-on: ubuntu-latest
-        needs: check-version
-        steps:
-            -   name: Check out the repository
-                uses: actions/checkout@v4
-            -   name: Update package.json version to match tag
-                run: |
-                    VERSION="${{ env.TAG_NAME }}"
-                    jq --arg version "$VERSION" '.version = $version' package.json > package.json.tmp && mv package.json.tmp package.json
-            - name: Commit version update
-              run: |
-                git config user.name "github-actions"
-                git config user.email "github-actions@github.com"
-                git checkout -b update-version-${{ env.TAG_NAME }}
-                git commit -am "chore: update package.json version to ${{ env.TAG_NAME }}"
-                git pull origin main --rebase --strategy-option=theirs
-                git push origin HEAD
-            -   name: Create PR
-                env:
-                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                run: |
-                    gh pr create --title "chore: update package.json version to ${{ env.TAG_NAME }}" --body "Automatically created PR for version update to ${{ env.TAG_NAME }}" --head update-version-${{ env.TAG_NAME }} --base main
-            -   name: Merge PR
-                env:
-                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                run: |
-                    PR_URL=$(gh pr list --head update-version-${{ env.TAG_NAME }} --json url -q .[0].url)
-                    gh pr merge $PR_URL --merge --admin
-    create-release:
-        name: Create Release
-        runs-on: ubuntu-latest
-        needs: update-version
-        steps:
-            -   name: Check out the repository
-                uses: actions/checkout@v4
-            -   name: Create tag (only for workflow_dispatch)
-                if: ${{ github.event_name == 'workflow_dispatch' }}
-                run: |
-                    git config user.name "github-actions"
-                    git config user.email "github-actions@github.com"
-                    git tag ${{ env.TAG_NAME }}
-                    git push origin ${{ env.TAG_NAME }}
-            -   name: Set up GitHub CLI
-                run: |
-                    sudo apt-get install -y gh
-                    echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-            -   name: Create Release with GitHub CLI
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                run: |
-                    gh release create ${{ env.TAG_NAME }} --title "Release ${{ env.TAG_NAME }}" --notes "Release notes generated automatically." --generate-notes
+  validate-tag:
+    name: Validate tag
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: Validate tag Format
+        run: |
+          if [[ ! "${{ env.TAG_NAME }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Error: Invalid tag format. Please use semver format (x.x.x)."
+            exit 1
+          fi
+  check-tag:
+    name: Check tag
+    runs-on: ubuntu-latest
+    needs: validate-tag
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          git fetch --tags
+          if git rev-parse "${{ env.TAG_NAME }}" >/dev/null 2>&1; then
+            echo "Tag already exists. Cancelling the release."
+            exit 1
+          fi
+  check-version:
+    name: Check Version
+    runs-on: ubuntu-latest
+    needs: check-tag
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Install semver
+        run: npm install -g semver
+      - name: Verify new version
+        run: |
+          CURRENT_VERSION=$(jq -r '.version' package.json)
+          echo "Current version: $CURRENT_VERSION"
+          if ! semver -r ">$CURRENT_VERSION" "${{ env.TAG_NAME }}"; then
+            echo "Error: The new version ${{ env.TAG_NAME }} is not greater than the current version $CURRENT_VERSION."
+            exit 1
+          fi
+        shell: bash
+  update-version:
+    name: Update version
+    runs-on: ubuntu-latest
+    needs: check-version
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Update package.json version to match tag
+        run: |
+          VERSION="${{ env.TAG_NAME }}"
+          jq --arg version "$VERSION" '.version = $version' package.json > package.json.tmp && mv package.json.tmp package.json
+
+      - name: Commit version update
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git commit -am "chore: update package.json version to ${{ env.TAG_NAME }}"
+          git push origin HEAD
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: update-version
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Create tag (only for workflow_dispatch)
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag ${{ env.TAG_NAME }}
+          git push origin ${{ env.TAG_NAME }}
+      - name: Set up GitHub CLI
+        run: |
+          sudo apt-get install -y gh
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+      - name: Create Release with GitHub CLI
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ env.TAG_NAME }} --title "Release ${{ env.TAG_NAME }}" --notes "Release notes generated automatically." --generate-notes
