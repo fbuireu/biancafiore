@@ -36,7 +36,6 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
-
       - name: Check if tag exists
         id: check_tag
         run: |
@@ -52,10 +51,8 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
-
       - name: Install semver
         run: npm install -g semver
-
       - name: Verify new version
         run: |
           CURRENT_VERSION=$(jq -r '.version' package.json)
@@ -72,7 +69,6 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
-
       - name: Update package.json version to match tag
         run: |
           VERSION="${{ env.TAG_NAME }}"
@@ -91,7 +87,6 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
-
       - name: Create tag (only for workflow_dispatch)
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |

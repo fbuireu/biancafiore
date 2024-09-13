@@ -6,6 +6,7 @@ on:
 env:
     CI: true
     E2E_URL: ${{ github.event_name == 'workflow_dispatch' && vars.E2E_PRODUCTION_URL || vars.E2E_SELF_HOSTED_URL }}
+    E2E_COMMAND: ${{ github.event_name == 'workflow_dispatch' && 'yarn test:e2e' || 'yarn test:e2e:changed' }}
 jobs:
     e2e-tests:
         name: Run E2E tests
@@ -32,32 +33,11 @@ jobs:
                 run: yarn install --frozen-lockfile
             -   name: Install Playwright Browsers
                 run: yarn playwright install --with-deps
-            -   name: Start application (for PRs only)
-                if: github.event_name != 'workflow_dispatch'
-                run: |
-                    yarn start &
-                    echo $! > .pidfile
-            -   name: Wait for application to be ready (for PRs only)
-                if: github.event_name != 'workflow_dispatch'
-                run: |
-                    echo "Waiting for application to start..."
-                    npx wait-on ${{ env.E2E_URL }}
             -   name: Run E2E Tests - Playwright for PRs
-                if: github.event_name == 'pull_request'
-                run: yarn test:e2e:changed
+                run: ${{ env.E2E_COMMAND }}
                 env:
                     CI: ${{ env.CI }}
                     E2E_URL: ${{ env.E2E_URL }}
-            -   name: Run E2E Tests - Playwright for Workflow Dispatch event
-                if: github.event_dispatch == 'workflow_dispatch'
-                run: yarn test:e2e
-                env:
-                    CI: ${{ env.CI }}
-                    E2E_URL: ${{ env.E2E_URL }}
-            -   name: Stop application (for PRs only)
-                if: always() && github.event_name != 'workflow_dispatch'
-                run: |
-                    kill $(cat .pidfile)
             -   uses: actions/upload-artifact@v4
                 if: always()
                 with:
