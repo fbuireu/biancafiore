@@ -3,7 +3,6 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
 	webServer: {
 		command: "yarn start",
-		url: "http://127.0.0.1:3000",
 		reuseExistingServer: !process.env.CI,
 	},
 	testDir: "./e2e",
@@ -14,6 +13,7 @@ export default defineConfig({
 	reporter: "html",
 	use: {
 		trace: "on-first-retry",
+		baseURL: `${process.env.E2E_URL ?? "http://localhost:4321"}`,
 	},
 	projects: [
 		{
