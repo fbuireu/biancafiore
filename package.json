@@ -32,7 +32,7 @@
     "test:ut:changed": "yarn test:ut --bail --findRelatedTests",
     "test:e2e": "playwright test --pass-with-no-tests",
     "test:e2e:ui": "yarn test:e2e --ui",
-    "test:e2e:changed": "yarn test:e2e --changed",
+		"test:e2e:changed": "yarn test:e2e --only-changed",
     "format": "biome check --write --no-errors-on-unmatched",
     "format:changed": "yarn format --changed",
     "format:all": "yarn format .",
