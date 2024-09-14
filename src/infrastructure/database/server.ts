@@ -3,6 +3,7 @@ import type { ServiceAccount } from "firebase-admin";
 import { cert, getApps, initializeApp } from "firebase-admin/app";
 
 const activeApps = getApps();
+
 const SERVICE_ACCOUNT = {
 	type: "service_account",
 	project_id: getSecret("FIREBASE_PROJECT_ID"),
