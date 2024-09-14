@@ -4,6 +4,5 @@
 	"labels": ["dependencies", "renovate", "bot"],
 	"schedule": ["every weekend"],
 	"assigneesFromCodeOwners": true,
-	"assignees": ["fbuireu"],
 	"reviewersFromCodeOwners": true
 }
