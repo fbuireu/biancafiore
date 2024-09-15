@@ -10,8 +10,12 @@ import "./tabs.css";
       <p class="contact-tabs__body">Multiple ways to get in touch with me :)</p>
     </div>
     <ul class="contact-tabs flex">
-      <li class="contact-tab --underline-on-hover" data-target="tab1">Email me</li>
-      <li class="contact-tab --underline-on-hover" data-target="tab2">Make an appointment</li>
+      <li class="contact-tab --underline-on-hover" data-target="tab1">
+          <button>Email me</button>
+      </li>
+      <li class="contact-tab --underline-on-hover" data-target="tab2">
+          <button>Make an appointment</button>
+      </li>
     </ul>
     <div id="tab1" class="contact-tab__content --is-active">
       <ContactFormProvider client:load />

@@ -6,7 +6,8 @@
 			background-color: var(--primary-light-2);
 			color: var(--neutral-main);
 		}
-		&:focus-visible {
+
+		&:focus-visible:not(input, textarea) {
 			outline: 2px solid var(--primary-main);
 			outline-offset: 2px;
 		}
