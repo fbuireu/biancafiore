@@ -33,7 +33,7 @@ jobs:
                 run: yarn install --frozen-lockfile
             -   name: Install Playwright Browsers
                 run: yarn playwright install --with-deps
-            -   name: Run E2E Tests - Playwright for PRs
+            -   name: Run E2E Tests 
                 run: ${{ env.E2E_COMMAND }}
                 env:
                     CI: ${{ env.CI }}
