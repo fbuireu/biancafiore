@@ -43,8 +43,8 @@ export function initializeThemeSetter() {
 
 		THEME_INPUT.checked = isDarkMode;
 		TOGGLE.classList.toggle("dark", isDarkMode);
-		TOGGLE.classList.toggle("--toggled", isDarkMode);
-		TOGGLE.classList.toggle("--untoggled", !isDarkMode);
+		TOGGLE.classList.toggle("--is-toggled", isDarkMode);
+		TOGGLE.classList.toggle("--is-untoggled", !isDarkMode);
 	};
 
 	applyTheme({ theme: initialTheme, document });
