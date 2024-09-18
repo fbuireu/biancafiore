@@ -55,7 +55,7 @@
     "@fontsource/baskervville": "^5.1.0",
     "@hookform/resolvers": "^3.9.0",
     "@million/lint": "1.0.0-rc.84",
-    "algoliasearch": "^5.4.3",
+    "algoliasearch": "^5.5.0",
     "astro": "^4.15.7",
     "clsx": "^2.1.1",
     "contentful": "^10.15.1",
