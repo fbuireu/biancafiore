@@ -1,6 +1,7 @@
 @layer theme {
 	:root {
 		color-scheme: light;
+		interpolate-size: allow-keywords;
 		--primary-light-3: color-mix(in srgb, var(--primary-main), var(--white) 75%);
 		--primary-light-2: color-mix(in srgb, var(--primary-main), var(--white) 50%);
 		--primary-light-1: color-mix(in srgb, var(--primary-main), var(--white) 25%);
