@@ -25,6 +25,10 @@
 	height: 100%;
 	overflow: hidden;
 
+	&:has(*:hover, *:focus-visible) {
+		overflow: initial;
+	}
+
 	&.--no-image-variant {
 		grid:
 			"Article-Card-Publish-Date Article-Card-Publish-Date" auto
