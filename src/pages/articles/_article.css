@@ -28,6 +28,7 @@
 }
 
 .article__heading {
+	scroll-margin-block-start: var(--header-height);
 	gap: 0 0.5rem;
 
 	svg {
