@@ -27,6 +27,22 @@
 	grid-area: auto / Article-Content;
 }
 
+.article__heading {
+	gap: 0 0.5rem;
+
+	svg {
+		display: none;
+	}
+	&:hover {
+		color: var(--primary-main);
+
+		svg {
+			display: flex;
+			fill: var(--primary-main);
+		}
+	}
+}
+
 .full-bleed {
 	grid-column: 1 / -1;
 	max-height: 50vh;

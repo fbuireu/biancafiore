@@ -2,7 +2,6 @@
 	--index0: calc(var(--inline-index) - 1);
 	--reverse-index: calc(var(--inline-num-cards) - var(--index0));
 	--reverse-index0: calc(var(--reverse-index) - 1);
-
 	padding-top: calc(var(--inline-index) * 0.5rem);
 	position: sticky;
 	top: calc(var(--header-height) + 0.5rem);

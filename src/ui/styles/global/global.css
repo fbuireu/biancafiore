@@ -67,6 +67,10 @@
 		align-items: center;
 	}
 
+	.align-baseline {
+		align-items: center;
+	}
+
 	.letter-spacing {
 		letter-spacing: 2px;
 	}

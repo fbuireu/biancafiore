@@ -131,12 +131,6 @@ export default defineConfig({
 			},
 		}),
 	],
-	redirects: {
-		"/home": {
-			status: 301,
-			destination: "/",
-		},
-	},
 	output: "hybrid",
 	adapter: cloudflare({
 		platformProxy: {
