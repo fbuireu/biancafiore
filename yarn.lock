@@ -2798,7 +2798,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.47.1":
+"@playwright/test@npm:^1.47.2":
   version: 1.47.2
   resolution: "@playwright/test@npm:1.47.2"
   dependencies:
@@ -4041,7 +4041,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"algoliasearch@npm:^5.5.2":
+"algoliasearch@npm:^5.5.3":
   version: 5.5.3
   resolution: "algoliasearch@npm:5.5.3"
   dependencies:
@@ -4402,7 +4402,7 @@ __metadata:
     "@fontsource/baskervville": "npm:^5.1.0"
     "@hookform/resolvers": "npm:^3.9.0"
     "@million/lint": "npm:1.0.0-rc.84"
-    "@playwright/test": "npm:^1.47.1"
+    "@playwright/test": "npm:^1.47.2"
     "@testing-library/react": "npm:^16.0.1"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
@@ -4411,7 +4411,7 @@ __metadata:
     "@types/react": "npm:^18.3.8"
     "@types/react-dom": "npm:^18.3.0"
     "@types/three": "npm:^0.168.0"
-    algoliasearch: "npm:^5.5.2"
+    algoliasearch: "npm:^5.5.3"
     astro: "npm:^4.15.8"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.0.2"
