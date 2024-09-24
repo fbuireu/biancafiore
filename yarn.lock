@@ -148,9 +148,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/cloudflare@npm:^11.0.5":
-  version: 11.0.5
-  resolution: "@astrojs/cloudflare@npm:11.0.5"
+"@astrojs/cloudflare@npm:^11.1.0":
+  version: 11.1.0
+  resolution: "@astrojs/cloudflare@npm:11.1.0"
   dependencies:
     "@astrojs/internal-helpers": "npm:0.4.1"
     "@astrojs/underscore-redirects": "npm:^0.3.4"
@@ -164,7 +164,7 @@ __metadata:
     wrangler: "npm:^3.78.3"
   peerDependencies:
     astro: ^4.10.3
-  checksum: 10c0/d6bec327d0b00a3770823171d9867a4dfb153eeca038beba6f76c6feb2daf3053d7377e95bb8e6ffe2ced585c1f9e7f9570f623ab345e21b120aa70f9cb39c61
+  checksum: 10c0/172463f9e3153c1f8df0f540be58e8221ed46183d7bcae705099dafaecf37a526179b9a784ea0e525dca6d3b9cd5bbcc37d987a6aed605de950e83618768fcec
   languageName: node
   linkType: hard
 
@@ -2784,10 +2784,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oslojs/encoding@npm:^0.4.1":
-  version: 0.4.1
-  resolution: "@oslojs/encoding@npm:0.4.1"
-  checksum: 10c0/e3ccee039f385cca8a53afb1584c85d66d3685e20142649aab8f6e7f71ea11e026861e60e3d61de8d34a78adf9049e6da6813e3de51ba2b86239a4200c08ee76
+"@oslojs/encoding@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@oslojs/encoding@npm:1.0.0"
+  checksum: 10c0/08e6a28e83ea2f604dce4a95ac342af27c32dd2d243b870d86cd1b1c7dcd34fed4339a5d430995410560298d7776c56330bf2f13c6b002a38c820307f6a0320e
   languageName: node
   linkType: hard
 
@@ -3546,12 +3546,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.5.5":
-  version: 22.5.5
-  resolution: "@types/node@npm:22.5.5"
+"@types/node@npm:^22.6.1":
+  version: 22.6.1
+  resolution: "@types/node@npm:22.6.1"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 10c0/ead9495cfc6b1da5e7025856dcce2591e9bae635357410c0d2dd619fce797d2a1d402887580ca4b336cb78168b195224869967de370a23f61663cf1e4836121c
+  checksum: 10c0/79fdb14f268070eb21d25f3e81811b73c10dfcc65a638a6546fd97aa3e7dfe473f31a547fd21c43b8559a435b6ab26057066a47b5453bd1b1cdffe14430ac399
   languageName: node
   linkType: hard
 
@@ -4224,9 +4224,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^4.15.8":
-  version: 4.15.8
-  resolution: "astro@npm:4.15.8"
+"astro@npm:^4.15.9":
+  version: 4.15.9
+  resolution: "astro@npm:4.15.9"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/internal-helpers": "npm:0.4.1"
@@ -4235,7 +4235,7 @@ __metadata:
     "@babel/core": "npm:^7.25.2"
     "@babel/plugin-transform-react-jsx": "npm:^7.25.2"
     "@babel/types": "npm:^7.25.6"
-    "@oslojs/encoding": "npm:^0.4.1"
+    "@oslojs/encoding": "npm:^1.0.0"
     "@rollup/pluginutils": "npm:^5.1.0"
     "@types/babel__core": "npm:^7.20.5"
     "@types/cookie": "npm:^0.6.0"
@@ -4299,7 +4299,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/8c8b1c0af59452cd4450e3ebd868ac85e0054ebac41b21ab57210cd3390f3e88ceb5f8c988806395eef1f133a4683c022361312a5a183602b575c86a946f2a50
+  checksum: 10c0/049e8fc23a022954d03789238b1e5a7c314e1239f11d9b60ed8a29878c8768dbda02c1906cea0b65609d6d870472ebbc55b048efb141767887d789f63e214b1b
   languageName: node
   linkType: hard
 
@@ -4386,7 +4386,7 @@ __metadata:
   resolution: "biancafiore@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.9.3"
-    "@astrojs/cloudflare": "npm:^11.0.5"
+    "@astrojs/cloudflare": "npm:^11.1.0"
     "@astrojs/mdx": "npm:^3.1.7"
     "@astrojs/partytown": "npm:^2.1.2"
     "@astrojs/react": "npm:^3.6.2"
@@ -4407,14 +4407,14 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^22.5.5"
+    "@types/node": "npm:^22.6.1"
     "@types/react": "npm:^18.3.8"
     "@types/react-dom": "npm:^18.3.0"
     "@types/three": "npm:^0.168.0"
     algoliasearch: "npm:^5.5.3"
-    astro: "npm:^4.15.8"
+    astro: "npm:^4.15.9"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.0.2"
+    contentful: "npm:^11.0.3"
     conventional-changelog-atom: "npm:^5.0.0"
     firebase: "npm:^10.13.2"
     firebase-admin: "npm:^12.5.0"
@@ -4971,9 +4971,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.0.2":
-  version: 11.0.2
-  resolution: "contentful@npm:11.0.2"
+"contentful@npm:^11.0.3":
+  version: 11.0.3
+  resolution: "contentful@npm:11.0.3"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.0"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -4982,7 +4982,7 @@ __metadata:
     contentful-sdk-core: "npm:^8.3.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/61812326dc19fcf8b4788a43a762384b12a9a1ea51248a853eba34e299a9d4922e3d39f87943289aa034e271621a8a7ea138dbc4a9ca50967fe7cdbdd2a9619a
+  checksum: 10c0/026737fdde20745f694252509ff5951b3e923605e5f487c5c477f07851bf291fc84ce25f0fa0b923eae219ed07a16396df82434c1f8488785bd1a7d858ac26b1
   languageName: node
   linkType: hard
 
