@@ -1,4 +1,7 @@
 .city-card__content__image {
 	grid-area: City-Image;
-	object-fit: cover;
+
+	& > * {
+		object-fit: cover;
+	}
 }

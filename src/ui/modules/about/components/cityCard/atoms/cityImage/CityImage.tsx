@@ -1,8 +1,9 @@
-import { Image } from "@modules/core/components/image";
+import { Picture } from "@modules/core/components/picture";
+import type { ImageFormats } from "@shared/application/types";
 import "./city-image.css";
 
-export type CityImageProps = Pick<HTMLImageElement, "src" | "alt">;
+export interface CityImageProps extends Pick<HTMLImageElement, "src" | "alt"> {
+	formats: ImageFormats;
+}
 
-export const CityImage = ({ src, alt }: CityImageProps) => (
-	<Image classNames="city-card__content__image" src={src} alt={alt} />
-);
+export const CityImage = (props: CityImageProps) => <Picture classNames="city-card__content__image" {...props} />;

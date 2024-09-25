@@ -18,6 +18,11 @@ export type ContentfulImageAsset = Asset & {
 	};
 };
 
+export interface ImageFormats {
+	avif: boolean;
+	webp: boolean;
+}
+
 export interface ContenfulLocation {
 	fields: {
 		coordinates: {

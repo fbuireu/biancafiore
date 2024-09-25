@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import { Chain as pin } from "@assets/images/svg-components/pin";
+import { Pin as pin } from "@assets/images/svg-components/pin";
 import type { ReactGlobePoint } from "@modules/about/components/worldGlobe";
 import { slugify } from "@modules/core/utils/slugify";
 import { createRoot } from "react-dom/client";

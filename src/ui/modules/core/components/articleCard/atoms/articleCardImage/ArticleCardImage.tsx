@@ -1,8 +1,11 @@
-import { Image } from "@modules/core/components/image";
+import { Picture } from "@modules/core/components/picture";
+import type { ImageFormats } from "@shared/application/types";
 import "./article-card-image.css";
 
-export type ArticleCardImageProps = Pick<HTMLImageElement, "src" | "alt">;
+export interface ArticleCardImageProps extends Pick<HTMLImageElement, "src" | "alt"> {
+	formats: ImageFormats;
+}
 
-export const ArticleCardImage = ({ src, alt }: ArticleCardImageProps) => (
-	<Image classNames="article-card__featured-image" src={src} alt={alt} />
+export const ArticleCardImage = (props: ArticleCardImageProps) => (
+	<Picture classNames="article-card__featured-image" {...props} />
 );

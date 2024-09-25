@@ -52,7 +52,11 @@ export const LatestArticlesSlider = ({ articles, origin }: LatestArticlesSLiderP
 								{article.data.publishDate}
 							</ArticleCard.PublishDate>
 							{article.data.featuredImage && (
-								<ArticleCard.Image src={article.data.featuredImage.url} alt={article.data.title} />
+								<ArticleCard.Image
+									src={article.data.featuredImage.url}
+									alt={article.data.title}
+									formats={article.data.featuredImage.formats}
+								/>
 							)}
 							<ArticleCard.Title>{article.data.title}</ArticleCard.Title>
 							<ArticleCard.Excerpt>{article.data.description}</ArticleCard.Excerpt>
