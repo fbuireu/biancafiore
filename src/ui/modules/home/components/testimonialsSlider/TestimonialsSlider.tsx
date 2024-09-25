@@ -44,7 +44,11 @@ export const TestimonialsSlider = ({ testimonials, origin }: TestimonialSliderPr
 				<Testimonial>
 					<Testimonial.Author>{testimonial.data.author}</Testimonial.Author>
 					<Testimonial.Quote>{testimonial.data.quote}</Testimonial.Quote>
-					<Testimonial.Image src={testimonial.data.image.url} alt={testimonial.data.author} />
+					<Testimonial.Image
+						src={testimonial.data.image.url}
+						alt={testimonial.data.author}
+						formats={testimonial.data.image.formats}
+					/>
 					<Testimonial.Description>{testimonial.data.role}</Testimonial.Description>
 				</Testimonial>
 			)}

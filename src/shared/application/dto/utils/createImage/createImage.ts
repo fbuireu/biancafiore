@@ -1,4 +1,4 @@
-import type { ContentfulImageAsset } from "@shared/application/types";
+import type { ContentfulImageAsset, ImageFormats } from "@shared/application/types";
 import type { Entry, EntrySkeletonType } from "contentful";
 
 interface CreateImageReturnType {
@@ -7,14 +7,25 @@ interface CreateImageReturnType {
 		width: number;
 		height: number;
 	};
+	formats: ImageFormats;
 }
 
 export function createImage(rawImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>): CreateImageReturnType {
+	const {
+		fields: {
+			file: { contentType, details, url },
+		},
+	} = rawImage as unknown as ContentfulImageAsset;
+
 	return {
-		url: rawImage.fields.file.url as unknown as string,
+		url: url as unknown as string,
 		details: {
-			width: (rawImage as unknown as ContentfulImageAsset).fields.file.details.image.width,
-			height: (rawImage as unknown as ContentfulImageAsset).fields.file.details?.image?.height,
+			width: details.image?.width,
+			height: details.image?.height,
+		},
+		formats: {
+			avif: contentType === "image/avif",
+			webp: contentType === "image/webp",
 		},
 	};
 }

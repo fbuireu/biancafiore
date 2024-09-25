@@ -12,7 +12,7 @@ export const Cities = ({ cities }: CitiesProps) => {
 		<ul className="city-card__list">
 			{cities.map(({ data }, index) => (
 				<CityCard key={data.name} index={index + 1} numCards={cities.length + 1} name={slugify(data.name)}>
-					<CityCard.Image src={data.image.url} alt={data.name} />
+					<CityCard.Image src={data.image.url} alt={data.name} formats={data.image.formats} />
 					<CityCard.Period>{data.period}</CityCard.Period>
 					<CityCard.Name>{data.name}</CityCard.Name>
 					<CityCard.Description>{data.description}</CityCard.Description>

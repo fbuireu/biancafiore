@@ -1,8 +1,11 @@
-import { Image } from "@modules/core/components/image";
+import { Picture } from "@modules/core/components/picture";
+import type { ImageFormats } from "@shared/application/types";
 import "./testimonial-image.css";
 
-export type TestimonialImageProps = Pick<HTMLImageElement, "src" | "alt">;
+export interface TestimonialImageProps extends Pick<HTMLImageElement, "src" | "alt"> {
+	formats: ImageFormats;
+}
 
-export const TestimonialImage = ({ src, alt }: TestimonialImageProps) => (
-	<Image classNames="testimonial__image" src={src} alt={alt} loading="eager" />
+export const TestimonialImage = (props: TestimonialImageProps) => (
+	<Picture classNames="testimonial__image" {...props} />
 );
