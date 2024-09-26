@@ -12,6 +12,7 @@ export const articles = defineCollection({
 		});
 
 		const articles = articleDTO.create(rawArticles as unknown as RawArticle[]);
+
 		return articles.map((article) => ({
 			id: article.slug,
 			...article,

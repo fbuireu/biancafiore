@@ -1,0 +1,25 @@
+.article__table-of-contents__wrapper {
+	position: sticky;
+	top: calc(var(--header-height) + 2rem);
+}
+
+.article__table-of-contents__nav {
+	position: absolute;
+	right: 1rem;
+}
+.article__table-of-contents__list {
+	gap: 0.25rem 0;
+}
+.article__table-of-contents__item {
+	margin-inline-start: calc(0.25rem * var(--inline-level));
+	width: fit-content;
+
+	&:hover {
+		color: var(--primary-main);
+	}
+}
+
+.article__table-of-contents__item__link {
+	position: relative;
+	z-index: 1;
+}

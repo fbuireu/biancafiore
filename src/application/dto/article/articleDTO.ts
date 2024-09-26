@@ -1,6 +1,7 @@
 import type { ArticleDTO, RawArticle } from "@application/dto/article/types";
 import { ArticleType } from "@application/dto/article/types";
 import { createRelatedArticles } from "@application/dto/article/utils/createRelatedArticles";
+import { generateTableOfContents } from "@application/dto/article/utils/generateTableOfContents";
 import { getRelatedArticles } from "@application/dto/article/utils/getRelatedArticles/getRelatedArticles";
 import { DEFAULT_DATE_FORMAT } from "@const/index";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
@@ -19,14 +20,15 @@ const PARSER: MarkdownIt = new MarkdownIt();
 export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 	create: (raw) => {
 		return raw.map((rawArticle) => {
+			const contentHtml = documentToHtmlString(rawArticle.fields.content as unknown as Document);
+
 			const description =
 				rawArticle.fields.description ??
 				generateExcerpt({
 					parser: PARSER,
-					content: documentToHtmlString(rawArticle.fields.content as unknown as Document),
+					content: contentHtml,
 				});
 
-			const tags = createTags(rawArticle.fields.tags);
 			const relatedArticles = rawArticle.fields.relatedArticles
 				? createRelatedArticles(rawArticle.fields.relatedArticles)
 				: getRelatedArticles({ rawArticle, allRawArticles: raw });
@@ -44,8 +46,9 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 				content,
 				isFeaturedArticle: rawArticle.fields.featuredArticle,
 				readingTime: getReadingTime(content),
-				tags,
+				tag: createTags(rawArticle.fields.tags),
 				relatedArticles,
+				tableOfContents: generateTableOfContents(contentHtml),
 			} as unknown as ArticleDTO;
 		});
 	},

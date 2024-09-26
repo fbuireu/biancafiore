@@ -8,7 +8,7 @@
 	gap: 0 1rem;
 	grid: ". Article-Content ." / 1fr min(var(--grid-article), 100%) 1fr;
 	line-height: var(--base-line-height);
-	margin-block: 4rem;
+	margin-block: 2rem 4rem;
 
 	@supports (initial-letter: 3 2) {
 		& > p:first-of-type::first-letter {
