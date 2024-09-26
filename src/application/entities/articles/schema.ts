@@ -17,4 +17,14 @@ export const articleSchema = z.object({
 	readingTime: z.number(),
 	tags: z.array(tagSchema).optional(),
 	relatedArticles: z.array(reference("articles")).default([]),
+	tableOfContents: z
+		.array(
+			z.object({
+				id: z.string(),
+				heading: z.string(),
+				level: z.number(),
+			}),
+		)
+		.optional()
+		.default([]),
 });

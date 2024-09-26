@@ -5,6 +5,7 @@ import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
+import TableOfContents from "@modules/article/components/tableOfContents/TableOfContents.astro";
 import ReadingProgress from "@modules/articles/components/readingProgress/ReadingProgress.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
@@ -56,6 +57,7 @@ const metadata: Partial<SeoMetadata> = {
     <Breadcrumbs />
     <ReadingProgress />
     <ArticleDetails article={article} />
+    <TableOfContents tableOfContents={article.data.tableOfContents} />
     <article class="article__wrapper" set:html={article.data.content} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
