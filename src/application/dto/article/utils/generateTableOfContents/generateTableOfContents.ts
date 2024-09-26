@@ -7,14 +7,14 @@ const HEADINGS_REGEX = /<h([1-6])>(.*?)<\/h\1>/g;
 
 export function generateTableOfContents(html: string): TableOfContentsReturnType {
 	const items: TableOfContentsReturnType = [];
-	const matches = html.matchAll(HEADINGS_REGEX);
+	const headings = html.matchAll(HEADINGS_REGEX);
 
-	for (const match of matches) {
-		const level = Number.parseInt(match[1]);
-		const heading = match[2];
-		const id = slugify(heading);
+	for (const heading of headings) {
+		const level = Number.parseInt(heading[1]);
+		const text = heading[2];
+		const id = slugify(text);
 
-		items.push({ id, heading, level });
+		items.push({ id, heading: text, level });
 	}
 
 	return items;
