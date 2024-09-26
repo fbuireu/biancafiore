@@ -10,7 +10,7 @@ export function generateTableOfContents(html: string): TableOfContentsReturnType
 	const headings = html.matchAll(HEADINGS_REGEX);
 
 	for (const heading of headings) {
-		const level = Number.parseInt(heading[1]);
+		const level = Number(heading[1]);
 		const text = heading[2];
 		const id = slugify(text);
 
