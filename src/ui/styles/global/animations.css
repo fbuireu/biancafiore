@@ -40,6 +40,7 @@
 			transform: scale(calc(1.1 - calc(0.05 * var(--reverse-index))));
 		}
 	}
+
 	@keyframes pop-in {
 		from {
 			scale: 0;
@@ -48,6 +49,16 @@
 			scale: 1;
 		}
 	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
 	@keyframes filter-out {
 		100% {
 			filter: brightness(2);
