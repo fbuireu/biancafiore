@@ -1,9 +1,10 @@
 .scroll-top__wrapper {
 	animation: pop-in 1s var(--ease-elastic) forwards;
-	animation-range: 0 50dvw;
+	animation-range: entry 50dvh;
 	animation-timeline: scroll();
 	inset: auto 2rem 3rem auto;
 	position: fixed;
+	scale: 0;
 	z-index: 100;
 
 	@media (width <= 575px) {

@@ -3546,12 +3546,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.7.2":
-  version: 22.7.2
-  resolution: "@types/node@npm:22.7.2"
+"@types/node@npm:^22.7.3":
+  version: 22.7.3
+  resolution: "@types/node@npm:22.7.3"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 10c0/987e4df034e4af0ce76b938c2c0d94373da376b228f1c93081a661c77e682795c599bcad47c93c70a25b8ea443587137cf23088fb7f62ef442955f13046eae3d
+  checksum: 10c0/0e579813528b0370454337a952f43b792cd12731e10fdca0fdb627158e980c1219bba99e9048c134b6a19325d817016059afe016ccd372326c838a1b85a51574
   languageName: node
   linkType: hard
 
@@ -3654,9 +3654,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/three@npm:^0.168.0":
-  version: 0.168.0
-  resolution: "@types/three@npm:0.168.0"
+"@types/three@npm:^0.169.0":
+  version: 0.169.0
+  resolution: "@types/three@npm:0.169.0"
   dependencies:
     "@tweenjs/tween.js": "npm:~23.1.3"
     "@types/stats.js": "npm:*"
@@ -3664,7 +3664,7 @@ __metadata:
     "@webgpu/types": "npm:*"
     fflate: "npm:~0.8.2"
     meshoptimizer: "npm:~0.18.1"
-  checksum: 10c0/59c5a8985df9f296802653c5878d9f3926257da959bca12bf255eaa19dad5bf1244a7c81634a5773de9e1729aba13b185fcb334f46cb02a7b7d47582ae41600a
+  checksum: 10c0/d5f588dcc9df02875d46e5e6ea8ea6dc346cd1e4c0fbe7bcca4c8d9584f82ac39a951788a79fc2ffae3d5e232f99e66046adec8f93fdf51d30561a4a00c52b40
   languageName: node
   linkType: hard
 
@@ -4407,10 +4407,10 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^22.7.2"
+    "@types/node": "npm:^22.7.3"
     "@types/react": "npm:^18.3.9"
     "@types/react-dom": "npm:^18.3.0"
-    "@types/three": "npm:^0.168.0"
+    "@types/three": "npm:^0.169.0"
     algoliasearch: "npm:^5.6.1"
     astro: "npm:^4.15.9"
     clsx: "npm:^2.1.1"
@@ -4432,7 +4432,7 @@ __metadata:
     react-router-dom: "npm:^6.26.2"
     resend: "npm:^4.0.0"
     swiper: "npm:^11.1.14"
-    three: "npm:^0.168.0"
+    three: "npm:^0.169.0"
     typescript: "npm:^5.6.2"
     vanilla-cookieconsent: "npm:^3.0.1"
     vitest: "npm:^2.1.1"
@@ -11413,10 +11413,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:>=0.118 <1, three@npm:^0.168.0":
+"three@npm:>=0.118 <1":
   version: 0.168.0
   resolution: "three@npm:0.168.0"
   checksum: 10c0/04aa53e64a61f31edd9631e57fe697752c9d358bd96e1344206d05e981507a6dae5c9da4e3b8d9ec7c6c8fc49732fd3f23d3675d126fe9bc1936894bbee6cc98
+  languageName: node
+  linkType: hard
+
+"three@npm:^0.169.0":
+  version: 0.169.0
+  resolution: "three@npm:0.169.0"
+  checksum: 10c0/be2e20f45eaa50489cd22d366c41fa14528f00b873078f52fc6ef37140fa8e541e9805630bbe696ab9b027530c74e5cd341705266eb268b5219402fb9fa78ed4
   languageName: node
   linkType: hard
 
