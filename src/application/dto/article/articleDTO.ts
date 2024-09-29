@@ -46,7 +46,7 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 				content,
 				isFeaturedArticle: rawArticle.fields.featuredArticle,
 				readingTime: getReadingTime(content),
-				tag: createTags(rawArticle.fields.tags),
+				tags: createTags(rawArticle.fields.tags),
 				relatedArticles,
 				tableOfContents: generateTableOfContents(contentHtml),
 			} as unknown as ArticleDTO;
