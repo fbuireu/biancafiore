@@ -5,8 +5,8 @@ import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
+import ReadingProgress from "@modules/article/components/readingProgress/ReadingProgress.astro";
 import TableOfContents from "@modules/article/components/tableOfContents/TableOfContents.astro";
-import ReadingProgress from "@modules/articles/components/readingProgress/ReadingProgress.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
@@ -38,6 +38,7 @@ const metadata: Partial<SeoMetadata> = {
 	...article,
 	...(article.data.featuredImage && { image: article.data.featuredImage.url }),
 };
+const scopes = article.data.tableOfContents.map((_, index) => `--section-${index + 1}`).join(",");
 ---
 <BaseLayout {...metadata}>
   {
@@ -57,8 +58,11 @@ const metadata: Partial<SeoMetadata> = {
     <Breadcrumbs />
     <ReadingProgress />
     <ArticleDetails article={article} />
-    <TableOfContents tableOfContents={article.data.tableOfContents} />
-    <article class="article__wrapper" set:html={article.data.content} />
+    <article class="article__wrapper" set:html={article.data.content} style={`--scopes: ${scopes}`}>
+      {
+        article.data.tableOfContents && <TableOfContents tableOfContents={article.data.tableOfContents} />
+      }
+    </article>
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Article',

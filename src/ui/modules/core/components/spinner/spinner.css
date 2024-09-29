@@ -1,7 +1,7 @@
 .spinner {
+	--opacity: 0.1;
 	--size: 50px;
 	--speed: 1.3s;
-	--opacity: 0.1;
 	height: calc(var(--size) * (2.1 / 5));
 	margin-inline: 1rem;
 	overflow: visible;
@@ -16,7 +16,7 @@
 	stroke-dasharray: 15, 85;
 	stroke-dashoffset: 0;
 	stroke-linecap: round;
-	transition: stroke 0.5s ease;
+	transition: stroke 0.5s;
 	will-change: stroke-dasharray, stroke-dashoffset;
 }
 

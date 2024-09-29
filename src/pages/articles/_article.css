@@ -9,6 +9,11 @@
 	grid: ". Article-Content ." / 1fr min(var(--grid-article), 100%) 1fr;
 	line-height: var(--base-line-height);
 	margin-block: 2rem 4rem;
+	timeline-scope: var(--scopes);
+
+	& > section {
+		view-timeline: var(--is);
+	}
 
 	@supports (initial-letter: 3 2) {
 		& > p:first-of-type::first-letter {
@@ -28,8 +33,8 @@
 }
 
 .article__heading {
-	scroll-margin-block-start: var(--header-height);
 	gap: 0 0.5rem;
+	scroll-margin-block-start: var(--header-height);
 
 	svg {
 		display: none;

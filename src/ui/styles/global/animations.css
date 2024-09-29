@@ -105,4 +105,12 @@
 			stroke-dashoffset: 100;
 		}
 	}
+
+	@keyframes bold {
+		from,
+		to {
+			font-weight: bold;
+			--opacity: 1;
+		}
+	}
 }
