@@ -2,13 +2,11 @@
 	animation: fade-in linear forwards;
 	animation-range: var(--animation-range);
 	animation-timeline: view();
-	background-color: var(--primary-main);
 	border-left: 4px solid var(--primary-dark-1);
-	border-radius: 0.5rem 0 0 0.5rem;
 	left: var(--global-max-width);
 	line-height: normal;
 	opacity: 0;
-	padding: 1rem;
+	padding: 0.25rem 1rem;
 	position: absolute;
 	--animation-range: entry 70cqh;
 	translate: calc(-50% + 1rem) 0;
@@ -31,7 +29,7 @@
 .article__table-of-contents__item {
 	margin-inline-start: calc(0.55rem * var(--inline-level));
 	position: relative;
-	transition: all calc(0.25s * var(--inline-level));
+	transition: translate calc(0.25s * var(--inline-level));
 	translate: 100px 0;
 	width: fit-content;
 }
@@ -42,11 +40,11 @@
 
 	&:not(:focus-visible) {
 		animation: bold forwards;
-		animation-range: entry calc(100cqh - var(--header-height));
+		animation-range: entry calc(100cqh - var(--header-height) - 1rem);
 		animation-timeline: var(--for);
 
 		&::before {
-			background: var(--primary-dark-2);
+			background: var(--primary-main);
 			border-radius: 50%;
 			content: "";
 			height: 0.5rem;
