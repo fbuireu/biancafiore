@@ -156,7 +156,7 @@
 		position: absolute;
 		right: 0;
 		transform: scaleX(0);
-		transition: transform 0.2s ease;
+		transition: transform 0.2s;
 		width: 80%;
 	}
 

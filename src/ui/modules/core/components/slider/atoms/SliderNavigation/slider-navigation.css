@@ -22,7 +22,7 @@
 
 .slider__navigation__button {
 	height: 3rem;
-	transition: transform 0.2s ease;
+	transition: transform 0.2s;
 	width: 3rem;
 
 	&.--is-right {

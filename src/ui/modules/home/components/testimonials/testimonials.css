@@ -1,7 +1,7 @@
 .testimonials__wrapper {
 	background-color: light-dark(var(--neutral-light-4), var(--background-main));
 	margin-block: 5rem;
-	transition: background-color 0.3s ease;
+	transition: background-color 0.3s;
 }
 
 .testimonials__title,
