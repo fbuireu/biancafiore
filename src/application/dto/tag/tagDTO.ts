@@ -1,35 +1,15 @@
 import { getCollection } from "astro:content";
-import { TagType } from "@application/dto/tag/types";
 import type { RawTag, TagDTO } from "@application/dto/tag/types";
+import { getAuthors } from "@application/dto/tag/utils/getAuthors";
+import { getTags } from "@application/dto/tag/utils/getTags";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
-import { getArticlesByTag } from "./utils/getArticlesByTag";
 import { groupBy } from "./utils/groupBy";
 
 export const tagDTO: BaseDTO<RawTag[], Promise<TagDTO>> = {
 	create: async (raw) => {
 		const articles = await getCollection("articles");
-
-		const tags = await Promise.all(
-			raw.map(async (rawTag) => {
-				const articlesByTag = getArticlesByTag({ rawTag, articles });
-
-				return {
-					name: rawTag.fields.name as unknown as string,
-					slug: rawTag.fields.slug,
-					type: TagType.TAG,
-					count: articlesByTag.length,
-					articles: articlesByTag,
-				};
-			}),
-		);
-
-		const authors = (await getCollection("authors")).map((author) => ({
-			name: author.data.name,
-			slug: author.data.slug,
-			type: TagType.AUTHOR,
-			count: author.data.articles.length,
-			articles: author.data.articles,
-		}));
+		const tags = await getTags({ raw, articles });
+		const authors = await getAuthors();
 
 		return groupBy({
 			array: [...tags, ...authors],
