@@ -20,17 +20,20 @@ const location = getLocation(Astro.url);
             ) : (
             <strong class="--is-current-page">{label}</strong>
             )}
-          <script is:inline type="application/ld+json" set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "ListItem",
-            "position": index + 1,
-            "item": {
-              "@id": `${originPath}${link}`,
-              "name": label
-            }
-          })}/>
         </li>
       );
     })}
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbs.map(({ link, label }, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@id": `${originPath}${link}`,
+          "name": label
+        }
+      }))
+    })}/>
 </ul>
 </section>
