@@ -23,7 +23,7 @@
 	}
 
 	@media (width <= 960px) {
-		gap: 2rem 0;
+		gap: 0;
 		padding-inline: 1rem;
 	}
 }

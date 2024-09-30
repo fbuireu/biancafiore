@@ -9,7 +9,7 @@ interface PinProps extends SVGProps<SVGSVGElement> {
 
 export const Pin = ({ fill, title = "Pin", classNames, ...props }: PinProps) => {
 	return (
-		<svg viewBox="-4 0 36 36" className={clsx(classNames)} {...props}>
+		<svg viewBox="-4 0 36 36" role="img" className={clsx(classNames)} {...props}>
 			<title>{title}</title>
 			<path
 				fill={fill}
