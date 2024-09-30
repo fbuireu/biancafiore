@@ -1,4 +1,5 @@
 .article__table-of-contents__nav {
+	--animation-range: entry 70cqh;
 	animation: fade-in linear forwards;
 	animation-range: var(--animation-range);
 	animation-timeline: view();
@@ -8,22 +9,82 @@
 	opacity: 0;
 	padding: 0.25rem 1rem;
 	position: absolute;
-	--animation-range: entry 70cqh;
 	translate: calc(-50% + 1rem) 0;
 	width: max-content;
 
 	&.--is-visible .article__table-of-contents__item {
 		translate: 0 0;
 	}
+
+	@media (width <= 960px) {
+		position: relative;
+		translate: 0;
+		left: auto;
+		opacity: 1;
+		width: 100%;
+	}
 }
 
 .article__table-of-contents__wrapper {
 	position: sticky;
 	top: calc(var(--header-height) + 2rem);
+
+	@media (width <= 960px) {
+		position: relative;
+		top: 0;
+		width: 100%;
+		margin-block: 1rem;
+	}
+}
+
+.article__table-of-contents__summary {
+	margin-block-end: 0.5rem;
+	position: relative;
+	transition: background-position .2s;
+
+	&::before {
+		content: "";
+		background: url("/src/ui/assets/images/svg/chevron-down.svg") no-repeat right center / 1rem;
+		position: absolute;
+		right: 0;
+		top: 50%;
+		translate: 0 -50%;
+		transition: transform .2s;
+		width: 1rem;
+		height: 1rem;
+		visibility: hidden;
+	}
+
+	@media (width <= 960px) {
+		&::before {
+			visibility: visible;
+		}
+	}
+}
+
+.article__table-of-contents__details {
+	height: 1.5rem;
+	transition: height 0.2s;
+
+	&[open] {
+		height: auto;
+
+		@media (width <= 960px) {
+			overflow: clip;
+		}
+	}
+}
+
+.article__table-of-contents__details[open] .article__table-of-contents__summary::before {
+	transform: translateY(-50%) rotate(0.5turn);
 }
 
 .article__table-of-contents__list {
 	gap: 0.25rem 0;
+
+	@media (width <= 960px) {
+		justify-content: flex-start;
+	}
 }
 
 .article__table-of-contents__item {
@@ -32,6 +93,11 @@
 	transition: translate calc(0.25s * var(--inline-level));
 	translate: 100px 0;
 	width: fit-content;
+
+	@media (width <= 960px) {
+		transition: none;
+		translate: 0;
+	}
 }
 
 .article__table-of-contents__item__link {

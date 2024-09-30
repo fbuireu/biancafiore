@@ -8,7 +8,7 @@ interface LeftArrowProps extends SVGProps<SVGSVGElement> {
 
 export const LeftArrow = ({ fill = "currentColor", title = "Arrow", classNames, ...props }: LeftArrowProps) => {
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" className={clsx(classNames)} {...props}>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" role="img" className={clsx(classNames)} {...props}>
 			<title>{title}</title>
 			<g id="Left">
 				<polygon

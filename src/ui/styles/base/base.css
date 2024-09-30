@@ -49,8 +49,12 @@
 		min-height: 100dvh;
 		width: 100%;
 
-		&:not(.--is-projects) {
+		&:not(.--is-projects, .--is-article) {
 			margin: calc(var(--header-height)) auto 0;
+
+			@media (width <= 960px) {
+				margin: 0 auto;
+			}
 		}
 	}
 
@@ -74,6 +78,13 @@
 
 	summary {
 		-webkit-tap-highlight-color: transparent;
+		list-style: none;
+		pointer-events: none;
+
+		@media (width <= 960px) {
+			cursor: pointer;
+			pointer-events: auto;
+		}
 	}
 
 	mark {
