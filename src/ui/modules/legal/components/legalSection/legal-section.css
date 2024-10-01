@@ -1,5 +1,9 @@
 .legal-section {
 	margin-block-end: 2rem;
+
+	@media (width <= 1440px) {
+		margin-inline: 1rem;
+	}
 }
 
 .legal-section li {

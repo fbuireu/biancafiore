@@ -11,6 +11,9 @@
 	&:has(a:is(:hover, :focus-visible)) ~ .article-card__tags__list .article-card__tag__item {
 		translate: 0 0;
 	}
+	@media (width <= 960px) {
+		padding-inline-start: 1rem;
+	}
 }
 
 .article-card__author__name {

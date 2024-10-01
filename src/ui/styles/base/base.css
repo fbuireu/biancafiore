@@ -99,8 +99,9 @@
 	svg {
 		-webkit-tap-highlight-color: transparent;
 
-		&:not(.logo, .theme_toggle_inner, .cookie_consent_icon) {
+		&:not(.logo, .theme_toggle_inner, .cookie_consent_icon, .marker__wrapper svg) {
 			fill: var(--neutral-main);
+			color: var(--neutral-main);
 		}
 	}
 

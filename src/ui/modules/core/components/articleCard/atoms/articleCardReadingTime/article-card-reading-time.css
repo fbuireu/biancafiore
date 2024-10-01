@@ -1,4 +1,8 @@
 .article-card__reading-time {
 	grid-area: Article-Card-Reading-Time;
 	justify-self: flex-end;
+
+	@media (width <= 960px) {
+		padding-inline-end: 1rem;
+	}
 }

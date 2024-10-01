@@ -1,3 +1,7 @@
 .article-card__publish-date {
 	grid-area: Article-Card-Publish-Date;
+
+	@media (width <= 960px) {
+		padding-inline-start: 1rem;
+	}
 }

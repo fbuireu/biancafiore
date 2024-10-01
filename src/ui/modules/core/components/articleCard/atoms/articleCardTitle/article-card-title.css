@@ -3,4 +3,8 @@
 	color: currentColor;
 	grid-area: Article-Card-Title;
 	letter-spacing: normal;
+
+	@media (width <= 960px) {
+		padding-inline-start: 1rem;
+	}
 }

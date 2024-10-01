@@ -8,8 +8,13 @@
 		width: 3rem;
 	}
 
-	&.--is-home {
+	&.--is-home,
+	&.--is-contact {
 		color: light-dark(var(--background-main), var(--white));
+
+		svg {
+			color: var(--white);
+		}
 	}
 
 	&.--is-home,

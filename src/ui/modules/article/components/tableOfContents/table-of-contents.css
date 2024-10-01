@@ -88,9 +88,9 @@
 }
 
 .article__table-of-contents__item {
-	margin-inline-start: calc(0.55rem * var(--inline-level));
+	margin-inline-start: calc(0.55rem * var(--inline-level, 1));
 	position: relative;
-	transition: translate calc(0.25s * var(--inline-level));
+	transition: translate calc(0.25s * var(--inline-level, 1));
 	translate: 100px 0;
 	width: fit-content;
 

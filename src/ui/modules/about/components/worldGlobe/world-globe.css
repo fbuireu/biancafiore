@@ -60,21 +60,21 @@ canvas {
 	gap: 0 3rem;
 }
 
-.world-globe__controls__direction__wrapper {
-	gap: 0 1rem;
-
-	img {
-		height: 3rem;
-		width: 3rem;
-	}
+.world-globe__controls__zoom__wrapper {
+	--size: 2rem;
 }
 
+.world-globe__controls__direction__wrapper {
+	--size: 3rem;
+}
+
+.world-globe__controls__direction__wrapper,
 .world-globe__controls__zoom__wrapper {
 	gap: 0 1rem;
 
-	img {
-		height: 2rem;
-		width: 2rem;
+	svg {
+		height: var(--size);
+		width: var(--size);
 	}
 }
 
