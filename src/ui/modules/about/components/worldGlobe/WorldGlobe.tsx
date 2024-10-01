@@ -1,19 +1,18 @@
 import type { CollectionEntry } from "astro:content";
-import horizontalArrow from "@assets/images/svg/left-arrow.svg";
-import zoomIn from "@assets/images/svg/zoom-in.svg";
-import zoomOut from "@assets/images/svg/zoom-out.svg";
+import { LeftArrow } from "@assets/images/svg-components/leftArrow";
+import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn.tsx";
 import { WORLD_GLOBE_CONFIG } from "@const/index";
 import countries from "@data/countries.geojson.json";
 import useTabVisibility, { TabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
 import { calculateCenter } from "@modules/about/utils/calculateCenter";
 import { refineCities } from "@modules/about/utils/refineCities";
 import { renderPin } from "@modules/about/utils/renderPin";
-import { Image } from "@modules/core/components/image";
 import { memo, useCallback, useEffect, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
 import "./world-globe.css";
+import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut.tsx";
 
 interface GlobeAllCitiesProps {
 	cities: CollectionEntry<"cities">[];
@@ -143,7 +142,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<Image src={(horizontalArrow as unknown as ProtoImage).src} alt="Move left" />
+						<LeftArrow title="Move left" />
 					</button>
 					<button
 						className="world-globe__controls__move --right flex --is-clickable"
@@ -155,7 +154,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<Image src={(horizontalArrow as unknown as ProtoImage).src} alt="Move Right" />
+						<LeftArrow title="Move Right" />
 					</button>
 				</div>
 				<div className="world-globe__controls__zoom__wrapper flex row-wrap">
@@ -169,7 +168,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<Image src={(zoomIn as unknown as ProtoImage).src} alt="Zoom in" />
+						<ZoomIn />
 					</button>
 					<button
 						className="world-globe__controls__move --zoom-out --is-clickable"
@@ -181,7 +180,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 							})
 						}
 					>
-						<Image src={(zoomOut as unknown as ProtoImage).src} alt="Zoom out" />
+						<ZoomOut />
 					</button>
 				</div>
 			</div>

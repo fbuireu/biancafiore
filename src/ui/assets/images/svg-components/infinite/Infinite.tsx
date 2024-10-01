@@ -16,7 +16,6 @@ export const Infinite = ({ fill = "currentColor", title = "Loading...", classNam
 			height="23.1"
 			width="55"
 			preserveAspectRatio="xMidYMid meet"
-			role="img"
 			fill={fill}
 			{...props}
 		>

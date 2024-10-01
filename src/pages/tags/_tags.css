@@ -1,11 +1,21 @@
 .tags__list {
 	text-align: center;
+	margin-block-start: 2rem;
 }
+
 .tags__item {
+	--items-per-row: 2;
+	--gap: 2rem;
 	margin-block-end: 1rem;
-	max-width: 50%;
 	width: 100%;
+	max-width: calc(100% / var(--items-per-row) - var(--gap));
+
+	@media (width <= 575px) {
+		--gap: 0;
+		--items-per-row: 1;
+	}
 }
+
 .tags__item__letter {
 	color: var(--primary-main);
 }

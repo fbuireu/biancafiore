@@ -47,25 +47,25 @@ const metadata: Partial<SeoMetadata> = {
 ---
 <BaseLayout {...metadata}>
     <Breadcrumbs />
-    <h1 class="flex justify-center">#{slug}</h1>
-    <section class="common-wrapper">
-      <ul class="tag__article__list flex row-wrap">
-        {tag.articles?.map((article, index) => {
-          return (
+    <h1 class="flex justify-center">#{slug}</h1>    <section class="common-wrapper">
+    <ul class="tag__article__list flex row-wrap justify-flex-start">
+      {tag.articles?.map((article, index) => {
+        return (
             <li class="tag__article__item">
-              <ArticleCard {...article} />
-              <script is:inline type="application/ld+json" set:html={JSON.stringify({
-                '@context': 'https://schema.org',
-                '@type': 'ItemList',
-                'itemListElement': {
-                  '@type': 'ListItem',
-                  'position': index + 1,
-                  'url': new URL(`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`, Astro.url).href,
-                },
-              })} />
+                <ArticleCard {...article} />
+                <script is:inline type="application/ld+json" set:html={JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'ItemList',
+                  'itemListElement': {
+                    '@type': 'ListItem',
+                    'position': index + 1,
+                    'url': new URL(`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`, Astro.url).href,
+                  },
+                })} />
             </li>
-          )
-        })}
-      </ul>
-    </section>
+        )
+      })}
+    </ul>
+</section>
+
 </BaseLayout>

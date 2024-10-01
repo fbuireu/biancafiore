@@ -18,7 +18,6 @@ export const Cookie = ({ fill = "currentColor", title = "Cookie", classNames, ..
 			y="0px"
 			viewBox="0 0 120.23 122.88"
 			xmlSpace="preserve"
-			role="img"
 			fill={fill}
 			{...props}
 		>
