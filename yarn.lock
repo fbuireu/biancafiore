@@ -313,14 +313,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/sitemap@npm:^3.1.6":
-  version: 3.1.6
-  resolution: "@astrojs/sitemap@npm:3.1.6"
+"@astrojs/sitemap@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@astrojs/sitemap@npm:3.2.0"
   dependencies:
-    sitemap: "npm:^7.1.2"
+    sitemap: "npm:^8.0.0"
     stream-replace-string: "npm:^2.0.0"
     zod: "npm:^3.23.8"
-  checksum: 10c0/2d8fd71c7afbf13ca48d92596d292c8cf967f2fae084b3e0d9717729e7b474c3bef86c4155f3b27aff722b2aade7c6c64ed813dbbbc4c3d12635bbf8d7a63ebd
+  checksum: 10c0/16e93a58831c3ac2f1da52e9660660c78abb423d10fd451b6e18f52f88250d5b16b077b226a201cbbcaa29d60558cd5fbd57980023808838869b929e707f1f2b
   languageName: node
   linkType: hard
 
@@ -2679,9 +2679,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@million/lint@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@million/lint@npm:1.0.0"
+"@million/lint@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@million/lint@npm:1.0.8"
   dependencies:
     "@axiomhq/js": "npm:1.0.0-rc.3"
     "@babel/core": "npm:7.25.2"
@@ -2711,7 +2711,7 @@ __metadata:
     update-notifier-cjs: "npm:^5.1.6"
   bin:
     lint: cli.js
-  checksum: 10c0/0f08194b6a80bf8b0a22296396984d15f36fb7de5cfa2173bd8f62559df8f0cbcd9c81d08decefdbe74fc0272b066142f32e6c4f0e8854cad746d7c233f5c830
+  checksum: 10c0/a665e5958461886f4398b8d5b294e80f12ca6119998c7421a80e0a47abf046c9b5e84733d860682346706f576c1b59fa8090e96038aced054e0718ee8bdceceb
   languageName: node
   linkType: hard
 
@@ -4223,9 +4223,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^4.15.10":
-  version: 4.15.10
-  resolution: "astro@npm:4.15.10"
+"astro@npm:^4.15.11":
+  version: 4.15.11
+  resolution: "astro@npm:4.15.11"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/internal-helpers": "npm:0.4.1"
@@ -4298,7 +4298,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/f8f601768f425f62dcc0880702e72d4cc402f5020e65303e3975d5580482803d355879d964c8cc7390077b65928901e0e27c9ab7fb98c4b24aaa5551b1db8585
+  checksum: 10c0/f1f2209cc4f89abcc03f8936aae13169794c56d0e9ccd9dc1ddc72839914fd9f7c55996bc06bd466bf2a00a4b5a3e82ac6d6660ad824f3aa9df5eb12afa38bb5
   languageName: node
   linkType: hard
 
@@ -4390,7 +4390,7 @@ __metadata:
     "@astrojs/partytown": "npm:^2.1.2"
     "@astrojs/react": "npm:^3.6.2"
     "@astrojs/rss": "npm:^4.0.7"
-    "@astrojs/sitemap": "npm:^3.1.6"
+    "@astrojs/sitemap": "npm:^3.2.0"
     "@astrojs/ts-plugin": "npm:^1.10.2"
     "@biomejs/biome": "npm:1.9.3"
     "@commitlint/cli": "npm:^19.5.0"
@@ -4400,7 +4400,7 @@ __metadata:
     "@fontsource-variable/nunito-sans": "npm:^5.1.0"
     "@fontsource/baskervville": "npm:^5.1.0"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@million/lint": "npm:^1.0.0"
+    "@million/lint": "npm:^1.0.8"
     "@playwright/test": "npm:^1.47.2"
     "@testing-library/react": "npm:^16.0.1"
     "@testing-library/react-hooks": "npm:^8.0.1"
@@ -4411,7 +4411,7 @@ __metadata:
     "@types/react-dom": "npm:^18.3.0"
     "@types/three": "npm:^0.169.0"
     algoliasearch: "npm:^5.7.0"
-    astro: "npm:^4.15.10"
+    astro: "npm:^4.15.11"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.0.3"
     conventional-changelog-atom: "npm:^5.0.0"
@@ -10947,9 +10947,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sitemap@npm:^7.1.2":
-  version: 7.1.2
-  resolution: "sitemap@npm:7.1.2"
+"sitemap@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "sitemap@npm:8.0.0"
   dependencies:
     "@types/node": "npm:^17.0.5"
     "@types/sax": "npm:^1.2.1"
@@ -10957,7 +10957,7 @@ __metadata:
     sax: "npm:^1.2.4"
   bin:
     sitemap: dist/cli.js
-  checksum: 10c0/01dd1268c0d4b89f8ef082bcb9ef18d0182d00d1622e9c54743474918169491e5360538f9a01a769262e0fe23d6e3822a90680eff0f076cf87b68d459014a34c
+  checksum: 10c0/adaabfb1f27e3c76ba25f9a16dcb02ff17dd2ecbd1b2dbe2608a6770eff37bd71f7d21c10df6824917453bc4da2c2790fd85ee6424d75699bd053e3422d2ef5c
   languageName: node
   linkType: hard
 
