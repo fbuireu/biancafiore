@@ -11,7 +11,7 @@ const isProd = import.meta.env.PROD;
 export default defineConfig({
 	site: "https://biancafiore.me",
 	prefetch: true,
-	output: "static",
+	output: "server",
 	vite: {
 		ssr: {
 			external: ["firebase-admin", "node:async_hooks", "contentful"],

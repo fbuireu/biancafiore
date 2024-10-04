@@ -1,6 +1,6 @@
 enum TabId {
-	FORM = "form",
-	CALENDLY = "calendly",
+	EMAIL = "email",
+	APPOINTMENT = "appointment",
 }
 
 const SELECTORS = {
@@ -25,11 +25,10 @@ const changeTab = (tabId: TabId) => {
 	}
 };
 
-export function initTabs() {
+export function initTabs(queryTab?: string) {
 	const TABS = getTabs();
 	const DEFAULT_TAB = TABS[0].dataset.target as TabId;
-	const queryTab = new URLSearchParams(window.location.search).get("tab");
-	const initialTab = queryTab === TabId.FORM || queryTab === TabId.CALENDLY ? queryTab : DEFAULT_TAB;
+	const initialTab = [TabId.APPOINTMENT, TabId.EMAIL].includes(queryTab as TabId) ? (queryTab as TabId) : DEFAULT_TAB;
 
 	for (const tab of TABS) {
 		tab.addEventListener("click", () => changeTab(tab.dataset.target as TabId));
