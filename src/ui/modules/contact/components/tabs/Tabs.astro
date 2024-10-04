@@ -10,17 +10,17 @@ import "./tabs.css";
       <p class="contact-tabs__body">Multiple ways to get in touch with me :)</p>
     </div>
     <ul class="contact-tabs flex">
-      <li class="contact-tab --underline-on-hover" data-target="tab1">
+      <li class="contact-tab --underline-on-hover" data-target="form">
           <button>Email me</button>
       </li>
-      <li class="contact-tab --underline-on-hover" data-target="tab2">
+      <li class="contact-tab --underline-on-hover" data-target="calendly">
           <button>Make an appointment</button>
       </li>
     </ul>
-    <div id="tab1" class="contact-tab__content --is-active">
+    <div id="form" class="contact-tab__content --is-active">
       <ContactFormProvider client:load />
     </div>
-    <div id="tab2" class="contact-tab__content">
+    <div id="calendly" class="contact-tab__content">
       <div
         class="calendly-inline-widget"
         data-url="https://calendly.com/fbuireu/45min-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
@@ -33,6 +33,6 @@ import "./tabs.css";
 
 <script>
   import { initTabs } from '../../utils/changeTab';
-
+  const tab = new URLSearchParams(window.location.search).get("tab");
   initTabs();
 </script>

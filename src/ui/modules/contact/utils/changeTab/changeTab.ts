@@ -1,20 +1,22 @@
-interface Tab {
-	id: string;
-	target: string;
+enum TabId {
+	FORM = "form",
+	CALENDLY = "calendly",
 }
 
 const SELECTORS = {
 	TAB: ".contact-tab",
 };
 
-const changeTab = (tabId: Tab["id"]) => {
-	const tabs: NodeListOf<HTMLElement> = document.querySelectorAll(SELECTORS.TAB);
+const getTabs = (): NodeListOf<HTMLElement> => document.querySelectorAll(SELECTORS.TAB);
 
-	for (const tab of tabs) {
+const changeTab = (tabId: TabId) => {
+	const TABS = getTabs();
+
+	for (const tab of TABS) {
 		const tabContentId = tab.dataset.target;
 		const tabContent: HTMLElement | null = document.querySelector(`#${tabContentId}`);
 
-		if (!tabContent) continue;
+		if (!tabContent) return;
 
 		const isActive = tabContentId === tabId;
 		tab.classList.toggle("--is-active", isActive);
@@ -24,12 +26,14 @@ const changeTab = (tabId: Tab["id"]) => {
 };
 
 export function initTabs() {
-	const tabs: NodeListOf<HTMLElement> = document.querySelectorAll(SELECTORS.TAB);
+	const TABS = getTabs();
+	const DEFAULT_TAB = TABS[0].dataset.target as TabId;
+	const queryTab = new URLSearchParams(window.location.search).get("tab");
+	const initialTab = queryTab === TabId.FORM || queryTab === TabId.CALENDLY ? queryTab : DEFAULT_TAB;
 
-	for (const tab of tabs) {
-		tab.addEventListener("click", () => {
-			changeTab(tab.dataset.target ?? "");
-		});
+	for (const tab of TABS) {
+		tab.addEventListener("click", () => changeTab(tab.dataset.target as TabId));
 	}
-	changeTab(tabs[0].dataset.target ?? "");
+
+	changeTab(initialTab);
 }
