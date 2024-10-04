@@ -6,7 +6,7 @@ export enum TabVisibility {
 	UNDEFINED = "undefined",
 }
 
-function useTabVisibility(): TabVisibility {
+export function useTabVisibility(): TabVisibility {
 	const subscribe = (callback: () => void) => {
 		document.addEventListener("visibilitychange", callback);
 		return () => {
@@ -18,5 +18,3 @@ function useTabVisibility(): TabVisibility {
 
 	return useSyncExternalStore(subscribe, getSnapshot);
 }
-
-export default useTabVisibility;

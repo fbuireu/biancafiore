@@ -15,7 +15,7 @@ interface UseSliderNavigationParams {
 
 const CLASSNAME = "--is-force-clickable";
 
-function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSliderNavigationParams) {
+export function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSliderNavigationParams) {
 	useEffect(() => {
 		const controller = new AbortController();
 
@@ -38,5 +38,3 @@ function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSlide
 		return () => controller.abort();
 	}, [leftButtonRef, rightButtonRef, swiper]);
 }
-
-export default useSliderNavigation;
