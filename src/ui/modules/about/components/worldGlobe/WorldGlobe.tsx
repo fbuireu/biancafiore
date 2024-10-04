@@ -3,7 +3,7 @@ import { LeftArrow } from "@assets/images/svg-components/leftArrow";
 import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn.tsx";
 import { WORLD_GLOBE_CONFIG } from "@const/index";
 import countries from "@data/countries.geojson.json";
-import useTabVisibility, { TabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
+import { TabVisibility, useTabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
 import { calculateCenter } from "@modules/about/utils/calculateCenter";
 import { refineCities } from "@modules/about/utils/refineCities";
 import { renderPin } from "@modules/about/utils/renderPin";
