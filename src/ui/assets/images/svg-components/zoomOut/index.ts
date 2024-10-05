@@ -1,1 +1,1 @@
-export * from "./LeftArrow";
+export * from "./ZoomOut";

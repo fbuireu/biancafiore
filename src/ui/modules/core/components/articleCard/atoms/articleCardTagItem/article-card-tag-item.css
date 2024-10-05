@@ -1,5 +1,11 @@
 .article-card__tag__item {
+	--translate: 0 100px;
 	transition: all 0.3s;
 	transition-delay: calc(var(--inline-index) * 0.1s);
-	translate: 0 100px;
+	translate: var(--translate);
+
+	@media (width <= 720px) {
+		--translate: 0 0;
+		margin-inline-start: 1rem;
+	}
 }
