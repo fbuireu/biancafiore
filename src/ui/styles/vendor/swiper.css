@@ -45,7 +45,7 @@
 
 	.swiper-pagination {
 		--swiper-pagination-color: var(--primary-main);
-		--swiper-pagination-bottom: 5.5rem;
+		--swiper-pagination-bottom: 5rem;
 	}
 
 	.swiper-pagination-bullet {

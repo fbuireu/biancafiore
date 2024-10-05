@@ -13,7 +13,7 @@
 		color: light-dark(var(--background-main), var(--white));
 
 		svg {
-			color: var(--white);
+			color: currentColor;
 		}
 	}
 
@@ -40,4 +40,9 @@
 		height: 100%;
 		width: 100%;
 	}
+}
+
+.testimonials__wrapper .slider__navigation.--is-home {
+	bottom: 4.25rem;
+	color: var(--neutral-main);
 }
