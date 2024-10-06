@@ -18,7 +18,8 @@
 	}
 
 	&.--is-home,
-	&.--is-article {
+	&.--is-article,
+	&.--is-contact {
 		@media (width >= 1024px) {
 			display: none;
 		}
