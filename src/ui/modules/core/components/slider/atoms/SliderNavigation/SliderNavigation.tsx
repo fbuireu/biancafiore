@@ -1,12 +1,12 @@
 import { LeftArrow } from "@assets/images/svg-components/leftArrow";
 import clsx from "clsx";
 import { useRef } from "react";
-import type { Swiper as SwiperClass } from "swiper/types";
+import type { Swiper } from "swiper/types";
 import { useSliderNavigation } from "../../hooks/useSliderNavigation/useSliderNavigation";
 import "./slider-navigation.css";
 
 interface SliderNavigationProps {
-	swiper: SwiperClass;
+	swiper: Swiper;
 	locationClassName: string;
 }
 
