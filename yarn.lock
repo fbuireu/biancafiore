@@ -2810,7 +2810,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@million/lint@npm:^1.0.8":
+"@million/lint@npm:^1.0.9":
   version: 1.0.9
   resolution: "@million/lint@npm:1.0.9"
   dependencies:
@@ -4536,7 +4536,7 @@ __metadata:
     "@fontsource-variable/nunito-sans": "npm:^5.1.0"
     "@fontsource/baskervville": "npm:^5.1.0"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@million/lint": "npm:^1.0.8"
+    "@million/lint": "npm:^1.0.9"
     "@playwright/test": "npm:^1.47.2"
     "@testing-library/react": "npm:^16.0.1"
     "@testing-library/react-hooks": "npm:^8.0.1"

@@ -54,7 +54,7 @@
     "@fontsource-variable/nunito-sans": "^5.1.0",
     "@fontsource/baskervville": "^5.1.0",
     "@hookform/resolvers": "^3.9.0",
-    "@million/lint": "^1.0.8",
+    "@million/lint": "^1.0.9",
     "algoliasearch": "^5.7.0",
     "astro": "5.0.0-beta.3",
     "clsx": "^2.1.1",
