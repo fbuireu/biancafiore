@@ -48,7 +48,7 @@
     "@astrojs/mdx": "4.0.0-beta.2",
     "@astrojs/partytown": "^2.1.2",
     "@astrojs/react": "^3.6.2",
-    "@astrojs/rss": "^4.0.7",
+    "@astrojs/rss": "^4.0.8",
     "@astrojs/sitemap": "^3.2.0",
     "@contentful/rich-text-html-renderer": "^16.6.10",
     "@fontsource-variable/nunito-sans": "^5.1.0",

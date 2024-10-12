@@ -301,13 +301,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/rss@npm:^4.0.7":
-  version: 4.0.7
-  resolution: "@astrojs/rss@npm:4.0.7"
+"@astrojs/rss@npm:^4.0.8":
+  version: 4.0.8
+  resolution: "@astrojs/rss@npm:4.0.8"
   dependencies:
-    fast-xml-parser: "npm:^4.4.0"
+    fast-xml-parser: "npm:^4.5.0"
     kleur: "npm:^4.1.5"
-  checksum: 10c0/dc3ca62de077eb4f1130c289aff95d7f69a74258fc0f7ca2f79ecfa428ad704051860c5abf386acfd0cfc5a5b026b08699cd520306df16eb8eaaa881a8611ac7
+  checksum: 10c0/449381cbb69d7ad33d02b8fcf809ce4f81dcb60773861a7215119009aada5cea2f4c3e17274900a42683b718c35ed6358566255bf81981038d2cc9d4dd40e5c0
   languageName: node
   linkType: hard
 
@@ -4888,7 +4888,7 @@ __metadata:
     "@astrojs/mdx": "npm:4.0.0-beta.2"
     "@astrojs/partytown": "npm:^2.1.2"
     "@astrojs/react": "npm:^3.6.2"
-    "@astrojs/rss": "npm:^4.0.7"
+    "@astrojs/rss": "npm:^4.0.8"
     "@astrojs/sitemap": "npm:^3.2.0"
     "@astrojs/ts-plugin": "npm:^1.10.2"
     "@biomejs/biome": "npm:1.9.3"
@@ -6748,7 +6748,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-xml-parser@npm:^4.4.0, fast-xml-parser@npm:^4.4.1":
+"fast-xml-parser@npm:^4.4.1, fast-xml-parser@npm:^4.5.0":
   version: 4.5.0
   resolution: "fast-xml-parser@npm:4.5.0"
   dependencies:
