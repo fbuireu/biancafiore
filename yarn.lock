@@ -131,7 +131,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/check@npm:^0.9.4":
+"@astrojs/check@npm:0.9.4":
   version: 0.9.4
   resolution: "@astrojs/check@npm:0.9.4"
   dependencies:
@@ -267,7 +267,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/partytown@npm:^2.1.2":
+"@astrojs/partytown@npm:2.1.2":
   version: 2.1.2
   resolution: "@astrojs/partytown@npm:2.1.2"
   dependencies:
@@ -286,7 +286,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:^3.6.2":
+"@astrojs/react@npm:3.6.2":
   version: 3.6.2
   resolution: "@astrojs/react@npm:3.6.2"
   dependencies:
@@ -301,24 +301,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/rss@npm:^4.0.8":
-  version: 4.0.8
-  resolution: "@astrojs/rss@npm:4.0.8"
+"@astrojs/rss@npm:4.0.9":
+  version: 4.0.9
+  resolution: "@astrojs/rss@npm:4.0.9"
   dependencies:
     fast-xml-parser: "npm:^4.5.0"
     kleur: "npm:^4.1.5"
-  checksum: 10c0/449381cbb69d7ad33d02b8fcf809ce4f81dcb60773861a7215119009aada5cea2f4c3e17274900a42683b718c35ed6358566255bf81981038d2cc9d4dd40e5c0
+  checksum: 10c0/9ad979a6f6093d5ad68f75520084cbcba8989f2fad9b3aa0b107e5b2870eb2cf9d67769a0f7ea5b36484baa84a52e5db05a6b0def636ee1f8477b82a874729d0
   languageName: node
   linkType: hard
 
-"@astrojs/sitemap@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "@astrojs/sitemap@npm:3.2.0"
+"@astrojs/sitemap@npm:3.2.1":
+  version: 3.2.1
+  resolution: "@astrojs/sitemap@npm:3.2.1"
   dependencies:
     sitemap: "npm:^8.0.0"
     stream-replace-string: "npm:^2.0.0"
     zod: "npm:^3.23.8"
-  checksum: 10c0/16e93a58831c3ac2f1da52e9660660c78abb423d10fd451b6e18f52f88250d5b16b077b226a201cbbcaa29d60558cd5fbd57980023808838869b929e707f1f2b
+  checksum: 10c0/03a883dcf5ea18963e2b9031c07ea131d8c79efbc76abb42a06e71db1ad252696846c187187f2804b16d1d51b740419433a1eacb4abe0e93d74056320aee12ae
   languageName: node
   linkType: hard
 
@@ -491,24 +491,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-string-parser@npm:^7.25.7":
-  version: 7.25.7
-  resolution: "@babel/helper-string-parser@npm:7.25.7"
-  checksum: 10c0/73ef2ceb81f8294678a0afe8ab0103729c0370cac2e830e0d5128b03be5f6a2635838af31d391d763e3c5a4460ed96f42fd7c9b552130670d525be665913bc4c
-  languageName: node
-  linkType: hard
-
 "@babel/helper-validator-identifier@npm:^7.24.7":
   version: 7.24.7
   resolution: "@babel/helper-validator-identifier@npm:7.24.7"
   checksum: 10c0/87ad608694c9477814093ed5b5c080c2e06d44cb1924ae8320474a74415241223cc2a725eea2640dd783ff1e3390e5f95eede978bc540e870053152e58f1d651
-  languageName: node
-  linkType: hard
-
-"@babel/helper-validator-identifier@npm:^7.25.7":
-  version: 7.25.7
-  resolution: "@babel/helper-validator-identifier@npm:7.25.7"
-  checksum: 10c0/07438e5bf01ab2882a15027fdf39ac3b0ba1b251774a5130917907014684e2f70fef8fd620137ca062c4c4eedc388508d2ea7a3a7d9936a32785f4fe116c68c0
   languageName: node
   linkType: hard
 
@@ -628,17 +614,6 @@ __metadata:
     "@babel/helper-validator-identifier": "npm:^7.24.7"
     to-fast-properties: "npm:^2.0.0"
   checksum: 10c0/89d45fbee24e27a05dca2d08300a26b905bd384a480448823f6723c72d3a30327c517476389b7280ce8cb9a2c48ef8f47da7f9f6d326faf6f53fd6b68237bdc4
-  languageName: node
-  linkType: hard
-
-"@babel/types@npm:^7.25.7":
-  version: 7.25.7
-  resolution: "@babel/types@npm:7.25.7"
-  dependencies:
-    "@babel/helper-string-parser": "npm:^7.25.7"
-    "@babel/helper-validator-identifier": "npm:^7.25.7"
-    to-fast-properties: "npm:^2.0.0"
-  checksum: 10c0/e03e1e2e08600fa1e8eb90632ac9c253dd748176c8d670d85f85b0dc83a0573b26ae748a1cbcb81f401903a3d95f43c3f4f8d516a5ed779929db27de56289633
   languageName: node
   linkType: hard
 
@@ -4718,15 +4693,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:5.0.0-beta.4":
-  version: 5.0.0-beta.4
-  resolution: "astro@npm:5.0.0-beta.4"
+"astro@npm:5.0.0-beta.5":
+  version: 5.0.0-beta.5
+  resolution: "astro@npm:5.0.0-beta.5"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/internal-helpers": "npm:0.4.1"
     "@astrojs/markdown-remark": "npm:6.0.0-beta.2"
     "@astrojs/telemetry": "npm:3.1.0"
-    "@babel/types": "npm:^7.25.7"
     "@oslojs/encoding": "npm:^1.1.0"
     "@rollup/pluginutils": "npm:^5.1.2"
     "@types/cookie": "npm:^0.6.0"
@@ -4749,14 +4723,13 @@ __metadata:
     esbuild: "npm:^0.21.5"
     estree-walker: "npm:^3.0.3"
     fast-glob: "npm:^3.3.2"
-    fastq: "npm:^1.17.1"
     flattie: "npm:^1.1.1"
     github-slugger: "npm:^2.0.0"
     html-escaper: "npm:^3.0.3"
     http-cache-semantics: "npm:^4.1.1"
     js-yaml: "npm:^4.1.0"
     kleur: "npm:^4.1.5"
-    magic-string: "npm:^0.30.11"
+    magic-string: "npm:^0.30.12"
     magicast: "npm:^0.3.5"
     micromatch: "npm:^4.0.8"
     mrmime: "npm:^2.0.0"
@@ -4769,13 +4742,12 @@ __metadata:
     semver: "npm:^7.6.3"
     sharp: "npm:^0.33.3"
     shiki: "npm:^1.22.0"
-    string-width: "npm:^7.2.0"
     tinyexec: "npm:^0.3.0"
-    tsconfck: "npm:^3.1.3"
+    tsconfck: "npm:^3.1.4"
     unist-util-visit: "npm:^5.0.0"
     vfile: "npm:^6.0.3"
     vite: "npm:6.0.0-beta.2"
-    vitefu: "npm:^1.0.2"
+    vitefu: "npm:^1.0.3"
     which-pm: "npm:^3.0.0"
     xxhash-wasm: "npm:^1.0.2"
     yargs-parser: "npm:^21.1.1"
@@ -4788,7 +4760,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/3b49267a9059f149b1b5c3f578c41d7cf42c4ef5a966559e7cab747883ea51c0bf2d8015a07ff31b8a5006d797357497478b9105b7b84758abfcef34bc547a53
+  checksum: 10c0/901da7ac4f5dfd1dd3e433b068eb86c6d1e0ec6b130236b1bc539fc76ea821a73b52e0a4142ef15208f0d1fe00d8540b3c7ee9a4ab0ff61bfb716a674f3ef85e
   languageName: node
   linkType: hard
 
@@ -4874,13 +4846,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "biancafiore@workspace:."
   dependencies:
-    "@astrojs/check": "npm:^0.9.4"
+    "@astrojs/check": "npm:0.9.4"
     "@astrojs/cloudflare": "npm:12.0.0-beta.0"
     "@astrojs/mdx": "npm:4.0.0-beta.2"
-    "@astrojs/partytown": "npm:^2.1.2"
-    "@astrojs/react": "npm:^3.6.2"
-    "@astrojs/rss": "npm:^4.0.8"
-    "@astrojs/sitemap": "npm:^3.2.0"
+    "@astrojs/partytown": "npm:2.1.2"
+    "@astrojs/react": "npm:3.6.2"
+    "@astrojs/rss": "npm:4.0.9"
+    "@astrojs/sitemap": "npm:3.2.1"
     "@astrojs/ts-plugin": "npm:^1.10.2"
     "@biomejs/biome": "npm:1.9.3"
     "@commitlint/cli": "npm:^19.5.0"
@@ -4901,7 +4873,7 @@ __metadata:
     "@types/react-dom": "npm:^18.3.1"
     "@types/three": "npm:^0.169.0"
     algoliasearch: "npm:^5.8.1"
-    astro: "npm:5.0.0-beta.4"
+    astro: "npm:5.0.0-beta.5"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.1.4"
     conventional-changelog-atom: "npm:^5.0.0"
@@ -4917,7 +4889,7 @@ __metadata:
     react-globe.gl: "npm:^2.27.2"
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.53.0"
-    react-instantsearch: "npm:^7.13.3"
+    react-instantsearch: "npm:^7.13.4"
     react-router-dom: "npm:^6.27.0"
     resend: "npm:^4.0.0"
     swiper: "npm:^11.1.14"
@@ -6759,7 +6731,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastq@npm:^1.17.1, fastq@npm:^1.6.0":
+"fastq@npm:^1.6.0":
   version: 1.17.1
   resolution: "fastq@npm:1.17.1"
   dependencies:
@@ -7871,9 +7843,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"instantsearch.js@npm:4.75.0":
-  version: 4.75.0
-  resolution: "instantsearch.js@npm:4.75.0"
+"instantsearch.js@npm:4.75.1":
+  version: 4.75.1
+  resolution: "instantsearch.js@npm:4.75.1"
   dependencies:
     "@algolia/events": "npm:^4.0.1"
     "@types/dom-speech-recognition": "npm:^0.0.1"
@@ -7889,7 +7861,7 @@ __metadata:
     search-insights: "npm:^2.15.0"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
-  checksum: 10c0/e6d06f4aeb981841e8c4f8e17f2d22584b1d2db33f95ea1460c1ce029c34ab994614421eb488e804db536e5e98d8ecd883923a7591e0444ff83c580fec84b6aa
+  checksum: 10c0/2dbf7c1b009b74b9659f578624d9c7f5f86b97d4ac49ff69e6793004dcc223f632085c4e3a13fc11e5d3d7ed1393ecad9272a01438d614e1e57d1ca7d8c510ef
   languageName: node
   linkType: hard
 
@@ -8777,6 +8749,15 @@ __metadata:
   dependencies:
     "@jridgewell/sourcemap-codec": "npm:^1.5.0"
   checksum: 10c0/b9eb370773d0bd90ca11a848753409d8e5309b1ad56d2a1aa49d6649da710a6d2fe7237ad1a643c5a5d3800de2b9946ed9690acdfc00e6cc1aeafff3ab1752c4
+  languageName: node
+  linkType: hard
+
+"magic-string@npm:^0.30.12":
+  version: 0.30.12
+  resolution: "magic-string@npm:0.30.12"
+  dependencies:
+    "@jridgewell/sourcemap-codec": "npm:^1.5.0"
+  checksum: 10c0/469f457d18af37dfcca8617086ea8a65bcd8b60ba8a1182cb024ce43e470ace3c9d1cb6bee58d3b311768fb16bc27bd50bdeebcaa63dadd0fd46cac4d2e11d5f
   languageName: node
   linkType: hard
 
@@ -10649,34 +10630,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-instantsearch-core@npm:7.13.3":
-  version: 7.13.3
-  resolution: "react-instantsearch-core@npm:7.13.3"
+"react-instantsearch-core@npm:7.13.4":
+  version: 7.13.4
+  resolution: "react-instantsearch-core@npm:7.13.4"
   dependencies:
     "@babel/runtime": "npm:^7.1.2"
     algoliasearch-helper: "npm:3.22.5"
-    instantsearch.js: "npm:4.75.0"
+    instantsearch.js: "npm:4.75.1"
     use-sync-external-store: "npm:^1.0.0"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
     react: ">= 16.8.0 < 19"
-  checksum: 10c0/dff74535c65fb315001b07b4e3b3cf42c52f188314e4f2a3d4f95937a22a623a1b0850f7a73fe3540b54ae99c7434bccb0664be7fd655833c938833a81cd2f47
+  checksum: 10c0/b7272c656c6f9da83d86544c278eacac089d91ed85ae59c0ce757b5ffaa4827b989705b87b2f4c1215b0f98f4829550408274f9d57ed61bbcad6efb8412dcc1c
   languageName: node
   linkType: hard
 
-"react-instantsearch@npm:^7.13.3":
-  version: 7.13.3
-  resolution: "react-instantsearch@npm:7.13.3"
+"react-instantsearch@npm:^7.13.4":
+  version: 7.13.4
+  resolution: "react-instantsearch@npm:7.13.4"
   dependencies:
     "@babel/runtime": "npm:^7.1.2"
     instantsearch-ui-components: "npm:0.9.0"
-    instantsearch.js: "npm:4.75.0"
-    react-instantsearch-core: "npm:7.13.3"
+    instantsearch.js: "npm:4.75.1"
+    react-instantsearch-core: "npm:7.13.4"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
     react: ">= 16.8.0 < 19"
     react-dom: ">= 16.8.0 < 19"
-  checksum: 10c0/b001d017753c17aaea4545241b72ea759d379419f3e12fffbd6d7b2bf6b94428def216c5c159baad3bd8fc567090c86c937919269dae766260d5219eeaae36b3
+  checksum: 10c0/5156d3daa33eea774c386f1f2eaf1f78e90a31ce255367bd024abb9bf2b3cdb614c510f69d9f4e1e7059a7791640b9e3b0f2ed93cd0426b6b8213762958ff444
   languageName: node
   linkType: hard
 
@@ -12245,9 +12226,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsconfck@npm:^3.1.3":
-  version: 3.1.3
-  resolution: "tsconfck@npm:3.1.3"
+"tsconfck@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "tsconfck@npm:3.1.4"
   peerDependencies:
     typescript: ^5.0.0
   peerDependenciesMeta:
@@ -12255,7 +12236,7 @@ __metadata:
       optional: true
   bin:
     tsconfck: bin/tsconfck.js
-  checksum: 10c0/64f7a8ed0a6d36b0902dfc0075e791d2242f7634644f124343ec0dec4f3f70092f929c5a9f59496d51883aa81bb1e595deb92a219593575d2e75b849064713d1
+  checksum: 10c0/5120e91b3388574b449d57d08f45d05d9966cf4b9d6aa1018652c1fff6d7d37b1ed099b07e6ebf6099aa40b8a16968dd337198c55b7274892849112b942861ed
   languageName: node
   linkType: hard
 
@@ -12766,15 +12747,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitefu@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "vitefu@npm:1.0.2"
+"vitefu@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "vitefu@npm:1.0.3"
   peerDependencies:
-    vite: ^3.0.0 || ^4.0.0 || ^5.0.0
+    vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0-beta.0
   peerDependenciesMeta:
     vite:
       optional: true
-  checksum: 10c0/8e9f0ed5aff93df7ee7f035a43e2b7d6faeaea201252a52d04181c193b06b53f66e0f26bf20c0e590ee23fe66b329b188c483bdf18b2c45994897394c22a1e6f
+  checksum: 10c0/0b41021767885d538d04bb0cdabd140a5397a780997533a3cc1a1ea3c0ffae0cac4bde3e67632440587cd0505c0b6e825dfd8ab7da6249a68076072bea6eada1
   languageName: node
   linkType: hard
 
