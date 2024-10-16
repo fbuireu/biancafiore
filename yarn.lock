@@ -131,7 +131,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/check@npm:0.9.4":
+"@astrojs/check@npm:^0.9.4":
   version: 0.9.4
   resolution: "@astrojs/check@npm:0.9.4"
   dependencies:
@@ -267,7 +267,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/partytown@npm:2.1.2":
+"@astrojs/partytown@npm:^2.1.2":
   version: 2.1.2
   resolution: "@astrojs/partytown@npm:2.1.2"
   dependencies:
@@ -286,7 +286,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:3.6.2":
+"@astrojs/react@npm:^3.6.2":
   version: 3.6.2
   resolution: "@astrojs/react@npm:3.6.2"
   dependencies:
@@ -301,7 +301,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/rss@npm:4.0.9":
+"@astrojs/rss@npm:^4.0.9":
   version: 4.0.9
   resolution: "@astrojs/rss@npm:4.0.9"
   dependencies:
@@ -311,7 +311,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/sitemap@npm:3.2.1":
+"@astrojs/sitemap@npm:^3.2.1":
   version: 3.2.1
   resolution: "@astrojs/sitemap@npm:3.2.1"
   dependencies:
@@ -4846,13 +4846,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "biancafiore@workspace:."
   dependencies:
-    "@astrojs/check": "npm:0.9.4"
+    "@astrojs/check": "npm:^0.9.4"
     "@astrojs/cloudflare": "npm:12.0.0-beta.0"
     "@astrojs/mdx": "npm:4.0.0-beta.2"
-    "@astrojs/partytown": "npm:2.1.2"
-    "@astrojs/react": "npm:3.6.2"
-    "@astrojs/rss": "npm:4.0.9"
-    "@astrojs/sitemap": "npm:3.2.1"
+    "@astrojs/partytown": "npm:^2.1.2"
+    "@astrojs/react": "npm:^3.6.2"
+    "@astrojs/rss": "npm:^4.0.9"
+    "@astrojs/sitemap": "npm:^3.2.1"
     "@astrojs/ts-plugin": "npm:^1.10.2"
     "@biomejs/biome": "npm:1.9.3"
     "@commitlint/cli": "npm:^19.5.0"
