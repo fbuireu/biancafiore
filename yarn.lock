@@ -3735,7 +3735,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tweenjs/tween.js@npm:18 - 23, @tweenjs/tween.js@npm:~23.1.3":
+"@tweenjs/tween.js@npm:18 - 25":
+  version: 25.0.0
+  resolution: "@tweenjs/tween.js@npm:25.0.0"
+  checksum: 10c0/372a85913ad088b8d2720e4a5e90469e411e0757b5f3a52da6a7403f1722236b853bc9c78d9437b1f30db61199efe45e7ec40484def2ab1fe7c2334de0673ef3
+  languageName: node
+  linkType: hard
+
+"@tweenjs/tween.js@npm:~23.1.3":
   version: 23.1.3
   resolution: "@tweenjs/tween.js@npm:23.1.3"
   checksum: 10c0/811b30f5f0e7409fb41833401c501c2d6f600eb5f43039dd9067a7f70aff6dad5f5ce1233848e13f0b33a269a160d9c133f344d986cbff4f1f6b72ddecd06c89
@@ -7223,17 +7230,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globe.gl@npm:^2.32":
-  version: 2.32.5
-  resolution: "globe.gl@npm:2.32.5"
+"globe.gl@npm:^2.33":
+  version: 2.33.1
+  resolution: "globe.gl@npm:2.33.1"
   dependencies:
-    "@tweenjs/tween.js": "npm:18 - 23"
+    "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
     kapsule: "npm:1"
-    three: "npm:>=0.118 <1"
-    three-globe: "npm:^2.31"
-    three-render-objects: "npm:^1.29"
-  checksum: 10c0/fc78ef55480f6cc50ba4ee3aed246793624b75324606da3c1a8ec48ce97b7ea057ccfc1aae60c1e82753b73712b7e62cc03d2ef05044fae2ed1b3791cf3fc4f2
+    three: "npm:>=0.154 <1"
+    three-globe: "npm:^2.33"
+    three-render-objects: "npm:^1.30"
+  checksum: 10c0/f2e5db80ca1f97953e9dd756099b810babcf05b5b9454a05508548260e33a0676e44b8416d59716280d0bf64c4732d903df9b354bedcf1d19839f6b63b90745e
   languageName: node
   linkType: hard
 
@@ -10636,15 +10643,15 @@ __metadata:
   linkType: hard
 
 "react-globe.gl@npm:^2.27.2":
-  version: 2.27.2
-  resolution: "react-globe.gl@npm:2.27.2"
+  version: 2.27.3
+  resolution: "react-globe.gl@npm:2.27.3"
   dependencies:
-    globe.gl: "npm:^2.32"
+    globe.gl: "npm:^2.33"
     prop-types: "npm:15"
     react-kapsule: "npm:2"
   peerDependencies:
     react: "*"
-  checksum: 10c0/1386868826a6fcfb2a4622ad277f6e9ebf714496929c4f1a4c423acb02cc19e7d4facf6d8ab50e23828d8b4fc880d5f800f55f7907042ab6fad1a764bad8f452
+  checksum: 10c0/2f87f9d3264c5cd1c03bc633e8fd6f3e94940523dec4abbfe32e2d489dbcedbbec6f2833618caf3960808996cfdf46bce0eb290f5a1a06474bbaf06fd2d7ac3b
   languageName: node
   linkType: hard
 
@@ -12077,15 +12084,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three-fatline@npm:^0.7":
-  version: 0.7.0
-  resolution: "three-fatline@npm:0.7.0"
-  peerDependencies:
-    three: ">=0.154.0"
-  checksum: 10c0/890e42b156653c73835f4c6d23864428e0aff55ee14732fc811f2fead32e3f920408ebbd5af1788801fa20c8d2b1f16e621f265ce10421ed43aed440f17323c6
-  languageName: node
-  linkType: hard
-
 "three-geojson-geometry@npm:1":
   version: 1.3.3
   resolution: "three-geojson-geometry@npm:1.3.3"
@@ -12098,11 +12096,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three-globe@npm:^2.31":
-  version: 2.31.1
-  resolution: "three-globe@npm:2.31.1"
+"three-globe@npm:^2.33":
+  version: 2.33.0
+  resolution: "three-globe@npm:2.33.0"
   dependencies:
-    "@tweenjs/tween.js": "npm:18 - 23"
+    "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
     d3-array: "npm:3"
     d3-color: "npm:3"
@@ -12111,44 +12109,35 @@ __metadata:
     d3-scale: "npm:4"
     d3-scale-chromatic: "npm:3"
     data-joint: "npm:1"
-    earcut: "npm:2"
     frame-ticker: "npm:1"
     h3-js: "npm:4"
     index-array-by: "npm:1"
     kapsule: "npm:1"
     three-conic-polygon-geometry: "npm:1"
-    three-fatline: "npm:^0.7"
     three-geojson-geometry: "npm:1"
     tinycolor2: "npm:1"
     yaot: "npm:^1.1"
   peerDependencies:
-    three: ">=0.125"
-  checksum: 10c0/c6831656fc0323f11cc38cb6a3265d7c1faa50f665974942d3540d800752f8ce06eb5397b4f38cf3b534416816f89aca81523fc3ab32a82abcd84341e4fee7b3
+    three: ">=0.154"
+  checksum: 10c0/040c0d7b0b1fe81e97243ba6087ac284317ddcea94b76843053f0f7371224abd738f666cd27612fa4cd592793587ae8ca431178bddc4578cab427732aedd2b5c
   languageName: node
   linkType: hard
 
-"three-render-objects@npm:^1.29":
-  version: 1.29.4
-  resolution: "three-render-objects@npm:1.29.4"
+"three-render-objects@npm:^1.30":
+  version: 1.30.0
+  resolution: "three-render-objects@npm:1.30.0"
   dependencies:
-    "@tweenjs/tween.js": "npm:18 - 23"
+    "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
     kapsule: "npm:1"
     polished: "npm:4"
   peerDependencies:
     three: "*"
-  checksum: 10c0/e19a5e0a22b0302cb2a502289506cc697afe9d63ee387b074818f6a4ebfbb551cdce227a705b3123f779d3d3777f04edc363e920dc61acb001e0064d927c498b
+  checksum: 10c0/5082c994f45dc59f5414582da50d45cc50e10395526b477713a9430cb2e1e7eaf0d7a47f382f5446250d24997874d68d44652734a78e2db060f429acb82f3bd5
   languageName: node
   linkType: hard
 
-"three@npm:>=0.118 <1":
-  version: 0.168.0
-  resolution: "three@npm:0.168.0"
-  checksum: 10c0/04aa53e64a61f31edd9631e57fe697752c9d358bd96e1344206d05e981507a6dae5c9da4e3b8d9ec7c6c8fc49732fd3f23d3675d126fe9bc1936894bbee6cc98
-  languageName: node
-  linkType: hard
-
-"three@npm:^0.169.0":
+"three@npm:>=0.154 <1, three@npm:^0.169.0":
   version: 0.169.0
   resolution: "three@npm:0.169.0"
   checksum: 10c0/be2e20f45eaa50489cd22d366c41fa14528f00b873078f52fc6ef37140fa8e541e9805630bbe696ab9b027530c74e5cd341705266eb268b5219402fb9fa78ed4
