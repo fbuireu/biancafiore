@@ -9,6 +9,13 @@ const SELECTORS = {
 
 const getTabs = (): NodeListOf<HTMLElement> => document.querySelectorAll(SELECTORS.TAB);
 
+const updateUrl = (tabId: TabId) => {
+	const url = new URL(window.location.href);
+	const params = new URLSearchParams(url.search);
+	params.set("tab", tabId);
+	history.pushState({}, "", `${url.pathname}?${String(params)}`);
+};
+
 const changeTab = (tabId: TabId) => {
 	const TABS = getTabs();
 
@@ -23,6 +30,7 @@ const changeTab = (tabId: TabId) => {
 		tabContent.classList.toggle("--is-active", isActive);
 		tabContent.classList.toggle("--is-hidden", !isActive);
 	}
+	updateUrl(tabId);
 };
 
 export function initTabs(queryTab?: string) {

@@ -19,6 +19,53 @@
 
 	body {
 		min-height: 100dvh;
+		-webkit-font-smoothing: antialiased;
+		-webkit-tap-highlight-color: transparent;
+		-webkit-touch-callout: none;
+		line-height: 1.5;
+		text-rendering: optimizeLegibility;
+	}
+
+	main {
+		isolation: isolate;
+	}
+
+	img,
+	picture,
+	video,
+	canvas {
+		height: 100%;
+		max-width: 100%;
+		width: 100%;
+	}
+
+	a {
+		-webkit-tap-highlight-color: transparent;
+		color: inherit;
+		cursor: pointer;
+	}
+
+	p {
+		text-wrap: pretty;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		text-wrap: balance;
+	}
+
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		overflow-wrap: break-word;
 	}
 
 	input,
@@ -26,6 +73,17 @@
 	textarea,
 	select {
 		font: inherit;
+	}
+
+	summary {
+		-webkit-tap-highlight-color: transparent;
+		list-style: none;
+		pointer-events: none;
+
+		@media (width <= 960px) {
+			cursor: pointer;
+			pointer-events: auto;
+		}
 	}
 
 	strong,
