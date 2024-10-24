@@ -10,10 +10,10 @@ const SELECTORS = {
 const getTabs = (): NodeListOf<HTMLElement> => document.querySelectorAll(SELECTORS.TAB);
 
 const updateUrl = (tabId: TabId) => {
-	const url = new URL(window.location.href);
-	const params = new URLSearchParams(url.search);
+	const { pathname, search } = new URL(window.location.href);
+	const params = new URLSearchParams(search);
 	params.set("tab", tabId);
-	history.pushState({}, "", `${url.pathname}?${String(params)}`);
+	history.pushState({}, "", `${pathname}?${String(params)}`);
 };
 
 const changeTab = (tabId: TabId) => {
