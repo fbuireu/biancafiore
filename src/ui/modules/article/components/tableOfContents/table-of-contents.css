@@ -1,123 +1,123 @@
 .article__table-of-contents__nav {
-	--animation-range: entry 70cqh;
-	animation: fade-in linear forwards;
-	animation-range: var(--animation-range);
-	animation-timeline: view();
-	border-left: 4px solid var(--primary-dark-1);
-	left: var(--global-max-width);
-	line-height: normal;
-	opacity: 0;
-	padding: 0.25rem 1rem;
-	position: absolute;
-	translate: calc(-50% + 1rem) 0;
-	width: max-content;
+    animation: fade-in linear forwards;
+    animation-range: var(--animation-range);
+    animation-timeline: view();
+    background-color: var(--white);
+    border-left: 4px solid var(--primary-dark-1);
+    left: 50vw;
+    line-height: normal;
+    opacity: 0;
+    padding: 0.25rem 1rem;
+    position: absolute;
+    --animation-range: entry 70cqh;
+    width: max-content;
 
-	&.--is-visible .article__table-of-contents__item {
-		translate: 0 0;
-	}
+    &.--is-visible .article__table-of-contents__item {
+        translate: 0 0;
+    }
 
-	@media (width <= 960px) {
-		position: relative;
-		translate: 0;
-		left: auto;
-		opacity: 1;
-		width: 100%;
-	}
+    @media (width <= 960px) {
+        left: auto;
+        opacity: 1;
+        position: relative;
+        translate: 0;
+        width: 100%;
+    }
 }
 
 .article__table-of-contents__wrapper {
-	position: sticky;
-	top: calc(var(--header-height) + 2rem);
+    position: sticky;
+    top: calc(var(--header-height) + 2rem);
 
-	@media (width <= 960px) {
-		position: relative;
-		top: 0;
-		width: 100%;
-		margin-block: 1rem;
-	}
+    @media (width <= 960px) {
+        margin-block: 1rem;
+        position: relative;
+        top: 0;
+        width: 100%;
+    }
 }
 
 .article__table-of-contents__summary {
-	margin-block-end: 0.5rem;
-	position: relative;
-	transition: background-position .2s;
+    margin-block-end: 0.5rem;
+    position: relative;
+    transition: background-position .2s;
 
-	&::before {
-		content: "";
-		background: url("/src/ui/assets/images/svg/chevron-down.svg") no-repeat right center / 1rem;
-		position: absolute;
-		right: 0;
-		top: 50%;
-		translate: 0 -50%;
-		transition: transform .2s;
-		width: 1rem;
-		height: 1rem;
-		visibility: hidden;
-	}
+    &::before {
+        background: url("/src/ui/assets/images/svg/chevron-down.svg") no-repeat right center / 1rem;
+        content: "";
+        height: 1rem;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transition: transform .2s;
+        translate: 0 -50%;
+        visibility: hidden;
+        width: 1rem;
+    }
 
-	@media (width <= 960px) {
-		&::before {
-			visibility: visible;
-		}
-	}
+    @media (width <= 960px) {
+        &::before {
+            visibility: visible;
+        }
+    }
 }
 
 .article__table-of-contents__details {
-	height: 1.5rem;
-	transition: height 0.2s;
+    height: 1.5rem;
+    transition: height 0.2s;
 
-	&[open] {
-		height: auto;
+    &[open] {
+        height: auto;
 
-		@media (width <= 960px) {
-			overflow: clip;
-		}
-	}
+        @media (width <= 960px) {
+            overflow: clip;
+        }
+    }
 }
 
 .article__table-of-contents__details[open] .article__table-of-contents__summary::before {
-	transform: translateY(-50%) rotate(0.5turn);
+    transform: translateY(-50%) rotate(0.5turn);
 }
 
 .article__table-of-contents__list {
-	gap: 0.25rem 0;
+    gap: 0.25rem 0;
 
-	@media (width <= 960px) {
-		justify-content: flex-start;
-	}
+    @media (width <= 960px) {
+        justify-content: flex-start;
+    }
 }
 
 .article__table-of-contents__item {
-	margin-inline-start: calc(0.55rem * var(--inline-level, 1));
-	position: relative;
-	transition: translate calc(0.25s * var(--inline-level, 1));
-	translate: 100px 0;
-	width: fit-content;
+    margin-inline-start: calc(0.55rem * var(--inline-level, 1));
+    position: relative;
+    transition: translate calc(0.25s * var(--inline-level, 1));
+    translate: 100px 0;
+    width: fit-content;
 
-	@media (width <= 960px) {
-		transition: none;
-		translate: 0;
-	}
+    @media (width <= 960px) {
+        transition: none;
+        translate: 0;
+    }
 }
 
 .article__table-of-contents__item__link {
-	position: relative;
-	z-index: 1;
+    position: relative;
+    z-index: 1;
 
-	&:not(:focus-visible) {
-		animation: bold forwards;
-		animation-range: entry calc(100cqh - var(--header-height) - 1rem);
-		animation-timeline: var(--for);
+    &:not(:focus-visible) {
+        animation: bold forwards;
+        animation-range: entry calc(100cqh - var(--header-height) - 1rem);
+        animation-timeline: var(--for);
 
-		&::before {
-			background: var(--primary-main);
-			border-radius: 50%;
-			content: "";
-			height: 0.5rem;
-			left: -1rem;
-			opacity: var(--opacity, 0);
-			position: absolute;
-			width: 0.5rem;
-		}
-	}
+        &::before {
+            background: var(--primary-main);
+            border-radius: 50%;
+            content: "";
+            height: 0.5rem;
+            left: -1rem;
+            opacity: var(--opacity, 0);
+            position: absolute;
+            width: 0.5rem;
+        }
+    }
 }
