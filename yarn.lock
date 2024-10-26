@@ -385,7 +385,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/ts-plugin@npm:^1.10.3":
+"@astrojs/ts-plugin@npm:^1.10.4":
   version: 1.10.4
   resolution: "@astrojs/ts-plugin@npm:1.10.4"
   dependencies:
@@ -3151,7 +3151,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.48.1":
+"@playwright/test@npm:^1.48.2":
   version: 1.48.2
   resolution: "@playwright/test@npm:1.48.2"
   dependencies:
@@ -4061,7 +4061,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^22.0.1, @types/node@npm:^22.7.9":
+"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^22.0.1, @types/node@npm:^22.8.1":
   version: 22.8.1
   resolution: "@types/node@npm:22.8.1"
   dependencies:
@@ -4926,7 +4926,7 @@ __metadata:
     "@astrojs/react": "npm:^3.6.2"
     "@astrojs/rss": "npm:^4.0.9"
     "@astrojs/sitemap": "npm:^3.2.1"
-    "@astrojs/ts-plugin": "npm:^1.10.3"
+    "@astrojs/ts-plugin": "npm:^1.10.4"
     "@biomejs/biome": "npm:1.9.4"
     "@commitlint/cli": "npm:^19.5.0"
     "@commitlint/config-conventional": "npm:^19.5.0"
@@ -4936,19 +4936,19 @@ __metadata:
     "@fontsource/baskervville": "npm:^5.1.0"
     "@hookform/resolvers": "npm:^3.9.0"
     "@million/lint": "npm:^1.0.11"
-    "@playwright/test": "npm:^1.48.1"
+    "@playwright/test": "npm:^1.48.2"
     "@testing-library/react": "npm:^16.0.1"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^22.7.9"
+    "@types/node": "npm:^22.8.1"
     "@types/react": "npm:^18.3.12"
     "@types/react-dom": "npm:^18.3.1"
     "@types/three": "npm:^0.169.0"
     algoliasearch: "npm:^5.10.2"
     astro: "npm:5.0.0-beta.5"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.1.4"
+    contentful: "npm:^11.2.0"
     conventional-changelog-atom: "npm:^5.0.0"
     firebase: "npm:^11.0.1"
     firebase-admin: "npm:^12.7.0"
@@ -5507,7 +5507,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.1.4":
+"contentful@npm:^11.2.0":
   version: 11.2.0
   resolution: "contentful@npm:11.2.0"
   dependencies:
