@@ -30,7 +30,7 @@ jobs:
             -   name: Install correct Yarn version
                 run: corepack prepare ${{ env.YARN_VERSION }} --activate
             -   name: Install dependencies
-                run: yarn install --immutable
+                run: yarn install --immutable-cache
             -   name: Install Playwright Browsers
                 run: yarn playwright install --with-deps
             -   name: Run E2E Tests
