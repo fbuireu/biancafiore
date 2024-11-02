@@ -27,6 +27,6 @@ jobs:
             -   name: Install correct Yarn version
                 run: corepack prepare ${{ env.YARN_VERSION }} --activate
             -   name: Install dependencies
-                run: yarn install
+                run: yarn install --immutable-cache
             -   name: Execute Unit tests
                 run: yarn test:ut
