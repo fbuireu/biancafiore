@@ -4776,7 +4776,7 @@ __metadata:
     react-router-dom: "npm:^6.27.0"
     resend: "npm:^4.0.1-alpha.0"
     swiper: "npm:^11.1.14"
-    three: "npm:^0.169.0"
+    three: "npm:^0.170.0"
     typescript: "npm:^5.6.3"
     vanilla-cookieconsent: "npm:^3.0.1"
     vitest: "npm:^2.1.4"
@@ -11774,17 +11774,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:>=0.154 <1":
+"three@npm:>=0.154 <1, three@npm:^0.170.0":
   version: 0.170.0
   resolution: "three@npm:0.170.0"
   checksum: 10c0/eeaa1eccb31467654a044fb90634b3b6bb8d0768a4f029c082fb6aa22aec0d6362d0e3af74938caa1db512b7823a031b54a76e88fba6cfd535054165ea9667c9
-  languageName: node
-  linkType: hard
-
-"three@npm:^0.169.0":
-  version: 0.169.0
-  resolution: "three@npm:0.169.0"
-  checksum: 10c0/be2e20f45eaa50489cd22d366c41fa14528f00b873078f52fc6ef37140fa8e541e9805630bbe696ab9b027530c74e5cd341705266eb268b5219402fb9fa78ed4
   languageName: node
   linkType: hard
 
