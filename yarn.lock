@@ -4893,7 +4893,7 @@ __metadata:
     algoliasearch: "npm:^5.13.0"
     astro: "npm:5.0.0-beta.7"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.2.0"
+    contentful: "npm:^11.2.1"
     conventional-changelog-atom: "npm:^5.0.0"
     firebase: "npm:^11.0.1"
     firebase-admin: "npm:^12.7.0"
@@ -5425,9 +5425,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.2.0":
-  version: 11.2.0
-  resolution: "contentful@npm:11.2.0"
+"contentful@npm:^11.2.1":
+  version: 11.2.1
+  resolution: "contentful@npm:11.2.1"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.6"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -5436,7 +5436,7 @@ __metadata:
     contentful-sdk-core: "npm:^8.3.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/20eadd25a55e28e2d434a961d1bec76532a2b4b94767962c1ca41b0f8abb61448e2ff0ba593226c4dc70d63fd87412f6ec6abe73c9fb117ba3df08f39c80d01d
+  checksum: 10c0/8799616bfea67c2efdfbe7592664980a539b48d82528759c593964fedd6b96a2a6e584fd9da91eb013317700e6b937ab38d0ca092fd332bba899b5cdef7f2f73
   languageName: node
   linkType: hard
 
