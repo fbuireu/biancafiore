@@ -58,7 +58,7 @@
 		"algoliasearch": "^5.13.0",
 		"astro": "5.0.0-beta.7",
 		"clsx": "^2.1.1",
-		"contentful": "^11.2.0",
+		"contentful": "^11.2.1",
 		"firebase": "^11.0.1",
 		"firebase-admin": "^12.7.0",
 		"gsap": "^3.12.5",
