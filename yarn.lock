@@ -4814,7 +4814,7 @@ __metadata:
     markdown-it: "npm:^14.1.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
-    react-globe.gl: "npm:^2.27.4"
+    react-globe.gl: "npm:^2.27.5"
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.53.2"
     react-instantsearch: "npm:^7.13.7"
@@ -10377,16 +10377,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-globe.gl@npm:^2.27.4":
-  version: 2.27.4
-  resolution: "react-globe.gl@npm:2.27.4"
+"react-globe.gl@npm:^2.27.5":
+  version: 2.27.5
+  resolution: "react-globe.gl@npm:2.27.5"
   dependencies:
     globe.gl: "npm:^2.33"
     prop-types: "npm:15"
-    react-kapsule: "npm:2"
+    react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/45c98740ab00aa872d37ad282031305d67742bc48ea8766b03fb0833978d78e51f0116f0d9c40ebf8e067535d9ae8f2ed163c1b39df8dcb904c09bdf45397385
+  checksum: 10c0/3708f90f7a7f76ca4a9ecb91d4ac657ebe5f2929870108737789fd7f8dc5cc7cbf8981912700e3854231687916ced937e814a4d12c2ec7728430074bcd84b157
   languageName: node
   linkType: hard
 
@@ -10449,15 +10449,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-kapsule@npm:2":
-  version: 2.4.1
-  resolution: "react-kapsule@npm:2.4.1"
+"react-kapsule@npm:^2.5":
+  version: 2.5.0
+  resolution: "react-kapsule@npm:2.5.0"
   dependencies:
     fromentries: "npm:^1.3.2"
     jerrypick: "npm:^1.1.1"
   peerDependencies:
     react: ">=16.13.1"
-  checksum: 10c0/3f446c2f164a9d1967120b8966de97c6df55cdea19f6c32b8e9639f08f0e8f99a2ef44b569cf278de8fcd373e0d9dab2029c35dd183c8c40711e9baac2a32c47
+  checksum: 10c0/9af2ec9d8739506ff8f49725651d2a2bf1b9b5244ca21d380d5dceeffbfa38ebd5c223ef39fa3ebfc80020d76399dc2f10fa67d05fe0ac0943505d3db17ecdc1
   languageName: node
   linkType: hard
 
