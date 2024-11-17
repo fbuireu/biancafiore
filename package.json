@@ -96,6 +96,6 @@
 		"conventional-changelog-atom": "^5.0.0",
 		"husky": "^9.1.6",
 		"lint-staged": "^15.2.10",
-		"vitest": "^2.1.4"
+		"vitest": "^2.1.5"
 	}
 }
