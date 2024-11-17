@@ -56,7 +56,7 @@
 		"@hookform/resolvers": "^3.9.1",
 		"@million/lint": "^1.0.12",
 		"algoliasearch": "^5.13.0",
-		"astro": "5.0.0-beta.7",
+		"astro": "5.0.0-beta.8",
 		"clsx": "^2.1.1",
 		"contentful": "^11.2.1",
 		"firebase": "^11.0.1",
