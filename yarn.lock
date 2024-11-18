@@ -4524,7 +4524,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"algoliasearch@npm:^5.13.0":
+"algoliasearch@npm:^5.14.2":
   version: 5.14.2
   resolution: "algoliasearch@npm:5.14.2"
   dependencies:
@@ -4888,12 +4888,12 @@ __metadata:
     "@types/react": "npm:^18.3.12"
     "@types/react-dom": "npm:^18.3.1"
     "@types/three": "npm:^0.170.0"
-    algoliasearch: "npm:^5.13.0"
+    algoliasearch: "npm:^5.14.2"
     astro: "npm:5.0.0-beta.8"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.2.1"
+    contentful: "npm:^11.2.2"
     conventional-changelog-atom: "npm:^5.0.0"
-    firebase: "npm:^11.0.1"
+    firebase: "npm:^11.0.2"
     firebase-admin: "npm:^13.0.0"
     gsap: "npm:^3.12.5"
     husky: "npm:^9.1.6"
@@ -4902,7 +4902,7 @@ __metadata:
     markdown-it: "npm:^14.1.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
-    react-globe.gl: "npm:^2.27.5"
+    react-globe.gl: "npm:^2.27.6"
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.53.2"
     react-instantsearch: "npm:^7.13.8"
@@ -5423,9 +5423,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.2.1":
-  version: 11.2.1
-  resolution: "contentful@npm:11.2.1"
+"contentful@npm:^11.2.2":
+  version: 11.2.2
+  resolution: "contentful@npm:11.2.2"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.6"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -5434,7 +5434,7 @@ __metadata:
     contentful-sdk-core: "npm:^8.3.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/8799616bfea67c2efdfbe7592664980a539b48d82528759c593964fedd6b96a2a6e584fd9da91eb013317700e6b937ab38d0ca092fd332bba899b5cdef7f2f73
+  checksum: 10c0/e03fd32a483bef3441812212e520b35a0ba153836011a8c7f70c42d6361d0c552fe43c50f0a55ae0965c1cc16433748037ae8604ea5a2ec9e745c5483a57c60b
   languageName: node
   linkType: hard
 
@@ -6793,7 +6793,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firebase@npm:^11.0.1":
+"firebase@npm:^11.0.2":
   version: 11.0.2
   resolution: "firebase@npm:11.0.2"
   dependencies:
@@ -10465,16 +10465,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-globe.gl@npm:^2.27.5":
-  version: 2.27.5
-  resolution: "react-globe.gl@npm:2.27.5"
+"react-globe.gl@npm:^2.27.6":
+  version: 2.27.6
+  resolution: "react-globe.gl@npm:2.27.6"
   dependencies:
     globe.gl: "npm:^2.33"
     prop-types: "npm:15"
     react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/3708f90f7a7f76ca4a9ecb91d4ac657ebe5f2929870108737789fd7f8dc5cc7cbf8981912700e3854231687916ced937e814a4d12c2ec7728430074bcd84b157
+  checksum: 10c0/f50089128c91cd647c2182834ea2e74876e94b5ac42a3bafafbd29706f1d6f0d0546317e6cf53b927cd185ddd7a16e10ff5260ce3c057398745d2383b221c84e
   languageName: node
   linkType: hard
 
