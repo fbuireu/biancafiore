@@ -334,18 +334,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:^3.6.2":
-  version: 3.6.2
-  resolution: "@astrojs/react@npm:3.6.2"
+"@astrojs/react@npm:^3.6.3":
+  version: 3.6.3
+  resolution: "@astrojs/react@npm:3.6.3"
   dependencies:
-    "@vitejs/plugin-react": "npm:^4.3.1"
+    "@vitejs/plugin-react": "npm:^4.3.3"
     ultrahtml: "npm:^1.5.3"
+    vite: "npm:^5.4.10"
   peerDependencies:
     "@types/react": ^17.0.50 || ^18.0.21
     "@types/react-dom": ^17.0.17 || ^18.0.6
     react: ^17.0.2 || ^18.0.0 || ^19.0.0-beta
     react-dom: ^17.0.2 || ^18.0.0 || ^19.0.0-beta
-  checksum: 10c0/161f458ecc6b6174bc85326a80889170150953c0343dcb2f141caa8e5406a00b0eddf9cadf5c39b7742538c091550af9d221186ae2817a005a1586f562918c24
+  checksum: 10c0/1a249c987e6425e0d2fc2d97ac37b1be7e0d831f882a1ac084ff40d6adc6bee5f6233958cb7dcf87855e7e5446b0105ba2ab4907168ece9668caa37b4c156633
   languageName: node
   linkType: hard
 
@@ -3499,6 +3500,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/rollup-linux-x64-gnu@npm:^4.18.0":
+  version: 4.27.3
+  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.27.3"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
 "@rollup/rollup-linux-x64-musl@npm:4.24.3":
   version: 4.24.3
   resolution: "@rollup/rollup-linux-x64-musl@npm:4.24.3"
@@ -4212,7 +4220,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react@npm:^4.3.1":
+"@vitejs/plugin-react@npm:^4.3.3":
   version: 4.3.3
   resolution: "@vitejs/plugin-react@npm:4.3.3"
   dependencies:
@@ -4875,7 +4883,7 @@ __metadata:
     "@astrojs/cloudflare": "npm:12.0.0-beta.1"
     "@astrojs/mdx": "npm:4.0.0-beta.3"
     "@astrojs/partytown": "npm:^2.1.2"
-    "@astrojs/react": "npm:^3.6.2"
+    "@astrojs/react": "npm:^3.6.3"
     "@astrojs/rss": "npm:^4.0.9"
     "@astrojs/sitemap": "npm:^3.2.1"
     "@astrojs/ts-plugin": "npm:^1.10.4"
@@ -4900,7 +4908,7 @@ __metadata:
     algoliasearch: "npm:^5.15.0"
     astro: "npm:5.0.0-beta.8"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.2.2"
+    contentful: "npm:^11.2.3"
     conventional-changelog-atom: "npm:^5.0.0"
     firebase: "npm:^11.0.2"
     firebase-admin: "npm:^13.0.1"
@@ -5419,31 +5427,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful-sdk-core@npm:^8.3.1":
-  version: 8.3.2
-  resolution: "contentful-sdk-core@npm:8.3.2"
+"contentful-sdk-core@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "contentful-sdk-core@npm:9.0.1"
   dependencies:
-    fast-copy: "npm:^2.1.7"
-    lodash.isplainobject: "npm:^4.0.6"
-    lodash.isstring: "npm:^4.0.1"
-    p-throttle: "npm:^4.1.1"
-    qs: "npm:^6.11.2"
-  checksum: 10c0/f0623dc8b1ed8df8dd3adf8bc2ddef81d36ce697519a8ff5351a70f3497ee7b403b8b23a9c438a9a4d9ee51afad0bb83d3cae370de2b481566cca699f1a98c80
+    "@rollup/rollup-linux-x64-gnu": "npm:^4.18.0"
+    fast-copy: "npm:^3.0.2"
+    lodash: "npm:^4.17.21"
+    p-throttle: "npm:^6.1.0"
+    process: "npm:^0.11.10"
+    qs: "npm:^6.12.3"
+  dependenciesMeta:
+    "@rollup/rollup-linux-x64-gnu":
+      optional: true
+  checksum: 10c0/9de88d147ddb45134a62b984a98e6011c339864d57fbde8b56cf70263fd755b7743b3e43ac33e0bc907fc0cbd4276afe96a117679d04be9a65c27256333c8cd6
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.2.2":
-  version: 11.2.2
-  resolution: "contentful@npm:11.2.2"
+"contentful@npm:^11.2.3":
+  version: 11.2.3
+  resolution: "contentful@npm:11.2.3"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.6"
     "@contentful/rich-text-types": "npm:^16.6.1"
     axios: "npm:^1.7.4"
     contentful-resolve-response: "npm:^1.9.0"
-    contentful-sdk-core: "npm:^8.3.1"
+    contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/e03fd32a483bef3441812212e520b35a0ba153836011a8c7f70c42d6361d0c552fe43c50f0a55ae0965c1cc16433748037ae8604ea5a2ec9e745c5483a57c60b
+  checksum: 10c0/52b3f2dcd6a5e0f00aaa26716f35991b5c8d072886a14ba1a97023d1c65cb46baf6de223d31602a2ce878c8e8edff85ed575896007b2b338a93e2f6deddc7318
   languageName: node
   linkType: hard
 
@@ -6634,6 +6646,13 @@ __metadata:
   version: 2.1.7
   resolution: "fast-copy@npm:2.1.7"
   checksum: 10c0/1fa3c6f21305fa49581d543812f0c96429c0748b97c074b1aca5d2d6d43520ff1452a8021b4051f5a894c0fdbcac463797b5660e0813399054914dd91e7f27f5
+  languageName: node
+  linkType: hard
+
+"fast-copy@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "fast-copy@npm:3.0.2"
+  checksum: 10c0/02e8b9fd03c8c024d2987760ce126456a0e17470850b51e11a1c3254eed6832e4733ded2d93316c82bc0b36aeb991ad1ff48d1ba95effe7add7c3ab8d8eb554a
   languageName: node
   linkType: hard
 
@@ -8565,7 +8584,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.17.21":
+"lodash@npm:4.17.21, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 10c0/d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
@@ -9945,10 +9964,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-throttle@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "p-throttle@npm:4.1.1"
-  checksum: 10c0/c4bfdcd0318d704b446a7af59dd8e0e32e37ba3d9841dd8dfced1c09742bc2f7a95bc0fcf4072030c62abf4533a9a2ef2954e559462052c5f406ae03d195925a
+"p-throttle@npm:^6.1.0":
+  version: 6.2.0
+  resolution: "p-throttle@npm:6.2.0"
+  checksum: 10c0/3be65f66eb21137be78b8d18a5240117312b942e3aa788f838ac4be785ab3c40b64ee34b2c393cd948ec7845c0a00241f446395b98ff4754e718fe54fdee0b00
   languageName: node
   linkType: hard
 
@@ -10303,6 +10322,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"process@npm:^0.11.10":
+  version: 0.11.10
+  resolution: "process@npm:0.11.10"
+  checksum: 10c0/40c3ce4b7e6d4b8c3355479df77aeed46f81b279818ccdc500124e6a5ab882c0cc81ff7ea16384873a95a74c4570b01b120f287abbdd4c877931460eca6084b3
+  languageName: node
+  linkType: hard
+
 "promise-retry@npm:^2.0.1":
   version: 2.0.1
   resolution: "promise-retry@npm:2.0.1"
@@ -10407,12 +10433,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.11.2":
-  version: 6.13.0
-  resolution: "qs@npm:6.13.0"
+"qs@npm:^6.12.3":
+  version: 6.13.1
+  resolution: "qs@npm:6.13.1"
   dependencies:
     side-channel: "npm:^1.0.6"
-  checksum: 10c0/62372cdeec24dc83a9fb240b7533c0fdcf0c5f7e0b83343edd7310f0ab4c8205a5e7c56406531f2e47e1b4878a3821d652be4192c841de5b032ca83619d8f860
+  checksum: 10c0/5ef527c0d62ffca5501322f0832d800ddc78eeb00da3b906f1b260ca0492721f8cdc13ee4b8fd8ac314a6ec37b948798c7b603ccc167e954088df392092f160c
   languageName: node
   linkType: hard
 
@@ -12617,6 +12643,49 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 10c0/4ef4807d2fd166a920de244dbcec791ba8a903b017a7d8e9f9b4ac40d23f8152c1100610583d08f542b47ca617a0505cfc5f8407377d610599d58296996691ed
+  languageName: node
+  linkType: hard
+
+"vite@npm:^5.4.10":
+  version: 5.4.11
+  resolution: "vite@npm:5.4.11"
+  dependencies:
+    esbuild: "npm:^0.21.3"
+    fsevents: "npm:~2.3.3"
+    postcss: "npm:^8.4.43"
+    rollup: "npm:^4.20.0"
+  peerDependencies:
+    "@types/node": ^18.0.0 || >=20.0.0
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    sass-embedded: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    sass-embedded:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 10c0/d536bb7af57dd0eca2a808f95f5ff1d7b7ffb8d86e17c6893087680a0448bd0d15e07475270c8a6de65cb5115592d037130a1dd979dc76bcef8c1dda202a1874
   languageName: node
   linkType: hard
 
