@@ -5,6 +5,10 @@
 		margin: 0 auto;
 	}
 
+	.relative {
+		position: relative;
+	}
+
 	.font-sans-serif {
 		font-family: "Nunito Sans Variable", sans-serif;
 	}
@@ -29,6 +33,10 @@
 	.inner-section-title {
 		font-size: clamp(2rem, 1vw, 3rem);
 		text-transform: uppercase;
+	}
+
+	.grid {
+		display: grid;
 	}
 
 	.flex {

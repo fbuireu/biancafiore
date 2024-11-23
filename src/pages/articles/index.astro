@@ -29,7 +29,7 @@ const metadata: Partial<SeoMetadata> = {
             articles
                 .filter((article) => article.data.slug !== featuredArticle?.data.slug)
                 .map((article, index) => (
-                    <li class="articles__grid__item">
+                    <li class="articles__grid__item grid relative">
                         <ArticleCard {...article} />
                         <script is:inline type="application/ld+json" set:html={JSON.stringify({
                           '@context': 'https://schema.org',
