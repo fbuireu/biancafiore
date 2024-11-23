@@ -15,7 +15,7 @@ const metadata: Partial<SeoMetadata> = {
     <Breadcrumbs />
     <section class="common-wrapper">
         <h1 class="flex justify-center">All tags</h1>
-        <ul class="tags__list flex row-wrap">
+        <ul class="tags__list grid">
           {tags.map((letter, index) => {
               return <li class="tags__item">
                   <h2 class="tags__item__letter">{letter.data.name}</h2>

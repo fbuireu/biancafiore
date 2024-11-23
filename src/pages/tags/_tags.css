@@ -1,19 +1,20 @@
 .tags__list {
-	text-align: center;
-	margin-block-start: 2rem;
-}
-
-.tags__item {
-	--items-per-row: 2;
 	--gap: 2rem;
-	margin-block-end: 1rem;
-	width: 100%;
-	max-width: calc(100% / var(--items-per-row) - var(--gap));
+	gap: calc(var(--gap) * 3) var(--gap);
+	grid-template-columns: repeat(auto-fill, minmax(calc(100% / var(--items-per-row) - var(--gap)), 1fr));
+	margin-block-start: 2rem;
+	--items-per-row: 2;
+	text-align: center;
 
 	@media (width <= 575px) {
 		--gap: 0;
 		--items-per-row: 1;
 	}
+}
+
+.tags__item {
+	margin-block-end: 1rem;
+	width: 100%;
 }
 
 .tags__item__letter {

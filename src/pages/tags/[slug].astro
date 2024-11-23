@@ -48,10 +48,10 @@ const metadata: Partial<SeoMetadata> = {
 <BaseLayout {...metadata}>
     <Breadcrumbs />
     <h1 class="flex justify-center">#{slug}</h1>    <section class="common-wrapper">
-    <ul class="tag__article__list flex row-wrap justify-flex-start">
+    <ul class="tag__article__list grid">
       {tag.articles?.map((article, index) => {
         return (
-            <li class="tag__article__item">
+            <li class="tag__article__item relative">
                 <ArticleCard {...article} />
                 <script is:inline type="application/ld+json" set:html={JSON.stringify({
                   '@context': 'https://schema.org',

@@ -1,19 +1,12 @@
 .articles__grid__list {
-	gap: 5rem 3rem;
+	--gap: 2rem;
+	gap: calc(var(--gap) * 3) var(--gap);
+	grid-template-columns: repeat(auto-fill, minmax(calc(100% / var(--items-per-row) - var(--gap)), 1fr));
 	margin-block: 12rem;
-
-	@media (width <= 960px) {
-		justify-content: center;
-		margin-block: 7rem;
-	}
-}
-.articles__grid__list > li {
-	max-width: calc(100% / var(--items-per-row) - 2rem);
-	position: relative;
-	width: 100%;
 	--items-per-row: 4;
 
 	@media (width <= 960px) {
+		margin-block: 7rem;
 		--items-per-row: 1;
 	}
 }

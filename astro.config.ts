@@ -9,6 +9,9 @@ import { defineConfig, envField } from "astro/config";
 const isProd = import.meta.env.PROD;
 
 export default defineConfig({
+	experimental: {
+		contentIntellisense: true,
+	},
 	site: "https://biancafiore.me",
 	prefetch: true,
 	output: "server",
