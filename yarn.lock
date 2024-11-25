@@ -4034,7 +4034,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^22.8.7, @types/node@npm:^22.9.1":
+"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^22.8.7, @types/node@npm:^22.9.3":
   version: 22.9.3
   resolution: "@types/node@npm:22.9.3"
   dependencies:
@@ -4877,14 +4877,14 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^22.9.1"
+    "@types/node": "npm:^22.9.3"
     "@types/react": "npm:^18.3.12"
     "@types/react-dom": "npm:^18.3.1"
     "@types/three": "npm:^0.170.0"
     algoliasearch: "npm:^5.15.0"
     astro: "npm:5.0.0-beta.10"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.2.3"
+    contentful: "npm:^11.2.4"
     conventional-changelog-atom: "npm:^5.0.0"
     firebase: "npm:^11.0.2"
     firebase-admin: "npm:^13.0.1"
@@ -4899,11 +4899,11 @@ __metadata:
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.53.2"
     react-instantsearch: "npm:^7.13.8"
-    react-router-dom: "npm:^7.0.0"
+    react-router-dom: "npm:^7.0.1"
     resend: "npm:^4.0.1"
     swiper: "npm:^11.1.15"
     three: "npm:^0.170.0"
-    typescript: "npm:^5.6.3"
+    typescript: "npm:^5.7.2"
     vanilla-cookieconsent: "npm:^3.0.1"
     vitest: "npm:^2.1.5"
     zod: "npm:^3.23.8"
@@ -5420,9 +5420,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.2.3":
-  version: 11.2.3
-  resolution: "contentful@npm:11.2.3"
+"contentful@npm:^11.2.4":
+  version: 11.2.4
+  resolution: "contentful@npm:11.2.4"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.6"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -5431,7 +5431,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/52b3f2dcd6a5e0f00aaa26716f35991b5c8d072886a14ba1a97023d1c65cb46baf6de223d31602a2ce878c8e8edff85ed575896007b2b338a93e2f6deddc7318
+  checksum: 10c0/2e2aa8d5782ec3010f273d31fd78d5a1800511c3907459ecec89d8362a00921eb22a1a3cee3cb3cb94165ccedcbbc3f2508583983c2f92a87b3082a221aac7ab
   languageName: node
   linkType: hard
 
@@ -10583,7 +10583,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.0.0":
+"react-router-dom@npm:^7.0.1":
   version: 7.0.1
   resolution: "react-router-dom@npm:7.0.1"
   dependencies:
@@ -12192,7 +12192,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.6.3":
+"typescript@npm:^5.7.2":
   version: 5.7.2
   resolution: "typescript@npm:5.7.2"
   bin:
@@ -12202,7 +12202,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.6.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.7.2#optional!builtin<compat/typescript>":
   version: 5.7.2
   resolution: "typescript@patch:typescript@npm%3A5.7.2#optional!builtin<compat/typescript>::version=5.7.2&hash=5786d5"
   bin:
