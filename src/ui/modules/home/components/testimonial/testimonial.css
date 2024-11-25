@@ -27,14 +27,12 @@
 	}
 }
 
-.swiper-slide-prev {
-	.testimonial__content {
-		grid:
-			". . Testimonial-Image Testimonial-Image " 1rem
-			"Testimonial-Quote Testimonial-Quote Testimonial-Image Testimonial-Image" min-content
-			"Testimonial-Quote Testimonial-Quote Testimonial-Image Testimonial-Image" calc(100% - 7rem)
-			"Testimonial-Author Testimonial-Author Testimonial-Image Testimonial-Image" 1.5rem
-			"Testimonial-Description Testimonial-Description Testimonial-Image Testimonial-Image" min-content
-			/ 1fr 1fr calc(100% / 4) calc(100% / 4);
-	}
+.swiper-slide-prev .testimonial__content {
+	grid:
+		". . Testimonial-Image Testimonial-Image " 1rem
+		"Testimonial-Quote Testimonial-Quote Testimonial-Image Testimonial-Image" min-content
+		"Testimonial-Quote Testimonial-Quote Testimonial-Image Testimonial-Image" calc(100% - 7rem)
+		"Testimonial-Author Testimonial-Author Testimonial-Image Testimonial-Image" 1.5rem
+		"Testimonial-Description Testimonial-Description Testimonial-Image Testimonial-Image" min-content
+		/ 1fr 1fr calc(100% / 4) calc(100% / 4);
 }
