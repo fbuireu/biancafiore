@@ -11,6 +11,7 @@ jobs:
   prepare-env:
     uses: ./.github/workflows/prepare-env.yml
   e2e-tests:
+    needs: prepare-env
     name: Run E2E tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
