@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/prepare-env.yml
+      - uses: ./.github/actions/prepare-env
       - name: Install dependencies
         run: yarn install
       - name: Execute Unit tests
