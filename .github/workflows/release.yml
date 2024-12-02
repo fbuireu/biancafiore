@@ -22,7 +22,7 @@ jobs:
   validate-tag:
     name: Validate tag
     runs-on: ubuntu-latest
-    if: ${{ env.IS_WORKFLOW_DISPATCH }}
+    if: ${{ fromJSON(env.IS_WORKFLOW_DISPATCH) }}
     steps:
       - name: Validate tag Format
         run: |
@@ -34,7 +34,7 @@ jobs:
     name: Check tag
     runs-on: ubuntu-latest
     needs: validate-tag
-    if: ${{ env.IS_WORKFLOW_DISPATCH }}
+    if: ${{ fromJSON(env.IS_WORKFLOW_DISPATCH) }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
@@ -90,7 +90,7 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
       - name: Create tag (only for workflow_dispatch)
-        if: ${{ env.IS_WORKFLOW_DISPATCH }}
+        if: ${{ fromJSON(env.IS_WORKFLOW_DISPATCH) }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
