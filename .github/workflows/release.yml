@@ -17,12 +17,11 @@ on:
     types: [completed]
 env:
   TAG_NAME: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag_name || github.ref_name }}
-  IS_WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
 jobs:
   validate-tag:
     name: Validate tag
     runs-on: ubuntu-latest
-    if: ${{ fromJSON(env.IS_WORKFLOW_DISPATCH) }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Validate tag Format
         run: |
@@ -34,7 +33,7 @@ jobs:
     name: Check tag
     runs-on: ubuntu-latest
     needs: validate-tag
-    if: ${{ fromJSON(env.IS_WORKFLOW_DISPATCH) }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
@@ -90,7 +89,7 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
       - name: Create tag (only for workflow_dispatch)
-        if: ${{ fromJSON(env.IS_WORKFLOW_DISPATCH) }}
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
