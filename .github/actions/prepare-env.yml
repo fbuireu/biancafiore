@@ -1,0 +1,23 @@
+name: Prepare Environment
+on:
+  workflow_call:
+jobs:
+  prepare-env:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js version from .nvmrc
+        id: nvmrc
+        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Get Yarn version from package.json
+        id: yarn_version
+        run: |
+          YARN_VERSION=$(jq -r '.packageManager' package.json | grep -o 'yarn@[0-9]*\.[0-9]*\.[0-9]*')
+          echo "YARN_VERSION=${YARN_VERSION}" >> $GITHUB_ENV
+      - name: Install correct Yarn version
+        run: corepack prepare ${{ env.YARN_VERSION }} --activate
