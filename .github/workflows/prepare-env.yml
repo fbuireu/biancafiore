@@ -3,8 +3,10 @@ description: 'Prepare environment for the workflow'
 on: workflow_call
 jobs:
   prepare-env:
+    name: Prepare Environment
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Use Node.js version from .nvmrc
         id: nvmrc
         shell: bash
