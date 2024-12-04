@@ -1,9 +1,10 @@
+import type { Except } from "@const/types.ts";
 import { Exception } from "@domain/errors";
 import type { ContactFormData } from "@shared/ui/types.ts";
 
 interface IsDuplicatedContactParams {
 	databaseRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>;
-	data: Omit<ContactFormData, "recaptcha">;
+	data: Except<ContactFormData, "recaptcha">;
 }
 
 const ALIAS_REGEX = /(\+.*?)(?=@)/;

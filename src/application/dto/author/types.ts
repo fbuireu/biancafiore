@@ -1,3 +1,4 @@
+import type { ArticleDTO } from "@application/dto/article/types.ts";
 import type { authorSchema } from "@application/entities/authors";
 import type { ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
@@ -16,4 +17,7 @@ export interface RawAuthor {
 	};
 }
 
-export type AuthorDTO = z.infer<typeof authorSchema>;
+export type AuthorDTO = z.infer<typeof authorSchema> & {
+	articles: ArticleDTO[];
+	latestArticle: ArticleDTO;
+};

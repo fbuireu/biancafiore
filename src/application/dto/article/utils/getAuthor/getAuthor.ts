@@ -1,8 +1,9 @@
 import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
+import type { Except } from "@const/types.ts";
 import { createImage } from "@shared/application/dto/utils/createImage";
 import type { Entry, EntrySkeletonType } from "contentful";
 
-type GetAuthorReturnType = Omit<AuthorDTO, "articles" | "latestArticle">;
+type GetAuthorReturnType = Except<AuthorDTO, "articles" | "latestArticle">;
 
 export function getAuthor(author: Entry<EntrySkeletonType<RawAuthor["fields"]>>): GetAuthorReturnType {
 	const profileImage = createImage(

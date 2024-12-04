@@ -1,11 +1,12 @@
 import { CONTACT_DETAILS } from "@const/index";
+import type { Except } from "@const/types.ts";
 import { Exception } from "@domain/errors";
 import { emails } from "@infrastructure/email/server";
 import { createEmail } from "@infrastructure/utils/createEmail";
 import type { ContactFormData } from "@shared/ui/types";
 import type { CreateEmailResponseSuccess } from "resend";
 
-type SendEmailParams = Omit<ContactFormData, "recaptcha">;
+type SendEmailParams = Except<ContactFormData, "recaptcha">;
 
 export async function sendEmail(params: SendEmailParams): Promise<CreateEmailResponseSuccess> {
 	const email = createEmail({ ...params });
