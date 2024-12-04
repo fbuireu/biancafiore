@@ -1,6 +1,7 @@
 // @ts-ignore
 import { ActionError, defineAction } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
+import type { Except } from "@const/types.ts";
 import { Exception } from "@domain/errors";
 import { app } from "@infrastructure/database/server";
 import { checkDuplicatedEntries } from "@infrastructure/utils/checkDuplicatedEntries";
@@ -10,7 +11,7 @@ import { validateContact } from "@infrastructure/utils/validateContact";
 import type { ContactFormData } from "@shared/ui/types";
 import { getFirestore } from "firebase-admin/firestore";
 
-type ActionHandlerParams = Omit<ContactFormData, "recaptcha">;
+type ActionHandlerParams = Except<ContactFormData, "recaptcha">;
 const database = getFirestore(app);
 
 export const server = {

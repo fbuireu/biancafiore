@@ -1,7 +1,8 @@
 import { CONTACT_DETAILS, DEFAULT_LOCALE_STRING } from "@const/const.ts";
+import type { Except } from "@const/types.ts";
 import type { ContactFormData } from "@shared/ui/types.ts";
 
-type GenerateHtmlParams = Omit<ContactFormData, "recaptcha">;
+type GenerateHtmlParams = Except<ContactFormData, "recaptcha">;
 
 const URL_ENCODED_SPACE_REGEX = /%20/g;
 

@@ -1,9 +1,10 @@
 import { DEFAULT_LOCALE_STRING } from "@const/index";
+import type { Except } from "@const/types.ts";
 import type { ContactFormData } from "@shared/ui/types";
 import type { CreateEmailResponseSuccess } from "resend";
 
 interface SaveContactParams {
-	contactData: Omit<ContactFormData, "recaptcha"> & CreateEmailResponseSuccess;
+	contactData: Except<ContactFormData, "recaptcha"> & CreateEmailResponseSuccess;
 	databaseRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>;
 }
 
