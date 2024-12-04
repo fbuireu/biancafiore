@@ -1,5 +1,5 @@
 ---
-import logo from "@assets/images/svg/logo.svg?raw";
+import Logo from "@assets/images/svg/logo.svg";
 import { PAGES_ROUTES } from "@const/index";
 import SocialNetworks from "@modules/core/components/socialNetworks/SocialNetworks.astro";
 import ThemeToggle from "@modules/core/components/themeToggle/ThemeToggle.astro";
@@ -11,7 +11,7 @@ const currentYear = new Date().getFullYear();
   <section class="footer__wrapper common-wrapper">
     <div class="footer__logo flex row-wrap justify-center">
       <a href={PAGES_ROUTES.HOME}>
-          <Fragment set:html={logo} />
+          <Logo />
       </a>
     </div>
     <ThemeToggle />

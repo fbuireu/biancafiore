@@ -50,6 +50,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
                   height={article.data.featuredImage.details.height}
                   alt={article.data.title}
                   class="article__featured__image"
+                  layout="full-width"
                   transition:name=`featured-image-${pathname}`
               />
           </section>
@@ -60,7 +61,8 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
     <ArticleDetails article={article} />
     <article class="article__wrapper" set:html={article.data.content} style={`--scopes: ${scopes}`}>
       {
-        article.data.tableOfContents.length > 0 && <TableOfContents tableOfContents={article.data.tableOfContents} />
+          article.data.tableOfContents.length > 0 &&
+          <TableOfContents tableOfContents={article.data.tableOfContents} />
       }
     </article>
     <script is:inline type="application/ld+json" set:html={JSON.stringify({

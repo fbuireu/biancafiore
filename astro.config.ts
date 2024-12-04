@@ -11,6 +11,11 @@ const isProd = import.meta.env.PROD;
 export default defineConfig({
 	experimental: {
 		contentIntellisense: true,
+		responsiveImages: true,
+		svg: true,
+	},
+	image: {
+		experimentalLayout: "responsive",
 	},
 	site: "https://biancafiore.me",
 	prefetch: true,
