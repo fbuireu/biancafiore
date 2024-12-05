@@ -18,7 +18,7 @@ export const authorDTO: BaseDTO<RawAuthor[], Promise<AuthorDTO[]>> = {
 					profileImage: createImage(rawAuthor.fields.profileImage),
 					socialNetworks: rawAuthor.fields.socialNetworks,
 					articles: articlesByAuthor,
-					latestArticle: articlesByAuthor[0],
+					latestArticle: articlesByAuthor.at(0),
 				} as unknown as AuthorDTO;
 			}),
 		);
