@@ -10602,15 +10602,15 @@ __metadata:
   linkType: hard
 
 "react-globe.gl@npm:^2.28.0":
-  version: 2.28.0
-  resolution: "react-globe.gl@npm:2.28.0"
+  version: 2.28.1
+  resolution: "react-globe.gl@npm:2.28.1"
   dependencies:
     globe.gl: "npm:^2.34"
     prop-types: "npm:15"
     react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/dd78f30f1c40f6f888ec6cd7e6c4054412cbe92bff546a0c473e89da33ac55e242fb52181a2c6b42437ecef7ee9f38e905312afdbf0911f246d3c88ee04489f2
+  checksum: 10c0/116c4d92993db513589cafb9feb736ad5e1c7fbf715ac2dd42e301eca53ee080100c188cbc1a46d9ba0a59f4f1d06227bce2c51d58c6f15d356544c7a4325904
   languageName: node
   linkType: hard
 
