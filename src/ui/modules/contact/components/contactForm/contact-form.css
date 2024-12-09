@@ -8,6 +8,7 @@
 	button {
 		margin-block-start: 2rem;
 	}
+
 	&.--is-disabled > *:not(.contact-form__submit) {
 		color: var(--neutral-light-1);
 	}
@@ -30,6 +31,7 @@
 .contact-form__input-label {
 	text-align: center;
 }
+
 .contact-form__submit .plane__left-wing,
 .contact-form__submit .plane__right-wing {
 	inset: 0;
@@ -52,6 +54,7 @@
 		z-index: var(--z-index, 2);
 	}
 }
+
 .contact-form__input-label,
 .contact-form__textarea-label {
 	color: var(--neutral-light-1);
@@ -110,10 +113,12 @@
 		-webkit-box-shadow: 0 0 0 0 var(--neutral-light-3);
 		-webkit-text-fill-color: var(--neutral-main);
 	}
+
 	&:disabled,
 	&:disabled:hover {
 		-webkit-text-fill-color: var(--neutral-light-1);
 	}
+
 	&:is(:focus, :not(:placeholder-shown), :focus-within) ~ .contact-form__input-label {
 		font-size: 1rem;
 		top: -1.5rem;
@@ -177,8 +182,17 @@
 	--right-body-third-x: 100;
 	--left-body-third-y: 100;
 	--right-body-third-y: 100;
+	color: var(--white);
+	display: block;
 	--plane-opacity: 1;
 	--text-opacity: 1;
+	padding: 0.75rem 1rem;
+	position: relative;
+	-webkit-tap-highlight-color: transparent;
+	text-align: center;
+	transform: rotate(calc(var(--rotate) * 1deg)) translateZ(0);
+	transition: all .2s;
+	will-change: translate, box-shadow;
 	--left-wing-background: var(--neutral-main);
 	--right-wing-background: var(--neutral-main);
 	--left-wing-first-x: 0;
@@ -195,15 +209,6 @@
 	--right-wing-third-y: 100;
 	--plane-x: 0;
 	--plane-y: 0;
-	color: var(--white);
-	display: block;
-	padding: 0.75rem 1rem;
-	position: relative;
-	-webkit-tap-highlight-color: transparent;
-	text-align: center;
-	transform: rotate(calc(var(--rotate) * 1deg)) translateZ(0);
-	transition: all .2s;
-	will-change: translate, box-shadow;
 
 	&:disabled {
 		background-color: var(--neutral-light-1);
@@ -218,8 +223,8 @@
 		background-color: var(--neutral-light-1);
 	}
 
-	&:hover,
-	&:focus {
+	&:hover:not(.--is-loading),
+	&:focus:not(.--is-loading) {
 		box-shadow: 0 0.5rem 0.5em -0.4rem var(--neutral-light-1);
 		translate: 0 -0.25rem;
 	}

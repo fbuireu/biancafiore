@@ -6,11 +6,9 @@ import { autosize } from "@modules/contact/utils/autosize";
 import { flyPlane } from "@modules/contact/utils/flyPlane";
 import { getErrorMessage } from "@modules/contact/utils/getErrorMessage";
 import Spinner from "@modules/core/components/spinner/Spinner";
-import type { ContactFormData } from "@shared/ui/types";
-import { FormStatus } from "@shared/ui/types";
+import { type ContactFormData, FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
-import type { FormEvent } from "react";
-import { useCallback, useRef, useState } from "react";
+import { type FormEvent, useCallback, useRef, useState, useTransition } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
 import "./contact-form.css";
@@ -25,13 +23,15 @@ export const ContactForm = () => {
 	} = useForm<ContactFormData>({
 		resolver: zodResolver(contactFormSchema),
 	});
-
+	const [pending, startTransition] = useTransition();
 	const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.INITIAL);
 	const { executeRecaptcha } = useGoogleReCaptcha();
 	const submitRef = useRef<HTMLButtonElement>(null);
 
 	const verifyRecaptcha = useCallback(
 		async (data: ContactFormData, event: FormEvent<HTMLFormElement>) => {
+			event.preventDefault();
+
 			if (!executeRecaptcha) return;
 			const token = await executeRecaptcha();
 
@@ -42,14 +42,13 @@ export const ContactForm = () => {
 				});
 				return;
 			}
-			await submitForm(data, event);
+			await submitForm(data);
 		},
 		[executeRecaptcha, setError],
 	);
 
 	const submitForm = useCallback(
-		async (data: ContactFormData, event: FormEvent<HTMLFormElement>) => {
-			event.preventDefault();
+		async (data: ContactFormData) => {
 			if (!submitRef.current) return;
 
 			try {
@@ -96,7 +95,7 @@ export const ContactForm = () => {
 					className={clsx("contact-form", {
 						"--is-disabled": formStatus === FormStatus.UNAUTHORIZED,
 					})}
-					onSubmit={(event) => handleSubmit((data) => verifyRecaptcha(data, event))(event)}
+					onSubmit={(event) => handleSubmit((data) => startTransition(() => verifyRecaptcha(data, event)))()}
 				>
 					<p className="contact-form__text"> My name is</p>
 					<div
@@ -170,12 +169,12 @@ export const ContactForm = () => {
 					<button
 						ref={submitRef}
 						className={clsx("contact-form__submit plane --is-clickable", {
-							"--is-loading": formStatus === FormStatus.LOADING,
+							"--is-loading": pending || formStatus === FormStatus.LOADING,
 						})}
 						disabled={[FormStatus.UNAUTHORIZED].includes(formStatus)}
 						type="submit"
 					>
-						<span className="flex">{formStatus !== FormStatus.LOADING ? <>Send email</> : <Spinner />}</span>
+						<span className="flex">{!pending ? <>Send email</> : <Spinner />}</span>
 						<div className="plane__left-wing" />
 						<div className="plane__right-wing" />
 						<span />

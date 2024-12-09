@@ -195,7 +195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/cloudflare@npm:^12.0.0":
+"@astrojs/cloudflare@npm:^12.0.1":
   version: 12.0.1
   resolution: "@astrojs/cloudflare@npm:12.0.1"
   dependencies:
@@ -358,7 +358,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/rss@npm:^4.0.9":
+"@astrojs/rss@npm:^4.0.10":
   version: 4.0.10
   resolution: "@astrojs/rss@npm:4.0.10"
   dependencies:
@@ -3697,7 +3697,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react@npm:^16.0.1":
+"@testing-library/react@npm:^16.1.0":
   version: 16.1.0
   resolution: "@testing-library/react@npm:16.1.0"
   dependencies:
@@ -4116,13 +4116,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*":
-  version: 15.7.13
-  resolution: "@types/prop-types@npm:15.7.13"
-  checksum: 10c0/1b20fc67281902c6743379960247bc161f3f0406ffc0df8e7058745a85ea1538612109db0406290512947f9632fe9e10e7337bf0ce6338a91d6c948df16a7c61
-  languageName: node
-  linkType: hard
-
 "@types/qs@npm:*, @types/qs@npm:^6.5.3":
   version: 6.9.16
   resolution: "@types/qs@npm:6.9.16"
@@ -4137,22 +4130,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.3.1":
-  version: 18.3.2
-  resolution: "@types/react-dom@npm:18.3.2"
+"@types/react-dom@npm:^19.0.1":
+  version: 19.0.1
+  resolution: "@types/react-dom@npm:19.0.1"
   dependencies:
-    "@types/react": "npm:^18"
-  checksum: 10c0/22510231af67044a9542633b5b52ec16a8d71fa1da177f82428b8120d36619fd874c3b975b2eda6895baa53667f9fe8cba3acea1232a0244dffe8b11f6b32284
+    "@types/react": "npm:*"
+  checksum: 10c0/fb40069a7c5c70475155dff91d25ff5a51226c14d45c8ad55894480366876426981c8be63ef322486af879bb220bf48443f2344c1a89cb75a47a1a761acee9d3
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18, @types/react@npm:^18.3.13":
-  version: 18.3.14
-  resolution: "@types/react@npm:18.3.14"
+"@types/react@npm:*, @types/react@npm:^19.0.1":
+  version: 19.0.1
+  resolution: "@types/react@npm:19.0.1"
   dependencies:
-    "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/d925fbfcf084238b93d1a0b5406d4cf9aeb37c4a1191559aa4ee107c2e55cc15327989140f03eddda4d471f5b935d4673fd74a86f451860edea18eae48ca44f8
+  checksum: 10c0/25eb69114abb9a6d5fc4414ee584388275bbc9ac32976449cf58b95fe9880efe6b3f936c3842be9bed8c571546a9752e8d3e2095288381e9c809269f5f574f2e
   languageName: node
   linkType: hard
 
@@ -4767,7 +4759,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.0.2":
+"astro@npm:^5.0.3":
   version: 5.0.3
   resolution: "astro@npm:5.0.3"
   dependencies:
@@ -4929,11 +4921,11 @@ __metadata:
   resolution: "biancafiore@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.9.4"
-    "@astrojs/cloudflare": "npm:^12.0.0"
+    "@astrojs/cloudflare": "npm:^12.0.1"
     "@astrojs/mdx": "npm:^4.0.1"
     "@astrojs/partytown": "npm:^2.1.2"
     "@astrojs/react": "npm:^4.0.0"
-    "@astrojs/rss": "npm:^4.0.9"
+    "@astrojs/rss": "npm:^4.0.10"
     "@astrojs/sitemap": "npm:^3.2.1"
     "@astrojs/ts-plugin": "npm:^1.10.4"
     "@biomejs/biome": "npm:^1.9.4"
@@ -4946,18 +4938,18 @@ __metadata:
     "@hookform/resolvers": "npm:^3.9.1"
     "@million/lint": "npm:^1.0.13"
     "@playwright/test": "npm:^1.49.0"
-    "@testing-library/react": "npm:^16.0.1"
+    "@testing-library/react": "npm:^16.1.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/add": "npm:^2.0.3"
     "@types/markdown-it": "npm:^14.1.2"
     "@types/node": "npm:^22.10.1"
-    "@types/react": "npm:^18.3.13"
-    "@types/react-dom": "npm:^18.3.1"
+    "@types/react": "npm:^19.0.1"
+    "@types/react-dom": "npm:^19.0.1"
     "@types/three": "npm:^0.170.0"
     algoliasearch: "npm:^5.15.0"
-    astro: "npm:^5.0.2"
+    astro: "npm:^5.0.3"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.2.5"
+    contentful: "npm:^11.3.0"
     conventional-changelog-atom: "npm:^5.0.0"
     firebase: "npm:^11.0.2"
     firebase-admin: "npm:^13.0.1"
@@ -4966,11 +4958,11 @@ __metadata:
     instantsearch.css: "npm:^8.5.1"
     lint-staged: "npm:^15.2.10"
     markdown-it: "npm:^14.1.0"
-    react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
-    react-globe.gl: "npm:^2.28.0"
+    react: "npm:^19.0.0"
+    react-dom: "npm:^19.0.0"
+    react-globe.gl: "npm:^2.28.2"
     react-google-recaptcha-v3: "npm:^1.10.1"
-    react-hook-form: "npm:^7.53.2"
+    react-hook-form: "npm:^7.54.0"
     react-instantsearch: "npm:^7.13.8"
     react-router-dom: "npm:^7.0.2"
     resend: "npm:^4.0.1"
@@ -5474,7 +5466,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.2.5":
+"contentful@npm:^11.3.0":
   version: 11.3.0
   resolution: "contentful@npm:11.3.0"
   dependencies:
@@ -8681,7 +8673,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -10569,15 +10561,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^18.3.1":
-  version: 18.3.1
-  resolution: "react-dom@npm:18.3.1"
+"react-dom@npm:^19.0.0":
+  version: 19.0.0
+  resolution: "react-dom@npm:19.0.0"
   dependencies:
-    loose-envify: "npm:^1.1.0"
-    scheduler: "npm:^0.23.2"
+    scheduler: "npm:^0.25.0"
   peerDependencies:
-    react: ^18.3.1
-  checksum: 10c0/a752496c1941f958f2e8ac56239172296fcddce1365ce45222d04a1947e0cc5547df3e8447f855a81d6d39f008d7c32eab43db3712077f09e3f67c4874973e85
+    react: ^19.0.0
+  checksum: 10c0/a36ce7ab507b237ae2759c984cdaad4af4096d8199fb65b3815c16825e5cfeb7293da790a3fc2184b52bfba7ba3ff31c058c01947aff6fd1a3701632aabaa6a9
   languageName: node
   linkType: hard
 
@@ -10592,16 +10583,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-globe.gl@npm:^2.28.0":
-  version: 2.28.1
-  resolution: "react-globe.gl@npm:2.28.1"
+"react-globe.gl@npm:^2.28.2":
+  version: 2.28.2
+  resolution: "react-globe.gl@npm:2.28.2"
   dependencies:
     globe.gl: "npm:^2.34"
     prop-types: "npm:15"
     react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/116c4d92993db513589cafb9feb736ad5e1c7fbf715ac2dd42e301eca53ee080100c188cbc1a46d9ba0a59f4f1d06227bce2c51d58c6f15d356544c7a4325904
+  checksum: 10c0/91bc16ee172ddc34efc9f7e2f5a7764cf32a0e655706f4cf5234ff6c107fba0342c80034571c26f765361435f2b1d3d8db98ba37aefd6f1e2d6f92f90f98897f
   languageName: node
   linkType: hard
 
@@ -10617,7 +10608,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.53.2":
+"react-hook-form@npm:^7.54.0":
   version: 7.54.0
   resolution: "react-hook-form@npm:7.54.0"
   peerDependencies:
@@ -10737,12 +10728,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.3.1":
-  version: 18.3.1
-  resolution: "react@npm:18.3.1"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-  checksum: 10c0/283e8c5efcf37802c9d1ce767f302dd569dd97a70d9bb8c7be79a789b9902451e0d16334b05d73299b20f048cbc3c7d288bbbde10b701fa194e2089c237dbea3
+"react@npm:^19.0.0":
+  version: 19.0.0
+  resolution: "react@npm:19.0.0"
+  checksum: 10c0/9cad8f103e8e3a16d15cb18a0d8115d8bd9f9e1ce3420310aea381eb42aa0a4f812cf047bb5441349257a05fba8a291515691e3cb51267279b2d2c3253f38471
   languageName: node
   linkType: hard
 
@@ -11429,12 +11418,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.23.2":
-  version: 0.23.2
-  resolution: "scheduler@npm:0.23.2"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-  checksum: 10c0/26383305e249651d4c58e6705d5f8425f153211aef95f15161c151f7b8de885f24751b377e4a0b3dd42cce09aad3f87a61dab7636859c0d89b7daf1a1e2a5c78
+"scheduler@npm:^0.25.0":
+  version: 0.25.0
+  resolution: "scheduler@npm:0.25.0"
+  checksum: 10c0/a4bb1da406b613ce72c1299db43759526058fdcc413999c3c3e0db8956df7633acf395cb20eb2303b6a65d658d66b6585d344460abaee8080b4aa931f10eaafe
   languageName: node
   linkType: hard
 
