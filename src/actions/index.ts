@@ -12,6 +12,7 @@ import type { ContactFormData } from "@shared/ui/types";
 import { getFirestore } from "firebase-admin/firestore";
 
 type ActionHandlerParams = Except<ContactFormData, "recaptcha">;
+
 const database = getFirestore(app);
 
 export const server = {
