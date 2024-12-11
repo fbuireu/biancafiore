@@ -55,7 +55,7 @@
 		"@fontsource/baskervville": "^5.1.0",
 		"@hookform/resolvers": "^3.9.1",
 		"@million/lint": "^1.0.13",
-		"algoliasearch": "^5.16.0",
+		"algoliasearch": "^5.17.0",
 		"astro": "^5.0.4",
 		"clsx": "^2.1.1",
 		"contentful": "^11.3.1",
@@ -76,7 +76,7 @@
 		"three": "^0.171.0",
 		"typescript": "^5.7.2",
 		"vanilla-cookieconsent": "^3.0.1",
-		"zod": "^3.24.0"
+		"zod": "^3.24.1"
 	},
 	"devDependencies": {
 		"@astrojs/ts-plugin": "^1.10.4",
@@ -95,7 +95,7 @@
 		"@types/three": "^0.170.0",
 		"conventional-changelog-atom": "^5.0.0",
 		"husky": "^9.1.7",
-		"lint-staged": "^15.2.10",
+		"lint-staged": "^15.2.11",
 		"vitest": "^2.1.8"
 	}
 }
