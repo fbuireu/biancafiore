@@ -174,7 +174,7 @@ export const ContactForm = () => {
 						disabled={[FormStatus.UNAUTHORIZED].includes(formStatus)}
 						type="submit"
 					>
-						<span className="flex">{!pending ? <>Send email</> : <Spinner />}</span>
+						<span className="flex">{!pending ? <>Send email</> : <Spinner aria-label="Sending" />}</span>
 						<div className="plane__left-wing" />
 						<div className="plane__right-wing" />
 						<span />

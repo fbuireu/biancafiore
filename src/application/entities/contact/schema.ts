@@ -1,4 +1,4 @@
-import { z } from "astro:schema";
+import { z } from "zod";
 
 export const contactFormSchema = z.object({
 	name: z.string().trim().min(1, "Please insert your name"),
