@@ -195,14 +195,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/cloudflare@npm:^12.0.1":
-  version: 12.0.1
-  resolution: "@astrojs/cloudflare@npm:12.0.1"
+"@astrojs/cloudflare@npm:^12.1.0":
+  version: 12.1.0
+  resolution: "@astrojs/cloudflare@npm:12.1.0"
   dependencies:
     "@astrojs/internal-helpers": "npm:0.4.1"
     "@astrojs/underscore-redirects": "npm:^0.4.0-alpha.0"
     "@cloudflare/workers-types": "npm:^4.20241112.0"
-    "@inox-tools/astro-when": "npm:^0.2.4"
+    "@inox-tools/astro-when": "npm:^1.0.1"
     esbuild: "npm:^0.24.0"
     estree-walker: "npm:^3.0.3"
     magic-string: "npm:^0.30.14"
@@ -212,7 +212,7 @@ __metadata:
     wrangler: "npm:^3.91.0"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/34a2bb4316d3177c4a1064867213c8d8e53353d3ab4fff6f94c62538d6e8751e8f43844d84032a84898775975cc398b7c926ece782d3e04d80a0474baa29d9ed
+  checksum: 10c0/d30604d86e5d0a3118a255c03e2c83291d901fdb2c70250cd9825e2eac0d944208e79f3385f70bba8e1b2ecdca48fbc2126c3a0b98bd0100204286ef6d1a252c
   languageName: node
   linkType: hard
 
@@ -1047,13 +1047,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@contentful/content-source-maps@npm:^0.11.6":
-  version: 0.11.6
-  resolution: "@contentful/content-source-maps@npm:0.11.6"
+"@contentful/content-source-maps@npm:^0.11.7":
+  version: 0.11.7
+  resolution: "@contentful/content-source-maps@npm:0.11.7"
   dependencies:
     "@vercel/stega": "npm:^0.1.2"
     json-pointer: "npm:^0.6.2"
-  checksum: 10c0/10cd0ef4f8c4df03c3760ef9e0e018c1b22942c849f419921d5ce15beec24448816b5e69763c975c414f2638f98322321782a99c750f5e22f6813b0155e257c5
+  checksum: 10c0/e8def0b102cebdff3212468942c2a329fbeaf22ad36b36674944ae8c0045cbf69c5e99692b260c739f1b261787d32cf7bb7456cdf905867d5cca9848ca0e6505
   languageName: node
   linkType: hard
 
@@ -2765,15 +2765,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inox-tools/astro-when@npm:^0.2.4":
-  version: 0.2.4
-  resolution: "@inox-tools/astro-when@npm:0.2.4"
+"@inox-tools/astro-when@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@inox-tools/astro-when@npm:1.0.1"
   dependencies:
-    astro-integration-kit: "npm:~0.16.1"
+    astro-integration-kit: "npm:~0.17.0"
     debug: "npm:^4.3.7"
   peerDependencies:
-    astro: ^4
-  checksum: 10c0/fc8f822a183d78ccfb7c86599a56e6318ce42857dd03ac7d592367c0dc17decd29c1ecddd42811fabe2aa87139c5a731ed08293e027700ffe52fb26a815e3488
+    astro: ^5
+  checksum: 10c0/50003d78dff91cff062065444b1cd42a5de6e56559322011638f4fd7374afbdb3ee6173aff8d2f0b5ad2f6a165d84953a7c27f61a6960d521d103e13345fd66e
   languageName: node
   linkType: hard
 
@@ -4747,15 +4747,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro-integration-kit@npm:~0.16.1":
-  version: 0.16.1
-  resolution: "astro-integration-kit@npm:0.16.1"
+"astro-integration-kit@npm:~0.17.0":
+  version: 0.17.0
+  resolution: "astro-integration-kit@npm:0.17.0"
   dependencies:
     pathe: "npm:^1.1.2"
     recast: "npm:^0.23.7"
   peerDependencies:
-    astro: ^4.12.0
-  checksum: 10c0/cd5d81d52cefc14c2dbeee9b758f70acbc2bd2654372956ff46971634a1d39e553ad4824aa561701c05d7a95edf9011ce4b6936cd83ac72a7168fe7bc00b3481
+    astro: ^4.12.0 || ^5.0.0-beta
+  checksum: 10c0/53f34d09003127719a52bd15a5f931c6dc25f77073576af6dd488b04870fd32741f718971cb99d5a8fd5f17042ff0ecc468dfba983b8cf1e579d3117821def8b
   languageName: node
   linkType: hard
 
@@ -4921,7 +4921,7 @@ __metadata:
   resolution: "biancafiore@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.9.4"
-    "@astrojs/cloudflare": "npm:^12.0.1"
+    "@astrojs/cloudflare": "npm:^12.1.0"
     "@astrojs/mdx": "npm:^4.0.2"
     "@astrojs/partytown": "npm:^2.1.2"
     "@astrojs/react": "npm:^4.1.0"
@@ -4949,7 +4949,7 @@ __metadata:
     algoliasearch: "npm:^5.17.1"
     astro: "npm:^5.0.5"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.3.1"
+    contentful: "npm:^11.3.2"
     conventional-changelog-atom: "npm:^5.0.0"
     firebase: "npm:^11.1.0"
     firebase-admin: "npm:^13.0.1"
@@ -4960,9 +4960,9 @@ __metadata:
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
-    react-globe.gl: "npm:^2.28.2"
+    react-globe.gl: "npm:^2.28.3"
     react-google-recaptcha-v3: "npm:^1.10.1"
-    react-hook-form: "npm:^7.54.0"
+    react-hook-form: "npm:^7.54.1"
     react-instantsearch: "npm:^7.13.9"
     react-router-dom: "npm:^7.0.2"
     resend: "npm:^4.0.1"
@@ -5466,18 +5466,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.3.1":
-  version: 11.3.1
-  resolution: "contentful@npm:11.3.1"
+"contentful@npm:^11.3.2":
+  version: 11.3.2
+  resolution: "contentful@npm:11.3.2"
   dependencies:
-    "@contentful/content-source-maps": "npm:^0.11.6"
+    "@contentful/content-source-maps": "npm:^0.11.7"
     "@contentful/rich-text-types": "npm:^16.6.1"
     axios: "npm:^1.7.4"
     contentful-resolve-response: "npm:^1.9.0"
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/825c00b4379521cf619b7da351e45452e65dc56f8b2c4d5a5c8fea214ea8134061cc207b3f253c41db57dbfd5c89fa82eb5fe6a066cbe0c20b85500910fe06fe
+  checksum: 10c0/8cd81eb71a8b070be712cfabaec89cc2d65186243c7ac67896c35c735b890d67a85a1927a5f51659e303bf022114a0fdf3e6029c6512c7456f97b6e346ec65a4
   languageName: node
   linkType: hard
 
@@ -10619,16 +10619,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-globe.gl@npm:^2.28.2":
-  version: 2.28.2
-  resolution: "react-globe.gl@npm:2.28.2"
+"react-globe.gl@npm:^2.28.3":
+  version: 2.28.3
+  resolution: "react-globe.gl@npm:2.28.3"
   dependencies:
     globe.gl: "npm:^2.34"
     prop-types: "npm:15"
     react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/91bc16ee172ddc34efc9f7e2f5a7764cf32a0e655706f4cf5234ff6c107fba0342c80034571c26f765361435f2b1d3d8db98ba37aefd6f1e2d6f92f90f98897f
+  checksum: 10c0/213d349cbcb40e95df88fbc45af9214ba75daccc49181a4a69ea5958b4c968f5db64e5c32f63eb1775d20ab63db7a9d302e1fff6618bd8b0abb36aa46b76f547
   languageName: node
   linkType: hard
 
@@ -10644,12 +10644,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.54.0":
-  version: 7.54.0
-  resolution: "react-hook-form@npm:7.54.0"
+"react-hook-form@npm:^7.54.1":
+  version: 7.54.1
+  resolution: "react-hook-form@npm:7.54.1"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10c0/8dbc68e8b82aafda1271bbc291052b5efb091505865cd10e3d7dd618ca3870bd05596d7ba68f128427d47ff11e0d9f03089fd7afb88d2a8865ff81f21af417a0
+  checksum: 10c0/2d960ddf8aa654f34e36f5d995f0ec067a4c01340d650eca44f22aa4421e278dcc449c8522e66c5c66b1c61d62fbdf914b9e0a8de9deb4c6346cc3b37ef4eb82
   languageName: node
   linkType: hard
 
