@@ -92,7 +92,7 @@
 		"@types/node": "^22.10.2",
 		"@types/react": "^19.0.1",
 		"@types/react-dom": "^19.0.2",
-		"@types/three": "^0.170.0",
+		"@types/three": "^0.171.0",
 		"conventional-changelog-atom": "^5.0.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.2.11",
