@@ -342,9 +342,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "@astrojs/react@npm:4.1.0"
+"@astrojs/react@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "@astrojs/react@npm:4.1.1"
   dependencies:
     "@vitejs/plugin-react": "npm:^4.3.4"
     ultrahtml: "npm:^1.5.3"
@@ -354,7 +354,7 @@ __metadata:
     "@types/react-dom": ^17.0.17 || ^18.0.6 || ^19.0.0
     react: ^17.0.2 || ^18.0.0 || ^19.0.0
     react-dom: ^17.0.2 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/abbf59d702e85e9af4fe828a06d37f6d869ee7a34a31c9880fd8327a7798ca1666ff5e042ab1b16f75a9dbd349fe4db6dac94403dc20edb4602e50637dc356b9
+  checksum: 10c0/a690222c0b276f197f4136ffe6adac4761498259db4e17bf0520ebe2964f2023c6051dc388670b081a1eb6a53933d84ef73a96dc88ff8e984bd5c17a082ad5de
   languageName: node
   linkType: hard
 
@@ -4759,9 +4759,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.0.5":
-  version: 5.0.5
-  resolution: "astro@npm:5.0.5"
+"astro@npm:^5.0.9":
+  version: 5.0.9
+  resolution: "astro@npm:5.0.9"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/internal-helpers": "npm:0.4.2"
@@ -4827,7 +4827,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/cd671327055bcc7af7ef92b72a0c8add9d26fb178a56344d86ba04b994555f7a18c65f934f6c246bf62fca48b6ca78b6ff3edeecd841fadaa036f092bf9d2387
+  checksum: 10c0/84d2cbe75e9a6e0bef414f88db2a6da470120089de4944c2f35c63214649794be3f7aab3bd15c3a22ac22316380433b6932542c790b671e599fa33f61b6eb33a
   languageName: node
   linkType: hard
 
@@ -4924,7 +4924,7 @@ __metadata:
     "@astrojs/cloudflare": "npm:^12.1.0"
     "@astrojs/mdx": "npm:^4.0.2"
     "@astrojs/partytown": "npm:^2.1.2"
-    "@astrojs/react": "npm:^4.1.0"
+    "@astrojs/react": "npm:^4.1.1"
     "@astrojs/rss": "npm:^4.0.10"
     "@astrojs/sitemap": "npm:^3.2.1"
     "@astrojs/ts-plugin": "npm:^1.10.4"
@@ -4947,9 +4947,9 @@ __metadata:
     "@types/react-dom": "npm:^19.0.2"
     "@types/three": "npm:^0.171.0"
     algoliasearch: "npm:^5.17.1"
-    astro: "npm:^5.0.5"
+    astro: "npm:^5.0.9"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.3.2"
+    contentful: "npm:^11.3.3"
     conventional-changelog-atom: "npm:^5.0.0"
     firebase: "npm:^11.1.0"
     firebase-admin: "npm:^13.0.1"
@@ -5466,9 +5466,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.3.2":
-  version: 11.3.2
-  resolution: "contentful@npm:11.3.2"
+"contentful@npm:^11.3.3":
+  version: 11.3.3
+  resolution: "contentful@npm:11.3.3"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.7"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -5477,7 +5477,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/8cd81eb71a8b070be712cfabaec89cc2d65186243c7ac67896c35c735b890d67a85a1927a5f51659e303bf022114a0fdf3e6029c6512c7456f97b6e346ec65a4
+  checksum: 10c0/5bcb40de05f71dee706e874fb81af838980b98d8da1aa0d47166d46f3c515ecaaacff0da2c04008849e00859759f61f8608efe9dd8a12b8913a2c561c8ac0072
   languageName: node
   linkType: hard
 
