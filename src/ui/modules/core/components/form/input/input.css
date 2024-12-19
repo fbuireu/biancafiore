@@ -1,0 +1,25 @@
+@import url("../shared.css");
+
+.contact-form__input-label {
+	text-align: center;
+}
+
+.contact-form__input__wrapper {
+	&:is(:has(.contact-form__input:focus, .contact-form__input:not(:placeholder-shown)))::after {
+		width: 100%;
+	}
+}
+
+.contact-form__input {
+	text-align: center;
+
+	&::placeholder {
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	&:is(:focus, :not(:placeholder-shown), :focus-within) ~ .contact-form__input-label {
+		font-size: 1rem;
+		top: -1.5rem;
+	}
+}

@@ -1,0 +1,55 @@
+.contact-form__recaptcha__error-message,
+.contact-form__textarea__error-message,
+.contact-form__input__error-message {
+	color: var(--error-main);
+	font-size: 1rem;
+	font-style: normal;
+	inset: auto 0;
+	position: absolute;
+	text-align: center;
+}
+
+.contact-form__input-label,
+.contact-form__textarea-label {
+	color: var(--neutral-light-1);
+	inset: 0;
+	position: absolute;
+	transition: inset 0.2s;
+}
+
+.contact-form__input__wrapper,
+.contact-form__textarea__wrapper {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	color: var(--neutral-main);
+	font-size: 1.25rem;
+	font-style: italic;
+	margin-block-end: 1.5rem;
+	position: relative;
+
+	&:is(:has(:focus, :not(:placeholder-shown)))::after {
+		width: 100%;
+	}
+}
+
+.contact-form__input,
+.contact-form__textarea {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	font-style: italic;
+	position: relative;
+	z-index: 10;
+
+	&:-webkit-autofill,
+	&:-webkit-autofill:hover,
+	&:-webkit-autofill:focus,
+	&:-webkit-autofill:active,
+	&:-webkit-autofill:focus-within {
+		-webkit-background-clip: text;
+		-webkit-box-shadow: 0 0 0 0 var(--neutral-light-3);
+		-webkit-text-fill-color: var(--neutral-main);
+	}
+
+	&:disabled,
+	&:disabled:hover {
+		-webkit-text-fill-color: var(--neutral-light-1);
+	}
+}

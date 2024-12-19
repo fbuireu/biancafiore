@@ -1,0 +1,5 @@
+@import url("../shared.css");
+
+.contact-form__recaptcha__wrapper {
+	width: 100%;
+}

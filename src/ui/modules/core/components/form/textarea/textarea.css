@@ -1,0 +1,33 @@
+@import url("../shared.css");
+
+.contact-form__textarea-label {
+	order: -1;
+	text-align: start;
+	top: 0.5rem;
+}
+
+.contact-form__textarea__wrapper {
+	flex-basis: 100%;
+
+	&:is(:has(.contact-form__textarea:focus, .contact-form__textarea:not(:placeholder-shown)))::after {
+		width: 100%;
+	}
+}
+
+.contact-form__textarea {
+	field-sizing: content;
+	min-height: 4rem;
+	resize: vertical;
+	text-align: start;
+	width: 100%;
+
+	&:is(:focus, :focus-within, :not(:placeholder-shown)) ~ .contact-form__textarea-label {
+		font-size: 1rem;
+		top: -1.25rem;
+	}
+
+	&:is(:focus, :not(:placeholder-shown), :focus-within) ~ .contact-form__input-label {
+		font-size: 1rem;
+		top: -1.5rem;
+	}
+}
