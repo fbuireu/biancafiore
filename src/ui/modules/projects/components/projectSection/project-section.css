@@ -1,6 +1,6 @@
 .project-section {
-	--info-size: 35vh;
 	--count: 4;
+	--info-size: 35vh;
 
 	.project__wrapper {
 		display: grid;
@@ -24,7 +24,6 @@
 		animation: filter-out both linear;
 		animation-range: exit 0% cover 100%;
 		animation-timeline: --article;
-		height: 100%;
 		height: calc(100vh - var(--info-size));
 		object-fit: cover;
 		width: 100%;
