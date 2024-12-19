@@ -2,9 +2,11 @@ import { actions } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
 import { Exception } from "@domain/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { autosize } from "@modules/contact/utils/autosize";
 import { flyPlane } from "@modules/contact/utils/flyPlane";
 import { getErrorMessage } from "@modules/contact/utils/getErrorMessage";
+import { Input } from "@modules/core/components/form/input";
+import { Recaptcha } from "@modules/core/components/form/recaptcha";
+import { Textarea } from "@modules/core/components/form/textarea";
 import Spinner from "@modules/core/components/spinner/Spinner";
 import { type ContactFormData, FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
@@ -21,6 +23,7 @@ export const ContactForm = () => {
 		formState: { errors },
 		reset,
 	} = useForm<ContactFormData>({
+		// @ts-ignore:next-line (mismatch between Astro zod and react-hook-form zod)
 		resolver: zodResolver(contactFormSchema),
 	});
 	const [pending, startTransition] = useTransition();
@@ -98,69 +101,42 @@ export const ContactForm = () => {
 					onSubmit={(event) => handleSubmit((data) => startTransition(() => verifyRecaptcha(data, event)))()}
 				>
 					<p className="contact-form__text"> My name is</p>
-					<div
-						className={clsx("contact-form__input__wrapper", {
-							"--underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
-						})}
-					>
-						<input
-							id="name"
-							type="text"
-							placeholder="Your name"
-							className="contact-form__input"
-							disabled={formStatus === FormStatus.UNAUTHORIZED}
-							{...register("name")}
-						/>
-						<label htmlFor="name" className="contact-form__input-label">
-							(your name)
-						</label>
-						{errors.name && <p className="contact-form__input__error-message">{errors.name.message}</p>}
-					</div>
+					<Input
+						id="name"
+						type="text"
+						placeholder="Your name"
+						formStatus={formStatus}
+						hasError={!!errors.name}
+						errorMessage={errors.name?.message}
+						label="(your name)"
+						{...register("name")}
+					/>
 					<p className="contact-form__text">and my email is</p>
-					<div
-						className={clsx("contact-form__input__wrapper", {
-							"--underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
-						})}
-					>
-						<input
-							id="email"
-							type="text"
-							placeholder="Your email"
-							className="contact-form__input"
-							disabled={formStatus === FormStatus.UNAUTHORIZED}
-							{...register("email")}
-						/>
-						<label htmlFor="email" className="contact-form__input-label">
-							(your email)
-						</label>
-						{errors.email && <p className="contact-form__input__error-message">{errors.email.message}</p>}
-					</div>
+					<Input
+						id="email"
+						type="text"
+						placeholder="Your email"
+						formStatus={formStatus}
+						hasError={!!errors.email}
+						errorMessage={errors.email?.message}
+						label="(your email)"
+						{...register("email")}
+					/>
 					<p className="contact-form__text">
 						I look forward to hearing from you within the next 24 hours to discuss further. <br />I have a message for
 						you,
 					</p>
-					<div
-						className={clsx("contact-form__textarea__wrapper flex column-wrap justify-flex-start", {
-							"--underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
-						})}
-					>
-						<textarea
-							id="message"
-							placeholder="Why you contact me?"
-							className="contact-form__textarea"
-							onKeyDown={autosize}
-							disabled={formStatus === FormStatus.UNAUTHORIZED}
-							{...register("message")}
-						/>
-						<label htmlFor="message" className="contact-form__textarea-label">
-							(your message)
-						</label>
-						{errors.message && <p className="contact-form__textarea__error-message">{errors.message.message}</p>}
-					</div>
-					<div className="contact-form__recaptcha__wrapper">
-						<input type="hidden" {...register("recaptcha")} />
-						{errors.recaptcha && <p className="contact-form__recaptcha__error-message">{errors.recaptcha.message}</p>}
-					</div>
+					<Textarea
+						id="message"
+						placeholder="Why you contact me?"
+						className="contact-form__textarea"
+						formStatus={formStatus}
+						label="(your message)"
+						hasError={!!errors.message}
+						errorMessage={errors.message?.message}
+						{...register("message")}
+					/>
+					<Recaptcha hasError={!!errors.recaptcha} errorMessage={errors.recaptcha?.message} />
 					{[FormStatus.ERROR, FormStatus.UNAUTHORIZED].includes(formStatus) && (
 						<div className="contact-form__recaptcha__wrapper">
 							<p className="contact-form__recaptcha__error-message">{errors.root?.message}</p>
