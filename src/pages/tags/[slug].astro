@@ -59,7 +59,9 @@ const metadata: Partial<SeoMetadata> = {
                   'itemListElement': {
                     '@type': 'ListItem',
                     'position': index + 1,
-                    'url': new URL(`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`, Astro.url).href,
+                      ...(article && {
+                          url: new URL(`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`, Astro.url).href,
+                      }),
                   },
                 })} />
             </li>

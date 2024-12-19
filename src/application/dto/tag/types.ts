@@ -1,6 +1,6 @@
+import type { z } from "astro:content";
 import type { tagSchema } from "@application/entities/tags/schema";
 import type { EntryFieldTypes } from "contentful";
-import type { z } from "zod";
 
 export interface RawTag {
 	contentTypeId: "tag";

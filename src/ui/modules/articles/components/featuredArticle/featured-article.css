@@ -32,6 +32,7 @@
 
 .featured-article__image {
 	grid-area: Featured-Article-Image;
+	height: 100%;
 	object-fit: cover;
 }
 

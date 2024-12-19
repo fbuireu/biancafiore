@@ -9,8 +9,8 @@ enum ArrowTypes {
 
 interface UseSliderNavigationParams {
 	swiper: Swiper;
-	leftButtonRef: RefObject<HTMLButtonElement>;
-	rightButtonRef: RefObject<HTMLButtonElement>;
+	leftButtonRef: RefObject<HTMLButtonElement | null>;
+	rightButtonRef: RefObject<HTMLButtonElement | null>;
 }
 
 const CLASSNAME = "--is-force-clickable";

@@ -9,9 +9,9 @@ interface RelatedArticleProps {
 }
 
 const { article } = Astro.props as RelatedArticleProps;
-const relatedArticles = await Promise.all(
+const relatedArticles = (await Promise.all(
 	article.data.relatedArticles.map(async (article) => await getEntry(article.collection, article.id)),
-);
+)) as CollectionEntry<"articles">[];
 ---
 {
     relatedArticles.length > 0 && (

@@ -4,13 +4,13 @@ import partytown from "@astrojs/partytown";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import MillionLint from "@million/lint";
+// @ts-ignore:next-line
 import { defineConfig, envField } from "astro/config";
 
 const isProd = import.meta.env.PROD;
 
 export default defineConfig({
 	experimental: {
-		contentIntellisense: true,
 		responsiveImages: true,
 		svg: true,
 	},
