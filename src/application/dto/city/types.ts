@@ -1,7 +1,7 @@
+import type { z } from "astro:content";
 import type { citiesSchema } from "@application/entities/cities";
 import type { ContenfulLocation, ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
-import type { z } from "zod";
 
 export interface RawCity {
 	contentTypeId: "city";

@@ -19,7 +19,9 @@ const bianca = {
 	...author,
 	data: {
 		...author.data,
-		latestArticle: await getEntry(author.data.latestArticle.collection, author.data.latestArticle.id),
+		...(author.data.latestArticle && {
+			latestArticle: await getEntry(author.data.latestArticle.collection, author.data.latestArticle.id),
+		}),
 	},
 };
 const metadata: Partial<SeoMetadata> = {
@@ -46,14 +48,16 @@ const metadata: Partial<SeoMetadata> = {
           'name': bianca.data.currentCompany,
         },
       },
-      'hasPart': [
-        {
-          '@type': 'Article',
-          'headline': bianca.data.latestArticle.data.title,
-          'url': new URL(`${PAGES_ROUTES.ARTICLES}/${bianca.data.latestArticle.data.slug}`, Astro.url).href,
-          'datePublished': bianca.data.latestArticle.data.publishDate,
-          'author': { '@id': '#bianca' },
-        }],
+        ...(bianca.data.latestArticle &&{
+          'hasPart': [
+            {
+              '@type': 'Article',
+              'headline': (bianca.data.latestArticle as CollectionEntry<"articles">).data.title,
+              'url': new URL(`${PAGES_ROUTES.ARTICLES}/${(bianca.data.latestArticle as CollectionEntry<"articles">).data.slug}`, Astro.url).href,
+              'datePublished': (bianca.data.latestArticle as CollectionEntry<"articles">).data.publishDate,
+              'author': { '@id': '#bianca' },
+            }],
+        }),
       'sameAs': [...bianca.data.socialNetworks],
     })} />
 </BaseLayout>

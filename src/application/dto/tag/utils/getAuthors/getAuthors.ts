@@ -6,7 +6,7 @@ export async function getAuthors() {
 		name: author.data.name,
 		slug: author.data.slug,
 		type: TagType.AUTHOR,
-		count: author.data.articles.length,
+		count: author.data.articles?.length ?? 0,
 		articles: author.data.articles,
 	}));
 }

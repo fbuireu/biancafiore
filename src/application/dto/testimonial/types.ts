@@ -1,7 +1,7 @@
+import type { z } from "astro:content";
 import type { testimonialsSchema } from "@application/entities/testimonials";
 import type { ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
-import type { z } from "zod";
 
 export interface RawTestimonial {
 	contentTypeId: "testimonial";
