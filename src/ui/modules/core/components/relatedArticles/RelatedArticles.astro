@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { getEntry } from "astro:content";
 import { RelatedArticlesSlider } from "@modules/core/components/relatedArticles/atoms/relatedArticlesSlider";
+import { getRelatedArticles } from "@modules/core/components/relatedArticles/utils/getRelatedArticles.ts";
 import "./related-articles.css";
 
 interface RelatedArticleProps {
@@ -9,9 +9,7 @@ interface RelatedArticleProps {
 }
 
 const { article } = Astro.props as RelatedArticleProps;
-const relatedArticles = (await Promise.all(
-	article.data.relatedArticles.map(async (article) => await getEntry(article.collection, article.id)),
-)) as CollectionEntry<"articles">[];
+const relatedArticles = await getRelatedArticles(article);
 ---
 {
     relatedArticles.length > 0 && (
