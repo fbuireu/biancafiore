@@ -3,17 +3,13 @@ import { ActionError, defineAction } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
 import type { Except } from "@const/types.ts";
 import { Exception } from "@domain/errors";
-import { app } from "@infrastructure/database/server";
 import { checkDuplicatedEntries } from "@infrastructure/utils/checkDuplicatedEntries";
 import { saveContact } from "@infrastructure/utils/saveContact";
 import { sendEmail } from "@infrastructure/utils/sendEmail";
 import { validateContact } from "@infrastructure/utils/validateContact";
 import type { ContactFormData } from "@shared/ui/types";
-import { getFirestore } from "firebase-admin/firestore";
 
 type ActionHandlerParams = Except<ContactFormData, "recaptcha">;
-
-const database = getFirestore(app);
 
 export const server = {
 	contact: defineAction({
@@ -27,15 +23,11 @@ export const server = {
 					message,
 				});
 
-				const databaseRef = database.collection("contacts");
-				await checkDuplicatedEntries({ databaseRef, data });
+				await checkDuplicatedEntries(data);
 
 				const { id: mailId } = await sendEmail(data);
 
-				await saveContact({
-					contactData: { id: mailId, ...data },
-					databaseRef,
-				});
+				await saveContact({ id: mailId, ...data });
 
 				return { ok: !!mailId };
 			} catch (error: unknown) {

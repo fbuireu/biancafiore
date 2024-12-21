@@ -1,19 +1,14 @@
-import { DEFAULT_LOCALE_STRING } from "@const/index";
+import { Contact, db } from "astro:db";
+import { DEFAULT_LOCALE_STRING } from "@const/const.ts";
 import type { Except } from "@const/types.ts";
 import type { ContactFormData } from "@shared/ui/types";
 import type { CreateEmailResponseSuccess } from "resend";
 
-interface SaveContactParams {
-	contactData: Except<ContactFormData, "recaptcha"> & CreateEmailResponseSuccess;
-	databaseRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>;
-}
+type SaveContactParams = Except<ContactFormData, "recaptcha"> & CreateEmailResponseSuccess;
 
-export async function saveContact({ databaseRef, contactData }: SaveContactParams): Promise<void> {
-	await databaseRef.add({
-		id: contactData.id,
-		name: contactData.name,
-		email: contactData.email,
-		message: contactData.message,
+export async function saveContact(contactData: SaveContactParams): Promise<void> {
+	await db.insert(Contact).values({
+		...contactData,
 		date: new Date().toLocaleString(DEFAULT_LOCALE_STRING),
 	});
 }
