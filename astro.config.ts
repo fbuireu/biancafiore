@@ -7,6 +7,8 @@ import MillionLint from "@million/lint";
 // @ts-ignore:next-line
 import { defineConfig, envField } from "astro/config";
 
+import db from "@astrojs/db";
+
 const isProd = import.meta.env.PROD;
 
 export default defineConfig({
@@ -22,7 +24,7 @@ export default defineConfig({
 	output: "server",
 	vite: {
 		ssr: {
-			external: ["firebase-admin", "node:async_hooks", "contentful"],
+			external: ["node:async_hooks", "contentful"],
 		},
 	},
 	integrations: [
@@ -35,6 +37,7 @@ export default defineConfig({
 				forward: ["dataLayer.push"],
 			},
 		}),
+		db(),
 	],
 	adapter: cloudflare({
 		platformProxy: {
@@ -75,42 +78,6 @@ export default defineConfig({
 				access: "public",
 				context: "client",
 			}),
-			FIREBASE_PRIVATE_KEY_ID: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			FIREBASE_PRIVATE_KEY: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			FIREBASE_PROJECT_ID: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			FIREBASE_CLIENT_EMAIL: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			FIREBASE_CLIENT_ID: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			FIREBASE_AUTH_URI: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			FIREBASE_TOKEN_URI: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			FIREBASE_AUTH_CERT_URL: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			FIREBASE_CLIENT_CERT_URL: envField.string({
-				access: "secret",
-				context: "server",
-			}),
 			RESEND_API_KEY: envField.string({
 				access: "secret",
 				context: "server",
@@ -136,6 +103,14 @@ export default defineConfig({
 				context: "server",
 			}),
 			ALGOLIA_APP_ID: envField.string({
+				access: "secret",
+				context: "server",
+			}),
+			ASTRO_DB_REMOTE_URL: envField.string({
+				access: "secret",
+				context: "server",
+			}),
+			ASTRO_DB_APP_TOKEN: envField.string({
 				access: "secret",
 				context: "server",
 			}),
