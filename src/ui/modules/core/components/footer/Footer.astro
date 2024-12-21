@@ -3,6 +3,7 @@ import Logo from "@assets/images/svg/logo.svg";
 import { PAGES_ROUTES } from "@const/index";
 import SocialNetworks from "@modules/core/components/socialNetworks/SocialNetworks.astro";
 import ThemeToggle from "@modules/core/components/themeToggle/ThemeToggle.astro";
+import CookieConsent from "@modules/core/components/cookieConsent/CookieConsent";
 import "./footer.css";
 
 const currentYear = new Date().getFullYear();
@@ -22,6 +23,7 @@ const currentYear = new Date().getFullYear();
     <p class="footer__legal-pages flex justify-center">
       <a href={PAGES_ROUTES['TERMS-AND-CONDITIONS']} rel="nofollow noreferrer" class="--underline-on-hover">Terms and Conditions</a>
       <a href={PAGES_ROUTES['PRIVACY-POLICY']}  rel="nofollow noreferrer" class="--underline-on-hover">Privacy Policy</a>
+      <CookieConsent client:only="react" />
     </p>
   </section>
 </footer>
