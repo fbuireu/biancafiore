@@ -13,3 +13,4 @@ const Contact = defineTable({
 export default defineDb({
 	tables: { Contact },
 });
+  

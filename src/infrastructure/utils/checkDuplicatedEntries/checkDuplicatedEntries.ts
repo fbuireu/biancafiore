@@ -8,13 +8,13 @@ type IsDuplicatedContactParams = Except<ContactFormData, "recaptcha">;
 const ALIAS_REGEX = /(\+.*?)(?=@)/;
 
 export async function checkDuplicatedEntries(data: IsDuplicatedContactParams): Promise<void> {
-	const references = await db
+	const duplicates = await db
 		.select()
 		.from(Contact)
 		.where(eq(Contact.email, data.email.replace(ALIAS_REGEX, "")))
 		.limit(1);
 
-	if (references.length) {
+	if (duplicates.length) {
 		throw new Exception({
 			message: "You already contacted. Please be patient, I will get back to you ASAP.",
 			code: "UNAUTHORIZED",
