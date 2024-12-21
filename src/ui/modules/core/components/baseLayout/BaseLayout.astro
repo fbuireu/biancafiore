@@ -1,7 +1,6 @@
 ---
 import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
 import type { SeoMetadata } from "@const/types";
-import CookieConsent from "@modules/core/components/cookieConsent/CookieConsent";
 import Footer from "@modules/core/components/footer/Footer.astro";
 import Head from "@modules/core/components/head/Head.astro";
 import Header from "@modules/core/components/header/Header.astro";
@@ -24,7 +23,6 @@ const location = getLocation(Astro.url);
   </noscript>
     <Header />
     <ScrollTop />
-    <CookieConsent client:only="react" />
     <main class:list={[{ [`--is-${location}`]: location}]}>
       <slot />
     </main>

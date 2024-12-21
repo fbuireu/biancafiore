@@ -1,8 +1,6 @@
-import { Cookie } from "@assets/images/svg-components/cookie";
 import { config } from "@modules/core/components/cookieConsent/config";
 import { useEffect } from "react";
 import { reset, run, showPreferences } from "vanilla-cookieconsent";
-import "./cookie-consent.css";
 
 const CookieConsent = () => {
 	useEffect(() => {
@@ -14,10 +12,10 @@ const CookieConsent = () => {
 	return (
 		<button
 			type="button"
-			className="cookies_consent_button flex justify-center --is-clickable"
+			className="cookies_consent_button --is-clickable --underline-on-hover"
 			onClick={showPreferences}
 		>
-			<Cookie classNames={"cookie_consent_icon"} />
+			Manage cookies
 		</button>
 	);
 };
