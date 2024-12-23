@@ -3,11 +3,11 @@ import type { Except } from "@const/types.ts";
 import { Exception } from "@domain/errors";
 import type { ContactFormData } from "@shared/ui/types.ts";
 
-type IsDuplicatedContactParams = Except<ContactFormData, "recaptcha" | "emailId">;
+type CheckDuplicatedEntriesParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
 const ALIAS_REGEX = /(\+.*?)(?=@)/;
 
-export async function checkDuplicatedEntries(data: IsDuplicatedContactParams): Promise<void> {
+export async function checkDuplicatedEntries(data: CheckDuplicatedEntriesParams) {
 	const duplicates = await db
 		.select()
 		.from(Contact)
