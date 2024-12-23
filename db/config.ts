@@ -6,6 +6,7 @@ const Contact = defineTable({
 		name: column.text(),
 		email: column.text({ unique: true }),
 		message: column.text({ multiline: true }),
+		emailId: column.text(),
 		date: column.text(),
 	},
 });

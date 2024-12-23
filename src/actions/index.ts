@@ -9,7 +9,7 @@ import { sendEmail } from "@infrastructure/utils/sendEmail";
 import { validateContact } from "@infrastructure/utils/validateContact";
 import type { ContactFormData } from "@shared/ui/types";
 
-type ActionHandlerParams = Except<ContactFormData, "recaptcha">;
+type ActionHandlerParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
 export const server = {
 	contact: defineAction({
@@ -25,11 +25,11 @@ export const server = {
 
 				await checkDuplicatedEntries(data);
 
-				const { id: mailId } = await sendEmail(data);
+				const { id: emailId } = await sendEmail(data);
 
-				await saveContact({ id: mailId, ...data });
+				await saveContact({ emailId, ...data });
 
-				return { ok: !!mailId };
+				return { ok: !!emailId };
 			} catch (error: unknown) {
 				if (error instanceof Exception) {
 					throw new ActionError({
