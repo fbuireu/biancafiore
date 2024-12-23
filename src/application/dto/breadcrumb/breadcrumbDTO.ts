@@ -5,7 +5,7 @@ import type { BaseDTO } from "@shared/application/dto/baseDTO";
 export type BreadcrumbDTO = BreadcrumbDTOItem[];
 
 export const breadcrumbDTO: BaseDTO<RawBreadcrumb, BreadcrumbDTO> = {
-	create: ({ currentPath }): BreadcrumbDTO => {
+	create: ({ currentPath }) => {
 		const pathSegments = currentPath.split("/").filter((segment) => segment.trim() !== "");
 		const breadcrumbs: BreadcrumbDTOItem[] = pathSegments.map((_, index) => {
 			const link = `/${pathSegments.slice(0, index + 1).join("/")}`;
