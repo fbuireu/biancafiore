@@ -6,7 +6,7 @@ import { createEmail } from "@infrastructure/utils/createEmail";
 import type { ContactFormData } from "@shared/ui/types";
 import type { CreateEmailResponseSuccess } from "resend";
 
-type SendEmailParams = Except<ContactFormData, "recaptcha">;
+type SendEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
 export async function sendEmail(params: SendEmailParams): Promise<CreateEmailResponseSuccess> {
 	const email = createEmail({ ...params });
