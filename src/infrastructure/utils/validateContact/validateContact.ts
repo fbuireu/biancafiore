@@ -1,9 +1,9 @@
 import { contactFormSchema } from "@application/entities/contact/schema";
-import type { Except } from "@const/types.ts";
 import { Exception } from "@domain/errors";
 import type { ContactFormData } from "@shared/ui/types";
+import type { Except } from "type-fest";
 
-type ValidateContact = Except<ContactFormData, "recaptcha">;
+type ValidateContact = Except<ContactFormData, "recaptcha" | "emailId">;
 
 export function validateContact(contact: ValidateContact) {
 	const { success, data, error } = contactFormSchema.safeParse(contact);
