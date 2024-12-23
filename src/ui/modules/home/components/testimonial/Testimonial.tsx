@@ -7,7 +7,7 @@ import { TestimonialImage } from "@modules/home/components/testimonial/atoms/tes
 import type { TestimonialQuoteProps } from "@modules/home/components/testimonial/atoms/testimonialQuote";
 import { TestimonialQuote } from "@modules/home/components/testimonial/atoms/testimonialQuote";
 import clsx from "clsx";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import { useSwiperSlide } from "swiper/react";
 import "./testimonial.css";
 
@@ -15,19 +15,19 @@ interface TestimonialProps {
 	children: ReactNode;
 }
 
-export const Testimonial = ({ children }: TestimonialProps) => {
+export const Testimonial = ({ children }: TestimonialProps): JSX.Element => {
 	const { isActive } = useSwiperSlide();
 
 	return <article className={clsx("testimonial__content", { "--is-active": isActive })}>{children}</article>;
 };
 
-const Image = (props: TestimonialImageProps) => <TestimonialImage {...props} />;
+const Image = (props: TestimonialImageProps): JSX.Element => <TestimonialImage {...props} />;
 
-const Quote = ({ children }: TestimonialQuoteProps) => <TestimonialQuote>{children}</TestimonialQuote>;
+const Quote = ({ children }: TestimonialQuoteProps): JSX.Element => <TestimonialQuote>{children}</TestimonialQuote>;
 
-const Author = ({ children }: TestimonialAuthorProps) => <TestimonialAuthor>{children}</TestimonialAuthor>;
+const Author = ({ children }: TestimonialAuthorProps): JSX.Element => <TestimonialAuthor>{children}</TestimonialAuthor>;
 
-const Description = ({ children }: TestimonialDescriptionProps) => (
+const Description = ({ children }: TestimonialDescriptionProps): JSX.Element => (
 	<TestimonialDescription>{children}</TestimonialDescription>
 );
 

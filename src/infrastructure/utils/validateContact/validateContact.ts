@@ -5,7 +5,7 @@ import type { Except } from "type-fest";
 
 type ValidateContact = Except<ContactFormData, "recaptcha" | "emailId">;
 
-export function validateContact(contact: ValidateContact) {
+export function validateContact(contact: ValidateContact): ValidateContact {
 	const { success, data, error } = contactFormSchema.safeParse(contact);
 
 	if (!success) {

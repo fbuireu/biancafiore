@@ -19,7 +19,7 @@ import { ArticleCardTitle } from "@modules/core/components/articleCard/atoms/art
 import { articleVariantToClass } from "@modules/core/utils/articleVariantToClass";
 import { getLocation } from "@modules/core/utils/getLocation";
 import clsx from "clsx";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import "./article-card.css";
 
 interface ArticleCardProps extends CollectionEntry<"articles"> {
@@ -27,7 +27,7 @@ interface ArticleCardProps extends CollectionEntry<"articles"> {
 	children: ReactNode;
 }
 
-export const ArticleCard = ({ children, origin, data }: ArticleCardProps) => {
+export const ArticleCard = ({ children, origin, data }: ArticleCardProps): JSX.Element => {
 	const location = getLocation(origin);
 
 	return (
@@ -44,20 +44,24 @@ export const ArticleCard = ({ children, origin, data }: ArticleCardProps) => {
 	);
 };
 
-const Image = (props: ArticleCardImageProps) => <ArticleCardImage {...props} />;
-const Title = ({ children }: ArticleCardTitleProps) => <ArticleCardTitle>{children}</ArticleCardTitle>;
-const Author = ({ children, slug }: ArticleCardAuthorProps) => (
+const Image = (props: ArticleCardImageProps): JSX.Element => <ArticleCardImage {...props} />;
+const Title = ({ children }: ArticleCardTitleProps): JSX.Element => <ArticleCardTitle>{children}</ArticleCardTitle>;
+const Author = ({ children, slug }: ArticleCardAuthorProps): JSX.Element => (
 	<ArticleCardAuthor slug={slug}>{children}</ArticleCardAuthor>
 );
-const Excerpt = ({ children }: ArticleCardExcerptProps) => <ArticleCardExcerpt>{children}</ArticleCardExcerpt>;
-const PublishDate = ({ children, publishDate }: ArticleCardPublishDateProps) => (
+const Excerpt = ({ children }: ArticleCardExcerptProps): JSX.Element => (
+	<ArticleCardExcerpt>{children}</ArticleCardExcerpt>
+);
+const PublishDate = ({ children, publishDate }: ArticleCardPublishDateProps): JSX.Element => (
 	<ArticleCardPublishDate publishDate={publishDate}>{children}</ArticleCardPublishDate>
 );
-const ReadingTime = ({ children }: ArticleCardReadingTimeProps) => (
+const ReadingTime = ({ children }: ArticleCardReadingTimeProps): JSX.Element => (
 	<ArticleCardReadingTime>{children}</ArticleCardReadingTime>
 );
-const Tags = ({ children }: ArticleCardTagsListProps) => <ArticleCardTagsList>{children}</ArticleCardTagsList>;
-const Tag = ({ children, ...props }: ArticleCardTagItemProps) => (
+const Tags = ({ children }: ArticleCardTagsListProps): JSX.Element => (
+	<ArticleCardTagsList>{children}</ArticleCardTagsList>
+);
+const Tag = ({ children, ...props }: ArticleCardTagItemProps): JSX.Element => (
 	<ArticleCardTagItem {...props}>{children}</ArticleCardTagItem>
 );
 

@@ -1,7 +1,7 @@
 import { getCollection } from "astro:content";
-import { TagType } from "@application/dto/tag/types";
+import { type TagDTO, TagType } from "@application/dto/tag/types";
 
-export async function getAuthors() {
+export async function getAuthors(): Promise<TagDTO["authors"]> {
 	return (await getCollection("authors")).map((author) => ({
 		name: author.data.name,
 		slug: author.data.slug,

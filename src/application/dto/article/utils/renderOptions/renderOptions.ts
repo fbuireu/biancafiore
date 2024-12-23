@@ -5,7 +5,16 @@ import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 
 type Node = Block | Inline | Text;
 
-export function renderOptions(rawArticle: RawArticle) {
+interface RenderOptionsReturnType {
+	renderNode: {
+		[INLINES.EMBEDDED_ENTRY]: (node: Node) => string;
+		[BLOCKS.EMBEDDED_ENTRY]: (node: Node) => string;
+		[BLOCKS.EMBEDDED_ASSET]: (node: Node) => string;
+		[key: string]: (node: Node) => string;
+	};
+}
+
+export function renderOptions(rawArticle: RawArticle): RenderOptionsReturnType {
 	return {
 		renderNode: {
 			[INLINES.EMBEDDED_ENTRY]: (node: Node) => {

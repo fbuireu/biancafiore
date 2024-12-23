@@ -1,6 +1,6 @@
 import type { BaseTagDTO } from "@application/dto/tag/types";
 import { PAGES_ROUTES } from "@const/index";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, JSX, ReactNode } from "react";
 import "./article-card-tag-item.css";
 
 export interface ArticleCardTagItemProps {
@@ -9,7 +9,7 @@ export interface ArticleCardTagItemProps {
 	style: CSSProperties;
 }
 
-export const ArticleCardTagItem = ({ children, tag, style }: ArticleCardTagItemProps) => (
+export const ArticleCardTagItem = ({ children, tag, style }: ArticleCardTagItemProps): JSX.Element => (
 	<a
 		key={tag.name}
 		className="article-card__tag__item --underline-on-hover --is-clickable"

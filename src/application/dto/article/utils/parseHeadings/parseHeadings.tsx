@@ -19,7 +19,7 @@ interface ExtractContentFromNextNodesParams {
 	level: number;
 }
 
-const extractContentFromNextNodes = ({ nextNodes, level }: ExtractContentFromNextNodesParams) => {
+const extractContentFromNextNodes = ({ nextNodes, level }: ExtractContentFromNextNodesParams): string => {
 	if (!Array.isArray(nextNodes)) return "";
 
 	return nextNodes

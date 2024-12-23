@@ -1,6 +1,6 @@
 import { Image } from "@modules/core/components/image";
 import type { ImageFormats } from "@shared/application/types";
-import type { ImgHTMLAttributes } from "react";
+import type { ImgHTMLAttributes, JSX } from "react";
 
 interface CustomPictureProps {
 	classNames?: string;
@@ -9,7 +9,7 @@ interface CustomPictureProps {
 
 type PictureProps = ImgHTMLAttributes<HTMLPictureElement> & CustomPictureProps;
 
-export const Picture = ({ formats, src, classNames, ...props }: PictureProps) => {
+export const Picture = ({ formats, src, classNames, ...props }: PictureProps): JSX.Element => {
 	return (
 		<picture className={classNames}>
 			{formats.avif && <source srcSet={src} type="image/avif" />}

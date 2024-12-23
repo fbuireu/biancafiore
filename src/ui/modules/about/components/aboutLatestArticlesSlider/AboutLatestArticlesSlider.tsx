@@ -2,7 +2,7 @@ import type { CollectionEntry } from "astro:content";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const";
 import { ArticleCard } from "@modules/core/components/articleCard/ArticleCard";
 import { Slider } from "@modules/core/components/slider";
-import type { CSSProperties } from "react";
+import type { CSSProperties, JSX } from "react";
 import type { SwiperOptions } from "swiper/types";
 import "./about-latest-articles-slider.css";
 
@@ -30,7 +30,7 @@ const SLIDER_CONFIG: SwiperOptions = {
 	containerModifierClass: "latest-articles-",
 };
 
-export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArticlesSLiderProps) => {
+export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArticlesSLiderProps): JSX.Element => {
 	return (
 		<div className="about__latest-articles__slider">
 			<Slider

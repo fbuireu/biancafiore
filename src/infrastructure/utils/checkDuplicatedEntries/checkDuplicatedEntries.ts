@@ -7,7 +7,7 @@ type CheckDuplicatedEntriesParams = Except<ContactFormData, "recaptcha" | "email
 
 const ALIAS_REGEX = /(\+.*?)(?=@)/;
 
-export async function checkDuplicatedEntries(data: CheckDuplicatedEntriesParams) {
+export async function checkDuplicatedEntries(data: CheckDuplicatedEntriesParams): Promise<void> {
 	const duplicates = await db
 		.select()
 		.from(Contact)

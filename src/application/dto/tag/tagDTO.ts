@@ -6,7 +6,7 @@ import type { BaseDTO } from "@shared/application/dto/baseDTO";
 import { groupBy } from "./utils/groupBy";
 
 export const tagDTO: BaseDTO<RawTag[], Promise<TagDTO>> = {
-	create: async (raw) => {
+	create: async (raw): Promise<TagDTO> => {
 		const articles = await getCollection("articles");
 		const tags = await getTags({ raw, articles });
 		const authors = await getAuthors();

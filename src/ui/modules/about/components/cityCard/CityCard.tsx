@@ -1,12 +1,12 @@
-import { CityDescription } from "@modules/about/components/cityCard/atoms/cityDescription";
 import type { CityDescriptionProps } from "@modules/about/components/cityCard/atoms/cityDescription";
-import { CityImage } from "@modules/about/components/cityCard/atoms/cityImage";
+import { CityDescription } from "@modules/about/components/cityCard/atoms/cityDescription";
 import type { CityImageProps } from "@modules/about/components/cityCard/atoms/cityImage";
-import { CityName } from "@modules/about/components/cityCard/atoms/cityName";
+import { CityImage } from "@modules/about/components/cityCard/atoms/cityImage";
 import type { CityNameProps } from "@modules/about/components/cityCard/atoms/cityName";
-import { CityPeriod } from "@modules/about/components/cityCard/atoms/cityPeriod";
+import { CityName } from "@modules/about/components/cityCard/atoms/cityName";
 import type { CityPeriodProps } from "@modules/about/components/cityCard/atoms/cityPeriod";
-import type { CSSProperties, ReactNode } from "react";
+import { CityPeriod } from "@modules/about/components/cityCard/atoms/cityPeriod";
+import type { CSSProperties, JSX, ReactNode } from "react";
 import "./city-card.css";
 
 interface CityCardProps {
@@ -16,7 +16,7 @@ interface CityCardProps {
 	name: string;
 }
 
-export const CityCard = ({ children, index, numCards, name }: CityCardProps) => {
+export const CityCard = ({ children, index, numCards, name }: CityCardProps): JSX.Element => {
 	const style: CSSProperties & { [key: string]: string } = {
 		"--inline-index": String(index),
 		"--inline-num-cards": String(numCards),

@@ -1,6 +1,6 @@
 import { autosize } from "@modules/contact/utils/autosize";
 import { FormStatus } from "@shared/ui/types.ts";
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, JSX } from "react";
 import "./textarea.css";
 import clsx from "clsx";
 
@@ -11,7 +11,15 @@ interface TextareaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
 	label: string;
 }
 
-export const Textarea = ({ id, label, hasError, placeholder, formStatus, errorMessage, ...rest }: TextareaProps) => {
+export const Textarea = ({
+	id,
+	label,
+	hasError,
+	placeholder,
+	formStatus,
+	errorMessage,
+	...rest
+}: TextareaProps): JSX.Element => {
 	return (
 		<div
 			className={clsx("contact-form__textarea__wrapper flex column-wrap justify-flex-start", {

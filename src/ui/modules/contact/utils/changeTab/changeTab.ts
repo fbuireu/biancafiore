@@ -9,14 +9,14 @@ const SELECTORS = {
 
 const getTabs = (): NodeListOf<HTMLElement> => document.querySelectorAll(SELECTORS.TAB);
 
-const updateUrl = (tabId: TabId) => {
+const updateUrl = (tabId: TabId): void => {
 	const { pathname, search } = new URL(window.location.href);
 	const params = new URLSearchParams(search);
 	params.set("tab", tabId);
 	history.pushState({}, "", `${pathname}?${String(params)}`);
 };
 
-const changeTab = (tabId: TabId) => {
+const changeTab = (tabId: TabId): void => {
 	const TABS = getTabs();
 
 	for (const tab of TABS) {
@@ -33,7 +33,7 @@ const changeTab = (tabId: TabId) => {
 	updateUrl(tabId);
 };
 
-export function initTabs(queryTab?: string) {
+export function initTabs(queryTab?: string): void {
 	const TABS = getTabs();
 	const DEFAULT_TAB = TABS[0].dataset.target as TabId;
 	const initialTab = [TabId.APPOINTMENT, TabId.EMAIL].includes(queryTab as TabId) ? (queryTab as TabId) : DEFAULT_TAB;

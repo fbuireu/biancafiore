@@ -7,6 +7,7 @@ import { TabVisibility, useTabVisibility } from "@modules/about/hooks/useTabVisi
 import { calculateCenter } from "@modules/about/utils/calculateCenter";
 import { refineCities } from "@modules/about/utils/refineCities";
 import { renderPin } from "@modules/about/utils/renderPin";
+import type { JSX } from "react";
 import { memo, useCallback, useEffect, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
@@ -62,7 +63,7 @@ const {
 	ZOOM_OFFSET,
 } = WORLD_GLOBE_CONFIG;
 
-const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitiesProps) => {
+const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitiesProps): JSX.Element => {
 	const tabVisibility = useTabVisibility();
 	const worldGlobeReference = useRef<GlobeMethods | undefined>(undefined);
 

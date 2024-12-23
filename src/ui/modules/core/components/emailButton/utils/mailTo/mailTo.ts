@@ -1,6 +1,6 @@
 import { CONTACT_DETAILS } from "@const/index";
 
-export function mailTo() {
+export function mailTo(): void {
 	const SELECTOR = document.querySelector(".mailTo__button");
 	if (!SELECTOR) return;
 

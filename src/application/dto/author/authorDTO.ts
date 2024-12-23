@@ -4,9 +4,9 @@ import { createImage } from "@shared/application/dto/utils/createImage";
 import { getArticlesByAuthor } from "./utils";
 
 export const authorDTO: BaseDTO<RawAuthor[], Promise<AuthorDTO[]>> = {
-	create: async (raw) => {
+	create: async (raw): Promise<AuthorDTO[]> => {
 		return Promise.all(
-			raw.map(async (rawAuthor) => {
+			raw.map(async (rawAuthor): Promise<AuthorDTO> => {
 				const articlesByAuthor = await getArticlesByAuthor(rawAuthor);
 
 				return {

@@ -6,8 +6,8 @@ import type { BaseDTO } from "@shared/application/dto/baseDTO";
 import { createImage } from "@shared/application/dto/utils/createImage";
 
 export const projectDTO: BaseDTO<RawProject[], ProjectDTO[]> = {
-	create: (raw) => {
-		return raw.map((rawProject) => {
+	create: (raw): ProjectDTO[] => {
+		return raw.map((rawProject): ProjectDTO => {
 			const id = rawProject.fields.id ? rawProject.fields.id : slugify(rawProject.fields.name as unknown as string);
 
 			return {
