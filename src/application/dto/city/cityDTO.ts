@@ -5,8 +5,8 @@ import type { ContenfulLocation } from "@shared/application/types";
 import { createDate } from "./utils/createDate";
 
 export const cityDTO: BaseDTO<RawCity[], CityDTO[]> = {
-	create: (raw): CityDTO[] => {
-		return raw.map((rawCity): CityDTO => {
+	create: (raw) => {
+		return raw.map((rawCity) => {
 			const coordinates = {
 				latitude: (rawCity.fields.coordinates as unknown as ContenfulLocation["fields"]["coordinates"]).lat,
 				longitude: (rawCity.fields.coordinates as unknown as ContenfulLocation["fields"]["coordinates"]).lon,
