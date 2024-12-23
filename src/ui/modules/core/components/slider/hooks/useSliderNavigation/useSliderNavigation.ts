@@ -15,7 +15,7 @@ interface UseSliderNavigationParams {
 
 const CLASSNAME = "--is-force-clickable";
 
-export function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSliderNavigationParams) {
+export function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: UseSliderNavigationParams): void {
 	useEffect(() => {
 		const controller = new AbortController();
 

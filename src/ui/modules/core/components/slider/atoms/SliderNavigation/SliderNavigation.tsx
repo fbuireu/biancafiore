@@ -1,5 +1,6 @@
 import { LeftArrow } from "@assets/images/svg-components/leftArrow";
 import clsx from "clsx";
+import type { JSX } from "react";
 import { useRef } from "react";
 import type { Swiper } from "swiper/types";
 import { useSliderNavigation } from "../../hooks/useSliderNavigation/useSliderNavigation";
@@ -10,7 +11,7 @@ interface SliderNavigationProps {
 	locationClassName: string;
 }
 
-export const SliderNavigation: React.FC<SliderNavigationProps> = ({ swiper, locationClassName }) => {
+export const SliderNavigation = ({ swiper, locationClassName }: SliderNavigationProps): JSX.Element => {
 	const leftButtonRef = useRef<HTMLButtonElement>(null);
 	const rightButtonRef = useRef<HTMLButtonElement>(null);
 	useSliderNavigation({ swiper, leftButtonRef, rightButtonRef });

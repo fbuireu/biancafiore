@@ -1,6 +1,6 @@
 import { getLocation } from "@modules/core/utils/getLocation";
 import clsx from "clsx";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperClass, SwiperOptions } from "swiper/types";
@@ -14,7 +14,7 @@ export interface Slider<T> {
 	origin: URL;
 }
 
-export const Slider = <T,>({ items, renderItem, swiperOptions, origin }: Slider<T>) => {
+export const Slider = <T,>({ items, renderItem, swiperOptions, origin }: Slider<T>): JSX.Element => {
 	const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(null);
 	const location = getLocation(origin);
 	const locationClassName = location ? `--is-${location}` : "";

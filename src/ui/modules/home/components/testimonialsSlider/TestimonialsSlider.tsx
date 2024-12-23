@@ -2,6 +2,7 @@ import type { CollectionEntry } from "astro:content";
 import { DEFAULT_SWIPER_CONFIG } from "@const/const";
 import { Slider } from "@modules/core/components/slider";
 import { Testimonial } from "@modules/home/components/testimonial";
+import type { JSX } from "react";
 import { Pagination } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";
 
@@ -34,7 +35,7 @@ const SLIDER_CONFIG: SwiperOptions = {
 	containerModifierClass: "testimonials-",
 };
 
-export const TestimonialsSlider = ({ testimonials, origin }: TestimonialSliderProps) => {
+export const TestimonialsSlider = ({ testimonials, origin }: TestimonialSliderProps): JSX.Element => {
 	return (
 		<Slider
 			items={testimonials}

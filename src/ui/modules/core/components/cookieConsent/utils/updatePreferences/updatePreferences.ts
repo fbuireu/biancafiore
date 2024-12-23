@@ -1,7 +1,7 @@
 import type { CookieValue } from "vanilla-cookieconsent";
 import { acceptedCategory } from "vanilla-cookieconsent";
 
-export function updatePreferences(cookie: CookieValue) {
+export function updatePreferences(cookie: CookieValue): void {
 	function gtag() {
 		// biome-ignore lint/style/noArguments: GA integration
 		window.dataLayer.push(arguments);
@@ -9,7 +9,7 @@ export function updatePreferences(cookie: CookieValue) {
 
 	const category = cookie.categories[0] ?? "analytics";
 
-	//@ts-ignore
+	//@ts-ignore:next-line
 	gtag("consent", "update", {
 		analytics_storage: acceptedCategory(category) ? "granted" : "denied",
 		wait_for_update: 500,

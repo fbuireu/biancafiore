@@ -1,13 +1,14 @@
 import type { CollectionEntry } from "astro:content";
 import { CityCard } from "@modules/about/components/cityCard";
 import { slugify } from "@modules/core/utils/slugify";
+import type { JSX } from "react";
 import "./cities.css";
 
 interface CitiesProps {
 	cities: CollectionEntry<"cities">[];
 }
 
-export const Cities = ({ cities }: CitiesProps) => {
+export const Cities = ({ cities }: CitiesProps): JSX.Element => {
 	return (
 		<ul className="city-card__list">
 			{cities.map(({ data }, index) => (

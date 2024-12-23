@@ -3,7 +3,7 @@ const SELECTORS = {
 	PROGRESS_BAR: ".reading-progress",
 };
 
-export function getReadingProgress() {
+export function getReadingProgress(): void {
 	const ARTICLE = document.querySelector(SELECTORS.ARTICLE) as HTMLElement;
 	const PROGRESS_BAR = document.querySelector(SELECTORS.PROGRESS_BAR) as HTMLElement;
 

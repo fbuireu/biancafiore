@@ -27,7 +27,7 @@ const SELECTORS = {
 	READING_PROGRESS: ".reading-progress",
 };
 
-export function toggleMenu() {
+export function toggleMenu(): void {
 	let isMenuOpen = false;
 	let toggleMenuText = "Menu";
 	const timeline = gsap.timeline({ paused: true });
@@ -59,7 +59,7 @@ export function toggleMenu() {
 
 	const ELEMENTS_TO_TOGGLE = [BODY, HTML, LOGO, MENU_DIVIDER, TOGGLE_MENU_BUTTON, READING_PROGRESS];
 
-	const toggleMenuItems = () => {
+	const toggleMenuItems = (): void => {
 		const { POWER4_IN_OUT, POWER2_EASE_IN, POWER2_EASE_OUT, POWER3_OUT, PATH_START, PATH_END } = ANIMATION_CONFIG;
 
 		timeline.to(MENU_OVERLAY, { display: "block" });
@@ -118,7 +118,7 @@ export function toggleMenu() {
 
 	toggleMenuItems();
 
-	const updateButton = () => {
+	const updateButton = (): void => {
 		if (!MENU_TEXT) return;
 		toggleMenuText = isMenuOpen ? "Close" : "Menu";
 		const timeout = isMenuOpen ? 500 : 0;

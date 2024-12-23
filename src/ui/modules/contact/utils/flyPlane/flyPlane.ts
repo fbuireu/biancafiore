@@ -1,6 +1,6 @@
 import { gsap } from "gsap";
 
-export function flyPlane(button: HTMLButtonElement) {
+export function flyPlane(button: HTMLButtonElement): void {
 	if (!button.classList.contains("--is-active")) {
 		button.classList.add("--is-active");
 

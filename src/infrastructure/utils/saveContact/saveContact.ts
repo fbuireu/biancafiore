@@ -5,7 +5,7 @@ import type { ContactFormData } from "@shared/ui/types";
 
 type SaveContactParams = Except<ContactFormData, "recaptcha">;
 
-export async function saveContact(contactData: SaveContactParams) {
+export async function saveContact(contactData: SaveContactParams): Promise<void> {
 	await db.insert(Contact).values({
 		...contactData,
 		id: crypto.randomUUID(),

@@ -12,28 +12,34 @@ const SELECTORS = {
 
 const PREFERS_DARK_SCHEME = window.matchMedia("(prefers-color-scheme: dark)");
 
-export const getCurrentTheme = () => localStorage.getItem(THEME_STORAGE_KEY) as ThemeType | null;
+export const getCurrentTheme = (): ThemeType | null => localStorage.getItem(THEME_STORAGE_KEY) as ThemeType | null;
 
-const getInitialTheme = () => {
+const getInitialTheme = (): ThemeType => {
 	const cachedTheme = getCurrentTheme();
 	const prefersDarkScheme = PREFERS_DARK_SCHEME.matches;
 
 	return cachedTheme ?? (prefersDarkScheme ? ThemeType.DARK : ThemeType.LIGHT);
 };
 
-export function initializeThemeSetter() {
+export function initializeThemeSetter(): void {
 	const { THEME_INPUT: THEME_INPUT_SELECTOR, TOGGLE: TOGGLE_SELECTOR } = SELECTORS;
 	const THEME_INPUT = document.querySelector<HTMLInputElement>(THEME_INPUT_SELECTOR);
 	const TOGGLE = document.querySelector<HTMLInputElement>(TOGGLE_SELECTOR);
 
 	const initialTheme = getInitialTheme();
 
-	const handleThemeChange = (toggleSwitch: HTMLInputElement) => {
+	const handleThemeChange = (toggleSwitch: HTMLInputElement): void => {
 		const newTheme = toggleSwitch.checked ? ThemeType.DARK : ThemeType.LIGHT;
 		applyTheme({ theme: newTheme, document });
 	};
 
-	const applyTheme = ({ theme, document }: { theme: ThemeType; document: Document }) => {
+	const applyTheme = ({
+		theme,
+		document,
+	}: {
+		theme: ThemeType;
+		document: Document;
+	}): void => {
 		document.documentElement.setAttribute(`data-${THEME_STORAGE_KEY}`, theme);
 		localStorage.setItem(THEME_STORAGE_KEY, theme);
 

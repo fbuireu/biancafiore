@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import { type RawTag, TagType } from "@application/dto/tag/types";
+import { type RawTag, type TagDTO, TagType } from "@application/dto/tag/types";
 import type { Reference } from "@shared/application/types";
 
 interface Articles {
@@ -22,14 +22,14 @@ const getArticlesByTag = ({ rawTag, articles }: GetArticlesByTagParams): Referen
 			collection: "articles",
 		}));
 
-export async function getTags({ raw, articles }: GetTags) {
+export async function getTags({ raw, articles }: GetTags): Promise<TagDTO["articles"]> {
 	return await Promise.all(
 		raw.map(async (rawTag) => {
 			const articlesByTag = getArticlesByTag({ rawTag, articles });
 
 			return {
 				name: rawTag.fields.name as unknown as string,
-				slug: rawTag.fields.slug,
+				slug: rawTag.fields.slug as unknown as string,
 				type: TagType.TAG,
 				count: articlesByTag.length,
 				articles: articlesByTag,
