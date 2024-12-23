@@ -4,8 +4,8 @@ const Contact = defineTable({
 	columns: {
 		id: column.text({ primaryKey: true }),
 		name: column.text(),
-		email: column.text(),
-		message: column.text(),
+		email: column.text({ unique: true }),
+		message: column.text({ multiline: true }),
 		date: column.text(),
 	},
 });
