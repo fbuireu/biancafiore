@@ -12,8 +12,8 @@
 		"marketing",
 		"content writing",
 		"seo",
-        "turso",
-        "resend"
+		"turso",
+		"resend"
 	],
 	"author": "Ferran Buireu <fbuireu@gmail.com>",
 	"version": "2.0.2",
@@ -71,7 +71,7 @@
 		"react-google-recaptcha-v3": "^1.10.1",
 		"react-hook-form": "^7.54.2",
 		"react-instantsearch": "^7.13.9",
-		"react-router-dom": "^7.1.0",
+		"react-router-dom": "^7.1.1",
 		"resend": "^4.0.1",
 		"swiper": "^11.1.15",
 		"three": "^0.171.0",
