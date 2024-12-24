@@ -11,7 +11,9 @@
 		"portfolio",
 		"marketing",
 		"content writing",
-		"seo"
+		"seo",
+        "turso",
+        "resend"
 	],
 	"author": "Ferran Buireu <fbuireu@gmail.com>",
 	"version": "2.0.2",
