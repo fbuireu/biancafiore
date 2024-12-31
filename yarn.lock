@@ -2017,17 +2017,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource-variable/nunito-sans@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "@fontsource-variable/nunito-sans@npm:5.1.0"
-  checksum: 10c0/1db308019f6c0b7b105f9ab57056193db5f5a61b9a00fbc732e18deccdfe1eb80d9c07e8eb94f289712bac67f8a0ec5a9452937bfd24628a2d76da1c5ff48039
+"@fontsource-variable/nunito-sans@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "@fontsource-variable/nunito-sans@npm:5.1.1"
+  checksum: 10c0/9178546e6aacc96554270c14516988610bd1a69c332e4e5cfa685ab36477502d99b0f0476f81c421932db6ab1f795af31cfa6c8ba09fdf9c861506613f1988dc
   languageName: node
   linkType: hard
 
-"@fontsource/baskervville@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "@fontsource/baskervville@npm:5.1.0"
-  checksum: 10c0/b1b1188bb0ecf59a3362826bb678ba04536dacc1d9cc4816402f1b08c84ca4939a2fe11a986a275285ae7ae5aa5793b9ea9cecd82cac750cceeb9f8b0320eb48
+"@fontsource/baskervville@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "@fontsource/baskervville@npm:5.1.1"
+  checksum: 10c0/40269d29b0e5bbe7465b881f37eab2a3c74d645139082c116faddd87fb87f9a665e8c49730a2bc6e04ecb08fc39529771432f22183ab02471117100bf92a3574
   languageName: node
   linkType: hard
 
@@ -4278,8 +4278,8 @@ __metadata:
     "@commitlint/config-conventional": "npm:^19.6.0"
     "@commitlint/format": "npm:^19.5.0"
     "@contentful/rich-text-html-renderer": "npm:^17.0.0"
-    "@fontsource-variable/nunito-sans": "npm:^5.1.0"
-    "@fontsource/baskervville": "npm:^5.1.0"
+    "@fontsource-variable/nunito-sans": "npm:^5.1.1"
+    "@fontsource/baskervville": "npm:^5.1.1"
     "@hookform/resolvers": "npm:^3.9.1"
     "@million/lint": "npm:^1.0.14"
     "@playwright/test": "npm:^1.49.1"
@@ -4294,12 +4294,12 @@ __metadata:
     algoliasearch: "npm:^5.18.0"
     astro: "npm:^5.1.1"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.3.3"
+    contentful: "npm:^11.4.0"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.12.5"
     husky: "npm:^9.1.7"
     instantsearch.css: "npm:^8.5.1"
-    lint-staged: "npm:^15.2.11"
+    lint-staged: "npm:^15.3.0"
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
@@ -4857,9 +4857,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.3.3":
-  version: 11.3.4
-  resolution: "contentful@npm:11.3.4"
+"contentful@npm:^11.4.0":
+  version: 11.4.0
+  resolution: "contentful@npm:11.4.0"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.7"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -4868,7 +4868,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/26571a4e5a2173efda92599e9c622484693596845295e75c2bc7de75c70c5d8c08d2995074e564740cb54bb7555d56251e5d4a1eff16856c6ab870972fd9eb43
+  checksum: 10c0/ff87ea02ba38a540b0b28acb30917f84e94aced64cf6c954698ad1276874b9a546dedcaeb4be27834c086430662c3c66ef2bfa564cf642d62385e47ac17989be
   languageName: node
   linkType: hard
 
@@ -7841,7 +7841,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^15.2.11":
+"lint-staged@npm:^15.3.0":
   version: 15.3.0
   resolution: "lint-staged@npm:15.3.0"
   dependencies:
