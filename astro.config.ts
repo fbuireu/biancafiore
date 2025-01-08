@@ -28,6 +28,7 @@ export default defineConfig({
 		},
 	},
 	integrations: [
+		db(),
 		mdx(),
 		sitemap(),
 		react(),
@@ -37,7 +38,6 @@ export default defineConfig({
 				forward: ["dataLayer.push"],
 			},
 		}),
-		db(),
 	],
 	adapter: cloudflare({
 		platformProxy: {
