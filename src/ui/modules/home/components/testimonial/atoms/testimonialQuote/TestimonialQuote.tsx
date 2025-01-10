@@ -11,7 +11,7 @@ export const TestimonialQuote = ({ children }: TestimonialQuoteProps): JSX.Eleme
 	<div className="testimonial__quote__wrapper">
 		<Image
 			classNames="testimonial__quote-symbol"
-			src={(doubleQuote as unknown as ProtoImage).src}
+			src={doubleQuote.src}
 			alt="Quote"
 			loading="eager"
 		/>

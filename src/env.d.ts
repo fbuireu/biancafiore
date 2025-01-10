@@ -34,12 +34,6 @@ declare global {
 	interface Window {
 		dataLayer: any[];
 	}
-	interface ProtoImage {
-		format: "svg" | "png" | "jpg" | "jpeg" | "webp";
-		src: string;
-		width: number;
-		height: number;
-	}
 }
 
 export {};
