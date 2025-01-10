@@ -42,7 +42,7 @@ export const DEFAULT_SEO_PARAMS: CapitalizeKeys<SeoMetadata> = {
 		INDEX: true,
 		FOLLOW: true,
 	},
-	IMAGE: (biancaImage as unknown as ProtoImage).src,
+	IMAGE: biancaImage.src,
 } as unknown as CapitalizeKeys<SeoMetadata>;
 
 export const CONTACT_DETAILS: Record<CapitalizeKeys<string>, string> = {
