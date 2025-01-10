@@ -1,7 +1,7 @@
 ---
-import { TWITTER_HANDLE } from "astro:env/client";
-import { DEFAULT_SEO_PARAMS } from "@const/index";
-import type { SeoMetadata } from "@const/types";
+import { TWITTER_HANDLE } from 'astro:env/client';
+import { DEFAULT_SEO_PARAMS } from '@const/index';
+import type { SeoMetadata } from '@const/types';
 
 type SeoProps = SeoMetadata;
 
@@ -10,10 +10,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const { IMAGE, TITLE, DESCRIPTION, ROBOTS } = DEFAULT_SEO_PARAMS;
 
 const {
-	title = TITLE,
-	description = DESCRIPTION,
-	image = IMAGE,
-	robots = { ...ROBOTS, ...Astro.props.robots },
+  title = TITLE,
+  description = DESCRIPTION,
+  image = IMAGE,
+  robots = { ...ROBOTS, ...Astro.props.robots },
 } = Astro.props as SeoProps;
 ---
 <title>{title} | Bianca Fiore</title>
