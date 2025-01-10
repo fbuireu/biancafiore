@@ -1,4 +1,5 @@
 import cloudflare from '@astrojs/cloudflare';
+import db from '@astrojs/db';
 import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
 import react from '@astrojs/react';
@@ -7,15 +8,12 @@ import MillionLint from '@million/lint';
 // @ts-ignore:next-line
 import { defineConfig, envField } from 'astro/config';
 
-import db from '@astrojs/db';
-
 const isProd = import.meta.env.PROD;
 
 export default defineConfig({
   experimental: {
     responsiveImages: true,
     svg: true,
-    contentIntellisense: true,
   },
   image: {
     experimentalLayout: 'responsive',
@@ -51,7 +49,7 @@ export default defineConfig({
       SITE_URL: envField.string({
         access: 'public',
         context: 'client',
-        default: 'https://biancafiore.me',
+        default: import.meta.env.SITE_URL,
       }),
       BIANCA_EMAIL: envField.string({
         access: 'public',
