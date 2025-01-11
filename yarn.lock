@@ -4314,7 +4314,7 @@ __metadata:
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
-    react-globe.gl: "npm:^2.29.3"
+    react-globe.gl: "npm:^2.29.4"
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.54.2"
     react-instantsearch: "npm:^7.13.10"
@@ -6771,9 +6771,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globe.gl@npm:^2.35":
-  version: 2.35.0
-  resolution: "globe.gl@npm:2.35.0"
+"globe.gl@npm:^2.36":
+  version: 2.36.0
+  resolution: "globe.gl@npm:2.36.0"
   dependencies:
     "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
@@ -6781,7 +6781,7 @@ __metadata:
     three: "npm:>=0.154 <1"
     three-globe: "npm:^2.40"
     three-render-objects: "npm:^1.31"
-  checksum: 10c0/f3e48aef10174b30d81cb7c268c5715a1d4faab20d45f5239512d1b4007449ea7c1bdc603c9f9bddb9ef395afff6bc19b4ab346b07bb3b3ea543ac14c1901ec6
+  checksum: 10c0/5021a9605a086c9b212386c31507b1b53837f5dcd774ec687fe3bdc2b53d2330eaf5b04bc4cbf44af8daf24d3910ce5ee033a2bd5643576d446e9eb8d581cfc9
   languageName: node
   linkType: hard
 
@@ -9990,16 +9990,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-globe.gl@npm:^2.29.3":
-  version: 2.29.3
-  resolution: "react-globe.gl@npm:2.29.3"
+"react-globe.gl@npm:^2.29.4":
+  version: 2.29.4
+  resolution: "react-globe.gl@npm:2.29.4"
   dependencies:
-    globe.gl: "npm:^2.35"
+    globe.gl: "npm:^2.36"
     prop-types: "npm:15"
     react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/66bdc60e266a84f79c27682e035669d7a1bbaae1106f10bc04ba129803a2db7d324c9bb37d50e35c6a23a8c6e0c6879779901ee1ef542bdd6f68017c01bbe97e
+  checksum: 10c0/48861bb3196948b1eae0cc708422e253243517cfd7361af248d6a7f48a2baf25bc8a1db9843fb5b4b97dc44d8d113afb0196ebfa1079d35f8f22254c1c4bfed1
   languageName: node
   linkType: hard
 
