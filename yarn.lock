@@ -5576,7 +5576,7 @@ __metadata:
     react-hook-form: "npm:^7.54.2"
     react-instantsearch: "npm:^7.14.0"
     react-router-dom: "npm:^7.1.1"
-    resend: "npm:^4.0.1"
+    resend: "npm:^4.1.1"
     swiper: "npm:^11.2.1"
     three: "npm:^0.172.0"
     typescript: "npm:^5.7.3"
@@ -11729,12 +11729,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resend@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "resend@npm:4.0.1"
+"resend@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "resend@npm:4.1.1"
   dependencies:
     "@react-email/render": "npm:1.0.1"
-  checksum: 10c0/0330ed3b654e7d5ebe3e4d0ff459a6d6a2e550d6bfe6d4e8e9a4d6459fe4a35c9158ca317599304c203ec76171f1e2bc4f078daec64843e191cbdfed46084141
+  checksum: 10c0/37389232fd1b685ef63a10df3cded2f32559d98391b4d0e168271d1d68c8c3e5cdf6c9d7142a477fb814e700ca4e7b7b98d14dbacf84f915f6cd60d7eaf8621b
   languageName: node
   linkType: hard
 
