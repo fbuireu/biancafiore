@@ -14,6 +14,7 @@ export default defineConfig({
   experimental: {
     responsiveImages: true,
     svg: true,
+    contentIntellisense: true,
   },
   image: {
     experimentalLayout: 'responsive',
