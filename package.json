@@ -70,7 +70,7 @@
 		"react-globe.gl": "^2.29.5",
 		"react-google-recaptcha-v3": "^1.10.1",
 		"react-hook-form": "^7.54.2",
-		"react-instantsearch": "^7.14.0",
+		"react-instantsearch": "^7.15.0",
 		"react-router-dom": "^7.1.1",
 		"resend": "^4.1.1",
 		"swiper": "^11.2.1",
@@ -97,6 +97,6 @@
 		"conventional-changelog-atom": "^5.0.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.4.0",
-		"vitest": "^2.1.8"
+		"vitest": "^3.0.0"
 	}
 }
