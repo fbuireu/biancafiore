@@ -29,8 +29,8 @@ export async function getTags({ rawTags, articles }: GetTags): Promise<TagDTO["a
 			const articlesByTag = getArticlesByTag({ rawTag, articles });
 
 			return {
-				name: rawTag.fields.name as unknown as string,
-				slug: rawTag.fields.slug as unknown as string,
+				name: String(rawTag.fields.name),
+				slug: String(rawTag.fields.slug),
 				type: TagType.TAG,
 				count: articlesByTag.length,
 				articles: articlesByTag,
