@@ -1,38 +1,38 @@
-import type { CollectionEntry } from 'astro:content';
-import type { RawTag, TagDTO } from '@application/dto/tag/types';
-import { TagType } from '@application/dto/tag/types';
-import type { Reference } from '@shared/application/types';
+import type { CollectionEntry } from "astro:content";
+import type { RawTag, TagDTO } from "@application/dto/tag/types";
+import { TagType } from "@application/dto/tag/types";
+import type { Reference } from "@shared/application/types";
 
 interface Articles {
-  articles: CollectionEntry<'articles'>[];
+	articles: CollectionEntry<"articles">[];
 }
 
 interface GetTags extends Articles {
-  rawTags: RawTag[];
+	rawTags: RawTag[];
 }
 
 interface GetArticlesByTagParams extends Articles {
-  rawTag: RawTag;
+	rawTag: RawTag;
 }
 
-const getArticlesByTag = ({ rawTag, articles }: GetArticlesByTagParams): Reference<'articles'>[] =>
-    articles
-        .filter(({ data: { tags } }) => tags?.some(({ slug }) => slug === String(rawTag.fields.slug)))
-        .map(({ data: { slug } }) => ({
-          id: slug,
-          collection: 'articles',
-        }));
+const getArticlesByTag = ({ rawTag, articles }: GetArticlesByTagParams): Reference<"articles">[] =>
+	articles
+		.filter(({ data: { tags } }) => tags?.some(({ slug }) => slug === String(rawTag.fields.slug)))
+		.map(({ data: { slug } }) => ({
+			id: slug,
+			collection: "articles",
+		}));
 
-export function getTags({ rawTags, articles }: GetTags): TagDTO['articles'] {
-  return rawTags.map((rawTag) => {
-    const articlesByTag = getArticlesByTag({ rawTag, articles });
+export function getTags({ rawTags, articles }: GetTags): TagDTO["articles"] {
+	return rawTags.map((rawTag) => {
+		const articlesByTag = getArticlesByTag({ rawTag, articles });
 
-    return {
-      name: String(rawTag.fields.name),
-      slug: String(rawTag.fields.slug),
-      type: TagType.TAG,
-      count: articlesByTag.length,
-      articles: articlesByTag,
-    };
-  });
+		return {
+			name: String(rawTag.fields.name),
+			slug: String(rawTag.fields.slug),
+			type: TagType.TAG,
+			count: articlesByTag.length,
+			articles: articlesByTag,
+		};
+	});
 }
