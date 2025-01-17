@@ -67,11 +67,11 @@
 		"markdown-it": "^14.1.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
-		"react-globe.gl": "^2.29.5",
+		"react-globe.gl": "^2.30.0",
 		"react-google-recaptcha-v3": "^1.10.1",
 		"react-hook-form": "^7.54.2",
 		"react-instantsearch": "^7.15.0",
-		"react-router-dom": "^7.1.1",
+		"react-router-dom": "^7.1.2",
 		"resend": "^4.1.1",
 		"swiper": "^11.2.1",
 		"three": "^0.172.0",
@@ -96,7 +96,7 @@
 		"@types/three": "^0.172.0",
 		"conventional-changelog-atom": "^5.0.0",
 		"husky": "^9.1.7",
-		"lint-staged": "^15.4.0",
-		"vitest": "^3.0.0"
+		"lint-staged": "^15.4.1",
+		"vitest": "^3.0.1"
 	}
 }
