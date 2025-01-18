@@ -7,7 +7,7 @@ export function updatePreferences(cookie: CookieValue): void {
 		window.dataLayer.push(arguments);
 	}
 
-	const category = cookie.categories[0] ?? "analytics";
+	const category = cookie.categories.at(0) ?? "analytics";
 
 	//@ts-ignore:next-line
 	gtag("consent", "update", {

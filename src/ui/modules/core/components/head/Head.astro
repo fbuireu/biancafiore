@@ -12,52 +12,63 @@ type HeadProps = SeoMetadata;
 const props = Astro.props as HeadProps;
 ---
 <head lang="en">
-<script is:inline define:vars={{ GOOGLE_TAG_MANAGER_ID }}>
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer',GOOGLE_TAG_MANAGER_ID);
-</script>
+    <script is:inline type="text/partytown" async
+            src=`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}` />
+    <script is:inline define:vars={{ GOOGLE_TAG_MANAGER_ID }}>
+      (function(w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+          'gtm.start':
+              new Date().getTime(), event: 'gtm.js',
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', GOOGLE_TAG_MANAGER_ID);
+    </script>
     <ClientRouter />
     <Seo {...props} />
 </head>
 <script is:inline define:vars={{ GOOGLE_ANALYTICS_ID }}>
-    window.dataLayer = window.dataLayer || [];
+  window.dataLayer = window.dataLayer || [];
 
-    const gtag = ()=> {
-        dataLayer.push(arguments);
-    }
+  const gtag = () => {
+    dataLayer.push(arguments);
+  };
 
-    const getCookieValue = (name)=> {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? decodeURIComponent(match[2]) : null;
-    }
+  const getCookieValue = (name) => {
+    const COOKIE_PATTERN_REGEX = `(^| )'${name}'=([^;]+)`;
 
-    const getConsentStatusFromCookie =(cookieName) => {
-        let consentStatus = "denied";
+    const match = document.cookie.match(new RegExp(COOKIE_PATTERN_REGEX));
+    return match ? decodeURIComponent(match[2]) : null;
+  };
 
-        try {
-            const cookieValue = getCookieValue(cookieName);
-            if (cookieValue) {
-                const cookieData = JSON.parse(cookieValue);
-                if (Array.isArray(cookieData.categories) && cookieData.categories.includes("analytics")) {
-                    consentStatus = "granted";
-                }
-            }
-        } catch (error) {
-            console.warn("Failed to parse cookie data", error);
+  const getConsentStatusFromCookie = (cookieName) => {
+    let consentStatus = 'denied';
+
+    try {
+      const cookieValue = getCookieValue(cookieName);
+      if (cookieValue) {
+        const cookieData = JSON.parse(cookieValue);
+        if (Array.isArray(cookieData.categories) && cookieData.categories.includes('analytics')) {
+          consentStatus = 'granted';
         }
-
-        return consentStatus;
+      }
+    } catch (error) {
+      console.warn('Failed to parse cookie data', error);
     }
 
-    const analyticsConsentStatus = getConsentStatusFromCookie("cc_cookie");
+    return consentStatus;
+  };
 
-    gtag('js', new Date());
-    gtag('config', GOOGLE_ANALYTICS_ID);
-    gtag('consent', 'default', {
-        'analytics_storage': analyticsConsentStatus
-    });
+  const analyticsConsentStatus = getConsentStatusFromCookie('cc_cookie');
+
+  gtag('js', new Date());
+  gtag('config', GOOGLE_ANALYTICS_ID);
+  gtag('consent', 'default', {
+    'analytics_storage': analyticsConsentStatus,
+  });
 </script>
-<script is:inline type="text/partytown" async src=`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}` />
