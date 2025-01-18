@@ -18,7 +18,7 @@ export function createImage(rawImage: Entry<EntrySkeletonType<ContentfulImageAss
 	} = rawImage as unknown as ContentfulImageAsset;
 
 	return {
-		url: url as unknown as string,
+		url: String(url) as unknown as string,
 		details: {
 			width: details.image?.width,
 			height: details.image?.height,
