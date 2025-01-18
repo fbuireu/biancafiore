@@ -80,14 +80,14 @@ export const config: CookieConsentConfig = {
 										name: "_ga",
 										domain: "Google Analytics",
 										description:
-											'Cookie set by <a href="https://policies.google.com/technologies/cookies?hl=en-US" target="_blank" rel="external noopener noreferrer">Google Analytics</a>',
+											'Cookie set by <a href="https://policies.google.com/technologies/cookies?hl=en-US" target="_blank" rel="external">Google Analytics</a>',
 										expiration: "Expires after 12 days",
 									},
 									{
 										name: "_gid",
 										domain: "Google Analytics",
 										description:
-											'Cookie set by <a href="https://policies.google.com/technologies/cookies?hl=en-US" target="_blank" rel="external noopener noreferrer">Google Analytics</a>',
+											'Cookie set by <a href="https://policies.google.com/technologies/cookies?hl=en-US" target="_blank" rel="external">Google Analytics</a>',
 										expiration: "Session",
 									},
 								],
