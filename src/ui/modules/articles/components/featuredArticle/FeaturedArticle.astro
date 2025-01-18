@@ -65,7 +65,7 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                         <li class="featured-article__share__link__item --underline-on-hover --is-clickable">
                             <a
                                 target="_blank"
-                                rel="noopener noreferrer"
+                                rel="external"
                                 href={`https://twitter.com/intent/tweet?url=${featuredArticleShareUrl}&text=${featuredArticle.data.title}&hashtags=${featuredArticle.data.tags?.join(
                                     ',')}`}>
                                 X (former Twitter)
