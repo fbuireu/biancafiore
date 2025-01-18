@@ -15,7 +15,7 @@
 	place-self: center;
 	width: 100%;
 
-	@media (960px <= width <=575px) {
+	@media (960px <= width <= 575px) {
 		width: 50%;
 	}
 }
