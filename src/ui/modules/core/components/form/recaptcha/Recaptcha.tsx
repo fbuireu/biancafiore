@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes, JSX } from "react";
+import type { InputHTMLAttributes } from "react";
 import "./recaptcha.css";
 
 interface RecaptchaProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -6,7 +6,7 @@ interface RecaptchaProps extends InputHTMLAttributes<HTMLInputElement> {
 	errorMessage?: string;
 }
 
-export const Recaptcha = ({ hasError, errorMessage, ...rest }: RecaptchaProps): JSX.Element => {
+export const Recaptcha = ({ hasError, errorMessage, ...rest }: RecaptchaProps) => {
 	return (
 		<div className="contact-form__recaptcha__wrapper">
 			<input type="hidden" {...rest} />

@@ -1,9 +1,9 @@
-import type { ImgHTMLAttributes, JSX } from "react";
+import type { ImgHTMLAttributes } from "react";
 
 interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
 	classNames?: string;
 }
 
-export const Image = ({ src, alt, decoding = "async", loading = "lazy", classNames }: ImageProps): JSX.Element => (
+export const Image = ({ src, alt, decoding = "async", loading = "lazy", classNames }: ImageProps) => (
 	<img src={src} alt={alt} className={classNames} decoding={decoding} loading={loading} />
 );

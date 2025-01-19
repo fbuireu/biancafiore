@@ -6,7 +6,7 @@ import type { CityNameProps } from "@modules/about/components/cityCard/atoms/cit
 import { CityName } from "@modules/about/components/cityCard/atoms/cityName";
 import type { CityPeriodProps } from "@modules/about/components/cityCard/atoms/cityPeriod";
 import { CityPeriod } from "@modules/about/components/cityCard/atoms/cityPeriod";
-import type { CSSProperties, JSX, ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import "./city-card.css";
 
 interface CityCardProps {
@@ -16,7 +16,7 @@ interface CityCardProps {
 	name: string;
 }
 
-export const CityCard = ({ children, index, numCards, name }: CityCardProps): JSX.Element => {
+export const CityCard = ({ children, index, numCards, name }: CityCardProps) => {
 	const style: CSSProperties & { [key: string]: string } = {
 		"--inline-index": String(index),
 		"--inline-num-cards": String(numCards),
