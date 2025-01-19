@@ -7151,7 +7151,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"float-tooltip@npm:^1.6":
+"float-tooltip@npm:^1.7":
   version: 1.7.3
   resolution: "float-tooltip@npm:1.7.3"
   dependencies:
@@ -7412,17 +7412,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globe.gl@npm:^2.38":
-  version: 2.38.0
-  resolution: "globe.gl@npm:2.38.0"
+"globe.gl@npm:^2.39":
+  version: 2.39.0
+  resolution: "globe.gl@npm:2.39.0"
   dependencies:
     "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
     kapsule: "npm:^1.16"
     three: "npm:>=0.154 <1"
-    three-globe: "npm:^2.40"
-    three-render-objects: "npm:^1.35"
-  checksum: 10c0/9ca1ea08b6cce433a4bbf8b0f1ffc80d8515430d0db5912c9797c14bf51e8a3c9ae1d378727fe0528e96be1cc1cb65c9a65bf2ed53dc999f1c603ab793cd829c
+    three-globe: "npm:^2.41"
+    three-render-objects: "npm:^1.37"
+  checksum: 10c0/1b5b87ff1c3fea22ee637d8b503eca2b904e661fe4d9ead5a98375e027c48bf16b52b6bfb506414e03603820544b2a3d6c42cf77bbd7594c2705ee5571d67468
   languageName: node
   linkType: hard
 
@@ -10585,15 +10585,15 @@ __metadata:
   linkType: hard
 
 "react-globe.gl@npm:^2.30.0":
-  version: 2.30.0
-  resolution: "react-globe.gl@npm:2.30.0"
+  version: 2.31.0
+  resolution: "react-globe.gl@npm:2.31.0"
   dependencies:
-    globe.gl: "npm:^2.38"
+    globe.gl: "npm:^2.39"
     prop-types: "npm:15"
     react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/8537e62bb1ae93f09e47bcbaa3c22eaa4ed8ba52bea28261ff9f5de5859e8f9004d6229a21810cf96cac65ec2759227160a1f66aa73ae3609e1a54bc75b5f9bc
+  checksum: 10c0/05ac48517da38b90f2a05504f51025c37c6cda0d67458d2e97d247427628b15e4c37dd6b0c7d7a20710e18cdfbbae222f625e94878b98322b2eed2ad97281f97
   languageName: node
   linkType: hard
 
@@ -12028,9 +12028,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three-globe@npm:^2.40":
-  version: 2.40.1
-  resolution: "three-globe@npm:2.40.1"
+"three-globe@npm:^2.41":
+  version: 2.41.0
+  resolution: "three-globe@npm:2.41.0"
   dependencies:
     "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
@@ -12052,22 +12052,22 @@ __metadata:
     yaot: "npm:^1.1"
   peerDependencies:
     three: ">=0.154"
-  checksum: 10c0/e6df2f742db45f202021757704836deb6e13e7bfe884ae54a70b9389d243e3f4ec793b28b2c736a02aed054a58cee33cd6fffca9044da3f5c28825800016dd08
+  checksum: 10c0/770edb078b53214e3edee6a153c0900cf21554a93bccdcd6e75b57081ef163a4f38649a08f0766b899d555314573a056c148a8c4668018277c669b3e4b71b966
   languageName: node
   linkType: hard
 
-"three-render-objects@npm:^1.35":
-  version: 1.35.0
-  resolution: "three-render-objects@npm:1.35.0"
+"three-render-objects@npm:^1.37":
+  version: 1.37.0
+  resolution: "three-render-objects@npm:1.37.0"
   dependencies:
     "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
-    float-tooltip: "npm:^1.6"
+    float-tooltip: "npm:^1.7"
     kapsule: "npm:^1.16"
     polished: "npm:4"
   peerDependencies:
     three: ">=0.168"
-  checksum: 10c0/67ccb99548b492a188896973b003cf056f4d70b4e5f99d7cc18554b642560fcf5b4313a76e360ed7a44412ec8fe78143221bf68559980a38965705e4b8667eb3
+  checksum: 10c0/96caa83a39c8597e7fd86d16f1a5c1b84db5a2b7fac7d32468c17f7d44922fa2ba20871fbfdc3ceeb3fa1aaa9161b815bc02d31003602c60eb30b24cf7c62898
   languageName: node
   linkType: hard
 
