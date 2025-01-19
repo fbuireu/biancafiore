@@ -10,13 +10,13 @@ import { Textarea } from "@modules/core/components/form/textarea";
 import Spinner from "@modules/core/components/spinner/Spinner";
 import { type ContactFormData, FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
-import type { FormEvent, JSX } from "react";
+import type { FormEvent } from "react";
 import { useCallback, useRef, useState, useTransition } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
 import "./contact-form.css";
 
-export const ContactForm = (): JSX.Element => {
+export const ContactForm = () => {
 	const {
 		register,
 		handleSubmit,

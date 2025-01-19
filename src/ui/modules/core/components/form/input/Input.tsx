@@ -1,6 +1,6 @@
 import { FormStatus } from "@shared/ui/types.ts";
 import clsx from "clsx";
-import type { InputHTMLAttributes, JSX } from "react";
+import type { InputHTMLAttributes } from "react";
 import "./input.css";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -10,16 +10,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 }
 
-export const Input = ({
-	id,
-	type,
-	placeholder,
-	label,
-	formStatus,
-	hasError,
-	errorMessage,
-	...rest
-}: InputProps): JSX.Element => {
+export const Input = ({ id, type, placeholder, label, formStatus, hasError, errorMessage, ...rest }: InputProps) => {
 	return (
 		<div
 			className={clsx("contact-form__input__wrapper", {

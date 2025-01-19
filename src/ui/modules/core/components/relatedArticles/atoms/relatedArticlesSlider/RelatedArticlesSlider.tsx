@@ -2,7 +2,7 @@ import type { CollectionEntry } from "astro:content";
 import { DEFAULT_SWIPER_CONFIG } from "@const/index";
 import { ArticleCard } from "@modules/core/components/articleCard/ArticleCard";
 import { Slider } from "@modules/core/components/slider";
-import type { CSSProperties, JSX } from "react";
+import type { CSSProperties } from "react";
 import type { SwiperOptions } from "swiper/types";
 
 interface RelatedArticlesSliderProps {
@@ -35,7 +35,7 @@ const SLIDER_CONFIG: SwiperOptions = {
 	containerModifierClass: "related-articles-",
 };
 
-export const RelatedArticlesSlider = ({ articles, origin }: RelatedArticlesSliderProps): JSX.Element => {
+export const RelatedArticlesSlider = ({ articles, origin }: RelatedArticlesSliderProps) => {
 	return (
 		<div className="related-articles__slider common-wrapper">
 			<Slider
