@@ -5105,7 +5105,7 @@ __metadata:
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
-    react-globe.gl: "npm:^2.30.0"
+    react-globe.gl: "npm:^2.31.0"
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.54.2"
     react-instantsearch: "npm:^7.15.0"
@@ -10584,7 +10584,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-globe.gl@npm:^2.30.0":
+"react-globe.gl@npm:^2.31.0":
   version: 2.31.0
   resolution: "react-globe.gl@npm:2.31.0"
   dependencies:
