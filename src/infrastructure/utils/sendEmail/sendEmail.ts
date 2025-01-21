@@ -1,5 +1,5 @@
 import { CONTACT_DETAILS } from "@const/index";
-import type { Except } from "@const/types.ts";
+import type { Except } from "@const/types";
 import { Exception } from "@domain/errors";
 import { emails } from "@infrastructure/email/server";
 import { createEmail } from "@infrastructure/utils/createEmail";

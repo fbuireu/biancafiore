@@ -1,6 +1,6 @@
-import { CONTACT_DETAILS, DEFAULT_LOCALE_STRING } from "@const/const.ts";
-import type { Except } from "@const/types.ts";
-import type { ContactFormData } from "@shared/ui/types.ts";
+import { CONTACT_DETAILS, DEFAULT_LOCALE_STRING } from "@const/const";
+import type { Except } from "@const/types";
+import type { ContactFormData } from "@shared/ui/types";
 
 type GenerateHtmlParams = Except<ContactFormData, "recaptcha" | "emailId">;
 

@@ -1,7 +1,7 @@
 import { Contact, db, eq } from "astro:db";
-import type { Except } from "@const/types.ts";
+import type { Except } from "@const/types";
 import { Exception } from "@domain/errors";
-import type { ContactFormData } from "@shared/ui/types.ts";
+import type { ContactFormData } from "@shared/ui/types";
 
 type CheckDuplicatedEntriesParams = Except<ContactFormData, "recaptcha" | "emailId">;
 

@@ -1,1 +1,1 @@
-export * from "./Recaptcha.tsx";
+export * from "./Recaptcha";

@@ -1,5 +1,5 @@
 import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
-import type { Except } from "@const/types.ts";
+import type { Except } from "@const/types";
 import { createImage } from "@shared/application/dto/utils/createImage";
 import type { Entry, EntrySkeletonType } from "contentful";
 

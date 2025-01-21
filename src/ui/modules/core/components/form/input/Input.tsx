@@ -1,4 +1,4 @@
-import { FormStatus } from "@shared/ui/types.ts";
+import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
 import type { InputHTMLAttributes } from "react";
 import "./input.css";

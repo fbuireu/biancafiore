@@ -1,7 +1,7 @@
 // @ts-ignore
 import { ActionError, defineAction } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
-import type { Except } from "@const/types.ts";
+import type { Except } from "@const/types";
 import { Exception } from "@domain/errors";
 import { checkDuplicatedEntries } from "@infrastructure/utils/checkDuplicatedEntries";
 import { saveContact } from "@infrastructure/utils/saveContact";
