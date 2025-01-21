@@ -1,5 +1,5 @@
 import { autosize } from "@modules/contact/utils/autosize";
-import { FormStatus } from "@shared/ui/types.ts";
+import { FormStatus } from "@shared/ui/types";
 import type { InputHTMLAttributes, JSX } from "react";
 import "./textarea.css";
 import clsx from "clsx";

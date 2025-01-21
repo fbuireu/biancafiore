@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 import { LeftArrow } from "@assets/images/svg-components/leftArrow";
-import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn.tsx";
+import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn";
 import { WORLD_GLOBE_CONFIG } from "@const/index";
 import countries from "@data/countries.geojson.json";
 import { TabVisibility, useTabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
@@ -12,7 +12,7 @@ import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
 import "./world-globe.css";
-import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut.tsx";
+import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
 
 interface GlobeAllCitiesProps {
 	cities: CollectionEntry<"cities">[];

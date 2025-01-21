@@ -1,5 +1,5 @@
 import type { z } from "astro:content";
-import type { ArticleDTO } from "@application/dto/article/types.ts";
+import type { ArticleDTO } from "@application/dto/article/types";
 import type { authorSchema } from "@application/entities/authors";
 import type { ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
