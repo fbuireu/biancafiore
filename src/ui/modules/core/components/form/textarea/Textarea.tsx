@@ -1,8 +1,8 @@
 import { autosize } from "@modules/contact/utils/autosize";
 import { FormStatus } from "@shared/ui/types";
 import type { InputHTMLAttributes, JSX } from "react";
-import "./textarea.css";
 import clsx from "clsx";
+import "./textarea.css";
 
 interface TextareaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
 	hasError: boolean;
