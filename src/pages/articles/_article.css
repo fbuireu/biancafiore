@@ -15,10 +15,21 @@
 		view-timeline: var(--is);
 	}
 
-	@supports (initial-letter: 3 2) {
+	& > p:first-of-type::first-letter {
+		color: var(--primary-main);
+	}
+
+	@supports (initial-letter: 2 2) {
 		& > p:first-of-type::first-letter {
-			initial-letter: 3 2;
+			initial-letter: 2 2;
 			padding-right: 0.25rem;
+		}
+	}
+
+	@supports not (initial-letter: 2 2) {
+		& > p:first-of-type::first-letter {
+			float: left;
+			font-size: 2lh;
 		}
 	}
 
