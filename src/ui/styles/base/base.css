@@ -88,6 +88,15 @@
 		}
 	}
 
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		text-box: trim-both cap alphabetic;
+	}
+
 	h1 {
 		font-size: clamp(4rem, 4.25vw, 5.25rem);
 	}
