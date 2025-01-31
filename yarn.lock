@@ -3623,9 +3623,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "astro@npm:5.2.0"
+"astro@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "astro@npm:5.2.1"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/internal-helpers": "npm:0.5.0"
@@ -3692,7 +3692,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/13c3206bf34c4740249783d10cd217c094cb9cb5f02eb96eced639c53d30137990fb20cbbbcf9814687a8a6cc4cad58717fd1a7f2959dea7ff4690940206d8ff
+  checksum: 10c0/268b1ed6823c818f3cc47b4aa7a5d42a67cef846163f86e14b96fea0c6d98f332a8f341f5c5a351cf9f01a8a9254171ff26ccd77c36adb1875256c4195914d7e
   languageName: node
   linkType: hard
 
@@ -3804,7 +3804,7 @@ __metadata:
     "@types/react-dom": "npm:^19.0.3"
     "@types/three": "npm:^0.172.0"
     algoliasearch: "npm:^5.20.0"
-    astro: "npm:^5.2.0"
+    astro: "npm:^5.2.1"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.4.4"
     conventional-changelog-atom: "npm:^5.0.0"
@@ -3819,10 +3819,10 @@ __metadata:
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.54.2"
     react-instantsearch: "npm:^7.15.3"
-    react-router-dom: "npm:^7.1.3"
+    react-router-dom: "npm:^7.1.4"
     resend: "npm:^4.1.1"
     swiper: "npm:^11.2.1"
-    three: "npm:^0.172.0"
+    three: "npm:^0.173.0"
     typescript: "npm:^5.7.3"
     vanilla-cookieconsent: "npm:^3.0.1"
     vitest: "npm:^3.0.4"
@@ -9369,21 +9369,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.1.3":
-  version: 7.1.3
-  resolution: "react-router-dom@npm:7.1.3"
+"react-router-dom@npm:^7.1.4":
+  version: 7.1.4
+  resolution: "react-router-dom@npm:7.1.4"
   dependencies:
-    react-router: "npm:7.1.3"
+    react-router: "npm:7.1.4"
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10c0/84752b90e3f9e9168fc29d7dd5eb0ff622a831de15e4e5d899694f19bc988387d831d180d07f503071d944fa4a666c1d07004e4526268215cc5dbe5bba98f52c
+  checksum: 10c0/edd5696c67d725a1109cc9a3602b2fc7df708fbfea21ee5f56ad0586fb9f4e11dfc13e0f516fa99771207e28d82ce746e84869fa4cd43826130afaf5f3bc1b43
   languageName: node
   linkType: hard
 
-"react-router@npm:7.1.3":
-  version: 7.1.3
-  resolution: "react-router@npm:7.1.3"
+"react-router@npm:7.1.4":
+  version: 7.1.4
+  resolution: "react-router@npm:7.1.4"
   dependencies:
     "@types/cookie": "npm:^0.6.0"
     cookie: "npm:^1.0.1"
@@ -9395,7 +9395,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/f42f7b245533d1adaa00779a0287993a836d5b56039d97a6643a8b3a721ffb92ff47c97cfb36409fec8794ac3c8a884339f588cf21fcd7f6dccdfc834520c76f
+  checksum: 10c0/3b57c46d7f6e7f04e6cf6e4e3dfba8cf5346baa1b56afc7234ce29c84776e9fd85300df227dc757e82574a05346d93467963f2ca15d92492bb07435d284bf934
   languageName: node
   linkType: hard
 
@@ -10741,10 +10741,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:^0.172.0":
-  version: 0.172.0
-  resolution: "three@npm:0.172.0"
-  checksum: 10c0/72eca48bf89990e799a1de1c63a93feff226277a8d49acaee0b46d3f4d085bcdc8b2cad8457cd0dd3168bd6c5775eee65deb66f79a7d2e93220214a1075500bf
+"three@npm:^0.173.0":
+  version: 0.173.0
+  resolution: "three@npm:0.173.0"
+  checksum: 10c0/6c8ad9b7ab6baaa0dc033c550e76cd3afe462ecfa99ba1b445714f36eeb4994e7dfcb1b72d3c32f6b53ac38df457aa3341ae4f948cb6cfd1d3acc9ee7bba4e58
   languageName: node
   linkType: hard
 
