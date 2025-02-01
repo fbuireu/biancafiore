@@ -32,6 +32,7 @@ export const Textarea = ({
 				disabled={formStatus === FormStatus.UNAUTHORIZED}
 				placeholder={placeholder}
 				onKeyDown={autosize}
+				aria-describedby={hasError ? errorMessage: undefined}
 				{...rest}
 			/>
 			<label htmlFor={id} className="contact-form__textarea-label">

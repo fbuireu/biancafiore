@@ -64,7 +64,7 @@ export const ContactForm = () => {
 				contactData.append("message", data.message);
 
 				const { data: response, error } = await actions.contact(contactData);
-
+				
 				if (response?.ok) {
 					flyPlane(submitRef.current);
 					setTimeout(() => {
