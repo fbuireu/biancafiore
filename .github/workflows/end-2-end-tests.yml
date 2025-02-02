@@ -8,7 +8,7 @@ env:
     E2E_URL: ${{ github.event_name == 'workflow_dispatch' && vars.E2E_PRODUCTION_URL || vars.E2E_SELF_HOSTED_URL }}
     E2E_COMMAND: ${{ github.event_name == 'workflow_dispatch' && 'yarn test:e2e' || 'yarn test:e2e:changed' }}
 jobs:
-    e2e-tests:
+    end-to-end-tests:
         name: Run E2E tests
         timeout-minutes: 60
         runs-on: ubuntu-latest
