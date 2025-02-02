@@ -6,7 +6,7 @@ on:
     pull_request:
         branches: [main]
 jobs:
-    ut-tests:
+    unit-tests:
         name: Run unit tests
         runs-on: ubuntu-latest
         steps:
