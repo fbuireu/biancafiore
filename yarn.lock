@@ -9334,15 +9334,15 @@ __metadata:
   linkType: hard
 
 "react-globe.gl@npm:^2.31.0":
-  version: 2.31.0
-  resolution: "react-globe.gl@npm:2.31.0"
+  version: 2.31.1
+  resolution: "react-globe.gl@npm:2.31.1"
   dependencies:
     globe.gl: "npm:^2.39"
     prop-types: "npm:15"
     react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/05ac48517da38b90f2a05504f51025c37c6cda0d67458d2e97d247427628b15e4c37dd6b0c7d7a20710e18cdfbbae222f625e94878b98322b2eed2ad97281f97
+  checksum: 10c0/93b01748e1c157423dd043268a527f195f49c8e05cc63aadf02fd5107652f3c881489ac0903ad120d1459c3b107976091f55a667c7f71f8b0eea1a1609dafcf5
   languageName: node
   linkType: hard
 
