@@ -858,7 +858,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:^19.6.1":
+"@commitlint/cli@npm:^19.7.1":
   version: 19.7.1
   resolution: "@commitlint/cli@npm:19.7.1"
   dependencies:
@@ -875,7 +875,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^19.6.0":
+"@commitlint/config-conventional@npm:^19.7.1":
   version: 19.7.1
   resolution: "@commitlint/config-conventional@npm:19.7.1"
   dependencies:
@@ -3849,8 +3849,8 @@ __metadata:
     "@astrojs/sitemap": "npm:^3.2.1"
     "@astrojs/ts-plugin": "npm:^1.10.4"
     "@biomejs/biome": "npm:^1.9.4"
-    "@commitlint/cli": "npm:^19.6.1"
-    "@commitlint/config-conventional": "npm:^19.6.0"
+    "@commitlint/cli": "npm:^19.7.1"
+    "@commitlint/config-conventional": "npm:^19.7.1"
     "@commitlint/format": "npm:^19.5.0"
     "@contentful/rich-text-html-renderer": "npm:^17.0.0"
     "@fontsource-variable/nunito-sans": "npm:^5.1.1"
@@ -3878,7 +3878,7 @@ __metadata:
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
-    react-globe.gl: "npm:^2.31.0"
+    react-globe.gl: "npm:^2.31.2"
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.54.2"
     react-instantsearch: "npm:^7.15.3"
@@ -9333,16 +9333,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-globe.gl@npm:^2.31.0":
-  version: 2.31.1
-  resolution: "react-globe.gl@npm:2.31.1"
+"react-globe.gl@npm:^2.31.2":
+  version: 2.31.2
+  resolution: "react-globe.gl@npm:2.31.2"
   dependencies:
     globe.gl: "npm:^2.39"
     prop-types: "npm:15"
     react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/93b01748e1c157423dd043268a527f195f49c8e05cc63aadf02fd5107652f3c881489ac0903ad120d1459c3b107976091f55a667c7f71f8b0eea1a1609dafcf5
+  checksum: 10c0/932e133f6ce64aac49f0db4209ac0aafddd5b7354d68f0ff663ca556a9212a9fec267b3ed27333fab217befe9c36a0ed99cdce0f127693aec33e920fe6a3fc55
   languageName: node
   linkType: hard
 
