@@ -3686,9 +3686,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.2.4":
-  version: 5.2.4
-  resolution: "astro@npm:5.2.4"
+"astro@npm:^5.2.5":
+  version: 5.2.5
+  resolution: "astro@npm:5.2.5"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/internal-helpers": "npm:0.5.1"
@@ -3729,10 +3729,10 @@ __metadata:
     neotraverse: "npm:^0.6.18"
     p-limit: "npm:^6.2.0"
     p-queue: "npm:^8.1.0"
-    preferred-pm: "npm:^4.1.0"
+    preferred-pm: "npm:^4.1.1"
     prompts: "npm:^2.4.2"
     rehype: "npm:^13.0.2"
-    semver: "npm:^7.7.0"
+    semver: "npm:^7.7.1"
     sharp: "npm:^0.33.3"
     shiki: "npm:^1.29.2"
     tinyexec: "npm:^0.3.2"
@@ -3743,7 +3743,7 @@ __metadata:
     vfile: "npm:^6.0.3"
     vite: "npm:^6.0.11"
     vitefu: "npm:^1.0.5"
-    which-pm: "npm:^3.0.0"
+    which-pm: "npm:^3.0.1"
     xxhash-wasm: "npm:^1.1.0"
     yargs-parser: "npm:^21.1.1"
     yocto-spinner: "npm:^0.2.0"
@@ -3755,7 +3755,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/53e7b13eb7a983ea07665aac2b7631dde9ebe2ec79fde2cb2bb21598a510e042714eebbe7ef352876769c0855d23b0aab0f09246a8095079371a19cd93262451
+  checksum: 10c0/181b77188c03bdfa62b7a2ced3bb0b6d93ac6794d8b9e02e340bcec2c40d4ad126010268d2614a9f439e644b791d570a264d02bbca325a3648af087452c2f67b
   languageName: node
   linkType: hard
 
@@ -3867,9 +3867,9 @@ __metadata:
     "@types/react-dom": "npm:^19.0.3"
     "@types/three": "npm:^0.173.0"
     algoliasearch: "npm:^5.20.0"
-    astro: "npm:^5.2.4"
+    astro: "npm:^5.2.5"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.4.4"
+    contentful: "npm:^11.4.5"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.12.7"
     husky: "npm:^9.1.7"
@@ -3887,7 +3887,7 @@ __metadata:
     swiper: "npm:^11.2.2"
     three: "npm:^0.173.0"
     typescript: "npm:^5.7.3"
-    vanilla-cookieconsent: "npm:^3.0.1"
+    vanilla-cookieconsent: "npm:^3.1.0"
     vitest: "npm:^3.0.5"
     zod: "npm:^3.24.1"
   languageName: unknown
@@ -4412,9 +4412,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.4.4":
-  version: 11.4.4
-  resolution: "contentful@npm:11.4.4"
+"contentful@npm:^11.4.5":
+  version: 11.4.5
+  resolution: "contentful@npm:11.4.5"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.7"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -4423,7 +4423,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/2436dcceb2e13cf8b7e5957b8b18f6be6e91c474b22c9671f5f05d62c25478377241e7569c1c3c4594f1d6d91a5ce29ffe598548b2b3641ad08e280cc47598e1
+  checksum: 10c0/d8570df113250a171bcb6aa38ba8d928bcf5efac29e18cfd9afead74c8da6e624d68ba224d2540edd7cfd3d27ecea6f889e9ea748248012519f23c1c081c9fd0
   languageName: node
   linkType: hard
 
@@ -9121,14 +9121,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preferred-pm@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "preferred-pm@npm:4.1.0"
+"preferred-pm@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "preferred-pm@npm:4.1.1"
   dependencies:
     find-up-simple: "npm:^1.0.0"
     find-yarn-workspace-root2: "npm:1.2.16"
-    which-pm: "npm:^3.0.0"
-  checksum: 10c0/76292b2a4892301769a5431704712b4f95c4f5dd42ea919345e25fe59882388fe3658d0c342226047110010a14b3602e80f1af11a9afdb6339aa5ec7bcc5a3dd
+    which-pm: "npm:^3.0.1"
+  checksum: 10c0/c5344ff6c1ca88b6e6b7ed9f2a9ff1c651f9e1062928610ac42dcc7e82468df06a62412a9f682e1a1a0fd0d3f409e3c6a0f97140c4bcdbc70dffddb570848e7f
   languageName: node
   linkType: hard
 
@@ -10135,12 +10135,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.7.0":
-  version: 7.7.0
-  resolution: "semver@npm:7.7.0"
+"semver@npm:^7.7.1":
+  version: 7.7.1
+  resolution: "semver@npm:7.7.1"
   bin:
     semver: bin/semver.js
-  checksum: 10c0/bcd1c03209b4be7d8ca86c976a0410beba7d4ec1d49d846a4be154b958db1ff5eaee50760c1d4f4070b19dee3236b8672d3e09642c53ea23740398bba2538a2d
+  checksum: 10c0/fd603a6fb9c399c6054015433051bdbe7b99a940a8fb44b85c2b524c4004b023d7928d47cb22154f8d054ea7ee8597f586605e05b52047f048278e4ac56ae958
   languageName: node
   linkType: hard
 
@@ -11386,10 +11386,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vanilla-cookieconsent@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "vanilla-cookieconsent@npm:3.0.1"
-  checksum: 10c0/dfb91004aaa14575561c6e6d8dd885b4cb9a867f99cce204802392e2ce725674b6b544b8af39e3eed2c25a9d30357c9ea45dbcef552a49c8445c6b4b0abd7db0
+"vanilla-cookieconsent@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "vanilla-cookieconsent@npm:3.1.0"
+  checksum: 10c0/f344d9786ea74850ec4274d85c9049b4d36b3ff368ddb4a0e446bad2dc0ccfad03542e97f40f7eb103b9e06d8b4d5381f63f8f0f80d898f80c5bf3e96e877382
   languageName: node
   linkType: hard
 
@@ -11856,12 +11856,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"which-pm@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "which-pm@npm:3.0.0"
+"which-pm@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "which-pm@npm:3.0.1"
   dependencies:
     load-yaml-file: "npm:^0.2.0"
-  checksum: 10c0/42be608abc9012b1456b99a1f3354119eb2500908e48532f873aa9d8c705d235d1b4ade62a2b28e35e90ecac1e0750a69cd6a079e3cf3e11d6bc1b601dbfda44
+  checksum: 10c0/2d372580c91c5d4fabef3a57d8cf235930fd4a600a36bf46a2c6f9e4b17ba4b646fe4a61fac176815d978478b214493b63868e9b0f7c44abeabbcf03a83ce24e
   languageName: node
   linkType: hard
 
