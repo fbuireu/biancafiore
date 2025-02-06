@@ -19,6 +19,7 @@ export default defineConfig({
 	image: {
 		experimentalLayout: "responsive",
 	},
+	trailingSlash: "always",
 	site: "https://biancafiore.me",
 	prefetch: true,
 	output: "server",
