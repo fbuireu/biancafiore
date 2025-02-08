@@ -3,20 +3,46 @@ description: 'Sets up Node.js and Yarn environment'
 runs:
   using: "composite"
   steps:
+    - name: Validate .nvmrc exists
+      shell: bash
+      run: |
+        if [ ! -f .nvmrc ]; then
+          echo "Error: .nvmrc file not found"
+          exit 1
+        fi
+
     - name: Use Node.js version from .nvmrc
       shell: bash
       run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
+
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
+
+    - uses: actions/cache@v4
+      with:
+        path: **/node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: ${{ runner.os }}-yarn-
+
     - name: Enable Corepack
       shell: bash
       run: corepack enable
+
     - name: Get Yarn version from package.json
       shell: bash
       run: |
         YARN_VERSION=$(jq -r '.packageManager' package.json | grep -o 'yarn@[0-9]*\.[0-9]*\.[0-9]*')
+        if [ -z "$YARN_VERSION" ]; then
+          echo "Error: Yarn version not found in package.json"
+          exit 1
+        fi
         echo "YARN_VERSION=${YARN_VERSION}" >> $GITHUB_ENV
+
     - name: Install correct Yarn version
       shell: bash
-      run: corepack prepare ${{ env.YARN_VERSION }} --activate
+      run: |
+        if ! corepack prepare ${{ env.YARN_VERSION }} --activate; then
+          echo "Error: Failed to install Yarn version ${{ env.YARN_VERSION }}"
+          exit 1
+        fi
