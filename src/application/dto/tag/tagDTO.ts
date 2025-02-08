@@ -1,8 +1,8 @@
+import { getCollection } from "astro:content";
 import type { RawTag, TagDTO } from "@application/dto/tag/types";
 import { getAuthors } from "@application/dto/tag/utils/getAuthors";
 import { getTags } from "@application/dto/tag/utils/getTags";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
-import { getCollection } from "astro:content";
 
 export const tagDTO: BaseDTO<RawTag[], Promise<TagDTO>> = {
 	create: async (raw) => {
