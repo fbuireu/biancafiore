@@ -1,7 +1,7 @@
 import { autosize } from "@modules/contact/utils/autosize";
 import { FormStatus } from "@shared/ui/types";
-import type { InputHTMLAttributes, JSX } from "react";
 import clsx from "clsx";
+import type { InputHTMLAttributes, JSX } from "react";
 import "./textarea.css";
 
 interface TextareaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
@@ -32,7 +32,7 @@ export const Textarea = ({
 				disabled={formStatus === FormStatus.UNAUTHORIZED}
 				placeholder={placeholder}
 				onKeyDown={autosize}
-				aria-describedby={hasError ? errorMessage: undefined}
+				aria-describedby={hasError ? errorMessage : undefined}
 				{...rest}
 			/>
 			<label htmlFor={id} className="contact-form__textarea-label">

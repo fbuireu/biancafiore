@@ -23,7 +23,7 @@ export const Input = ({ id, type, placeholder, label, formStatus, hasError, erro
 				placeholder={placeholder}
 				className="contact-form__input"
 				disabled={formStatus === FormStatus.UNAUTHORIZED}
-				aria-describedby={hasError ? errorMessage: undefined}
+				aria-describedby={hasError ? errorMessage : undefined}
 				{...rest}
 			/>
 			{label && id && (
