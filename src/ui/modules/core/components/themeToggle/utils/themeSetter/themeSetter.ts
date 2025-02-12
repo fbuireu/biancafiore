@@ -43,7 +43,9 @@ export function initializeThemeSetter(): void {
 		document.documentElement.setAttribute(`data-${THEME_STORAGE_KEY}`, theme);
 		localStorage.setItem(THEME_STORAGE_KEY, theme);
 
-		if (!TOGGLE || !THEME_INPUT) return;
+		if (!TOGGLE || !THEME_INPUT) {
+			return;
+		}
 
 		const isDarkMode = theme === ThemeType.DARK;
 
@@ -55,7 +57,9 @@ export function initializeThemeSetter(): void {
 
 	applyTheme({ theme: initialTheme, document });
 
-	if (!THEME_INPUT) return;
+	if (!THEME_INPUT) {
+		return;
+	}
 
 	THEME_INPUT.addEventListener("change", () => handleThemeChange(THEME_INPUT));
 

@@ -6,6 +6,7 @@
 		"strict": true,
 		"strictNullChecks": true,
 		"allowSyntheticDefaultImports": true,
+		"target": "ESNext",
 		"moduleResolution": "node",
 		"jsxImportSource": "react",
 		"jsx": "react-jsx",

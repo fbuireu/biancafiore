@@ -4,8 +4,7 @@ import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import MillionLint from "@million/lint";
-// @ts-ignore:next-line
+import MillionLint from "@million/lint"; // @ts-ignore:next-line
 import { defineConfig, envField } from "astro/config";
 
 const isProd = import.meta.env.PROD;
@@ -19,11 +18,14 @@ export default defineConfig({
 	image: {
 		experimentalLayout: "responsive",
 	},
-	trailingSlash: "always",
+	trailingSlash: "never",
 	site: "https://biancafiore.me",
 	prefetch: true,
 	output: "server",
 	vite: {
+		build: {
+			target: "esnext",
+		},
 		ssr: {
 			external: ["node:async_hooks", "contentful"],
 		},
@@ -41,6 +43,7 @@ export default defineConfig({
 		MillionLint.astro({ lite: true, telemetry: false }),
 	],
 	adapter: cloudflare({
+		imageService: "compile",
 		platformProxy: {
 			enabled: isProd,
 		},

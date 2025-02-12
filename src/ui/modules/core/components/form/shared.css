@@ -1,5 +1,6 @@
 .contact-form__recaptcha__error-message,
 .contact-form__textarea__error-message,
+.contact-form__generic-error-message,
 .contact-form__input__error-message {
 	color: var(--error-main);
 	font-size: 1rem;
@@ -7,6 +8,16 @@
 	inset: auto 0;
 	position: absolute;
 	text-align: center;
+}
+
+.contact-form__textarea__error-message {
+	bottom: -1.75rem;
+}
+
+.contact-form__generic-error__wrapper {
+	bottom: 2rem;
+	width: 100%;
+	position: relative;
 }
 
 .contact-form__input-label,

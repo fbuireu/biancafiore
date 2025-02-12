@@ -20,7 +20,9 @@ interface ExtractContentFromNextNodesParams {
 }
 
 const extractContentFromNextNodes = ({ nextNodes, level }: ExtractContentFromNextNodesParams): string => {
-	if (!Array.isArray(nextNodes)) return "";
+	if (!Array.isArray(nextNodes)) {
+		return "";
+	}
 
 	return nextNodes
 		.map((nextNode) => {

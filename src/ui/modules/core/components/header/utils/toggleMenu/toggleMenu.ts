@@ -119,7 +119,9 @@ export function toggleMenu(): void {
 	toggleMenuItems();
 
 	const updateButton = (): void => {
-		if (!MENU_TEXT) return;
+		if (!MENU_TEXT) {
+			return;
+		}
 		toggleMenuText = isMenuOpen ? "Close" : "Menu";
 		const timeout = isMenuOpen ? 500 : 0;
 
@@ -135,7 +137,9 @@ export function toggleMenu(): void {
 		timeline.reversed(!timeline.reversed());
 
 		for (const element of ELEMENTS_TO_TOGGLE) {
-			if (!element) return;
+			if (!element) {
+				return;
+			}
 			element.classList.toggle("--is-menu-open");
 		}
 	});

@@ -5,8 +5,9 @@
 	margin: 0 auto;
 	max-width: var(--grid-medium);
 
-	button {
-		margin-block-start: 2rem;
+	button[type="submit"] {
+		margin-block-start: 1rem;
+		height: 3rem;
 	}
 
 	&.--is-disabled > *:not(.contact-form__submit) {

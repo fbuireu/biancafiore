@@ -23,7 +23,9 @@ const changeTab = (tabId: TabId): void => {
 		const tabContentId = tab.dataset.target;
 		const tabContent: HTMLElement | null = document.querySelector(`#${tabContentId}`);
 
-		if (!tabContent) return;
+		if (!tabContent) {
+			return;
+		}
 
 		const isActive = tabContentId === tabId;
 		tab.classList.toggle("--is-active", isActive);

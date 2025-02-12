@@ -34,7 +34,9 @@ export function backgroundObserver(): void {
 	const FOOTER = document.querySelector(FOOTER_SELECTOR) as unknown as HTMLElement;
 	const isMenuOpen = SITE_LOGO.classList.contains("--is-menu-open");
 
-	if (!HEADER || !LATEST_ARTICLES || isMenuOpen) return;
+	if (!HEADER || !LATEST_ARTICLES || isMenuOpen) {
+		return;
+	}
 
 	const hasIntersected = isIntersecting(LATEST_ARTICLES) || isIntersecting(FOOTER);
 

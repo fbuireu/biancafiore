@@ -21,6 +21,9 @@
 		"ignore": ["*.d.ts*"],
 		"rules": {
 			"recommended": true,
+			"correctness": {
+				"noUnknownProperty": "info"
+			},
 			"suspicious": {
 				"noConsole": "error"
 			}
