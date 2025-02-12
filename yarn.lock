@@ -3686,9 +3686,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "astro@npm:5.2.5"
+"astro@npm:^5.2.6":
+  version: 5.2.6
+  resolution: "astro@npm:5.2.6"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/internal-helpers": "npm:0.5.1"
@@ -3755,7 +3755,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/181b77188c03bdfa62b7a2ced3bb0b6d93ac6794d8b9e02e340bcec2c40d4ad126010268d2614a9f439e644b791d570a264d02bbca325a3648af087452c2f67b
+  checksum: 10c0/23cc70f2358bef3fe597f4bd653531a5f59de2256aa17d4d0bf06b5768e8dea9253baa0f37bad558f06232afeb6178cdcab287930ebbb7a502406e9b9416a34a
   languageName: node
   linkType: hard
 
@@ -3867,7 +3867,7 @@ __metadata:
     "@types/react-dom": "npm:^19.0.3"
     "@types/three": "npm:^0.173.0"
     algoliasearch: "npm:^5.20.2"
-    astro: "npm:^5.2.5"
+    astro: "npm:^5.2.6"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.4.6"
     conventional-changelog-atom: "npm:^5.0.0"
@@ -3884,7 +3884,7 @@ __metadata:
     react-instantsearch: "npm:^7.15.3"
     react-router-dom: "npm:^7.1.5"
     resend: "npm:^4.1.2"
-    swiper: "npm:^11.2.2"
+    swiper: "npm:^11.2.3"
     three: "npm:^0.173.0"
     typescript: "npm:^5.7.3"
     vanilla-cookieconsent: "npm:^3.1.0"
@@ -10709,10 +10709,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^11.2.2":
-  version: 11.2.2
-  resolution: "swiper@npm:11.2.2"
-  checksum: 10c0/1edb67949c5957877f3c30370e0eb188bbf044f80e482376db97b1923f7f7c07e41f84bb0dacae766c77f01ee6be1b4cab839ec1dd3811adebd7ce36d00571bf
+"swiper@npm:^11.2.3":
+  version: 11.2.3
+  resolution: "swiper@npm:11.2.3"
+  checksum: 10c0/7759f377a13e104a97a4d653647eba2008851b4b7da8bddcbcc90914621447c8f8f26e28138a2edb492ddcc77bc1697f3e0378354bd6e069a36fd3902de6c453
   languageName: node
   linkType: hard
 
