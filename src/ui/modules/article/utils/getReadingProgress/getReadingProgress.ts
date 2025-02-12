@@ -7,7 +7,9 @@ export function getReadingProgress(): void {
 	const ARTICLE = document.querySelector(SELECTORS.ARTICLE) as HTMLElement;
 	const PROGRESS_BAR = document.querySelector(SELECTORS.PROGRESS_BAR) as HTMLElement;
 
-	if (!ARTICLE || !PROGRESS_BAR) return;
+	if (!ARTICLE || !PROGRESS_BAR) {
+		return;
+	}
 
 	const readingProgress = Math.min(Math.ceil((window.scrollY / ARTICLE.offsetHeight) * 100), 100);
 

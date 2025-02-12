@@ -10,7 +10,9 @@ interface ParallaxParams {
 export function initializeParallax(): void {
 	const WELCOME = document.querySelector(".welcome") as HTMLElement;
 
-	if (!(WELCOME instanceof HTMLElement)) return;
+	if (!(WELCOME instanceof HTMLElement)) {
+		return;
+	}
 
 	WELCOME.addEventListener("mousemove", (event) => {
 		attachParallax({ event, target: ".welcome__image", movement: 30 });
@@ -32,7 +34,9 @@ export function initializeParallax(): void {
 	});
 
 	const attachParallax = ({ event, target, movement }: ParallaxParams): void => {
-		if (!(WELCOME instanceof HTMLElement)) return;
+		if (!(WELCOME instanceof HTMLElement)) {
+			return;
+		}
 
 		const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = WELCOME;
 		const relativeX = event.pageX - offsetLeft;

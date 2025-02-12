@@ -27,12 +27,16 @@ export function renderPin({ markerData, cities }: RenderPinParams): HTMLElement 
 
 	markerWrapper.onclick = () => {
 		const city = document.getElementById(slugify(markerData.label));
-		if (!city) return;
+		if (!city) {
+			return;
+		}
 
 		const cityIndex = Number(getComputedStyle(city).getPropertyValue("--inline-index"));
 		const cityPosition = citiesInitialPosition[cityIndex - 1];
 
-		if (cityIndex < 1 || cityIndex > citiesInitialPosition.length || !cityPosition) return;
+		if (cityIndex < 1 || cityIndex > citiesInitialPosition.length || !cityPosition) {
+			return;
+		}
 
 		window.scrollTo({
 			top: cityPosition - city.clientHeight / 4,

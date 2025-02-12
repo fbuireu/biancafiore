@@ -8,9 +8,9 @@ import { Input } from "@modules/core/components/form/input";
 import { Recaptcha } from "@modules/core/components/form/recaptcha";
 import { Textarea } from "@modules/core/components/form/textarea";
 import Spinner from "@modules/core/components/spinner/Spinner";
-import { type ContactFormData, FormStatus } from "@shared/ui/types";
+import type { ContactFormData } from "@shared/ui/types";
+import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
-import type { FormEvent } from "react";
 import { useCallback, useRef, useState, useTransition } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
@@ -24,6 +24,7 @@ export const ContactForm = () => {
 		formState: { errors },
 		reset,
 	} = useForm<ContactFormData>({
+		// @ts-ignore:next-line (mismatch between Astro zod and react-hook-form zod)
 		resolver: zodResolver(contactFormSchema),
 	});
 	const [pending, startTransition] = useTransition();
@@ -32,12 +33,11 @@ export const ContactForm = () => {
 	const submitRef = useRef<HTMLButtonElement>(null);
 
 	const verifyRecaptcha = useCallback(
-		async (data: ContactFormData, event: FormEvent<HTMLFormElement>) => {
-			event.preventDefault();
-
-			if (!executeRecaptcha) return;
+		async (data: ContactFormData) => {
+			if (!executeRecaptcha) {
+				return;
+			}
 			const token = await executeRecaptcha();
-
 			if (!token) {
 				setError("recaptcha", {
 					type: "manual",
@@ -52,11 +52,12 @@ export const ContactForm = () => {
 
 	const submitForm = useCallback(
 		async (data: ContactFormData) => {
-			if (!submitRef.current) return;
+			if (!submitRef.current) {
+				return;
+			}
 
 			try {
 				setFormStatus(FormStatus.LOADING);
-
 				const contactData = new FormData();
 				contactData.append("name", data.name);
 				contactData.append("email", data.email);
@@ -98,7 +99,10 @@ export const ContactForm = () => {
 					className={clsx("contact-form", {
 						"--is-disabled": formStatus === FormStatus.UNAUTHORIZED,
 					})}
-					onSubmit={(event) => handleSubmit((data) => startTransition(() => verifyRecaptcha(data, event)))()}
+					onSubmit={(event) => {
+						event.preventDefault();
+						handleSubmit((data) => startTransition(() => verifyRecaptcha(data)))();
+					}}
 				>
 					<p className="contact-form__text"> My name is</p>
 					<Input
@@ -137,11 +141,11 @@ export const ContactForm = () => {
 						{...register("message")}
 					/>
 					<Recaptcha hasError={!!errors.recaptcha} errorMessage={errors.recaptcha?.message} />
-					{[FormStatus.ERROR, FormStatus.UNAUTHORIZED].includes(formStatus) && (
-						<div className="contact-form__recaptcha__wrapper">
-							<p className="contact-form__recaptcha__error-message">{errors.root?.message}</p>
-						</div>
-					)}
+					<div className="contact-form__generic-error__wrapper">
+						{[FormStatus.ERROR, FormStatus.UNAUTHORIZED].includes(formStatus) && (
+							<p className="contact-form__generic-error-message">{errors.root?.message}</p>
+						)}
+					</div>
 					<button
 						ref={submitRef}
 						className={clsx("contact-form__submit plane --is-clickable", {

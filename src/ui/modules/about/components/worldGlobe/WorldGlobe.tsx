@@ -67,7 +67,10 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 	const worldGlobeReference = useRef<GlobeMethods | undefined>(undefined);
 
 	const onGlobeReady = () => {
-		if (!worldGlobeReference.current || !cities) return;
+		if (!worldGlobeReference.current || !cities) {
+			return;
+		}
+
 		const { latitude, longitude } = calculateCenter(cities);
 		worldGlobeReference.current.controls().autoRotate = true;
 		worldGlobeReference.current.controls().enableZoom = false;
@@ -81,7 +84,9 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 
 	useEffect(() => {
 		const controller = new AbortController();
-		if (!worldGlobeReference.current) return;
+		if (!worldGlobeReference.current) {
+			return;
+		}
 		worldGlobeReference.current.controls().autoRotate = tabVisibility === TabVisibility.VISIBLE;
 
 		return () => controller.abort();

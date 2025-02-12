@@ -22,11 +22,8 @@ export const server = {
 					email,
 					message,
 				});
-
 				await checkDuplicatedEntries(data);
-
 				const { id: emailId } = await sendEmail(data);
-
 				await saveContact({ emailId, ...data });
 
 				return { ok: !!emailId };

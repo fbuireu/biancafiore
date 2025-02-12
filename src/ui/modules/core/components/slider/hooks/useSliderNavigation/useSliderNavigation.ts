@@ -20,7 +20,9 @@ export function useSliderNavigation({ swiper, leftButtonRef, rightButtonRef }: U
 		const controller = new AbortController();
 
 		const handleKeyDown = (event: KeyboardEvent) => {
-			if (!leftButtonRef.current || !rightButtonRef.current) return;
+			if (!leftButtonRef.current || !rightButtonRef.current) {
+				return;
+			}
 
 			if (event.key === ArrowTypes.ARROW_LEFT) {
 				swiper.slidePrev();

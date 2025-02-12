@@ -1,10 +1,10 @@
-export interface ContactFormData {
-	name: string;
-	email: string;
-	message: string;
+import type { z } from "astro:schema";
+import type { contactFormSchema } from "@application/entities/contact/schema";
+
+export type ContactFormData = z.infer<typeof contactFormSchema> & {
 	recaptcha: string;
 	emailId: string;
-}
+};
 
 export enum FormStatus {
 	INITIAL = "initial",
