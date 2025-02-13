@@ -41,14 +41,6 @@
 		}
 	}
 
-	@keyframes pop-in {
-		from {
-			scale: 0;
-		}
-		to {
-			scale: 1;
-		}
-	}
 
 	@keyframes fade-in {
 		from {
