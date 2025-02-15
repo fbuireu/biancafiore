@@ -73,7 +73,7 @@
 		"react-instantsearch": "^7.15.3",
 		"react-router-dom": "^7.1.5",
 		"resend": "^4.1.2",
-		"swiper": "^11.2.3",
+		"swiper": "^11.2.4",
 		"three": "^0.173.0",
 		"typescript": "^5.7.3",
 		"vanilla-cookieconsent": "^3.1.0",
