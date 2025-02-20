@@ -44,7 +44,6 @@ export default defineConfig({
     MillionLint.astro({ lite: true, telemetry: false }),
   ],
   adapter: cloudflare({
-    imageService: 'compile',
     platformProxy: {
       enabled: isProd,
     },
