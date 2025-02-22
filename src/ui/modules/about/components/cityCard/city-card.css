@@ -19,7 +19,7 @@
 	background: var(--white);
 	box-shadow: 0 0.2rem 1rem var(--neutral-light-2), 0 1em 2em var(--neutral-light-4);
 	display: grid;
-	gap: 1rem;
+	gap: 2rem 1rem;
 	overflow: hidden;
 	transform-origin: 50% 0;
 	will-change: transform;
@@ -38,6 +38,7 @@
 		"City-Image City-Image City-Description City-Description" min-content
 		/ 1fr 1fr 1fr 1fr;
 	padding-inline-end: 2rem;
+
 	@media (width <= 960px) {
 		grid:
 			"City-Image" auto

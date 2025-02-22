@@ -6,7 +6,12 @@
 	opacity: 0;
 	position: fixed;
 	z-index: 100;
+	transition: scale 0.2s;
 
+	&:hover {
+		scale: 1.05;
+	}
+	
 	@media (width <= 575px) {
 		inset: auto 1rem 1rem auto;
 	}
@@ -15,7 +20,7 @@
 	background: var(--primary-light-2);
 	box-shadow: 0.125rem 0.125rem 0.175rem var(--neutral-light-2);
 	height: fit-content;
-	transition: background-color 2s;
+	transition: all 0.2s;
 	width: fit-content;
 
 	svg {

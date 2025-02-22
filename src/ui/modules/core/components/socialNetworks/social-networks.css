@@ -19,6 +19,10 @@
 	}
 }
 
+.social__networks__link {
+	text-transform: capitalize;
+}
+
 .social__networks__item.--is-footer {
 	max-width: calc(100% / 4);
 	padding: 0.25rem 0;
