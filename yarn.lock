@@ -195,23 +195,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/cloudflare@npm:^12.2.1":
-  version: 12.2.1
-  resolution: "@astrojs/cloudflare@npm:12.2.1"
+"@astrojs/cloudflare@npm:^12.2.2":
+  version: 12.2.2
+  resolution: "@astrojs/cloudflare@npm:12.2.2"
   dependencies:
-    "@astrojs/internal-helpers": "npm:0.4.2"
-    "@astrojs/underscore-redirects": "npm:^0.6.0"
+    "@astrojs/internal-helpers": "npm:0.5.1"
+    "@astrojs/underscore-redirects": "npm:0.6.0"
     "@cloudflare/workers-types": "npm:^4.20250109.0"
     esbuild: "npm:^0.24.0"
     estree-walker: "npm:^3.0.3"
     magic-string: "npm:^0.30.17"
     miniflare: "npm:^3.20241230.1"
-    tiny-glob: "npm:^0.2.9"
+    tinyglobby: "npm:^0.2.12"
     vite: "npm:^6.0.7"
     wrangler: "npm:^3.101.0"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/1745f0d4e0d994dd6ef353f66d106ede8509fbb44e7ffc103b3ceaba817dca750b57724ab91a954d12b019b7bbb16d6b9119668e2d39f71421a71d03f3fe26a4
+  checksum: 10c0/99b72351eb547cd81933ba8ab1713f579a5e9035883cdeeeffd656dbf35cb6575771bf24f1b48d42c64254888348e45577b7b01979a0c2a86ee57419369d2fb0
   languageName: node
   linkType: hard
 
@@ -240,13 +240,6 @@ __metadata:
     yocto-spinner: "npm:^0.1.2"
     zod: "npm:^3.24.1"
   checksum: 10c0/a74261a182027d5b2e3a5d94a9b35b7af93aff32d246ad8739321f5f39665c5491da91581cdbf513bb73baae0793858b650429d8be789cfc39bc0ded33815694
-  languageName: node
-  linkType: hard
-
-"@astrojs/internal-helpers@npm:0.4.2":
-  version: 0.4.2
-  resolution: "@astrojs/internal-helpers@npm:0.4.2"
-  checksum: 10c0/881e345f587e0cd05a94a44a6b5aa4e104b67584dc65c21e139668661572add8bbcfad1ae02fe38d1189f553f203c0fcb15da79032cc4e973eabac704c041b19
   languageName: node
   linkType: hard
 
@@ -441,7 +434,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/underscore-redirects@npm:^0.6.0":
+"@astrojs/underscore-redirects@npm:0.6.0":
   version: 0.6.0
   resolution: "@astrojs/underscore-redirects@npm:0.6.0"
   checksum: 10c0/fe1895e3a6fa38b246bd9b793b203e590ee52fc426892802cfcd8e1d7d3ef181c919412f664de946ef940b6d0c758473c45997d0cb60cfaf3c95a5e086d1ad3e
@@ -1702,14 +1695,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "@hookform/resolvers@npm:4.1.1"
+"@hookform/resolvers@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "@hookform/resolvers@npm:4.1.2"
   dependencies:
-    caniuse-lite: "npm:^1.0.30001698"
+    "@standard-schema/utils": "npm:^0.3.0"
   peerDependencies:
     react-hook-form: ^7.0.0
-  checksum: 10c0/3d0ea8cbe5a8e008361149a1e087124b7e086779534f79de1330fb6bc68cc2df2627152cfa3f0f33a1baa6294430edad6f80fa7eb8887a9d8c52d79c228e0709
+  checksum: 10c0/3e74dfac02c9b40d1840f3ede57031a461195eed513d299946d04afc823d92565e74af79aa1c61508d250068105f0ae14409cec35f03eba166bfd1316f1cf3fd
   languageName: node
   linkType: hard
 
@@ -2786,6 +2779,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@standard-schema/utils@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@standard-schema/utils@npm:0.3.0"
+  checksum: 10c0/6eb74cd13e52d5fc74054df51e37d947ef53f3ab9e02c085665dcca3c38c60ece8d735cebbdf18fbb13c775fbcb9becb3f53109b0e092a63f0f7389ce0993fd0
+  languageName: node
+  linkType: hard
+
 "@testing-library/react-hooks@npm:^8.0.1":
   version: 8.0.1
   resolution: "@testing-library/react-hooks@npm:8.0.1"
@@ -3688,9 +3688,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.3.0":
-  version: 5.3.0
-  resolution: "astro@npm:5.3.0"
+"astro@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "astro@npm:5.3.1"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/internal-helpers": "npm:0.5.1"
@@ -3717,7 +3717,6 @@ __metadata:
     es-module-lexer: "npm:^1.6.0"
     esbuild: "npm:^0.24.2"
     estree-walker: "npm:^3.0.3"
-    fast-glob: "npm:^3.3.3"
     flattie: "npm:^1.1.1"
     github-slugger: "npm:^2.0.0"
     html-escaper: "npm:3.0.3"
@@ -3726,11 +3725,11 @@ __metadata:
     kleur: "npm:^4.1.5"
     magic-string: "npm:^0.30.17"
     magicast: "npm:^0.3.5"
-    micromatch: "npm:^4.0.8"
     mrmime: "npm:^2.0.0"
     neotraverse: "npm:^0.6.18"
     p-limit: "npm:^6.2.0"
     p-queue: "npm:^8.1.0"
+    picomatch: "npm:^4.0.2"
     preferred-pm: "npm:^4.1.1"
     prompts: "npm:^2.4.2"
     rehype: "npm:^13.0.2"
@@ -3738,6 +3737,7 @@ __metadata:
     sharp: "npm:^0.33.3"
     shiki: "npm:^1.29.2"
     tinyexec: "npm:^0.3.2"
+    tinyglobby: "npm:^0.2.12"
     tsconfck: "npm:^3.1.4"
     ultrahtml: "npm:^1.5.3"
     unist-util-visit: "npm:^5.0.0"
@@ -3757,7 +3757,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/023d44ad8ca90965b5f3e41c00b1de26b1a424139bbf0a96551363a416e784547b29998998584c09cb0234e5cf1ba51c3dfbded20f37df2a8888f4cc0088b1e8
+  checksum: 10c0/3592ae255cd7b0a402617ae3c06da5e72033b911c577409531be10371fab1871f156581fae6aa132dc796d0a7f1d0e9a50e14065d45e3e66cbd08666811677bb
   languageName: node
   linkType: hard
 
@@ -3842,7 +3842,7 @@ __metadata:
   resolution: "biancafiore@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.9.4"
-    "@astrojs/cloudflare": "npm:^12.2.1"
+    "@astrojs/cloudflare": "npm:^12.2.2"
     "@astrojs/db": "npm:^0.14.6"
     "@astrojs/mdx": "npm:^4.0.8"
     "@astrojs/partytown": "npm:^2.1.3"
@@ -3857,7 +3857,7 @@ __metadata:
     "@contentful/rich-text-html-renderer": "npm:^17.0.0"
     "@fontsource-variable/nunito-sans": "npm:^5.1.1"
     "@fontsource/baskervville": "npm:^5.1.1"
-    "@hookform/resolvers": "npm:^4.1.1"
+    "@hookform/resolvers": "npm:^4.1.2"
     "@million/lint": "npm:^1.0.14"
     "@playwright/test": "npm:^1.50.1"
     "@testing-library/react": "npm:^16.2.0"
@@ -3869,7 +3869,7 @@ __metadata:
     "@types/react-dom": "npm:^19.0.4"
     "@types/three": "npm:^0.173.0"
     algoliasearch: "npm:^5.20.3"
-    astro: "npm:^5.3.0"
+    astro: "npm:^5.3.1"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.5.0"
     conventional-changelog-atom: "npm:^5.0.0"
@@ -4054,13 +4054,6 @@ __metadata:
   version: 1.0.30001690
   resolution: "caniuse-lite@npm:1.0.30001690"
   checksum: 10c0/646bd469032afa90400a84dec30a2b00a6eda62c03ead358117e3f884cda8aacec02ec058a6dbee5eaf9714f83e483b9b0eb4fb42febb8076569f5ca40f1d347
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001698":
-  version: 1.0.30001699
-  resolution: "caniuse-lite@npm:1.0.30001699"
-  checksum: 10c0/e87b3a0602c3124131f6a21f1eb262378e17a2ee3089e3c472ac8b9caa85cf7d6a219655379302c29c6f10a74051f2a712639d7f98ee0444c73fefcbaf25d519
   languageName: node
   linkType: hard
 
@@ -5774,19 +5767,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.3.3":
-  version: 3.3.3
-  resolution: "fast-glob@npm:3.3.3"
-  dependencies:
-    "@nodelib/fs.stat": "npm:^2.0.2"
-    "@nodelib/fs.walk": "npm:^1.2.3"
-    glob-parent: "npm:^5.1.2"
-    merge2: "npm:^1.3.0"
-    micromatch: "npm:^4.0.8"
-  checksum: 10c0/f6aaa141d0d3384cf73cbcdfc52f475ed293f6d5b65bfc5def368b09163a9f7e5ec2b3014d80f733c405f58e470ee0cc451c2937685045cddcdeaa24199c43fe
-  languageName: node
-  linkType: hard
-
 "fast-uri@npm:^3.0.1":
   version: 3.0.3
   resolution: "fast-uri@npm:3.0.3"
@@ -5820,6 +5800,18 @@ __metadata:
   dependencies:
     reusify: "npm:^1.0.4"
   checksum: 10c0/7be87ecc41762adbddf558d24182f50a4b1a3ef3ee807d33b7623da7aee5faecdcc94fce5aa13fe91df93e269f383232bbcdb2dc5338cd1826503d6063221f36
+  languageName: node
+  linkType: hard
+
+"fdir@npm:^6.4.3":
+  version: 6.4.3
+  resolution: "fdir@npm:6.4.3"
+  peerDependencies:
+    picomatch: ^3 || ^4
+  peerDependenciesMeta:
+    picomatch:
+      optional: true
+  checksum: 10c0/d13c10120e9625adf21d8d80481586200759928c19405a816b77dd28eaeb80e7c59c5def3e2941508045eb06d34eb47fad865ccc8bf98e6ab988bb0ed160fb6f
   languageName: node
   linkType: hard
 
@@ -6162,13 +6154,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globalyzer@npm:0.1.0":
-  version: 0.1.0
-  resolution: "globalyzer@npm:0.1.0"
-  checksum: 10c0/e16e47a5835cbe8a021423d4c7fcd9f5f85815b4190a7f50c1fdb95fc559d72e4fb30be96f106c66a99413f36d72da0f8323d19d27f60a8feec9d936139ec5a8
-  languageName: node
-  linkType: hard
-
 "globe.gl@npm:^2.40":
   version: 2.40.0
   resolution: "globe.gl@npm:2.40.0"
@@ -6180,13 +6165,6 @@ __metadata:
     three-globe: "npm:^2.41"
     three-render-objects: "npm:^1.39"
   checksum: 10c0/6eff92bcebaa2eedde9db528115bcc13b9d8d457be17a381603b63a30f5f62aeddce1e183df6ba7b42c79a2f1407124fd9ecae2349c4fe8e3271a256c010336c
-  languageName: node
-  linkType: hard
-
-"globrex@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "globrex@npm:0.1.2"
-  checksum: 10c0/a54c029520cf58bda1d8884f72bd49b4cd74e977883268d931fd83bcbd1a9eb96d57c7dbd4ad80148fb9247467ebfb9b215630b2ed7563b2a8de02e1ff7f89d1
   languageName: node
   linkType: hard
 
@@ -10859,16 +10837,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tiny-glob@npm:^0.2.9":
-  version: 0.2.9
-  resolution: "tiny-glob@npm:0.2.9"
-  dependencies:
-    globalyzer: "npm:0.1.0"
-    globrex: "npm:^0.1.2"
-  checksum: 10c0/cbe072f0d213a1395d30aa94845a051d4af18fe8ffb79c8e99ac1787cd25df69083f17791a53997cb65f469f48950cb61426ccc0683cc9df170ac2430e883702
-  languageName: node
-  linkType: hard
-
 "tiny-invariant@npm:^1.3.3":
   version: 1.3.3
   resolution: "tiny-invariant@npm:1.3.3"
@@ -10901,6 +10869,16 @@ __metadata:
   version: 0.3.2
   resolution: "tinyexec@npm:0.3.2"
   checksum: 10c0/3efbf791a911be0bf0821eab37a3445c2ba07acc1522b1fa84ae1e55f10425076f1290f680286345ed919549ad67527d07281f1c19d584df3b74326909eb1f90
+  languageName: node
+  linkType: hard
+
+"tinyglobby@npm:^0.2.12":
+  version: 0.2.12
+  resolution: "tinyglobby@npm:0.2.12"
+  dependencies:
+    fdir: "npm:^6.4.3"
+    picomatch: "npm:^4.0.2"
+  checksum: 10c0/7c9be4fd3625630e262dcb19015302aad3b4ba7fc620f269313e688f2161ea8724d6cb4444baab5ef2826eb6bed72647b169a33ec8eea37501832a2526ff540f
   languageName: node
   linkType: hard
 
