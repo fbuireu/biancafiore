@@ -1702,7 +1702,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:^4.1.0":
+"@hookform/resolvers@npm:^4.1.1":
   version: 4.1.1
   resolution: "@hookform/resolvers@npm:4.1.1"
   dependencies:
@@ -3857,7 +3857,7 @@ __metadata:
     "@contentful/rich-text-html-renderer": "npm:^17.0.0"
     "@fontsource-variable/nunito-sans": "npm:^5.1.1"
     "@fontsource/baskervville": "npm:^5.1.1"
-    "@hookform/resolvers": "npm:^4.1.0"
+    "@hookform/resolvers": "npm:^4.1.1"
     "@million/lint": "npm:^1.0.14"
     "@playwright/test": "npm:^1.50.1"
     "@testing-library/react": "npm:^16.2.0"
