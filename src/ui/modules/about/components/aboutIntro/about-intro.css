@@ -1,46 +1,46 @@
 .about-me-intro__wrapper {
-    display: grid;
-    gap: 0 10%;
-    grid: "About-Text About-Image" 1fr / 1fr 1fr;
+	display: grid;
+	gap: 0 10%;
+	grid: "About-Text About-Image" 1fr / 1fr 1fr;
 
-    @media (width <= 960px) {
-        gap: 0;
-        grid:
+	@media (width <= 960px) {
+		gap: 0;
+		grid:
 			"About-Text About-Text" min-content
 			"About-Image About-Image" 1fr / 1fr;
-    }
+	}
 }
 
 .about-me-intro__section.--left {
-    gap: 2rem 0;
-    grid-area: About-Text;
+	gap: 2rem 0;
+	grid-area: About-Text;
 }
 
 .about-me-intro__section.--right {
-    gap: 2rem 0;
-    grid-area: About-Image;
+	gap: 2rem 0;
+	grid-area: About-Image;
 
-    @media (width <= 960px) {
-        padding: 0 1rem;
-    }
+	@media (width <= 960px) {
+		padding: 0 1rem;
+	}
 }
 
 .about-me-intro__title {
-    text-transform: uppercase;
+	text-transform: uppercase;
 
-    @media (width <= 1440px) {
-        padding-inline-start: 3rem;
-    }
-    @media (width <= 960px) {
-        padding-inline-start: 1rem;
-    }
+	@media (width <= 1440px) {
+		padding-inline-start: 3rem;
+	}
+	@media (width <= 960px) {
+		padding-inline-start: 1rem;
+	}
 }
 
 .about-me-intro__body {
-    gap: 2rem 0;
-    padding-inline-start: 3rem;
+	gap: 2rem 0;
+	padding-inline-start: 3rem;
 
-    @media (width <= 960px) {
-        padding-inline-start: 1rem;
-    }
+	@media (width <= 960px) {
+		padding-inline-start: 1rem;
+	}
 }

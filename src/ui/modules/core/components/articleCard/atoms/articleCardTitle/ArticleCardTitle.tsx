@@ -1,10 +1,10 @@
-import type { ReactNode } from 'react';
-import './article-card-title.css';
+import type { ReactNode } from "react";
+import "./article-card-title.css";
 
 export interface ArticleCardTitleProps {
-  children: ReactNode;
+	children: ReactNode;
 }
 
 export const ArticleCardTitle = ({ children }: ArticleCardTitleProps) => (
-    <h3 className="article-card__title font-serif">{children}</h3>
+	<h3 className="article-card__title font-serif">{children}</h3>
 );
