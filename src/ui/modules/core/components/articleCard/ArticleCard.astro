@@ -1,13 +1,13 @@
 ---
-import { Image } from "astro:assets";
-import type { CollectionEntry } from "astro:content";
-import { PAGES_ROUTES } from "@const/index";
-import { articleVariantToClass } from "@modules/core/utils/articleVariantToClass";
-import { getLocation } from "@modules/core/utils/getLocation";
-import clsx from "clsx";
-import "./article-card.css";
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { PAGES_ROUTES } from '@const/index';
+import { articleVariantToClass } from '@modules/core/utils/articleVariantToClass';
+import { getLocation } from '@modules/core/utils/getLocation';
+import clsx from 'clsx';
+import './article-card.css';
 
-type ArticleCardProps = CollectionEntry<"articles">;
+type ArticleCardProps = CollectionEntry<'articles'>;
 
 const article = Astro.props as ArticleCardProps;
 const { pathname } = Astro.url;
@@ -29,7 +29,6 @@ const location = getLocation(Astro.url);
           width={article.data.featuredImage.details.width}
           height={article.data.featuredImage.details.height}
           alt={article.data.title}
-          fit="inherit"
           transition:name=`featured-image-${pathname}`
       />
   )}
