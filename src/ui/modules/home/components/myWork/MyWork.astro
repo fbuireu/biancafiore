@@ -1,37 +1,39 @@
 ---
-import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
-import { PAGES_ROUTES } from "src/const";
-import "./my-work.css";
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import { PAGES_ROUTES } from 'src/const';
+import './my-work.css';
 
-const projects = await getCollection("projects");
+const projects = await getCollection('projects');
 ---
 <section class="my-work__wrapper common-wrapper">
-  <h3 class="my-work__title section-title">My Work</h3>
-  <ul class="my-work__content__list flex row-wrap justify-space-between">
-    {projects.map((project, index) => {
-      const projectUrl=`${PAGES_ROUTES.PROJECTS}#${project.data.id}`
+    <h2 class="my-work__title section-title">My Work</h2>
+    <ul class="my-work__content__list flex row-wrap justify-space-between">
+      {projects.map((project, index) => {
+        const projectUrl = `${PAGES_ROUTES.PROJECTS}#${project.data.id}`;
 
-        return <li class="my-work__item">
-          <a class="my-work__item__link --is-clickable" href={projectUrl}>
-            <Image
-              src={project.data.image.url}
-              alt={project.data.name}
-              width={project.data.image.details.width}
-              height={project.data.image.details.height}
-            />
-            <h4 class="my-work__item__title inner-section-title">{project.data.name}</h4>
-          </a>
-        </li>
-        <script is:inline type="application/ld+json" set:html={JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'ItemList',
-          'itemListElement': {
-            '@type': 'ListItem',
-            'position': index + 1,
-            'url': new URL(projectUrl, Astro.url).href,
-          },
-        })} />
-    })}
-  </ul>
+        return (
+            <li class="my-work__item">
+                <a class="my-work__item__link --is-clickable" href={projectUrl}>
+                    <Image
+                        src={project.data.image.url}
+                        alt={project.data.name}
+                        width={project.data.image.details.width}
+                        height={project.data.image.details.height}
+                    />
+                    <h4 class="my-work__item__title inner-section-title">{project.data.name}</h4>
+                </a>
+            </li>
+            <script is:inline type="application/ld+json" set:html={JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'ItemList',
+              'itemListElement': {
+                '@type': 'ListItem',
+                'position': index + 1,
+                'url': new URL(projectUrl, Astro.url).href,
+              },
+            })} />
+        );
+      })}
+    </ul>
 </section>

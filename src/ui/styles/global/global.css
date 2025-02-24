@@ -1,85 +1,84 @@
 @layer global {
-	.common-wrapper {
-		max-width: var(--grid-extra-large);
-		width: 100%;
-		margin: 0 auto;
-	}
+    .common-wrapper {
+        max-width: var(--grid-extra-large);
+        width: 100%;
+        margin: 0 auto;
+    }
 
-	.relative {
-		position: relative;
-	}
+    .relative {
+        position: relative;
+    }
 
-	.font-sans-serif {
-		font-family: "Nunito Sans Variable", sans-serif;
-	}
+    .font-sans-serif {
+        font-family: "Nunito Sans Variable", sans-serif;
+    }
 
-	.font-serif {
-		font-family: "Baskervville", serif;
-	}
+    .font-serif {
+        font-family: "Baskervville", serif;
+    }
 
-	.section-title {
-		letter-spacing: 0.5rem;
-		text-transform: uppercase;
-		text-align: center;
-		font-size: clamp(2rem, 2.5vw, 5rem);
-		font-variation-settings: "wght" 200;
-		transition: font-variation-settings .5s;
+    .section-title {
+        letter-spacing: 0.5rem;
+        text-transform: uppercase;
+        text-align: center;
+        font-variation-settings: "wght" 200;
+        transition: font-variation-settings .5s;
 
-		&:hover {
-			font-variation-settings: "wght" 600;
-		}
-	}
+        &:hover {
+            font-variation-settings: "wght" 600;
+        }
+    }
 
-	.inner-section-title {
-		font-size: clamp(2rem, 1vw, 3rem);
-		text-transform: uppercase;
-	}
+    .inner-section-title {
+        font-size: clamp(2rem, 1vw, 3rem);
+        text-transform: uppercase;
+    }
 
-	.grid {
-		display: grid;
-	}
+    .grid {
+        display: grid;
+    }
 
-	.flex {
-		display: flex;
-	}
+    .flex {
+        display: flex;
+    }
 
-	.row-wrap {
-		flex-flow: row wrap;
-	}
+    .row-wrap {
+        flex-flow: row wrap;
+    }
 
-	.column-wrap {
-		flex-flow: column wrap;
-	}
+    .column-wrap {
+        flex-flow: column wrap;
+    }
 
-	.column-nowrap {
-		flex-flow: column nowrap;
-	}
+    .column-nowrap {
+        flex-flow: column nowrap;
+    }
 
-	.justify-flex-start {
-		justify-content: flex-start;
-	}
+    .justify-flex-start {
+        justify-content: flex-start;
+    }
 
-	.justify-flex-end {
-		justify-content: flex-end;
-	}
+    .justify-flex-end {
+        justify-content: flex-end;
+    }
 
-	.justify-space-between {
-		justify-content: space-between;
-	}
+    .justify-space-between {
+        justify-content: space-between;
+    }
 
-	.justify-center {
-		justify-content: center;
-	}
+    .justify-center {
+        justify-content: center;
+    }
 
-	.align-center {
-		align-items: center;
-	}
+    .align-center {
+        align-items: center;
+    }
 
-	.align-baseline {
-		align-items: center;
-	}
+    .align-baseline {
+        align-items: center;
+    }
 
-	.letter-spacing {
-		letter-spacing: 2px;
-	}
+    .letter-spacing {
+        letter-spacing: 2px;
+    }
 }
