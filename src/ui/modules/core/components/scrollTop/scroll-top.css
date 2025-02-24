@@ -11,7 +11,7 @@
 	&:hover {
 		scale: 1.05;
 	}
-	
+
 	@media (width <= 575px) {
 		inset: auto 1rem 1rem auto;
 	}

@@ -1,290 +1,290 @@
 @layer theme {
-    :root {
-        color-scheme: light;
-        interpolate-size: allow-keywords;
-        --primary-light-3: color-mix(in srgb, var(--primary-main), var(--white) 75%);
-        --primary-light-2: color-mix(in srgb, var(--primary-main), var(--white) 50%);
-        --primary-light-1: color-mix(in srgb, var(--primary-main), var(--white) 25%);
-        --primary-main: oklch(74.41% 0.108 75.17);
-        --primary-dark-1: color-mix(in srgb, var(--primary-main), var(--black) 25%);
-        --primary-dark-2: color-mix(in srgb, var(--primary-main), var(--black) 50%);
-        --primary-dark-3: color-mix(in srgb, var(--primary-main), var(--black) 75%);
-        --neutral-main: oklch(24.18% 0.004 228.95);
-        --neutral-light-1: color-mix(in srgb, var(--neutral-main), var(--white) 25%);
-        --neutral-light-2: color-mix(in srgb, var(--neutral-main), var(--white) 50%);
-        --neutral-light-3: color-mix(in srgb, var(--neutral-main), var(--white) 75%);
-        --neutral-light-4: color-mix(in srgb, var(--neutral-main), var(--white) 90%);
-        --background-main: oklch(100% 0 0);
-        --error-main: oklch(58.08% 0.196 25.77);
-        --success-main: oklch(52.29% 0.17558211290701223 142.8999328999691);
-        --x: oklch(0 0 0);
-        --linkedin: oklch(54.58% 0.13 242.27);
-        --email: oklch(58.97% 0 0);
-        --white: oklch(100% 0 0);
-        --black: oklch(0 0 0);
-        --header-height: 80px;
-        --global-max-width: 1440px;
-        --base-font-size: 16px;
-        --fluid-typography-viewport-scale: 0.25;
-        --font-size-h1: clamp(4rem, calc(4rem + var(--fluid-typography-viewport-scale) * 1vw), 5.25rem);
-        --font-size-h2: clamp(3rem, calc(3rem + calc(var(--fluid-typography-viewport-scale) * 0.75) * 1vw), 5rem);
-        --font-size-h3: clamp(1.5rem, calc(1.5rem + calc(var(--fluid-typography-viewport-scale) * 1.4) * 1vw), 3rem);
-        --font-size-h4: clamp(1.25rem, calc(1.25rem + calc(var(--fluid-typography-viewport-scale) * 1.2) * 1vw), 2rem);
-        --font-size-h5: clamp(1.125rem, calc(1.125rem + 1vw), 1.5rem);
-        --font-size-h6: clamp(1.075rem, calc(1.075rem + 0.8vw), 1.25rem);
-        --global-border-radius: 0.25rem;
-        --grid-extra-small: 575px;
-        --grid-small: 720px;
-        --grid-medium: 960px;
-        --grid-article: 65ch;
-        --grid-large: 1024px;
-        --grid-extra-large: 1440px;
-        --ease-elastic: linear(0, 0.186 2.1%, 0.778 7.2%, 1.027 9.7%, 1);
-    }
+	:root {
+		color-scheme: light;
+		interpolate-size: allow-keywords;
+		--primary-light-3: color-mix(in srgb, var(--primary-main), var(--white) 75%);
+		--primary-light-2: color-mix(in srgb, var(--primary-main), var(--white) 50%);
+		--primary-light-1: color-mix(in srgb, var(--primary-main), var(--white) 25%);
+		--primary-main: oklch(74.41% 0.108 75.17);
+		--primary-dark-1: color-mix(in srgb, var(--primary-main), var(--black) 25%);
+		--primary-dark-2: color-mix(in srgb, var(--primary-main), var(--black) 50%);
+		--primary-dark-3: color-mix(in srgb, var(--primary-main), var(--black) 75%);
+		--neutral-main: oklch(24.18% 0.004 228.95);
+		--neutral-light-1: color-mix(in srgb, var(--neutral-main), var(--white) 25%);
+		--neutral-light-2: color-mix(in srgb, var(--neutral-main), var(--white) 50%);
+		--neutral-light-3: color-mix(in srgb, var(--neutral-main), var(--white) 75%);
+		--neutral-light-4: color-mix(in srgb, var(--neutral-main), var(--white) 90%);
+		--background-main: oklch(100% 0 0);
+		--error-main: oklch(58.08% 0.196 25.77);
+		--success-main: oklch(52.29% 0.17558211290701223 142.8999328999691);
+		--x: oklch(0 0 0);
+		--linkedin: oklch(54.58% 0.13 242.27);
+		--email: oklch(58.97% 0 0);
+		--white: oklch(100% 0 0);
+		--black: oklch(0 0 0);
+		--header-height: 80px;
+		--global-max-width: 1440px;
+		--base-font-size: 16px;
+		--fluid-typography-viewport-scale: 0.25;
+		--font-size-h1: clamp(4rem, calc(4rem + var(--fluid-typography-viewport-scale) * 1vw), 5.25rem);
+		--font-size-h2: clamp(3rem, calc(3rem + calc(var(--fluid-typography-viewport-scale) * 0.75) * 1vw), 5rem);
+		--font-size-h3: clamp(1.5rem, calc(1.5rem + calc(var(--fluid-typography-viewport-scale) * 1.4) * 1vw), 3rem);
+		--font-size-h4: clamp(1.25rem, calc(1.25rem + calc(var(--fluid-typography-viewport-scale) * 1.2) * 1vw), 2rem);
+		--font-size-h5: clamp(1.125rem, calc(1.125rem + 1vw), 1.5rem);
+		--font-size-h6: clamp(1.075rem, calc(1.075rem + 0.8vw), 1.25rem);
+		--global-border-radius: 0.25rem;
+		--grid-extra-small: 575px;
+		--grid-small: 720px;
+		--grid-medium: 960px;
+		--grid-article: 65ch;
+		--grid-large: 1024px;
+		--grid-extra-large: 1440px;
+		--ease-elastic: linear(0, 0.186 2.1%, 0.778 7.2%, 1.027 9.7%, 1);
+	}
 
-    [data-theme="dark"] {
-        color-scheme: dark;
-        --black: oklch(100% 0 0);
-        --white: var(--background-main);
-        --primary-dark-1: color-mix(in srgb, var(--primary-main), var(--white) 25%);
-        --primary-dark-2: color-mix(in srgb, var(--primary-main), var(--white) 50%);
-        --primary-dark-3: color-mix(in srgb, var(--primary-main), var(--white) 75%);
-        --neutral-light-1: color-mix(in srgb, var(--neutral-main), var(--black) 25%);
-        --primary-light-1: color-mix(in srgb, var(--primary-main), var(--black) 25%);
-        --neutral-light-2: color-mix(in srgb, var(--neutral-main), var(--black) 50%);
-        --primary-light-2: color-mix(in srgb, var(--primary-main), var(--black) 50%);
-        --neutral-light-3: color-mix(in srgb, var(--neutral-main), var(--black) 75%);
-        --primary-light-3: color-mix(in srgb, var(--primary-main), var(--black) 75%);
-        --neutral-light-4: color-mix(in srgb, var(--neutral-main), var(--black) 95%);
-        --background-main: oklch(24.18% 0.004 228.95);
-        --neutral-main: oklch(90.49% 0.003 48.72);
-    }
+	[data-theme="dark"] {
+		color-scheme: dark;
+		--black: oklch(100% 0 0);
+		--white: var(--background-main);
+		--primary-dark-1: color-mix(in srgb, var(--primary-main), var(--white) 25%);
+		--primary-dark-2: color-mix(in srgb, var(--primary-main), var(--white) 50%);
+		--primary-dark-3: color-mix(in srgb, var(--primary-main), var(--white) 75%);
+		--neutral-light-1: color-mix(in srgb, var(--neutral-main), var(--black) 25%);
+		--primary-light-1: color-mix(in srgb, var(--primary-main), var(--black) 25%);
+		--neutral-light-2: color-mix(in srgb, var(--neutral-main), var(--black) 50%);
+		--primary-light-2: color-mix(in srgb, var(--primary-main), var(--black) 50%);
+		--neutral-light-3: color-mix(in srgb, var(--neutral-main), var(--black) 75%);
+		--primary-light-3: color-mix(in srgb, var(--primary-main), var(--black) 75%);
+		--neutral-light-4: color-mix(in srgb, var(--neutral-main), var(--black) 95%);
+		--background-main: oklch(24.18% 0.004 228.95);
+		--neutral-main: oklch(90.49% 0.003 48.72);
+	}
 }
 
 @property --primary-light-3 {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--primary-light-3);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--primary-light-3);
 }
 
 @property --primary-light-2 {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--primary-light-2);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--primary-light-2);
 }
 
 @property --primary-light-1 {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--primary-light-2);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--primary-light-2);
 }
 
 @property --primary-main {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--primary-main);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--primary-main);
 }
 
 @property --primary-dark-1 {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--primary-dark-1);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--primary-dark-1);
 }
 
 @property --primary-dark-2 {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--primary-dark-2);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--primary-dark-2);
 }
 
 @property --primary-dark-3 {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--primary-dark-3);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--primary-dark-3);
 }
 
 @property --neutral-main {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--neutral-main);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--neutral-main);
 }
 
 @property --neutral-light-1 {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--neutral-light-1);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--neutral-light-1);
 }
 
 @property --neutral-light-2 {
-    syntax: "<color>";
-    inherits: false;
-    initial-value: var(--neutral-light-2);
+	syntax: "<color>";
+	inherits: false;
+	initial-value: var(--neutral-light-2);
 }
 
 @property --neutral-light-3 {
-    syntax: "<color>";
-    inherits: false;
-    initial-value: var(--neutral-light-3);
+	syntax: "<color>";
+	inherits: false;
+	initial-value: var(--neutral-light-3);
 }
 
 @property --neutral-light-4 {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--neutral-light-4);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--neutral-light-4);
 }
 
 @property --background-main {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--background-main);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--background-main);
 }
 
 @property --error-main {
-    syntax: "<color>";
-    inherits: false;
-    initial-value: var(--error-main);
+	syntax: "<color>";
+	inherits: false;
+	initial-value: var(--error-main);
 }
 
 @property --success-main {
-    syntax: "<color>";
-    inherits: false;
-    initial-value: var(--success-main);
+	syntax: "<color>";
+	inherits: false;
+	initial-value: var(--success-main);
 }
 
 @property --x {
-    syntax: "<color>";
-    inherits: false;
-    initial-value: var(--x);
+	syntax: "<color>";
+	inherits: false;
+	initial-value: var(--x);
 }
 
 @property --linkedin {
-    syntax: "<color>";
-    inherits: false;
-    initial-value: var(--linkedin);
+	syntax: "<color>";
+	inherits: false;
+	initial-value: var(--linkedin);
 }
 
 @property --email {
-    syntax: "<color>";
-    inherits: false;
-    initial-value: var(--email);
+	syntax: "<color>";
+	inherits: false;
+	initial-value: var(--email);
 }
 
 @property --white {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--white);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--white);
 }
 
 @property --black {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--black);
+	syntax: "<color>";
+	inherits: true;
+	initial-value: var(--black);
 }
 
 @property --header-height {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: var(--header-height);
+	syntax: "<length>";
+	inherits: false;
+	initial-value: var(--header-height);
 }
 
 @property --global-max-width {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: var(--global-max-width);
+	syntax: "<length>";
+	inherits: false;
+	initial-value: var(--global-max-width);
 }
 
 @property --base-font-size {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: var(--base-font-size);
+	syntax: "<length>";
+	inherits: false;
+	initial-value: var(--base-font-size);
 }
 
 @property --fluid-typography-viewport-scale {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: var(--fluid-typography-viewport-scale);
+	syntax: "<length>";
+	inherits: false;
+	initial-value: var(--fluid-typography-viewport-scale);
 }
 
 @property --font-size-h1 {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: 4.625rem;
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 4.625rem;
 }
 
 @property --font-size-h2 {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: 4rem;
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 4rem;
 }
 
 @property --font-size-h3 {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: 2.25rem;
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 2.25rem;
 }
 
 @property --font-size-h4 {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: 1.625rem;
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 1.625rem;
 }
 
 @property --font-size-h5 {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: 1.3125rem;
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 1.3125rem;
 }
 
 @property --font-size-h6 {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: 1.1625rem;
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 1.1625rem;
 }
 
 @property --global-border-radius {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: var(--global-border-radius);
+	syntax: "<length>";
+	inherits: false;
+	initial-value: var(--global-border-radius);
 }
 
 @property --grid-extra-small {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: var(--grid-extra-small);
+	syntax: "<length>";
+	inherits: false;
+	initial-value: var(--grid-extra-small);
 }
 
 @property --grid-small {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: var(--grid-small);
+	syntax: "<length>";
+	inherits: false;
+	initial-value: var(--grid-small);
 }
 
 @property --grid-medium {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: var(--grid-medium);
+	syntax: "<length>";
+	inherits: false;
+	initial-value: var(--grid-medium);
 }
 
 @property --grid-article {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: var(--grid-article);
+	syntax: "<length>";
+	inherits: false;
+	initial-value: var(--grid-article);
 }
 
 @property --grid-large {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: var(--grid-large);
+	syntax: "<length>";
+	inherits: false;
+	initial-value: var(--grid-large);
 }
 
 @property --grid-extra-large {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: var(--grid-extra-large);
+	syntax: "<length>";
+	inherits: false;
+	initial-value: var(--grid-extra-large);
 }
 
 @property --ease-elastic {
-    syntax: "<transform-function>";
-    inherits: false;
-    initial-value: "ease";
+	syntax: "<transform-function>";
+	inherits: false;
+	initial-value: "ease";
 }

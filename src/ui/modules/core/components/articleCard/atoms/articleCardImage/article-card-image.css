@@ -1,6 +1,6 @@
 .article-card__featured-image {
-    height: inherit;
-    grid-area: Article-Card-Featured-Image;
-    object-fit: cover;
-    z-index: 0;
+	height: inherit;
+	grid-area: Article-Card-Featured-Image;
+	object-fit: cover;
+	z-index: 0;
 }

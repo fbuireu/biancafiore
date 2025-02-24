@@ -1,10 +1,10 @@
 ---
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
-import { PAGES_ROUTES } from 'src/const';
-import './my-work.css';
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { PAGES_ROUTES } from "src/const";
+import "./my-work.css";
 
-const projects = await getCollection('projects');
+const projects = await getCollection("projects");
 ---
 <section class="my-work__wrapper common-wrapper">
     <h2 class="my-work__title section-title">My Work</h2>
