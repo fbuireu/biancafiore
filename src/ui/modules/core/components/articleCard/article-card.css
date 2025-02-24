@@ -8,39 +8,43 @@
 @import url("atoms/articleCardReadingTime/article-card-reading-time.css");
 
 .article-card__link {
-	inset: 0;
-	position: absolute;
-	width: 100%;
-	z-index: 1;
+    inset: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
 
-	&:is(:hover, :focus-visible) ~ .article-card__item .article-card__tag__item {
-		translate: 0 0;
-	}
+    &:is(:hover, :focus-visible) ~ .article-card__item .article-card__tag__item {
+        translate: 0 0;
+    }
 }
 
 .article-card__item {
-	color: var(--white);
-	display: grid;
-	gap: 0.5rem 0;
-	height: 100%;
-	overflow: hidden;
+    color: var(--white);
+    display: grid;
+    gap: 0.5rem 0;
+    height: 100%;
+    overflow: hidden;
 
-	&:has(*:hover, *:focus-visible) {
-		overflow: initial;
-	}
+    &:has(*:hover, *:focus-visible) {
+        overflow: initial;
+    }
 
-	&.--no-image-variant {
-		grid:
+    &.--no-image-variant {
+        grid:
 			"Article-Card-Publish-Date Article-Card-Publish-Date" auto
 			"Article-Card-Title Article-Card-Title" 1fr
 			"Article-Card-Author Article-Card-Reading-Time" auto
 			"Article-Card-Excerpt Article-Card-Excerpt" auto
 			"Article-Card-Tags Article-Card-Tags" auto
 			/ 1fr 1fr;
-	}
 
-	&.--default-variant {
-		grid:
+        .article-card__title {
+            font-size: var(--font-size-h2);
+        }
+    }
+
+    &.--default-variant {
+        grid:
 			"Article-Card-Publish-Date Article-Card-Publish-Date" auto
 			"Article-Card-Featured-Image Article-Card-Featured-Image" 1fr
 			"Article-Card-Title Article-Card-Title" auto
@@ -48,12 +52,12 @@
 			"Article-Card-Excerpt Article-Card-Excerpt" auto
 			"Article-Card-Tags Article-Card-Tags" auto
 			/ 1fr 1fr;
-	}
+    }
 
-	&.--is-articles,
-	&.--is-about,
-	&.--is-tags,
-	&.--is-article {
-		color: var(--neutral-main);
-	}
+    &.--is-articles,
+    &.--is-about,
+    &.--is-tags,
+    &.--is-article {
+        color: var(--neutral-main);
+    }
 }

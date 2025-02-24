@@ -1,19 +1,20 @@
 ---
-import { Image } from "astro:assets";
-import type { CollectionEntry } from "astro:content";
-import { PAGES_ROUTES } from "@const/index";
-import { articleVariantToClass } from "@modules/core/utils/articleVariantToClass";
-import { getLocation } from "@modules/core/utils/getLocation";
-import clsx from "clsx";
-import "./article-card.css";
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { PAGES_ROUTES } from '@const/index';
+import { articleVariantToClass } from '@modules/core/utils/articleVariantToClass';
+import { getLocation } from '@modules/core/utils/getLocation';
+import clsx from 'clsx';
+import './article-card.css';
 
-type ArticleCardProps = CollectionEntry<"articles">;
+type ArticleCardProps = CollectionEntry<'articles'>;
 
 const article = Astro.props as ArticleCardProps;
 const { pathname } = Astro.url;
 const location = getLocation(Astro.url);
 ---
-<a class="article-card__link" href={`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`} aria-label={article.data.title}>{' '}</a>
+<a class="article-card__link" href={`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`}
+   aria-label={article.data.title}>{' '}</a>
 <article
     class={clsx(
         'article-card__item',
@@ -28,21 +29,24 @@ const location = getLocation(Astro.url);
           width={article.data.featuredImage.details.width}
           height={article.data.featuredImage.details.height}
           alt={article.data.title}
+          fit="inherit"
           transition:name=`featured-image-${pathname}`
       />
   )}
     <time class="article-card__publish-date" datetime={article.data.publishDate}>
       {article.data.publishDate}
     </time>
-    <h3 class="article-card__title font-serif inner-section-title">{article.data.title}</h3>
+    <h3 class="article-card__title font-serif">{article.data.title}</h3>
     <p class="article-card__author">
-        by <a href={`${PAGES_ROUTES.TAGS}/${article.data.author.slug}`} class="article-card__author__name --is-clickable --underline-on-hover ">{article.data.author.name}</a>
+        by <a href={`${PAGES_ROUTES.TAGS}/${article.data.author.slug}`}
+              class="article-card__author__name --is-clickable --underline-on-hover ">{article.data.author.name}</a>
     </p>
     <p class="article-card__excerpt">{article.data.description}</p>
     <p class="article-card__reading-time">{article.data.readingTime} minutes read</p>
     <ul class="article-card__tags__list flex">
       {article.data.tags?.map(({ slug, name }, index) => (
-          <a class="article-card__tag__item --underline-on-hover --is-clickable" href={`${PAGES_ROUTES.TAGS}/${slug}`} style={`--inline-index: ${String(index)}`}>
+          <a class="article-card__tag__item --underline-on-hover --is-clickable" href={`${PAGES_ROUTES.TAGS}/${slug}`}
+             style={`--inline-index: ${String(index)}`}>
               #{name}
           </a>
       ))}

@@ -6,5 +6,5 @@ export interface TestimonialAuthorProps {
 }
 
 export const TestimonialAuthor = ({ children }: TestimonialAuthorProps) => (
-	<h4 className="testimonial__author font-serif">{children}</h4>
+	<h5 className="testimonial__author font-serif">{children}</h5>
 );

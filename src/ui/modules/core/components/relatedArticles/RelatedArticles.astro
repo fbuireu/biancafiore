@@ -1,11 +1,11 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { RelatedArticlesSlider } from "@modules/core/components/relatedArticles/atoms/relatedArticlesSlider";
-import { getRelatedArticles } from "@modules/core/components/relatedArticles/utils/getRelatedArticles";
-import "./related-articles.css";
+import type { CollectionEntry } from 'astro:content';
+import { RelatedArticlesSlider } from '@modules/core/components/relatedArticles/atoms/relatedArticlesSlider';
+import { getRelatedArticles } from '@modules/core/components/relatedArticles/utils/getRelatedArticles';
+import './related-articles.css';
 
 interface RelatedArticleProps {
-	article: CollectionEntry<"articles">;
+  article: CollectionEntry<'articles'>;
 }
 
 const { article } = Astro.props as RelatedArticleProps;
@@ -14,7 +14,7 @@ const relatedArticles = await getRelatedArticles(article);
 {
     relatedArticles.length > 0 && (
     <section class="related-articles__wrapper common-wrapper">
-        <h3 class="related-articles__title section-title">You might also like</h3>
+        <h2 class="related-articles__title section-title">You might also like</h2>
         <RelatedArticlesSlider client:only="react" articles={relatedArticles} origin={Astro.url} />
         <script is:inline type="application/ld+json" set:html={JSON.stringify({
           '@context': 'https://schema.org',
