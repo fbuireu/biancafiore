@@ -3409,9 +3409,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/three@npm:^0.173.0":
-  version: 0.173.0
-  resolution: "@types/three@npm:0.173.0"
+"@types/three@npm:^0.174.0":
+  version: 0.174.0
+  resolution: "@types/three@npm:0.174.0"
   dependencies:
     "@tweenjs/tween.js": "npm:~23.1.3"
     "@types/stats.js": "npm:*"
@@ -3419,7 +3419,7 @@ __metadata:
     "@webgpu/types": "npm:*"
     fflate: "npm:~0.8.2"
     meshoptimizer: "npm:~0.18.1"
-  checksum: 10c0/6fede57591b364fc430c233d054d1892c017c2879e0ddb979e1cc14f6ebe59c560f7dbacc4c34e7cf17969d50c5f519d69a89f643a6839d16ed14ebbdd9ca43f
+  checksum: 10c0/338e9d8d01d373014ee3c3b686a0d633c1a29603fe199c7c5340fc1a35c17e6eea0d0a7bba5ff9a33b8e462e5b471c0829c2aaa34ab2300e8d6e7e3f885e45b5
   languageName: node
   linkType: hard
 
@@ -4113,11 +4113,11 @@ __metadata:
     "@types/node": "npm:^22.13.5"
     "@types/react": "npm:^19.0.10"
     "@types/react-dom": "npm:^19.0.4"
-    "@types/three": "npm:^0.173.0"
+    "@types/three": "npm:^0.174.0"
     algoliasearch: "npm:^5.20.3"
     astro: "npm:^5.4.0"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.5.1"
+    contentful: "npm:^11.5.2"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.12.7"
     husky: "npm:^9.1.7"
@@ -4660,9 +4660,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.5.1":
-  version: 11.5.1
-  resolution: "contentful@npm:11.5.1"
+"contentful@npm:^11.5.2":
+  version: 11.5.2
+  resolution: "contentful@npm:11.5.2"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.8"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -4671,7 +4671,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/44adcc156db17ab5540d45cb8f3079731ff53b9c602f9555826e80a1091ad52e5cf982ea5f4b5ca02f35bfab60851696a19d21fd7d447373ad8b327082d71e4f
+  checksum: 10c0/51fe072e0ce223a18df32af76981cd0e10d7aa62166069bc1d46958347c6b87a947c971fb54d990c28eba4083507b61ebf7b315ebd5d6e805a0cbd780cb2a3e0
   languageName: node
   linkType: hard
 
