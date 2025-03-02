@@ -1863,9 +1863,9 @@ __metadata:
   linkType: hard
 
 "@fontsource/baskervville@npm:^5.1.1":
-  version: 5.2.0
-  resolution: "@fontsource/baskervville@npm:5.2.0"
-  checksum: 10c0/1e2054a7d08fa4913dc1ff817904339cdc98cc6e9df8c080db9c19a0952265afb20d4889dbc50ce0d768a7d642b6bb42d3669be9a0a23efa9a4dc87577cae534
+  version: 5.2.1
+  resolution: "@fontsource/baskervville@npm:5.2.1"
+  checksum: 10c0/b49ae454022286d28dc020a6ae546be21080c8d353a69fec1e9285547c30cd01e809c4a48e62ddaad30ed3bdf2e32b6b1608d694891c7c8e0dd7c43b62a32108
   languageName: node
   linkType: hard
 
