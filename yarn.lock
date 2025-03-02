@@ -1856,16 +1856,16 @@ __metadata:
   linkType: hard
 
 "@fontsource-variable/nunito-sans@npm:^5.1.1":
-  version: 5.2.0
-  resolution: "@fontsource-variable/nunito-sans@npm:5.2.0"
-  checksum: 10c0/396aaa5e7908cc7a4af004dd2d5209b2d9da8986bb13654bd92a29830038c6847c9dc434b4297bdc681f31d0577908eb5dcb35fc8de5daa9d24a4b0ff1bcd674
+  version: 5.2.5
+  resolution: "@fontsource-variable/nunito-sans@npm:5.2.5"
+  checksum: 10c0/c1f83fefa5366ffa268eb3777340710006d227fa88e1ef9755c8867552690993a6b3f2872c5912edcd9a58f28cf559b2114436d50ca0ff6f46323614662e5fce
   languageName: node
   linkType: hard
 
 "@fontsource/baskervville@npm:^5.1.1":
-  version: 5.2.1
-  resolution: "@fontsource/baskervville@npm:5.2.1"
-  checksum: 10c0/b49ae454022286d28dc020a6ae546be21080c8d353a69fec1e9285547c30cd01e809c4a48e62ddaad30ed3bdf2e32b6b1608d694891c7c8e0dd7c43b62a32108
+  version: 5.2.5
+  resolution: "@fontsource/baskervville@npm:5.2.5"
+  checksum: 10c0/67114bc1963a453e14f199de29afffd92d69a35f0418d95dd2183659994ec7d96287a7936b1d83dd2589d892fbbec43f81030cf3bf0399fe1371cf96a288d6db
   languageName: node
   linkType: hard
 
