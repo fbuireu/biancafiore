@@ -6493,17 +6493,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globe.gl@npm:^2.40":
-  version: 2.40.0
-  resolution: "globe.gl@npm:2.40.0"
+"globe.gl@npm:^2.41":
+  version: 2.41.1
+  resolution: "globe.gl@npm:2.41.1"
   dependencies:
     "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
     kapsule: "npm:^1.16"
     three: "npm:>=0.154 <1"
-    three-globe: "npm:^2.41"
+    three-globe: "npm:^2.42"
     three-render-objects: "npm:^1.39"
-  checksum: 10c0/6eff92bcebaa2eedde9db528115bcc13b9d8d457be17a381603b63a30f5f62aeddce1e183df6ba7b42c79a2f1407124fd9ecae2349c4fe8e3271a256c010336c
+  checksum: 10c0/0755e69c2c56fb2622d19b115d1075753ea9b24141f2de02728308585de0ea23cb906edb8bf8df58d17dc8afcd3e91a524b50d34fbc32a094eb3168481400641
   languageName: node
   linkType: hard
 
@@ -9634,13 +9634,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rafor@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "rafor@npm:1.0.2"
-  checksum: 10c0/82d5fcd1fef68eb93e856f563c59b02a3df80f937c1d03afddf3ba2c18fbec8f10b362d4db7778a718a0c0bc8bfc341097f85bbc92b6fccdbc7b0b9457fb1f04
-  languageName: node
-  linkType: hard
-
 "rc@npm:^1.2.8":
   version: 1.2.8
   resolution: "rc@npm:1.2.8"
@@ -9678,15 +9671,15 @@ __metadata:
   linkType: hard
 
 "react-globe.gl@npm:^2.32.0":
-  version: 2.32.0
-  resolution: "react-globe.gl@npm:2.32.0"
+  version: 2.33.1
+  resolution: "react-globe.gl@npm:2.33.1"
   dependencies:
-    globe.gl: "npm:^2.40"
+    globe.gl: "npm:^2.41"
     prop-types: "npm:15"
     react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/2e5d86c5407e007a8cf412a5bc788b7b52bbdee3bf8a533b91ddc29fcffdcbbbd702c80d0c0a8e4da93e504cb574f67357f7f49fac5088f0b63432868f2577a7
+  checksum: 10c0/6dd6c6e94ce36e8b35ca87675437aee0a76bbe3d8b99a9d96bcb35343c677abedf9023e6133cf82af39dfdc66189d1657cbd716809fd0ebdbb14d20921745574
   languageName: node
   linkType: hard
 
@@ -11166,9 +11159,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three-globe@npm:^2.41":
-  version: 2.41.0
-  resolution: "three-globe@npm:2.41.0"
+"three-globe@npm:^2.42":
+  version: 2.42.1
+  resolution: "three-globe@npm:2.42.1"
   dependencies:
     "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
@@ -11187,10 +11180,9 @@ __metadata:
     three-geojson-geometry: "npm:2"
     three-slippy-map-globe: "npm:1"
     tinycolor2: "npm:1"
-    yaot: "npm:^1.1"
   peerDependencies:
     three: ">=0.154"
-  checksum: 10c0/770edb078b53214e3edee6a153c0900cf21554a93bccdcd6e75b57081ef163a4f38649a08f0766b899d555314573a056c148a8c4668018277c669b3e4b71b966
+  checksum: 10c0/68c9b65f1776cca9eeddf42a9a3b999a68d23f7dcf901c581bda62561b32dbce0be4b41e030ec814ba928dd0f3b44d03e3e77e4ab5189149d7a454c624e3a189
   languageName: node
   linkType: hard
 
@@ -12601,15 +12593,6 @@ __metadata:
   bin:
     yaml: bin.mjs
   checksum: 10c0/886a7d2abbd70704b79f1d2d05fe9fb0aa63aefb86e1cb9991837dced65193d300f5554747a872b4b10ae9a12bc5d5327e4d04205f70336e863e35e89d8f4ea9
-  languageName: node
-  linkType: hard
-
-"yaot@npm:^1.1":
-  version: 1.1.3
-  resolution: "yaot@npm:1.1.3"
-  dependencies:
-    rafor: "npm:^1.0.2"
-  checksum: 10c0/bdbddab6d3b04776c09b486b90440629caf2f486b1362077ce7c97894f841858d5476aeb0bc88ffc02c8fd2ee92ad9a4e51415ecbba96e6fcef92b0d324642a9
   languageName: node
   linkType: hard
 
