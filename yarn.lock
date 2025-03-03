@@ -1855,14 +1855,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource-variable/nunito-sans@npm:^5.1.1":
+"@fontsource-variable/nunito-sans@npm:^5.2.5":
   version: 5.2.5
   resolution: "@fontsource-variable/nunito-sans@npm:5.2.5"
   checksum: 10c0/c1f83fefa5366ffa268eb3777340710006d227fa88e1ef9755c8867552690993a6b3f2872c5912edcd9a58f28cf559b2114436d50ca0ff6f46323614662e5fce
   languageName: node
   linkType: hard
 
-"@fontsource/baskervville@npm:^5.1.1":
+"@fontsource/baskervville@npm:^5.2.5":
   version: 5.2.5
   resolution: "@fontsource/baskervville@npm:5.2.5"
   checksum: 10c0/67114bc1963a453e14f199de29afffd92d69a35f0418d95dd2183659994ec7d96287a7936b1d83dd2589d892fbbec43f81030cf3bf0399fe1371cf96a288d6db
@@ -1878,14 +1878,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "@hookform/resolvers@npm:4.1.2"
+"@hookform/resolvers@npm:^4.1.3":
+  version: 4.1.3
+  resolution: "@hookform/resolvers@npm:4.1.3"
   dependencies:
     "@standard-schema/utils": "npm:^0.3.0"
   peerDependencies:
     react-hook-form: ^7.0.0
-  checksum: 10c0/3e74dfac02c9b40d1840f3ede57031a461195eed513d299946d04afc823d92565e74af79aa1c61508d250068105f0ae14409cec35f03eba166bfd1316f1cf3fd
+  checksum: 10c0/dfaeb5936de4c21b849ba0120edb3ad8d0a8c835fd496ccb39ff409a19fa2334867218feb1120d7aed57a9a85f0b4f855f658ebd52c1b90122e9171c66275956
   languageName: node
   linkType: hard
 
@@ -4108,9 +4108,9 @@ __metadata:
     "@commitlint/config-conventional": "npm:^19.7.1"
     "@commitlint/format": "npm:^19.5.0"
     "@contentful/rich-text-html-renderer": "npm:^17.0.0"
-    "@fontsource-variable/nunito-sans": "npm:^5.1.1"
-    "@fontsource/baskervville": "npm:^5.1.1"
-    "@hookform/resolvers": "npm:^4.1.2"
+    "@fontsource-variable/nunito-sans": "npm:^5.2.5"
+    "@fontsource/baskervville": "npm:^5.2.5"
+    "@hookform/resolvers": "npm:^4.1.3"
     "@million/lint": "npm:^1.0.14"
     "@playwright/test": "npm:^1.50.1"
     "@testing-library/react": "npm:^16.2.0"
@@ -4124,7 +4124,7 @@ __metadata:
     algoliasearch: "npm:^5.20.3"
     astro: "npm:^5.4.1"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.5.2"
+    contentful: "npm:^11.5.3"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.12.7"
     husky: "npm:^9.1.7"
@@ -4133,7 +4133,7 @@ __metadata:
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
-    react-globe.gl: "npm:^2.32.0"
+    react-globe.gl: "npm:^2.33.1"
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.54.2"
     react-instantsearch: "npm:^7.15.3"
@@ -4667,9 +4667,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.5.2":
-  version: 11.5.2
-  resolution: "contentful@npm:11.5.2"
+"contentful@npm:^11.5.3":
+  version: 11.5.3
+  resolution: "contentful@npm:11.5.3"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.8"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -4678,7 +4678,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/51fe072e0ce223a18df32af76981cd0e10d7aa62166069bc1d46958347c6b87a947c971fb54d990c28eba4083507b61ebf7b315ebd5d6e805a0cbd780cb2a3e0
+  checksum: 10c0/980defbe64235b68596686f68cd7aa4a056daf93a4d3f630203a2aa06ec5a948f0c710759fa848c536fd1f78f48527e3f6004924695392265fdf68c7ee06613a
   languageName: node
   linkType: hard
 
@@ -9670,7 +9670,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-globe.gl@npm:^2.32.0":
+"react-globe.gl@npm:^2.33.1":
   version: 2.33.1
   resolution: "react-globe.gl@npm:2.33.1"
   dependencies:
