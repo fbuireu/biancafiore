@@ -88,7 +88,6 @@
 		"@playwright/test": "^1.51.0",
 		"@testing-library/react": "^16.2.0",
 		"@testing-library/react-hooks": "^8.0.1",
-		"@types/add": "^2.0.3",
 		"@types/markdown-it": "^14.1.2",
 		"@types/node": "^22.13.9",
 		"@types/react": "^19.0.10",
