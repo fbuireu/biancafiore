@@ -3977,9 +3977,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.5.1":
-  version: 5.5.1
-  resolution: "astro@npm:5.5.1"
+"astro@npm:^5.5.2":
+  version: 5.5.2
+  resolution: "astro@npm:5.5.2"
   dependencies:
     "@astrojs/compiler": "npm:^2.11.0"
     "@astrojs/internal-helpers": "npm:0.6.1"
@@ -4045,7 +4045,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/a29b78f6808969cd9ebeb7835498454c0384f57e719518a8d499b052fd72e1a43ec552f0bfa28300e2549cd0f8544d36283a56f1d04fa8538a98648aaeda3333
+  checksum: 10c0/d7b75ed69452999a65375b4e2f81e238b92e12da4510a781e8b9fb3d17acb3c16e29019de2240bd19799c30428a284706edcddbfb04eb97598fc9f9fa832d63c
   languageName: node
   linkType: hard
 
@@ -4156,7 +4156,7 @@ __metadata:
     "@types/react-dom": "npm:^19.0.4"
     "@types/three": "npm:^0.174.0"
     algoliasearch: "npm:^5.21.0"
-    astro: "npm:^5.5.1"
+    astro: "npm:^5.5.2"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.5.7"
     conventional-changelog-atom: "npm:^5.0.0"
