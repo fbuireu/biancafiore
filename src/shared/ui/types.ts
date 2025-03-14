@@ -1,15 +1,15 @@
-import type { z } from "astro:schema";
-import type { contactFormSchema } from "@application/entities/contact/schema";
+import type { contactFormSchema } from '@application/entities/contact/schema';
+import type { z } from 'astro:schema';
 
 export type ContactFormData = z.infer<typeof contactFormSchema> & {
-	recaptcha: string;
-	emailId: string;
+  recaptcha: string;
+  emailId: string;
 };
 
-export enum FormStatus {
-	INITIAL = "initial",
-	LOADING = "loading",
-	SUCCESS = "success",
-	ERROR = "error",
-	UNAUTHORIZED = "unauthorized",
-}
+export const FormStatus = {
+  INITIAL: 'initial',
+  LOADING: 'loading',
+  SUCCESS: 'success',
+  ERROR: 'error',
+  UNAUTHORIZED: 'unauthorized',
+} as const;

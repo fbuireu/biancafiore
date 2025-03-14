@@ -1,20 +1,21 @@
-import { useSyncExternalStore } from "react";
+import { useSyncExternalStore } from 'react';
 
-export enum TabVisibility {
-	VISIBLE = "visible",
-	HIDDEN = "hidden",
-	UNDEFINED = "undefined",
-}
+export const TabVisibility = {
+  VISIBLE: 'visible',
+  HIDDEN: 'hidden',
+  UNDEFINED: 'undefined',
+} as const;
 
-export function useTabVisibility(): TabVisibility {
-	const subscribe = (callback: () => void) => {
-		document.addEventListener("visibilitychange", callback);
-		return () => {
-			document.removeEventListener("visibilitychange", callback);
-		};
-	};
 
-	const getSnapshot = () => document.visibilityState as TabVisibility;
+export function useTabVisibility(): (typeof TabVisibility)[keyof typeof TabVisibility] {
+  const subscribe = (callback: () => void) => {
+    document.addEventListener('visibilitychange', callback);
+    return () => {
+      document.removeEventListener('visibilitychange', callback);
+    };
+  };
 
-	return useSyncExternalStore(subscribe, getSnapshot);
+  const getSnapshot = (): DocumentVisibilityState => document.visibilityState;
+
+  return useSyncExternalStore(subscribe, getSnapshot);
 }

@@ -7,7 +7,7 @@ import "./textarea.css";
 interface TextareaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
 	hasError: boolean;
 	errorMessage?: string;
-	formStatus: FormStatus;
+	formStatus: typeof FormStatus[keyof typeof FormStatus];
 	label: string;
 }
 
