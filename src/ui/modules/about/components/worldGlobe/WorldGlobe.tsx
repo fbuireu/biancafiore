@@ -1,6 +1,7 @@
 import type { CollectionEntry } from "astro:content";
 import { LeftArrow } from "@assets/images/svg-components/leftArrow";
 import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn";
+import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
 import { WORLD_GLOBE_CONFIG } from "@const/index";
 import countries from "@data/countries.geojson.json";
 import { TabVisibility, useTabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
@@ -12,7 +13,6 @@ import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
 import "./world-globe.css";
-import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
 
 interface GlobeAllCitiesProps {
 	cities: CollectionEntry<"cities">[];
@@ -25,24 +25,25 @@ export interface ReactGlobePoint {
 	label: string;
 }
 
-enum MovementType {
-	MOVE = "move",
-	ZOOM = "zoom",
-}
+const MovementType = {
+  MOVE: "move",
+  ZOOM: "zoom"
+} as const;
 
-enum Direction {
-	CLOCKWISE = "clockwise",
-	COUNTERCLOCKWISE = "counterClockwise",
-}
+const Direction = {
+  CLOCKWISE: "clockwise",
+  COUNTERCLOCKWISE: "counterClockwise"
+} as const;
 
-enum Zoom {
-	IN = "in",
-	OUT = "out",
-}
+
+export const Zoom = {
+  IN: "in",
+  OUT: "out"
+} as const;
 
 interface HandleActionParams {
-	movementDirection: Direction | Zoom;
-	type: MovementType;
+	movementDirection: typeof Direction[keyof typeof Direction] | typeof Zoom[keyof typeof Zoom];
+	type: typeof MovementType[keyof typeof MovementType];
 }
 
 const worldGlobeSize = {

@@ -1,28 +1,28 @@
-import type { z } from "astro:content";
-import type { tagSchema } from "@application/entities/tags/schema";
-import type { EntryFieldTypes } from "contentful";
+import type { tagSchema } from '@application/entities/tags/schema';
+import type { z } from 'astro:content';
+import type { EntryFieldTypes } from 'contentful';
 
 export interface RawTag {
-	contentTypeId: "tag";
-	sys: {
-		id: string;
-	};
-	fields: {
-		name: EntryFieldTypes.Text;
-		slug: EntryFieldTypes.Text;
-	};
+  contentTypeId: 'tag';
+  sys: {
+    id: string;
+  };
+  fields: {
+    name: EntryFieldTypes.Text;
+    slug: EntryFieldTypes.Text;
+  };
 }
 
-export enum TagType {
-	TAG = "tag",
-	AUTHOR = "author",
-}
+export const TagType = {
+  TAG: 'tag',
+  AUTHOR: 'author',
+} as const;
 
 export interface BaseTagDTO {
-	name: string;
-	slug: string;
+  name: string;
+  slug: string;
 }
 
 export type TagDTO = {
-	[key: string]: z.infer<typeof tagSchema>[];
+  [key: string]: z.infer<typeof tagSchema>[];
 };
