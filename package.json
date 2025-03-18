@@ -85,17 +85,17 @@
 		"@commitlint/cli": "^19.8.0",
 		"@commitlint/config-conventional": "^19.8.0",
 		"@commitlint/format": "^19.8.0",
-		"@playwright/test": "^1.51.0",
+		"@playwright/test": "^1.51.1",
 		"@testing-library/react": "^16.2.0",
 		"@testing-library/react-hooks": "^8.0.1",
 		"@types/markdown-it": "^14.1.2",
 		"@types/node": "^22.13.10",
-		"@types/react": "^19.0.10",
+		"@types/react": "^19.0.11",
 		"@types/react-dom": "^19.0.4",
 		"@types/three": "^0.174.0",
 		"conventional-changelog-atom": "^5.0.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.5.0",
-		"vitest": "^3.0.8"
+		"vitest": "^3.0.9"
 	}
 }
