@@ -5,7 +5,7 @@ import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 
 type Node = Block | Inline | Text;
 
-interface RenderOptionsReturnType {
+interface RenderOptionsReturn {
 	renderNode: {
 		[INLINES.EMBEDDED_ENTRY]: (node: Node) => string;
 		[BLOCKS.EMBEDDED_ENTRY]: (node: Node) => string;
@@ -14,55 +14,55 @@ interface RenderOptionsReturnType {
 	};
 }
 
-export function renderOptions(rawArticle: RawArticle): RenderOptionsReturnType {
-	return {
-		renderNode: {
-			[INLINES.EMBEDDED_ENTRY]: (node: Node) => {
-				const contentTypeId = node.data.target.sys.contentType.sys.id;
-				const { slug, title } = node.data.target.fields;
+export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
+  return {
+    renderNode: {
+      [INLINES.EMBEDDED_ENTRY]: (node: Node) => {
+        const contentTypeId = node.data.target.sys.contentType.sys.id;
+        const { slug, title } = node.data.target.fields;
 
-				if (contentTypeId === "article" && slug && title) {
-					return `<a href="/articles/${slug}">${title}</a>`;
-				}
-				return "";
-			},
-			[BLOCKS.EMBEDDED_ENTRY]: (node: Node) => {
-				const contentTypeId = node.data.target.sys.contentType.sys.id;
-				const { code, embedUrl, title } = node.data.target.fields;
+        if (contentTypeId === 'article' && slug && title) {
+          return `<a href="/articles/${slug}">${title}</a>`;
+        }
+        return '';
+      },
+      [BLOCKS.EMBEDDED_ENTRY]: (node: Node) => {
+        const contentTypeId = node.data.target.sys.contentType.sys.id;
+        const { code, embedUrl, title } = node.data.target.fields;
 
-				if (contentTypeId === "codeBlock" && code) {
-					return `<pre><code>${code}</code></pre>`;
-				}
+        if (contentTypeId === 'codeBlock' && code) {
+          return `<pre><code>${code}</code></pre>`;
+        }
 
-				if (contentTypeId === "videoEmbed" && embedUrl && title) {
-					return `<iframe src="${embedUrl}" height="100%" width="100%" title="${title}" allowfullscreen></iframe>`;
-				}
-				return "";
-			},
-			[BLOCKS.EMBEDDED_ASSET]: (node: Node) => {
-				const { file, description } = node.data.target.fields;
-				const { url, details } = file || {};
-				const { image } = details || {};
-				const { height, width } = image || {};
+        if (contentTypeId === 'videoEmbed' && embedUrl && title) {
+          return `<iframe src="${embedUrl}" height="100%" width="100%" title="${title}" allowfullscreen></iframe>`;
+        }
+        return '';
+      },
+      [BLOCKS.EMBEDDED_ASSET]: (node: Node) => {
+        const { file, description } = node.data.target.fields;
+        const { url, details } = file || {};
+        const { image } = details || {};
+        const { height, width } = image || {};
 
-				if (url) {
-					return `
+        if (url) {
+          return `
             <figure class="full-bleed">
               <img
                 src="https:${url}"
-                height="${height ?? ""}"
-                width="${width ?? ""}"
+                height="${height ?? ''}"
+                width="${width ?? ''}"
                 alt="${description ?? rawArticle.fields.title}"
                 loading="lazy"
                 decoding="async"
               />
-              ${description ? `<figcaption>${description}</figcaption>` : ""}
+              ${description ? `<figcaption>${description}</figcaption>` : ''}
             </figure>
           `;
-				}
-				return "";
-			},
-			...parseHeadings(),
-		},
-	};
+        }
+        return '';
+      },
+      ...parseHeadings(),
+    },
+  };
 }
