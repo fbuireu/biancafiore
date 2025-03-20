@@ -3427,12 +3427,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.0.11":
-  version: 19.0.11
-  resolution: "@types/react@npm:19.0.11"
+"@types/react@npm:^19.0.12":
+  version: 19.0.12
+  resolution: "@types/react@npm:19.0.12"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10c0/386cdde579b60e22160d6894a985655742703346bdc71fed9809f8f90ca87e2dd0252e86b81f92621a2c1de8d0fbf35e3963996db8c451cc670570061ed62f29
+  checksum: 10c0/c814b6af5c0fbcf5c65d031b1c9bf98c5b857e015254d95811f2851b27b869c3d31c6f35dab127dc6921a3dbda0b0622c6323d493a14b31b231a6a58c41c5e84
   languageName: node
   linkType: hard
 
@@ -4150,13 +4150,13 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
     "@types/node": "npm:^22.13.10"
-    "@types/react": "npm:^19.0.11"
+    "@types/react": "npm:^19.0.12"
     "@types/react-dom": "npm:^19.0.4"
     "@types/three": "npm:^0.174.0"
     algoliasearch: "npm:^5.21.0"
     astro: "npm:^5.5.3"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.5.8"
+    contentful: "npm:^11.5.9"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.12.7"
     husky: "npm:^9.1.7"
@@ -4169,9 +4169,9 @@ __metadata:
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.54.2"
     react-instantsearch: "npm:^7.15.4"
-    react-router-dom: "npm:^7.3.0"
+    react-router-dom: "npm:^7.4.0"
     resend: "npm:^4.1.2"
-    swiper: "npm:^11.2.5"
+    swiper: "npm:^11.2.6"
     three: "npm:^0.174.0"
     typescript: "npm:^5.8.2"
     vanilla-cookieconsent: "npm:^3.1.0"
@@ -4656,9 +4656,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.5.8":
-  version: 11.5.8
-  resolution: "contentful@npm:11.5.8"
+"contentful@npm:^11.5.9":
+  version: 11.5.9
+  resolution: "contentful@npm:11.5.9"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.8"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -4667,7 +4667,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/ff1fb14cc6abac9fe997ee7228549b07ca14cb6cac445f2f19b645ee62399157179f7b7b844ad7083da168f248a5224684a8ba0241312b43897e32e44db6d1b6
+  checksum: 10c0/1f94d0bf1d3b306a995181abf0ff0923678f52ca86283863f7dcc6cd6abf3e4c5c6c62d0d60c4b78f8b55f8cc43c04e7ae16505cb5b5c334562275f2c5f6021a
   languageName: node
   linkType: hard
 
@@ -9683,21 +9683,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.3.0":
-  version: 7.3.0
-  resolution: "react-router-dom@npm:7.3.0"
+"react-router-dom@npm:^7.4.0":
+  version: 7.4.0
+  resolution: "react-router-dom@npm:7.4.0"
   dependencies:
-    react-router: "npm:7.3.0"
+    react-router: "npm:7.4.0"
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10c0/62360eb87d64081b413591a8c96dbf0f1f568df2e1b2748179a586f0ccd891df85acf25a52b6425fee8614266d53fd7ba9944b5c7ab6478966c46daa546307b8
+  checksum: 10c0/d3233843b05e3cac3045a2655f487860b9e20464cc6d2907e6b57628b1740084390478538508183bb43a4712c7f9b6ab2c20178f4444430c4c99ded6512cd3e5
   languageName: node
   linkType: hard
 
-"react-router@npm:7.3.0":
-  version: 7.3.0
-  resolution: "react-router@npm:7.3.0"
+"react-router@npm:7.4.0":
+  version: 7.4.0
+  resolution: "react-router@npm:7.4.0"
   dependencies:
     "@types/cookie": "npm:^0.6.0"
     cookie: "npm:^1.0.1"
@@ -9709,7 +9709,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/2965a8a7598afaeb5c4d10c3364452df924bed9b03f6b18d7049e4b93054e2412749d0621b2ff4cdd7791af9fb843148aefbea3db2ffc9f43ef68f9df0c0241d
+  checksum: 10c0/9cf943d7854e1e4d068162efa9a61e2d06a5c679cf3272a867046cc97a6cc65c9744490f54e8fd77bbe2d114610a5cb285ceb3d3941b9b19ac6f63385ac0a89d
   languageName: node
   linkType: hard
 
@@ -10992,10 +10992,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^11.2.5":
-  version: 11.2.5
-  resolution: "swiper@npm:11.2.5"
-  checksum: 10c0/dd1e598a810ee4e38316dc6bb80d27be374faf78385f44669f24c46427929d8532e96fc52fb45b8c9edb956074408ce14208355ff8410d68a71e5f8f39287da1
+"swiper@npm:^11.2.6":
+  version: 11.2.6
+  resolution: "swiper@npm:11.2.6"
+  checksum: 10c0/36ba63e2d1c5045f647f0f07b3a25c164393fb89b17db63f57fa9f776eb61bc5cb2c34634f80cf69caaddc209a174d0cd7be23c580785534569ea4a098b3a42c
   languageName: node
   linkType: hard
 
