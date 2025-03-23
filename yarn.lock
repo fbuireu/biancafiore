@@ -195,7 +195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/cloudflare@npm:^12.2.4":
+"@astrojs/cloudflare@npm:^12.3.0":
   version: 12.3.0
   resolution: "@astrojs/cloudflare@npm:12.3.0"
   dependencies:
@@ -3211,7 +3211,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^22.13.10":
+"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^22.13.11":
   version: 22.13.11
   resolution: "@types/node@npm:22.13.11"
   dependencies:
@@ -3791,7 +3791,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.5.3":
+"astro@npm:^5.5.4":
   version: 5.5.4
   resolution: "astro@npm:5.5.4"
   dependencies:
@@ -3943,7 +3943,7 @@ __metadata:
   resolution: "biancafiore@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.9.4"
-    "@astrojs/cloudflare": "npm:^12.2.4"
+    "@astrojs/cloudflare": "npm:^12.3.0"
     "@astrojs/db": "npm:^0.14.8"
     "@astrojs/mdx": "npm:^4.2.1"
     "@astrojs/partytown": "npm:^2.1.4"
@@ -3964,12 +3964,12 @@ __metadata:
     "@testing-library/react": "npm:^16.2.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^22.13.10"
+    "@types/node": "npm:^22.13.11"
     "@types/react": "npm:^19.0.12"
     "@types/react-dom": "npm:^19.0.4"
     "@types/three": "npm:^0.174.0"
     algoliasearch: "npm:^5.21.0"
-    astro: "npm:^5.5.3"
+    astro: "npm:^5.5.4"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.5.10"
     conventional-changelog-atom: "npm:^5.0.0"
