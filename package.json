@@ -74,7 +74,7 @@
 		"react-router-dom": "^7.4.0",
 		"resend": "^4.2.0",
 		"swiper": "^11.2.6",
-		"three": "^0.174.0",
+		"three": "^0.175.0",
 		"typescript": "^5.8.2",
 		"vanilla-cookieconsent": "^3.1.0",
 		"zod": "^3.24.2"
@@ -92,7 +92,7 @@
 		"@types/node": "^22.13.14",
 		"@types/react": "^19.0.12",
 		"@types/react-dom": "^19.0.4",
-		"@types/three": "^0.174.0",
+		"@types/three": "^0.175.0",
 		"conventional-changelog-atom": "^5.0.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.5.0",
