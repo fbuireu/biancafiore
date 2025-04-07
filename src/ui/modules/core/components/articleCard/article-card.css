@@ -21,7 +21,7 @@
 .article-card__item {
 	color: var(--white);
 	display: grid;
-	gap: 0.5rem 0;
+	gap: 1rem 0;
 	height: 100%;
 	overflow: hidden;
 

@@ -31,8 +31,8 @@
 
 	@media (width <= 960px) {
 		margin-block: 1rem;
-		position: relative;
-		top: 0;
+		position: sticky;
+		top: var(--header-height);
 		width: 100%;
 	}
 }
@@ -68,10 +68,6 @@
 
 	&[open] {
 		height: auto;
-
-		@media (width <= 960px) {
-			overflow: clip;
-		}
 	}
 }
 
