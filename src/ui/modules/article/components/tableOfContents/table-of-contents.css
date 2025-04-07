@@ -26,13 +26,13 @@
 }
 
 .article__table-of-contents__wrapper {
+	--top: calc(var(--header-height) + 2rem);
 	position: sticky;
-	top: calc(var(--header-height) + 2rem);
+	top: var(--top);
 
 	@media (width <= 960px) {
+		--top: var(--header-height);
 		margin-block: 1rem;
-		position: sticky;
-		top: var(--header-height);
 		width: 100%;
 	}
 }
