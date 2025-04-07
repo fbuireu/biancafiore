@@ -3667,7 +3667,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.6.0":
+"astro@npm:^5.6.1":
   version: 5.6.1
   resolution: "astro@npm:5.6.1"
   dependencies:
@@ -3845,7 +3845,7 @@ __metadata:
     "@types/react-dom": "npm:^19.1.1"
     "@types/three": "npm:^0.175.0"
     algoliasearch: "npm:^5.23.2"
-    astro: "npm:^5.6.0"
+    astro: "npm:^5.6.1"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.5.13"
     conventional-changelog-atom: "npm:^5.0.0"
@@ -3860,11 +3860,11 @@ __metadata:
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.55.0"
     react-instantsearch: "npm:^7.15.5"
-    react-router-dom: "npm:^7.4.1"
+    react-router-dom: "npm:^7.5.0"
     resend: "npm:^4.2.0"
     swiper: "npm:^11.2.6"
     three: "npm:^0.175.0"
-    typescript: "npm:^5.8.2"
+    typescript: "npm:^5.8.3"
     vanilla-cookieconsent: "npm:^3.1.0"
     vitest: "npm:^3.1.1"
     zod: "npm:^3.24.2"
@@ -9218,7 +9218,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.4.1":
+"react-router-dom@npm:^7.5.0":
   version: 7.5.0
   resolution: "react-router-dom@npm:7.5.0"
   dependencies:
@@ -10722,7 +10722,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.8.2":
+"typescript@npm:^5.8.3":
   version: 5.8.3
   resolution: "typescript@npm:5.8.3"
   bin:
@@ -10732,7 +10732,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.8.2#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>":
   version: 5.8.3
   resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"
   bin:
