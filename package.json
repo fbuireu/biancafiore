@@ -91,7 +91,7 @@
 		"@types/markdown-it": "^14.1.2",
 		"@types/node": "^22.14.0",
 		"@types/react": "^19.1.0",
-		"@types/react-dom": "^19.1.1",
+		"@types/react-dom": "^19.1.2",
 		"@types/three": "^0.175.0",
 		"conventional-changelog-atom": "^5.0.0",
 		"husky": "^9.1.7",
