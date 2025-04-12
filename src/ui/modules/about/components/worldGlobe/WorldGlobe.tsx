@@ -26,24 +26,23 @@ export interface ReactGlobePoint {
 }
 
 const MovementType = {
-  MOVE: "move",
-  ZOOM: "zoom"
+	MOVE: "move",
+	ZOOM: "zoom",
 } as const;
 
 const Direction = {
-  CLOCKWISE: "clockwise",
-  COUNTERCLOCKWISE: "counterClockwise"
+	CLOCKWISE: "clockwise",
+	COUNTERCLOCKWISE: "counterClockwise",
 } as const;
 
-
 export const Zoom = {
-  IN: "in",
-  OUT: "out"
+	IN: "in",
+	OUT: "out",
 } as const;
 
 interface HandleActionParams {
-	movementDirection: typeof Direction[keyof typeof Direction] | typeof Zoom[keyof typeof Zoom];
-	type: typeof MovementType[keyof typeof MovementType];
+	movementDirection: (typeof Direction)[keyof typeof Direction] | (typeof Zoom)[keyof typeof Zoom];
+	type: (typeof MovementType)[keyof typeof MovementType];
 }
 
 const worldGlobeSize = {
