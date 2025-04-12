@@ -6,7 +6,7 @@ import "./input.css";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	hasError: boolean;
 	errorMessage?: string;
-	formStatus: typeof FormStatus[keyof typeof FormStatus];
+	formStatus: (typeof FormStatus)[keyof typeof FormStatus];
 	label?: string;
 }
 

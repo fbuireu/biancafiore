@@ -5,12 +5,12 @@ interface CalculateCenterReturn {
 	longitude: number;
 }
 
-export function calculateCenter(city: CollectionEntry<'cities'>[]): CalculateCenterReturn {
-  const latitudes = city.map(({ data }) => Number.parseFloat(String(data.coordinates.latitude)));
-  const longitudes = city.map(({ data }) => Number.parseFloat(String(data.coordinates.longitude)));
+export function calculateCenter(city: CollectionEntry<"cities">[]): CalculateCenterReturn {
+	const latitudes = city.map(({ data }) => Number.parseFloat(String(data.coordinates.latitude)));
+	const longitudes = city.map(({ data }) => Number.parseFloat(String(data.coordinates.longitude)));
 
-  const centerLatitude = latitudes.reduce((acc, latitude) => acc + latitude, 0) / latitudes.length;
-  const centerLongitude = longitudes.reduce((acc, longitude) => acc + longitude, 0) / longitudes.length;
+	const centerLatitude = latitudes.reduce((acc, latitude) => acc + latitude, 0) / latitudes.length;
+	const centerLongitude = longitudes.reduce((acc, longitude) => acc + longitude, 0) / longitudes.length;
 
-  return { latitude: centerLatitude, longitude: centerLongitude };
+	return { latitude: centerLatitude, longitude: centerLongitude };
 }

@@ -1,3 +1,4 @@
+import { actions } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
 import { Exception } from "@domain/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +10,6 @@ import { Textarea } from "@modules/core/components/form/textarea";
 import Spinner from "@modules/core/components/spinner/Spinner";
 import type { ContactFormData } from "@shared/ui/types";
 import { FormStatus } from "@shared/ui/types";
-import { actions } from "astro:actions";
 import clsx from "clsx";
 import { useCallback, useRef, useState, useTransition } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
@@ -28,7 +28,7 @@ export const ContactForm = () => {
 		resolver: zodResolver(contactFormSchema),
 	});
 	const [pending, startTransition] = useTransition();
-	const [formStatus, setFormStatus] = useState<typeof FormStatus[keyof typeof FormStatus]>(FormStatus.INITIAL);
+	const [formStatus, setFormStatus] = useState<(typeof FormStatus)[keyof typeof FormStatus]>(FormStatus.INITIAL);
 	const { executeRecaptcha } = useGoogleReCaptcha();
 	const submitRef = useRef<HTMLButtonElement>(null);
 
@@ -142,9 +142,9 @@ export const ContactForm = () => {
 					/>
 					<Recaptcha hasError={!!errors.recaptcha} errorMessage={errors.recaptcha?.message} />
 					<div className="contact-form__generic-error__wrapper">
-						{(([FormStatus.ERROR, FormStatus.UNAUTHORIZED] as typeof FormStatus[keyof typeof FormStatus][]).includes(formStatus)) && (
-							<p className="contact-form__generic-error-message">{errors.root?.message}</p>
-						)}
+						{([FormStatus.ERROR, FormStatus.UNAUTHORIZED] as (typeof FormStatus)[keyof typeof FormStatus][]).includes(
+							formStatus,
+						) && <p className="contact-form__generic-error-message">{errors.root?.message}</p>}
 					</div>
 					<button
 						ref={submitRef}
