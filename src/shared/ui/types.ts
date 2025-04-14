@@ -2,7 +2,7 @@ import type { z } from "astro:schema";
 import type { contactFormSchema } from "@application/entities/contact/schema";
 
 export type ContactFormData = z.infer<typeof contactFormSchema> & {
-	recaptcha: string;
+	recaptcha?: string;
 	emailId: string;
 };
 

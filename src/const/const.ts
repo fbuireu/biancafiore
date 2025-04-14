@@ -86,7 +86,7 @@ const defaultDateFormat: CapitalizeKeys<Intl.DateTimeFormatOptions> = {
 	DAY: "numeric",
 } as const;
 
-export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = lowercaseKeys(defaultDateFormat) as const;
+export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = lowercaseKeys(defaultDateFormat);
 
 export const THEME_STORAGE_KEY = "theme" as const;
 

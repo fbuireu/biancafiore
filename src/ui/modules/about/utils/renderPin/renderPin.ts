@@ -10,7 +10,8 @@ interface RenderPinParams {
 }
 
 export function renderPin({ markerData, cities }: RenderPinParams): HTMLElement {
-	const citiesInitialPosition = cities.map(({ data }) => document.querySelector(`#${slugify(data.name)}`)?.offsetTop);
+const citiesInitialPosition = cities.map( ({ data }) => (document.querySelector(`#${slugify(data.name)}`) as HTMLElement)?.offsetTop
+);
 
 	const markerWrapper = document.createElement("button");
 	markerWrapper.classList.add("marker__wrapper", `--is-${slugify(markerData.label)}`);

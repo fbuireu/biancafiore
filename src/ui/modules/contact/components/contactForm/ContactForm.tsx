@@ -24,7 +24,6 @@ export const ContactForm = () => {
 		formState: { errors },
 		reset,
 	} = useForm<ContactFormData>({
-		// @ts-ignore:next-line (mismatch between Astro zod and react-hook-form zod)
 		resolver: zodResolver(contactFormSchema),
 	});
 	const [pending, startTransition] = useTransition();

@@ -3078,7 +3078,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^22.14.0":
+"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^22.14.1":
   version: 22.14.1
   resolution: "@types/node@npm:22.14.1"
   dependencies:
@@ -3110,7 +3110,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.1.0":
+"@types/react@npm:^19.1.1":
   version: 19.1.1
   resolution: "@types/react@npm:19.1.1"
   dependencies:
@@ -3831,8 +3831,8 @@ __metadata:
     "@testing-library/react": "npm:^16.3.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^22.14.0"
-    "@types/react": "npm:^19.1.0"
+    "@types/node": "npm:^22.14.1"
+    "@types/react": "npm:^19.1.1"
     "@types/react-dom": "npm:^19.1.2"
     "@types/three": "npm:^0.175.0"
     algoliasearch: "npm:^5.23.3"
@@ -3843,7 +3843,7 @@ __metadata:
     gsap: "npm:^3.12.7"
     husky: "npm:^9.1.7"
     instantsearch.css: "npm:^8.5.1"
-    lint-staged: "npm:^15.5.0"
+    lint-staged: "npm:^15.5.1"
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
@@ -7068,7 +7068,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^15.5.0":
+"lint-staged@npm:^15.5.1":
   version: 15.5.1
   resolution: "lint-staged@npm:15.5.1"
   dependencies:
