@@ -5,7 +5,9 @@ import type { Except } from "@const/types";
 import { Exception } from "@domain/errors";
 import type { ContactFormData } from "@shared/ui/types";
 
-type SaveContactParams = Except<ContactFormData, "recaptcha">;
+interface SaveContactParams extends Except<ContactFormData, "recaptcha"> {
+	emailId: string,
+};
 
 export async function saveContact(contactData: SaveContactParams): Promise<void> {
 	try {
