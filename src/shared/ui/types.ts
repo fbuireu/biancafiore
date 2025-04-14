@@ -3,7 +3,7 @@ import type { contactFormSchema } from "@application/entities/contact/schema";
 
 export type ContactFormData = z.infer<typeof contactFormSchema> & {
 	recaptcha?: string;
-	emailId: string;
+	emailId?: string;
 };
 
 export const FormStatus = {
