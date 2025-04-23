@@ -195,23 +195,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/cloudflare@npm:^12.5.0":
-  version: 12.5.0
-  resolution: "@astrojs/cloudflare@npm:12.5.0"
+"@astrojs/cloudflare@npm:^12.5.1":
+  version: 12.5.1
+  resolution: "@astrojs/cloudflare@npm:12.5.1"
   dependencies:
     "@astrojs/internal-helpers": "npm:0.6.1"
-    "@astrojs/underscore-redirects": "npm:0.6.0"
+    "@astrojs/underscore-redirects": "npm:0.6.1"
     "@cloudflare/workers-types": "npm:^4.20250327.0"
-    esbuild: "npm:^0.25.0"
-    estree-walker: "npm:^3.0.3"
-    magic-string: "npm:^0.30.17"
-    miniflare: "npm:^4.20250321.1"
     tinyglobby: "npm:^0.2.12"
     vite: "npm:^6.2.6"
     wrangler: "npm:^4.5.1"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/c366d12a4048bc1b4deee3ef6787cf9d502ed98f359d99f736e1b493aa0b3a61dbe8f4f238cf890251a4e3188e93d083d70f1f33b211efd0b0336f8d286c6b9d
+  checksum: 10c0/26e0b8ad6acaf7aac64be19a6a39afeb4b2ac3efbf970429e0765176dc374361a7cd1159544e6d4b5fdafa15825cdb084eeeb8354f185ea609426332971706bf
   languageName: node
   linkType: hard
 
@@ -229,11 +225,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/db@npm:^0.14.11":
-  version: 0.14.11
-  resolution: "@astrojs/db@npm:0.14.11"
+"@astrojs/db@npm:^0.14.12":
+  version: 0.14.12
+  resolution: "@astrojs/db@npm:0.14.12"
   dependencies:
-    "@astrojs/studio": "npm:0.1.7"
+    "@astrojs/studio": "npm:0.1.8"
     "@libsql/client": "npm:^0.15.2"
     async-listen: "npm:^3.1.0"
     deep-diff: "npm:^1.0.2"
@@ -246,7 +242,7 @@ __metadata:
     yargs-parser: "npm:^21.1.1"
     yocto-spinner: "npm:^0.2.1"
     zod: "npm:^3.24.2"
-  checksum: 10c0/4fa9fca4f195594d967ae576d94bff951fb87674af1f347afb4da5a0f25a28d49a686fc60db8035b15864f96b77febcfa96782a89fb2103a3a64a212d66d7990
+  checksum: 10c0/47d0685d7cbc16d995404b6ae329d58888ffe0e5761dd207947ef541810136b99b3e571e41f45c5f3f8126aa6db76d2d867bec31308a48946caf6d178cfb9c2d
   languageName: node
   linkType: hard
 
@@ -322,9 +318,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/mdx@npm:^4.2.4":
-  version: 4.2.4
-  resolution: "@astrojs/mdx@npm:4.2.4"
+"@astrojs/mdx@npm:^4.2.5":
+  version: 4.2.5
+  resolution: "@astrojs/mdx@npm:4.2.5"
   dependencies:
     "@astrojs/markdown-remark": "npm:6.3.1"
     "@mdx-js/mdx": "npm:^3.1.0"
@@ -341,7 +337,7 @@ __metadata:
     vfile: "npm:^6.0.3"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/b2dedb989f0501a149fa4ad74dbf9a7d2b0438f96752760e1fbc47e08bdb573d4abac99f35850a89b43b42923fe702d029f7ea0728ae5cd638c143bd0e4dca15
+  checksum: 10c0/a3f3078471d8bb44b94a852ceff2aa98b9ed281888ac8dc70ed72ceb6e118d9ede110378c11d38b4c7499169e02497c98c83430bc83ea2b96c4a07484b912b2c
   languageName: node
   linkType: hard
 
@@ -364,9 +360,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:^4.2.4":
-  version: 4.2.4
-  resolution: "@astrojs/react@npm:4.2.4"
+"@astrojs/react@npm:^4.2.5":
+  version: 4.2.5
+  resolution: "@astrojs/react@npm:4.2.5"
   dependencies:
     "@vitejs/plugin-react": "npm:^4.3.4"
     ultrahtml: "npm:^1.5.3"
@@ -376,7 +372,7 @@ __metadata:
     "@types/react-dom": ^17.0.17 || ^18.0.6 || ^19.0.0
     react: ^17.0.2 || ^18.0.0 || ^19.0.0
     react-dom: ^17.0.2 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/da495f6cda74039d2ee587279d43a2b08e11c6356b6f7e985413a10b2ae5aa1e1a676e04021efacc5b8f943e450e9117dd7120244202bf1b479c4bae84cee7a2
+  checksum: 10c0/b96533599f19c39c27cd377e0493c214c4b7efdb4c929a4de4de8a25c7bc2201ba396c855338256ba736e13e2b65f0fab31bb18f036d706d4385452f09985f67
   languageName: node
   linkType: hard
 
@@ -390,40 +386,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/sitemap@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "@astrojs/sitemap@npm:3.3.0"
+"@astrojs/sitemap@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "@astrojs/sitemap@npm:3.3.1"
   dependencies:
     sitemap: "npm:^8.0.0"
     stream-replace-string: "npm:^2.0.0"
     zod: "npm:^3.24.2"
-  checksum: 10c0/6e112cc8234c669a9e9ded81cdfe40d740471a173d126eb79a2d36455a6e4c27457faaea0c750575d814408283db07ee1844bb98c7c3209ac2ce1396538e54e4
+  checksum: 10c0/7e6baf6378716ab4ecc7927130aeae9881d6f59d5db555ffed57411de5fd3e28186371a79f6f551aa265b6632c4b021dd4b72a8f12b69f7f46f51a74a7bcd022
   languageName: node
   linkType: hard
 
-"@astrojs/studio@npm:0.1.7":
-  version: 0.1.7
-  resolution: "@astrojs/studio@npm:0.1.7"
+"@astrojs/studio@npm:0.1.8":
+  version: 0.1.8
+  resolution: "@astrojs/studio@npm:0.1.8"
   dependencies:
     ci-info: "npm:^4.2.0"
     kleur: "npm:^4.1.5"
     yocto-spinner: "npm:^0.2.1"
-  checksum: 10c0/e67bb21a9b6c43c0b37f83ea6e1ea720049463cefc531aaa4357bcee821479fe0bdf5364ec1d8156ccd526361e3bbac18450f6b32a2f21be8bcdb34a42e384ab
+  checksum: 10c0/6dd4244a5b5e9f86a9d7f1687c34610b09e43266ec3f6eedacc632ac4cf382f8a68aeb3cbfd67516fcbf6ae5ddc7c6d38a9607f72d89343f4cb7db59783b7b88
   languageName: node
   linkType: hard
 
-"@astrojs/telemetry@npm:3.2.0":
-  version: 3.2.0
-  resolution: "@astrojs/telemetry@npm:3.2.0"
+"@astrojs/telemetry@npm:3.2.1":
+  version: 3.2.1
+  resolution: "@astrojs/telemetry@npm:3.2.1"
   dependencies:
-    ci-info: "npm:^4.1.0"
-    debug: "npm:^4.3.7"
+    ci-info: "npm:^4.2.0"
+    debug: "npm:^4.4.0"
     dlv: "npm:^1.1.3"
     dset: "npm:^3.1.4"
     is-docker: "npm:^3.0.0"
     is-wsl: "npm:^3.1.0"
     which-pm-runs: "npm:^1.1.0"
-  checksum: 10c0/5727205ca13fc9f83ff97b64838f6edd4010e8307d19f781f641c0c99e779d7d3e15469d66a67ba119c87963cd1c529bbd0f15bc8b88d88918f8fda04805c610
+  checksum: 10c0/7af06ba35fdd6f4c6b27e4bb3f1071b43a8918d046ddebf201fcbce7e6b1b8902be34abf2b00f7a647a0f03d5738f7d9f67b4d852a2032634cbe64abb68518d3
   languageName: node
   linkType: hard
 
@@ -442,10 +438,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/underscore-redirects@npm:0.6.0":
-  version: 0.6.0
-  resolution: "@astrojs/underscore-redirects@npm:0.6.0"
-  checksum: 10c0/fe1895e3a6fa38b246bd9b793b203e590ee52fc426892802cfcd8e1d7d3ef181c919412f664de946ef940b6d0c758473c45997d0cb60cfaf3c95a5e086d1ad3e
+"@astrojs/underscore-redirects@npm:0.6.1":
+  version: 0.6.1
+  resolution: "@astrojs/underscore-redirects@npm:0.6.1"
+  checksum: 10c0/8b8d611ffb9d6580524fc0b837f0791e40cfb21e2c44de359c2cdc5d8516c6762fa3f0cc8d03b43a24d12bc22c5fd380b27ef7fd4a0ca6f3e05a2c216960a84e
   languageName: node
   linkType: hard
 
@@ -3671,14 +3667,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.7.4":
-  version: 5.7.4
-  resolution: "astro@npm:5.7.4"
+"astro@npm:^5.7.5":
+  version: 5.7.5
+  resolution: "astro@npm:5.7.5"
   dependencies:
     "@astrojs/compiler": "npm:^2.11.0"
     "@astrojs/internal-helpers": "npm:0.6.1"
     "@astrojs/markdown-remark": "npm:6.3.1"
-    "@astrojs/telemetry": "npm:3.2.0"
+    "@astrojs/telemetry": "npm:3.2.1"
     "@capsizecss/unpack": "npm:^2.4.0"
     "@oslojs/encoding": "npm:^1.1.0"
     "@rollup/pluginutils": "npm:^5.1.4"
@@ -3740,7 +3736,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/12f124975b044d60e7e26b19aa73b7b0261accf00089a002c36e7b529aa42e94a2096775a14e6e40c874328245534d1129f20cc64d945d343202b30b6b97fc9d
+  checksum: 10c0/c350269625ad5ccd7030d6a1071562849b0e715d2805e6f381fdfe43d0ba17e677a162343991321c6a09b67f09ccd45d261a5eacceff66308d4b5443ca6516e1
   languageName: node
   linkType: hard
 
@@ -3832,13 +3828,13 @@ __metadata:
   resolution: "biancafiore@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.9.4"
-    "@astrojs/cloudflare": "npm:^12.5.0"
-    "@astrojs/db": "npm:^0.14.11"
-    "@astrojs/mdx": "npm:^4.2.4"
+    "@astrojs/cloudflare": "npm:^12.5.1"
+    "@astrojs/db": "npm:^0.14.12"
+    "@astrojs/mdx": "npm:^4.2.5"
     "@astrojs/partytown": "npm:^2.1.4"
-    "@astrojs/react": "npm:^4.2.4"
+    "@astrojs/react": "npm:^4.2.5"
     "@astrojs/rss": "npm:^4.0.11"
-    "@astrojs/sitemap": "npm:^3.3.0"
+    "@astrojs/sitemap": "npm:^3.3.1"
     "@astrojs/ts-plugin": "npm:^1.10.4"
     "@biomejs/biome": "npm:^1.9.4"
     "@commitlint/cli": "npm:^19.8.0"
@@ -3858,7 +3854,7 @@ __metadata:
     "@types/react-dom": "npm:^19.1.2"
     "@types/three": "npm:^0.175.0"
     algoliasearch: "npm:^5.23.4"
-    astro: "npm:^5.7.4"
+    astro: "npm:^5.7.5"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.5.15"
     conventional-changelog-atom: "npm:^5.0.0"
@@ -3871,12 +3867,12 @@ __metadata:
     react-dom: "npm:^19.1.0"
     react-globe.gl: "npm:^2.33.2"
     react-google-recaptcha-v3: "npm:^1.10.1"
-    react-hook-form: "npm:^7.56.0"
+    react-hook-form: "npm:^7.56.1"
     react-instantsearch: "npm:^7.15.5"
     react-router-dom: "npm:^7.5.1"
-    resend: "npm:^4.3.0"
+    resend: "npm:^4.4.0"
     swiper: "npm:^11.2.6"
-    three: "npm:^0.175.0"
+    three: "npm:^0.176.0"
     typescript: "npm:^5.8.3"
     vanilla-cookieconsent: "npm:^3.1.0"
     vitest: "npm:^3.1.2"
@@ -4150,7 +4146,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ci-info@npm:^4.0.0, ci-info@npm:^4.1.0":
+"ci-info@npm:^4.0.0":
   version: 4.1.0
   resolution: "ci-info@npm:4.1.0"
   checksum: 10c0/0f969ce32a974c542bc8abe4454b220d9d9323bb9415054c92a900faa5fdda0bb222eda68c490127c1d78503510d46b6aca614ecaba5a60515b8ac7e170119e6
@@ -4724,7 +4720,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.0, debug@npm:^4.3.1, debug@npm:^4.3.4, debug@npm:^4.3.7, debug@npm:^4.4.0":
+"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.0, debug@npm:^4.3.1, debug@npm:^4.3.4, debug@npm:^4.4.0":
   version: 4.4.0
   resolution: "debug@npm:4.4.0"
   dependencies:
@@ -8198,7 +8194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"miniflare@npm:4.20250321.1, miniflare@npm:^4.20250321.1":
+"miniflare@npm:4.20250321.1":
   version: 4.20250321.1
   resolution: "miniflare@npm:4.20250321.1"
   dependencies:
@@ -9249,12 +9245,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.56.0":
-  version: 7.56.0
-  resolution: "react-hook-form@npm:7.56.0"
+"react-hook-form@npm:^7.56.1":
+  version: 7.56.1
+  resolution: "react-hook-form@npm:7.56.1"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10c0/707b5939e5aede9deafd781c832bc6eed4086bb64f39697b038b702b6698b367fac0aa8dc4e2ed3f6d235a37b991af8d3c0d4968eae82529946a30558a10967d
+  checksum: 10c0/26eafd54bf47167628e34c2f22ea27ea7bdd5b4231a56af5be31ccedfb2a721708b308026ea4a17f2fb15c7b5fff83c0feb4acc7aa07bd6faa8506e917810cab
   languageName: node
   linkType: hard
 
@@ -9648,12 +9644,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resend@npm:^4.3.0":
-  version: 4.3.0
-  resolution: "resend@npm:4.3.0"
+"resend@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "resend@npm:4.4.0"
   dependencies:
     "@react-email/render": "npm:1.0.6"
-  checksum: 10c0/8d4372c0820768a178546b3bd43e285b4513e22effc9cac4a5cec510e7db6b6c25580d30dd921647699bad22d09cac80027e6c76f9ac48bb355a1866a3bdf4e0
+  checksum: 10c0/526b29bef9cbc056618a56908b798776a117e11af8b15547664575a490d46b65de96ba7a08e1a4dc65f3d8ff8072469d1ce8bc91cbd88068b04f89254103c75d
   languageName: node
   linkType: hard
 
@@ -10649,10 +10645,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:^0.175.0":
-  version: 0.175.0
-  resolution: "three@npm:0.175.0"
-  checksum: 10c0/eb47d45aaee376cfbbe7334ec4e9f3ea9cb03f9ecce5a313a08f56a01834e7f514a0c657cf2c4abeff9956079721cd542e2913fede50553d935e7fa390921452
+"three@npm:^0.176.0":
+  version: 0.176.0
+  resolution: "three@npm:0.176.0"
+  checksum: 10c0/e1aee553649d1fb38eceadd748438f4333a7fec24658e97895e05e686222c1aae8fe3925e81af1400dcde4b8bd8dae23066cf591f50e90fe1dd9a898fee8971b
   languageName: node
   linkType: hard
 
