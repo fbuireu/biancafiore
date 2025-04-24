@@ -13,7 +13,6 @@ const isProd = import.meta.env.PROD;
 export default defineConfig({
 	experimental: {
 		responsiveImages: true,
-		svg: true,
 		contentIntellisense: true,
 	},
 	image: {
