@@ -1,9 +1,14 @@
+.welcome-wrapper {
+	container: welcome / inline-size;
+	width: 100%;
+}
+
 .welcome {
 	display: grid;
 	grid: "Left-Greeting Welcome-Image Right-Greeting" auto / 1fr 1fr 1fr;
 	overflow: hidden;
 
-	@media (width <= 960px) {
+	@container welcome (width <= 960px) {
 		grid: "Left-Greeting Left-Greeting Left-Greeting" auto "Welcome-Image Welcome-Image Welcome-Image" auto "Right-Greeting Right-Greeting Right-Greeting" auto / 1fr;
 		margin-block-end: 3rem;
 	}
@@ -15,7 +20,7 @@
 	place-self: center;
 	width: 100%;
 
-	@media (960px <= width <= 575px) {
+	@container welcome (575px < width <= 960px) {
 		width: 50%;
 	}
 }
@@ -31,8 +36,9 @@
 		margin-inline-start: -3rem;
 		translate: 0 4rem;
 		z-index: 10;
+		grid-area: Right-Greeting;
 
-		@media (width <= 960px) {
+		@container welcome (width <= 960px) {
 			justify-items: end;
 			margin-inline-start: 0;
 			translate: 0;
@@ -46,7 +52,7 @@
 		translate: 0 -100px;
 		z-index: 10;
 
-		@media (width <= 960px) {
+		@container welcome (width <= 960px) {
 			justify-self: start;
 			translate: 0;
 		}
@@ -67,11 +73,11 @@
 	padding-inline-start: 3.5rem;
 	text-align: start;
 
-	@media (width <= 960px) {
+	@container welcome (width <= 960px) {
 		text-align: end;
 	}
 
-	@media (width <= 575px) {
+	@container welcome (width <= 575px) {
 		padding-inline-start: 1rem;
 		text-align: start;
 	}
@@ -83,7 +89,7 @@
 		animation: float-side linear;
 		animation-timeline: scroll(root block);
 
-		@media (width <= 960px) {
+		@container welcome (width <= 960px) {
 			--origin-x: 0;
 		}
 	}
@@ -94,7 +100,7 @@
 			animation: float-side linear;
 			animation-timeline: scroll(root block);
 
-			@media (width <= 960px) {
+			@container welcome (width <= 960px) {
 				--origin-x: 0;
 			}
 		}
@@ -104,7 +110,7 @@
 			animation: float-side linear;
 			animation-timeline: scroll(root block);
 
-			@media (width <= 960px) {
+			@container welcome (width <= 960px) {
 				--origin-x: 0;
 			}
 		}
