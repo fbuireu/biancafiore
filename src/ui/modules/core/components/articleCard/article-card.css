@@ -23,6 +23,7 @@
 	display: grid;
 	gap: 1rem 0;
 	height: 100%;
+	padding-bottom: 2rem;
 	overflow: hidden;
 
 	&:has(*:hover, *:focus-visible) {

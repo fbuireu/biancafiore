@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Cities } from "@modules/about/components/cities";
+import WorldGlobe from "@modules/about/components/worldGlobe/WorldGlobe";
+import "./little-more-of-me.css";
+
+interface LittleMoreOfMeProps {
+	cities: CollectionEntry<"cities">[];
+}
+
+const { cities } = Astro.props as LittleMoreOfMeProps;
+
+---
+
+<section class="little-more-of-me__wrapper common-wrapper">
+<h2 class="little-more-of-me__title section-title">A little more of me</h2>
+<div class="little-more-of-me__inner flex row-nowrap justify-space-between">
+	<WorldGlobe cities={cities} client:only="react" />
+	<Cities cities={cities} />
+</div>
+</section>
+

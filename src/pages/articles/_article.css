@@ -18,6 +18,14 @@
 		color: var(--primary-main);
 	}
 
+p{
+	line-height: 1.5lh;
+}
+
+	& > * {
+	margin-block-end: 1lh;
+	}
+
 	@supports (initial-letter: 2 2) {
 		& > p:first-of-type::first-letter {
 			initial-letter: 2 2;
