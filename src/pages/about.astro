@@ -1,4 +1,6 @@
 ---
+import type { CollectionEntry } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import { CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
@@ -6,8 +8,6 @@ import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/A
 import LittleMoreOfMe from "@modules/about/components/littleMoreOfMe/LittleMoreOfMe.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
-import type { CollectionEntry } from "astro:content";
-import { getCollection, getEntry } from "astro:content";
 
 const [cities, authors] = await Promise.all([getCollection("cities"), getCollection("authors")]);
 
