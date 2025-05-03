@@ -18,12 +18,12 @@
 		color: var(--primary-main);
 	}
 
-p{
-	line-height: 1.5lh;
-}
+	p {
+		line-height: 1.5lh;
+	}
 
 	& > * {
-	margin-block-end: 1lh;
+		margin-block-end: 1lh;
 	}
 
 	@supports (initial-letter: 2 2) {
