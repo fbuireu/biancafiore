@@ -6,7 +6,9 @@
 	margin: 10rem auto;
 }
 .little-more-of-me__inner {
+	justify-content: flex-end;
 	@media (width <= 960px) {
 		flex-wrap: wrap;
+		justify-content: unset;
 	}
 }
