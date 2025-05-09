@@ -6,8 +6,8 @@
 	@media (width <= 960px) {
 		gap: 0;
 		grid:
-			"About-Text About-Text" min-content
-			"About-Image About-Image" 1fr / 1fr;
+			"About-Text" min-content
+			"About-Image" 1fr / 1fr;
 	}
 }
 

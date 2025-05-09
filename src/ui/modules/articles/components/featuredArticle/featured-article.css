@@ -23,8 +23,8 @@
 	@media (width <= 960px) {
 		gap: 1rem 0;
 		grid:
-			"Featured-Article-Image Featured-Article-Image " minmax(auto, 50dvh)
-			"Featured-Article-Content Featured-Article-Content " 1fr
+			"Featured-Article-Image" minmax(auto, 50dvh)
+			"Featured-Article-Content" 1fr
 			/ 1fr;
 		padding-block-end: 1rem;
 	}

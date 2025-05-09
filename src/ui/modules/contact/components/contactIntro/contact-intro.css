@@ -1,20 +1,20 @@
 .contact-intro__wrapper {
 	display: grid;
 	gap: 0 8rem;
-	grid: "AboutMe-Text AboutMe-Image" 1fr / 1fr 1fr;
+	grid: "Contact-Text Contact-Image" 1fr / 1fr 1fr;
 	justify-items: self-start;
 
 	@media (width <= 960px) {
 		gap: 2rem 0;
 		grid:
-			"AboutMe-Text AboutMe-Text" min-content
-			"AboutMe-Image AboutMe-Image" 1fr / 1fr 1fr;
+			"Contact-Text" min-content
+			"Contact-Image" 1fr / 1fr;
 	}
 }
 
 .contact-intro__section.--left {
 	gap: 2rem 0;
-	grid-area: AboutMe-Text;
+	grid-area: Contact-Text;
 	margin-block-end: 3rem;
 	max-width: var(--grid-extra-small);
 
@@ -27,5 +27,5 @@
 
 .contact-intro__section.--right {
 	gap: 2rem 0;
-	grid-area: AboutMe-Image;
+	grid-area: Contact-Image;
 }
