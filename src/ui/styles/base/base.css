@@ -30,6 +30,7 @@
 
 		@media (prefers-reduced-motion: reduce) {
 			scroll-behavior: auto;
+			navigation: auto;
 		}
 	}
 
@@ -88,6 +89,12 @@
 		}
 	}
 
+	a:focus-visible {
+		outline-offset: 0.15em;
+		outline-width: 0.15em;
+		outline-color: currentColor;
+	} 
+
 	h1,
 	h2,
 	h3,
@@ -130,4 +137,9 @@
 	p {
 		font-size: var(--base-font-size);
 	}
+
+	ul, ol, dl, dt, dd, p, figure, blockquote {
+		hanging-punctuation: first last;
+		text-wrap: pretty;
+	  }
 }
