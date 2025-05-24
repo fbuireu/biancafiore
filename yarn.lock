@@ -289,12 +289,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/markdown-remark@npm:6.3.1":
-  version: 6.3.1
-  resolution: "@astrojs/markdown-remark@npm:6.3.1"
+"@astrojs/markdown-remark@npm:6.3.2":
+  version: 6.3.2
+  resolution: "@astrojs/markdown-remark@npm:6.3.2"
   dependencies:
     "@astrojs/internal-helpers": "npm:0.6.1"
-    "@astrojs/prism": "npm:3.2.0"
+    "@astrojs/prism": "npm:3.3.0"
     github-slugger: "npm:^2.0.0"
     hast-util-from-html: "npm:^2.0.3"
     hast-util-to-text: "npm:^4.0.2"
@@ -305,24 +305,24 @@ __metadata:
     rehype-stringify: "npm:^10.0.1"
     remark-gfm: "npm:^4.0.1"
     remark-parse: "npm:^11.0.0"
-    remark-rehype: "npm:^11.1.1"
+    remark-rehype: "npm:^11.1.2"
     remark-smartypants: "npm:^3.0.2"
-    shiki: "npm:^3.0.0"
+    shiki: "npm:^3.2.1"
     smol-toml: "npm:^1.3.1"
     unified: "npm:^11.0.5"
     unist-util-remove-position: "npm:^5.0.0"
     unist-util-visit: "npm:^5.0.0"
     unist-util-visit-parents: "npm:^6.0.1"
     vfile: "npm:^6.0.3"
-  checksum: 10c0/ebb5a1d85042590d7ec6e2ea0bd4b0a221dc53b8b67e57964fc13335616737cc545fdea5fbcde107175d608f0bba8a8b76580293bfe389dcb076c9747e91f00c
+  checksum: 10c0/e4e9926286def70548505d49333c0b80624e36dad035d0b943ef4d56211530784a8317f92277c702b6a47b68dea0f9afd154aacf2c6b8361177a51ac3c8b20bc
   languageName: node
   linkType: hard
 
-"@astrojs/mdx@npm:^4.2.6":
-  version: 4.2.6
-  resolution: "@astrojs/mdx@npm:4.2.6"
+"@astrojs/mdx@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "@astrojs/mdx@npm:4.3.0"
   dependencies:
-    "@astrojs/markdown-remark": "npm:6.3.1"
+    "@astrojs/markdown-remark": "npm:6.3.2"
     "@mdx-js/mdx": "npm:^3.1.0"
     acorn: "npm:^8.14.1"
     es-module-lexer: "npm:^1.6.0"
@@ -337,7 +337,7 @@ __metadata:
     vfile: "npm:^6.0.3"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/4c2cc859e5b7ca63a32ecb290be16eafd173507a372ad868705694ad2f7166366e3f1a8b8226df04472c4fbc2b567c158d06e2b5601a2761fe27b1b08332d141
+  checksum: 10c0/26af7eef30e7f89f30ab89971d8b320678788a4a56f9e8a22e5b5eb1885c105dd1c0e5fe94c564a44a87e293bdb1a1b666f1f04004afcbfb3b53b462a759a9ef
   languageName: node
   linkType: hard
 
@@ -351,28 +351,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/prism@npm:3.2.0":
-  version: 3.2.0
-  resolution: "@astrojs/prism@npm:3.2.0"
+"@astrojs/prism@npm:3.3.0":
+  version: 3.3.0
+  resolution: "@astrojs/prism@npm:3.3.0"
   dependencies:
-    prismjs: "npm:^1.29.0"
-  checksum: 10c0/da1bea22fa82e411fb751e8c1cf8fcf6c466eb28e2caea80b0c8d1f550bb0bc4ab6ab7220efd50ecb95513fe87be2c56873e1afffd1753829a5979dbe6f961ac
+    prismjs: "npm:^1.30.0"
+  checksum: 10c0/8a87f2589f4a3e9ea982e3dd0a3e4ebf565b2e5cf16aa70d979cbddab241a7a24d7be45176fa8c5f69f000cd9ab311ab4677d7a15e2ba0cbd610c80db8b9d7dd
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:^4.2.7":
-  version: 4.2.7
-  resolution: "@astrojs/react@npm:4.2.7"
+"@astrojs/react@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "@astrojs/react@npm:4.3.0"
   dependencies:
     "@vitejs/plugin-react": "npm:^4.4.1"
     ultrahtml: "npm:^1.6.0"
-    vite: "npm:^6.3.4"
+    vite: "npm:^6.3.5"
   peerDependencies:
     "@types/react": ^17.0.50 || ^18.0.21 || ^19.0.0
     "@types/react-dom": ^17.0.17 || ^18.0.6 || ^19.0.0
     react: ^17.0.2 || ^18.0.0 || ^19.0.0
     react-dom: ^17.0.2 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/33234e648393455205169c9fce6396399e766d7b9a1ff981222b1bba9620c3aba28fdde712d3199fa4e8544849abea5bbd7a408762d9d240da6b7317376f5b93
+  checksum: 10c0/619f5d6286156b04fd5e1c48e817ce8ae18f6969f8f849fc953de0333b4f212b6a61d677ee8b2b198cf7aeaa9c125e8d8be5bdf0ca2c85e320266f0991f0b518
   languageName: node
   linkType: hard
 
@@ -408,9 +408,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/telemetry@npm:3.2.1":
-  version: 3.2.1
-  resolution: "@astrojs/telemetry@npm:3.2.1"
+"@astrojs/telemetry@npm:3.3.0":
+  version: 3.3.0
+  resolution: "@astrojs/telemetry@npm:3.3.0"
   dependencies:
     ci-info: "npm:^4.2.0"
     debug: "npm:^4.4.0"
@@ -419,7 +419,7 @@ __metadata:
     is-docker: "npm:^3.0.0"
     is-wsl: "npm:^3.1.0"
     which-pm-runs: "npm:^1.1.0"
-  checksum: 10c0/7af06ba35fdd6f4c6b27e4bb3f1071b43a8918d046ddebf201fcbce7e6b1b8902be34abf2b00f7a647a0f03d5738f7d9f67b4d852a2032634cbe64abb68518d3
+  checksum: 10c0/7c575aad221d7335b6b1378ceac0e60a25c9540cdde8f5584b0ffe565d06b3ecfc2217738d1ce55ac13eb66e1a6251453bddf117d7f793e51b3fc7be5d001ea4
   languageName: node
   linkType: hard
 
@@ -3271,12 +3271,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.1.4":
-  version: 19.1.4
-  resolution: "@types/react@npm:19.1.4"
+"@types/react@npm:^19.1.5":
+  version: 19.1.5
+  resolution: "@types/react@npm:19.1.5"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10c0/501350d4f9cef13c5dd1b1496fa70ebaff52f6fa359b623b51c9d817e5bc4333fa3c8b7a6a4cbc88c643385052d66a243c3ceccfd6926062f917a2dd0535f6b3
+  checksum: 10c0/e0811aadc65cf4030e2418c7975b524f126db806bacb85cffdbe5e50c3606e9a5ffe89ffe6bf9c945e03f5e8d5ed992686bc6bb478db1f3127cc50933f648e1e
   languageName: node
   linkType: hard
 
@@ -3820,14 +3820,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.7.13":
-  version: 5.7.13
-  resolution: "astro@npm:5.7.13"
+"astro@npm:^5.8.0":
+  version: 5.8.0
+  resolution: "astro@npm:5.8.0"
   dependencies:
     "@astrojs/compiler": "npm:^2.11.0"
     "@astrojs/internal-helpers": "npm:0.6.1"
-    "@astrojs/markdown-remark": "npm:6.3.1"
-    "@astrojs/telemetry": "npm:3.2.1"
+    "@astrojs/markdown-remark": "npm:6.3.2"
+    "@astrojs/telemetry": "npm:3.3.0"
     "@capsizecss/unpack": "npm:^2.4.0"
     "@oslojs/encoding": "npm:^1.1.0"
     "@rollup/pluginutils": "npm:^5.1.4"
@@ -3854,6 +3854,7 @@ __metadata:
     github-slugger: "npm:^2.0.0"
     html-escaper: "npm:3.0.3"
     http-cache-semantics: "npm:^4.1.1"
+    import-meta-resolve: "npm:^4.1.0"
     js-yaml: "npm:^4.1.0"
     kleur: "npm:^4.1.5"
     magic-string: "npm:^0.30.17"
@@ -3890,7 +3891,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/4a057967d5d30a6fb85710912386a0d3cdf0ffececaa966685a38f0d5f10de66ba4db796eb4dc585f290ed322ded09f50b6e237ac7110022ec562a98193a4265
+  checksum: 10c0/124d40e023d3126ecb307ccdc17f7a195ddac8d22a8ef826f5915ef2c41f38e63976a10738705afc1b60119dcd32f26a9e3a3799b297df611dfe75e2124273f5
   languageName: node
   linkType: hard
 
@@ -3984,9 +3985,9 @@ __metadata:
     "@astrojs/check": "npm:^0.9.4"
     "@astrojs/cloudflare": "npm:^12.5.3"
     "@astrojs/db": "npm:^0.14.14"
-    "@astrojs/mdx": "npm:^4.2.6"
+    "@astrojs/mdx": "npm:^4.3.0"
     "@astrojs/partytown": "npm:^2.1.4"
-    "@astrojs/react": "npm:^4.2.7"
+    "@astrojs/react": "npm:^4.3.0"
     "@astrojs/rss": "npm:^4.0.11"
     "@astrojs/sitemap": "npm:^3.4.0"
     "@astrojs/ts-plugin": "npm:^1.10.4"
@@ -4004,11 +4005,11 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
     "@types/node": "npm:^22.15.21"
-    "@types/react": "npm:^19.1.4"
+    "@types/react": "npm:^19.1.5"
     "@types/react-dom": "npm:^19.1.5"
     "@types/three": "npm:^0.176.0"
     algoliasearch: "npm:^5.25.0"
-    astro: "npm:^5.7.13"
+    astro: "npm:^5.8.0"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.5.23"
     conventional-changelog-atom: "npm:^5.0.0"
@@ -4025,12 +4026,12 @@ __metadata:
     react-instantsearch: "npm:^7.15.7"
     react-router-dom: "npm:^7.6.0"
     resend: "npm:^4.5.1"
-    swiper: "npm:^11.2.7"
+    swiper: "npm:^11.2.8"
     three: "npm:^0.176.0"
     typescript: "npm:^5.8.3"
     vanilla-cookieconsent: "npm:^3.1.0"
     vitest: "npm:^3.1.4"
-    zod: "npm:^3.25.13"
+    zod: "npm:^3.25.28"
   languageName: unknown
   linkType: soft
 
@@ -9138,7 +9139,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prismjs@npm:^1.29.0":
+"prismjs@npm:^1.30.0":
   version: 1.30.0
   resolution: "prismjs@npm:1.30.0"
   checksum: 10c0/f56205bfd58ef71ccfcbcb691fd0eb84adc96c6ff21b0b69fc6fdcf02be42d6ef972ba4aed60466310de3d67733f6a746f89f2fb79c00bf217406d465b3e8f23
@@ -9673,7 +9674,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remark-rehype@npm:^11.0.0, remark-rehype@npm:^11.1.1":
+"remark-rehype@npm:^11.0.0":
   version: 11.1.1
   resolution: "remark-rehype@npm:11.1.1"
   dependencies:
@@ -9683,6 +9684,19 @@ __metadata:
     unified: "npm:^11.0.0"
     vfile: "npm:^6.0.0"
   checksum: 10c0/68f986e8ee758d415e93babda2a0d89477c15b7c200edc23b8b1d914dd6e963c5fc151a11cbbbcfa7dd237367ff3ef86e302be90f31f37a17b0748668bd8c65b
+  languageName: node
+  linkType: hard
+
+"remark-rehype@npm:^11.1.2":
+  version: 11.1.2
+  resolution: "remark-rehype@npm:11.1.2"
+  dependencies:
+    "@types/hast": "npm:^3.0.0"
+    "@types/mdast": "npm:^4.0.0"
+    mdast-util-to-hast: "npm:^13.0.0"
+    unified: "npm:^11.0.0"
+    vfile: "npm:^6.0.0"
+  checksum: 10c0/f9eccacfb596d9605581dc05bfad28635d6ded5dd0a18e88af5fd4df0d3fcf9612e1501d4513bc2164d833cfe9636dab20400080b09e53f155c6e1442a1231fb
   languageName: node
   linkType: hard
 
@@ -10186,7 +10200,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shiki@npm:^3.0.0, shiki@npm:^3.2.1":
+"shiki@npm:^3.2.1":
   version: 3.2.1
   resolution: "shiki@npm:3.2.1"
   dependencies:
@@ -10615,10 +10629,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^11.2.7":
-  version: 11.2.7
-  resolution: "swiper@npm:11.2.7"
-  checksum: 10c0/6ac060760ad392e854253f068df10757cf684a8997c34ef26ce0286434d3411caa15d87ad48e0a248ba01c1b63d9d43116852e066ca500637187bf00260ec09a
+"swiper@npm:^11.2.8":
+  version: 11.2.8
+  resolution: "swiper@npm:11.2.8"
+  checksum: 10c0/1f20611434ae9659a62da3efc220043c52135e9377c95c359f2baa4852deaeb52c9580e14e4d1b6c3f1a27ff118bbd3b9e13f14c8ca99e0ee7f63b17ec94f6dc
   languageName: node
   linkType: hard
 
@@ -12225,10 +12239,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25.13":
-  version: 3.25.13
-  resolution: "zod@npm:3.25.13"
-  checksum: 10c0/04d7d0bb769fa80cc657300e5c64a563dd91a998a88ce2d604d6e9d911df2f71fdea5c6b253136750c70a257a06b85132bbd4a8d039263b37ff02c3d57560418
+"zod@npm:^3.25.28":
+  version: 3.25.28
+  resolution: "zod@npm:3.25.28"
+  checksum: 10c0/557fb621813d128f8090c43de65f9e8661ce9bd8bd29d7adc6b38b0a79e14729a8926e28a2e6eee2fa0ec0ea390cc549363f50235e8f45d2e4771906d1f87b20
   languageName: node
   linkType: hard
 
