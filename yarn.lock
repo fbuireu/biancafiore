@@ -12218,17 +12218,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.24.2":
-  version: 3.24.2
-  resolution: "zod@npm:3.24.2"
-  checksum: 10c0/c638c7220150847f13ad90635b3e7d0321b36cce36f3fc6050ed960689594c949c326dfe2c6fa87c14b126ee5d370ccdebd6efb304f41ef5557a4aaca2824565
-  languageName: node
-  linkType: hard
-
-"zod@npm:^3.25.13":
-  version: 3.25.13
-  resolution: "zod@npm:3.25.13"
-  checksum: 10c0/04d7d0bb769fa80cc657300e5c64a563dd91a998a88ce2d604d6e9d911df2f71fdea5c6b253136750c70a257a06b85132bbd4a8d039263b37ff02c3d57560418
+"zod@npm:^3.24.2, zod@npm:^3.25.13":
+  version: 3.25.28
+  resolution: "zod@npm:3.25.28"
+  checksum: 10c0/557fb621813d128f8090c43de65f9e8661ce9bd8bd29d7adc6b38b0a79e14729a8926e28a2e6eee2fa0ec0ea390cc549363f50235e8f45d2e4771906d1f87b20
   languageName: node
   linkType: hard
 
