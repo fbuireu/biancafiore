@@ -225,15 +225,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/db@npm:^0.14.14":
-  version: 0.14.14
-  resolution: "@astrojs/db@npm:0.14.14"
+"@astrojs/db@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "@astrojs/db@npm:0.15.0"
   dependencies:
     "@astrojs/studio": "npm:0.1.9"
     "@libsql/client": "npm:^0.15.2"
     async-listen: "npm:^3.1.0"
     deep-diff: "npm:^1.0.2"
-    drizzle-orm: "npm:^0.31.2"
+    drizzle-orm: "npm:^0.42.0"
     github-slugger: "npm:^2.0.0"
     kleur: "npm:^4.1.5"
     nanoid: "npm:^5.1.5"
@@ -242,7 +242,7 @@ __metadata:
     yargs-parser: "npm:^21.1.1"
     yocto-spinner: "npm:^0.2.1"
     zod: "npm:^3.24.2"
-  checksum: 10c0/d699768422ec78fdb944850d263703f37663ea39b4d6e4dcb69fe3caadc82fddec915d7dba15e4550394012a084f1d1088d663a76759362d6723099b9f514986
+  checksum: 10c0/a191f2928d744523ab234aa52a7d6f3c7fb77f78b881b3231a36a1ddc8788828237ce32aaeae3ec037e3c62f461ea4297bcc75cb9be4c2f6572d95b37d31c76e
   languageName: node
   linkType: hard
 
@@ -3246,12 +3246,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.15.21":
-  version: 22.15.21
-  resolution: "@types/node@npm:22.15.21"
+"@types/node@npm:^22.15.28":
+  version: 22.15.28
+  resolution: "@types/node@npm:22.15.28"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/f092bbccda2131c2b2c8f720338080aa0ef1d928f5f1062c03954a4f7dafa7ee3ed29bc3e51bd4e2584473b3d943c637a2b39ad7174898970818270187cf10c1
+  checksum: 10c0/5d540f44a421edf57d492c5c8f1dcbc4eb1d07f820501848e958c64a83cdb76bebf1d0456d2677c3dc37b94f3fde054b76c880bdd88e19518ae87b05a72bac3c
   languageName: node
   linkType: hard
 
@@ -3271,12 +3271,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.1.5":
-  version: 19.1.5
-  resolution: "@types/react@npm:19.1.5"
+"@types/react@npm:^19.1.6":
+  version: 19.1.6
+  resolution: "@types/react@npm:19.1.6"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10c0/e0811aadc65cf4030e2418c7975b524f126db806bacb85cffdbe5e50c3606e9a5ffe89ffe6bf9c945e03f5e8d5ed992686bc6bb478db1f3127cc50933f648e1e
+  checksum: 10c0/8b10b198e28997b3c57559750f8bcf5ae7b33c554b16b6f4fe2ece1d4de6a2fc8cb53e7effe08ec9cb939d2f479eb97c5e08aac2cf83b10a90164fe451cc8ea2
   languageName: node
   linkType: hard
 
@@ -3820,9 +3820,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.8.0":
-  version: 5.8.0
-  resolution: "astro@npm:5.8.0"
+"astro@npm:^5.8.1":
+  version: 5.8.1
+  resolution: "astro@npm:5.8.1"
   dependencies:
     "@astrojs/compiler": "npm:^2.11.0"
     "@astrojs/internal-helpers": "npm:0.6.1"
@@ -3891,7 +3891,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/124d40e023d3126ecb307ccdc17f7a195ddac8d22a8ef826f5915ef2c41f38e63976a10738705afc1b60119dcd32f26a9e3a3799b297df611dfe75e2124273f5
+  checksum: 10c0/8425d9f7e09266cf841ac0ea6e77dd4038074b66eb3ab7aa2ac0f10b5ff15920b9d3f7fbf5288cdc9478a26420a4ce8983493de585df546245648a4c26247e02
   languageName: node
   linkType: hard
 
@@ -3984,7 +3984,7 @@ __metadata:
   dependencies:
     "@astrojs/check": "npm:^0.9.4"
     "@astrojs/cloudflare": "npm:^12.5.3"
-    "@astrojs/db": "npm:^0.14.14"
+    "@astrojs/db": "npm:^0.15.0"
     "@astrojs/mdx": "npm:^4.3.0"
     "@astrojs/partytown": "npm:^2.1.4"
     "@astrojs/react": "npm:^4.3.0"
@@ -4004,34 +4004,34 @@ __metadata:
     "@testing-library/react": "npm:^16.3.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^22.15.21"
-    "@types/react": "npm:^19.1.5"
+    "@types/node": "npm:^22.15.28"
+    "@types/react": "npm:^19.1.6"
     "@types/react-dom": "npm:^19.1.5"
     "@types/three": "npm:^0.176.0"
     algoliasearch: "npm:^5.25.0"
-    astro: "npm:^5.8.0"
+    astro: "npm:^5.8.1"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.5.23"
+    contentful: "npm:^11.5.24"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.13.0"
     husky: "npm:^9.1.7"
     instantsearch.css: "npm:^8.5.1"
-    lint-staged: "npm:^16.0.0"
+    lint-staged: "npm:^16.1.0"
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
     react-globe.gl: "npm:^2.33.2"
     react-google-recaptcha-v3: "npm:^1.10.1"
     react-hook-form: "npm:^7.56.4"
-    react-instantsearch: "npm:^7.15.7"
-    react-router-dom: "npm:^7.6.0"
+    react-instantsearch: "npm:^7.15.8"
+    react-router-dom: "npm:^7.6.1"
     resend: "npm:^4.5.1"
     swiper: "npm:^11.2.8"
-    three: "npm:^0.176.0"
+    three: "npm:^0.177.0"
     typescript: "npm:^5.8.3"
     vanilla-cookieconsent: "npm:^3.1.0"
     vitest: "npm:^3.1.4"
-    zod: "npm:^3.25.28"
+    zod: "npm:^3.25.42"
   languageName: unknown
   linkType: soft
 
@@ -4453,10 +4453,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^13.1.0":
-  version: 13.1.0
-  resolution: "commander@npm:13.1.0"
-  checksum: 10c0/7b8c5544bba704fbe84b7cab2e043df8586d5c114a4c5b607f83ae5060708940ed0b5bd5838cf8ce27539cde265c1cbd59ce3c8c6b017ed3eec8943e3a415164
+"commander@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "commander@npm:14.0.0"
+  checksum: 10c0/73c4babfa558077868d84522b11ef56834165d472b9e86a634cd4c3ae7fc72d59af6377d8878e06bd570fe8f3161eced3cbe383c38f7093272bb65bd242b595b
   languageName: node
   linkType: hard
 
@@ -4527,9 +4527,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.5.23":
-  version: 11.5.23
-  resolution: "contentful@npm:11.5.23"
+"contentful@npm:^11.5.24":
+  version: 11.5.24
+  resolution: "contentful@npm:11.5.24"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.8"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -4538,7 +4538,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/a4bc9bb633bc54fde064d994ea60c484315d90e474793cba57e10c3a1941d1ba53e68c9833ff2300f9b4b28555c73ba6962ddb24b84572c50cfb4bf52d45ed62
+  checksum: 10c0/ec68af9eec5aa356a584f01ff4d606e407be03b2ebd07ad3adc214242b5bbe146e4c93b475b3ef2df9c147e37dbd65e8a85e67cd26c1f5a956c8ec217edc323d
   languageName: node
   linkType: hard
 
@@ -4880,6 +4880,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"debug@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "debug@npm:4.4.1"
+  dependencies:
+    ms: "npm:^2.1.3"
+  peerDependenciesMeta:
+    supports-color:
+      optional: true
+  checksum: 10c0/d2b44bc1afd912b49bb7ebb0d50a860dc93a4dd7d946e8de94abc957bb63726b7dd5aa48c18c2386c379ec024c46692e15ed3ed97d481729f929201e671fcd55
+  languageName: node
+  linkType: hard
+
 "debug@npm:~4.3.1, debug@npm:~4.3.2, debug@npm:~4.3.4":
   version: 4.3.7
   resolution: "debug@npm:4.3.7"
@@ -5104,35 +5116,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"drizzle-orm@npm:^0.31.2":
-  version: 0.31.4
-  resolution: "drizzle-orm@npm:0.31.4"
+"drizzle-orm@npm:^0.42.0":
+  version: 0.42.0
+  resolution: "drizzle-orm@npm:0.42.0"
   peerDependencies:
     "@aws-sdk/client-rds-data": ">=3"
-    "@cloudflare/workers-types": ">=3"
-    "@electric-sql/pglite": ">=0.1.1"
-    "@libsql/client": "*"
-    "@neondatabase/serverless": ">=0.1"
+    "@cloudflare/workers-types": ">=4"
+    "@electric-sql/pglite": ">=0.2.0"
+    "@libsql/client": ">=0.10.0"
+    "@libsql/client-wasm": ">=0.10.0"
+    "@neondatabase/serverless": ">=0.10.0"
     "@op-engineering/op-sqlite": ">=2"
     "@opentelemetry/api": ^1.4.1
-    "@planetscale/database": ">=1"
+    "@planetscale/database": ">=1.13"
     "@prisma/client": "*"
     "@tidbcloud/serverless": "*"
     "@types/better-sqlite3": "*"
     "@types/pg": "*"
-    "@types/react": ">=18"
     "@types/sql.js": "*"
     "@vercel/postgres": ">=0.8.0"
     "@xata.io/client": "*"
     better-sqlite3: ">=7"
     bun-types: "*"
-    expo-sqlite: ">=13.2.0"
+    expo-sqlite: ">=14.0.0"
+    gel: ">=2"
     knex: "*"
     kysely: "*"
     mysql2: ">=2"
     pg: ">=8"
     postgres: ">=3"
-    react: ">=18"
     sql.js: ">=1"
     sqlite3: ">=5"
   peerDependenciesMeta:
@@ -5143,6 +5155,8 @@ __metadata:
     "@electric-sql/pglite":
       optional: true
     "@libsql/client":
+      optional: true
+    "@libsql/client-wasm":
       optional: true
     "@neondatabase/serverless":
       optional: true
@@ -5160,8 +5174,6 @@ __metadata:
       optional: true
     "@types/pg":
       optional: true
-    "@types/react":
-      optional: true
     "@types/sql.js":
       optional: true
     "@vercel/postgres":
@@ -5173,6 +5185,8 @@ __metadata:
     bun-types:
       optional: true
     expo-sqlite:
+      optional: true
+    gel:
       optional: true
     knex:
       optional: true
@@ -5186,13 +5200,11 @@ __metadata:
       optional: true
     prisma:
       optional: true
-    react:
-      optional: true
     sql.js:
       optional: true
     sqlite3:
       optional: true
-  checksum: 10c0/2b7132f1d07039b159015a7c4e0da946ad9667a451f51be99c2704001c0ddc39cab71a26609643c4d8d954c56ffe0f4c65e488933d129cf4747bb6e41104d28b
+  checksum: 10c0/9992b8dfa830e41cded7c47e55de4dec282154fc6c5dbe74146ee1679145fd7365dce99ea1fafb3a72284fe6061c360718e91c44301a2ff3076eebae10b24bf8
   languageName: node
   linkType: hard
 
@@ -7291,23 +7303,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^16.0.0":
-  version: 16.0.0
-  resolution: "lint-staged@npm:16.0.0"
+"lint-staged@npm:^16.1.0":
+  version: 16.1.0
+  resolution: "lint-staged@npm:16.1.0"
   dependencies:
     chalk: "npm:^5.4.1"
-    commander: "npm:^13.1.0"
-    debug: "npm:^4.4.0"
+    commander: "npm:^14.0.0"
+    debug: "npm:^4.4.1"
     lilconfig: "npm:^3.1.3"
     listr2: "npm:^8.3.3"
     micromatch: "npm:^4.0.8"
-    nano-spawn: "npm:^1.0.0"
+    nano-spawn: "npm:^1.0.2"
     pidtree: "npm:^0.6.0"
     string-argv: "npm:^0.3.2"
-    yaml: "npm:^2.7.1"
+    yaml: "npm:^2.8.0"
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/8778dbe7892bbf14e378d612d1649c1e3df38a8ddf14cf35962b6e8a962be72efb1ebb48a697e38366be97d25b8d2599cad3c26ac5afc0d0460452484e27924d
+  checksum: 10c0/5cc33d61ec2c682e488eb3fcea5c153ce486623b80314f2c56af438ad78d73c7fcd3e7c911d273ac740bd34f1e030d35d4fb92d8e476984150c0c59724ac7fa4
   languageName: node
   linkType: hard
 
@@ -8481,10 +8493,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nano-spawn@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "nano-spawn@npm:1.0.1"
-  checksum: 10c0/e03edc6971f653bc4651f2413b2011772a7c18797c0a4e986ff8eaea3adf4f017697d4d494ffb4ba6bce907b42abbeb0f7f681dbf336c84a324c940fb64c1dec
+"nano-spawn@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "nano-spawn@npm:1.0.2"
+  checksum: 10c0/d8cec78f127a44aa5e38be01746b3d963a8dcf8b00b4a05bf259b5369af2225b8c7dc9d12517050b90234e5c3eeea4ece5d18a5f9c6c3462b56f9f595f07e632
   languageName: node
   linkType: hard
 
@@ -9349,9 +9361,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-instantsearch-core@npm:7.15.7":
-  version: 7.15.7
-  resolution: "react-instantsearch-core@npm:7.15.7"
+"react-instantsearch-core@npm:7.15.8":
+  version: 7.15.8
+  resolution: "react-instantsearch-core@npm:7.15.8"
   dependencies:
     "@babel/runtime": "npm:^7.1.2"
     algoliasearch-helper: "npm:3.25.0"
@@ -9360,23 +9372,23 @@ __metadata:
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
     react: ">= 16.8.0 < 20"
-  checksum: 10c0/73928118a3ca619a522a371f4c0132887f5ad5b927df8983bc5e3a22827a485f2145be7d9498f40ef1490f49121378b49489463520dedb1010c368d342a13127
+  checksum: 10c0/050105bdb9403ed0dcb3331f27388fbd03eae71da6a1c5f587e41833dbea5f8636ef5b4ff504a5c1560b9dd0c603cab22a104abbe28f549287048013e662ba20
   languageName: node
   linkType: hard
 
-"react-instantsearch@npm:^7.15.7":
-  version: 7.15.7
-  resolution: "react-instantsearch@npm:7.15.7"
+"react-instantsearch@npm:^7.15.8":
+  version: 7.15.8
+  resolution: "react-instantsearch@npm:7.15.8"
   dependencies:
     "@babel/runtime": "npm:^7.1.2"
     instantsearch-ui-components: "npm:0.11.1"
     instantsearch.js: "npm:4.78.3"
-    react-instantsearch-core: "npm:7.15.7"
+    react-instantsearch-core: "npm:7.15.8"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
     react: ">= 16.8.0 < 20"
     react-dom: ">= 16.8.0 < 20"
-  checksum: 10c0/447cb5b0e368b1e67769ac8e179aabb23dddf50b07e8dc8e5f26855c63f4ba4a472c03ea89eed747c87f524db4d519f3a5909cabdf4324ed937cea2699264a8d
+  checksum: 10c0/87ab41c26015de8c3fb42af65bf2b31ba5e2e93f4892662fe9ac0f65a8c21135efb3c54270389a39ec9d3d2d24838da95a730b1332b579a9093c801a122e4263
   languageName: node
   linkType: hard
 
@@ -9414,7 +9426,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.6.0":
+"react-router-dom@npm:^7.6.1":
   version: 7.6.1
   resolution: "react-router-dom@npm:7.6.1"
   dependencies:
@@ -10748,10 +10760,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:^0.176.0":
-  version: 0.176.0
-  resolution: "three@npm:0.176.0"
-  checksum: 10c0/e1aee553649d1fb38eceadd748438f4333a7fec24658e97895e05e686222c1aae8fe3925e81af1400dcde4b8bd8dae23066cf591f50e90fe1dd9a898fee8971b
+"three@npm:^0.177.0":
+  version: 0.177.0
+  resolution: "three@npm:0.177.0"
+  checksum: 10c0/3e2ac1b9908e0d4dcecaf67c3d3e1b0b021dbfc7c80c2780005cc4e50532fb95b4c7f21669931e93c7b934d5576eb2364e1b34271bbd0e9484d1d723f836907b
   languageName: node
   linkType: hard
 
@@ -12141,12 +12153,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.7.1":
-  version: 2.7.1
-  resolution: "yaml@npm:2.7.1"
+"yaml@npm:^2.8.0":
+  version: 2.8.0
+  resolution: "yaml@npm:2.8.0"
   bin:
     yaml: bin.mjs
-  checksum: 10c0/ee2126398ab7d1fdde566b4013b68e36930b9e6d8e68b6db356875c99614c10d678b6f45597a145ff6d63814961221fc305bf9242af8bf7450177f8a68537590
+  checksum: 10c0/f6f7310cf7264a8107e72c1376f4de37389945d2fb4656f8060eca83f01d2d703f9d1b925dd8f39852a57034fafefde6225409ddd9f22aebfda16c6141b71858
   languageName: node
   linkType: hard
 
@@ -12239,10 +12251,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25.28":
-  version: 3.25.28
-  resolution: "zod@npm:3.25.28"
-  checksum: 10c0/557fb621813d128f8090c43de65f9e8661ce9bd8bd29d7adc6b38b0a79e14729a8926e28a2e6eee2fa0ec0ea390cc549363f50235e8f45d2e4771906d1f87b20
+"zod@npm:^3.25.42":
+  version: 3.25.42
+  resolution: "zod@npm:3.25.42"
+  checksum: 10c0/daa04d3bd5d87318790def440c074a154e29a5c900aefc6605c078df5878cdc9b465091c1ad117478e1f907242b8983d69bf2c11fcf354772b18d7103b94383a
   languageName: node
   linkType: hard
 
