@@ -1860,9 +1860,9 @@ __metadata:
   linkType: hard
 
 "@fontsource/baskervville@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "@fontsource/baskervville@npm:5.2.5"
-  checksum: 10c0/67114bc1963a453e14f199de29afffd92d69a35f0418d95dd2183659994ec7d96287a7936b1d83dd2589d892fbbec43f81030cf3bf0399fe1371cf96a288d6db
+  version: 5.2.6
+  resolution: "@fontsource/baskervville@npm:5.2.6"
+  checksum: 10c0/83ea072823f59ea5c8f95e06ee4e3b00a9da1a7743ff75f96e0cfdf4c4f8668fe6b8fa459456c2cc140994c8a29891ac72f1d13ab7f5f82f4c8ec189db0b96b5
   languageName: node
   linkType: hard
 
