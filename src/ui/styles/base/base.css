@@ -12,6 +12,10 @@
 			outline-offset: 2px;
 		}
 	}
+	
+	@view-transition {
+		navigation: auto;
+	  }
 
 	html {
 		overflow-x: hidden;
