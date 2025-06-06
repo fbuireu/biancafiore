@@ -6,7 +6,7 @@
 	--items-per-row: 2;
 	text-align: center;
 
-	@container tags-page  (width <= 575px) {
+	@container tags-page (width <= 575px) {
 		--gap: 0;
 		--items-per-row: 1;
 	}

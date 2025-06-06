@@ -1,7 +1,7 @@
 .about-latest-articles__wrapper {
 	margin-block-end: 12rem;
 
-	@container about-page  (width <= 720px) {
+	@container about-page (width <= 720px) {
 		margin-block-end: 5rem;
 	}
 }
@@ -14,7 +14,7 @@
 		display: inline-block;
 	}
 
-	@container about-page  (width <= 720px) {
+	@container about-page (width <= 720px) {
 		margin-block-end: 2rem;
 	}
 }
@@ -25,7 +25,7 @@
 	grid: "Quote Latest-Articles" 1fr / calc(30% - 2rem) calc(70% - 2rem);
 	justify-content: flex-end;
 
-	@container about-page  (width <= 720px) {
+	@container about-page (width <= 720px) {
 		gap: 3rem 0;
 		grid:
 			"Quote Quote" min-content
@@ -55,7 +55,7 @@
 		width: 1px;
 	}
 
-	@container about-page  (width <= 720px) {
+	@container about-page (width <= 720px) {
 		align-items: center;
 		justify-content: center;
 		text-align: center;

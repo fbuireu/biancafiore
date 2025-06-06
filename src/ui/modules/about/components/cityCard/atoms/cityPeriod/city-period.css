@@ -1,8 +1,8 @@
 .city-card__content__period {
 	grid-area: City-Period;
 	padding-top: 1rem;
-	
-	@container about-page  (width <= 720px) {
+
+	@container about-page (width <= 720px) {
 		padding-inline: 1rem;
 		padding-top: 0;
 	}
