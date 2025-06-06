@@ -19,6 +19,47 @@
 
 	html {
 		overflow-x: hidden;
+
+		&.--is-articles {
+			container: articles-page / inline-size;
+			width: 100%;
+		}
+		&.--is-home {
+			container: home-page / inline-size;
+			width: 100%;
+		}
+		&.--is-article {
+			container: article-page / inline-size;
+			width: 100%;
+		}
+		&.--is-about {
+			container: about-page / inline-size;
+			width: 100%;
+		}
+		&.--is-tag {
+			container: tag-page / inline-size;
+			width: 100%;
+		}
+		&.--is-tags {
+			container: tags-page / inline-size;
+			width: 100%;
+		}
+		&.--is-contact {
+			container: contact-page / inline-size;
+			width: 100%;
+		}
+		&.--is-projects {
+			container: projects-page / inline-size;
+			width: 100%;
+		}		
+		&.--is-terms-and-conditions {
+			container: terms-and-conditions-page / inline-size;
+			width: 100%;
+		}
+		&.--is-privacy-policy {
+			container: privacy-policy-page / inline-size;
+			width: 100%;
+		}
 	}
 
 	html,

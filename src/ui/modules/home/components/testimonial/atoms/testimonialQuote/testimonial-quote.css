@@ -9,7 +9,7 @@
 	isolation: isolate;
 	padding-inline-end: 2rem;
 
-	@media (width <= 1024px) {
+	@container home-page (width <= 1024px) {
 		padding-inline-end: 1rem;
 	}
 }
@@ -21,7 +21,7 @@
 	transition-property: translate;
 	transition-timing-function: ease-in;
 
-	@media (width <= 575px) {
+	@container home-page (width <= 575px) {
 		padding-inline: 1rem;
 	}
 }

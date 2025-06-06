@@ -6,17 +6,16 @@
 	--items-per-row: 4;
 	position: relative;
 
-	@media (width <= 1440px) {
+	@container tag-page  (width <= 1440px) {
 		margin-inline: 1rem;
 	}
-
-	@media (width <= 960px) {
+	@container tag-page  (width <= 960px) {
 		--gap: 1rem;
 		justify-content: space-between;
 		margin-inline: 0;
 		--items-per-row: 2;
 	}
-	@media (width <= 720px) {
+	@container tag-page  (width <= 720px) {
 		--gap: 0;
 		--items-per-row: 1;
 	}

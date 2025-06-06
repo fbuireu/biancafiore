@@ -2,7 +2,7 @@
 	grid-area: City-Name;
 	margin-block-start: -1rem;
 
-	@media (width <= 720px) {
+	@container about-page  (width <= 720px) {
 		margin-block-start: 0;
 		padding-inline: 1rem;
 	}

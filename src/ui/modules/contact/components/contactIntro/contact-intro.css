@@ -4,7 +4,7 @@
 	grid: "Contact-Text Contact-Image" 1fr / 1fr 1fr;
 	justify-items: self-start;
 
-	@media (width <= 960px) {
+	@container contact-page (width <= 960px) {
 		gap: 2rem 0;
 		grid:
 			"Contact-Text" min-content
@@ -18,7 +18,7 @@
 	margin-block-end: 3rem;
 	max-width: var(--grid-extra-small);
 
-	@media (width <= 960px) {
+	@container contact-page (width <= 960px) {
 		margin-block-end: 0;
 		max-width: 100%;
 		padding-inline: 1rem;

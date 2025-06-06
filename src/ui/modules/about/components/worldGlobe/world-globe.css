@@ -1,7 +1,7 @@
 canvas {
 	cursor: grab;
 
-	@media (width <= 960px) {
+	@container about-page (width <= 960px) {
 		width: 100%;
 	}
 }
@@ -11,7 +11,7 @@ canvas {
 	position: sticky;
 	top: calc(var(--header-height) + 0.5rem);
 
-	@media (width <= 960px) {
+	@container about-page (width <= 960px) {
 		order: 2;
 		position: relative;
 		top: unset;
