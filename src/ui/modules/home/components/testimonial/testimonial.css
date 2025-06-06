@@ -15,14 +15,15 @@
 	&:not(.--is-active) {
 		opacity: 0.25;
 	}
-
-	@media (width <= 575px) {
+	
+	@container home-page (width <= 575px) {
 		gap: 0.5rem 0;
 		grid:
 			"Testimonial-Image" auto
 			"Testimonial-Quote" min-content
 			"Testimonial-Author" 1.5rem
 			"Testimonial-Description" min-content
+		
 			/ 1fr;
 	}
 }

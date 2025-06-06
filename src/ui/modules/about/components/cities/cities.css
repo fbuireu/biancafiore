@@ -10,7 +10,7 @@
 	padding-bottom: calc(var(--inline-index) * 0.5rem);
 	view-timeline-name: --cities-scales-in-view;
 
-	@media (width <= 960px) {
+	@container about-page  (width <= 760px) {
 		--num-columns: 1;
 	}
 }

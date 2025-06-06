@@ -10,7 +10,7 @@
 	max-width: var(--grid-small);
 	width: 100%;
 
-	@media (width <= 960px) {
+	@container article-page (width <= 960px) {
 		padding-inline: 1rem;
 	}
 }

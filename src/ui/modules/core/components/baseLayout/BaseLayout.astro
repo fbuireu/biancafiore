@@ -12,7 +12,7 @@ type BaseLayoutProps = SeoMetadata;
 const props = Astro.props as BaseLayoutProps;
 const location = getLocation(Astro.url);
 ---
-<html lang="en">
+<html lang="en" class:list={[{ [`--is-${location}`]: location}]}>
   <Head {...props} />
   <body>
   <noscript>

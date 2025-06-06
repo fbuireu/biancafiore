@@ -1,7 +1,7 @@
 .my-work__title {
 	margin-block-end: 4rem;
 
-	@media (width <= 720px) {
+	@container home-page (width <= 720px) {
 		margin-block-end: 0;
 	}
 }
@@ -41,9 +41,8 @@
 		margin-block-start: 75%;
 	}
 
-	@media (width <= 1024px) {
+	@container home-page (width <= 1024px) {
 		--items-per-row: 2;
-
 		&:nth-child(1),
 		&:nth-child(3) {
 			margin-block-start: 0;
@@ -54,7 +53,8 @@
 			margin-block-start: 25%;
 		}
 	}
-	@media (width <= 720px) {
+	
+	@container home-page (width <= 720px) {
 		--gap: 0;
 		--items-per-row: 1;
 

@@ -1,7 +1,7 @@
 .related-articles__wrapper {
 	margin: 6rem auto;
 
-	@media (width <= 960px) {
+	@container article-page (width <= 960px) {
 		margin: 4rem auto;
 	}
 }
@@ -14,7 +14,7 @@
 	gap: 1rem 0;
 	padding: 0 1rem;
 
-	@media (width <= 960px) {
+	@container article-page (width <= 960px) {
 		margin: 2rem 0;
 	}
 }
@@ -25,7 +25,7 @@
 	width: 100%;
 	--items-per-row: 3;
 
-	@media (width <= 960px) {
+	@container article-page (width <= 960px) {
 		--items-per-row: 1;
 	}
 }

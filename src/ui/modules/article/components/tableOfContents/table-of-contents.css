@@ -16,7 +16,7 @@
 		translate: 0 0;
 	}
 
-	@media (width <= 960px) {
+	@container article-page (width <= 960px) {
 		left: auto;
 		opacity: 1;
 		position: relative;
@@ -30,7 +30,7 @@
 	position: sticky;
 	top: var(--top);
 
-	@media (width <= 960px) {
+	@container article-page (width <= 960px) {
 		--top: var(--header-height);
 		margin-block: 1rem;
 		width: 100%;
@@ -55,7 +55,7 @@
 		width: 1rem;
 	}
 
-	@media (width <= 960px) {
+	@container article-page (width <= 960px) {
 		&::before {
 			visibility: visible;
 		}
@@ -78,7 +78,7 @@
 .article__table-of-contents__list {
 	gap: 0.25rem 0;
 
-	@media (width <= 960px) {
+	@container article-page (width <= 960px) {
 		justify-content: flex-start;
 	}
 }
@@ -90,7 +90,7 @@
 	translate: 100px 0;
 	width: fit-content;
 
-	@media (width <= 960px) {
+	@container article-page (width <= 960px) {
 		transition: none;
 		translate: 0;
 	}

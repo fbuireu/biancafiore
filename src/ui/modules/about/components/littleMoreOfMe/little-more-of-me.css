@@ -7,7 +7,8 @@
 }
 .little-more-of-me__inner {
 	justify-content: flex-end;
-	@media (width <= 960px) {
+
+	@container about-page (width <= 960px) {
 		flex-wrap: wrap;
 		justify-content: unset;
 	}

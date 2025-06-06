@@ -1,14 +1,9 @@
-.welcome-wrapper {
-	container: welcome / inline-size;
-	width: 100%;
-}
-
 .welcome {
 	display: grid;
 	grid: "Left-Greeting Welcome-Image Right-Greeting" auto / 1fr 1fr 1fr;
 	overflow: hidden;
 
-	@container welcome (width <= 960px) {
+	@container home-page (width <= 960px) {
 		grid: "Left-Greeting Left-Greeting Left-Greeting" auto "Welcome-Image Welcome-Image Welcome-Image" auto "Right-Greeting Right-Greeting Right-Greeting" auto / 1fr;
 		margin-block-end: 3rem;
 	}
@@ -20,7 +15,7 @@
 	place-self: center;
 	width: 100%;
 
-	@container welcome (575px < width <= 960px) {
+	@container home-page (575px < width <= 960px) {
 		width: 50%;
 	}
 }
@@ -38,7 +33,7 @@
 		z-index: 10;
 		grid-area: Right-Greeting;
 
-		@container welcome (width <= 960px) {
+		@container home-page (width <= 960px) {
 			justify-items: end;
 			margin-inline-start: 0;
 			translate: 0;
@@ -52,7 +47,7 @@
 		translate: 0 -100px;
 		z-index: 10;
 
-		@container welcome (width <= 960px) {
+		@container home-page (width <= 960px) {
 			justify-self: start;
 			translate: 0;
 		}
@@ -73,11 +68,11 @@
 	padding-inline-start: 3.5rem;
 	text-align: start;
 
-	@container welcome (width <= 960px) {
+	@container home-page (width <= 960px) {
 		text-align: end;
 	}
 
-	@container welcome (width <= 575px) {
+	@container home-page  (width <= 575px) {
 		padding-inline-start: 1rem;
 		text-align: start;
 	}
@@ -89,7 +84,7 @@
 		animation: float-side linear;
 		animation-timeline: scroll(root block);
 
-		@container welcome (width <= 960px) {
+		@container home-page (width <= 960px) {
 			--origin-x: 0;
 		}
 	}
@@ -100,7 +95,7 @@
 			animation: float-side linear;
 			animation-timeline: scroll(root block);
 
-			@container welcome (width <= 960px) {
+			@container home-page (width <= 960px) {
 				--origin-x: 0;
 			}
 		}
@@ -110,7 +105,7 @@
 			animation: float-side linear;
 			animation-timeline: scroll(root block);
 
-			@container welcome (width <= 960px) {
+			@container home-page (width <= 960px) {
 				--origin-x: 0;
 			}
 		}
