@@ -1,5 +1,3 @@
-import { getLocation } from "@modules/core/utils/getLocation";
-import clsx from "clsx";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,25 +9,22 @@ export interface Slider<T> {
 	items: T[];
 	renderItem: (item: T) => ReactNode;
 	swiperOptions: SwiperOptions;
-	origin: URL;
 }
 
-export const Slider = <T,>({ items, renderItem, swiperOptions, origin }: Slider<T>) => {
+export const Slider = <T,>({ items, renderItem, swiperOptions }: Slider<T>) => {
 	const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(null);
-	const location = getLocation(origin);
-	const locationClassName = location ? `--is-${location}` : "";
 
 	return (
-		<div className={clsx("slider__wrapper common-wrapper", locationClassName)}>
+		<div className="slider__wrapper common-wrapper">
 			<Swiper {...swiperOptions} onSwiper={setSwiperInstance}>
-				<ul className={clsx("slider__list flex row-wrap justify-space-between", locationClassName)}>
+				<ul className="slider__list flex row-wrap justify-space-between">
 					{items.map((item) => (
-						<li key={crypto.randomUUID()} className={clsx("item__wrapper --is-clickable", locationClassName)}>
+						<li key={crypto.randomUUID()} className="item__wrapper --is-clickable">
 							<SwiperSlide key={crypto.randomUUID()}>{renderItem(item)}</SwiperSlide>
 						</li>
 					))}
 				</ul>
-				{swiperInstance && <SliderNavigation swiper={swiperInstance} locationClassName={locationClassName} />}
+				{swiperInstance && <SliderNavigation swiper={swiperInstance} />}
 			</Swiper>
 		</div>
 	);

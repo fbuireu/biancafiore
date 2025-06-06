@@ -15,7 +15,7 @@
 	&:not(.--is-active) {
 		opacity: 0.25;
 	}
-	
+
 	@container home-page (width <= 575px) {
 		gap: 0.5rem 0;
 		grid:
@@ -23,7 +23,6 @@
 			"Testimonial-Quote" min-content
 			"Testimonial-Author" 1.5rem
 			"Testimonial-Description" min-content
-		
 			/ 1fr;
 	}
 }

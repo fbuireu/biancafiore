@@ -17,29 +17,21 @@ import { ArticleCardTagsList } from "@modules/core/components/articleCard/atoms/
 import type { ArticleCardTitleProps } from "@modules/core/components/articleCard/atoms/articleCardTitle";
 import { ArticleCardTitle } from "@modules/core/components/articleCard/atoms/articleCardTitle";
 import { articleVariantToClass } from "@modules/core/utils/articleVariantToClass";
-import { getLocation } from "@modules/core/utils/getLocation";
 import clsx from "clsx";
 import type { ReactNode } from "react";
 import "./article-card.css";
 
 interface ArticleCardProps extends CollectionEntry<"articles"> {
-	origin: URL;
 	children: ReactNode;
 }
 
-export const ArticleCard = ({ children, origin, data }: ArticleCardProps) => {
-	const location = getLocation(origin);
-
+export const ArticleCard = ({ children, data }: ArticleCardProps) => {
 	return (
 		<>
 			<a className={"article-card__link"} href={`${PAGES_ROUTES.ARTICLES}/${data.slug}`} aria-label={data.title}>
 				{" "}
 			</a>
-			<article
-				className={clsx("article-card__item", articleVariantToClass(data.variant), location && `--is-${location}`)}
-			>
-				{children}
-			</article>
+			<article className={clsx("article-card__item", articleVariantToClass(data.variant))}>{children}</article>
 		</>
 	);
 };

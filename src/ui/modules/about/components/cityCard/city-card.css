@@ -6,7 +6,7 @@
 	position: sticky;
 	top: calc(var(--header-height) + 0.5rem);
 
-	@container about-page  (width <= 960px) {
+	@container about-page (width <= 960px) {
 		padding-inline: 1rem;
 	}
 }
@@ -26,7 +26,7 @@
 	--end-range: calc((var(--inline-index)) / var(--inline-num-cards) * 100%);
 	--start-range: calc(var(--index0) / var(--inline-num-cards) * 100%);
 
-	@container about-page  (width <= 720px) {
+	@container about-page (width <= 720px) {
 		gap: 0.5rem;
 	}
 }
@@ -39,7 +39,7 @@
 		/ 1fr 1fr 1fr 1fr;
 	padding-inline-end: 2rem;
 
-	@container about-page  (width <= 960px) {
+	@container about-page (width <= 960px) {
 		grid:
 			"City-Image" auto
 			"City-Period" auto
@@ -58,7 +58,7 @@
 		/ 1fr 1fr 1fr 1fr;
 	padding-inline-start: 1rem;
 
-	@container about-page  (width <= 960px) {
+	@container about-page (width <= 960px) {
 		grid:
 			"City-Image" auto
 			"City-Period" auto

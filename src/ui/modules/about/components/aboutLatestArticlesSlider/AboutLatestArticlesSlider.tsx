@@ -8,7 +8,6 @@ import "./about-latest-articles-slider.css";
 
 interface AboutLatestArticlesSLiderProps {
 	articles: CollectionEntry<"articles">[];
-	origin: URL;
 }
 
 const SLIDER_CONFIG: SwiperOptions = {
@@ -30,48 +29,43 @@ const SLIDER_CONFIG: SwiperOptions = {
 	containerModifierClass: "latest-articles-",
 };
 
-export const AboutLatestArticlesSlider = ({ articles, origin }: AboutLatestArticlesSLiderProps) => {
+export const AboutLatestArticlesSlider = ({ articles }: AboutLatestArticlesSLiderProps) => {
 	return (
 		<div className="about__latest-articles__slider">
 			<Slider
 				items={articles}
 				swiperOptions={SLIDER_CONFIG}
-				origin={origin}
-				renderItem={(article) => {
-					const props = { ...article, origin };
+				renderItem={(article) => (
+					<ArticleCard {...article}>
+						<ArticleCard.PublishDate publishDate={article.data.publishDate}>
+							{article.data.publishDate}
+						</ArticleCard.PublishDate>
+						{article.data.featuredImage && (
+							<ArticleCard.Image
+								src={article.data.featuredImage.url}
+								alt={article.data.title}
+								formats={article.data.featuredImage.formats}
+							/>
+						)}
+						<ArticleCard.Title>{article.data.title}</ArticleCard.Title>
+						<ArticleCard.Excerpt>{article.data.description}</ArticleCard.Excerpt>
+						<ArticleCard.Author slug={article.data.author.slug}>{article.data.author.name}</ArticleCard.Author>
+						<ArticleCard.ReadingTime>{article.data.readingTime} min.</ArticleCard.ReadingTime>
+						<ArticleCard.Tags>
+							{article.data.tags?.map((tag, index) => {
+								const style: CSSProperties & { [key: string]: string } = {
+									"--inline-index": String(index),
+								};
 
-					return (
-						<ArticleCard {...props}>
-							<ArticleCard.PublishDate publishDate={article.data.publishDate}>
-								{article.data.publishDate}
-							</ArticleCard.PublishDate>
-							{article.data.featuredImage && (
-								<ArticleCard.Image
-									src={article.data.featuredImage.url}
-									alt={article.data.title}
-									formats={article.data.featuredImage.formats}
-								/>
-							)}
-							<ArticleCard.Title>{article.data.title}</ArticleCard.Title>
-							<ArticleCard.Excerpt>{article.data.description}</ArticleCard.Excerpt>
-							<ArticleCard.Author slug={article.data.author.slug}>{article.data.author.name}</ArticleCard.Author>
-							<ArticleCard.ReadingTime>{article.data.readingTime} min.</ArticleCard.ReadingTime>
-							<ArticleCard.Tags>
-								{article.data.tags?.map((tag, index) => {
-									const style: CSSProperties & { [key: string]: string } = {
-										"--inline-index": String(index),
-									};
-
-									return (
-										<ArticleCard.Tag key={tag.name} tag={tag} style={style}>
-											{tag.name}
-										</ArticleCard.Tag>
-									);
-								})}
-							</ArticleCard.Tags>
-						</ArticleCard>
-					);
-				}}
+								return (
+									<ArticleCard.Tag key={tag.name} tag={tag} style={style}>
+										{tag.name}
+									</ArticleCard.Tag>
+								);
+							})}
+						</ArticleCard.Tags>
+					</ArticleCard>
+				)}
 			/>
 		</div>
 	);

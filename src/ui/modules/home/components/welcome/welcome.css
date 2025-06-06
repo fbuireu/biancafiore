@@ -72,7 +72,7 @@
 		text-align: end;
 	}
 
-	@container home-page  (width <= 575px) {
+	@container home-page (width <= 575px) {
 		padding-inline-start: 1rem;
 		text-align: start;
 	}

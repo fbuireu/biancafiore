@@ -1,30 +1,22 @@
 ---
 import { SOCIAL_NETWORKS } from "@const/index";
 import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
-import { getLocation } from "@modules/core/utils/getLocation";
 import "./social-networks.css";
-
-interface SocialMediaProps {
-	origin?: URL;
-}
-
-const { origin } = Astro.props as SocialMediaProps;
-const location = origin ? getLocation(origin) : "footer";
 ---
-<ul class:list={[`social__networks__list flex`, { [`--is-${location}`]: location }]}>
-    {Object.entries(SOCIAL_NETWORKS).map(([key, value]) => (
-        <li class:list={[`social__networks__item`, { [`--is-${location}`]: location }]}>
-            <a
-                href={value}
-                target="_blank"
-                rel="external"
-                class="social__networks__link --underline-on-hover"
-            >
-                {key.toLowerCase()}
-            </a>
-        </li>
-    ))}
-    <li class:list={[`social__networks__item`, { [`--is-${location}`]: location }]}>
+<ul class="social__networks__list flex">
+  {Object.entries(SOCIAL_NETWORKS).map(([key, value]) => (
+      <li class="social__networks__item">
+          <a
+              href={value}
+              target="_blank"
+              rel="external"
+              class="social__networks__link --underline-on-hover"
+          >
+            {key.toLowerCase()}
+          </a>
+      </li>
+  ))}
+    <li class="social__networks__item">
         <EmailButton classNames="social__networks__link" />
     </li>
 </ul>

@@ -1,4 +1,4 @@
-.breadcrumb__item, 
+.breadcrumb__item,
 .breadcrumbs__list {
 	gap: 1rem;
 }
@@ -11,42 +11,42 @@
 	@container articles-page (width <= 960px) {
 		margin-block-end: 2rem;
 	}
-	
+
 	@container articles-page (width > 960px) {
 		margin-block-end: 5rem;
 	}
-	
+
 	@container projects-page (width >= 0) {
 		display: none;
 	}
-	
+
 	@container article-page (width <= 960px) {
 		margin-inline-start: 1rem;
 		max-width: 100%;
 	}
-	
+
 	@container article-page (width > 960px) {
 		justify-content: flex-start;
 		margin: 0 auto;
 		max-width: var(--grid-small);
 		padding-block-start: 2rem;
 	}
-	
+
 	@container about-page (width <= 960px) {
 		margin-inline-start: 1rem;
 		max-width: 100%;
 	}
-	
+
 	@container about-page (width > 960px) {
 		justify-content: flex-start;
 		margin-block-end: 2rem;
 	}
-	
+
 	@container contact-page (width <= 960px) {
 		margin-inline-start: 1rem;
 		max-width: 100%;
 	}
-	
+
 	@container contact-page (width > 960px) {
 		justify-content: flex-start;
 		margin-block-end: 2rem;
