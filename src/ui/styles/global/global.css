@@ -10,11 +10,11 @@
 	}
 
 	.font-sans-serif {
-		font-family: "Nunito Sans Variable", sans-serif;
+		font-family: var(--font-nunito-sans);
 	}
 
 	.font-serif {
-		font-family: "Baskervville", serif;
+		font-family: var(--font-baskervville);
 	}
 
 	.section-title {

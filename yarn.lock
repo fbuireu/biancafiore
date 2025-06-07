@@ -1852,20 +1852,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource-variable/nunito-sans@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "@fontsource-variable/nunito-sans@npm:5.2.5"
-  checksum: 10c0/c1f83fefa5366ffa268eb3777340710006d227fa88e1ef9755c8867552690993a6b3f2872c5912edcd9a58f28cf559b2114436d50ca0ff6f46323614662e5fce
-  languageName: node
-  linkType: hard
-
-"@fontsource/baskervville@npm:^5.2.6":
-  version: 5.2.6
-  resolution: "@fontsource/baskervville@npm:5.2.6"
-  checksum: 10c0/83ea072823f59ea5c8f95e06ee4e3b00a9da1a7743ff75f96e0cfdf4c4f8668fe6b8fa459456c2cc140994c8a29891ac72f1d13ab7f5f82f4c8ec189db0b96b5
-  languageName: node
-  linkType: hard
-
 "@hono/node-server@npm:^1.11.1":
   version: 1.13.7
   resolution: "@hono/node-server@npm:1.13.7"
@@ -4153,8 +4139,6 @@ __metadata:
     "@commitlint/config-conventional": "npm:^19.8.1"
     "@commitlint/format": "npm:^19.8.1"
     "@contentful/rich-text-html-renderer": "npm:^17.0.0"
-    "@fontsource-variable/nunito-sans": "npm:^5.2.5"
-    "@fontsource/baskervville": "npm:^5.2.6"
     "@hookform/resolvers": "npm:^5.0.1"
     "@million/lint": "npm:^1.0.14"
     "@playwright/test": "npm:^1.52.0"
