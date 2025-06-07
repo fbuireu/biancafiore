@@ -54,8 +54,6 @@
 		"@astrojs/rss": "^4.0.12",
 		"@astrojs/sitemap": "^3.4.1",
 		"@contentful/rich-text-html-renderer": "^17.0.0",
-		"@fontsource-variable/nunito-sans": "^5.2.5",
-		"@fontsource/baskervville": "^5.2.6",
 		"@hookform/resolvers": "^5.0.1",
 		"@million/lint": "^1.0.14",
 		"algoliasearch": "^5.27.0",
