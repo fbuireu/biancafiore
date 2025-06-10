@@ -18,7 +18,7 @@
 	"author": "Ferran Buireu <fbuireu@gmail.com>",
 	"version": "2.0.2",
 	"type": "module",
-	"packageManager": "yarn@4.9.1",
+	"packageManager": "yarn@4.9.2",
 	"engines": {
 		"node": ">=22.0.0"
 	},
@@ -54,14 +54,12 @@
 		"@astrojs/rss": "^4.0.12",
 		"@astrojs/sitemap": "^3.4.1",
 		"@contentful/rich-text-html-renderer": "^17.0.0",
-		"@fontsource-variable/nunito-sans": "^5.2.5",
-		"@fontsource/baskervville": "^5.2.6",
-		"@hookform/resolvers": "^5.0.1",
+		"@hookform/resolvers": "^5.1.0",
 		"@million/lint": "^1.0.14",
 		"algoliasearch": "^5.27.0",
-		"astro": "^5.9.0",
+		"astro": "^5.9.1",
 		"clsx": "^2.1.1",
-		"contentful": "^11.6.0",
+		"contentful": "^11.7.0",
 		"gsap": "^3.13.0",
 		"instantsearch.css": "^8.5.1",
 		"markdown-it": "^14.1.0",
@@ -77,7 +75,7 @@
 		"three": "^0.177.0",
 		"typescript": "^5.8.3",
 		"vanilla-cookieconsent": "^3.1.0",
-		"zod": "^3.25.53"
+		"zod": "^3.25.56"
 	},
 	"devDependencies": {
 		"@astrojs/ts-plugin": "^1.10.4",

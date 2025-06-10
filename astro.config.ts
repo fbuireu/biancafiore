@@ -6,7 +6,7 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import MillionLint from "@million/lint";
 // @ts-ignore:next-line
-import { defineConfig, envField } from "astro/config";
+import { defineConfig, envField, fontProviders } from "astro/config";
 
 const isProd = import.meta.env.PROD;
 
@@ -14,6 +14,18 @@ export default defineConfig({
 	experimental: {
 		responsiveImages: true,
 		contentIntellisense: true,
+		fonts: [
+			{
+				provider: fontProviders.google(),
+				name: "Nunito Sans",
+				cssVariable: "--font-nunito-sans",
+			},
+			{
+				provider: fontProviders.google(),
+				name: "Baskervville",
+				cssVariable: "--font-baskervville",
+			},
+		],
 	},
 	image: {
 		experimentalLayout: "constrained",

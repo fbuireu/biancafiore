@@ -1,17 +1,18 @@
 ---
-import type { SeoMetadata } from "@const/types";
-import "@fontsource-variable/nunito-sans";
-import "@fontsource/baskervville";
 import { GOOGLE_ANALYTICS_ID, GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
 import { ClientRouter } from "astro:transitions";
+import type { SeoMetadata } from "@const/types";
 import Seo from "@modules/core/components/seo/Seo.astro";
 import "@styles/index.css";
+import { Font } from "astro:assets";
 
 type HeadProps = SeoMetadata;
 
 const props = Astro.props as HeadProps;
 ---
 <head lang="en">
+    <Font cssVariable="--font-nunito-sans" preload />
+    <Font cssVariable="--font-baskervville" preload />
     <script is:inline type="text/partytown" async
             src=`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}` />
     <script is:inline define:vars={{ GOOGLE_TAG_MANAGER_ID }}>

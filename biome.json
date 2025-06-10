@@ -1,32 +1,36 @@
 {
-	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-	"files": {
-		"ignore": ["src/data/*"]
-	},
-	"vcs": {
-		"enabled": true,
-		"useIgnoreFile": true,
-		"clientKind": "git",
-		"defaultBranch": "main"
-	},
-	"formatter": {
-		"lineWidth": 120
-	},
-	"css": {
-		"formatter": {
-			"enabled": true
-		}
-	},
-	"linter": {
-		"ignore": ["*.d.ts*"],
-		"rules": {
-			"recommended": true,
-			"correctness": {
-				"noUnknownProperty": "info"
-			},
-			"suspicious": {
-				"noConsole": "error"
-			}
-		}
-	}
+    "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+    "files": {
+        "ignore": [
+            "src/data/*"
+        ]
+    },
+    "vcs": {
+        "enabled": true,
+        "useIgnoreFile": true,
+        "clientKind": "git",
+        "defaultBranch": "main"
+    },
+    "formatter": {
+        "lineWidth": 120
+    },
+    "css": {
+        "formatter": {
+            "enabled": true
+        }
+    },
+    "linter": {
+        "ignore": [
+            "*.d.ts*"
+        ],
+        "rules": {
+            "recommended": true,
+            "correctness": {
+                "noUnknownProperty": "info"
+            },
+            "suspicious": {
+                "noConsole": "error"
+            }
+        }
+    }
 }
