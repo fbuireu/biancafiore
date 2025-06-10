@@ -54,12 +54,12 @@
 		"@astrojs/rss": "^4.0.12",
 		"@astrojs/sitemap": "^3.4.1",
 		"@contentful/rich-text-html-renderer": "^17.0.0",
-		"@hookform/resolvers": "^5.1.0",
+		"@hookform/resolvers": "^5.1.1",
 		"@million/lint": "^1.0.14",
 		"algoliasearch": "^5.27.0",
-		"astro": "^5.9.1",
+		"astro": "^5.9.2",
 		"clsx": "^2.1.1",
-		"contentful": "^11.7.0",
+		"contentful": "^11.7.1",
 		"gsap": "^3.13.0",
 		"instantsearch.css": "^8.5.1",
 		"markdown-it": "^14.1.0",
@@ -75,7 +75,7 @@
 		"three": "^0.177.0",
 		"typescript": "^5.8.3",
 		"vanilla-cookieconsent": "^3.1.0",
-		"zod": "^3.25.56"
+		"zod": "^3.25.57"
 	},
 	"devDependencies": {
 		"@astrojs/ts-plugin": "^1.10.4",
@@ -87,13 +87,13 @@
 		"@testing-library/react": "^16.3.0",
 		"@testing-library/react-hooks": "^8.0.1",
 		"@types/markdown-it": "^14.1.2",
-		"@types/node": "^22.15.30",
-		"@types/react": "^19.1.6",
+		"@types/node": "^24.0.0",
+		"@types/react": "^19.1.7",
 		"@types/react-dom": "^19.1.6",
 		"@types/three": "^0.177.0",
 		"conventional-changelog-atom": "^5.0.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.1.0",
-		"vitest": "^3.2.2"
+		"vitest": "^3.2.3"
 	}
 }
