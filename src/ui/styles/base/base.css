@@ -75,7 +75,7 @@
 	body {
 		color: var(--neutral-main);
 		font-size: var(--base-font-size);
-		font-family: "Baskervville", serif;
+		font-family: var(--font-baskervville);
 		scroll-behavior: smooth;
 		scrollbar-gutter: stable;
 		scrollbar-width: auto;
@@ -108,7 +108,7 @@
 
 	p,
 	article {
-		font-family: "Nunito Sans Variable", sans-serif;
+		font-family: var(--font-nunito-sans);
 		text-wrap: pretty;
 	}
 

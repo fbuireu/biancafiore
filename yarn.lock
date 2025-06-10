@@ -218,10 +218,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/compiler@npm:^2.12.0":
-  version: 2.12.0
-  resolution: "@astrojs/compiler@npm:2.12.0"
-  checksum: 10c0/8499c8cfae1c94ba5cbafe1fb645f6a6d1b8e431ca20e91386a76e39046c66dddc1cea84d75152d961752dc95bb45f9e933b54e7b1dd3746b98626f2878c1c79
+"@astrojs/compiler@npm:^2.12.1":
+  version: 2.12.1
+  resolution: "@astrojs/compiler@npm:2.12.1"
+  checksum: 10c0/722ab975d900b51ccbd86c0835f14f10166477b946bd31dbbf6fb4d959934e75a03f130a0f23889caf946ad831f458a8a7fc21c1c3a223439991e24fabf81e15
   languageName: node
   linkType: hard
 
@@ -1852,20 +1852,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource-variable/nunito-sans@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "@fontsource-variable/nunito-sans@npm:5.2.5"
-  checksum: 10c0/c1f83fefa5366ffa268eb3777340710006d227fa88e1ef9755c8867552690993a6b3f2872c5912edcd9a58f28cf559b2114436d50ca0ff6f46323614662e5fce
-  languageName: node
-  linkType: hard
-
-"@fontsource/baskervville@npm:^5.2.6":
-  version: 5.2.6
-  resolution: "@fontsource/baskervville@npm:5.2.6"
-  checksum: 10c0/83ea072823f59ea5c8f95e06ee4e3b00a9da1a7743ff75f96e0cfdf4c4f8668fe6b8fa459456c2cc140994c8a29891ac72f1d13ab7f5f82f4c8ec189db0b96b5
-  languageName: node
-  linkType: hard
-
 "@hono/node-server@npm:^1.11.1":
   version: 1.13.7
   resolution: "@hono/node-server@npm:1.13.7"
@@ -1875,14 +1861,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "@hookform/resolvers@npm:5.0.1"
+"@hookform/resolvers@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "@hookform/resolvers@npm:5.1.0"
   dependencies:
     "@standard-schema/utils": "npm:^0.3.0"
   peerDependencies:
     react-hook-form: ^7.55.0
-  checksum: 10c0/8260de1cd1b8b53629ea67555f3f027fdeabf4cd6da7f20cb76e646d353d998e61cf3a338d6313c94a31f32c23447403df5e584e5c8dddbca766ed7776513f8b
+  checksum: 10c0/5bd28ef58a182102f40b7fa2bc73a5e423c8bcf9cb25fee91cb8933026e7efba6f9adfda1ee637294de59c5467c938f4fb99c77a73bbb8c6180482c69d31cbbd
   languageName: node
   linkType: hard
 
@@ -3977,11 +3963,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.9.0":
-  version: 5.9.0
-  resolution: "astro@npm:5.9.0"
+"astro@npm:^5.9.1":
+  version: 5.9.1
+  resolution: "astro@npm:5.9.1"
   dependencies:
-    "@astrojs/compiler": "npm:^2.12.0"
+    "@astrojs/compiler": "npm:^2.12.1"
     "@astrojs/internal-helpers": "npm:0.6.1"
     "@astrojs/markdown-remark": "npm:6.3.2"
     "@astrojs/telemetry": "npm:3.3.0"
@@ -4048,7 +4034,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/8b32e3f1fd054d50089d248c487dca9377a0954fd508dfbd0b18153a81aeace9fe2cbcfef4874b38fe0404bc50829314196dc2bbd875582a444883ceabdc3bd8
+  checksum: 10c0/aa17f6d972009c457b23fddc2c120a3da78692bd39b23b32e3f784d9140337aaff3d67aed47d29d23e607cb05e2f2ba3731cb3262cc7f572152ff4c133ac0c07
   languageName: node
   linkType: hard
 
@@ -4153,9 +4139,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:^19.8.1"
     "@commitlint/format": "npm:^19.8.1"
     "@contentful/rich-text-html-renderer": "npm:^17.0.0"
-    "@fontsource-variable/nunito-sans": "npm:^5.2.5"
-    "@fontsource/baskervville": "npm:^5.2.6"
-    "@hookform/resolvers": "npm:^5.0.1"
+    "@hookform/resolvers": "npm:^5.1.0"
     "@million/lint": "npm:^1.0.14"
     "@playwright/test": "npm:^1.52.0"
     "@testing-library/react": "npm:^16.3.0"
@@ -4166,9 +4150,9 @@ __metadata:
     "@types/react-dom": "npm:^19.1.6"
     "@types/three": "npm:^0.177.0"
     algoliasearch: "npm:^5.27.0"
-    astro: "npm:^5.9.0"
+    astro: "npm:^5.9.1"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.6.0"
+    contentful: "npm:^11.7.0"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.13.0"
     husky: "npm:^9.1.7"
@@ -4188,7 +4172,7 @@ __metadata:
     typescript: "npm:^5.8.3"
     vanilla-cookieconsent: "npm:^3.1.0"
     vitest: "npm:^3.2.2"
-    zod: "npm:^3.25.53"
+    zod: "npm:^3.25.56"
   languageName: unknown
   linkType: soft
 
@@ -4684,9 +4668,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.6.0":
-  version: 11.6.0
-  resolution: "contentful@npm:11.6.0"
+"contentful@npm:^11.7.0":
+  version: 11.7.0
+  resolution: "contentful@npm:11.7.0"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.8"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -4695,7 +4679,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/97b0e3bffd78fea56f46fcc4a867e7f74b274b307a9f09ea456e3f1d99e233a17fb442725d03e434357460175120b1478265c33a5051f1f6f1904fb21239b1ce
+  checksum: 10c0/7b5d1c33605f034c4726c6c186e0383888de723e9e4dedde157fa9269fc432262eacfb5ed1891132a4262599191b072121af8d039fe33da86d6044e01e88d118
   languageName: node
   linkType: hard
 
@@ -12543,17 +12527,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.24.2":
-  version: 3.25.46
-  resolution: "zod@npm:3.25.46"
-  checksum: 10c0/2cc754a49244f9d80ef50c0da8e01136e0202a9fa92229bcfef2b8285ca07f865bcdd17f0fb609219bd91a2de7965b9a27627cd456e151924144d7a06c6d6686
-  languageName: node
-  linkType: hard
-
-"zod@npm:^3.25.53":
-  version: 3.25.53
-  resolution: "zod@npm:3.25.53"
-  checksum: 10c0/f27f13b15d5a165f4320c287e23eef689899714adcf793afcf51f4b79186a0d0dec3f3e67f87d5f658f913c3f035c1d212f1bfaac00ef1f55143b1d0a3fb5c6d
+"zod@npm:^3.24.2, zod@npm:^3.25.56":
+  version: 3.25.56
+  resolution: "zod@npm:3.25.56"
+  checksum: 10c0/3800f01d4b1df932b91354eb1e648f69cc7e5561549e6d2bf83827d930a5f33bbf92926099445f6fc1ebb64ca9c6513ef9ae5e5409cfef6325f354bcf6fc9a24
   languageName: node
   linkType: hard
 

@@ -11,21 +11,22 @@ type BaseLayoutProps = SeoMetadata;
 
 const props = Astro.props as BaseLayoutProps;
 const location = getLocation(Astro.url);
+const className = { [`--is-${location}`]: location };
 ---
-<html lang="en" class:list={[{ [`--is-${location}`]: location}]}>
-  <Head {...props} />
-  <body>
-  <noscript>
+<html lang="en" class:list={[className]}>
+<Head {...props} />
+<body>
+<noscript>
     <iframe src=`https://www.googletagmanager.com/ns.html?id=${GOOGLE_ANALYTICS_ID}`
-                    height="0" width="0" style="display:none;visibility:hidden">
+            height="0" width="0" style="display:none;visibility:hidden">
 
     </iframe>
-  </noscript>
-    <Header />
-    <ScrollTop />
-    <main class:list={[{ [`--is-${location}`]: location}]}>
-      <slot />
-    </main>
-    <Footer />
-  </body>
+</noscript>
+<Header />
+<ScrollTop />
+<main class:list={[className]}>
+    <slot />
+</main>
+<Footer />
+</body>
 </html>

@@ -9,6 +9,7 @@
 .legal-section li {
 	list-style: disc;
 }
+
 .legal-section ul {
 	padding-left: 1rem;
 }
@@ -20,7 +21,7 @@
 
 .legal-page__email,
 .legal-section li {
-	font-family: "Nunito Sans Variable", sans-serif;
+	font-family: var(--font-nunito-sans);
 }
 
 .legal-page__email,
