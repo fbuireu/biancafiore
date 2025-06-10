@@ -1,24 +1,29 @@
 .error-layer__wrapper {
-	gap: 1rem 0;
-	height: 100vh;
-	position: relative;
-	text-align: center;
-	translate: 0 -25%;
-	width: 100vw;
-	z-index: 1;
+    gap: 1rem 0;
+    height: 100vh;
+    position: relative;
+    text-align: center;
+    translate: 0 -25%;
+    width: 100vw;
+    z-index: 1;
 }
 
 .error-layer__link {
-	font-weight: bold;
-	letter-spacing: normal;
+    font-weight: bold;
+    letter-spacing: normal;
 }
 
 .travolta {
-	background: url("https://assets-9gag-fun.9cache.com/s/fab0aa49/033037194a549b0bf83e2ac4ba90706a52a9132e/static/dist/web6/img/404/bg.gif")
-		center center / cover no-repeat;
-	height: 120%;
-	inset: 0;
-	opacity: 0.5;
-	position: absolute;
-	width: 100%;
+    background: url("https://assets-9gag-fun.9cache.com/s/fab0aa49/033037194a549b0bf83e2ac4ba90706a52a9132e/static/dist/web6/img/404/bg.gif") center center / cover no-repeat;
+    height: 120%;
+    inset: 0;
+    opacity: 0.5;
+    position: absolute;
+    width: 100%;
+}
+
+.error-layer__reveal_spotlight {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 1.5rem;
 }
