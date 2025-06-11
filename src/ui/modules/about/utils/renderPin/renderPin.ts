@@ -33,7 +33,7 @@ export function renderPin({ markerData, cities }: RenderPinParams): HTMLElement 
 			return;
 		}
 
-		const cityIndex = Number(getComputedStyle(city).getPropertyValue("--inline-index"));
+		const cityIndex = Number(getComputedStyle(city).getPropertyValue("--index"));
 		const cityPosition = citiesInitialPosition[cityIndex - 1];
 
 		if (cityIndex < 1 || cityIndex > citiesInitialPosition.length || !cityPosition) {

@@ -1,8 +1,8 @@
 .city-card__item {
-	--index0: calc(var(--inline-index) - 1);
-	--reverse-index: calc(var(--inline-num-cards) - var(--index0));
+	--index0: calc(var(--index) - 1);
+	--reverse-index: calc(var(--num-cards) - var(--index0));
 	--reverse-index0: calc(var(--reverse-index) - 1);
-	padding-top: calc(var(--inline-index) * 0.5rem);
+	padding-top: calc(var(--index) * 0.5rem);
 	position: sticky;
 	top: calc(var(--header-height) + 0.5rem);
 
@@ -23,8 +23,8 @@
 	overflow: hidden;
 	transform-origin: 50% 0;
 	will-change: transform;
-	--end-range: calc((var(--inline-index)) / var(--inline-num-cards) * 100%);
-	--start-range: calc(var(--index0) / var(--inline-num-cards) * 100%);
+	--end-range: calc((var(--index)) / var(--num-cards) * 100%);
+	--start-range: calc(var(--index0) / var(--num-cards) * 100%);
 
 	@container about-page (width <= 720px) {
 		gap: 0.5rem;

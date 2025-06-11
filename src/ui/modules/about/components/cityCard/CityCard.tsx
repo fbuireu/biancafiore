@@ -18,8 +18,8 @@ interface CityCardProps {
 
 export const CityCard = ({ children, index, numCards, name }: CityCardProps) => {
 	const style: CSSProperties & { [key: string]: string } = {
-		"--inline-index": String(index),
-		"--inline-num-cards": String(numCards),
+		"--index": String(index),
+		"--num-cards": String(numCards),
 	};
 	return (
 		<li className={"city-card__item"} style={style} id={name}>
