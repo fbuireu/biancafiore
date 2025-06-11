@@ -1,7 +1,7 @@
 .article-card__tag__item {
 	--translate: 0 75px;
 	transition: all 0.3s;
-	transition-delay: calc(var(--inline-index) * 0.1s);
+	transition-delay: calc(var(--index) * 0.1s);
 	translate: var(--translate);
 
 	@media (width <= 720px) {

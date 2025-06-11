@@ -54,7 +54,7 @@ export const AboutLatestArticlesSlider = ({ articles }: AboutLatestArticlesSLide
 						<ArticleCard.Tags>
 							{article.data.tags?.map((tag, index) => {
 								const style: CSSProperties & { [key: string]: string } = {
-									"--inline-index": String(index),
+									"--index": String(index),
 								};
 
 								return (

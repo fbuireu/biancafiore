@@ -41,7 +41,7 @@ const { pathname } = Astro.url;
     <p class="article-card__reading-time">{article.data.readingTime} minutes read</p>
     <ul class="article-card__tags__list flex">
       {article.data.tags?.map(({ slug, name }, index) => (
-          <li class="article-card__tag__item" style={`--inline-index: ${String(index)}`}>
+          <li class="article-card__tag__item" style={`--index: ${String(index)}`}>
               <a class="--underline-on-hover --is-clickable" href={`${PAGES_ROUTES.TAGS}/${slug}`}
               >
                   #{name}

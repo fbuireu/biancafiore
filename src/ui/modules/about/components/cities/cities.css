@@ -3,11 +3,11 @@
 	display: grid;
 	gap: 3rem;
 	grid-template-columns: 1fr;
-	grid-template-rows: repeat(var(--inline-num-cards), 400px);
+	grid-template-rows: repeat(var(--num-cards), 400px);
 	list-style: none;
 	margin-block-end: 3rem;
 	max-width: calc(100% / var(--num-columns));
-	padding-bottom: calc(var(--inline-index) * 0.5rem);
+	padding-bottom: calc(var(--index) * 0.5rem);
 	view-timeline-name: --cities-scales-in-view;
 
 	@container about-page (width <= 760px) {

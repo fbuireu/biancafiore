@@ -6,18 +6,18 @@
         pointer-events: none;
         filter: blur(0.1em) contrast(10);
         mix-blend-mode: darken;
-        background-color: white;
-        outline: 2em solid black;
+        background-color: var(--white);
+        outline: 2em solid var(--black);
         background-image: radial-gradient(
-                circle at var(--inline-client-x, 50%) var(--inline-client-y, 50%),
+                circle at var(--client-x, 50%) var(--client-y, 50%),
                 transparent 6em,
-                black 8em
+                var(--black) 8em
         );
         transition: opacity 0.5s, background-color 0.5s;
 
         body:has(.error-layer__reveal_spotlight:hover, :focus-visible) & {
             opacity: 0;
-            background-color: black;
+            background-color: var(--black);
         }
     }
 }

@@ -35,7 +35,7 @@
 		}
 
 		> g g circle {
-			transition-delay: calc(var(--theme-toggle-animation-duration) * (var(--inline-index) * 0.095 + 0.158));
+			transition-delay: calc(var(--theme-toggle-animation-duration) * (var(--index) * 0.095 + 0.158));
 			transition-duration: calc(var(--theme-toggle-animation-duration) * 0.2);
 		}
 
