@@ -9,10 +9,13 @@
 	@media (width <= 720px) {
 		margin: 2rem auto;
 	}
+
 	@container about-page (width >= 0) {
 		flex-flow: row nowrap;
 		gap: 0 1rem;
 		width: 100%;
+		margin: 0;
+		max-width: 100%;
 	}
 }
 

@@ -1,12 +1,14 @@
 ---
 import { getCollection } from "astro:content";
-import { MAX_LATEST_ARTICLES, PAGES_ROUTES } from "@const/index";
+import { PAGES_ROUTES } from "@const/index";
 import { LatestArticlesSlider } from "./atoms/latestArticlesSlider/LatestArticlesSlider";
 import "./latest-articles.css";
 
 interface LatestArticlesProps {
 	limit?: number;
 }
+
+const MAX_LATEST_ARTICLES = 4;
 
 const { limit = MAX_LATEST_ARTICLES } = Astro.props as LatestArticlesProps;
 

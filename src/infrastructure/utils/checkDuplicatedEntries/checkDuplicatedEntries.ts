@@ -1,3 +1,4 @@
+// @ts-ignore:next-line
 import { ActionError } from "astro:actions";
 import { Contact, db, eq } from "astro:db";
 import type { Except } from "@const/types";

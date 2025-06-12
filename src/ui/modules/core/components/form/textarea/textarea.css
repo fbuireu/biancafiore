@@ -8,6 +8,7 @@
 
 .contact-form__textarea__wrapper {
 	flex-basis: 100%;
+	font-family: var(--font-nunito-sans);
 
 	&:is(:has(.contact-form__textarea:focus, .contact-form__textarea:not(:placeholder-shown)))::after {
 		width: 100%;

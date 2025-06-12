@@ -15,13 +15,9 @@ export const server = {
 	contact: defineAction({
 		accept: "form",
 		input: contactFormSchema,
-		handler: async ({ name, email, message }: ActionHandlerParams) => {
+		handler: async (params: ActionHandlerParams) => {
 			try {
-				const data = validateContact({
-					name,
-					email,
-					message,
-				});
+				const data = validateContact(params);
 				await checkDuplicatedEntries(data);
 				const { id: emailId } = await sendEmail(data);
 				await saveContact({ emailId, ...data });
