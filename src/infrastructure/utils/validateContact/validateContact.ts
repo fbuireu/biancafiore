@@ -1,3 +1,4 @@
+// @ts-ignore:next-line
 import { ActionError } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
 import { Exception } from "@domain/errors";

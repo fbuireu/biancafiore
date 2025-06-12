@@ -4,7 +4,7 @@ import { capitalizeKeys } from "@const/utils/capitalizeKeys";
 import { lowercaseKeys } from "@const/utils/lowercaseKeys";
 import { A11y, Autoplay, Keyboard, Navigation, Virtual } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";
-import type { CapitalizeKeys, SeoMetadata, WorldGlobeConfig } from "./types";
+import type { CapitalizeKeys, SeoMetadata } from "./types";
 
 export const Pages = {
 	HOME: "home",
@@ -52,26 +52,6 @@ export const CONTACT_DETAILS: Record<CapitalizeKeys<string>, string> = {
 	ENCODED_EMAIL_BIANCA: btoa(BIANCA_EMAIL),
 } as const;
 
-export const SOCIAL_NETWORKS: Record<CapitalizeKeys<string>, string> = {
-	LINKEDIN: "https://www.linkedin.com/in/bianca-fiore-88b83199",
-} as const;
-
-export const WORLD_GLOBE_CONFIG: CapitalizeKeys<WorldGlobeConfig> = {
-	ANIMATION_DURATION: 500,
-	MOVEMENT_OFFSET: 20,
-	ZOOM_OFFSET: 0.2,
-	POINTS_MERGE: true,
-	ANIMATE_IN: true,
-	SHOW_ATMOSPHERE: false,
-	BACKGROUND_COLOR: "#FFFFFF00",
-	HEXAGON_POLYGON_COLOR: "#d4a259",
-	MESH_PHONG_MATERIAL_CONFIG: {
-		TRANSPARENT: true,
-		COLOR: "#f7ecd6",
-		OPACITY: 0.7,
-	},
-} as const;
-
 const defaultSwiperConfig: CapitalizeKeys<SwiperOptions> = {
 	MODULES: [Navigation, Keyboard, Virtual, Autoplay, A11y],
 	LOOP: true,
@@ -91,7 +71,3 @@ export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = lowercaseKeys(def
 export const THEME_STORAGE_KEY = "theme" as const;
 
 export const DEFAULT_LOCALE_STRING: Intl.LocalesArgument = "es-ES" as const;
-
-export const MAX_RELATED_ARTICLES = 3 as const;
-
-export const MAX_LATEST_ARTICLES = 4 as const;

@@ -25,6 +25,9 @@ export const ContactForm = () => {
 		reset,
 	} = useForm<ContactFormData>({
 		resolver: zodResolver(contactFormSchema),
+		defaultValues: {
+			id: crypto.randomUUID(),
+		},
 	});
 	const [pending, startTransition] = useTransition();
 	const [formStatus, setFormStatus] = useState<(typeof FormStatus)[keyof typeof FormStatus]>(FormStatus.INITIAL);
@@ -54,13 +57,13 @@ export const ContactForm = () => {
 			if (!submitRef.current) {
 				return;
 			}
-
 			try {
 				setFormStatus(FormStatus.LOADING);
 				const contactData = new FormData();
 				contactData.append("name", data.name);
 				contactData.append("email", data.email);
 				contactData.append("message", data.message);
+				contactData.append("id", crypto.randomUUID());
 
 				const { data: response, error } = await actions.contact(contactData);
 

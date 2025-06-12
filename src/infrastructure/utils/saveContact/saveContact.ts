@@ -1,3 +1,4 @@
+// @ts-ignore:next-line
 import { ActionError } from "astro:actions";
 import { Contact, db } from "astro:db";
 import { DEFAULT_LOCALE_STRING } from "@const/const";
@@ -13,7 +14,6 @@ export async function saveContact(contactData: SaveContactParams): Promise<void>
 	try {
 		await db.insert(Contact).values({
 			...contactData,
-			id: crypto.randomUUID(),
 			date: new Date().toLocaleString(DEFAULT_LOCALE_STRING),
 		});
 	} catch (error: unknown) {
