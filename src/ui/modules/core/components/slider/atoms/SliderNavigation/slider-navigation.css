@@ -20,15 +20,7 @@
 		}
 	}
 
-	@container home-page (width >= 1024px) {
-		display: none;
-	}
-
 	@container article-page (width >= 1024px) {
-		display: none;
-	}
-
-	@container contact-page (width >= 1024px) {
 		display: none;
 	}
 }
@@ -37,9 +29,16 @@
 	height: 3rem;
 	transition: transform 0.2s;
 	width: 3rem;
+	outline: none;
 
 	&.--is-right {
 		rotate: 0.5turn;
+	}
+
+	&:focus-visible,
+	&.--is-force-clickable {
+		outline: 2px solid currentColor;
+		outline-offset: 2px;
 	}
 
 	&.--is-force-clickable {

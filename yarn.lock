@@ -3388,12 +3388,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^24.0.0":
-  version: 24.0.0
-  resolution: "@types/node@npm:24.0.0"
+"@types/node@npm:^24.0.1":
+  version: 24.0.1
+  resolution: "@types/node@npm:24.0.1"
   dependencies:
     undici-types: "npm:~7.8.0"
-  checksum: 10c0/075f3129aa88932a0b4c3c9c28486f93a8d295151138b1fdd590cbbb59ec92d59b66201f99a0f061a7c8955a09d06ecc3fa070ed3c438a521a9890d1a3460958
+  checksum: 10c0/91cd50d1ac32a2172cbc67b65c78391fbd469b24743e3665427aa60bebaf4620cb9ac2e91c09a8081a78d08855c00faca659c287c1725ce8ca5e80ece3a20520
   languageName: node
   linkType: hard
 
@@ -3413,12 +3413,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.1.7":
-  version: 19.1.7
-  resolution: "@types/react@npm:19.1.7"
+"@types/react@npm:^19.1.8":
+  version: 19.1.8
+  resolution: "@types/react@npm:19.1.8"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10c0/3bb8fb865debad4328b0d623e1c669f2ee90e9302638a64e65a0a1c61efca4f4ef91f58b55ff94075358c190d80bb8472a5823c6901d8cdc9009dd436a1dcab1
+  checksum: 10c0/4908772be6dc941df276931efeb0e781777fa76e4d5d12ff9f75eb2dcc2db3065e0100efde16fde562c5bafa310cc8f50c1ee40a22640459e066e72cd342143e
   languageName: node
   linkType: hard
 
@@ -4146,8 +4146,8 @@ __metadata:
     "@testing-library/react": "npm:^16.3.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^24.0.0"
-    "@types/react": "npm:^19.1.7"
+    "@types/node": "npm:^24.0.1"
+    "@types/react": "npm:^19.1.8"
     "@types/react-dom": "npm:^19.1.6"
     "@types/three": "npm:^0.177.0"
     algoliasearch: "npm:^5.27.0"
@@ -4173,7 +4173,7 @@ __metadata:
     typescript: "npm:^5.8.3"
     vanilla-cookieconsent: "npm:^3.1.0"
     vitest: "npm:^3.2.3"
-    zod: "npm:^3.25.58"
+    zod: "npm:^3.25.62"
   languageName: unknown
   linkType: soft
 
@@ -12558,10 +12558,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25.58":
-  version: 3.25.58
-  resolution: "zod@npm:3.25.58"
-  checksum: 10c0/3525e9104adcb84b48ff2c166a44175e2f4fd502bcab045bde7cb898097a3ff0cc8b03469d949f1c14455266fd9bedeea0b411ec624b42827db48ad942ffb3b1
+"zod@npm:^3.25.62":
+  version: 3.25.62
+  resolution: "zod@npm:3.25.62"
+  checksum: 10c0/a98e53eddd689913a1d476ccfd3fd3ffbdf56c8e8606449445e4a36f31064551760c930c62381420605394e71b00d3397ea456637bacc7d2afe7c4946bf9c6b0
   languageName: node
   linkType: hard
 
