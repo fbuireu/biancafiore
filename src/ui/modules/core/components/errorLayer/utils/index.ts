@@ -1,1 +1,1 @@
-export * from './followMouse.ts';
+export * from "./followMouse.ts";

@@ -1,12 +1,12 @@
 ---
-import './email-button.css';
+import "./email-button.css";
 
 interface EmailButtonProps {
-  classNames?: string;
-  text?: string;
+	classNames?: string;
+	text?: string;
 }
 
-const { classNames, text = 'Email' } = Astro.props as EmailButtonProps;
+const { classNames, text = "Email" } = Astro.props as EmailButtonProps;
 ---
 <button class:list={[`${classNames} --underline-on-hover --add-letter-spacing mailTo__button`]}>{text}</button>
 

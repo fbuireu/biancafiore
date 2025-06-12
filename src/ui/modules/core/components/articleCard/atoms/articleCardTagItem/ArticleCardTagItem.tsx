@@ -10,7 +10,7 @@ export interface ArticleCardTagItemProps {
 }
 
 export const ArticleCardTagItem = ({ children, tag, style }: ArticleCardTagItemProps) => (
-	<li key={tag.name} className="article-card__tag__item" style={style}>
+	<li key={tag.name} className="article-card__tag__item --is-clickable" style={style}>
 		<a href={`${PAGES_ROUTES.TAGS}/${tag.slug}`} className="--underline-on-hover --is-clickable">
 			#{children}
 		</a>
