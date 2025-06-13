@@ -75,7 +75,7 @@
 		"three": "^0.177.0",
 		"typescript": "^5.8.3",
 		"vanilla-cookieconsent": "^3.1.0",
-		"zod": "^3.25.62"
+		"zod": "^3.25.64"
 	},
 	"devDependencies": {
 		"@astrojs/ts-plugin": "^1.10.4",
