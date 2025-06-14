@@ -93,7 +93,7 @@
 		"@types/three": "^0.177.0",
 		"conventional-changelog-atom": "^5.0.0",
 		"husky": "^9.1.7",
-		"lint-staged": "^16.1.0",
+		"lint-staged": "^16.1.1",
 		"vitest": "^3.2.3"
 	}
 }
