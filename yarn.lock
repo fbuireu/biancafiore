@@ -4158,13 +4158,13 @@ __metadata:
     gsap: "npm:^3.13.0"
     husky: "npm:^9.1.7"
     instantsearch.css: "npm:^8.5.1"
-    lint-staged: "npm:^16.1.1"
+    lint-staged: "npm:^16.1.2"
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
     react-globe.gl: "npm:^2.33.2"
     react-google-recaptcha-v3: "npm:^1.11.0"
-    react-hook-form: "npm:^7.57.0"
+    react-hook-form: "npm:^7.58.0"
     react-instantsearch: "npm:^7.15.8"
     react-router-dom: "npm:^7.6.2"
     resend: "npm:^4.6.0"
@@ -7452,9 +7452,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^16.1.1":
-  version: 16.1.1
-  resolution: "lint-staged@npm:16.1.1"
+"lint-staged@npm:^16.1.2":
+  version: 16.1.2
+  resolution: "lint-staged@npm:16.1.2"
   dependencies:
     chalk: "npm:^5.4.1"
     commander: "npm:^14.0.0"
@@ -7468,7 +7468,7 @@ __metadata:
     yaml: "npm:^2.8.0"
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/80b1945b4e7c9d6c2e08f05bd2c175465f7b8b08a7f512582027ef7da5f2e961b96d4db3e50f9946d4d11a8068658d8fd2ac946655b30883a0adaf64acbc5613
+  checksum: 10c0/2a299fc0d56e0a64ed0af8caf937e00eac47cb270df2917e2d4b939074eaa63ecd7f16d3b70b7e5e57bff75ffbbbf8aae5768dedf3dfd45e3ca1b9caaf7740cc
   languageName: node
   linkType: hard
 
@@ -9501,12 +9501,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.57.0":
-  version: 7.57.0
-  resolution: "react-hook-form@npm:7.57.0"
+"react-hook-form@npm:^7.58.0":
+  version: 7.58.0
+  resolution: "react-hook-form@npm:7.58.0"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10c0/6db0b44b2e88d4db541514e96557723e39381ce9f71b3787bf041635f829143dbd0ae46a1f6c16dee23afe3413fd25539484ba02bf2a35d90aaa1b7483193ea9
+  checksum: 10c0/9e87bf1dfb43157ffec1b112092e8c5b2b9d0056c2a8bdea6c15e08d510b365915101f499f2e7698e16e94541ac82b26ab8e3b05af5b0cccfc82d29cf31c1b0b
   languageName: node
   linkType: hard
 
