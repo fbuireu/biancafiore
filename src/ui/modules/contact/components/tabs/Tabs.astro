@@ -4,33 +4,34 @@ import "./tabs.css";
 
 const queryTab = Astro.url.searchParams.get("tab");
 ---
-<section class="contact-tabs__wrapper">
-  <div class="contact-tabs__inner__wrapper common-wrapper">
-    <div class="contact-tabs__header flex column-wrap">
-      <h4 class="contact-tabs__title section-title">Contact me</h4>
-      <hr class="contact-tabs__divider" />
-      <p class="contact-tabs__body">Multiple ways to get in touch with me :)</p>
+<section class="contact-tabs-wrapper">
+    <div class="contact-tabs__inner-wrapper common-wrapper">
+        <div class="contact-tabs__header flex column-wrap">
+            <h4 class="contact-tabs__title section-title">Contact me</h4>
+            <hr class="contact-tabs__divider" />
+            <p class="contact-tabs__body">Multiple ways to get in touch with me :)</p>
+        </div>
+        <ul class="contact-tabs flex">
+            <li class="contact-tab --underline-on-hover" data-target="email">
+                <button>Email me</button>
+            </li>
+            <li class="contact-tab --underline-on-hover" data-target="appointment">
+                <button>Make an appointment</button>
+            </li>
+        </ul>
+        <div id="email" class="contact-tab__content --is-active">
+            <ContactFormProvider client:load />
+        </div>
+        <div id="appointment" class="contact-tab__content">
+            <div
+                class="calendly-inline-widget"
+                data-url="https://calendly.com/fbuireu/45min-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
+            >
+            </div>
+            <script is:inline type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async
+                    defer />
+        </div>
     </div>
-    <ul class="contact-tabs flex">
-      <li class="contact-tab --underline-on-hover" data-target="email">
-          <button>Email me</button>
-      </li>
-      <li class="contact-tab --underline-on-hover" data-target="appointment">
-          <button>Make an appointment</button>
-      </li>
-    </ul>
-    <div id="email" class="contact-tab__content --is-active">
-      <ContactFormProvider client:load />
-    </div>
-    <div id="appointment" class="contact-tab__content">
-      <div
-        class="calendly-inline-widget"
-        data-url="https://calendly.com/fbuireu/45min-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
-      >
-      </div>
-      <script is:inline type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async defer />
-    </div>
-  </div>
 </section>
 
 <script is:inline type="module" define:vars={{ queryTab }}>

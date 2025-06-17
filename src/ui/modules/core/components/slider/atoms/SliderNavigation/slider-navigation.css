@@ -51,7 +51,7 @@
 	}
 }
 
-.testimonials__wrapper .slider__navigation {
+.testimonials-wrapper .slider__navigation {
 	@container home-page (width >= 0) {
 		bottom: 4.25rem;
 		color: var(--neutral-main);

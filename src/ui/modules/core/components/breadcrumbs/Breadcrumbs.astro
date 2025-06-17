@@ -8,32 +8,32 @@ const { pathname: currentPath, origin: originPath } = Astro.url;
 const breadcrumbs = breadcrumbDTO.create({ currentPath });
 const location = getLocation(Astro.url);
 ---
-<section class:list={[`breadcrumbs__wrapper common-wrapper`, { [`--is-${location}`]: location}]}>
-<ul class="breadcrumbs__list flex justify-center align-center font-sans-serif">
-  {breadcrumbs?.map(({ link, label }) => {
-      const isLast = breadcrumbs.at(-1)?.link === link
+<section class:list={[`breadcrumbs-wrapper common-wrapper`, { [`--is-${location}`]: location }]}>
+    <ul class="breadcrumbs__list flex justify-center align-center font-sans-serif">
+      {breadcrumbs?.map(({ link, label }) => {
+        const isLast = breadcrumbs.at(-1)?.link === link;
 
-      return (
-        <li class="breadcrumb__item flex">
-          {!isLast ? (
-              <a href={link} class="--underline-on-hover --is-clickable">{label}</a><span>/</span>
-            ) : (
-            <strong class="--is-current-page">{label}</strong>
-            )}
-        </li>
-      );
-    })}
-    <script is:inline type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": breadcrumbs.map(({ link, label }, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "item": {
-          "@id": `${originPath}${link}`,
-          "name": label
-        }
-      }))
-    })}/>
-</ul>
+        return (
+            <li class="breadcrumb__item flex">
+              {!isLast ? (
+                  <a href={link} class="--underline-on-hover --is-clickable">{label}</a><span>/</span>
+              ) : (
+                  <strong class="--is-current-page">{label}</strong>
+              )}
+            </li>
+        );
+      })}
+        <script is:inline type="application/ld+json" set:html={JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          'itemListElement': breadcrumbs.map(({ link, label }, index) => ({
+            '@type': 'ListItem',
+            'position': index + 1,
+            'item': {
+              '@id': `${originPath}${link}`,
+              'name': label,
+            },
+          })),
+        })} />
+    </ul>
 </section>

@@ -1,4 +1,4 @@
-.related-articles__wrapper {
+.related-articles-wrapper {
 	margin: 6rem auto;
 
 	@container article-page (width <= 960px) {

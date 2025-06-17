@@ -6,7 +6,7 @@
 	top: 0.5rem;
 }
 
-.contact-form__textarea__wrapper {
+.contact-form__textarea-wrapper {
 	flex-basis: 100%;
 	font-family: var(--font-nunito-sans);
 

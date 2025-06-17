@@ -86,7 +86,7 @@
 	-webkit-tap-highlight-color: transparent;
 	text-align: center;
 	transform: rotate(calc(var(--rotate) * 1deg)) translateZ(0);
-	transition: all .2s;
+	transition: all 0.2s;
 	will-change: translate, box-shadow;
 	--left-wing-background: var(--neutral-main);
 	--right-wing-background: var(--neutral-main);

@@ -9,21 +9,23 @@ import "./footer.css";
 const currentYear = new Date().getFullYear();
 ---
 <footer>
-  <section class="footer__wrapper common-wrapper">
-    <div class="footer__logo flex row-wrap justify-center">
-      <a href={PAGES_ROUTES.HOME}>
-          <Logo />
-      </a>
-    </div>
-    <ThemeToggle />
-    <SocialNetworks />
-    <p class="footer__disclaimer flex justify-center">
-      &copy; {currentYear} &nbsp; <span translate="no">Bianca Fiore</span>. All rights reserved.
-    </p>
-    <p class="footer__legal-pages flex justify-center">
-      <a href={PAGES_ROUTES['TERMS-AND-CONDITIONS']} rel="nofollow noreferrer" class="--underline-on-hover">Terms and Conditions</a>
-      <a href={PAGES_ROUTES['PRIVACY-POLICY']}  rel="nofollow noreferrer" class="--underline-on-hover">Privacy Policy</a>
-      <CookieConsent client:only="react" />
-    </p>
-  </section>
+    <section class="footer-wrapper common-wrapper">
+        <div class="footer__logo flex row-wrap justify-center">
+            <a href={PAGES_ROUTES.HOME}>
+                <Logo />
+            </a>
+        </div>
+        <ThemeToggle />
+        <SocialNetworks />
+        <p class="footer__disclaimer flex justify-center">
+            &copy; {currentYear} &nbsp; <span translate="no">Bianca Fiore</span>. All rights reserved.
+        </p>
+        <p class="footer__legal-pages flex justify-center">
+            <a href={PAGES_ROUTES['TERMS-AND-CONDITIONS']} rel="nofollow noreferrer" class="--underline-on-hover">Terms
+                and Conditions</a>
+            <a href={PAGES_ROUTES['PRIVACY-POLICY']} rel="nofollow noreferrer" class="--underline-on-hover">Privacy
+                Policy</a>
+            <CookieConsent client:only="react" />
+        </p>
+    </section>
 </footer>

@@ -25,7 +25,7 @@
 	}
 }
 
-.article__table-of-contents__wrapper {
+.article__table-of-contents-wrapper {
 	--top: calc(var(--header-height) + 2rem);
 	position: sticky;
 	top: var(--top);
@@ -40,7 +40,7 @@
 .article__table-of-contents__summary {
 	margin-block-end: 0.5rem;
 	position: relative;
-	transition: background-position .2s;
+	transition: background-position 0.2s;
 
 	&::before {
 		background: url("/src/ui/assets/images/svg/chevron-down.svg") no-repeat right center / 1rem;
@@ -49,7 +49,7 @@
 		position: absolute;
 		right: 0;
 		top: 50%;
-		transition: transform .2s;
+		transition: transform 0.2s;
 		translate: 0 -50%;
 		visibility: hidden;
 		width: 1rem;

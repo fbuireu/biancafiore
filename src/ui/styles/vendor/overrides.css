@@ -1,5 +1,5 @@
 @layer overrides {
-	.marker__wrapper {
+	.marker-wrapper {
 		z-index: inherit;
 		&:hover {
 			z-index: 5 !important;

@@ -22,7 +22,7 @@
 		text-transform: uppercase;
 		text-align: center;
 		font-variation-settings: "wght" 200;
-		transition: font-variation-settings .5s;
+		transition: font-variation-settings 0.5s;
 
 		&:hover {
 			font-variation-settings: "wght" 600;

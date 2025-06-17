@@ -6,7 +6,7 @@ footer {
 	z-index: 10;
 }
 
-.footer__wrapper {
+.footer-wrapper {
 	padding: 2rem 0 1rem;
 
 	@media (width <= 720px) {

@@ -1,4 +1,4 @@
-.scroll-top__wrapper {
+.scroll-top-wrapper {
 	animation: fade-in 1s var(--ease-elastic) forwards;
 	animation-range: 5vw 1cqi;
 	animation-timeline: scroll();
@@ -28,7 +28,7 @@
 		color: var(--color);
 		fill: var(--color);
 		height: 3rem;
-		padding: 0.50rem;
+		padding: 0.5rem;
 		rotate: 0.25turn;
 		width: 3rem;
 	}

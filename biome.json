@@ -1,7 +1,14 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"files": {
-		"ignore": ["src/data/*"]
+		"includes": ["**", "!**/src/data/**/*"]
+	},
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
 	},
 	"vcs": {
 		"enabled": true,
@@ -18,7 +25,7 @@
 		}
 	},
 	"linter": {
-		"ignore": ["*.d.ts*"],
+		"includes": ["**", "!**/*.d.ts*"],
 		"rules": {
 			"recommended": true,
 			"correctness": {
@@ -28,5 +35,10 @@
 				"noConsole": "error"
 			}
 		}
-	}
+	},
+	"overrides": [
+		{
+			"includes": ["*.astro"]
+		}
+	]
 }

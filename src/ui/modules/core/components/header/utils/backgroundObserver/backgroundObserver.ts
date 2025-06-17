@@ -1,6 +1,6 @@
 const SELECTORS = {
 	HEADER: ".header",
-	LATEST_ARTICLES: ".latest-articles__wrapper",
+	LATEST_ARTICLES: ".latest-articles-wrapper",
 	SITE_LOGO: ".site__logo",
 	HEADER_MENU_BUTTON: ".header__menu-button",
 	HEADER_MENU_LOGO: ".site__logo svg",

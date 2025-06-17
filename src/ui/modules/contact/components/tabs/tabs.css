@@ -1,9 +1,9 @@
-.contact-tabs__wrapper {
+.contact-tabs-wrapper {
 	background-color: light-dark(var(--neutral-light-4), var(--background-main));
 	margin: 2rem 0;
 	padding: 3rem 0;
 }
-.contact-tabs__inner__wrapper {
+.contact-tabs__inner-wrapper {
 	@container contact-page (width <= 960px) {
 		padding-inline: 1rem;
 	}

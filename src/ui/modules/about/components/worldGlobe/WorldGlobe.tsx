@@ -109,7 +109,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 	}, []);
 
 	return (
-		<aside className="world-globe__wrapper">
+		<aside className="world-globe-wrapper">
 			<Globe
 				ref={worldGlobeReference}
 				height={worldGlobeSize.height}
@@ -136,7 +136,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 				htmlElement={(data) => renderPin({ markerData: data as ReactGlobePoint, cities })}
 			/>
 			<div className="world-globe__controls flex row-wrap justify-center">
-				<div className="world-globe__controls__direction__wrapper flex row-wrap">
+				<div className="world-globe__controls__direction-wrapperflex row-wrap">
 					<button
 						className="world-globe__controls__move --left flex --is-clickable"
 						type="button"
@@ -162,7 +162,7 @@ const WorldGlobe = memo(({ cities, width = worldGlobeSize.width }: GlobeAllCitie
 						<LeftArrow title="Move Right" />
 					</button>
 				</div>
-				<div className="world-globe__controls__zoom__wrapper flex row-wrap">
+				<div className="world-globe__controls__zoom-wrapperflex row-wrap">
 					<button
 						className="world-globe__controls__move --zoom-in --is-clickable"
 						type="button"
