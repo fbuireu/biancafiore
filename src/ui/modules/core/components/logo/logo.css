@@ -7,7 +7,10 @@
 	inset: 1.25rem 0 1rem 0;
 	margin: 0 auto;
 	position: absolute;
-	transition: top 0.3s ease-in 1.75s, scale 0.2s 1.5s, transform 0.2s 1.5s;
+	transition:
+		top 0.3s ease-in 1.75s,
+		scale 0.2s 1.5s,
+		transform 0.2s 1.5s;
 	width: fit-content;
 	z-index: 20;
 
@@ -40,11 +43,14 @@
 	}
 	&.--is-menu-open {
 		transform: translateY(2rem);
-		transition: top 0.3s .75s, scale 0.3s linear 2s, transform 0.2s 1s;
+		transition:
+			top 0.3s 0.75s,
+			scale 0.3s linear 2s,
+			transform 0.2s 1s;
 
 		svg > g > g:nth-child(1) {
 			fill: var(--white);
-			transition-delay: .75s;
+			transition-delay: 0.75s;
 		}
 	}
 	@media (width >= 525px) {

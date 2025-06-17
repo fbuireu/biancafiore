@@ -13,7 +13,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 export const Input = ({ id, type, placeholder, label, formStatus, hasError, errorMessage, ...rest }: InputProps) => {
 	return (
 		<div
-			className={clsx("contact-form__input__wrapper", {
+			className={clsx("contact-form__input-wrapper", {
 				"--underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
 			})}
 		>

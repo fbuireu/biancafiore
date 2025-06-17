@@ -15,7 +15,7 @@ export function renderPin({ markerData, cities }: RenderPinParams): HTMLElement 
 	);
 
 	const markerWrapper = document.createElement("button");
-	markerWrapper.classList.add("marker__wrapper", `--is-${slugify(markerData.label)}`);
+	markerWrapper.classList.add("marker-wrapper", `--is-${slugify(markerData.label)}`);
 
 	const marker = document.createElement("div");
 	const root = createRoot(marker);

@@ -13,7 +13,7 @@
 		clip-path: polygon(0 0, 100% 0, 100% 120%, 0 120%);
 	}
 
-	.header__wrapper {
+	.header-wrapper {
 		height: 100%;
 		position: relative;
 		width: 100vw;

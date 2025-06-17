@@ -6,7 +6,7 @@ canvas {
 	}
 }
 
-.world-globe__wrapper {
+.world-globe-wrapper {
 	height: fit-content;
 	position: sticky;
 	top: calc(var(--header-height) + 0.5rem);
@@ -29,7 +29,7 @@ canvas {
 	z-index: 100;
 }
 
-.marker__wrapper {
+.marker-wrapper {
 	color: var(--primary-dark-1);
 	cursor: pointer;
 	pointer-events: auto;
@@ -60,16 +60,16 @@ canvas {
 	gap: 0 3rem;
 }
 
-.world-globe__controls__zoom__wrapper {
+.world-globe__controls__zoom-wrapper {
 	--size: 2rem;
 }
 
-.world-globe__controls__direction__wrapper {
+.world-globe__controls__direction-wrapper {
 	--size: 3rem;
 }
 
-.world-globe__controls__direction__wrapper,
-.world-globe__controls__zoom__wrapper {
+.world-globe__controls__direction-wrapper,
+.world-globe__controls__zoom-wrapper {
 	gap: 0 1rem;
 
 	svg {

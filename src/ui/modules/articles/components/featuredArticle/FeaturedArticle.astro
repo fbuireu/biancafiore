@@ -12,9 +12,9 @@ interface FeaturedArticleProps {
 const { featuredArticle } = Astro.props as FeaturedArticleProps;
 const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`, Astro.url).href;
 ---
-<div class="articles__wrapper">
-    <section class="articles__wrapper__inner common-wrapper">
-        <div class="featured-article__wrapper">
+<div class="articles-wrapper">
+    <section class="articles-wrapper__inner common-wrapper">
+        <div class="featured-article-wrapper">
             <a href={`/articles/${featuredArticle.data.slug}`}>
                 <Image
                     class="featured-article__image"
@@ -25,7 +25,7 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                     loading="eager"
                 />
             </a>
-            <div class="featured-article__details__wrapper flex row-wrap">
+            <div class="featured-article__details-wrapper flex row-wrap">
                 <a class="featured-article__link-card" href={`/articles/${featuredArticle.data.slug}`}
                    aria-label={featuredArticle.data.title}>{' '}</a>
                 <div class="featured-article__details flex column-wrap">
@@ -50,7 +50,7 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                     Read more
                 </LinkWithArrow>
                 </div>
-                <div class="featured-article__share__wrapper flex row-wrap">
+                <div class="featured-article__share-wrapper flex row-wrap">
                     <p class="featured-article__share__title font-serif">SHARE IT!</p>
                     <ul class="featured-article__share__links__list flex row-nowrap">
                         <li class="featured-article__share__link__item --underline-on-hover --is-clickable">

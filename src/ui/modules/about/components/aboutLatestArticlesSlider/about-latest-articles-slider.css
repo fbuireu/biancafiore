@@ -2,7 +2,7 @@
 	grid-area: Latest-Articles;
 }
 
-.about__latest-article__item__wrapper {
+.about__latest-article__item-wrapper {
 	backface-visibility: hidden;
 	-webkit-font-smoothing: subpixel-antialiased;
 	height: fit-content;

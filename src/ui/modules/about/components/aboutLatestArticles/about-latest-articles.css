@@ -1,4 +1,4 @@
-.about-latest-articles__wrapper {
+.about-latest-articles-wrapper {
 	margin-block-end: 12rem;
 
 	@container about-page (width <= 720px) {
@@ -33,7 +33,7 @@
 	}
 }
 
-.about-latest-articles__quote__wrapper {
+.about-latest-articles__quote-wrapper {
 	align-items: flex-end;
 	align-self: self-start;
 	display: flex;

@@ -43,7 +43,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
 <BaseLayout {...metadata}>
   {
       article.data.featuredImage && (
-          <section class="article__featured__image__wrapper">
+          <section class="article__featured__image-wrapper">
               <Image
                   src={article.data.featuredImage.url}
                   width={article.data.featuredImage.details.width}
@@ -59,7 +59,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
     <Breadcrumbs />
     <ReadingProgress />
     <ArticleDetails article={article} />
-    <article class="article__wrapper" set:html={article.data.content} style={`--scopes: ${scopes}`}>
+    <article class="article-wrapper" set:html={article.data.content} style={`--scopes: ${scopes}`}>
       {
           article.data.tableOfContents.length > 0 &&
           <TableOfContents tableOfContents={article.data.tableOfContents} />

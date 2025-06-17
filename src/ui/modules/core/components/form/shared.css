@@ -14,7 +14,7 @@
 	bottom: -1.75rem;
 }
 
-.contact-form__generic-error__wrapper {
+.contact-form__generic-error-wrapper {
 	bottom: 2rem;
 	width: 100%;
 	position: relative;
@@ -28,8 +28,8 @@
 	transition: inset 0.2s;
 }
 
-.contact-form__input__wrapper,
-.contact-form__textarea__wrapper {
+.contact-form__input-wrapper,
+.contact-form__textarea-wrapper {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 	color: var(--neutral-main);
 	font-size: 1.25rem;

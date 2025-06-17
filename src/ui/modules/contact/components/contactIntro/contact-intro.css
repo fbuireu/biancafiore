@@ -1,4 +1,4 @@
-.contact-intro__wrapper {
+.contact-intro-wrapper {
 	display: grid;
 	gap: 0 8rem;
 	grid: "Contact-Text Contact-Image" 1fr / 1fr 1fr;

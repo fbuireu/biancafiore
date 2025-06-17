@@ -3,7 +3,7 @@
 	object-fit: cover;
 }
 
-.article__wrapper {
+.article-wrapper {
 	display: grid;
 	gap: 0 1rem;
 	grid: ". Article-Content ." / 1fr min(var(--grid-article), 100%) 1fr;
@@ -46,7 +46,7 @@
 	}
 }
 
-.article__wrapper > *:not(.full-bleed) {
+.article-wrapper > *:not(.full-bleed) {
 	grid-area: auto / Article-Content;
 }
 

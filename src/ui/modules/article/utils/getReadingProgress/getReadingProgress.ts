@@ -1,5 +1,5 @@
 const SELECTORS = {
-	ARTICLE: ".article__wrapper",
+	ARTICLE: ".article-wrapper",
 	PROGRESS_BAR: ".reading-progress",
 };
 

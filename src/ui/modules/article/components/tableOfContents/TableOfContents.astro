@@ -8,18 +8,19 @@ interface TableOfContentsProps {
 
 const { tableOfContents } = Astro.props as TableOfContentsProps;
 ---
-<aside class="article__table-of-contents__wrapper" role="complementary">
+<aside class="article__table-of-contents-wrapper" role="complementary">
     <nav class="article__table-of-contents__nav">
         <details class="article__table-of-contents__details" open>
             <summary class="article__table-of-contents__summary">
                 <h5>Table of Contents</h5></summary>
-                <ul class="article__table-of-contents__list flex column-nowrap">
-                    {tableOfContents.map(({ id, heading, level}, index) => (
-                        <li class="article__table-of-contents__item" style={`--level: ${level};`}>
-                            <a class="article__table-of-contents__item__link flex align-center --underline-on-hover --is-clickable" href={`#${id}`} style={`--for: --section-${index + 1}`}>{heading}</a>
-                        </li>
-                    ))}
-                </ul>
+            <ul class="article__table-of-contents__list flex column-nowrap">
+              {tableOfContents.map(({ id, heading, level }, index) => (
+                  <li class="article__table-of-contents__item" style={`--level: ${level};`}>
+                      <a class="article__table-of-contents__item__link flex align-center --underline-on-hover --is-clickable"
+                         href={`#${id}`} style={`--for: --section-${index + 1}`}>{heading}</a>
+                  </li>
+              ))}
+            </ul>
         </details>
     </nav>
 </aside>

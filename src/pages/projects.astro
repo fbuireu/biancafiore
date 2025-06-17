@@ -13,27 +13,28 @@ const metadata: Partial<SeoMetadata> = {
 };
 ---
 <BaseLayout {...metadata}>
-  <ProjectsIntro />
-  {projects.map((project, index) =>(
-    <ProjectSection id={project.data.id}>
-      <article style={`--index: ${index}`} class="project__wrapper">
-        <div class="project-image__wrapper" slot="project-image">
-          <Image class="project-image" layout="full-width" src={project.data.image.url} alt={project.data.name} width={project.data.image.details.width} height={project.data.image.details.height} />
-        </div>
-        <div class="project-information" slot="project-information">
-          <h2 class="project-title font-serif">{project.data.name}</h2>
-          <article set:html={project.data.description} />
-        </div>
-      </article>
-        <script is:inline type="application/ld+json" set:html={JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'ItemList',
-          'itemListElement': {
-            '@type': 'ListItem',
-            'position': index + 1,
-            'url': new URL(`${PAGES_ROUTES.PROJECTS}#${project.data.id}#${project.data.id}`, Astro.url).href,
-          },
-        })} />
-    </ProjectSection>
+    <ProjectsIntro />
+  {projects.map((project, index) => (
+      <ProjectSection id={project.data.id}>
+          <article style={`--index: ${index}`} class="project-wrapper">
+              <div class="project-image-wrapper" slot="project-image">
+                  <Image class="project-image" layout="full-width" src={project.data.image.url} alt={project.data.name}
+                         width={project.data.image.details.width} height={project.data.image.details.height} />
+              </div>
+              <div class="project-information" slot="project-information">
+                  <h2 class="project-title font-serif">{project.data.name}</h2>
+                  <article set:html={project.data.description} />
+              </div>
+          </article>
+          <script is:inline type="application/ld+json" set:html={JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            'itemListElement': {
+              '@type': 'ListItem',
+              'position': index + 1,
+              'url': new URL(`${PAGES_ROUTES.PROJECTS}#${project.data.id}#${project.data.id}`, Astro.url).href,
+            },
+          })} />
+      </ProjectSection>
   ))}
 </BaseLayout>

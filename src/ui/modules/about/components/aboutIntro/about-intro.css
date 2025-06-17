@@ -1,4 +1,4 @@
-.about-me-intro__wrapper {
+.about-me-intro-wrapper {
 	display: grid;
 	gap: 0 10%;
 	grid: "About-Text About-Image" 1fr / 1fr 1fr;

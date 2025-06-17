@@ -60,7 +60,7 @@ export const LatestArticlesSlider = ({ articles }: LatestArticlesSLiderProps) =>
 						<ArticleCard.Tags>
 							{article.data.tags?.map((tag, index) => {
 								const style: CSSProperties & { [key: string]: string } = {
-									"-index": String(index),
+									"--index": String(index),
 								};
 
 								return (

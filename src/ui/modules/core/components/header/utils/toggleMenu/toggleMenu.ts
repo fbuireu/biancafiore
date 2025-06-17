@@ -1,4 +1,4 @@
-import { Power2, Power3, Power4, gsap } from "gsap";
+import { gsap, Power2, Power3, Power4 } from "gsap";
 import { backgroundObserver } from "../../utils/backgroundObserver";
 
 const ANIMATION_CONFIG = {
@@ -14,8 +14,8 @@ const SELECTORS = {
 	BODY: "body",
 	HTML: "html",
 	TOGGLE_MENU_BUTTON: ".header__menu-button",
-	MENU_OVERLAY: ".header__menu-overlay__wrapper",
-	OVERLAY_PATH: ".header__menu-overlay__wrapper path",
+	MENU_OVERLAY: ".header__menu-overlay-wrapper",
+	OVERLAY_PATH: ".header__menu-overlay-wrapper path",
 	HEADER_MENU_TEXT: ".header__menu-text",
 	BUTTON_OUTLINE: ".header__menu-button__outline",
 	SITE_LOGO: ".site__logo",
@@ -119,9 +119,8 @@ export function toggleMenu(): void {
 	toggleMenuItems();
 
 	const updateButton = (): void => {
-		if (!MENU_TEXT) {
-			return;
-		}
+		if (!MENU_TEXT) return;
+
 		toggleMenuText = isMenuOpen ? "Close" : "Menu";
 		const timeout = isMenuOpen ? 500 : 0;
 
@@ -137,10 +136,9 @@ export function toggleMenu(): void {
 		timeline.reversed(!timeline.reversed());
 
 		for (const element of ELEMENTS_TO_TOGGLE) {
-			if (!element) {
-				return;
-			}
-			element.classList.toggle("--is-menu-open");
+			if (!element) return;
+
+			element.classList.toggle("is-menu-open");
 		}
 	});
 }

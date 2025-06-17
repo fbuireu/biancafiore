@@ -1,4 +1,4 @@
-.articles__wrapper {
+.articles-wrapper {
 	background-color: var(--neutral-light-4);
 	[data-theme="dark"] & {
 		background-color: var(--background-main);
@@ -15,7 +15,7 @@
 	width: 100%;
 }
 
-.featured-article__wrapper {
+.featured-article-wrapper {
 	display: grid;
 	gap: 0 2rem;
 	grid: "Featured-Article-Image Featured-Article-Content" minmax(auto, 70dvh) / minmax(60%, 1fr) 1fr;
@@ -36,7 +36,7 @@
 	object-fit: cover;
 }
 
-.featured-article__details__wrapper {
+.featured-article__details-wrapper {
 	grid-area: Featured-Article-Content;
 	padding-inline-end: 1rem;
 	position: relative;
@@ -52,7 +52,7 @@
 	}
 }
 
-.featured-article__share__wrapper {
+.featured-article__share-wrapper {
 	bottom: -0.5rem;
 	gap: 1rem 0;
 	justify-content: space-between;

@@ -11,7 +11,7 @@ import Spinner from "@modules/core/components/spinner/Spinner";
 import type { ContactFormData } from "@shared/ui/types";
 import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
-import { useCallback, useRef, useState, useTransition } from "react";
+import { useCallback, useId, useRef, useState, useTransition } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
 import "./contact-form.css";
@@ -31,26 +31,11 @@ export const ContactForm = () => {
 	});
 	const [pending, startTransition] = useTransition();
 	const [formStatus, setFormStatus] = useState<(typeof FormStatus)[keyof typeof FormStatus]>(FormStatus.INITIAL);
+	const nameId = useId();
+	const emailId = useId();
+	const messageId = useId();
 	const { executeRecaptcha } = useGoogleReCaptcha();
 	const submitRef = useRef<HTMLButtonElement>(null);
-
-	const verifyRecaptcha = useCallback(
-		async (data: ContactFormData) => {
-			if (!executeRecaptcha) {
-				return;
-			}
-			const token = await executeRecaptcha();
-			if (!token) {
-				setError("recaptcha", {
-					type: "manual",
-					message: "Mr. Robot, is that you?",
-				});
-				return;
-			}
-			await submitForm(data);
-		},
-		[executeRecaptcha, setError],
-	);
 
 	const submitForm = useCallback(
 		async (data: ContactFormData) => {
@@ -94,6 +79,24 @@ export const ContactForm = () => {
 		[reset, setError],
 	);
 
+	const verifyRecaptcha = useCallback(
+		async (data: ContactFormData) => {
+			if (!executeRecaptcha) {
+				return;
+			}
+			const token = await executeRecaptcha();
+			if (!token) {
+				setError("recaptcha", {
+					type: "manual",
+					message: "Mr. Robot, is that you?",
+				});
+				return;
+			}
+			await submitForm(data);
+		},
+		[executeRecaptcha, setError, submitForm],
+	);
+
 	return (
 		<>
 			{formStatus !== FormStatus.SUCCESS ? (
@@ -108,7 +111,7 @@ export const ContactForm = () => {
 				>
 					<p className="contact-form__text"> My name is</p>
 					<Input
-						id="name"
+						id={nameId}
 						type="text"
 						placeholder="Your name"
 						formStatus={formStatus}
@@ -119,7 +122,7 @@ export const ContactForm = () => {
 					/>
 					<p className="contact-form__text">and my email is</p>
 					<Input
-						id="email"
+						id={emailId}
 						type="text"
 						placeholder="Your email"
 						formStatus={formStatus}
@@ -133,7 +136,7 @@ export const ContactForm = () => {
 						you,
 					</p>
 					<Textarea
-						id="message"
+						id={messageId}
 						placeholder="Why you contact me?"
 						className="contact-form__textarea"
 						formStatus={formStatus}
@@ -143,7 +146,7 @@ export const ContactForm = () => {
 						{...register("message")}
 					/>
 					<Recaptcha hasError={!!errors.recaptcha} errorMessage={errors.recaptcha?.message} />
-					<div className="contact-form__generic-error__wrapper">
+					<div className="contact-form__generic-error-wrapper">
 						{([FormStatus.ERROR, FormStatus.UNAUTHORIZED] as (typeof FormStatus)[keyof typeof FormStatus][]).includes(
 							formStatus,
 						) && <p className="contact-form__generic-error-message">{errors.root?.message}</p>}
