@@ -20,6 +20,7 @@ const projects = await getCollection("projects");
                         alt={project.data.name}
                         width={project.data.image.details.width}
                         height={project.data.image.details.height}
+                        loading="lazy"
                     />
                     <h4 class="my-work__item__title inner-section-title">{project.data.name}</h4>
                 </a>
