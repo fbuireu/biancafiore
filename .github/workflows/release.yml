@@ -67,6 +67,9 @@ jobs:
         name: Update version
         runs-on: ubuntu-latest
         needs: check-version
+        permissions:
+            contents: write
+            pull-requests: read
         steps:
             - name: Check out the repository
               uses: actions/checkout@v4
