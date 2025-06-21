@@ -12,18 +12,17 @@ jobs:
         name: Run E2E tests
         timeout-minutes: 60
         runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            actions: read
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v4
-
             - uses: ./.github/actions/prepare-env
-
             - name: Install dependencies
               run: yarn install --frozen-lockfile
-
             - name: Install Playwright Browsers
               run: yarn playwright install --with-deps
-
             - name: Run E2E Tests
               run: ${{ env.E2E_COMMAND }}
               env:
