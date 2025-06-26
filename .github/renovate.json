@@ -17,6 +17,7 @@
    "reviewersFromCodeOwners":true,
    "packageRules":[
       {
+         "matchPackagePatterns": ["*"],
          "automerge": true,
          "automergeType": "pr"
       }
