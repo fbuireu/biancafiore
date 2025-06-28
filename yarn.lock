@@ -3388,12 +3388,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^24.0.4":
-  version: 24.0.4
-  resolution: "@types/node@npm:24.0.4"
+"@types/node@npm:^24.0.6":
+  version: 24.0.6
+  resolution: "@types/node@npm:24.0.6"
   dependencies:
     undici-types: "npm:~7.8.0"
-  checksum: 10c0/590e8cb0ec59fb9cd566402120e690d87ecbdf57f1ee2b8493266121ed33aa4b25949a0c6156b84a6ffb9250baaf1f80e9af142da542ed603e6ee73fc4d1115f
+  checksum: 10c0/17f976364358f85294912e04f0de147da6ba5ce3fe495b758df58458241f110475905cd0bb4ace373e9c44a0a7927202043bf0501cc1f7644306bde310c62650
   languageName: node
   linkType: hard
 
@@ -4146,7 +4146,7 @@ __metadata:
     "@testing-library/react": "npm:^16.3.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^24.0.4"
+    "@types/node": "npm:^24.0.6"
     "@types/react": "npm:^19.1.8"
     "@types/react-dom": "npm:^19.1.6"
     "@types/three": "npm:^0.177.0"
@@ -4164,11 +4164,11 @@ __metadata:
     react-dom: "npm:^19.1.0"
     react-globe.gl: "npm:^2.33.2"
     react-google-recaptcha-v3: "npm:^1.11.0"
-    react-hook-form: "npm:^7.58.1"
+    react-hook-form: "npm:^7.59.0"
     react-instantsearch: "npm:^7.16.0"
-    react-router-dom: "npm:^7.6.2"
+    react-router-dom: "npm:^7.6.3"
     resend: "npm:^4.6.0"
-    swiper: "npm:^11.2.8"
+    swiper: "npm:^11.2.9"
     three: "npm:^0.177.0"
     typescript: "npm:^5.8.3"
     vanilla-cookieconsent: "npm:^3.1.0"
@@ -9501,12 +9501,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.58.1":
-  version: 7.58.1
-  resolution: "react-hook-form@npm:7.58.1"
+"react-hook-form@npm:^7.59.0":
+  version: 7.59.0
+  resolution: "react-hook-form@npm:7.59.0"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10c0/981b9982b7eb497c3afff86c219175fdd4d92a24e3533518035239545dda23f5ebc6ba647fb29a250f768bdf811ba413094ce0103fbf36b436737fc18aa1bb49
+  checksum: 10c0/6be30ce65121f4be0f491c2929142e2d9a390a8802f58fb7a41ab978ab8daa6fcd2c442258dbd1b053e6864a83c8f4b1d83de9c95f0efdf5c2120d3c21bd838e
   languageName: node
   linkType: hard
 
@@ -9575,21 +9575,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.6.2":
-  version: 7.6.2
-  resolution: "react-router-dom@npm:7.6.2"
+"react-router-dom@npm:^7.6.3":
+  version: 7.6.3
+  resolution: "react-router-dom@npm:7.6.3"
   dependencies:
-    react-router: "npm:7.6.2"
+    react-router: "npm:7.6.3"
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10c0/9a8370333b5c1ada5ed76a2c30a90ca5a5a8e6c8565165f147fb42b150f2b258b9e73935fe4945c459d770841abdfaf99c28f7e13da93b1f49b28e6a8e87aadb
+  checksum: 10c0/51ebd9c71255d836a055b87745070c1800733212088fbb1a7031ce16cbf420ad12a4286faebfc7dc62be6931a0eee74f4dc68f05e7d7a63933bc53b5c9c101f6
   languageName: node
   linkType: hard
 
-"react-router@npm:7.6.2":
-  version: 7.6.2
-  resolution: "react-router@npm:7.6.2"
+"react-router@npm:7.6.3":
+  version: 7.6.3
+  resolution: "react-router@npm:7.6.3"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -9599,7 +9599,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/c8ef65f2a378f38e3cba900d67fa2b80a41c1c3925102875ee07c12faa01ea40991cb3fbefaf3ff6914e724c755732e3d7dec2b1bdef09e0fddd00fccc85a06a
+  checksum: 10c0/43c8dd124d1c3f9fb11afa905fb0c87e19b73b04877e9be09f84eac34948ea90d6c4aae408c8030fe6dc4ed88c0bcf2e857b53a817ebbe5ce7d26e485a330c7d
   languageName: node
   linkType: hard
 
@@ -10874,10 +10874,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^11.2.8":
-  version: 11.2.8
-  resolution: "swiper@npm:11.2.8"
-  checksum: 10c0/1f20611434ae9659a62da3efc220043c52135e9377c95c359f2baa4852deaeb52c9580e14e4d1b6c3f1a27ff118bbd3b9e13f14c8ca99e0ee7f63b17ec94f6dc
+"swiper@npm:^11.2.9":
+  version: 11.2.9
+  resolution: "swiper@npm:11.2.9"
+  checksum: 10c0/eb1dcffe5fa1fc7b3171de9c36d66b335d7c45eb88b166b30ffd8e5b693f0803b8730424895dfa7ef832a6bdbd267870fc4548c4bd6cc319f34699ff3795204f
   languageName: node
   linkType: hard
 
