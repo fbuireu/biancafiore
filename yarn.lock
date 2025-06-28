@@ -3388,12 +3388,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^24.0.6":
-  version: 24.0.6
-  resolution: "@types/node@npm:24.0.6"
+"@types/node@npm:^24.0.7":
+  version: 24.0.7
+  resolution: "@types/node@npm:24.0.7"
   dependencies:
     undici-types: "npm:~7.8.0"
-  checksum: 10c0/17f976364358f85294912e04f0de147da6ba5ce3fe495b758df58458241f110475905cd0bb4ace373e9c44a0a7927202043bf0501cc1f7644306bde310c62650
+  checksum: 10c0/be3849816dafc54ec79e6be6dafcf60bdb6466beaf0081b941142d260e2b2864855210dfe5b4395c59b276468528695aefcf4f060ac95cc433b2968e80a311f9
   languageName: node
   linkType: hard
 
@@ -4146,7 +4146,7 @@ __metadata:
     "@testing-library/react": "npm:^16.3.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^24.0.6"
+    "@types/node": "npm:^24.0.7"
     "@types/react": "npm:^19.1.8"
     "@types/react-dom": "npm:^19.1.6"
     "@types/three": "npm:^0.177.0"
