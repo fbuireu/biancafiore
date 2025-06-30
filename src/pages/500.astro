@@ -1,4 +1,5 @@
 ---
+import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import ErrorLayer from "@modules/core/components/errorLayer/ErrorLayer.astro";
@@ -24,5 +25,7 @@ const metadata: Partial<SeoMetadata> = {
     <h1>{title}</h1>
     <p>Clearly something went wrong... Oh gosh this is embarrassing...</p>
     <p>{description}</p>
+	<p>Why not try going back to the <a href={PAGES_ROUTES.HOME}
+		class="error-layer__link --underline-on-hover">homepage</a>?</p>
   </ErrorLayer>
 </BaseLayout>
