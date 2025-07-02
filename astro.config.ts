@@ -27,7 +27,7 @@ export default defineConfig({
     ],
   },
   image: {
-    experimentalLayout: 'constrained',
+    layout: 'constrained',
     responsiveStyles: true,
   },
   trailingSlash: 'never',
