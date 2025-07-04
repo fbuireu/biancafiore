@@ -3964,9 +3964,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.10.2":
-  version: 5.10.2
-  resolution: "astro@npm:5.10.2"
+"astro@npm:^5.11.0":
+  version: 5.11.0
+  resolution: "astro@npm:5.11.0"
   dependencies:
     "@astrojs/compiler": "npm:^2.12.2"
     "@astrojs/internal-helpers": "npm:0.6.1"
@@ -4035,7 +4035,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/99b2ee606b39615a00e71a240d95b9fdfd96c59393b0541017fd677ee553288e233d95971fe2e2771548c320d1c0c62e3cc344d2c5035117f5af8177ebe0162d
+  checksum: 10c0/77d242d50f2fcddd8aff318f04db48b04a5fa601a7298034d50eaff9fd1db58d4199773b340e803ceaa31c90a0e7d42fdc09b5e8e5b08f85128c8d0f8436e793
   languageName: node
   linkType: hard
 
@@ -4151,7 +4151,7 @@ __metadata:
     "@types/react-dom": "npm:^19.1.6"
     "@types/three": "npm:^0.178.0"
     algoliasearch: "npm:^5.30.0"
-    astro: "npm:^5.10.2"
+    astro: "npm:^5.11.0"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.7.5"
     conventional-changelog-atom: "npm:^5.0.0"
@@ -4173,7 +4173,7 @@ __metadata:
     typescript: "npm:^5.8.3"
     vanilla-cookieconsent: "npm:^3.1.0"
     vitest: "npm:^3.2.4"
-    zod: "npm:^3.25.68"
+    zod: "npm:^3.25.72"
   languageName: unknown
   linkType: soft
 
@@ -12558,10 +12558,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25.68":
-  version: 3.25.68
-  resolution: "zod@npm:3.25.68"
-  checksum: 10c0/6a88ed324f9f359c29f735ade149fb57d92d2b5e9809cb518560bd40f75dc0159e7d8b335290656a1583ad103d741468638d69a382eaefdd688125e1d1d00f30
+"zod@npm:^3.25.72":
+  version: 3.25.72
+  resolution: "zod@npm:3.25.72"
+  checksum: 10c0/10a15e6ae66318966523a856fef75b0ad2ebf9b8edb9ce80ad64ec5cb849df5ecd549450bd6392abe5084d63a3aa30390edecb15c3cb7c61c022c113174f9f31
   languageName: node
   linkType: hard
 
