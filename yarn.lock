@@ -12551,17 +12551,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.24.2":
-  version: 3.25.56
-  resolution: "zod@npm:3.25.56"
-  checksum: 10c0/3800f01d4b1df932b91354eb1e648f69cc7e5561549e6d2bf83827d930a5f33bbf92926099445f6fc1ebb64ca9c6513ef9ae5e5409cfef6325f354bcf6fc9a24
-  languageName: node
-  linkType: hard
-
-"zod@npm:^3.25.72":
-  version: 3.25.72
-  resolution: "zod@npm:3.25.72"
-  checksum: 10c0/10a15e6ae66318966523a856fef75b0ad2ebf9b8edb9ce80ad64ec5cb849df5ecd549450bd6392abe5084d63a3aa30390edecb15c3cb7c61c022c113174f9f31
+"zod@npm:^3.24.2, zod@npm:^3.25.72":
+  version: 3.25.74
+  resolution: "zod@npm:3.25.74"
+  checksum: 10c0/59e38b046ac333b5bd1ba325a83b6798721227cbfb1e69dfc7159bd7824b904241ab923026edb714fafefec3624265ae374a70aee9a5a45b365bd31781ffa105
   languageName: node
   linkType: hard
 
