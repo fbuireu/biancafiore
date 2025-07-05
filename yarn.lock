@@ -4164,7 +4164,7 @@ __metadata:
     react-dom: "npm:^19.1.0"
     react-globe.gl: "npm:^2.34.0"
     react-google-recaptcha-v3: "npm:^1.11.0"
-    react-hook-form: "npm:^7.59.0"
+    react-hook-form: "npm:^7.60.0"
     react-instantsearch: "npm:^7.16.0"
     react-router-dom: "npm:^7.6.3"
     resend: "npm:^4.6.0"
@@ -4173,7 +4173,7 @@ __metadata:
     typescript: "npm:^5.8.3"
     vanilla-cookieconsent: "npm:^3.1.0"
     vitest: "npm:^3.2.4"
-    zod: "npm:^3.25.72"
+    zod: "npm:^3.25.74"
   languageName: unknown
   linkType: soft
 
@@ -9501,12 +9501,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.59.0":
-  version: 7.59.0
-  resolution: "react-hook-form@npm:7.59.0"
+"react-hook-form@npm:^7.60.0":
+  version: 7.60.0
+  resolution: "react-hook-form@npm:7.60.0"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10c0/6be30ce65121f4be0f491c2929142e2d9a390a8802f58fb7a41ab978ab8daa6fcd2c442258dbd1b053e6864a83c8f4b1d83de9c95f0efdf5c2120d3c21bd838e
+  checksum: 10c0/eb8518d42a074d9e115d4b414bac18ae72708b2d047a9453dcc7588b00df300b32cebf6ecb7f2c8aa534808b3dc54bde4124af95c1e432b6691f9aba07c93b11
   languageName: node
   linkType: hard
 
@@ -12558,10 +12558,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25.72":
-  version: 3.25.72
-  resolution: "zod@npm:3.25.72"
-  checksum: 10c0/10a15e6ae66318966523a856fef75b0ad2ebf9b8edb9ce80ad64ec5cb849df5ecd549450bd6392abe5084d63a3aa30390edecb15c3cb7c61c022c113174f9f31
+"zod@npm:^3.25.74":
+  version: 3.25.74
+  resolution: "zod@npm:3.25.74"
+  checksum: 10c0/59e38b046ac333b5bd1ba325a83b6798721227cbfb1e69dfc7159bd7824b904241ab923026edb714fafefec3624265ae374a70aee9a5a45b365bd31781ffa105
   languageName: node
   linkType: hard
 
