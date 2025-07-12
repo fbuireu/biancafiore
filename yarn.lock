@@ -4144,7 +4144,7 @@ __metadata:
     algoliasearch: "npm:^5.30.0"
     astro: "npm:^5.11.0"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.7.5"
+    contentful: "npm:^11.7.6"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.13.0"
     husky: "npm:^9.1.7"
@@ -4660,9 +4660,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.7.5":
-  version: 11.7.5
-  resolution: "contentful@npm:11.7.5"
+"contentful@npm:^11.7.6":
+  version: 11.7.6
+  resolution: "contentful@npm:11.7.6"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.8"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -4671,7 +4671,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/09383e85f0e778907525a9503cc51ad38df065249713cf44cfffd180b634d56fda16e363b1a277d028676723b27e0cd9301e31a95ddcb06e7acba41cd9d4dbe6
+  checksum: 10c0/474cb543ac23924daf9c8b1fb65e0e7272ab946d995173e72ff382d3a4e6174beb3012aac4a86864b8e9f26bb44c8779019530b7c59db71e7d75012affd8efea
   languageName: node
   linkType: hard
 
