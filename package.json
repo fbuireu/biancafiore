@@ -68,7 +68,7 @@
 		"react-globe.gl": "^2.34.0",
 		"react-google-recaptcha-v3": "^1.11.0",
 		"react-hook-form": "^7.60.0",
-		"react-instantsearch": "^7.16.0",
+		"react-instantsearch": "^7.16.1",
 		"react-router-dom": "^7.6.3",
 		"resend": "^4.6.0",
 		"swiper": "^11.2.10",
