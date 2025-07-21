@@ -93,5 +93,8 @@
         "husky": "^9.1.7",
         "lint-staged": "^16.1.2",
         "vitest": "^3.2.4"
+    },
+    "resolutions": {
+        "form-data": "^4.0.4"
     }
 }
