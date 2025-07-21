@@ -55,7 +55,6 @@
         "@astrojs/sitemap": "^3.4.1",
         "@contentful/rich-text-html-renderer": "^17.0.1",
         "@hookform/resolvers": "^5.1.1",
-        "@million/lint": "^1.0.14",
         "algoliasearch": "^5.30.0",
         "astro": "^5.11.0",
         "clsx": "^2.1.1",
