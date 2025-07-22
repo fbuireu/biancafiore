@@ -138,7 +138,6 @@ export function toggleMenu (): void {
     timeline.reversed(!timeline.reversed())
 
     for (const element of ELEMENTS_TO_TOGGLE) {
-      console.log(element)
       if (!element) return
 
       element.classList.toggle('--is-menu-open')
