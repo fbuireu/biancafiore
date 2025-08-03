@@ -5420,17 +5420,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globe.gl@npm:^2.42":
-  version: 2.42.0
-  resolution: "globe.gl@npm:2.42.0"
+"globe.gl@npm:^2.43":
+  version: 2.43.0
+  resolution: "globe.gl@npm:2.43.0"
   dependencies:
     "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
     kapsule: "npm:^1.16"
     three: "npm:>=0.154 <1"
-    three-globe: "npm:^2.43"
+    three-globe: "npm:^2.44"
     three-render-objects: "npm:^1.40"
-  checksum: 10c0/0ed3ba1140e22229e68ba1248944ec2a684823d396cec747fd01e42e67c18c6a9bad0fc26060d8fa9204694854f20e3f8692c7156c2e46b475ddce5d76842e21
+  checksum: 10c0/3a95fc3f726e8343751dd1c5ccbee01d929a18d820e24484c23d875ecc1f81fb4832aeda6ada11506dbf59dd4e2da4d40ba48d30cf3c058a9153a38a2c3dbb71
   languageName: node
   linkType: hard
 
@@ -8173,15 +8173,15 @@ __metadata:
   linkType: hard
 
 "react-globe.gl@npm:^2.34.0":
-  version: 2.34.0
-  resolution: "react-globe.gl@npm:2.34.0"
+  version: 2.35.0
+  resolution: "react-globe.gl@npm:2.35.0"
   dependencies:
-    globe.gl: "npm:^2.42"
+    globe.gl: "npm:^2.43"
     prop-types: "npm:15"
     react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/d3fac6cf5102ddf7cdfeef7f43cb371a54387cf435c50e837adc9fb8e8c183098c94567aca37008d3595bcac01a5a6b4e72d25eee1bfc116ff6fb9f2ca3771e8
+  checksum: 10c0/2ecd12afd5b9e774e84cc9154b49869b1344d147ffc79963a23dbc886fa6ab4e546f90bd5ed8bce7e9dbdb747cdba5c601ccaac6fa2514da65bf6d245b1b69fa
   languageName: node
   linkType: hard
 
@@ -9419,9 +9419,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three-globe@npm:^2.43":
-  version: 2.43.0
-  resolution: "three-globe@npm:2.43.0"
+"three-globe@npm:^2.44":
+  version: 2.44.0
+  resolution: "three-globe@npm:2.44.0"
   dependencies:
     "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
@@ -9442,7 +9442,7 @@ __metadata:
     tinycolor2: "npm:1"
   peerDependencies:
     three: ">=0.154"
-  checksum: 10c0/015e80207e80ad2e72f697b0f820db65dba3369f502567be83c6a1a92b5fd83329e28535f9bb1eac8e3e15b0c789fca727b3c733a0e0708071ffea6bf22c247a
+  checksum: 10c0/78c133b0668fe9116c33cc185c267f8c399d96b798bd2fd504a1ff6bb0b2a4b21cd563778b033ecbc84c54672685b289738252b66a4b1cf55c8444a40f0f9bda
   languageName: node
   linkType: hard
 
