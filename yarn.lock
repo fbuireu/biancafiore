@@ -193,8 +193,8 @@ __metadata:
   linkType: hard
 
 "@astrojs/cloudflare@npm:^12.6.0":
-  version: 12.6.2
-  resolution: "@astrojs/cloudflare@npm:12.6.2"
+  version: 12.6.3
+  resolution: "@astrojs/cloudflare@npm:12.6.3"
   dependencies:
     "@astrojs/internal-helpers": "npm:0.7.1"
     "@astrojs/underscore-redirects": "npm:1.0.0"
@@ -204,7 +204,7 @@ __metadata:
     wrangler: "npm:^4.14.1"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/8636c4da772ac63f4869f31d3f4e9935b4725c974c7f172cdf45ae936da40d631a40d28ee3ccba27f7df553902a83b273c633f3241f3d209c32b489650997e75
+  checksum: 10c0/82c4ba7fda18e47a9ce5a0d71f12a7afc0cf0d0c1b2fd88b1cd2ab7b28941eb739fe9dd4286f7cd7446594e9b8f498901106476dba63011c91f94dada3cdbf68
   languageName: node
   linkType: hard
 
@@ -222,9 +222,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/db@npm:^0.16.0":
-  version: 0.16.0
-  resolution: "@astrojs/db@npm:0.16.0"
+"@astrojs/db@npm:^0.17.0":
+  version: 0.17.0
+  resolution: "@astrojs/db@npm:0.17.0"
   dependencies:
     "@libsql/client": "npm:^0.15.2"
     deep-diff: "npm:^1.0.2"
@@ -234,7 +234,7 @@ __metadata:
     prompts: "npm:^2.4.2"
     yargs-parser: "npm:^21.1.1"
     zod: "npm:^3.24.4"
-  checksum: 10c0/715c6c631435d2b6e4452380b752d3636a1d5866f5ce9481ad2b3d782e9ab47bc60fdf91aa1388fe8a69d506db769528befabc750123841d8402a16b6c8a581c
+  checksum: 10c0/d3c9cd146f38711ccb02f8112420d54bfcba65510fe22a97fabb0907d706792429f76261f76031a494cc6cc4e0a9a2c2c3d3c706834fefa87a26e274b1025dcf
   languageName: node
   linkType: hard
 
@@ -3318,8 +3318,8 @@ __metadata:
   linkType: hard
 
 "astro@npm:^5.12.1":
-  version: 5.12.8
-  resolution: "astro@npm:5.12.8"
+  version: 5.12.9
+  resolution: "astro@npm:5.12.9"
   dependencies:
     "@astrojs/compiler": "npm:^2.12.2"
     "@astrojs/internal-helpers": "npm:0.7.1"
@@ -3389,7 +3389,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/dd1f01fc3effc4574d8c3de05edf4a6d57cf5a073b30423a80d80ca3cdb96be8fc82d3808e99983d839d0fd1bc607dbaedd38e4fd56fca4dd9e981451c284096
+  checksum: 10c0/651dcdf32c67b2af60c3930c6f0983c1ea1d5808fde9c34ac8d0255744e26c79714bee59ea900548127574732af487c13852f949d280f0f8510ff3899fc76ca7
   languageName: node
   linkType: hard
 
@@ -3452,7 +3452,7 @@ __metadata:
   dependencies:
     "@astrojs/check": "npm:^0.9.4"
     "@astrojs/cloudflare": "npm:^12.6.0"
-    "@astrojs/db": "npm:^0.16.0"
+    "@astrojs/db": "npm:^0.17.0"
     "@astrojs/mdx": "npm:^4.3.1"
     "@astrojs/partytown": "npm:^2.1.4"
     "@astrojs/react": "npm:^4.3.0"
