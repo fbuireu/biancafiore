@@ -223,8 +223,8 @@ __metadata:
   linkType: hard
 
 "@astrojs/db@npm:^0.17.0":
-  version: 0.17.0
-  resolution: "@astrojs/db@npm:0.17.0"
+  version: 0.17.1
+  resolution: "@astrojs/db@npm:0.17.1"
   dependencies:
     "@libsql/client": "npm:^0.15.2"
     deep-diff: "npm:^1.0.2"
@@ -234,7 +234,7 @@ __metadata:
     prompts: "npm:^2.4.2"
     yargs-parser: "npm:^21.1.1"
     zod: "npm:^3.24.4"
-  checksum: 10c0/d3c9cd146f38711ccb02f8112420d54bfcba65510fe22a97fabb0907d706792429f76261f76031a494cc6cc4e0a9a2c2c3d3c706834fefa87a26e274b1025dcf
+  checksum: 10c0/f54d44af28141cfa79f0b47789359a1ed775f2cde96a17392c0678fee34945aec1f5a316e62001bd6a10dd5984361ada5be5738a60530f21cfca227aef74578b
   languageName: node
   linkType: hard
 
