@@ -8570,11 +8570,11 @@ __metadata:
   linkType: hard
 
 "resend@npm:^4.7.0":
-  version: 4.7.0
-  resolution: "resend@npm:4.7.0"
+  version: 4.8.0
+  resolution: "resend@npm:4.8.0"
   dependencies:
     "@react-email/render": "npm:1.1.2"
-  checksum: 10c0/c5bdb06670097dcbf49c012f5ccfe290c15a9d5cb2ddc97de4d6fde201edaac7037f03b0f1f09b87a054e6097b7c104dafa1c85f981615962fd2b5220a2a5e96
+  checksum: 10c0/8836b529abe3188592c2df120f18c40b6378707cec86bcd28000e912b51dc9304080d8876fa4e4a52d328aa0390a5ca5362de53331e9317bce9bd29bff6c2b41
   languageName: node
   linkType: hard
 
