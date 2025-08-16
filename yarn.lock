@@ -193,10 +193,10 @@ __metadata:
   linkType: hard
 
 "@astrojs/cloudflare@npm:^12.6.0":
-  version: 12.6.3
-  resolution: "@astrojs/cloudflare@npm:12.6.3"
+  version: 12.6.4
+  resolution: "@astrojs/cloudflare@npm:12.6.4"
   dependencies:
-    "@astrojs/internal-helpers": "npm:0.7.1"
+    "@astrojs/internal-helpers": "npm:0.7.2"
     "@astrojs/underscore-redirects": "npm:1.0.0"
     "@cloudflare/workers-types": "npm:^4.20250507.0"
     tinyglobby: "npm:^0.2.13"
@@ -204,7 +204,7 @@ __metadata:
     wrangler: "npm:^4.14.1"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/82c4ba7fda18e47a9ce5a0d71f12a7afc0cf0d0c1b2fd88b1cd2ab7b28941eb739fe9dd4286f7cd7446594e9b8f498901106476dba63011c91f94dada3cdbf68
+  checksum: 10c0/4617dd83fbb51ecc887a54ab5f767a0e6aeeb7f288801eb0795b3291bc42c64df96c3534e6c1126eaf22edd89089bbb344ceba9966f1c297a5746b89f2df0999
   languageName: node
   linkType: hard
 
@@ -238,10 +238,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/internal-helpers@npm:0.7.1":
-  version: 0.7.1
-  resolution: "@astrojs/internal-helpers@npm:0.7.1"
-  checksum: 10c0/f14fa470d16b04d968f3d63826b158ed981befdb899d296f62e1d3d2b5d3ab164bfa60ceea97c072beb39ff5c7df5e054234d1a3af9a0f42df10780d50655f95
+"@astrojs/internal-helpers@npm:0.7.2":
+  version: 0.7.2
+  resolution: "@astrojs/internal-helpers@npm:0.7.2"
+  checksum: 10c0/c80f7d28f7b241b64f6542df68767b62e33d5637c4b23e8b7edcc9c6e3d5d3169b572e7da4d8eb5536939c34f8be0225923c8be6c52290551d74ca7c1dcbc4cc
   languageName: node
   linkType: hard
 
@@ -281,11 +281,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/markdown-remark@npm:6.3.5":
-  version: 6.3.5
-  resolution: "@astrojs/markdown-remark@npm:6.3.5"
+"@astrojs/markdown-remark@npm:6.3.6":
+  version: 6.3.6
+  resolution: "@astrojs/markdown-remark@npm:6.3.6"
   dependencies:
-    "@astrojs/internal-helpers": "npm:0.7.1"
+    "@astrojs/internal-helpers": "npm:0.7.2"
     "@astrojs/prism": "npm:3.3.0"
     github-slugger: "npm:^2.0.0"
     hast-util-from-html: "npm:^2.0.3"
@@ -306,15 +306,15 @@ __metadata:
     unist-util-visit: "npm:^5.0.0"
     unist-util-visit-parents: "npm:^6.0.1"
     vfile: "npm:^6.0.3"
-  checksum: 10c0/ab559b3d13068ad0aeacf04cdfe8c76544dd3d5a857252406c20c541bb9288e5351f146cf4884b471101b52492947b8559525f8b9502b607714cd191b83325cf
+  checksum: 10c0/9a55458aa15f778e1522abd574b048b084652269963d47e9ace8fa2e1b63d026efc1468d48f2936dae3cee387b56be3eba3abf388f162adb9e9b08ce1d9b1ddd
   languageName: node
   linkType: hard
 
 "@astrojs/mdx@npm:^4.3.1":
-  version: 4.3.3
-  resolution: "@astrojs/mdx@npm:4.3.3"
+  version: 4.3.4
+  resolution: "@astrojs/mdx@npm:4.3.4"
   dependencies:
-    "@astrojs/markdown-remark": "npm:6.3.5"
+    "@astrojs/markdown-remark": "npm:6.3.6"
     "@mdx-js/mdx": "npm:^3.1.0"
     acorn: "npm:^8.14.1"
     es-module-lexer: "npm:^1.6.0"
@@ -329,7 +329,7 @@ __metadata:
     vfile: "npm:^6.0.3"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/6ad26d85344637d5c06db89628e370032d5954ffc15387aad3339ce4b9645b485b7a22bd349daaf8e16c2c9168e3fe5a5f4db1cf65f4bc91cf10bd27ff5e33be
+  checksum: 10c0/74b1fc8dfebca4de45a6079285f3cc9300e8219c97c63f2022a1b48c90f395d0286d9e66afe87d7bd49a4a334ad24dfc4263d1d2567a92f611bb4c0cfb5ee248
   languageName: node
   linkType: hard
 
@@ -379,13 +379,13 @@ __metadata:
   linkType: hard
 
 "@astrojs/sitemap@npm:^3.4.1":
-  version: 3.4.2
-  resolution: "@astrojs/sitemap@npm:3.4.2"
+  version: 3.5.0
+  resolution: "@astrojs/sitemap@npm:3.5.0"
   dependencies:
     sitemap: "npm:^8.0.0"
     stream-replace-string: "npm:^2.0.0"
     zod: "npm:^3.24.4"
-  checksum: 10c0/1a7234a0182dc2d2dde12a5f6f8ba7c8b3cc23b55671a026338dd27dc913a9741f42e07b2266218b7612904a2be591ed4e0232e8ed211e993cdabcfe32ca6dd8
+  checksum: 10c0/754fedddfa3b468e42a34aeace30345538799205fc7fad0097cf6d7fb11a13b6d9ebd68ca27efea685326104644ebfce16d7354651159c154449fb2e42864f89
   languageName: node
   linkType: hard
 
@@ -3294,12 +3294,12 @@ __metadata:
   linkType: hard
 
 "astro@npm:^5.12.1":
-  version: 5.12.9
-  resolution: "astro@npm:5.12.9"
+  version: 5.13.2
+  resolution: "astro@npm:5.13.2"
   dependencies:
     "@astrojs/compiler": "npm:^2.12.2"
-    "@astrojs/internal-helpers": "npm:0.7.1"
-    "@astrojs/markdown-remark": "npm:6.3.5"
+    "@astrojs/internal-helpers": "npm:0.7.2"
+    "@astrojs/markdown-remark": "npm:6.3.6"
     "@astrojs/telemetry": "npm:3.3.0"
     "@capsizecss/unpack": "npm:^2.4.0"
     "@oslojs/encoding": "npm:^1.1.0"
@@ -3365,7 +3365,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/651dcdf32c67b2af60c3930c6f0983c1ea1d5808fde9c34ac8d0255744e26c79714bee59ea900548127574732af487c13852f949d280f0f8510ff3899fc76ca7
+  checksum: 10c0/b5b8df9e55bd4e6d564c69e4cac51fd101968480c5fb24447c6a16c3183c780f17f87271b3ff721963d08d0133b22b0c61b8dded8d5117b24f2a1adae89780c0
   languageName: node
   linkType: hard
 
