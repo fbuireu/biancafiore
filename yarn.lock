@@ -193,8 +193,8 @@ __metadata:
   linkType: hard
 
 "@astrojs/cloudflare@npm:^12.6.6":
-  version: 12.6.6
-  resolution: "@astrojs/cloudflare@npm:12.6.6"
+  version: 12.6.7
+  resolution: "@astrojs/cloudflare@npm:12.6.7"
   dependencies:
     "@astrojs/internal-helpers": "npm:0.7.2"
     "@astrojs/underscore-redirects": "npm:1.0.0"
@@ -204,7 +204,7 @@ __metadata:
     wrangler: "npm:4.14.1"
   peerDependencies:
     astro: ^5.7.0
-  checksum: 10c0/9b7e1c9572299f253be3d279eff81afac8149dcc5bc53011978df0a74dd0b1d0dac337d4e2eb943c91f979925e5e6be8562f9245899ead978b69fb2f31424a90
+  checksum: 10c0/2a37a3c67d891feafddaf4d1d72ba1231298a201fb12c5e18684fa8b43f239dbacd3c9cc8b355f1a7f92d4e039ed40652165671ae8d42955c27778288e05f5c5
   languageName: node
   linkType: hard
 
@@ -3294,8 +3294,8 @@ __metadata:
   linkType: hard
 
 "astro@npm:^5.13.4":
-  version: 5.13.4
-  resolution: "astro@npm:5.13.4"
+  version: 5.13.5
+  resolution: "astro@npm:5.13.5"
   dependencies:
     "@astrojs/compiler": "npm:^2.12.2"
     "@astrojs/internal-helpers": "npm:0.7.2"
@@ -3365,7 +3365,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/d26a903bba5df0163779af8bb81eb7e413213c17353ec3c617230ef56f29646828292e8222b5bfc9760bb93f8f98ecd81c44fd2a27072f0c7f6d8089156e1511
+  checksum: 10c0/1734804d8ec8a8a8ceb19f96b1584d045eb94bbf4cfae370440da2a7e254f062c6be07a7d053acbc02057438938e0982a3f5c3eafb11bedda0c72c5664b6940e
   languageName: node
   linkType: hard
 
