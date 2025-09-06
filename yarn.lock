@@ -5405,9 +5405,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globe.gl@npm:^2.43":
-  version: 2.43.0
-  resolution: "globe.gl@npm:2.43.0"
+"globe.gl@npm:^2.44":
+  version: 2.44.0
+  resolution: "globe.gl@npm:2.44.0"
   dependencies:
     "@tweenjs/tween.js": "npm:18 - 25"
     accessor-fn: "npm:1"
@@ -5415,7 +5415,7 @@ __metadata:
     three: "npm:>=0.154 <1"
     three-globe: "npm:^2.44"
     three-render-objects: "npm:^1.40"
-  checksum: 10c0/3a95fc3f726e8343751dd1c5ccbee01d929a18d820e24484c23d875ecc1f81fb4832aeda6ada11506dbf59dd4e2da4d40ba48d30cf3c058a9153a38a2c3dbb71
+  checksum: 10c0/46c7c8258f7ac1654018cc4ca7b23cc33191393d6adb8424b2a03c4f148e26ac5dc5c0b0a81b973eb088ee87a143c114dac1e247407a5c5c2d64f66c8fd551e1
   languageName: node
   linkType: hard
 
@@ -8114,15 +8114,15 @@ __metadata:
   linkType: hard
 
 "react-globe.gl@npm:^2.35.0":
-  version: 2.35.0
-  resolution: "react-globe.gl@npm:2.35.0"
+  version: 2.36.0
+  resolution: "react-globe.gl@npm:2.36.0"
   dependencies:
-    globe.gl: "npm:^2.43"
+    globe.gl: "npm:^2.44"
     prop-types: "npm:15"
     react-kapsule: "npm:^2.5"
   peerDependencies:
     react: "*"
-  checksum: 10c0/2ecd12afd5b9e774e84cc9154b49869b1344d147ffc79963a23dbc886fa6ab4e546f90bd5ed8bce7e9dbdb747cdba5c601ccaac6fa2514da65bf6d245b1b69fa
+  checksum: 10c0/caac6e3eac1bd201f31b14ea5e20be8112ca96be18ce80a62b3744f22d755bf58f941936de1853ab4f06e41710b3b2a33d10eb26681e2f466c4b18dbe75f44c2
   languageName: node
   linkType: hard
 
