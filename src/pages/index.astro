@@ -1,10 +1,10 @@
 ---
-import BaseLayout from '@modules/core/components/baseLayout/BaseLayout.astro';
-import LatestArticles from '@modules/core/components/latestArticles/LatestArticles.astro';
-import MyWork from '@modules/home/components/myWork/MyWork.astro';
-import Testimonials from '@modules/home/components/testimonials/Testimonials.astro';
-import Welcome from '@modules/home/components/welcome/Welcome.astro';
-import type { SeoMetadata } from 'src/const/types';
+import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import LatestArticles from "@modules/core/components/latestArticles/LatestArticles.astro";
+import MyWork from "@modules/home/components/myWork/MyWork.astro";
+import Testimonials from "@modules/home/components/testimonials/Testimonials.astro";
+import Welcome from "@modules/home/components/welcome/Welcome.astro";
+import type { SeoMetadata } from "src/const/types";
 
 // todo: migrate to payloadCMS (remove resolutions in package as the resolution fixes a critical vulnerability from contentful)
 // todo: add live collections
@@ -35,7 +35,7 @@ import type { SeoMetadata } from 'src/const/types';
 // valorar idea de que semblin 2 pagines(https://www.behance.net/gallery/177718861/Photography-Portfolio-Layout-(Download)?tracking_source=search_projects|writing+portfolio&l=2)
 
 const metadata: Partial<SeoMetadata> = {
-  title: 'Welcome',
+	title: "Welcome",
 };
 ---
 <BaseLayout {...metadata}>
