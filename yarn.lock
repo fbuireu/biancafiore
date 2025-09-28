@@ -182,7 +182,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "@astrojs/cloudflare@npm:^12.6.9":
+=======
+"@astrojs/cloudflare@npm:^12.6.8":
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   version: 12.6.9
   resolution: "@astrojs/cloudflare@npm:12.6.9"
   dependencies:
@@ -300,7 +304,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "@astrojs/mdx@npm:^4.3.6":
+=======
+"@astrojs/mdx@npm:^4.3.5":
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   version: 4.3.6
   resolution: "@astrojs/mdx@npm:4.3.6"
   dependencies:
@@ -342,7 +350,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "@astrojs/react@npm:^4.4.0":
+=======
+"@astrojs/react@npm:^4.3.1":
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   version: 4.4.0
   resolution: "@astrojs/react@npm:4.4.0"
   dependencies:
@@ -639,9 +651,9 @@ __metadata:
   linkType: hard
 
 "@babel/runtime@npm:^7.20.13":
-  version: 7.28.4
-  resolution: "@babel/runtime@npm:7.28.4"
-  checksum: 10c0/792ce7af9750fb9b93879cc9d1db175701c4689da890e6ced242ea0207c9da411ccf16dc04e689cc01158b28d7898c40d75598f4559109f761c12ce01e959bf7
+  version: 7.28.3
+  resolution: "@babel/runtime@npm:7.28.3"
+  checksum: 10c0/b360f82c2c5114f2a062d4d143d7b4ec690094764853937110585a9497977aed66c102166d0e404766c274e02a50ffb8f6d77fef7251ecf3f607f0e03e6397bc
   languageName: node
   linkType: hard
 
@@ -858,9 +870,15 @@ __metadata:
   linkType: hard
 
 "@cloudflare/workers-types@npm:^4.20250913.0":
+<<<<<<< HEAD
   version: 4.20250927.0
   resolution: "@cloudflare/workers-types@npm:4.20250927.0"
   checksum: 10c0/1cbface71b91853d3a86ab1ad35f7f0f0df351302519485d9620d8ae71763ca7ba138db64dbf8f8a817e7ff9937ec5847660aee0ed14253bdeb6d25ac997afce
+=======
+  version: 4.20250926.0
+  resolution: "@cloudflare/workers-types@npm:4.20250926.0"
+  checksum: 10c0/eb7efbde277599478d0642c06d2ca6b1de294d383c3fd5d9df7b6c476255c204ddadbdccff117eacd62c509b170fd73bbbd558eaea490b3f6813cd64600b01ab
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   languageName: node
   linkType: hard
 
@@ -1065,7 +1083,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "@contentful/rich-text-html-renderer@npm:^17.1.5":
+=======
+"@contentful/rich-text-html-renderer@npm:^17.1.3":
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   version: 17.1.5
   resolution: "@contentful/rich-text-html-renderer@npm:17.1.5"
   dependencies:
@@ -2024,12 +2046,12 @@ __metadata:
   linkType: hard
 
 "@jridgewell/trace-mapping@npm:^0.3.28":
-  version: 0.3.31
-  resolution: "@jridgewell/trace-mapping@npm:0.3.31"
+  version: 0.3.30
+  resolution: "@jridgewell/trace-mapping@npm:0.3.30"
   dependencies:
     "@jridgewell/resolve-uri": "npm:^3.1.0"
     "@jridgewell/sourcemap-codec": "npm:^1.4.14"
-  checksum: 10c0/4b30ec8cd56c5fd9a661f088230af01e0c1a3888d11ffb6b47639700f71225be21d1f7e168048d6d4f9449207b978a235c07c8f15c07705685d16dc06280e9d9
+  checksum: 10c0/3a1516c10f44613b9ba27c37a02ff8f410893776b2b3dad20a391b51b884dd60f97bbb56936d65d2ff8fe978510a0000266654ab8426bdb9ceb5fb4585b19e23
   languageName: node
   linkType: hard
 
@@ -2148,30 +2170,30 @@ __metadata:
   linkType: hard
 
 "@lingui/core@npm:^5.4.1":
-  version: 5.5.0
-  resolution: "@lingui/core@npm:5.5.0"
+  version: 5.4.1
+  resolution: "@lingui/core@npm:5.4.1"
   dependencies:
     "@babel/runtime": "npm:^7.20.13"
-    "@lingui/message-utils": "npm:5.5.0"
+    "@lingui/message-utils": "npm:5.4.1"
   peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": 5.5.0
+    "@lingui/babel-plugin-lingui-macro": 5.4.1
     babel-plugin-macros: 2 || 3
   peerDependenciesMeta:
     "@lingui/babel-plugin-lingui-macro":
       optional: true
     babel-plugin-macros:
       optional: true
-  checksum: 10c0/6a0f6c8968a3e065af151196ea16f4ab1531b050db722a691b021857f6e669ca0c83826e5e8cef45006b4287c1bb98671f293e18dfb515f8878a321a7213373c
+  checksum: 10c0/6cbfb3fa5bd46e3523a41774fd4b948b60d1ee643d8c82db8f4ed135d051dcdacb3132a42780b76dd6b3c3a030430f0e5325557c117175673e6f326d7548e5c8
   languageName: node
   linkType: hard
 
-"@lingui/message-utils@npm:5.5.0":
-  version: 5.5.0
-  resolution: "@lingui/message-utils@npm:5.5.0"
+"@lingui/message-utils@npm:5.4.1":
+  version: 5.4.1
+  resolution: "@lingui/message-utils@npm:5.4.1"
   dependencies:
     "@messageformat/parser": "npm:^5.0.0"
     js-sha256: "npm:^0.10.1"
-  checksum: 10c0/139699a9a646f2b2a863080ccafcc781c6db89396fc524ec4395835d1fb14947d75481ef6e11540f55cfdf9022124d68ce08058359673329c0eb05933e7c4b56
+  checksum: 10c0/96cefc75a883e398ed0c29b06eeb36b917a237d52913848fcf9e4b071cb0d117621354f9aa61679e67c0058936b5e2f051b3969bc3611540c183798eb89f27f1
   languageName: node
   linkType: hard
 
@@ -2287,7 +2309,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "@playwright/test@npm:^1.55.1":
+=======
+"@playwright/test@npm:^1.55.0":
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   version: 1.55.1
   resolution: "@playwright/test@npm:1.55.1"
   dependencies:
@@ -2776,9 +2802,9 @@ __metadata:
   linkType: hard
 
 "@sindresorhus/is@npm:^7.0.2":
-  version: 7.1.0
-  resolution: "@sindresorhus/is@npm:7.1.0"
-  checksum: 10c0/44e10fa64fd40132a908286812b105115bc8d9a56b3b76f9dbadad5865d68163e1637b11ec558762636d2af23493a6448fc00daf2614e3d5569873d3edf573ec
+  version: 7.0.2
+  resolution: "@sindresorhus/is@npm:7.0.2"
+  checksum: 10c0/50881c9b651e189972087de9104e0d259a2a0dc93c604e863b3be1847e31c3dce685e76a41c0ae92198ae02b36d30d07b723a2d72015ce3cf910afc6dc337ff5
   languageName: node
   linkType: hard
 
@@ -3105,11 +3131,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 24.0.15
-  resolution: "@types/node@npm:24.0.15"
+  version: 24.3.0
+  resolution: "@types/node@npm:24.3.0"
   dependencies:
-    undici-types: "npm:~7.8.0"
-  checksum: 10c0/39ead0c0ff25dde29357630b5eaa7dd73cf3af796dbd0f01ed439a8af01cbddfa6b68aa9d67fb3243962836170a4463ff856c47fa822250c585987f707eb42b3
+    undici-types: "npm:~7.10.0"
+  checksum: 10c0/96bdeca01f690338957c2dcc92cb9f76c262c10398f8d91860865464412b0f9d309c24d9b03d0bdd26dd47fa7ee3f8227893d5c89bc2009d919a525a22512030
   languageName: node
   linkType: hard
 
@@ -3145,7 +3171,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "@types/react@npm:^19.1.14":
+=======
+"@types/react@npm:^19.1.13":
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   version: 19.1.14
   resolution: "@types/react@npm:19.1.14"
   dependencies:
@@ -3523,7 +3553,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "algoliasearch@npm:^5.39.0":
+=======
+"algoliasearch@npm:^5.37.0":
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   version: 5.39.0
   resolution: "algoliasearch@npm:5.39.0"
   dependencies:
@@ -3654,7 +3688,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "astro@npm:^5.14.1":
+=======
+"astro@npm:^5.13.9":
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   version: 5.14.1
   resolution: "astro@npm:5.14.1"
   dependencies:
@@ -3737,7 +3775,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "axios@npm:^1.12.2":
+=======
+"axios@npm:^1.11.0":
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   version: 1.12.2
   resolution: "axios@npm:1.12.2"
   dependencies:
@@ -3788,25 +3830,41 @@ __metadata:
   resolution: "biancafiore@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.9.4"
+<<<<<<< HEAD
     "@astrojs/cloudflare": "npm:^12.6.9"
     "@astrojs/db": "npm:^0.18.0"
     "@astrojs/mdx": "npm:^4.3.6"
+=======
+    "@astrojs/cloudflare": "npm:^12.6.8"
+    "@astrojs/db": "npm:^0.18.0"
+    "@astrojs/mdx": "npm:^4.3.5"
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
     "@astrojs/partytown": "npm:^2.1.4"
     "@astrojs/react": "npm:^4.4.0"
     "@astrojs/rss": "npm:^4.0.12"
     "@astrojs/sitemap": "npm:^3.6.0"
     "@astrojs/ts-plugin": "npm:^1.10.4"
     "@biomejs/biome": "npm:^2.2.4"
+<<<<<<< HEAD
     "@commitlint/cli": "npm:^20.0.0"
     "@commitlint/config-conventional": "npm:^20.0.0"
     "@commitlint/format": "npm:^20.0.0"
     "@contentful/rich-text-html-renderer": "npm:^17.1.5"
     "@hookform/resolvers": "npm:^5.2.2"
     "@playwright/test": "npm:^1.55.1"
+=======
+    "@commitlint/cli": "npm:^19.8.1"
+    "@commitlint/config-conventional": "npm:^19.8.1"
+    "@commitlint/format": "npm:^19.8.1"
+    "@contentful/rich-text-html-renderer": "npm:^17.1.3"
+    "@hookform/resolvers": "npm:^5.2.2"
+    "@playwright/test": "npm:^1.55.0"
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
     "@testing-library/react": "npm:^16.3.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
     "@types/node": "npm:^24.5.2"
+<<<<<<< HEAD
     "@types/react": "npm:^19.1.14"
     "@types/react-dom": "npm:^19.1.9"
     "@types/three": "npm:^0.180.0"
@@ -3814,6 +3872,15 @@ __metadata:
     astro: "npm:^5.14.1"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.8.1"
+=======
+    "@types/react": "npm:^19.1.13"
+    "@types/react-dom": "npm:^19.1.9"
+    "@types/three": "npm:^0.180.0"
+    algoliasearch: "npm:^5.37.0"
+    astro: "npm:^5.13.9"
+    clsx: "npm:^2.1.1"
+    contentful: "npm:^11.7.19"
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.13.0"
     husky: "npm:^9.1.7"
@@ -3826,7 +3893,11 @@ __metadata:
     react-google-recaptcha-v3: "npm:^1.11.0"
     react-hook-form: "npm:^7.63.0"
     react-instantsearch: "npm:^7.16.3"
+<<<<<<< HEAD
     react-router-dom: "npm:^7.9.3"
+=======
+    react-router-dom: "npm:^7.9.1"
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
     resend: "npm:^6.1.0"
     swiper: "npm:^12.0.2"
     three: "npm:^0.180.0"
@@ -4002,6 +4073,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
+=======
+"chalk@npm:^5.6.0":
+  version: 5.6.0
+  resolution: "chalk@npm:5.6.0"
+  checksum: 10c0/f8558fc12fd9805f167611803b325b0098bbccdc9f1d3bafead41c9bac61f263357f3c0df0cbe28bc2fd5fca3edcf618b01d6771a5a776b4c15d061482a72b23
+  languageName: node
+  linkType: hard
+
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
 "character-entities-html4@npm:^2.0.0":
   version: 2.1.0
   resolution: "character-entities-html4@npm:2.1.0"
@@ -4234,9 +4315,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "contentful@npm:^11.8.1":
   version: 11.8.1
   resolution: "contentful@npm:11.8.1"
+=======
+"contentful@npm:^11.7.19":
+  version: 11.7.19
+  resolution: "contentful@npm:11.7.19"
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.33"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -4245,7 +4332,11 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
+<<<<<<< HEAD
   checksum: 10c0/a21d9437676d7831f7a8c78743df7d22c477598e9bf58e13f45e4a55dd7d1359026312d7685ea0762a7727b87fa930ddb05a024c2333c5a23de0de2b9c0d5e8c
+=======
+  checksum: 10c0/6e29d919cfd343bc0445aec45642c4b8d5beb5b5511aa99f0e4d3c556e4c2454ee69c1adb5066780070b5b407763d5afbcf266e3d27dacc4526fb16d8d64429f
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   languageName: node
   linkType: hard
 
@@ -8431,7 +8522,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "react-hook-form@npm:^7.63.0":
+=======
+"react-hook-form@npm:^7.62.0":
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   version: 7.63.0
   resolution: "react-hook-form@npm:7.63.0"
   peerDependencies:
@@ -8496,7 +8591,11 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "react-router-dom@npm:^7.9.3":
+=======
+"react-router-dom@npm:^7.9.1":
+>>>>>>> 20f880a7feae0ab6f24d520c66178f45ab319ed0
   version: 7.9.3
   resolution: "react-router-dom@npm:7.9.3"
   dependencies:
@@ -10027,10 +10126,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~7.8.0":
-  version: 7.8.0
-  resolution: "undici-types@npm:7.8.0"
-  checksum: 10c0/9d9d246d1dc32f318d46116efe3cfca5a72d4f16828febc1918d94e58f6ffcf39c158aa28bf5b4fc52f410446bc7858f35151367bd7a49f21746cab6497b709b
+"undici-types@npm:~7.12.0":
+  version: 7.12.0
+  resolution: "undici-types@npm:7.12.0"
+  checksum: 10c0/326e455bbc0026db1d6b81c76a1cf10c63f7e2f9821db2e24fdc258f482814e5bfa8481f8910d07c68e305937c5c049610fdc441c5e8b7bb0daca7154fb8a306
   languageName: node
   linkType: hard
 
