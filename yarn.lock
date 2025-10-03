@@ -629,18 +629,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:^2.2.4":
-  version: 2.2.4
-  resolution: "@biomejs/biome@npm:2.2.4"
+"@biomejs/biome@npm:^2.2.5":
+  version: 2.2.5
+  resolution: "@biomejs/biome@npm:2.2.5"
   dependencies:
-    "@biomejs/cli-darwin-arm64": "npm:2.2.4"
-    "@biomejs/cli-darwin-x64": "npm:2.2.4"
-    "@biomejs/cli-linux-arm64": "npm:2.2.4"
-    "@biomejs/cli-linux-arm64-musl": "npm:2.2.4"
-    "@biomejs/cli-linux-x64": "npm:2.2.4"
-    "@biomejs/cli-linux-x64-musl": "npm:2.2.4"
-    "@biomejs/cli-win32-arm64": "npm:2.2.4"
-    "@biomejs/cli-win32-x64": "npm:2.2.4"
+    "@biomejs/cli-darwin-arm64": "npm:2.2.5"
+    "@biomejs/cli-darwin-x64": "npm:2.2.5"
+    "@biomejs/cli-linux-arm64": "npm:2.2.5"
+    "@biomejs/cli-linux-arm64-musl": "npm:2.2.5"
+    "@biomejs/cli-linux-x64": "npm:2.2.5"
+    "@biomejs/cli-linux-x64-musl": "npm:2.2.5"
+    "@biomejs/cli-win32-arm64": "npm:2.2.5"
+    "@biomejs/cli-win32-x64": "npm:2.2.5"
   dependenciesMeta:
     "@biomejs/cli-darwin-arm64":
       optional: true
@@ -660,62 +660,62 @@ __metadata:
       optional: true
   bin:
     biome: bin/biome
-  checksum: 10c0/7229fcc743db48f3cfd7417fb3f33d1cd9e7dfe42a12ed3c1046cd3110718237bb71ea3fe5c8b0de9bd3df2b918d0be58027602aa3720b64904b63d9cedf53e3
+  checksum: 10c0/d9baff2b9d35f820e3e746fd4222ba1295d7648e04ececc4e1f25ed0c09dd4fd30505a7183731fc75252ea925728c276858c9f09751b7e1fd1c8378b05208de6
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-arm64@npm:2.2.4":
-  version: 2.2.4
-  resolution: "@biomejs/cli-darwin-arm64@npm:2.2.4"
+"@biomejs/cli-darwin-arm64@npm:2.2.5":
+  version: 2.2.5
+  resolution: "@biomejs/cli-darwin-arm64@npm:2.2.5"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-x64@npm:2.2.4":
-  version: 2.2.4
-  resolution: "@biomejs/cli-darwin-x64@npm:2.2.4"
+"@biomejs/cli-darwin-x64@npm:2.2.5":
+  version: 2.2.5
+  resolution: "@biomejs/cli-darwin-x64@npm:2.2.5"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64-musl@npm:2.2.4":
-  version: 2.2.4
-  resolution: "@biomejs/cli-linux-arm64-musl@npm:2.2.4"
+"@biomejs/cli-linux-arm64-musl@npm:2.2.5":
+  version: 2.2.5
+  resolution: "@biomejs/cli-linux-arm64-musl@npm:2.2.5"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64@npm:2.2.4":
-  version: 2.2.4
-  resolution: "@biomejs/cli-linux-arm64@npm:2.2.4"
+"@biomejs/cli-linux-arm64@npm:2.2.5":
+  version: 2.2.5
+  resolution: "@biomejs/cli-linux-arm64@npm:2.2.5"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64-musl@npm:2.2.4":
-  version: 2.2.4
-  resolution: "@biomejs/cli-linux-x64-musl@npm:2.2.4"
+"@biomejs/cli-linux-x64-musl@npm:2.2.5":
+  version: 2.2.5
+  resolution: "@biomejs/cli-linux-x64-musl@npm:2.2.5"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64@npm:2.2.4":
-  version: 2.2.4
-  resolution: "@biomejs/cli-linux-x64@npm:2.2.4"
+"@biomejs/cli-linux-x64@npm:2.2.5":
+  version: 2.2.5
+  resolution: "@biomejs/cli-linux-x64@npm:2.2.5"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-arm64@npm:2.2.4":
-  version: 2.2.4
-  resolution: "@biomejs/cli-win32-arm64@npm:2.2.4"
+"@biomejs/cli-win32-arm64@npm:2.2.5":
+  version: 2.2.5
+  resolution: "@biomejs/cli-win32-arm64@npm:2.2.5"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-x64@npm:2.2.4":
-  version: 2.2.4
-  resolution: "@biomejs/cli-win32-x64@npm:2.2.4"
+"@biomejs/cli-win32-x64@npm:2.2.5":
+  version: 2.2.5
+  resolution: "@biomejs/cli-win32-x64@npm:2.2.5"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -795,20 +795,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:^20.0.0":
-  version: 20.0.0
-  resolution: "@commitlint/cli@npm:20.0.0"
+"@commitlint/cli@npm:^20.1.0":
+  version: 20.1.0
+  resolution: "@commitlint/cli@npm:20.1.0"
   dependencies:
     "@commitlint/format": "npm:^20.0.0"
     "@commitlint/lint": "npm:^20.0.0"
-    "@commitlint/load": "npm:^20.0.0"
+    "@commitlint/load": "npm:^20.1.0"
     "@commitlint/read": "npm:^20.0.0"
     "@commitlint/types": "npm:^20.0.0"
     tinyexec: "npm:^1.0.0"
     yargs: "npm:^17.0.0"
   bin:
     commitlint: ./cli.js
-  checksum: 10c0/d9f6b7e155be73804884a8cd218eddc78ca0fa082461968ccc6ba04b38fc548afa4101e0c00c6a285c35ae31bdf499c0d1e48a72742ab6679c7fe268bf2c3d88
+  checksum: 10c0/ce3914947e6ab9ad658c52e697e4b1e1dac7c80313253a4f9fdfa9a1fb10df9e6cc06d89f7daae4b6a2d157b967f28cc39856c8a6bf11a4a4ed653d011b3f81a
   languageName: node
   linkType: hard
 
@@ -885,13 +885,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/load@npm:^20.0.0":
-  version: 20.0.0
-  resolution: "@commitlint/load@npm:20.0.0"
+"@commitlint/load@npm:^20.1.0":
+  version: 20.1.0
+  resolution: "@commitlint/load@npm:20.1.0"
   dependencies:
     "@commitlint/config-validator": "npm:^20.0.0"
     "@commitlint/execute-rule": "npm:^20.0.0"
-    "@commitlint/resolve-extends": "npm:^20.0.0"
+    "@commitlint/resolve-extends": "npm:^20.1.0"
     "@commitlint/types": "npm:^20.0.0"
     chalk: "npm:^5.3.0"
     cosmiconfig: "npm:^9.0.0"
@@ -899,7 +899,7 @@ __metadata:
     lodash.isplainobject: "npm:^4.0.6"
     lodash.merge: "npm:^4.6.2"
     lodash.uniq: "npm:^4.5.0"
-  checksum: 10c0/d0b02e6b943db0f7a2892e63fdd5c8f5015c02caee7c3f6c20324870a40b9ed49fd4a5aa6e9e5b7d4270ff1446c6972c4f01043f727a6f9bc1663144b8197ca1
+  checksum: 10c0/cabbd8311605afd2a9437b7bb9174c2307453ed6a8ff5bee4738470efcc316c998c7e0660b5342e191e20962af0ab76bc608ce5812e23b1a0207fe60e9dd238f
   languageName: node
   linkType: hard
 
@@ -934,9 +934,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/resolve-extends@npm:^20.0.0":
-  version: 20.0.0
-  resolution: "@commitlint/resolve-extends@npm:20.0.0"
+"@commitlint/resolve-extends@npm:^20.1.0":
+  version: 20.1.0
+  resolution: "@commitlint/resolve-extends@npm:20.1.0"
   dependencies:
     "@commitlint/config-validator": "npm:^20.0.0"
     "@commitlint/types": "npm:^20.0.0"
@@ -944,7 +944,7 @@ __metadata:
     import-meta-resolve: "npm:^4.0.0"
     lodash.mergewith: "npm:^4.6.2"
     resolve-from: "npm:^5.0.0"
-  checksum: 10c0/22b744cfbfdf38af90c6472f9d3a348a467c1ce3ef752342e3571fc9a07ee26ddeef16fb9fe4b5ace0894feb4e749987093bfc45d1ec4b8912d02dd7f4ec677f
+  checksum: 10c0/d5b30a5266310070d729eafb2ca5aaac9426de8d978dc5f459f41cc6d5d726b00bb5892f3a65f80ebf728752465e2fdb3cb4738118a65004beace675a72f4081
   languageName: node
   linkType: hard
 
@@ -2795,7 +2795,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^24.5.2":
+"@types/node@npm:*":
   version: 24.5.2
   resolution: "@types/node@npm:24.5.2"
   dependencies:
@@ -2811,6 +2811,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^24.6.2":
+  version: 24.6.2
+  resolution: "@types/node@npm:24.6.2"
+  dependencies:
+    undici-types: "npm:~7.13.0"
+  checksum: 10c0/d029757711be85ec468686f66cd8eca78f5996d7e2b1a5b818436e0299b19925b0fb4f7509a6b62750abdc72d66f5750ce22fb8b55559baca86df89a9c44722e
+  languageName: node
+  linkType: hard
+
 "@types/qs@npm:^6.5.3":
   version: 6.14.0
   resolution: "@types/qs@npm:6.14.0"
@@ -2818,21 +2827,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^19.1.9":
-  version: 19.1.9
-  resolution: "@types/react-dom@npm:19.1.9"
+"@types/react-dom@npm:^19.2.0":
+  version: 19.2.0
+  resolution: "@types/react-dom@npm:19.2.0"
   peerDependencies:
-    "@types/react": ^19.0.0
-  checksum: 10c0/34c8dda86c1590b3ef0e7ecd38f9663a66ba2dd69113ba74fb0adc36b83bbfb8c94c1487a2505282a5f7e5e000d2ebf36f4c0fd41b3b672f5178fd1d4f1f8f58
+    "@types/react": ^19.2.0
+  checksum: 10c0/73ba326c8bc53e7bb597aa8e66ce4aabd79e501f744e1386278f0c63f1be6d78cca71a8269af3565206f296675116109a3ccbed4038409614fabf8405e54c6ef
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.1.14":
-  version: 19.1.15
-  resolution: "@types/react@npm:19.1.15"
+"@types/react@npm:^19.2.0":
+  version: 19.2.0
+  resolution: "@types/react@npm:19.2.0"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10c0/f72cb36cb12a0c8aeba4df5a52d6b8a66509983c109201582c156676e8f1a6f5f2b74103f996ae756a04154d3722154350bd606cb87df211bbacda93139225b2
+  checksum: 10c0/a280e146df2abd3b06eaa2f5332dade9f7ebe916334a40699ee11139c5f22aeb49b5b78b6de8c55b53ef2fa94285e1bc2feaf4fbce6fe259a7de92dc1bf67b17
   languageName: node
   linkType: hard
 
@@ -3487,8 +3496,8 @@ __metadata:
     "@astrojs/rss": "npm:^4.0.12"
     "@astrojs/sitemap": "npm:^3.6.0"
     "@astrojs/ts-plugin": "npm:^1.10.4"
-    "@biomejs/biome": "npm:^2.2.4"
-    "@commitlint/cli": "npm:^20.0.0"
+    "@biomejs/biome": "npm:^2.2.5"
+    "@commitlint/cli": "npm:^20.1.0"
     "@commitlint/config-conventional": "npm:^20.0.0"
     "@commitlint/format": "npm:^20.0.0"
     "@contentful/rich-text-html-renderer": "npm:^17.1.5"
@@ -3497,31 +3506,31 @@ __metadata:
     "@testing-library/react": "npm:^16.3.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^24.5.2"
-    "@types/react": "npm:^19.1.14"
-    "@types/react-dom": "npm:^19.1.9"
+    "@types/node": "npm:^24.6.2"
+    "@types/react": "npm:^19.2.0"
+    "@types/react-dom": "npm:^19.2.0"
     "@types/three": "npm:^0.180.0"
     algoliasearch: "npm:^5.39.0"
     astro: "npm:^5.14.1"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.8.1"
+    contentful: "npm:^11.8.3"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.13.0"
     husky: "npm:^9.1.7"
     instantsearch.css: "npm:^8.5.1"
-    lint-staged: "npm:^16.2.1"
+    lint-staged: "npm:^16.2.3"
     markdown-it: "npm:^14.1.0"
-    react: "npm:^19.1.1"
-    react-dom: "npm:^19.1.1"
+    react: "npm:^19.2.0"
+    react-dom: "npm:^19.2.0"
     react-globe.gl: "npm:^2.36.0"
     react-google-recaptcha-v3: "npm:^1.11.0"
     react-hook-form: "npm:^7.63.0"
     react-instantsearch: "npm:^7.16.3"
     react-router-dom: "npm:^7.9.3"
-    resend: "npm:^6.1.0"
+    resend: "npm:^6.1.2"
     swiper: "npm:^12.0.2"
     three: "npm:^0.180.0"
-    typescript: "npm:^5.9.2"
+    typescript: "npm:^5.9.3"
     vanilla-cookieconsent: "npm:^3.1.0"
     vitest: "npm:^3.2.4"
   languageName: unknown
@@ -3919,9 +3928,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.8.1":
-  version: 11.8.1
-  resolution: "contentful@npm:11.8.1"
+"contentful@npm:^11.8.3":
+  version: 11.8.3
+  resolution: "contentful@npm:11.8.3"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.33"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -3930,7 +3939,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/a21d9437676d7831f7a8c78743df7d22c477598e9bf58e13f45e4a55dd7d1359026312d7685ea0762a7727b87fa930ddb05a024c2333c5a23de0de2b9c0d5e8c
+  checksum: 10c0/dbda022af580c3740c168a07902ef3dcb16cbc62478d2c184cf3869127104516d6d9ee21dbe3f2a351dd1e9c634e397a6101c40cb3095399c00226d5381fb2b0
   languageName: node
   linkType: hard
 
@@ -6186,7 +6195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^16.2.1":
+"lint-staged@npm:^16.2.3":
   version: 16.2.3
   resolution: "lint-staged@npm:16.2.3"
   dependencies:
@@ -7945,14 +7954,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^19.1.1":
-  version: 19.1.1
-  resolution: "react-dom@npm:19.1.1"
+"react-dom@npm:^19.2.0":
+  version: 19.2.0
+  resolution: "react-dom@npm:19.2.0"
   dependencies:
-    scheduler: "npm:^0.26.0"
+    scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: ^19.1.1
-  checksum: 10c0/8c91198510521299c56e4e8d5e3a4508b2734fb5e52f29eeac33811de64e76fe586ad32c32182e2e84e070d98df67125da346c3360013357228172dbcd20bcdd
+    react: ^19.2.0
+  checksum: 10c0/fa2cae05248d01288e91523b590ce4e7635b1e13f1344e225f850d722a8da037bf0782f63b1c1d46353334e0c696909b82e582f8cad607948fde6f7646cc18d9
   languageName: node
   linkType: hard
 
@@ -8085,10 +8094,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^19.1.1":
-  version: 19.1.1
-  resolution: "react@npm:19.1.1"
-  checksum: 10c0/8c9769a2dfd02e603af6445058325e6c8a24b47b185d0e461f66a6454765ddcaecb3f0a90184836c68bb509f3c38248359edbc42f0d07c23eb500a5c30c87b4e
+"react@npm:^19.2.0":
+  version: 19.2.0
+  resolution: "react@npm:19.2.0"
+  checksum: 10c0/1b6d64eacb9324725bfe1e7860cb7a6b8a34bc89a482920765ebff5c10578eb487e6b46b2f0df263bd27a25edbdae2c45e5ea5d81ae61404301c1a7192c38330
   languageName: node
   linkType: hard
 
@@ -8330,15 +8339,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resend@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "resend@npm:6.1.0"
+"resend@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "resend@npm:6.1.2"
   peerDependencies:
-    "@react-email/render": ^1.1.0
+    "@react-email/render": "*"
   peerDependenciesMeta:
     "@react-email/render":
       optional: true
-  checksum: 10c0/cfa07559407a811af3844d4eacca4e96ae7d530e8a6577998d6a42133498e36a5cbb373ad65da834cee7da9b633ecef123526d3952c637436e967affbb28051a
+  checksum: 10c0/7a7a6099f82470d7fb8526bf18ea8563dca9bf93b245dfa4dcf12257e3e903a8b1cf73b7a1b7a7a77573837d67a9fba13a13ed2deb88f11c38e143a55ba45f99
   languageName: node
   linkType: hard
 
@@ -8550,10 +8559,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.26.0":
-  version: 0.26.0
-  resolution: "scheduler@npm:0.26.0"
-  checksum: 10c0/5b8d5bfddaae3513410eda54f2268e98a376a429931921a81b5c3a2873aab7ca4d775a8caac5498f8cbc7d0daeab947cf923dbd8e215d61671f9f4e392d34356
+"scheduler@npm:^0.27.0":
+  version: 0.27.0
+  resolution: "scheduler@npm:0.27.0"
+  checksum: 10c0/4f03048cb05a3c8fddc45813052251eca00688f413a3cee236d984a161da28db28ba71bd11e7a3dd02f7af84ab28d39fb311431d3b3772fed557945beb00c452
   languageName: node
   linkType: hard
 
@@ -9362,23 +9371,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.9.2":
-  version: 5.9.2
-  resolution: "typescript@npm:5.9.2"
+"typescript@npm:^5.9.3":
+  version: 5.9.3
+  resolution: "typescript@npm:5.9.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/cd635d50f02d6cf98ed42de2f76289701c1ec587a363369255f01ed15aaf22be0813226bff3c53e99d971f9b540e0b3cc7583dbe05faded49b1b0bed2f638a18
+  checksum: 10c0/6bd7552ce39f97e711db5aa048f6f9995b53f1c52f7d8667c1abdc1700c68a76a308f579cd309ce6b53646deb4e9a1be7c813a93baaf0a28ccd536a30270e1c5
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.9.2#optional!builtin<compat/typescript>":
-  version: 5.9.2
-  resolution: "typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"
+"typescript@patch:typescript@npm%3A^5.9.3#optional!builtin<compat/typescript>":
+  version: 5.9.3
+  resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/34d2a8e23eb8e0d1875072064d5e1d9c102e0bdce56a10a25c0b917b8aa9001a9cf5c225df12497e99da107dc379360bc138163c66b55b95f5b105b50578067e
+  checksum: 10c0/ad09fdf7a756814dce65bc60c1657b40d44451346858eea230e10f2e95a289d9183b6e32e5c11e95acc0ccc214b4f36289dcad4bf1886b0adb84d711d336a430
   languageName: node
   linkType: hard
 
@@ -9414,6 +9423,13 @@ __metadata:
   version: 7.12.0
   resolution: "undici-types@npm:7.12.0"
   checksum: 10c0/326e455bbc0026db1d6b81c76a1cf10c63f7e2f9821db2e24fdc258f482814e5bfa8481f8910d07c68e305937c5c049610fdc441c5e8b7bb0daca7154fb8a306
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~7.13.0":
+  version: 7.13.0
+  resolution: "undici-types@npm:7.13.0"
+  checksum: 10c0/44bbb0935425291351bfd8039571f017295b5d6dc5727045d0a4fea8c6ffe73a6703b48ce010f9cb539b9041a75b463f8cfe1e7309cab7486452505fb0d66151
   languageName: node
   linkType: hard
 
