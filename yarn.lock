@@ -3524,7 +3524,7 @@ __metadata:
     react-dom: "npm:^19.2.0"
     react-globe.gl: "npm:^2.36.0"
     react-google-recaptcha-v3: "npm:^1.11.0"
-    react-hook-form: "npm:^7.63.0"
+    react-hook-form: "npm:^7.64.0"
     react-instantsearch: "npm:^7.16.3"
     react-router-dom: "npm:^7.9.3"
     resend: "npm:^6.1.2"
@@ -7994,7 +7994,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.63.0":
+"react-hook-form@npm:^7.64.0":
   version: 7.64.0
   resolution: "react-hook-form@npm:7.64.0"
   peerDependencies:
