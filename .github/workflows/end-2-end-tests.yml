@@ -29,7 +29,7 @@ jobs:
                   CI: ${{ env.CI }}
                   E2E_URL: ${{ env.E2E_URL }}
             - name: Upload Artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v5
               if: always()
               with:
                   name: playwright-report
