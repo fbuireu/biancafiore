@@ -77,7 +77,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/ts-plugin": "^1.10.5",
-		"@biomejs/biome": "^2.3.3",
+		"@biomejs/biome": "^2.3.4",
 		"@commitlint/cli": "^20.1.0",
 		"@commitlint/config-conventional": "^20.0.0",
 		"@commitlint/format": "^20.0.0",
