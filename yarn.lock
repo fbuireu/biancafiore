@@ -329,8 +329,8 @@ __metadata:
   linkType: hard
 
 "@astrojs/mdx@npm:^4.3.9":
-  version: 4.3.9
-  resolution: "@astrojs/mdx@npm:4.3.9"
+  version: 4.3.10
+  resolution: "@astrojs/mdx@npm:4.3.10"
   dependencies:
     "@astrojs/markdown-remark": "npm:6.3.8"
     "@mdx-js/mdx": "npm:^3.1.1"
@@ -347,7 +347,7 @@ __metadata:
     vfile: "npm:^6.0.3"
   peerDependencies:
     astro: ^5.0.0
-  checksum: 10c0/a45f7bdbe4d2bfc8622da0c80b1b2a35269792087973878784a3c033fad67f0fecf222caf220f035647566189f3a09279bd9adcf4d861645cc247f6f6d5dafdf
+  checksum: 10c0/c216dde40a29af6f612dec3bd4f48072e21845c7ac20c22259a68edde6919547580cf2998abf7e1a11028e7096ff6ddf0e5d6774350800cec53480619643fdec
   languageName: node
   linkType: hard
 
@@ -371,8 +371,8 @@ __metadata:
   linkType: hard
 
 "@astrojs/react@npm:^4.4.1":
-  version: 4.4.1
-  resolution: "@astrojs/react@npm:4.4.1"
+  version: 4.4.2
+  resolution: "@astrojs/react@npm:4.4.2"
   dependencies:
     "@vitejs/plugin-react": "npm:^4.7.0"
     ultrahtml: "npm:^1.6.0"
@@ -382,7 +382,7 @@ __metadata:
     "@types/react-dom": ^17.0.17 || ^18.0.6 || ^19.0.0
     react: ^17.0.2 || ^18.0.0 || ^19.0.0
     react-dom: ^17.0.2 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/edc72531a114613e18a59c45664a2b5e0a7a0f4b4fbe80278d88bf1d04c841e1b8542c0805f998af496e90eaf9e16cd4a1dd1ca927e4c1ed5d3b9d9040c25288
+  checksum: 10c0/aabe71afcba01b1a133c97201c7dcdb417c2345ad73b0bae7d331651fcec9a6b0f2c6eb0c18b600973582065d608676b026f0fb8dd38c83dcbb82cd1377cfd7f
   languageName: node
   linkType: hard
 
@@ -3420,8 +3420,8 @@ __metadata:
   linkType: hard
 
 "astro@npm:^5.15.3":
-  version: 5.15.3
-  resolution: "astro@npm:5.15.3"
+  version: 5.15.4
+  resolution: "astro@npm:5.15.4"
   dependencies:
     "@astrojs/compiler": "npm:^2.12.2"
     "@astrojs/internal-helpers": "npm:0.7.4"
@@ -3491,7 +3491,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/7cefee00b53d4ecf5e1b0826bf6a19e70f44f58fac573bdbb0d8fe8d6005ee15973bdb396a78559ecb968db800688e906c1b82bc9ff9de1e288f7d455a164b36
+  checksum: 10c0/019a07c76c785d9f3e7a71b1d96dba7c3a95254b05a4636fe50c92db8a1fe7edfcab4957fe526bfba00e1763dfef4ed88b22ce992f0632b8a005f4aaf736e7b6
   languageName: node
   linkType: hard
 
