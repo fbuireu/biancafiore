@@ -328,7 +328,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/mdx@npm:^4.3.9":
+"@astrojs/mdx@npm:^4.3.10":
   version: 4.3.10
   resolution: "@astrojs/mdx@npm:4.3.10"
   dependencies:
@@ -370,7 +370,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:^4.4.1":
+"@astrojs/react@npm:^4.4.2":
   version: 4.4.2
   resolution: "@astrojs/react@npm:4.4.2"
   dependencies:
@@ -3295,7 +3295,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"algoliasearch@npm:^5.42.0":
+"algoliasearch@npm:^5.43.0":
   version: 5.43.0
   resolution: "algoliasearch@npm:5.43.0"
   dependencies:
@@ -3419,7 +3419,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.15.3":
+"astro@npm:^5.15.4":
   version: 5.15.4
   resolution: "astro@npm:5.15.4"
   dependencies:
@@ -3564,9 +3564,9 @@ __metadata:
     "@astrojs/check": "npm:^0.9.5"
     "@astrojs/cloudflare": "npm:^12.6.10"
     "@astrojs/db": "npm:^0.18.2"
-    "@astrojs/mdx": "npm:^4.3.9"
+    "@astrojs/mdx": "npm:^4.3.10"
     "@astrojs/partytown": "npm:^2.1.4"
-    "@astrojs/react": "npm:^4.4.1"
+    "@astrojs/react": "npm:^4.4.2"
     "@astrojs/rss": "npm:^4.0.13"
     "@astrojs/sitemap": "npm:^3.6.0"
     "@astrojs/ts-plugin": "npm:^1.10.5"
@@ -3584,14 +3584,14 @@ __metadata:
     "@types/react": "npm:^19.2.2"
     "@types/react-dom": "npm:^19.2.2"
     "@types/three": "npm:^0.181.0"
-    algoliasearch: "npm:^5.42.0"
-    astro: "npm:^5.15.3"
+    algoliasearch: "npm:^5.43.0"
+    astro: "npm:^5.15.4"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.8.11"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.13.0"
     husky: "npm:^9.1.7"
-    instantsearch.css: "npm:^8.6.0"
+    instantsearch.css: "npm:^8.7.0"
     lint-staged: "npm:^16.2.6"
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.2.0"
@@ -3599,14 +3599,14 @@ __metadata:
     react-globe.gl: "npm:^2.37.0"
     react-google-recaptcha-v3: "npm:^1.11.0"
     react-hook-form: "npm:^7.66.0"
-    react-instantsearch: "npm:^7.17.0"
+    react-instantsearch: "npm:^7.18.0"
     react-router-dom: "npm:^7.9.5"
-    resend: "npm:^6.4.1"
+    resend: "npm:^6.4.2"
     swiper: "npm:^12.0.3"
-    three: "npm:^0.181.0"
+    three: "npm:^0.181.1"
     typescript: "npm:^5.9.3"
     vanilla-cookieconsent: "npm:^3.1.0"
-    vitest: "npm:^4.0.7"
+    vitest: "npm:^4.0.8"
   languageName: unknown
   linkType: soft
 
@@ -5822,7 +5822,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"instantsearch.css@npm:^8.6.0":
+"instantsearch.css@npm:^8.7.0":
   version: 8.7.0
   resolution: "instantsearch.css@npm:8.7.0"
   checksum: 10c0/210eeebd343b35920691b28b6a429c3d6eedafe059045c998e1b5882a8048999db3184fb7963cbdbdfeb8ed4c310147bc1cbb108ae0732a891fd8ddccb4f6927
@@ -8081,7 +8081,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-instantsearch@npm:^7.17.0":
+"react-instantsearch@npm:^7.18.0":
   version: 7.18.0
   resolution: "react-instantsearch@npm:7.18.0"
   dependencies:
@@ -8402,7 +8402,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resend@npm:^6.4.1":
+"resend@npm:^6.4.2":
   version: 6.4.2
   resolution: "resend@npm:6.4.2"
   dependencies:
@@ -9294,10 +9294,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:^0.181.0":
-  version: 0.181.0
-  resolution: "three@npm:0.181.0"
-  checksum: 10c0/676dff297e54dc8bb55ce059d5bfe2332c817e207025d07d1a24fd48376db276d9bc6aa4c47ab7b1ba551752f1e42aacf7248eac94354ebbfa0d43042c6a50f1
+"three@npm:^0.181.1":
+  version: 0.181.1
+  resolution: "three@npm:0.181.1"
+  checksum: 10c0/ca848798fa75ac6f4a20b7da085e99b7eba18cc8bd51268e91cefa405a021e045561475fe8cea3841439e39e7723055d80ba942ad4c63f651713ac874f6d4e4a
   languageName: node
   linkType: hard
 
@@ -9959,7 +9959,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^4.0.7":
+"vitest@npm:^4.0.8":
   version: 4.0.8
   resolution: "vitest@npm:4.0.8"
   dependencies:
