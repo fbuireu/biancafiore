@@ -664,18 +664,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@biomejs/biome@npm:2.3.4"
+"@biomejs/biome@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@biomejs/biome@npm:2.3.5"
   dependencies:
-    "@biomejs/cli-darwin-arm64": "npm:2.3.4"
-    "@biomejs/cli-darwin-x64": "npm:2.3.4"
-    "@biomejs/cli-linux-arm64": "npm:2.3.4"
-    "@biomejs/cli-linux-arm64-musl": "npm:2.3.4"
-    "@biomejs/cli-linux-x64": "npm:2.3.4"
-    "@biomejs/cli-linux-x64-musl": "npm:2.3.4"
-    "@biomejs/cli-win32-arm64": "npm:2.3.4"
-    "@biomejs/cli-win32-x64": "npm:2.3.4"
+    "@biomejs/cli-darwin-arm64": "npm:2.3.5"
+    "@biomejs/cli-darwin-x64": "npm:2.3.5"
+    "@biomejs/cli-linux-arm64": "npm:2.3.5"
+    "@biomejs/cli-linux-arm64-musl": "npm:2.3.5"
+    "@biomejs/cli-linux-x64": "npm:2.3.5"
+    "@biomejs/cli-linux-x64-musl": "npm:2.3.5"
+    "@biomejs/cli-win32-arm64": "npm:2.3.5"
+    "@biomejs/cli-win32-x64": "npm:2.3.5"
   dependenciesMeta:
     "@biomejs/cli-darwin-arm64":
       optional: true
@@ -695,62 +695,62 @@ __metadata:
       optional: true
   bin:
     biome: bin/biome
-  checksum: 10c0/61bb2e3b98ebb26cc21e5690492bc09793c9135c34fd33230c227d4cb707a19ced578d20df4cab8b257c70cef006312f1050cdba3abdf8c0aa478ca6a347b27f
+  checksum: 10c0/c29264d9e3427b665a169af01aadea5584def961397ff6e1d1be4f16c5d37aca1b1b6ea1e6190c63330d0d8022009261ddc4c42a39727f77d5668b91e427b4f3
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-arm64@npm:2.3.4":
-  version: 2.3.4
-  resolution: "@biomejs/cli-darwin-arm64@npm:2.3.4"
+"@biomejs/cli-darwin-arm64@npm:2.3.5":
+  version: 2.3.5
+  resolution: "@biomejs/cli-darwin-arm64@npm:2.3.5"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-x64@npm:2.3.4":
-  version: 2.3.4
-  resolution: "@biomejs/cli-darwin-x64@npm:2.3.4"
+"@biomejs/cli-darwin-x64@npm:2.3.5":
+  version: 2.3.5
+  resolution: "@biomejs/cli-darwin-x64@npm:2.3.5"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64-musl@npm:2.3.4":
-  version: 2.3.4
-  resolution: "@biomejs/cli-linux-arm64-musl@npm:2.3.4"
+"@biomejs/cli-linux-arm64-musl@npm:2.3.5":
+  version: 2.3.5
+  resolution: "@biomejs/cli-linux-arm64-musl@npm:2.3.5"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64@npm:2.3.4":
-  version: 2.3.4
-  resolution: "@biomejs/cli-linux-arm64@npm:2.3.4"
+"@biomejs/cli-linux-arm64@npm:2.3.5":
+  version: 2.3.5
+  resolution: "@biomejs/cli-linux-arm64@npm:2.3.5"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64-musl@npm:2.3.4":
-  version: 2.3.4
-  resolution: "@biomejs/cli-linux-x64-musl@npm:2.3.4"
+"@biomejs/cli-linux-x64-musl@npm:2.3.5":
+  version: 2.3.5
+  resolution: "@biomejs/cli-linux-x64-musl@npm:2.3.5"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64@npm:2.3.4":
-  version: 2.3.4
-  resolution: "@biomejs/cli-linux-x64@npm:2.3.4"
+"@biomejs/cli-linux-x64@npm:2.3.5":
+  version: 2.3.5
+  resolution: "@biomejs/cli-linux-x64@npm:2.3.5"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-arm64@npm:2.3.4":
-  version: 2.3.4
-  resolution: "@biomejs/cli-win32-arm64@npm:2.3.4"
+"@biomejs/cli-win32-arm64@npm:2.3.5":
+  version: 2.3.5
+  resolution: "@biomejs/cli-win32-arm64@npm:2.3.5"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-x64@npm:2.3.4":
-  version: 2.3.4
-  resolution: "@biomejs/cli-win32-x64@npm:2.3.4"
+"@biomejs/cli-win32-x64@npm:2.3.5":
+  version: 2.3.5
+  resolution: "@biomejs/cli-win32-x64@npm:2.3.5"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -2899,12 +2899,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.2.2":
-  version: 19.2.2
-  resolution: "@types/react@npm:19.2.2"
+"@types/react@npm:^19.2.3":
+  version: 19.2.3
+  resolution: "@types/react@npm:19.2.3"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10c0/f830b1204aca4634ce3c6cb3477b5d3d066b80a4dd832a4ee0069acb504b6debd2416548a43a11c1407c12bc60e2dc6cf362934a18fe75fe06a69c0a98cba8ab
+  checksum: 10c0/12db8df36b9a0c8f7a602d0684e53731a43da4519f963fa3d1f4d4cac10b3bd31f2c838be74fe111174fff631e80b8e3d645fdfed477eb0632ab972241d05d67
   languageName: node
   linkType: hard
 
@@ -3284,14 +3284,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"algoliasearch-helper@npm:3.26.0":
-  version: 3.26.0
-  resolution: "algoliasearch-helper@npm:3.26.0"
+"algoliasearch-helper@npm:3.26.1":
+  version: 3.26.1
+  resolution: "algoliasearch-helper@npm:3.26.1"
   dependencies:
     "@algolia/events": "npm:^4.0.1"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
-  checksum: 10c0/1b644ba6b5f2dcf46438f0200fc442c25725492f8e2fb046453c2b6c68403c0a8d128fd6f092a598ea7ce1a7737baa88bc466bc1cfc477f60105ab0c0c41bec2
+  checksum: 10c0/506bbd63041ee593eacd02cc88294961eb8b4fbd63a45bb6aeb5795de79c243ab5a0c2f121ed056d344cad0146bba8a40fe3729d12315803d895335790dba059
   languageName: node
   linkType: hard
 
@@ -3419,9 +3419,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.15.4":
-  version: 5.15.4
-  resolution: "astro@npm:5.15.4"
+"astro@npm:^5.15.5":
+  version: 5.15.5
+  resolution: "astro@npm:5.15.5"
   dependencies:
     "@astrojs/compiler": "npm:^2.12.2"
     "@astrojs/internal-helpers": "npm:0.7.4"
@@ -3491,7 +3491,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/019a07c76c785d9f3e7a71b1d96dba7c3a95254b05a4636fe50c92db8a1fe7edfcab4957fe526bfba00e1763dfef4ed88b22ce992f0632b8a005f4aaf736e7b6
+  checksum: 10c0/f00b73c382d8cb7f8e867d8f782aba4f8ce3b41ae4ef997c8b7f5b11f82385aec0cff22a02e05f07743ed413a0cd5ded32314f9e92a0182645cdbfdaf1097e5c
   languageName: node
   linkType: hard
 
@@ -3570,7 +3570,7 @@ __metadata:
     "@astrojs/rss": "npm:^4.0.13"
     "@astrojs/sitemap": "npm:^3.6.0"
     "@astrojs/ts-plugin": "npm:^1.10.5"
-    "@biomejs/biome": "npm:^2.3.4"
+    "@biomejs/biome": "npm:^2.3.5"
     "@commitlint/cli": "npm:^20.1.0"
     "@commitlint/config-conventional": "npm:^20.0.0"
     "@commitlint/format": "npm:^20.0.0"
@@ -3581,17 +3581,17 @@ __metadata:
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
     "@types/node": "npm:^24.10.0"
-    "@types/react": "npm:^19.2.2"
+    "@types/react": "npm:^19.2.3"
     "@types/react-dom": "npm:^19.2.2"
     "@types/three": "npm:^0.181.0"
     algoliasearch: "npm:^5.43.0"
-    astro: "npm:^5.15.4"
+    astro: "npm:^5.15.5"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.8.11"
+    contentful: "npm:^11.8.12"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.13.0"
     husky: "npm:^9.1.7"
-    instantsearch.css: "npm:^8.7.0"
+    instantsearch.css: "npm:^8.8.0"
     lint-staged: "npm:^16.2.6"
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.2.0"
@@ -3599,7 +3599,7 @@ __metadata:
     react-globe.gl: "npm:^2.37.0"
     react-google-recaptcha-v3: "npm:^1.11.0"
     react-hook-form: "npm:^7.66.0"
-    react-instantsearch: "npm:^7.18.0"
+    react-instantsearch: "npm:^7.19.0"
     react-router-dom: "npm:^7.9.5"
     resend: "npm:^6.4.2"
     swiper: "npm:^12.0.3"
@@ -3975,9 +3975,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.8.11":
-  version: 11.8.11
-  resolution: "contentful@npm:11.8.11"
+"contentful@npm:^11.8.12":
+  version: 11.8.12
+  resolution: "contentful@npm:11.8.12"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.33"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -3986,7 +3986,7 @@ __metadata:
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/020d956082bd031e50887e2621ecc830fa895fc360ba136f9c1817295557aed2419a34332050a820bb9be39e0fb76e39e8fdc9342c3468c82f6d668c4bb1556a
+  checksum: 10c0/d1a4034c415ecb771f6055e1ced9532e6593123ab0c455214b1f2758fd683795ac7fa1fa3986919aadf1d648a344f9b5eca124cfad17f79621fdc68ee4a5ded8
   languageName: node
   linkType: hard
 
@@ -5809,29 +5809,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"instantsearch-ui-components@npm:0.13.0":
-  version: 0.13.0
-  resolution: "instantsearch-ui-components@npm:0.13.0"
+"instantsearch-ui-components@npm:0.14.0":
+  version: 0.14.0
+  resolution: "instantsearch-ui-components@npm:0.14.0"
   dependencies:
     "@babel/runtime": "npm:^7.27.6"
     ai: "npm:^5.0.18"
     markdown-to-jsx: "npm:^7.7.15"
     zod: "npm:^3.25.76 || ^4"
     zod-to-json-schema: "npm:3.24.6"
-  checksum: 10c0/912a6aa94165b55e6f4cbde4af0a6aaccbf5f07d1ccce681c79024f90819071b00c79fdf5f03c2cc510db0d5c8b7ce08b284ec21b0b17a00f6d03d9cb9234317
+  checksum: 10c0/095b5de407ed8737e2332fc268ad08bb0fe3708df54958b940fba2063c2fbb5be3a51082b2cc58836a8968d190c851312052a40f82fcef0c03e0351fc251a26e
   languageName: node
   linkType: hard
 
-"instantsearch.css@npm:^8.7.0":
-  version: 8.7.0
-  resolution: "instantsearch.css@npm:8.7.0"
-  checksum: 10c0/210eeebd343b35920691b28b6a429c3d6eedafe059045c998e1b5882a8048999db3184fb7963cbdbdfeb8ed4c310147bc1cbb108ae0732a891fd8ddccb4f6927
+"instantsearch.css@npm:^8.8.0":
+  version: 8.8.0
+  resolution: "instantsearch.css@npm:8.8.0"
+  checksum: 10c0/d1e79170340003373d4cc54606ff4b25b99dfe0b5fb05a906f005cde82cee109ba4c7248d1579846e87f0563b8c3aa461660e7a1dbe63f6f7568f9e6b5f2cbd9
   languageName: node
   linkType: hard
 
-"instantsearch.js@npm:4.82.0":
-  version: 4.82.0
-  resolution: "instantsearch.js@npm:4.82.0"
+"instantsearch.js@npm:4.83.0":
+  version: 4.83.0
+  resolution: "instantsearch.js@npm:4.83.0"
   dependencies:
     "@algolia/events": "npm:^4.0.1"
     "@types/dom-speech-recognition": "npm:^0.0.1"
@@ -5839,10 +5839,10 @@ __metadata:
     "@types/hogan.js": "npm:^3.0.0"
     "@types/qs": "npm:^6.5.3"
     ai: "npm:^5.0.18"
-    algoliasearch-helper: "npm:3.26.0"
+    algoliasearch-helper: "npm:3.26.1"
     hogan.js: "npm:^3.0.2"
     htm: "npm:^3.0.0"
-    instantsearch-ui-components: "npm:0.13.0"
+    instantsearch-ui-components: "npm:0.14.0"
     preact: "npm:^10.10.0"
     qs: "npm:^6.5.1 < 6.10"
     react: "npm:>= 0.14.0"
@@ -5851,7 +5851,7 @@ __metadata:
     zod-to-json-schema: "npm:3.24.6"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
-  checksum: 10c0/ef161ddfcfa77fdeda6b5555571c628dda698cba9258209134c0770f0fe7781fd1c90a465bcb627cc1ef8fd6a6bf3f63e1006937b8b0c2e722e712790b75a18c
+  checksum: 10c0/ad077375134112802747bf56cdc8783761f91188e51042c807266643b57bf779e0ecfad215cf04f60c5f98861f2f59b3da39c927daa1b2cc817bac6e8f1a6393
   languageName: node
   linkType: hard
 
@@ -8063,37 +8063,37 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-instantsearch-core@npm:7.18.0":
-  version: 7.18.0
-  resolution: "react-instantsearch-core@npm:7.18.0"
+"react-instantsearch-core@npm:7.19.0":
+  version: 7.19.0
+  resolution: "react-instantsearch-core@npm:7.19.0"
   dependencies:
     "@babel/runtime": "npm:^7.27.6"
     ai: "npm:^5.0.18"
-    algoliasearch-helper: "npm:3.26.0"
-    instantsearch.js: "npm:4.82.0"
+    algoliasearch-helper: "npm:3.26.1"
+    instantsearch.js: "npm:4.83.0"
     use-sync-external-store: "npm:^1.0.0"
     zod: "npm:^3.25.76 || ^4"
     zod-to-json-schema: "npm:3.24.6"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
     react: ">= 16.8.0 < 20"
-  checksum: 10c0/4b27bbe7a87e17f86d79e49ab06466c269f2502d90d2a9b7bc484c6cfc068ba7ed864182a1d3dcb31eb0d0a490bf7a99a2f0367a0dfaa6ff2695a92e28f1f516
+  checksum: 10c0/251ec922c7a096de4d5d8acb22622b0dd96c4dc70f071018e4d8fed165feb5a2db52ad46331e38b3f5876b833b1c545794bfbd231071a525f7dec5ef011981bb
   languageName: node
   linkType: hard
 
-"react-instantsearch@npm:^7.18.0":
-  version: 7.18.0
-  resolution: "react-instantsearch@npm:7.18.0"
+"react-instantsearch@npm:^7.19.0":
+  version: 7.19.0
+  resolution: "react-instantsearch@npm:7.19.0"
   dependencies:
     "@babel/runtime": "npm:^7.27.6"
-    instantsearch-ui-components: "npm:0.13.0"
-    instantsearch.js: "npm:4.82.0"
-    react-instantsearch-core: "npm:7.18.0"
+    instantsearch-ui-components: "npm:0.14.0"
+    instantsearch.js: "npm:4.83.0"
+    react-instantsearch-core: "npm:7.19.0"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
     react: ">= 16.8.0 < 20"
     react-dom: ">= 16.8.0 < 20"
-  checksum: 10c0/90a4d5027fdc0492d0b37b0e0652f13accccc8d2e4fe5c22c98b5ba3d3cb2a349f9d0ccfa546f44ca455c1dd89c47f4295eaaee208b565677f1cb20d1aac6f86
+  checksum: 10c0/ac47774da8a367c6542b0f6639a61fc96fa77a77aa18285af7fbbb27484f26021ea6c6a8dbeca5e18348fdf72f56b29f6330fc7caa4c126be7ab72418d2a6aca
   languageName: node
   linkType: hard
 
