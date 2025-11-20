@@ -2,9 +2,9 @@ name: Unit Tests
 on:
     workflow_dispatch:
     push:
-        branches: [ main ]
+        branches: [main]
     pull_request:
-        branches: [ main ]
+        branches: [main]
 jobs:
     unit-tests:
         name: Run unit tests
@@ -12,10 +12,10 @@ jobs:
         permissions:
             contents: read
         steps:
-            -   name: Checkout Repository
-                uses: actions/checkout@v5
-            -   uses: ./.github/actions/prepare-env
-            -   name: Install dependencies
-                run: yarn install 
-            -   name: Execute Unit tests
-                run: yarn test:ut
+            - name: Checkout Repository
+              uses: actions/checkout@v5
+            - uses: ./.github/actions/prepare-env
+            - name: Install dependencies
+              run: yarn install  --frozen-lockfile
+            - name: Execute Unit tests
+              run: yarn test:ut
