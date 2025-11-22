@@ -38,7 +38,7 @@ jobs:
             contents: read
         steps:
             - name: Check out the repository
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
             - name: Check if tag exists
               id: check_tag
               run: |
@@ -55,7 +55,7 @@ jobs:
             contents: read
         steps:
             - name: Check out the repository
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
             - name: Install semver
               run: npm install -g semver
             - name: Verify new version
@@ -75,7 +75,7 @@ jobs:
             contents: write
         steps:
             - name: Check out the repository
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
             - name: Update package.json version to match tag
               run: |
                   VERSION="${{ env.TAG_NAME }}"
@@ -95,7 +95,7 @@ jobs:
             pull-requests: read
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v5
+              uses: actions/checkout@v6
 
             - name: Create tag (only for workflow_dispatch)
               if: ${{ github.event_name == 'workflow_dispatch' }}
