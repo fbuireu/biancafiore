@@ -45,8 +45,8 @@
 		"lint:ts:typecheck": "tsc --project . --noEmit"
 	},
 	"dependencies": {
-		"@astrojs/check": "^0.9.5",
-		"@astrojs/cloudflare": "^12.6.11",
+		"@astrojs/check": "^0.9.6",
+		"@astrojs/cloudflare": "^12.6.12",
 		"@astrojs/db": "^0.18.3",
 		"@astrojs/mdx": "^4.3.12",
 		"@astrojs/partytown": "^2.1.4",
@@ -55,8 +55,8 @@
 		"@astrojs/sitemap": "^3.6.0",
 		"@contentful/rich-text-html-renderer": "^17.1.6",
 		"@hookform/resolvers": "^5.2.2",
-		"algoliasearch": "^5.44.0",
-		"astro": "^5.16.0",
+		"algoliasearch": "^5.45.0",
+		"astro": "^5.16.2",
 		"clsx": "^2.1.1",
 		"contentful": "^11.9.0",
 		"gsap": "^3.13.0",
@@ -76,22 +76,22 @@
 		"vanilla-cookieconsent": "^3.1.0"
 	},
 	"devDependencies": {
-		"@astrojs/ts-plugin": "^1.10.5",
-		"@biomejs/biome": "^2.3.6",
+		"@astrojs/ts-plugin": "^1.10.6",
+		"@biomejs/biome": "^2.3.8",
 		"@commitlint/cli": "^20.1.0",
 		"@commitlint/config-conventional": "^20.0.0",
 		"@commitlint/format": "^20.0.0",
-		"@playwright/test": "^1.56.1",
+		"@playwright/test": "^1.57.0",
 		"@testing-library/react": "^16.3.0",
 		"@testing-library/react-hooks": "^8.0.1",
 		"@types/markdown-it": "^14.1.2",
 		"@types/node": "^24.10.1",
-		"@types/react": "^19.2.6",
+		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
 		"@types/three": "^0.181.0",
 		"conventional-changelog-atom": "^5.0.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.2.7",
-		"vitest": "^4.0.12"
+		"vitest": "^4.0.14"
 	}
 }
