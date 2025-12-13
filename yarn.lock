@@ -5658,9 +5658,9 @@ __metadata:
   linkType: hard
 
 "gsap@npm:^3.14.1":
-  version: 3.14.1
-  resolution: "gsap@npm:3.14.1"
-  checksum: 10c0/c8f5e15773350a812847d83e44f0e696f5600a1a4e8f25d4c264d80cdb6ab4b0d2d887174fe592a1a3bf03a65b4a6e3337f4d646f31763effdce6209e3d3e576
+  version: 3.14.2
+  resolution: "gsap@npm:3.14.2"
+  checksum: 10c0/8f7d93d58d43c23a8de22630539364fac270e0d1dd8b8747064275dcc177e9c3c944a2eb54a10684e2902011dad0ba9ca3eb5c2a0a3bdb815d4f5401f14519e6
   languageName: node
   linkType: hard
 
