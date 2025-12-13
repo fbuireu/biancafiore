@@ -328,7 +328,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/mdx@npm:^4.3.12":
+"@astrojs/mdx@npm:^4.3.13":
   version: 4.3.13
   resolution: "@astrojs/mdx@npm:4.3.13"
   dependencies:
@@ -2938,7 +2938,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^25.0.1":
   version: 25.0.1
   resolution: "@types/node@npm:25.0.1"
   dependencies:
@@ -2960,15 +2960,6 @@ __metadata:
   dependencies:
     undici-types: "npm:~6.21.0"
   checksum: 10c0/fd56fc727bdc2cd9582e05db5daab6c8eb7bc5e5640a54cbc64ccc160a61cf50940742be5536f83796bffc83ce7709d5580a9ca85806f57501958821d230ab78
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^24.10.2":
-  version: 24.10.3
-  resolution: "@types/node@npm:24.10.3"
-  dependencies:
-    undici-types: "npm:~7.16.0"
-  checksum: 10c0/58ddaf9ce3dd9d3aa55f7dfacb7b8f16481ad64a47b99f1890fa3d4498d1958def78699838f422c0a81851d6be8b9de7ffc344435a60abcf02c0e2c085008b20
   languageName: node
   linkType: hard
 
@@ -3013,18 +3004,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/three@npm:^0.181.0":
-  version: 0.181.0
-  resolution: "@types/three@npm:0.181.0"
+"@types/three@npm:^0.182.0":
+  version: 0.182.0
+  resolution: "@types/three@npm:0.182.0"
   dependencies:
     "@dimforge/rapier3d-compat": "npm:~0.12.0"
     "@tweenjs/tween.js": "npm:~23.1.3"
     "@types/stats.js": "npm:*"
-    "@types/webxr": "npm:*"
+    "@types/webxr": "npm:>=0.5.17"
     "@webgpu/types": "npm:*"
     fflate: "npm:~0.8.2"
     meshoptimizer: "npm:~0.22.0"
-  checksum: 10c0/c110de1a1934ef4cceb9071a52ccdab6df0c6502600322004a29c4b273c196a0e700fed4257a421190d8618a27f0e418e3ba14da3e3a7168cc014007be1b8f04
+  checksum: 10c0/3578a4c847a750922545410ae54b0a785a0695da28916a0009e659d1f79b5351a3b74b1665ae538ebba812add8d758c745148a131079fd10d770b487242da857
   languageName: node
   linkType: hard
 
@@ -3042,10 +3033,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webxr@npm:*":
-  version: 0.5.23
-  resolution: "@types/webxr@npm:0.5.23"
-  checksum: 10c0/4108d29844cbbae2e765df2948b7af1db5dcf1fd15f10c300186e1a711c0eb5ca2d9e0205c58043b35d46474e1405805c11381bb12318e15ff77cb57243767e1
+"@types/webxr@npm:>=0.5.17":
+  version: 0.5.24
+  resolution: "@types/webxr@npm:0.5.24"
+  checksum: 10c0/ff59ffd390d06ca3f89ab2531d583ac10bc5e2ab82e5a01ecc40fbc365224a3375e7caa5b14649cf6141db21fb024940da7ad2bd8faa3cd497a6665257cb53b5
   languageName: node
   linkType: hard
 
@@ -3547,7 +3538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.16.4":
+"astro@npm:^5.16.5":
   version: 5.16.5
   resolution: "astro@npm:5.16.5"
   dependencies:
@@ -3693,7 +3684,7 @@ __metadata:
     "@astrojs/check": "npm:^0.9.6"
     "@astrojs/cloudflare": "npm:^12.6.12"
     "@astrojs/db": "npm:^0.18.3"
-    "@astrojs/mdx": "npm:^4.3.12"
+    "@astrojs/mdx": "npm:^4.3.13"
     "@astrojs/partytown": "npm:^2.1.4"
     "@astrojs/react": "npm:^4.4.2"
     "@astrojs/rss": "npm:^4.0.14"
@@ -3709,30 +3700,30 @@ __metadata:
     "@testing-library/react": "npm:^16.3.0"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^24.10.2"
+    "@types/node": "npm:^25.0.1"
     "@types/react": "npm:^19.2.7"
     "@types/react-dom": "npm:^19.2.3"
-    "@types/three": "npm:^0.181.0"
+    "@types/three": "npm:^0.182.0"
     algoliasearch: "npm:^5.46.0"
-    astro: "npm:^5.16.4"
+    astro: "npm:^5.16.5"
     clsx: "npm:^2.1.1"
-    contentful: "npm:^11.9.0"
+    contentful: "npm:^11.10.1"
     conventional-changelog-atom: "npm:^5.0.0"
-    gsap: "npm:^3.14.1"
+    gsap: "npm:^3.14.2"
     husky: "npm:^9.1.7"
     instantsearch.css: "npm:^8.9.0"
     lint-staged: "npm:^16.2.7"
     markdown-it: "npm:^14.1.0"
-    react: "npm:^19.2.1"
-    react-dom: "npm:^19.2.1"
+    react: "npm:^19.2.3"
+    react-dom: "npm:^19.2.3"
     react-globe.gl: "npm:^2.37.0"
     react-google-recaptcha-v3: "npm:^1.11.0"
     react-hook-form: "npm:^7.68.0"
-    react-instantsearch: "npm:^7.20.2"
+    react-instantsearch: "npm:^7.21.0"
     react-router-dom: "npm:^7.10.1"
     resend: "npm:^6.6.0"
     swiper: "npm:^12.0.3"
-    three: "npm:^0.181.2"
+    three: "npm:^0.182.0"
     typescript: "npm:^5.9.3"
     vanilla-cookieconsent: "npm:^3.1.0"
     vitest: "npm:^4.0.15"
@@ -4125,9 +4116,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful@npm:^11.9.0":
-  version: 11.9.0
-  resolution: "contentful@npm:11.9.0"
+"contentful@npm:^11.10.1":
+  version: 11.10.1
+  resolution: "contentful@npm:11.10.1"
   dependencies:
     "@contentful/content-source-maps": "npm:^0.11.33"
     "@contentful/rich-text-types": "npm:^16.6.1"
@@ -4135,8 +4126,9 @@ __metadata:
     contentful-resolve-response: "npm:^1.9.4"
     contentful-sdk-core: "npm:^9.0.1"
     json-stringify-safe: "npm:^5.0.1"
+    tslib: "npm:^2.8.1"
     type-fest: "npm:^4.0.0"
-  checksum: 10c0/2f41cfbc6898811e9e131d1e1439cdc866b291bfe46c7092b9acdc2d06efe7f6fdc0742fad4f1cc417f60954cfc4e54f2a7ecc83525e395d6cb8b8116917ed88
+  checksum: 10c0/2225a1b7565219cb4cba6bb17c4d2090788b3c990b335051db97686813a9577347055fc86d5be82cdb9fd19b9279cbc1d2ae4367e132c50863a54e289a471855
   languageName: node
   linkType: hard
 
@@ -5657,10 +5649,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gsap@npm:^3.14.1":
-  version: 3.14.1
-  resolution: "gsap@npm:3.14.1"
-  checksum: 10c0/c8f5e15773350a812847d83e44f0e696f5600a1a4e8f25d4c264d80cdb6ab4b0d2d887174fe592a1a3bf03a65b4a6e3337f4d646f31763effdce6209e3d3e576
+"gsap@npm:^3.14.2":
+  version: 3.14.2
+  resolution: "gsap@npm:3.14.2"
+  checksum: 10c0/8f7d93d58d43c23a8de22630539364fac270e0d1dd8b8747064275dcc177e9c3c944a2eb54a10684e2902011dad0ba9ca3eb5c2a0a3bdb815d4f5401f14519e6
   languageName: node
   linkType: hard
 
@@ -6051,9 +6043,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"instantsearch.js@npm:4.85.1":
-  version: 4.85.1
-  resolution: "instantsearch.js@npm:4.85.1"
+"instantsearch.js@npm:4.85.2":
+  version: 4.85.2
+  resolution: "instantsearch.js@npm:4.85.2"
   dependencies:
     "@algolia/events": "npm:^4.0.1"
     "@types/dom-speech-recognition": "npm:^0.0.1"
@@ -6073,7 +6065,7 @@ __metadata:
     zod-to-json-schema: "npm:3.24.6"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
-  checksum: 10c0/9e03882fff9d4e5079ce0209dc2fce8047260c7a61ab718415da1a2a50ee9ba614f2df091f00afc303b5029b9ad9ebd86fb52ea82b24943034e2efb43c530023
+  checksum: 10c0/3be63728ba2bdfdc13f59ffe7fa8338581e0b81d9a7ee665692bae6962d905bdb11f2579e7923802c50e60de910a4f24b1969bc807b1d4257dfe432f88f7426c
   languageName: node
   linkType: hard
 
@@ -8272,14 +8264,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^19.2.1":
-  version: 19.2.1
-  resolution: "react-dom@npm:19.2.1"
+"react-dom@npm:^19.2.3":
+  version: 19.2.3
+  resolution: "react-dom@npm:19.2.3"
   dependencies:
     scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: ^19.2.1
-  checksum: 10c0/e56b6b3d72314df580ca800b70a69a21c6372703c8f45d9b5451ca6519faefb2496d76ffa9c5adb94136d2bbf2fd303d0dfc208a2cd77ede3132877471af9470
+    react: ^19.2.3
+  checksum: 10c0/dc43f7ede06f46f3acc16ee83107c925530de9b91d1d0b3824583814746ff4c498ea64fd65cd83aba363205268adff52e2827c582634ae7b15069deaeabc4892
   languageName: node
   linkType: hard
 
@@ -8328,37 +8320,37 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-instantsearch-core@npm:7.20.2":
-  version: 7.20.2
-  resolution: "react-instantsearch-core@npm:7.20.2"
+"react-instantsearch-core@npm:7.21.0":
+  version: 7.21.0
+  resolution: "react-instantsearch-core@npm:7.21.0"
   dependencies:
     "@babel/runtime": "npm:^7.27.6"
     ai: "npm:^5.0.18"
     algoliasearch-helper: "npm:3.26.1"
-    instantsearch.js: "npm:4.85.1"
+    instantsearch.js: "npm:4.85.2"
     use-sync-external-store: "npm:^1.0.0"
     zod: "npm:^3.25.76 || ^4"
     zod-to-json-schema: "npm:3.24.6"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
     react: ">= 16.8.0 < 20"
-  checksum: 10c0/351579c59d196b539b7e96852b177d4b490d14ab163c05139f2a4bf7f4df52c13ddcd35627ade165552d1e0b0e9943d2e3eb586d78e832a62e510ab5353e0c07
+  checksum: 10c0/db004346474d1211ad04265fce8496c25910d770afac2a92e52c2dbeaa3c74a6007e18c4bc487beb9c380711c0dbdf95d536e6e6efe1b85483063ce3c87d2bc8
   languageName: node
   linkType: hard
 
-"react-instantsearch@npm:^7.20.2":
-  version: 7.20.2
-  resolution: "react-instantsearch@npm:7.20.2"
+"react-instantsearch@npm:^7.21.0":
+  version: 7.21.0
+  resolution: "react-instantsearch@npm:7.21.0"
   dependencies:
     "@babel/runtime": "npm:^7.27.6"
     instantsearch-ui-components: "npm:0.15.2"
-    instantsearch.js: "npm:4.85.1"
-    react-instantsearch-core: "npm:7.20.2"
+    instantsearch.js: "npm:4.85.2"
+    react-instantsearch-core: "npm:7.21.0"
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
     react: ">= 16.8.0 < 20"
     react-dom: ">= 16.8.0 < 20"
-  checksum: 10c0/64be8716ba3f9ce9f7986cd13fde8e3adad620fceac86ef096c7696c4c0710769dbd4aaad194f3d56af471dc342c6accb27e09ea119f42c6098868a4fadd4531
+  checksum: 10c0/477fc0626025af92e4167330cae9924baa25716a62e24f37224b9a5ca729ccafb66705cdcd9d8b3a0dd74ed0d66e1e48a5370f0aaf55e886580ce650380a72b5
   languageName: node
   linkType: hard
 
@@ -8422,10 +8414,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^19.2.1":
-  version: 19.2.1
-  resolution: "react@npm:19.2.1"
-  checksum: 10c0/2b5eaf407abb3db84090434c20d6c5a8e447ab7abcd8fe9eaf1ddc299babcf31284ee9db7ea5671d21c85ac5298bd632fa1a7da1ed78d5b368a537f5e1cd5d62
+"react@npm:^19.2.3":
+  version: 19.2.3
+  resolution: "react@npm:19.2.3"
+  checksum: 10c0/094220b3ba3a76c1b668f972ace1dd15509b157aead1b40391d1c8e657e720c201d9719537375eff08f5e0514748c0319063392a6f000e31303aafc4471f1436
   languageName: node
   linkType: hard
 
@@ -9615,10 +9607,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:^0.181.2":
-  version: 0.181.2
-  resolution: "three@npm:0.181.2"
-  checksum: 10c0/b34b6240fbedebc7f8a9317c062f7ee5339de0e56250ba2ae3de52edb9c517dc8e9aaf6fe242e1bfff56808081e095db28be5ef1a05947e0c82aefada95c628b
+"three@npm:^0.182.0":
+  version: 0.182.0
+  resolution: "three@npm:0.182.0"
+  checksum: 10c0/8ddb3380dc881c75a91cb9fb29a3610b1d01de7feff4b7610fb305a24efc51c98d51b8bcef6ab74e82a1af1947bc81343a9eab1dc9ebe17b504eab19a321430b
   languageName: node
   linkType: hard
 
