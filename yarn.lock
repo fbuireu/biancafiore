@@ -692,7 +692,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:^2.3.10":
+"@biomejs/biome@npm:^2.3.11":
   version: 2.3.11
   resolution: "@biomejs/biome@npm:2.3.11"
   dependencies:
@@ -873,7 +873,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^20.2.0":
+"@commitlint/config-conventional@npm:^20.3.0":
   version: 20.3.0
   resolution: "@commitlint/config-conventional@npm:20.3.0"
   dependencies:
@@ -3423,7 +3423,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"algoliasearch@npm:^5.46.1":
+"algoliasearch@npm:^5.46.2":
   version: 5.46.2
   resolution: "algoliasearch@npm:5.46.2"
   dependencies:
@@ -3699,9 +3699,9 @@ __metadata:
     "@astrojs/rss": "npm:^4.0.14"
     "@astrojs/sitemap": "npm:^3.6.0"
     "@astrojs/ts-plugin": "npm:^1.10.6"
-    "@biomejs/biome": "npm:^2.3.10"
+    "@biomejs/biome": "npm:^2.3.11"
     "@commitlint/cli": "npm:^20.2.0"
-    "@commitlint/config-conventional": "npm:^20.2.0"
+    "@commitlint/config-conventional": "npm:^20.3.0"
     "@commitlint/format": "npm:^20.2.0"
     "@contentful/rich-text-html-renderer": "npm:^17.1.6"
     "@hookform/resolvers": "npm:^5.2.2"
@@ -3713,7 +3713,7 @@ __metadata:
     "@types/react": "npm:^19.2.7"
     "@types/react-dom": "npm:^19.2.3"
     "@types/three": "npm:^0.182.0"
-    algoliasearch: "npm:^5.46.1"
+    algoliasearch: "npm:^5.46.2"
     astro: "npm:^5.16.6"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.10.1"
@@ -3727,8 +3727,8 @@ __metadata:
     react-dom: "npm:^19.2.3"
     react-globe.gl: "npm:^2.37.0"
     react-google-recaptcha-v3: "npm:^1.11.0"
-    react-hook-form: "npm:^7.68.0"
-    react-instantsearch: "npm:^7.21.0"
+    react-hook-form: "npm:^7.70.0"
+    react-instantsearch: "npm:^7.22.1"
     react-router-dom: "npm:^7.11.0"
     resend: "npm:^6.6.0"
     swiper: "npm:^12.0.3"
@@ -8322,7 +8322,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.68.0":
+"react-hook-form@npm:^7.70.0":
   version: 7.70.0
   resolution: "react-hook-form@npm:7.70.0"
   peerDependencies:
@@ -8349,7 +8349,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-instantsearch@npm:^7.21.0":
+"react-instantsearch@npm:^7.22.1":
   version: 7.22.1
   resolution: "react-instantsearch@npm:7.22.1"
   dependencies:
