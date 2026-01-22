@@ -5,7 +5,7 @@ permissions:
   pull-requests: write
   checks: read
 jobs:
-  dependabot:
+  auto-merge:
     runs-on: ubuntu-latest
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
@@ -16,17 +16,17 @@ jobs:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: Approve and auto-merge patch and minor updates
         if: |
-          steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
-          steps.metadata.outputs.update-type == 'version-update:semver-minor'
+          steps.metadata.outputs['update-type'] == 'version-update:semver-patch' ||
+          steps.metadata.outputs['update-type'] == 'version-update:semver-minor'
         run: |
-          echo "Auto-merging ${{ steps.metadata.outputs.update-type }} for ${{ steps.metadata.outputs.dependency-names }}"
+          echo "Auto-merging ${{ steps.metadata.outputs['update-type'] }} for ${{ steps.metadata.outputs.dependency-names }}"
           gh pr review --approve "$PR_URL"
           gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.PAT_ADMIN_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT }}
       - name: Comment on major updates
-        if: steps.metadata.outputs.update-type == 'version-update:semver-major'
+        if: steps.metadata.outputs['update-type'] == 'version-update:semver-major'
         run: |
           gh pr comment "$PR_URL" --body "🚨 **Major update detected** - Manual review required for ${{ steps.metadata.outputs.dependency-names }}"
         env:
@@ -34,7 +34,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Label PRs by update type
         run: |
-          case "${{ steps.metadata.outputs.update-type }}" in
+          case "${{ steps.metadata.outputs['update-type'] }}" in
             version-update:semver-patch)
               gh pr edit "$PR_URL" --add-label "patch-update,auto-merge"
               ;;
