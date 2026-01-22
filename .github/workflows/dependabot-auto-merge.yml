@@ -14,12 +14,23 @@ jobs:
         uses: dependabot/fetch-metadata@v2.5.0
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Approve and auto-merge patch and minor updates
-        if: |
-          steps.metadata.outputs['update-type'] == 'version-update:semver-patch' ||
-          steps.metadata.outputs['update-type'] == 'version-update:semver-minor'
+      - name: Check if should auto-merge
+        id: auto-merge-check
         run: |
-          echo "Auto-merging ${{ steps.metadata.outputs['update-type'] }} for ${{ steps.metadata.outputs.dependency-names }}"
+          UPDATE_TYPE="${{ steps.metadata.outputs.update-type }}"
+          DEP_TYPE="${{ steps.metadata.outputs.dependency-type }}"
+
+          if [[ "$UPDATE_TYPE" == "version-update:semver-patch" ]] || \
+             [[ "$UPDATE_TYPE" == "version-update:semver-minor" ]] || \
+             [[ "$DEP_TYPE" == "indirect" ]]; then
+            echo "should-merge=true" >> $GITHUB_OUTPUT
+          else
+            echo "should-merge=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Approve and auto-merge
+        if: steps.auto-merge-check.outputs.should-merge == 'true'
+        run: |
+          echo "Auto-merging ${{ steps.metadata.outputs.dependency-type }} dependency: ${{ steps.metadata.outputs.dependency-names }}"
           gh pr review --approve "$PR_URL"
           gh pr merge --auto --squash "$PR_URL"
         env:
