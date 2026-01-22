@@ -22,7 +22,8 @@ jobs:
 
           if [[ "$UPDATE_TYPE" == "version-update:semver-patch" ]] || \
              [[ "$UPDATE_TYPE" == "version-update:semver-minor" ]] || \
-             [[ "$DEP_TYPE" == "indirect" ]]; then
+             [[ "$DEP_TYPE" == "indirect" ]] || \
+             [[ "$DEP_TYPE" == "direct:development" ]]; then
             echo "should-merge=true" >> $GITHUB_OUTPUT
           else
             echo "should-merge=false" >> $GITHUB_OUTPUT
