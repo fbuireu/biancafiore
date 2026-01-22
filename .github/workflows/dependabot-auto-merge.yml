@@ -3,6 +3,7 @@ on: pull_request
 permissions:
   contents: write
   pull-requests: write
+  checks: read
 jobs:
   dependabot:
     runs-on: ubuntu-latest
@@ -10,25 +11,20 @@ jobs:
     steps:
       - name: Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v2.5.0
+        uses: dependabot/fetch-metadata@v2.5
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Auto-merge patch updates
-        if: steps.metadata.outputs.update-type == 'version-update:semver-patch'
+      - name: Approve and auto-merge patch and minor updates
+        if: |
+          steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
+          steps.metadata.outputs.update-type == 'version-update:semver-minor'
         run: |
-          echo "Auto-merging patch update for ${{ steps.metadata.outputs.dependency-names }}"
+          echo "Auto-merging ${{ steps.metadata.outputs.update-type }} for ${{ steps.metadata.outputs.dependency-names }}"
+          gh pr review --approve "$PR_URL"
           gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Auto-merge all minor updates
-        if: steps.metadata.outputs.update-type == 'version-update:semver-minor'
-        run: |
-          echo "Auto-merging minor update for ${{ steps.metadata.outputs.dependency-names }}"
-          gh pr merge --auto --squash "$PR_URL"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_ADMIN_TOKEN }}
       - name: Comment on major updates
         if: steps.metadata.outputs.update-type == 'version-update:semver-major'
         run: |
@@ -52,4 +48,3 @@ jobs:
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
