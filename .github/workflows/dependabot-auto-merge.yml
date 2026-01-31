@@ -1,5 +1,7 @@
 name: Dependabot auto-merge
-on: pull_request
+on: 
+  pull_request_target: 
+    types: [opened, synchronize]
 permissions:
   contents: write
   pull-requests: write
@@ -19,7 +21,7 @@ jobs:
         run: |
           UPDATE_TYPE="${{ steps.metadata.outputs.update-type }}"
           DEP_TYPE="${{ steps.metadata.outputs.dependency-type }}"
-
+          
           if [[ "$UPDATE_TYPE" == "version-update:semver-patch" ]] || \
              [[ "$UPDATE_TYPE" == "version-update:semver-minor" ]] || \
              [[ "$DEP_TYPE" == "indirect" ]] || \
@@ -36,7 +38,7 @@ jobs:
           gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.PAT }}
+          GH_TOKEN: ${{ secrets.PAT }} 
       - name: Comment on major updates
         if: steps.metadata.outputs['update-type'] == 'version-update:semver-major'
         run: |
