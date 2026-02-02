@@ -856,7 +856,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:^20.3.1":
+"@commitlint/cli@npm:^20.4.0":
   version: 20.4.0
   resolution: "@commitlint/cli@npm:20.4.0"
   dependencies:
@@ -873,7 +873,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^20.3.1":
+"@commitlint/config-conventional@npm:^20.4.0":
   version: 20.4.0
   resolution: "@commitlint/config-conventional@npm:20.4.0"
   dependencies:
@@ -910,7 +910,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/format@npm:^20.3.1, @commitlint/format@npm:^20.4.0":
+"@commitlint/format@npm:^20.4.0":
   version: 20.4.0
   resolution: "@commitlint/format@npm:20.4.0"
   dependencies:
@@ -2244,7 +2244,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.58.0":
+"@playwright/test@npm:^1.58.1":
   version: 1.58.1
   resolution: "@playwright/test@npm:1.58.1"
   dependencies:
@@ -2909,7 +2909,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^25.0.10":
+"@types/node@npm:*, @types/node@npm:^25.2.0":
   version: 25.2.0
   resolution: "@types/node@npm:25.2.0"
   dependencies:
@@ -3499,7 +3499,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.16.15":
+"astro@npm:^5.17.1":
   version: 5.17.1
   resolution: "astro@npm:5.17.1"
   dependencies:
@@ -3645,27 +3645,27 @@ __metadata:
     "@astrojs/sitemap": "npm:^3.7.0"
     "@astrojs/ts-plugin": "npm:^1.10.6"
     "@biomejs/biome": "npm:^2.3.13"
-    "@commitlint/cli": "npm:^20.3.1"
-    "@commitlint/config-conventional": "npm:^20.3.1"
-    "@commitlint/format": "npm:^20.3.1"
+    "@commitlint/cli": "npm:^20.4.0"
+    "@commitlint/config-conventional": "npm:^20.4.0"
+    "@commitlint/format": "npm:^20.4.0"
     "@contentful/rich-text-html-renderer": "npm:^17.1.6"
     "@hookform/resolvers": "npm:^5.2.2"
-    "@playwright/test": "npm:^1.58.0"
+    "@playwright/test": "npm:^1.58.1"
     "@testing-library/react": "npm:^16.3.2"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^25.0.10"
+    "@types/node": "npm:^25.2.0"
     "@types/react": "npm:^19.2.10"
     "@types/react-dom": "npm:^19.2.3"
     "@types/three": "npm:^0.182.0"
     algoliasearch: "npm:^5.47.0"
-    astro: "npm:^5.16.15"
+    astro: "npm:^5.17.1"
     clsx: "npm:^2.1.1"
     contentful: "npm:^11.10.3"
     conventional-changelog-atom: "npm:^5.0.0"
     gsap: "npm:^3.14.2"
     husky: "npm:^9.1.7"
-    instantsearch.css: "npm:^8.9.0"
+    instantsearch.css: "npm:^8.10.0"
     lint-staged: "npm:^16.2.7"
     markdown-it: "npm:^14.1.0"
     react: "npm:^19.2.4"
@@ -3673,10 +3673,10 @@ __metadata:
     react-globe.gl: "npm:^2.37.0"
     react-google-recaptcha-v3: "npm:^1.11.0"
     react-hook-form: "npm:^7.71.1"
-    react-instantsearch: "npm:^7.22.1"
+    react-instantsearch: "npm:^7.23.0"
     react-router-dom: "npm:^7.13.0"
     resend: "npm:^6.9.1"
-    swiper: "npm:^12.0.3"
+    swiper: "npm:^12.1.0"
     three: "npm:^0.182.0"
     typescript: "npm:^5.9.3"
     vanilla-cookieconsent: "npm:^3.1.0"
@@ -6016,7 +6016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"instantsearch.css@npm:^8.9.0":
+"instantsearch.css@npm:^8.10.0":
   version: 8.10.0
   resolution: "instantsearch.css@npm:8.10.0"
   dependencies:
@@ -8281,7 +8281,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-instantsearch@npm:^7.22.1":
+"react-instantsearch@npm:^7.23.0":
   version: 7.23.0
   resolution: "react-instantsearch@npm:7.23.0"
   dependencies:
@@ -9440,7 +9440,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^12.0.3":
+"swiper@npm:^12.1.0":
   version: 12.1.0
   resolution: "swiper@npm:12.1.0"
   checksum: 10c0/a5a2320895ef39ad22e7e1c9ac1b0b1233062a99ac273cad026881985eac37210c7c039152fa2489fb3a3ad12c349c8ff9a2133edccb4e4db3726170c157a17f
