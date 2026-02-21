@@ -4,8 +4,7 @@
 # Logs
 logs/
 *.log
-yarn-debug.log*
-yarn-error.log*
+pnpm-debug.log*
 
 # Test-related directories
 /test-results/
@@ -17,16 +16,7 @@ yarn-error.log*
 node_modules/
 
 # Dependency managers
-.yarn/*
-!.yarn/cache
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
 *.tgz
-.yarn-integrity
-yarn-error.log
 
 # Environment variables files
 .env*
