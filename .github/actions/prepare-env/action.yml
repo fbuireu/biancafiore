@@ -1,5 +1,5 @@
 name: 'Prepare Environment'
-description: 'Sets up Node.js and Yarn environment'
+description: 'Sets up Node.js and pnpm environment'
 runs:
   using: "composite"
   steps:
@@ -15,6 +15,9 @@ runs:
       shell: bash
       run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
 
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+
     - uses: actions/setup-node@v6
       with:
         node-version: ${{ env.NODE_VERSION }}
@@ -22,28 +25,6 @@ runs:
     - uses: actions/cache@v5
       with:
         path: '**/node_modules'
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
         restore-keys: |
-          ${{ runner.os }}-yarn-
-
-    - name: Enable Corepack
-      shell: bash
-      run: corepack enable
-
-    - name: Get Yarn version from package.json
-      shell: bash
-      run: |
-        YARN_VERSION=$(jq -r '.packageManager' package.json | grep -o 'yarn@[0-9]*\.[0-9]*\.[0-9]*')
-        if [ -z "$YARN_VERSION" ]; then
-          echo "Error: Yarn version not found in package.json"
-          exit 1
-        fi
-        echo "YARN_VERSION=${YARN_VERSION}" >> $GITHUB_ENV
-
-    - name: Install correct Yarn version
-      shell: bash
-      run: |
-        if ! corepack prepare ${{ env.YARN_VERSION }} --activate; then
-          echo "Error: Failed to install Yarn version ${{ env.YARN_VERSION }}"
-          exit 1
-        fi
+          ${{ runner.os }}-pnpm-

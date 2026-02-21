@@ -98,78 +98,79 @@ export const ContactForm = () => {
 	);
 
 	return (
-		<>
-			{formStatus !== FormStatus.SUCCESS ? (
-				<form
-					className={clsx("contact-form", {
-						"--is-disabled": formStatus === FormStatus.UNAUTHORIZED,
-					})}
-					onSubmit={(event) => {
-						event.preventDefault();
-						handleSubmit((data) => startTransition(() => verifyRecaptcha(data)))();
-					}}
-				>
-					<p className="contact-form__text"> My name is</p>
-					<Input
-						id={nameId}
-						type="text"
-						placeholder="Your name"
-						formStatus={formStatus}
-						hasError={!!errors.name}
-						errorMessage={errors.name?.message}
-						label="(your name)"
-						{...register("name")}
-					/>
-					<p className="contact-form__text">and my email is</p>
-					<Input
-						id={emailId}
-						type="text"
-						placeholder="Your email"
-						formStatus={formStatus}
-						hasError={!!errors.email}
-						errorMessage={errors.email?.message}
-						label="(your email)"
-						{...register("email")}
-					/>
-					<p className="contact-form__text">
-						I look forward to hearing from you within the next 24 hours to discuss further. <br />I have a message for
-						you,
-					</p>
-					<Textarea
-						id={messageId}
-						placeholder="Why you contact me?"
-						className="contact-form__textarea"
-						formStatus={formStatus}
-						label="(your message)"
-						hasError={!!errors.message}
-						errorMessage={errors.message?.message}
-						{...register("message")}
-					/>
-					<Recaptcha hasError={!!errors.recaptcha} errorMessage={errors.recaptcha?.message} />
-					<div className="contact-form__generic-error-wrapper">
-						{([FormStatus.ERROR, FormStatus.UNAUTHORIZED] as (typeof FormStatus)[keyof typeof FormStatus][]).includes(
-							formStatus,
-						) && <p className="contact-form__generic-error-message">{errors.root?.message}</p>}
-					</div>
-					<button
-						ref={submitRef}
-						className={clsx("contact-form__submit plane --is-clickable", {
-							"--is-loading": pending || formStatus === FormStatus.LOADING,
-						})}
-						disabled={formStatus === FormStatus.UNAUTHORIZED}
-						type="submit"
-					>
-						<span className="flex">{!pending ? <>Send email</> : <Spinner aria-label="Sending" />}</span>
-						<div className="plane__left-wing" />
-						<div className="plane__right-wing" />
-						<span />
-					</button>
-				</form>
-			) : (
-				<div className="contact-form__success-message flex column-wrap">
-					<h4>Form sent correctly! Will be in touch soon</h4>
-				</div>
-			)}
-		</>
-	);
+    <>
+      {formStatus !== FormStatus.SUCCESS ? (
+        <form
+          className={clsx('contact-form', {
+            '--is-disabled': formStatus === FormStatus.UNAUTHORIZED,
+          })}
+          onSubmit={(event) => {
+            event.preventDefault();
+            handleSubmit((data) => startTransition(() => verifyRecaptcha(data)))();
+          }}>
+          <p className='contact-form__text'> My name is</p>
+          <Input
+            id={nameId}
+            type='text'
+            inputMode='text'
+            placeholder='Your name'
+            formStatus={formStatus}
+            hasError={!!errors.name}
+            errorMessage={errors.name?.message}
+            label='(your name)'
+            {...register('name')}
+          />
+          <p className='contact-form__text'>and my email is</p>
+          <Input
+            id={emailId}
+            type='email'
+            inputMode='email'
+            placeholder='Your email'
+            formStatus={formStatus}
+            hasError={!!errors.email}
+            errorMessage={errors.email?.message}
+            label='(your email)'
+            {...register('email')}
+          />
+          <p className='contact-form__text'>
+            I look forward to hearing from you within the next 24 hours to discuss further. <br />I have a message for
+            you,
+          </p>
+          <Textarea
+            id={messageId}
+            inputMode='text'
+            placeholder='Why you contact me?'
+            className='contact-form__textarea'
+            formStatus={formStatus}
+            label='(your message)'
+            hasError={!!errors.message}
+            errorMessage={errors.message?.message}
+            {...register('message')}
+          />
+          <Recaptcha hasError={!!errors.recaptcha} errorMessage={errors.recaptcha?.message} />
+          <div className='contact-form__generic-error-wrapper'>
+            {([FormStatus.ERROR, FormStatus.UNAUTHORIZED] as (typeof FormStatus)[keyof typeof FormStatus][]).includes(
+              formStatus,
+            ) && <p className='contact-form__generic-error-message'>{errors.root?.message}</p>}
+          </div>
+          <button
+            ref={submitRef}
+            className={clsx('contact-form__submit plane --is-clickable', {
+              '--is-loading': pending || formStatus === FormStatus.LOADING,
+            })}
+            disabled={formStatus === FormStatus.UNAUTHORIZED}
+            type='submit'>
+            <span className='flex'>{!pending ? <>Send email</> : <Spinner aria-label='Sending' />}</span>
+            <div className='plane__left-wing' />
+            <div className='plane__right-wing' />
+            <span />
+          </button>
+        </form>
+      ) : (
+        <div className='contact-form__success-message flex column-wrap'>
+          <h4>Form sent correctly! Will be in touch soon</h4>
+        </div>
+      )}
+    </>
+  );
 };

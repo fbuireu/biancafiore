@@ -16,6 +16,6 @@ jobs:
               uses: actions/checkout@v6
             - uses: ./.github/actions/prepare-env
             - name: Install dependencies
-              run: yarn install  --frozen-lockfile
+              run: pnpm install --frozen-lockfile
             - name: Execute Unit tests
-              run: yarn test:ut
+              run: pnpm test:ut
