@@ -1,103 +1,103 @@
-import { actions } from "astro:actions";
-import { contactFormSchema } from "@application/entities/contact/schema";
-import { Exception } from "@domain/errors";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { flyPlane } from "@modules/contact/utils/flyPlane";
-import { getErrorMessage } from "@modules/contact/utils/getErrorMessage";
-import { Input } from "@modules/core/components/form/input";
-import { Recaptcha } from "@modules/core/components/form/recaptcha";
-import { Textarea } from "@modules/core/components/form/textarea";
-import Spinner from "@modules/core/components/spinner/Spinner";
-import type { ContactFormData } from "@shared/ui/types";
-import { FormStatus } from "@shared/ui/types";
-import clsx from "clsx";
-import { useCallback, useId, useRef, useState, useTransition } from "react";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { useForm } from "react-hook-form";
-import "./contact-form.css";
+import { actions } from 'astro:actions';
+import { contactFormSchema } from '@application/entities/contact/schema';
+import { Exception } from '@domain/errors';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { flyPlane } from '@modules/contact/utils/flyPlane';
+import { getErrorMessage } from '@modules/contact/utils/getErrorMessage';
+import { Input } from '@modules/core/components/form/input';
+import { Recaptcha } from '@modules/core/components/form/recaptcha';
+import { Textarea } from '@modules/core/components/form/textarea';
+import Spinner from '@modules/core/components/spinner/Spinner';
+import type { ContactFormData } from '@shared/ui/types';
+import { FormStatus } from '@shared/ui/types';
+import clsx from 'clsx';
+import { useCallback, useId, useRef, useState, useTransition } from 'react';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useForm } from 'react-hook-form';
+import './contact-form.css';
 
 export const ContactForm = () => {
-	const {
-		register,
-		handleSubmit,
-		setError,
-		formState: { errors },
-		reset,
-	} = useForm<ContactFormData>({
-		resolver: zodResolver(contactFormSchema),
-		defaultValues: {
-			id: crypto.randomUUID(),
-		},
-	});
-	const [pending, startTransition] = useTransition();
-	const [formStatus, setFormStatus] = useState<(typeof FormStatus)[keyof typeof FormStatus]>(FormStatus.INITIAL);
-	const nameId = useId();
-	const emailId = useId();
-	const messageId = useId();
-	const { executeRecaptcha } = useGoogleReCaptcha();
-	const submitRef = useRef<HTMLButtonElement>(null);
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+    reset,
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      id: crypto.randomUUID(),
+    },
+  });
+  const [pending, startTransition] = useTransition();
+  const [formStatus, setFormStatus] = useState<(typeof FormStatus)[keyof typeof FormStatus]>(FormStatus.INITIAL);
+  const nameId = useId();
+  const emailId = useId();
+  const messageId = useId();
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const submitRef = useRef<HTMLButtonElement>(null);
 
-	const submitForm = useCallback(
-		async (data: ContactFormData) => {
-			if (!submitRef.current) {
-				return;
-			}
-			try {
-				setFormStatus(FormStatus.LOADING);
-				const contactData = new FormData();
-				contactData.append("name", data.name);
-				contactData.append("email", data.email);
-				contactData.append("message", data.message);
-				contactData.append("id", crypto.randomUUID());
+  const submitForm = useCallback(
+    async (data: ContactFormData) => {
+      if (!submitRef.current) {
+        return;
+      }
+      try {
+        setFormStatus(FormStatus.LOADING);
+        const contactData = new FormData();
+        contactData.append('name', data.name);
+        contactData.append('email', data.email);
+        contactData.append('message', data.message);
+        contactData.append('id', crypto.randomUUID());
 
-				const { data: response, error } = await actions.contact(contactData);
+        const { data: response, error } = await actions.contact(contactData);
 
-				if (response?.ok) {
-					flyPlane(submitRef.current);
-					setTimeout(() => {
-						setFormStatus(FormStatus.SUCCESS);
-						reset();
-					}, 2000);
-				} else if (error) {
-					if (error.status === 401) {
-						setFormStatus(FormStatus.UNAUTHORIZED);
-						throw new Exception(error);
-					}
+        if (response?.ok) {
+          flyPlane(submitRef.current);
+          setTimeout(() => {
+            setFormStatus(FormStatus.SUCCESS);
+            reset();
+          }, 2000);
+        } else if (error) {
+          if (error.status === 401) {
+            setFormStatus(FormStatus.UNAUTHORIZED);
+            throw new Exception(error);
+          }
 
-					setFormStatus(FormStatus.ERROR);
-					throw new Error(error.message);
-				}
-			} catch (error) {
-				const errorMessage = getErrorMessage(error);
+          setFormStatus(FormStatus.ERROR);
+          throw new Error(error.message);
+        }
+      } catch (error) {
+        const errorMessage = getErrorMessage(error);
 
-				setError("root", {
-					type: "manual",
-					message: errorMessage as string,
-				});
-			}
-		},
-		[reset, setError],
-	);
+        setError('root', {
+          type: 'manual',
+          message: errorMessage as string,
+        });
+      }
+    },
+    [reset, setError],
+  );
 
-	const verifyRecaptcha = useCallback(
-		async (data: ContactFormData) => {
-			if (!executeRecaptcha) {
-				return;
-			}
-			const token = await executeRecaptcha();
-			if (!token) {
-				setError("recaptcha", {
-					type: "manual",
-					message: "Mr. Robot, is that you?",
-				});
-				return;
-			}
-			await submitForm(data);
-		},
-		[executeRecaptcha, setError, submitForm],
-	);
+  const verifyRecaptcha = useCallback(
+    async (data: ContactFormData) => {
+      if (!executeRecaptcha) {
+        return;
+      }
+      const token = await executeRecaptcha();
+      if (!token) {
+        setError('recaptcha', {
+          type: 'manual',
+          message: 'Mr. Robot, is that you?',
+        });
+        return;
+      }
+      await submitForm(data);
+    },
+    [executeRecaptcha, setError, submitForm],
+  );
 
-	return (
+  return (
     <>
       {formStatus !== FormStatus.SUCCESS ? (
         <form
@@ -114,6 +114,7 @@ export const ContactForm = () => {
             type='text'
             inputMode='text'
             placeholder='Your name'
+            autocomplete='name'
             formStatus={formStatus}
             hasError={!!errors.name}
             errorMessage={errors.name?.message}
@@ -125,6 +126,7 @@ export const ContactForm = () => {
             id={emailId}
             type='email'
             inputMode='email'
+            autocomplete='email'
             placeholder='Your email'
             formStatus={formStatus}
             hasError={!!errors.email}
