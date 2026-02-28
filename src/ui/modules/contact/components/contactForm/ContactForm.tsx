@@ -114,7 +114,7 @@ export const ContactForm = () => {
             type='text'
             inputMode='text'
             placeholder='Your name'
-            autocomplete='name'
+            autoComplete='name'
             formStatus={formStatus}
             hasError={!!errors.name}
             errorMessage={errors.name?.message}
@@ -126,7 +126,7 @@ export const ContactForm = () => {
             id={emailId}
             type='email'
             inputMode='email'
-            autocomplete='email'
+            autoComplete='email'
             placeholder='Your email'
             formStatus={formStatus}
             hasError={!!errors.email}
