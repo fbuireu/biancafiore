@@ -9,7 +9,6 @@ import "./article-card.css";
 type ArticleCardProps = CollectionEntry<"articles">;
 
 const article = Astro.props as ArticleCardProps;
-const { pathname } = Astro.url;
 ---
 <a class="article-card__link" href={`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`}
    aria-label={article.data.title}>{' '}</a>
@@ -26,7 +25,7 @@ const { pathname } = Astro.url;
           width={article.data.featuredImage.details.width}
           height={article.data.featuredImage.details.height}
           alt={article.data.title}
-          transition:name=`featured-image-${pathname}`
+          transition:name=`featured-image-${article.data.slug}`
       />
   )}
     <time class="article-card__publish-date" datetime={article.data.publishDate}>

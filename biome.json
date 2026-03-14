@@ -35,10 +35,5 @@
 				"noConsole": "error"
 			}
 		}
-	},
-	"overrides": [
-		{
-			"includes": ["*.astro"]
-		}
-	]
+	}
 }

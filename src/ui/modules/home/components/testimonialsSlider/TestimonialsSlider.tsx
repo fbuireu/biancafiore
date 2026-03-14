@@ -5,7 +5,7 @@ import { Testimonial } from "@modules/home/components/testimonial";
 import { Pagination } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";
 
-interface TestimonialSliderProps extends Partial<Slider<TestimonialSliderProps>> {
+interface TestimonialSliderProps {
 	testimonials: CollectionEntry<"testimonials">[];
 }
 
@@ -37,6 +37,7 @@ export const TestimonialsSlider = ({ testimonials }: TestimonialSliderProps) => 
 	return (
 		<Slider
 			items={testimonials}
+			keyExtractor={(testimonial) => testimonial.id}
 			swiperOptions={SLIDER_CONFIG}
 			renderItem={(testimonial) => (
 				<Testimonial>
@@ -45,7 +46,6 @@ export const TestimonialsSlider = ({ testimonials }: TestimonialSliderProps) => 
 					<Testimonial.Image
 						src={testimonial.data.image.url}
 						alt={testimonial.data.author}
-						formats={testimonial.data.image.formats}
 					/>
 					<Testimonial.Description>{testimonial.data.role}</Testimonial.Description>
 				</Testimonial>

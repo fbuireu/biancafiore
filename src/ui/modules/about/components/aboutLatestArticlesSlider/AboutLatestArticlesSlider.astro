@@ -1,0 +1,97 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
+import "swiper/css/bundle";
+import "./about-latest-articles-slider.css";
+
+interface Props {
+    articles: CollectionEntry<"articles">[];
+}
+
+const { articles } = Astro.props;
+---
+<div class="about__latest-articles__slider swiper" data-slider="about-latest-articles">
+    <div class="swiper-wrapper">
+        {articles.map((article) => (
+            <div class="swiper-slide item-wrapper --is-clickable">
+                <ArticleCard {...article} />
+            </div>
+        ))}
+    </div>
+    <div class="slider__navigation flex row-nowrap">
+        <button
+            class="slider__navigation__button --is-left --is-clickable"
+            type="button"
+            aria-label="Previous Article"
+            data-slider-prev
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
+                <title>Previous Article</title>
+                <g id="Left">
+                    <polygon
+                        points="24 12.001 2.914 12.001 8.208 6.706 7.501 5.999 1 12.501 7.5 19.001 8.207 18.294 2.914 13.001 24 13.001 24 12.001"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        stroke-width="0.25"
+                    />
+                </g>
+            </svg>
+        </button>
+        <button
+            class="slider__navigation__button --is-right --is-clickable"
+            type="button"
+            aria-label="Next Article"
+            data-slider-next
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
+                <title>Next Article</title>
+                <g id="Left">
+                    <polygon
+                        points="24 12.001 2.914 12.001 8.208 6.706 7.501 5.999 1 12.501 7.5 19.001 8.207 18.294 2.914 13.001 24 13.001 24 12.001"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        stroke-width="0.25"
+                    />
+                </g>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>
+    import Swiper from "swiper";
+    import { Keyboard, Autoplay, A11y } from "swiper/modules";
+
+    const FORCE_CLASSNAME = "--is-force-clickable";
+
+    document.querySelectorAll<HTMLElement>('[data-slider="about-latest-articles"]').forEach((el) => {
+        const swiper = new Swiper(el, {
+            modules: [Keyboard, Autoplay, A11y],
+            loop: true,
+            containerModifierClass: "latest-articles-",
+            autoplay: { delay: 10000, pauseOnMouseEnter: true },
+            breakpoints: {
+                1024: { slidesPerView: 2, spaceBetween: 32 },
+                320: { slidesPerView: 1 },
+            },
+        });
+
+        const prevBtn = el.querySelector<HTMLButtonElement>("[data-slider-prev]");
+        const nextBtn = el.querySelector<HTMLButtonElement>("[data-slider-next]");
+
+        prevBtn?.addEventListener("click", () => swiper.slidePrev());
+        nextBtn?.addEventListener("click", () => swiper.slideNext());
+
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft") {
+                swiper.slidePrev();
+                prevBtn?.classList.add(FORCE_CLASSNAME);
+                setTimeout(() => prevBtn?.classList.remove(FORCE_CLASSNAME), 200);
+            } else if (e.key === "ArrowRight") {
+                swiper.slideNext();
+                nextBtn?.classList.add(FORCE_CLASSNAME);
+                setTimeout(() => nextBtn?.classList.remove(FORCE_CLASSNAME), 200);
+            }
+        });
+    });
+</script>

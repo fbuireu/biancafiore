@@ -32,7 +32,6 @@ export async function getStaticPaths() {
 	});
 }
 
-const { pathname } = Astro.url;
 const { article } = Astro.props as ArticleProps;
 const metadata: Partial<SeoMetadata> = {
 	...article,
@@ -51,7 +50,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
                   alt={article.data.title}
                   class="article__featured__image"
                   layout="full-width"
-                  transition:name=`featured-image-${pathname}`
+                  transition:name=`featured-image-${article.data.slug}`
               />
           </section>
       )

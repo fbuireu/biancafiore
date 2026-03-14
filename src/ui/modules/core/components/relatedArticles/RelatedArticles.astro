@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { RelatedArticlesSlider } from "@modules/core/components/relatedArticles/atoms/relatedArticlesSlider";
+import RelatedArticlesSlider from "@modules/core/components/relatedArticles/atoms/relatedArticlesSlider/RelatedArticlesSlider.astro";
 import { getRelatedArticles } from "@modules/core/components/relatedArticles/utils/getRelatedArticles";
 import "./related-articles.css";
 
@@ -15,7 +15,7 @@ const relatedArticles = await getRelatedArticles(article);
     relatedArticles.length > 0 && (
     <section class="related-articles-wrapper common-wrapper">
         <h2 class="related-articles__title section-title">You might also like</h2>
-        <RelatedArticlesSlider client:only="react" articles={relatedArticles} />
+        <RelatedArticlesSlider articles={relatedArticles} />
         <script is:inline type="application/ld+json" set:html={JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'ItemList',
