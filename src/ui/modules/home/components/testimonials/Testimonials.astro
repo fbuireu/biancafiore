@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { TestimonialsSlider } from "../testimonialsSlider";
+import TestimonialsSlider from "../testimonialsSlider/TestimonialsSlider.astro";
 import "./testimonials.css";
 
 const testimonials = await getCollection("testimonials");
@@ -16,5 +16,5 @@ const testimonials = await getCollection("testimonials");
         or
         Vue to your project.
     </p>
-    <TestimonialsSlider client:load testimonials={testimonials} />
+    <TestimonialsSlider testimonials={testimonials} />
 </section>

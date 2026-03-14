@@ -1,13 +1,8 @@
 {
-	"extends": ["astro/tsconfigs/base"],
+	"extends": ["astro/tsconfigs/strict"],
 	"include": [".astro/types.d.ts", "**/*"],
 	"exclude": ["dist"],
 	"compilerOptions": {
-		"strict": true,
-		"strictNullChecks": true,
-		"allowSyntheticDefaultImports": true,
-		"target": "ESNext",
-		"moduleResolution": "node",
 		"jsxImportSource": "react",
 		"jsx": "react-jsx",
 		"types": ["vite/client"],

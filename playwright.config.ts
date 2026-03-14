@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
 	webServer: {
-		command: "yarn start",
+		command: "pnpm start",
 		reuseExistingServer: !process.env.CI,
 	},
 	testDir: "./e2e",

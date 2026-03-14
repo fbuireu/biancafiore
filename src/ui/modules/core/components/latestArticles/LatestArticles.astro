@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { PAGES_ROUTES } from "@const/index";
-import { LatestArticlesSlider } from "./atoms/latestArticlesSlider/LatestArticlesSlider";
+import LatestArticlesSlider from "./atoms/latestArticlesSlider/LatestArticlesSlider.astro";
 import "./latest-articles.css";
 
 interface LatestArticlesProps {
@@ -19,7 +19,7 @@ const articles = (await getCollection("articles")).slice(0, limit);
         Fresh from <a class="latest-articles__title__link --is-clickable --underline-on-hover"
                       href={`${PAGES_ROUTES.ARTICLES}`}>the blog</a>
     </h2>
-    <LatestArticlesSlider client:load articles={articles} />
+    <LatestArticlesSlider articles={articles} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'ItemList',

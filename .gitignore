@@ -27,12 +27,11 @@ node_modules/
 .astro/
 dist/
 
-# Million files
-.million/
+# Infrastructure
+.wrangler/
 
 # IDE/Text editor
 .editorconfig
 .idea/
 .vscode/
-.fleet/
 .history/

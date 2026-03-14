@@ -1,0 +1,80 @@
+---
+import type { CollectionEntry } from "astro:content";
+import DoubleQuote from "@assets/images/svg/double-quote.svg";
+import "swiper/css/bundle";
+import "../testimonial/testimonial.css";
+import "../testimonial/atoms/testimonialImage/testimonial-image.css";
+import "../testimonial/atoms/testimonialQuote/testimonial-quote.css";
+import "../testimonial/atoms/testimonialAuthor/testimonial-author.css";
+import "../testimonial/atoms/testimonialDescription/testimonial-description.css";
+
+interface Props {
+    testimonials: CollectionEntry<"testimonials">[];
+}
+
+const { testimonials } = Astro.props;
+---
+<div class="testimonials__slider common-wrapper">
+    <div class="slider-wrapper swiper" data-slider="testimonials">
+        <div class="swiper-wrapper">
+            {testimonials.map((testimonial) => (
+                <div class="swiper-slide">
+                    <article class="testimonial__content">
+                        <img
+                            class="testimonial__image"
+                            src={testimonial.data.image.url}
+                            alt={testimonial.data.author}
+                            loading="lazy"
+                        />
+                        <div class="testimonial__quote-wrapper">
+                            <DoubleQuote class="testimonial__quote-symbol" />
+                            <blockquote class="testimonial__quote">{testimonial.data.quote}</blockquote>
+                        </div>
+                        <h5 class="testimonial__author font-serif">{testimonial.data.author}</h5>
+                        <p class="testimonial__description">{testimonial.data.role}</p>
+                    </article>
+                </div>
+            ))}
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+
+<script>
+    import Swiper from "swiper";
+    import { Navigation, Keyboard, Autoplay, A11y, Pagination } from "swiper/modules";
+
+    document.querySelectorAll<HTMLElement>('[data-slider="testimonials"]').forEach((el) => {
+        const updateActive = (swiper: Swiper) => {
+            el.querySelectorAll<HTMLElement>(".testimonial__content").forEach((c) =>
+                c.classList.remove("--is-active")
+            );
+            el.querySelector<HTMLElement>(".swiper-slide-active .testimonial__content")
+                ?.classList.add("--is-active");
+        };
+
+        const swiper = new Swiper(el, {
+            modules: [Navigation, Keyboard, Autoplay, A11y, Pagination],
+            loop: true,
+            centeredSlides: true,
+            slidesPerView: 3,
+            containerModifierClass: "testimonials-",
+            pagination: {
+                clickable: true,
+                el: el.querySelector<HTMLElement>(".swiper-pagination"),
+            },
+            autoplay: {
+                delay: 5000,
+                pauseOnMouseEnter: true,
+            },
+            breakpoints: {
+                1024: { slidesPerView: 1.85, spaceBetween: 150 },
+                320: { slidesPerView: 1 },
+            },
+            on: {
+                afterInit: updateActive,
+                slideChange: updateActive,
+            },
+        });
+    });
+</script>

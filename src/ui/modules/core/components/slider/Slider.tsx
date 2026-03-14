@@ -7,11 +7,12 @@ import { SliderNavigation } from "./atoms/SliderNavigation";
 
 export interface Slider<T> {
 	items: T[];
+	keyExtractor: (item: T) => string;
 	renderItem: (item: T) => ReactNode;
 	swiperOptions: SwiperOptions;
 }
 
-export const Slider = <T,>({ items, renderItem, swiperOptions }: Slider<T>) => {
+export const Slider = <T,>({ items, keyExtractor, renderItem, swiperOptions }: Slider<T>) => {
 	const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(null);
 
 	return (
@@ -19,8 +20,8 @@ export const Slider = <T,>({ items, renderItem, swiperOptions }: Slider<T>) => {
 			<Swiper {...swiperOptions} onSwiper={setSwiperInstance}>
 				<ul className="slider__list flex row-wrap justify-space-between">
 					{items.map((item) => (
-						<li key={crypto.randomUUID()} className="item-wrapper --is-clickable">
-							<SwiperSlide key={crypto.randomUUID()}>{renderItem(item)}</SwiperSlide>
+						<li key={keyExtractor(item)} className="item-wrapper --is-clickable">
+							<SwiperSlide>{renderItem(item)}</SwiperSlide>
 						</li>
 					))}
 				</ul>
