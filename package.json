@@ -71,12 +71,12 @@
     "vanilla-cookieconsent": "^3.1.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.4",
+    "@astrojs/check": "^0.9.7",
     "@astrojs/ts-plugin": "^1.10.7",
     "@biomejs/biome": "^2.4.7",
-    "@commitlint/cli": "^20.4.4",
-    "@commitlint/config-conventional": "^20.4.4",
-    "@commitlint/format": "^20.4.4",
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "@commitlint/format": "^20.5.0",
     "@playwright/test": "^1.58.2",
     "@testing-library/react": "^16.3.2",
     "@types/markdown-it": "^14.1.2",
@@ -85,7 +85,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.183.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.3.4",
+    "lint-staged": "^16.4.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.0",
     "wrangler": "^4.73.0"
