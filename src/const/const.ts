@@ -2,8 +2,6 @@ import { BIANCA_EMAIL } from "astro:env/client";
 import biancaImage from "@assets/images/jpg/bianca-fiore.jpg";
 import { capitalizeKeys } from "@const/utils/capitalizeKeys";
 import { lowercaseKeys } from "@const/utils/lowercaseKeys";
-import { A11y, Autoplay, Keyboard, Navigation, Virtual } from "swiper/modules";
-import type { SwiperOptions } from "swiper/types";
 import type { CapitalizeKeys, SeoMetadata } from "./types";
 
 export const Pages = {
@@ -52,12 +50,6 @@ export const CONTACT_DETAILS: Record<CapitalizeKeys<string>, string> = {
 	ENCODED_EMAIL_BIANCA: btoa(BIANCA_EMAIL),
 } as const;
 
-const defaultSwiperConfig: CapitalizeKeys<SwiperOptions> = {
-	MODULES: [Navigation, Keyboard, Virtual, Autoplay, A11y],
-	LOOP: true,
-} as const;
-
-export const DEFAULT_SWIPER_CONFIG: SwiperOptions = lowercaseKeys(defaultSwiperConfig);
 
 const defaultDateFormat: CapitalizeKeys<Intl.DateTimeFormatOptions> = {
 	WEEKDAY: "long",
