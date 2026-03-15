@@ -27,7 +27,7 @@
 	}
 }
 
-.swiper-slide-prev .testimonial__content {
+.slider__slide.--is-prev .testimonial__content {
 	grid:
 		". . Testimonial-Image Testimonial-Image " 1rem
 		"Testimonial-Quote Testimonial-Quote Testimonial-Image Testimonial-Image" min-content

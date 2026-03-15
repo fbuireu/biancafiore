@@ -1,80 +1,153 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import DoubleQuote from "@assets/images/svg/double-quote.svg";
-import "swiper/css/bundle";
-import "../testimonial/testimonial.css";
-import "../testimonial/atoms/testimonialImage/testimonial-image.css";
-import "../testimonial/atoms/testimonialQuote/testimonial-quote.css";
-import "../testimonial/atoms/testimonialAuthor/testimonial-author.css";
-import "../testimonial/atoms/testimonialDescription/testimonial-description.css";
+import SliderShell from "@modules/core/components/sliderShell/SliderShell.astro";
+import "../testimonial/testimonial-styles.css";
+import "./testimonials-slider.css";
+import { Image } from 'astro:assets';
 
 interface Props {
-    testimonials: CollectionEntry<"testimonials">[];
+	testimonials: CollectionEntry<"testimonials">[];
 }
 
 const { testimonials } = Astro.props;
+
+const arrowPoints =
+	"24 12.001 2.914 12.001 8.208 6.706 7.501 5.999 1 12.501 7.5 19.001 8.207 18.294 2.914 13.001 24 13.001 24 12.001";
 ---
-<div class="testimonials__slider common-wrapper">
-    <div class="slider-wrapper swiper" data-slider="testimonials">
-        <div class="swiper-wrapper">
-            {testimonials.map((testimonial) => (
-                <div class="swiper-slide">
-                    <article class="testimonial__content">
-                        <img
-                            class="testimonial__image"
-                            src={testimonial.data.image.url}
-                            alt={testimonial.data.author}
-                            loading="lazy"
-                        />
-                        <div class="testimonial__quote-wrapper">
-                            <DoubleQuote class="testimonial__quote-symbol" />
-                            <blockquote class="testimonial__quote">{testimonial.data.quote}</blockquote>
-                        </div>
-                        <h5 class="testimonial__author font-serif">{testimonial.data.author}</h5>
-                        <p class="testimonial__description">{testimonial.data.role}</p>
-                    </article>
-                </div>
-            ))}
-        </div>
-        <div class="swiper-pagination"></div>
-    </div>
-</div>
+
+<SliderShell class="testimonials__slider common-wrapper" type="testimonials" delay={5000}>
+	{
+		testimonials.map((testimonial, i) => (
+			<li
+				class:list={["slider__slide", { "--is-active": i === 0 }]}
+				data-slider-slide
+			>
+				<article class:list={["testimonial__content", { "--is-active": i === 0 }]}>
+					<Image
+						class="testimonial__image"
+						src={testimonial.data.image.url}
+						alt={testimonial.data.author}
+						width={testimonial.data.image.details.width}
+						height={testimonial.data.image.details.height}
+					/>
+					<div class="testimonial__quote-wrapper">
+						<DoubleQuote class="testimonial__quote-symbol" />
+						<blockquote class="testimonial__quote">{testimonial.data.quote}</blockquote>
+					</div>
+					<h5 class="testimonial__author font-serif">{testimonial.data.author}</h5>
+					<p class="testimonial__description">{testimonial.data.role}</p>
+				</article>
+			</li>
+		))
+	}
+
+	<div slot="navigation" class="testimonials__nav">
+		<button
+			class="slider__navigation__button --is-left --is-clickable"
+			type="button"
+			aria-label="Previous Testimonial"
+			data-slider-prev
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" aria-hidden="true">
+				<polygon
+					points={arrowPoints}
+					fill="currentColor"
+					stroke="currentColor"
+					stroke-width="0.25"
+				/>
+			</svg>
+		</button>
+
+		<nav class="slider__dots" aria-label="Testimonials pagination">
+			{
+				testimonials.map((_, i) => (
+					<button
+						class:list={["slider__dot", { "--is-active": i === 0 }]}
+						type="button"
+						aria-label={`Testimonial ${i + 1}`}
+						data-slider-dot
+					/>
+				))
+			}
+		</nav>
+
+		<button
+			class="slider__navigation__button --is-right --is-clickable"
+			type="button"
+			aria-label="Next Testimonial"
+			data-slider-next
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" aria-hidden="true">
+				<polygon
+					points={arrowPoints}
+					fill="currentColor"
+					stroke="currentColor"
+					stroke-width="0.25"
+				/>
+			</svg>
+		</button>
+	</div>
+</SliderShell>
 
 <script>
-    import Swiper from "swiper";
-    import { Navigation, Keyboard, Autoplay, A11y, Pagination } from "swiper/modules";
+	document.querySelectorAll<HTMLElement>('[data-slider-type="testimonials"]').forEach((slider) => {
+		const track = slider.querySelector<HTMLElement>("[data-slider-track]");
+		if (!track) return;
 
-    document.querySelectorAll<HTMLElement>('[data-slider="testimonials"]').forEach((el) => {
-        const updateActive = (swiper: Swiper) => {
-            el.querySelectorAll<HTMLElement>(".testimonial__content").forEach((c) =>
-                c.classList.remove("--is-active")
-            );
-            el.querySelector<HTMLElement>(".swiper-slide-active .testimonial__content")
-                ?.classList.add("--is-active");
-        };
+		const slides = Array.from(track.querySelectorAll<HTMLElement>("[data-slider-slide]"));
+		const dots = Array.from(slider.querySelectorAll<HTMLButtonElement>("[data-slider-dot]"));
+		const prev = slider.querySelector<HTMLButtonElement>("[data-slider-prev]");
+		const next = slider.querySelector<HTMLButtonElement>("[data-slider-next]");
+		const delay = Number(slider.dataset.sliderDelay ?? 5000);
 
-        const swiper = new Swiper(el, {
-            modules: [Navigation, Keyboard, Autoplay, A11y, Pagination],
-            loop: true,
-            centeredSlides: true,
-            slidesPerView: 3,
-            containerModifierClass: "testimonials-",
-            pagination: {
-                clickable: true,
-                el: el.querySelector<HTMLElement>(".swiper-pagination"),
-            },
-            autoplay: {
-                delay: 5000,
-                pauseOnMouseEnter: true,
-            },
-            breakpoints: {
-                1024: { slidesPerView: 1.85, spaceBetween: 150 },
-                320: { slidesPerView: 1 },
-            },
-            on: {
-                afterInit: updateActive,
-                slideChange: updateActive,
-            },
-        });
-    });
+		const getActiveIndex = (): number =>
+			slides.reduce((best, slide, i) => {
+				const center = track.scrollLeft + track.clientWidth / 2;
+				const dist = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - center);
+				const bestDist = Math.abs(
+					slides[best].offsetLeft + slides[best].offsetWidth / 2 - center
+				);
+				return dist < bestDist ? i : best;
+			}, 0);
+
+		const setActive = (idx: number): void => {
+			slides.forEach((slide, i) => {
+				slide.classList.toggle("--is-active", i === idx);
+				slide.classList.toggle("--is-prev", i === idx - 1);
+				slide.classList.toggle("--is-next", i === idx + 1);
+				slide
+					.querySelector(".testimonial__content")
+					?.classList.toggle("--is-active", i === idx);
+			});
+			dots.forEach((dot, i) => dot.classList.toggle("--is-active", i === idx));
+		};
+
+		const scrollToSlide = (index: number): void => {
+			const slide = slides.at(index);
+			if (!slide) return;
+			const targetLeft = slide.offsetLeft + slide.offsetWidth / 2 - track.clientWidth / 2;
+			track.scrollTo({ left: targetLeft, behavior: "smooth" });
+			setActive(index);
+		};
+
+		const advance = (dir: 1 | -1): void => {
+			const idx = getActiveIndex();
+			const next = idx + dir;
+			scrollToSlide(next < 0 ? slides.length - 1 : next >= slides.length ? 0 : next);
+		};
+
+		prev?.addEventListener("click", () => advance(-1));
+		next?.addEventListener("click", () => advance(1));
+		dots.forEach((dot, i) => dot.addEventListener("click", () => scrollToSlide(i)));
+
+		track.addEventListener("scrollend", () => setActive(getActiveIndex()));
+		setActive(0);
+
+		let timer = setInterval(() => advance(1), delay);
+		slider.addEventListener("mouseenter", () => clearInterval(timer));
+		slider.addEventListener("mouseleave", () => {
+			timer = setInterval(() => advance(1), delay);
+		});
+	});
 </script>

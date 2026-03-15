@@ -1,0 +1,5 @@
+@import url("testimonial.css");
+@import url("atoms/testimonialImage/testimonial-image.css");
+@import url("atoms/testimonialQuote/testimonial-quote.css");
+@import url("atoms/testimonialAuthor/testimonial-author.css");
+@import url("atoms/testimonialDescription/testimonial-description.css");

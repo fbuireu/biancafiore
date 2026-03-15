@@ -49,7 +49,7 @@ export default defineConfig({
       {
         name: 'node-fetch-cloudflare-shim',
         resolveId(id) {
-          if (id === 'node-fetch') return '\0node-fetch-shim';
+          if (id === 'node-fetch' || id === 'cross-fetch') return '\0node-fetch-shim';
         },
         load(id) {
           if (id === '\0node-fetch-shim') {

@@ -1,0 +1,14 @@
+.related-articles__slider {
+	--slides-per-view: 1;
+	--slider-gap: 0rem;
+
+	@media (width >= 720px) {
+		--slides-per-view: 2;
+		--slider-gap: 2rem;
+	}
+
+	@media (width >= 1024px) {
+		--slides-per-view: 3;
+		--slider-gap: 2rem;
+	}
+}
