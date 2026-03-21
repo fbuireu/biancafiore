@@ -17,6 +17,7 @@
 	}
 
 	.slider__slide {
+		container-type: scroll-state;
 		flex-shrink: 0;
 		height: auto;
 		scroll-snap-align: start;

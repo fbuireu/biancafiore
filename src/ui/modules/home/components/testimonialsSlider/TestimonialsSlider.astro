@@ -100,6 +100,7 @@ const arrowPoints =
 		const prev = slider.querySelector<HTMLButtonElement>("[data-slider-prev]");
 		const next = slider.querySelector<HTMLButtonElement>("[data-slider-next]");
 		const delay = Number(slider.dataset.sliderDelay ?? 5000);
+		const nativeScrollState = CSS.supports("container-type", "scroll-state");
 
 		const getActiveIndex = (): number =>
 			slides.reduce((best, slide, i) => {
@@ -113,12 +114,14 @@ const arrowPoints =
 
 		const setActive = (idx: number): void => {
 			slides.forEach((slide, i) => {
-				slide.classList.toggle("--is-active", i === idx);
 				slide.classList.toggle("--is-prev", i === idx - 1);
 				slide.classList.toggle("--is-next", i === idx + 1);
-				slide
-					.querySelector(".testimonial__content")
-					?.classList.toggle("--is-active", i === idx);
+				if (!nativeScrollState) {
+					slide.classList.toggle("--is-active", i === idx);
+					slide
+						.querySelector(".testimonial__content")
+						?.classList.toggle("--is-active", i === idx);
+				}
 			});
 			dots.forEach((dot, i) => dot.classList.toggle("--is-active", i === idx));
 		};

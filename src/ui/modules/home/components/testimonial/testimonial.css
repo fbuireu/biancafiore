@@ -12,8 +12,18 @@
 		/ calc(100% / 4) calc(100% / 4) 1fr 1fr;
 	width: 100%;
 
-	&:not(.--is-active) {
+	@supports not (container-type: scroll-state) {
+		&:not(.--is-active) {
+			opacity: 0.25;
+		}
+	}
+
+	@supports (container-type: scroll-state) {
 		opacity: 0.25;
+
+		@container scroll-state(snapped: inline) {
+			opacity: 1;
+		}
 	}
 
 	@container home-page (width <= 575px) {
