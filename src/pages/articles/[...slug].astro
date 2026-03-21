@@ -1,7 +1,4 @@
 ---
-import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
-import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
@@ -11,6 +8,9 @@ import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
 import type { InferGetStaticPropsType } from "astro";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { SITE_URL } from "astro:env/client";
 import "./_article.css";
 
 type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;
@@ -50,6 +50,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
                   alt={article.data.title}
                   class="article__featured__image"
                   layout="full-width"
+                  transition:animate="slide"
                   transition:name=`featured-image-${article.data.slug}`
               />
           </section>

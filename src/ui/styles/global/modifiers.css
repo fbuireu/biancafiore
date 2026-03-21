@@ -1,4 +1,8 @@
 @layer modifiers {
+	.item-wrapper {
+		position: relative;
+	}
+
 	.--is-clickable:not(canvas):not(:disabled) {
 		cursor: pointer;
 		transition: scale 0.2s;

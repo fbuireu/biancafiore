@@ -25,6 +25,7 @@ const article = Astro.props as ArticleCardProps;
           width={article.data.featuredImage.details.width}
           height={article.data.featuredImage.details.height}
           alt={article.data.title}
+          transition:animate="slide"
           transition:name=`featured-image-${article.data.slug}`
       />
   )}
