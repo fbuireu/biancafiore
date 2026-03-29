@@ -10,11 +10,11 @@
 	}
 
 	.font-sans-serif {
-		font-family: var(--font-nunito-sans);
+		font-family: var(--font-sans-serif);
 	}
 
 	.font-serif {
-		font-family: var(--font-baskervville);
+		font-family: var(--font-serif);
 	}
 
 	.section-title {
