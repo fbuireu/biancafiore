@@ -5,6 +5,7 @@
 	"compilerOptions": {
 		"jsxImportSource": "react",
 		"jsx": "react-jsx",
+		"module": "ESNext",
 		"types": ["vite/client"],
 		"baseUrl": ".",
 		"paths": {

@@ -5,7 +5,7 @@
 }
 
 .contact-form__input-wrapper {
-	font-family: var(--font-nunito-sans);
+	font-family: var(--font-sans-serif);
 
 	&:is(:has(.contact-form__input:focus, .contact-form__input:not(:placeholder-shown)))::after {
 		width: 100%;
