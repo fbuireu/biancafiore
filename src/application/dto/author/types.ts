@@ -1,4 +1,4 @@
-import type { z } from "astro:content";
+import { z } from 'astro/zod';
 import type { ArticleDTO } from "@application/dto/article/types";
 import type { authorSchema } from "@application/entities/authors";
 import type { ContentfulImageAsset } from "@shared/application/types";

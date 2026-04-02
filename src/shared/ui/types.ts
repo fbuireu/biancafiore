@@ -1,4 +1,4 @@
-import type { z } from "astro:schema";
+import { z } from 'astro/zod';
 import type { contactFormSchema } from "@application/entities/contact/schema";
 
 export type ContactFormData = z.infer<typeof contactFormSchema> & {

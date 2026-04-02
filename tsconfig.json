@@ -7,7 +7,6 @@
 		"jsx": "react-jsx",
 		"module": "ESNext",
 		"types": ["vite/client"],
-		"baseUrl": ".",
 		"paths": {
 			"@const/*": ["./src/const/*"],
 			"@infrastructure/*": ["./src/infrastructure/*"],

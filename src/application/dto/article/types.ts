@@ -1,4 +1,4 @@
-import type { z } from "astro:content";
+import { z } from 'astro/zod';
 import type { RawAuthor } from "@application/dto/author/types";
 import type { BaseTagDTO } from "@application/dto/tag/types";
 import type { articleSchema } from "@application/entities/articles";

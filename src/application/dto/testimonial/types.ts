@@ -1,4 +1,4 @@
-import type { z } from "astro:content";
+import { z } from 'astro/zod';
 import type { testimonialsSchema } from "@application/entities/testimonials";
 import type { ContentfulImageAsset } from "@shared/application/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";

@@ -13,7 +13,7 @@ export function validateContact(contact: ValidateContact): ValidateContact {
 
 		if (!success) {
 			throw new Exception({
-				message: error?.errors.join(", ") || "Invalid data",
+				message: error?.issues.map((i) => i.message).join(", ") || "Invalid data",
 				code: "BAD_REQUEST",
 			});
 		}
