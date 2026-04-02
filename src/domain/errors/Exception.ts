@@ -1,4 +1,4 @@
-import type { ActionErrorCode } from "astro/dist/actions/runtime/virtual/shared";
+import type { ActionErrorCode } from "astro:actions";
 
 interface ExceptionParams {
 	message: string;

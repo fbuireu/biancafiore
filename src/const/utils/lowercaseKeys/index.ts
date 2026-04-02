@@ -1,1 +1,1 @@
-export * from "src/const/utils/lowercaseKeys/lowecaseKeys";
+export * from "./lowecaseKeys";
