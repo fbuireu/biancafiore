@@ -86,7 +86,7 @@
     "@types/three": "^0.183.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.0",
     "vitest": "^4.1.2",
     "wrangler": "^4.78.0"
   }
