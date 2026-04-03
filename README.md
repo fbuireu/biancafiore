@@ -1,1 +1,8 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/0719dd8b-1088-4561-8df9-64263f7ffbc8/deploy-status)](https://app.netlify.com/sites/biancafiore/deploys)
+## License
+
+All blog content (posts, articles, original images) is licensed under
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+
+Source code (components, styles, config) is licensed under [MIT](LICENSE-CODE).
+
+[![CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/88x31.png)](https://creativecommons.org/licenses/by-sa/4.0/)
