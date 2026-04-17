@@ -2,6 +2,10 @@
 	--slides-per-view: 1;
 	--slider-gap: 0rem;
 
+	.slider__track {
+		scroll-marker-group: none;
+	}
+
 	@media (width >= 720px) {
 		--slides-per-view: 2;
 		--slider-gap: 2rem;

@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import { PAGES_ROUTES } from "src/const";
 import "./my-work.css";
+import { PAGES_ROUTES } from "@const/const";
 
 const projects = await getCollection("projects");
 ---

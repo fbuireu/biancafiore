@@ -4,6 +4,10 @@
 
 	grid-area: Latest-Articles;
 
+	.slider__track {
+		scroll-marker-group: none;
+	}
+
 	@media (width >= 1024px) {
 		--slides-per-view: 2;
 		--slider-gap: 2rem;
