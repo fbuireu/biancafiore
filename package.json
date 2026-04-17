@@ -45,11 +45,11 @@
     "lint:ts:typecheck": "tsc --project . --noEmit"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "13.1.8",
+    "@astrojs/cloudflare": "13.1.9",
     "@astrojs/compiler-rs": "0.1.6",
     "@astrojs/db": "0.20.1",
     "@astrojs/mdx": "5.0.3",
-    "@astrojs/partytown": "2.1.6",
+    "@astrojs/partytown": "2.1.7",
     "@astrojs/react": "5.0.3",
     "@astrojs/rss": "4.0.18",
     "@astrojs/sitemap": "3.7.2",
@@ -57,17 +57,17 @@
     "@contentful/rich-text-types": "17.2.7",
     "@hookform/resolvers": "5.2.2",
     "algoliasearch": "5.50.1",
-    "astro": "6.1.5",
+    "astro": "6.1.6",
     "clsx": "2.1.1",
-    "contentful": "11.12.0",
-    "gsap": "3.14.2",
+    "contentful": "11.12.1",
+    "gsap": "3.15.0",
     "markdown-it": "14.1.1",
     "react": "19.2.5",
     "react-dom": "19.2.5",
     "react-globe.gl": "2.37.1",
     "react-google-recaptcha-v3": "1.11.0",
     "react-hook-form": "7.72.1",
-    "resend": "6.10.0",
+    "resend": "6.11.0",
     "three": "0.183.2",
     "vanilla-cookieconsent": "3.1.0"
   },
@@ -89,6 +89,6 @@
     "lint-staged": "16.4.0",
     "typescript": "6.0.2",
     "vitest": "4.1.4",
-    "wrangler": "4.81.1"
+    "wrangler": "4.82.2"
   }
 }

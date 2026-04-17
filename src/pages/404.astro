@@ -1,9 +1,9 @@
 ---
+import { PAGES_ROUTES } from "@const/const";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import ErrorLayer from "@modules/core/components/errorLayer/ErrorLayer.astro";
-import { PAGES_ROUTES } from "src/const";
-import Spotlight from "src/ui/modules/core/components/spotlight/Spotlight.astro";
+import Spotlight from "@modules/core/components/spotlight/Spotlight.astro";
 
 const title = "404: Not Found";
 const description = "It seems you've stumbled upon a page that doesn't exist.";
@@ -24,7 +24,7 @@ const metadata: Partial<SeoMetadata> = {
             <p>{description}</p>
             <p>Why not try going back to the <a href={PAGES_ROUTES.HOME}
                                                 class="error-layer__link --underline-on-hover">homepage</a>?</p>
-        </div>
+        </div> 
     </ErrorLayer>
     <Spotlight />
 </BaseLayout>

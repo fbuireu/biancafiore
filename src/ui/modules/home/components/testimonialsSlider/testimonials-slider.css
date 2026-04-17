@@ -1,9 +1,24 @@
+.testimonials__wrapper {
+  position: relative;
+}
+
 .testimonials__slider {
-  --testimonial-translation: 4rem;
   --slider-gap: 0;
 
   .slider__track {
     align-items: center;
+
+    /* Anchor the dots group so real nav buttons can position against it */
+    &::scroll-marker-group {
+      anchor-name: --testimonials-nav-dots;
+      padding-block: 2rem;
+    }
+
+    /* Suppress the CSS-generated buttons — real buttons handle navigation */
+    &::scroll-button(inline-start),
+    &::scroll-button(inline-end) {
+      content: none;
+    }
   }
 
   .slider__slide {
@@ -15,16 +30,6 @@
     .slider__track {
       padding-inline: calc((100% - 100% / 1.85) / 2);
       scroll-padding-inline: calc((100% - 100% / 1.85) / 2);
-    }
-
-    @supports not (container-type: scroll-state) {
-      .slider__slide {
-        transition: scale 0.3s;
-      }
-
-      .slider__slide:not(.--is-active) {
-        scale: 0.8;
-      }
     }
 
     @supports (container-type: scroll-state) {
@@ -39,33 +44,67 @@
         }
       }
     }
-
-    .slider__slide.--is-prev .testimonial__content > *:not(.testimonial__image),
-    .slider__slide.--is-prev .testimonial__content > *:not(.testimonial__image) > *:not(.testimonial__quote-symbol) {
-      translate: calc(var(--testimonial-translation) * -1) 0;
-    }
-
-    .slider__slide.--is-next .testimonial__content > *:not(.testimonial__image),
-    .slider__slide.--is-next .testimonial__content > *:not(.testimonial__image) > *:not(.testimonial__quote-symbol) {
-      translate: var(--testimonial-translation) 0;
-    }
-
-    .slider__slide.--is-prev .testimonial__quote-symbol,
-    .slider__slide.--is-next .testimonial__quote-symbol {
-      opacity: 0;
-    }
   }
 }
 
+/* Fallback layout: buttons appear below the dots in a centered row */
 .testimonials__nav {
   align-items: center;
-  display: grid;
-  grid: 'arrow-left dots arrow-right' / auto 1fr auto;
-  gap: 1rem;
+  display: flex;
+  gap: 0.75rem;
   justify-content: center;
-  padding-block: 2rem;
+  padding-block: 0 2rem;
+}
 
-  .slider__dots {
-    padding: 0;
+.testimonials__nav__button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  color: currentColor;
+  display: flex;
+  height: 2.5rem;
+  justify-content: center;
+  padding: 0.5rem;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+  width: 2.5rem;
+
+  & svg {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  &.--is-right svg {
+    transform: scaleX(-1);
+  }
+
+  &:hover {
+    background-color: var(--primary-main);
+    border-color: var(--primary-main);
+  }
+}
+
+/* Enhanced layout: anchor buttons inline with the dots via anchor positioning */
+@supports (anchor-name: --x) {
+  .testimonials__nav {
+    display: contents;
+  }
+
+  .testimonials__nav__button {
+    position: fixed;
+    position-anchor: --testimonials-nav-dots;
+    top: anchor(center);
+  }
+
+  .testimonials__nav__button.--is-left {
+    right: anchor(left);
+    translate: -0.75rem -50%;
+  }
+
+  .testimonials__nav__button.--is-right {
+    left: anchor(right);
+    translate: 0.75rem -50%;
   }
 }

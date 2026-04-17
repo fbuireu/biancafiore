@@ -11,24 +11,12 @@ interface Props {
 const { articles } = Astro.props;
 ---
 
-<SliderShell
-	class="latest-articles__slider common-wrapper"
-	delay={10000}
-	prevLabel="Previous Article"
-	nextLabel="Next Article"
->
+<SliderShell class="latest-articles__slider common-wrapper">
 	{
 		articles.map((article) => (
-			<li class="slider__slide item-wrapper --is-clickable" data-slider-slide>
+			<li class="slider__slide item-wrapper --is-clickable">
 				<ArticleCard {...article} />
 			</li>
 		))
 	}
 </SliderShell>
-
-<script>
-	import { initArticleSlider } from "@utils/slider";
-	document
-		.querySelectorAll<HTMLElement>('[data-slider-type="articles"]')
-		.forEach(initArticleSlider);
-</script>

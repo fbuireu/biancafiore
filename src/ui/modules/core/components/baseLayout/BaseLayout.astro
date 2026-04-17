@@ -1,13 +1,13 @@
 ---
-import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
 import type { SeoMetadata } from "@const/types";
 import Footer from "@modules/core/components/footer/Footer.astro";
 import Head from "@modules/core/components/head/Head.astro";
 import Header from "@modules/core/components/header/Header.astro";
 import ScrollTop from "@modules/core/components/scrollTop/ScrollTop.astro";
-import { getLocation } from "src/ui/modules/core/utils/getLocation";
+import { getLocation } from "@modules/core/utils/getLocation";
+import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
 
-type BaseLayoutProps = SeoMetadata;
+type BaseLayoutProps = SeoMetadata; 
 
 const props = Astro.props as BaseLayoutProps;
 const location = getLocation(Astro.url);

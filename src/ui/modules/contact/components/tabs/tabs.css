@@ -29,6 +29,10 @@
 	padding: 1rem;
 	position: relative;
 	--border-width: 2px;
+
+	&::after {
+		pointer-events: none;
+	}
 }
 
 .contact-tab.--is-active {

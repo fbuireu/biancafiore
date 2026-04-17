@@ -15,6 +15,10 @@
 	padding: 2rem 0 4rem;
 	position: relative;
 
+	.slider__track {
+		scroll-marker-group: none;
+	}
+
 	@media (width >= 720px) {
 		--slides-per-view: 2;
 		--slider-gap: 2rem;
