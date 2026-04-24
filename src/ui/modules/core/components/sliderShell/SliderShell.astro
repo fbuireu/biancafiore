@@ -1,13 +1,14 @@
 ---
-interface Props {
+interface SliderShellProps {
 	class?: string;
+	showTrack?: boolean;
 }
 
-const { class: className } = Astro.props;
+const { class: className, showTrack = true } = Astro.props as SliderShellProps;
 ---
 
 <div class={className}>
-	<ul class="slider__track">
+	<ul class="slider__track" data-track={showTrack}>
 		<slot />
 	</ul>
 </div>
