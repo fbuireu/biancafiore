@@ -61,6 +61,13 @@
 		&::scroll-button(inline-end) {
 			content: "→" / "Next slide";
 		}
+
+		&[data-track="false"] {
+			&::scroll-button(inline-start),
+			&::scroll-button(inline-end) {
+				display: none;
+			}
+		}
 	}
 
 	.slider__slide {
