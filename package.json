@@ -66,7 +66,7 @@
     "react-dom": "19.2.5",
     "react-globe.gl": "2.37.1",
     "react-google-recaptcha-v3": "1.11.0",
-    "react-hook-form": "7.73.1",
+    "react-hook-form": "7.74.0",
     "resend": "6.12.2",
     "three": "0.184.0",
     "vanilla-cookieconsent": "3.1.0"
