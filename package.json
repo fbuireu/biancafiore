@@ -84,7 +84,7 @@
     "@types/node": "25.6.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@types/three": "0.184.0",
+    "@types/three": "0.184.1",
     "husky": "9.1.7",
     "lint-staged": "16.4.0",
     "typescript": "6.0.3",
