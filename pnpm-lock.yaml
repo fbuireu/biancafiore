@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@astrojs/cloudflare':
-        specifier: 13.2.2
-        version: 13.2.2(@types/node@25.7.0)(astro@6.1.10(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(typescript@6.0.3)(yaml@2.8.3))(jiti@2.6.1)(workerd@1.20260508.1)(wrangler@4.90.1)(yaml@2.8.3)
+        specifier: 13.5.0
+        version: 13.5.0(@types/node@25.7.0)(astro@6.3.1(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(yaml@2.8.3))(jiti@2.6.1)(workerd@1.20260508.1)(wrangler@4.90.1)(yaml@2.8.3)
       '@astrojs/compiler-rs':
         specifier: 0.2.0
         version: 0.2.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
       '@astrojs/db':
-        specifier: 0.21.0
-        version: 0.21.0
+        specifier: 0.21.1
+        version: 0.21.1
       '@astrojs/mdx':
         specifier: 5.0.4
-        version: 5.0.4(astro@6.1.10(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(typescript@6.0.3)(yaml@2.8.3))
+        version: 5.0.4(astro@6.3.1(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(yaml@2.8.3))
       '@astrojs/partytown':
         specifier: 2.1.7
         version: 2.1.7
@@ -45,8 +45,8 @@ importers:
         specifier: 5.52.1
         version: 5.52.1
       astro:
-        specifier: 6.1.10
-        version: 6.1.10(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(typescript@6.0.3)(yaml@2.8.3)
+        specifier: 6.3.1
+        version: 6.3.1(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(yaml@2.8.3)
       clsx:
         specifier: 2.1.1
         version: 2.1.1
@@ -203,10 +203,10 @@ packages:
     peerDependencies:
       typescript: ^5.0.0 || ^6.0.0
 
-  '@astrojs/cloudflare@13.2.2':
-    resolution: {integrity: sha512-SSKpqvlFsmguC7cVKMpovGyb7l74Ilhe5j0iAc2preRerRgnvAZLegh22/jocQrZc7/qlxPAsLKT04NwEYqRJg==}
+  '@astrojs/cloudflare@13.5.0':
+    resolution: {integrity: sha512-kP3/SwPzZi7tq+fZG6H9GpaYQF3jw9L6vg92QL6q7FLI7t0rGiuG6Q0AckeJYjBUsO4Y+2w7aI7m+Q2r/WpssQ==}
     peerDependencies:
-      astro: ^6.0.0
+      astro: ^6.3.0
       wrangler: ^4.83.0
 
   '@astrojs/compiler-binding-darwin-arm64@0.2.0':
@@ -276,11 +276,11 @@ packages:
   '@astrojs/compiler@2.13.1':
     resolution: {integrity: sha512-f3FN83d2G/v32ipNClRKgYv30onQlMZX1vCeZMjPsMMPl1mDpmbl0+N5BYo4S/ofzqJyS5hvwacEo0CCVDn/Qg==}
 
-  '@astrojs/compiler@3.0.1':
-    resolution: {integrity: sha512-z97oYbdebO5aoWzuJ/8q5hLK232+17KcLZ7cJ8BCWk6+qNzVxn/gftC0KzMBUTD8WAaBkPpNSQK6PXLnNrZ0CA==}
+  '@astrojs/compiler@4.0.0':
+    resolution: {integrity: sha512-eouss7G8ygdZqHuke033VMcVw5HTZUu+PXd/h06DGDUg/jt5btPYPqh66ENWw/mU78rBrf/oeC4oqoBwMtDMNA==}
 
-  '@astrojs/db@0.21.0':
-    resolution: {integrity: sha512-9Ekc4BeQEB667LOR8WmUVqL3KwJWmMClir+MZP4DQF81vkViHFeGkCw5LVDBNpnD6sS+J4ed55lJ0x0V+Fp0TA==}
+  '@astrojs/db@0.21.1':
+    resolution: {integrity: sha512-ZQfUAPnAEuQnIDDWGCic3bhPlJOGZHyj1rY333uITVl9JcdCRCqMlRhQQOsGSkWvFQ39gLcnQ6qAfNePfUs4nw==}
 
   '@astrojs/internal-helpers@0.9.0':
     resolution: {integrity: sha512-GdYkzR26re8izmyYlBqf4z2s7zNngmWLFuxw0UKiPNqHraZGS6GKWIwSHgS22RDlu2ePFJ8bzmpBcUszut/SDg==}
@@ -328,8 +328,8 @@ packages:
   '@astrojs/sitemap@3.7.2':
     resolution: {integrity: sha512-PqkzkcZTb5ICiyIR8VoKbIAP/laNRXi5tw616N1Ckk+40oNB8Can1AzVV56lrbC5GKSZFCyJYUVYqVivMisvpA==}
 
-  '@astrojs/telemetry@3.3.1':
-    resolution: {integrity: sha512-7fcIxXS9J4ls5tr8b3ww9rbAIz2+HrhNJYZdkAhhB4za/I5IZ/60g+Bs8q7zwG0tOIZfNB4JWhVJ1Qkl/OrNCw==}
+  '@astrojs/telemetry@3.3.2':
+    resolution: {integrity: sha512-j8DNruA8ors99Al39RYZPJK4DC1bKkoNm93mAMuBhY9TCNC4R8n1q7ovFnJ5qhGh5Lsh7pa1gpQVpYpsJPeTHQ==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
 
   '@astrojs/ts-plugin@1.10.7':
@@ -1776,8 +1776,8 @@ packages:
     resolution: {integrity: sha512-LElXdjswlqjWrPpJFg1Fx4wpkOCxj1TDHlSV4PlaRxHGWko024xICaa97ZkMfs6DRKlCguiAI+rbXv5GWwXIkg==}
     hasBin: true
 
-  astro@6.1.10:
-    resolution: {integrity: sha512-jQAIki6c862oxRr7OXXC+h3n4wg1EpmKgCH3vv1FtXM9VFmD2iTjlaxrfb0I6eQCwtUjSBxfJBFBDSXHu7Wing==}
+  astro@6.3.1:
+    resolution: {integrity: sha512-atz6dmkE3Gu24bDgb7g2RE/BYnKqPYIHd6hTUM1UXvu/i7qNZOKLAqEHvgYpv9PQVcgWsXpk4/OOXZ0E/FzvSQ==}
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -2089,9 +2089,6 @@ packages:
   diff@8.0.4:
     resolution: {integrity: sha512-DPi0FmjiSU5EvQV0++GFDOJ9ASQUVFh5kD+OzOnYdi7n3Wpm9hWWGfB/O2blfHcMVTL5WkQXSnRiK9makhrcnw==}
     engines: {node: '>=0.3.1'}
-
-  dlv@1.1.3:
-    resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
 
   dom-accessibility-api@0.5.16:
     resolution: {integrity: sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg==}
@@ -2440,6 +2437,10 @@ packages:
   get-proto@1.0.1:
     resolution: {integrity: sha512-sTSfBjoXBp89JvIKIefqw7U2CCebsc74kiY6awiGogKtoSGbgjYE/G/+l9sF3MWFPNc9IcoOC4ODfKHfxFmp0g==}
     engines: {node: '>= 0.4'}
+
+  get-tsconfig@5.0.0-beta.4:
+    resolution: {integrity: sha512-7nF7C9fIPFEMHgEMEfgIlO9wDdZ8CyHw27rWciFZfHvHDReIiPhsYuzPRXsfvBCqFy1l8RRyyWV7QLM+ZhUJsQ==}
+    engines: {node: '>=20.20.0'}
 
   git-raw-commits@5.0.1:
     resolution: {integrity: sha512-Y+csSm2GD/PCSh6Isd/WiMjNAydu0VBiG9J7EdQsNA5P9uXvLayqjmTsNlK5Gs9IhblFZqOU0yid5Il5JPoLiQ==}
@@ -3270,6 +3271,9 @@ packages:
     resolution: {integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==}
     engines: {node: '>=8'}
 
+  resolve-pkg-maps@1.0.0:
+    resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
+
   restore-cursor@5.1.0:
     resolution: {integrity: sha512-oMA2dcrw6u0YfxJQXm342bFKX/E4sG9rbTzO9ptUcR/e8A33cHuvStiYOwH7fszkZlZ1z/ta9AAoPk2F4qIOHA==}
     engines: {node: '>=18'}
@@ -3501,16 +3505,6 @@ packages:
 
   trough@2.2.0:
     resolution: {integrity: sha512-tmMpK00BjZiUyVyvrBK7knerNgmgvcV/KLVyuma/SC+TQN167GrMRciANTz09+k3zW8L8t60jWO1GpfkZdjTaw==}
-
-  tsconfck@3.1.6:
-    resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
-    engines: {node: ^18 || >=20}
-    hasBin: true
-    peerDependencies:
-      typescript: ^5.0.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
 
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
@@ -4065,12 +4059,12 @@ snapshots:
       - prettier
       - prettier-plugin-astro
 
-  '@astrojs/cloudflare@13.2.2(@types/node@25.7.0)(astro@6.1.10(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(typescript@6.0.3)(yaml@2.8.3))(jiti@2.6.1)(workerd@1.20260508.1)(wrangler@4.90.1)(yaml@2.8.3)':
+  '@astrojs/cloudflare@13.5.0(@types/node@25.7.0)(astro@6.3.1(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(yaml@2.8.3))(jiti@2.6.1)(workerd@1.20260508.1)(wrangler@4.90.1)(yaml@2.8.3)':
     dependencies:
       '@astrojs/internal-helpers': 0.9.0
       '@astrojs/underscore-redirects': 1.0.3
       '@cloudflare/vite-plugin': 1.34.0(vite@7.3.2(@types/node@25.7.0)(jiti@2.6.1)(yaml@2.8.3))(workerd@1.20260508.1)(wrangler@4.90.1)
-      astro: 6.1.10(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(typescript@6.0.3)(yaml@2.8.3)
+      astro: 6.3.1(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(yaml@2.8.3)
       piccolore: 0.1.3
       tinyglobby: 0.2.16
       vite: 7.3.2(@types/node@25.7.0)(jiti@2.6.1)(yaml@2.8.3)
@@ -4147,9 +4141,9 @@ snapshots:
 
   '@astrojs/compiler@2.13.1': {}
 
-  '@astrojs/compiler@3.0.1': {}
+  '@astrojs/compiler@4.0.0': {}
 
-  '@astrojs/db@0.21.0':
+  '@astrojs/db@0.21.1':
     dependencies:
       '@clack/prompts': 1.2.0
       '@libsql/client': 0.17.3
@@ -4246,12 +4240,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@5.0.4(astro@6.1.10(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(typescript@6.0.3)(yaml@2.8.3))':
+  '@astrojs/mdx@5.0.4(astro@6.3.1(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(yaml@2.8.3))':
     dependencies:
       '@astrojs/markdown-remark': 7.1.1
       '@mdx-js/mdx': 3.1.1
       acorn: 8.16.0
-      astro: 6.1.10(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(typescript@6.0.3)(yaml@2.8.3)
+      astro: 6.3.1(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(yaml@2.8.3)
       es-module-lexer: 2.1.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -4311,10 +4305,9 @@ snapshots:
       stream-replace-string: 2.0.0
       zod: 4.3.6
 
-  '@astrojs/telemetry@3.3.1':
+  '@astrojs/telemetry@3.3.2':
     dependencies:
       ci-info: 4.4.0
-      dlv: 1.1.3
       dset: 3.1.4
       is-docker: 4.0.0
       is-wsl: 3.1.1
@@ -5610,12 +5603,12 @@ snapshots:
 
   astring@1.9.0: {}
 
-  astro@6.1.10(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(typescript@6.0.3)(yaml@2.8.3):
+  astro@6.3.1(@types/node@25.7.0)(jiti@2.6.1)(rollup@4.60.2)(yaml@2.8.3):
     dependencies:
-      '@astrojs/compiler': 3.0.1
+      '@astrojs/compiler': 4.0.0
       '@astrojs/internal-helpers': 0.9.0
       '@astrojs/markdown-remark': 7.1.1
-      '@astrojs/telemetry': 3.3.1
+      '@astrojs/telemetry': 3.3.2
       '@capsizecss/unpack': 4.0.0
       '@clack/prompts': 1.2.0
       '@oslojs/encoding': 1.1.0
@@ -5633,10 +5626,12 @@ snapshots:
       esbuild: 0.27.7
       flattie: 1.1.1
       fontace: 0.4.1
+      get-tsconfig: 5.0.0-beta.4
       github-slugger: 2.0.0
       html-escaper: 3.0.3
       http-cache-semantics: 4.2.0
       js-yaml: 4.1.1
+      jsonc-parser: 3.3.1
       magic-string: 0.30.21
       magicast: 0.5.2
       mrmime: 2.0.1
@@ -5655,7 +5650,6 @@ snapshots:
       tinyclip: 0.1.12
       tinyexec: 1.1.1
       tinyglobby: 0.2.16
-      tsconfck: 3.1.6(typescript@6.0.3)
       ultrahtml: 1.6.0
       unifont: 0.7.4
       unist-util-visit: 5.1.0
@@ -5699,7 +5693,6 @@ snapshots:
       - supports-color
       - terser
       - tsx
-      - typescript
       - uploadthing
       - yaml
 
@@ -5994,8 +5987,6 @@ snapshots:
       dequal: 2.0.3
 
   diff@8.0.4: {}
-
-  dlv@1.1.3: {}
 
   dom-accessibility-api@0.5.16: {}
 
@@ -6296,6 +6287,10 @@ snapshots:
     dependencies:
       dunder-proto: 1.0.1
       es-object-atoms: 1.1.1
+
+  get-tsconfig@5.0.0-beta.4:
+    dependencies:
+      resolve-pkg-maps: 1.0.0
 
   git-raw-commits@5.0.1(conventional-commits-parser@6.4.0):
     dependencies:
@@ -7496,6 +7491,8 @@ snapshots:
 
   resolve-from@5.0.0: {}
 
+  resolve-pkg-maps@1.0.0: {}
+
   restore-cursor@5.1.0:
     dependencies:
       onetime: 7.0.0
@@ -7818,10 +7815,6 @@ snapshots:
   trim-lines@3.0.1: {}
 
   trough@2.2.0: {}
-
-  tsconfck@3.1.6(typescript@6.0.3):
-    optionalDependencies:
-      typescript: 6.0.3
 
   tslib@2.8.1: {}
 
