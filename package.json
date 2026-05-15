@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "13.2.2",
-    "@astrojs/compiler-rs": "0.1.10",
+    "@astrojs/compiler-rs": "0.2.0",
     "@astrojs/db": "0.21.0",
     "@astrojs/mdx": "5.0.4",
     "@astrojs/partytown": "2.1.7",
