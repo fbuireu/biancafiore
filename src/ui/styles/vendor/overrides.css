@@ -2,17 +2,17 @@
 	.marker-wrapper {
 		z-index: inherit;
 		&:hover {
-			z-index: 5 !important;
+			z-index: 5;
 		}
 	}
 
 	.site__logo {
 		&.--is-menu-open {
-			scale: 1 !important;
+			scale: 1;
 			transition: scale 0.2s;
 
 			&:active {
-				scale: 0.9 !important;
+				scale: 0.9;
 			}
 		}
 	}
