@@ -135,6 +135,11 @@ export default defineConfig({
         access: 'secret',
         context: 'server',
       }),
+      HIDE_CHROME: envField.boolean({
+        context: 'server',
+        access: 'public',
+        default: false,
+      }),
     },
   },
 });

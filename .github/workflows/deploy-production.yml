@@ -1,0 +1,21 @@
+name: Deploy - Production
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy
+    uses: ./.github/workflows/_deploy.yml
+    with:
+      environment: production
+      url: https://biancafiore.me
+    secrets: inherit

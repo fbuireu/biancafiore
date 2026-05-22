@@ -1,0 +1,54 @@
+name: Deploy - Development
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: deploy-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy
+    uses: ./.github/workflows/_deploy.yml
+    with:
+      environment: development
+      branch: pr-${{ github.event.pull_request.number }}
+      url: https://pr-${{ github.event.pull_request.number }}.biancafiore.pages.dev
+    secrets: inherit
+
+  comment:
+    name: Post preview URL
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    env:
+      PREVIEW_MARKER: '<!-- preview-deployment -->'
+    steps:
+      - name: Find existing comment
+        uses: peter-evans/find-comment@v4
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: github-actions[bot]
+          body-includes: ${{ env.PREVIEW_MARKER }}
+
+      - name: Upsert preview comment
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body: |
+            ${{ env.PREVIEW_MARKER }}
+            ### Preview deployment
+
+            | | |
+            |---|---|
+            | **URL** | https://pr-${{ github.event.pull_request.number }}.biancafiore.pages.dev |
+            | **Branch** | `${{ github.head_ref }}` |
+            | **Commit** | `${{ github.event.pull_request.head.sha }}` |

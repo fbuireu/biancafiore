@@ -45,6 +45,8 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 				variant: rawArticle.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
 				content,
 				isFeaturedArticle: rawArticle.fields.featuredArticle,
+				isRepublished: rawArticle.fields.isRepublished ?? false,
+				originalSource: rawArticle.fields.originalSource,
 				readingTime: getReadingTime(content),
 				tags: createTags(rawArticle.fields.tags),
 				relatedArticles,

@@ -12,6 +12,8 @@ export const articleSchema = z.object({
 	publishDate: z.string(),
 	featuredImage: imageSchema.optional(),
 	isFeaturedArticle: z.boolean(),
+	isRepublished: z.boolean().default(false),
+	originalSource: z.string().optional(),
 	variant: z.enum([ArticleType.NO_IMAGE, ArticleType.DEFAULT]),
 	content: z.string(),
 	readingTime: z.number(),

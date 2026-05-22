@@ -6,12 +6,14 @@ import Header from "@modules/core/components/header/Header.astro";
 import ScrollTop from "@modules/core/components/scrollTop/ScrollTop.astro";
 import { getLocation } from "@modules/core/utils/getLocation";
 import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
+import { HIDE_CHROME } from "astro:env/server";
 
 type BaseLayoutProps = SeoMetadata; 
 
 const props = Astro.props as BaseLayoutProps;
 const location = getLocation(Astro.url);
 const className = { [`--is-${location}`]: location };
+const isUnderConstruction = HIDE_CHROME && location !== "article";
 ---
 <html lang="en" class:list={[className]}>
 <Head {...props} />
@@ -22,11 +24,14 @@ const className = { [`--is-${location}`]: location };
 
     </iframe>
 </noscript>
-<Header />
-<ScrollTop />
+{!HIDE_CHROME && <Header />}
+{!HIDE_CHROME && <ScrollTop />}
 <main class:list={[className]}>
-    <slot />
+    {isUnderConstruction
+        ? <h1 style="text-align:center;margin-top:50vh;font-size:52px">Site under construction<br />We'll be back soon</h1>
+        : <slot />
+    }
 </main>
-<Footer />
+{!HIDE_CHROME && <Footer />}
 </body>
 </html>
