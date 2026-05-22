@@ -6,7 +6,7 @@
 		"jsxImportSource": "react",
 		"jsx": "react-jsx",
 		"module": "ESNext",
-		"types": ["vite/client"],
+
 		"paths": {
 			"@const/*": ["./src/const/*"],
 			"@infrastructure/*": ["./src/infrastructure/*"],

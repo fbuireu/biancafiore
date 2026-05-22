@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error
 import { ActionError, defineAction } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
 import type { Except } from "@const/types";

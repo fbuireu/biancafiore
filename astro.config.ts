@@ -7,7 +7,6 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig, envField, fontProviders } from 'astro/config';
 import { fileURLToPath } from 'node:url';
 
-const isProd = import.meta.env.PROD;
 
 export default defineConfig({
   experimental: {
