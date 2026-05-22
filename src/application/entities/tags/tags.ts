@@ -1,4 +1,5 @@
-import { defineCollection, reference, z } from "astro:content";
+import { defineCollection, reference } from "astro:content";
+import { z } from "astro/zod";
 import { tagDTO } from "@application/dto/tag";
 import type { RawTag } from "@application/dto/tag/types";
 import { TagType } from "@application/dto/tag/types";
