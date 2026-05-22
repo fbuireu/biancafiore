@@ -35,5 +35,7 @@ jobs:
       - uses: ./.github/actions/prepare-env
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Generate types
+        run: pnpm run sync
       - name: Typecheck
         run: pnpm lint:ts:typecheck
