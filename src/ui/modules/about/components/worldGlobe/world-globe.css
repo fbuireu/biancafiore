@@ -72,6 +72,7 @@ canvas {
 .world-globe__controls__zoom-wrapper {
 	gap: 0 1rem;
 
+	/* biome-ignore lint/style/noDescendingSpecificity: svg is a different element per wrapper, cascade is intentional */
 	svg {
 		height: var(--size);
 		width: var(--size);

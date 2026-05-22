@@ -23,6 +23,7 @@
 		scale: 1.1;
 	}
 
+	/* biome-ignore lint/style/noDescendingSpecificity: base inner styles intentionally follow the hover override */
 	.theme_toggle_inner {
 		fill: light-dark(var(--primary-main), var(--white));
 		height: 2rem;

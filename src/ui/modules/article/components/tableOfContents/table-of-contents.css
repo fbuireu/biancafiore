@@ -83,6 +83,7 @@
 	}
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: base item styles intentionally follow the nav visibility override */
 .article__table-of-contents__item {
 	margin-inline-start: calc(0.55rem * var(--level, 1));
 	position: relative;

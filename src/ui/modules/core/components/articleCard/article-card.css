@@ -52,12 +52,14 @@
   text-transform: lowercase;
   z-index: 10;
 
+  /* biome-ignore lint/style/noDescendingSpecificity: hover/focus override intentionally precedes base item rule */
   &:hover .article-card__tag__item,
   &:has(.article-card__tag__item:focus-visible) .article-card__tag__item {
     translate: 0 0;
   }
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: base styles follow interaction overrides by design */
 .article-card__tag__item {
   --translate: 0 75px;
   transition: all 0.3s;
@@ -96,6 +98,7 @@
   width: 100%;
   z-index: 1;
 
+  /* biome-ignore lint/style/noDescendingSpecificity: sibling override intentionally precedes item block */
   &:is(:hover, :focus-visible) ~ .article-card__item .article-card__tag__item {
     translate: 0 0;
   }
@@ -112,6 +115,7 @@
   &:has(*:hover, *:focus-visible) {
     overflow: initial;
 
+    /* biome-ignore lint/style/noDescendingSpecificity: :has override intentionally follows sibling rule */
     .article-card__tag__item {
       translate: 0 0;
     }
