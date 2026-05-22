@@ -1,29 +1,3 @@
 name = "biancafiore"
 compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2026-03-12"
-
-[assets]
-directory = "dist/client"
-binding = "ASSETS"
-
-[env.development]
-name = "biancafiore-development"
-
-# Run: wrangler kv namespace create SESSION --env development
-# Replace id with the output
-[[env.development.kv_namespaces]]
-binding = "SESSION"
-id = "fde64789020f4160b0d835d190d8d5d6"
-
-[env.production]
-name = "biancafiore"
-
-# Run: wrangler kv namespace create SESSION --env production
-# Replace id with the output
-[[env.production.kv_namespaces]]
-binding = "SESSION"
-id = "c9f2626f1a4043c0aea8a75985bdc0a1"
-
-[[env.production.routes]]
-pattern = "biancafiore.me/*"
-zone_name = "biancafiore.me"

@@ -45,9 +45,8 @@ jobs:
     uses: ./.github/workflows/_deploy.yml
     with:
       environment: development
-      wrangler_env: development
-      worker_name: pr-${{ github.event.pull_request.number }}-biancafiore-development
-      url: https://pr-${{ github.event.pull_request.number }}-biancafiore-development.forever-pto.workers.dev
+      branch: pr-${{ github.event.pull_request.number }}
+      url: https://pr-${{ github.event.pull_request.number }}.biancafiore.pages.dev
     secrets: inherit
 
   comment:

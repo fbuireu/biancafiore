@@ -6,16 +6,13 @@ on:
       environment:
         required: true
         type: string
-      wrangler_env:
-        required: true
+      branch:
+        required: false
         type: string
+        description: Cloudflare Pages branch name (omit for production)
       url:
         required: false
         type: string
-      worker_name:
-        required: false
-        type: string
-        description: Override the worker name (for per-PR preview deployments)
 
 permissions:
   contents: read
@@ -36,16 +33,6 @@ jobs:
       - uses: ./.github/actions/prepare-env
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Write .dev.vars for miniflare prerender server
-        run: |
-          echo "RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}" >> .dev.vars
-          echo "CONTENTFUL_SPACE_ID=${{ secrets.CONTENTFUL_SPACE_ID }}" >> .dev.vars
-          echo "CONTENTFUL_DELIVERY_TOKEN=${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}" >> .dev.vars
-          echo "CONTENTFUL_PREVIEW_TOKEN=${{ secrets.CONTENTFUL_PREVIEW_TOKEN }}" >> .dev.vars
-          echo "CONTENTFUL_SIGNIN_TOKEN=${{ secrets.CONTENTFUL_SIGNIN_TOKEN }}" >> .dev.vars
-          echo "ASTRO_DB_REMOTE_URL=${{ secrets.ASTRO_DB_REMOTE_URL }}" >> .dev.vars
-          echo "ASTRO_DB_APP_TOKEN=${{ secrets.ASTRO_DB_APP_TOKEN }}" >> .dev.vars
-          echo "GOOGLE_RECAPTCHA_SECRET_KEY=${{ secrets.GOOGLE_RECAPTCHA_SECRET_KEY }}" >> .dev.vars
       - name: Build
         run: pnpm build
         env:
@@ -64,32 +51,10 @@ jobs:
           ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
           ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
           HIDE_CHROME: ${{ vars.HIDE_CHROME || 'false' }}
-      - name: Deploy to Cloudflare Workers
+      - name: Deploy to Cloudflare Pages
         run: |
-          NAME_FLAG=""
-          if [ -n "${{ inputs.worker_name }}" ]; then
-            NAME_FLAG="--name ${{ inputs.worker_name }}"
+          BRANCH_FLAG=""
+          if [ -n "${{ inputs.branch }}" ]; then
+            BRANCH_FLAG="--branch ${{ inputs.branch }}"
           fi
-          pnpm exec wrangler deploy dist/server/index.js --config wrangler.toml --env ${{ inputs.wrangler_env }} $NAME_FLAG
-      - name: Set Worker secrets
-        env:
-          GOOGLE_RECAPTCHA_SECRET_KEY: ${{ secrets.GOOGLE_RECAPTCHA_SECRET_KEY }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
-          CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
-          CONTENTFUL_PREVIEW_TOKEN: ${{ secrets.CONTENTFUL_PREVIEW_TOKEN }}
-          CONTENTFUL_SIGNIN_TOKEN: ${{ secrets.CONTENTFUL_SIGNIN_TOKEN }}
-          ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
-          ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
-        run: |
-          if [ -n "${{ inputs.worker_name }}" ]; then
-            TARGET_FLAG="--name ${{ inputs.worker_name }}"
-          else
-            TARGET_FLAG="--env ${{ inputs.wrangler_env }}"
-          fi
-          node -e "
-          const required = ['GOOGLE_RECAPTCHA_SECRET_KEY','RESEND_API_KEY','CONTENTFUL_SPACE_ID','CONTENTFUL_DELIVERY_TOKEN','CONTENTFUL_PREVIEW_TOKEN','CONTENTFUL_SIGNIN_TOKEN','ASTRO_DB_REMOTE_URL','ASTRO_DB_APP_TOKEN'];
-          const missing = required.filter(k => !process.env[k]);
-          if (missing.length) { console.error('Missing required secrets: ' + missing.join(', ')); process.exit(1); }
-          process.stdout.write(JSON.stringify(Object.fromEntries(required.map(k => [k, process.env[k]]))));
-          " | pnpm exec wrangler secret bulk $TARGET_FLAG
+          pnpm exec wrangler pages deploy dist --project-name biancafiore $BRANCH_FLAG
