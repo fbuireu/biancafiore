@@ -2,10 +2,11 @@ import { defineCollection, reference, z } from "astro:content";
 import { authorDTO } from "@application/dto/author";
 import type { RawAuthor } from "@application/dto/author/types";
 import { authorSchema } from "@application/entities/authors/schema";
-import { client } from "@infrastructure/cms/client";
+import { createContentfulClient } from "@infrastructure/cms/client";
 
 export const authors = defineCollection({
 	loader: async () => {
+		const client = await createContentfulClient();
 		const { items: rawAuthors } = await client.getEntries<RawAuthor>({
 			content_type: "author",
 		});
