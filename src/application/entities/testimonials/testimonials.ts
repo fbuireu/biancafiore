@@ -6,6 +6,7 @@ import { createContentfulClient } from "@infrastructure/cms/client";
 
 export const testimonials = defineCollection({
 	loader: async () => {
+		if (!process.env.CONTENTFUL_SPACE_ID) return [];
 		const client = await createContentfulClient();
 		const { items: rawTestimonials } = await client.getEntries<RawTestimonial>({
 			content_type: "testimonial",
