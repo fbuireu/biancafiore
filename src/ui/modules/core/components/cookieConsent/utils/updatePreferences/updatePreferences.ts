@@ -9,7 +9,7 @@ export function updatePreferences(cookie: CookieValue): void {
 
 	const category = cookie.categories.at(0) ?? "analytics";
 
-	//@ts-ignore:next-line
+	// @ts-expect-error: gtag uses arguments internally, TS can't infer the call signature
 	gtag("consent", "update", {
 		analytics_storage: acceptedCategory(category) ? "granted" : "denied",
 		wait_for_update: 500,
