@@ -1,4 +1,6 @@
-import { getSecret } from "astro:env/server";
 import { Resend } from "resend";
 
-export const { emails } = new Resend(getSecret("RESEND_API_KEY"));
+export async function getEmails() {
+	const { getSecret } = await import("astro:env/server");
+	return new Resend(getSecret("RESEND_API_KEY")).emails;
+}

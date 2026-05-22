@@ -2,7 +2,7 @@ import { ActionError } from "astro:actions";
 import { CONTACT_DETAILS } from "@const/index";
 import type { Except } from "@const/types";
 import { Exception } from "@domain/errors";
-import { emails } from "@infrastructure/email/server";
+import { getEmails } from "@infrastructure/email/server";
 import { createEmail } from "@infrastructure/utils/createEmail";
 import type { ContactFormData } from "@shared/ui/types";
 import type { CreateEmailResponseSuccess } from "resend";
@@ -13,6 +13,7 @@ export async function sendEmail(params: SendEmailParams): Promise<CreateEmailRes
 	try {
 		const email = createEmail({ ...params });
 
+		const emails = await getEmails();
 		const { data, error } = await emails.send({
 			from: `${params.name} <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`,
 			to: atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA),
