@@ -34,7 +34,6 @@
 		top: 0;
 
 		@container projects-page (width >= 768px) {
-			animation: none;
 			animation: brighten both linear;
 			animation-range: entry 0% entry 50%;
 			animation-timeline: --project;
