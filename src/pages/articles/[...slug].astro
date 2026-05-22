@@ -12,7 +12,7 @@ import type { InferGetStaticPropsType } from "astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "astro:env/client";
-import { HIDE_CHROME } from "astro:env/server";
+import { HIDE_CHROME } from "astro:env/client";
 import "./_article.css";
 
 type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;

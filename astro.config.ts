@@ -124,7 +124,7 @@ ASTRO_DB_REMOTE_URL: envField.string({
         context: 'server',
       }),
       HIDE_CHROME: envField.boolean({
-        context: 'server',
+        context: 'client',
         access: 'public',
         default: false,
       }),
