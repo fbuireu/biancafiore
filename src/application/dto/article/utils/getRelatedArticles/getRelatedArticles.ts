@@ -9,7 +9,7 @@ interface GetRelatedArticlesParams {
 const MAX_RELATED_ARTICLES = 3;
 
 export function getRelatedArticles({ rawArticle, allRawArticles }: GetRelatedArticlesParams): Reference<"articles">[] {
-	const articleTags = new Set(rawArticle.fields.tags.map((tag) => tag.fields.slug));
+	const articleTags = new Set(rawArticle.fields.tags?.map((tag) => tag.fields.slug) ?? []);
 
 	return allRawArticles
 		.filter(({ fields }) => {
