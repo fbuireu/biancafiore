@@ -1,4 +1,5 @@
-import { defineCollection, reference, z } from "astro:content";
+import { defineCollection, reference } from "astro:content";
+import { z } from "astro/zod";
 import { authorDTO } from "@application/dto/author";
 import type { RawAuthor } from "@application/dto/author/types";
 import { authorSchema } from "@application/entities/authors/schema";

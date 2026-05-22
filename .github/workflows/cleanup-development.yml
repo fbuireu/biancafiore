@@ -9,34 +9,16 @@ permissions:
 
 jobs:
   cleanup:
-    name: Delete preview deployment
+    name: Delete preview Worker
     runs-on: ubuntu-latest
     environment: development
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
-      - name: Delete Cloudflare Pages preview deployments
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          BRANCH="pr-${PR_NUMBER}"
-          PROJECT_NAME="biancafiore"
-
-          DEPLOYMENTS=$(curl -s -X GET \
-            "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/deployments?page=1&per_page=25" \
-            -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" | \
-            jq -r ".result[] | select(.deployment_trigger.metadata.branch == \"${BRANCH}\") | .id" 2>/dev/null || true)
-
-          if [ -z "$DEPLOYMENTS" ]; then
-            echo "No deployments found for branch ${BRANCH}, nothing to clean up."
-            exit 0
-          fi
-
-          for ID in $DEPLOYMENTS; do
-            echo "Deleting deployment: $ID"
-            curl -s -X DELETE \
-              "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/pages/projects/${PROJECT_NAME}/deployments/${ID}?force=true" \
-              -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}"
-          done
-
-          echo "Cleanup complete for branch ${BRANCH}."
+      - name: Delete preview Worker
+        uses: cloudflare/wrangler-action@v4.0.0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: delete pr-${{ github.event.pull_request.number }}-biancafiore-development --force

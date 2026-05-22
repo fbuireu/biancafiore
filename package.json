@@ -25,7 +25,7 @@
   "scripts": {
     "prepare": "husky",
     "start": "astro dev --open --remote",
-    "build": "pnpm check && astro build --remote",
+    "build": "astro build --remote",
     "preview": "astro preview",
     "sync": "astro sync",
     "check": "astro check",

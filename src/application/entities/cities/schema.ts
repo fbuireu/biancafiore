@@ -1,4 +1,4 @@
-import { z } from "astro:content";
+import { z } from "astro/zod";
 import { imageSchema } from "@shared/application/entities";
 
 export const citiesSchema = z.object({
