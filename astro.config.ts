@@ -7,7 +7,6 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig, envField, fontProviders } from 'astro/config';
 import { fileURLToPath } from 'node:url';
 
-
 export default defineConfig({
   experimental: {
     contentIntellisense: true,
@@ -64,7 +63,7 @@ export default defineConfig({
     imageService: 'passthrough',
   }),
   env: {
-    validateSecrets: false,
+    validateSecrets: true,
     schema: {
       SITE_URL: envField.string({
         access: 'public',
@@ -117,15 +116,7 @@ export default defineConfig({
         access: 'secret',
         context: 'server',
       }),
-      ALGOLIA_API_KEY: envField.string({
-        access: 'secret',
-        context: 'server',
-      }),
-      ALGOLIA_APP_ID: envField.string({
-        access: 'secret',
-        context: 'server',
-      }),
-      ASTRO_DB_REMOTE_URL: envField.string({
+ASTRO_DB_REMOTE_URL: envField.string({
         access: 'secret',
         context: 'server',
       }),
