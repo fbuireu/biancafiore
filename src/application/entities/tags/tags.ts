@@ -3,10 +3,11 @@ import { tagDTO } from "@application/dto/tag";
 import type { RawTag } from "@application/dto/tag/types";
 import { TagType } from "@application/dto/tag/types";
 import { tagSchema } from "@application/entities/tags/schema";
-import { client } from "@infrastructure/cms/client";
+import { createContentfulClient } from "@infrastructure/cms/client";
 
 export const tags = defineCollection({
 	loader: async () => {
+		const client = await createContentfulClient();
 		const { items: rawTags } = await client.getEntries<RawTag>({
 			content_type: "tag",
 		});
