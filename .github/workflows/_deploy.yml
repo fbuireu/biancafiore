@@ -70,7 +70,7 @@ jobs:
           if [ -n "${{ inputs.worker_name }}" ]; then
             NAME_FLAG="--name ${{ inputs.worker_name }}"
           fi
-          pnpm exec wrangler deploy dist/server/index.js --env ${{ inputs.wrangler_env }} $NAME_FLAG
+          pnpm exec wrangler deploy dist/server/index.js --config wrangler.toml --env ${{ inputs.wrangler_env }} $NAME_FLAG
       - name: Set Worker secrets
         env:
           GOOGLE_RECAPTCHA_SECRET_KEY: ${{ secrets.GOOGLE_RECAPTCHA_SECRET_KEY }}
