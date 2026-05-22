@@ -64,7 +64,7 @@ export default defineConfig({
     imageService: 'passthrough',
   }),
   env: {
-    validateSecrets: true,
+    validateSecrets: false,
     schema: {
       SITE_URL: envField.string({
         access: 'public',
