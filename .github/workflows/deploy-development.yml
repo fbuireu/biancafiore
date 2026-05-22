@@ -13,8 +13,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - uses: ./.github/actions/prepare-env
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint:all
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - uses: ./.github/actions/prepare-env
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Generate types
+        run: pnpm run sync
+      - name: Typecheck
+        run: pnpm lint:ts:typecheck
+
   deploy:
     name: Deploy
+    needs: [lint, typecheck]
     uses: ./.github/workflows/_deploy.yml
     with:
       environment: development

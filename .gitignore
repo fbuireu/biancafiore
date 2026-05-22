@@ -21,6 +21,7 @@ node_modules/
 # Environment variables files
 .env*
 !.env.example
+.dev.vars
 
 # Astro files
 .cache
@@ -35,3 +36,6 @@ dist/
 .idea/
 .vscode/
 .history/
+
+# Claude Code
+.claude/

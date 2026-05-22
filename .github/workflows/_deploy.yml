@@ -33,6 +33,10 @@ jobs:
       - uses: ./.github/actions/prepare-env
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Write .dev.vars for Cloudflare Workers simulation
+        run: |
+          echo "ASTRO_DB_REMOTE_URL=${{ secrets.ASTRO_DB_REMOTE_URL }}" > .dev.vars
+          echo "ASTRO_DB_APP_TOKEN=${{ secrets.ASTRO_DB_APP_TOKEN }}" >> .dev.vars
       - name: Build
         run: pnpm build
         env:
