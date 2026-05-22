@@ -1,5 +1,4 @@
 name = "biancafiore"
-main = "dist/server/index.js"
 compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2026-03-12"
 
