@@ -20,6 +20,5 @@ jobs:
     uses: ./.github/workflows/_deploy.yml
     with:
       environment: production
-      wrangler_env: production
       url: https://biancafiore.me
     secrets: inherit
