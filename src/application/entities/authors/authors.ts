@@ -6,6 +6,7 @@ import { createContentfulClient } from "@infrastructure/cms/client";
 
 export const authors = defineCollection({
 	loader: async () => {
+		if (!process.env.CONTENTFUL_SPACE_ID) return [];
 		const client = await createContentfulClient();
 		const { items: rawAuthors } = await client.getEntries<RawAuthor>({
 			content_type: "author",
