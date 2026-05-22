@@ -1,8 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":dependencyDashboard", "customManagers:biomeVersions", ":enableVulnerabilityAlerts"],
-  "labels": ["dependencies", "renovate", "bot"],
-  "schedule": ["on the 1st and 15th day of the month"],
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    "customManagers:biomeVersions",
+    ":enableVulnerabilityAlerts"
+  ],
+  "labels": [
+    "dependencies",
+    "renovate",
+    "bot"
+  ],
+  "schedule": [
+    "on the 1st and 15th day of the month"
+  ],
   "minimumReleaseAge": "3 days",
   "rangeStrategy": "pin",
   "automergeStrategy": "squash",
@@ -10,43 +21,65 @@
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
-    "addLabels": ["lock-maintenance"],
-    "schedule": ["on the 1st and 15th day of the month"]
+    "addLabels": [
+      "lock-maintenance"
+    ],
+    "schedule": [
+      "on the 1st and 15th day of the month"
+    ]
   },
   "assigneesFromCodeOwners": true,
   "reviewersFromCodeOwners": true,
   "vulnerabilityAlerts": {
-    "schedule": ["at any time"],
-    "labels": ["security", "vulnerability"]
+    "schedule": [
+      "at any time"
+    ],
+    "labels": [
+      "security",
+      "vulnerability"
+    ]
   },
   "osvVulnerabilityAlerts": true,
   "packageRules": [
     {
-      "matchUpdateTypes": ["pin", "pinDigest"],
+      "matchUpdateTypes": [
+        "pin",
+        "pinDigest"
+      ],
       "automerge": true,
       "automergeType": "pr",
-      "addLabels": ["pin-update"]
+      "addLabels": [
+        "pin-update"
+      ]
     },
     {
-      "matchUpdateTypes": ["patch"],
+      "matchUpdateTypes": [
+        "patch"
+      ],
       "automerge": true,
       "automergeType": "pr",
-      "addLabels": ["patch-update"]
+      "addLabels": [
+        "patch-update"
+      ]
     },
     {
-      "matchUpdateTypes": ["minor"],
+      "matchUpdateTypes": [
+        "minor"
+      ],
       "automerge": true,
       "automergeType": "pr",
-      "addLabels": ["minor-update"]
+      "addLabels": [
+        "minor-update"
+      ]
     },
     {
-      "matchUpdateTypes": ["major"],
-      "addLabels": ["major-update"],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "addLabels": [
+        "major-update"
+      ],
       "automerge": false
-    },
-    {
-      "matchDepNames": ["node"],
-      "allowedVersions": "/^[0-9]*[02468]\\."
     }
   ]
 }
