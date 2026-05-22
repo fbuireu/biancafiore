@@ -15,6 +15,8 @@ export interface RawArticle {
 		publishDate: EntryFieldTypes.Date;
 		featuredImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
 		featuredArticle: EntryFieldTypes.Boolean;
+		isRepublished: EntryFieldTypes.Boolean;
+		originalSource: EntryFieldTypes.Text;
 		author: Entry<EntrySkeletonType<RawAuthor["fields"]>>;
 		tags: Entry<EntrySkeletonType<BaseTagDTO>>[];
 		relatedArticles: Array<Entry<EntrySkeletonType>>;

@@ -2,6 +2,7 @@
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
+import RepublishedBanner from "@modules/article/components/republishedBanner/RepublishedBanner.astro";
 import ReadingProgress from "@modules/article/components/readingProgress/ReadingProgress.astro";
 import TableOfContents from "@modules/article/components/tableOfContents/TableOfContents.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
@@ -11,6 +12,7 @@ import type { InferGetStaticPropsType } from "astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "astro:env/client";
+import { HIDE_CHROME } from "astro:env/server";
 import "./_article.css";
 
 type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;
@@ -59,6 +61,9 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
     <Breadcrumbs />
     <ReadingProgress />
     <ArticleDetails article={article} />
+    {article.data.isRepublished && (
+      <RepublishedBanner originalSource={article.data.originalSource} />
+    )}
     <article class="article-wrapper" set:html={article.data.content} style={`--scopes: ${scopes}`}>
       {
           article.data.tableOfContents.length > 0 &&
@@ -88,5 +93,5 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
         '@id': Astro.url.href,
       },
     })} />
-    <RelatedArticles article={article} />
+    {!HIDE_CHROME && <RelatedArticles article={article} />}
 </BaseLayout>
