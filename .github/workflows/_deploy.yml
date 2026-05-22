@@ -36,6 +36,16 @@ jobs:
       - uses: ./.github/actions/prepare-env
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Write .dev.vars for miniflare prerender server
+        run: |
+          echo "RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}" >> .dev.vars
+          echo "CONTENTFUL_SPACE_ID=${{ secrets.CONTENTFUL_SPACE_ID }}" >> .dev.vars
+          echo "CONTENTFUL_DELIVERY_TOKEN=${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}" >> .dev.vars
+          echo "CONTENTFUL_PREVIEW_TOKEN=${{ secrets.CONTENTFUL_PREVIEW_TOKEN }}" >> .dev.vars
+          echo "CONTENTFUL_SIGNIN_TOKEN=${{ secrets.CONTENTFUL_SIGNIN_TOKEN }}" >> .dev.vars
+          echo "ASTRO_DB_REMOTE_URL=${{ secrets.ASTRO_DB_REMOTE_URL }}" >> .dev.vars
+          echo "ASTRO_DB_APP_TOKEN=${{ secrets.ASTRO_DB_APP_TOKEN }}" >> .dev.vars
+          echo "GOOGLE_RECAPTCHA_SECRET_KEY=${{ secrets.GOOGLE_RECAPTCHA_SECRET_KEY }}" >> .dev.vars
       - name: Build
         run: pnpm build
         env:
