@@ -11,7 +11,6 @@ import { fileURLToPath } from 'node:url';
 export default defineConfig({
   experimental: {
     contentIntellisense: true,
-    svgo: true,
   },
   fonts: [
     {

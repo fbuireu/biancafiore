@@ -13,7 +13,7 @@ export function getRelatedArticles({ rawArticle, allRawArticles }: GetRelatedArt
 
 	return allRawArticles
 		.filter(({ fields }) => {
-			if (fields.title === rawArticle.fields.title) return;
+			if (fields.title === rawArticle.fields.title) return false;
 
 			const allTags = fields.tags?.map((tag) => tag.fields.slug) || [];
 			return allTags.some((slug) => articleTags.has(slug));

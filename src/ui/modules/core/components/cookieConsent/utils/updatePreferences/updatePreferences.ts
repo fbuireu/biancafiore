@@ -3,7 +3,7 @@ import { acceptedCategory } from "vanilla-cookieconsent";
 
 export function updatePreferences(cookie: CookieValue): void {
 	function gtag() {
-		// biome-ignore lint/style/noArguments: GA integration
+		// biome-ignore lint/complexity/noArguments: GA integration
 		window.dataLayer.push(arguments);
 	}
 
