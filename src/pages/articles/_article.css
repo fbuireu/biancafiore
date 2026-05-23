@@ -24,9 +24,21 @@
     line-height: 1.5lh;
   }
 
+  p a,
+  li a {
+    color: var(--primary-main);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
   & > * {
     grid-column: content;
-    margin-block-end: 1lh;
+    margin-block-end: 0.75lh;
     text-wrap: pretty;
   }
 
@@ -41,12 +53,55 @@
   }
 
   figure {
-    margin-block-end: 2.5rem;
+    display: flex;
+    flex-flow: column;
   }
 
   figcaption {
     font-size: 0.8rem;
     color: var(--neutral-light-2);
+  }
+
+  blockquote {
+    border-inline-start: 3px solid var(--primary-main);
+    padding-inline: 1.25rem 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--neutral-light-1);
+
+    p {
+      margin-block-end: 0;
+      line-height: 1.6lh;
+    }
+
+    cite {
+      display: block;
+      font-style: normal;
+      font-family: var(--font-sans-serif);
+      font-size: 0.8rem;
+      color: var(--neutral-light-2);
+      margin-block-start: 0.5rem;
+
+      &::before {
+        content: "— ";
+      }
+    }
+  }
+
+  q {
+    font-style: italic;
+    color: var(--neutral-light-1);
+
+    &::before {
+      content: "\201C";
+      color: var(--primary-main);
+    }
+
+    &::after {
+      content: "\201D";
+      color: var(--primary-main);
+    }
   }
 
   @supports (initial-letter: 2 2) {

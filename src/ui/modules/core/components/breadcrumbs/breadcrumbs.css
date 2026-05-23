@@ -3,8 +3,20 @@
 	gap: 1rem;
 }
 
+.breadcrumb__item {
+	@container article-page (width <= 960px) {
+		min-width: 0;
+	}
+}
+
 .--is-current-page {
 	color: var(--primary-main);
+
+	@container article-page (width <= 960px) {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 }
 
 .breadcrumbs__list {
@@ -23,6 +35,7 @@
 	@container article-page (width <= 960px) {
 		margin-inline-start: 1rem;
 		max-width: 100%;
+		overflow: hidden;
 	}
 
 	@container article-page (width > 960px) {
