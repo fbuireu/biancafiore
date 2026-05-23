@@ -31,6 +31,7 @@ const {
 <meta name="robots" content={`${robots.index ? 'index' : 'noindex'}, ${robots.follow ? 'follow' : 'nofollow'}`}/>
 <meta name="googlebot" content={`${robots.index ? 'index' : 'noindex'}, ${robots.follow ? 'follow' : 'nofollow'}`}/>
 <meta name="description" content={description}/>
+{tags && tags.length > 0 && <meta name="keywords" content={tags.join(', ')}/>}
 <meta property="og:type" content={type}/>
 <meta property="og:url" content={Astro.url}/>
 <meta property="og:title" content={title}/>
