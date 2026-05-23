@@ -17,6 +17,7 @@
 
 .article-details__title {
 	grid-area: Article-Details-Title;
+	text-wrap: pretty;
 }
 
 .article-details__author {

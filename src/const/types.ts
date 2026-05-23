@@ -35,4 +35,8 @@ export interface SeoMetadata {
 		follow: boolean;
 	};
 	image: string;
+	type?: 'website' | 'article';
+	publishedTime?: string;
+	author?: string;
+	tags?: string[];
 }
