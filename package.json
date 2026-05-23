@@ -26,6 +26,7 @@
     "prepare": "husky",
     "start": "astro dev --open --remote",
     "build": "astro build --remote",
+    "deploy": "wrangler deploy --env production",
     "preview": "astro preview",
     "sync": "astro sync",
     "check": "astro check",
