@@ -71,7 +71,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
     )}
     <article class="article-wrapper" set:html={article.data.content} style={`--scopes: ${scopes}`}>
       {
-          article.data.tableOfContents.length > 0 &&
+          !HIDE_CHROME && article.data.tableOfContents.length > 0 &&
           <TableOfContents tableOfContents={article.data.tableOfContents} />
       }
     </article>
