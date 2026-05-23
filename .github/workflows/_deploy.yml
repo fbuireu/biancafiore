@@ -48,6 +48,14 @@ jobs:
           GOOGLE_RECAPTCHA_SITE_KEY: ${{ vars.GOOGLE_RECAPTCHA_SITE_KEY }}
           GOOGLE_RECAPTCHA_SECRET_KEY: ${{ secrets.GOOGLE_RECAPTCHA_SECRET_KEY }}
           HIDE_CHROME: ${{ vars.HIDE_CHROME || 'false' }}
+      - name: Debug generated wrangler config
+        run: |
+          echo "=== dist/server/wrangler.json ==="
+          cat dist/server/wrangler.json 2>/dev/null || echo "File not found"
+          echo "=== .wrangler/deploy/config.json ==="
+          cat .wrangler/deploy/config.json 2>/dev/null || echo "File not found"
+          echo "=== wrangler whoami ==="
+          pnpm exec wrangler whoami
       - name: Deploy to Cloudflare Workers
         run: |
           NAME_FLAG=""
