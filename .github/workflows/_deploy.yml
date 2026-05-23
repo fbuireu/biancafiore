@@ -39,6 +39,7 @@ jobs:
       - name: Build
         run: pnpm build
         env:
+          CLOUDFLARE_ENV: ${{ inputs.wrangler_env }}
           SITE_URL: ${{ vars.SITE_URL }}
           BIANCA_EMAIL: ${{ vars.BIANCA_EMAIL }}
           TWITTER_HANDLE: ${{ vars.TWITTER_HANDLE }}
