@@ -25,22 +25,24 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				return "";
 			},
 			[INLINES.ENTRY_HYPERLINK]: (node: Node, next: Next) => {
-				const contentTypeId = node.data.target.sys.contentType.sys.id;
-				const { slug } = node.data.target.fields;
+				const inlineNode = node as Inline;
+				const contentTypeId = inlineNode.data.target.sys.contentType.sys.id;
+				const { slug } = inlineNode.data.target.fields;
 
 				if (contentTypeId === "article" && slug) {
-					return `<a href="/articles/${slug}">${next(node.content)}</a>`;
+					return `<a href="/articles/${slug}">${next(inlineNode.content)}</a>`;
 				}
-				return next(node.content);
+				return next(inlineNode.content);
 			},
 			[INLINES.ASSET_HYPERLINK]: (node: Node, next: Next) => {
-				const { file } = node.data.target.fields;
+				const inlineNode = node as Inline;
+				const { file } = inlineNode.data.target.fields;
 				const { url } = file ?? {};
 
 				if (url) {
-					return `<a href="https:${url}" target="_blank" rel="noopener noreferrer">${next(node.content)}</a>`;
+					return `<a href="https:${url}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}</a>`;
 				}
-				return next(node.content);
+				return next(inlineNode.content);
 			},
 			[BLOCKS.EMBEDDED_ENTRY]: (node: Node) => {
 				const contentTypeId = node.data.target.sys.contentType.sys.id;
