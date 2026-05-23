@@ -30,10 +30,21 @@
     text-wrap: pretty;
   }
 
+  & > section :is(h1, h2, h3, h4, h5, h6, p) {
+    margin-block-end: 1lh;
+    text-wrap: pretty;
+  }
+
   iframe {
     width: 100%;
     aspect-ratio: 16 / 9;
     border: none;
+  }
+
+  figcaption {
+    font-size: 0.8rem;
+    margin-block-start: 0.5rem;
+    color: var(--neutral-light-2);
   }
 
   @supports (initial-letter: 2 2) {

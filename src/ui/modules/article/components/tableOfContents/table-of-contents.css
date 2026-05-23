@@ -6,6 +6,7 @@
 	border-left: 4px solid var(--primary-dark-1);
 	left: 50vw;
 	line-height: normal;
+	max-width: 280px;
 	opacity: 0;
 	padding: 0.25rem 1rem;
 	position: absolute;
@@ -85,11 +86,12 @@
 
 /* biome-ignore lint/style/noDescendingSpecificity: base item styles intentionally follow the nav visibility override */
 .article__table-of-contents__item {
-	margin-inline-start: calc(0.55rem * var(--level, 1));
+	margin-inline-start: calc(0.75rem * (var(--level, 2) - 2));
+	max-width: 100%;
+	overflow: hidden;
 	position: relative;
 	transition: translate calc(0.25s * var(--level, 1));
 	translate: 100px 0;
-	width: fit-content;
 
 	@container article-page (width <= 960px) {
 		transition: none;
@@ -98,7 +100,10 @@
 }
 
 .article__table-of-contents__item__link {
+	overflow: hidden;
 	position: relative;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	z-index: 1;
 
 	&:not(:focus-visible) {

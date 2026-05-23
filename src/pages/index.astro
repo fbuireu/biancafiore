@@ -39,6 +39,8 @@ import Welcome from "@modules/home/components/welcome/Welcome.astro";
 // todo: add like system: https://twitter.com/jh3yy/status/1740501273009389943?t=HACFVwPJq343ZjQt3sPaMA&s=19
 // todo: update @astrojs/db from pkg.pr.new preview to stable semver once withastro/astro#16114 is fixed and released (`pnpm add @astrojs/db@latest`)
 
+// todo: contentful webhook → repository_dispatch to trigger production deploy on article publish (webhook configured in Contentful → Settings → Webhooks, needs GITHUB_PAT secret)
+
 // --- cloudflare workers migration ---
 // todo: resolve workers.dev subdomain — currently `forever-pto` (account-level); options: (A) rename to something neutral like `fbuireu` at dash.cloudflare.com > Workers > subdomain, (B) use custom domain wildcard for PR previews instead
 // todo: after subdomain decision, update `url` in `.github/workflows/deploy-development.yml` (currently `https://pr-{N}-biancafiore-development.forever-pto.workers.dev`)
