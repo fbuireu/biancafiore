@@ -100,6 +100,8 @@
 }
 
 .article__table-of-contents__item__link {
+	display: block;
+	max-width: 100%;
 	overflow: hidden;
 	position: relative;
 	text-overflow: ellipsis;
