@@ -3,6 +3,8 @@ name: Deploy - Production
 on:
   push:
     branches: [main]
+  repository_dispatch:
+    types: [contentful-publish]
 
 permissions:
   contents: read

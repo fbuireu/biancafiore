@@ -7,11 +7,24 @@ compatibility_date = "2026-03-12"
 directory = "dist"
 binding = "ASSETS"
 
+[[kv_namespaces]]
+binding = "SESSION"
+id = "c9f2626f1a4043c0aea8a75985bdc0a1"
+preview_id = "fde64789020f4160b0d835d190d8d5d6"
+
 [env.development]
 name = "biancafiore-development"
 
+[[env.development.kv_namespaces]]
+binding = "SESSION"
+id = "fde64789020f4160b0d835d190d8d5d6"
+
 [env.production]
 name = "biancafiore"
+
+[[env.production.kv_namespaces]]
+binding = "SESSION"
+id = "c9f2626f1a4043c0aea8a75985bdc0a1"
 
 [[env.production.routes]]
 pattern = "biancafiore.me/*"
