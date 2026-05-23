@@ -29,6 +29,12 @@
     margin-block-end: 1lh;
   }
 
+  iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+  }
+
   @supports (initial-letter: 2 2) {
     & > p:first-of-type::first-letter {
       initial-letter: 2 2;

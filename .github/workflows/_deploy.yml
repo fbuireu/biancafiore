@@ -54,7 +54,7 @@ jobs:
           if [ -n "${{ inputs.worker_name }}" ]; then
             NAME_FLAG="--name ${{ inputs.worker_name }}"
           fi
-          pnpm exec wrangler deploy --env ${{ inputs.wrangler_env }} $NAME_FLAG
+          pnpm exec wrangler deploy $NAME_FLAG
       - name: Set Worker secrets
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -65,10 +65,9 @@ jobs:
           ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
           ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
         run: |
+          TARGET_FLAG=""
           if [ -n "${{ inputs.worker_name }}" ]; then
             TARGET_FLAG="--name ${{ inputs.worker_name }}"
-          else
-            TARGET_FLAG="--env ${{ inputs.wrangler_env }}"
           fi
           node -e "
           const required = ['RESEND_API_KEY','CONTENTFUL_SPACE_ID','CONTENTFUL_DELIVERY_TOKEN','CONTENTFUL_PREVIEW_TOKEN','CONTENTFUL_SIGNIN_TOKEN','ASTRO_DB_REMOTE_URL','ASTRO_DB_APP_TOKEN'];

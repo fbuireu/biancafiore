@@ -4,13 +4,11 @@ import type { Block, Inline, Text } from "@contentful/rich-text-types";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 
 type Node = Block | Inline | Text;
+type Next = (nodes: Node[]) => string;
 
 interface RenderOptionsReturn {
 	renderNode: {
-		[INLINES.EMBEDDED_ENTRY]: (node: Node) => string;
-		[BLOCKS.EMBEDDED_ENTRY]: (node: Node) => string;
-		[BLOCKS.EMBEDDED_ASSET]: (node: Node) => string;
-		[key: string]: (node: Node) => string;
+		[key: string]: (node: Node, next: Next) => string;
 	};
 }
 
@@ -26,16 +24,34 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				}
 				return "";
 			},
+			[INLINES.ENTRY_HYPERLINK]: (node: Node, next: Next) => {
+				const contentTypeId = node.data.target.sys.contentType.sys.id;
+				const { slug } = node.data.target.fields;
+
+				if (contentTypeId === "article" && slug) {
+					return `<a href="/articles/${slug}">${next(node.content)}</a>`;
+				}
+				return next(node.content);
+			},
+			[INLINES.ASSET_HYPERLINK]: (node: Node, next: Next) => {
+				const { file } = node.data.target.fields;
+				const { url } = file ?? {};
+
+				if (url) {
+					return `<a href="https:${url}" target="_blank" rel="noopener noreferrer">${next(node.content)}</a>`;
+				}
+				return next(node.content);
+			},
 			[BLOCKS.EMBEDDED_ENTRY]: (node: Node) => {
 				const contentTypeId = node.data.target.sys.contentType.sys.id;
-				const { code, embedUrl, title } = node.data.target.fields;
+				const { code, url, title } = node.data.target.fields;
 
 				if (contentTypeId === "codeBlock" && code) {
 					return `<pre><code>${code}</code></pre>`;
 				}
 
-				if (contentTypeId === "videoEmbed" && embedUrl && title) {
-					return `<iframe src="${embedUrl}" height="100%" width="100%" title="${title}" allowfullscreen></iframe>`;
+				if (contentTypeId === "videoEmbed" && url && title) {
+					return `<iframe src="${url}" width="100%" title="${title}" allowfullscreen loading="lazy"></iframe>`;
 				}
 				return "";
 			},
