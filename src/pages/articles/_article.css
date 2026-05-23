@@ -27,6 +27,7 @@
   & > * {
     grid-column: content;
     margin-block-end: 1lh;
+    text-wrap: pretty;
   }
 
   iframe {

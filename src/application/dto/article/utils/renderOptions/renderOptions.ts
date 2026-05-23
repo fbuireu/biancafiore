@@ -12,6 +12,19 @@ interface RenderOptionsReturn {
 	};
 }
 
+function toEmbedUrl(url: string): string {
+	try {
+		const parsed = new URL(url);
+		if (parsed.hostname === "youtu.be") {
+			return `https://www.youtube.com/embed${parsed.pathname}`;
+		}
+		if (parsed.hostname.includes("youtube.com") && parsed.searchParams.has("v")) {
+			return `https://www.youtube.com/embed/${parsed.searchParams.get("v")}`;
+		}
+	} catch {}
+	return url;
+}
+
 export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 	return {
 		renderNode: {
@@ -46,15 +59,37 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 			},
 			[BLOCKS.EMBEDDED_ENTRY]: (node: Node) => {
 				const contentTypeId = node.data.target.sys.contentType.sys.id;
-				const { code, url, title } = node.data.target.fields;
+				const { code, url, title, image, fullBleed, caption } = node.data.target.fields;
 
 				if (contentTypeId === "codeBlock" && code) {
 					return `<pre><code>${code}</code></pre>`;
 				}
 
 				if (contentTypeId === "videoEmbed" && url && title) {
-					return `<iframe src="${url}" width="100%" title="${title}" allowfullscreen loading="lazy"></iframe>`;
+					return `<iframe src="${toEmbedUrl(url)}" width="100%" title="${title}" allowfullscreen loading="lazy"></iframe>`;
 				}
+
+				if (contentTypeId === "imageEmbed" && image?.fields?.file?.url) {
+					const { url: imgUrl, details } = image.fields.file;
+					const { height, width } = details?.image ?? {};
+					const alt = caption ?? image.fields.description ?? image.fields.title ?? "";
+					const wrapperClass = fullBleed ? "full-bleed" : "";
+
+					return `
+						<figure${wrapperClass ? ` class="${wrapperClass}"` : ""}>
+							<img
+								src="https:${imgUrl}"
+								height="${height ?? ""}"
+								width="${width ?? ""}"
+								alt="${alt}"
+								loading="lazy"
+								decoding="async"
+							/>
+							${caption ? `<figcaption>${caption}</figcaption>` : ""}
+						</figure>
+					`;
+				}
+
 				return "";
 			},
 			[BLOCKS.EMBEDDED_ASSET]: (node: Node) => {

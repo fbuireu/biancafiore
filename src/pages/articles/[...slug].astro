@@ -36,8 +36,13 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props as ArticleProps;
 const metadata: Partial<SeoMetadata> = {
-	...article,
-	...(article.data.featuredImage && { image: article.data.featuredImage.url }),
+	title: article.data.title,
+	description: article.data.description,
+	type: 'article',
+	publishedTime: new Date(String(article.data.publishDate)).toISOString(),
+	author: article.data.author.name,
+	tags: article.data.tags?.map((tag: { name: string }) => tag.name),
+	...(article.data.featuredImage && { image: `https:${article.data.featuredImage.url}` }),
 };
 const scopes = article.data.tableOfContents.map((_, index) => `--section-${index + 1}`).join(",");
 ---
@@ -75,9 +80,8 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
       '@type': 'Article',
       'headline': article.data.title,
       'description': article.data.description,
-      ...(article.data.featuredImage && { 'image': article.data.featuredImage }),
+      ...(article.data.featuredImage && { 'image': `https:${article.data.featuredImage.url}` }),
       'datePublished': new Date(String(article.data.publishDate)).toISOString(),
-      'dateModified': new Date(String(article.data.publishDate)).toISOString(),
       'author': {
         '@type': 'Person',
         'name': article.data.author.name,
