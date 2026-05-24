@@ -24,7 +24,7 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 
 			const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 			const description = (
-				rawArticle.fields.description ??
+				(rawArticle.fields.description as unknown as string) ??
 				generateExcerpt({
 					parser: PARSER,
 					content: contentHtml,
