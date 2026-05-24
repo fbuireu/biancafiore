@@ -8,7 +8,7 @@ interface GetAuthorsParams {
 }
 
 export function getAuthors({ rawAuthors, rawArticles }: GetAuthorsParams): TagDTO["authors"] {
-	return rawAuthors.map((author) => {
+	return rawAuthors.flatMap((author) => {
 		const slug = String(author.fields.slug).trim();
 		const articles: Reference<"articles">[] = rawArticles
 			.filter((article) => {
@@ -20,12 +20,14 @@ export function getAuthors({ rawAuthors, rawArticles }: GetAuthorsParams): TagDT
 				collection: "articles",
 			}));
 
-		return {
+		if (articles.length === 0) return [];
+
+		return [{
 			name: String(author.fields.name).trim(),
 			slug,
 			type: TagType.AUTHOR,
 			count: articles.length,
 			articles,
-		};
+		}];
 	});
 }
