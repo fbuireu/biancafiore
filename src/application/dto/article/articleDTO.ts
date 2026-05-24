@@ -8,14 +8,10 @@ import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Document } from "@contentful/rich-text-types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
 import { createImage } from "@shared/application/dto/utils/createImage";
-import MarkdownIt from "markdown-it";
 import { createTags } from "./utils/createTags";
-import { generateExcerpt } from "./utils/generateExcerpt";
 import { getAuthor } from "./utils/getAuthor";
 import { getReadingTime } from "./utils/getReadingTime";
 import { renderOptions } from "./utils/renderOptions";
-
-const PARSER: MarkdownIt = new MarkdownIt();
 
 export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 	create: (raw): ArticleDTO[] => {
@@ -23,13 +19,8 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 			const contentHtml = documentToHtmlString(rawArticle.fields.content as unknown as Document);
 
 			const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
-			const description = (
-				(rawArticle.fields.description as unknown as string) ??
-				generateExcerpt({
-					parser: PARSER,
-					content: contentHtml,
-				})
-			).replace(HTML_TAG_REGEX, "").trim();
+			const rawDescription = (rawArticle.fields.description as unknown as string) ?? contentHtml;
+			const description = `${rawDescription.replace(HTML_TAG_REGEX, " ").replace(/\s+/g, " ").trim().substring(0, 140)}...`;
 
 			const relatedArticles = rawArticle.fields.relatedArticles
 				? createRelatedArticles(rawArticle.fields.relatedArticles)

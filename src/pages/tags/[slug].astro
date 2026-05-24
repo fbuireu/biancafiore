@@ -51,7 +51,7 @@ const metadata: Partial<SeoMetadata> = {
 ---
 <BaseLayout {...metadata}>
     <Breadcrumbs />
-    <h1 class="flex justify-center">#{slug}</h1>    <section class="common-wrapper">
+    <h1 class="flex justify-center">#{slug}(&times;{tag.count})</h1>    <section class="common-wrapper">
     <ul class="tag__article__list grid">
       {tag.articles?.map((article) => {
         return (

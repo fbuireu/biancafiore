@@ -25,9 +25,26 @@ function toEmbedUrl(url: string): string {
 	return url;
 }
 
+function isExternal(url: string): boolean {
+	try {
+		return new URL(url).hostname !== "biancafiore.me";
+	} catch {
+		return false;
+	}
+}
+
 export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 	return {
 		renderNode: {
+			[INLINES.HYPERLINK]: (node: Node, next: Next) => {
+				const inlineNode = node as Inline;
+				const { uri } = inlineNode.data;
+
+				if (isExternal(uri)) {
+					return `<a href="${uri}" target="_blank" rel="noopener noreferrer" class="--is-external">${next(inlineNode.content)}</a>`;
+				}
+				return `<a href="${uri}">${next(inlineNode.content)}</a>`;
+			},
 			[INLINES.EMBEDDED_ENTRY]: (node: Node) => {
 				const contentTypeId = node.data.target.sys.contentType.sys.id;
 				const { slug, title } = node.data.target.fields;
@@ -67,6 +84,10 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 
 				if (contentTypeId === "videoEmbed" && url && title) {
 					return `<iframe src="${toEmbedUrl(url)}" width="100%" title="${title}" allowfullscreen loading="lazy"></iframe>`;
+				}
+
+				if (contentTypeId === "iframeEmbed" && url) {
+					return `<iframe src="${url}" width="100%" title="${title ?? ""}" allowfullscreen loading="lazy"></iframe>`;
 				}
 
 				if (contentTypeId === "imageEmbed" && image?.fields?.file?.url) {
