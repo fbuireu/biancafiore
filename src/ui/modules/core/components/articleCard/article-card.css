@@ -61,7 +61,7 @@
 
 /* biome-ignore lint/style/noDescendingSpecificity: base styles follow interaction overrides by design */
 .article-card__tag__item {
-  --translate: 0 75px;
+  --translate: 0 200px;
   transition: all 0.3s;
   transition-delay: calc(var(--index) * 0.1s);
   translate: var(--translate);
@@ -120,6 +120,8 @@
       translate: 0 0;
     }
   }
+
+  overflow: clip;
 
   &.--no-image-variant {
     grid:
