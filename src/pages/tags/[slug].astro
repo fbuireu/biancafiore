@@ -32,7 +32,9 @@ export async function getStaticPaths() {
 					props: {
 						tag: {
 							...tag,
-							articles,
+							articles: articles
+								.filter(Boolean)
+								.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()),
 						},
 					},
 				};

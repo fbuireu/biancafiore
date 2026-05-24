@@ -22,12 +22,14 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 		return raw.map((rawArticle) => {
 			const contentHtml = documentToHtmlString(rawArticle.fields.content as unknown as Document);
 
-			const description =
+			const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
+			const description = (
 				rawArticle.fields.description ??
 				generateExcerpt({
 					parser: PARSER,
 					content: contentHtml,
-				});
+				})
+			).replace(HTML_TAG_REGEX, "").trim();
 
 			const relatedArticles = rawArticle.fields.relatedArticles
 				? createRelatedArticles(rawArticle.fields.relatedArticles)
