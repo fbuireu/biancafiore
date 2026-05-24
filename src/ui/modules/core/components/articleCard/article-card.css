@@ -9,6 +9,7 @@
   }
 
   &:has(a:is(:hover, :focus-visible)) ~ .article-card__tags__list .article-card__tag__item {
+    opacity: 1;
     translate: 0 0;
   }
   @media (width <= 960px) {
@@ -55,20 +56,23 @@
   /* biome-ignore lint/style/noDescendingSpecificity: hover/focus override intentionally precedes base item rule */
   &:hover .article-card__tag__item,
   &:has(.article-card__tag__item:focus-visible) .article-card__tag__item {
+    opacity: 1;
     translate: 0 0;
   }
 }
 
 /* biome-ignore lint/style/noDescendingSpecificity: base styles follow interaction overrides by design */
 .article-card__tag__item {
-  --translate: 0 200px;
-  transition: all 0.3s;
+  --translate: 0 500px;
+  opacity: 0;
+  transition: translate 0.3s, opacity 0.3s;
   transition-delay: calc(var(--index) * 0.1s);
   translate: var(--translate);
 
   @media (width <= 720px) {
     --translate: 0 0;
     margin-inline-start: 1rem;
+    opacity: 1;
   }
 }
 
@@ -100,6 +104,7 @@
 
   /* biome-ignore lint/style/noDescendingSpecificity: sibling override intentionally precedes item block */
   &:is(:hover, :focus-visible) ~ .article-card__item .article-card__tag__item {
+    opacity: 1;
     translate: 0 0;
   }
 }
@@ -113,10 +118,9 @@
   overflow: clip;
 
   &:has(*:hover, *:focus-visible) {
-    overflow: initial;
-
     /* biome-ignore lint/style/noDescendingSpecificity: :has override intentionally follows sibling rule */
     .article-card__tag__item {
+      opacity: 1;
       translate: 0 0;
     }
   }

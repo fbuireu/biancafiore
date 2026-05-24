@@ -1,5 +1,6 @@
 .tags__list {
 	--gap: 2rem;
+	align-items: start;
 	gap: calc(var(--gap) * 3) var(--gap);
 	grid-template-columns: repeat(auto-fill, minmax(calc(100% / var(--items-per-row) - var(--gap)), 1fr));
 	margin-block-start: 2rem;
