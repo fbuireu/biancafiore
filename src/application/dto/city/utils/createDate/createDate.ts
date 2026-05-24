@@ -10,7 +10,7 @@ interface CreateDateReturn {
 
 export function createDate({ startDate, endDate }: CreateDateParams): CreateDateReturn {
 	return {
-		startDate: new Date(startDate).getFullYear(),
-		endDate: endDate ? new Date(endDate).getFullYear() : "Present",
+		startDate: Temporal.PlainDate.from(startDate).year,
+		endDate: endDate ? Temporal.PlainDate.from(endDate).year : "Present",
 	};
 }

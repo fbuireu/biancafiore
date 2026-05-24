@@ -6,10 +6,12 @@ import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import ProjectSection from "@modules/projects/components/projectSection/ProjectSection.astro";
 import ProjectsIntro from "@modules/projects/components/projectsIntro/ProjectsIntro.astro";
 import { PAGES_ROUTES } from "@const/const";
+import { SITE_URL } from "astro:env/client";
 
 const projects = await getCollection("projects");
 const metadata: Partial<SeoMetadata> = {
 	title: "Projects",
+	description: "Explore Bianca Fiore's portfolio of web development projects and case studies.",
 };
 ---
 <BaseLayout {...metadata}>
@@ -19,7 +21,7 @@ const metadata: Partial<SeoMetadata> = {
           <article style={`--index: ${index}`} class="project-wrapper">
               <div class="project-image-wrapper" slot="project-image">
                   <Image class="project-image" layout="full-width" src={project.data.image.url} alt={project.data.name}
-                         width={project.data.image.details.width} height={project.data.image.details.height} 
+                         width={project.data.image.details.width} height={project.data.image.details.height}
                          loading="eager" />
               </div>
               <div class="project-information" slot="project-information">
@@ -27,15 +29,15 @@ const metadata: Partial<SeoMetadata> = {
                   <article set:html={project.data.description} />
               </div>
           </article>
-          <script is:inline type="application/ld+json" set:html={JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'ItemList',
-            'itemListElement': {
-              '@type': 'ListItem',
-              'position': index + 1,
-              'url': new URL(`${PAGES_ROUTES.PROJECTS}#${project.data.id}#${project.data.id}`, Astro.url).href,
-            },
-          })} />
       </ProjectSection>
   ))}
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      'itemListElement': projects.map((project, index) => ({
+        '@type': 'ListItem',
+        'position': index + 1,
+        'url': new URL(`${PAGES_ROUTES.PROJECTS}#${project.data.id}`, SITE_URL).href,
+      })),
+    })} />
 </BaseLayout>

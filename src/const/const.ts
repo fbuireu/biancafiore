@@ -35,7 +35,7 @@ export const PAGES_ROUTES: CapitalizeKeys<typeof pagesRoutes> = capitalizeKeys(p
 export const DEFAULT_SEO_PARAMS: CapitalizeKeys<SeoMetadata> = {
 	TITLE: "Bianca Fiore",
 	SITE: "biancafiore.me",
-	DESCRIPTION: "Welcome to my website!",
+	DESCRIPTION: "Bianca Fiore — personal website.",
 	ROBOTS: {
 		INDEX: true,
 		FOLLOW: true,

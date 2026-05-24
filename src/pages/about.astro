@@ -2,6 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection, getEntry } from "astro:content";
 import { CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
+import { SITE_URL } from "astro:env/client";
 import type { SeoMetadata } from "@const/types";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
 import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
@@ -26,6 +27,8 @@ const bianca = {
 };
 const metadata: Partial<SeoMetadata> = {
 	title: "About me",
+	description: bianca.data.description,
+	image: `https:${bianca.data.profileImage.url}`,
 };
 ---
 <BaseLayout {...metadata}>
@@ -40,24 +43,25 @@ const metadata: Partial<SeoMetadata> = {
         '@id': '#bianca',
         '@type': 'Person',
         'name': bianca.data.name,
-        'url': new URL(Astro.url).href,
-        'image': new URL(bianca.data.profileImage.url, Astro.url).href,
+        'url': Astro.url.href,
+        'image': `https:${bianca.data.profileImage.url}`,
         'jobTitle': bianca.data.jobTitle,
         'worksFor': {
           '@type': 'Organization',
           'name': bianca.data.currentCompany,
         },
+        'sameAs': [...bianca.data.socialNetworks],
       },
-        ...(bianca.data.latestArticle &&{
-          'hasPart': [
-            {
-              '@type': 'Article',
-              'headline': (bianca.data.latestArticle as CollectionEntry<"articles">).data.title,
-              'url': new URL(`${PAGES_ROUTES.ARTICLES}/${(bianca.data.latestArticle as CollectionEntry<"articles">).data.slug}`, Astro.url).href,
-              'datePublished': (bianca.data.latestArticle as CollectionEntry<"articles">).data.publishDate,
-              'author': { '@id': '#bianca' },
-            }],
-        }),
-      'sameAs': [...bianca.data.socialNetworks],
+      ...(bianca.data.latestArticle && {
+        'hasPart': [
+          {
+            '@type': 'Article',
+            'headline': (bianca.data.latestArticle as CollectionEntry<"articles">).data.title,
+            'url': new URL(`${PAGES_ROUTES.ARTICLE}${(bianca.data.latestArticle as CollectionEntry<"articles">).data.slug}`, SITE_URL).href,
+            'datePublished': (bianca.data.latestArticle as CollectionEntry<"articles">).data.publishDate,
+            'author': { '@id': '#bianca' },
+          },
+        ],
+      }),
     })} />
 </BaseLayout>
