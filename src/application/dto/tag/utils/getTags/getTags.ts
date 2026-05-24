@@ -25,15 +25,17 @@ const getArticlesByTag = ({ rawTag, rawArticles }: GetArticlesByTagParams): Refe
 		}));
 
 export function getTags({ rawTags, rawArticles }: GetTags): TagDTO["articles"] {
-	return rawTags.map((rawTag) => {
+	return rawTags.flatMap((rawTag) => {
 		const articlesByTag = getArticlesByTag({ rawTag, rawArticles });
 
-		return {
+		if (articlesByTag.length === 0) return [];
+
+		return [{
 			name: String(rawTag.fields.name).trim(),
 			slug: String(rawTag.fields.slug).trim(),
 			type: TagType.TAG,
 			count: articlesByTag.length,
 			articles: articlesByTag,
-		};
+		}];
 	});
 }

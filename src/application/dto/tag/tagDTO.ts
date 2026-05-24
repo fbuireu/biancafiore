@@ -11,7 +11,7 @@ export const tagDTO: BaseDTO<[RawTag[], Entry<EntrySkeletonType>[], Entry<EntryS
 		const authors = getAuthors({ rawAuthors, rawArticles });
 
 		return groupBy({
-			array: [...tags, ...authors].filter(({ count }) => count > 0),
+			array: [...tags, ...authors],
 			keyFn: ({ name }) => name.charAt(0).toUpperCase(),
 		}) as TagDTO;
 	},
