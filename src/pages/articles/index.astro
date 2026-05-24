@@ -1,11 +1,13 @@
 ---
 import { getCollection } from "astro:content";
+import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import FeaturedArticle from "@modules/articles/components/featuredArticle/FeaturedArticle.astro";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import { getFeaturedArticle } from "@modules/core/utils/getFeaturedArticle";
+import { SITE_URL } from "astro:env/client";
 import "./_articles.css";
 
 const articles = await getCollection("articles");
@@ -14,7 +16,7 @@ const featuredArticle = getFeaturedArticle(articles);
 const metadata: Partial<SeoMetadata> = {
 	title: "Articles",
 	description: "Articles I wrote while drinking coffee",
-	...(featuredArticle?.data.featuredImage && { image: featuredArticle.data.featuredImage.url }),
+	...(featuredArticle?.data.featuredImage && { image: `https:${featuredArticle.data.featuredImage.url}` }),
 };
 ---
 <BaseLayout {...metadata}>
@@ -28,20 +30,20 @@ const metadata: Partial<SeoMetadata> = {
           {
             articles
                 .filter((article) => article.data.slug !== featuredArticle?.data.slug)
-                .map((article, index) => (
+                .map((article) => (
                     <li class="articles__grid__item grid relative">
                         <ArticleCard {...article} />
-                        <script is:inline type="application/ld+json" set:html={JSON.stringify({
-                          '@context': 'https://schema.org',
-                          '@type': 'ItemList',
-                          'itemListElement': {
-                            '@type': 'ListItem',
-                            'position': index + 2,
-                            'url': new URL(`${Astro.url}/${article.data.slug}`, Astro.url).href,
-                          },
-                        })} />
                     </li>
                 ))}
         </ul>
     </section>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      'itemListElement': articles.map((article, index) => ({
+        '@type': 'ListItem',
+        'position': index + 1,
+        'url': new URL(`${PAGES_ROUTES.ARTICLE}${article.data.slug}`, SITE_URL).href,
+      })),
+    })} />
 </BaseLayout>

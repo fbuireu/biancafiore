@@ -7,7 +7,7 @@ type GenerateHtmlParams = Except<ContactFormData, "recaptcha" | "emailId">;
 const URL_ENCODED_SPACE_REGEX = /%20/g;
 
 export function createEmail({ name, email, message }: GenerateHtmlParams): string {
-	const date = new Date().toLocaleString(DEFAULT_LOCALE_STRING);
+	const date = Temporal.Now.zonedDateTimeISO('UTC').toLocaleString(DEFAULT_LOCALE_STRING);
 	const mailTo =
 		`mailto:${email}?subject=Re: ${encodeURIComponent(CONTACT_DETAILS.EMAIL_SUBJECT)} from biancafiore.me`.replace(
 			URL_ENCODED_SPACE_REGEX,

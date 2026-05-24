@@ -3,13 +3,14 @@ import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import "./my-work.css";
 import { PAGES_ROUTES } from "@const/const";
+import { SITE_URL } from "astro:env/client";
 
 const projects = await getCollection("projects");
 ---
 <section class="my-work-wrapper common-wrapper">
     <h2 class="my-work__title section-title">My Work</h2>
     <ul class="my-work__content__list flex row-wrap justify-space-between">
-      {projects.map((project, index) => {
+      {projects.map((project) => {
         const projectUrl = `${PAGES_ROUTES.PROJECTS}#${project.data.id}`;
 
         return (
@@ -25,16 +26,16 @@ const projects = await getCollection("projects");
                     <h4 class="my-work__item__title inner-section-title">{project.data.name}</h4>
                 </a>
             </li>
-            <script is:inline type="application/ld+json" set:html={JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'ItemList',
-              'itemListElement': {
-                '@type': 'ListItem',
-                'position': index + 1,
-                'url': new URL(projectUrl, Astro.url).href,
-              },
-            })} />
         );
       })}
     </ul>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      'itemListElement': projects.map((project, index) => ({
+        '@type': 'ListItem',
+        'position': index + 1,
+        'url': new URL(`${PAGES_ROUTES.PROJECTS}#${project.data.id}`, SITE_URL).href,
+      })),
+    })} />
 </section>

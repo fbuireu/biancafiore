@@ -4,11 +4,15 @@ import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import { SITE_URL } from "astro:env/client";
 import "./_tags.css";
 
 const tags = await getCollection("tags");
+const allTags = tags.flatMap((letter) => letter.data.tags);
+
 const metadata: Partial<SeoMetadata> = {
 	title: "Tags",
+	description: "Browse all topics and tags from Bianca Fiore's articles.",
 };
 ---
 <BaseLayout {...metadata}>
@@ -24,19 +28,19 @@ const metadata: Partial<SeoMetadata> = {
                         <li class="tag__item font-sans-serif --is-clickable">
                             <a href={`${PAGES_ROUTES.TAGS}/${tag.slug}`} class="--underline-on-hover">{tag.name}(&times;{tag.count})</a>
                         </li>
-                        <script is:inline type="application/ld+json" set:html={JSON.stringify({
-                          '@context': 'https://schema.org',
-                          '@type': 'ItemList',
-                          'itemListElement': {
-                            '@type': 'ListItem',
-                            'position': index + 1,
-                            'url': new URL(`${Astro.url}/${tag.slug}`, Astro.url).href,
-                          },
-                        })}/>
                     ))}
                   </ul>
               </li>
           })}
         </ul>
     </section>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      'itemListElement': allTags.map((tag, index) => ({
+        '@type': 'ListItem',
+        'position': index + 1,
+        'url': new URL(`${PAGES_ROUTES.TAGS}/${tag.slug}`, SITE_URL).href,
+      })),
+    })} />
 </BaseLayout>

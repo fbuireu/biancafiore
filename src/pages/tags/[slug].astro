@@ -6,6 +6,7 @@ import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro"
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
+import { SITE_URL } from "astro:env/client";
 import "./_tag.css";
 
 type TagProps = InferGetStaticPropsType<typeof getStaticPaths>;
@@ -43,31 +44,31 @@ const { slug } = Astro.params as TagParams;
 const { tag } = Astro.props as TagProps;
 const metadata: Partial<SeoMetadata> = {
 	title: `#${slug}`,
+	description: `Articles tagged with #${slug}.`,
 };
 ---
 <BaseLayout {...metadata}>
     <Breadcrumbs />
     <h1 class="flex justify-center">#{slug}</h1>    <section class="common-wrapper">
     <ul class="tag__article__list grid">
-      {tag.articles?.map((article, index) => {
+      {tag.articles?.map((article) => {
         return (
             <li class="tag__article__item relative">
                 <ArticleCard {...article} />
-                <script is:inline type="application/ld+json" set:html={JSON.stringify({
-                  '@context': 'https://schema.org',
-                  '@type': 'ItemList',
-                  'itemListElement': {
-                    '@type': 'ListItem',
-                    'position': index + 1,
-                      ...(article && {
-                          url: new URL(`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`, Astro.url).href,
-                      }),
-                  },
-                })} />
             </li>
         )
       })}
     </ul>
 </section>
-
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      'itemListElement': (tag.articles ?? []).map((article, index) => ({
+        '@type': 'ListItem',
+        'position': index + 1,
+        ...(article && {
+          'url': new URL(`${PAGES_ROUTES.ARTICLE}${article.data.slug}`, SITE_URL).href,
+        }),
+      })),
+    })} />
 </BaseLayout>

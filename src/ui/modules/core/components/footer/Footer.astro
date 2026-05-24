@@ -6,7 +6,7 @@ import SocialNetworks from "@modules/core/components/socialNetworks/SocialNetwor
 import ThemeToggle from "@modules/core/components/themeToggle/ThemeToggle.astro";
 import "./footer.css";
 
-const currentYear = new Date().getFullYear();
+const currentYear = Temporal.Now.plainDateISO().year;
 ---
 <footer>
     <section class="footer-wrapper common-wrapper">

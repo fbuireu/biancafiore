@@ -39,7 +39,7 @@ const metadata: Partial<SeoMetadata> = {
 	title: article.data.title,
 	description: article.data.description,
 	type: 'article',
-	publishedTime: new Date(String(article.data.publishDate)).toISOString(),
+	publishedTime: new Date(article.data.publishDate).toISOString(),
 	author: article.data.author.name,
 	tags: article.data.tags?.map((tag: { name: string }) => tag.name),
 	...(article.data.featuredImage && { image: `https:${article.data.featuredImage.url}` }),
@@ -77,20 +77,30 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
     </article>
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
-      '@type': 'Article',
+      '@type': 'BlogPosting',
+      'url': Astro.url.href,
       'headline': article.data.title,
       'description': article.data.description,
-      ...(article.data.featuredImage && { 'image': `https:${article.data.featuredImage.url}` }),
-      'datePublished': new Date(String(article.data.publishDate)).toISOString(),
+      'inLanguage': 'en',
+      ...(article.data.featuredImage && {
+        'image': {
+          '@type': 'ImageObject',
+          'url': `https:${article.data.featuredImage.url}`,
+          'width': article.data.featuredImage.details.width,
+          'height': article.data.featuredImage.details.height,
+        },
+      }),
+      'datePublished': new Date(article.data.publishDate).toISOString(),
       'author': {
         '@type': 'Person',
         'name': article.data.author.name,
         'jobTitle': article.data.author.jobTitle,
-        'url': new URL(`${PAGES_ROUTES.ABOUT}`, SITE_URL),
+        'url': new URL(`${PAGES_ROUTES.ABOUT}`, SITE_URL).href,
       },
       'publisher': {
+        '@type': 'Person',
         'name': article.data.author.name,
-        'url': new URL(SITE_URL),
+        'url': new URL(SITE_URL).href,
       },
       'mainEntityOfPage': {
         '@type': 'WebPage',

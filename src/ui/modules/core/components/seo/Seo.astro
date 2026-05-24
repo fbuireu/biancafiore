@@ -13,37 +13,40 @@ const {
   title = TITLE,
   description = DESCRIPTION,
   image = IMAGE,
-  robots = { ...ROBOTS, ...Astro.props.robots },
+  robots = { index: ROBOTS.INDEX as boolean, follow: ROBOTS.FOLLOW as boolean, ...Astro.props.robots },
   type = 'website',
   publishedTime,
   author,
   tags,
 } = Astro.props as SeoProps
 ---
-<title>{title} | Bianca Fiore</title>
+<title>{title !== TITLE ? `${title} | Bianca Fiore` : 'Bianca Fiore'}</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="canonical" href={canonical}/>
 <link rel="sitemap" href="/sitemap-index.xml"/>
-<meta name="title" content={title}/>
 <meta name="robots" content={`${robots.index ? 'index' : 'noindex'}, ${robots.follow ? 'follow' : 'nofollow'}`}/>
 <meta name="googlebot" content={`${robots.index ? 'index' : 'noindex'}, ${robots.follow ? 'follow' : 'nofollow'}`}/>
 <meta name="description" content={description}/>
 {tags && tags.length > 0 && <meta name="keywords" content={tags.join(', ')}/>}
 <meta property="og:type" content={type}/>
-<meta property="og:url" content={Astro.url}/>
+<meta property="og:url" content={canonical}/>
 <meta property="og:title" content={title}/>
 <meta property="og:description" content={description}/>
-<meta property="og:image" content={new URL(image, Astro.url)}/>
+<meta property="og:image" content={new URL(image, Astro.site)}/>
+<meta property="og:image:alt" content={title}/>
+<meta property="og:site_name" content="Bianca Fiore"/>
+<meta property="og:locale" content="en_US"/>
 {type === 'article' && publishedTime && <meta property="og:article:published_time" content={publishedTime}/>}
 {type === 'article' && author && <meta property="og:article:author" content={author}/>}
 {type === 'article' && tags?.map(tag => <meta property="og:article:tag" content={tag}/>)}
 <meta property="twitter:card" content="summary_large_image"/>
-<meta property="twitter:url" content={Astro.url}/>
+<meta property="twitter:url" content={canonical}/>
 <meta property="twitter:title" content={title}/>
 <meta property="twitter:description" content={description}/>
-<meta property="twitter:image" content={new URL(image, Astro.url)}/>
+<meta property="twitter:image" content={new URL(image, Astro.site)}/>
+<meta property="twitter:image:alt" content={title}/>
 <meta property="twitter:creator" content={TWITTER_HANDLE}/>
 <meta property="twitter:site" content={TWITTER_HANDLE}/>

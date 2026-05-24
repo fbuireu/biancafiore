@@ -20,7 +20,7 @@
   "type": "module",
   "packageManager": "pnpm@10.33.4",
   "engines": {
-    "node": "v24.14.1"
+    "node": "v26.0.0"
   },
   "scripts": {
     "prepare": "husky",
@@ -46,7 +46,7 @@
     "lint:ts:typecheck": "tsc --project . --noEmit"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "13.5.1",
+    "@astrojs/cloudflare": "13.5.3",
     "@astrojs/compiler-rs": "0.2.0",
     "@astrojs/db": "https://pkg.pr.new/@astrojs/db@3ade645",
     "@astrojs/mdx": "5.0.6",
@@ -57,23 +57,23 @@
     "@contentful/rich-text-html-renderer": "17.2.2",
     "@contentful/rich-text-types": "17.2.7",
     "@hookform/resolvers": "5.2.2",
-    "astro": "6.3.3",
+    "astro": "6.3.6",
     "clsx": "2.1.1",
     "contentful": "11.12.2",
     "gsap": "3.15.0",
     "markdown-it": "14.1.1",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "react-globe.gl": "2.37.1",
+    "react-globe.gl": "2.38.0",
     "react-google-recaptcha-v3": "1.11.0",
-    "react-hook-form": "7.75.0",
+    "react-hook-form": "7.76.0",
     "resend": "6.12.3",
     "three": "0.184.0",
     "vanilla-cookieconsent": "3.1.0"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
-    "@astrojs/ts-plugin": "1.10.8",
+    "@astrojs/ts-plugin": "1.10.9",
     "@biomejs/biome": "2.4.15",
     "@commitlint/cli": "21.0.1",
     "@commitlint/config-conventional": "21.0.1",
@@ -81,14 +81,14 @@
     "@playwright/test": "1.60.0",
     "@testing-library/react": "16.3.2",
     "@types/markdown-it": "14.1.2",
-    "@types/node": "25.8.0",
-    "@types/react": "19.2.14",
+    "@types/node": "25.9.1",
+    "@types/react": "19.2.15",
     "@types/react-dom": "19.2.3",
     "@types/three": "0.184.1",
     "husky": "9.1.7",
-    "lint-staged": "17.0.4",
+    "lint-staged": "17.0.5",
     "typescript": "6.0.3",
-    "vitest": "4.1.6",
-    "wrangler": "4.91.0"
+    "vitest": "4.1.7",
+    "wrangler": "4.93.0"
   }
 }
