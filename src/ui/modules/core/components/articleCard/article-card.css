@@ -11,6 +11,8 @@
   &:has(a:is(:hover, :focus-visible)) ~ .article-card__tags__list .article-card__tag__item {
     opacity: 1;
     translate: 0 0;
+    transition: translate 0.3s, opacity 0.3s;
+    transition-delay: calc(var(--index) * 0.1s);
   }
   @media (width <= 960px) {
     padding-inline-start: 1rem;
@@ -58,6 +60,8 @@
   &:has(.article-card__tag__item:focus-visible) .article-card__tag__item {
     opacity: 1;
     translate: 0 0;
+    transition: translate 0.3s, opacity 0.3s;
+    transition-delay: calc(var(--index) * 0.1s);
   }
 }
 
@@ -65,8 +69,6 @@
 .article-card__tag__item {
   --translate: 0 500px;
   opacity: 0;
-  transition: translate 0.3s, opacity 0.3s;
-  transition-delay: calc(var(--index) * 0.1s);
   translate: var(--translate);
 
   @media (width <= 720px) {
@@ -106,6 +108,8 @@
   &:is(:hover, :focus-visible) ~ .article-card__item .article-card__tag__item {
     opacity: 1;
     translate: 0 0;
+    transition: translate 0.3s, opacity 0.3s;
+    transition-delay: calc(var(--index) * 0.1s);
   }
 }
 
@@ -122,6 +126,8 @@
     .article-card__tag__item {
       opacity: 1;
       translate: 0 0;
+      transition: translate 0.3s, opacity 0.3s;
+      transition-delay: calc(var(--index) * 0.1s);
     }
   }
 
