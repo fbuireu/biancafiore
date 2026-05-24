@@ -63,7 +63,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
           </section>
       )
   }
-    <Breadcrumbs />
+    {!HIDE_CHROME && <Breadcrumbs />}
     <ReadingProgress />
     <ArticleDetails article={article} />
     {article.data.isRepublished && (
