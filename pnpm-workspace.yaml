@@ -1,10 +1,9 @@
 packages:
   - ./
 allowBuilds:
-  esbuild: set this to true or false
-  sharp: set this to true or false
-  workerd: set this to true or false
+  "@astrojs/compiler-rs": true
+  "@biomejs/biome": true
+  esbuild: true
+  sharp: true
+  workerd: true
 minimumReleaseAge: 4320 #3 days
-onlyBuiltDependencies:
-  - "@biomejs/biome"
-  - "@astrojs/compiler-rs"
