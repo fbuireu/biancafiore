@@ -1,12 +1,31 @@
-import { getCollection } from "astro:content";
+import type { Entry, EntrySkeletonType } from "contentful";
 import { type TagDTO, TagType } from "@application/dto/tag/types";
+import type { Reference } from "@shared/application/types";
 
-export async function getAuthors(): Promise<TagDTO["authors"]> {
-	return (await getCollection("authors")).map((author) => ({
-		name: author.data.name,
-		slug: author.data.slug,
-		type: TagType.AUTHOR,
-		count: author.data.articles?.length ?? 0,
-		articles: author.data.articles,
-	}));
+interface GetAuthorsParams {
+	rawAuthors: Entry<EntrySkeletonType>[];
+	rawArticles: Entry<EntrySkeletonType>[];
+}
+
+export function getAuthors({ rawAuthors, rawArticles }: GetAuthorsParams): TagDTO["authors"] {
+	return rawAuthors.map((author) => {
+		const slug = String(author.fields.slug).trim();
+		const articles: Reference<"articles">[] = rawArticles
+			.filter((article) => {
+				const articleAuthor = article.fields.author as Entry<EntrySkeletonType> | undefined;
+				return String(articleAuthor?.fields?.slug).trim() === slug;
+			})
+			.map((article) => ({
+				id: String(article.fields.slug).trim(),
+				collection: "articles",
+			}));
+
+		return {
+			name: String(author.fields.name).trim(),
+			slug,
+			type: TagType.AUTHOR,
+			count: articles.length,
+			articles,
+		};
+	});
 }
