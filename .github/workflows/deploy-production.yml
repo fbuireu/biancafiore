@@ -1,10 +1,15 @@
 name: Deploy - Production
 
+run-name: >-
+  ${{ github.event_name == 'repository_dispatch'
+      && format('Article "{0}" {1} — deploy triggered by Contentful Webhook', github.event.client_payload.title, github.event.action)
+      || 'Deploy to production' }}
+
 on:
   push:
     branches: [main]
   repository_dispatch:
-    types: [contentful-publish]
+    types: [article-published, article-unpublished]
 
 permissions:
   contents: read
