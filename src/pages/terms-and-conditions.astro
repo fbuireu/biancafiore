@@ -5,7 +5,7 @@ import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
 import LegalSection from "@modules/legal/components/legalSection/LegalSection.astro";
 
-const today = Temporal.Now.plainDateISO().toLocaleString("en", DEFAULT_DATE_FORMAT);
+const today = new Date().toLocaleDateString("en", DEFAULT_DATE_FORMAT);
 const metadata: Partial<SeoMetadata> = {
 	title: "Terms and Conditions",
 	robots: {

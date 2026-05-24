@@ -13,7 +13,7 @@ type BaseLayoutProps = SeoMetadata;
 const props = Astro.props as BaseLayoutProps;
 const location = getLocation(Astro.url);
 const className = { [`--is-${location}`]: location };
-const isUnderConstruction = HIDE_CHROME && location !== "article";
+const isUnderConstruction = HIDE_CHROME && !["article", "tags"].includes(location ?? "");
 ---
 <html lang="en" class:list={[className]}>
 <Head {...props} />
