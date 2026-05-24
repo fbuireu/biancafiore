@@ -34,6 +34,7 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 				slug: rawArticle.fields.slug,
 				description,
 				publishDate: new Date(String(rawArticle.fields.publishDate)).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
+				updatedAt: rawArticle.sys?.updatedAt ?? new Date(String(rawArticle.fields.publishDate)).toISOString(),
 				featuredImage,
 				variant: rawArticle.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
 				content,

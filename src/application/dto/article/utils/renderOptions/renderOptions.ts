@@ -41,7 +41,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				const { uri } = inlineNode.data;
 
 				if (isExternal(uri)) {
-					return `<a href="${uri}" target="_blank" rel="noopener noreferrer" class="--is-external">${next(inlineNode.content)}</a>`;
+					return `<a href="${uri}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}<span aria-hidden="true" class="external-link-icon"> ↗</span></a>`;
 				}
 				return `<a href="${uri}">${next(inlineNode.content)}</a>`;
 			},

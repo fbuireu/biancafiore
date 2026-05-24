@@ -7,6 +7,9 @@ import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawArticle {
 	contentTypeId: "article";
+	sys: {
+		updatedAt: string;
+	};
 	fields: {
 		title: EntryFieldTypes.Text;
 		slug: EntryFieldTypes.Text;
