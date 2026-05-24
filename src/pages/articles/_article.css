@@ -24,24 +24,17 @@
     line-height: 1.5lh;
   }
 
-  p a,
-  li a {
-    --border-width: 1px;
+  :is(p, li, blockquote) a {
     color: var(--primary-main);
-    position: relative;
     text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
-    &::after {
-      border-bottom: var(--border-width) solid currentColor;
-      content: "";
-      inset: 0;
-      position: absolute;
-      transition: width 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-      width: 0;
-    }
-
-    &:hover::after {
-      width: 100%;
+    &:hover {
+      background-size: 100% 1px;
     }
 
     .external-link-icon {
