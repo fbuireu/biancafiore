@@ -1,5 +1,9 @@
 packages:
   - ./
+allowBuilds:
+  esbuild: set this to true or false
+  sharp: set this to true or false
+  workerd: set this to true or false
 minimumReleaseAge: 4320 #3 days
 onlyBuiltDependencies:
   - "@biomejs/biome"
