@@ -101,7 +101,7 @@ export const ContactForm = () => {
     <>
       {formStatus !== FormStatus.SUCCESS ? (
         <form
-          className={clsx('contact-form', {
+          className={clsx('contact-form flex row-wrap', {
             '--is-disabled': formStatus === FormStatus.UNAUTHORIZED,
           })}
           onSubmit={(event) => {

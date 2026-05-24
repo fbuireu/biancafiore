@@ -3,7 +3,7 @@ import EmailButton from "@modules/core/components/emailButton/EmailButton.astro"
 import { SOCIAL_NETWORKS } from "./const";
 import "./social-networks.css";
 ---
-<ul class="social__networks__list flex">
+<ul class="social__networks__list flex row-wrap">
   {Object.entries(SOCIAL_NETWORKS).map(([key, value]) => (
       <li class="social__networks__item">
           <a
