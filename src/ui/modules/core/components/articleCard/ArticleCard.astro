@@ -39,7 +39,7 @@ const article = Astro.props as ArticleCardProps;
     </p>
     <p class="article-card__excerpt">{article.data.description}</p>
     <p class="article-card__reading-time">{article.data.readingTime} minutes read</p>
-    <ul class="article-card__tags__list flex">
+    <ul class="article-card__tags__list flex row-wrap">
       {article.data.tags?.map(({ slug, name }, index) => (
           <li class="article-card__tag__item" style={`--index: ${String(index)}`}>
               <a class="--underline-on-hover --is-clickable" href={`${PAGES_ROUTES.TAGS}/${slug}`}>

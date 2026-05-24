@@ -1,7 +1,6 @@
 .link-with-arrow {
 	--gap: 1.25rem;
 	align-content: center;
-	flex-flow: row wrap;
 	font-weight: 700;
 	gap: 0 1rem;
 	position: relative;
