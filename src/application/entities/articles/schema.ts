@@ -11,6 +11,7 @@ export const articleSchema = z.object({
 	slug: z.string(),
 	description: z.string(),
 	publishDate: z.string(),
+	updatedAt: z.string(),
 	featuredImage: imageSchema.optional(),
 	isFeaturedArticle: z.boolean(),
 	isRepublished: z.boolean().default(false),

@@ -44,21 +44,9 @@
       width: 100%;
     }
 
-    &.--is-external {
-      &::after {
-        border-bottom: none;
-        content: " ↗";
-        font-size: 0.7em;
-        inset: auto;
-        position: static;
-        transition: none;
-        vertical-align: super;
-        width: auto;
-      }
-
-      &:hover::after {
-        width: auto;
-      }
+    .external-link-icon {
+      font-size: 0.7em;
+      vertical-align: super;
     }
   }
 

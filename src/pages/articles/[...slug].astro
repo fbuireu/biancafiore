@@ -40,9 +40,14 @@ const metadata: Partial<SeoMetadata> = {
 	description: article.data.description,
 	type: 'article',
 	publishedTime: new Date(article.data.publishDate).toISOString(),
+	modifiedTime: article.data.updatedAt,
 	author: article.data.author.name,
 	tags: article.data.tags?.map((tag: { name: string }) => tag.name),
-	...(article.data.featuredImage && { image: `https:${article.data.featuredImage.url}` }),
+	...(article.data.featuredImage && {
+		image: `https:${article.data.featuredImage.url}`,
+		imageWidth: article.data.featuredImage.details.width,
+		imageHeight: article.data.featuredImage.details.height,
+	}),
 };
 const scopes = article.data.tableOfContents.map((_, index) => `--section-${index + 1}`).join(",");
 ---
@@ -91,6 +96,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
         },
       }),
       'datePublished': new Date(article.data.publishDate).toISOString(),
+      'dateModified': article.data.updatedAt,
       'author': {
         '@type': 'Person',
         'name': article.data.author.name,

@@ -13,9 +13,12 @@ const {
   title = TITLE,
   description = DESCRIPTION,
   image = IMAGE,
+  imageWidth,
+  imageHeight,
   robots = { index: ROBOTS.INDEX as boolean, follow: ROBOTS.FOLLOW as boolean, ...Astro.props.robots },
   type = 'website',
   publishedTime,
+  modifiedTime,
   author,
   tags,
 } = Astro.props as SeoProps
@@ -37,9 +40,12 @@ const {
 <meta property="og:description" content={description}/>
 <meta property="og:image" content={new URL(image, Astro.site)}/>
 <meta property="og:image:alt" content={title}/>
+{imageWidth && <meta property="og:image:width" content={String(imageWidth)}/>}
+{imageHeight && <meta property="og:image:height" content={String(imageHeight)}/>}
 <meta property="og:site_name" content="Bianca Fiore"/>
 <meta property="og:locale" content="en_US"/>
 {type === 'article' && publishedTime && <meta property="og:article:published_time" content={publishedTime}/>}
+{type === 'article' && modifiedTime && <meta property="og:article:modified_time" content={modifiedTime}/>}
 {type === 'article' && author && <meta property="og:article:author" content={author}/>}
 {type === 'article' && tags?.map(tag => <meta property="og:article:tag" content={tag}/>)}
 <meta property="twitter:card" content="summary_large_image"/>
