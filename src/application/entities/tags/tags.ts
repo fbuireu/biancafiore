@@ -10,11 +10,13 @@ export const tags = defineCollection({
 	loader: async () => {
 		if (!process.env.CONTENTFUL_SPACE_ID) return [];
 		const client = await createContentfulClient();
-		const { items: rawTags } = await client.getEntries<RawTag>({
-			content_type: "tag",
-		});
+		const [{ items: rawTags }, { items: rawArticles }, { items: rawAuthors }] = await Promise.all([
+			client.getEntries<RawTag>({ content_type: "tag" }),
+			client.getEntries({ content_type: "article", select: ["fields.slug", "fields.tags", "fields.author"] }),
+			client.getEntries({ content_type: "author", select: ["fields.name", "fields.slug"] }),
+		]);
 
-		const tags = await tagDTO.create(rawTags as unknown as RawTag[]);
+		const tags = await tagDTO.create([rawTags as unknown as RawTag[], rawArticles, rawAuthors]);
 
 		return Object.keys(tags).map((letter) => ({
 			id: letter,

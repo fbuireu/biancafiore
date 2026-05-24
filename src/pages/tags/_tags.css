@@ -19,6 +19,7 @@
 
 .tags__item__letter {
 	color: var(--primary-main);
+	margin-block-end: 1rem;
 }
 
 .tags__item__list {
