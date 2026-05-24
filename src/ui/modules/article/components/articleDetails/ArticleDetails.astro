@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { DEFAULT_DATE_FORMAT } from "@const/index";
 import { PAGES_ROUTES } from "@const/const";
 import "./article-details.css";
 
@@ -16,7 +15,7 @@ const { article } = Astro.props as ArticleDetailsProps;
     </h1>
     <p class="article-details__author">by <a class="--underline-on-hover" href={`${PAGES_ROUTES.TAGS}/${article.data.author.slug}`}>{article.data.author.name}</a></p>
     <time class="article-details__publish-date font-sans-serif" datetime={article.data.publishDate}>
-      {Temporal.PlainDate.from(article.data.publishDate).toLocaleString("en", DEFAULT_DATE_FORMAT)}
+      {article.data.publishDate}
     </time>
     <p class="article-details__reading-time">{article.data.readingTime} minutes read</p>
   {

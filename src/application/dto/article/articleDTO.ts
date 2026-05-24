@@ -3,6 +3,7 @@ import { ArticleType } from "@application/dto/article/types";
 import { createRelatedArticles } from "@application/dto/article/utils/createRelatedArticles";
 import { generateTableOfContents } from "@application/dto/article/utils/generateTableOfContents";
 import { getRelatedArticles } from "@application/dto/article/utils/getRelatedArticles/getRelatedArticles";
+import { DEFAULT_DATE_FORMAT } from "@const/index";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Document } from "@contentful/rich-text-types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
@@ -39,7 +40,7 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 				author: getAuthor(rawArticle.fields.author),
 				slug: rawArticle.fields.slug,
 				description,
-				publishDate: Temporal.PlainDate.from(String(rawArticle.fields.publishDate)).toString(),
+				publishDate: new Date(String(rawArticle.fields.publishDate)).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
 				featuredImage,
 				variant: rawArticle.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,
 				content,
