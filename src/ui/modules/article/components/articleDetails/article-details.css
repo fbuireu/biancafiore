@@ -37,6 +37,8 @@
 	grid-area: Article-Details-Tags;
 	text-transform: lowercase;
 	z-index: 10;
+	display: flex;
+    flex-flow: row wrap;
 }
 
 .article-details__publish-date {
