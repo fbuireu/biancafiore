@@ -26,13 +26,22 @@
 
   p a,
   li a {
+    --border-width: 1px;
     color: var(--primary-main);
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-    text-decoration-thickness: 1px;
+    position: relative;
+    text-decoration: none;
 
-    &:hover {
-      opacity: 0.75;
+    &::after {
+      border-bottom: var(--border-width) solid currentColor;
+      content: "";
+      inset: 0;
+      position: absolute;
+      transition: width 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+      width: 0;
+    }
+
+    &:hover::after {
+      width: 100%;
     }
   }
 
