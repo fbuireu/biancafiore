@@ -31,10 +31,14 @@
     background-size: 0% 1px;
     background-repeat: no-repeat;
     background-position: 0 100%;
-    transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), scale 0.2s;
 
     &:hover {
       background-size: 100% 1px;
+    }
+
+    &:active {
+      scale: 0.9;
     }
 
     .external-link-icon {
