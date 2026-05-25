@@ -6,13 +6,8 @@
 		"Article-Details-Title  Article-Details-Title  Article-Details-Title" 1fr
 		"Article-Details-Author Article-Details-Author Article-Reading-Time" min-content
 		"Article-Details-Tags Article-Details-Tags Article-Details-Tags" min-content / 1fr 1fr;
-	margin: 2rem auto;
-	max-width: var(--grid-small);
+	margin-block-start: 2rem;
 	width: 100%;
-
-	@container article-page (width <= 960px) {
-		padding-inline: 1rem;
-	}
 }
 
 .article-details__title {

@@ -24,7 +24,7 @@
   },
   "scripts": {
     "prepare": "husky",
-    "start": "astro dev --open --remote",
+    "dev": "astro dev --open --remote",
     "build": "astro build --remote",
     "deploy": "wrangler deploy --env production",
     "preview": "astro preview",
