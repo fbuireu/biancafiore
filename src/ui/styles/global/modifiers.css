@@ -14,25 +14,24 @@
 
 	.--underline-on-hover {
 		--border-width: 1px;
-		position: relative;
 		border: none;
 		background-color: unset;
+		background-image: linear-gradient(currentColor, currentColor);
+		background-size: 0% var(--border-width);
+		background-repeat: no-repeat;
+		background-position: 0 100%;
 		text-decoration: none;
 		color: currentColor;
 		padding: 0;
 		cursor: pointer;
+		transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
-		&:not(.--is-active)::after {
-			border-bottom: var(--border-width) solid currentColor;
-			content: "";
-			inset: 0;
-			position: absolute;
-			transition: width 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-			width: 0;
+		&:not(.--is-active):hover {
+			background-size: 100% var(--border-width);
 		}
 
-		&:hover::after {
-			width: 100%;
+		&.--is-active {
+			background-size: 100% var(--border-width);
 		}
 	}
 }
