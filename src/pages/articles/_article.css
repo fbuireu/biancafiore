@@ -3,22 +3,6 @@
   object-fit: cover;
 }
 
-.article-layout {
-  display: grid;
-  grid-template-columns:
-    [article-start] 1fr
-    [content-start] min(var(--grid-article), 100% - 2rem) [content-end]
-    1fr [article-end];
-
-  & > * {
-    grid-column: content;
-  }
-
-  & > .article-wrapper {
-    grid-column: article;
-  }
-}
-
 .article-wrapper {
   display: grid;
   grid-template-columns:
@@ -37,7 +21,7 @@
   }
 
   p {
-    line-height: 1.6;
+    line-height: 1.4lh;
   }
 
   :is(p, li, blockquote) a {
@@ -95,7 +79,7 @@
 
     p {
       margin-block-end: 0;
-      line-height: 1.6;
+      line-height: 1.6lh;
     }
 
     cite {
