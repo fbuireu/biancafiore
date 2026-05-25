@@ -1,22 +1,6 @@
 .tag__article__list {
-	--gap: 2rem;
-	gap: calc(var(--gap) * 3) var(--gap);
-	grid-template-columns: repeat(auto-fill, minmax(calc(100% / var(--items-per-row) - var(--gap)), 1fr));
+	gap: calc(2rem * 3) 2rem;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
 	margin-block: 2rem;
-	--items-per-row: 4;
 	position: relative;
-
-	@container tag-page (width <= 1440px) {
-		margin-inline: 1rem;
-	}
-	@container tag-page (width <= 960px) {
-		--gap: 1rem;
-		justify-content: space-between;
-		margin-inline: 0;
-		--items-per-row: 2;
-	}
-	@container tag-page (width <= 720px) {
-		--gap: 0;
-		--items-per-row: 1;
-	}
 }
