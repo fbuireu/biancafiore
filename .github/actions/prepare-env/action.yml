@@ -11,18 +11,14 @@ runs:
           exit 1
         fi
 
-    - name: Use Node.js version from .nvmrc
-      shell: bash
-      run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
-
     - name: Install pnpm
-      uses: pnpm/action-setup@v6
+      uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v6
 
-    - uses: actions/setup-node@v6
+    - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
       with:
-        node-version: ${{ env.NODE_VERSION }}
+        node-version-file: .nvmrc
 
-    - uses: actions/cache@v5
+    - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
       with:
         path: '**/node_modules'
         key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}

@@ -16,6 +16,27 @@ on:
         required: false
         type: string
         description: Override the worker name (for per-PR preview deployments)
+    secrets:
+      CLOUDFLARE_API_TOKEN:
+        required: true
+      CLOUDFLARE_ACCOUNT_ID:
+        required: true
+      GOOGLE_RECAPTCHA_SECRET_KEY:
+        required: false
+      RESEND_API_KEY:
+        required: true
+      CONTENTFUL_SPACE_ID:
+        required: true
+      CONTENTFUL_DELIVERY_TOKEN:
+        required: true
+      CONTENTFUL_PREVIEW_TOKEN:
+        required: true
+      CONTENTFUL_SIGNIN_TOKEN:
+        required: true
+      ASTRO_DB_REMOTE_URL:
+        required: true
+      ASTRO_DB_APP_TOKEN:
+        required: true
 
 permissions:
   contents: read
@@ -48,7 +69,9 @@ jobs:
       ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
       - uses: ./.github/actions/prepare-env
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -57,15 +80,17 @@ jobs:
       - name: Deploy to Cloudflare Workers
         run: |
           NAME_FLAG=""
-          if [ -n "${{ inputs.worker_name }}" ]; then
-            NAME_FLAG="--name ${{ inputs.worker_name }}"
+          if [ -n "${INPUTS_WORKER_NAME}" ]; then
+            NAME_FLAG="--name ${INPUTS_WORKER_NAME}"
           fi
           pnpm exec wrangler deploy $NAME_FLAG
+        env:
+          INPUTS_WORKER_NAME: ${{ inputs.worker_name }}
       - name: Set Worker secrets
         run: |
           TARGET_FLAG=""
-          if [ -n "${{ inputs.worker_name }}" ]; then
-            TARGET_FLAG="--name ${{ inputs.worker_name }}"
+          if [ -n "${INPUTS_WORKER_NAME}" ]; then
+            TARGET_FLAG="--name ${INPUTS_WORKER_NAME}"
           fi
           node -e "
           const required = ['RESEND_API_KEY','CONTENTFUL_SPACE_ID','CONTENTFUL_DELIVERY_TOKEN','CONTENTFUL_PREVIEW_TOKEN','CONTENTFUL_SIGNIN_TOKEN','ASTRO_DB_REMOTE_URL','ASTRO_DB_APP_TOKEN'];
@@ -73,3 +98,5 @@ jobs:
           if (missing.length) { console.error('Missing required secrets: ' + missing.join(', ')); process.exit(1); }
           process.stdout.write(JSON.stringify(Object.fromEntries(required.map(k => [k, process.env[k]]))));
           " | pnpm exec wrangler secret bulk $TARGET_FLAG
+        env:
+          INPUTS_WORKER_NAME: ${{ inputs.worker_name }}
