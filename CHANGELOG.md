@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/fbuireu/biancafiore/compare/v1.2.0...v1.2.1) (2026-05-26)
+
+
+### Bug Fixes
+
+* add buttons track ([c92bab3](https://github.com/fbuireu/biancafiore/commit/c92bab3bba06531c6e1d3af57ffadd5bd5f13dfc))
+
 # [1.2.0](https://github.com/fbuireu/biancafiore/compare/v1.1.0...v1.2.0) (2026-05-26)
 
 
