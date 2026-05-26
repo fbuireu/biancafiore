@@ -16,8 +16,8 @@ interface GetArticlesByTagParams {
 const getArticlesByTag = ({ rawTag, rawArticles }: GetArticlesByTagParams): Reference<"articles">[] =>
 	rawArticles
 		.filter((article) => {
-			const tags = article.fields.tags as Array<Entry<EntrySkeletonType>> | undefined;
-			return tags?.some((tag) => String(tag.fields?.slug).trim() === String(rawTag.fields.slug).trim());
+			const tags = article.fields.tags as Array<{ sys: { id: string } }> | undefined;
+			return tags?.some((tag) => tag.sys?.id === rawTag.sys.id);
 		})
 		.map((article) => ({
 			id: String(article.fields.slug).trim(),
