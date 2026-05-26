@@ -105,7 +105,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 							<img
 								src="${optimizedSrc}"
 								srcset="${srcset}"
-								sizes="(max-width: 768px) 100vw, 768px"
+								sizes="auto"
 								height="${height ?? ""}"
 								width="${width ?? ""}"
 								alt="${alt}"
@@ -134,7 +134,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
               <img
                 src="${optimizedSrc}"
                 srcset="${srcset}"
-                sizes="(max-width: 768px) 100vw, 1024px"
+                sizes="auto"
                 height="${height ?? ""}"
                 width="${width ?? ""}"
                 alt="${description ?? rawArticle.fields.title}"
