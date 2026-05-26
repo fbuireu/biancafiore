@@ -26,6 +26,8 @@ jobs:
       - uses: ./.github/actions/prepare-env
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Generate types
+        run: pnpm run sync
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
