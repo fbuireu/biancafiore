@@ -1,15 +1,11 @@
-name: Deploy - Production
+name: Deploy Article
 
 run-name: >-
-  ${{ github.event_name == 'repository_dispatch'
-      && (github.event.action == 'article-published'
-          && format('Article "{0}" published (deploy triggered by Contentful Webhook)', github.event.client_payload.title)
-          || format('Article ({0}) unpublished (deploy triggered by Contentful Webhook)', github.event.client_payload.id))
-      || 'Deploy to production' }}
+  ${{ github.event.action == 'article-published'
+      && format('Article "{0}" published (deploy triggered by Contentful Webhook)', github.event.client_payload.title)
+      || format('Article ({0}) unpublished (deploy triggered by Contentful Webhook)', github.event.client_payload.id) }}
 
 on:
-  push:
-    branches: [main]
   repository_dispatch:
     types: [article-published, article-unpublished]
 
