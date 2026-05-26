@@ -16,6 +16,7 @@
   ],
   "minimumReleaseAge": "3 days",
   "rangeStrategy": "pin",
+  "pinDigests": true,
   "automergeStrategy": "squash",
   "commitMessagePrefix": "chore(deps):",
   "lockFileMaintenance": {
