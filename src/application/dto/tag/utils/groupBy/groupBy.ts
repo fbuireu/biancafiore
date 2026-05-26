@@ -17,7 +17,9 @@ export function groupBy<T, K extends string>({ array, keyFn }: GroupByParams<T, 
 	const sortedKeys = Object.keys(grouped).sort((a, b) => a.localeCompare(b)) as K[];
 	const sortedGrouped = {} as Record<K, T[]>;
 	for (const key of sortedKeys) {
-		sortedGrouped[key] = grouped[key];
+		sortedGrouped[key] = grouped[key].sort((a, b) =>
+			(a as { name: string }).name.localeCompare((b as { name: string }).name),
+		);
 	}
 	return sortedGrouped;
 }

@@ -11,9 +11,9 @@ export const tags = defineCollection({
 		if (!process.env.CONTENTFUL_SPACE_ID) return [];
 		const client = await createContentfulClient();
 		const [{ items: rawTags }, { items: rawArticles }, { items: rawAuthors }] = await Promise.all([
-			client.getEntries<RawTag>({ content_type: "tag" }),
-			client.getEntries({ content_type: "article", select: ["fields.slug", "fields.tags", "fields.author"] }),
-			client.getEntries({ content_type: "author", select: ["fields.name", "fields.slug"] }),
+			client.getEntries<RawTag>({ content_type: "tag", limit: 1000 }),
+			client.getEntries({ content_type: "article", select: ["fields.slug", "fields.tags", "fields.author"], limit: 1000 }),
+			client.getEntries({ content_type: "author", select: ["fields.name", "fields.slug"], limit: 1000 }),
 		]);
 
 		const tags = await tagDTO.create([rawTags as unknown as RawTag[], rawArticles, rawAuthors]);
