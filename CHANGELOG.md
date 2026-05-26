@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/fbuireu/biancafiore/compare/v1.2.4...v1.2.5) (2026-05-26)
+
+
+### Bug Fixes
+
+* navigate transition script ([f654ffd](https://github.com/fbuireu/biancafiore/commit/f654ffdffdaee8debb2d3670d716e153c8254a97))
+
 ## [1.2.4](https://github.com/fbuireu/biancafiore/compare/v1.2.3...v1.2.4) (2026-05-26)
 
 
