@@ -28,6 +28,9 @@ export default defineConfig({
   image: {
     layout: 'constrained',
     responsiveStyles: true,
+    service: {
+      entrypoint: './src/imageService.ts',
+    },
   },
   trailingSlash: 'never',
   site: 'https://biancafiore.me',
@@ -61,9 +64,7 @@ export default defineConfig({
       },
     }),
   ],
-  adapter: cloudflare({
-    imageService: 'cloudflare',
-  }),
+  adapter: cloudflare(),
   env: {
     schema: {
       SITE_URL: envField.string({
