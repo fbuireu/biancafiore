@@ -16,6 +16,7 @@ export function getRelatedArticles({ rawArticle, allRawArticles }: GetRelatedArt
 			const allTags = fields.tags?.map((tag) => tag.fields.slug) || [];
 			return allTags.some((slug) => articleTags.has(slug));
 		})
+		.slice(0, 6)
 		.map((relatedArticle) => ({
 			id: String(relatedArticle.fields.slug),
 			collection: "articles",
