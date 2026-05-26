@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/fbuireu/biancafiore/compare/v1.0.1...v1.0.2) (2026-05-26)
+
+
+### Bug Fixes
+
+* add loading featured image ([eb9e857](https://github.com/fbuireu/biancafiore/commit/eb9e857e4f80b2c55e5d92ca51d9749647b98987))
+
 ## [1.0.1](https://github.com/fbuireu/biancafiore/compare/v1.0.0...v1.0.1) (2026-05-26)
 
 
