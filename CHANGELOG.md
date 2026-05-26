@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/fbuireu/biancafiore/compare/v1.0.10...v1.1.0) (2026-05-26)
+
+
+### Features
+
+* simplify tags + random related ([fd693c3](https://github.com/fbuireu/biancafiore/commit/fd693c38da46d682a318b1d5f8824e9c6e09e9f5))
+
 ## [1.0.10](https://github.com/fbuireu/biancafiore/compare/v1.0.9...v1.0.10) (2026-05-26)
 
 
