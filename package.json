@@ -16,7 +16,7 @@
     "resend"
   ],
   "author": "Ferran Buireu <fbuireu@gmail.com>",
-  "version": "2.0.2",
+  "version": "1.0.0",
   "type": "module",
   "packageManager": "pnpm@11.3.0",
   "engines": {
