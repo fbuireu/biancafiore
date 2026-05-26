@@ -19,11 +19,11 @@ const { class: className, showTrack = true } = Astro.props as SliderShellProps;
 	)}
 </div>
 
-<script>
-	document.querySelectorAll<HTMLElement>('.slider__wrapper[data-has-buttons="true"]').forEach((wrapper) => {
-		const track = wrapper.querySelector<HTMLElement>('.slider__track');
-		const prev = wrapper.querySelector<HTMLButtonElement>('.slider__btn--prev');
-		const next = wrapper.querySelector<HTMLButtonElement>('.slider__btn--next');
+<script is:inline>
+	document.querySelectorAll('.slider__wrapper[data-has-buttons="true"]').forEach((wrapper) => {
+		const track = wrapper.querySelector('.slider__track');
+		const prev = wrapper.querySelector('.slider__btn--prev');
+		const next = wrapper.querySelector('.slider__btn--next');
 		if (!track || !prev || !next) return;
 
 		const update = () => {
