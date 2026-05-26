@@ -97,8 +97,8 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 					const alt = caption ?? image.fields.description ?? image.fields.title ?? "";
 					const wrapperClass = fullBleed ? "full-bleed" : "";
 					const displayWidth = width ?? 768;
-					const optimizedSrc = getOptimizedImageUrl(`https:${imgUrl}`, { width: displayWidth, format: 'auto', quality: 85 });
-					const srcset = getOptimizedSrcset(`https:${imgUrl}`, [400, 768, 1024], { format: 'auto', quality: 85 });
+					const optimizedSrc = getOptimizedImageUrl(`https:${imgUrl}`, { width: displayWidth, format: 'webp', quality: 85 });
+					const srcset = getOptimizedSrcset(`https:${imgUrl}`, [400, 768, 1024], { format: 'webp', quality: 85 });
 
 					return `
 						<figure${wrapperClass ? ` class="${wrapperClass}"` : ""}>
@@ -127,8 +127,8 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 
 				if (url) {
 					const displayWidth = width ?? 768;
-					const optimizedSrc = getOptimizedImageUrl(`https:${url}`, { width: displayWidth, format: 'auto', quality: 85 });
-					const srcset = getOptimizedSrcset(`https:${url}`, [400, 768, 1024], { format: 'auto', quality: 85 });
+					const optimizedSrc = getOptimizedImageUrl(`https:${url}`, { width: displayWidth, format: 'webp', quality: 85 });
+					const srcset = getOptimizedSrcset(`https:${url}`, [400, 768, 1024], { format: 'webp', quality: 85 });
 					return `
             <figure class="full-bleed">
               <img
