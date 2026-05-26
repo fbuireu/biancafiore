@@ -9,6 +9,10 @@ import "./article-card.css";
 type ArticleCardProps = CollectionEntry<"articles">;
 
 const article = Astro.props as ArticleCardProps;
+
+const MAX_TAGS = 4;
+const visibleTags = article.data.tags?.slice(0, MAX_TAGS) ?? [];
+const remainingTags = (article.data.tags?.length ?? 0) - visibleTags.length;
 ---
 <a class="article-card__link" href={`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`}
    aria-label={article.data.title}>{' '}</a>
@@ -39,12 +43,17 @@ const article = Astro.props as ArticleCardProps;
     <p class="article-card__excerpt">{article.data.description}</p>
     <p class="article-card__reading-time">{article.data.readingTime} minutes read</p>
     <ul class="article-card__tags__list flex row-wrap">
-      {article.data.tags?.map(({ slug, name }, index) => (
+      {visibleTags.map(({ slug, name }, index) => (
           <li class="article-card__tag__item" style={`--index: ${String(index)}`}>
               <a class="--underline-on-hover --is-clickable" href={`${PAGES_ROUTES.TAGS}/${slug}`}>
                   #{name}
               </a>
           </li>
       ))}
+      {remainingTags > 0 && (
+          <li class="article-card__tag__item article-card__tags__overflow" style={`--index: ${String(MAX_TAGS)}`}>
+              +{remainingTags}
+          </li>
+      )}
     </ul>
 </article>
