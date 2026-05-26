@@ -1,3 +1,11 @@
+## [1.2.4](https://github.com/fbuireu/biancafiore/compare/v1.2.3...v1.2.4) (2026-05-26)
+
+
+### Bug Fixes
+
+* clickable links in article ([2e3023e](https://github.com/fbuireu/biancafiore/commit/2e3023e9e69fbb6e8d49eac4f69550c351d487ca))
+* clickable links in article ([60fdcef](https://github.com/fbuireu/biancafiore/commit/60fdcef6fbca30a5cef502f2d000051ade331331))
+
 ## [1.2.3](https://github.com/fbuireu/biancafiore/compare/v1.2.2...v1.2.3) (2026-05-26)
 
 
