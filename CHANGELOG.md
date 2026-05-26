@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/fbuireu/biancafiore/compare/v1.1.0...v1.2.0) (2026-05-26)
+
+
+### Bug Fixes
+
+* show track related articles ([212cba6](https://github.com/fbuireu/biancafiore/commit/212cba66d44063b7d25852c83242979123a5844e))
+
+
+### Features
+
+* simplify tags + random related ([1a8a26b](https://github.com/fbuireu/biancafiore/commit/1a8a26b673681f4f01cc82baf5d4de119532fb5f))
+
 # [1.1.0](https://github.com/fbuireu/biancafiore/compare/v1.0.10...v1.1.0) (2026-05-26)
 
 
