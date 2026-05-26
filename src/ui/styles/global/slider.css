@@ -5,6 +5,25 @@
 			display: grid;
 			gap: 1rem;
 			grid-template-columns: 2.5rem 1fr 2.5rem;
+
+			@media (width >= 768px) {
+				grid-template-columns: auto 1fr auto;
+
+				& .slider__track {
+					grid-column: 1 / -1;
+					grid-row: 1;
+				}
+
+				& .slider__btn--prev {
+					grid-column: 1;
+					grid-row: 2;
+				}
+
+				& .slider__btn--next {
+					grid-column: 3;
+					grid-row: 2;
+				}
+			}
 		}
 	}
 
