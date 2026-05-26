@@ -78,6 +78,12 @@
   }
 }
 
+.article-card__tags__overflow {
+  cursor: default;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
 .article-card__title {
   align-self: center;
   color: currentColor;
