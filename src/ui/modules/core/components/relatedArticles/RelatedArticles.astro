@@ -26,21 +26,15 @@ const relatedArticles = await getRelatedArticles(article);
           })),
         })} />
         <script is:inline>
-          (function () {
-            const MAX_DISPLAYED = 3;
-            const track = document.querySelector('.related-articles-wrapper .slider__track');
-            if (!track) return;
+          const track = document.querySelector('.related-articles-wrapper .slider__track');
+          if (track) {
             const slides = Array.from(track.children);
-            if (slides.length <= MAX_DISPLAYED) return;
             for (let i = slides.length - 1; i > 0; i--) {
               const j = Math.floor(Math.random() * (i + 1));
               [slides[i], slides[j]] = [slides[j], slides[i]];
             }
-            slides.forEach(function (slide, i) {
-              track.appendChild(slide);
-              if (i >= MAX_DISPLAYED) slide.hidden = true;
-            });
-          })();
+            slides.forEach((slide) => track.appendChild(slide));
+          }
         </script>
     </section>
         )
