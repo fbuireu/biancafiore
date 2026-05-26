@@ -15,11 +15,13 @@
 				}
 
 				& .slider__btn--prev {
+					align-self: end;
 					grid-column: 1;
 					grid-row: 2;
 				}
 
 				& .slider__btn--next {
+					align-self: end;
 					grid-column: 3;
 					grid-row: 2;
 				}
