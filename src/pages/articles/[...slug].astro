@@ -62,6 +62,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
                   alt={article.data.title}
                   class="article__featured__image"
                   layout="full-width"
+                  loading="eager"
                   transition:animate="slide"
                   transition:name=`featured-image-${article.data.slug}`
               />
@@ -113,5 +114,5 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
         '@id': Astro.url.href,
       },
     })} />
-    {!HIDE_CHROME && <RelatedArticles article={article} />}
+    <RelatedArticles article={article} />
 </BaseLayout>
