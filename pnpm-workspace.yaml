@@ -1,5 +1,8 @@
 packages:
   - ./
+overrides:
+  chokidar: ">=5.0.0"
+  semver: ">=7.0.0"
 allowBuilds:
   "@astrojs/compiler-rs": true
   "@biomejs/biome": true
