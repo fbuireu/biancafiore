@@ -25,6 +25,23 @@ const relatedArticles = await getRelatedArticles(article);
             'url': new URL(slug, Astro.url).href,
           })),
         })} />
+        <script is:inline>
+          (function () {
+            const MAX_DISPLAYED = 3;
+            const track = document.querySelector('.related-articles-wrapper .slider__track');
+            if (!track) return;
+            const slides = Array.from(track.children);
+            if (slides.length <= MAX_DISPLAYED) return;
+            for (let i = slides.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [slides[i], slides[j]] = [slides[j], slides[i]];
+            }
+            slides.forEach(function (slide, i) {
+              track.appendChild(slide);
+              if (i >= MAX_DISPLAYED) slide.hidden = true;
+            });
+          })();
+        </script>
     </section>
         )
     }
