@@ -24,7 +24,7 @@
 		color: currentColor;
 		padding: 0;
 		cursor: pointer;
-		transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+		transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), scale 0.2s;
 
 		&:not(.--is-active):hover {
 			background-size: 100% var(--border-width);
@@ -32,10 +32,6 @@
 
 		&.--is-active {
 			background-size: 100% var(--border-width);
-		}
-
-		&.--is-clickable:not(canvas):not(:disabled) {
-			transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), scale 0.2s;
 		}
 	}
 }

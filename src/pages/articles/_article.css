@@ -25,6 +25,7 @@
   }
 
   :is(p, li, blockquote) a {
+    display: inline-block;
     color: var(--primary-main);
     text-decoration: none;
     background-image: linear-gradient(currentColor, currentColor);
