@@ -6,4 +6,6 @@ allowBuilds:
   esbuild: true
   sharp: true
   workerd: true
-minimumReleaseAge: 4320 #3 days
+minimumReleaseAge: 4320 # 3 days
+trustPolicy: "no-downgrade"
+blockExoticSubdeps: true
