@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/fbuireu/biancafiore/compare/v1.0.2...v1.0.3) (2026-05-26)
+
+
+### Bug Fixes
+
+* excerpt to 200ch ([3a213d2](https://github.com/fbuireu/biancafiore/commit/3a213d2a0f5cd6aa088a73635b5ebcc3bb7f7c95))
+
 ## [1.0.2](https://github.com/fbuireu/biancafiore/compare/v1.0.1...v1.0.2) (2026-05-26)
 
 
