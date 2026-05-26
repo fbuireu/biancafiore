@@ -7,8 +7,34 @@ interface SliderShellProps {
 const { class: className, showTrack = true } = Astro.props as SliderShellProps;
 ---
 
-<div class={className}>
-	<ul class="slider__track" data-track={showTrack}>
+<div class={`slider__wrapper ${className ?? ''}`.trim()} data-has-buttons={showTrack}>
+	{showTrack && (
+		<button class="slider__btn slider__btn--prev" aria-label="Previous slide" disabled>←</button>
+	)}
+	<ul class="slider__track">
 		<slot />
 	</ul>
+	{showTrack && (
+		<button class="slider__btn slider__btn--next" aria-label="Next slide">→</button>
+	)}
 </div>
+
+<script>
+	document.querySelectorAll<HTMLElement>('.slider__wrapper[data-has-buttons="true"]').forEach((wrapper) => {
+		const track = wrapper.querySelector<HTMLElement>('.slider__track');
+		const prev = wrapper.querySelector<HTMLButtonElement>('.slider__btn--prev');
+		const next = wrapper.querySelector<HTMLButtonElement>('.slider__btn--next');
+		if (!track || !prev || !next) return;
+
+		const update = () => {
+			prev.disabled = track.scrollLeft <= 0;
+			next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 1;
+		};
+
+		prev.addEventListener('click', () => track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' }));
+		next.addEventListener('click', () => track.scrollBy({ left: track.clientWidth, behavior: 'smooth' }));
+		track.addEventListener('scroll', update, { passive: true });
+
+		update();
+	});
+</script>
