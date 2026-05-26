@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/fbuireu/biancafiore/compare/v1.0.3...v1.0.4) (2026-05-26)
+
+
+### Bug Fixes
+
+* title card wrap ([46ab9ab](https://github.com/fbuireu/biancafiore/commit/46ab9ab46e5875e68d175b02b63620c21db28443))
+
 ## [1.0.3](https://github.com/fbuireu/biancafiore/compare/v1.0.2...v1.0.3) (2026-05-26)
 
 
