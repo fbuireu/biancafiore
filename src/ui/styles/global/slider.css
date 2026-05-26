@@ -1,4 +1,48 @@
 @layer global {
+	.slider__wrapper {
+		&[data-has-buttons="true"] {
+			align-items: center;
+			display: grid;
+			gap: 1rem;
+			grid-template-columns: 2.5rem 1fr 2.5rem;
+		}
+	}
+
+	.slider__btn {
+		align-items: center;
+		background: transparent;
+		border: 1px solid currentColor;
+		border-radius: 50%;
+		color: currentColor;
+		cursor: pointer;
+		display: flex;
+		flex-shrink: 0;
+		height: 2.5rem;
+		justify-content: center;
+		padding: 0.5rem;
+		transition:
+			background-color 0.2s,
+			border-color 0.2s,
+			color 0.2s,
+			scale 0.2s;
+		width: 2.5rem;
+
+		&:hover:not(:disabled) {
+			background-color: var(--primary-main);
+			border-color: var(--primary-main);
+			color: var(--white, white);
+		}
+
+		&:active:not(:disabled) {
+			scale: 0.9;
+		}
+
+		&:disabled {
+			cursor: not-allowed;
+			opacity: 0.3;
+		}
+	}
+
 	.slider__track {
 		align-items: stretch;
 		display: flex;
@@ -22,51 +66,6 @@
 			gap: 0 0.7rem;
 			justify-content: center;
 			padding-block: 2rem;
-		}
-
-		&::scroll-button(inline-start),
-		&::scroll-button(inline-end) {
-			align-items: center;
-			background: transparent;
-			border: 1px solid currentColor;
-			border-radius: 50%;
-			color: currentColor;
-			cursor: pointer;
-			display: flex;
-			height: 2.5rem;
-			justify-content: center;
-			padding: 0.5rem;
-			transition:
-				background-color 0.2s,
-				border-color 0.2s,
-				color 0.2s;
-			width: 2.5rem;
-
-			&:hover:not(:disabled) {
-				background-color: var(--primary-main);
-				border-color: var(--primary-main);
-				color: var(--white, white);
-			}
-
-			&:disabled {
-				cursor: not-allowed;
-				opacity: 0.3;
-			}
-		}
-
-		&::scroll-button(inline-start) {
-			content: "←" / "Previous slide";
-		}
-
-		&::scroll-button(inline-end) {
-			content: "→" / "Next slide";
-		}
-
-		&[data-track="false"] {
-			&::scroll-button(inline-start),
-			&::scroll-button(inline-end) {
-				display: none;
-			}
 		}
 	}
 

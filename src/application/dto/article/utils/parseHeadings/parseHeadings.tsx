@@ -53,10 +53,7 @@ export function parseHeadings() {
 				const text = node.content.map((child: Text) => child.value).join("");
 				const id = slugify(text);
 				const content = extractContentFromNextNodes({ nextNodes, level });
-				// Shift all headings +1 so article body starts at h2 (page h1 = article title)
-				const htmlLevel = Math.min(level + 1, 6);
-
-				return createSection({ level: htmlLevel, index, id, text, content });
+				return createSection({ level, index, id, text, content });
 			},
 		]),
 	);

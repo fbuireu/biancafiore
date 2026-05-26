@@ -14,14 +14,6 @@
 
   & > section {
     view-timeline: var(--is);
-
-    /* Compensate visual sizes after semantic heading shift (+1 level for accessibility).
-       h2 = was Contentful h1, h3 = was h2, etc. */
-    h2 { font-size: var(--font-size-h1); line-height: 3lh; }
-    h3 { font-size: var(--font-size-h2); line-height: 3lh; letter-spacing: normal; }
-    h4 { font-size: var(--font-size-h3); line-height: 2lh; }
-    h5 { font-size: var(--font-size-h4); line-height: 1.3; letter-spacing: 0.15rem; }
-    h6 { font-size: var(--font-size-h5); }
   }
 
   & > p:first-of-type::first-letter {
