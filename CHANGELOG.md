@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/fbuireu/biancafiore/compare/v1.0.0...v1.0.1) (2026-05-26)
+
+
+### Bug Fixes
+
+* zizmor audit ([7a10258](https://github.com/fbuireu/biancafiore/commit/7a1025804412ab16faccd352f68ead90239e3dde))
+* zizmor audit ([278f028](https://github.com/fbuireu/biancafiore/commit/278f028c22815dada95291cffac8bc8884902b68))
+* zizmor audit ([90bc895](https://github.com/fbuireu/biancafiore/commit/90bc89568831f13b3459fd289478010a4dc2beeb))
+
 # 1.0.0 (2026-05-26)
 
 
