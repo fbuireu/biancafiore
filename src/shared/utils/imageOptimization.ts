@@ -1,4 +1,4 @@
-interface CloudflareImageOptions {
+interface ImageOptions {
 	width?: number;
 	height?: number;
 	quality?: number;
@@ -10,7 +10,7 @@ function toAbsoluteSrc(src: string): string {
 	return src.startsWith('//') ? `https:${src}` : src;
 }
 
-function buildCFParams(options: CloudflareImageOptions): string {
+function buildCFParams(options: ImageOptions): string {
 	const parts: string[] = [
 		`format=${options.format ?? 'auto'}`,
 		`quality=${options.quality ?? 85}`,
@@ -21,7 +21,7 @@ function buildCFParams(options: CloudflareImageOptions): string {
 	return parts.join(',');
 }
 
-function getContentfulOptimizedUrl(src: string, options: CloudflareImageOptions): string {
+function getContentfulUrl(src: string, options: ImageOptions): string {
 	try {
 		const url = new URL(src);
 		if (options.width) url.searchParams.set('w', String(options.width));
@@ -35,29 +35,23 @@ function getContentfulOptimizedUrl(src: string, options: CloudflareImageOptions)
 	}
 }
 
-export function getOptimizedImageUrl(src: string, options: CloudflareImageOptions = {}): string {
+export function getOptimizedImageUrl(src: string, options: ImageOptions = {}): string {
 	const absoluteSrc = toAbsoluteSrc(src);
-
-	if (import.meta.env.DEV) {
-		return getContentfulOptimizedUrl(absoluteSrc, options);
-	}
-
+	if (import.meta.env.DEV) return getContentfulUrl(absoluteSrc, options);
 	return `/cdn-cgi/image/${buildCFParams(options)}/${absoluteSrc}`;
 }
 
 export function getOptimizedSrcset(
 	src: string,
 	widths: number[],
-	options: Omit<CloudflareImageOptions, 'width'> = {},
+	options: Omit<ImageOptions, 'width'> = {},
 ): string {
 	const absoluteSrc = toAbsoluteSrc(src);
-
 	if (import.meta.env.DEV) {
 		return widths
-			.map((w) => `${getContentfulOptimizedUrl(absoluteSrc, { ...options, width: w })} ${w}w`)
+			.map((w) => `${getContentfulUrl(absoluteSrc, { ...options, width: w })} ${w}w`)
 			.join(', ');
 	}
-
 	return widths
 		.map((w) => `/cdn-cgi/image/${buildCFParams({ ...options, width: w })}/${absoluteSrc} ${w}w`)
 		.join(', ');
