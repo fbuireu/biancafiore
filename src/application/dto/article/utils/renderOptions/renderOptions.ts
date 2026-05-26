@@ -1,5 +1,6 @@
 import type { RawArticle } from "@application/dto/article/types";
 import { parseHeadings } from "@application/dto/article/utils/parseHeadings";
+import { getOptimizedImageUrl, getOptimizedSrcset } from "@shared/utils/imageOptimization";
 import type { Block, Inline, Text } from "@contentful/rich-text-types";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 
@@ -95,11 +96,16 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 					const { height, width } = details?.image ?? {};
 					const alt = caption ?? image.fields.description ?? image.fields.title ?? "";
 					const wrapperClass = fullBleed ? "full-bleed" : "";
+					const displayWidth = width ?? 768;
+					const optimizedSrc = getOptimizedImageUrl(`https:${imgUrl}`, { width: displayWidth, format: 'auto', quality: 85 });
+					const srcset = getOptimizedSrcset(`https:${imgUrl}`, [400, 768, 1024], { format: 'auto', quality: 85 });
 
 					return `
 						<figure${wrapperClass ? ` class="${wrapperClass}"` : ""}>
 							<img
-								src="https:${imgUrl}"
+								src="${optimizedSrc}"
+								srcset="${srcset}"
+								sizes="(max-width: 768px) 100vw, 768px"
 								height="${height ?? ""}"
 								width="${width ?? ""}"
 								alt="${alt}"
@@ -120,10 +126,15 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				const { height, width } = image || {};
 
 				if (url) {
+					const displayWidth = width ?? 768;
+					const optimizedSrc = getOptimizedImageUrl(`https:${url}`, { width: displayWidth, format: 'auto', quality: 85 });
+					const srcset = getOptimizedSrcset(`https:${url}`, [400, 768, 1024], { format: 'auto', quality: 85 });
 					return `
             <figure class="full-bleed">
               <img
-                src="https:${url}"
+                src="${optimizedSrc}"
+                srcset="${srcset}"
+                sizes="(max-width: 768px) 100vw, 1024px"
                 height="${height ?? ""}"
                 width="${width ?? ""}"
                 alt="${description ?? rawArticle.fields.title}"
