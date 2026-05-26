@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/fbuireu/biancafiore/compare/v1.0.4...v1.0.5) (2026-05-26)
+
+
+### Bug Fixes
+
+* seo stuff ([2266686](https://github.com/fbuireu/biancafiore/commit/226668648f7e115da7b371536c78b9ddb06c6f50))
+
 ## [1.0.4](https://github.com/fbuireu/biancafiore/compare/v1.0.3...v1.0.4) (2026-05-26)
 
 
