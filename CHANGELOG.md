@@ -1,3 +1,10 @@
+## [1.0.10](https://github.com/fbuireu/biancafiore/compare/v1.0.9...v1.0.10) (2026-05-26)
+
+
+### Bug Fixes
+
+* missing tags sys id ([eb4c43d](https://github.com/fbuireu/biancafiore/commit/eb4c43d29090fcd38dd2f6d9a4da68c1989e9ba8))
+
 ## [1.0.9](https://github.com/fbuireu/biancafiore/compare/v1.0.8...v1.0.9) (2026-05-26)
 
 
