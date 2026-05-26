@@ -15,7 +15,7 @@ const relatedArticles = await getRelatedArticles(article);
     relatedArticles.length > 0 && (
     <section class="related-articles-wrapper common-wrapper">
         <h2 class="related-articles__title section-title">You might also like</h2>
-        <RelatedArticlesSlider articles={relatedArticles} showTrack={false} />
+        <RelatedArticlesSlider articles={relatedArticles} />
         <script is:inline type="application/ld+json" set:html={JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'ItemList',
