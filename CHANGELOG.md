@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/fbuireu/biancafiore/compare/v1.2.2...v1.2.3) (2026-05-26)
+
+
+### Bug Fixes
+
+* align arrow ([2654e55](https://github.com/fbuireu/biancafiore/commit/2654e55fb5f444c77740553ad55aaea83eecc248))
+
 ## [1.2.2](https://github.com/fbuireu/biancafiore/compare/v1.2.1...v1.2.2) (2026-05-26)
 
 
