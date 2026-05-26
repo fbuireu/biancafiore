@@ -6,7 +6,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 concurrency:
   group: deploy-preview-${{ github.event.pull_request.number }}
@@ -18,7 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
       - uses: ./.github/actions/prepare-env
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -30,7 +31,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
       - uses: ./.github/actions/prepare-env
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -48,17 +51,29 @@ jobs:
       wrangler_env: development
       worker_name: pr-${{ github.event.pull_request.number }}-biancafiore-development
       url: https://pr-${{ github.event.pull_request.number }}-biancafiore-development.fbuireu.workers.dev
-    secrets: inherit
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      GOOGLE_RECAPTCHA_SECRET_KEY: ${{ secrets.GOOGLE_RECAPTCHA_SECRET_KEY }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+      CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
+      CONTENTFUL_PREVIEW_TOKEN: ${{ secrets.CONTENTFUL_PREVIEW_TOKEN }}
+      CONTENTFUL_SIGNIN_TOKEN: ${{ secrets.CONTENTFUL_SIGNIN_TOKEN }}
+      ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
+      ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
 
   comment:
     name: Post preview URL
     needs: [deploy]
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     env:
       PREVIEW_MARKER: '<!-- preview-deployment -->'
     steps:
       - name: Find existing comment
-        uses: peter-evans/find-comment@v4
+        uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
         id: find-comment
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -66,7 +81,7 @@ jobs:
           body-includes: ${{ env.PREVIEW_MARKER }}
 
       - name: Upsert preview comment
-        uses: peter-evans/create-or-update-comment@v5
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
