@@ -54,7 +54,7 @@ const service: ExternalImageService = {
 		return widths.map((width) => ({
 			transform: { ...options, width },
 			url: buildUrl({ ...options, width }),
-			descriptor: { type: 'w' as const, value: width },
+			descriptor: `${width}w`,
 			attributes: {},
 		}));
 	},
