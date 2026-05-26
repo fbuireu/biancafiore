@@ -15,11 +15,13 @@ export default defineConfig({
     {
       provider: fontProviders.google(),
       name: 'Inter',
+      display: 'swap',
       cssVariable: '--font-sans-serif',
     },
     {
       provider: fontProviders.google(),
       name: 'Playfair Display',
+      display: 'swap',
       cssVariable: '--font-serif',
     },
   ],
@@ -60,7 +62,7 @@ export default defineConfig({
     }),
   ],
   adapter: cloudflare({
-    imageService: 'passthrough',
+    imageService: 'cloudflare',
   }),
   env: {
     schema: {
@@ -115,7 +117,7 @@ export default defineConfig({
         access: 'secret',
         context: 'server',
       }),
-ASTRO_DB_REMOTE_URL: envField.string({
+      ASTRO_DB_REMOTE_URL: envField.string({
         access: 'secret',
         context: 'server',
       }),

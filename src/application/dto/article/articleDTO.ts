@@ -20,7 +20,8 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 
       const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
       const rawDescription = (rawArticle.fields.description as unknown as string) ?? contentHtml;
-      const description = `${rawDescription.replace(HTML_TAG_REGEX, ' ').replace(/\s+/g, ' ').trim().substring(0, 200)}...`;
+      const cleanDescription = rawDescription.replace(HTML_TAG_REGEX, ' ').replace(/\s+/g, ' ').trim();
+      const description = cleanDescription.length > 200 ? `${cleanDescription.substring(0, 200)}...` : cleanDescription;
       const relatedArticles = rawArticle.fields.relatedArticles
         ? createRelatedArticles(rawArticle.fields.relatedArticles)
         : getRelatedArticles({ rawArticle, allRawArticles: raw });
