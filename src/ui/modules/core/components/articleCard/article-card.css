@@ -79,6 +79,7 @@
 }
 
 .article-card__tags__overflow {
+  align-self: center;
   cursor: default;
   font-size: 0.75rem;
   opacity: 0.6;
