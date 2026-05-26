@@ -1,3 +1,11 @@
+## [1.0.7](https://github.com/fbuireu/biancafiore/compare/v1.0.6...v1.0.7) (2026-05-26)
+
+
+### Bug Fixes
+
+* images cdn ([01c31f7](https://github.com/fbuireu/biancafiore/commit/01c31f72ed0eb4d835abc5b3994514122291880c))
+* images cdn ([f48393a](https://github.com/fbuireu/biancafiore/commit/f48393a40e7ebab92d48441037bed3d17c2166a7))
+
 ## [1.0.6](https://github.com/fbuireu/biancafiore/compare/v1.0.5...v1.0.6) (2026-05-26)
 
 
