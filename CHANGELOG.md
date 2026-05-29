@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/fbuireu/biancafiore/compare/v1.3.0...v1.4.0) (2026-05-29)
+
+
+### Features
+
+* add security headers middleware and security.txt ([11efa9c](https://github.com/fbuireu/biancafiore/commit/11efa9ce5e8722da6ec754937938ad6eab742f01))
+
 # [1.3.0](https://github.com/fbuireu/biancafiore/compare/v1.2.5...v1.3.0) (2026-05-29)
 
 
