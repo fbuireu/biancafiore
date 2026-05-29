@@ -45,6 +45,9 @@ importers:
       '@hookform/resolvers':
         specifier: 5.4.0
         version: 5.4.0(react-hook-form@7.76.0(react@19.2.6))
+      '@tgwf/co2':
+        specifier: ^0.18.0
+        version: 0.18.0
       astro:
         specifier: 6.3.7
         version: 6.3.7(@types/node@25.9.1)(jiti@2.6.1)(rollup@4.60.4)(yaml@2.9.0)
@@ -1568,6 +1571,10 @@ packages:
         optional: true
       '@types/react-dom':
         optional: true
+
+  '@tgwf/co2@0.18.0':
+    resolution: {integrity: sha512-YMLTBPJX1WqKcnf4oRnw7laDcAExj2efT+ujglaHCRPG5/66raaIlUav3JgMIN+aDilwyGrmLhUoM2PvWYavFQ==}
+    engines: {node: '>=14.0.0'}
 
   '@turf/boolean-point-in-polygon@7.3.5':
     resolution: {integrity: sha512-ba7+B0wzaS9GtERZOoXUZ6oW8IcIJHNQZf3c+tiD9ESjcsPO1Q/4qIJGTKl92nBLhhracHJxMWBM/U6hAVkaRg==}
@@ -6249,6 +6256,8 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.15
       '@types/react-dom': 19.2.3(@types/react@19.2.15)
+
+  '@tgwf/co2@0.18.0': {}
 
   '@turf/boolean-point-in-polygon@7.3.5':
     dependencies:

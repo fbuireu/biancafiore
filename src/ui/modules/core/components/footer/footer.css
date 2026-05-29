@@ -39,3 +39,8 @@ footer {
 		}
 	}
 }
+
+.cookies_consent_button {
+	align-self: center;
+	line-height: inherit;
+}
