@@ -117,6 +117,8 @@
 	}
 
 	button {
+		-webkit-appearance: none;
+		appearance: none;
 		-webkit-tap-highlight-color: transparent;
 		cursor: pointer;
 	}

@@ -5,6 +5,10 @@
 	max-width: var(--grid-article);
 	padding: 0.875rem 1.25rem;
 	width: calc(100% - 2rem);
+
+	[data-theme="dark"] & {
+		background-color: var(--primary-dark-3);
+	}
 }
 
 .republished-banner__header {
