@@ -1,3 +1,31 @@
+## [1.4.1](https://github.com/fbuireu/biancafiore/compare/v1.4.0...v1.4.1) (2026-05-29)
+
+
+### Bug Fixes
+
+* add header ([59f08a5](https://github.com/fbuireu/biancafiore/commit/59f08a527c3ff1ded501076117bf2c595c8fd940))
+
+# [1.4.0](https://github.com/fbuireu/biancafiore/compare/v1.3.0...v1.4.0) (2026-05-29)
+
+
+### Features
+
+* add security headers middleware and security.txt ([11efa9c](https://github.com/fbuireu/biancafiore/commit/11efa9ce5e8722da6ec754937938ad6eab742f01))
+
+# [1.3.0](https://github.com/fbuireu/biancafiore/compare/v1.2.5...v1.3.0) (2026-05-29)
+
+
+### Features
+
+* add pages sitemap ([b7b4d32](https://github.com/fbuireu/biancafiore/commit/b7b4d32408c26caa912d83cf5cc67d122484b068))
+
+## [1.2.5](https://github.com/fbuireu/biancafiore/compare/v1.2.4...v1.2.5) (2026-05-26)
+
+
+### Bug Fixes
+
+* navigate transition script ([f654ffd](https://github.com/fbuireu/biancafiore/commit/f654ffdffdaee8debb2d3670d716e153c8254a97))
+
 ## [1.2.4](https://github.com/fbuireu/biancafiore/compare/v1.2.3...v1.2.4) (2026-05-26)
 
 

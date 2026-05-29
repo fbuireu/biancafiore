@@ -27,5 +27,23 @@ const currentYear = new Date().getFullYear();
                 Policy</a>
             <CookieConsent client:only="react" />
         </p>
+        <div class="footer__carbon flex justify-center">
+            <div id="wcb" class="carbonbadge"></div>
+            <script src="https://unpkg.com/website-carbon-badges@1/b.min.js" defer></script>
+            <script is:inline>
+              (function () {
+                function syncCarbonTheme() {
+                  var badge = document.getElementById('wcb');
+                  if (!badge) return;
+                  badge.classList.toggle('wcb-d', document.documentElement.getAttribute('data-theme') === 'dark');
+                }
+                syncCarbonTheme();
+                new MutationObserver(syncCarbonTheme).observe(document.documentElement, {
+                  attributes: true,
+                  attributeFilter: ['data-theme'],
+                });
+              })();
+            </script>
+        </div>
     </section>
 </footer>

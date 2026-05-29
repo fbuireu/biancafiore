@@ -57,7 +57,16 @@ export default defineConfig({
     db(),
     mdx(),
     react(),
-    sitemap(),
+    sitemap({
+      filter: (page) => {
+        const SITEMAP_ALLOWED_SEGMENTS = ['articles', 'tags'];
+        const { pathname } = new URL(page);
+        const [, segment, slug] = pathname.split('/');
+
+        return SITEMAP_ALLOWED_SEGMENTS.includes(segment) && Boolean(slug);
+      },
+      customPages: ['https://biancafiore.me/tags'],
+    }),
     partytown({
       config: {
         forward: ['dataLayer.push'],
