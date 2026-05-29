@@ -1,3 +1,10 @@
+## [1.4.5](https://github.com/fbuireu/biancafiore/compare/v1.4.4...v1.4.5) (2026-05-29)
+
+
+### Bug Fixes
+
+* add footer ([8621999](https://github.com/fbuireu/biancafiore/commit/86219993d050fe893176e3bae9c73dc28545b490))
+
 ## [1.4.4](https://github.com/fbuireu/biancafiore/compare/v1.4.3...v1.4.4) (2026-05-29)
 
 
