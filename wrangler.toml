@@ -29,3 +29,7 @@ id = "c9f2626f1a4043c0aea8a75985bdc0a1"
 [[env.production.routes]]
 pattern = "biancafiore.me/*"
 zone_name = "biancafiore.me"
+
+[[env.production.routes]]
+pattern = "contribkit.app"
+custom_domain = true
