@@ -1,3 +1,10 @@
+## [1.4.6](https://github.com/fbuireu/biancafiore/compare/v1.4.5...v1.4.6) (2026-05-29)
+
+
+### Bug Fixes
+
+* theme toggle typo ([396ab07](https://github.com/fbuireu/biancafiore/commit/396ab073538d1869616bbb595aa212f4af5b4a7b))
+
 ## [1.4.5](https://github.com/fbuireu/biancafiore/compare/v1.4.4...v1.4.5) (2026-05-29)
 
 
