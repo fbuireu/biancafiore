@@ -31,5 +31,5 @@ pattern = "biancafiore.me/*"
 zone_name = "biancafiore.me"
 
 [[env.production.routes]]
-pattern = "contribkit.app"
+pattern = "biancafiore.me"
 custom_domain = true
