@@ -22,67 +22,61 @@ const getInitialTheme = (): (typeof ThemeType)[keyof typeof ThemeType] => {
 	return cachedTheme ?? (prefersDarkScheme ? ThemeType.DARK : ThemeType.LIGHT);
 };
 
-export function initializeThemeSetter(): void {
-	const { THEME_INPUT: THEME_INPUT_SELECTOR, TOGGLE: TOGGLE_SELECTOR } = SELECTORS;
-	const THEME_INPUT = document.querySelector<HTMLInputElement>(THEME_INPUT_SELECTOR);
-	const TOGGLE = document.querySelector<HTMLInputElement>(TOGGLE_SELECTOR);
+const applyTheme = ({
+	theme,
+	document,
+}: {
+	theme: (typeof ThemeType)[keyof typeof ThemeType];
+	document: Document;
+}): void => {
+	document.documentElement.setAttribute(`data-${THEME_STORAGE_KEY}`, theme);
+	localStorage.setItem(THEME_STORAGE_KEY, theme);
 
-	const initialTheme = getInitialTheme();
+	const TOGGLE = document.querySelector<HTMLElement>(SELECTORS.TOGGLE);
+	const THEME_INPUT = document.querySelector<HTMLInputElement>(SELECTORS.THEME_INPUT);
 
-	const handleThemeChange = (toggleSwitch: HTMLInputElement): void => {
-		const newTheme = toggleSwitch.checked ? ThemeType.DARK : ThemeType.LIGHT;
+	if (!TOGGLE || !THEME_INPUT) return;
+
+	const isDarkMode = theme === ThemeType.DARK;
+
+	THEME_INPUT.checked = isDarkMode;
+	TOGGLE.classList.toggle("dark", isDarkMode);
+	TOGGLE.classList.toggle("--is-toggled", isDarkMode);
+	TOGGLE.classList.toggle("--is-untoggled", !isDarkMode);
+};
+
+// Global listeners — run once at module load, survive view transitions
+window.addEventListener("storage", ({ key, newValue }) => {
+	if (key === THEME_STORAGE_KEY && newValue) {
+		const newTheme = newValue as (typeof ThemeType)[keyof typeof ThemeType];
+
 		applyTheme({ theme: newTheme, document });
-	};
-
-	const applyTheme = ({
-		theme,
-		document,
-	}: {
-		theme: (typeof ThemeType)[keyof typeof ThemeType];
-		document: Document;
-	}): void => {
-		document.documentElement.setAttribute(`data-${THEME_STORAGE_KEY}`, theme);
-		localStorage.setItem(THEME_STORAGE_KEY, theme);
-
-		if (!TOGGLE || !THEME_INPUT) {
-			return;
-		}
-
-		const isDarkMode = theme === ThemeType.DARK;
-
-		THEME_INPUT.checked = isDarkMode;
-		TOGGLE.classList.toggle("dark", isDarkMode);
-		TOGGLE.classList.toggle("--is-toggled", isDarkMode);
-		TOGGLE.classList.toggle("--is-untoggled", !isDarkMode);
-	};
-
-	applyTheme({ theme: initialTheme, document });
-
-	if (!THEME_INPUT) {
-		return;
 	}
+});
 
-	THEME_INPUT.addEventListener("change", () => handleThemeChange(THEME_INPUT));
+PREFERS_DARK_SCHEME.addEventListener("change", ({ matches }) => {
+	const newTheme = matches ? ThemeType.DARK : ThemeType.LIGHT;
+	const currentTheme = getCurrentTheme();
 
-	window.addEventListener("storage", ({ key, newValue }) => {
-		if (key === THEME_STORAGE_KEY && newValue) {
-			const newTheme = newValue as (typeof ThemeType)[keyof typeof ThemeType];
+	if (newTheme !== currentTheme) applyTheme({ theme: newTheme, document });
+});
 
-			applyTheme({ theme: newTheme, document });
-		}
-	});
+document.addEventListener("astro:before-swap", ({ newDocument }) => {
+	const theme = getCurrentTheme() ?? getInitialTheme();
 
-	PREFERS_DARK_SCHEME.addEventListener("change", ({ matches }) => {
-		const newTheme = matches ? ThemeType.DARK : ThemeType.LIGHT;
-		const currentTheme = getCurrentTheme();
+	applyTheme({ theme, document: newDocument });
+});
 
-		if (newTheme !== currentTheme) applyTheme({ theme: newTheme, document });
-	});
-	document.addEventListener("astro:before-swap", ({ newDocument }) => {
-		const initialTheme = getInitialTheme();
-		const currentTheme = getCurrentTheme();
-		const theme = currentTheme ?? initialTheme;
+export function initializeThemeSetter(): void {
+	applyTheme({ theme: getInitialTheme(), document });
 
-		applyTheme({ theme, document: newDocument });
+	const THEME_INPUT = document.querySelector<HTMLInputElement>(SELECTORS.THEME_INPUT);
+
+	if (!THEME_INPUT) return;
+
+	THEME_INPUT.addEventListener("change", () => {
+		const newTheme = THEME_INPUT.checked ? ThemeType.DARK : ThemeType.LIGHT;
+
+		applyTheme({ theme: newTheme, document });
 	});
 }

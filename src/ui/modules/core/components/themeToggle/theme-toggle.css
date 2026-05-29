@@ -62,7 +62,7 @@
 			transition-duration: calc(var(--theme-toggle-animation-duration) * 0.4);
 		}
 
-		.---is-toggled.theme-toggle & > *:first-child,
+		.--is-toggled.theme-toggle & > *:first-child,
 		.--is-dark.theme-toggle:not(.--is-untoggled) & > *:first-child {
 			rotate: -0.25turn;
 		}
