@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/fbuireu/biancafiore/compare/v1.4.1...v1.4.2) (2026-05-29)
+
+
+### Bug Fixes
+
+* add custom domain wrangler ([5890ddc](https://github.com/fbuireu/biancafiore/commit/5890ddc4f0244b8e6bed4fd517f1e4f0a70a60d9))
+
 ## [1.4.1](https://github.com/fbuireu/biancafiore/compare/v1.4.0...v1.4.1) (2026-05-29)
 
 
