@@ -1,3 +1,10 @@
+## [1.4.9](https://github.com/fbuireu/biancafiore/compare/v1.4.8...v1.4.9) (2026-05-29)
+
+
+### Bug Fixes
+
+* archive notice dark mode ([70daaa2](https://github.com/fbuireu/biancafiore/commit/70daaa217d3d606b5cb1c3d47b46ebe2eff263f2))
+
 ## [1.4.8](https://github.com/fbuireu/biancafiore/compare/v1.4.7...v1.4.8) (2026-05-29)
 
 
