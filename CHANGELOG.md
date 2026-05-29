@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/fbuireu/biancafiore/compare/v1.4.0...v1.4.1) (2026-05-29)
+
+
+### Bug Fixes
+
+* add header ([59f08a5](https://github.com/fbuireu/biancafiore/commit/59f08a527c3ff1ded501076117bf2c595c8fd940))
+
 # [1.4.0](https://github.com/fbuireu/biancafiore/compare/v1.3.0...v1.4.0) (2026-05-29)
 
 
