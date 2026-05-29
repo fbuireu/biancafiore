@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/fbuireu/biancafiore/compare/v1.2.5...v1.3.0) (2026-05-29)
+
+
+### Features
+
+* add pages sitemap ([b7b4d32](https://github.com/fbuireu/biancafiore/commit/b7b4d32408c26caa912d83cf5cc67d122484b068))
+
 ## [1.2.5](https://github.com/fbuireu/biancafiore/compare/v1.2.4...v1.2.5) (2026-05-26)
 
 
