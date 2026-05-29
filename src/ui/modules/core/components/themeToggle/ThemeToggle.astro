@@ -31,8 +31,10 @@ import "./theme-toggle.css";
     </svg>
   </label>
 </div>
-<script is:inline data-astro-rerun type="module">
-  import { initializeThemeSetter } from '/src/ui/modules/core/components/themeToggle/utils/themeSetter';
+<script>
+  import { initializeThemeSetter } from "./utils/themeSetter";
 
-  initializeThemeSetter()
+  document.addEventListener("astro:page-load", () => {
+    initializeThemeSetter();
+  });
 </script>
