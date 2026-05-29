@@ -1,0 +1,4 @@
+Contact: https://biancafiore.me/contact
+Expires: 2027-05-29T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://biancafiore.me/.well-known/security.txt
