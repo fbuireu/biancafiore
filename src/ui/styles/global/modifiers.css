@@ -10,6 +10,10 @@
 		&:active {
 			scale: 0.9;
 		}
+
+		&.--underline-on-hover {
+			transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), scale 0.2s;
+		}
 	}
 
 	.--underline-on-hover {

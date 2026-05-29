@@ -1,0 +1,48 @@
+---
+import "./carbon-badge.css";
+---
+<div class="carbon-badge font-sans-serif" id="carbon-badge" aria-live="polite"></div>
+<script>
+  import { co2 } from "@tgwf/co2";
+
+  async function renderCarbonBadge() {
+    const badge = document.getElementById("carbon-badge");
+    if (!badge) return;
+
+    const resources = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
+    const [navigation] = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
+
+    let totalBytes = navigation?.transferSize ?? 0;
+    for (const r of resources) totalBytes += r.transferSize ?? 0;
+
+    if (totalBytes === 0) return;
+
+    let isGreen = false;
+    try {
+      const res = await fetch(
+        `https://api.thegreenwebfoundation.org/api/v3/greencheck/${window.location.hostname}`,
+      );
+      const data = await res.json();
+      isGreen = data.green === true;
+    } catch {
+      // silently fail — assume non-green
+    }
+
+    const calculator = new co2({ model: "swd" });
+    const grams = (calculator.perVisit(totalBytes, isGreen) as number).toFixed(2);
+
+    badge.innerHTML = `
+      <a
+        href="https://www.thegreenwebfoundation.org/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="carbon-badge__link --underline-on-hover"
+        title="Check this site's carbon footprint"
+      >
+        ${isGreen ? "♻️ " : ""}${grams}g CO₂/visit · Powered by Green Web Foundation
+      </a>
+    `;
+  }
+
+  document.addEventListener("astro:page-load", renderCarbonBadge);
+</script>
