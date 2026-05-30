@@ -30,8 +30,6 @@ jobs:
   typecheck:
     name: Typecheck
     runs-on: ubuntu-latest
-    env:
-      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -76,8 +74,6 @@ jobs:
     concurrency:
       group: release
       cancel-in-progress: false
-    env:
-      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
