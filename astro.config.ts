@@ -1,7 +1,6 @@
 import cloudflare from '@astrojs/cloudflare';
 import db from '@astrojs/db';
 import mdx from '@astrojs/mdx';
-import partytown from '@astrojs/partytown';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, envField, fontProviders } from 'astro/config';
@@ -66,11 +65,6 @@ export default defineConfig({
         return SITEMAP_ALLOWED_SEGMENTS.includes(segment) && Boolean(slug);
       },
       customPages: ['https://biancafiore.me/tags'],
-    }),
-    partytown({
-      config: {
-        forward: ['dataLayer.push'],
-      },
     }),
   ],
   adapter: cloudflare(),

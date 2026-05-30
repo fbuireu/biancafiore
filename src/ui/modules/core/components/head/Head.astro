@@ -13,50 +13,29 @@ const props = Astro.props as HeadProps;
 <head>
     <meta charset="utf-8" />
     <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <script is:inline async src=`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`></script>
+    <script is:inline async src=`https://www.googletagmanager.com/gtm.js?id=${GOOGLE_TAG_MANAGER_ID}`></script>
     <script is:inline define:vars={{ GOOGLE_ANALYTICS_ID }}>
       window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
 
-      function gtag() { dataLayer.push(arguments); }
-
-      const getCookieValue = (name) => {
-        const COOKIE_PATTERN_REGEX = `(^| )${name}=([^;]+)`;
-
-        const match = document.cookie.match(new RegExp(COOKIE_PATTERN_REGEX));
-        return match ? decodeURIComponent(match[2]) : null;
-      };
-
-      const getConsentStatusFromCookie = (cookieName) => {
-        let consentStatus = 'denied';
-
+      const analyticsConsentStatus = (() => {
         try {
-          const cookieValue = getCookieValue(cookieName);
-          if (cookieValue) {
-            const cookieData = JSON.parse(cookieValue);
-            if (Array.isArray(cookieData.categories) && cookieData.categories.includes('analytics')) {
-              consentStatus = 'granted';
-            }
+          const match = document.cookie.match(/(^| )cc_cookie=([^;]+)/);
+          if (match) {
+            const data = JSON.parse(decodeURIComponent(match[2]));
+            if (Array.isArray(data.categories) && data.categories.includes('analytics')) return 'granted';
           }
-        } catch (error) {
-          console.warn('Failed to parse cookie data', error);
-        }
+        } catch {}
+        return 'denied';
+      })();
 
-        return consentStatus;
-      };
-
-      const analyticsConsentStatus = getConsentStatusFromCookie('cc_cookie');
-
-      gtag('consent', 'default', {
-        'analytics_storage': analyticsConsentStatus,
-      });
+      gtag('consent', 'default', { analytics_storage: analyticsConsentStatus });
       gtag('js', new Date());
       gtag('config', GOOGLE_ANALYTICS_ID);
     </script>
     <Font cssVariable="--font-sans-serif" preload />
     <Font cssVariable="--font-serif" preload />
-    <script is:inline type="text/partytown" async
-            src=`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}` />
-    <script is:inline type="text/partytown" async
-            src=`https://www.googletagmanager.com/gtm.js?id=${GOOGLE_TAG_MANAGER_ID}` />
     <ClientRouter />
     <Seo {...props} />
     <slot name="head" />
