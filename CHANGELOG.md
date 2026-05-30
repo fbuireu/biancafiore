@@ -1,3 +1,10 @@
+## [1.4.11](https://github.com/fbuireu/biancafiore/compare/v1.4.10...v1.4.11) (2026-05-30)
+
+
+### Bug Fixes
+
+* test ga ([0e168e6](https://github.com/fbuireu/biancafiore/commit/0e168e65f55b84ff178f87fe19ca2c559bca5321))
+
 ## [1.4.10](https://github.com/fbuireu/biancafiore/compare/v1.4.9...v1.4.10) (2026-05-30)
 
 
