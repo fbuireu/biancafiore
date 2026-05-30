@@ -3,11 +3,11 @@ import { z } from "astro/zod";
 import { authorDTO } from "@application/dto/author";
 import type { RawAuthor } from "@application/dto/author/types";
 import { authorSchema } from "@application/entities/authors/schema";
-import { createContentfulClient } from "@infrastructure/cms/client";
+import { createContentfulClient, isContentfulConfigured } from "@infrastructure/cms/client";
 
 export const authors = defineCollection({
 	loader: async () => {
-		if (!process.env.CONTENTFUL_SPACE_ID) return [];
+		if (!isContentfulConfigured()) return [];
 		const client = await createContentfulClient();
 		const { items: rawAuthors } = await client.getEntries<RawAuthor>({
 			content_type: "author",
