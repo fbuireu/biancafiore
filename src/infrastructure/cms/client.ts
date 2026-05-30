@@ -1,7 +1,11 @@
 import * as contentful from "contentful";
+import { getSecret } from "astro:env/server";
+
+export function isContentfulConfigured(): boolean {
+	return Boolean(getSecret("CONTENTFUL_SPACE_ID"));
+}
 
 export async function createContentfulClient() {
-	const { getSecret } = await import("astro:env/server");
 	return contentful.createClient({
 		space: getSecret("CONTENTFUL_SPACE_ID") as string,
 		accessToken: import.meta.env.DEV

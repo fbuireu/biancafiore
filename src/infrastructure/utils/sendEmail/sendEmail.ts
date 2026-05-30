@@ -13,7 +13,7 @@ export async function sendEmail(params: SendEmailParams): Promise<CreateEmailRes
 	try {
 		const email = createEmail({ ...params });
 
-		const emails = await getEmails();
+		const emails = getEmails();
 		const { data, error } = await emails.send({
 			from: `${params.name} <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`,
 			to: atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA),

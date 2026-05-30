@@ -4,11 +4,11 @@ import { tagDTO } from "@application/dto/tag";
 import type { RawTag } from "@application/dto/tag/types";
 import { TagType } from "@application/dto/tag/types";
 import { tagSchema } from "@application/entities/tags/schema";
-import { createContentfulClient } from "@infrastructure/cms/client";
+import { createContentfulClient, isContentfulConfigured } from "@infrastructure/cms/client";
 
 export const tags = defineCollection({
 	loader: async () => {
-		if (!process.env.CONTENTFUL_SPACE_ID) return [];
+		if (!isContentfulConfigured()) return [];
 		const client = await createContentfulClient();
 		const [{ items: rawTags }, { items: rawArticles }, { items: rawAuthors }] = await Promise.all([
 			client.getEntries<RawTag>({ content_type: "tag", limit: 1000 }),
