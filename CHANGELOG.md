@@ -1,3 +1,12 @@
+## [1.4.10](https://github.com/fbuireu/biancafiore/compare/v1.4.9...v1.4.10) (2026-05-30)
+
+
+### Bug Fixes
+
+* cookie management ([07a4acb](https://github.com/fbuireu/biancafiore/commit/07a4acb5e0bf31ddb7ab5539aff21ef15f9a37b7))
+* cookie management ([b10a0b0](https://github.com/fbuireu/biancafiore/commit/b10a0b0f61bdf2a400f937264b766c27443f572b))
+* local dev ([6aa3ce5](https://github.com/fbuireu/biancafiore/commit/6aa3ce50941b73a451ade991c408b34cb3988f58))
+
 ## [1.4.9](https://github.com/fbuireu/biancafiore/compare/v1.4.8...v1.4.9) (2026-05-29)
 
 
