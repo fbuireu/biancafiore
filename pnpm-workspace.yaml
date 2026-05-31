@@ -1,9 +1,5 @@
 packages:
   - ./
-overrides:
-  chokidar: ">=5.0.0"
-  semver: ">=7.0.0"
-  tinyexec: "1.1.2"
 allowBuilds:
   "@astrojs/compiler-rs": true
   "@biomejs/biome": true
@@ -11,5 +7,4 @@ allowBuilds:
   sharp: true
   workerd: true
 minimumReleaseAge: 4320 # 3 days
-trustPolicy: "no-downgrade"
 blockExoticSubdeps: true
