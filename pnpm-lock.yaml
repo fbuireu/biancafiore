@@ -39,7 +39,7 @@ importers:
         specifier: 5.4.0
         version: 5.4.0(react-hook-form@7.76.1(react@19.2.6))
       '@tgwf/co2':
-        specifier: ^0.18.0
+        specifier: 0.18.0
         version: 0.18.0
       astro:
         specifier: 6.4.2
@@ -239,7 +239,7 @@ packages:
     resolution: {integrity: sha512-eouss7G8ygdZqHuke033VMcVw5HTZUu+PXd/h06DGDUg/jt5btPYPqh66ENWw/mU78rBrf/oeC4oqoBwMtDMNA==}
 
   '@astrojs/db@https://pkg.pr.new/@astrojs/db@3ade645':
-    resolution: {tarball: https://pkg.pr.new/@astrojs/db@3ade645}
+    resolution: {integrity: sha512-qSKDbe2T3J93CpaKBpY2zjGgZkhBeVrbEApyKXvgp/pS49TjocWpA+V0ImGYZ3uLQzSGnYGsQrrhjwydw2YszQ==, tarball: https://pkg.pr.new/@astrojs/db@3ade645}
     version: 0.21.1
 
   '@astrojs/internal-helpers@0.10.0':
