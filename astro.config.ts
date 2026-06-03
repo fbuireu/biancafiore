@@ -1,6 +1,5 @@
 import cloudflare from '@astrojs/cloudflare';
 import db from '@astrojs/db';
-import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, envField, fontProviders } from 'astro/config';
@@ -54,7 +53,6 @@ export default defineConfig({
   },
   integrations: [
     db(),
-    mdx(),
     react(),
     sitemap({
       filter: (page) => {
