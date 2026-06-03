@@ -18,7 +18,7 @@
   "author": "Ferran Buireu <fbuireu@gmail.com>",
   "version": "1.4.11",
   "type": "module",
-  "packageManager": "pnpm@11.4.0",
+  "packageManager": "pnpm@11.5.0",
   "engines": {
     "node": "26.2.0"
   },
@@ -27,6 +27,7 @@
     "dev": "astro dev --open --remote",
     "build": "astro build --remote",
     "deploy": "wrangler deploy --env production",
+    "wrangler:dev": "pnpm build && wrangler dev",
     "preview": "astro preview",
     "sync": "astro sync",
     "check": "astro check",
@@ -49,7 +50,6 @@
     "@astrojs/cloudflare": "13.6.0",
     "@astrojs/compiler-rs": "0.2.1",
     "@astrojs/db": "https://pkg.pr.new/@astrojs/db@3ade645",
-    "@astrojs/mdx": "5.0.6",
     "@astrojs/react": "5.0.6",
     "@astrojs/rss": "4.0.18",
     "@astrojs/sitemap": "3.7.3",
@@ -65,7 +65,7 @@
     "react-dom": "19.2.6",
     "react-globe.gl": "2.38.0",
     "react-google-recaptcha-v3": "1.11.0",
-    "react-hook-form": "7.76.1",
+    "react-hook-form": "7.77.0",
     "resend": "6.12.4",
     "three": "0.184.0",
     "vanilla-cookieconsent": "3.1.0"
@@ -87,7 +87,7 @@
     "@types/react-dom": "19.2.3",
     "@types/three": "0.184.1",
     "husky": "9.1.7",
-    "lint-staged": "17.0.5",
+    "lint-staged": "17.0.7",
     "semantic-release": "25.0.3",
     "typescript": "6.0.3",
     "vitest": "4.1.7",
