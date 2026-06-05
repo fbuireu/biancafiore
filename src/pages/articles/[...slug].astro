@@ -75,9 +75,11 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
           </section>
       )
   }
-    {!HIDE_CHROME && <Breadcrumbs />}
     <ReadingProgress />
-    <ArticleDetails article={article} />
+    <div class:list={["article-masthead", { "--has-featured": !!article.data.featuredImage }]}>
+      {!HIDE_CHROME && <Breadcrumbs />}
+      <ArticleDetails article={article} />
+    </div>
     {article.data.isRepublished && (
       <RepublishedBanner originalSource={article.data.originalSource} />
     )}
