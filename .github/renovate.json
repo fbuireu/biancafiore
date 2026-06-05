@@ -18,7 +18,6 @@
   "rangeStrategy": "pin",
   "pinDigests": true,
   "automergeStrategy": "squash",
-  "commitMessagePrefix": "chore(deps):",
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
