@@ -159,6 +159,7 @@
 	h4,
 	h5,
 	h6 {
+		font-family: var(--font-display);
 		line-height: 2lh;
 		text-box: trim-both cap alphabetic;
 	}

@@ -68,8 +68,13 @@
 /* biome-ignore lint/style/noDescendingSpecificity: base styles follow interaction overrides by design */
 .article-card__tag__item {
   --translate: 0 500px;
+  font-size: 0.6875rem;
   opacity: 0;
   translate: var(--translate);
+
+  a {
+    display: inline-block;
+  }
 
   @media (width <= 720px) {
     --translate: 0 0;
@@ -81,7 +86,7 @@
 .article-card__tags__overflow {
   align-self: center;
   cursor: default;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   opacity: 0.6;
 }
 

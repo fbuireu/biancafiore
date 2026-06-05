@@ -12,15 +12,28 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.google(),
-      name: 'Inter',
+      name: 'Newsreader',
       display: 'swap',
-      cssVariable: '--font-sans-serif',
+      cssVariable: '--font-serif',
+      weights: [300, 400, 500, 600],
+      styles: ['normal', 'italic'],
     },
     {
       provider: fontProviders.google(),
-      name: 'Playfair Display',
+      name: 'Libre Caslon Display',
       display: 'swap',
-      cssVariable: '--font-serif',
+      cssVariable: '--font-display',
+      weights: [400],
+      styles: ['normal'],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'Arimo',
+      display: 'swap',
+      cssVariable: '--font-sans-serif',
+      weights: [400, 500, 600, 700],
+      styles: ['normal'],
+      fallbacks: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
     },
   ],
   image: {
