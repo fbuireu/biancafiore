@@ -33,7 +33,14 @@ jobs:
       - name: Typecheck
         run: pnpm lint:ts:typecheck
       - name: Unit tests
-        run: pnpm test:ut
+        run: pnpm test:ut --coverage
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
 
   deploy-production:
     name: Deploy to production
