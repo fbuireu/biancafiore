@@ -41,6 +41,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: deploy-${{ inputs.wrangler_env }}-${{ inputs.worker_name }}
+  cancel-in-progress: false
+
 jobs:
   deploy:
     name: Deploy to ${{ inputs.environment }}
