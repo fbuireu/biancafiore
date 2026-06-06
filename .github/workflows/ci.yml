@@ -3,6 +3,8 @@ name: CI
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -10,11 +12,11 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  lint:
-    name: Lint
+  check:
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,10 +28,32 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Lint
         run: pnpm lint:all
+      - name: Unit tests
+        run: pnpm test:ut
 
-  typecheck:
-    name: Typecheck
+  build:
+    name: Build
+    needs: [check]
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_ENV: production
+      SITE_URL: ${{ vars.SITE_URL }}
+      BIANCA_EMAIL: ${{ vars.BIANCA_EMAIL }}
+      TWITTER_HANDLE: ${{ vars.TWITTER_HANDLE }}
+      GOOGLE_ANALYTICS_ID: ${{ vars.GOOGLE_ANALYTICS_ID }}
+      GOOGLE_TAG_MANAGER_ID: ${{ vars.GOOGLE_TAG_MANAGER_ID }}
+      GOOGLE_RECAPTCHA_SITE_KEY: ${{ vars.GOOGLE_RECAPTCHA_SITE_KEY }}
+      GOOGLE_RECAPTCHA_SECRET_KEY: ${{ secrets.GOOGLE_RECAPTCHA_SECRET_KEY }}
+      HIDE_CHROME: ${{ vars.HIDE_CHROME || 'false' }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+      CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
+      CONTENTFUL_PREVIEW_TOKEN: ${{ secrets.CONTENTFUL_PREVIEW_TOKEN }}
+      CONTENTFUL_SIGNIN_TOKEN: ${{ secrets.CONTENTFUL_SIGNIN_TOKEN }}
+      ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
+      ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -42,24 +66,13 @@ jobs:
         run: pnpm run sync
       - name: Typecheck
         run: pnpm lint:ts:typecheck
+      - name: Build
+        run: pnpm build
 
-  unit-tests:
-    name: Unit tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/prepare-env
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Execute unit tests
-        run: pnpm test:ut
-
-  deploy:
+  deploy-production:
     name: Deploy to production
-    needs: [lint, typecheck, unit-tests]
+    needs: [check, build]
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' }}
     uses: ./.github/workflows/_deploy.yml
     with:
       environment: production
@@ -79,7 +92,8 @@ jobs:
 
   release:
     name: Semantic Release
-    needs: [lint, typecheck, unit-tests]
+    needs: [check, build]
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -118,3 +132,90 @@ jobs:
           git tag -fa $MAJOR_VERSION -m "Update $MAJOR_VERSION to $LATEST_TAG"
 
           git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git $MAJOR_VERSION --force
+
+  deploy-development:
+    name: Deploy to development
+    needs: [check, build]
+    if: ${{ github.event_name == 'pull_request' }}
+    uses: ./.github/workflows/_deploy.yml
+    with:
+      environment: development
+      wrangler_env: development
+      worker_name: pr-${{ github.event.pull_request.number }}-biancafiore-development
+      url: https://pr-${{ github.event.pull_request.number }}-biancafiore-development.fbuireu.workers.dev
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      GOOGLE_RECAPTCHA_SECRET_KEY: ${{ secrets.GOOGLE_RECAPTCHA_SECRET_KEY }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+      CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
+      CONTENTFUL_PREVIEW_TOKEN: ${{ secrets.CONTENTFUL_PREVIEW_TOKEN }}
+      CONTENTFUL_SIGNIN_TOKEN: ${{ secrets.CONTENTFUL_SIGNIN_TOKEN }}
+      ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
+      ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
+
+  comment:
+    name: Post preview URL
+    needs: [deploy-development]
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    env:
+      PREVIEW_MARKER: '<!-- preview-deployment -->'
+    steps:
+      - name: Find existing comment
+        uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: github-actions[bot]
+          body-includes: ${{ env.PREVIEW_MARKER }}
+
+      - name: Upsert preview comment
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body: |
+            ${{ env.PREVIEW_MARKER }}
+            ### Preview deployment
+
+            | | |
+            |---|---|
+            | **URL** | https://pr-${{ github.event.pull_request.number }}-biancafiore-development.fbuireu.workers.dev |
+            | **Branch** | `${{ github.head_ref }}` |
+            | **Commit** | `${{ github.event.pull_request.head.sha }}` |
+
+  e2e:
+    name: E2E (preview)
+    needs: [deploy-development]
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    env:
+      CI: true
+      E2E_URL: https://pr-${{ github.event.pull_request.number }}-biancafiore-development.fbuireu.workers.dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare-env
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Playwright Browsers
+        run: pnpm playwright install --with-deps
+      - name: Run E2E Tests
+        run: pnpm test:e2e
+      - name: Upload Artifact
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
