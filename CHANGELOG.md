@@ -1,3 +1,11 @@
+## [1.5.4](https://github.com/fbuireu/biancafiore/compare/v1.5.3...v1.5.4) (2026-06-06)
+
+
+### Bug Fixes
+
+* ci yasml ([a1f3c9a](https://github.com/fbuireu/biancafiore/commit/a1f3c9a976483de73ad62507453d024ce30cf522))
+* ci yasml ([25add2b](https://github.com/fbuireu/biancafiore/commit/25add2b359dc616192df0c1b49003dd798c48de9))
+
 ## [1.5.3](https://github.com/fbuireu/biancafiore/compare/v1.5.2...v1.5.3) (2026-06-06)
 
 
