@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/fbuireu/biancafiore/compare/v1.5.0...v1.5.1) (2026-06-06)
+
+
+### Bug Fixes
+
+* ci dependency ([731fc96](https://github.com/fbuireu/biancafiore/commit/731fc966ed287ef048d854a8a3caea2ffbf747a2))
+
 # [1.5.0](https://github.com/fbuireu/biancafiore/compare/v1.4.11...v1.5.0) (2026-06-06)
 
 
