@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/fbuireu/biancafiore/compare/v1.5.2...v1.5.3) (2026-06-06)
+
+
+### Bug Fixes
+
+* view transition masthead ([608a350](https://github.com/fbuireu/biancafiore/commit/608a3507102e578a07cc4e586e21e527ef9eca95))
+
 ## [1.5.2](https://github.com/fbuireu/biancafiore/compare/v1.5.1...v1.5.2) (2026-06-06)
 
 
