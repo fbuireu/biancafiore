@@ -1,3 +1,10 @@
+## [1.5.6](https://github.com/fbuireu/biancafiore/compare/v1.5.5...v1.5.6) (2026-06-06)
+
+
+### Bug Fixes
+
+* ci codecov upload ([74937d5](https://github.com/fbuireu/biancafiore/commit/74937d5a4e6ecca931844a2665c7d75e13a11faa))
+
 ## [1.5.5](https://github.com/fbuireu/biancafiore/compare/v1.5.4...v1.5.5) (2026-06-06)
 
 
