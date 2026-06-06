@@ -51,6 +51,7 @@
   color: currentColor;
   gap: 0 1rem;
   grid-area: Article-Card-Tags;
+  line-height: 1.4;
   position: relative;
   text-transform: lowercase;
   z-index: 10;
@@ -73,6 +74,7 @@
   translate: var(--translate);
 
   a {
+    color: var(--primary-main);
     display: inline-block;
   }
 

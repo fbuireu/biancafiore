@@ -43,9 +43,23 @@ jobs:
       - name: Typecheck
         run: pnpm lint:ts:typecheck
 
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare-env
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Execute unit tests
+        run: pnpm test:ut
+
   deploy:
     name: Deploy to production
-    needs: [lint, typecheck]
+    needs: [lint, typecheck, unit-tests]
     uses: ./.github/workflows/_deploy.yml
     with:
       environment: production
@@ -65,7 +79,7 @@ jobs:
 
   release:
     name: Semantic Release
-    needs: [lint, typecheck]
+    needs: [lint, typecheck, unit-tests]
     runs-on: ubuntu-latest
     permissions:
       contents: write
