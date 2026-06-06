@@ -28,50 +28,16 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Lint
         run: pnpm lint:all
-      - name: Unit tests
-        run: pnpm test:ut
-
-  build:
-    name: Build
-    needs: [check]
-    runs-on: ubuntu-latest
-    env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      CLOUDFLARE_ENV: production
-      SITE_URL: ${{ vars.SITE_URL }}
-      BIANCA_EMAIL: ${{ vars.BIANCA_EMAIL }}
-      TWITTER_HANDLE: ${{ vars.TWITTER_HANDLE }}
-      GOOGLE_ANALYTICS_ID: ${{ vars.GOOGLE_ANALYTICS_ID }}
-      GOOGLE_TAG_MANAGER_ID: ${{ vars.GOOGLE_TAG_MANAGER_ID }}
-      GOOGLE_RECAPTCHA_SITE_KEY: ${{ vars.GOOGLE_RECAPTCHA_SITE_KEY }}
-      GOOGLE_RECAPTCHA_SECRET_KEY: ${{ secrets.GOOGLE_RECAPTCHA_SECRET_KEY }}
-      HIDE_CHROME: ${{ vars.HIDE_CHROME || 'false' }}
-      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-      CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
-      CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
-      CONTENTFUL_PREVIEW_TOKEN: ${{ secrets.CONTENTFUL_PREVIEW_TOKEN }}
-      CONTENTFUL_SIGNIN_TOKEN: ${{ secrets.CONTENTFUL_SIGNIN_TOKEN }}
-      ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
-      ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/prepare-env
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
       - name: Generate types
         run: pnpm run sync
       - name: Typecheck
         run: pnpm lint:ts:typecheck
-      - name: Build
-        run: pnpm build
+      - name: Unit tests
+        run: pnpm test:ut
 
   deploy-production:
     name: Deploy to production
-    needs: [check, build]
+    needs: [check]
     if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' }}
     uses: ./.github/workflows/_deploy.yml
     with:
@@ -92,7 +58,7 @@ jobs:
 
   release:
     name: Semantic Release
-    needs: [check, build]
+    needs: [check, deploy-production]
     if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
@@ -135,7 +101,7 @@ jobs:
 
   deploy-development:
     name: Deploy to development
-    needs: [check, build]
+    needs: [check]
     if: ${{ github.event_name == 'pull_request' }}
     uses: ./.github/workflows/_deploy.yml
     with:
