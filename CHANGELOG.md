@@ -1,3 +1,10 @@
+## [1.5.5](https://github.com/fbuireu/biancafiore/compare/v1.5.4...v1.5.5) (2026-06-06)
+
+
+### Bug Fixes
+
+* ci semver only main ([ae2ae20](https://github.com/fbuireu/biancafiore/commit/ae2ae200438308a64c3878dbe8245c9d30a430cd))
+
 ## [1.5.4](https://github.com/fbuireu/biancafiore/compare/v1.5.3...v1.5.4) (2026-06-06)
 
 
