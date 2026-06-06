@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/fbuireu/biancafiore/compare/v1.4.11...v1.5.0) (2026-06-06)
+
+
+### Features
+
+* add anchor slider ([441e475](https://github.com/fbuireu/biancafiore/commit/441e4754eeafd74fcf1efe4ec8b36bb527266b63))
+
 ## [1.4.11](https://github.com/fbuireu/biancafiore/compare/v1.4.10...v1.4.11) (2026-05-30)
 
 
