@@ -1,9 +1,9 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-type ErrorLayerProps = HTMLAttributes<"section">;
+type Props = HTMLAttributes<"section">;
 
-const { class: classNames, ...props } = Astro.props as ErrorLayerProps;
+const { class: classNames, ...props } = Astro.props;
 ---
 <section class:list={['error-layer-wrapper common-wrapper flex column-nowrap justify-center align-center', classNames]}
          {...props}>

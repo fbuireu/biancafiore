@@ -2,11 +2,11 @@
 import type { CollectionEntry } from "astro:content";
 import "./table-of-contents.css";
 
-interface TableOfContentsProps {
+interface Props {
 	tableOfContents: CollectionEntry<"articles">["data"]["tableOfContents"];
 }
 
-const { tableOfContents } = Astro.props as TableOfContentsProps;
+const { tableOfContents } = Astro.props;
 ---
 <aside class="article__table-of-contents-wrapper" role="complementary">
     <nav class="article__table-of-contents__nav">
@@ -24,9 +24,3 @@ const { tableOfContents } = Astro.props as TableOfContentsProps;
         </details>
     </nav>
 </aside>
-
-<script>
-  import { observeOpacity } from '../../utils/observeOpacity';
-
-  observeOpacity();
-</script>

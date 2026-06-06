@@ -4,18 +4,18 @@ import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro"
 import SliderShell from "@modules/core/components/sliderShell/SliderShell.astro";
 import "./related-articles-slider.css";
 
-interface RelatedArticlesSliderProps {
+interface Props {
 	articles: CollectionEntry<"articles">[];
 	showTrack?: boolean;
 }
 
-const { articles, ...rest } = Astro.props as RelatedArticlesSliderProps;
+const { articles, ...rest } = Astro.props;
 ---
 
 <SliderShell class="related-articles__slider common-wrapper" {...rest}>
 	{
 		articles.map((article) => (
-			<li class="slider__slide item-wrapper --is-clickable">
+			<li class="slider__slide item-wrapper card-spotlight__item">
 				<ArticleCard {...article} />
 			</li>
 		))

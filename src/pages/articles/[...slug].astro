@@ -15,7 +15,7 @@ import { SITE_URL } from "astro:env/client";
 import { HIDE_CHROME } from "astro:env/client";
 import "./_article.css";
 
-type ArticleProps = InferGetStaticPropsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 export const prerender = true;
 
@@ -34,7 +34,7 @@ export async function getStaticPaths() {
 	});
 }
 
-const { article } = Astro.props as ArticleProps;
+const { article } = Astro.props;
 const metadata: Partial<SeoMetadata> = {
 	title: article.data.title,
 	description: article.data.description,
@@ -85,7 +85,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
     )}
     <article class="article-wrapper" set:html={article.data.content} style={`--scopes: ${scopes}`}>
       {
-          !HIDE_CHROME && article.data.tableOfContents.length > 0 &&
+          !HIDE_CHROME && article.data.tableOfContents.length > 1 &&
           <TableOfContents tableOfContents={article.data.tableOfContents} />
       }
     </article>

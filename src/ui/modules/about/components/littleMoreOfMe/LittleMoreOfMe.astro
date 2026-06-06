@@ -4,11 +4,11 @@ import { Cities } from "@modules/about/components/cities";
 import WorldGlobe from "@modules/about/components/worldGlobe/WorldGlobe";
 import "./little-more-of-me.css";
 
-interface LittleMoreOfMeProps {
+interface Props {
 	cities: CollectionEntry<"cities">[];
 }
 
-const { cities } = Astro.props as LittleMoreOfMeProps;
+const { cities } = Astro.props;
 ---
 
 <section class="little-more-of-me-wrapper common-wrapper">

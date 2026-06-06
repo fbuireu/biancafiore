@@ -1,10 +1,10 @@
 ---
-interface SliderShellProps {
+interface Props {
 	class?: string;
 	showTrack?: boolean;
 }
 
-const { class: className, showTrack = true } = Astro.props as SliderShellProps;
+const { class: className, showTrack = true } = Astro.props;
 ---
 
 <div class={`slider__wrapper ${className ?? ''}`.trim()} data-has-buttons={showTrack}>

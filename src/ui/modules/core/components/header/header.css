@@ -6,7 +6,7 @@
 	margin-inline: auto;
 	position: sticky;
 	top: 0;
-	width: 100vw;
+	width: 100%;
 	z-index: 1000;
 
 	&::after {
@@ -16,7 +16,7 @@
 	.header-wrapper {
 		height: 100%;
 		position: relative;
-		width: 100vw;
+		width: 100%;
 	}
 
 	.header__backdrop {

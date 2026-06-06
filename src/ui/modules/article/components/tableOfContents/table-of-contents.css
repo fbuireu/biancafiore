@@ -2,6 +2,7 @@
 	animation: fade-in linear forwards;
 	animation-range: var(--animation-range);
 	animation-timeline: view();
+	view-timeline-name: --toc;
 	background-color: var(--white);
 	border-left: 4px solid var(--primary-dark-1);
 	left: 50vw;
@@ -12,10 +13,6 @@
 	position: absolute;
 	--animation-range: entry 70cqh;
 	width: max-content;
-
-	&.--is-visible .article__table-of-contents__item {
-		translate: 0 0;
-	}
 
 	@container article-page (width <= 960px) {
 		left: auto;
@@ -29,6 +26,7 @@
 .article__table-of-contents-wrapper {
 	--top: calc(var(--header-height) + 2rem);
 	position: sticky;
+	timeline-scope: --toc;
 	top: var(--top);
 
 	@container article-page (width <= 960px) {
@@ -84,18 +82,27 @@
 	}
 }
 
-/* biome-ignore lint/style/noDescendingSpecificity: base item styles intentionally follow the nav visibility override */
 .article__table-of-contents__item {
 	margin-inline-start: calc(0.75rem * (var(--level, 2) - 2));
 	max-width: 100%;
 	overflow: hidden;
 	position: relative;
-	transition: translate calc(0.25s * var(--level, 1));
-	translate: 100px 0;
+	animation: toc-slide-in linear both;
+	animation-timeline: --toc;
+	animation-range: var(--animation-range);
 
 	@container article-page (width <= 960px) {
-		transition: none;
-		translate: 0;
+		animation: none;
+	}
+}
+
+@keyframes toc-slide-in {
+	from {
+		translate: 100px 0;
+	}
+
+	to {
+		translate: 0 0;
 	}
 }
 

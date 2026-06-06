@@ -1,11 +1,11 @@
 ---
 import "./republished-banner.css";
 
-interface RepublishedBannerProps {
+interface Props {
 	originalSource?: string;
 }
 
-const { originalSource } = Astro.props as RepublishedBannerProps;
+const { originalSource } = Astro.props;
 ---
 <aside class="republished-banner font-sans-serif" role="note" aria-label="Archival notice">
   <div class="republished-banner__header">

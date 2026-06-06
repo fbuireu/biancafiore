@@ -5,11 +5,11 @@ import { PAGES_ROUTES } from "@const/index";
 import LinkWithArrow from "@modules/core/components/linkWithArrow/LinkWithArrow.astro";
 import "./featured-article.css";
 
-interface FeaturedArticleProps {
+interface Props {
 	featuredArticle: CollectionEntry<"articles">;
 }
 
-const { featuredArticle } = Astro.props as FeaturedArticleProps;
+const { featuredArticle } = Astro.props;
 const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`, Astro.url).href;
 ---
 <div class="articles-wrapper">
