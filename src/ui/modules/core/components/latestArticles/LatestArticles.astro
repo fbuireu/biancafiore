@@ -4,13 +4,13 @@ import { PAGES_ROUTES } from "@const/index";
 import LatestArticlesSlider from "./atoms/latestArticlesSlider/LatestArticlesSlider.astro";
 import "./latest-articles.css";
 
-interface LatestArticlesProps {
+interface Props {
 	limit?: number;
 }
 
 const MAX_LATEST_ARTICLES = 4;
 
-const { limit = MAX_LATEST_ARTICLES } = Astro.props as LatestArticlesProps;
+const { limit = MAX_LATEST_ARTICLES } = Astro.props;
 
 const articles = (await getCollection("articles")).slice(0, limit);
 ---

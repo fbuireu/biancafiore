@@ -140,11 +140,7 @@
 	}
 
 	textarea {
-		/* biome-ignore lint/correctness/noUnknownProperty: form-sizing is a new CSS property not yet in Biome's known list */
-		@supports (form-sizing: content) {
-			/* biome-ignore lint/correctness/noUnknownProperty: form-sizing is a new CSS property not yet in Biome's known list */
-			form-sizing: content;
-		}
+		field-sizing: content;
 	}
 
 	a:focus-visible {

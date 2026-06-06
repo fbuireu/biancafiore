@@ -6,9 +6,9 @@ import { articleVariantToClass } from "@modules/core/utils/articleVariantToClass
 import clsx from "clsx";
 import "./article-card.css";
 
-type ArticleCardProps = CollectionEntry<"articles">;
+type Props = CollectionEntry<"articles">;
 
-const article = Astro.props as ArticleCardProps;
+const article = Astro.props;
 
 const MAX_TAGS = 4;
 const visibleTags = article.data.tags?.slice(0, MAX_TAGS) ?? [];

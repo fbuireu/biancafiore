@@ -3,11 +3,11 @@ import type { CollectionEntry } from "astro:content";
 import { PAGES_ROUTES } from "@const/const";
 import "./article-details.css";
 
-interface ArticleDetailsProps {
+interface Props {
 	article: CollectionEntry<"articles">;
 }
 
-const { article } = Astro.props as ArticleDetailsProps;
+const { article } = Astro.props;
 ---
 <div class="article-details">
     <time class="article-details__publish-date font-sans-serif" datetime={article.data.publishDate}>

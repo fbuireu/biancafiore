@@ -4,11 +4,11 @@ import { getRelatedArticles } from "@modules/core/components/relatedArticles/uti
 import type { CollectionEntry } from "astro:content";
 import "./related-articles.css";
 
-interface RelatedArticleProps {
+interface Props {
 	article: CollectionEntry<"articles">;
 }
 
-const { article } = Astro.props as RelatedArticleProps;
+const { article } = Astro.props;
 const relatedArticles = await getRelatedArticles(article);
 ---
 {

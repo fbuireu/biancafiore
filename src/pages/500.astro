@@ -4,11 +4,11 @@ import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import ErrorLayer from "@modules/core/components/errorLayer/ErrorLayer.astro";
 
-interface FiveHundredProps {
+interface Props {
 	error: unknown;
 }
 
-const { error } = Astro.props as FiveHundredProps;
+const { error } = Astro.props;
 const title = "500: Whoops!";
 const description = `For full transparency this is the error: ${error instanceof Error ? error.message : "Unknown error"}`;
 const metadata: Partial<SeoMetadata> = {

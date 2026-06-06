@@ -8,9 +8,9 @@ import { getLocation } from "@modules/core/utils/getLocation";
 import { GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
 import { HIDE_CHROME } from "astro:env/client";
 
-type BaseLayoutProps = SeoMetadata; 
+type Props = Partial<SeoMetadata>;
 
-const props = Astro.props as BaseLayoutProps;
+const props = Astro.props;
 const location = getLocation(Astro.url);
 const className = { [`--is-${location}`]: location };
 const isUnderConstruction = HIDE_CHROME && !["article", "tags", "terms-and-conditions", "privacy-policy"].includes(location ?? "");

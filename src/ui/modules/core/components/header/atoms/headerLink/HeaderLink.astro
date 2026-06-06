@@ -1,9 +1,9 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-type HeaderLinkProps = HTMLAttributes<"a">;
+type Props = HTMLAttributes<"a">;
 
-const { href, class: classNames, ...props } = Astro.props as HeaderLinkProps;
+const { href, class: classNames, ...props } = Astro.props;
 const TRAILING_SLASH_REGEX = /\/$/;
 const HOMEPAGE = "/";
 

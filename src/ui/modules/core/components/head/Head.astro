@@ -6,9 +6,9 @@ import Seo from "@modules/core/components/seo/Seo.astro";
 import "@styles/index.css";
 import { Font } from "astro:assets";
 
-type HeadProps = SeoMetadata;
+type Props = Partial<SeoMetadata>;
 
-const props = Astro.props as HeadProps;
+const props = Astro.props;
 ---
 <head>
     <meta charset="utf-8" />

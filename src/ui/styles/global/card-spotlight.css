@@ -1,0 +1,42 @@
+@layer global {
+	@media (hover: hover) {
+		:where(ul):has(> .card-spotlight__item) {
+			position: relative;
+
+			&::after {
+				content: "";
+				position: absolute;
+				z-index: 0;
+				inset: anchor(top) anchor(right) anchor(bottom) anchor(left);
+				position-anchor: --card-spotlight;
+				border-radius: var(--global-border-radius);
+				background: color-mix(in srgb, var(--primary-main), transparent 91%);
+				opacity: var(--card-spotlight-active, 0);
+				pointer-events: none;
+				transition:
+					opacity 0.2s ease,
+					inset 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+			}
+
+			&:has(> .card-spotlight__item:hover) {
+				--card-spotlight-active: 1;
+			}
+		}
+
+		.slider__track:has(> .card-spotlight__item) {
+			padding: 0.75rem;
+			scroll-padding-inline: 0.75rem;
+		}
+
+		.card-spotlight__item {
+			position: relative;
+			z-index: 1;
+			transition: scale 0.3s var(--ease-elastic, ease);
+
+			&:hover {
+				anchor-name: --card-spotlight;
+				scale: 1.025;
+			}
+		}
+	}
+}

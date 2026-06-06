@@ -9,7 +9,7 @@ import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import { SITE_URL } from "astro:env/client";
 import "./_tag.css";
 
-type TagProps = InferGetStaticPropsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 type TagParams = InferGetStaticParamsType<typeof getStaticPaths>;
 
 export const prerender = true;
@@ -33,7 +33,7 @@ export async function getStaticPaths() {
 						tag: {
 							...tag,
 							articles: articles
-								.filter(Boolean)
+								.filter((article): article is NonNullable<typeof article> => Boolean(article))
 								.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()),
 						},
 					},
@@ -43,7 +43,7 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params as TagParams;
-const { tag } = Astro.props as TagProps;
+const { tag } = Astro.props;
 const metadata: Partial<SeoMetadata> = {
 	title: `#${slug}`,
 	description: `Articles tagged with #${slug}.`,
@@ -55,7 +55,7 @@ const metadata: Partial<SeoMetadata> = {
     <ul class="tag__article__list grid">
       {tag.articles?.map((article) => {
         return (
-            <li class="tag__article__item relative">
+            <li class="tag__article__item card-spotlight__item relative">
                 <ArticleCard {...article} />
             </li>
         )

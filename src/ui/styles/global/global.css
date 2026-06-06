@@ -84,11 +84,11 @@
 
 	.error-layer-wrapper {
 		gap: 1rem 0;
-		height: 100vh;
+		height: 100dvh;
 		position: relative;
 		text-align: center;
 		translate: 0 -25%;
-		width: 100vw;
+		width: 100%;
 		z-index: 1;
 
 		&:not(:has(.error-layer__reveal_spotlight)) {

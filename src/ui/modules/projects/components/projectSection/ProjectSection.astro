@@ -1,11 +1,11 @@
 ---
 import "./project-section.css";
 
-interface ProjectSectionProps {
+interface Props {
 	id: string;
 }
 
-const { id } = Astro.props as ProjectSectionProps;
+const { id } = Astro.props;
 ---
 <section id={id} class="project-section">
   <slot />
