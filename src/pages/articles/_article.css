@@ -12,6 +12,7 @@ html.--is-article {
 .article-masthead {
   position: relative;
   z-index: 2;
+  view-transition-name: article-masthead;
   width: min(var(--grid-article), 100% - 2rem);
   margin-inline: auto;
   padding-block: 40px 0;
