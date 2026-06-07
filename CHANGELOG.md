@@ -1,3 +1,10 @@
+## [1.5.9](https://github.com/fbuireu/biancafiore/compare/v1.5.8...v1.5.9) (2026-06-07)
+
+
+### Bug Fixes
+
+* overflow color ([e3a1427](https://github.com/fbuireu/biancafiore/commit/e3a142724105d07c70d03d918b996e8e73e9f517))
+
 ## [1.5.8](https://github.com/fbuireu/biancafiore/compare/v1.5.7...v1.5.8) (2026-06-07)
 
 
