@@ -1,3 +1,10 @@
+## [1.5.7](https://github.com/fbuireu/biancafiore/compare/v1.5.6...v1.5.7) (2026-06-07)
+
+
+### Bug Fixes
+
+* encoded alt text ([7482684](https://github.com/fbuireu/biancafiore/commit/74826848a8fc90d68fd665d863a31e8bcf28f9a8))
+
 ## [1.5.6](https://github.com/fbuireu/biancafiore/compare/v1.5.5...v1.5.6) (2026-06-06)
 
 
