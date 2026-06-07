@@ -1,3 +1,10 @@
+## [1.5.8](https://github.com/fbuireu/biancafiore/compare/v1.5.7...v1.5.8) (2026-06-07)
+
+
+### Bug Fixes
+
+* links in home under construction ([522c8d8](https://github.com/fbuireu/biancafiore/commit/522c8d8769abe7b693494d552d19fd6b04e32d4b))
+
 ## [1.5.7](https://github.com/fbuireu/biancafiore/compare/v1.5.6...v1.5.7) (2026-06-07)
 
 
