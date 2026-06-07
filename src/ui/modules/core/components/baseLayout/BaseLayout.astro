@@ -1,19 +1,20 @@
 ---
+import { GOOGLE_TAG_MANAGER_ID, HIDE_CHROME } from "astro:env/client";
+import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import Footer from "@modules/core/components/footer/Footer.astro";
 import Head from "@modules/core/components/head/Head.astro";
 import Header from "@modules/core/components/header/Header.astro";
 import ScrollTop from "@modules/core/components/scrollTop/ScrollTop.astro";
 import { getLocation } from "@modules/core/utils/getLocation";
-import { GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
-import { HIDE_CHROME } from "astro:env/client";
 
 type Props = Partial<SeoMetadata>;
 
 const props = Astro.props;
 const location = getLocation(Astro.url);
 const className = { [`--is-${location}`]: location };
-const isUnderConstruction = HIDE_CHROME && !["article", "tags", "terms-and-conditions", "privacy-policy"].includes(location ?? "");
+const isUnderConstruction =
+	HIDE_CHROME && !["article", "tags", "terms-and-conditions", "privacy-policy"].includes(location ?? "");
 ---
 <html lang="en" class:list={[className]}>
 <Head {...props}><slot name="head" slot="head" /></Head>
@@ -28,7 +29,14 @@ const isUnderConstruction = HIDE_CHROME && !["article", "tags", "terms-and-condi
 {!HIDE_CHROME && <ScrollTop />}
 <main class:list={[className]}>
     {isUnderConstruction
-        ? <h1 style="text-align:center;margin-top:50vh;font-size:52px">Site under construction<br />We'll be back soon</h1>
+        ? (
+            <div style="text-align:center;margin-top:40vh">
+              <h1 style="font-size:52px;margin:0">Site under construction<br />We'll be back soon</h1>
+              <p style="margin-top:1.5rem;font-size:18px">
+                In the meantime, you can read what I've already written — browse <a href={PAGES_ROUTES.TAGS} style="color:var(--primary-main);text-decoration:underline">all the tags</a> or head straight to <a href={`${PAGES_ROUTES.TAGS}/bianca-fiore`} style="color:var(--primary-main);text-decoration:underline">Bianca Fiore</a>.
+              </p>
+            </div>
+          )
         : <slot />
     }
 </main>
