@@ -87,9 +87,9 @@
 
 .article-card__tags__overflow {
   align-self: center;
+  color: var(--primary-main);
   cursor: default;
   font-size: 0.6875rem;
-  opacity: 0.6;
 }
 
 .article-card__title {
