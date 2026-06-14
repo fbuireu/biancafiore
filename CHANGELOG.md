@@ -1,3 +1,11 @@
+## [1.6.1](https://github.com/fbuireu/biancafiore/compare/v1.6.0...v1.6.1) (2026-06-14)
+
+
+### Bug Fixes
+
+* allow YouTube embeds via CSP frame-src ([866d076](https://github.com/fbuireu/biancafiore/commit/866d0767b2de25209c93a56bf71724b63b769473))
+* remove related-articles bottom margin ([1b480cd](https://github.com/fbuireu/biancafiore/commit/1b480cda179c6562a2a4807121e5216c31808f31))
+
 # [1.6.0](https://github.com/fbuireu/biancafiore/compare/v1.5.9...v1.6.0) (2026-06-14)
 
 
