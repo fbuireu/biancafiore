@@ -34,6 +34,92 @@
 		text-transform: uppercase;
 	}
 
+	.editorial-eyebrow {
+		color: var(--gold);
+		font-family: var(--font-sans-serif);
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.28em;
+		text-transform: uppercase;
+	}
+
+	.editorial-meta {
+		color: var(--muted);
+		font-family: var(--font-sans-serif);
+		font-size: 11px;
+		font-weight: 500;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+
+		&.--gold {
+			color: var(--gold);
+		}
+	}
+
+	.editorial-section-title {
+		color: var(--ink);
+		font-family: var(--font-display);
+		font-size: clamp(24px, 2.66cqi, 34px);
+		font-weight: 400;
+		letter-spacing: 0.22em;
+		line-height: 1.2;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.editorial-cta {
+		align-items: baseline;
+		color: var(--ink);
+		display: inline-flex;
+		font-family: var(--font-sans-serif);
+		font-size: 12px;
+		font-weight: 600;
+		gap: 12px;
+		letter-spacing: 0.16em;
+		padding-block-end: 7px;
+		position: relative;
+		text-transform: uppercase;
+		transition: color 0.2s;
+
+		&::after {
+			background-color: currentColor;
+			block-size: 1px;
+			content: "";
+			inset-block-end: 0;
+			inset-inline-start: 0;
+			inline-size: 100%;
+			position: absolute;
+			scale: 0 1;
+			transform-origin: left;
+			transition: scale 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+		}
+
+		&:hover {
+			color: var(--gold);
+
+			&::after {
+				scale: 1 1;
+			}
+
+			& .editorial-cta__arrow {
+				translate: 4px 0;
+			}
+		}
+
+		& .editorial-cta__arrow {
+			font-family: var(--font-serif);
+			font-size: 16px;
+			transition: translate 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.editorial-cta::after,
+		.editorial-cta .editorial-cta__arrow {
+			transition: none;
+		}
+	}
+
 	.grid {
 		display: grid;
 	}
@@ -83,18 +169,14 @@
 	}
 
 	.error-layer-wrapper {
-		gap: 1rem 0;
+		flex-flow: column wrap;
+		gap: 1.5rem;
 		height: 100dvh;
 		position: relative;
 		text-align: center;
 		translate: 0 -25%;
 		width: 100%;
 		z-index: 1;
-
-		&:not(:has(.error-layer__reveal_spotlight)) {
-			flex-flow: column wrap;
-			gap: 1.5rem;
-		}
 	}
 
 	.error-layer__link {
@@ -111,10 +193,5 @@
 		opacity: 0.5;
 		position: absolute;
 		width: 100%;
-	}
-
-	.error-layer__reveal_spotlight {
-		flex-flow: column wrap;
-		gap: 1.5rem;
 	}
 }

@@ -3,7 +3,7 @@
 	margin: 2rem 0;
 	padding: 3rem 0;
 }
-.contact-tabs__inner-wrapper {
+.contact-tabs__inner {
 	@container contact-page (width <= 960px) {
 		padding-inline: 1rem;
 	}

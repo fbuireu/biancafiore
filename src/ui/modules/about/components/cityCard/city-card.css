@@ -16,10 +16,9 @@
 	animation: linear scale-by-index forwards;
 	animation-range: exit-crossing var(--start-range) exit-crossing var(--end-range);
 	animation-timeline: --cities-scales-in-view;
-	background: var(--white);
-	box-shadow:
-		0 0.2rem 1rem var(--neutral-light-2),
-		0 1em 2em var(--neutral-light-4);
+	background: var(--surface);
+	border: 1px solid var(--line);
+	box-shadow: 0 1rem 2.5rem -1rem var(--neutral-light-3);
 	display: grid;
 	gap: 2rem 1rem;
 	overflow: hidden;

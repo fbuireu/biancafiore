@@ -60,16 +60,16 @@ canvas {
 	gap: 0 3rem;
 }
 
-.world-globe__controls__zoom-wrapper {
+.world-globe__zoom-wrapper {
 	--size: 2rem;
 }
 
-.world-globe__controls__direction-wrapper {
+.world-globe__direction-wrapper {
 	--size: 3rem;
 }
 
-.world-globe__controls__direction-wrapper,
-.world-globe__controls__zoom-wrapper {
+.world-globe__direction-wrapper,
+.world-globe__zoom-wrapper {
 	gap: 0 1rem;
 
 	/* biome-ignore lint/style/noDescendingSpecificity: svg is a different element per wrapper, cascade is intentional */

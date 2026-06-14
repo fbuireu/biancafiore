@@ -1,6 +1,9 @@
 .tag__article__list {
-	gap: calc(2rem * 3) 2rem;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
-	margin-block: 2rem;
+	grid-template-columns: 1fr;
+	margin-block: 2rem 6rem;
 	position: relative;
+}
+
+.tag__article__item:last-child .article-card__item.--is-landscape {
+	border-block-end: 1px solid var(--line);
 }

@@ -1,12 +1,13 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { getCollection, getEntry } from "astro:content";
-import { CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
 import { SITE_URL } from "astro:env/client";
+import { CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
 import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
 import LittleMoreOfMe from "@modules/about/components/littleMoreOfMe/LittleMoreOfMe.astro";
+import WhatIDo from "@modules/about/components/whatIDo/WhatIDo.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 
@@ -34,6 +35,7 @@ const metadata: Partial<SeoMetadata> = {
 <BaseLayout {...metadata}>
     <Breadcrumbs />
     <AboutIntro />
+    <WhatIDo />
     <LittleMoreOfMe cities={cities} />
     <AboutLatestArticles />
     <script is:inline type="application/ld+json" set:html={JSON.stringify({

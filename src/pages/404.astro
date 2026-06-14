@@ -3,7 +3,7 @@ import { PAGES_ROUTES } from "@const/const";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import ErrorLayer from "@modules/core/components/errorLayer/ErrorLayer.astro";
-import Spotlight from "@modules/core/components/spotlight/Spotlight.astro";
+import "./_404.css";
 
 const title = "404: Not Found";
 const description = "It seems you've stumbled upon a page that doesn't exist.";
@@ -18,13 +18,23 @@ const metadata: Partial<SeoMetadata> = {
 };
 ---
 <BaseLayout {...metadata}>
-    <ErrorLayer>
-        <div class="error-layer__reveal_spotlight flex">
-            <h1>{title}</h1>
+    <ErrorLayer class="error-404">
+        <div class="error-404__stage">
+            <h1 class="error-404__title">
+                404
+                <span aria-hidden="true">404</span>
+            </h1>
+        </div>
+        <div class="error-404__cloak-wrapper" aria-hidden="true">
+            <div class="error-404__cloak-container">
+                <div class="error-404__cloak"></div>
+            </div>
+        </div>
+        <div class="error-404__info">
             <p>{description}</p>
-            <p>Why not try going back to the <a href={PAGES_ROUTES.HOME}
-                                                class="error-layer__link --underline-on-hover">homepage</a>?</p>
-        </div> 
+            <a class="error-404__link --is-clickable --underline-on-hover" href={PAGES_ROUTES.HOME}>
+                <span class="error-404__arrow" aria-hidden="true">←</span> Back home
+            </a>
+        </div>
     </ErrorLayer>
-    <Spotlight />
 </BaseLayout>

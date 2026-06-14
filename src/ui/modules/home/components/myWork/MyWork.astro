@@ -2,33 +2,45 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import "./my-work.css";
-import { PAGES_ROUTES } from "@const/const";
 import { SITE_URL } from "astro:env/client";
+import { PAGES_ROUTES } from "@const/const";
 
 const projects = await getCollection("projects");
----
-<section class="my-work-wrapper common-wrapper">
-    <h2 class="my-work__title section-title">My Work</h2>
-    <ul class="my-work__content__list flex row-wrap justify-space-between">
-      {projects.map((project) => {
-        const projectUrl = `${PAGES_ROUTES.PROJECTS}#${project.data.id}`;
 
-        return (
-            <li class="my-work__item">
-                <a class="my-work__item__link --is-clickable" href={projectUrl}>
-                    <Image
-                        src={project.data.image.url}
-                        alt={project.data.name}
-                        width={project.data.image.details.width}
-                        height={project.data.image.details.height}
-                        loading="lazy"
-                    />
-                    <h4 class="my-work__item__title inner-section-title">{project.data.name}</h4>
-                </a>
-            </li>
-        );
-      })}
-    </ul>
+const disciplinesCount = String(projects.length).padStart(2, "0");
+---
+<section class="my-work">
+    <div class="my-work__inner">
+        <header class="my-work__header">
+            <h2 class="my-work__title editorial-section-title">My&nbsp;Work</h2>
+            <p class="editorial-meta">{disciplinesCount} — Disciplines</p>
+        </header>
+        {projects.map((project) => {
+          const projectUrl = `${PAGES_ROUTES.PROJECTS}#${project.data.id}`;
+
+          return (
+              <details class="my-work__item" name="my-work">
+                  <summary class="my-work__summary">
+                      <h3 class="my-work__name">{project.data.name}</h3>
+                      <Image
+                          class="my-work__thumbnail"
+                          src={project.data.image.url}
+                          alt={project.data.name}
+                          width={project.data.image.details.width}
+                          height={project.data.image.details.height}
+                          loading="lazy"
+                      />
+                  </summary>
+                  <div class="my-work__panel">
+                      <article class="my-work__description" set:html={project.data.description} />
+                      <a class="editorial-cta" href={projectUrl}>
+                          More details <span class="editorial-cta__arrow" aria-hidden="true">→</span>
+                      </a>
+                  </div>
+              </details>
+          );
+        })}
+    </div>
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'ItemList',

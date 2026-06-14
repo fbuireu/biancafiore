@@ -14,7 +14,7 @@ const { articles } = Astro.props;
 <SliderShell class="latest-articles__slider common-wrapper">
 	{
 		articles.map((article) => (
-			<li class="slider__slide item-wrapper card-spotlight__item">
+			<li class="slider__slide item-wrapper">
 				<ArticleCard {...article} />
 			</li>
 		))

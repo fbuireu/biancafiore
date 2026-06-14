@@ -7,8 +7,8 @@ import "./about-latest-articles.css";
 const articles = await getCollection("articles");
 ---
 <section class="about-latest-articles-wrapper common-wrapper">
-    <h2 class="about-latest-articles__title section-title">
-        Fresh from <a class="--is-clickable --underline-on-hover" href={`${PAGES_ROUTES.ARTICLES}`}>the blog</a>
+    <h2 class="about-latest-articles__title editorial-section-title">
+        Fresh from <a class="about-latest-articles__title__link --is-clickable --underline-on-hover" href={`${PAGES_ROUTES.ARTICLES}`}>the blog</a>
     </h2>
     <div class="about-latest-articles__inner">
         <div class="about-latest-articles__quote-wrapper">

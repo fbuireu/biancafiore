@@ -1,7 +1,7 @@
 ---
+import type { CollectionEntry } from "astro:content";
 import RelatedArticlesSlider from "@modules/core/components/relatedArticles/atoms/relatedArticlesSlider/RelatedArticlesSlider.astro";
 import { getRelatedArticles } from "@modules/core/components/relatedArticles/utils/getRelatedArticles";
-import type { CollectionEntry } from "astro:content";
 import "./related-articles.css";
 
 interface Props {
@@ -13,7 +13,8 @@ const relatedArticles = await getRelatedArticles(article);
 ---
 {
     relatedArticles.length > 0 && (
-    <section class="related-articles-wrapper common-wrapper">
+    <section class="related-articles --inverted-color-scheme">
+      <div class="related-articles-wrapper common-wrapper">
         <h2 class="related-articles__title section-title">You might also like</h2>
         <RelatedArticlesSlider articles={relatedArticles} />
         <script is:inline type="application/ld+json" set:html={JSON.stringify({
@@ -36,6 +37,7 @@ const relatedArticles = await getRelatedArticles(article);
             slides.forEach((slide) => track.appendChild(slide));
           }
         </script>
+      </div>
     </section>
         )
     }

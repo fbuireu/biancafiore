@@ -3,6 +3,14 @@
 		position: relative;
 	}
 
+	.--inverted-color-scheme {
+		color-scheme: dark;
+	}
+
+	[data-theme="dark"] .--inverted-color-scheme {
+		color-scheme: light;
+	}
+
 	.--is-clickable:not(canvas):not(:disabled) {
 		cursor: pointer;
 		transition: scale 0.2s;
@@ -12,7 +20,9 @@
 		}
 
 		&.--underline-on-hover {
-			transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), scale 0.2s;
+			transition:
+				background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955),
+				scale 0.2s;
 		}
 	}
 
@@ -28,7 +38,9 @@
 		color: currentColor;
 		padding: 0;
 		cursor: pointer;
-		transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955), scale 0.2s;
+		transition:
+			background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955),
+			scale 0.2s;
 
 		&:not(.--is-active):hover {
 			background-size: 100% var(--border-width);

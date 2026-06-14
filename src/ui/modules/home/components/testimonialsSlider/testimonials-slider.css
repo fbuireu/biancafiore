@@ -1,110 +1,139 @@
-.testimonials__wrapper {
-  position: relative;
-}
-
 .testimonials__slider {
-  --slider-gap: 0;
+	& .slider__track {
+		--slides-per-view: 1;
+		--slider-gap: 0px;
 
-  .slider__track {
-    align-items: center;
+		scroll-marker-group: none;
+	}
 
-    /* Anchor the dots group so real nav buttons can position against it */
-    &::scroll-marker-group {
-      anchor-name: --testimonials-nav-dots;
-      padding-block: 2rem;
-    }
-
-    /* Suppress the CSS-generated buttons — real buttons handle navigation */
-    &::scroll-button(inline-start),
-    &::scroll-button(inline-end) {
-      content: none;
-    }
-  }
-
-  .slider__slide {
-    width: 100%;
-    scroll-snap-align: center;
-  }
-
-  @media (width >= 1024px) {
-    .slider__track {
-      padding-inline: calc((100% - 100% / 1.85) / 2);
-      scroll-padding-inline: calc((100% - 100% / 1.85) / 2);
-    }
-
-    @supports (container-type: scroll-state) {
-      .testimonial__content {
-        scale: 0.8;
-        transition: scale 0.3s;
-      }
-
-      @container scroll-state(snapped: inline) {
-        .testimonial__content {
-          scale: 1;
-        }
-      }
-    }
-  }
+	& .slider__slide {
+		scroll-snap-align: center;
+		width: 100%;
+	}
 }
 
-/* Fallback layout: buttons appear below the dots in a centered row */
+.testimonial {
+	margin: 0;
+}
+
+.testimonial__quote {
+	color: var(--ink);
+	font-family: var(--font-display);
+	font-size: clamp(24px, 2.58cqi, 33px);
+	letter-spacing: -0.005em;
+	line-height: 1.32;
+	margin: 0 0 38px;
+	text-wrap: pretty;
+
+	&::before {
+		color: var(--gold);
+		content: open-quote;
+		font-size: 48px;
+		line-height: 0;
+		margin-inline-end: 6px;
+		vertical-align: -12px;
+	}
+
+	&::after {
+		color: var(--gold);
+		content: close-quote;
+	}
+}
+
+.testimonial__attribution {
+	align-items: center;
+	display: flex;
+	gap: 16px;
+	justify-content: center;
+}
+
+.testimonial__avatar {
+	border-radius: 50%;
+	height: 54px;
+	object-fit: cover;
+	width: 54px;
+}
+
+.testimonial__identity {
+	display: grid;
+	gap: 3px;
+	text-align: left;
+}
+
+.testimonial__author {
+	color: var(--ink);
+	font-family: var(--font-serif);
+	font-size: 18px;
+	font-weight: 420;
+	line-height: 1.12;
+}
+
 .testimonials__nav {
-  align-items: center;
-  display: flex;
-  gap: 0.75rem;
-  justify-content: center;
-  padding-block: 0 2rem;
+	align-items: center;
+	display: flex;
+	gap: 8px;
+	justify-content: center;
+	margin-block-start: 28px;
 }
 
-.testimonials__nav__button {
-  align-items: center;
-  background: transparent;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  color: currentColor;
-  display: flex;
-  height: 2.5rem;
-  justify-content: center;
-  padding: 0.5rem;
-  transition:
-    background-color 0.2s,
-    border-color 0.2s;
-  width: 2.5rem;
+.testimonials__nav__dash {
+	background: transparent;
+	block-size: 28px;
+	border: 0;
+	inline-size: 14px;
+	padding: 0;
+	position: relative;
+	transition: inline-size 0.3s;
 
-  & svg {
-    height: 1.25rem;
-    width: 1.25rem;
-  }
+	&::after {
+		background-color: var(--faint);
+		block-size: 2px;
+		content: "";
+		inset-block-start: 50%;
+		inset-inline: 0;
+		position: absolute;
+		transition: background-color 0.3s;
+		translate: 0 -50%;
+	}
 
-  &.--is-right svg {
-    transform: scaleX(-1);
-  }
+	&:hover::after {
+		background-color: var(--gold-bright);
+	}
 
-  &:hover {
-    background-color: var(--primary-main);
-    border-color: var(--primary-main);
-  }
+	&.--is-active {
+		inline-size: 32px;
+
+		&::after {
+			background-color: var(--gold);
+		}
+	}
 }
 
-/* Enhanced layout: anchor buttons inline with the dots via anchor positioning */
-@supports (anchor-name: --x) {
-  .testimonials__nav {
-    display: contents;
-  }
+.testimonials__nav {
+	position: relative;
+}
 
-  .testimonials__nav__button {
-    position: fixed;
-    position-anchor: --testimonials-nav-dots;
-    top: anchor(center);
-  }
+.testimonials__nav__arrow {
+	&.--is-prev {
+		margin-inline-end: 16px;
+	}
 
-  .testimonials__nav__button.--is-left {
-    right: anchor(left);
-    translate: -0.75rem -50%;
-  }
+	&.--is-next {
+		margin-inline-start: 16px;
+	}
 
-  .testimonials__nav__button.--is-right {
-    left: anchor(right);
-    translate: 0.75rem -50%;
-  }
+	@container home-page (width > 960px) {
+		inset-block-start: 50%;
+		margin: 0;
+		position: absolute;
+		translate: 0 -50%;
+
+		&.--is-prev {
+			inset-inline-start: 0;
+		}
+
+		&.--is-next {
+			inset-inline-end: 0;
+		}
+	}
 }

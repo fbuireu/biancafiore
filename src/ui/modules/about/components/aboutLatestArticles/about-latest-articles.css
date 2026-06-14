@@ -8,11 +8,11 @@
 
 .about-latest-articles__title {
 	margin-block: 5rem;
+}
 
-	a {
-		color: var(--primary-main);
-		display: inline-block;
-	}
+.about-latest-articles__title__link {
+	color: var(--gold);
+	display: inline-block;
 
 	@container about-page (width <= 720px) {
 		margin-block-end: 2rem;

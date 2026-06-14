@@ -7,6 +7,16 @@
 			color: var(--neutral-main);
 		}
 
+		&::search-text {
+			background-color: var(--primary-light-2);
+			color: var(--neutral-main);
+		}
+
+		&::search-text:current {
+			background-color: var(--primary-main);
+			color: var(--neutral-main);
+		}
+
 		&:focus-visible:not(input, textarea) {
 			outline: 2px solid var(--primary-main);
 			outline-offset: 2px;

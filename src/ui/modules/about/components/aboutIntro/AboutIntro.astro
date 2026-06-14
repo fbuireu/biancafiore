@@ -1,33 +1,20 @@
 ---
 import { Image } from "astro:assets";
 import bianca from "@assets/images/jpg/bianca-fiore.jpg";
-import { PAGES_ROUTES } from "@const/index";
-import LinkWithArrow from "@modules/core/components/linkWithArrow/LinkWithArrow.astro";
 import SocialNetworks from "@modules/core/components/socialNetworks/SocialNetworks.astro";
 import "./about-intro.css";
 ---
-<section class="about-me-intro-wrapper common-wrapper" transition:name="about-me-section">
-    <div class="about-me-intro__section --left flex column-wrap">
-        <h1 class="about-me-intro__title">Hi! I'm <br /><strong translate="no">Bianca</strong></h1>
-        <div class="about-me-intro__body font-serif flex column-wrap">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. At enim hic etiam dolore. Facillimum id quidem
-                est,
-                inquam. Vide, quantum, inquam, fallare, Torquate. Lorem ipsum dolor sit amet, consectetur adipiscing
-                elit.
-                <br />
-                <br />
-                Quid de Platone aut de Democrito loquar? Summus dolor plures dies manere non potest? Si enim ita est,
-                vide ne facinus
-                facias, cum mori.
-            </p>
-            <LinkWithArrow href={`${PAGES_ROUTES.PROJECTS}`} classNames="about-me-intro__body__cta">
-                See my work
-            </LinkWithArrow>
+<section class="about-intro common-wrapper" transition:name="about-me-section">
+    <div class="about-intro__inner">
+        <p class="editorial-eyebrow about-intro__eyebrow">About</p>
+        <div class="about-intro__grid">
+            <h1 class="about-intro__title">
+                Hi, I'm <span translate="no">Bianca</span> — I find the human thread in every story.
+            </h1>
+            <div class="about-intro__aside">
+                <Image src={bianca} alt="Bianca Fiore" class="about-intro__portrait" loading="eager" />
+                <SocialNetworks />
+            </div>
         </div>
-    </div>
-    <div class="about-me-intro__section --right flex row-wrap">
-        <Image src={bianca} alt="Bianca Fiore" class="about-me-intro__image" loading="eager" />
-        <SocialNetworks />
     </div>
 </section>
