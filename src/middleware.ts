@@ -17,7 +17,7 @@ const SECURITY_HEADERS: Record<string, string> = {
     "font-src 'self' data:",
     "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com https://www.google.com https://api.websitecarbon.com",
     "worker-src 'self' blob:",
-    "frame-src 'self' https://www.google.com",
+    "frame-src 'self' https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
