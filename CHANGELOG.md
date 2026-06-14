@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/fbuireu/biancafiore/compare/v1.5.9...v1.6.0) (2026-06-14)
+
+
+### Features
+
+* add more layouts ([d349d76](https://github.com/fbuireu/biancafiore/commit/d349d76024cca4c313f0c286fbd52d677e89ed98))
+
 ## [1.5.9](https://github.com/fbuireu/biancafiore/compare/v1.5.8...v1.5.9) (2026-06-07)
 
 
