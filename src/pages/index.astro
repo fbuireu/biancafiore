@@ -1,27 +1,24 @@
 ---
-import { CONTACT_DETAILS } from "@const/index";
-import type { SeoMetadata } from "@const/types";
-import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
-import LatestArticles from "@modules/core/components/latestArticles/LatestArticles.astro";
-import MyWork from "@modules/home/components/myWork/MyWork.astro";
-import Testimonials from "@modules/home/components/testimonials/Testimonials.astro";
-import Welcome from "@modules/home/components/welcome/Welcome.astro";
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "astro:env/client";
+import { CONTACT_DETAILS } from "@const/index";
+import type { SeoMetadata } from "@const/types";
+import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import Blog from "@modules/home/components/blog/Blog.astro";
+import MyWork from "@modules/home/components/myWork/MyWork.astro";
+import Testimonials from "@modules/home/components/testimonials/Testimonials.astro";
+import Welcome from "@modules/home/components/welcome/Welcome.astro";
 
 // todo: react email (supports dark mode)
 // todo: built payload cms + docker + new struct (or directus)/emdash
 // todo: add subgrid article for more layouts https://dbushell.com/2026/04/02/css-subgrid-is-super-good/
 // todo: https://buttondown-0008.com/c/ZDc4ZmM4MzYtYjA1OC00ZjYxLTlkMDUtNTMzYWE5YjJlZTZifGZiZTRkNmQ5LTBkYjQtNDUzMC1hNGIxLTY0NzZiNDMxZTVlYXxodHRwczovL2lzaGFkZWVkLmNvbS9hcnRpY2xlL2Nzcy1yb3VuZD91dG1fc291cmNlPWlzaGFkZWVkJnV0bV9tZWRpdW09ZW1haWwmdXRtX2NhbXBhaWduPXUyNzI4LW5ldy1vbi10aGUtYmxvZy1iZXR0ZXItZmx1aWQtc2l6aW5nLXdpdGh8ZW1haWw=
 // todo: https://www.bram.us/2025/11/06/combining-scroll-driven-animations-with-starting-style/
-// todo: add find and match style: https://www.linkedin.com/posts/theosoti_you-can-now-style-text-that-matches-a-browser-share-7453072851663753216-Ijou/?rcm=ACoAABa0rEYBglTSyRPVRPvzjLHwxm6xCwHOHAI
-// todo: https://codepen.io/jh3y/pen/oNRBOGY (for 404)
 // todo: remove hardcoded container queries values in favor of chars or otherunits (https://www.youtube.com/watch?v=9XKWnvpdSlU)
 // todo: add next sibling insteat of index in loops
 // todo: https://electricmagicfactory.com/articles/interactive-fluid-typography/
 // todo: add squash and stretch arrows https://www.joshwcomeau.com/animation/squash-and-stretch/?from=newsletter
-// todo: migrate to payloadCMS (remove resolutions in package as the resolution fixes a critical vulnerability from contentful)
 // todo: add live collections
 // https://mintlify.com/blog/what-is-llms-txt
 // https://modern-css.com/
@@ -32,8 +29,6 @@ import { SITE_URL } from "astro:env/client";
 //        - add small icons (reading time, tags, etc)?
 // todo: add thinner svg lines (// todo: replace arrows and icons for a finest ones) (// todo: refer logo (original + finet)
 // todo: wait for wrangler webhook -->  add Algolia + filters (+ URL filtering) https://www.algolia.com/developers/contentful-search-algolia/ (webhook problem)
-// todo: how to deploy cloudflare pages
-// todo: cloudflare setup and checks
 // todo: cloudinary for heavy assets
 // todo: print mediaquery
 // todo: add resume (PDF) in about?
@@ -42,19 +37,6 @@ import { SITE_URL } from "astro:env/client";
 // todo: add vitest
 // todo: add like system: https://twitter.com/jh3yy/status/1740501273009389943?t=HACFVwPJq343ZjQt3sPaMA&s=19
 // todo: update @astrojs/db from pkg.pr.new preview to stable semver once withastro/astro#16114 is fixed and released (`pnpm add @astrojs/db@latest`)
-
-// todo: contentful webhook → repository_dispatch to trigger production deploy on article publish (webhook configured in Contentful → Settings → Webhooks, needs GITHUB_PAT secret)
-
-// --- cloudflare workers migration ---
-// todo: resolve workers.dev subdomain — currently `forever-pto` (account-level); options: (A) rename to something neutral like `fbuireu` at dash.cloudflare.com > Workers > subdomain, (B) use custom domain wildcard for PR previews instead
-// todo: after subdomain decision, update `url` in `.github/workflows/deploy-development.yml` (currently `https://pr-{N}-biancafiore-development.forever-pto.workers.dev`)
-// todo: first production deploy: `pnpm build && pnpm exec wrangler deploy --env production`
-// todo: verify runtime secrets are set on the production worker after first deploy (CI `wrangler secret bulk` handles it on subsequent deploys)
-// todo: delete old Cloudflare Pages project (`biancafiore`) once Workers deployment is confirmed working
-// --- kv namespaces (already created) ---
-// SESSION dev:  fde64789020f4160b0d835d190d8d5d6
-// SESSION prod: c9f2626f1a4043c0aea8a75985bdc0a1
-
 // other ideas:
 // todo: check notion
 // todo: reveal on scroll (Agafar idees gsap)
@@ -72,9 +54,9 @@ const metadata: Partial<SeoMetadata> = {
 ---
 <BaseLayout {...metadata}>
     <Welcome />
-    <Testimonials />
     <MyWork />
-    <LatestArticles />
+    <Testimonials />
+    <Blog />
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'WebSite',

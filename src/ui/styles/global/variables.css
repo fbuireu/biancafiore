@@ -5,7 +5,7 @@
 		--primary-light-3: color-mix(in srgb, var(--primary-main), var(--white) 75%);
 		--primary-light-2: color-mix(in srgb, var(--primary-main), var(--white) 50%);
 		--primary-light-1: color-mix(in srgb, var(--primary-main), var(--white) 25%);
-		--primary-main: oklch(58.62% 0.093 78.50);
+		--primary-main: oklch(58.62% 0.093 78.5);
 		--primary-dark-1: color-mix(in srgb, var(--primary-main), var(--black) 25%);
 		--primary-dark-2: color-mix(in srgb, var(--primary-main), var(--black) 50%);
 		--primary-dark-3: color-mix(in srgb, var(--primary-main), var(--black) 75%);
@@ -22,6 +22,15 @@
 		--email: oklch(58.97% 0 0);
 		--white: oklch(100% 0 0);
 		--black: oklch(0 0 0);
+		--ink: light-dark(#1b1813, #ece6d8);
+		--ink-soft: light-dark(#3a352d, #cdc6b6);
+		--muted: light-dark(#756e62, #968d7c);
+		--faint: light-dark(#a39b8c, #6b6356);
+		--line: light-dark(rgb(27 24 19 / 13%), rgb(236 230 216 / 15%));
+		--line-soft: light-dark(rgb(27 24 19 / 7%), rgb(236 230 216 / 7%));
+		--gold: light-dark(#9a7536, #cba968);
+		--gold-bright: light-dark(#b58e4d, #ddc084);
+		--surface: light-dark(#f1ede3, #1d1a13);
 		--header-height: 80px;
 		--global-max-width: 1440px;
 		--base-font-size: 16px;
@@ -59,7 +68,7 @@
 		color-scheme: dark;
 		--black: oklch(100% 0 0);
 		--white: var(--background-main);
-		--primary-main: oklch(75.09% 0.092 82.70);
+		--primary-main: oklch(75.09% 0.092 82.7);
 		--primary-dark-1: color-mix(in srgb, var(--primary-main), var(--white) 25%);
 		--primary-dark-2: color-mix(in srgb, var(--primary-main), var(--white) 50%);
 		--primary-dark-3: color-mix(in srgb, var(--primary-main), var(--white) 75%);
@@ -70,8 +79,8 @@
 		--neutral-light-3: color-mix(in srgb, var(--neutral-main), var(--black) 75%);
 		--primary-light-3: color-mix(in srgb, var(--primary-main), var(--black) 75%);
 		--neutral-light-4: color-mix(in srgb, var(--neutral-main), var(--black) 95%);
-		--background-main: oklch(18.72% 0.010 88.81);
-		--neutral-main: oklch(92.58% 0.020 87.52);
+		--background-main: oklch(18.72% 0.01 88.81);
+		--neutral-main: oklch(92.58% 0.02 87.52);
 	}
 }
 

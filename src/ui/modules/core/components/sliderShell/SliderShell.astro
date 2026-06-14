@@ -7,7 +7,7 @@ interface Props {
 const { class: className, showTrack = true } = Astro.props;
 ---
 
-<div class={`slider__wrapper ${className ?? ''}`.trim()} data-has-buttons={showTrack}>
+<div class={`slider-wrapper ${className ?? ''}`.trim()} data-has-buttons={showTrack}>
 	{showTrack && (
 		<button class="slider__btn slider__btn--prev" aria-label="Previous slide" disabled>←</button>
 	)}
@@ -21,7 +21,7 @@ const { class: className, showTrack = true } = Astro.props;
 
 <script>
 	document.addEventListener('astro:page-load', () => {
-		document.querySelectorAll<HTMLElement>('.slider__wrapper[data-has-buttons="true"]').forEach((wrapper) => {
+		document.querySelectorAll<HTMLElement>('.slider-wrapper[data-has-buttons="true"]').forEach((wrapper) => {
 			const track = wrapper.querySelector<HTMLElement>('.slider__track');
 			const prev = wrapper.querySelector<HTMLButtonElement>('.slider__btn--prev');
 			const next = wrapper.querySelector<HTMLButtonElement>('.slider__btn--next');

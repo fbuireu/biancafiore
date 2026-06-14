@@ -1,26 +1,28 @@
 ---
 import { Image } from "astro:assets";
 import bianca from "@assets/images/jpg/bianca-fiore.jpg";
+import { PAGES_ROUTES } from "@const/index";
 import "./welcome.css";
 ---
-<section class="welcome flex row-wrap common-wrapper" transition:name="welcome-section" transition:animate="slide"
->
-  <div class="welcome__text__section --left">
-    <h2 class="welcome__text__title">Hi! I'm</h2>
-  </div>
-  <Image src={bianca} alt="Bianca Fiore" class="welcome__image" loading="eager" />
-  <div class="welcome__text__section --right">
-      <h1 class="welcome__text__title" translate="no"><strong>Bianca</strong></h1>
-    <p class="welcome__text__body">
-      Lorem ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet
-      ipsum dolor sit amet ipsum dolor sit amet. Lorem ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet
-      ipsum dolor sit amet
-    </p>
-  </div>
+<section class="hero common-wrapper" transition:name="welcome-section" transition:animate="slide">
+    <div class="hero__inner">
+        <div class="hero__grid">
+            <div class="hero__headline">
+                <p class="editorial-eyebrow hero__eyebrow">Writer · Storyteller · Creative strategist</p>
+                <h1 class="hero__title">
+                    Stories that move<br />people <em class="hero__ampersand">&amp;</em> the planet<br />forward.
+                </h1>
+            </div>
+            <div class="hero__aside">
+                <p class="hero__lede">
+                    I'm Bianca Fiore. For a decade I've reported on the people building a fairer, greener world — and
+                    helped mission‑driven organisations tell those stories well.
+                </p>
+                <a class="editorial-cta hero__cta" href={PAGES_ROUTES.ARTICLES}>
+                    Read the blog <span class="editorial-cta__arrow" aria-hidden="true">→</span>
+                </a>
+            </div>
+        </div>
+        <Image src={bianca} alt="Bianca Fiore" class="hero__portrait" loading="eager" fetchpriority="high" />
+    </div>
 </section>
-
-<script is:inline data-astro-rerun type="module">
-  import { initializeParallax } from '/src/ui/modules/home/utils/initializeParallax';
-
-  initializeParallax()
-</script>

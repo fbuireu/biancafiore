@@ -1,18 +1,17 @@
 ---
+import { Picture } from "astro:assets";
+import { getCollection } from "astro:content";
+import { HIDE_CHROME, SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
-import RepublishedBanner from "@modules/article/components/republishedBanner/RepublishedBanner.astro";
 import ReadingProgress from "@modules/article/components/readingProgress/ReadingProgress.astro";
+import RepublishedBanner from "@modules/article/components/republishedBanner/RepublishedBanner.astro";
 import TableOfContents from "@modules/article/components/tableOfContents/TableOfContents.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
 import type { InferGetStaticPropsType } from "astro";
-import { Picture } from "astro:assets";
-import { getCollection } from "astro:content";
-import { SITE_URL } from "astro:env/client";
-import { HIDE_CHROME } from "astro:env/client";
 import "./_article.css";
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
@@ -38,7 +37,7 @@ const { article } = Astro.props;
 const metadata: Partial<SeoMetadata> = {
 	title: article.data.title,
 	description: article.data.description,
-	type: 'article',
+	type: "article",
 	publishedTime: new Date(article.data.publishDate).toISOString(),
 	modifiedTime: article.data.updatedAt,
 	author: article.data.author.name,
@@ -50,12 +49,11 @@ const metadata: Partial<SeoMetadata> = {
 	}),
 };
 const scopes = article.data.tableOfContents.map((_, index) => `--section-${index + 1}`).join(",");
-
 ---
 <BaseLayout {...metadata}>
   {
       article.data.featuredImage && (
-          <section class="article__featured__image-wrapper">
+          <section class="article__featured-image-wrapper">
               <Picture
                   src={`https:${article.data.featuredImage.url}`}
                   width={article.data.featuredImage.details.width}
@@ -68,7 +66,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
                   loading="eager"
                   fetchpriority="high"
                   decoding="async"
-                  class="article__featured__image"
+                  class="article__featured-image"
                   pictureAttributes={{ style: 'display:block;width:100%' }}
                   transition:name=`featured-image-${article.data.slug}`
               />

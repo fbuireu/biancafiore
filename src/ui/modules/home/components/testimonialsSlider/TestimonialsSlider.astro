@@ -1,112 +1,106 @@
 ---
+import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
-import DoubleQuote from "@assets/images/svg/double-quote.svg";
 import SliderShell from "@modules/core/components/sliderShell/SliderShell.astro";
-import "../testimonial/testimonial-styles.css";
 import "./testimonials-slider.css";
-import { Image } from 'astro:assets';
 
 interface Props {
 	testimonials: CollectionEntry<"testimonials">[];
 }
 
 const { testimonials } = Astro.props;
-
-const arrowPoints =
-	"24 12.001 2.914 12.001 8.208 6.706 7.501 5.999 1 12.501 7.5 19.001 8.207 18.294 2.914 13.001 24 13.001 24 12.001";
 ---
 
-<div class="testimonials__wrapper common-wrapper">
-	<SliderShell class="testimonials__slider">
+<div class="testimonials__carousel">
+	<SliderShell class="testimonials__slider" showTrack={false}>
 		{
 			testimonials.map((testimonial) => (
-				<li class="slider__slide">
-					<article class="testimonial__content">
-						<Image
-							class="testimonial__image"
-							src={testimonial.data.image.url}
-							alt={testimonial.data.author}
-							width={testimonial.data.image.details.width}
-							height={testimonial.data.image.details.height}
-						/>
-						<div class="testimonial__quote-wrapper">
-							<DoubleQuote class="testimonial__quote-symbol" />
-							<blockquote class="testimonial__quote">{testimonial.data.quote}</blockquote>
-						</div>
-						<h5 class="testimonial__author font-serif">{testimonial.data.author}</h5>
-						<p class="testimonial__description">{testimonial.data.role}</p>
-					</article>
+				<li class="slider__slide testimonials__slide">
+					<figure class="testimonial">
+						<blockquote class="testimonial__quote">{testimonial.data.quote}</blockquote>
+						<figcaption class="testimonial__attribution">
+							<Image
+								class="testimonial__avatar"
+								src={testimonial.data.image.url}
+								alt={testimonial.data.author}
+								width={testimonial.data.image.details.width}
+								height={testimonial.data.image.details.height}
+							/>
+							<span class="testimonial__identity">
+								<span class="testimonial__author">{testimonial.data.author}</span>
+								<span class="editorial-meta testimonial__role">{testimonial.data.role}</span>
+							</span>
+						</figcaption>
+					</figure>
 				</li>
 			))
 		}
 	</SliderShell>
-
 	<nav class="testimonials__nav" aria-label="Testimonials navigation">
-		<button
-			class="testimonials__nav__button --is-left --is-clickable"
-			type="button"
-			aria-label="Previous Testimonial"
-		>
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" aria-hidden="true">
-				<polygon
-					points={arrowPoints}
-					fill="currentColor"
-					stroke="currentColor"
-					stroke-width="0.25"
-				/>
-			</svg>
+		<button class="slider__btn testimonials__nav__arrow --is-prev" type="button" aria-label="Previous testimonial">
+			←
 		</button>
-		<button
-			class="testimonials__nav__button --is-right --is-clickable"
-			type="button"
-			aria-label="Next Testimonial"
-		>
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" aria-hidden="true">
-				<polygon
-					points={arrowPoints}
-					fill="currentColor"
-					stroke="currentColor"
-					stroke-width="0.25"
+		{
+			testimonials.map((testimonial, index) => (
+				<button
+					class:list={["testimonials__nav__dash --is-clickable", { "--is-active": index === 0 }]}
+					type="button"
+					data-index={index}
+					aria-label={`Go to testimonial by ${testimonial.data.author}`}
 				/>
-			</svg>
+			))
+		}
+		<button class="slider__btn testimonials__nav__arrow --is-next" type="button" aria-label="Next testimonial">
+			→
 		</button>
 	</nav>
 </div>
 
 <script>
-	document.querySelectorAll<HTMLElement>(".testimonials__wrapper").forEach((wrapper) => {
-		const track = wrapper.querySelector<HTMLElement>(".slider__track");
-		if (!track) return;
+	document.addEventListener("astro:page-load", () => {
+		document.querySelectorAll<HTMLElement>(".testimonials__carousel").forEach((carousel) => {
+			const track = carousel.querySelector<HTMLElement>(".slider__track");
+			if (!track) return;
 
-		const slides = Array.from(track.querySelectorAll<HTMLElement>(".slider__slide"));
-		const prev = wrapper.querySelector<HTMLButtonElement>(".--is-left");
-		const next = wrapper.querySelector<HTMLButtonElement>(".--is-right");
+			const slides = Array.from(track.querySelectorAll<HTMLElement>(".slider__slide"));
+			const dashes = Array.from(carousel.querySelectorAll<HTMLButtonElement>(".testimonials__nav__dash"));
 
-		const getActiveIndex = (): number =>
-			slides.reduce((best, slide, i) => {
-				const center = track.scrollLeft + track.clientWidth / 2;
-				const dist = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - center);
-				const bestDist = Math.abs(
-					slides[best].offsetLeft + slides[best].offsetWidth / 2 - center
+			const distanceToCenter = (slide: HTMLElement): number => {
+				const trackRect = track.getBoundingClientRect();
+				const slideRect = slide.getBoundingClientRect();
+
+				return Math.abs(slideRect.left + slideRect.width / 2 - (trackRect.left + trackRect.width / 2));
+			};
+
+			const getActiveIndex = (): number =>
+				slides.reduce(
+					(closest, slide, index) => (distanceToCenter(slide) < distanceToCenter(slides[closest]) ? index : closest),
+					0,
 				);
-				return dist < bestDist ? i : best;
-			}, 0);
 
-		const scrollToSlide = (index: number): void => {
-			const slide = slides.at(index);
-			if (!slide) return;
-			const targetLeft = slide.offsetLeft + slide.offsetWidth / 2 - track.clientWidth / 2;
-			track.scrollTo({ left: targetLeft, behavior: "smooth" });
-		};
+			const setActiveDash = (activeIndex: number): void => {
+				dashes.forEach((dash, index) => dash.classList.toggle("--is-active", index === activeIndex));
+			};
 
-		prev?.addEventListener("click", () => {
-			const idx = getActiveIndex();
-			scrollToSlide(idx <= 0 ? slides.length - 1 : idx - 1);
-		});
+			const goTo = (index: number): void => {
+				const target = (index + slides.length) % slides.length;
 
-		next?.addEventListener("click", () => {
-			const idx = getActiveIndex();
-			scrollToSlide(idx >= slides.length - 1 ? 0 : idx + 1);
+				slides.at(target)?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+				setActiveDash(target);
+			};
+
+			dashes.forEach((dash, index) => {
+				dash.addEventListener("click", () => goTo(index));
+			});
+
+			carousel
+				.querySelector<HTMLButtonElement>(".testimonials__nav__arrow.--is-prev")
+				?.addEventListener("click", () => goTo(getActiveIndex() - 1));
+			carousel
+				.querySelector<HTMLButtonElement>(".testimonials__nav__arrow.--is-next")
+				?.addEventListener("click", () => goTo(getActiveIndex() + 1));
+
+			track.addEventListener("scroll", () => setActiveDash(getActiveIndex()), { passive: true });
 		});
 	});
 </script>

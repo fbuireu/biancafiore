@@ -1,0 +1,179 @@
+@property --swing-x {
+	syntax: "<integer>";
+	initial-value: 0;
+	inherits: false;
+}
+
+@property --swing-y {
+	syntax: "<integer>";
+	initial-value: 0;
+	inherits: false;
+}
+
+.error-404 {
+	--speed: 2s;
+	--ease-swing: linear(
+		0 0%,
+		0.0036 9.62%,
+		0.0185 16.66%,
+		0.0489 23.03%,
+		0.0962 28.86%,
+		0.1705 34.93%,
+		0.269 40.66%,
+		0.3867 45.89%,
+		0.5833 52.95%,
+		0.683 57.05%,
+		0.7829 62.14%,
+		0.8621 67.46%,
+		0.8991 70.68%,
+		0.9299 74.03%,
+		0.9545 77.52%,
+		0.9735 81.21%,
+		0.9865 85%,
+		0.9949 89.15%,
+		1 100%
+	);
+	--lit: oklch(99% 0.02 90);
+	--dim: var(--gold);
+	--shadow: hsl(30 12% 3% / 0.9);
+	--veil: hsl(30 12% 3% / 0.94);
+	--text: oklch(94% 0.03 88);
+
+	gap: 2.5rem;
+	height: auto;
+	min-height: 100dvh;
+	justify-content: flex-start;
+	padding-block: 3rem;
+	translate: none;
+}
+
+.error-404__stage {
+	display: flex;
+	justify-content: center;
+	perspective: 1200px;
+}
+
+.error-404__title {
+	--x: calc(50% + (var(--swing-x) * 0.5) * 1%);
+	position: relative;
+	margin: 0;
+	font-family: var(--font-display);
+	font-size: clamp(5rem, 40vmin, 20rem);
+	line-height: 1.1;
+	letter-spacing: 1rem;
+	text-box: normal;
+	padding-block-start: 0.1em;
+	transform-style: preserve-3d;
+	transform: translate3d(0, 0, 0vmin);
+	background: radial-gradient(var(--lit), var(--dim) 45%) var(--x) 100% / 200% 200%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	animation: error-404-swing var(--speed) infinite alternate var(--ease-swing);
+}
+
+.error-404__title span {
+	position: absolute;
+	top: 0;
+	left: 0;
+	color: var(--shadow);
+	filter: blur(1.5vmin);
+	transform: scale(1.05) translate3d(0, 12%, -10vmin)
+		translate(calc((var(--swing-x) * 0.05) * 1%), calc((var(--swing-y) * -0.025) * 1%));
+	animation: error-404-swing var(--speed) infinite alternate var(--ease-swing);
+}
+
+.error-404__cloak-wrapper {
+	position: fixed;
+	inset: 0;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.error-404__cloak-container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 250vmax;
+	width: 250vmax;
+	transform: translate(-50%, -50%);
+}
+
+.error-404__cloak {
+	height: 100%;
+	width: 100%;
+	transform-origin: 50% 25%;
+	transform: rotate(calc(var(--swing-x) * -0.25deg));
+	background: radial-gradient(40% 40% at 50% calc(42% + (var(--swing-y) * 0.01%)), transparent, var(--veil) 38vmax);
+	animation: error-404-swing var(--speed) infinite alternate-reverse var(--ease-swing);
+}
+
+.error-404__info {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+	width: 44ch;
+	max-width: calc(100% - 2rem);
+	line-height: 1.6;
+	text-align: center;
+}
+
+.error-404__info p {
+	--x: calc(50% + (var(--swing-x) * 0.5) * 1%);
+	margin: 0;
+	font-family: var(--font-serif);
+	font-weight: 300;
+	background: radial-gradient(
+		50% 250% at var(--x) -50%,
+		var(--text),
+		color-mix(in oklch, var(--text), transparent 55%)
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	animation: error-404-swing var(--speed) infinite alternate-reverse var(--ease-swing);
+}
+
+.error-404__link {
+	align-self: center;
+	color: var(--gold-bright);
+	font-family: var(--font-sans-serif);
+	font-size: 0.9375rem;
+	letter-spacing: 0.02em;
+}
+
+.error-404__arrow {
+	display: inline-block;
+	transition: translate 0.3s var(--ease-swing);
+}
+
+.error-404__link:is(:hover, :focus-visible) .error-404__arrow {
+	translate: -4px 0;
+}
+
+@keyframes error-404-swing {
+	0% {
+		--swing-x: -100;
+		--swing-y: -100;
+	}
+
+	50% {
+		--swing-y: 0;
+	}
+
+	100% {
+		--swing-x: 100;
+		--swing-y: -100;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.error-404__title,
+	.error-404__title span,
+	.error-404__cloak,
+	.error-404__info p {
+		animation: none;
+	}
+}

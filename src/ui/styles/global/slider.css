@@ -1,5 +1,5 @@
 @layer global {
-	.slider__wrapper {
+	.slider-wrapper {
 		&[data-has-buttons="true"] {
 			align-items: center;
 			display: grid;
@@ -95,10 +95,7 @@
 		flex-shrink: 0;
 		height: auto;
 		scroll-snap-align: start;
-		width: calc(
-			(100% - (var(--slides-per-view) - 1) * var(--slider-gap, 2rem)) /
-				var(--slides-per-view)
-		);
+		width: calc((100% - (var(--slides-per-view) - 1) * var(--slider-gap, 2rem)) / var(--slides-per-view));
 
 		&::scroll-marker {
 			background-color: var(--neutral-light-1);

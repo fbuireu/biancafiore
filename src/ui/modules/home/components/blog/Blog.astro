@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+import { PAGES_ROUTES } from "@const/index";
+import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
+import "./blog.css";
+
+interface Props {
+	limit?: number;
+}
+
+const MAX_ARTICLES = 3;
+
+const { limit = MAX_ARTICLES } = Astro.props;
+
+const articles = (await getCollection("articles")).slice(0, limit);
+---
+<section class="blog --inverted-color-scheme">
+    <div class="blog__inner">
+        <h2 class="blog__title editorial-section-title">
+            Fresh from <a class="blog__title__link --is-clickable --underline-on-hover"
+                          href={PAGES_ROUTES.ARTICLES}>the Blog</a>
+        </h2>
+        <ul class="blog__list">
+          {articles.map((article) => (
+              <li class="blog__item item-wrapper">
+                  <ArticleCard {...article} />
+              </li>
+          ))}
+        </ul>
+        <div class="blog__footer">
+            <a class="editorial-cta" href={PAGES_ROUTES.ARTICLES}>
+                All articles <span class="editorial-cta__arrow" aria-hidden="true">→</span>
+            </a>
+        </div>
+        <script is:inline type="application/ld+json" set:html={JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          'itemListElement': articles.map(({ data: { slug } }, index) => ({
+            '@type': 'ListItem',
+            'position': index + 1,
+            'url': new URL(slug, Astro.url).href,
+          })),
+        })} />
+    </div>
+</section>

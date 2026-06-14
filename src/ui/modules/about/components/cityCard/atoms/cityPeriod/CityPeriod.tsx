@@ -6,5 +6,5 @@ export interface CityPeriodProps {
 }
 
 export const CityPeriod = ({ children }: CityPeriodProps) => (
-	<h4 className="city-card__content__period font-serif">{children}</h4>
+	<h4 className="city-card__content__period editorial-meta --gold">{children}</h4>
 );

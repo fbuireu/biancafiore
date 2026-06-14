@@ -1,46 +1,54 @@
-.about-me-intro-wrapper {
+.about-intro {
+	padding-block: 90px 0;
+
+	@container about-page (width <= 960px) {
+		padding-block: 56px 0;
+	}
+}
+
+.about-intro__inner {
+	margin-inline: auto;
+	max-width: 1180px;
+	padding-inline: clamp(1.25rem, 5cqi, 64px);
+}
+
+.about-intro__eyebrow {
+	margin-block-end: 24px;
+}
+
+.about-intro__grid {
+	align-items: start;
 	display: grid;
-	gap: 0 10%;
-	grid: "About-Text About-Image" 1fr / 1fr 1fr;
+	gap: 56px;
+	grid-template-columns: 1.4fr 0.6fr;
 
 	@container about-page (width <= 960px) {
-		gap: 0;
-		grid:
-			"About-Text" min-content
-			"About-Image" 1fr / 1fr;
+		gap: 40px;
+		grid-template-columns: 1fr;
 	}
 }
 
-.about-me-intro__section.--left {
-	gap: 2rem 0;
-	grid-area: About-Text;
+.about-intro__title {
+	font-family: var(--font-display);
+	font-size: clamp(40px, 6cqi, 64px);
+	font-weight: 400;
+	letter-spacing: -0.01em;
+	line-height: 1.02;
+	margin: 0;
+	text-transform: none;
+	text-wrap: balance;
 }
 
-.about-me-intro__section.--right {
-	gap: 2rem 0;
-	grid-area: About-Image;
-
-	@container about-page (width <= 960px) {
-		padding: 0 1rem;
-	}
+.about-intro__aside {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
 }
 
-.about-me-intro__title {
-	text-transform: uppercase;
-
-	@container about-page (width <= 1440px) {
-		padding-inline-start: 3rem;
-	}
-	@container about-page (width <= 960px) {
-		padding-inline-start: 1rem;
-	}
-}
-
-.about-me-intro__body {
-	gap: 2rem 0;
-	padding-inline-start: 3rem;
-
-	@container about-page (width <= 960px) {
-		padding-inline-start: 1rem;
-	}
+.about-intro__portrait {
+	aspect-ratio: 3 / 4;
+	border: 1px solid var(--line);
+	height: auto;
+	object-fit: cover;
+	width: 100%;
 }

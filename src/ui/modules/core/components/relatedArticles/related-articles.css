@@ -1,12 +1,20 @@
-.related-articles-wrapper {
-	margin: 6rem auto;
+.related-articles {
+	background-color: var(--neutral-main);
+	margin-block: 6rem;
+	padding-block: 4rem;
 
 	@container article-page (width <= 960px) {
-		margin: 4rem auto;
+		margin-block: 4rem;
+		padding-block: 3rem;
 	}
 }
 
+.related-articles-wrapper {
+	margin-inline: auto;
+}
+
 .related-articles__title {
+	color: var(--ink);
 	margin-block-end: 2rem;
 }
 

@@ -1,0 +1,35 @@
+---
+import { PAGES_ROUTES } from "@const/index";
+import "./what-i-do.css";
+
+const DISCIPLINES = ["Creative direction", "Editorial & reports", "Impact storytelling", "Web content & copy"];
+---
+<section class="what-i-do common-wrapper">
+    <div class="what-i-do__inner">
+        <div class="what-i-do__disciplines">
+            <p class="editorial-eyebrow">What I do</p>
+            <hr class="what-i-do__rule" />
+            <ul class="what-i-do__list">
+              {DISCIPLINES.map((discipline) => <li class="what-i-do__list__item">{discipline}</li>)}
+            </ul>
+        </div>
+        <div class="what-i-do__bio">
+            <p class="what-i-do__lede">
+                For over ten years I've worked at the intersection of journalism, brand and social change — turning
+                complex missions into stories people remember.
+            </p>
+            <p class="what-i-do__body">
+                My work has spanned flagship reports, brand worlds and human features for organisations across climate,
+                justice and culture. Whatever the format, the brief is the same: make it true, make it clear, make it
+                move.
+            </p>
+            <p class="what-i-do__body">
+                When I'm not writing you'll find me chasing good light, slow mornings and the kind of conversations that
+                change your mind.
+            </p>
+            <a class="editorial-cta what-i-do__cta" href={PAGES_ROUTES.CONTACT}>
+                Say hello <span class="editorial-cta__arrow" aria-hidden="true">→</span>
+            </a>
+        </div>
+    </div>
+</section>

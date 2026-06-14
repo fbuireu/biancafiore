@@ -60,7 +60,7 @@
 	}
 }
 
-.article-details__featured__image {
+.article-details__featured-image {
 	max-height: 60dvh;
 	object-fit: cover;
 }
