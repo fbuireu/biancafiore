@@ -1,10 +1,10 @@
 .related-articles {
 	background-color: var(--neutral-main);
-	margin-block: 6rem;
+	margin-block: 6rem 0;
 	padding-block: 4rem;
 
 	@container article-page (width <= 960px) {
-		margin-block: 4rem;
+		margin-block: 4rem 0;
 		padding-block: 3rem;
 	}
 }
