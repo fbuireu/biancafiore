@@ -44,7 +44,8 @@
     {
       "matchUpdateTypes": [
         "pin",
-        "pinDigest"
+        "pinDigest",
+        "digest"
       ],
       "automerge": true,
       "automergeType": "pr",
