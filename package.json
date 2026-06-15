@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "13.6.1",
-    "@astrojs/compiler-rs": "0.2.1",
+    "@astrojs/compiler-rs": "0.2.2",
     "@astrojs/db": "https://pkg.pr.new/@astrojs/db@3ade645",
     "@astrojs/react": "5.0.7",
     "@astrojs/rss": "4.0.18",
