@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/fbuireu/biancafiore/compare/v1.6.1...v1.6.2) (2026-06-15)
+
+
+### Bug Fixes
+
+* **security:** resolve CodeQL and zizmor alerts ([43dfe2a](https://github.com/fbuireu/biancafiore/commit/43dfe2a0052b18f4106bd7ad5f374ffa9b608984)), closes [#59](https://github.com/fbuireu/biancafiore/issues/59) [124-#135](https://github.com/124-/issues/135)
+
 ## [1.6.1](https://github.com/fbuireu/biancafiore/compare/v1.6.0...v1.6.1) (2026-06-14)
 
 
