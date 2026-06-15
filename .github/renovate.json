@@ -14,7 +14,7 @@
   "schedule": [
     "on the 1st and 15th day of the month"
   ],
-  "minimumReleaseAge": "3 days",
+  "minimumReleaseAge": "4 days",
   "rangeStrategy": "pin",
   "pinDigests": true,
   "automergeStrategy": "squash",
