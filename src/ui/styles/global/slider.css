@@ -1,4 +1,30 @@
 @layer global {
+	.slider__track {
+		align-items: stretch;
+		display: flex;
+		gap: var(--slider-gap, 2rem);
+		list-style: none;
+		margin: 0;
+		overflow-x: auto;
+		padding: 0;
+		scroll-behavior: smooth;
+		scroll-snap-type: x mandatory;
+		scroll-marker-group: after;
+		scrollbar-width: none;
+
+		@media (prefers-reduced-motion: reduce) {
+			scroll-behavior: auto;
+		}
+
+		&::scroll-marker-group {
+			align-items: center;
+			display: flex;
+			gap: 0 0.7rem;
+			justify-content: center;
+			padding-block: 2rem;
+		}
+	}
+
 	.slider-wrapper {
 		&[data-has-buttons="true"] {
 			align-items: center;
@@ -61,33 +87,6 @@
 		&:disabled {
 			cursor: not-allowed;
 			opacity: 0.3;
-		}
-	}
-
-	/* biome-ignore lint/style/noDescendingSpecificity: intentional cascade order */
-	.slider__track {
-		align-items: stretch;
-		display: flex;
-		gap: var(--slider-gap, 2rem);
-		list-style: none;
-		margin: 0;
-		overflow-x: auto;
-		padding: 0;
-		scroll-behavior: smooth;
-		scroll-snap-type: x mandatory;
-		scroll-marker-group: after;
-		scrollbar-width: none;
-
-		@media (prefers-reduced-motion: reduce) {
-			scroll-behavior: auto;
-		}
-
-		&::scroll-marker-group {
-			align-items: center;
-			display: flex;
-			gap: 0 0.7rem;
-			justify-content: center;
-			padding-block: 2rem;
 		}
 	}
 

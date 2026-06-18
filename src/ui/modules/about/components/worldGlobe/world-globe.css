@@ -29,6 +29,28 @@ canvas {
 	z-index: 100;
 }
 
+.world-globe__controls {
+	gap: 0 3rem;
+}
+
+.world-globe__zoom-wrapper {
+	--size: 2rem;
+}
+
+.world-globe__direction-wrapper {
+	--size: 3rem;
+}
+
+.world-globe__direction-wrapper,
+.world-globe__zoom-wrapper {
+	gap: 0 1rem;
+
+	svg {
+		height: var(--size);
+		width: var(--size);
+	}
+}
+
 .marker-wrapper {
 	color: var(--primary-dark-1);
 	cursor: pointer;
@@ -53,29 +75,6 @@ canvas {
 		svg {
 			rotate: 0.5turn;
 		}
-	}
-}
-
-.world-globe__controls {
-	gap: 0 3rem;
-}
-
-.world-globe__zoom-wrapper {
-	--size: 2rem;
-}
-
-.world-globe__direction-wrapper {
-	--size: 3rem;
-}
-
-.world-globe__direction-wrapper,
-.world-globe__zoom-wrapper {
-	gap: 0 1rem;
-
-	/* biome-ignore lint/style/noDescendingSpecificity: svg is a different element per wrapper, cascade is intentional */
-	svg {
-		height: var(--size);
-		width: var(--size);
 	}
 }
 
