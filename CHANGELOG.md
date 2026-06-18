@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/fbuireu/biancafiore/compare/v1.6.2...v1.6.3) (2026-06-18)
+
+
+### Bug Fixes
+
+* **lint:** silence intentional noDescendingSpecificity warnings ([a7fea16](https://github.com/fbuireu/biancafiore/commit/a7fea1643593caf66c9d94daef9dca928bc62279))
+
 ## [1.6.2](https://github.com/fbuireu/biancafiore/compare/v1.6.1...v1.6.2) (2026-06-18)
 
 
