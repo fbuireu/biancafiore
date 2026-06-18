@@ -100,6 +100,7 @@
 	}
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: intentional cascade order */
 .my-work__name {
 	font-family: var(--font-display);
 	font-size: clamp(26px, 3.13cqi, 40px);

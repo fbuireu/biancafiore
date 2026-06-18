@@ -213,6 +213,7 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.article-card__featured-image,
+	/* biome-ignore lint/style/noDescendingSpecificity: reduced-motion reset intentionally overrides earlier rules */
 	.article-card__media::after,
 	.article-card__arrow,
 	.article-card__excerpt,

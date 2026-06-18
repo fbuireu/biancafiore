@@ -106,6 +106,7 @@
 			}
 		}
 
+		/* biome-ignore lint/style/noDescendingSpecificity: intentional cascade, follows hover-scoped rule */
 		& .editorial-cta__arrow {
 			font-family: var(--font-serif);
 			font-size: 16px;
@@ -115,6 +116,7 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		.editorial-cta::after,
+		/* biome-ignore lint/style/noDescendingSpecificity: reduced-motion reset intentionally overrides earlier rules */
 		.editorial-cta .editorial-cta__arrow {
 			transition: none;
 		}

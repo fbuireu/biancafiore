@@ -85,6 +85,7 @@ html.--is-article {
 		line-height: var(--rhythm);
 	}
 
+	/* biome-ignore lint/style/noDescendingSpecificity: intentional cascade, overrides earlier link rules */
 	:is(p, li, blockquote) a {
 		display: inline;
 		overflow-wrap: anywhere;
@@ -227,6 +228,7 @@ html.--is-article {
 		display: none;
 	}
 
+	/* biome-ignore lint/style/noDescendingSpecificity: hover state intentionally follows base rule */
 	&:hover {
 		color: var(--primary-main);
 
