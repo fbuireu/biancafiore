@@ -198,7 +198,6 @@ html.--is-article {
 			color: var(--primary-main);
 		}
 
-		/* biome-ignore lint/style/noDescendingSpecificity: q pseudo-elements target different element than preceding a::after */
 		&::after {
 			content: "\201D";
 			color: var(--primary-main);
