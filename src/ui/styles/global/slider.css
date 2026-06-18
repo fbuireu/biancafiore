@@ -64,6 +64,7 @@
 		}
 	}
 
+	/* biome-ignore lint/style/noDescendingSpecificity: intentional cascade order */
 	.slider__track {
 		align-items: stretch;
 		display: flex;

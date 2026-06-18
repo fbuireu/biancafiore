@@ -26,6 +26,7 @@
 		}
 	}
 
+	/* biome-ignore lint/style/noDescendingSpecificity: intentional cascade order */
 	.--underline-on-hover {
 		--border-width: 1px;
 		border: none;
