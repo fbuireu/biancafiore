@@ -8,6 +8,20 @@
 * **deps:** update dependency @astrojs/compiler-rs to v0.2.2 ([#1106](https://github.com/fbuireu/biancafiore/issues/1106)) ([94f765f](https://github.com/fbuireu/biancafiore/commit/94f765fcd5e35747df0da7ec8b4d146344782fd7))
 * **deps:** update dependency contentful to v11.12.5 ([#1107](https://github.com/fbuireu/biancafiore/issues/1107)) ([227ec91](https://github.com/fbuireu/biancafiore/commit/227ec91ad694277f85e1d385091bae1f9e61068a))
 * **deps:** update dependency react-hook-form to v7.79.0 ([#1113](https://github.com/fbuireu/biancafiore/issues/1113)) ([0c5407a](https://github.com/fbuireu/biancafiore/commit/0c5407ad52bd3b7ba3b2ac718dae2e74dbdd8feb))
+* **lint:** resolve Biome 2.5.0 lint errors ([02c7699](https://github.com/fbuireu/biancafiore/commit/02c769901bb5e2144535c3b719ad91151938eeec))
+* remove related-articles bottom margin ([eaccd2b](https://github.com/fbuireu/biancafiore/commit/eaccd2bafe52bc16ef453cc306a7382b1197bc58))
+* **security:** resolve CodeQL and zizmor alerts ([9723c6c](https://github.com/fbuireu/biancafiore/commit/9723c6cf7a4f8efa3b4fb76cc4b9aff7d3f2ffa9)), closes [#59](https://github.com/fbuireu/biancafiore/issues/59) [124-#135](https://github.com/124-/issues/135)
+
+## [1.6.2](https://github.com/fbuireu/biancafiore/compare/v1.6.1...v1.6.2) (2026-06-18)
+
+
+### Bug Fixes
+
+* allow YouTube embeds via CSP frame-src ([dee36b3](https://github.com/fbuireu/biancafiore/commit/dee36b3132b804609580477ddbffac94b94429ed))
+* **deps:** update astro monorepo ([#1112](https://github.com/fbuireu/biancafiore/issues/1112)) ([8408932](https://github.com/fbuireu/biancafiore/commit/8408932fc12c3a9997b5d86e48fe811c2a82b3ec))
+* **deps:** update dependency @astrojs/compiler-rs to v0.2.2 ([#1106](https://github.com/fbuireu/biancafiore/issues/1106)) ([94f765f](https://github.com/fbuireu/biancafiore/commit/94f765fcd5e35747df0da7ec8b4d146344782fd7))
+* **deps:** update dependency contentful to v11.12.5 ([#1107](https://github.com/fbuireu/biancafiore/issues/1107)) ([227ec91](https://github.com/fbuireu/biancafiore/commit/227ec91ad694277f85e1d385091bae1f9e61068a))
+* **deps:** update dependency react-hook-form to v7.79.0 ([#1113](https://github.com/fbuireu/biancafiore/issues/1113)) ([0c5407a](https://github.com/fbuireu/biancafiore/commit/0c5407ad52bd3b7ba3b2ac718dae2e74dbdd8feb))
 * **lint:** resolve Biome 2.5.0 lint errors ([4187ce0](https://github.com/fbuireu/biancafiore/commit/4187ce09f56e112c1d79c9471ace2e41fb07abb4))
 * remove related-articles bottom margin ([eaccd2b](https://github.com/fbuireu/biancafiore/commit/eaccd2bafe52bc16ef453cc306a7382b1197bc58))
 * **security:** resolve CodeQL and zizmor alerts ([9723c6c](https://github.com/fbuireu/biancafiore/commit/9723c6cf7a4f8efa3b4fb76cc4b9aff7d3f2ffa9)), closes [#59](https://github.com/fbuireu/biancafiore/issues/59) [124-#135](https://github.com/124-/issues/135)
