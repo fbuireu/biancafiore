@@ -50,6 +50,22 @@
 	}
 }
 
+.my-work__name {
+	font-family: var(--font-display);
+	font-size: clamp(26px, 3.13cqi, 40px);
+	font-weight: 400;
+	letter-spacing: -0.005em;
+	line-height: 1.04;
+	margin: 0;
+	transition:
+		color 0.3s,
+		translate 0.3s var(--ease-elastic, ease);
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: color 0.3s;
+	}
+}
+
 .my-work__summary {
 	align-items: center;
 	cursor: pointer;
@@ -97,23 +113,6 @@
 		gap: 16px;
 		grid-template-columns: 40px 1fr auto;
 		padding-block: 22px;
-	}
-}
-
-/* biome-ignore lint/style/noDescendingSpecificity: intentional cascade order */
-.my-work__name {
-	font-family: var(--font-display);
-	font-size: clamp(26px, 3.13cqi, 40px);
-	font-weight: 400;
-	letter-spacing: -0.005em;
-	line-height: 1.04;
-	margin: 0;
-	transition:
-		color 0.3s,
-		translate 0.3s var(--ease-elastic, ease);
-
-	@media (prefers-reduced-motion: reduce) {
-		transition: color 0.3s;
 	}
 }
 

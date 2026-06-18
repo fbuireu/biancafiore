@@ -19,11 +19,6 @@
 	cursor: pointer;
 	--theme-toggle-animation-duration: 500ms;
 
-	&:hover .theme_toggle_inner {
-		scale: 1.1;
-	}
-
-	/* biome-ignore lint/style/noDescendingSpecificity: base inner styles intentionally follow the hover override */
 	.theme_toggle_inner {
 		fill: light-dark(var(--primary-main), var(--white));
 		height: 2rem;
@@ -78,5 +73,9 @@
 				transform: translate3d(-0.75rem, 1rem, 0);
 			}
 		}
+	}
+
+	&:hover .theme_toggle_inner {
+		scale: 1.1;
 	}
 }

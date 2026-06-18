@@ -94,6 +94,12 @@
 			transition: scale 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 		}
 
+		& .editorial-cta__arrow {
+			font-family: var(--font-serif);
+			font-size: 16px;
+			transition: translate 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+		}
+
 		&:hover {
 			color: var(--gold);
 
@@ -105,18 +111,10 @@
 				translate: 4px 0;
 			}
 		}
-
-		/* biome-ignore lint/style/noDescendingSpecificity: intentional cascade, follows hover-scoped rule */
-		& .editorial-cta__arrow {
-			font-family: var(--font-serif);
-			font-size: 16px;
-			transition: translate 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
-		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.editorial-cta::after,
-		/* biome-ignore lint/style/noDescendingSpecificity: reduced-motion reset intentionally overrides earlier rules */
 		.editorial-cta .editorial-cta__arrow {
 			transition: none;
 		}

@@ -11,22 +11,6 @@
 		color-scheme: light;
 	}
 
-	.--is-clickable:not(canvas):not(:disabled) {
-		cursor: pointer;
-		transition: scale 0.2s;
-
-		&:active {
-			scale: 0.9;
-		}
-
-		&.--underline-on-hover {
-			transition:
-				background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955),
-				scale 0.2s;
-		}
-	}
-
-	/* biome-ignore lint/style/noDescendingSpecificity: intentional cascade order */
 	.--underline-on-hover {
 		--border-width: 1px;
 		border: none;
@@ -49,6 +33,21 @@
 
 		&.--is-active {
 			background-size: 100% var(--border-width);
+		}
+	}
+
+	.--is-clickable:not(canvas):not(:disabled) {
+		cursor: pointer;
+		transition: scale 0.2s;
+
+		&:active {
+			scale: 0.9;
+		}
+
+		&.--underline-on-hover {
+			transition:
+				background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955),
+				scale 0.2s;
 		}
 	}
 }
