@@ -9,53 +9,20 @@ html.--is-article {
 	object-fit: cover;
 }
 
-.article-masthead {
-	position: relative;
-	z-index: 2;
-	view-transition-name: article-masthead;
-	width: min(var(--grid-article), 100% - 2rem);
-	margin-inline: auto;
-	padding-block: 40px 0;
-	background: var(--background-main);
-	text-align: center;
+.article__heading {
+	gap: 0 0.5rem;
+	scroll-margin-block-start: var(--header-height);
 
-	&.--has-featured {
-		margin-block-start: -64px;
+	svg {
+		display: none;
 	}
 
-	&:not(.--has-featured) {
-		margin-block-start: calc(var(--header-height) + 1rem);
-	}
+	&:hover {
+		color: var(--primary-main);
 
-	.breadcrumbs__list {
-		display: block;
-		max-width: none;
-		margin: 0 0 18px;
-		padding: 0;
-		overflow: visible;
-		font-size: 0.6875rem;
-		line-height: 1.5;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-	}
-
-	.breadcrumb__item {
-		display: inline;
-	}
-
-	.breadcrumb__item a {
-		display: inline-block;
-	}
-
-	.breadcrumb__item span {
-		margin-inline: 0.5ch;
-	}
-
-	@container article-page (width <= 960px) {
-		padding-block: 32px 0;
-
-		&.--has-featured {
-			margin-block-start: -40px;
+		svg {
+			display: flex;
+			fill: var(--primary-main);
 		}
 	}
 }
@@ -85,7 +52,6 @@ html.--is-article {
 		line-height: var(--rhythm);
 	}
 
-	/* biome-ignore lint/style/noDescendingSpecificity: intentional cascade, overrides earlier link rules */
 	:is(p, li, blockquote) a {
 		display: inline;
 		overflow-wrap: anywhere;
@@ -159,6 +125,21 @@ html.--is-article {
 		margin-block-start: calc(var(--rhythm) / 2);
 	}
 
+	q {
+		font-style: italic;
+		color: var(--neutral-light-1);
+
+		&::before {
+			content: "\201C";
+			color: var(--primary-main);
+		}
+
+		&::after {
+			content: "\201D";
+			color: var(--primary-main);
+		}
+	}
+
 	blockquote {
 		border-inline-start: 2px solid var(--primary-main);
 		padding-inline: 1.75rem 0;
@@ -189,22 +170,6 @@ html.--is-article {
 		}
 	}
 
-	q {
-		font-style: italic;
-		color: var(--neutral-light-1);
-
-		/* biome-ignore lint/style/noDescendingSpecificity: q pseudo-elements target different element than preceding cite::before */
-		&::before {
-			content: "\201C";
-			color: var(--primary-main);
-		}
-
-		&::after {
-			content: "\201D";
-			color: var(--primary-main);
-		}
-	}
-
 	@supports (initial-letter: 2 2) {
 		& > p:first-of-type::first-letter {
 			initial-letter: 2 2;
@@ -220,21 +185,53 @@ html.--is-article {
 	}
 }
 
-.article__heading {
-	gap: 0 0.5rem;
-	scroll-margin-block-start: var(--header-height);
+.article-masthead {
+	position: relative;
+	z-index: 2;
+	view-transition-name: article-masthead;
+	width: min(var(--grid-article), 100% - 2rem);
+	margin-inline: auto;
+	padding-block: 40px 0;
+	background: var(--background-main);
+	text-align: center;
 
-	svg {
-		display: none;
+	&.--has-featured {
+		margin-block-start: -64px;
 	}
 
-	/* biome-ignore lint/style/noDescendingSpecificity: hover state intentionally follows base rule */
-	&:hover {
-		color: var(--primary-main);
+	&:not(.--has-featured) {
+		margin-block-start: calc(var(--header-height) + 1rem);
+	}
 
-		svg {
-			display: flex;
-			fill: var(--primary-main);
+	.breadcrumbs__list {
+		display: block;
+		max-width: none;
+		margin: 0 0 18px;
+		padding: 0;
+		overflow: visible;
+		font-size: 0.6875rem;
+		line-height: 1.5;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.breadcrumb__item {
+		display: inline;
+	}
+
+	.breadcrumb__item a {
+		display: inline-block;
+	}
+
+	.breadcrumb__item span {
+		margin-inline: 0.5ch;
+	}
+
+	@container article-page (width <= 960px) {
+		padding-block: 32px 0;
+
+		&.--has-featured {
+			margin-block-start: -40px;
 		}
 	}
 }
