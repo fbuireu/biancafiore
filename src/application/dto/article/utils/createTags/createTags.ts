@@ -1,9 +1,9 @@
+import type { ArticleResolver } from "@application/dto/article/types";
 import type { BaseTagDTO } from "@application/dto/tag/types";
-import type { Entry, EntrySkeletonType } from "contentful";
 
-export function createTags(tags: Array<Entry<EntrySkeletonType<BaseTagDTO>>> | undefined): BaseTagDTO[] {
-	return (tags ?? []).map((tag) => ({
-		name: (tag.fields.name as unknown as string).trim(),
-		slug: (tag.fields.slug as unknown as string).trim(),
+export function createTags(articleId: string, resolver?: ArticleResolver): BaseTagDTO[] {
+	return (resolver?.tagsByArticleId.get(articleId) ?? []).map((tag) => ({
+		name: tag.name.trim(),
+		slug: tag.slug.trim(),
 	}));
 }

@@ -1,10 +1,10 @@
 ---
-import { getCollection } from "astro:content";
 import { PAGES_ROUTES } from "@const/index";
+import { getArticles } from "@infrastructure/cms/content";
 import AboutLatestArticlesSlider from "../aboutLatestArticlesSlider/AboutLatestArticlesSlider.astro";
 import "./about-latest-articles.css";
 
-const articles = await getCollection("articles");
+const articles = await getArticles();
 ---
 <section class="about-latest-articles-wrapper common-wrapper">
     <h2 class="about-latest-articles__title editorial-section-title">

@@ -7,6 +7,9 @@ compatibility_date = "2026-03-12"
 directory = "dist"
 binding = "ASSETS"
 
+# EmDash uses Turso (libSQL over HTTP) for its database and R2 via the S3 API
+# for media, so it needs no D1/R2 Worker bindings — only credentials, supplied
+# as Worker secrets (see _deploy.yml / MIGRATION.md). KV `SESSION` stays.
 [[kv_namespaces]]
 binding = "SESSION"
 id = "c9f2626f1a4043c0aea8a75985bdc0a1"

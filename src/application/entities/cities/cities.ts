@@ -1,23 +1,12 @@
 import { defineCollection } from "astro:content";
-import { cityDTO } from "@application/dto/city";
-import type { RawCity } from "@application/dto/city/types";
 import { citiesSchema } from "@application/entities/cities/schema";
-import { createContentfulClient, isContentfulConfigured } from "@infrastructure/cms/client";
 
+/**
+ * Cities are served live via `getLiveCollection` (see `src/live.config.ts`).
+ * This build-time collection exists only to generate the
+ * `CollectionEntry<"cities">` types the UI components consume.
+ */
 export const cities = defineCollection({
-	loader: async () => {
-		if (!isContentfulConfigured()) return [];
-		const client = await createContentfulClient();
-		const { items: rawCities } = await client.getEntries<RawCity>({
-			content_type: "city",
-			order: ["fields.startDate"],
-		});
-		const cities = cityDTO.create(rawCities as unknown as RawCity[]);
-
-		return cities.map((city) => ({
-			id: city.name,
-			...city,
-		}));
-	},
+	loader: () => [],
 	schema: citiesSchema,
 });

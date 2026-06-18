@@ -1,49 +1,26 @@
 ---
-import { getCollection, getEntry } from "astro:content";
 import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
+import { getArticle, getTagGroups } from "@infrastructure/cms/content";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
-import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import "./_tag.css";
 
-type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-type TagParams = InferGetStaticParamsType<typeof getStaticPaths>;
+const { slug } = Astro.params;
+const groups = await getTagGroups();
+const matchedTag = groups.flatMap((group) => group.data.tags).find((entry) => entry.slug === slug);
 
-export const prerender = true;
-
-export async function getStaticPaths() {
-	const tags = await getCollection("tags");
-
-	return await Promise.all(
-		tags
-			.flatMap((tag) => tag.data.tags)
-			.map(async (tag) => {
-				const articles = await Promise.all(
-					tag.articles.map(async (article) => await getEntry(article.collection, article.id)),
-				);
-
-				return {
-					params: {
-						slug: tag.slug,
-					},
-					props: {
-						tag: {
-							...tag,
-							articles: articles
-								.filter((article): article is NonNullable<typeof article> => Boolean(article))
-								.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()),
-						},
-					},
-				};
-			}),
-	);
+if (!slug || !matchedTag) {
+	return Astro.rewrite("/404");
 }
 
-const { slug } = Astro.params as TagParams;
-const { tag } = Astro.props;
+const articles = (await Promise.all(matchedTag.articles.map((reference) => getArticle(reference.id))))
+	.filter((article): article is NonNullable<typeof article> => Boolean(article))
+	.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
+
+const tag = { ...matchedTag, articles };
 const metadata: Partial<SeoMetadata> = {
 	title: `#${slug}`,
 	description: `Articles tagged with #${slug}.`,

@@ -1,12 +1,12 @@
 import type { CollectionEntry } from "astro:content";
-import { getEntry } from "astro:content";
+import { getArticle } from "@infrastructure/cms/content";
 
 export async function getRelatedArticles(article: CollectionEntry<"articles">): Promise<CollectionEntry<"articles">[]> {
 	const relatedArticles: CollectionEntry<"articles">[] = [];
 
-	for (const { collection, id } of article.data.relatedArticles) {
-		const article = await getEntry(collection, id);
-		relatedArticles.push(...(article ? [article] : []));
+	for (const { id } of article.data.relatedArticles) {
+		const related = await getArticle(id);
+		relatedArticles.push(...(related ? [related] : []));
 	}
 
 	return relatedArticles;

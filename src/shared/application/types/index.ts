@@ -1,35 +1,61 @@
-import type { Asset } from "contentful";
+import type { PortableTextBlock } from "@portabletext/types";
 
-interface FileDetails {
-	image: {
-		width: number;
-		height: number;
-	};
-}
-
-interface AssetFile {
+/**
+ * Shape of an EmDash `image` field as returned by the content API.
+ * @see https://docs.emdashcms.com/reference/field-types/
+ */
+export interface EmDashImageField {
+	id: string;
 	url: string;
-	details: FileDetails;
+	alt?: string;
+	width: number;
+	height: number;
 }
 
-export type ContentfulImageAsset = Asset & {
-	fields: {
-		file: AssetFile;
+/**
+ * Shape of an EmDash `file` field as returned by the content API.
+ */
+export interface EmDashFileField {
+	id: string;
+	url: string;
+	filename: string;
+	mimeType: string;
+	size: number;
+}
+
+/**
+ * Generic EmDash entry returned by `getEmDashCollection` / `getEmDashEntry`.
+ * Fields live under `data`; EmDash also injects system fields (`slug`,
+ * `status`, `publishedAt`, `updatedAt`) into `data`.
+ * @see https://docs.emdashcms.com/guides/querying-content/
+ */
+export interface EmDashEntry<T> {
+	id: string;
+	data: T & {
+		slug?: string;
+		status?: EmDashStatus | "scheduled";
+		publishedAt?: string;
+		updatedAt?: string;
+		createdAt?: string;
 	};
-};
+}
+
+/** Status values accepted by the EmDash query API. */
+export type EmDashStatus = "draft" | "published" | "archived";
+
+export type { PortableTextBlock };
 
 export interface ImageFormats {
 	avif: boolean;
 	webp: boolean;
 }
 
-export interface ContenfulLocation {
-	fields: {
-		coordinates: {
-			lat: number;
-			lon: number;
-		};
-	};
+/**
+ * Coordinates as stored in a `json` field on the EmDash `cities` collection.
+ */
+export interface GeoCoordinates {
+	lat: number;
+	lon: number;
 }
 
 export interface Reference<T> {

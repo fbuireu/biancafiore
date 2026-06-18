@@ -1,24 +1,14 @@
 import { defineCollection, reference } from "astro:content";
-import { z } from "astro/zod";
-import { authorDTO } from "@application/dto/author";
-import type { RawAuthor } from "@application/dto/author/types";
 import { authorSchema } from "@application/entities/authors/schema";
-import { createContentfulClient, isContentfulConfigured } from "@infrastructure/cms/client";
+import { z } from "astro/zod";
 
+/**
+ * Authors are served live via `getLiveCollection` (see `src/live.config.ts`).
+ * This build-time collection exists only to generate the
+ * `CollectionEntry<"authors">` types the UI components consume.
+ */
 export const authors = defineCollection({
-	loader: async () => {
-		if (!isContentfulConfigured()) return [];
-		const client = await createContentfulClient();
-		const { items: rawAuthors } = await client.getEntries<RawAuthor>({
-			content_type: "author",
-		});
-		const authors = await authorDTO.create(rawAuthors as unknown as RawAuthor[]);
-
-		return authors.map((author) => ({
-			id: author.name,
-			...author,
-		}));
-	},
+	loader: () => [],
 	schema: authorSchema.extend({
 		articles: z.array(reference("articles")).optional(),
 		latestArticle: reference("articles").optional(),

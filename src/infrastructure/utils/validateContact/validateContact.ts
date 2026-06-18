@@ -1,8 +1,8 @@
 import { ActionError } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
+import type { Except } from "@const/types";
 import { Exception } from "@domain/errors";
 import type { ContactFormData } from "@shared/ui/types";
-import type { Except } from "@const/types";
 
 type ValidateContact = Except<ContactFormData, "recaptcha" | "emailId">;
 

@@ -1,18 +1,15 @@
-import type { z } from 'astro/zod';
 import type { citiesSchema } from "@application/entities/cities";
-import type { ContenfulLocation, ContentfulImageAsset } from "@shared/application/types";
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { EmDashImageField, GeoCoordinates } from "@shared/application/types";
+import type { z } from "astro/zod";
 
+/** `data` payload of an EmDash `cities` entry. */
 export interface RawCity {
-	contentTypeId: "city";
-	fields: {
-		name: EntryFieldTypes.Text;
-		coordinates: Entry<EntrySkeletonType<ContenfulLocation["fields"]>>;
-		startDate: EntryFieldTypes.Date;
-		endDate?: EntryFieldTypes.Date;
-		description: EntryFieldTypes.Text;
-		image: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
-	};
+	name: string;
+	coordinates: GeoCoordinates;
+	startDate: string;
+	endDate?: string;
+	description: string;
+	image?: EmDashImageField;
 }
 
 export type CityDTO = z.infer<typeof citiesSchema>;

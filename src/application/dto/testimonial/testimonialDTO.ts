@@ -1,15 +1,18 @@
 import type { RawTestimonial, TestimonialDTO } from "@application/dto/testimonial/types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
 import { createImage } from "@shared/application/dto/utils/createImage";
+import type { EmDashEntry } from "@shared/application/types";
 
-export const testimonialDTO: BaseDTO<RawTestimonial[], TestimonialDTO[]> = {
+export const testimonialDTO: BaseDTO<EmDashEntry<RawTestimonial>[], TestimonialDTO[]> = {
 	create: (raw) => {
-		return raw.map((rawTestimonial) => {
+		return raw.map((entry) => {
+			const testimonial = entry.data;
+
 			return {
-				author: rawTestimonial.fields.author,
-				quote: rawTestimonial.fields.quote,
-				image: createImage(rawTestimonial.fields.image),
-				role: rawTestimonial.fields.role,
+				author: testimonial.author,
+				quote: testimonial.quote,
+				image: createImage(testimonial.image),
+				role: testimonial.role,
 			} as unknown as TestimonialDTO;
 		});
 	},

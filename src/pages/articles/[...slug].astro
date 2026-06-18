@@ -1,9 +1,9 @@
 ---
 import { Picture } from "astro:assets";
-import { getCollection } from "astro:content";
 import { HIDE_CHROME, SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
+import { getArticle } from "@infrastructure/cms/content";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
 import ReadingProgress from "@modules/article/components/readingProgress/ReadingProgress.astro";
 import RepublishedBanner from "@modules/article/components/republishedBanner/RepublishedBanner.astro";
@@ -11,29 +11,14 @@ import TableOfContents from "@modules/article/components/tableOfContents/TableOf
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
-import type { InferGetStaticPropsType } from "astro";
 import "./_article.css";
 
-type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { slug } = Astro.params;
+const article = slug ? await getArticle(slug) : undefined;
 
-export const prerender = true;
-
-export async function getStaticPaths() {
-	const articles = await getCollection("articles");
-
-	return articles.map((article) => {
-		return {
-			params: {
-				slug: article.data.slug,
-			},
-			props: {
-				article,
-			},
-		};
-	});
+if (!article) {
+	return Astro.rewrite("/404");
 }
-
-const { article } = Astro.props;
 const metadata: Partial<SeoMetadata> = {
 	title: article.data.title,
 	description: article.data.description,

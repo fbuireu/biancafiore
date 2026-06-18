@@ -1,5 +1,5 @@
-import type { z } from 'astro/zod';
 import type { contactFormSchema } from "@application/entities/contact/schema";
+import type { z } from "astro/zod";
 
 export type ContactFormData = z.infer<typeof contactFormSchema> & {
 	recaptcha?: string;

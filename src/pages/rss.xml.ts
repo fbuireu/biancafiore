@@ -1,10 +1,10 @@
-import { getCollection } from "astro:content";
 import rss from "@astrojs/rss";
 import { DEFAULT_SEO_PARAMS } from "@const/const";
+import { getArticles } from "@infrastructure/cms/content";
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async (context) => {
-	const articles = await getCollection("articles");
+	const articles = await getArticles();
 
 	return rss({
 		title: DEFAULT_SEO_PARAMS.TITLE,

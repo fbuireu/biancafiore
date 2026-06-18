@@ -1,20 +1,17 @@
-import type { z } from 'astro/zod';
 import type { ArticleDTO } from "@application/dto/article/types";
 import type { authorSchema } from "@application/entities/authors";
-import type { ContentfulImageAsset } from "@shared/application/types";
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { EmDashImageField } from "@shared/application/types";
+import type { z } from "astro/zod";
 
+/** `data` payload of an EmDash `authors` entry. */
 export interface RawAuthor {
-	contentTypeId: "author";
-	fields: {
-		name: EntryFieldTypes.Text;
-		slug: EntryFieldTypes.Text;
-		description: EntryFieldTypes.Text;
-		jobTitle: EntryFieldTypes.Text;
-		currentCompany: EntryFieldTypes.Text;
-		profileImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
-		socialNetworks: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
-	};
+	name: string;
+	slug: string;
+	description: string;
+	jobTitle: string;
+	currentCompany: string;
+	profileImage?: EmDashImageField;
+	socialNetworks: string[];
 }
 
 export type AuthorDTO = z.infer<typeof authorSchema> & {

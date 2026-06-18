@@ -1,17 +1,15 @@
-import type { RawArticle } from "@application/dto/article/types";
-import { parseHeadings } from "@application/dto/article/utils/parseHeadings";
 import { escapeHtml } from "@const/utils/escapeHtml";
-import type { Block, Inline, Text } from "@contentful/rich-text-types";
-import { BLOCKS, INLINES } from "@contentful/rich-text-types";
+import { slugify } from "@modules/core/utils/slugify";
+import { type PortableTextHtmlComponents, toHTML } from "@portabletext/to-html";
+import type { ArbitraryTypedObject, PortableTextBlock } from "@portabletext/types";
 import { getOptimizedImageUrl, getOptimizedSrcset } from "@shared/utils/imageOptimization";
 
-type Node = Block | Inline | Text;
-type Next = (nodes: Node[]) => string;
+type RenderableBlock = PortableTextBlock | ArbitraryTypedObject;
 
-interface RenderOptionsReturn {
-	renderNode: {
-		[key: string]: (node: Node, next: Next) => string;
-	};
+const HEADING_STYLES = ["h1", "h2", "h3", "h4", "h5", "h6"] as const;
+
+function toProtocolRelative(url: string): string {
+	return url.replace(/^https?:/, "");
 }
 
 function toEmbedUrl(url: string): string {
@@ -35,128 +33,123 @@ function isExternal(url: string): boolean {
 	}
 }
 
-export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
+interface PortableImageValue {
+	url?: string;
+	width?: number;
+	height?: number;
+	alt?: string;
+	caption?: string;
+	fullBleed?: boolean;
+}
+
+function renderImage(value: PortableImageValue): string {
+	if (!value?.url) return "";
+
+	const src = toProtocolRelative(value.url);
+	const displayWidth = value.width ?? 768;
+	const optimizedSrc = getOptimizedImageUrl(src, { width: displayWidth, format: "webp", quality: 85 });
+	const srcset = getOptimizedSrcset(src, [400, 768, 1024], { format: "webp", quality: 85 });
+	const alt = escapeHtml(String(value.alt ?? ""));
+	const wrapperClass = value.fullBleed ? "full-bleed" : "";
+
+	return `
+		<figure${wrapperClass ? ` class="${wrapperClass}"` : ""}>
+			<img
+				src="${optimizedSrc}"
+				srcset="${srcset}"
+				sizes="auto"
+				height="${value.height ?? ""}"
+				width="${value.width ?? ""}"
+				alt="${alt}"
+				loading="lazy"
+				decoding="async"
+			/>
+			${value.caption ? `<figcaption>${escapeHtml(String(value.caption))}</figcaption>` : ""}
+		</figure>
+	`;
+}
+
+/**
+ * Builds the `@portabletext/to-html` serializer set that mirrors the markup the
+ * Contentful Rich Text renderer used to produce.
+ *
+ * @param withSections when true, headings are wrapped in the `<section>` markup
+ * the article CSS relies on (scroll scopes). The plain variant (false) emits
+ * bare `<h2>…</h2>` so the table-of-contents regex can pick headings up.
+ */
+function getComponents(withSections: boolean): Partial<PortableTextHtmlComponents> {
 	return {
-		renderNode: {
-			[INLINES.HYPERLINK]: (node: Node, next: Next) => {
-				const inlineNode = node as Inline;
-				const { uri } = inlineNode.data;
-
-				if (isExternal(uri)) {
-					return `<a href="${uri}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}<span aria-hidden="true" class="external-link-icon"> ↗</span></a>`;
+		types: {
+			code: ({ value }) => `<pre><code>${escapeHtml(String(value?.code ?? ""))}</code></pre>`,
+			codeBlock: ({ value }) => `<pre><code>${escapeHtml(String(value?.code ?? ""))}</code></pre>`,
+			image: ({ value }) => renderImage(value as PortableImageValue),
+			videoEmbed: ({ value }) =>
+				value?.url
+					? `<iframe src="${toEmbedUrl(String(value.url))}" width="100%" title="${escapeHtml(String(value.title ?? ""))}" allowfullscreen loading="lazy"></iframe>`
+					: "",
+			iframeEmbed: ({ value }) =>
+				value?.url
+					? `<iframe src="${String(value.url)}" width="100%" title="${escapeHtml(String(value.title ?? ""))}" allowfullscreen loading="lazy"></iframe>`
+					: "",
+		},
+		marks: {
+			link: ({ value, children }) => {
+				const href = String(value?.href ?? "");
+				if (isExternal(href)) {
+					return `<a href="${href}" target="_blank" rel="noopener noreferrer">${children}<span aria-hidden="true" class="external-link-icon"> ↗</span></a>`;
 				}
-				return `<a href="${uri}">${next(inlineNode.content)}</a>`;
+				return `<a href="${href}">${children}</a>`;
 			},
-			[INLINES.EMBEDDED_ENTRY]: (node: Node) => {
-				const contentTypeId = node.data.target.sys.contentType.sys.id;
-				const { slug, title } = node.data.target.fields;
-
-				if (contentTypeId === "article" && slug && title) {
-					return `<a href="/articles/${slug}">${title}</a>`;
-				}
-				return "";
+			internalLink: ({ value, children }) => {
+				const slug = value?.slug ?? value?.reference?.slug;
+				return slug ? `<a href="/articles/${slug}">${children}</a>` : `${children}`;
 			},
-			[INLINES.ENTRY_HYPERLINK]: (node: Node, next: Next) => {
-				const inlineNode = node as Inline;
-				const contentTypeId = inlineNode.data.target.sys.contentType.sys.id;
-				const { slug } = inlineNode.data.target.fields;
+		},
+		block: {
+			normal: ({ children }) => `<p>${children}</p>`,
+			blockquote: ({ children }) => `<blockquote>${children}</blockquote>`,
+			...Object.fromEntries(
+				HEADING_STYLES.map((style, index) => [
+					style,
+					({ children, value }: { children: string; value: PortableTextBlock }) => {
+						const level = index + 1;
+						const text = (value.children ?? [])
+							.map((child) => ("text" in child ? (child as { text: string }).text : ""))
+							.join("");
+						const id = slugify(text);
 
-				if (contentTypeId === "article" && slug) {
-					return `<a href="/articles/${slug}">${next(inlineNode.content)}</a>`;
-				}
-				return next(inlineNode.content);
-			},
-			[INLINES.ASSET_HYPERLINK]: (node: Node, next: Next) => {
-				const inlineNode = node as Inline;
-				const { file } = inlineNode.data.target.fields;
-				const { url } = file ?? {};
+						if (!withSections) return `<h${level} id="${id}">${children}</h${level}>`;
 
-				if (url) {
-					return `<a href="https:${url}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}</a>`;
-				}
-				return next(inlineNode.content);
-			},
-			[BLOCKS.EMBEDDED_ENTRY]: (node: Node) => {
-				const contentTypeId = node.data.target.sys.contentType.sys.id;
-				const { code, url, title, image, fullBleed, caption } = node.data.target.fields;
-
-				if (contentTypeId === "codeBlock" && code) {
-					return `<pre><code>${code}</code></pre>`;
-				}
-
-				if (contentTypeId === "videoEmbed" && url && title) {
-					return `<iframe src="${toEmbedUrl(url)}" width="100%" title="${title}" allowfullscreen loading="lazy"></iframe>`;
-				}
-
-				if (contentTypeId === "iframeEmbed" && url) {
-					return `<iframe src="${url}" width="100%" title="${title ?? ""}" allowfullscreen loading="lazy"></iframe>`;
-				}
-
-				if (contentTypeId === "imageEmbed" && image?.fields?.file?.url) {
-					const { url: imgUrl, details } = image.fields.file;
-					const { height, width } = details?.image ?? {};
-					const alt = escapeHtml(String(image.fields.description ?? image.fields.title ?? ""));
-					const wrapperClass = fullBleed ? "full-bleed" : "";
-					const displayWidth = width ?? 768;
-					const optimizedSrc = getOptimizedImageUrl(`https:${imgUrl}`, {
-						width: displayWidth,
-						format: "webp",
-						quality: 85,
-					});
-					const srcset = getOptimizedSrcset(`https:${imgUrl}`, [400, 768, 1024], { format: "webp", quality: 85 });
-
-					return `
-						<figure${wrapperClass ? ` class="${wrapperClass}"` : ""}>
-							<img
-								src="${optimizedSrc}"
-								srcset="${srcset}"
-								sizes="auto"
-								height="${height ?? ""}"
-								width="${width ?? ""}"
-								alt="${alt}"
-								loading="lazy"
-								decoding="async"
-							/>
-							${caption ? `<figcaption>${escapeHtml(String(caption))}</figcaption>` : ""}
-						</figure>
-					`;
-				}
-
-				return "";
-			},
-			[BLOCKS.EMBEDDED_ASSET]: (node: Node) => {
-				const { file, description } = node.data.target.fields;
-				const { url, details } = file || {};
-				const { image } = details || {};
-				const { height, width } = image || {};
-
-				if (url) {
-					const displayWidth = width ?? 768;
-					const optimizedSrc = getOptimizedImageUrl(`https:${url}`, {
-						width: displayWidth,
-						format: "webp",
-						quality: 85,
-					});
-					const srcset = getOptimizedSrcset(`https:${url}`, [400, 768, 1024], { format: "webp", quality: 85 });
-					return `
-            <figure class="full-bleed">
-              <img
-                src="${optimizedSrc}"
-                srcset="${srcset}"
-                sizes="auto"
-                height="${height ?? ""}"
-                width="${width ?? ""}"
-                alt="${escapeHtml(description ? "" : String(rawArticle.fields.title ?? ""))}"
-                loading="lazy"
-                decoding="async"
-              />
-              ${description ? `<figcaption>${escapeHtml(String(description))}</figcaption>` : ""}
-            </figure>
-          `;
-				}
-				return "";
-			},
-			...parseHeadings(),
+						return `
+							<section style="--is: --section-${index}">
+								<h${level} id="${id}" class="article__heading flex flex-start align-baseline">
+									<a href="#${id}">${children}</a>
+								</h${level}>
+							</section>
+						`;
+					},
+				]),
+			),
 		},
 	};
+}
+
+const articleComponents = getComponents(true);
+const plainComponents = getComponents(false);
+
+export function renderArticleContent(blocks: RenderableBlock[] | undefined): string {
+	return toHTML((blocks ?? []) as PortableTextBlock[], { components: articleComponents });
+}
+
+export function renderPlainContent(blocks: RenderableBlock[] | undefined): string {
+	return toHTML((blocks ?? []) as PortableTextBlock[], { components: plainComponents });
+}
+
+export function portableTextToPlainText(blocks: RenderableBlock[] | undefined): string {
+	return (blocks ?? [])
+		.filter((block): block is PortableTextBlock => (block as PortableTextBlock)._type === "block")
+		.map((block) =>
+			(block.children ?? []).map((child) => ("text" in child ? (child as { text: string }).text : "")).join(""),
+		)
+		.join(" ");
 }

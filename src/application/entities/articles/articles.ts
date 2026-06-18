@@ -1,24 +1,12 @@
 import { defineCollection } from "astro:content";
-import { articleDTO } from "@application/dto/article";
-import type { RawArticle } from "@application/dto/article/types";
 import { articleSchema } from "@application/entities/articles/schema";
-import { createContentfulClient, isContentfulConfigured } from "@infrastructure/cms/client";
 
+/**
+ * Articles are served live via `getLiveCollection` (see `src/live.config.ts`).
+ * This build-time collection exists only to generate the
+ * `CollectionEntry<"articles">` types the UI components consume.
+ */
 export const articles = defineCollection({
-	loader: async () => {
-		if (!isContentfulConfigured()) return [];
-		const client = await createContentfulClient();
-		const { items: rawArticles } = await client.getEntries<RawArticle>({
-			content_type: "article",
-			order: ["-fields.publishDate"],
-		});
-
-		const articles = articleDTO.create(rawArticles as unknown as RawArticle[]);
-
-		return articles.map((article) => ({
-			id: article.slug,
-			...article,
-		}));
-	},
+	loader: () => [],
 	schema: articleSchema,
 });

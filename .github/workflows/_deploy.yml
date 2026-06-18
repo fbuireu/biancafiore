@@ -25,18 +25,24 @@ on:
         required: false
       RESEND_API_KEY:
         required: true
-      CONTENTFUL_SPACE_ID:
-        required: true
-      CONTENTFUL_DELIVERY_TOKEN:
-        required: true
-      CONTENTFUL_PREVIEW_TOKEN:
-        required: true
-      CONTENTFUL_SIGNIN_TOKEN:
-        required: true
       ASTRO_DB_REMOTE_URL:
         required: true
       ASTRO_DB_APP_TOKEN:
         required: true
+      EMDASH_TURSO_URL:
+        required: true
+      EMDASH_TURSO_AUTH_TOKEN:
+        required: true
+      EMDASH_R2_ENDPOINT:
+        required: true
+      EMDASH_R2_BUCKET:
+        required: true
+      EMDASH_R2_ACCESS_KEY_ID:
+        required: true
+      EMDASH_R2_SECRET_ACCESS_KEY:
+        required: true
+      EMDASH_R2_PUBLIC_URL:
+        required: false
 
 permissions:
   contents: read
@@ -65,12 +71,15 @@ jobs:
       GOOGLE_RECAPTCHA_SECRET_KEY: ${{ secrets.GOOGLE_RECAPTCHA_SECRET_KEY }}
       HIDE_CHROME: ${{ vars.HIDE_CHROME || 'false' }}
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-      CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
-      CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
-      CONTENTFUL_PREVIEW_TOKEN: ${{ secrets.CONTENTFUL_PREVIEW_TOKEN }}
-      CONTENTFUL_SIGNIN_TOKEN: ${{ secrets.CONTENTFUL_SIGNIN_TOKEN }}
       ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
       ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
+      EMDASH_TURSO_URL: ${{ secrets.EMDASH_TURSO_URL }}
+      EMDASH_TURSO_AUTH_TOKEN: ${{ secrets.EMDASH_TURSO_AUTH_TOKEN }}
+      EMDASH_R2_ENDPOINT: ${{ secrets.EMDASH_R2_ENDPOINT }}
+      EMDASH_R2_BUCKET: ${{ secrets.EMDASH_R2_BUCKET }}
+      EMDASH_R2_ACCESS_KEY_ID: ${{ secrets.EMDASH_R2_ACCESS_KEY_ID }}
+      EMDASH_R2_SECRET_ACCESS_KEY: ${{ secrets.EMDASH_R2_SECRET_ACCESS_KEY }}
+      EMDASH_R2_PUBLIC_URL: ${{ secrets.EMDASH_R2_PUBLIC_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -97,7 +106,7 @@ jobs:
             TARGET_FLAG="--name ${INPUTS_WORKER_NAME}"
           fi
           node -e "
-          const required = ['RESEND_API_KEY','CONTENTFUL_SPACE_ID','CONTENTFUL_DELIVERY_TOKEN','CONTENTFUL_PREVIEW_TOKEN','CONTENTFUL_SIGNIN_TOKEN','ASTRO_DB_REMOTE_URL','ASTRO_DB_APP_TOKEN'];
+          const required = ['RESEND_API_KEY','ASTRO_DB_REMOTE_URL','ASTRO_DB_APP_TOKEN','EMDASH_TURSO_URL','EMDASH_TURSO_AUTH_TOKEN','EMDASH_R2_ENDPOINT','EMDASH_R2_BUCKET','EMDASH_R2_ACCESS_KEY_ID','EMDASH_R2_SECRET_ACCESS_KEY','EMDASH_R2_PUBLIC_URL'];
           const missing = required.filter(k => !process.env[k]);
           if (missing.length) { console.error('Missing required secrets: ' + missing.join(', ')); process.exit(1); }
           process.stdout.write(JSON.stringify(Object.fromEntries(required.map(k => [k, process.env[k]]))));

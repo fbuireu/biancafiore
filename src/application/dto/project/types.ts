@@ -1,16 +1,13 @@
-import type { z } from 'astro/zod';
 import type { projectsSchema } from "@application/entities/projects";
-import type { ContentfulImageAsset } from "@shared/application/types";
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { EmDashImageField, PortableTextBlock } from "@shared/application/types";
+import type { z } from "astro/zod";
 
+/** `data` payload of an EmDash `projects` entry. */
 export interface RawProject {
-	contentTypeId: "project";
-	fields: {
-		id: EntryFieldTypes.Text;
-		name: EntryFieldTypes.Text;
-		description: EntryFieldTypes.RichText;
-		image: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
-	};
+	id?: string;
+	name: string;
+	description: PortableTextBlock[];
+	image?: EmDashImageField;
 }
 
 export type ProjectDTO = z.infer<typeof projectsSchema>;

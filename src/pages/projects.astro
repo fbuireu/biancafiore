@@ -1,14 +1,14 @@
 ---
 import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
+import { SITE_URL } from "astro:env/client";
+import { PAGES_ROUTES } from "@const/const";
 import type { SeoMetadata } from "@const/types";
+import { getProjects } from "@infrastructure/cms/content";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import ProjectSection from "@modules/projects/components/projectSection/ProjectSection.astro";
 import ProjectsIntro from "@modules/projects/components/projectsIntro/ProjectsIntro.astro";
-import { PAGES_ROUTES } from "@const/const";
-import { SITE_URL } from "astro:env/client";
 
-const projects = await getCollection("projects");
+const projects = await getProjects();
 const metadata: Partial<SeoMetadata> = {
 	title: "Projects",
 	description: "Explore Bianca Fiore's portfolio of web development projects and case studies.",

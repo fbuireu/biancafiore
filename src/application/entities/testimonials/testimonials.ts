@@ -1,22 +1,12 @@
 import { defineCollection } from "astro:content";
-import { testimonialDTO } from "@application/dto/testimonial";
-import type { RawTestimonial } from "@application/dto/testimonial/types";
 import { testimonialsSchema } from "@application/entities/testimonials/schema";
-import { createContentfulClient, isContentfulConfigured } from "@infrastructure/cms/client";
 
+/**
+ * Testimonials are served live via `getLiveCollection` (see `src/live.config.ts`).
+ * This build-time collection exists only to generate the
+ * `CollectionEntry<"testimonials">` types the UI components consume.
+ */
 export const testimonials = defineCollection({
-	loader: async () => {
-		if (!isContentfulConfigured()) return [];
-		const client = await createContentfulClient();
-		const { items: rawTestimonials } = await client.getEntries<RawTestimonial>({
-			content_type: "testimonial",
-		});
-		const testimonials = testimonialDTO.create(rawTestimonials as unknown as RawTestimonial[]);
-
-		return testimonials.map((testimonial) => ({
-			id: testimonial.author,
-			...testimonial,
-		}));
-	},
+	loader: () => [],
 	schema: testimonialsSchema,
 });

@@ -1,11 +1,11 @@
 ---
 import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
 import "./my-work.css";
 import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/const";
+import { getProjects } from "@infrastructure/cms/content";
 
-const projects = await getCollection("projects");
+const projects = await getProjects();
 
 const disciplinesCount = String(projects.length).padStart(2, "0");
 ---

@@ -1,16 +1,13 @@
-import type { z } from 'astro/zod';
 import type { testimonialsSchema } from "@application/entities/testimonials";
-import type { ContentfulImageAsset } from "@shared/application/types";
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { EmDashImageField } from "@shared/application/types";
+import type { z } from "astro/zod";
 
+/** `data` payload of an EmDash `testimonials` entry. */
 export interface RawTestimonial {
-	contentTypeId: "testimonial";
-	fields: {
-		author: EntryFieldTypes.Text;
-		quote: EntryFieldTypes.Text;
-		image: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
-		role: EntryFieldTypes.Text;
-	};
+	author: string;
+	quote: string;
+	image?: EmDashImageField;
+	role: string;
 }
 
 export type TestimonialDTO = z.infer<typeof testimonialsSchema>;

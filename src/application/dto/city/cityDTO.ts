@@ -1,28 +1,29 @@
 import type { CityDTO, RawCity } from "@application/dto/city/types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
 import { createImage } from "@shared/application/dto/utils/createImage";
-import type { ContenfulLocation } from "@shared/application/types";
+import type { EmDashEntry } from "@shared/application/types";
 import { createDate } from "./utils/createDate";
 
-export const cityDTO: BaseDTO<RawCity[], CityDTO[]> = {
+export const cityDTO: BaseDTO<EmDashEntry<RawCity>[], CityDTO[]> = {
 	create: (raw) => {
-		return raw.map((rawCity) => {
+		return raw.map((entry) => {
+			const city = entry.data;
 			const coordinates = {
-				latitude: (rawCity.fields.coordinates as unknown as ContenfulLocation["fields"]["coordinates"]).lat,
-				longitude: (rawCity.fields.coordinates as unknown as ContenfulLocation["fields"]["coordinates"]).lon,
+				latitude: city.coordinates.lat,
+				longitude: city.coordinates.lon,
 			};
 
 			const { startDate, endDate } = createDate({
-				startDate: String(rawCity.fields.startDate),
-				...(rawCity.fields.endDate && { endDate: String(rawCity.fields.endDate) }),
+				startDate: String(city.startDate),
+				...(city.endDate && { endDate: String(city.endDate) }),
 			});
 
 			return {
-				name: rawCity.fields.name,
+				name: city.name,
 				coordinates,
 				period: `${startDate}-${endDate}`,
-				description: rawCity.fields.description,
-				image: createImage(rawCity.fields.image),
+				description: city.description,
+				image: createImage(city.image),
 			} as unknown as CityDTO;
 		});
 	},

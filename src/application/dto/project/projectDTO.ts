@@ -1,20 +1,21 @@
+import { renderPlainContent } from "@application/dto/article/utils/renderOptions";
 import type { ProjectDTO, RawProject } from "@application/dto/project/types";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import type { Document } from "@contentful/rich-text-types";
 import { slugify } from "@modules/core/utils/slugify";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
 import { createImage } from "@shared/application/dto/utils/createImage";
+import type { EmDashEntry } from "@shared/application/types";
 
-export const projectDTO: BaseDTO<RawProject[], ProjectDTO[]> = {
+export const projectDTO: BaseDTO<EmDashEntry<RawProject>[], ProjectDTO[]> = {
 	create: (raw) => {
-		return raw.map((rawProject): ProjectDTO => {
-			const id = rawProject.fields.id ? rawProject.fields.id : slugify(rawProject.fields.name as unknown as string);
+		return raw.map((entry): ProjectDTO => {
+			const project = entry.data;
+			const id = project.id ? project.id : slugify(project.name);
 
 			return {
 				id,
-				name: rawProject.fields.name,
-				description: documentToHtmlString(rawProject.fields.description as unknown as Document),
-				image: createImage(rawProject.fields.image),
+				name: project.name,
+				description: renderPlainContent(project.description),
+				image: createImage(project.image),
 			} as unknown as ProjectDTO;
 		});
 	},

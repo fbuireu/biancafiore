@@ -1,24 +1,25 @@
-import type { RawArticle } from "@application/dto/article/types";
-import type { Reference } from "@shared/application/types";
+import type { ArticleResolver, RawArticle } from "@application/dto/article/types";
+import type { EmDashEntry, Reference } from "@shared/application/types";
 
 interface GetRelatedArticlesParams {
-	rawArticle: RawArticle;
-	allRawArticles: RawArticle[];
+	entry: EmDashEntry<RawArticle>;
+	allEntries: EmDashEntry<RawArticle>[];
+	resolver?: ArticleResolver;
 }
 
-export function getRelatedArticles({ rawArticle, allRawArticles }: GetRelatedArticlesParams): Reference<"articles">[] {
-	const articleTags = new Set(rawArticle.fields.tags?.map((tag) => tag.fields.slug) ?? []);
+const MAX_RELATED_ARTICLES = 6;
 
-	return allRawArticles
-		.filter(({ fields }) => {
-			if (fields.title === rawArticle.fields.title) return false;
+export function getRelatedArticles({ entry, allEntries, resolver }: GetRelatedArticlesParams): Reference<"articles">[] {
+	const tagSlugs = new Set((resolver?.tagsByArticleId.get(entry.id) ?? []).map((tag) => tag.slug));
 
-			const allTags = fields.tags?.map((tag) => tag.fields.slug) || [];
-			return allTags.some((slug) => articleTags.has(slug));
+	return allEntries
+		.filter((other) => {
+			if (other.id === entry.id) return false;
+			return (resolver?.tagsByArticleId.get(other.id) ?? []).some((tag) => tagSlugs.has(tag.slug));
 		})
-		.slice(0, 6)
-		.map((relatedArticle) => ({
-			id: String(relatedArticle.fields.slug),
+		.slice(0, MAX_RELATED_ARTICLES)
+		.map((other) => ({
+			id: String(other.data.slug),
 			collection: "articles",
 		}));
 }

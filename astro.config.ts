@@ -4,6 +4,40 @@ import db from "@astrojs/db";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig, envField, fontProviders } from "astro/config";
+import emdash, { local, s3 } from "emdash/astro";
+import { libsql, sqlite } from "emdash/db";
+
+/**
+ * EmDash runs in-process. NOTE: as of emdash@0.19.0 the published package only
+ * ships `sqlite | libsql | postgres` database adapters and `local | s3` storage
+ * adapters — there is no `d1()`/`r2()` factory yet (despite the docs). On
+ * Cloudflare Workers we therefore use Turso (libSQL over HTTP) for the database
+ * and R2 through its S3-compatible API for media. Local dev uses a SQLite file
+ * and on-disk uploads.
+ */
+const emdashIntegration =
+	process.env.NODE_ENV === "production"
+		? emdash({
+				database: libsql({
+					url: process.env.EMDASH_TURSO_URL as string,
+					authToken: process.env.EMDASH_TURSO_AUTH_TOKEN,
+				}),
+				storage: s3({
+					endpoint: process.env.EMDASH_R2_ENDPOINT as string,
+					bucket: process.env.EMDASH_R2_BUCKET as string,
+					accessKeyId: process.env.EMDASH_R2_ACCESS_KEY_ID,
+					secretAccessKey: process.env.EMDASH_R2_SECRET_ACCESS_KEY,
+					region: "auto",
+					publicUrl: process.env.EMDASH_R2_PUBLIC_URL,
+				}),
+			})
+		: emdash({
+				database: sqlite({ url: "file:./.emdash/data.db" }),
+				storage: local({
+					directory: "./.emdash/uploads",
+					baseUrl: "/_emdash/api/media/file",
+				}),
+			});
 
 export default defineConfig({
 	experimental: {
@@ -61,11 +95,12 @@ export default defineConfig({
 			},
 		},
 		ssr: {
-			external: ["node:async_hooks", "contentful"],
+			external: ["node:async_hooks"],
 		},
 	},
 	integrations: [
 		db(),
+		emdashIntegration,
 		react(),
 		sitemap({
 			filter: (page) => {
@@ -116,22 +151,17 @@ export default defineConfig({
 				access: "secret",
 				context: "server",
 			}),
-			CONTENTFUL_SPACE_ID: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			CONTENTFUL_DELIVERY_TOKEN: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			CONTENTFUL_PREVIEW_TOKEN: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			CONTENTFUL_SIGNIN_TOKEN: envField.string({
-				access: "secret",
-				context: "server",
-			}),
+			// Runtime: EmDash database (Turso/libSQL) + media storage (R2 via S3 API).
+			EMDASH_TURSO_URL: envField.string({ access: "secret", context: "server", optional: true }),
+			EMDASH_TURSO_AUTH_TOKEN: envField.string({ access: "secret", context: "server", optional: true }),
+			EMDASH_R2_ENDPOINT: envField.string({ access: "secret", context: "server", optional: true }),
+			EMDASH_R2_BUCKET: envField.string({ access: "secret", context: "server", optional: true }),
+			EMDASH_R2_ACCESS_KEY_ID: envField.string({ access: "secret", context: "server", optional: true }),
+			EMDASH_R2_SECRET_ACCESS_KEY: envField.string({ access: "secret", context: "server", optional: true }),
+			EMDASH_R2_PUBLIC_URL: envField.string({ access: "secret", context: "server", optional: true }),
+			// CLI (`pnpm cms:types`) + migration script (`pnpm cms:migrate`) only.
+			EMDASH_API_URL: envField.string({ access: "secret", context: "server", optional: true }),
+			EMDASH_API_TOKEN: envField.string({ access: "secret", context: "server", optional: true }),
 			ASTRO_DB_REMOTE_URL: envField.string({
 				access: "secret",
 				context: "server",

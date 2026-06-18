@@ -1,29 +1,38 @@
-import type { z } from 'astro/zod';
 import type { RawAuthor } from "@application/dto/author/types";
 import type { BaseTagDTO } from "@application/dto/tag/types";
 import type { articleSchema } from "@application/entities/articles";
-import type { ContentfulImageAsset } from "@shared/application/types";
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { EmDashEntry, EmDashImageField, PortableTextBlock } from "@shared/application/types";
+import type { z } from "astro/zod";
 
+/**
+ * `data` payload of an EmDash `articles` entry. The reference fields (`author`,
+ * `relatedArticles`) are stored as entry-id strings; tags are **taxonomy terms**
+ * (not a field), resolved separately via {@link ArticleResolver}.
+ */
 export interface RawArticle {
-	contentTypeId: "article";
-	sys: {
-		updatedAt: string;
-	};
-	fields: {
-		title: EntryFieldTypes.Text;
-		slug: EntryFieldTypes.Text;
-		content: EntryFieldTypes.RichText;
-		description: EntryFieldTypes.Text;
-		publishDate: EntryFieldTypes.Date;
-		featuredImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
-		featuredArticle: EntryFieldTypes.Boolean;
-		isRepublished: EntryFieldTypes.Boolean;
-		originalSource: EntryFieldTypes.Text;
-		author: Entry<EntrySkeletonType<RawAuthor["fields"]>>;
-		tags: Entry<EntrySkeletonType<BaseTagDTO>>[];
-		relatedArticles: Array<Entry<EntrySkeletonType>>;
-	};
+	title: string;
+	slug: string;
+	content: PortableTextBlock[];
+	description?: string;
+	publishDate: string;
+	featuredImage?: EmDashImageField;
+	featuredArticle?: boolean;
+	isRepublished?: boolean;
+	originalSource?: string;
+	author: string;
+	relatedArticles?: string[];
+	updatedAt?: string;
+}
+
+/**
+ * Lookups the article DTO uses to resolve the author reference, the `tag`
+ * taxonomy terms (keyed by article id) and the related-article slugs the Astro
+ * `reference()` schema expects.
+ */
+export interface ArticleResolver {
+	authorsById: Map<string, EmDashEntry<RawAuthor>>;
+	tagsByArticleId: Map<string, BaseTagDTO[]>;
+	articleSlugById: Map<string, string>;
 }
 
 export type ArticleDTO = z.infer<typeof articleSchema>;

@@ -18,10 +18,17 @@ interface ImportMetaEnv {
 	readonly FIREBASE_AUTH_CERT_URL: string;
 	readonly FIREBASE_CLIENT_CERT_URL: string;
 	readonly RESEND_API_KEY: string;
-	readonly CONTENTFUL_SPACE_ID: string;
-	readonly CONTENTFUL_DELIVERY_TOKEN: string;
-	readonly CONTENTFUL_PREVIEW_TOKEN: string;
-	readonly CONTENTFUL_SIGNIN_TOKEN: string;
+	readonly EMDASH_TURSO_URL: string;
+	readonly EMDASH_TURSO_AUTH_TOKEN: string;
+	readonly EMDASH_R2_ENDPOINT: string;
+	readonly EMDASH_R2_BUCKET: string;
+	readonly EMDASH_R2_ACCESS_KEY_ID: string;
+	readonly EMDASH_R2_SECRET_ACCESS_KEY: string;
+	readonly EMDASH_R2_PUBLIC_URL: string;
+	readonly EMDASH_API_URL: string;
+	readonly EMDASH_API_TOKEN: string;
+	readonly MIGRATION_CONTENTFUL_SPACE_ID: string;
+	readonly MIGRATION_CONTENTFUL_DELIVERY_TOKEN: string;
 	readonly ALGOLIA_API_KEY: string;
 	readonly ALGOLIA_APP_ID: string;
 }

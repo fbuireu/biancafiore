@@ -3,6 +3,7 @@ packages:
 allowBuilds:
   "@astrojs/compiler-rs": true
   "@biomejs/biome": true
+  better-sqlite3: true # EmDash local (dev) SQLite driver
   esbuild: true
   sharp: true
   workerd: true

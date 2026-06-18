@@ -1,18 +1,12 @@
 import { defineCollection } from "astro:content";
-import { projectDTO } from "@application/dto/project";
-import type { RawProject } from "@application/dto/project/types";
 import { projectsSchema } from "@application/entities/projects/schema";
-import { createContentfulClient, isContentfulConfigured } from "@infrastructure/cms/client";
 
+/**
+ * Projects are served live via `getLiveCollection` (see `src/live.config.ts`).
+ * This build-time collection exists only to generate the
+ * `CollectionEntry<"projects">` types the UI components consume.
+ */
 export const projects = defineCollection({
-	loader: async () => {
-		if (!isContentfulConfigured()) return [];
-		const client = await createContentfulClient();
-		const { items: rawProjects } = await client.getEntries<RawProject>({
-			content_type: "project",
-		});
-
-		return projectDTO.create(rawProjects as unknown as RawProject[]);
-	},
+	loader: () => [],
 	schema: projectsSchema,
 });

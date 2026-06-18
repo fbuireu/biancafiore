@@ -1,5 +1,4 @@
-import type { ContentfulImageAsset, ImageFormats } from "@shared/application/types";
-import type { Entry, EntrySkeletonType } from "contentful";
+import type { EmDashImageField, ImageFormats } from "@shared/application/types";
 
 interface CreateImageReturn {
 	url: string;
@@ -10,22 +9,33 @@ interface CreateImageReturn {
 	formats: ImageFormats;
 }
 
-export function createImage(rawImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>): CreateImageReturn {
-	const {
-		fields: {
-			file: { contentType, details, url },
-		},
-	} = rawImage as unknown as ContentfulImageAsset;
+/**
+ * EmDash serves media as absolute `https://` URLs from R2. The rest of the app
+ * (templates, image service, Portable Text renderer) prepends `https:` to image
+ * URLs — a leftover from Contentful's protocol-relative asset URLs — so we strip
+ * the protocol here to keep that contract and avoid touching every consumer.
+ */
+function toProtocolRelative(url: string): string {
+	return url.replace(/^https?:/, "");
+}
+
+function detectFormat(url: string): ImageFormats {
+	const extension = url.split("?")[0]?.split(".").pop()?.toLowerCase();
+	return {
+		avif: extension === "avif",
+		webp: extension === "webp",
+	};
+}
+
+export function createImage(rawImage: EmDashImageField | null | undefined): CreateImageReturn {
+	const url = rawImage?.url ?? "";
 
 	return {
-		url: String(url) as unknown as string,
+		url: toProtocolRelative(url),
 		details: {
-			width: details.image?.width,
-			height: details.image?.height,
+			width: rawImage?.width ?? 0,
+			height: rawImage?.height ?? 0,
 		},
-		formats: {
-			avif: contentType === "image/avif",
-			webp: contentType === "image/webp",
-		},
+		formats: detectFormat(url),
 	};
 }

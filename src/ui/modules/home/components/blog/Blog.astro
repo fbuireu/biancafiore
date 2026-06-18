@@ -1,6 +1,6 @@
 ---
-import { getCollection } from "astro:content";
 import { PAGES_ROUTES } from "@const/index";
+import { getArticles } from "@infrastructure/cms/content";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import "./blog.css";
 
@@ -12,7 +12,7 @@ const MAX_ARTICLES = 3;
 
 const { limit = MAX_ARTICLES } = Astro.props;
 
-const articles = (await getCollection("articles")).slice(0, limit);
+const articles = (await getArticles()).slice(0, limit);
 ---
 <section class="blog --inverted-color-scheme">
     <div class="blog__inner">

@@ -1,9 +1,9 @@
 ---
-import { getCollection } from "astro:content";
+import { getTestimonials } from "@infrastructure/cms/content";
 import TestimonialsSlider from "../testimonialsSlider/TestimonialsSlider.astro";
 import "./testimonials.css";
 
-const testimonials = await getCollection("testimonials");
+const testimonials = await getTestimonials();
 ---
 <section class="testimonials">
     <div class="testimonials__inner">

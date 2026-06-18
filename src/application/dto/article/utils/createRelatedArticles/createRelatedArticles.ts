@@ -1,9 +1,15 @@
+import type { ArticleResolver } from "@application/dto/article/types";
 import type { Reference } from "@shared/application/types";
-import type { Entry, EntrySkeletonType } from "contentful";
 
-export function createRelatedArticles(relatedArticles: Array<Entry<EntrySkeletonType>> | undefined): Reference<"articles">[] {
-	return (relatedArticles ?? []).map((relatedArticle) => ({
-		id: relatedArticle.fields.slug as unknown as string,
-		collection: "articles",
-	}));
+export function createRelatedArticles(
+	relatedArticleIds: string[] | undefined,
+	resolver?: ArticleResolver,
+): Reference<"articles">[] {
+	return (relatedArticleIds ?? [])
+		.map((id) => resolver?.articleSlugById.get(id))
+		.filter((slug): slug is string => Boolean(slug))
+		.map((slug) => ({
+			id: slug,
+			collection: "articles",
+		}));
 }

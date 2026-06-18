@@ -1,9 +1,9 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { getCollection, getEntry } from "astro:content";
 import { SITE_URL } from "astro:env/client";
 import { CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
+import { getArticle, getAuthors, getCities } from "@infrastructure/cms/content";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
 import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
 import LittleMoreOfMe from "@modules/about/components/littleMoreOfMe/LittleMoreOfMe.astro";
@@ -11,7 +11,7 @@ import WhatIDo from "@modules/about/components/whatIDo/WhatIDo.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 
-const [cities, authors] = await Promise.all([getCollection("cities"), getCollection("authors")]);
+const [cities, authors] = await Promise.all([getCities(), getAuthors()]);
 
 const author = authors
 	.filter((author) => author.data.name === CONTACT_DETAILS.NAME)
@@ -22,7 +22,7 @@ const bianca = {
 	data: {
 		...author.data,
 		...(author.data.latestArticle && {
-			latestArticle: await getEntry(author.data.latestArticle.collection, author.data.latestArticle.id),
+			latestArticle: await getArticle(author.data.latestArticle.id),
 		}),
 	},
 };
