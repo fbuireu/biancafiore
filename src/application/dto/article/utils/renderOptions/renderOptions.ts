@@ -20,7 +20,8 @@ function toEmbedUrl(url: string): string {
 		if (parsed.hostname === "youtu.be") {
 			return `https://www.youtube.com/embed${parsed.pathname}`;
 		}
-		if (parsed.hostname.includes("youtube.com") && parsed.searchParams.has("v")) {
+		const isYouTube = parsed.hostname === "youtube.com" || parsed.hostname.endsWith(".youtube.com");
+		if (isYouTube && parsed.searchParams.has("v")) {
 			return `https://www.youtube.com/embed/${parsed.searchParams.get("v")}`;
 		}
 	} catch {}
