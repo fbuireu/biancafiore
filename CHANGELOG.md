@@ -1,3 +1,11 @@
+# [1.7.0](https://github.com/fbuireu/biancafiore/compare/v1.6.3...v1.7.0) (2026-06-19)
+
+
+### Features
+
+* add column layout ([ec295b9](https://github.com/fbuireu/biancafiore/commit/ec295b95305fe2a640b7c35ad036624abcc59f2d))
+* add column layout ([69be898](https://github.com/fbuireu/biancafiore/commit/69be89845f200d1b4a08a91e0a696ca25274ae90))
+
 ## [1.6.3](https://github.com/fbuireu/biancafiore/compare/v1.6.2...v1.6.3) (2026-06-18)
 
 
