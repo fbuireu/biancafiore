@@ -253,6 +253,34 @@ html.--is-article {
 	}
 }
 
+.article-wrapper.--two-columns {
+	--article-columns-gap: clamp(1.5rem, 4cqi, 3rem);
+	--gutter: 2rem;
+	display: block;
+	max-inline-size: min(calc(var(--grid-article) * 2 + var(--article-columns-gap)), 100% - var(--gutter));
+	margin-inline: auto;
+	column-count: 2;
+	column-gap: var(--article-columns-gap);
+	column-rule: 1px solid var(--line);
+	orphans: 3;
+	widows: 3;
+
+	& > section,
+	& > .full-bleed,
+	& > .article__table-of-contents-wrapper {
+		column-span: all;
+	}
+
+	& > :is(figure, blockquote, pre, iframe, ul, ol, dl) {
+		break-inside: avoid;
+	}
+
+	@container article-page (width <= 720px) {
+		max-inline-size: min(var(--grid-article), 100% - 2rem);
+		column-count: 1;
+	}
+}
+
 html.--debug-baseline .article-wrapper {
 	position: relative;
 }
