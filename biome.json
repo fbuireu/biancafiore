@@ -27,7 +27,7 @@
 	"linter": {
 		"includes": ["**", "!**/*.d.ts*"],
 		"rules": {
-			"recommended": true,
+			"preset": "recommended",
 			"correctness": {
 				"noUnknownProperty": "info"
 			},

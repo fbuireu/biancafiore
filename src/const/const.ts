@@ -50,7 +50,6 @@ export const CONTACT_DETAILS: Record<CapitalizeKeys<string>, string> = {
 	ENCODED_EMAIL_BIANCA: btoa(BIANCA_EMAIL),
 } as const;
 
-
 const defaultDateFormat: CapitalizeKeys<Intl.DateTimeFormatOptions> = {
 	WEEKDAY: "long",
 	YEAR: "numeric",
@@ -61,5 +60,7 @@ const defaultDateFormat: CapitalizeKeys<Intl.DateTimeFormatOptions> = {
 export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = lowercaseKeys(defaultDateFormat);
 
 export const THEME_STORAGE_KEY = "theme" as const;
+
+export const ARTICLE_COLUMNS_STORAGE_KEY = "article-columns" as const;
 
 export const DEFAULT_LOCALE_STRING: Intl.LocalesArgument = "es-ES" as const;

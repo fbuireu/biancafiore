@@ -5,6 +5,7 @@ import { HIDE_CHROME, SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
+import ColumnsToggle from "@modules/article/components/columnsToggle/ColumnsToggle.astro";
 import ReadingProgress from "@modules/article/components/readingProgress/ReadingProgress.astro";
 import RepublishedBanner from "@modules/article/components/republishedBanner/RepublishedBanner.astro";
 import TableOfContents from "@modules/article/components/tableOfContents/TableOfContents.astro";
@@ -81,6 +82,7 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
     {article.data.isRepublished && (
       <RepublishedBanner originalSource={article.data.originalSource} />
     )}
+    <ColumnsToggle />
     <article class="article-wrapper" set:html={article.data.content} style={`--scopes: ${scopes}`}>
       {
           !HIDE_CHROME && article.data.tableOfContents.length > 1 &&

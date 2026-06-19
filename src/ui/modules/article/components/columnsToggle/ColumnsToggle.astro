@@ -1,0 +1,51 @@
+---
+import "./columns-toggle.css";
+---
+<div class="columns-toggle">
+  <button
+    type="button"
+    class="columns-toggle__button font-sans-serif --is-clickable --underline-on-hover"
+    aria-pressed="false"
+    title="Toggle two-column reading layout"
+  >
+    <svg
+      class="columns-toggle__icon columns-toggle__icon--single"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.3"
+      stroke-linecap="round"
+      aria-hidden="true"
+    >
+      <rect x="2.25" y="2.5" width="11.5" height="11" rx="1.5" />
+      <path d="M4.75 5.75h6.5M4.75 8h6.5M4.75 10.25h4" />
+    </svg>
+    <svg
+      class="columns-toggle__icon columns-toggle__icon--double"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.3"
+      stroke-linecap="round"
+      aria-hidden="true"
+    >
+      <rect x="2.25" y="2.5" width="11.5" height="11" rx="1.5" />
+      <path d="M8 4v8" />
+      <path d="M4.75 6h2M4.75 8h2M4.75 10h2M9.25 6h2M9.25 8h2M9.25 10h2" />
+    </svg>
+    <span class="columns-toggle__label">Columns</span>
+  </button>
+</div>
+<script>
+  import { initializeColumnsToggle } from "./utils/columnsLayout";
+
+  document.addEventListener("astro:page-load", () => {
+    initializeColumnsToggle();
+  });
+</script>
