@@ -22,8 +22,7 @@ const applyColumns = ({ enabled, document }: ApplyColumnsParams): void => {
 	TOGGLE?.setAttribute("aria-pressed", String(enabled));
 };
 
-// Global listeners — run once at module load, survive view transitions
-window.addEventListener("storage", ({ key, newValue }) => {
+globalThis.addEventListener("storage", ({ key, newValue }) => {
 	if (key === ARTICLE_COLUMNS_STORAGE_KEY) {
 		applyColumns({ enabled: newValue === "true", document });
 	}
