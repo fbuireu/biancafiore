@@ -22,8 +22,8 @@
 	color: inherit;
 }
 
-.columns-toggle__button[aria-pressed="false"] .columns-toggle__icon--double,
-.columns-toggle__button[aria-pressed="true"] .columns-toggle__icon--single {
+.columns-toggle__button[aria-pressed="false"] :is(.columns-toggle__icon--double, .columns-toggle__label--double),
+.columns-toggle__button[aria-pressed="true"] :is(.columns-toggle__icon--single, .columns-toggle__label--single) {
 	display: none;
 }
 
