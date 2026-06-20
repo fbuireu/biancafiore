@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/fbuireu/biancafiore/compare/v1.7.0...v1.8.0) (2026-06-20)
+
+
+### Features
+
+* add new column icon ([838f334](https://github.com/fbuireu/biancafiore/commit/838f3348e2cdf7656e4b5f5621a7a2051237ddb4))
+
 # [1.7.0](https://github.com/fbuireu/biancafiore/compare/v1.6.3...v1.7.0) (2026-06-19)
 
 
