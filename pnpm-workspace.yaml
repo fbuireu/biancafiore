@@ -8,3 +8,6 @@ allowBuilds:
   workerd: true
 minimumReleaseAge: 4320 # 3 days
 blockExoticSubdeps: true
+minimumReleaseAgeExclude:
+  # Renovate security update: pnpm@11.8.0
+  - pnpm@11.8.0
