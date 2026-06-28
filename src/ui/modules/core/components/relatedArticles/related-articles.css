@@ -4,7 +4,7 @@
 	padding-block: 4rem;
 
 	@container article-page (width <= 960px) {
-		margin-block: 4rem 2rem;
+		margin-block-start: 4rem;
 		padding-block: 3rem;
 	}
 }
@@ -14,7 +14,7 @@
 }
 
 .related-articles__title {
-	color: var(--background-main);
+	color: var(--ink);
 	margin-block-end: 2rem;
 }
 

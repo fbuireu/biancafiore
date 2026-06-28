@@ -196,11 +196,12 @@ main.--is-article {
 	width: min(var(--grid-article), 100% - 2rem);
 	margin-inline: auto;
 	padding-block: 40px 0;
-	background: var(--background-main);
+	background: var(--white);
 	text-align: center;
 
 	&.--has-featured {
-		margin-block-start: -64px;
+		margin-block-start: -4rem;
+		background-color: var(--white);
 	}
 
 	&:not(.--has-featured) {
