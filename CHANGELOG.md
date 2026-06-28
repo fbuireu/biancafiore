@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/fbuireu/biancafiore/compare/v1.9.7...v1.10.0) (2026-06-28)
+
+
+### Features
+
+* add worker cdn images ([40d3c16](https://github.com/fbuireu/biancafiore/commit/40d3c168f49431e26f34d874bc2b5f78baa9e745))
+
 ## [1.9.7](https://github.com/fbuireu/biancafiore/compare/v1.9.6...v1.9.7) (2026-06-28)
 
 
