@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/fbuireu/biancafiore/compare/v1.10.1...v1.11.0) (2026-06-28)
+
+
+### Features
+
+* add cdn fallback ([b567a12](https://github.com/fbuireu/biancafiore/commit/b567a129160349d90b9a043937e321aec5867431))
+
 ## [1.10.1](https://github.com/fbuireu/biancafiore/compare/v1.10.0...v1.10.1) (2026-06-28)
 
 
