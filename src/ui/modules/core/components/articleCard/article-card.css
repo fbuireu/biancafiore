@@ -15,6 +15,10 @@
 	overflow: hidden;
 	position: relative;
 
+	img {
+		display:block; 
+	}
+
 	&::after {
 		background-color: var(--gold);
 		block-size: 2px;

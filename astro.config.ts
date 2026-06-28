@@ -86,7 +86,7 @@ export default defineConfig({
 			customPages: ["https://biancafiore.me/tags"],
 		}),
 	],
-	adapter: cloudflare(),
+	adapter: cloudflare({ imageService: "custom" }),
 	env: {
 		schema: {
 			SITE_URL: envField.string({
