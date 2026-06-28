@@ -57,10 +57,6 @@
 	line-height: round(up, 1em, var(--rhythm));
 	margin-block: 0 12px;
 	text-wrap: pretty;
-
-	.--inverted-color-scheme & {
-		color: var(--background-main);
-	}
 }
 
 .article-card__arrow {
