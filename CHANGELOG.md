@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/fbuireu/biancafiore/compare/v1.9.0...v1.9.1) (2026-06-28)
+
+
+### Bug Fixes
+
+* minor css ([7a3cc9a](https://github.com/fbuireu/biancafiore/commit/7a3cc9a1cb283d2edc881e6681ff4d293fc6d0db))
+
 # [1.9.0](https://github.com/fbuireu/biancafiore/compare/v1.8.0...v1.9.0) (2026-06-28)
 
 
