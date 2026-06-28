@@ -4,9 +4,8 @@ html.--is-article {
 	--rhythm: calc(var(--article-body-size) * var(--leading));
 }
 
-html.--is-article,
-html.--is-article body,
-main.--is-article {
+:is(html, main).--is-article,
+html.--is-article body {
 	background-color: var(--white);
 }
 

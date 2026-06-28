@@ -1,3 +1,8 @@
+:is(html, main).--is-tags,
+html.--is-tags body {
+	background-color: var(--white);
+}
+
 .tag__article__list {
 	grid-template-columns: 1fr;
 	margin-block: 2rem 6rem;
