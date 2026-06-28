@@ -1,4 +1,3 @@
-import { fileURLToPath } from "node:url";
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
@@ -62,10 +61,6 @@ export default defineConfig({
 		},
 		resolve: {
 			dedupe: ["react", "react-dom"],
-			alias: {
-				"node-fetch": fileURLToPath(new URL("./src/shims/node-fetch.ts", import.meta.url)),
-				"cross-fetch": fileURLToPath(new URL("./src/shims/node-fetch.ts", import.meta.url)),
-			},
 		},
 		ssr: {
 			external: ["node:async_hooks", "contentful"],
