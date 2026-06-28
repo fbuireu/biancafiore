@@ -31,7 +31,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "wrangler:dev": "pnpm build && wrangler dev",
+    "wrangler:dev": "pnpm build && wrangler dev --remote",
     "preview": "astro preview",
     "sync": "astro sync",
     "check": "astro check",
