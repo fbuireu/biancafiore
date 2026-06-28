@@ -1,3 +1,10 @@
+## [1.9.5](https://github.com/fbuireu/biancafiore/compare/v1.9.4...v1.9.5) (2026-06-28)
+
+
+### Bug Fixes
+
+* use white background on article and tag pages ([68d8394](https://github.com/fbuireu/biancafiore/commit/68d83942209aa83a81aa253ab0c32217c9aff7d0))
+
 ## [1.9.4](https://github.com/fbuireu/biancafiore/compare/v1.9.3...v1.9.4) (2026-06-28)
 
 
