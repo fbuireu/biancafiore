@@ -6,6 +6,21 @@ interface ImageOptions {
 	fit?: 'fill' | 'crop' | 'pad' | 'thumb' | 'scale';
 }
 
+const CLOUDFLARE_FORMAT: Record<NonNullable<ImageOptions['format']>, string> = {
+	webp: 'webp',
+	avif: 'avif',
+	jpg: 'jpeg',
+	png: 'png',
+};
+
+const CLOUDFLARE_FIT: Record<NonNullable<ImageOptions['fit']>, string> = {
+	fill: 'cover',
+	crop: 'crop',
+	pad: 'pad',
+	thumb: 'cover',
+	scale: 'scale-down',
+};
+
 function toAbsoluteSrc(src: string): string {
 	return src.startsWith('//') ? `https:${src}` : src;
 }
@@ -24,8 +39,26 @@ function getContentfulUrl(src: string, options: ImageOptions): string {
 	}
 }
 
+function getCloudflareUrl(src: string, options: ImageOptions): string {
+	const params: string[] = [
+		`format=${options.format ? CLOUDFLARE_FORMAT[options.format] : 'auto'}`,
+		`quality=${options.quality ?? 85}`,
+	];
+	if (options.width) params.push(`width=${options.width}`);
+	if (options.height) params.push(`height=${options.height}`);
+	if (options.fit) params.push(`fit=${CLOUDFLARE_FIT[options.fit]}`);
+	return `/cdn-cgi/image/${params.join(',')}/${src}`;
+}
+
+function buildUrl(src: string, options: ImageOptions): string {
+	const absoluteSrc = toAbsoluteSrc(src);
+	return import.meta.env.DEV
+		? getContentfulUrl(absoluteSrc, options)
+		: getCloudflareUrl(absoluteSrc, options);
+}
+
 export function getOptimizedImageUrl(src: string, options: ImageOptions = {}): string {
-	return getContentfulUrl(toAbsoluteSrc(src), options);
+	return buildUrl(src, options);
 }
 
 export function getOptimizedSrcset(
@@ -33,8 +66,5 @@ export function getOptimizedSrcset(
 	widths: number[],
 	options: Omit<ImageOptions, 'width'> = {},
 ): string {
-	const absoluteSrc = toAbsoluteSrc(src);
-	return widths
-		.map((w) => `${getContentfulUrl(absoluteSrc, { ...options, width: w })} ${w}w`)
-		.join(', ');
+	return widths.map((w) => `${buildUrl(src, { ...options, width: w })} ${w}w`).join(', ');
 }
