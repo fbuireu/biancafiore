@@ -1,3 +1,10 @@
+## [1.9.7](https://github.com/fbuireu/biancafiore/compare/v1.9.6...v1.9.7) (2026-06-28)
+
+
+### Bug Fixes
+
+* revert custom image service that returned 404 for transformed images ([4aebb3d](https://github.com/fbuireu/biancafiore/commit/4aebb3d8c5dbe2f958af0899eb3854fc7ebefdc6))
+
 ## [1.9.6](https://github.com/fbuireu/biancafiore/compare/v1.9.5...v1.9.6) (2026-06-28)
 
 
