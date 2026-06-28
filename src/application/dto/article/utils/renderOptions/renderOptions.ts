@@ -4,7 +4,7 @@ import { PAGES_ROUTES } from "@const/index";
 import { escapeHtml } from "@const/utils/escapeHtml";
 import type { Block, Inline, Text } from "@contentful/rich-text-types";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
-import { getOptimizedImageUrl, getOptimizedSrcset } from "@shared/utils/imageOptimization";
+import { getOptimizedImageUrl, getOptimizedSrcset } from "@infrastructure/images/imageOptimization";
 
 type Node = Block | Inline | Text;
 type Next = (nodes: Node[]) => string;
@@ -98,12 +98,11 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 					const alt = escapeHtml(String(image.fields.description ?? image.fields.title ?? ""));
 					const wrapperClass = fullBleed ? "full-bleed" : "";
 					const displayWidth = width ?? 768;
-					const optimizedSrc = getOptimizedImageUrl(`https:${imgUrl}`, {
-						width: displayWidth,
-						format: "webp",
-						quality: 85,
+					const optimizedSrc = getOptimizedImageUrl({
+						source: `https:${imgUrl}`,
+						options: { width: displayWidth, format: "webp" },
 					});
-					const srcset = getOptimizedSrcset(`https:${imgUrl}`, [400, 768, 1024], { format: "webp", quality: 85 });
+					const srcset = getOptimizedSrcset({ source: `https:${imgUrl}`, widths: [400, 768, 1024], options: { format: "webp" } });
 
 					return `
 						<figure${wrapperClass ? ` class="${wrapperClass}"` : ""}>
@@ -132,12 +131,11 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 
 				if (url) {
 					const displayWidth = width ?? 768;
-					const optimizedSrc = getOptimizedImageUrl(`https:${url}`, {
-						width: displayWidth,
-						format: "webp",
-						quality: 85,
+					const optimizedSrc = getOptimizedImageUrl({
+						source: `https:${url}`,
+						options: { width: displayWidth, format: "webp" },
 					});
-					const srcset = getOptimizedSrcset(`https:${url}`, [400, 768, 1024], { format: "webp", quality: 85 });
+					const srcset = getOptimizedSrcset({ source: `https:${url}`, widths: [400, 768, 1024], options: { format: "webp" } });
 					return `
             <figure class="full-bleed">
               <img
