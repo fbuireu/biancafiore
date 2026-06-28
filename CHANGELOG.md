@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/fbuireu/biancafiore/compare/v1.8.0...v1.9.0) (2026-06-28)
+
+
+### Features
+
+* migrate astro 7 ([c0bd3aa](https://github.com/fbuireu/biancafiore/commit/c0bd3aa1ae295c99d78b17ae0238c12d2f31bf38))
+
 # [1.8.0](https://github.com/fbuireu/biancafiore/compare/v1.7.0...v1.8.0) (2026-06-20)
 
 
