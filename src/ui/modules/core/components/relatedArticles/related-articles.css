@@ -1,6 +1,6 @@
 .related-articles {
 	background-color: var(--neutral-main);
-	margin-block: 6rem;
+	margin-block-start: 6rem;
 	padding-block: 4rem;
 
 	@container article-page (width <= 960px) {
@@ -14,7 +14,7 @@
 }
 
 .related-articles__title {
-	color: var(--ink);
+	color: var(--background-main);
 	margin-block-end: 2rem;
 }
 
