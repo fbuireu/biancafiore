@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/fbuireu/biancafiore/compare/v1.10.0...v1.10.1) (2026-06-28)
+
+
+### Bug Fixes
+
+* mailto ([25aa122](https://github.com/fbuireu/biancafiore/commit/25aa122fb724760e511e13dc738a45b66181808f))
+
 # [1.10.0](https://github.com/fbuireu/biancafiore/compare/v1.9.7...v1.10.0) (2026-06-28)
 
 
