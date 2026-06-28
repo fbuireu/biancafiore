@@ -1,3 +1,4 @@
+import { buildContentfulImageUrl, parseCloudflareImageUrl } from '@infrastructure/images/imageOptimization';
 import { defineMiddleware } from 'astro:middleware';
 
 const SECURITY_HEADERS: Record<string, string> = {
@@ -25,7 +26,14 @@ const SECURITY_HEADERS: Record<string, string> = {
   ].join('; '),
 };
 
-export const onRequest = defineMiddleware(async (_context, next) => {
+export const onRequest = defineMiddleware(async (context, next) => {
+  if (import.meta.env.DEV) {
+    const transform = parseCloudflareImageUrl(context.url.pathname);
+    if (transform) {
+      return context.redirect(buildContentfulImageUrl(transform), 302);
+    }
+  }
+
   const response = await next();
 
   for (const [header, value] of Object.entries(SECURITY_HEADERS)) {
