@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/fbuireu/biancafiore/compare/v1.9.1...v1.9.2) (2026-06-28)
+
+
+### Bug Fixes
+
+* make inverted band titles legible ([24788ab](https://github.com/fbuireu/biancafiore/commit/24788ab7b946eb9f71b03552f20cb8ca6ce7a3b7))
+
 ## [1.9.1](https://github.com/fbuireu/biancafiore/compare/v1.9.0...v1.9.1) (2026-06-28)
 
 
