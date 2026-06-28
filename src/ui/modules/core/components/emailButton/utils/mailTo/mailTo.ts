@@ -16,8 +16,6 @@ export function mailTo(): void {
 
 		event.preventDefault();
 
-		const mailto = encodeURIComponent(`"${CONTACT_DETAILS.NAME}"<${atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA)}>`);
-
-		window.location.href = `mailto:${mailto}`;
+		window.location.href = `mailto:${atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA)}`;
 	});
 }
