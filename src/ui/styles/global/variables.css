@@ -146,13 +146,13 @@
 
 @property --neutral-light-2 {
 	syntax: "<color>";
-	inherits: false;
+	inherits: true;
 	initial-value: transparent;
 }
 
 @property --neutral-light-3 {
 	syntax: "<color>";
-	inherits: false;
+	inherits: true;
 	initial-value: transparent;
 }
 

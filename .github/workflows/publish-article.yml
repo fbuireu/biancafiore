@@ -1,9 +1,9 @@
-name: Deploy Article
+name: Publish Article
 
 run-name: >-
   ${{ github.event.action == 'article-published'
-      && format('Article "{0}" published (deploy triggered by Contentful Webhook)', github.event.client_payload.title)
-      || format('Article ({0}) unpublished (deploy triggered by Contentful Webhook)', github.event.client_payload.id) }}
+      && format('Article "{0}" published (publish triggered by Contentful Webhook)', github.event.client_payload.title)
+      || format('Article ({0}) unpublished (publish triggered by Contentful Webhook)', github.event.client_payload.id) }}
 
 on:
   repository_dispatch:
@@ -13,12 +13,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-production
+  group: publish-production
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    name: Deploy
+  publish:
+    name: Publish
     uses: ./.github/workflows/_deploy.yml
     with:
       environment: production

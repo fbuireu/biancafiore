@@ -4,6 +4,12 @@ html.--is-article {
 	--rhythm: calc(var(--article-body-size) * var(--leading));
 }
 
+html.--is-article,
+html.--is-article body,
+main.--is-article {
+	background-color: var(--white);
+}
+
 .article__featured-image {
 	max-height: 50vh;
 	object-fit: cover;
@@ -118,10 +124,8 @@ html.--is-article {
 	figcaption {
 		font-family: var(--font-sans-serif);
 		font-size: 0.72rem;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
 		text-align: center;
-		color: var(--neutral-light-2);
+		color: var(--muted);
 		margin-block-start: calc(var(--rhythm) / 2);
 	}
 
