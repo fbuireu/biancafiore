@@ -3,6 +3,7 @@ import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig, envField, fontProviders, memoryCache } from "astro/config";
+import { Features } from "lightningcss";
 
 export default defineConfig({
 	experimental: {
@@ -54,6 +55,12 @@ export default defineConfig({
 	vite: {
 		build: {
 			target: "esnext",
+		},
+		css: {
+			transformer: "lightningcss",
+			lightningcss: {
+				exclude: Features.LightDark,
+			},
 		},
 		resolve: {
 			dedupe: ["react", "react-dom"],

@@ -95,6 +95,7 @@
     "@vitest/coverage-v8": "4.1.9",
     "drizzle-kit": "0.31.10",
     "husky": "9.1.7",
+    "lightningcss": "1.32.0",
     "lint-staged": "17.0.8",
     "semantic-release": "25.0.5",
     "typescript": "6.0.3",
