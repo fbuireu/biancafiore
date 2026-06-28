@@ -20,8 +20,11 @@ const metadata: Partial<SeoMetadata> = {
 };
 ---
 <BaseLayout {...metadata}>
-    <h1 class="articles__title section-title">The Blog</h1>
-    <Breadcrumbs />
+    <header class="articles__intro common-wrapper">
+        <p class="editorial-eyebrow articles__eyebrow">Writing</p>
+        <h1 class="articles__title editorial-headline">The Blog</h1>
+        <Breadcrumbs />
+    </header>
   {
       featuredArticle && <FeaturedArticle featuredArticle={featuredArticle} />
   }

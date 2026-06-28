@@ -12,6 +12,19 @@
 	}
 }
 
+.articles__intro {
+	padding-block: 5.625rem 0;
+
+	@container articles-page (width <= 960px) {
+		padding-block: 3.5rem 0;
+	}
+}
+
+.articles__eyebrow {
+	margin-block-end: 1.5rem;
+}
+
 .articles__title {
-	margin-block-end: 2rem;
+	font-size: clamp(2.5rem, 6cqi, 4rem);
+	margin: 0 0 var(--rhythm);
 }

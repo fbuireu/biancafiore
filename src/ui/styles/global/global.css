@@ -62,9 +62,19 @@
 		font-size: clamp(24px, 2.66cqi, 34px);
 		font-weight: 400;
 		letter-spacing: 0.22em;
-		line-height: 1.2;
+		line-height: round(up, 1em, var(--rhythm));
 		text-align: center;
 		text-transform: uppercase;
+	}
+
+	.editorial-headline {
+		color: var(--ink);
+		font-family: var(--font-display);
+		font-weight: 400;
+		letter-spacing: -0.01em;
+		line-height: round(up, 1em, var(--rhythm));
+		text-transform: none;
+		text-wrap: balance;
 	}
 
 	.editorial-cta {

@@ -1,20 +1,34 @@
 import { defineCollection, reference } from "astro:content";
-import { z } from "astro/zod";
 import { tagDTO } from "@application/dto/tag";
 import type { RawTag } from "@application/dto/tag/types";
 import { TagType } from "@application/dto/tag/types";
 import { tagSchema } from "@application/entities/tags/schema";
-import { createContentfulClient, isContentfulConfigured } from "@infrastructure/cms/client";
+import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
+import { runCms } from "@infrastructure/runtime";
+import { z } from "astro/zod";
+import { Effect } from "effect";
 
 export const tags = defineCollection({
 	loader: async () => {
 		if (!isContentfulConfigured()) return [];
-		const client = await createContentfulClient();
-		const [{ items: rawTags }, { items: rawArticles }, { items: rawAuthors }] = await Promise.all([
-			client.getEntries<RawTag>({ content_type: "tag", limit: 1000 }),
-			client.getEntries({ content_type: "article", select: ["fields.slug", "fields.tags", "fields.author"], limit: 1000 }),
-			client.getEntries({ content_type: "author", select: ["fields.name", "fields.slug"], limit: 1000 }),
-		]);
+
+		const [{ items: rawTags }, { items: rawArticles }, { items: rawAuthors }] = await runCms(
+			Effect.gen(function* () {
+				const cms = yield* CmsClient;
+				return yield* Effect.all(
+					[
+						cms.getEntries({ content_type: "tag", limit: 1000 }),
+						cms.getEntries({
+							content_type: "article",
+							select: ["fields.slug", "fields.tags", "fields.author"],
+							limit: 1000,
+						}),
+						cms.getEntries({ content_type: "author", select: ["fields.name", "fields.slug"], limit: 1000 }),
+					],
+					{ concurrency: "unbounded" },
+				);
+			}),
+		);
 
 		const tags = await tagDTO.create([rawTags as unknown as RawTag[], rawArticles, rawAuthors]);
 

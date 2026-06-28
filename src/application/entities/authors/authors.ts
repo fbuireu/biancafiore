@@ -1,17 +1,23 @@
 import { defineCollection, reference } from "astro:content";
-import { z } from "astro/zod";
 import { authorDTO } from "@application/dto/author";
 import type { RawAuthor } from "@application/dto/author/types";
 import { authorSchema } from "@application/entities/authors/schema";
-import { createContentfulClient, isContentfulConfigured } from "@infrastructure/cms/client";
+import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
+import { runCms } from "@infrastructure/runtime";
+import { z } from "astro/zod";
+import { Effect } from "effect";
 
 export const authors = defineCollection({
 	loader: async () => {
 		if (!isContentfulConfigured()) return [];
-		const client = await createContentfulClient();
-		const { items: rawAuthors } = await client.getEntries<RawAuthor>({
-			content_type: "author",
-		});
+
+		const { items: rawAuthors } = await runCms(
+			Effect.gen(function* () {
+				const cms = yield* CmsClient;
+				return yield* cms.getEntries({ content_type: "author" });
+			}),
+		);
+
 		const authors = await authorDTO.create(rawAuthors as unknown as RawAuthor[]);
 
 		return authors.map((author) => ({

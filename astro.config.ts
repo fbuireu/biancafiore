@@ -1,13 +1,15 @@
 import { fileURLToPath } from "node:url";
 import cloudflare from "@astrojs/cloudflare";
-import db from "@astrojs/db";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import { defineConfig, envField, fontProviders } from "astro/config";
+import { defineConfig, envField, fontProviders, memoryCache } from "astro/config";
 
 export default defineConfig({
 	experimental: {
 		contentIntellisense: true,
+	},
+	cache: {
+		provider: memoryCache(),
 	},
 	fonts: [
 		{
@@ -65,7 +67,6 @@ export default defineConfig({
 		},
 	},
 	integrations: [
-		db(),
 		react(),
 		sitemap({
 			filter: (page) => {

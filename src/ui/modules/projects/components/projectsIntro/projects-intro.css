@@ -1,3 +1,22 @@
-.articles__title {
-	display: none;
+.projects-intro {
+	padding-block: 5.625rem 0;
+
+	@container projects-page (width <= 960px) {
+		padding-block: 3.5rem 0;
+	}
+}
+
+.projects-intro__inner {
+	margin-inline: auto;
+	max-width: var(--grid-content);
+	padding-inline: clamp(1.25rem, 5cqi, 4rem);
+}
+
+.projects-intro__eyebrow {
+	margin-block-end: 1.5rem;
+}
+
+.projects-intro__title {
+	font-size: clamp(2.5rem, 6cqi, 4rem);
+	margin: 0 0 var(--rhythm);
 }

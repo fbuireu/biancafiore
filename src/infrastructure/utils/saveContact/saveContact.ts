@@ -1,33 +1,24 @@
-import { ActionError } from "astro:actions";
-import { Contact, db } from "astro:db";
 import { DEFAULT_LOCALE_STRING } from "@const/const";
 import type { Except } from "@const/types";
-import { Exception } from "@domain/errors";
+import { Database } from "@infrastructure/db/client";
+import { Contact } from "@infrastructure/db/schema";
+import type { DatabaseError } from "@infrastructure/errors";
 import type { ContactFormData } from "@shared/ui/types";
+import { Effect } from "effect";
 
 interface SaveContactParams extends Except<ContactFormData, "recaptcha"> {
 	emailId: string;
 }
 
-export async function saveContact(contactData: SaveContactParams): Promise<void> {
-	try {
-		await db.insert(Contact).values({
-			...contactData,
-			createdDate: new Date().toLocaleString(DEFAULT_LOCALE_STRING),
-			modifiedDate: new Date().toLocaleString(DEFAULT_LOCALE_STRING),
-		});
-	} catch (error: unknown) {
-		if (error instanceof Exception) {
-			throw new ActionError({
-				code: error.code,
-				message: error.message,
-			});
-		}
-
-		throw new ActionError({
-			code: "INTERNAL_SERVER_ERROR",
-			message:
-				"Whoopsie! Something went wrong. It's my fault (or actually my boyfriend's). Please try again in a few minutes after refreshing the page.",
-		});
-	}
-}
+export const saveContact = (contactData: SaveContactParams): Effect.Effect<void, DatabaseError, Database> =>
+	Effect.gen(function* () {
+		const { db, run } = yield* Database;
+		yield* run(
+			db.insert(Contact).values({
+				...contactData,
+				id: crypto.randomUUID(),
+				createdDate: new Date().toLocaleString(DEFAULT_LOCALE_STRING),
+				modifiedDate: new Date().toLocaleString(DEFAULT_LOCALE_STRING),
+			}),
+		);
+	});

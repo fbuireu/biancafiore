@@ -1,8 +1,8 @@
-import type { z } from 'astro/zod';
 import type { RawAuthor } from "@application/dto/author/types";
 import type { BaseTagDTO } from "@application/dto/tag/types";
 import type { articleSchema } from "@application/entities/articles";
 import type { ContentfulImageAsset } from "@shared/application/types";
+import type { z } from "astro/zod";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawArticle {
@@ -18,6 +18,7 @@ export interface RawArticle {
 		publishDate: EntryFieldTypes.Date;
 		featuredImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
 		featuredArticle: EntryFieldTypes.Boolean;
+		isFavorite: EntryFieldTypes.Boolean;
 		isRepublished: EntryFieldTypes.Boolean;
 		originalSource: EntryFieldTypes.Text;
 		author: Entry<EntrySkeletonType<RawAuthor["fields"]>>;

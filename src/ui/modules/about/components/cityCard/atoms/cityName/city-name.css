@@ -5,7 +5,7 @@
 	font-weight: 400;
 	grid-area: City-Name;
 	letter-spacing: -0.01em;
-	line-height: 1.04;
+	line-height: round(up, 1em, var(--rhythm));
 	margin-block-start: -1rem;
 
 	@container about-page (width <= 720px) {

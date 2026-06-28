@@ -1,39 +1,33 @@
-import { ActionError } from "astro:actions";
-import { Contact, db, eq } from "astro:db";
 import type { Except } from "@const/types";
-import { Exception } from "@domain/errors";
+import { Database } from "@infrastructure/db/client";
+import { Contact } from "@infrastructure/db/schema";
+import { type DatabaseError, DuplicateContactError } from "@infrastructure/errors";
 import type { ContactFormData } from "@shared/ui/types";
+import { eq } from "drizzle-orm";
+import { Effect } from "effect";
 
 type CheckDuplicatedEntriesParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
 const ALIAS_REGEX = /(\+.*?)(?=@)/;
 
-export async function checkDuplicatedEntries(data: CheckDuplicatedEntriesParams): Promise<void> {
-	try {
-		const duplicates = await db
-			.select()
-			.from(Contact)
-			.where(eq(Contact.email, data.email.replace(ALIAS_REGEX, "")))
-			.limit(1);
+export const checkDuplicatedEntries = (
+	data: CheckDuplicatedEntriesParams,
+): Effect.Effect<void, DatabaseError | DuplicateContactError, Database> =>
+	Effect.gen(function* () {
+		const { db, run } = yield* Database;
+		const duplicates = yield* run(
+			db
+				.select()
+				.from(Contact)
+				.where(eq(Contact.email, data.email.replace(ALIAS_REGEX, "")))
+				.limit(1),
+		);
 
 		if (duplicates.length) {
-			throw new Exception({
-				message: "You already contacted. Please be patient, I will get back to you ASAP.",
-				code: "UNAUTHORIZED",
-			});
+			return yield* Effect.fail(
+				new DuplicateContactError({
+					message: "You already contacted. Please be patient, I will get back to you ASAP.",
+				}),
+			);
 		}
-	} catch (error: unknown) {
-		if (error instanceof Exception) {
-			throw new ActionError({
-				code: error.code,
-				message: error.message,
-			});
-		}
-
-		throw new ActionError({
-			code: "INTERNAL_SERVER_ERROR",
-			message:
-				"Whoopsie! Something went wrong. It's my fault (or actually my boyfriend's). Please try again in a few minutes after refreshing the page.",
-		});
-	}
-}
+	});
