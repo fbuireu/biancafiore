@@ -3,7 +3,7 @@
 	font-family: var(--font-serif);
 	font-size: 15px;
 	grid-area: City-Description;
-	line-height: 1.6;
+	line-height: var(--leading);
 	padding-bottom: 2rem;
 
 	@container about-page (width <= 720px) {

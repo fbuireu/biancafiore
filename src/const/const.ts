@@ -1,66 +1,30 @@
 import { BIANCA_EMAIL } from "astro:env/client";
-import biancaImage from "@assets/images/jpg/bianca-fiore.jpg";
-import { capitalizeKeys } from "@const/utils/capitalizeKeys";
-import { lowercaseKeys } from "@const/utils/lowercaseKeys";
-import type { CapitalizeKeys, SeoMetadata } from "./types";
 
-export const Pages = {
-	HOME: "home",
-	PROJECTS: "projects",
-	ABOUT: "about",
-	ARTICLES: "articles",
-	ARTICLE: "article",
-	CONTACT: "contact",
-	TAGS: "tags",
-	TAG: "tag",
-	TERMS_AND_CONDITIONS: "terms-and-conditions",
-	PRIVACY_POLICY: "privacy-policy",
+export const PAGES_ROUTES = {
+	ARTICLE: "/articles/",
+	ARTICLES: "/articles",
+	ABOUT: "/about",
+	TAGS: "/tags",
+	TAG: "/tags/",
+	CONTACT: "/contact",
+	PROJECTS: "/projects",
+	"TERMS-AND-CONDITIONS": "/terms-and-conditions",
+	"PRIVACY-POLICY": "/privacy-policy",
+	HOME: "/",
 } as const;
 
-const pagesRoutes = {
-	[Pages.ARTICLE]: "/articles/",
-	[Pages.ARTICLES]: "/articles",
-	[Pages.ABOUT]: "/about",
-	[Pages.TAGS]: "/tags",
-	[Pages.TAG]: "/tags/",
-	[Pages.CONTACT]: "/contact",
-	[Pages.PROJECTS]: "/projects",
-	[Pages.TERMS_AND_CONDITIONS]: "/terms-and-conditions",
-	[Pages.PRIVACY_POLICY]: "/privacy-policy",
-	[Pages.HOME]: "/",
-} as const;
-
-export const PAGES_ROUTES: CapitalizeKeys<typeof pagesRoutes> = capitalizeKeys(pagesRoutes);
-
-export const DEFAULT_SEO_PARAMS: CapitalizeKeys<SeoMetadata> = {
-	TITLE: "Bianca Fiore",
-	SITE: "biancafiore.me",
-	DESCRIPTION: "Bianca Fiore — personal website.",
-	ROBOTS: {
-		INDEX: true,
-		FOLLOW: true,
-	},
-	IMAGE: biancaImage.src,
-} as unknown as CapitalizeKeys<SeoMetadata>;
-
-export const CONTACT_DETAILS: Record<CapitalizeKeys<string>, string> = {
+export const CONTACT_DETAILS = {
 	NAME: "Bianca Fiore",
 	EMAIL_SUBJECT: "Web contact form submission",
 	ENCODED_EMAIL_FROM: btoa("hello@biancafiore.me"),
 	ENCODED_EMAIL_BIANCA: btoa(BIANCA_EMAIL),
 } as const;
 
-const defaultDateFormat: CapitalizeKeys<Intl.DateTimeFormatOptions> = {
-	WEEKDAY: "long",
-	YEAR: "numeric",
-	MONTH: "long",
-	DAY: "numeric",
-} as const;
+export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = {
+	weekday: "long",
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+};
 
-export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = lowercaseKeys(defaultDateFormat);
-
-export const THEME_STORAGE_KEY = "theme" as const;
-
-export const ARTICLE_COLUMNS_STORAGE_KEY = "article-columns" as const;
-
-export const DEFAULT_LOCALE_STRING: Intl.LocalesArgument = "es-ES" as const;
+export const DEFAULT_LOCALE_STRING: Intl.LocalesArgument = "en-GB" as const;

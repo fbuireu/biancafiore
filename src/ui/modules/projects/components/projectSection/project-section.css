@@ -62,6 +62,11 @@
 		}
 	}
 
+	.project-title {
+		font-size: clamp(1.75rem, 4cqi, 2.75rem);
+		margin: 0;
+	}
+
 	.project-information {
 		align-content: center;
 		display: grid;

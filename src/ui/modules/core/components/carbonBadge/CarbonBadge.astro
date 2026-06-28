@@ -29,7 +29,7 @@ import "./carbon-badge.css";
     }
 
     const calculator = new co2({ model: "swd" });
-    const grams = (calculator.perVisit(totalBytes, isGreen) as number).toFixed(2);
+    const grams = calculator.perVisit(totalBytes, isGreen).toFixed(2);
 
     badge.innerHTML = `
       <a

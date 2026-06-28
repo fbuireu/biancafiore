@@ -10,7 +10,7 @@
 .my-work__inner {
 	counter-reset: my-work;
 	margin-inline: auto;
-	max-width: 1180px;
+	max-width: var(--grid-content);
 	padding-inline: clamp(1.25rem, 5cqi, 64px);
 }
 
@@ -55,7 +55,7 @@
 	font-size: clamp(26px, 3.13cqi, 40px);
 	font-weight: 400;
 	letter-spacing: -0.005em;
-	line-height: 1.04;
+	line-height: round(up, 1em, var(--rhythm));
 	margin: 0;
 	transition:
 		color 0.3s,
@@ -139,12 +139,12 @@
 .my-work__description {
 	color: var(--ink-soft);
 	font-family: var(--font-serif);
-	max-width: 640px;
+	max-width: var(--grid-text);
 
 	& p {
 		font-family: var(--font-serif);
 		font-size: 18px;
-		line-height: 1.72;
+		line-height: var(--leading);
 		margin-block-end: 18px;
 	}
 }

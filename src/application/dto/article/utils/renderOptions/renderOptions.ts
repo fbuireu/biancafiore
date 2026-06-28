@@ -1,5 +1,6 @@
 import type { RawArticle } from "@application/dto/article/types";
 import { parseHeadings } from "@application/dto/article/utils/parseHeadings";
+import { PAGES_ROUTES } from "@const/index";
 import { escapeHtml } from "@const/utils/escapeHtml";
 import type { Block, Inline, Text } from "@contentful/rich-text-types";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
@@ -28,23 +29,21 @@ function toEmbedUrl(url: string): string {
 	return url;
 }
 
-function isExternal(url: string): boolean {
-	try {
-		return new URL(url).hostname !== "biancafiore.me";
-	} catch {
-		return false;
-	}
-}
-
 export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 	return {
 		renderNode: {
 			[INLINES.HYPERLINK]: (node: Node, next: Next) => {
 				const inlineNode = node as Inline;
 				const { uri } = inlineNode.data;
+				const { hostname, pathname } = new URL(uri, "https://biancafiore.me");
+				const isExternal = hostname !== "biancafiore.me";
+				const isTagPage = pathname.startsWith(PAGES_ROUTES.TAG) && pathname !== PAGES_ROUTES.TAG;
 
-				if (isExternal(uri)) {
+				if (isExternal) {
 					return `<a href="${uri}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}<span aria-hidden="true" class="external-link-icon"> ↗</span></a>`;
+				}
+				if (isTagPage) {
+					return `<a href="${uri}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}</a>`;
 				}
 				return `<a href="${uri}">${next(inlineNode.content)}</a>`;
 			},

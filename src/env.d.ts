@@ -30,10 +30,19 @@ interface ImportMeta {
 	readonly env: ImportMetaEnv;
 }
 
-declare global {
-	interface Window {
-		dataLayer: any[];
+declare module "@tgwf/co2" {
+	interface CO2Options {
+		model?: "swd" | "1byte";
+		version?: number;
+	}
+
+	export class co2 {
+		constructor(options?: CO2Options);
+		perVisit(bytes: number, green?: boolean): number;
+		perByte(bytes: number, green?: boolean): number;
 	}
 }
 
-export {};
+interface Window {
+	dataLayer: any[];
+}

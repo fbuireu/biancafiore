@@ -1,4 +1,4 @@
-import { THEME_STORAGE_KEY } from "@const/index";
+import { THEME_STORAGE_KEY } from "../../const";
 
 export const ThemeType = {
 	DARK: "dark",

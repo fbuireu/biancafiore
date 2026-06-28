@@ -1,4 +1,5 @@
 .header__menu {
+	color-scheme: dark;
 	display: flex;
 	height: 100dvh;
 	position: fixed;
@@ -12,7 +13,7 @@
 }
 
 .header__menu :is(a, span) {
-	color: var(--white);
+	color: var(--ink);
 	line-height: 70%;
 	position: relative;
 	top: 150%;
@@ -20,7 +21,7 @@
 
 .navigation__menu {
 	align-items: center;
-	background-color: var(--neutral-main);
+	background-color: var(--surface);
 	display: flex;
 	flex: 3;
 	flex-direction: column;
@@ -60,7 +61,7 @@
 	position: relative;
 
 	&::after {
-		background: var(--neutral-main);
+		background: var(--surface);
 		content: "";
 		height: 175%;
 		left: -1.5rem;
@@ -88,7 +89,8 @@
 }
 
 .navigation__menu__quote {
-	color: var(--white);
+	color: var(--ink);
+	font-family: var(--font-serif);
 	font-size: clamp(1rem, 3vw + 1rem, 2rem);
 	grid-area: Header-Quote;
 	padding-inline-end: 4rem;
@@ -115,7 +117,7 @@
 }
 
 .navigation__menu__divider {
-	background-color: var(--white);
+	background-color: var(--ink);
 	grid-area: Header-Divider;
 	height: 125%;
 	opacity: 0;
@@ -142,12 +144,13 @@
 
 .navigation__menu__link {
 	display: inline-block;
+	font-family: var(--font-display);
 	font-size: clamp(2rem, 5vw + 1rem, 4rem);
 	position: relative;
 	text-transform: uppercase;
 
 	&.--is-current-page {
-		color: var(--primary-main);
+		color: var(--gold);
 	}
 
 	&:hover,

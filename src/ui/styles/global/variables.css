@@ -36,6 +36,8 @@
 		--base-font-size: 16px;
 		--scale-ratio: 1.25;
 		--fluid-factor: 0.25;
+		--leading: 1.5;
+		--rhythm: calc(var(--base-font-size) * var(--leading));
 		--base-h6: calc(var(--base-font-size) * pow(var(--scale-ratio), 0));
 		--base-h5: calc(var(--base-font-size) * pow(var(--scale-ratio), 1));
 		--base-h4: calc(var(--base-font-size) * pow(var(--scale-ratio), 2));
@@ -60,7 +62,11 @@
 		--grid-medium: 960px;
 		--grid-article: 70ch;
 		--grid-large: 1024px;
+		--grid-content: 1180px;
 		--grid-extra-large: 1440px;
+		--grid-narrow: 880px;
+		--grid-text: 640px;
+		--grid-sidebar: 280px;
 		--ease-elastic: linear(0, 0.186 2.1%, 0.778 7.2%, 1.027 9.7%, 1);
 	}
 
@@ -87,133 +93,133 @@
 @property --primary-light-3 {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--primary-light-3);
+	initial-value: transparent;
 }
 
 @property --primary-light-2 {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--primary-light-2);
+	initial-value: transparent;
 }
 
 @property --primary-light-1 {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--primary-light-2);
+	initial-value: transparent;
 }
 
 @property --primary-main {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--primary-main);
+	initial-value: transparent;
 }
 
 @property --primary-dark-1 {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--primary-dark-1);
+	initial-value: transparent;
 }
 
 @property --primary-dark-2 {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--primary-dark-2);
+	initial-value: transparent;
 }
 
 @property --primary-dark-3 {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--primary-dark-3);
+	initial-value: transparent;
 }
 
 @property --neutral-main {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--neutral-main);
+	initial-value: transparent;
 }
 
 @property --neutral-light-1 {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--neutral-light-1);
+	initial-value: transparent;
 }
 
 @property --neutral-light-2 {
 	syntax: "<color>";
 	inherits: false;
-	initial-value: var(--neutral-light-2);
+	initial-value: transparent;
 }
 
 @property --neutral-light-3 {
 	syntax: "<color>";
 	inherits: false;
-	initial-value: var(--neutral-light-3);
+	initial-value: transparent;
 }
 
 @property --neutral-light-4 {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--neutral-light-4);
+	initial-value: transparent;
 }
 
 @property --background-main {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--background-main);
+	initial-value: transparent;
 }
 
 @property --error-main {
 	syntax: "<color>";
 	inherits: false;
-	initial-value: var(--error-main);
+	initial-value: transparent;
 }
 
 @property --success-main {
 	syntax: "<color>";
 	inherits: false;
-	initial-value: var(--success-main);
+	initial-value: transparent;
 }
 
 @property --x {
 	syntax: "<color>";
 	inherits: false;
-	initial-value: var(--x);
+	initial-value: transparent;
 }
 
 @property --linkedin {
 	syntax: "<color>";
 	inherits: false;
-	initial-value: var(--linkedin);
+	initial-value: transparent;
 }
 
 @property --email {
 	syntax: "<color>";
 	inherits: false;
-	initial-value: var(--email);
+	initial-value: transparent;
 }
 
 @property --white {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--white);
+	initial-value: transparent;
 }
 
 @property --black {
 	syntax: "<color>";
 	inherits: true;
-	initial-value: var(--black);
+	initial-value: transparent;
 }
 
 @property --header-height {
 	syntax: "<length>";
 	inherits: false;
-	initial-value: var(--header-height);
+	initial-value: 80px;
 }
 
 @property --global-max-width {
 	syntax: "<length>";
 	inherits: false;
-	initial-value: var(--global-max-width);
+	initial-value: 1440px;
 }
 
 @property --scale-ratio {
@@ -226,6 +232,18 @@
 	syntax: "<number>";
 	inherits: false;
 	initial-value: 0.25;
+}
+
+@property --leading {
+	syntax: "<number>";
+	inherits: true;
+	initial-value: 1.5;
+}
+
+@property --rhythm {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 24px;
 }
 
 @property --base-h1 {
@@ -339,43 +357,67 @@
 @property --global-border-radius {
 	syntax: "<length>";
 	inherits: false;
-	initial-value: var(--global-border-radius);
+	initial-value: 0.25rem;
 }
 
 @property --grid-extra-small {
 	syntax: "<length>";
 	inherits: false;
-	initial-value: var(--grid-extra-small);
+	initial-value: 575px;
 }
 
 @property --grid-small {
 	syntax: "<length>";
 	inherits: false;
-	initial-value: var(--grid-small);
+	initial-value: 720px;
 }
 
 @property --grid-medium {
 	syntax: "<length>";
 	inherits: false;
-	initial-value: var(--grid-medium);
+	initial-value: 960px;
 }
 
 @property --grid-article {
 	syntax: "<length>";
 	inherits: false;
-	initial-value: var(--grid-article);
+	initial-value: 70ch;
 }
 
 @property --grid-large {
 	syntax: "<length>";
 	inherits: false;
-	initial-value: var(--grid-large);
+	initial-value: 1024px;
+}
+
+@property --grid-content {
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 1180px;
 }
 
 @property --grid-extra-large {
 	syntax: "<length>";
 	inherits: false;
-	initial-value: var(--grid-extra-large);
+	initial-value: 1440px;
+}
+
+@property --grid-narrow {
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 880px;
+}
+
+@property --grid-text {
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 640px;
+}
+
+@property --grid-sidebar {
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 280px;
 }
 
 @property --ease-elastic {

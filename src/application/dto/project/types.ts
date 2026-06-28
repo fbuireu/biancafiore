@@ -1,6 +1,6 @@
-import type { z } from 'astro/zod';
 import type { projectsSchema } from "@application/entities/projects";
 import type { ContentfulImageAsset } from "@shared/application/types";
+import type { z } from "astro/zod";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawProject {

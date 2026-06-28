@@ -1,5 +1,5 @@
 .header__menu-text {
-	color: var(--neutral-main);
+	color: var(--ink);
 	display: block;
 	position: relative;
 	transition: color 1s;
@@ -11,7 +11,7 @@
 }
 
 .header__menu-button__outline {
-	border: 1px solid var(--neutral-main);
+	border: 1px solid var(--ink);
 	height: calc(var(--header-height) * 0.85);
 	position: absolute;
 	transition: border 1s;
@@ -28,22 +28,22 @@
 
 	&.--has-intersected {
 		.header__menu-button__outline {
-			border-color: var(--white);
+			border-color: var(--background-main);
 		}
 
 		.header__menu-text {
-			color: var(--white);
+			color: var(--background-main);
 		}
 	}
 
 	&.--is-menu-open {
 		.header__menu-button__outline {
-			border-color: var(--white);
+			border-color: var(--background-main);
 			transition: border-color 1s;
 		}
 
 		.header__menu-text {
-			color: var(--white);
+			color: var(--background-main);
 			transition: color 1s;
 		}
 	}

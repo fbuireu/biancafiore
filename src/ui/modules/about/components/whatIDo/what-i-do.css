@@ -11,7 +11,7 @@
 	gap: 64px;
 	grid-template-columns: 1fr 1.4fr;
 	margin-inline: auto;
-	max-width: 1180px;
+	max-width: var(--grid-content);
 	padding-inline: clamp(1.25rem, 5cqi, 64px);
 
 	@container about-page (width <= 960px) {
@@ -44,7 +44,7 @@
 	color: var(--ink-soft);
 	font-family: var(--font-serif);
 	font-size: 21px;
-	line-height: 1.5;
+	line-height: var(--leading);
 	margin-block-end: 24px;
 }
 
@@ -52,7 +52,7 @@
 	color: var(--ink-soft);
 	font-family: var(--font-serif);
 	font-size: 18px;
-	line-height: 1.72;
+	line-height: var(--leading);
 	margin-block-end: 24px;
 }
 

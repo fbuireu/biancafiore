@@ -1,13 +1,13 @@
 import type { CollectionEntry } from "astro:content";
 import { getEntry } from "astro:content";
+import { Effect } from "effect";
 
-export async function getRelatedArticles(article: CollectionEntry<"articles">): Promise<CollectionEntry<"articles">[]> {
-	const relatedArticles: CollectionEntry<"articles">[] = [];
-
-	for (const { collection, id } of article.data.relatedArticles) {
-		const article = await getEntry(collection, id);
-		relatedArticles.push(...(article ? [article] : []));
-	}
-
-	return relatedArticles;
+export function getRelatedArticles(article: CollectionEntry<"articles">): Promise<CollectionEntry<"articles">[]> {
+	return Effect.runPromise(
+		Effect.forEach(
+			article.data.relatedArticles,
+			({ collection, id }) => Effect.promise(async () => await getEntry(collection, id)),
+			{ concurrency: "unbounded" },
+		).pipe(Effect.map((entries) => entries.filter((entry): entry is CollectionEntry<"articles"> => Boolean(entry)))),
+	);
 }

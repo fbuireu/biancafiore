@@ -33,9 +33,19 @@ footer {
 
 .footer__logo {
 	svg {
-		fill: var(--white);
-		@media (width <= 720px) {
-			width: 14rem;
+		width: clamp(11rem, 40vw, 14rem);
+		height: auto;
+
+		text {
+			font-family: var(--font-display);
+		}
+
+		.logo__name {
+			fill: currentColor;
+		}
+
+		.logo__surname {
+			fill: var(--gold);
 		}
 	}
 }

@@ -15,27 +15,30 @@
 	z-index: 20;
 
 	svg {
-		fill: var(--neutral-main);
+		width: clamp(13rem, 60vw, 19.5rem);
+		height: auto;
 		transition-delay: 3s;
 
-		g > g:nth-child(1) {
+		text {
+			font-family: var(--font-display);
+		}
+
+		.logo__name {
+			color: var(--ink);
 			transition-delay: 1.75s;
 		}
 
-		&.--is-menu-open g > g:nth-child(1) {
+		.logo__surname {
+			fill: var(--gold);
+		}
+
+		&.--is-menu-open .logo__name {
 			transition-delay: 1.75s;
 		}
 
-		&.--has-intersected {
-			fill: var(--white);
-
-			g > g:nth-child(1) {
-				transition-delay: 0s;
-			}
-		}
-
-		@media (width <= 525px) {
-			width: 75%;
+		&.--has-intersected .logo__name {
+			color: var(--white);
+			transition-delay: 0s;
 		}
 	}
 
@@ -50,8 +53,8 @@
 			scale 0.3s linear 2s,
 			transform 0.2s 1s;
 
-		svg > g > g:nth-child(1) {
-			fill: var(--white);
+		svg .logo__name {
+			color: var(--white);
 			transition-delay: 0.75s;
 		}
 	}

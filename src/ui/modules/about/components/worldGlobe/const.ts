@@ -1,6 +1,4 @@
-import type { CapitalizeKeys, WorldGlobeConfig } from "@const/types.ts";
-
-export const WORLD_GLOBE_CONFIG: CapitalizeKeys<WorldGlobeConfig> = {
+export const WORLD_GLOBE_CONFIG = {
 	ANIMATION_DURATION: 500,
 	MOVEMENT_OFFSET: 20,
 	ZOOM_OFFSET: 0.2,

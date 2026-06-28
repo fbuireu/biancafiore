@@ -1,5 +1,5 @@
-import type { z } from 'astro/zod';
 import type { tagSchema } from "@application/entities/tags/schema";
+import type { z } from "astro/zod";
 import type { EntryFieldTypes } from "contentful";
 
 export interface RawTag {
