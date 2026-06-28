@@ -25,6 +25,11 @@
 	}
 }
 
+.contact-intro__title {
+	font-size: clamp(2.5rem, 6cqi, 4rem);
+	margin: 0;
+}
+
 .contact-intro__section.--right {
 	gap: 2rem 0;
 	grid-area: Contact-Image;

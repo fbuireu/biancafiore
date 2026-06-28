@@ -177,7 +177,7 @@
 	h5,
 	h6 {
 		font-family: var(--font-display);
-		line-height: 2lh;
+		line-height: calc(2 * var(--rhythm));
 		text-box: trim-both cap alphabetic;
 	}
 
@@ -188,12 +188,12 @@
 
 	h1 {
 		font-size: var(--font-size-h1);
-		line-height: 3lh;
+		line-height: calc(3 * var(--rhythm));
 	}
 
 	h2 {
 		font-size: var(--font-size-h2);
-		line-height: 3lh;
+		line-height: calc(3 * var(--rhythm));
 	}
 
 	h3 {
@@ -202,7 +202,6 @@
 
 	h4 {
 		font-size: var(--font-size-h4);
-		line-height: 1.3;
 	}
 
 	h5 {

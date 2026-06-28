@@ -9,7 +9,7 @@
 
 .blog__inner {
 	margin-inline: auto;
-	max-width: 1180px;
+	max-width: var(--grid-content);
 	padding-inline: clamp(1.25rem, 5cqi, 64px);
 }
 

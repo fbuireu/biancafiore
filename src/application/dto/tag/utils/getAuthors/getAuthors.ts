@@ -1,6 +1,6 @@
-import type { Entry, EntrySkeletonType } from "contentful";
 import { type TagDTO, TagType } from "@application/dto/tag/types";
 import type { Reference } from "@shared/application/types";
+import type { Entry, EntrySkeletonType } from "contentful";
 
 interface GetAuthorsParams {
 	rawAuthors: Entry<EntrySkeletonType>[];
@@ -22,12 +22,14 @@ export function getAuthors({ rawAuthors, rawArticles }: GetAuthorsParams): TagDT
 
 		if (articles.length === 0) return [];
 
-		return [{
-			name: String(author.fields.name).trim(),
-			slug,
-			type: TagType.AUTHOR,
-			count: articles.length,
-			articles,
-		}];
+		return [
+			{
+				name: String(author.fields.name).trim(),
+				slug,
+				type: TagType.AUTHOR,
+				count: articles.length,
+				articles,
+			},
+		];
 	});
 }

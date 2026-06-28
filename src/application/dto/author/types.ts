@@ -1,7 +1,7 @@
-import type { z } from 'astro/zod';
 import type { ArticleDTO } from "@application/dto/article/types";
 import type { authorSchema } from "@application/entities/authors";
 import type { ContentfulImageAsset } from "@shared/application/types";
+import type { z } from "astro/zod";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export interface RawAuthor {

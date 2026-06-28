@@ -1,7 +1,7 @@
-import type { Entry, EntrySkeletonType } from "contentful";
 import type { RawTag, TagDTO } from "@application/dto/tag/types";
 import { TagType } from "@application/dto/tag/types";
 import type { Reference } from "@shared/application/types";
+import type { Entry, EntrySkeletonType } from "contentful";
 
 interface GetTags {
 	rawTags: RawTag[];
@@ -30,12 +30,14 @@ export function getTags({ rawTags, rawArticles }: GetTags): TagDTO["articles"] {
 
 		if (articlesByTag.length === 0) return [];
 
-		return [{
-			name: String(rawTag.fields.name).trim(),
-			slug: String(rawTag.fields.slug).trim(),
-			type: TagType.TAG,
-			count: articlesByTag.length,
-			articles: articlesByTag,
-		}];
+		return [
+			{
+				name: String(rawTag.fields.name).trim(),
+				slug: String(rawTag.fields.slug).trim(),
+				type: TagType.TAG,
+				count: articlesByTag.length,
+				articles: articlesByTag,
+			},
+		];
 	});
 }

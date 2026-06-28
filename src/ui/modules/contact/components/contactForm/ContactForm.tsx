@@ -1,9 +1,7 @@
 import { actions } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
-import { Exception } from "@domain/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { flyPlane } from "@modules/contact/utils/flyPlane";
-import { getErrorMessage } from "@modules/contact/utils/getErrorMessage";
 import { Input } from "@modules/core/components/form/input";
 import { Recaptcha } from "@modules/core/components/form/recaptcha";
 import { Textarea } from "@modules/core/components/form/textarea";
@@ -11,6 +9,7 @@ import Spinner from "@modules/core/components/spinner/Spinner";
 import type { ContactFormData } from "@shared/ui/types";
 import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
+import { Effect } from "effect";
 import { useCallback, useId, useRef, useState, useTransition } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
@@ -25,9 +24,6 @@ export const ContactForm = () => {
 		reset,
 	} = useForm<ContactFormData>({
 		resolver: zodResolver(contactFormSchema),
-		defaultValues: {
-			id: crypto.randomUUID(),
-		},
 	});
 	const [pending, startTransition] = useTransition();
 	const [formStatus, setFormStatus] = useState<(typeof FormStatus)[keyof typeof FormStatus]>(FormStatus.INITIAL);
@@ -39,42 +35,49 @@ export const ContactForm = () => {
 
 	const submitForm = useCallback(
 		async (data: ContactFormData) => {
-			if (!submitRef.current) {
+			const button = submitRef.current;
+			if (!button) {
 				return;
 			}
-			try {
-				setFormStatus(FormStatus.LOADING);
+
+			setFormStatus(FormStatus.LOADING);
+
+			const submit = Effect.gen(function* () {
 				const contactData = new FormData();
 				contactData.append("name", data.name);
 				contactData.append("email", data.email);
 				contactData.append("message", data.message);
-				contactData.append("id", crypto.randomUUID());
 
-				const { data: response, error } = await actions.contact(contactData);
+				const { data: response, error } = yield* Effect.promise(() => actions.contact(contactData));
 
-				if (response?.ok) {
-					flyPlane(submitRef.current);
-					setTimeout(() => {
-						setFormStatus(FormStatus.SUCCESS);
-						reset();
-					}, 2000);
-				} else if (error) {
-					if (error.status === 401) {
-						setFormStatus(FormStatus.UNAUTHORIZED);
-						throw new Exception(error);
-					}
-
-					setFormStatus(FormStatus.ERROR);
-					throw new Error(error.message);
+				if (error) {
+					return yield* Effect.fail(error);
 				}
-			} catch (error) {
-				const errorMessage = getErrorMessage(error);
 
-				setError("root", {
-					type: "manual",
-					message: errorMessage as string,
-				});
-			}
+				return response;
+			});
+
+			await Effect.runPromise(
+				submit.pipe(
+					Effect.flatMap((response) =>
+						Effect.sync(() => {
+							if (response?.ok) {
+								flyPlane(button);
+								setTimeout(() => {
+									setFormStatus(FormStatus.SUCCESS);
+									reset();
+								}, 2000);
+							}
+						}),
+					),
+					Effect.catchAll((error) =>
+						Effect.sync(() => {
+							setFormStatus(error.status === 401 ? FormStatus.UNAUTHORIZED : FormStatus.ERROR);
+							setError("root", { type: "manual", message: error.message });
+						}),
+					),
+				),
+			);
 		},
 		[reset, setError],
 	);

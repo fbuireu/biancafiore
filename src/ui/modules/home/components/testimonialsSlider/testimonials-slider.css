@@ -21,7 +21,7 @@
 	font-family: var(--font-display);
 	font-size: clamp(24px, 2.58cqi, 33px);
 	letter-spacing: -0.005em;
-	line-height: 1.32;
+	line-height: round(up, 1em, var(--rhythm));
 	margin: 0 0 38px;
 	text-wrap: pretty;
 
@@ -65,7 +65,7 @@
 	font-family: var(--font-serif);
 	font-size: 18px;
 	font-weight: 420;
-	line-height: 1.12;
+	line-height: var(--leading);
 }
 
 .testimonials__nav {

@@ -1,4 +1,4 @@
-import { ARTICLE_COLUMNS_STORAGE_KEY } from "@const/index";
+import { ARTICLE_COLUMNS_STORAGE_KEY } from "../../const";
 
 const SELECTORS = {
 	ARTICLE: ".article-wrapper",
