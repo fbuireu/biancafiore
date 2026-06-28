@@ -1,3 +1,10 @@
+## [1.9.6](https://github.com/fbuireu/biancafiore/compare/v1.9.5...v1.9.6) (2026-06-28)
+
+
+### Bug Fixes
+
+* minor css issues ([445e0cc](https://github.com/fbuireu/biancafiore/commit/445e0ccffd3b7f217a61111ea4082cb1a1edeb53))
+
 ## [1.9.5](https://github.com/fbuireu/biancafiore/compare/v1.9.4...v1.9.5) (2026-06-28)
 
 
