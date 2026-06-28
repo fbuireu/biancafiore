@@ -1,3 +1,10 @@
+## [1.9.4](https://github.com/fbuireu/biancafiore/compare/v1.9.3...v1.9.4) (2026-06-28)
+
+
+### Bug Fixes
+
+* exclude light-dark() from lightningcss downleveling ([86adab0](https://github.com/fbuireu/biancafiore/commit/86adab0c67ddfac55c202b716a9c94d198feb283))
+
 ## [1.9.3](https://github.com/fbuireu/biancafiore/compare/v1.9.2...v1.9.3) (2026-06-28)
 
 
