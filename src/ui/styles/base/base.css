@@ -23,6 +23,14 @@
 		}
 	}
 
+	[data-theme="dark"] {
+		::selection,
+		::search-text {
+			background-color: var(--primary-main);
+			color: var(--background-main);
+		}
+	}
+
 	@view-transition {
 		navigation: auto;
 	}
@@ -39,55 +47,56 @@
 	}
 
 	html {
+		container-type: scroll-state;
 		overflow-x: hidden;
 
 		&.--is-articles {
-			container: articles-page / inline-size;
+			container: articles-page / inline-size scroll-state;
 			width: 100%;
 		}
 
 		&.--is-home {
-			container: home-page / inline-size;
+			container: home-page / inline-size scroll-state;
 			width: 100%;
 		}
 
 		&.--is-article {
-			container: article-page / inline-size;
+			container: article-page / inline-size scroll-state;
 			width: 100%;
 		}
 
 		&.--is-about {
-			container: about-page / inline-size;
+			container: about-page / inline-size scroll-state;
 			width: 100%;
 		}
 
 		&.--is-tag {
-			container: tag-page / inline-size;
+			container: tag-page / inline-size scroll-state;
 			width: 100%;
 		}
 
 		&.--is-tags {
-			container: tags-page / inline-size;
+			container: tags-page / inline-size scroll-state;
 			width: 100%;
 		}
 
 		&.--is-contact {
-			container: contact-page / inline-size;
+			container: contact-page / inline-size scroll-state;
 			width: 100%;
 		}
 
 		&.--is-projects {
-			container: projects-page / inline-size;
+			container: projects-page / inline-size scroll-state;
 			width: 100%;
 		}
 
 		&.--is-terms-and-conditions {
-			container: terms-and-conditions-page / inline-size;
+			container: terms-and-conditions-page / inline-size scroll-state;
 			width: 100%;
 		}
 
 		&.--is-privacy-policy {
-			container: privacy-policy-page / inline-size;
+			container: privacy-policy-page / inline-size scroll-state;
 			width: 100%;
 		}
 	}

@@ -1,21 +1,29 @@
 .scroll-top-wrapper {
-	animation: fade-in 1s var(--ease-elastic) forwards;
-	animation-range: 5vw 1cqi;
-	animation-timeline: scroll();
+	--hidden-offset: calc(100% + 2rem);
 	inset: auto 2rem 3rem auto;
-	opacity: 0;
 	position: fixed;
+	transition:
+		translate 0.4s ease,
+		scale 0.2s;
+	translate: var(--hidden-offset) 0;
 	z-index: 100;
-	transition: scale 0.2s;
 
 	&:hover {
 		scale: 1.05;
 	}
 
 	@media (width <= 575px) {
+		--hidden-offset: calc(100% + 1rem);
 		inset: auto 1rem 1rem auto;
 	}
 }
+
+@container scroll-state(scrollable: top) {
+	.scroll-top-wrapper {
+		translate: 0 0;
+	}
+}
+
 .scroll-top {
 	background: var(--primary-light-2);
 	box-shadow: 0.125rem 0.125rem 0.175rem var(--neutral-light-2);

@@ -10,6 +10,8 @@ export const PAGES_ROUTES = {
 	PROJECTS: "/projects",
 	"TERMS-AND-CONDITIONS": "/terms-and-conditions",
 	"PRIVACY-POLICY": "/privacy-policy",
+	"404": "/404",
+	"500": "/500",
 	HOME: "/",
 } as const;
 
@@ -28,3 +30,10 @@ export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = {
 };
 
 export const DEFAULT_LOCALE_STRING: Intl.LocalesArgument = "en-GB" as const;
+
+export const IMAGE_CDN = {
+	CLOUDFLARE: "cloudflare",
+	CONTENTFUL: "contentful",
+} as const;
+
+export type ImageCdn = (typeof IMAGE_CDN)[keyof typeof IMAGE_CDN];

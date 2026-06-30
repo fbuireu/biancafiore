@@ -34,28 +34,23 @@
 		--header-height: 80px;
 		--global-max-width: 1440px;
 		--base-font-size: 16px;
-		--scale-ratio: 1.25;
-		--fluid-factor: 0.25;
 		--leading: 1.5;
 		--rhythm: calc(var(--base-font-size) * var(--leading));
-		--base-h6: calc(var(--base-font-size) * pow(var(--scale-ratio), 0));
-		--base-h5: calc(var(--base-font-size) * pow(var(--scale-ratio), 1));
-		--base-h4: calc(var(--base-font-size) * pow(var(--scale-ratio), 2));
-		--base-h3: calc(var(--base-font-size) * pow(var(--scale-ratio), 3));
-		--base-h2: calc(var(--base-font-size) * pow(var(--scale-ratio), 4));
-		--base-h1: calc(var(--base-font-size) * pow(var(--scale-ratio), 5));
-		--fluid-h6: calc(var(--fluid-factor) * (1 - var(--fluid-factor)));
-		--fluid-h5: calc(var(--fluid-factor) * 1);
-		--fluid-h4: calc(var(--fluid-factor) * (1 + var(--fluid-factor)));
-		--fluid-h3: calc(var(--fluid-factor) * (1 + 2 * var(--fluid-factor)));
-		--fluid-h2: calc(var(--fluid-factor) * (1 + 3 * var(--fluid-factor)));
-		--fluid-h1: calc(var(--fluid-factor) * (1 + 4 * var(--fluid-factor)));
-		--font-size-h6: clamp(var(--base-h6), calc(var(--base-h6) + var(--fluid-h6) * 1vw), calc(var(--base-h6) * 1.2));
-		--font-size-h5: clamp(var(--base-h5), calc(var(--base-h5) + var(--fluid-h5) * 1vw), calc(var(--base-h5) * 1.2));
-		--font-size-h4: clamp(var(--base-h4), calc(var(--base-h4) + var(--fluid-h4) * 1vw), calc(var(--base-h4) * 1.25));
-		--font-size-h3: clamp(var(--base-h3), calc(var(--base-h3) + var(--fluid-h3) * 1vw), calc(var(--base-h3) * 1.3));
-		--font-size-h2: clamp(var(--base-h2), calc(var(--base-h2) + var(--fluid-h2) * 1vw), calc(var(--base-h2) * 1.35));
-		--font-size-h1: clamp(var(--base-h1), calc(var(--base-h1) + var(--fluid-h1) * 1vw), calc(var(--base-h1) * 1.4));
+		--font-size-h6: clamp(1rem, calc(0.9429rem + 0.2857vw), 1.2rem);
+		--font-size-h5: clamp(1.25rem, calc(1.1786rem + 0.3571vw), 1.5rem);
+		--font-size-h4: clamp(1.5625rem, calc(1.4509rem + 0.558vw), 1.9531rem);
+		--font-size-h3: clamp(1.9531rem, calc(1.7857rem + 0.8371vw), 2.5391rem);
+		--font-size-h2: clamp(2.4414rem, calc(2.1973rem + 1.2207vw), 3.2959rem);
+		--font-size-h1: clamp(3.0518rem, calc(2.703rem + 1.7439vw), 4.2725rem);
+		--space-3xs: clamp(0.25rem, calc(0.2321rem + 0.0893vw), 0.3125rem);
+		--space-2xs: clamp(0.5rem, calc(0.4643rem + 0.1786vw), 0.625rem);
+		--space-xs: clamp(0.75rem, calc(0.6964rem + 0.2679vw), 0.9375rem);
+		--space-s: clamp(1rem, calc(0.9286rem + 0.3571vw), 1.25rem);
+		--space-m: clamp(1.5rem, calc(1.3929rem + 0.5357vw), 1.875rem);
+		--space-l: clamp(2rem, calc(1.8571rem + 0.7143vw), 2.5rem);
+		--space-xl: clamp(3rem, calc(2.7857rem + 1.0714vw), 3.75rem);
+		--space-2xl: clamp(4rem, calc(3.7143rem + 1.4286vw), 5rem);
+		--space-3xl: clamp(6rem, calc(5.5714rem + 2.1429vw), 7.5rem);
 		--global-border-radius: 0.25rem;
 		--grid-extra-small: 575px;
 		--grid-small: 720px;
@@ -222,18 +217,6 @@
 	initial-value: 1440px;
 }
 
-@property --scale-ratio {
-	syntax: "<number>";
-	inherits: false;
-	initial-value: 1.25;
-}
-
-@property --fluid-factor {
-	syntax: "<number>";
-	inherits: false;
-	initial-value: 0.25;
-}
-
 @property --leading {
 	syntax: "<number>";
 	inherits: true;
@@ -246,112 +229,94 @@
 	initial-value: 24px;
 }
 
-@property --base-h1 {
-	syntax: "<length>";
-	inherits: false;
-	initial-value: 3.05rem;
-}
-
-@property --base-h2 {
-	syntax: "<length>";
-	inherits: false;
-	initial-value: 2.44rem;
-}
-
-@property --base-h3 {
-	syntax: "<length>";
-	inherits: false;
-	initial-value: 1.95rem;
-}
-
-@property --base-h4 {
-	syntax: "<length>";
-	inherits: false;
-	initial-value: 1.56rem;
-}
-
-@property --base-h5 {
-	syntax: "<length>";
-	inherits: false;
-	initial-value: 1.25rem;
-}
-
-@property --base-h6 {
-	syntax: "<length>";
-	inherits: false;
-	initial-value: 1rem;
-}
-
-@property --fluid-h1 {
-	syntax: "<number>";
-	inherits: false;
-	initial-value: 0.5;
-}
-
-@property --fluid-h2 {
-	syntax: "<number>";
-	inherits: false;
-	initial-value: 0.375;
-}
-
-@property --fluid-h3 {
-	syntax: "<number>";
-	inherits: false;
-	initial-value: 0.3;
-}
-
-@property --fluid-h4 {
-	syntax: "<number>";
-	inherits: false;
-	initial-value: 0.25;
-}
-
-@property --fluid-h5 {
-	syntax: "<number>";
-	inherits: false;
-	initial-value: 0.2;
-}
-
-@property --fluid-h6 {
-	syntax: "<number>";
-	inherits: false;
-	initial-value: 0.15;
-}
-
 @property --font-size-h1 {
 	syntax: "<length>";
-	inherits: false;
-	initial-value: 4.625rem;
+	inherits: true;
+	initial-value: 3.0518rem;
 }
 
 @property --font-size-h2 {
 	syntax: "<length>";
-	inherits: false;
-	initial-value: 4rem;
+	inherits: true;
+	initial-value: 2.4414rem;
 }
 
 @property --font-size-h3 {
 	syntax: "<length>";
-	inherits: false;
-	initial-value: 2.25rem;
+	inherits: true;
+	initial-value: 1.9531rem;
 }
 
 @property --font-size-h4 {
 	syntax: "<length>";
-	inherits: false;
-	initial-value: 1.625rem;
+	inherits: true;
+	initial-value: 1.5625rem;
 }
 
 @property --font-size-h5 {
 	syntax: "<length>";
-	inherits: false;
-	initial-value: 1.3125rem;
+	inherits: true;
+	initial-value: 1.25rem;
 }
 
 @property --font-size-h6 {
 	syntax: "<length>";
-	inherits: false;
-	initial-value: 1.1625rem;
+	inherits: true;
+	initial-value: 1rem;
+}
+
+@property --space-3xs {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0.25rem;
+}
+
+@property --space-2xs {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0.5rem;
+}
+
+@property --space-xs {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0.75rem;
+}
+
+@property --space-s {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 1rem;
+}
+
+@property --space-m {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 1.5rem;
+}
+
+@property --space-l {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 2rem;
+}
+
+@property --space-xl {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 3rem;
+}
+
+@property --space-2xl {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 4rem;
+}
+
+@property --space-3xl {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 6rem;
 }
 
 @property --global-border-radius {
