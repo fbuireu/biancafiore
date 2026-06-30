@@ -1,4 +1,4 @@
-import { IMAGE_CDN } from "@const/imageCdn";
+import { IMAGE_CDN } from "@const/const";
 
 const CDN_CGI_IMAGE = "/cdn-cgi/image";
 const DEFAULT_QUALITY = 85;
