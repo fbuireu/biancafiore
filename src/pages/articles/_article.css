@@ -125,7 +125,7 @@ html.--is-article body {
 		font-size: 0.72rem;
 		text-align: center;
 		color: var(--muted);
-		margin-block-start: calc(var(--rhythm) / 1.5);
+		margin-block-start: 0;
 	}
 
 	q {
