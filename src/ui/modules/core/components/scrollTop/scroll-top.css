@@ -3,7 +3,7 @@
 	inset: auto 2rem 3rem auto;
 	position: fixed;
 	transition:
-		translate 0.4s var(--ease-elastic),
+		translate 0.4s ease,
 		scale 0.2s;
 	translate: var(--hidden-offset) 0;
 	z-index: 100;
