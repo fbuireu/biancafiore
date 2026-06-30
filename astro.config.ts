@@ -4,6 +4,9 @@ import sitemap from "@astrojs/sitemap";
 import { defineConfig, envField, fontProviders, memoryCache } from "astro/config";
 import { Features } from "lightningcss";
 
+const isProductionBuild = process.env.CLOUDFLARE_ENV === "production";
+const imageCdn = isProductionBuild ? "cloudflare" : "contentful";
+
 export default defineConfig({
 	experimental: {
 		contentIntellisense: true,
@@ -50,6 +53,9 @@ export default defineConfig({
 	},
 	output: "server",
 	vite: {
+		define: {
+			"import.meta.env.IMAGE_CDN": JSON.stringify(imageCdn),
+		},
 		build: {
 			target: "esnext",
 		},
@@ -79,7 +85,7 @@ export default defineConfig({
 			customPages: ["https://biancafiore.me/tags"],
 		}),
 	],
-	adapter: cloudflare({ imageService: "cloudflare" }),
+	adapter: cloudflare({ imageService: isProductionBuild ? "cloudflare" : "passthrough" }),
 	env: {
 		schema: {
 			SITE_URL: envField.string({

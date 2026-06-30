@@ -37,7 +37,7 @@
 	--dim: var(--gold);
 	--shadow: hsl(30 12% 3% / 0.9);
 	--veil: hsl(30 12% 3% / 0.94);
-	--text: oklch(94% 0.03 88);
+	--text: light-dark(oklch(25% 0.02 88), oklch(94% 0.03 88));
 
 	gap: 2.5rem;
 	height: auto;
@@ -54,7 +54,7 @@
 }
 
 .error-404__title {
-	--x: calc(50% + (var(--swing-x) * 0.5) * 1%);
+	--sweep-x: calc(50% + (var(--swing-x) * 0.5) * 1%);
 	position: relative;
 	margin: 0;
 	font-family: var(--font-display);
@@ -65,7 +65,7 @@
 	padding-block-start: 0.1em;
 	transform-style: preserve-3d;
 	transform: translate3d(0, 0, 0vmin);
-	background: radial-gradient(var(--lit), var(--dim) 45%) var(--x) 100% / 200% 200%;
+	background: radial-gradient(var(--lit), var(--dim) 45%) var(--sweep-x) 100% / 200% 200%;
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
@@ -121,19 +121,10 @@
 }
 
 .error-404__info p {
-	--x: calc(50% + (var(--swing-x) * 0.5) * 1%);
 	margin: 0;
 	font-family: var(--font-serif);
 	font-weight: 300;
-	background: radial-gradient(
-		50% 250% at var(--x) -50%,
-		var(--text),
-		color-mix(in oklch, var(--text), transparent 55%)
-	);
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
-	animation: error-404-swing var(--speed) infinite alternate-reverse var(--ease-swing);
+	color: var(--text);
 }
 
 .error-404__link {

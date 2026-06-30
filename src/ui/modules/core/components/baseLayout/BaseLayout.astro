@@ -14,7 +14,7 @@ const props = Astro.props;
 const location = getLocation(Astro.url);
 const className = { [`--is-${location}`]: location };
 const isUnderConstruction =
-	HIDE_CHROME && !["article", "tags", "terms-and-conditions", "privacy-policy"].includes(location ?? "");
+	HIDE_CHROME && !["article", "tags", "terms-and-conditions", "privacy-policy", "404", "500"].includes(location ?? "");
 ---
 <html lang="en" class:list={[className]}>
 <Head {...props}><slot name="head" slot="head" /></Head>
@@ -26,7 +26,7 @@ const isUnderConstruction =
     </iframe>
 </noscript>
 {!HIDE_CHROME && <Header />}
-{!HIDE_CHROME && <ScrollTop />}
+{!isUnderConstruction && <ScrollTop />}
 <main class:list={[className]}>
     {isUnderConstruction
         ? (
