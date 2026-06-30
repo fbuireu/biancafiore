@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/fbuireu/biancafiore/compare/v1.13.0...v1.13.1) (2026-06-30)
+
+
+### Bug Fixes
+
+* tighten heading line-height with unitless leading tokens ([387bba7](https://github.com/fbuireu/biancafiore/commit/387bba7ffea3ba4ee58aa0182609fcfdf8a871fe))
+
 # [1.13.0](https://github.com/fbuireu/biancafiore/compare/v1.12.2...v1.13.0) (2026-06-30)
 
 
