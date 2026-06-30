@@ -11,7 +11,7 @@
 	align-items: center;
 	gap: 0.5rem;
 	color: var(--muted);
-	font-size: 0.72rem;
+	font-size: var(--font-size-xs);
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
 }

@@ -36,14 +36,14 @@
 .what-i-do__list__item {
 	border-block-end: 1px solid var(--line-soft);
 	font-family: var(--font-serif);
-	font-size: 18px;
+	font-size: var(--font-size-h6);
 	padding-block: 11px;
 }
 
 .what-i-do__lede {
 	color: var(--ink-soft);
 	font-family: var(--font-serif);
-	font-size: 21px;
+	font-size: var(--font-size-h5);
 	line-height: var(--leading);
 	margin-block-end: 24px;
 }
@@ -51,7 +51,7 @@
 .what-i-do__body {
 	color: var(--ink-soft);
 	font-family: var(--font-serif);
-	font-size: 18px;
+	font-size: var(--font-size-h6);
 	line-height: var(--leading);
 	margin-block-end: 24px;
 }

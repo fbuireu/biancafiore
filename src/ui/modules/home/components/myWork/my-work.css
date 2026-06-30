@@ -143,7 +143,7 @@
 
 	& p {
 		font-family: var(--font-serif);
-		font-size: 18px;
+		font-size: var(--font-size-h6);
 		line-height: var(--leading);
 		margin-block-end: 18px;
 	}

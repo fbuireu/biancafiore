@@ -63,7 +63,7 @@
 .testimonial__author {
 	color: var(--ink);
 	font-family: var(--font-serif);
-	font-size: 18px;
+	font-size: var(--font-size-h6);
 	font-weight: 420;
 	line-height: var(--leading);
 }

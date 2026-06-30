@@ -26,7 +26,7 @@ footer {
 
 .footer__legal-pages {
 	color: var(--white);
-	font-size: 0.75rem;
+	font-size: var(--font-size-xs);
 	gap: 0 1rem;
 	text-underline-offset: 0.2rem;
 }
