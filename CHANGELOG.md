@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/fbuireu/biancafiore/compare/v1.11.0...v1.12.0) (2026-06-30)
+
+
+### Features
+
+* scroll-state scroll-to-top + Utopia-aligned type & space tokens ([#1117](https://github.com/fbuireu/biancafiore/issues/1117)) ([011918e](https://github.com/fbuireu/biancafiore/commit/011918e8cddf7a428c792f650f6d8e93cb64ff82))
+
 # [1.11.0](https://github.com/fbuireu/biancafiore/compare/v1.10.1...v1.11.0) (2026-06-28)
 
 
