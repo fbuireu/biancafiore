@@ -1,3 +1,5 @@
+import { IMAGE_CDN } from "@const/imageCdn";
+
 const CDN_CGI_IMAGE = "/cdn-cgi/image";
 const DEFAULT_QUALITY = 85;
 
@@ -48,7 +50,7 @@ function toAbsoluteSrc(source: string): string {
 }
 
 export function getOptimizedImageUrl({ source, options = {} }: GetOptimizedImageUrlParams): string {
-	if (import.meta.env.IMAGE_CDN === "contentful") {
+	if (import.meta.env.IMAGE_CDN === IMAGE_CDN.CONTENTFUL) {
 		return buildContentfulImageUrl({ source, options: { quality: DEFAULT_QUALITY, ...options } });
 	}
 
