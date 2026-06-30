@@ -164,7 +164,7 @@
 
 	time {
 		color: var(--primary-main);
-		font-size: 0.75rem;
+		font-size: var(--font-size-xs);
 		text-transform: uppercase;
 		letter-spacing: 0.25rem;
 	}

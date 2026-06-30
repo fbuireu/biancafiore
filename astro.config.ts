@@ -1,11 +1,12 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
+import { IMAGE_CDN } from "@const/const";
 import { defineConfig, envField, fontProviders, memoryCache } from "astro/config";
 import { Features } from "lightningcss";
 
 const isProductionBuild = process.env.CLOUDFLARE_ENV === "production";
-const imageCdn = isProductionBuild ? "cloudflare" : "contentful";
+const imageCdn = isProductionBuild ? IMAGE_CDN.CLOUDFLARE : IMAGE_CDN.CONTENTFUL;
 
 export default defineConfig({
 	experimental: {

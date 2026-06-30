@@ -55,7 +55,7 @@
 .article-card__title {
 	color: currentColor;
 	font-family: var(--font-serif);
-	font-size: 23px;
+	font-size: var(--font-size-h5);
 	font-weight: 420;
 	letter-spacing: -0.01em;
 	line-height: round(up, 1em, var(--rhythm));
@@ -91,7 +91,7 @@
 .article-card__excerpt {
 	color: var(--muted);
 	font-family: var(--font-serif);
-	font-size: 15px;
+	font-size: var(--font-size-sm);
 	line-height: var(--leading);
 	margin: 0;
 	transition: opacity 0.4s ease;
@@ -109,7 +109,7 @@
 .article-card__kicker {
 	color: var(--faint);
 	font-family: var(--font-sans-serif);
-	font-size: 10.5px;
+	font-size: var(--font-size-xs);
 	font-weight: 600;
 	letter-spacing: 0.22em;
 	margin-block-end: 9px;
@@ -128,7 +128,7 @@
 .article-card__tag__item {
 	color: var(--gold);
 	font-family: var(--font-sans-serif);
-	font-size: 11px;
+	font-size: var(--font-size-xs);
 	letter-spacing: 0.06em;
 
 	&.article-card__tags__overflow {
@@ -199,7 +199,7 @@
 		}
 
 		& .article-card__title {
-			font-size: 30px;
+			font-size: var(--font-size-h4);
 			grid-area: title;
 			margin-block-end: 10px;
 		}
