@@ -1,3 +1,15 @@
+# [1.13.0](https://github.com/fbuireu/biancafiore/compare/v1.12.2...v1.13.0) (2026-06-30)
+
+
+### Bug Fixes
+
+* type import vite ([6f29104](https://github.com/fbuireu/biancafiore/commit/6f291046dad30c474af13937318ff209a7c39375))
+
+
+### Features
+
+* normalize fs ([a45ec98](https://github.com/fbuireu/biancafiore/commit/a45ec9821ca0b873398fa539742978258afd54a3))
+
 ## [1.12.2](https://github.com/fbuireu/biancafiore/compare/v1.12.1...v1.12.2) (2026-06-30)
 
 
