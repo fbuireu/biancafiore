@@ -35,6 +35,8 @@
 		--global-max-width: 1440px;
 		--base-font-size: 16px;
 		--leading: 1.5;
+		--leading-heading: 1.2;
+		--leading-display: 1.1;
 		--rhythm: calc(var(--base-font-size) * var(--leading));
 		--ratio: 1.25;
 		--vw-min: 20;
@@ -243,6 +245,18 @@
 	syntax: "<number>";
 	inherits: true;
 	initial-value: 1.5;
+}
+
+@property --leading-heading {
+	syntax: "<number>";
+	inherits: true;
+	initial-value: 1.2;
+}
+
+@property --leading-display {
+	syntax: "<number>";
+	inherits: true;
+	initial-value: 1.1;
 }
 
 @property --rhythm {
