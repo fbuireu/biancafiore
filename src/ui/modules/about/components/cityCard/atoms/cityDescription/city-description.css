@@ -1,7 +1,7 @@
 .city-card__content__description {
 	color: var(--muted);
 	font-family: var(--font-serif);
-	font-size: 15px;
+	font-size: var(--font-size-sm);
 	grid-area: City-Description;
 	line-height: var(--leading);
 	padding-bottom: 2rem;

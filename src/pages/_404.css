@@ -131,7 +131,7 @@
 	align-self: center;
 	color: var(--gold-bright);
 	font-family: var(--font-sans-serif);
-	font-size: 0.9375rem;
+	font-size: var(--font-size-sm);
 	letter-spacing: 0.02em;
 }
 

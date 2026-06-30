@@ -27,7 +27,7 @@
 
 .republished-banner__label {
 	color: var(--black);
-	font-size: 0.75rem;
+	font-size: var(--font-size-xs);
 	font-weight: 600;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
@@ -35,7 +35,7 @@
 
 .republished-banner__text {
 	color: var(--neutral-main);
-	font-size: 0.875rem;
+	font-size: var(--font-size-sm);
 	line-height: var(--leading);
 	margin: 0;
 

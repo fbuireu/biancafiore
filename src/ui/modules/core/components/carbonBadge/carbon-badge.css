@@ -1,6 +1,6 @@
 .carbon-badge {
 	color: var(--white);
-	font-size: 0.7rem;
+	font-size: var(--font-size-xs);
 	min-height: 1.2em;
 }
 

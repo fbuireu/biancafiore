@@ -36,12 +36,34 @@
 		--base-font-size: 16px;
 		--leading: 1.5;
 		--rhythm: calc(var(--base-font-size) * var(--leading));
-		--font-size-h6: clamp(1rem, calc(0.9429rem + 0.2857vw), 1.2rem);
-		--font-size-h5: clamp(1.25rem, calc(1.1786rem + 0.3571vw), 1.5rem);
-		--font-size-h4: clamp(1.5625rem, calc(1.4509rem + 0.558vw), 1.9531rem);
-		--font-size-h3: clamp(1.9531rem, calc(1.7857rem + 0.8371vw), 2.5391rem);
-		--font-size-h2: clamp(2.4414rem, calc(2.1973rem + 1.2207vw), 3.2959rem);
-		--font-size-h1: clamp(3.0518rem, calc(2.703rem + 1.7439vw), 4.2725rem);
+		--ratio: 1.25;
+		--vw-min: 20;
+		--vw-max: 90;
+		--vw-range: calc(var(--vw-max) - var(--vw-min));
+		--font-size-h6-min: 1;
+		--font-size-sm-min: calc(var(--font-size-h6-min) / var(--ratio));
+		--font-size-xs-min: calc(var(--font-size-sm-min) / var(--ratio));
+		--font-size-h5-min: calc(var(--font-size-h6-min) * var(--ratio));
+		--font-size-h4-min: calc(var(--font-size-h5-min) * var(--ratio));
+		--font-size-h3-min: calc(var(--font-size-h4-min) * var(--ratio));
+		--font-size-h2-min: calc(var(--font-size-h3-min) * var(--ratio));
+		--font-size-h1-min: calc(var(--font-size-h2-min) * var(--ratio));
+		--font-size-xs-max: calc(var(--font-size-xs-min) * 1.2);
+		--font-size-sm-max: calc(var(--font-size-sm-min) * 1.2);
+		--font-size-h6-max: calc(var(--font-size-h6-min) * 1.2);
+		--font-size-h5-max: calc(var(--font-size-h5-min) * 1.2);
+		--font-size-h4-max: calc(var(--font-size-h4-min) * 1.25);
+		--font-size-h3-max: calc(var(--font-size-h3-min) * 1.3);
+		--font-size-h2-max: calc(var(--font-size-h2-min) * 1.35);
+		--font-size-h1-max: calc(var(--font-size-h1-min) * 1.4);
+		--font-size-xs: clamp(calc(var(--font-size-xs-min) * 1rem), calc((var(--font-size-xs-min) - (var(--font-size-xs-max) - var(--font-size-xs-min)) / var(--vw-range) * var(--vw-min)) * 1rem + (var(--font-size-xs-max) - var(--font-size-xs-min)) / var(--vw-range) * 100 * 1vw), calc(var(--font-size-xs-max) * 1rem));
+		--font-size-sm: clamp(calc(var(--font-size-sm-min) * 1rem), calc((var(--font-size-sm-min) - (var(--font-size-sm-max) - var(--font-size-sm-min)) / var(--vw-range) * var(--vw-min)) * 1rem + (var(--font-size-sm-max) - var(--font-size-sm-min)) / var(--vw-range) * 100 * 1vw), calc(var(--font-size-sm-max) * 1rem));
+		--font-size-h6: clamp(calc(var(--font-size-h6-min) * 1rem), calc((var(--font-size-h6-min) - (var(--font-size-h6-max) - var(--font-size-h6-min)) / var(--vw-range) * var(--vw-min)) * 1rem + (var(--font-size-h6-max) - var(--font-size-h6-min)) / var(--vw-range) * 100 * 1vw), calc(var(--font-size-h6-max) * 1rem));
+		--font-size-h5: clamp(calc(var(--font-size-h5-min) * 1rem), calc((var(--font-size-h5-min) - (var(--font-size-h5-max) - var(--font-size-h5-min)) / var(--vw-range) * var(--vw-min)) * 1rem + (var(--font-size-h5-max) - var(--font-size-h5-min)) / var(--vw-range) * 100 * 1vw), calc(var(--font-size-h5-max) * 1rem));
+		--font-size-h4: clamp(calc(var(--font-size-h4-min) * 1rem), calc((var(--font-size-h4-min) - (var(--font-size-h4-max) - var(--font-size-h4-min)) / var(--vw-range) * var(--vw-min)) * 1rem + (var(--font-size-h4-max) - var(--font-size-h4-min)) / var(--vw-range) * 100 * 1vw), calc(var(--font-size-h4-max) * 1rem));
+		--font-size-h3: clamp(calc(var(--font-size-h3-min) * 1rem), calc((var(--font-size-h3-min) - (var(--font-size-h3-max) - var(--font-size-h3-min)) / var(--vw-range) * var(--vw-min)) * 1rem + (var(--font-size-h3-max) - var(--font-size-h3-min)) / var(--vw-range) * 100 * 1vw), calc(var(--font-size-h3-max) * 1rem));
+		--font-size-h2: clamp(calc(var(--font-size-h2-min) * 1rem), calc((var(--font-size-h2-min) - (var(--font-size-h2-max) - var(--font-size-h2-min)) / var(--vw-range) * var(--vw-min)) * 1rem + (var(--font-size-h2-max) - var(--font-size-h2-min)) / var(--vw-range) * 100 * 1vw), calc(var(--font-size-h2-max) * 1rem));
+		--font-size-h1: clamp(calc(var(--font-size-h1-min) * 1rem), calc((var(--font-size-h1-min) - (var(--font-size-h1-max) - var(--font-size-h1-min)) / var(--vw-range) * var(--vw-min)) * 1rem + (var(--font-size-h1-max) - var(--font-size-h1-min)) / var(--vw-range) * 100 * 1vw), calc(var(--font-size-h1-max) * 1rem));
 		--space-3xs: clamp(0.25rem, calc(0.2321rem + 0.0893vw), 0.3125rem);
 		--space-2xs: clamp(0.5rem, calc(0.4643rem + 0.1786vw), 0.625rem);
 		--space-xs: clamp(0.75rem, calc(0.6964rem + 0.2679vw), 0.9375rem);
@@ -263,6 +285,18 @@
 	syntax: "<length>";
 	inherits: true;
 	initial-value: 1rem;
+}
+
+@property --font-size-sm {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0.8rem;
+}
+
+@property --font-size-xs {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0.64rem;
 }
 
 @property --space-3xs {
