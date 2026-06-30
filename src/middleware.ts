@@ -1,5 +1,4 @@
 import { defineMiddleware } from "astro:middleware";
-import { buildContentfulImageUrl, parseCloudflareImageUrl } from "@infrastructure/images/imageOptimization";
 
 const SECURITY_HEADERS: Record<string, string> = {
 	"Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
@@ -26,16 +25,7 @@ const SECURITY_HEADERS: Record<string, string> = {
 	].join("; "),
 };
 
-export const onRequest = defineMiddleware(async (context, next) => {
-	const isProductionHost = context.url.hostname === context.site?.hostname;
-
-	if (!isProductionHost) {
-		const transform = parseCloudflareImageUrl(context.url.pathname);
-		if (transform) {
-			return context.redirect(buildContentfulImageUrl(transform), 302);
-		}
-	}
-
+export const onRequest = defineMiddleware(async (_, next) => {
 	const response = await next();
 
 	for (const [header, value] of Object.entries(SECURITY_HEADERS)) {

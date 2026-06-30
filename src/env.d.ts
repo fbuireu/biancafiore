@@ -1,6 +1,7 @@
 /// <reference path="../.astro/types.d.ts" />
 
 interface ImportMetaEnv {
+	readonly IMAGE_CDN: "cloudflare" | "contentful";
 	readonly PUBLIC_SITE_URL: string;
 	readonly BIANCA_EMAIL: string;
 	readonly TWITTER_HANDLE: string;

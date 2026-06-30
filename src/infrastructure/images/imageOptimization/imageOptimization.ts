@@ -1,5 +1,4 @@
 const CDN_CGI_IMAGE = "/cdn-cgi/image";
-const CDN_CGI_IMAGE_PATTERN = /^\/cdn-cgi\/image\/([^/]+)\/(https?:\/\/.+)$/;
 const DEFAULT_QUALITY = 85;
 
 const CONTENTFUL_FORMAT = {
@@ -28,14 +27,6 @@ export interface ImageTransformOptions {
 	fit?: ImageFit;
 }
 
-const OPTION_PARSERS: { [K in keyof ImageTransformOptions]-?: (value: string) => ImageTransformOptions[K] } = {
-	width: Number,
-	height: Number,
-	quality: Number,
-	format: (value) => value as ImageFormat,
-	fit: (value) => value as ImageFit,
-};
-
 interface GetOptimizedImageUrlParams {
 	source: string;
 	options?: ImageTransformOptions;
@@ -57,6 +48,10 @@ function toAbsoluteSrc(source: string): string {
 }
 
 export function getOptimizedImageUrl({ source, options = {} }: GetOptimizedImageUrlParams): string {
+	if (import.meta.env.IMAGE_CDN === "contentful") {
+		return buildContentfulImageUrl({ source, options: { quality: DEFAULT_QUALITY, ...options } });
+	}
+
 	const params = [`format=${options.format ?? "auto"}`, `quality=${options.quality ?? DEFAULT_QUALITY}`];
 	if (options.width) params.push(`width=${options.width}`);
 	if (options.height) params.push(`height=${options.height}`);
@@ -66,7 +61,9 @@ export function getOptimizedImageUrl({ source, options = {} }: GetOptimizedImage
 }
 
 export function getOptimizedSrcset({ source, widths, options = {} }: GetOptimizedSrcsetParams): string {
-	return widths.map((width) => `${getOptimizedImageUrl({ source, options: { ...options, width } })} ${width}w`).join(", ");
+	return widths
+		.map((width) => `${getOptimizedImageUrl({ source, options: { ...options, width } })} ${width}w`)
+		.join(", ");
 }
 
 export function buildContentfulImageUrl({ source, options = {} }: BuildContentfulImageUrlParams): string {
@@ -82,19 +79,4 @@ export function buildContentfulImageUrl({ source, options = {} }: BuildContentfu
 	} catch {
 		return source;
 	}
-}
-
-export function parseCloudflareImageUrl(pathname: string): { source: string; options: ImageTransformOptions } | null {
-	const match = pathname.match(CDN_CGI_IMAGE_PATTERN);
-	if (!match) return null;
-
-	const [, rawOptions, source] = match;
-	const rawParams = new Map(rawOptions.split(",").map((part) => part.split("=") as [string, string]));
-	const options: ImageTransformOptions = {};
-	for (const key of Object.keys(OPTION_PARSERS) as (keyof ImageTransformOptions)[]) {
-		const value = rawParams.get(key);
-		if (value !== undefined) Object.assign(options, { [key]: OPTION_PARSERS[key](value) });
-	}
-
-	return { source, options };
 }
