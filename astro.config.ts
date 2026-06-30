@@ -1,7 +1,7 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import { IMAGE_CDN } from "@const/const";
+import { IMAGE_CDN } from "./src/const/imageCdn";
 import { defineConfig, envField, fontProviders, memoryCache } from "astro/config";
 import { Features } from "lightningcss";
 
