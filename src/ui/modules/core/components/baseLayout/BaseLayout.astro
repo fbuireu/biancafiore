@@ -8,10 +8,10 @@ import Header from "@modules/core/components/header/Header.astro";
 import ScrollTop from "@modules/core/components/scrollTop/ScrollTop.astro";
 import { getLocation } from "@modules/core/utils/getLocation";
 
-type Props = Partial<SeoMetadata> & { location?: string };
+type Props = Partial<SeoMetadata>;
 
-const { location: locationOverride, ...props } = Astro.props;
-const location = locationOverride ?? getLocation(Astro.url);
+const props = Astro.props;
+const location = getLocation(Astro.url);
 const className = { [`--is-${location}`]: location };
 const isUnderConstruction =
 	HIDE_CHROME && !["article", "tags", "terms-and-conditions", "privacy-policy", "404", "500"].includes(location ?? "");

@@ -10,6 +10,8 @@ export const PAGES_ROUTES = {
 	PROJECTS: "/projects",
 	"TERMS-AND-CONDITIONS": "/terms-and-conditions",
 	"PRIVACY-POLICY": "/privacy-policy",
+	"404": "/404",
+	"500": "/500",
 	HOME: "/",
 } as const;
 
