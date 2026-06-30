@@ -23,6 +23,14 @@
 		}
 	}
 
+	[data-theme="dark"] {
+		::selection,
+		::search-text {
+			background-color: var(--primary-main);
+			color: var(--background-main);
+		}
+	}
+
 	@view-transition {
 		navigation: auto;
 	}
