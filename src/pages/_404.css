@@ -47,6 +47,18 @@
 	translate: none;
 }
 
+.error-404::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	background-color: hsl(30 12% 3%);
+}
+
+.error-404 + .travolta {
+	display: none;
+}
+
 .error-404__stage {
 	display: flex;
 	justify-content: center;
