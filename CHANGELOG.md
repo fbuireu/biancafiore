@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/fbuireu/biancafiore/compare/v1.12.0...v1.12.1) (2026-06-30)
+
+
+### Bug Fixes
+
+* remove margin caption ([8bfd809](https://github.com/fbuireu/biancafiore/commit/8bfd8093fd9941b5cecc52710ad201b952f533d2))
+
 # [1.12.0](https://github.com/fbuireu/biancafiore/compare/v1.11.0...v1.12.0) (2026-06-30)
 
 
