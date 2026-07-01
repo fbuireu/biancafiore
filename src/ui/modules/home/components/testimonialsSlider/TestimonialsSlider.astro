@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
+import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import SliderShell from "@modules/core/components/sliderShell/SliderShell.astro";
 import "./testimonials-slider.css";
 
@@ -19,12 +19,14 @@ const { testimonials } = Astro.props;
 					<figure class="testimonial">
 						<blockquote class="testimonial__quote">{testimonial.data.quote}</blockquote>
 						<figcaption class="testimonial__attribution">
-							<Image
+							<BlurImage
 								class="testimonial__avatar"
 								src={testimonial.data.image.url}
 								alt={testimonial.data.author}
 								width={testimonial.data.image.details.width}
 								height={testimonial.data.image.details.height}
+								placeholder={testimonial.data.image.placeholder}
+								loading="lazy"
 							/>
 							<span class="testimonial__identity">
 								<span class="testimonial__author">{testimonial.data.author}</span>

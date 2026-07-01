@@ -10,4 +10,5 @@ export const imageSchema = z.object({
 		avif: z.boolean(),
 		webp: z.boolean(),
 	}),
+	placeholder: z.string().optional(),
 });

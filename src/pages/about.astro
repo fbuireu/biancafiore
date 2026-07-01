@@ -31,6 +31,38 @@ const metadata: Partial<SeoMetadata> = {
 	description: bianca.data.description,
 	image: `https:${bianca.data.profileImage.url}`,
 };
+
+const profilePageSchema = JSON.stringify({
+	"@context": "https://schema.org",
+	"@type": "ProfilePage",
+	mainEntity: {
+		"@id": "#bianca",
+		"@type": "Person",
+		name: bianca.data.name,
+		url: Astro.url.href,
+		image: `https:${bianca.data.profileImage.url}`,
+		jobTitle: bianca.data.jobTitle,
+		worksFor: {
+			"@type": "Organization",
+			name: bianca.data.currentCompany,
+		},
+		sameAs: [...bianca.data.socialNetworks],
+	},
+	...(bianca.data.latestArticle && {
+		hasPart: [
+			{
+				"@type": "Article",
+				headline: (bianca.data.latestArticle as CollectionEntry<"articles">).data.title,
+				url: new URL(
+					`${PAGES_ROUTES.ARTICLE}${(bianca.data.latestArticle as CollectionEntry<"articles">).data.slug}`,
+					SITE_URL,
+				).href,
+				datePublished: (bianca.data.latestArticle as CollectionEntry<"articles">).data.publishDate,
+				author: { "@id": "#bianca" },
+			},
+		],
+	}),
+});
 ---
 <BaseLayout {...metadata}>
     <Breadcrumbs />
@@ -38,32 +70,5 @@ const metadata: Partial<SeoMetadata> = {
     <WhatIDo />
     <LittleMoreOfMe cities={cities} />
     <AboutLatestArticles />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'ProfilePage',
-      'mainEntity': {
-        '@id': '#bianca',
-        '@type': 'Person',
-        'name': bianca.data.name,
-        'url': Astro.url.href,
-        'image': `https:${bianca.data.profileImage.url}`,
-        'jobTitle': bianca.data.jobTitle,
-        'worksFor': {
-          '@type': 'Organization',
-          'name': bianca.data.currentCompany,
-        },
-        'sameAs': [...bianca.data.socialNetworks],
-      },
-      ...(bianca.data.latestArticle && {
-        'hasPart': [
-          {
-            '@type': 'Article',
-            'headline': (bianca.data.latestArticle as CollectionEntry<"articles">).data.title,
-            'url': new URL(`${PAGES_ROUTES.ARTICLE}${(bianca.data.latestArticle as CollectionEntry<"articles">).data.slug}`, SITE_URL).href,
-            'datePublished': (bianca.data.latestArticle as CollectionEntry<"articles">).data.publishDate,
-            'author': { '@id': '#bianca' },
-          },
-        ],
-      }),
-    })} />
+    <script is:inline type="application/ld+json" set:html={profilePageSchema} />
 </BaseLayout>
