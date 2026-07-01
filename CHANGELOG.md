@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/fbuireu/biancafiore/compare/v1.13.2...v1.14.0) (2026-07-01)
+
+
+### Features
+
+* lots of cool stuff ([#1121](https://github.com/fbuireu/biancafiore/issues/1121)) ([aba88a1](https://github.com/fbuireu/biancafiore/commit/aba88a1092cc72505970dc45b2e45b382d72ed72))
+
 ## [1.13.2](https://github.com/fbuireu/biancafiore/compare/v1.13.1...v1.13.2) (2026-07-01)
 
 
