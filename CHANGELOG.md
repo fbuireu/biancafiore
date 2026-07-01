@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/fbuireu/biancafiore/compare/v1.14.0...v1.14.1) (2026-07-01)
+
+
+### Bug Fixes
+
+* prevent featured image flash during article view transition ([#1123](https://github.com/fbuireu/biancafiore/issues/1123)) ([b73bf54](https://github.com/fbuireu/biancafiore/commit/b73bf5463b02380596dc047943abb2b77d823605))
+
 # [1.14.0](https://github.com/fbuireu/biancafiore/compare/v1.13.2...v1.14.0) (2026-07-01)
 
 
