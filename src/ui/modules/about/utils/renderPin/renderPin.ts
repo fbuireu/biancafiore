@@ -1,4 +1,3 @@
-import type { CollectionEntry } from "astro:content";
 import { Pin as pin } from "@assets/images/svg-components/pin";
 import type { ReactGlobePoint } from "@modules/about/components/worldGlobe";
 import { slugify } from "@modules/core/utils/slugify";
@@ -6,15 +5,11 @@ import { createRoot } from "react-dom/client";
 
 interface RenderPinParams {
 	markerData: ReactGlobePoint;
-	cities: CollectionEntry<"cities">[];
 }
 
-export function renderPin({ markerData, cities }: RenderPinParams): HTMLElement {
-	const citiesInitialPosition = cities.map(
-		({ data }) => (document.querySelector(`#${slugify(data.name)}`) as HTMLElement)?.offsetTop,
-	);
-
+export function renderPin({ markerData }: RenderPinParams): HTMLElement {
 	const markerWrapper = document.createElement("button");
+	markerWrapper.type = "button";
 	markerWrapper.classList.add("marker-wrapper", `--is-${slugify(markerData.label)}`);
 
 	const marker = document.createElement("div");
@@ -28,22 +23,22 @@ export function renderPin({ markerData, cities }: RenderPinParams): HTMLElement 
 	markerWrapper.append(label);
 
 	markerWrapper.onclick = () => {
-		const city = document.querySelector(`#${slugify(markerData.label)}`);
+		const city = document.getElementById(slugify(markerData.label));
 		if (!city) {
 			return;
 		}
 
-		const cityIndex = Number(getComputedStyle(city).getPropertyValue("--index"));
-		const cityPosition = citiesInitialPosition[cityIndex - 1];
+		const originalPosition = city.style.position;
+		city.style.position = "static";
 
-		if (cityIndex < 1 || cityIndex > citiesInitialPosition.length || !cityPosition) {
-			return;
+		let naturalTop = 0;
+		for (let node: HTMLElement | null = city; node; node = node.offsetParent as HTMLElement | null) {
+			naturalTop += node.offsetTop;
 		}
 
-		window.scrollTo({
-			top: cityPosition - city.clientHeight / 4,
-			behavior: "smooth",
-		});
+		city.style.position = originalPosition;
+
+		window.scrollTo({ top: Math.max(naturalTop - city.clientHeight / 4, 0), behavior: "smooth" });
 	};
 
 	return markerWrapper;

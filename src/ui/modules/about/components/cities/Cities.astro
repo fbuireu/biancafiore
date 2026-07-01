@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
+import { slugify } from "@modules/core/utils/slugify";
+import "./cities.css";
+
+interface Props {
+	cities: CollectionEntry<"cities">[];
+}
+
+const { cities } = Astro.props;
+const numCards = cities.length + 1;
+---
+<ul class="city-card__list">
+	{
+		cities.map(({ data }, index) => (
+			<li
+				class="city-card__item"
+				style={`--index: ${index + 1}; --num-cards: ${numCards};`}
+				id={slugify(data.name)}
+			>
+				<article class="city-card__content">
+					<BlurImage
+						class="city-card__content__image"
+						src={`https:${data.image.url}`}
+						alt={data.name}
+						width={data.image.details.width}
+						height={data.image.details.height}
+						placeholder={data.image.placeholder}
+						loading="lazy"
+						decoding="async"
+					/>
+					<h4 class="city-card__content__period editorial-meta --is-gold">{data.period}</h4>
+					<h3 class="city-card__content__name font-serif">{data.name}</h3>
+					<p class="city-card__content__description">{data.description}</p>
+				</article>
+			</li>
+		))
+	}
+</ul>

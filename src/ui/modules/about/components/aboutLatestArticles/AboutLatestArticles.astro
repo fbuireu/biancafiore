@@ -5,6 +5,16 @@ import AboutLatestArticlesSlider from "../aboutLatestArticlesSlider/AboutLatestA
 import "./about-latest-articles.css";
 
 const articles = await getCollection("articles");
+
+const itemListSchema = JSON.stringify({
+	"@context": "https://schema.org",
+	"@type": "ItemList",
+	itemListElement: articles.map((article, index) => ({
+		"@type": "ListItem",
+		position: index + 1,
+		url: new URL(article.data.slug, Astro.url).href,
+	})),
+});
 ---
 <section class="about-latest-articles-wrapper common-wrapper">
     <h2 class="about-latest-articles__title editorial-section-title">
@@ -16,14 +26,6 @@ const articles = await getCollection("articles");
             <h6 class="about-latest-articles__quote__author">Ferran Buireu</h6>
         </div>
         <AboutLatestArticlesSlider articles={articles} />
-        <script is:inline type="application/ld+json" set:html={JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'ItemList',
-          'itemListElement': articles.map((article, index) => ({
-            '@type': 'ListItem',
-            'position': index + 1,
-            'url': new URL(article.data.slug, Astro.url).href,
-          })),
-        })} />
+        <script is:inline type="application/ld+json" set:html={itemListSchema} />
     </div>
 </section>

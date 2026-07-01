@@ -1,7 +1,7 @@
 ---
-import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { PAGES_ROUTES } from "@const/index";
+import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import LinkWithArrow from "@modules/core/components/linkWithArrow/LinkWithArrow.astro";
 import "./featured-article.css";
 
@@ -16,12 +16,13 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
     <section class="articles-wrapper__inner common-wrapper">
         <div class="featured-article-wrapper">
             <a href={`/articles/${featuredArticle.data.slug}`}>
-                <Image
+                <BlurImage
                     class="featured-article__image"
                     src={featuredArticle.data.featuredImage!.url}
                     width={featuredArticle.data.featuredImage!.details.width}
                     height={featuredArticle.data.featuredImage!.details.height}
                     alt={'featuredArticle.title'}
+                    placeholder={featuredArticle.data.featuredImage!.placeholder}
                     loading="eager"
                 />
             </a>
