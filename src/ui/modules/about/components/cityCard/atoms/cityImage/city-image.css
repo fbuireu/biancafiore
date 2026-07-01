@@ -1,8 +1,0 @@
-.city-card__content__image {
-	grid-area: City-Image;
-
-	& > * {
-		border: 1px solid var(--line);
-		object-fit: cover;
-	}
-}

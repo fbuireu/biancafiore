@@ -10,17 +10,19 @@ const metadata: Partial<SeoMetadata> = {
 	title: "Contact",
 	description: "Get in touch with me",
 };
+
+const contactPageSchema = JSON.stringify({
+	"@context": "https://schema.org",
+	"@type": "ContactPage",
+	url: Astro.url.href,
+	name: "Contact Bianca Fiore",
+	description: "Get in touch with Bianca Fiore.",
+});
 ---
 <BaseLayout {...metadata}>
   <Breadcrumbs />
   <ContactIntro />
   <Tabs />
   <LatestArticles />
-  <script is:inline type="application/ld+json" set:html={JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'ContactPage',
-    'url': Astro.url.href,
-    'name': 'Contact Bianca Fiore',
-    'description': 'Get in touch with Bianca Fiore.',
-  })} />
+  <script is:inline type="application/ld+json" set:html={contactPageSchema} />
 </BaseLayout>

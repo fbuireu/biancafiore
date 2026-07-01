@@ -1,9 +1,9 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import "./my-work.css";
 import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/const";
+import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 
 const projects = await getCollection("projects");
 
@@ -22,12 +22,13 @@ const disciplinesCount = String(projects.length).padStart(2, "0");
               <details class="my-work__item" name="my-work">
                   <summary class="my-work__summary">
                       <h3 class="my-work__name">{project.data.name}</h3>
-                      <Image
+                      <BlurImage
                           class="my-work__thumbnail"
                           src={project.data.image.url}
                           alt={project.data.name}
                           width={project.data.image.details.width}
                           height={project.data.image.details.height}
+                          placeholder={project.data.image.placeholder}
                           loading="lazy"
                       />
                   </summary>

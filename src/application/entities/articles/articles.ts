@@ -3,6 +3,7 @@ import { articleDTO } from "@application/dto/article";
 import type { RawArticle } from "@application/dto/article/types";
 import { articleSchema } from "@application/entities/articles/schema";
 import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
+import { getImagePlaceholder } from "@infrastructure/images/imagePlaceholder";
 import { runCms } from "@infrastructure/runtime";
 import { Effect } from "effect";
 
@@ -26,10 +27,15 @@ export const articles = defineCollection({
 			(a, b) => Number(b.isFavorite) - Number(a.isFavorite) || b.publishDate.localeCompare(a.publishDate),
 		);
 
-		return sortedArticles.map((article) => ({
-			id: article.slug,
-			...article,
-		}));
+		return Promise.all(
+			sortedArticles.map(async (article) => ({
+				id: article.slug,
+				...article,
+				featuredImage: article.featuredImage
+					? { ...article.featuredImage, placeholder: await getImagePlaceholder({ source: article.featuredImage.url }) }
+					: article.featuredImage,
+			})),
+		);
 	},
 	schema: articleSchema,
 });
