@@ -1,3 +1,10 @@
+## [1.13.2](https://github.com/fbuireu/biancafiore/compare/v1.13.1...v1.13.2) (2026-07-01)
+
+
+### Bug Fixes
+
+* **deps:** pin dependency effect to 3.21.4 ([#1118](https://github.com/fbuireu/biancafiore/issues/1118)) ([1d91d79](https://github.com/fbuireu/biancafiore/commit/1d91d794b677e4824c4ccd54589b40dc53158fe5))
+
 ## [1.13.1](https://github.com/fbuireu/biancafiore/compare/v1.13.0...v1.13.1) (2026-06-30)
 
 
