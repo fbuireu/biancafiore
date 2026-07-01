@@ -51,7 +51,7 @@ importers:
         specifier: 0.45.2
         version: 0.45.2(@libsql/client@0.17.4)
       effect:
-        specifier: ^3.21.4
+        specifier: 3.21.4
         version: 3.21.4
       gsap:
         specifier: 3.15.0
