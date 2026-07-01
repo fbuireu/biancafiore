@@ -1,0 +1,10 @@
+.blur-image {
+	display: contents;
+}
+
+.blur-image img {
+	background-image: var(--lqip, none);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}

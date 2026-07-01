@@ -3,6 +3,7 @@ import { testimonialDTO } from "@application/dto/testimonial";
 import type { RawTestimonial } from "@application/dto/testimonial/types";
 import { testimonialsSchema } from "@application/entities/testimonials/schema";
 import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
+import { getImagePlaceholder } from "@infrastructure/images/imagePlaceholder";
 import { runCms } from "@infrastructure/runtime";
 import { Effect } from "effect";
 
@@ -19,10 +20,13 @@ export const testimonials = defineCollection({
 
 		const testimonials = testimonialDTO.create(rawTestimonials as unknown as RawTestimonial[]);
 
-		return testimonials.map((testimonial) => ({
-			id: testimonial.author,
-			...testimonial,
-		}));
+		return Promise.all(
+			testimonials.map(async (testimonial) => ({
+				id: testimonial.author,
+				...testimonial,
+				image: { ...testimonial.image, placeholder: await getImagePlaceholder({ source: testimonial.image.url }) },
+			})),
+		);
 	},
 	schema: testimonialsSchema,
 });

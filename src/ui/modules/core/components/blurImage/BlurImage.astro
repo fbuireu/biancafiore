@@ -1,0 +1,16 @@
+---
+import type { RemoteImageProps } from "astro:assets";
+import { Image } from "astro:assets";
+import "./blur-image.css";
+
+type Props = RemoteImageProps & {
+	placeholder?: string;
+	transitionName?: string;
+};
+
+const { placeholder, transitionName, ...rest } = Astro.props;
+const lqip = placeholder ? `--lqip: url("${placeholder}")` : undefined;
+---
+<div class="blur-image" style={lqip}>
+    <Image transition:name={transitionName} {...rest} />
+</div>

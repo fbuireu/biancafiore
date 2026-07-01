@@ -1,10 +1,10 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/const";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import ProjectSection from "@modules/projects/components/projectSection/ProjectSection.astro";
 import ProjectsIntro from "@modules/projects/components/projectsIntro/ProjectsIntro.astro";
 
@@ -20,9 +20,9 @@ const metadata: Partial<SeoMetadata> = {
       <ProjectSection id={project.data.id}>
           <article style={`--index: ${index}`} class="project-wrapper">
               <div class="project-image-wrapper" slot="project-image">
-                  <Image class="project-image" layout="full-width" src={project.data.image.url} alt={project.data.name}
+                  <BlurImage class="project-image" layout="full-width" src={project.data.image.url} alt={project.data.name}
                          width={project.data.image.details.width} height={project.data.image.details.height}
-                         loading="eager" />
+                         placeholder={project.data.image.placeholder} loading="eager" />
               </div>
               <div class="project-information" slot="project-information">
                   <h2 class="project-title editorial-headline">{project.data.name}</h2>

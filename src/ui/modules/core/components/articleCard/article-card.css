@@ -16,7 +16,7 @@
 	position: relative;
 
 	img {
-		display:block; 
+		display: block;
 	}
 
 	&::after {
