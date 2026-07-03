@@ -1,3 +1,10 @@
+## [1.14.2](https://github.com/fbuireu/biancafiore/compare/v1.14.1...v1.14.2) (2026-07-03)
+
+
+### Bug Fixes
+
+* bump deps ([9d4866e](https://github.com/fbuireu/biancafiore/commit/9d4866eda67a8e275ffbdacbbe8cb09724e4abaa))
+
 ## [1.14.1](https://github.com/fbuireu/biancafiore/compare/v1.14.0...v1.14.1) (2026-07-01)
 
 
