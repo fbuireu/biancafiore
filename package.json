@@ -72,7 +72,7 @@
     "react-globe.gl": "2.38.0",
     "react-google-recaptcha-v3": "1.11.0",
     "react-hook-form": "7.81.0",
-    "resend": "6.17.1",
+    "resend": "6.17.2",
     "three": "0.185.1",
     "vanilla-cookieconsent": "3.1.0"
   },
