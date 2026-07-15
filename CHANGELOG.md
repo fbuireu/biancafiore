@@ -1,3 +1,12 @@
+## [1.14.4](https://github.com/fbuireu/biancafiore/compare/v1.14.3...v1.14.4) (2026-07-15)
+
+
+### Bug Fixes
+
+* **deps:** update astro monorepo ([#1131](https://github.com/fbuireu/biancafiore/issues/1131)) ([350e297](https://github.com/fbuireu/biancafiore/commit/350e2973f2ad7e8d77a7b888eb24a94e5241c7e7))
+* **deps:** update dependency contentful to v11.12.7 ([#1133](https://github.com/fbuireu/biancafiore/issues/1133)) ([3e4b42d](https://github.com/fbuireu/biancafiore/commit/3e4b42df6893ed6092d8e2511d8bc44579d7a8c7))
+* **deps:** update dependency resend to v6.17.2 ([#1134](https://github.com/fbuireu/biancafiore/issues/1134)) ([774b236](https://github.com/fbuireu/biancafiore/commit/774b236a8407e7240e2141ec4169e181403b14fa))
+
 ## [1.14.3](https://github.com/fbuireu/biancafiore/compare/v1.14.2...v1.14.3) (2026-07-15)
 
 
