@@ -1,3 +1,10 @@
+## [1.14.3](https://github.com/fbuireu/biancafiore/compare/v1.14.2...v1.14.3) (2026-07-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @astrojs/compiler-rs to v0.3.1 ([#1132](https://github.com/fbuireu/biancafiore/issues/1132)) ([fbf4f4e](https://github.com/fbuireu/biancafiore/commit/fbf4f4e820670847f9b69eea5e5a6c6de9f51762))
+
 ## [1.14.2](https://github.com/fbuireu/biancafiore/compare/v1.14.1...v1.14.2) (2026-07-03)
 
 
