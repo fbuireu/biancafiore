@@ -51,7 +51,7 @@
     "lint:ts:typecheck": "tsc --project . --noEmit"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "14.1.1",
+    "@astrojs/cloudflare": "14.1.2",
     "@astrojs/compiler-rs": "0.3.1",
     "@astrojs/react": "6.0.1",
     "@astrojs/rss": "4.0.19",
@@ -61,7 +61,7 @@
     "@hookform/resolvers": "5.4.0",
     "@libsql/client": "0.17.4",
     "@tgwf/co2": "0.19.0",
-    "astro": "7.0.6",
+    "astro": "7.0.7",
     "clsx": "2.1.1",
     "contentful": "11.12.7",
     "drizzle-orm": "0.45.2",
