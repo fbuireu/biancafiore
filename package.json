@@ -18,7 +18,7 @@
   "author": "Ferran Buireu <fbuireu@gmail.com>",
   "version": "1.14.4",
   "type": "module",
-  "packageManager": "pnpm@11.9.0",
+  "packageManager": "pnpm@11.11.0",
   "engines": {
     "node": "26.5.0"
   },
