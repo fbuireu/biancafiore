@@ -5,6 +5,7 @@ import { SITE_URL } from "astro:env/client";
 import { CONTACT_DETAILS } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import { buildWebSiteSchema } from "@modules/core/utils/jsonLd";
 import Blog from "@modules/home/components/blog/Blog.astro";
 import MyWork from "@modules/home/components/myWork/MyWork.astro";
 import Testimonials from "@modules/home/components/testimonials/Testimonials.astro";
@@ -52,23 +53,21 @@ const metadata: Partial<SeoMetadata> = {
 	description: author.data.description,
 	image: `https:${author.data.profileImage.url}`,
 };
+
+const webSiteSchema = buildWebSiteSchema({
+	url: SITE_URL,
+	name: "Bianca Fiore",
+	description: author.data.description,
+	author: {
+		name: author.data.name,
+		jobTitle: author.data.jobTitle,
+	},
+});
 ---
 <BaseLayout {...metadata}>
     <Welcome />
     <MyWork />
     <Testimonials />
     <Blog />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      'url': SITE_URL,
-      'name': 'Bianca Fiore',
-      'description': author.data.description,
-      'author': {
-        '@type': 'Person',
-        'name': author.data.name,
-        'jobTitle': author.data.jobTitle,
-        'url': SITE_URL,
-      },
-    })} />
+    <script is:inline type="application/ld+json" set:html={webSiteSchema} />
 </BaseLayout>

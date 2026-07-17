@@ -8,12 +8,16 @@ import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro"
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import { getFeaturedArticle } from "@modules/core/utils/getFeaturedArticle";
+import { buildItemListSchema } from "@modules/core/utils/jsonLd";
 import "./_articles.css";
 
 export const prerender = true;
 
 const articles = await getCollection("articles");
 const featuredArticle = getFeaturedArticle(articles);
+const itemListSchema = buildItemListSchema(
+	articles.map((article) => new URL(`${PAGES_ROUTES.ARTICLE}${article.data.slug}`, SITE_URL).href),
+);
 
 const metadata: Partial<SeoMetadata> = {
 	title: "Articles",
@@ -42,13 +46,5 @@ const metadata: Partial<SeoMetadata> = {
                 ))}
         </ul>
     </section>
-    <script is:inline type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      'itemListElement': articles.map((article, index) => ({
-        '@type': 'ListItem',
-        'position': index + 1,
-        'url': new URL(`${PAGES_ROUTES.ARTICLE}${article.data.slug}`, SITE_URL).href,
-      })),
-    })} />
+    <script is:inline type="application/ld+json" set:html={itemListSchema} />
 </BaseLayout>

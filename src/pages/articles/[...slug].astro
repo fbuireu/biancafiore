@@ -12,6 +12,7 @@ import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
+import { buildBlogPostingSchema } from "@modules/core/utils/jsonLd";
 import type { InferGetStaticPropsType } from "astro";
 import "./_article.css";
 
@@ -50,6 +51,29 @@ const metadata: Partial<SeoMetadata> = {
 	}),
 };
 const scopes = article.data.tableOfContents.map((_, index) => `--section-${index + 1}`).join(",");
+const blogPostingSchema = buildBlogPostingSchema({
+	url: Astro.url.href,
+	headline: article.data.title,
+	description: article.data.description,
+	...(article.data.featuredImage && {
+		image: {
+			url: `https:${article.data.featuredImage.url}`,
+			width: article.data.featuredImage.details.width,
+			height: article.data.featuredImage.details.height,
+		},
+	}),
+	datePublished: new Date(article.data.publishDate).toISOString(),
+	dateModified: article.data.updatedAt,
+	author: {
+		name: article.data.author.name,
+		jobTitle: article.data.author.jobTitle,
+		url: new URL(`${PAGES_ROUTES.ABOUT}`, SITE_URL).href,
+	},
+	publisher: {
+		name: article.data.author.name,
+		url: new URL(SITE_URL).href,
+	},
+});
 ---
 <BaseLayout {...metadata}>
   {
@@ -87,38 +111,6 @@ const scopes = article.data.tableOfContents.map((_, index) => `--section-${index
           <TableOfContents tableOfContents={article.data.tableOfContents} />
       }
     </article>
-    <script is:inline type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'BlogPosting',
-      'url': Astro.url.href,
-      'headline': article.data.title,
-      'description': article.data.description,
-      'inLanguage': 'en',
-      ...(article.data.featuredImage && {
-        'image': {
-          '@type': 'ImageObject',
-          'url': `https:${article.data.featuredImage.url}`,
-          'width': article.data.featuredImage.details.width,
-          'height': article.data.featuredImage.details.height,
-        },
-      }),
-      'datePublished': new Date(article.data.publishDate).toISOString(),
-      'dateModified': article.data.updatedAt,
-      'author': {
-        '@type': 'Person',
-        'name': article.data.author.name,
-        'jobTitle': article.data.author.jobTitle,
-        'url': new URL(`${PAGES_ROUTES.ABOUT}`, SITE_URL).href,
-      },
-      'publisher': {
-        '@type': 'Person',
-        'name': article.data.author.name,
-        'url': new URL(SITE_URL).href,
-      },
-      'mainEntityOfPage': {
-        '@type': 'WebPage',
-        '@id': Astro.url.href,
-      },
-    })} />
+    <script is:inline type="application/ld+json" set:html={blogPostingSchema} />
     <RelatedArticles article={article} />
 </BaseLayout>

@@ -1,12 +1,16 @@
 ---
 import { breadcrumbDTO } from "@application/dto/breadcrumb/breadcrumbDTO";
 import { getLocation } from "@modules/core/utils/getLocation";
+import { buildBreadcrumbListSchema } from "@modules/core/utils/jsonLd";
 import "./breadcrumbs.css";
 
 const { pathname: currentPath, origin: originPath } = Astro.url;
 
 const breadcrumbs = breadcrumbDTO.create({ currentPath });
 const location = getLocation(Astro.url);
+const breadcrumbListSchema = buildBreadcrumbListSchema(
+	breadcrumbs.map(({ link, label }) => ({ name: label, url: `${originPath}${link}` })),
+);
 ---
 <section class:list={[`breadcrumbs-wrapper common-wrapper`, { [`--is-${location}`]: location }]}>
     <ul class="breadcrumbs__list flex justify-center align-center font-sans-serif">
@@ -24,16 +28,5 @@ const location = getLocation(Astro.url);
         );
       })}
     </ul>
-    <script is:inline type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      'itemListElement': breadcrumbs.map(({ link, label }, index) => ({
-        '@type': 'ListItem',
-        'position': index + 1,
-        'item': {
-          '@id': `${originPath}${link}`,
-          'name': label,
-        },
-      })),
-    })} />
+    <script is:inline type="application/ld+json" set:html={breadcrumbListSchema} />
 </section>
