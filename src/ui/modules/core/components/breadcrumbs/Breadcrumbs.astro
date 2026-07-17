@@ -23,17 +23,17 @@ const location = getLocation(Astro.url);
             </li>
         );
       })}
-        <script is:inline type="application/ld+json" set:html={JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'BreadcrumbList',
-          'itemListElement': breadcrumbs.map(({ link, label }, index) => ({
-            '@type': 'ListItem',
-            'position': index + 1,
-            'item': {
-              '@id': `${originPath}${link}`,
-              'name': label,
-            },
-          })),
-        })} />
     </ul>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': breadcrumbs.map(({ link, label }, index) => ({
+        '@type': 'ListItem',
+        'position': index + 1,
+        'item': {
+          '@id': `${originPath}${link}`,
+          'name': label,
+        },
+      })),
+    })} />
 </section>

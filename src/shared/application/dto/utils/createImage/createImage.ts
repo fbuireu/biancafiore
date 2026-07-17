@@ -1,5 +1,5 @@
-import type { ContentfulImageAsset, ImageFormats } from "@shared/application/types";
-import type { Entry, EntrySkeletonType } from "contentful";
+import type { ImageFormats } from "@shared/application/types";
+import type { Asset, UnresolvedLink } from "contentful";
 
 interface CreateImageReturn {
 	url: string;
@@ -10,18 +10,15 @@ interface CreateImageReturn {
 	formats: ImageFormats;
 }
 
-export function createImage(rawImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>): CreateImageReturn {
-	const {
-		fields: {
-			file: { contentType, details, url },
-		},
-	} = rawImage as unknown as ContentfulImageAsset;
+export function createImage(rawImage: Asset<undefined> | UnresolvedLink<"Asset">): CreateImageReturn {
+	const asset = rawImage as Asset<undefined>;
+	const { contentType, details, url } = asset.fields.file as NonNullable<Asset<undefined>["fields"]["file"]>;
 
 	return {
-		url: String(url) as unknown as string,
+		url,
 		details: {
-			width: details.image?.width,
-			height: details.image?.height,
+			width: details.image?.width as number,
+			height: details.image?.height as number,
 		},
 		formats: {
 			avif: contentType === "image/avif",

@@ -1,7 +1,10 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { SITE_URL } from "astro:env/client";
+import { PAGES_ROUTES } from "@const/index";
 import RelatedArticlesSlider from "@modules/core/components/relatedArticles/atoms/relatedArticlesSlider/RelatedArticlesSlider.astro";
 import { getRelatedArticles } from "@modules/core/components/relatedArticles/utils/getRelatedArticles";
+import { buildItemListSchema } from "@modules/core/utils/buildItemListSchema";
 import "./related-articles.css";
 
 interface Props {
@@ -10,6 +13,9 @@ interface Props {
 
 const { article } = Astro.props;
 const relatedArticles = await getRelatedArticles(article);
+const itemListSchema = buildItemListSchema(
+	relatedArticles.map(({ data: { slug } }) => new URL(`${PAGES_ROUTES.ARTICLE}${slug}`, SITE_URL).href),
+);
 ---
 {
     relatedArticles.length > 0 && (
@@ -17,27 +23,28 @@ const relatedArticles = await getRelatedArticles(article);
       <div class="related-articles-wrapper common-wrapper">
         <h2 class="related-articles__title section-title">You might also like</h2>
         <RelatedArticlesSlider articles={relatedArticles} />
-        <script is:inline type="application/ld+json" set:html={JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'ItemList',
-          'itemListElement': relatedArticles.map(({ data: { slug } }, index) => ({
-            '@type': 'ListItem',
-            'position': index + 1,
-            'url': new URL(slug, Astro.url).href,
-          })),
-        })} />
-        <script is:inline>
-          const track = document.querySelector('.related-articles-wrapper .slider__track');
-          if (track) {
-            const slides = Array.from(track.children);
-            for (let i = slides.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [slides[i], slides[j]] = [slides[j], slides[i]];
-            }
-            slides.forEach((slide) => track.appendChild(slide));
-          }
-        </script>
+        <script is:inline type="application/ld+json" set:html={itemListSchema} />
       </div>
     </section>
         )
     }
+<script>
+	document.addEventListener("astro:page-load", () => {
+		const track = document.querySelector(".related-articles-wrapper .slider__track");
+
+		if (!track) {
+			return;
+		}
+
+		const slides = Array.from(track.children);
+
+		for (let i = slides.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[slides[i], slides[j]] = [slides[j], slides[i]];
+		}
+
+		for (const slide of slides) {
+			track.appendChild(slide);
+		}
+	});
+</script>

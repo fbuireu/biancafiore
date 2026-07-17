@@ -14,7 +14,8 @@ const props = Astro.props;
 const location = getLocation(Astro.url);
 const className = { [`--is-${location}`]: location };
 const isUnderConstruction =
-	HIDE_CHROME && !["article", "tags", "terms-and-conditions", "privacy-policy", "404", "500"].includes(location ?? "");
+	HIDE_CHROME &&
+	!["article", "articles", "tags", "terms-and-conditions", "privacy-policy", "404", "500"].includes(location ?? "");
 ---
 <html lang="en" class:list={[className]}>
 <Head {...props}><slot name="head" slot="head" /></Head>

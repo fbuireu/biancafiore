@@ -1,0 +1,11 @@
+.error-500__help {
+	color: var(--muted);
+	font-family: var(--font-serif);
+	font-size: var(--font-size-sm);
+	line-height: var(--leading);
+	margin-block-start: var(--space-2xs);
+}
+
+.error-500__email {
+	color: var(--gold);
+}

@@ -1,6 +1,6 @@
 import { defineCollection } from "astro:content";
 import { cityDTO } from "@application/dto/city";
-import type { RawCity } from "@application/dto/city/types";
+import type { CitySkeleton } from "@application/dto/city/types";
 import { citiesSchema } from "@application/entities/cities/schema";
 import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
 import { getImagePlaceholder } from "@infrastructure/images/imagePlaceholder";
@@ -14,14 +14,14 @@ export const cities = defineCollection({
 		const { items: rawCities } = await runCms(
 			Effect.gen(function* () {
 				const cms = yield* CmsClient;
-				return yield* cms.getEntries({
+				return yield* cms.getEntries<CitySkeleton>({
 					content_type: "city",
 					order: ["fields.startDate"],
 				});
 			}),
 		);
 
-		const cities = cityDTO.create(rawCities as unknown as RawCity[]);
+		const cities = cityDTO.create(rawCities);
 
 		return Promise.all(
 			cities.map(async (city) => ({

@@ -11,6 +11,8 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = ({ id, type, placeholder, label, formStatus, hasError, errorMessage, ...rest }: InputProps) => {
+	const errorId = id ? `${id}-error` : undefined;
+
 	return (
 		<div
 			className={clsx("contact-form__input-wrapper", {
@@ -23,7 +25,8 @@ export const Input = ({ id, type, placeholder, label, formStatus, hasError, erro
 				placeholder={placeholder}
 				className="contact-form__input"
 				disabled={formStatus === FormStatus.UNAUTHORIZED}
-				aria-describedby={hasError ? errorMessage : undefined}
+				aria-invalid={hasError || undefined}
+				aria-describedby={hasError ? errorId : undefined}
 				{...rest}
 			/>
 			{label && id && (
@@ -31,7 +34,11 @@ export const Input = ({ id, type, placeholder, label, formStatus, hasError, erro
 					{label}
 				</label>
 			)}
-			{hasError && errorMessage && <p className="contact-form__input__error-message">{errorMessage}</p>}
+			{hasError && errorMessage && (
+				<p id={errorId} className="contact-form__input__error-message">
+					{errorMessage}
+				</p>
+			)}
 		</div>
 	);
 };

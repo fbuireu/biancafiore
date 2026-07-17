@@ -25,14 +25,10 @@ const SELECTORS = {
 	NAVIGATION_ITEMS: ".navigation__menu__item > *",
 	QUOTE: ".navigation__menu__quote > *",
 	READING_PROGRESS: ".reading-progress",
+	FIRST_MENU_LINK: ".navigation__menu__nav a",
 };
 
 export function toggleMenu(): void {
-	let isMenuOpen = false;
-	let toggleMenuText = "Menu";
-	const timeline = gsap.timeline({ paused: true });
-	timeline.eventCallback("onReverseComplete", () => backgroundObserver());
-
 	const {
 		BODY: BODY_SELECTOR,
 		HTML: HTML_SELECTOR,
@@ -48,6 +44,7 @@ export function toggleMenu(): void {
 		HEADER_MENU_TEXT,
 		READING_PROGRESS: READING_PROGRESS_SELECTOR,
 		SITE_LOGO_SVG,
+		FIRST_MENU_LINK: FIRST_MENU_LINK_SELECTOR,
 	} = SELECTORS;
 
 	const BODY = document.querySelector(BODY_SELECTOR) as HTMLBodyElement;
@@ -58,6 +55,17 @@ export function toggleMenu(): void {
 	const MENU_TEXT = document.querySelector(HEADER_MENU_TEXT) as HTMLElement;
 	const LOGO_SVG = document.querySelector(SITE_LOGO_SVG) as HTMLElement;
 	const READING_PROGRESS = document.querySelector(READING_PROGRESS_SELECTOR) as HTMLElement;
+
+	if (!TOGGLE_MENU_BUTTON || TOGGLE_MENU_BUTTON.dataset.menuInitialized === "true") {
+		return;
+	}
+
+	TOGGLE_MENU_BUTTON.dataset.menuInitialized = "true";
+
+	let isMenuOpen = false;
+	let toggleMenuText = "Menu";
+	const timeline = gsap.timeline({ paused: true });
+	timeline.eventCallback("onReverseComplete", () => backgroundObserver());
 
 	const ELEMENTS_TO_TOGGLE = [BODY, HTML, LOGO, MENU_DIVIDER, TOGGLE_MENU_BUTTON, LOGO_SVG, READING_PROGRESS];
 
@@ -138,14 +146,33 @@ export function toggleMenu(): void {
 		}, timeout);
 	};
 
+	const closeMenuAndFocusButton = (): void => {
+		TOGGLE_MENU_BUTTON.click();
+		TOGGLE_MENU_BUTTON.focus();
+	};
+
 	TOGGLE_MENU_BUTTON.addEventListener("click", () => {
 		isMenuOpen = !isMenuOpen;
 		timeline.reversed(!timeline.reversed());
+		TOGGLE_MENU_BUTTON.setAttribute("aria-expanded", String(isMenuOpen));
 
 		for (const element of ELEMENTS_TO_TOGGLE) {
 			if (!element) return;
 
 			element.classList.toggle("--is-menu-open");
 		}
+
+		if (isMenuOpen) {
+			const FIRST_MENU_LINK = document.querySelector(FIRST_MENU_LINK_SELECTOR) as HTMLElement;
+			FIRST_MENU_LINK?.focus();
+		}
+	});
+
+	document.addEventListener("keydown", (event) => {
+		if (event.key !== "Escape" || !isMenuOpen) {
+			return;
+		}
+
+		closeMenuAndFocusButton();
 	});
 }

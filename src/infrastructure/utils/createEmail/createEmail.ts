@@ -1,5 +1,6 @@
-import { CONTACT_DETAILS, DEFAULT_LOCALE_STRING } from "@const/const";
+import { CONTACT_DETAILS, DEFAULT_LOCALE_STRING } from "@const/index";
 import type { Except } from "@const/types";
+import { escapeHtml } from "@const/utils/escapeHtml";
 import type { ContactFormData } from "@shared/ui/types";
 
 type GenerateHtmlParams = Except<ContactFormData, "recaptcha" | "emailId">;
@@ -8,6 +9,9 @@ const URL_ENCODED_SPACE_REGEX = /%20/g;
 
 export function createEmail({ name, email, message }: GenerateHtmlParams): string {
 	const date = new Date().toLocaleString(DEFAULT_LOCALE_STRING);
+	const safeName = escapeHtml(name);
+	const safeEmail = escapeHtml(email);
+	const safeMessage = escapeHtml(message);
 	const mailTo =
 		`mailto:${email}?subject=Re: ${encodeURIComponent(CONTACT_DETAILS.EMAIL_SUBJECT)} from biancafiore.me`.replace(
 			URL_ENCODED_SPACE_REGEX,
@@ -48,13 +52,13 @@ export function createEmail({ name, email, message }: GenerateHtmlParams): strin
                 <th style="width: 80px; text-align: left; font-size: 18px;">
                   Name:
                 </th>
-                <td>${name}</td>
+                <td>${safeName}</td>
               </tr>
               <tr>
                 <th style="width: 80px; text-align: left; font-size: 18px;">
                   Email:
                 </th>
-                <td>${email}</td>
+                <td>${safeEmail}</td>
               </tr>
 							<tr>
                 <th style="width: 80px; text-align: left; font-size: 18px;">
@@ -67,7 +71,7 @@ export function createEmail({ name, email, message }: GenerateHtmlParams): strin
                 <td></td>
               </tr>
               <tr>
-                <td colspan="2">${message}</td>
+                <td colspan="2">${safeMessage}</td>
               </tr>
               <tr>
                 <td colspan="2">
@@ -75,7 +79,7 @@ export function createEmail({ name, email, message }: GenerateHtmlParams): strin
                     Reply directly by clicking the following button:
                   </p>
                   <a
-                    href="mailto:${mailTo}"
+                    href="${escapeHtml(mailTo)}"
                     style="font-size: 18px; text-align: center; text-decoration: none; background-color: #1E2021FF; padding: 16px; color: #ffffff; border-radius: 4px; display: block; width: calc(100% - 32px); margin-top: 16px; margin-bottom: 16px;"
                   >
                     Reply

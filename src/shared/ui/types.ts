@@ -1,7 +1,8 @@
-import type { z } from 'astro/zod';
 import type { contactFormSchema } from "@application/entities/contact/schema";
+import type { Except } from "@const/types";
+import type { z } from "astro/zod";
 
-export type ContactFormData = z.infer<typeof contactFormSchema> & {
+export type ContactFormData = Except<z.infer<typeof contactFormSchema>, "recaptcha"> & {
 	recaptcha?: string;
 	emailId?: string;
 };

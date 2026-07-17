@@ -1,22 +1,20 @@
-import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
+import type { AuthorDTO, AuthorSkeleton, RawAuthor } from "@application/dto/author/types";
 import type { Except } from "@const/types";
 import { createImage } from "@shared/application/dto/utils/createImage";
-import type { Entry, EntrySkeletonType } from "contentful";
+import type { Entry, UnresolvedLink } from "contentful";
 
 type GetAuthorReturn = Except<AuthorDTO, "articles" | "latestArticle">;
 
-export function getAuthor(author: Entry<EntrySkeletonType<RawAuthor["fields"]>>): GetAuthorReturn {
-	const profileImage = createImage(
-		author.fields.profileImage as unknown as Entry<EntrySkeletonType<RawAuthor["fields"]["profileImage"]["fields"]>>,
-	);
+export function getAuthor(author: Entry<AuthorSkeleton, undefined> | UnresolvedLink<"Entry">): GetAuthorReturn {
+	const rawAuthor = author as RawAuthor;
 
 	return {
-		name: author.fields.name as string,
-		slug: author.fields.slug as string,
-		description: author.fields.description as string,
-		jobTitle: author.fields.jobTitle as string,
-		currentCompany: author.fields.currentCompany as string,
-		profileImage,
-		socialNetworks: author.fields.socialNetworks as string[],
+		name: rawAuthor.fields.name,
+		slug: rawAuthor.fields.slug,
+		description: rawAuthor.fields.description,
+		jobTitle: rawAuthor.fields.jobTitle,
+		currentCompany: rawAuthor.fields.currentCompany,
+		profileImage: createImage(rawAuthor.fields.profileImage),
+		socialNetworks: rawAuthor.fields.socialNetworks,
 	};
 }

@@ -1,17 +1,16 @@
 import type { tagSchema } from "@application/entities/tags/schema";
 import type { z } from "astro/zod";
-import type { EntryFieldTypes } from "contentful";
+import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
-export interface RawTag {
-	contentTypeId: "tag";
-	sys: {
-		id: string;
-	};
-	fields: {
+export type TagSkeleton = EntrySkeletonType<
+	{
 		name: EntryFieldTypes.Text;
 		slug: EntryFieldTypes.Text;
-	};
-}
+	},
+	"tag"
+>;
+
+export type RawTag = Entry<TagSkeleton, undefined>;
 
 export const TagType = {
 	TAG: "tag",

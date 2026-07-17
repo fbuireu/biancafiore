@@ -37,7 +37,7 @@ const extractContentFromNextNodes = ({ nextNodes, level }: ExtractContentFromNex
 const createSection = ({ level, id, text, content, index }: CreateSectionParams) => {
 	return `
     <section style="--is: --section-${index}">
-      <h${level} id="${id}" class="article__heading flex flex-start align-baseline">
+      <h${level} id="${id}" class="article__heading flex align-baseline">
         <a href="#${id}">${text}</a>
       </h${level}>
       <p>${content}</p>

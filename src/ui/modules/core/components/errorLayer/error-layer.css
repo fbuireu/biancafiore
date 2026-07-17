@@ -1,0 +1,101 @@
+.error-layer {
+	align-items: center;
+	display: grid;
+	justify-items: center;
+	min-height: calc(100dvh - var(--header-height));
+	overflow: hidden;
+	padding-block: var(--space-xl);
+	padding-inline: clamp(1.25rem, 5vw, 4rem);
+	position: relative;
+	text-align: center;
+}
+
+.error-layer__ghost {
+	color: var(--ink);
+	font-family: var(--font-display);
+	font-size: 44vw;
+	inset-block-start: 50%;
+	inset-inline-start: 50%;
+	letter-spacing: -0.02em;
+	line-height: 1;
+	opacity: 0.05;
+	pointer-events: none;
+	position: absolute;
+	translate: -50% -54%;
+	user-select: none;
+	white-space: nowrap;
+
+	@media (width <= 640px) {
+		font-size: 60vw;
+	}
+}
+
+.error-layer__inner {
+	max-width: 560px;
+	position: relative;
+}
+
+.error-layer__eyebrow {
+	margin-block-end: var(--space-m);
+}
+
+.error-layer__title {
+	font-size: clamp(38px, 4.5vw, 58px);
+	margin-block: 0 var(--space-m);
+}
+
+.error-layer__accent {
+	color: var(--gold);
+	font-style: italic;
+}
+
+.error-layer__lede {
+	color: var(--ink-soft);
+	font-family: var(--font-serif);
+	font-size: clamp(18px, 1.6vw, 20px);
+	font-weight: 360;
+	line-height: var(--leading);
+	margin: 0 auto var(--space-l);
+	max-width: 460px;
+}
+
+.error-layer__actions {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-m) var(--space-l);
+	justify-content: center;
+}
+
+.error-layer__button {
+	background-color: var(--ink);
+	color: var(--background-main);
+	display: inline-flex;
+	font-family: var(--font-sans-serif);
+	font-size: var(--font-size-xs);
+	font-weight: 600;
+	letter-spacing: 0.16em;
+	padding: 15px 30px;
+	text-transform: uppercase;
+	transition: background-color 0.2s;
+
+	&:is(:hover, :focus-visible) {
+		background-color: var(--gold);
+	}
+}
+
+.error-layer__extra {
+	border-block-start: 1px solid var(--line);
+	margin: var(--space-xl) auto 0;
+	max-width: 460px;
+	padding-block-start: var(--space-m);
+	width: 100%;
+}
+
+.error-layer__code {
+	color: var(--faint);
+	font-family: "Courier New", monospace;
+	font-size: var(--font-size-xs);
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}

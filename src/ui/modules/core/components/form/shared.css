@@ -3,7 +3,7 @@
 .contact-form__generic-error-message,
 .contact-form__input__error-message {
 	color: var(--error-main);
-	font-size: 1rem;
+	font-size: var(--font-size-sm);
 	font-style: normal;
 	inset: auto 0;
 	position: absolute;
