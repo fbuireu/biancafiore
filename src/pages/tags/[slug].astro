@@ -17,29 +17,34 @@ export const prerender = true;
 
 export async function getStaticPaths() {
 	const tags = await getCollection("tags");
+	const uniqueTags = new Map<string, (typeof tags)[number]["data"]["tags"][number]>();
+
+	for (const tag of tags.flatMap((tag) => tag.data.tags)) {
+		if (!uniqueTags.has(tag.slug)) {
+			uniqueTags.set(tag.slug, tag);
+		}
+	}
 
 	return await Promise.all(
-		tags
-			.flatMap((tag) => tag.data.tags)
-			.map(async (tag) => {
-				const articles = await Promise.all(
-					tag.articles.map(async (article) => await getEntry(article.collection, article.id)),
-				);
+		[...uniqueTags.values()].map(async (tag) => {
+			const articles = await Promise.all(
+				tag.articles.map(async (article) => await getEntry(article.collection, article.id)),
+			);
 
-				return {
-					params: {
-						slug: tag.slug,
+			return {
+				params: {
+					slug: tag.slug,
+				},
+				props: {
+					tag: {
+						...tag,
+						articles: articles
+							.filter((article): article is NonNullable<typeof article> => Boolean(article))
+							.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()),
 					},
-					props: {
-						tag: {
-							...tag,
-							articles: articles
-								.filter((article): article is NonNullable<typeof article> => Boolean(article))
-								.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()),
-						},
-					},
-				};
-			}),
+				},
+			};
+		}),
 	);
 }
 
