@@ -1,5 +1,5 @@
 ---
-import { CONTACT_DETAILS, DEFAULT_DATE_FORMAT } from "@const/index";
+import { CONTACT_DETAILS, DEFAULT_DATE_FORMAT, DEFAULT_LOCALE_STRING } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
@@ -7,7 +7,7 @@ import LegalSection from "@modules/legal/components/legalSection/LegalSection.as
 
 export const prerender = true;
 
-const today = new Date().toLocaleDateString("en", DEFAULT_DATE_FORMAT);
+const today = new Date().toLocaleDateString(DEFAULT_LOCALE_STRING, DEFAULT_DATE_FORMAT);
 const metadata: Partial<SeoMetadata> = {
 	title: "Privacy Policy",
 	robots: {

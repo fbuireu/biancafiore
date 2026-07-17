@@ -5,6 +5,7 @@ import Tabs from "@modules/contact/components/tabs/Tabs.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import LatestArticles from "@modules/core/components/latestArticles/LatestArticles.astro";
+import { buildContactPageSchema } from "@modules/core/utils/jsonLd";
 
 export const prerender = true;
 
@@ -13,9 +14,7 @@ const metadata: Partial<SeoMetadata> = {
 	description: "Get in touch with me",
 };
 
-const contactPageSchema = JSON.stringify({
-	"@context": "https://schema.org",
-	"@type": "ContactPage",
+const contactPageSchema = buildContactPageSchema({
 	url: Astro.url.href,
 	name: "Contact Bianca Fiore",
 	description: "Get in touch with Bianca Fiore.",

@@ -4,7 +4,7 @@ import "./my-work.css";
 import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
-import { buildItemListSchema } from "@modules/core/utils/buildItemListSchema";
+import { buildItemListSchema } from "@modules/core/utils/jsonLd";
 
 const projects = await getCollection("projects");
 
