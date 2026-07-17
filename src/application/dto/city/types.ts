@@ -1,18 +1,19 @@
 import type { citiesSchema } from "@application/entities/cities";
-import type { ContenfulLocation, ContentfulImageAsset } from "@shared/application/types";
 import type { z } from "astro/zod";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
-export interface RawCity {
-	contentTypeId: "city";
-	fields: {
+export type CitySkeleton = EntrySkeletonType<
+	{
 		name: EntryFieldTypes.Text;
-		coordinates: Entry<EntrySkeletonType<ContenfulLocation["fields"]>>;
+		coordinates: EntryFieldTypes.Location;
 		startDate: EntryFieldTypes.Date;
 		endDate?: EntryFieldTypes.Date;
 		description: EntryFieldTypes.Text;
-		image: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
-	};
-}
+		image: EntryFieldTypes.AssetLink;
+	},
+	"city"
+>;
+
+export type RawCity = Entry<CitySkeleton, undefined>;
 
 export type CityDTO = z.infer<typeof citiesSchema>;

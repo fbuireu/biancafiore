@@ -14,10 +14,12 @@ import "./header.css";
     <MenuOverlay />
     <Menu />
 </header>
-<script is:inline data-astro-rerun type="module">
-  import { toggleMenu } from '/src/ui/modules/core/components/header/utils/toggleMenu';
-  import { backgroundObserver } from '/src/ui/modules/core/components/header/utils/backgroundObserver';
+<script>
+	import { backgroundObserver } from "@modules/core/components/header/utils/backgroundObserver";
+	import { toggleMenu } from "@modules/core/components/header/utils/toggleMenu";
 
-  backgroundObserver();
-  toggleMenu();
+	document.addEventListener("astro:page-load", () => {
+		backgroundObserver();
+		toggleMenu();
+	});
 </script>

@@ -6,6 +6,8 @@ import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import LatestArticles from "@modules/core/components/latestArticles/LatestArticles.astro";
 
+export const prerender = true;
+
 const metadata: Partial<SeoMetadata> = {
 	title: "Contact",
 	description: "Get in touch with me",

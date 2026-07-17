@@ -2,7 +2,9 @@
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
 import ErrorLayer from "@modules/core/components/errorLayer/ErrorLayer.astro";
+import "./_500.css";
 
 interface Props {
 	error: unknown;
@@ -10,10 +12,10 @@ interface Props {
 
 const { error } = Astro.props;
 const title = "500: Whoops!";
-const description = `For full transparency this is the error: ${error instanceof Error ? error.message : "Unknown error"}`;
+const reference = error instanceof Error ? error.message : "Internal error";
 const metadata: Partial<SeoMetadata> = {
 	title,
-	description,
+	description: `For full transparency this is the error: ${reference}`,
 	robots: {
 		index: false,
 		follow: false,
@@ -21,11 +23,35 @@ const metadata: Partial<SeoMetadata> = {
 };
 ---
 <BaseLayout {...metadata}>
-  <ErrorLayer>
-    <h1>{title}</h1>
-    <p>Clearly something went wrong... Oh gosh this is embarrassing...</p>
-    <p>{description}</p>
-	<p>Why not try going back to the <a href={PAGES_ROUTES.HOME}
-		class="error-layer__link --underline-on-hover">homepage</a>?</p>
-  </ErrorLayer>
+    <ErrorLayer class="error-500">
+        <div class="error-layer__ghost" aria-hidden="true">500</div>
+        <div class="error-layer__inner">
+            <p class="editorial-eyebrow error-layer__eyebrow">Error 500 — Server error</p>
+            <h1 class="editorial-headline error-layer__title">
+                Something broke <em class="error-layer__accent">on our end.</em>
+            </h1>
+            <p class="error-layer__lede">
+                This one's on us, not you. A part of the site stumbled mid-sentence. Give it a moment
+                and try again — and if it keeps happening, I'd genuinely like to know.
+            </p>
+            <div class="error-layer__actions">
+                <button class="error-layer__button error-500__reload --is-clickable" type="button">Try again</button>
+                <a class="editorial-cta" href={PAGES_ROUTES.HOME}>
+                    Back to home <span class="editorial-cta__arrow" aria-hidden="true">→</span>
+                </a>
+            </div>
+            <div class="error-layer__extra">
+                <p class="error-layer__code">Reference: 500 · {reference}</p>
+                <p class="error-500__help">
+                    Still stuck? <EmailButton classNames="error-500__email" text="Email me" /> and I'll take a look.
+                </p>
+            </div>
+        </div>
+    </ErrorLayer>
 </BaseLayout>
+
+<script>
+	document.querySelector<HTMLButtonElement>(".error-500__reload")?.addEventListener("click", () => {
+		window.location.reload();
+	});
+</script>

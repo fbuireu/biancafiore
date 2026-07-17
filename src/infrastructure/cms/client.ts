@@ -1,15 +1,17 @@
 import { CmsError } from "@infrastructure/errors";
+import type { EntryCollection, EntrySkeletonType } from "contentful";
 import * as contentful from "contentful";
 import { Context, Effect, Layer } from "effect";
 
 type ContentfulClient = ReturnType<typeof contentful.createClient>;
 type GetEntriesQuery = Parameters<ContentfulClient["getEntries"]>[0];
-type EntriesResult = Awaited<ReturnType<ContentfulClient["getEntries"]>>;
 
 export class CmsClient extends Context.Tag("CmsClient")<
 	CmsClient,
 	{
-		getEntries(query: GetEntriesQuery): Effect.Effect<EntriesResult, CmsError>;
+		getEntries<Skeleton extends EntrySkeletonType = EntrySkeletonType>(
+			query: GetEntriesQuery,
+		): Effect.Effect<EntryCollection<Skeleton, undefined>, CmsError>;
 	}
 >() {}
 
@@ -31,9 +33,9 @@ export const CmsClientLive = Layer.effect(
 		});
 
 		return {
-			getEntries: (query) =>
+			getEntries: <Skeleton extends EntrySkeletonType = EntrySkeletonType>(query: GetEntriesQuery) =>
 				Effect.tryPromise({
-					try: () => client.getEntries(query),
+					try: () => client.getEntries<Skeleton>(query),
 					catch: (cause) =>
 						new CmsError({
 							message: cause instanceof Error ? cause.message : String(cause),

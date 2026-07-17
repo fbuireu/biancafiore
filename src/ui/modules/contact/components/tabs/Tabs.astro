@@ -1,8 +1,6 @@
 ---
 import { ContactFormProvider } from "../contactFormProvider/ContactFormProvider";
 import "./tabs.css";
-
-const queryTab = Astro.url.searchParams.get("tab");
 ---
 
 <section class="contact-tabs-wrapper">
@@ -29,13 +27,14 @@ const queryTab = Astro.url.searchParams.get("tab");
 				data-url="https://calendly.com/fbuireu/45min-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
 			>
 			</div>
-			<script is:inline type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async defer />
 		</div>
 	</div>
 </section>
 
-<script is:inline type="module" define:vars={{ queryTab }}>
-  import { initTabs } from '/src/ui/modules/contact/utils/changeTab';
+<script>
+	import { initTabs } from "@modules/contact/utils/changeTab";
 
-  initTabs(queryTab);
+	document.addEventListener("astro:page-load", () => {
+		initTabs(new URLSearchParams(window.location.search).get("tab") ?? undefined);
+	});
 </script>

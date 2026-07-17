@@ -1,9 +1,9 @@
 .carbon-badge {
-	color: var(--white);
+	color: var(--muted);
 	font-size: var(--font-size-xs);
 	min-height: 1.2em;
 }
 
 .carbon-badge__link {
-	color: var(--white);
+	color: var(--muted);
 }

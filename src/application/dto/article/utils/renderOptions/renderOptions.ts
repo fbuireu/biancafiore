@@ -102,7 +102,11 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 						source: `https:${imgUrl}`,
 						options: { width: displayWidth, format: "webp" },
 					});
-					const srcset = getOptimizedSrcset({ source: `https:${imgUrl}`, widths: [400, 768, 1024], options: { format: "webp" } });
+					const srcset = getOptimizedSrcset({
+						source: `https:${imgUrl}`,
+						widths: [400, 768, 1024],
+						options: { format: "webp" },
+					});
 
 					return `
 						<figure${wrapperClass ? ` class="${wrapperClass}"` : ""}>
@@ -135,7 +139,11 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 						source: `https:${url}`,
 						options: { width: displayWidth, format: "webp" },
 					});
-					const srcset = getOptimizedSrcset({ source: `https:${url}`, widths: [400, 768, 1024], options: { format: "webp" } });
+					const srcset = getOptimizedSrcset({
+						source: `https:${url}`,
+						widths: [400, 768, 1024],
+						options: { format: "webp" },
+					});
 					return `
             <figure class="full-bleed">
               <img
@@ -144,7 +152,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
                 sizes="auto"
                 height="${height ?? ""}"
                 width="${width ?? ""}"
-                alt="${escapeHtml(description ? "" : String(rawArticle.fields.title ?? ""))}"
+                alt="${escapeHtml(description ? String(description) : String(rawArticle.fields.title ?? ""))}"
                 loading="lazy"
                 decoding="async"
               />

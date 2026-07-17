@@ -1,9 +1,14 @@
 ---
-import { PAGES_ROUTES } from "@const/const";
+import { getCollection } from "astro:content";
+import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import ErrorLayer from "@modules/core/components/errorLayer/ErrorLayer.astro";
 import "./_404.css";
+
+const MAX_SUGGESTED_ARTICLES = 3;
+
+const articles = (await getCollection("articles")).slice(0, MAX_SUGGESTED_ARTICLES);
 
 const title = "404: Not Found";
 const description = "It seems you've stumbled upon a page that doesn't exist.";
@@ -19,22 +24,37 @@ const metadata: Partial<SeoMetadata> = {
 ---
 <BaseLayout {...metadata}>
     <ErrorLayer class="error-404">
-        <div class="error-404__stage">
-            <h1 class="error-404__title">
-                404
-                <span aria-hidden="true">404</span>
+        <div class="error-layer__ghost" aria-hidden="true">404</div>
+        <div class="error-layer__inner">
+            <p class="editorial-eyebrow error-layer__eyebrow">Error 404 — Page not found</p>
+            <h1 class="editorial-headline error-layer__title">
+                You've lost <em class="error-layer__accent">the thread.</em>
             </h1>
-        </div>
-        <div class="error-404__cloak-wrapper" aria-hidden="true">
-            <div class="error-404__cloak-container">
-                <div class="error-404__cloak"></div>
+            <p class="error-layer__lede">
+                The story you were looking for isn't here — it may have moved, been retitled, or never
+                existed at all. Every good piece has a way back to the start.
+            </p>
+            <div class="error-layer__actions">
+                <a class="error-layer__button --is-clickable" href={PAGES_ROUTES.HOME}>Back to home</a>
+                <a class="editorial-cta" href={PAGES_ROUTES.ARTICLES}>
+                    Browse the blog <span class="editorial-cta__arrow" aria-hidden="true">→</span>
+                </a>
             </div>
-        </div>
-        <div class="error-404__info">
-            <p>{description}</p>
-            <a class="error-404__link --is-clickable --underline-on-hover" href={PAGES_ROUTES.HOME}>
-                <span class="error-404__arrow" aria-hidden="true">←</span> Back home
-            </a>
+            {articles.length > 0 && (
+                <div class="error-layer__extra">
+                    <p class="editorial-kicker error-404__kicker">Or pick up one of these</p>
+                    <ul class="error-404__links">
+                        {articles.map(({ data: { slug, title: articleTitle } }) => (
+                            <li>
+                                <a class="error-404__link" href={`${PAGES_ROUTES.ARTICLE}${slug}`}>
+                                    <span class="error-404__link-title">{articleTitle}</span>
+                                    <span class="error-404__link-arrow" aria-hidden="true">→</span>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
         </div>
     </ErrorLayer>
 </BaseLayout>

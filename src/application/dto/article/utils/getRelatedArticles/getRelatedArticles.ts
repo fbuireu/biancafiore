@@ -6,19 +6,23 @@ interface GetRelatedArticlesParams {
 	allRawArticles: RawArticle[];
 }
 
+function getTagSlugs(article: RawArticle): string[] {
+	return (article.fields.tags ?? []).flatMap((tag) => ("fields" in tag ? [tag.fields.slug] : []));
+}
+
 export function getRelatedArticles({ rawArticle, allRawArticles }: GetRelatedArticlesParams): Reference<"articles">[] {
-	const articleTags = new Set(rawArticle.fields.tags?.map((tag) => tag.fields.slug) ?? []);
+	const articleTags = new Set(getTagSlugs(rawArticle));
 
 	return allRawArticles
-		.filter(({ fields }) => {
-			if (fields.title === rawArticle.fields.title) return false;
+		.filter((article) => {
+			if (article.fields.title === rawArticle.fields.title) return false;
 
-			const allTags = fields.tags?.map((tag) => tag.fields.slug) || [];
+			const allTags = getTagSlugs(article);
 			return allTags.some((slug) => articleTags.has(slug));
 		})
 		.slice(0, 6)
 		.map((relatedArticle) => ({
-			id: String(relatedArticle.fields.slug),
+			id: relatedArticle.fields.slug,
 			collection: "articles",
 		}));
 }

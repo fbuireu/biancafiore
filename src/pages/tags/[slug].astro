@@ -6,6 +6,7 @@ import type { SeoMetadata } from "@const/types";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import { buildItemListSchema } from "@modules/core/utils/buildItemListSchema";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import "./_tag.css";
 
@@ -48,6 +49,10 @@ const metadata: Partial<SeoMetadata> = {
 	title: `#${slug}`,
 	description: `Articles tagged with #${slug}.`,
 };
+
+const itemListSchema = buildItemListSchema(
+	(tag.articles ?? []).map((article) => new URL(`${PAGES_ROUTES.ARTICLE}${article.data.slug}`, SITE_URL).href),
+);
 ---
 <BaseLayout {...metadata}>
     <Breadcrumbs />
@@ -62,15 +67,5 @@ const metadata: Partial<SeoMetadata> = {
       })}
     </ul>
 </section>
-    <script is:inline type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      'itemListElement': (tag.articles ?? []).map((article, index) => ({
-        '@type': 'ListItem',
-        'position': index + 1,
-        ...(article && {
-          'url': new URL(`${PAGES_ROUTES.ARTICLE}${article.data.slug}`, SITE_URL).href,
-        }),
-      })),
-    })} />
+    <script is:inline type="application/ld+json" set:html={itemListSchema} />
 </BaseLayout>

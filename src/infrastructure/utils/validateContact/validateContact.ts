@@ -8,7 +8,7 @@ type ValidateContact = Except<ContactFormData, "recaptcha" | "emailId">;
 
 export const validateContact = (contact: ValidateContact): Effect.Effect<ValidateContact, ValidationError> =>
 	Effect.suspend(() => {
-		const { success, data, error } = contactFormSchema.safeParse(contact);
+		const { success, data, error } = contactFormSchema.omit({ recaptcha: true }).safeParse(contact);
 
 		return success
 			? Effect.succeed(data)

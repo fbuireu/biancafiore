@@ -2,8 +2,7 @@
 	display: flex;
 	justify-content: flex-end;
 	width: min(var(--grid-article), 100% - 2rem);
-	margin-inline: auto;
-	margin-block-start: 2rem;
+	margin: 2rem auto 0;
 }
 
 .columns-toggle__button {

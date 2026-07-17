@@ -1,6 +1,7 @@
 import { defineCollection, reference } from "astro:content";
+import type { ArticleSkeleton } from "@application/dto/article/types";
 import { authorDTO } from "@application/dto/author";
-import type { RawAuthor } from "@application/dto/author/types";
+import type { AuthorSkeleton } from "@application/dto/author/types";
 import { authorSchema } from "@application/entities/authors/schema";
 import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
 import { runCms } from "@infrastructure/runtime";
@@ -11,14 +12,20 @@ export const authors = defineCollection({
 	loader: async () => {
 		if (!isContentfulConfigured()) return [];
 
-		const { items: rawAuthors } = await runCms(
+		const [{ items: rawAuthors }, { items: rawArticles }] = await runCms(
 			Effect.gen(function* () {
 				const cms = yield* CmsClient;
-				return yield* cms.getEntries({ content_type: "author" });
+				return yield* Effect.all(
+					[
+						cms.getEntries<AuthorSkeleton>({ content_type: "author" }),
+						cms.getEntries<ArticleSkeleton>({ content_type: "article" }),
+					],
+					{ concurrency: "unbounded" },
+				);
 			}),
 		);
 
-		const authors = await authorDTO.create(rawAuthors as unknown as RawAuthor[]);
+		const authors = await authorDTO.create([rawAuthors, rawArticles]);
 
 		return authors.map((author) => ({
 			id: author.name,

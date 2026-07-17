@@ -8,20 +8,12 @@ import { Effect } from "effect";
 
 type CheckDuplicatedEntriesParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
-const ALIAS_REGEX = /(\+.*?)(?=@)/;
-
 export const checkDuplicatedEntries = (
 	data: CheckDuplicatedEntriesParams,
 ): Effect.Effect<void, DatabaseError | DuplicateContactError, Database> =>
 	Effect.gen(function* () {
 		const { db, run } = yield* Database;
-		const duplicates = yield* run(
-			db
-				.select()
-				.from(Contact)
-				.where(eq(Contact.email, data.email.replace(ALIAS_REGEX, "")))
-				.limit(1),
-		);
+		const duplicates = yield* run(db.select().from(Contact).where(eq(Contact.email, data.email)).limit(1));
 
 		if (duplicates.length) {
 			return yield* Effect.fail(

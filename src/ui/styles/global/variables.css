@@ -17,9 +17,6 @@
 		--background-main: oklch(97.90% 0.008 91.48);
 		--error-main: oklch(58.08% 0.196 25.77);
 		--success-main: oklch(52.29% 0.17558211290701223 142.8999328999691);
-		--x: oklch(0 0 0);
-		--linkedin: oklch(54.58% 0.13 242.27);
-		--email: oklch(58.97% 0 0);
 		--white: oklch(100% 0 0);
 		--black: oklch(0 0 0);
 		--ink: light-dark(#1b1813, #ece6d8);
@@ -317,31 +314,13 @@
 
 @property --error-main {
 	syntax: "<color>";
-	inherits: false;
+	inherits: true;
 	initial-value: transparent;
 }
 
 @property --success-main {
 	syntax: "<color>";
-	inherits: false;
-	initial-value: transparent;
-}
-
-@property --x {
-	syntax: "<color>";
-	inherits: false;
-	initial-value: transparent;
-}
-
-@property --linkedin {
-	syntax: "<color>";
-	inherits: false;
-	initial-value: transparent;
-}
-
-@property --email {
-	syntax: "<color>";
-	inherits: false;
+	inherits: true;
 	initial-value: transparent;
 }
 

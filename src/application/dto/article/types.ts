@@ -1,31 +1,29 @@
-import type { RawAuthor } from "@application/dto/author/types";
-import type { BaseTagDTO } from "@application/dto/tag/types";
+import type { AuthorSkeleton } from "@application/dto/author/types";
+import type { TagSkeleton } from "@application/dto/tag/types";
 import type { articleSchema } from "@application/entities/articles";
-import type { ContentfulImageAsset } from "@shared/application/types";
 import type { z } from "astro/zod";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
-export interface RawArticle {
-	contentTypeId: "article";
-	sys: {
-		updatedAt: string;
-	};
-	fields: {
+export type ArticleSkeleton = EntrySkeletonType<
+	{
 		title: EntryFieldTypes.Text;
 		slug: EntryFieldTypes.Text;
 		content: EntryFieldTypes.RichText;
-		description: EntryFieldTypes.Text;
+		description?: EntryFieldTypes.Text;
 		publishDate: EntryFieldTypes.Date;
-		featuredImage: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
+		featuredImage?: EntryFieldTypes.AssetLink;
 		featuredArticle: EntryFieldTypes.Boolean;
-		isFavorite: EntryFieldTypes.Boolean;
-		isRepublished: EntryFieldTypes.Boolean;
-		originalSource: EntryFieldTypes.Text;
-		author: Entry<EntrySkeletonType<RawAuthor["fields"]>>;
-		tags: Entry<EntrySkeletonType<BaseTagDTO>>[];
-		relatedArticles: Array<Entry<EntrySkeletonType>>;
-	};
-}
+		isFavorite?: EntryFieldTypes.Boolean;
+		isRepublished?: EntryFieldTypes.Boolean;
+		originalSource?: EntryFieldTypes.Text;
+		author: EntryFieldTypes.EntryLink<AuthorSkeleton>;
+		tags?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TagSkeleton>>;
+		relatedArticles?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<EntrySkeletonType>>;
+	},
+	"article"
+>;
+
+export type RawArticle = Entry<ArticleSkeleton, undefined>;
 
 export type ArticleDTO = z.infer<typeof articleSchema>;
 

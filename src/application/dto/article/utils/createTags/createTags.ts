@@ -1,9 +1,13 @@
-import type { BaseTagDTO } from "@application/dto/tag/types";
-import type { Entry, EntrySkeletonType } from "contentful";
+import type { BaseTagDTO, RawTag } from "@application/dto/tag/types";
+import type { UnresolvedLink } from "contentful";
 
-export function createTags(tags: Array<Entry<EntrySkeletonType<BaseTagDTO>>> | undefined): BaseTagDTO[] {
-	return (tags ?? []).map((tag) => ({
-		name: (tag.fields.name as unknown as string).trim(),
-		slug: (tag.fields.slug as unknown as string).trim(),
+function isResolvedTag(tag: RawTag | UnresolvedLink<"Entry">): tag is RawTag {
+	return "fields" in tag;
+}
+
+export function createTags(tags: Array<RawTag | UnresolvedLink<"Entry">> | undefined): BaseTagDTO[] {
+	return (tags ?? []).filter(isResolvedTag).map((tag) => ({
+		name: tag.fields.name.trim(),
+		slug: tag.fields.slug.trim(),
 	}));
 }
