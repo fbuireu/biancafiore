@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
-import { buildItemListSchema } from "@modules/core/utils/buildItemListSchema";
+import { buildItemListSchema } from "@modules/core/utils/jsonLd";
 import "./blog.css";
 
 interface Props {
