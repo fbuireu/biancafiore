@@ -28,7 +28,7 @@ const itemListSchema = buildItemListSchema(
                       <h3 class="my-work__name">{project.data.name}</h3>
                       <BlurImage
                           class="my-work__thumbnail"
-                          src={project.data.image.url}
+                          src={`https:${project.data.image.url}`}
                           alt={project.data.name}
                           width={project.data.image.details.width}
                           height={project.data.image.details.height}
