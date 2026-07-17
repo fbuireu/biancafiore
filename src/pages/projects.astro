@@ -26,7 +26,7 @@ const metadata: Partial<SeoMetadata> = {
       <ProjectSection id={project.data.id}>
           <article style={`--index: ${index}`} class="project-wrapper">
               <div class="project-image-wrapper">
-                  <BlurImage class="project-image" layout="full-width" src={project.data.image.url} alt={project.data.name}
+                  <BlurImage class="project-image" layout="full-width" src={`https:${project.data.image.url}`} alt={project.data.name}
                          width={project.data.image.details.width} height={project.data.image.details.height}
                          placeholder={project.data.image.placeholder} loading={index === 0 ? "eager" : "lazy"} />
               </div>
