@@ -146,6 +146,7 @@
 	display: inline-block;
 	font-family: var(--font-display);
 	font-size: clamp(2rem, 5vw + 1rem, 4rem);
+	padding-block-end: 0.15em;
 	position: relative;
 	text-transform: uppercase;
 

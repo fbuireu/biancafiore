@@ -1,7 +1,9 @@
 ---
 import { getCollection } from "astro:content";
+import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
+import { buildItemListSchema } from "@modules/core/utils/buildItemListSchema";
 import "./blog.css";
 
 interface Props {
@@ -13,6 +15,9 @@ const MAX_ARTICLES = 3;
 const { limit = MAX_ARTICLES } = Astro.props;
 
 const articles = (await getCollection("articles")).slice(0, limit);
+const itemListSchema = buildItemListSchema(
+	articles.map(({ data: { slug } }) => new URL(`${PAGES_ROUTES.ARTICLE}${slug}`, SITE_URL).href),
+);
 ---
 <section class="blog --inverted-color-scheme">
     <div class="blog__inner">
@@ -32,14 +37,6 @@ const articles = (await getCollection("articles")).slice(0, limit);
                 All articles <span class="editorial-cta__arrow" aria-hidden="true">→</span>
             </a>
         </div>
-        <script is:inline type="application/ld+json" set:html={JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'ItemList',
-          'itemListElement': articles.map(({ data: { slug } }, index) => ({
-            '@type': 'ListItem',
-            'position': index + 1,
-            'url': new URL(slug, Astro.url).href,
-          })),
-        })} />
+        <script is:inline type="application/ld+json" set:html={itemListSchema} />
     </div>
 </section>

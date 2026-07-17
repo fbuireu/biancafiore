@@ -22,7 +22,7 @@
 		--cc-cookie-category-expanded-block-hover-bg: var(--cc-cookie-category-block-border);
 		--cc-cookie-category-expanded-block-bg: var(--background-main);
 		--cc-toggle-readonly-bg: var(--primary-light-1);
-		--cc-overlay-bg: color-mix(in srgb, var(--x) 90%, transparent);
+		--cc-overlay-bg: color-mix(in srgb, oklch(0 0 0) 90%, transparent);
 		--cc-toggle-on-bg: var(--primary-main);
 		--cc-toggle-off-bg: var(--primary-dark-3);
 		--cc-toggle-on-knob-bg: var(--white);
@@ -81,7 +81,7 @@
 			--cc-cookie-category-expanded-block-hover-bg: var(--primary-dark-2);
 			--cc-cookie-category-expanded-block-bg: transparent;
 			--cc-toggle-readonly-bg: var(--primary-dark-2);
-			--cc-overlay-bg: color-mix(in srgb, var(--x) 90%, transparent);
+			--cc-overlay-bg: color-mix(in srgb, oklch(0 0 0) 90%, transparent);
 			--cc-toggle-on-bg: var(--primary-light-1);
 			--cc-toggle-off-bg: var(--primary-dark-2);
 			--cc-toggle-on-knob-bg: var(--white);

@@ -1,17 +1,19 @@
-import { getCollection } from "astro:content";
+import type { RawArticle } from "@application/dto/article/types";
 import type { RawAuthor } from "@application/dto/author/types";
 import type { Reference } from "@shared/application/types";
-import { Effect } from "effect";
 
-export async function getArticlesByAuthor(rawAuthor: RawAuthor): Promise<Reference<"articles">[]> {
-	const articles = await Effect.runPromise(
-		Effect.tryPromise(() => getCollection("articles")).pipe(Effect.orElseSucceed(() => [])),
-	);
+interface GetArticlesByAuthorParams {
+	rawAuthor: RawAuthor;
+	rawArticles: RawArticle[];
+}
 
-	return articles
-		.filter((article) => article.data.author.name === String(rawAuthor.fields.name))
+export function getArticlesByAuthor({ rawAuthor, rawArticles }: GetArticlesByAuthorParams): Reference<"articles">[] {
+	return rawArticles
+		.filter(
+			(article) => "fields" in article.fields.author && article.fields.author.fields.name === rawAuthor.fields.name,
+		)
 		.map((article) => ({
-			id: article.data.slug,
+			id: article.fields.slug,
 			collection: "articles",
 		}));
 }

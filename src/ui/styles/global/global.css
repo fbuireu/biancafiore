@@ -21,17 +21,6 @@
 		letter-spacing: 0.5rem;
 		text-transform: uppercase;
 		text-align: center;
-		font-variation-settings: "wght" 200;
-		transition: font-variation-settings 0.5s;
-
-		&:hover {
-			font-variation-settings: "wght" 600;
-		}
-	}
-
-	.inner-section-title {
-		font-size: clamp(2rem, 1vw, 3rem);
-		text-transform: uppercase;
 	}
 
 	.editorial-eyebrow {
@@ -54,6 +43,15 @@
 		&.--is-gold {
 			color: var(--gold);
 		}
+	}
+
+	.editorial-kicker {
+		color: var(--faint);
+		font-family: var(--font-sans-serif);
+		font-size: var(--font-size-xs);
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
 	}
 
 	.editorial-section-title {
@@ -123,13 +121,6 @@
 		}
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		.editorial-cta::after,
-		.editorial-cta .editorial-cta__arrow {
-			transition: none;
-		}
-	}
-
 	.grid {
 		display: grid;
 	}
@@ -171,37 +162,6 @@
 	}
 
 	.align-baseline {
-		align-items: center;
-	}
-
-	.letter-spacing {
-		letter-spacing: 2px;
-	}
-
-	.error-layer-wrapper {
-		flex-flow: column wrap;
-		gap: 1.5rem;
-		height: 100dvh;
-		position: relative;
-		text-align: center;
-		translate: 0 -25%;
-		width: 100%;
-		z-index: 1;
-	}
-
-	.error-layer__link {
-		font-weight: bold;
-		letter-spacing: normal;
-	}
-
-	.travolta {
-		background:
-			url("https://assets-9gag-fun.9cache.com/s/fab0aa49/033037194a549b0bf83e2ac4ba90706a52a9132e/static/dist/web6/img/404/bg.gif")
-			center center / cover no-repeat;
-		height: 120%;
-		inset: 0;
-		opacity: 0.5;
-		position: absolute;
-		width: 100%;
+		align-items: baseline;
 	}
 }

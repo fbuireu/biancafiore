@@ -20,6 +20,8 @@ export const Textarea = ({
 	errorMessage,
 	...rest
 }: TextareaProps): JSX.Element => {
+	const errorId = id ? `${id}-error` : undefined;
+
 	return (
 		<div
 			className={clsx("contact-form__textarea-wrapper flex column-wrap justify-flex-start", {
@@ -32,13 +34,18 @@ export const Textarea = ({
 				disabled={formStatus === FormStatus.UNAUTHORIZED}
 				placeholder={placeholder}
 				onKeyDown={autosize}
-				aria-describedby={hasError ? errorMessage : undefined}
+				aria-invalid={hasError || undefined}
+				aria-describedby={hasError ? errorId : undefined}
 				{...rest}
 			/>
 			<label htmlFor={id} className="contact-form__textarea-label">
 				{label}
 			</label>
-			{hasError && <p className="contact-form__textarea__error-message">{errorMessage}</p>}
+			{hasError && (
+				<p id={errorId} className="contact-form__textarea__error-message">
+					{errorMessage}
+				</p>
+			)}
 		</div>
 	);
 };

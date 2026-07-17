@@ -4,13 +4,15 @@ import type { Except } from "@const/types";
 import type { DatabaseError, DuplicateContactError, EmailError, ValidationError } from "@infrastructure/errors";
 import { ContactLayer } from "@infrastructure/layers";
 import { checkDuplicatedEntries } from "@infrastructure/utils/checkDuplicatedEntries";
+import { normalizeEmail } from "@infrastructure/utils/normalizeEmail";
 import { saveContact } from "@infrastructure/utils/saveContact";
 import { sendEmail } from "@infrastructure/utils/sendEmail";
 import { validateContact } from "@infrastructure/utils/validateContact";
+import { verifyRecaptcha } from "@infrastructure/utils/verifyRecaptcha";
 import type { ContactFormData } from "@shared/ui/types";
 import { Cause, Effect, Option } from "effect";
 
-type ActionHandlerParams = Except<ContactFormData, "recaptcha" | "emailId">;
+type ActionHandlerParams = Except<ContactFormData, "emailId"> & { recaptcha: string };
 type ContactError = ValidationError | DuplicateContactError | EmailError | DatabaseError;
 
 const GENERIC_ERROR_MESSAGE =
@@ -28,6 +30,8 @@ function toActionError(cause: Cause.Cause<ContactError>): ActionError {
 		}
 	}
 
+	console.error(Cause.pretty(cause));
+
 	return new ActionError({ code: "INTERNAL_SERVER_ERROR", message: GENERIC_ERROR_MESSAGE });
 }
 
@@ -35,12 +39,14 @@ export const server = {
 	contact: defineAction({
 		accept: "form",
 		input: contactFormSchema,
-		handler: async (params: ActionHandlerParams) => {
+		handler: async ({ recaptcha, ...params }: ActionHandlerParams) => {
 			const program = Effect.gen(function* () {
 				const data = yield* validateContact(params);
-				yield* checkDuplicatedEntries(data);
+				yield* verifyRecaptcha(recaptcha);
+				const normalizedData = { ...data, email: normalizeEmail(data.email) };
+				yield* checkDuplicatedEntries(normalizedData);
 				const { id: emailId } = yield* sendEmail(data);
-				yield* saveContact({ emailId, ...data });
+				yield* saveContact({ emailId, ...normalizedData });
 
 				return { ok: !!emailId };
 			});

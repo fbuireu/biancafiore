@@ -14,8 +14,9 @@ export const sendEmail = (params: SendEmailParams): Effect.Effect<{ id: string }
 		const html = createEmail({ ...params });
 
 		return yield* emails.send({
-			from: `${params.name} <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`,
+			from: `Bianca Fiore Web <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`,
 			to: atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA),
+			replyTo: params.email,
 			subject: `${CONTACT_DETAILS.EMAIL_SUBJECT} from ${params.name} (${params.email})`,
 			tags: [
 				{

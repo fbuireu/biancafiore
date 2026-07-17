@@ -15,3 +15,5 @@ export function getReadingProgress(): void {
 
 	PROGRESS_BAR.style.width = `${readingProgress}%`;
 }
+
+window.addEventListener("scroll", getReadingProgress);

@@ -3,6 +3,8 @@ import rss from "@astrojs/rss";
 import { DEFAULT_SEO_PARAMS } from "@modules/core/components/seo/const";
 import type { APIRoute } from "astro";
 
+export const prerender = true;
+
 export const GET: APIRoute = async (context) => {
 	const articles = await getCollection("articles");
 

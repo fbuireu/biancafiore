@@ -3,9 +3,13 @@ main = "@astrojs/cloudflare/entrypoints/server"
 compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2026-03-12"
 
+[observability]
+enabled = true
+
 [assets]
 directory = "dist"
 binding = "ASSETS"
+html_handling = "drop-trailing-slash"
 
 [[kv_namespaces]]
 binding = "SESSION"

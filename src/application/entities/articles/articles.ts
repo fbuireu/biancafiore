@@ -1,6 +1,6 @@
 import { defineCollection } from "astro:content";
 import { articleDTO } from "@application/dto/article";
-import type { RawArticle } from "@application/dto/article/types";
+import type { ArticleSkeleton } from "@application/dto/article/types";
 import { articleSchema } from "@application/entities/articles/schema";
 import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
 import { getImagePlaceholder } from "@infrastructure/images/imagePlaceholder";
@@ -14,14 +14,14 @@ export const articles = defineCollection({
 		const { items: rawArticles } = await runCms(
 			Effect.gen(function* () {
 				const cms = yield* CmsClient;
-				return yield* cms.getEntries({
+				return yield* cms.getEntries<ArticleSkeleton>({
 					content_type: "article",
 					order: ["-fields.publishDate"],
 				});
 			}),
 		);
 
-		const articles = articleDTO.create(rawArticles as unknown as RawArticle[]);
+		const articles = articleDTO.create(rawArticles);
 
 		const sortedArticles = articles.toSorted(
 			(a, b) => Number(b.isFavorite) - Number(a.isFavorite) || b.publishDate.localeCompare(a.publishDate),

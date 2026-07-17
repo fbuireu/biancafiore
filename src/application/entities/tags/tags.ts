@@ -1,6 +1,6 @@
 import { defineCollection, reference } from "astro:content";
 import { tagDTO } from "@application/dto/tag";
-import type { RawTag } from "@application/dto/tag/types";
+import type { TagSkeleton } from "@application/dto/tag/types";
 import { TagType } from "@application/dto/tag/types";
 import { tagSchema } from "@application/entities/tags/schema";
 import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
@@ -17,7 +17,7 @@ export const tags = defineCollection({
 				const cms = yield* CmsClient;
 				return yield* Effect.all(
 					[
-						cms.getEntries({ content_type: "tag", limit: 1000 }),
+						cms.getEntries<TagSkeleton>({ content_type: "tag", limit: 1000 }),
 						cms.getEntries({
 							content_type: "article",
 							select: ["fields.slug", "fields.tags", "fields.author"],
@@ -30,7 +30,7 @@ export const tags = defineCollection({
 			}),
 		);
 
-		const tags = await tagDTO.create([rawTags as unknown as RawTag[], rawArticles, rawAuthors]);
+		const tags = await tagDTO.create([rawTags, rawArticles, rawAuthors]);
 
 		return Object.keys(tags).map((letter) => ({
 			id: letter,

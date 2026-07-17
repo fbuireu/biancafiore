@@ -1,12 +1,11 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import "./error-layer.css";
 
 type Props = HTMLAttributes<"section">;
 
 const { class: classNames, ...props } = Astro.props;
 ---
-<section class:list={['error-layer-wrapper common-wrapper flex column-nowrap justify-center align-center', classNames]}
-         {...props}>
+<section class:list={['error-layer common-wrapper', classNames]} {...props}>
     <slot />
 </section>
-<div class="travolta" />

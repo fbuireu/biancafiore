@@ -1,16 +1,17 @@
 import type { testimonialsSchema } from "@application/entities/testimonials";
-import type { ContentfulImageAsset } from "@shared/application/types";
 import type { z } from "astro/zod";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
-export interface RawTestimonial {
-	contentTypeId: "testimonial";
-	fields: {
+export type TestimonialSkeleton = EntrySkeletonType<
+	{
 		author: EntryFieldTypes.Text;
 		quote: EntryFieldTypes.Text;
-		image: Entry<EntrySkeletonType<ContentfulImageAsset["fields"]>>;
+		image: EntryFieldTypes.AssetLink;
 		role: EntryFieldTypes.Text;
-	};
-}
+	},
+	"testimonial"
+>;
+
+export type RawTestimonial = Entry<TestimonialSkeleton, undefined>;
 
 export type TestimonialDTO = z.infer<typeof testimonialsSchema>;

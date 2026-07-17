@@ -1,9 +1,9 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import { IMAGE_CDN } from "./src/const/imageCdn";
 import { defineConfig, envField, fontProviders, memoryCache } from "astro/config";
 import { Features } from "lightningcss";
+import { IMAGE_CDN } from "./src/const/imageCdn";
 
 const isProductionBuild = process.env.CLOUDFLARE_ENV === "production";
 const imageCdn = isProductionBuild ? IMAGE_CDN.CLOUDFLARE : IMAGE_CDN.CONTENTFUL;
@@ -117,8 +117,8 @@ export default defineConfig({
 				context: "client",
 			}),
 			GOOGLE_RECAPTCHA_SECRET_KEY: envField.string({
-				access: "public",
-				context: "client",
+				access: "secret",
+				context: "server",
 			}),
 			RESEND_API_KEY: envField.string({
 				access: "secret",
@@ -133,10 +133,6 @@ export default defineConfig({
 				context: "server",
 			}),
 			CONTENTFUL_PREVIEW_TOKEN: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			CONTENTFUL_SIGNIN_TOKEN: envField.string({
 				access: "secret",
 				context: "server",
 			}),

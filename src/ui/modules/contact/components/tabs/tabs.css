@@ -28,7 +28,6 @@
 	cursor: pointer;
 	padding: 1rem;
 	position: relative;
-	--border-width: 2px;
 
 	&::after {
 		pointer-events: none;
@@ -36,7 +35,6 @@
 }
 
 .contact-tab.--is-active {
-	border-bottom: 2px solid var(--neutral-main);
 	font-weight: bold;
 }
 

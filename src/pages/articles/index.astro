@@ -10,6 +10,8 @@ import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro"
 import { getFeaturedArticle } from "@modules/core/utils/getFeaturedArticle";
 import "./_articles.css";
 
+export const prerender = true;
+
 const articles = await getCollection("articles");
 const featuredArticle = getFeaturedArticle(articles);
 
