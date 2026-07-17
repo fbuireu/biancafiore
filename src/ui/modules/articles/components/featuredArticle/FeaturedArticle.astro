@@ -20,7 +20,7 @@ const itemListSchema = buildItemListSchema([featuredArticleShareUrl]);
             <a href={`/articles/${featuredArticle.data.slug}`}>
                 <BlurImage
                     class="featured-article__image"
-                    src={featuredArticle.data.featuredImage!.url}
+                    src={`https:${featuredArticle.data.featuredImage!.url}`}
                     width={featuredArticle.data.featuredImage!.details.width}
                     height={featuredArticle.data.featuredImage!.details.height}
                     alt={featuredArticle.data.title}
