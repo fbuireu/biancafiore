@@ -1,3 +1,17 @@
+# [1.15.0](https://github.com/fbuireu/biancafiore/compare/v1.14.4...v1.15.0) (2026-07-17)
+
+
+### Bug Fixes
+
+* build https image cdn ([902a271](https://github.com/fbuireu/biancafiore/commit/902a271a7e87801f54d046c9495fa514949b5297))
+* refactor json+ld ([11566cf](https://github.com/fbuireu/biancafiore/commit/11566cf5b3ed3e5d94be94282b4902ff54b40e4a))
+* unique tags ([377b1d9](https://github.com/fbuireu/biancafiore/commit/377b1d929e4c3621ca15a05039c1192e2de7ddd9))
+
+
+### Features
+
+* major refactor ([4ecc618](https://github.com/fbuireu/biancafiore/commit/4ecc61845396eecabf51129743f7e01bb73648c6))
+
 ## [1.14.4](https://github.com/fbuireu/biancafiore/compare/v1.14.3...v1.14.4) (2026-07-15)
 
 
