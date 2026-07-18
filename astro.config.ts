@@ -1,12 +1,29 @@
+import { writeFileSync } from "node:fs";
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig, envField, fontProviders, memoryCache } from "astro/config";
 import { Features } from "lightningcss";
 import { IMAGE_CDN } from "./src/const/imageCdn";
+import { SECURITY_HEADERS } from "./src/const/securityHeaders";
 
 const isProductionBuild = process.env.CLOUDFLARE_ENV === "production";
 const imageCdn = isProductionBuild ? IMAGE_CDN.CLOUDFLARE : IMAGE_CDN.CONTENTFUL;
+
+function generateStaticHeaders() {
+	return {
+		name: "generate-static-headers",
+		hooks: {
+			"astro:build:start": () => {
+				const rules = Object.entries(SECURITY_HEADERS)
+					.map(([header, value]) => `  ${header}: ${value}`)
+					.join("\n");
+
+				writeFileSync("./public/_headers", `/*\n${rules}\n`);
+			},
+		},
+	};
+}
 
 export default defineConfig({
 	experimental: {
@@ -74,6 +91,7 @@ export default defineConfig({
 		},
 	},
 	integrations: [
+		generateStaticHeaders(),
 		react(),
 		sitemap({
 			filter: (page) => {
