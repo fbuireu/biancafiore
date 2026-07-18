@@ -1,3 +1,11 @@
+# [1.17.0](https://github.com/fbuireu/biancafiore/compare/v1.16.0...v1.17.0) (2026-07-18)
+
+
+### Features
+
+* apply modern css rules ([2cfc690](https://github.com/fbuireu/biancafiore/commit/2cfc690ed456da5cbdd8a98d12cf5b0993e0bd73))
+* remove index in favor of attr() ([4fb9232](https://github.com/fbuireu/biancafiore/commit/4fb92323ab3d541cb34a75439567c688ef0208b9))
+
 # [1.16.0](https://github.com/fbuireu/biancafiore/compare/v1.15.0...v1.16.0) (2026-07-18)
 
 
