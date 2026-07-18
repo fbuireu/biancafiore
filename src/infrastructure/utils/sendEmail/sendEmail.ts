@@ -11,7 +11,7 @@ type SendEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
 export const sendEmail = (params: SendEmailParams): Effect.Effect<{ id: string }, EmailError, EmailClient> =>
 	Effect.gen(function* () {
 		const emails = yield* EmailClient;
-		const html = createEmail({ ...params });
+		const { html, text } = yield* Effect.promise(() => createEmail({ ...params }));
 
 		return yield* emails.send({
 			from: `Bianca Fiore Web <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`,
@@ -25,5 +25,6 @@ export const sendEmail = (params: SendEmailParams): Effect.Effect<{ id: string }
 				},
 			],
 			html,
+			text,
 		});
 	});
