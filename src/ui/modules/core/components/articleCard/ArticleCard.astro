@@ -15,7 +15,7 @@ const visibleTags = article.data.tags?.slice(0, MAX_TAGS) ?? [];
 const remainingTags = (article.data.tags?.length ?? 0) - visibleTags.length;
 ---
 <a class="article-card__link" href={`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`}
-   aria-label={article.data.title}>{' '}</a>
+   aria-labelledby={`article-title-${article.data.slug}`}>{' '}</a>
 <article
     class={clsx(
         'article-card__item',
@@ -39,7 +39,7 @@ const remainingTags = (article.data.tags?.length ?? 0) - visibleTags.length;
     <time class="article-card__publish-date editorial-meta --is-gold" datetime={article.data.publishDate}>
       {article.data.publishDate}
     </time>
-    <h3 class="article-card__title">
+    <h3 class="article-card__title" id={`article-title-${article.data.slug}`}>
       {article.data.title} <span class="article-card__arrow" aria-hidden="true">→</span>
     </h3>
     <p class="article-card__byline editorial-meta">

@@ -1,4 +1,5 @@
 import type { RawArticle } from "@application/dto/article/types";
+import { getImageEmbedWrapperClass } from "@application/dto/article/utils/getImageEmbedWrapperClass";
 import { parseHeadings } from "@application/dto/article/utils/parseHeadings";
 import { PAGES_ROUTES } from "@const/index";
 import { escapeHtml } from "@const/utils/escapeHtml";
@@ -78,7 +79,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 			},
 			[BLOCKS.EMBEDDED_ENTRY]: (node: Node) => {
 				const contentTypeId = node.data.target.sys.contentType.sys.id;
-				const { code, url, title, image, fullBleed, caption } = node.data.target.fields;
+				const { code, url, title, image, layout, caption, heading, text } = node.data.target.fields;
 
 				if (contentTypeId === "codeBlock" && code) {
 					return `<pre><code>${code}</code></pre>`;
@@ -96,7 +97,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 					const { url: imgUrl, details } = image.fields.file;
 					const { height, width } = details?.image ?? {};
 					const alt = escapeHtml(String(image.fields.description ?? image.fields.title ?? ""));
-					const wrapperClass = fullBleed ? "full-bleed" : "";
+					const wrapperClass = getImageEmbedWrapperClass(layout);
 					const displayWidth = width ?? 768;
 					const optimizedSrc = getOptimizedImageUrl({
 						source: `https:${imgUrl}`,
@@ -122,6 +123,42 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 							/>
 							${caption ? `<figcaption>${escapeHtml(String(caption))}</figcaption>` : ""}
 						</figure>
+					`;
+				}
+
+				if (contentTypeId === "splitBlock" && image?.fields?.file?.url) {
+					const { url: imgUrl, details } = image.fields.file;
+					const { height, width } = details?.image ?? {};
+					const alt = escapeHtml(String(image.fields.description ?? image.fields.title ?? ""));
+					const displayWidth = width ?? 768;
+					const optimizedSrc = getOptimizedImageUrl({
+						source: `https:${imgUrl}`,
+						options: { width: displayWidth, format: "webp" },
+					});
+					const srcset = getOptimizedSrcset({
+						source: `https:${imgUrl}`,
+						widths: [400, 768, 1024],
+						options: { format: "webp" },
+					});
+
+					return `
+						<div class="split">
+							<div class="split__content">
+								${heading ? `<h3>${escapeHtml(String(heading))}</h3>` : ""}
+								${text ? `<p>${escapeHtml(String(text))}</p>` : ""}
+							</div>
+							<img
+								class="split__image"
+								src="${optimizedSrc}"
+								srcset="${srcset}"
+								sizes="auto"
+								height="${height ?? ""}"
+								width="${width ?? ""}"
+								alt="${alt}"
+								loading="lazy"
+								decoding="async"
+							/>
+						</div>
 					`;
 				}
 

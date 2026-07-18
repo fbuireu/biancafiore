@@ -8,11 +8,11 @@ interface Props {
 
 const { tableOfContents } = Astro.props;
 ---
-<aside class="article__table-of-contents-wrapper" role="complementary">
+<aside class="article__table-of-contents-wrapper" role="complementary" aria-labelledby="toc-heading">
     <nav class="article__table-of-contents__nav">
         <details class="article__table-of-contents__details" open>
             <summary class="article__table-of-contents__summary">
-                <h5>Table of Contents</h5></summary>
+                <h5 id="toc-heading">Table of Contents</h5></summary>
             <ul class="article__table-of-contents__list flex column-nowrap">
               {tableOfContents.map(({ id, heading, level }, index) => (
                   <li class="article__table-of-contents__item" style={`--level: ${level};`}>

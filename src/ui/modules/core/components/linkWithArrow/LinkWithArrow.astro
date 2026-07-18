@@ -11,6 +11,6 @@ const { href, classNames } = Astro.props;
 ---
 <a href={href} class:list={[`${classNames} link-with-arrow flex row-wrap align-center --underline-on-hover --is-clickable`]}>
     <slot />
-    <Fragment set:html={horizontalArrowRaw} />
+    <span aria-hidden="true" set:html={horizontalArrowRaw} />
 </a>
 

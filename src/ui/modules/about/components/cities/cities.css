@@ -1,5 +1,6 @@
 .city-card__list {
 	--num-columns: 2;
+	--num-cards: attr(data-num-cards type(<number>), 1);
 	display: grid;
 	gap: 3rem;
 	grid-template-columns: 1fr;
@@ -7,7 +8,6 @@
 	list-style: none;
 	margin-block-end: 3rem;
 	max-width: calc(100% / var(--num-columns));
-	padding-bottom: calc(var(--index) * 0.5rem);
 	view-timeline-name: --cities-scales-in-view;
 
 	@container about-page (width <= 760px) {
@@ -15,16 +15,28 @@
 	}
 }
 
+@supports not (z-index: attr(data-index type(<number>))) {
+	.city-card__list {
+		--num-cards: 1;
+	}
+}
+
 .city-card__item {
+	--index: attr(data-index type(<number>), 1);
 	--index0: calc(var(--index) - 1);
 	--reverse-index: calc(var(--num-cards) - var(--index0));
-	--reverse-index0: calc(var(--reverse-index) - 1);
 	padding-top: calc(var(--index) * 0.5rem);
 	position: sticky;
 	top: calc(var(--header-height) + 0.5rem);
 
 	@container about-page (width <= 960px) {
 		padding-inline: 1rem;
+	}
+}
+
+@supports not (z-index: attr(data-index type(<number>))) {
+	.city-card__item {
+		--index: 1;
 	}
 }
 

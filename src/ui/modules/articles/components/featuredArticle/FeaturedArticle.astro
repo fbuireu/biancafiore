@@ -30,13 +30,13 @@ const itemListSchema = buildItemListSchema([featuredArticleShareUrl]);
             </a>
             <div class="featured-article__details-wrapper flex row-wrap">
                 <a class="featured-article__link-card" href={`/articles/${featuredArticle.data.slug}`}
-                   aria-label={featuredArticle.data.title}>{' '}</a>
+                   aria-labelledby="featured-article-title">{' '}</a>
                 <div class="featured-article__details flex column-wrap">
                     <time class="featured-article__publish-date font-sans-serif"
                           datetime={featuredArticle.data.publishDate}>
                       {featuredArticle.data.publishDate}
                     </time>
-                    <h2 class="featured-article__title">{featuredArticle.data.title}</h2>
+                    <h2 class="featured-article__title" id="featured-article-title">{featuredArticle.data.title}</h2>
                     <p class="featured-article__description" set:html={featuredArticle.data.description} />
                   {
                       featuredArticle.data.tags?.length && (
