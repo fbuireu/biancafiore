@@ -50,7 +50,7 @@ const profilePageSchema = buildProfilePageSchema({
 		latestArticle: {
 			headline: latestArticle.data.title,
 			url: new URL(`${PAGES_ROUTES.ARTICLE}${latestArticle.data.slug}`, SITE_URL).href,
-			datePublished: latestArticle.data.publishDate,
+			datePublished: latestArticle.data.publishDateISO,
 		},
 	}),
 });

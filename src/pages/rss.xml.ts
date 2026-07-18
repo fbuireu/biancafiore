@@ -15,7 +15,7 @@ export const GET: APIRoute = async (context) => {
 		items: articles.map((article) => ({
 			title: article.data.title,
 			description: article.data.description,
-			pubDate: new Date(article.data.publishDate),
+			pubDate: new Date(article.data.publishDateISO),
 			link: `/articles/${article.data.slug}`,
 		})),
 	});

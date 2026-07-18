@@ -3,12 +3,9 @@ import { contactFormSchema } from "@application/entities/contact/schema";
 import type { Except } from "@const/types";
 import type { DatabaseError, DuplicateContactError, EmailError, ValidationError } from "@infrastructure/errors";
 import { ContactLayer } from "@infrastructure/layers";
-import { checkDuplicatedEntries } from "@infrastructure/utils/checkDuplicatedEntries";
-import { normalizeEmail } from "@infrastructure/utils/normalizeEmail";
-import { saveContact } from "@infrastructure/utils/saveContact";
-import { sendEmail } from "@infrastructure/utils/sendEmail";
-import { validateContact } from "@infrastructure/utils/validateContact";
-import { verifyRecaptcha } from "@infrastructure/utils/verifyRecaptcha";
+import { normalizeEmail, sendEmail } from "@infrastructure/utils/email";
+import { validateContact, verifyRecaptcha } from "@infrastructure/utils/guards";
+import { checkDuplicatedEntries, saveContact } from "@infrastructure/utils/persistence";
 import type { ContactFormData } from "@shared/ui/types";
 import { Cause, Effect, Option } from "effect";
 

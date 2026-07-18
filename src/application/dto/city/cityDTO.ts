@@ -1,8 +1,8 @@
 import type { CityDTO, RawCity } from "@application/dto/city/types";
-import { slugify } from "@modules/core/utils/slugify";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
-import { createImage } from "@shared/application/dto/utils/createImage";
-import { createDate } from "./utils/createDate";
+import { createImage } from "@shared/application/dto/utils/images";
+import { slugify } from "@shared/utils/strings";
+import { createDate } from "./utils/dates";
 
 export const cityDTO: BaseDTO<RawCity[], CityDTO[]> = {
 	create: (raw) => {

@@ -1,6 +1,6 @@
 import type { RawTestimonial, TestimonialDTO } from "@application/dto/testimonial/types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
-import { createImage } from "@shared/application/dto/utils/createImage";
+import { createImage } from "@shared/application/dto/utils/images";
 
 export const testimonialDTO: BaseDTO<RawTestimonial[], TestimonialDTO[]> = {
 	create: (raw) => {

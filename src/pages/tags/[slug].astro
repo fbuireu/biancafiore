@@ -40,7 +40,7 @@ export async function getStaticPaths() {
 						...tag,
 						articles: articles
 							.filter((article): article is NonNullable<typeof article> => Boolean(article))
-							.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()),
+							.sort((a, b) => b.data.publishDateISO.localeCompare(a.data.publishDateISO)),
 					},
 				},
 			};

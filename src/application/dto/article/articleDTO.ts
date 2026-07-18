@@ -1,16 +1,13 @@
 import type { ArticleDTO, RawArticle } from "@application/dto/article/types";
 import { ArticleType } from "@application/dto/article/types";
-import { createRelatedArticles } from "@application/dto/article/utils/createRelatedArticles";
-import { generateTableOfContents } from "@application/dto/article/utils/generateTableOfContents";
-import { getRelatedArticles } from "@application/dto/article/utils/getRelatedArticles/getRelatedArticles";
-import { DEFAULT_DATE_FORMAT } from "@const/index";
+import { createRelatedArticles, getRelatedArticles } from "@application/dto/article/utils/articles";
+import { generateTableOfContents, getReadingTime, renderOptions } from "@application/dto/article/utils/content";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
-import { createImage } from "@shared/application/dto/utils/createImage";
-import { createTags } from "./utils/createTags";
-import { getAuthor } from "./utils/getAuthor";
-import { getReadingTime } from "./utils/getReadingTime";
-import { renderOptions } from "./utils/renderOptions";
+import { createImage } from "@shared/application/dto/utils/images";
+import { formatDate } from "@shared/utils/dates";
+import { getAuthor } from "./utils/authors";
+import { createTags } from "./utils/tags";
 
 export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 	create: (raw): ArticleDTO[] => {
@@ -32,7 +29,8 @@ export const articleDTO: BaseDTO<RawArticle[], ArticleDTO[]> = {
 				author: getAuthor(rawArticle.fields.author),
 				slug: rawArticle.fields.slug,
 				description,
-				publishDate: new Date(rawArticle.fields.publishDate).toLocaleDateString("en", DEFAULT_DATE_FORMAT),
+				publishDate: formatDate(rawArticle.fields.publishDate),
+				publishDateISO: new Date(rawArticle.fields.publishDate).toISOString(),
 				updatedAt: rawArticle.sys.updatedAt ?? new Date(rawArticle.fields.publishDate).toISOString(),
 				featuredImage,
 				variant: rawArticle.fields.featuredImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE,

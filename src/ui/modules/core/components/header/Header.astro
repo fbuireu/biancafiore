@@ -15,8 +15,7 @@ import "./header.css";
     <Menu />
 </header>
 <script>
-	import { backgroundObserver } from "@modules/core/components/header/utils/backgroundObserver";
-	import { toggleMenu } from "@modules/core/components/header/utils/toggleMenu";
+	import { backgroundObserver, toggleMenu } from "@modules/core/components/header/utils/interactions";
 
 	document.addEventListener("astro:page-load", () => {
 		backgroundObserver();

@@ -1,13 +1,14 @@
 ---
-import { CONTACT_DETAILS, DEFAULT_DATE_FORMAT, DEFAULT_LOCALE_STRING } from "@const/index";
+import { CONTACT_DETAILS } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
 import LegalSection from "@modules/legal/components/legalSection/LegalSection.astro";
+import { formatDate } from "@shared/utils/dates";
 
 export const prerender = true;
 
-const today = new Date().toLocaleDateString(DEFAULT_LOCALE_STRING, DEFAULT_DATE_FORMAT);
+const lastUpdated = formatDate("2026-05-18");
 const metadata: Partial<SeoMetadata> = {
 	title: "Terms and Conditions",
 	robots: {
@@ -21,7 +22,7 @@ const metadata: Partial<SeoMetadata> = {
     <LegalSection>
         <h1>Terms and Conditions</h1>
     </LegalSection>
-      <LegalSection><p>Last updated: {today}</p></LegalSection>
+      <LegalSection><p>Last updated: {lastUpdated}</p></LegalSection>
       <LegalSection>
         <p>Please read these terms and conditions carefully before using Our Service.</p>
     </LegalSection>

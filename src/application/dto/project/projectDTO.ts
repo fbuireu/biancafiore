@@ -1,8 +1,8 @@
 import type { ProjectDTO, RawProject } from "@application/dto/project/types";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import { slugify } from "@modules/core/utils/slugify";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
-import { createImage } from "@shared/application/dto/utils/createImage";
+import { createImage } from "@shared/application/dto/utils/images";
+import { slugify } from "@shared/utils/strings";
 
 export const projectDTO: BaseDTO<RawProject[], ProjectDTO[]> = {
 	create: (raw) => {

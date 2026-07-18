@@ -1,7 +1,7 @@
 import { actions, isActionError } from "astro:actions";
 import { contactFormSchema } from "@application/entities/contact/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { flyPlane } from "@modules/contact/utils/flyPlane";
+import { flyPlane } from "@modules/contact/utils/form";
 import { Input } from "@modules/core/components/form/input";
 import { Recaptcha } from "@modules/core/components/form/recaptcha";
 import { Textarea } from "@modules/core/components/form/textarea";

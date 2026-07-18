@@ -1,4 +1,3 @@
-import { autosize } from "@modules/contact/utils/autosize";
 import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
 import type { InputHTMLAttributes, JSX } from "react";
@@ -33,7 +32,6 @@ export const Textarea = ({
 				className="contact-form__textarea"
 				disabled={formStatus === FormStatus.UNAUTHORIZED}
 				placeholder={placeholder}
-				onKeyDown={autosize}
 				aria-invalid={hasError || undefined}
 				aria-describedby={hasError ? errorId : undefined}
 				{...rest}

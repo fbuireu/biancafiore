@@ -32,7 +32,7 @@ import "./tabs.css";
 </section>
 
 <script>
-	import { initTabs } from "@modules/contact/utils/changeTab";
+	import { initTabs } from "@modules/contact/utils/tabs";
 
 	document.addEventListener("astro:page-load", () => {
 		initTabs(new URLSearchParams(window.location.search).get("tab") ?? undefined);
