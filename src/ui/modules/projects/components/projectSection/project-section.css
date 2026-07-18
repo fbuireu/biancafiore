@@ -20,7 +20,7 @@
 			place-items: start;
 			position: relative;
 			width: 100%;
-			z-index: calc(var(--count) - var(--index, 0));
+			z-index: calc(var(--count) - attr(data-index type(<number>), 0));
 		}
 	}
 
@@ -85,6 +85,14 @@
 			padding: 1rem;
 			place-items: center;
 			width: 40%;
+		}
+	}
+}
+
+@supports not (z-index: attr(data-index type(<number>))) {
+	.project-section .project-wrapper {
+		@container projects-page (width >= 768px) {
+			z-index: var(--count);
 		}
 	}
 }

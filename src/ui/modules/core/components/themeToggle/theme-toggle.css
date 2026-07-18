@@ -31,6 +31,7 @@
 		}
 
 		> g g circle {
+			--index: attr(data-index type(<number>), 1);
 			transition-delay: calc(var(--theme-toggle-animation-duration) * (var(--index) * 0.095 + 0.158));
 			transition-duration: calc(var(--theme-toggle-animation-duration) * 0.2);
 		}
@@ -77,5 +78,28 @@
 
 	&:hover .theme_toggle_inner {
 		scale: 1.1;
+	}
+}
+
+@supports not (z-index: attr(data-index type(<number>))) {
+	.theme-toggle .theme_toggle_inner > g g circle {
+		&:nth-child(1) {
+			--index: 1;
+		}
+		&:nth-child(2) {
+			--index: 2;
+		}
+		&:nth-child(3) {
+			--index: 3;
+		}
+		&:nth-child(4) {
+			--index: 4;
+		}
+		&:nth-child(5) {
+			--index: 5;
+		}
+		&:nth-child(6) {
+			--index: 6;
+		}
 	}
 }
