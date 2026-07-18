@@ -33,23 +33,23 @@
 			grid-template-columns: 2.5rem 1fr 2.5rem;
 
 			@media (width >= 768px) {
+				grid-template-areas:
+					"Slider-Track Slider-Track Slider-Track"
+					"Slider-Prev . Slider-Next";
 				grid-template-columns: auto 1fr auto;
 
 				& .slider__track {
-					grid-column: 1 / -1;
-					grid-row: 1;
+					grid-area: Slider-Track;
 				}
 
 				& .slider__btn--prev {
 					align-items: self-end;
-					grid-column: 1;
-					grid-row: 2;
+					grid-area: Slider-Prev;
 				}
 
 				& .slider__btn--next {
 					align-items: self-end;
-					grid-column: 3;
-					grid-row: 2;
+					grid-area: Slider-Next;
 				}
 			}
 		}

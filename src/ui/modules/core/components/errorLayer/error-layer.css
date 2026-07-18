@@ -75,7 +75,8 @@
 	font-size: var(--font-size-xs);
 	font-weight: 600;
 	letter-spacing: 0.16em;
-	padding: 15px 30px;
+	padding-block: 15px;
+	padding-inline: 30px;
 	text-transform: uppercase;
 	transition: background-color 0.2s;
 

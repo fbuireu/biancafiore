@@ -10,7 +10,7 @@
 .error-404__link-title {
 	color: var(--ink);
 	font-family: var(--font-serif);
-	font-size: 17px;
+	font-size: var(--font-size-h6);
 	transition: color 0.3s ease;
 }
 

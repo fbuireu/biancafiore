@@ -46,7 +46,7 @@
 }
 
 .featured-article__share-wrapper {
-	bottom: -0.5rem;
+	inset-block-end: -0.5rem;
 	gap: 1rem 0;
 	justify-content: space-between;
 	position: absolute;
@@ -54,7 +54,7 @@
 	width: 100%;
 
 	@container articles-page (width <= 960px) {
-		bottom: -1.5rem;
+		inset-block-end: -1.5rem;
 		gap: 0.5rem 1rem;
 		justify-content: flex-start;
 		padding-inline: 1rem;

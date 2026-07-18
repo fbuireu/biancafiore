@@ -16,7 +16,7 @@
 
 .article-details__title {
 	font-size: var(--font-size-h1);
-	margin: 0 0 var(--rhythm);
+	margin-block-end: var(--rhythm);
 }
 
 .article-details__byline {
@@ -25,7 +25,7 @@
 	line-height: var(--leading);
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
-	margin: 0 0 var(--rhythm);
+	margin-block-end: var(--rhythm);
 
 	a {
 		display: inline-block;

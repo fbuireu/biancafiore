@@ -5,7 +5,7 @@ html.--is-tags body {
 
 .tag__article__list {
 	grid-template-columns: 1fr;
-	margin-block: 2rem 6rem;
+	margin-block: var(--space-l) var(--space-3xl);
 	position: relative;
 }
 

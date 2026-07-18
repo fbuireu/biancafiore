@@ -14,7 +14,7 @@
 }
 
 .blog__title {
-	margin: 0 0 54px;
+	margin-block-end: 54px;
 }
 
 .blog__title__link {

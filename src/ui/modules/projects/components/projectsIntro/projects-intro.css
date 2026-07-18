@@ -18,5 +18,5 @@
 
 .projects-intro__title {
 	font-size: clamp(2.5rem, 6cqi, 4rem);
-	margin: 0 0 var(--rhythm);
+	margin-block: 0 var(--rhythm);
 }

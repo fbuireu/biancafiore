@@ -2,7 +2,7 @@
 	.common-wrapper {
 		max-width: var(--grid-extra-large);
 		width: 100%;
-		margin: 0 auto;
+		margin-inline: auto;
 	}
 
 	.relative {

@@ -12,7 +12,7 @@
 	--slides-per-view: 1;
 	--slider-gap: 0rem;
 
-	padding: 2rem 0 4rem;
+	padding-block: 2rem 4rem;
 	position: relative;
 
 	.slider__track {

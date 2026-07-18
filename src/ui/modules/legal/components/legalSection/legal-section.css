@@ -28,7 +28,7 @@
 
 .legal-section ul {
 	margin-block-end: var(--space-2xs);
-	padding-left: 1.5rem;
+	padding-inline-start: 1.5rem;
 }
 
 .privacy-policy-wrapper,
