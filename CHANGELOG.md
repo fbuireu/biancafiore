@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/fbuireu/biancafiore/compare/v1.17.0...v1.18.0) (2026-07-18)
+
+
+### Features
+
+* add stretch arrow ([28d42b0](https://github.com/fbuireu/biancafiore/commit/28d42b03d4eb14c162da0259f12db29f357e9e50))
+
 # [1.17.0](https://github.com/fbuireu/biancafiore/compare/v1.16.0...v1.17.0) (2026-07-18)
 
 
