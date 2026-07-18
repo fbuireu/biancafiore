@@ -1,4 +1,5 @@
 import type { CityDTO, RawCity } from "@application/dto/city/types";
+import { slugify } from "@modules/core/utils/slugify";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
 import { createImage } from "@shared/application/dto/utils/createImage";
 import { createDate } from "./utils/createDate";
@@ -18,6 +19,7 @@ export const cityDTO: BaseDTO<RawCity[], CityDTO[]> = {
 
 			return {
 				name: rawCity.fields.name,
+				slug: slugify(rawCity.fields.name),
 				coordinates,
 				period: `${startDate}-${endDate}`,
 				description: rawCity.fields.description,

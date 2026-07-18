@@ -2,8 +2,8 @@
 	color-scheme: dark;
 	display: flex;
 	height: 100dvh;
+	inset-block-start: 0;
 	position: fixed;
-	top: 0;
 	visibility: hidden;
 	width: 100%;
 
@@ -14,9 +14,9 @@
 
 .header__menu :is(a, span) {
 	color: var(--ink);
+	inset-block-start: 150%;
 	line-height: 70%;
 	position: relative;
-	top: 150%;
 }
 
 .navigation__menu {
@@ -64,7 +64,7 @@
 		background: var(--surface);
 		content: "";
 		height: 175%;
-		left: -1.5rem;
+		inset-inline-start: -1.5rem;
 		margin: 0 auto;
 		position: absolute;
 		width: 120%;
@@ -84,7 +84,7 @@
 	}
 
 	&::after {
-		top: 125%;
+		inset-block-start: 125%;
 	}
 }
 
@@ -102,11 +102,11 @@
 	}
 
 	&::after {
-		top: 330px;
+		inset-block-start: 330px;
 		width: 100%;
 
 		@media (width <= 1024px) {
-			bottom: 0;
+			inset-block-end: 0;
 		}
 	}
 
@@ -154,8 +154,7 @@
 		color: var(--gold);
 	}
 
-	&:hover,
-	&:focus {
+	&:is(:hover, :focus-visible) {
 		opacity: 1;
 	}
 }

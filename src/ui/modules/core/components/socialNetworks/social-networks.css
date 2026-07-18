@@ -1,12 +1,12 @@
 .social__networks__list {
 	width: 100%;
 	justify-content: center;
-	margin: 4rem auto;
+	margin: var(--space-2xl) auto;
 	max-width: var(--grid-extra-small);
 	padding-inline-start: 0;
 
 	@media (width <= 720px) {
-		margin: 2rem auto;
+		margin: var(--space-l) auto;
 	}
 
 	@container about-page (width >= 0) {
@@ -24,7 +24,8 @@
 
 .social__networks__item {
 	max-width: calc(100% / 4);
-	padding: 0.25rem 0;
+	padding-block: var(--space-3xs);
+	padding-inline: 0;
 	text-align: center;
 	width: 100%;
 

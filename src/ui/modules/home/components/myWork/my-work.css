@@ -60,10 +60,6 @@
 	transition:
 		color 0.3s,
 		translate 0.3s var(--ease-elastic, ease);
-
-	@media (prefers-reduced-motion: reduce) {
-		transition: color 0.3s;
-	}
 }
 
 .my-work__summary {

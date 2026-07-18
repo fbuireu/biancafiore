@@ -1,6 +1,6 @@
 .breadcrumb__item,
 .breadcrumbs__list {
-	gap: 1rem;
+	gap: var(--space-s);
 }
 
 .breadcrumb__item {
@@ -21,11 +21,11 @@
 
 .breadcrumbs__list {
 	@container articles-page (width <= 960px) {
-		margin-block-end: 2rem;
+		margin-block-end: var(--space-l);
 	}
 
 	@container articles-page (width > 960px) {
-		margin-block-end: 5rem;
+		margin-block-end: var(--space-2xl);
 	}
 
 	@container projects-page (width >= 0) {
@@ -33,35 +33,36 @@
 	}
 
 	@container article-page (width <= 960px) {
-		margin-inline-start: 1rem;
+		margin-inline-start: var(--space-s);
 		max-width: 100%;
 		overflow: hidden;
 	}
 
 	@container article-page (width > 960px) {
 		justify-content: flex-start;
-		margin: 0 auto;
+		margin-block: 0;
+		margin-inline: auto;
 		max-width: var(--grid-small);
-		padding-block-start: 2rem;
+		padding-block-start: var(--space-l);
 	}
 
 	@container about-page (width <= 960px) {
-		margin-inline-start: 1rem;
+		margin-inline-start: var(--space-s);
 		max-width: 100%;
 	}
 
 	@container about-page (width > 960px) {
 		justify-content: flex-start;
-		margin-block-end: 2rem;
+		margin-block-end: var(--space-l);
 	}
 
 	@container contact-page (width <= 960px) {
-		margin-inline-start: 1rem;
+		margin-inline-start: var(--space-s);
 		max-width: 100%;
 	}
 
 	@container contact-page (width > 960px) {
 		justify-content: flex-start;
-		margin-block-end: 2rem;
+		margin-block-end: var(--space-l);
 	}
 }

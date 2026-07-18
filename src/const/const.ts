@@ -31,5 +31,5 @@ export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = {
 
 export const DEFAULT_LOCALE_STRING: Intl.LocalesArgument = "en-GB" as const;
 
-export { IMAGE_CDN } from "./imageCdn";
 export type { ImageCdn } from "./imageCdn";
+export { IMAGE_CDN } from "./imageCdn";

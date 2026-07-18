@@ -1,21 +1,21 @@
 .what-i-do {
-	padding-block: 96px;
+	padding-block: var(--space-3xl);
 
 	@container about-page (width <= 960px) {
-		padding-block: 64px;
+		padding-block: var(--space-2xl);
 	}
 }
 
 .what-i-do__inner {
 	display: grid;
-	gap: 64px;
+	gap: var(--space-2xl);
 	grid-template-columns: 1fr 1.4fr;
 	margin-inline: auto;
 	max-width: var(--grid-content);
 	padding-inline: clamp(1.25rem, 5cqi, 64px);
 
 	@container about-page (width <= 960px) {
-		gap: 40px;
+		gap: var(--space-l);
 		grid-template-columns: 1fr;
 	}
 }
@@ -45,7 +45,7 @@
 	font-family: var(--font-serif);
 	font-size: var(--font-size-h5);
 	line-height: var(--leading);
-	margin-block-end: 24px;
+	margin-block-end: var(--space-m);
 }
 
 .what-i-do__body {
@@ -53,9 +53,9 @@
 	font-family: var(--font-serif);
 	font-size: var(--font-size-h6);
 	line-height: var(--leading);
-	margin-block-end: 24px;
+	margin-block-end: var(--space-m);
 }
 
 .what-i-do__cta {
-	margin-block-start: 10px;
+	margin-block-start: var(--space-2xs);
 }
