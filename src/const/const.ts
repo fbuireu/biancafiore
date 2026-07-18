@@ -14,22 +14,19 @@ export const PAGES_ROUTES = {
 	"500": "/500",
 	HOME: "/",
 } as const;
-
 export const CONTACT_DETAILS = {
 	NAME: "Bianca Fiore",
 	EMAIL_SUBJECT: "Web contact form submission",
 	ENCODED_EMAIL_FROM: btoa("hello@biancafiore.me"),
 	ENCODED_EMAIL_BIANCA: btoa(BIANCA_EMAIL),
 } as const;
-
 export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = {
 	weekday: "long",
 	year: "numeric",
 	month: "long",
 	day: "numeric",
 };
-
-export const DEFAULT_LOCALE_STRING: Intl.LocalesArgument = "en-GB" as const;
+export const DEFAULT_LOCALE_STRING = "en-GB" as const;
 
 export type { ImageCdn } from "./imageCdn";
 export { IMAGE_CDN } from "./imageCdn";

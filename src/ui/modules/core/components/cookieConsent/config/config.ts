@@ -1,6 +1,6 @@
 import { PAGES_ROUTES } from "@const/index";
 import type { CookieConsentConfig } from "vanilla-cookieconsent";
-import { updatePreferences } from "../utils/updatePreferences";
+import { updatePreferences } from "../utils/preferences";
 
 export const config: CookieConsentConfig = {
 	onFirstConsent: ({ cookie }) => updatePreferences(cookie),

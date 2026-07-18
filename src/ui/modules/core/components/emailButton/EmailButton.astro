@@ -11,7 +11,7 @@ const { classNames, text = "Email" } = Astro.props;
 <button class:list={[`${classNames} --underline-on-hover --add-letter-spacing mailTo__button`]}>{text}</button>
 
 <script>
-  import { mailTo } from "@modules/core/components/emailButton/utils/mailTo";
+  import { mailTo } from "@modules/core/components/emailButton/utils/interactions";
 
   mailTo();
 </script>

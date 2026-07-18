@@ -10,7 +10,7 @@ interface Props {
 const { article } = Astro.props;
 ---
 <div class="article-details">
-    <time class="article-details__publish-date font-sans-serif" datetime={article.data.publishDate}>
+    <time class="article-details__publish-date font-sans-serif" datetime={article.data.publishDateISO}>
       {article.data.publishDate}
     </time>
     <h1 class="article-details__title editorial-headline">
