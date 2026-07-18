@@ -60,6 +60,8 @@
     "@contentful/rich-text-types": "17.2.7",
     "@hookform/resolvers": "5.4.0",
     "@libsql/client": "0.17.4",
+    "@react-email/components": "1.0.12",
+    "@react-email/render": "2.1.0",
     "@tgwf/co2": "0.19.0",
     "astro": "7.0.9",
     "clsx": "2.1.1",
