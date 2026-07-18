@@ -34,10 +34,19 @@
 	svg {
 		--color: light-dark(inherit, var(--white));
 		color: var(--color);
-		fill: var(--color);
 		height: 3rem;
 		padding: 0.5rem;
-		rotate: 0.25turn;
+		rotate: -0.25turn;
 		width: 3rem;
+	}
+
+	&:hover {
+		.stretch-arrow__shaft {
+			d: var(--stretch-arrow-shaft-hover);
+		}
+
+		.stretch-arrow__tip {
+			d: var(--stretch-arrow-tip-hover);
+		}
 	}
 }

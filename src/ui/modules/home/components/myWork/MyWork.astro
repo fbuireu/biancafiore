@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import "./my-work.css";
 import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
@@ -39,7 +40,7 @@ const itemListSchema = buildItemListSchema(
                   <div class="my-work__panel">
                       <article class="my-work__description" set:html={project.data.description} />
                       <a class="editorial-cta" href={projectUrl}>
-                          More details <span class="editorial-cta__arrow" aria-hidden="true">→</span>
+                          More details <span class="editorial-cta__arrow" aria-hidden="true" set:html={stretchArrow} />
                       </a>
                   </div>
               </details>

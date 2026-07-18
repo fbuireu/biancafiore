@@ -212,6 +212,8 @@
 		--grid-text: 640px;
 		--grid-sidebar: 280px;
 		--ease-elastic: linear(0, 0.186 2.1%, 0.778 7.2%, 1.027 9.7%, 1);
+		--stretch-arrow-shaft-hover: path("M 5,12 h 17");
+		--stretch-arrow-tip-hover: path("M 15,7 l 7,5 l -7,5");
 	}
 
 	[data-theme="dark"] {

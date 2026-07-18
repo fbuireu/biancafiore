@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import bianca from "@assets/images/jpg/bianca-fiore.jpg";
+import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { PAGES_ROUTES } from "@const/index";
 import "./welcome.css";
 ---
@@ -19,7 +20,7 @@ import "./welcome.css";
                     helped mission‑driven organisations tell those stories well.
                 </p>
                 <a class="editorial-cta hero__cta" href={PAGES_ROUTES.ARTICLES}>
-                    Read the blog <span class="editorial-cta__arrow" aria-hidden="true">→</span>
+                    Read the blog <span class="editorial-cta__arrow" aria-hidden="true" set:html={stretchArrow} />
                 </a>
             </div>
         </div>

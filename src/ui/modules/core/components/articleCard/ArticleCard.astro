@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { PAGES_ROUTES } from "@const/index";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import { articleVariantToClass } from "@modules/core/utils/articleVariantToClass";
@@ -40,7 +41,7 @@ const remainingTags = (article.data.tags?.length ?? 0) - visibleTags.length;
       {article.data.publishDate}
     </time>
     <h3 class="article-card__title" id={`article-title-${article.data.slug}`}>
-      {article.data.title} <span class="article-card__arrow" aria-hidden="true">→</span>
+      {article.data.title} <span class="article-card__arrow" aria-hidden="true" set:html={stretchArrow} />
     </h3>
     <p class="article-card__byline editorial-meta">
         by <a href={`${PAGES_ROUTES.TAGS}/${article.data.author.slug}`}

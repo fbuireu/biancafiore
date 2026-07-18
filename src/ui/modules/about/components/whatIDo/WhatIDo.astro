@@ -1,4 +1,5 @@
 ---
+import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { PAGES_ROUTES } from "@const/index";
 import "./what-i-do.css";
 
@@ -28,7 +29,7 @@ const DISCIPLINES = ["Creative direction", "Editorial & reports", "Impact storyt
                 change your mind.
             </p>
             <a class="editorial-cta what-i-do__cta" href={PAGES_ROUTES.CONTACT}>
-                Say hello <span class="editorial-cta__arrow" aria-hidden="true">→</span>
+                Say hello <span class="editorial-cta__arrow" aria-hidden="true" set:html={stretchArrow} />
             </a>
         </div>
     </div>

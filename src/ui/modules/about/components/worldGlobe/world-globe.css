@@ -81,7 +81,17 @@ canvas {
 .world-globe__controls__move {
 	gap: 0 1rem;
 
-	&.--right {
+	&.--left {
 		rotate: 0.5turn;
+	}
+
+	&:hover {
+		& .stretch-arrow__shaft {
+			d: var(--stretch-arrow-shaft-hover);
+		}
+
+		& .stretch-arrow__tip {
+			d: var(--stretch-arrow-tip-hover);
+		}
 	}
 }
