@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
@@ -37,7 +38,7 @@ const metadata: Partial<SeoMetadata> = {
             <div class="error-layer__actions">
                 <a class="error-layer__button --is-clickable" href={PAGES_ROUTES.HOME}>Back to home</a>
                 <a class="editorial-cta" href={PAGES_ROUTES.ARTICLES}>
-                    Browse the blog <span class="editorial-cta__arrow" aria-hidden="true">→</span>
+                    Browse the blog <span class="editorial-cta__arrow" aria-hidden="true" set:html={stretchArrow} />
                 </a>
             </div>
             {articles.length > 0 && (
@@ -48,7 +49,7 @@ const metadata: Partial<SeoMetadata> = {
                             <li>
                                 <a class="error-404__link" href={`${PAGES_ROUTES.ARTICLE}${slug}`}>
                                     <span class="error-404__link-title">{articleTitle}</span>
-                                    <span class="error-404__link-arrow" aria-hidden="true">→</span>
+                                    <span class="error-404__link-arrow" aria-hidden="true" set:html={stretchArrow} />
                                 </a>
                             </li>
                         ))}

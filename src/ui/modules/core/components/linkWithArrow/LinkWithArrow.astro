@@ -1,5 +1,5 @@
 ---
-import horizontalArrowRaw from "@assets/images/svg/left-arrow.svg?raw";
+import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import "./link-with-arrow.css";
 
 interface Props {
@@ -11,6 +11,6 @@ const { href, classNames } = Astro.props;
 ---
 <a href={href} class:list={[`${classNames} link-with-arrow flex row-wrap align-center --underline-on-hover --is-clickable`]}>
     <slot />
-    <span aria-hidden="true" set:html={horizontalArrowRaw} />
+    <span aria-hidden="true" set:html={stretchArrow} />
 </a>
 

@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import SliderShell from "@modules/core/components/sliderShell/SliderShell.astro";
 import "./testimonials-slider.css";
@@ -40,7 +41,7 @@ const { testimonials } = Astro.props;
 	</SliderShell>
 	<nav class="testimonials__nav" aria-label="Testimonials navigation">
 		<button class="slider__btn testimonials__nav__arrow --is-prev" type="button" aria-label="Previous testimonial">
-			←
+			<Fragment set:html={stretchArrow} />
 		</button>
 		{
 			testimonials.map((testimonial, index) => (
@@ -53,7 +54,7 @@ const { testimonials } = Astro.props;
 			))
 		}
 		<button class="slider__btn testimonials__nav__arrow --is-next" type="button" aria-label="Next testimonial">
-			→
+			<Fragment set:html={stretchArrow} />
 		</button>
 	</nav>
 </div>
