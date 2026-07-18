@@ -1,3 +1,11 @@
+# [1.16.0](https://github.com/fbuireu/biancafiore/compare/v1.15.0...v1.16.0) (2026-07-18)
+
+
+### Features
+
+* reuse middleware headers ([0b83991](https://github.com/fbuireu/biancafiore/commit/0b83991a25c7ee3ebf7cb7c930801c66f546d37c))
+* reuse middleware headers ([f771f2c](https://github.com/fbuireu/biancafiore/commit/f771f2cc8032fc1b355dbf7114e29e2472dc4671))
+
 # [1.15.0](https://github.com/fbuireu/biancafiore/compare/v1.14.4...v1.15.0) (2026-07-17)
 
 
