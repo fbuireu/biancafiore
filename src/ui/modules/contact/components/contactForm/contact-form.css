@@ -109,10 +109,8 @@
 		pointer-events: none;
 	}
 
-	&:disabled:not(.--is-loading) .plane__right-wing::before,
-	&:disabled:not(.--is-loading) .plane__right-wing::after,
-	&:disabled:not(.--is-loading) .plane__left-wing::before,
-	&:disabled:not(.--is-loading) .plane__left-wing::after {
+	&:disabled:not(.--is-loading) :is(.plane__left-wing, .plane__right-wing)::before,
+	&:disabled:not(.--is-loading) :is(.plane__left-wing, .plane__right-wing)::after {
 		background-color: var(--neutral-light-1);
 	}
 

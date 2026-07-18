@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
-import { slugify } from "@modules/core/utils/slugify";
 import "./cities.css";
 
 interface Props {
@@ -17,7 +16,7 @@ const numCards = cities.length + 1;
 			<li
 				class="city-card__item"
 				data-index={index + 1}
-				id={slugify(data.name)}
+				id={data.slug}
 			>
 				<article class="city-card__content">
 					<BlurImage

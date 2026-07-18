@@ -1,14 +1,10 @@
 .republished-banner {
-	border-left: 3px solid var(--primary-main);
-	background-color: var(--primary-light-3);
+	border-inline-start: 3px solid var(--primary-main);
+	background-color: light-dark(var(--primary-light-3), var(--primary-dark-3));
 	margin: 2.5rem auto;
 	max-width: var(--grid-article);
 	padding: 0.875rem 1.25rem;
 	width: calc(100% - 2rem);
-
-	[data-theme="dark"] & {
-		background-color: var(--primary-dark-3);
-	}
 }
 
 .republished-banner__header {

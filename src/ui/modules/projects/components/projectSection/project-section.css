@@ -28,21 +28,18 @@
 		animation: in-and-out both linear;
 		animation-timeline: --project;
 		height: var(--info-size);
-		left: 0;
+		inset-block-start: 0;
+		inset-inline: 0;
 		position: sticky;
-		right: 0;
-		top: 0;
 
 		@container projects-page (width >= 768px) {
 			animation: brighten both linear;
 			animation-range: entry 0% entry 50%;
 			animation-timeline: --project;
-			bottom: 0;
 			height: 100dvh;
-			left: 40%;
+			inset-block: 0;
+			inset-inline: 40% 0;
 			position: fixed;
-			right: 0;
-			top: 0;
 		}
 	}
 

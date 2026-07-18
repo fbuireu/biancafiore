@@ -11,7 +11,7 @@ html.--is-article body {
 
 .article__featured-image {
 	display: block;
-	max-height: 50vh;
+	max-height: 50dvh;
 	object-fit: cover;
 	width: 100%;
 }

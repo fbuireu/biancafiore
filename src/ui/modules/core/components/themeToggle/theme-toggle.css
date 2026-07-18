@@ -1,6 +1,6 @@
 .theme-toggle-wrapper {
+	inset-inline-end: 2rem;
 	position: absolute;
-	right: 2rem;
 	transform: translateY(-75%);
 
 	@media (width <= 575px) {
