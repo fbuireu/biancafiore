@@ -1,23 +1,23 @@
 ---
 import { GOOGLE_TAG_MANAGER_ID, HIDE_CHROME } from "astro:env/client";
-import { PAGES_ROUTES } from "@const/index";
+import { DEFAULT_LOCALE_STRING, PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import Footer from "@modules/core/components/footer/Footer.astro";
 import Head from "@modules/core/components/head/Head.astro";
 import Header from "@modules/core/components/header/Header.astro";
 import ScrollTop from "@modules/core/components/scrollTop/ScrollTop.astro";
-import { getLocation } from "@modules/core/utils/getLocation";
+import { getPage } from "@modules/core/utils/page";
 
 type Props = Partial<SeoMetadata>;
 
 const props = Astro.props;
-const location = getLocation(Astro.url);
+const location = getPage(Astro.url);
 const className = { [`--is-${location}`]: location };
 const isUnderConstruction =
 	HIDE_CHROME &&
 	!["article", "articles", "tags", "terms-and-conditions", "privacy-policy", "404", "500"].includes(location ?? "");
 ---
-<html lang="en" class:list={[className]}>
+<html lang={DEFAULT_LOCALE_STRING} class:list={[className]}>
 <Head {...props}><slot name="head" slot="head" /></Head>
 <body>
 <noscript>

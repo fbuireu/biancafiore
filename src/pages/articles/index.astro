@@ -4,10 +4,10 @@ import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import FeaturedArticle from "@modules/articles/components/featuredArticle/FeaturedArticle.astro";
+import { getFeaturedArticle } from "@modules/articles/utils/featured";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
-import { getFeaturedArticle } from "@modules/core/utils/getFeaturedArticle";
 import { buildItemListSchema } from "@modules/core/utils/jsonLd";
 import "./_articles.css";
 

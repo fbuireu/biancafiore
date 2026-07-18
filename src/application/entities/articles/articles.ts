@@ -24,7 +24,7 @@ export const articles = defineCollection({
 		const articles = articleDTO.create(rawArticles);
 
 		const sortedArticles = articles.toSorted(
-			(a, b) => Number(b.isFavorite) - Number(a.isFavorite) || b.publishDate.localeCompare(a.publishDate),
+			(a, b) => Number(b.isFavorite) - Number(a.isFavorite) || b.publishDateISO.localeCompare(a.publishDateISO),
 		);
 
 		return Promise.all(

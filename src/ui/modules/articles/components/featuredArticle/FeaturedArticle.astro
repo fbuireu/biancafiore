@@ -3,7 +3,6 @@ import type { CollectionEntry } from "astro:content";
 import { PAGES_ROUTES } from "@const/index";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import LinkWithArrow from "@modules/core/components/linkWithArrow/LinkWithArrow.astro";
-import { buildItemListSchema } from "@modules/core/utils/jsonLd";
 import "./featured-article.css";
 
 interface Props {
@@ -12,7 +11,6 @@ interface Props {
 
 const { featuredArticle } = Astro.props;
 const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`, Astro.url).href;
-const itemListSchema = buildItemListSchema([featuredArticleShareUrl]);
 ---
 <div class="articles-wrapper">
     <section class="articles-wrapper__inner common-wrapper">
@@ -33,7 +31,7 @@ const itemListSchema = buildItemListSchema([featuredArticleShareUrl]);
                    aria-labelledby="featured-article-title">{' '}</a>
                 <div class="featured-article__details flex column-wrap">
                     <time class="featured-article__publish-date font-sans-serif"
-                          datetime={featuredArticle.data.publishDate}>
+                          datetime={featuredArticle.data.publishDateISO}>
                       {featuredArticle.data.publishDate}
                     </time>
                     <h2 class="featured-article__title" id="featured-article-title">{featuredArticle.data.title}</h2>
@@ -78,6 +76,5 @@ const itemListSchema = buildItemListSchema([featuredArticleShareUrl]);
                 </div>
             </div>
         </div>
-        <script is:inline type="application/ld+json" set:html={itemListSchema} />
     </section>
 </div>

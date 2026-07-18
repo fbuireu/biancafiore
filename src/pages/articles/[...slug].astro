@@ -40,7 +40,7 @@ const metadata: Partial<SeoMetadata> = {
 	title: article.data.title,
 	description: article.data.description,
 	type: "article",
-	publishedTime: new Date(article.data.publishDate).toISOString(),
+	publishedTime: article.data.publishDateISO,
 	modifiedTime: article.data.updatedAt,
 	author: article.data.author.name,
 	tags: article.data.tags?.map((tag: { name: string }) => tag.name),
@@ -55,14 +55,8 @@ const blogPostingSchema = buildBlogPostingSchema({
 	url: Astro.url.href,
 	headline: article.data.title,
 	description: article.data.description,
-	...(article.data.featuredImage && {
-		image: {
-			url: `https:${article.data.featuredImage.url}`,
-			width: article.data.featuredImage.details.width,
-			height: article.data.featuredImage.details.height,
-		},
-	}),
-	datePublished: new Date(article.data.publishDate).toISOString(),
+	imageUrl: `https:${(article.data.featuredImage ?? article.data.author.profileImage).url}`,
+	datePublished: article.data.publishDateISO,
 	dateModified: article.data.updatedAt,
 	author: {
 		name: article.data.author.name,
@@ -73,6 +67,7 @@ const blogPostingSchema = buildBlogPostingSchema({
 		name: article.data.author.name,
 		url: new URL(SITE_URL).href,
 	},
+	keywords: article.data.tags?.map((tag: { name: string }) => tag.name),
 });
 ---
 <BaseLayout {...metadata}>

@@ -1,8 +1,8 @@
 import type { RawArticle } from "@application/dto/article/types";
 import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
 import type { BaseDTO } from "@shared/application/dto/baseDTO";
-import { createImage } from "@shared/application/dto/utils/createImage";
-import { getArticlesByAuthor } from "./utils";
+import { createImage } from "@shared/application/dto/utils/images";
+import { getArticlesByAuthor } from "./utils/articles";
 
 export const authorDTO: BaseDTO<[RawAuthor[], RawArticle[]], Promise<AuthorDTO[]>> = {
 	create: async ([raw, rawArticles]) => {

@@ -1,13 +1,13 @@
 ---
 import { breadcrumbDTO } from "@application/dto/breadcrumb/breadcrumbDTO";
-import { getLocation } from "@modules/core/utils/getLocation";
 import { buildBreadcrumbListSchema } from "@modules/core/utils/jsonLd";
+import { getPage } from "@modules/core/utils/page";
 import "./breadcrumbs.css";
 
 const { pathname: currentPath, origin: originPath } = Astro.url;
 
 const breadcrumbs = breadcrumbDTO.create({ currentPath });
-const location = getLocation(Astro.url);
+const location = getPage(Astro.url);
 const breadcrumbListSchema = buildBreadcrumbListSchema(
 	breadcrumbs.map(({ link, label }) => ({ name: label, url: `${originPath}${link}` })),
 );

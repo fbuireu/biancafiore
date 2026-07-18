@@ -2,8 +2,8 @@
 import type { CollectionEntry } from "astro:content";
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { PAGES_ROUTES } from "@const/index";
+import { articleVariantToClass } from "@modules/core/components/articleCard/utils/variants";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
-import { articleVariantToClass } from "@modules/core/utils/articleVariantToClass";
 import clsx from "clsx";
 import "./article-card.css";
 
@@ -37,7 +37,7 @@ const remainingTags = (article.data.tags?.length ?? 0) - visibleTags.length;
           />
       </div>
   )}
-    <time class="article-card__publish-date editorial-meta --is-gold" datetime={article.data.publishDate}>
+    <time class="article-card__publish-date editorial-meta --is-gold" datetime={article.data.publishDateISO}>
       {article.data.publishDate}
     </time>
     <h3 class="article-card__title" id={`article-title-${article.data.slug}`}>

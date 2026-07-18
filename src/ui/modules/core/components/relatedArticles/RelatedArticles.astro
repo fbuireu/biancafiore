@@ -3,7 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import { SITE_URL } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
 import RelatedArticlesSlider from "@modules/core/components/relatedArticles/atoms/relatedArticlesSlider/RelatedArticlesSlider.astro";
-import { getRelatedArticles } from "@modules/core/components/relatedArticles/utils/getRelatedArticles";
+import { getRelatedArticles } from "@modules/core/components/relatedArticles/utils/entries";
 import { buildItemListSchema } from "@modules/core/utils/jsonLd";
 import "./related-articles.css";
 
