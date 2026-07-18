@@ -35,10 +35,13 @@ html.--is-article body {
 }
 
 .article-wrapper {
+	--breakout-margin: clamp(0px, 6cqi, var(--space-xl));
 	display: grid;
 	grid-template-columns:
 		[article-start] 1fr
-		[content-start] min(var(--grid-article), 100% - 2rem) [content-end]
+		[breakout-start] var(--breakout-margin)
+		[content-start] min(var(--grid-article), 100% - 2rem - (var(--breakout-margin) * 2)) [content-end]
+		var(--breakout-margin) [breakout-end]
 		1fr [article-end];
 	margin-block: 2rem 4rem;
 	timeline-scope: var(--scopes);
@@ -240,10 +243,19 @@ html.--is-article body {
 	}
 }
 
-.full-bleed {
-	grid-column: article;
+.full-bleed,
+.breakout,
+.split {
 	display: grid;
 	grid-template-columns: subgrid;
+
+	:where(&) > * {
+		grid-column: content;
+	}
+}
+
+.full-bleed {
+	grid-column: article;
 
 	img {
 		grid-column: 1 / -1;
@@ -255,6 +267,42 @@ html.--is-article body {
 	@container article-page (width <= 960px) {
 		max-height: 100%;
 	}
+}
+
+.breakout {
+	grid-column: breakout;
+
+	img {
+		grid-column: 1 / -1;
+		width: 100%;
+		object-fit: cover;
+	}
+}
+
+.split {
+	grid-column: article;
+	align-items: center;
+	gap: var(--space-m) var(--space-l);
+
+	@container article-page (width <= 960px) {
+		display: flex;
+		flex-flow: column;
+	}
+}
+
+.split__content {
+	grid-column: content-start / content-end;
+
+	@container article-page (width <= 960px) {
+		padding-inline: 1rem;
+	}
+}
+
+.split__image {
+	grid-column: content-end / article-end;
+	height: 100%;
+	object-fit: cover;
+	width: 100%;
 }
 
 .article-wrapper.--two-columns {
@@ -271,6 +319,8 @@ html.--is-article body {
 
 	& > section,
 	& > .full-bleed,
+	& > .breakout,
+	& > .split,
 	& > .article__table-of-contents-wrapper {
 		column-span: all;
 	}
