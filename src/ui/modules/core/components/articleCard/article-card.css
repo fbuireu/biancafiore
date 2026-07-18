@@ -58,13 +58,22 @@
 }
 
 .article-card__arrow {
+	block-size: 1rem;
 	color: var(--gold);
 	display: inline-block;
+	inline-size: 1rem;
 	opacity: 0;
 	transition:
 		opacity 0.35s ease,
 		translate 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
 	translate: -7px 0;
+	vertical-align: middle;
+
+	& svg {
+		block-size: 100%;
+		display: block;
+		inline-size: 100%;
+	}
 }
 
 .article-card__byline {
@@ -146,6 +155,14 @@
 	& .article-card__arrow {
 		opacity: 1;
 		translate: 0 0;
+
+		& .stretch-arrow__shaft {
+			d: var(--stretch-arrow-shaft-hover);
+		}
+
+		& .stretch-arrow__tip {
+			d: var(--stretch-arrow-tip-hover);
+		}
 	}
 
 	& .article-card__excerpt {

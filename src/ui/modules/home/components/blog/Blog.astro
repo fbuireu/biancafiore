@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { SITE_URL } from "astro:env/client";
+import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { PAGES_ROUTES } from "@const/index";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import { buildItemListSchema } from "@modules/core/utils/jsonLd";
@@ -34,7 +35,7 @@ const itemListSchema = buildItemListSchema(
         </ul>
         <div class="blog__footer">
             <a class="editorial-cta" href={PAGES_ROUTES.ARTICLES}>
-                All articles <span class="editorial-cta__arrow" aria-hidden="true">→</span>
+                All articles <span class="editorial-cta__arrow" aria-hidden="true" set:html={stretchArrow} />
             </a>
         </div>
         <script is:inline type="application/ld+json" set:html={itemListSchema} />

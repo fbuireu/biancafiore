@@ -74,10 +74,27 @@
 			scale 0.2s;
 		width: 2.5rem;
 
+		& .stretch-arrow {
+			block-size: 1.25rem;
+			inline-size: 1.25rem;
+		}
+
+		&:is(.slider__btn--prev, .--is-prev) .stretch-arrow {
+			rotate: 0.5turn;
+		}
+
 		&:hover:not(:disabled) {
 			background-color: var(--primary-main);
 			border-color: var(--primary-main);
 			color: var(--white, white);
+
+			& .stretch-arrow__shaft {
+				d: var(--stretch-arrow-shaft-hover);
+			}
+
+			& .stretch-arrow__tip {
+				d: var(--stretch-arrow-tip-hover);
+			}
 		}
 
 		&:active:not(:disabled) {

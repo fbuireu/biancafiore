@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import { LeftArrow } from "@assets/images/svg-components/leftArrow";
+import { StretchArrow } from "@assets/images/svg-components/stretchArrow";
 import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn";
 import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
 import countries from "@data/countries.geojson.json";
@@ -141,7 +141,7 @@ const WorldGlobeCanvas = ({ cities, width }: WorldGlobeCanvasProps) => {
 							})
 						}
 					>
-						<LeftArrow title="Move left" />
+						<StretchArrow title="Move left" />
 					</button>
 					<button
 						className="world-globe__controls__move --right flex --is-clickable"
@@ -153,7 +153,7 @@ const WorldGlobeCanvas = ({ cities, width }: WorldGlobeCanvasProps) => {
 							})
 						}
 					>
-						<LeftArrow title="Move Right" />
+						<StretchArrow title="Move Right" />
 					</button>
 				</div>
 				<div className="world-globe__zoom-wrapper flex row-wrap">

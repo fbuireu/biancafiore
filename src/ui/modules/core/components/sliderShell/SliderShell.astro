@@ -1,4 +1,6 @@
 ---
+import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
+
 interface Props {
 	class?: string;
 	showTrack?: boolean;
@@ -9,13 +11,13 @@ const { class: className, showTrack = true } = Astro.props;
 
 <div class={`slider-wrapper ${className ?? ''}`.trim()} data-has-buttons={showTrack}>
 	{showTrack && (
-		<button class="slider__btn slider__btn--prev" aria-label="Previous slide" disabled>←</button>
+		<button class="slider__btn slider__btn--prev" aria-label="Previous slide" disabled><Fragment set:html={stretchArrow} /></button>
 	)}
 	<ul class="slider__track">
 		<slot />
 	</ul>
 	{showTrack && (
-		<button class="slider__btn slider__btn--next" aria-label="Next slide">→</button>
+		<button class="slider__btn slider__btn--next" aria-label="Next slide"><Fragment set:html={stretchArrow} /></button>
 	)}
 </div>
 

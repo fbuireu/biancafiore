@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="stretch-arrow" viewBox="0 0 24 24">
+    <title>Arrow</title>
+    <path class="stretch-arrow__shaft" d="M 5,12 h 14" />
+    <path class="stretch-arrow__tip" d="M 12,5 l 7,7 l -7,7" />
+</svg>

@@ -15,7 +15,7 @@ export interface ReactGlobePoint {
 
 const WorldGlobeCanvas = lazy(() => import("./WorldGlobeCanvas"));
 
-const worldGlobeHeight = 458;
+const WORLD_GLOBE_HEIGHT = 458;
 
 const getResponsiveWidth = () => (window.innerWidth > 720 ? 680 : undefined);
 
@@ -61,7 +61,7 @@ const WorldGlobe = memo(({ cities, width: widthProp }: GlobeAllCitiesProps) => {
 		<aside
 			ref={containerRef}
 			className="world-globe-wrapper"
-			style={!isVisible ? { height: worldGlobeHeight, width } : undefined}
+			style={!isVisible ? { height: WORLD_GLOBE_HEIGHT, width } : undefined}
 		>
 			{isVisible && (
 				<Suspense fallback={null}>
