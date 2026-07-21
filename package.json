@@ -63,7 +63,7 @@
     "@react-email/components": "1.0.12",
     "@react-email/render": "2.1.0",
     "@tgwf/co2": "0.19.0",
-    "astro": "7.0.9",
+    "astro": "7.1.0",
     "clsx": "2.1.1",
     "contentful": "11.12.7",
     "drizzle-orm": "0.45.2",
