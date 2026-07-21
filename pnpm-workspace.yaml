@@ -8,3 +8,6 @@ allowBuilds:
   workerd: true
 minimumReleaseAge: 4320 # 3 days
 blockExoticSubdeps: true
+minimumReleaseAgeExclude:
+  # Renovate security update: astro@7.1.0
+  - astro@7.1.0
