@@ -28,12 +28,10 @@
 	background: var(--primary-light-2);
 	box-shadow: 0.125rem 0.125rem 0.175rem var(--neutral-light-2);
 	height: fit-content;
-	transition: all 0.2s;
 	width: fit-content;
 
 	svg {
-		--color: light-dark(inherit, var(--white));
-		color: var(--color);
+		color: var(--primary-dark-3);
 		height: 3rem;
 		padding: 0.5rem;
 		rotate: -0.25turn;

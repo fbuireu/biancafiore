@@ -16,15 +16,15 @@ const itemListSchema = buildItemListSchema(
 ---
 <section class="my-work">
     <div class="my-work__inner">
-        <header class="my-work__header">
+        <header class="my-work__header reveal">
             <h2 class="my-work__title editorial-section-title">My&nbsp;Work</h2>
             <p class="editorial-meta">{disciplinesCount} — Disciplines</p>
         </header>
-        {projects.map((project) => {
+        {projects.map((project, index) => {
           const projectUrl = `${PAGES_ROUTES.PROJECTS}#${project.data.id}`;
 
           return (
-              <details class="my-work__item" name="my-work">
+              <details class="my-work__item reveal" name="my-work" data-reveal-index={index}>
                   <summary class="my-work__summary">
                       <h3 class="my-work__name">{project.data.name}</h3>
                       <BlurImage

@@ -60,7 +60,7 @@ const WorldGlobe = memo(({ cities, width: widthProp }: GlobeAllCitiesProps) => {
 	return (
 		<aside
 			ref={containerRef}
-			className="world-globe-wrapper"
+			className="world-globe-wrapper reveal --fade"
 			style={!isVisible ? { height: WORLD_GLOBE_HEIGHT, width } : undefined}
 		>
 			{isVisible && (

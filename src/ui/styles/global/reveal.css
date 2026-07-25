@@ -1,0 +1,57 @@
+@layer global {
+	.reveal {
+		--reveal-index: attr(data-reveal-index type(<number>), 0);
+		--reveal-index-cap: 8;
+		--reveal-delay: 80ms;
+		--reveal-duration: 700ms;
+		--reveal-distance: 10rem;
+		--reveal-stagger-distance: 3rem;
+		--reveal: 1;
+		transition: --reveal var(--reveal-duration) ease;
+		transition-delay: calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-delay));
+		animation: reveal-up both;
+		animation-timeline: view();
+		animation-range-start: cover calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-stagger-distance));
+		animation-range-end: cover calc(30% + min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-stagger-distance));
+
+		@starting-style {
+			--reveal: 0;
+		}
+	}
+
+	.reveal.--fade {
+		animation-name: reveal-fade;
+	}
+
+	.reveal.--on-load {
+		animation: none;
+		opacity: var(--reveal);
+		transform: translateY(calc(var(--reveal-distance) * (1 - var(--reveal))));
+	}
+
+	.reveal.--on-load.--fade {
+		transform: none;
+	}
+
+	.slider-wrapper.--reveal-items {
+		view-timeline-name: --reveal-slider;
+	}
+
+	.slider-wrapper.--reveal-items .reveal {
+		animation-timeline: --reveal-slider;
+	}
+
+	@supports not (z-index: attr(data-reveal-index type(<number>))) {
+		.reveal {
+			--reveal-index: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.reveal {
+			animation: none;
+			transition: none;
+			--reveal: 1;
+		}
+	}
+}

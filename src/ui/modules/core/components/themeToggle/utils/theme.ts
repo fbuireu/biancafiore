@@ -29,6 +29,7 @@ const applyTheme = ({
 	document: Document;
 }): void => {
 	document.documentElement.setAttribute(`data-${THEME_STORAGE_KEY}`, theme);
+	document.documentElement.style.colorScheme = theme;
 	localStorage.setItem(THEME_STORAGE_KEY, theme);
 
 	const TOGGLE = document.querySelector<HTMLElement>(SELECTORS.TOGGLE);

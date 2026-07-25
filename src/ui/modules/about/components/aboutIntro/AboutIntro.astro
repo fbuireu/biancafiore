@@ -6,12 +6,12 @@ import "./about-intro.css";
 ---
 <section class="about-intro common-wrapper" transition:name="about-me-section">
     <div class="about-intro__inner">
-        <p class="editorial-eyebrow about-intro__eyebrow">About</p>
+        <p class="editorial-eyebrow about-intro__eyebrow reveal">About</p>
         <div class="about-intro__grid">
-            <h1 class="about-intro__title editorial-headline">
+            <h1 class="about-intro__title editorial-headline reveal" data-reveal-index="1">
                 Hi, I'm <span translate="no">Bianca</span> — I find the human thread in every story.
             </h1>
-            <div class="about-intro__aside">
+            <div class="about-intro__aside reveal --fade" data-reveal-index="2">
                 <Image src={bianca} alt="Bianca Fiore" class="about-intro__portrait" loading="eager" />
                 <SocialNetworks />
             </div>
