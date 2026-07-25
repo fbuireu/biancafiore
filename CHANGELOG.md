@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/fbuireu/biancafiore/compare/v1.18.1...v1.19.0) (2026-07-25)
+
+
+### Features
+
+* improve dark-mode persistance + improvements ([ec9b659](https://github.com/fbuireu/biancafiore/commit/ec9b6597e207f85a7154bb3c793cdb282f6b09d2))
+
 ## [1.18.1](https://github.com/fbuireu/biancafiore/compare/v1.18.0...v1.18.1) (2026-07-21)
 
 
