@@ -8,6 +8,10 @@
 	padding-inline: clamp(1.25rem, 5vw, 4rem);
 	position: relative;
 	text-align: center;
+
+	& .reveal {
+		--reveal-distance: 1.5rem;
+	}
 }
 
 .error-layer__ghost {

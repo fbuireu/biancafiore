@@ -65,6 +65,7 @@ export default defineConfig({
 			transformer: "lightningcss",
 			lightningcss: {
 				exclude: Features.LightDark,
+				errorRecovery: true,
 			},
 		},
 		resolve: {

@@ -92,7 +92,7 @@ const blogPostingSchema = buildBlogPostingSchema({
       )
   }
     <ReadingProgress />
-    <div class:list={["article-masthead", { "--has-featured": !!article.data.featuredImage }]}>
+    <div class:list={["article-masthead reveal", { "--has-featured": !!article.data.featuredImage }]}>
       {!HIDE_CHROME && <Breadcrumbs />}
       <ArticleDetails article={article} />
     </div>
