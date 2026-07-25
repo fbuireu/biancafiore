@@ -275,108 +275,12 @@
 		--background-main: oklch(18.72% 0.01 88.81);
 		--neutral-main: oklch(92.58% 0.02 87.52);
 	}
-}
 
-@property --primary-light-3 {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --primary-light-2 {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --primary-light-1 {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --primary-main {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --primary-dark-1 {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --primary-dark-2 {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --primary-dark-3 {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --neutral-main {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --neutral-light-1 {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --neutral-light-2 {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --neutral-light-3 {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --neutral-light-4 {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --background-main {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --error-main {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --success-main {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --white {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
-}
-
-@property --black {
-	syntax: "<color>";
-	inherits: true;
-	initial-value: transparent;
+	@media (prefers-color-scheme: dark) {
+		:root:not([data-theme]) {
+			color-scheme: dark;
+		}
+	}
 }
 
 @property --header-height {
@@ -586,4 +490,10 @@
 @property --ease-elastic {
 	syntax: "*";
 	inherits: false;
+}
+
+@property --reveal {
+	syntax: "<number>";
+	inherits: false;
+	initial-value: 1;
 }

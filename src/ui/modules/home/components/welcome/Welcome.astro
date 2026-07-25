@@ -9,21 +9,21 @@ import "./welcome.css";
     <div class="hero__inner">
         <div class="hero__grid">
             <div class="hero__headline">
-                <p class="editorial-eyebrow hero__eyebrow">Writer · Storyteller · Creative strategist</p>
-                <h1 class="hero__title editorial-headline">
+                <p class="editorial-eyebrow hero__eyebrow reveal">Writer · Storyteller · Creative strategist</p>
+                <h1 class="hero__title editorial-headline reveal" data-reveal-index="1">
                     Stories that move<br />people <em class="hero__ampersand">&amp;</em> the planet<br />forward.
                 </h1>
             </div>
             <div class="hero__aside">
-                <p class="hero__lede">
+                <p class="hero__lede reveal" data-reveal-index="2">
                     I'm Bianca Fiore. For a decade I've reported on the people building a fairer, greener world — and
                     helped mission‑driven organisations tell those stories well.
                 </p>
-                <a class="editorial-cta hero__cta" href={PAGES_ROUTES.ARTICLES}>
+                <a class="editorial-cta hero__cta reveal" href={PAGES_ROUTES.ARTICLES} data-reveal-index="3">
                     Read the blog <span class="editorial-cta__arrow" aria-hidden="true" set:html={stretchArrow} />
                 </a>
             </div>
         </div>
-        <Image src={bianca} alt="Bianca Fiore" class="hero__portrait" loading="eager" fetchpriority="high" />
+        <Image src={bianca} alt="Bianca Fiore" class="hero__portrait reveal --fade" loading="eager" fetchpriority="high" />
     </div>
 </section>

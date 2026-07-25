@@ -12,6 +12,24 @@
 	}
 }
 
+@container articles-page (width > 960px) {
+	.articles__grid__item {
+		--reveal-stagger-distance: 6rem;
+	}
+
+	.articles__grid__item:nth-child(4n + 2) {
+		--reveal-index: 1;
+	}
+
+	.articles__grid__item:nth-child(4n + 3) {
+		--reveal-index: 2;
+	}
+
+	.articles__grid__item:nth-child(4n + 4) {
+		--reveal-index: 3;
+	}
+}
+
 .articles__intro {
 	padding-block: 5.625rem 0;
 

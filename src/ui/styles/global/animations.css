@@ -104,4 +104,24 @@
 			--opacity: 1;
 		}
 	}
+
+	@keyframes reveal-up {
+		from {
+			opacity: 0;
+			transform: translateY(var(--reveal-distance));
+		}
+		to {
+			opacity: var(--reveal);
+			transform: translateY(calc(var(--reveal-distance) * (1 - var(--reveal))));
+		}
+	}
+
+	@keyframes reveal-fade {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: var(--reveal);
+		}
+	}
 }

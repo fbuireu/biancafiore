@@ -27,22 +27,22 @@ const metadata: Partial<SeoMetadata> = {
     <ErrorLayer class="error-404">
         <div class="error-layer__ghost" aria-hidden="true">404</div>
         <div class="error-layer__inner">
-            <p class="editorial-eyebrow error-layer__eyebrow">Error 404 — Page not found</p>
-            <h1 class="editorial-headline error-layer__title">
+            <p class="editorial-eyebrow error-layer__eyebrow reveal --on-load --fade" data-reveal-index="1">Error 404 — Page not found</p>
+            <h1 class="editorial-headline error-layer__title reveal --on-load" data-reveal-index="2">
                 You've lost <em class="error-layer__accent">the thread.</em>
             </h1>
-            <p class="error-layer__lede">
+            <p class="error-layer__lede reveal --on-load" data-reveal-index="3">
                 The story you were looking for isn't here — it may have moved, been retitled, or never
                 existed at all. Every good piece has a way back to the start.
             </p>
-            <div class="error-layer__actions">
+            <div class="error-layer__actions reveal --on-load" data-reveal-index="4">
                 <a class="error-layer__button --is-clickable" href={PAGES_ROUTES.HOME}>Back to home</a>
                 <a class="editorial-cta" href={PAGES_ROUTES.ARTICLES}>
                     Browse the blog <span class="editorial-cta__arrow" aria-hidden="true" set:html={stretchArrow} />
                 </a>
             </div>
             {articles.length > 0 && (
-                <div class="error-layer__extra">
+                <div class="error-layer__extra reveal --on-load" data-reveal-index="5">
                     <p class="editorial-kicker error-404__kicker">Or pick up one of these</p>
                     <ul class="error-404__links">
                         {articles.map(({ data: { slug, title: articleTitle } }) => (
