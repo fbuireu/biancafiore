@@ -85,6 +85,24 @@ Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/*
 - **No Biome suppressions.** Fix the root cause (e.g. reorder selectors) instead of `biome-ignore`; suppress only if truly irreplaceable. Biome: 120 line width, `noConsole` error (only `console.error` allowed), organizeImports on. `src/data/**` and `public/**` are excluded from Biome.
 - **Conventional commits** (commitlint + husky). semantic-release owns versioning. Do NOT add a Co-Authored-By / Claude trailer to commits or PRs.
 
+## Maintenance contract
+
+These documents are not generated. Nothing verifies them, so a change that does not update them leaves the tree describing code that no longer exists. When you change code, update the docs **in the same commit** — a follow-up commit is a promise, not a fix.
+
+| If you change | Update |
+| --- | --- |
+| What a domain word means, or introduce a new one | [`CONTEXT.md`](./CONTEXT.md) — the glossary, vocabulary only |
+| A folder's layout, the files a concept is made of, or a rule its guide states | that folder's nested `CLAUDE.md` (table above) |
+| A behaviour a doc states as an invariant or a gotcha | that bullet, or delete it if it stopped being true |
+| An env var | `env.schema` in `astro.config.ts`, `.env.example`, and the Gotchas bullet if it has one |
+| A package script, a path alias, or the folder tree | the *Commands* / *Structure & aliases* sections here |
+| The layer boundaries, the rendering mode, or the deploy target | the *Stack* / *Deploy* sections here, plus the ADR that decided it |
+| A decision an ADR records | that ADR — amend it, or supersede it with a new one and say so in both `## Status` blocks |
+
+Propose an ADR in [`docs/adr/`](./docs/adr/) when a decision is **hard to reverse**, **surprising without context** and **the result of a real trade-off**. All three, or it is not an ADR. Number it one above the highest existing file (`NNNN-kebab-title.md`, `# N. Title` / Date / Status / Context / Decision / Consequences) and link it from wherever it bites — a Gotchas bullet here, a nested guide, a `CONTEXT.md` entry. There is no separate index; an ADR nothing links to will not be read.
+
+Two traps worth naming, because both have already happened here: deleting a resolved entry from a "known inconsistencies" or gotchas list is part of the fix, not tidying to do later; and a `file.ts:123` citation silently rots the moment anything above it moves — prefer naming the symbol.
+
 ## Gotchas
 
 - **`light-dark()` in prod:** lightningcss downlevels it into a polyfill that breaks nested `color-scheme` inversion in production (dev looks fine). `Features.LightDark` stays in `lightningcss.exclude` in `astro.config.ts`; `errorRecovery: true` is also set. ADR 0006, and [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
