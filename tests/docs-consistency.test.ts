@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
@@ -68,6 +68,9 @@ const directoriesIn = (relativeDirectory: string) =>
 
 const populatedDirectoriesIn = (relativeDirectory: string) =>
 	directoriesIn(relativeDirectory).filter((name) => walk(`${relativeDirectory}/${name}`).length > 0);
+
+const isTracked = (relativePath: string) =>
+	exists(relativePath) && (statSync(join(ROOT, relativePath)).isFile() || walk(relativePath).length > 0);
 
 const PROJECT_FILES = [
 	...readdirSync(ROOT, { withFileTypes: true })
@@ -199,7 +202,7 @@ describe("structure and aliases", () => {
 	});
 
 	it("describes a folder tree that exists on disk", () => {
-		expect(treeEntries.filter((entry) => !exists(entry))).toEqual([]);
+		expect(treeEntries.filter((entry) => !isTracked(entry))).toEqual([]);
 	});
 
 	it("lists every populated folder under src and src/ui", () => {
