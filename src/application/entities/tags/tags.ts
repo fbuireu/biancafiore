@@ -1,11 +1,9 @@
-import { defineCollection, reference } from "astro:content";
+import { defineCollection } from "astro:content";
 import { tagDTO } from "@application/dto/tag";
 import type { TagSkeleton } from "@application/dto/tag/types";
-import { TagType } from "@application/dto/tag/types";
-import { tagSchema } from "@application/entities/tags/schema";
+import { tagIndexSchema } from "@domain/tag";
 import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
 import { runCms } from "@infrastructure/runtime";
-import { z } from "astro/zod";
 import { Effect } from "effect";
 
 export const tags = defineCollection({
@@ -38,15 +36,5 @@ export const tags = defineCollection({
 			tags: tags[letter],
 		}));
 	},
-	schema: z.object({
-		id: z.string(),
-		name: z.string(),
-		tags: z.array(
-			tagSchema.extend({
-				type: z.enum([TagType.TAG, TagType.AUTHOR]),
-				count: z.number(),
-				articles: z.array(reference("articles")),
-			}),
-		),
-	}),
+	schema: tagIndexSchema,
 });

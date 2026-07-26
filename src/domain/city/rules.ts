@@ -14,3 +14,9 @@ export function createDate({ startDate, endDate }: CreateDateParams): CreateDate
 		endDate: endDate ? new Date(endDate).getFullYear() : "Present",
 	};
 }
+
+export function formatPeriod(params: CreateDateParams): string {
+	const { startDate, endDate } = createDate(params);
+
+	return `${startDate}-${endDate}`;
+}

@@ -11,8 +11,10 @@
 		transition-delay: calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-delay));
 		animation: reveal-up both;
 		animation-timeline: view();
-		animation-range-start: cover calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-stagger-distance));
-		animation-range-end: cover calc(30% + min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-stagger-distance));
+		animation-range-start: cover
+			calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-stagger-distance));
+		animation-range-end: cover
+			calc(30% + min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-stagger-distance));
 
 		@starting-style {
 			--reveal: 0;

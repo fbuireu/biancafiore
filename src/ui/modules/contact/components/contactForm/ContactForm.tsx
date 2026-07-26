@@ -1,5 +1,5 @@
 import { actions, isActionError } from "astro:actions";
-import { contactFormSchema } from "@application/entities/contact/schema";
+import { contactFormSchema } from "@domain/contact/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { flyPlane } from "@modules/contact/utils/form";
 import { Input } from "@modules/core/components/form/input";

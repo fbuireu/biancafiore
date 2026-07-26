@@ -1,6 +1,6 @@
 import type { RawTag } from "@application/dto/tag/types";
-import { type TagDTO, TagType } from "@application/dto/tag/types";
-import type { Reference } from "@shared/application/types";
+import type { Reference } from "@domain/shared/reference";
+import { type TagDTO, TagType } from "@domain/tag";
 import type { Entry, EntrySkeletonType } from "contentful";
 
 interface GetAuthorsParams {

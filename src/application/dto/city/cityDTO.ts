@@ -1,8 +1,8 @@
-import type { CityDTO, RawCity } from "@application/dto/city/types";
-import type { BaseDTO } from "@shared/application/dto/baseDTO";
+import type { RawCity } from "@application/dto/city/types";
+import { type CityDTO, formatPeriod } from "@domain/city";
+import type { BaseDTO } from "@domain/shared/baseDTO";
 import { createImage } from "@shared/application/dto/utils/images";
 import { slugify } from "@shared/utils/strings";
-import { createDate } from "./utils/dates";
 
 export const cityDTO: BaseDTO<RawCity[], CityDTO[]> = {
 	create: (raw) => {
@@ -12,16 +12,14 @@ export const cityDTO: BaseDTO<RawCity[], CityDTO[]> = {
 				longitude: rawCity.fields.coordinates.lon,
 			};
 
-			const { startDate, endDate } = createDate({
-				startDate: String(rawCity.fields.startDate),
-				...(rawCity.fields.endDate && { endDate: String(rawCity.fields.endDate) }),
-			});
-
 			return {
 				name: rawCity.fields.name,
 				slug: slugify(rawCity.fields.name),
 				coordinates,
-				period: `${startDate}-${endDate}`,
+				period: formatPeriod({
+					startDate: String(rawCity.fields.startDate),
+					...(rawCity.fields.endDate && { endDate: String(rawCity.fields.endDate) }),
+				}),
 				description: rawCity.fields.description,
 				image: createImage(rawCity.fields.image),
 			};

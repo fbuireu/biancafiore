@@ -1,6 +1,7 @@
 import type { RawArticle } from "@application/dto/article/types";
-import type { AuthorDTO, RawAuthor } from "@application/dto/author/types";
-import type { BaseDTO } from "@shared/application/dto/baseDTO";
+import type { RawAuthor } from "@application/dto/author/types";
+import type { AuthorDTO } from "@domain/author";
+import type { BaseDTO } from "@domain/shared/baseDTO";
 import { createImage } from "@shared/application/dto/utils/images";
 import { getArticlesByAuthor } from "./utils/articles";
 

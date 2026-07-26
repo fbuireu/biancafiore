@@ -1,4 +1,4 @@
-import { imageSchema } from "@shared/application/entities";
+import { imageSchema } from "@domain/shared/image";
 import { z } from "astro/zod";
 
 export const testimonialsSchema = z.object({

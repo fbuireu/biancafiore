@@ -1,7 +1,7 @@
 import { defineCollection } from "astro:content";
 import { testimonialDTO } from "@application/dto/testimonial";
 import type { TestimonialSkeleton } from "@application/dto/testimonial/types";
-import { testimonialsSchema } from "@application/entities/testimonials/schema";
+import { testimonialsSchema } from "@domain/testimonial";
 import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
 import { getImagePlaceholder } from "@infrastructure/images/imagePlaceholder";
 import { runCms } from "@infrastructure/runtime";

@@ -1,4 +1,4 @@
-import type { ImageFormats } from "@shared/application/types";
+import type { ImageFormats } from "@domain/shared/image";
 import type { Asset, UnresolvedLink } from "contentful";
 
 interface CreateImageReturn {

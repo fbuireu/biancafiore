@@ -1,0 +1,50 @@
+import type { ArticleDTO, TableOfContents } from "@domain/article/types";
+import { ArticleType } from "@domain/article/types";
+import { slugify } from "@shared/utils/strings";
+
+const WORDS_PER_MINUTE = 200;
+const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
+const WORD_SPLIT_REGEX = /\s/g;
+const HEADINGS_REGEX = /<h([2-6])>(.*?)<\/h\1>/g;
+const HEADING_LEVEL_OFFSET = 1;
+const MAX_DESCRIPTION_LENGTH = 200;
+
+export function getReadingTime(content: string): number {
+	const cleanContent = content.replace(HTML_TAG_REGEX, "");
+	const numberOfWords = cleanContent.split(WORD_SPLIT_REGEX).length;
+
+	return Math.ceil(numberOfWords / WORDS_PER_MINUTE);
+}
+
+export function generateTableOfContents(html: string): TableOfContents {
+	const items: TableOfContents = [];
+	const headings = html.matchAll(HEADINGS_REGEX);
+
+	for (const heading of headings) {
+		const level = Number(heading[1]) - HEADING_LEVEL_OFFSET;
+		const text = heading[2];
+		const id = slugify(text);
+
+		items.push({ id, heading: text, level });
+	}
+
+	return items;
+}
+
+export function deriveDescription(rawDescription: string): string {
+	const cleanDescription = rawDescription.replace(HTML_TAG_REGEX, " ").replace(/\s+/g, " ").trim();
+
+	return cleanDescription.length > MAX_DESCRIPTION_LENGTH
+		? `${cleanDescription.substring(0, MAX_DESCRIPTION_LENGTH)}...`
+		: cleanDescription;
+}
+
+export function deriveVariant(hasFeaturedImage: boolean): (typeof ArticleType)[keyof typeof ArticleType] {
+	return hasFeaturedImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
+}
+
+export function sortFavoriteFirst(articles: ArticleDTO[]): ArticleDTO[] {
+	return articles.toSorted(
+		(a, b) => Number(b.isFavorite) - Number(a.isFavorite) || b.publishDateISO.localeCompare(a.publishDateISO),
+	);
+}
