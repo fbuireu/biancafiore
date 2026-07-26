@@ -11,14 +11,14 @@ import "./tabs.css";
 			<p class="contact-tabs__body">Multiple ways to get in touch with me :)</p>
 		</div>
 		<ul class="contact-tabs flex">
-			<li class="contact-tab --underline-on-hover" data-target="email">
+			<li class="contact-tab underline-on-hover" data-target="email">
 				<button>Email me</button>
 			</li>
-			<li class="contact-tab --underline-on-hover" data-target="appointment">
+			<li class="contact-tab underline-on-hover" data-target="appointment">
 				<button>Make an appointment</button>
 			</li>
 		</ul>
-		<div id="email" class="contact-tab__content --is-active">
+		<div id="email" class="contact-tab__content contact-tab__content--active">
 			<ContactFormProvider client:only="react" />
 		</div>
 		<div id="appointment" class="contact-tab__content">

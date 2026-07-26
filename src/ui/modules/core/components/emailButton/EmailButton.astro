@@ -8,7 +8,7 @@ interface Props {
 
 const { classNames, text = "Email" } = Astro.props;
 ---
-<button class:list={[`${classNames} --underline-on-hover --add-letter-spacing mailTo__button`]}>{text}</button>
+<button class:list={[`${classNames} underline-on-hover mail-to__button`]}>{text}</button>
 
 <script>
   import { mailTo } from "@modules/core/components/emailButton/utils/interactions";

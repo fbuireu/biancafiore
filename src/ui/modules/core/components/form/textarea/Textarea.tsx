@@ -24,7 +24,7 @@ export const Textarea = ({
 	return (
 		<div
 			className={clsx("contact-form__textarea-wrapper flex column-wrap justify-flex-start", {
-				"--underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
+				"underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
 			})}
 		>
 			<textarea

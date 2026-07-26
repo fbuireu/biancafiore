@@ -40,7 +40,7 @@
 		letter-spacing: 0.16em;
 		text-transform: uppercase;
 
-		&.--is-gold {
+		&.editorial-meta--gold {
 			color: var(--gold);
 		}
 	}

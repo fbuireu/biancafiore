@@ -21,25 +21,25 @@
 		}
 	}
 
-	.reveal.--fade {
+	.reveal--fade {
 		animation-name: reveal-fade;
 	}
 
-	.reveal.--on-load {
+	.reveal--on-load {
 		animation: none;
 		opacity: var(--reveal);
 		transform: translateY(calc(var(--reveal-distance) * (1 - var(--reveal))));
 	}
 
-	.reveal.--on-load.--fade {
+	.reveal--on-load.reveal--fade {
 		transform: none;
 	}
 
-	.slider-wrapper.--reveal-items {
+	.slider-wrapper--reveal-items {
 		view-timeline-name: --reveal-slider;
 	}
 
-	.slider-wrapper.--reveal-items .reveal {
+	.slider-wrapper--reveal-items .reveal {
 		animation-timeline: --reveal-slider;
 	}
 

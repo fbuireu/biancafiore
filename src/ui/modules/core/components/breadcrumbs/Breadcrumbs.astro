@@ -1,18 +1,16 @@
 ---
 import { breadcrumbDTO } from "@domain/breadcrumb";
 import { buildBreadcrumbListSchema } from "@modules/core/utils/jsonLd";
-import { getPage } from "@modules/core/utils/page";
 import "./breadcrumbs.css";
 
 const { pathname: currentPath, origin: originPath } = Astro.url;
 
 const breadcrumbs = breadcrumbDTO.create({ currentPath });
-const location = getPage(Astro.url);
 const breadcrumbListSchema = buildBreadcrumbListSchema(
 	breadcrumbs.map(({ link, label }) => ({ name: label, url: `${originPath}${link}` })),
 );
 ---
-<section class:list={[`breadcrumbs-wrapper common-wrapper`, { [`--is-${location}`]: location }]}>
+<section class="breadcrumbs-wrapper common-wrapper">
     <ul class="breadcrumbs__list flex justify-center align-center font-sans-serif">
       {breadcrumbs?.map(({ link, label }) => {
         const isLast = breadcrumbs.at(-1)?.link === link;
@@ -20,9 +18,9 @@ const breadcrumbListSchema = buildBreadcrumbListSchema(
         return (
             <li class="breadcrumb__item flex">
               {!isLast ? (
-                  <a href={link} class="--underline-on-hover --is-clickable">{label}</a><span>/</span>
+                  <a href={link} class="underline-on-hover clickable">{label}</a><span>/</span>
               ) : (
-                  <strong class="--is-current-page">{label}</strong>
+                  <strong class="current-page">{label}</strong>
               )}
             </li>
         );

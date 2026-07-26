@@ -9,7 +9,7 @@ interface Props {
 
 const { href, classNames } = Astro.props;
 ---
-<a href={href} class:list={[`${classNames} link-with-arrow flex row-wrap align-center --underline-on-hover --is-clickable`]}>
+<a href={href} class:list={[`${classNames} link-with-arrow flex row-wrap align-center underline-on-hover clickable`]}>
     <slot />
     <span aria-hidden="true" set:html={stretchArrow} />
 </a>

@@ -9,7 +9,7 @@
 	}
 }
 
-.--is-current-page {
+.current-page {
 	color: var(--primary-main);
 
 	@container article-page (width <= 960px) {

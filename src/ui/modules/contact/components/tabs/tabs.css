@@ -34,7 +34,7 @@
 	}
 }
 
-.contact-tab.--is-active {
+.contact-tab--active {
 	font-weight: bold;
 }
 
@@ -42,7 +42,7 @@
 	display: none;
 	padding: 3rem 0;
 
-	&.--is-active {
+	&.contact-tab__content--active {
 		display: block;
 	}
 }

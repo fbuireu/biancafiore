@@ -1,8 +1,3 @@
-.projects-page {
-	container-name: projects-page;
-	container-type: inline-size;
-}
-
 .project-section {
 	--count: 4;
 	--info-size: 35dvh;

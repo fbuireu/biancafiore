@@ -19,7 +19,7 @@
 	cursor: pointer;
 	--theme-toggle-animation-duration: 500ms;
 
-	.theme_toggle_inner {
+	.theme-toggle__inner {
 		fill: light-dark(var(--primary-main), var(--white));
 		height: 2rem;
 		transition: scale 0.2s;
@@ -40,49 +40,43 @@
 			transition-property: transform, d;
 		}
 
-		.--is-toggled.theme-toggle &,
-		.--is-dark.theme-toggle:not(.--is-untoggled) & {
+		.theme-toggle.theme-toggle--toggled & {
 			transition-delay: 0s;
 			transition-duration: var(--theme-toggle-animation-duration);
 		}
 
-		.--is-toggled.theme-toggle & > g > circle,
-		.--is-dark.theme-toggle:not(.--is-untoggled) & > g > circle {
+		.theme-toggle.theme-toggle--toggled & > g > circle {
 			transform: scale(1.4);
 		}
 
-		.--is-dark.theme-toggle:not(.--is-untoggled) & > g > circle,
-		.--is-toggled.theme-toggle & > g g circle {
+		.theme-toggle.theme-toggle--toggled & > g g circle {
 			transform: scale(0);
 			transition-delay: 0s;
 			transition-duration: calc(var(--theme-toggle-animation-duration) * 0.4);
 		}
 
-		.--is-toggled.theme-toggle & > *:first-child,
-		.--is-dark.theme-toggle:not(.--is-untoggled) & > *:first-child {
+		.theme-toggle.theme-toggle--toggled & > *:first-child {
 			rotate: -0.25turn;
 		}
 
-		.--is-toggled.theme-toggle & > *:first-child path,
-		.--is-dark.theme-toggle:not(.--is-untoggled) & > *:first-child path {
+		.theme-toggle.theme-toggle--toggled & > *:first-child path {
 			d: path("M-12-14h42v30a1 1 0 00-16 13H0Z");
 		}
 
 		@supports not (d: path("")) {
-			.--is-toggled.theme-toggle & > *:first-child path,
-			.--is-dark.theme-toggle:not(.--is-untoggled) & > *:first-child path {
+			.theme-toggle.theme-toggle--toggled & > *:first-child path {
 				transform: translate3d(-0.75rem, 1rem, 0);
 			}
 		}
 	}
 
-	&:hover .theme_toggle_inner {
+	&:hover .theme-toggle__inner {
 		scale: 1.1;
 	}
 }
 
 @supports not (z-index: attr(data-index type(<number>))) {
-	.theme-toggle .theme_toggle_inner > g g circle {
+	.theme-toggle .theme-toggle__inner > g g circle {
 		&:nth-child(1) {
 			--index: 1;
 		}

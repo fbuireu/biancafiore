@@ -1,4 +1,4 @@
-<svg class="logo --is-clickable" version="1.1" viewBox="-6 39.93 499.57 81.21" role="img" aria-label="Bianca Fiore">
+<svg class="logo clickable" version="1.1" viewBox="-6 39.93 499.57 81.21" role="img" aria-label="Bianca Fiore">
     <title>Bianca Fiore</title>
     <text x="0" y="100" font-size="56" letter-spacing="9">
         <tspan class="logo__name" fill="currentColor">BIANCA</tspan><tspan class="logo__surname" dx="26">FIORE</tspan>

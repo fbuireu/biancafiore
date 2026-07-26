@@ -8,7 +8,7 @@
 		height: 3rem;
 	}
 
-	&.--is-disabled > *:not(.contact-form__submit) {
+	&.contact-form--disabled > *:not(.contact-form__submit) {
 		color: var(--neutral-light-1);
 	}
 
@@ -48,14 +48,6 @@
 .contact-form__success-message {
 	gap: 1rem;
 	text-align: center;
-}
-
-.contact-form__success__reset-button {
-	background-color: var(--neutral-main);
-	color: var(--white);
-	margin: 0 auto;
-	padding: 1rem;
-	width: fit-content;
 }
 
 .contact-form__submit {
@@ -112,13 +104,13 @@
 		pointer-events: none;
 	}
 
-	&:disabled:not(.--is-loading) :is(.plane__left-wing, .plane__right-wing)::before,
-	&:disabled:not(.--is-loading) :is(.plane__left-wing, .plane__right-wing)::after {
+	&:disabled:not(.contact-form__submit--loading) :is(.plane__left-wing, .plane__right-wing)::before,
+	&:disabled:not(.contact-form__submit--loading) :is(.plane__left-wing, .plane__right-wing)::after {
 		background-color: var(--neutral-light-1);
 	}
 
-	&:hover:not(.--is-loading),
-	&:focus:not(.--is-loading) {
+	&:hover:not(.contact-form__submit--loading),
+	&:focus:not(.contact-form__submit--loading) {
 		box-shadow: 0 0.5rem 0.5em -0.4rem var(--neutral-light-1);
 		translate: 0 -0.25rem;
 	}

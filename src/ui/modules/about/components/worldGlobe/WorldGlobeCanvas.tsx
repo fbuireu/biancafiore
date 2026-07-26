@@ -130,7 +130,7 @@ const WorldGlobeCanvas = ({ cities, width }: WorldGlobeCanvasProps) => {
 			<div className="world-globe__controls flex row-wrap justify-center">
 				<div className="world-globe__direction-wrapper flex row-wrap">
 					<button
-						className="world-globe__controls__move --left flex --is-clickable"
+						className="world-globe__controls__move world-globe__controls__move--left flex clickable"
 						type="button"
 						onClick={() =>
 							handleAction({
@@ -142,7 +142,7 @@ const WorldGlobeCanvas = ({ cities, width }: WorldGlobeCanvasProps) => {
 						<StretchArrow title="Move left" />
 					</button>
 					<button
-						className="world-globe__controls__move --right flex --is-clickable"
+						className="world-globe__controls__move flex clickable"
 						type="button"
 						onClick={() =>
 							handleAction({
@@ -156,7 +156,7 @@ const WorldGlobeCanvas = ({ cities, width }: WorldGlobeCanvasProps) => {
 				</div>
 				<div className="world-globe__zoom-wrapper flex row-wrap">
 					<button
-						className="world-globe__controls__move --zoom-in --is-clickable"
+						className="world-globe__controls__move clickable"
 						type="button"
 						onClick={() =>
 							handleAction({
@@ -168,7 +168,7 @@ const WorldGlobeCanvas = ({ cities, width }: WorldGlobeCanvasProps) => {
 						<ZoomIn />
 					</button>
 					<button
-						className="world-globe__controls__move --zoom-out --is-clickable"
+						className="world-globe__controls__move clickable"
 						type="button"
 						onClick={() =>
 							handleAction({

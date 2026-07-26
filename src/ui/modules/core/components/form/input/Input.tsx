@@ -16,7 +16,7 @@ export const Input = ({ id, type, placeholder, label, formStatus, hasError, erro
 	return (
 		<div
 			className={clsx("contact-form__input-wrapper", {
-				"--underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
+				"underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
 			})}
 		>
 			<input

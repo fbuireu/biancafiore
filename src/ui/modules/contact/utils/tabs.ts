@@ -57,9 +57,9 @@ const changeTab = (tabId: (typeof TabId)[keyof typeof TabId]): void => {
 		}
 
 		const isActive = tabContentId === tabId;
-		tab.classList.toggle("--is-active", isActive);
-		tabContent.classList.toggle("--is-active", isActive);
-		tabContent.classList.toggle("--is-hidden", !isActive);
+		tab.classList.toggle("contact-tab--active", isActive);
+		tab.classList.toggle("underline-on-hover--active", isActive);
+		tabContent.classList.toggle("contact-tab__content--active", isActive);
 	}
 
 	if (tabId === TabId.APPOINTMENT) {

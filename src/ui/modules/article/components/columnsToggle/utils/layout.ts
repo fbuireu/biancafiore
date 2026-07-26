@@ -4,7 +4,7 @@ const SELECTORS = {
 	ARTICLE: ".article-wrapper",
 	TOGGLE: ".columns-toggle__button",
 } as const;
-const ACTIVE_CLASS = "--two-columns";
+const ACTIVE_CLASS = "article-wrapper--two-columns";
 
 interface ApplyColumnsParams {
 	enabled: boolean;

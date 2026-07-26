@@ -1,5 +1,6 @@
-:is(html, main).--is-tags,
-html.--is-tags body {
+html.page--tags,
+html.page--tags .page__main,
+html.page--tags body {
 	background-color: var(--white);
 }
 
@@ -9,6 +10,6 @@ html.--is-tags body {
 	position: relative;
 }
 
-.tag__article__item:last-child .article-card__item.--is-landscape {
+.tag__article__item:last-child .article-card__item--landscape {
 	border-block-end: 1px solid var(--line);
 }

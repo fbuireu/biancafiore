@@ -40,9 +40,7 @@ const applyTheme = ({
 	const isDarkMode = theme === ThemeType.DARK;
 
 	THEME_INPUT.checked = isDarkMode;
-	TOGGLE.classList.toggle("dark", isDarkMode);
-	TOGGLE.classList.toggle("--is-toggled", isDarkMode);
-	TOGGLE.classList.toggle("--is-untoggled", !isDarkMode);
+	TOGGLE.classList.toggle("theme-toggle--toggled", isDarkMode);
 };
 
 // Global listeners — run once at module load, survive view transitions

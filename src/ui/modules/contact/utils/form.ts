@@ -9,8 +9,8 @@ export function getErrorMessage(error: unknown): unknown {
 }
 
 export function flyPlane(button: HTMLButtonElement): void {
-	if (!button.classList.contains("--is-active")) {
-		button.classList.add("--is-active");
+	if (button.dataset.flying !== "true") {
+		button.dataset.flying = "true";
 
 		const getPropertyValue = (variable: string): string => window.getComputedStyle(button).getPropertyValue(variable);
 

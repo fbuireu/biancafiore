@@ -40,20 +40,20 @@ const { testimonials } = Astro.props;
 		}
 	</SliderShell>
 	<nav class="testimonials__nav" aria-label="Testimonials navigation">
-		<button class="slider__btn testimonials__nav__arrow --is-prev" type="button" aria-label="Previous testimonial">
+		<button class="slider__btn testimonials__nav__arrow testimonials__nav__arrow--prev" type="button" aria-label="Previous testimonial">
 			<Fragment set:html={stretchArrow} />
 		</button>
 		{
 			testimonials.map((testimonial, index) => (
 				<button
-					class:list={["testimonials__nav__dash --is-clickable", { "--is-active": index === 0 }]}
+					class:list={["testimonials__nav__dash clickable", { "testimonials__nav__dash--active": index === 0 }]}
 					type="button"
 					data-index={index}
 					aria-label={`Go to testimonial by ${testimonial.data.author}`}
 				/>
 			))
 		}
-		<button class="slider__btn testimonials__nav__arrow --is-next" type="button" aria-label="Next testimonial">
+		<button class="slider__btn testimonials__nav__arrow testimonials__nav__arrow--next" type="button" aria-label="Next testimonial">
 			<Fragment set:html={stretchArrow} />
 		</button>
 	</nav>
@@ -82,7 +82,7 @@ const { testimonials } = Astro.props;
 				);
 
 			const setActiveDash = (activeIndex: number): void => {
-				dashes.forEach((dash, index) => dash.classList.toggle("--is-active", index === activeIndex));
+				dashes.forEach((dash, index) => dash.classList.toggle("testimonials__nav__dash--active", index === activeIndex));
 			};
 
 			const goTo = (index: number): void => {
@@ -97,10 +97,10 @@ const { testimonials } = Astro.props;
 			});
 
 			carousel
-				.querySelector<HTMLButtonElement>(".testimonials__nav__arrow.--is-prev")
+				.querySelector<HTMLButtonElement>(".testimonials__nav__arrow--prev")
 				?.addEventListener("click", () => goTo(getActiveIndex() - 1));
 			carousel
-				.querySelector<HTMLButtonElement>(".testimonials__nav__arrow.--is-next")
+				.querySelector<HTMLButtonElement>(".testimonials__nav__arrow--next")
 				?.addEventListener("click", () => goTo(getActiveIndex() + 1));
 
 			track.addEventListener("scroll", () => setActiveDash(getActiveIndex()), { passive: true });

@@ -12,7 +12,7 @@
 	}
 }
 
-.contact-intro__section.--left {
+.contact-intro__section--left {
 	gap: 2rem 0;
 	grid-area: Contact-Text;
 	margin-block-end: 3rem;
@@ -30,7 +30,7 @@
 	margin: 0;
 }
 
-.contact-intro__section.--right {
+.contact-intro__section--right {
 	gap: 2rem 0;
 	grid-area: Contact-Image;
 }
