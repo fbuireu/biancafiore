@@ -1,4 +1,4 @@
-import { ArticleType } from "@application/dto/article/types";
+import { ArticleType } from "@domain/article";
 
 const VARIANT_CLASS_MAP = new Map<(typeof ArticleType)[keyof typeof ArticleType], string>([
 	[ArticleType.DEFAULT, "--default-variant"],

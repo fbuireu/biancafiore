@@ -1,6 +1,7 @@
-import type { ProjectDTO, RawProject } from "@application/dto/project/types";
+import type { RawProject } from "@application/dto/project/types";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import type { BaseDTO } from "@shared/application/dto/baseDTO";
+import type { ProjectDTO } from "@domain/project";
+import type { BaseDTO } from "@domain/shared/baseDTO";
 import { createImage } from "@shared/application/dto/utils/images";
 import { slugify } from "@shared/utils/strings";
 

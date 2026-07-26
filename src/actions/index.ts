@@ -1,6 +1,6 @@
 import { ActionError, defineAction } from "astro:actions";
-import { contactFormSchema } from "@application/entities/contact/schema";
 import type { Except } from "@const/types";
+import { contactFormSchema } from "@domain/contact/schema";
 import type { DatabaseError, DuplicateContactError, EmailError, ValidationError } from "@infrastructure/errors";
 import { ContactLayer } from "@infrastructure/layers";
 import { normalizeEmail, sendEmail } from "@infrastructure/utils/email";
