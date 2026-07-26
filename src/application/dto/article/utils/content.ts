@@ -1,17 +1,10 @@
-import type { CollectionEntry } from "astro:content";
 import type { RawArticle } from "@application/dto/article/types";
 import { PAGES_ROUTES } from "@const/index";
 import type { Block, Inline, Text, TopLevelBlock } from "@contentful/rich-text-types";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import { getOptimizedImageUrl, getOptimizedSrcset } from "@infrastructure/images/imageOptimization";
-import { slugify } from "@shared/utils/strings";
-import { escapeHtml } from "./strings";
+import { escapeHtml, slugify } from "@shared/utils/strings";
 
-const WORDS_PER_MINUTE = 200;
-const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
-const WORD_SPLIT_REGEX = /\s/g;
-const HEADINGS_REGEX = /<h([2-6])>(.*?)<\/h\1>/g;
-const HEADING_LEVEL_OFFSET = 1;
 export const IMAGE_EMBED_LAYOUT = {
 	FULL_BLEED: "fullBleed",
 	BREAKOUT: "breakout",
@@ -23,30 +16,6 @@ const IMAGE_WRAPPER_CLASS: Record<ImageEmbedLayout, string> = {
 const HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
 
 type ImageEmbedLayout = (typeof IMAGE_EMBED_LAYOUT)[keyof typeof IMAGE_EMBED_LAYOUT];
-
-export function getReadingTime(content: string): number {
-	const cleanContent = content.replace(HTML_TAG_REGEX, "");
-	const numberOfWords = cleanContent.split(WORD_SPLIT_REGEX).length;
-
-	return Math.ceil(numberOfWords / WORDS_PER_MINUTE);
-}
-
-type TableOfContentsReturn = CollectionEntry<"articles">["data"]["tableOfContents"];
-
-export function generateTableOfContents(html: string): TableOfContentsReturn {
-	const items: TableOfContentsReturn = [];
-	const headings = html.matchAll(HEADINGS_REGEX);
-
-	for (const heading of headings) {
-		const level = Number(heading[1]) - HEADING_LEVEL_OFFSET;
-		const text = heading[2];
-		const id = slugify(text);
-
-		items.push({ id, heading: text, level });
-	}
-
-	return items;
-}
 
 export function getImageEmbedWrapperClass(layout?: string): string {
 	return IMAGE_WRAPPER_CLASS[layout as ImageEmbedLayout] ?? "";

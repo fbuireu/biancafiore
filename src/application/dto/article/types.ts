@@ -1,7 +1,5 @@
 import type { AuthorSkeleton } from "@application/dto/author/types";
 import type { TagSkeleton } from "@application/dto/tag/types";
-import type { articleSchema } from "@application/entities/articles";
-import type { z } from "astro/zod";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export type ArticleSkeleton = EntrySkeletonType<
@@ -24,10 +22,3 @@ export type ArticleSkeleton = EntrySkeletonType<
 >;
 
 export type RawArticle = Entry<ArticleSkeleton, undefined>;
-
-export type ArticleDTO = z.infer<typeof articleSchema>;
-
-export const ArticleType = {
-	DEFAULT: "default",
-	NO_IMAGE: "no_image",
-} as const;

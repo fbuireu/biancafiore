@@ -2,7 +2,7 @@ import { defineCollection, reference } from "astro:content";
 import type { ArticleSkeleton } from "@application/dto/article/types";
 import { authorDTO } from "@application/dto/author";
 import type { AuthorSkeleton } from "@application/dto/author/types";
-import { authorSchema } from "@application/entities/authors/schema";
+import { authorSchema } from "@domain/author";
 import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
 import { runCms } from "@infrastructure/runtime";
 import { z } from "astro/zod";

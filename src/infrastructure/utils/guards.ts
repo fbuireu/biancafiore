@@ -1,5 +1,5 @@
-import { contactFormSchema } from "@application/entities/contact/schema";
 import type { Except } from "@const/types";
+import { contactFormSchema } from "@domain/contact/schema";
 import { ValidationError } from "@infrastructure/errors";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";

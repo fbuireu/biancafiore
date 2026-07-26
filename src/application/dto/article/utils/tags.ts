@@ -1,4 +1,5 @@
-import type { BaseTagDTO, RawTag } from "@application/dto/tag/types";
+import type { RawTag } from "@application/dto/tag/types";
+import type { BaseTagDTO } from "@domain/tag";
 import type { UnresolvedLink } from "contentful";
 
 function isResolvedTag(tag: RawTag | UnresolvedLink<"Entry">): tag is RawTag {

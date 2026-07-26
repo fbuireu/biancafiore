@@ -1,7 +1,7 @@
 import { defineCollection } from "astro:content";
 import { articleDTO } from "@application/dto/article";
 import type { ArticleSkeleton } from "@application/dto/article/types";
-import { articleSchema } from "@application/entities/articles/schema";
+import { articleSchema, sortFavoriteFirst } from "@domain/article";
 import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
 import { getImagePlaceholder } from "@infrastructure/images/imagePlaceholder";
 import { runCms } from "@infrastructure/runtime";
@@ -21,11 +21,7 @@ export const articles = defineCollection({
 			}),
 		);
 
-		const articles = articleDTO.create(rawArticles);
-
-		const sortedArticles = articles.toSorted(
-			(a, b) => Number(b.isFavorite) - Number(a.isFavorite) || b.publishDateISO.localeCompare(a.publishDateISO),
-		);
+		const sortedArticles = sortFavoriteFirst(articleDTO.create(rawArticles));
 
 		return Promise.all(
 			sortedArticles.map(async (article) => ({

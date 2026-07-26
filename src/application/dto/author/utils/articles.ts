@@ -1,6 +1,6 @@
 import type { RawArticle } from "@application/dto/article/types";
 import type { RawAuthor } from "@application/dto/author/types";
-import type { Reference } from "@shared/application/types";
+import type { Reference } from "@domain/shared/reference";
 
 interface GetArticlesByAuthorParams {
 	rawAuthor: RawAuthor;

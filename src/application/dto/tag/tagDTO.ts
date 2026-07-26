@@ -1,8 +1,9 @@
-import type { RawTag, TagDTO } from "@application/dto/tag/types";
+import type { RawTag } from "@application/dto/tag/types";
 import { getAuthors, getTags } from "@application/dto/tag/utils/tags";
-import type { BaseDTO } from "@shared/application/dto/baseDTO";
+import type { BaseDTO } from "@domain/shared/baseDTO";
+import type { TagDTO } from "@domain/tag";
+import { groupBy } from "@shared/utils/objects";
 import type { Entry, EntrySkeletonType } from "contentful";
-import { groupBy } from "./utils/objects";
 
 export const tagDTO: BaseDTO<[RawTag[], Entry<EntrySkeletonType>[], Entry<EntrySkeletonType>[]], Promise<TagDTO>> = {
 	create: async ([raw, rawArticles, rawAuthors]) => {

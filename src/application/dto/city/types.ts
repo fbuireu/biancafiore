@@ -1,5 +1,3 @@
-import type { citiesSchema } from "@application/entities/cities";
-import type { z } from "astro/zod";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 
 export type CitySkeleton = EntrySkeletonType<
@@ -15,5 +13,3 @@ export type CitySkeleton = EntrySkeletonType<
 >;
 
 export type RawCity = Entry<CitySkeleton, undefined>;
-
-export type CityDTO = z.infer<typeof citiesSchema>;

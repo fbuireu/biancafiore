@@ -1,5 +1,5 @@
 import type { RawArticle } from "@application/dto/article/types";
-import type { Reference } from "@shared/application/types";
+import type { Reference } from "@domain/shared/reference";
 import type { Entry, EntrySkeletonType, UnresolvedLink } from "contentful";
 
 function isResolvedEntry(entry: Entry<EntrySkeletonType> | UnresolvedLink<"Entry">): entry is Entry<EntrySkeletonType> {

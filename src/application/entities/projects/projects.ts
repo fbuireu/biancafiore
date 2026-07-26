@@ -1,7 +1,7 @@
 import { defineCollection } from "astro:content";
 import { projectDTO } from "@application/dto/project";
 import type { ProjectSkeleton } from "@application/dto/project/types";
-import { projectsSchema } from "@application/entities/projects/schema";
+import { projectsSchema } from "@domain/project";
 import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
 import { getImagePlaceholder } from "@infrastructure/images/imagePlaceholder";
 import { runCms } from "@infrastructure/runtime";

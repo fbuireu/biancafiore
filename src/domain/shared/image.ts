@@ -1,5 +1,10 @@
 import { z } from "astro/zod";
 
+export interface ImageFormats {
+	avif: boolean;
+	webp: boolean;
+}
+
 export const imageSchema = z.object({
 	url: z.string(),
 	details: z.object({
