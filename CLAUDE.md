@@ -63,7 +63,7 @@ src/
     modules/          # feature areas: home, about, article(s), contact, projects, legal, core
     styles/           # global CSS layer stack + design tokens
     assets/           # images, svg-components (React)
-  const/ data/ utils/ db/
+  const/ data/
 ```
 
 Unit tests are co-located with the code they cover (`src/**/*.test.ts`); repo-level tests that belong to no single module live in `tests/` — currently `tests/docs-consistency.test.ts`, see the maintenance contract below. Both are picked up by `vitest.config.ts`; Playwright specs live in the `testDir` declared in `playwright.config.ts`.
