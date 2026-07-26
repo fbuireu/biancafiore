@@ -71,7 +71,7 @@ canvas {
 		fill: var(--primary-light-2);
 	}
 
-	&.--is-sydney {
+	&.marker-wrapper--sydney {
 		svg {
 			rotate: 0.5turn;
 		}
@@ -81,7 +81,7 @@ canvas {
 .world-globe__controls__move {
 	gap: 0 1rem;
 
-	&.--left {
+	&.world-globe__controls__move--left {
 		rotate: 0.5turn;
 	}
 

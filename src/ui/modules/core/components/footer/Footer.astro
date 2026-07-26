@@ -9,7 +9,7 @@ import "./footer.css";
 
 const currentYear = new Date().getFullYear();
 ---
-<footer class="--inverted-color-scheme">
+<footer class="inverted-color-scheme">
     <section class="footer-wrapper common-wrapper">
         <div class="footer__logo flex row-wrap justify-center">
             <a href={PAGES_ROUTES.HOME}>
@@ -19,9 +19,9 @@ const currentYear = new Date().getFullYear();
         <ThemeToggle />
         <SocialNetworks />
         <p class="footer__legal-pages flex justify-center">
-            <a href={PAGES_ROUTES['TERMS-AND-CONDITIONS']} rel="nofollow noreferrer" class="--underline-on-hover">Terms
+            <a href={PAGES_ROUTES['TERMS-AND-CONDITIONS']} rel="nofollow noreferrer" class="underline-on-hover">Terms
                 and Conditions</a>
-            <a href={PAGES_ROUTES['PRIVACY-POLICY']} rel="nofollow noreferrer" class="--underline-on-hover">Privacy
+            <a href={PAGES_ROUTES['PRIVACY-POLICY']} rel="nofollow noreferrer" class="underline-on-hover">Privacy
                 Policy</a>
             <CookieConsent client:only="react" />
         </p>

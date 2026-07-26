@@ -3,15 +3,15 @@
 		position: relative;
 	}
 
-	.--inverted-color-scheme {
+	.inverted-color-scheme {
 		color-scheme: dark;
 	}
 
-	[data-theme="dark"] .--inverted-color-scheme {
+	[data-theme="dark"] .inverted-color-scheme {
 		color-scheme: light;
 	}
 
-	.--underline-on-hover {
+	.underline-on-hover {
 		--border-width: 1px;
 		border: none;
 		background-color: unset;
@@ -27,16 +27,16 @@
 			background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955),
 			scale 0.2s;
 
-		&:not(.--is-active):hover {
+		&:not(.underline-on-hover--active):hover {
 			background-size: 100% var(--border-width);
 		}
 
-		&.--is-active {
+		&.underline-on-hover--active {
 			background-size: 100% var(--border-width);
 		}
 	}
 
-	.--is-clickable:not(canvas):not(:disabled) {
+	.clickable:not(canvas):not(:disabled) {
 		cursor: pointer;
 		transition: scale 0.2s;
 
@@ -44,7 +44,7 @@
 			scale: 0.9;
 		}
 
-		&.--underline-on-hover {
+		&.underline-on-hover {
 			transition:
 				background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955),
 				scale 0.2s;

@@ -60,21 +60,26 @@ src/
   infrastructure/     # cms/ db/ email/ clients (Effect), images/, integrations/, runtime.ts, layers.ts, errors.ts
   ui/
     modules/          # feature areas: home, about, article(s), contact, projects, legal, core
-    styles/           # global CSS layer stack (see below)
+    styles/           # global CSS layer stack + design tokens
     assets/           # images, svg-components (React)
   const/ data/ utils/ db/
 ```
 
 Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/* @application/* @modules/* (→ src/ui/modules) @utils/* @assets/* (→ src/ui/assets) @styles/* @data/* @shared/* @content/*`. Prefer aliases over relative paths.
 
-**Effect infrastructure:** clients are `Context.Tag` + `Layer` (`CmsClientLive`, `DatabaseLive`, `EmailClientLive`), errors are `Data.TaggedError`. `runtime.ts` exposes `runCms` (a long-lived `ManagedRuntime` for CMS reads); `layers.ts` exposes `ContactLayer` (per-request, merges db + email) used by the contact action. DTOs are kept pure on purpose.
+**Nested guides** — read the one for the folder you're touching, they carry the detail this file deliberately omits:
 
-**Module convention:** each feature module lives under `ui/modules/<feature>/components/<Component>/` as a co-located pair — `Component.astro` + kebab-case `component.css`. Styling is per-component, not global. Shared layout/chrome (header, footer, seo, form, cookieConsent, themeToggle…) lives in `ui/modules/core/components/`.
+| Folder | Covers |
+| --- | --- |
+| [`src/domain/`](./src/domain/CLAUDE.md) | per-concept `schema`/`types`/`rules` layout, purity rules |
+| [`src/application/`](./src/application/CLAUDE.md) | ACL: DTO mappers, collection loaders, adding a content type |
+| [`src/infrastructure/`](./src/infrastructure/CLAUDE.md) | Effect clients, tagged errors, `runCms` vs `ContactLayer`, secrets |
+| [`src/ui/styles/`](./src/ui/styles/CLAUDE.md) | `@layer` order, token system, colour scheme, page containers |
+| [`src/ui/modules/`](./src/ui/modules/CLAUDE.md) | component/CSS co-location, islands, data access |
 
 ## Conventions
 
-- **CSS `@layer` order** (`src/ui/styles/index.css`): `reset, vendor, overrides, base, theme, global, modifiers, animations`. Respect it — cascade correctness depends on it. Design tokens (oklch colors, fluid type scale, vertical rhythm) live in `styles/global/variables.css` under `@layer theme`.
-- **Design tokens over magic numbers.** Colors are oklch + `color-mix` scales; font sizes derive from `--ratio`/viewport bounds in CSS; spacing uses `--leading`/`--rhythm` with baseline snapping. Use existing tokens (`var(--font-size-*)`, `.editorial-headline`, etc.) rather than hardcoding.
+- **Design tokens over magic numbers**, and respect the CSS `@layer` order — cascade correctness depends on it. Details in [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
 - **Evergreen / Chromium-forward CSS.** Modern features are used freely (`light-dark()`, `interpolate-size`, `color-mix`, oklch); the build target is `esnext`.
 - **No code comments.** Rationale belongs in commit messages / PRs / memory, not inline.
 - **No Biome suppressions.** Fix the root cause (e.g. reorder selectors) instead of `biome-ignore`; suppress only if truly irreplaceable. Biome: 120 line width, `noConsole` error (only `console.error` allowed), organizeImports on. `src/data/**` and `public/**` are excluded from Biome.
@@ -82,7 +87,7 @@ Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/*
 
 ## Gotchas
 
-- **`light-dark()` in prod:** Astro 7's lightningcss downlevels `light-dark()` into an inherited-var polyfill that breaks nested `color-scheme` inversion in production (dev looks fine). Fixed via `Features.LightDark` in the `lightningcss.exclude` list in `astro.config.ts` — keep it there. `errorRecovery: true` is also set. See ADR 0006.
+- **`light-dark()` in prod:** lightningcss downlevels it into a polyfill that breaks nested `color-scheme` inversion in production (dev looks fine). `Features.LightDark` stays in `lightningcss.exclude` in `astro.config.ts`; `errorRecovery: true` is also set. ADR 0006, and [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
 - **`astro dev` hangs / SSR 500s / blank globe:** usually `.vite` cache thrash from running `astro check` or a second `astro dev` beside a live dev server (orphans deps chunks: `effect.js` → 500, `three`/`react-globe.gl` → blank). Fix: stop all dev processes, delete `node_modules/.vite`, restart.
 - **`HIDE_CHROME`** (public boolean env) hides site chrome (header/footer) — used for embedding/clean article rendering. Referenced in `ui/modules/core/components/baseLayout/BaseLayout.astro`, `articles/[...slug].astro`, the astro.config env schema, and the deploy workflow.
 - **Turso env naming:** DB env vars are `ASTRO_DB_REMOTE_URL` / `ASTRO_DB_APP_TOKEN` despite the project no longer using Astro DB. Schema: `src/infrastructure/db/schema.ts`; migrations in `drizzle/`.

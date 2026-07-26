@@ -12,7 +12,7 @@ interface Props {
 const { articles, ...rest } = Astro.props;
 ---
 
-<SliderShell class="related-articles__slider common-wrapper --reveal-items" {...rest}>
+<SliderShell class="related-articles__slider common-wrapper slider-wrapper--reveal-items" {...rest}>
 	{
 		articles.map((article, index) => (
 			<li class="slider__slide item-wrapper reveal" data-reveal-index={index}>

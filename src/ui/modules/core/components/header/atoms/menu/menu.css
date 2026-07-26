@@ -124,7 +124,7 @@
 	translate: 0 -3rem;
 	width: 1px;
 
-	&.--is-menu-open {
+	.page--menu-open & {
 		opacity: 1;
 		transition-delay: 2.5s;
 	}
@@ -149,7 +149,7 @@
 	position: relative;
 	text-transform: uppercase;
 
-	&.--is-current-page {
+	&.current-page {
 		color: var(--gold);
 	}
 

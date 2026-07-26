@@ -94,7 +94,7 @@ export const ContactForm = () => {
 			{formStatus !== FormStatus.SUCCESS ? (
 				<form
 					className={clsx("contact-form flex row-wrap", {
-						"--is-disabled": formStatus === FormStatus.UNAUTHORIZED,
+						"contact-form--disabled": formStatus === FormStatus.UNAUTHORIZED,
 					})}
 					onSubmit={(event) => {
 						event.preventDefault();
@@ -150,8 +150,8 @@ export const ContactForm = () => {
 					</div>
 					<button
 						ref={submitRef}
-						className={clsx("contact-form__submit plane --is-clickable", {
-							"--is-loading": pending || formStatus === FormStatus.LOADING,
+						className={clsx("contact-form__submit plane clickable", {
+							"contact-form__submit--loading": pending || formStatus === FormStatus.LOADING,
 						})}
 						disabled={formStatus === FormStatus.UNAUTHORIZED}
 						type="submit"

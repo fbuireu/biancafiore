@@ -16,7 +16,7 @@ const { tableOfContents } = Astro.props;
             <ul class="article__table-of-contents__list flex column-nowrap">
               {tableOfContents.map(({ id, heading, level }, index) => (
                   <li class="article__table-of-contents__item" style={`--level: ${level};`}>
-                      <a class="article__table-of-contents__item__link flex align-center --underline-on-hover --is-clickable"
+                      <a class="article__table-of-contents__item__link flex align-center underline-on-hover clickable"
                          href={`#${id}`} style={`--for: --section-${index + 1}`}>{heading}</a>
                   </li>
               ))}
