@@ -8,10 +8,10 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 
 ## Stack
 
-- **Astro 7.1** (`output: "server"`), `@astrojs/cloudflare` adapter, React islands via `@astrojs/react`
-- **Contentful** delivery/preview API (`contentful`, rich-text renderers)
-- **Drizzle ORM** + `@libsql/client` → **Turso** (migrated off Astro DB; env vars still named `ASTRO_DB_*`)
-- **Effect 3** — `Context.Tag` + `Layer` clients for cms/db/email
+- **Astro 7.1** (`output: "server"`), `@astrojs/cloudflare` adapter, React islands via `@astrojs/react`. ADR 0001 for the host, ADR 0011 for why content pages prerender anyway
+- **Contentful** delivery/preview API (`contentful`, rich-text renderers). ADR 0002
+- **Drizzle ORM** + `@libsql/client` → **Turso** (migrated off Astro DB; env vars still named `ASTRO_DB_*`). ADR 0003
+- **Effect 3** — `Context.Tag` + `Layer` clients for cms/db/email. ADR 0004
 - **lightningcss** CSS transformer; **GSAP**, `react-globe.gl`/`three` (globe), `react-hook-form`, `resend` (email), reCAPTCHA v3, `vanilla-cookieconsent`
 - **Biome** (lint + format), **Vitest** (unit), **Playwright** (e2e), **semantic-release** + commitlint (conventional commits)
 
@@ -92,7 +92,7 @@ Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/*
 
 These documents are not generated. A change that does not update them leaves the tree describing code that no longer exists, so when you change code, update the docs **in the same commit** — a follow-up commit is a promise, not a fix.
 
-`tests/docs-consistency.test.ts` makes the mechanical half of that contract executable: it reads these documents and asserts every checkable claim against the repo — scripts, aliases, the folder tree, the route list, env vars, cited paths, links, ADR numbering, the client/layer/stylesheet tables, the Gotchas invariants. It runs with `pnpm test:ut` (so, in CI on every PR). A failure means the docs and the code disagree — fix whichever one is wrong, and when the deliberate answer is "the doc leaves this out on purpose", say so in the allowlist at the top of that file rather than deleting the assertion. It cannot check prose or rationale; that part is still on you.
+`tests/docs-consistency.test.ts` makes the mechanical half of that contract executable: it reads these documents and asserts every checkable claim against the repo — scripts, aliases, the folder tree, the route list, env vars, cited paths, links, ADR numbering/template/references, the client/layer/stylesheet tables, the Gotchas invariants. It runs with `pnpm test:ut` (so, in CI on every PR). A failure means the docs and the code disagree — fix whichever one is wrong, and when the deliberate answer is "the doc leaves this out on purpose", say so in the allowlist at the top of that file rather than deleting the assertion. It cannot check prose or rationale; that part is still on you. ADR 0015 records why it exists and what it costs — the markdown shape of these documents is parsed, so reformatting one can fail the build.
 
 | If you change | Update |
 | --- | --- |
@@ -105,7 +105,7 @@ These documents are not generated. A change that does not update them leaves the
 | A decision an ADR records | that ADR — amend it, or supersede it with a new one and say so in both `## Status` blocks |
 | A claim `tests/docs-consistency.test.ts` asserts, on purpose | the doc first; the test only when the claim itself is what changed |
 
-Propose an ADR in [`docs/adr/`](./docs/adr/) when a decision is **hard to reverse**, **surprising without context** and **the result of a real trade-off**. All three, or it is not an ADR. Number it one above the highest existing file (`NNNN-kebab-title.md`, `# N. Title` / Date / Status / Context / Decision / Consequences) and link it from wherever it bites — a Gotchas bullet here, a nested guide, a `CONTEXT.md` entry. There is no separate index; an ADR nothing links to will not be read.
+Propose an ADR in [`docs/adr/`](./docs/adr/) when a decision is **hard to reverse**, **surprising without context** and **the result of a real trade-off**. All three, or it is not an ADR. Copy [ADR 0000](./docs/adr/0000-adr-template.md), the template, and number it one above the highest existing file (`NNNN-kebab-title.md`, `# N. Title` / `Date:` / `## Status` / `## Context` / `## Decision` / `## Consequences`), then link it from wherever it bites — a Gotchas bullet here, a nested guide, a `CONTEXT.md` entry. There is no separate index; an ADR nothing links to will not be read, which is why both the template and the incoming link are asserted.
 
 Two traps worth naming, because both have already happened here: deleting a resolved entry from a "known inconsistencies" or gotchas list is part of the fix, not tidying to do later; and a `file.ts:123` citation silently rots the moment anything above it moves — prefer naming the symbol.
 
@@ -114,10 +114,11 @@ Two traps worth naming, because both have already happened here: deleting a reso
 - **`light-dark()` in prod:** lightningcss downlevels it into a polyfill that breaks nested `color-scheme` inversion in production (dev looks fine). `Features.LightDark` stays in `lightningcss.exclude` in `astro.config.ts`; `errorRecovery: true` is also set. ADR 0006, and [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
 - **`astro dev` hangs / SSR 500s / blank globe:** usually `.vite` cache thrash from running `astro check` or a second `astro dev` beside a live dev server (orphans deps chunks: `effect.js` → 500, `three`/`react-globe.gl` → blank). Fix: stop all dev processes, delete `node_modules/.vite`, restart.
 - **`HIDE_CHROME`** (public boolean env) hides site chrome (header/footer) — used for embedding/clean article rendering. Referenced in `ui/modules/core/components/baseLayout/BaseLayout.astro`, `articles/[...slug].astro`, the astro.config env schema, and the deploy workflow.
-- **Turso env naming:** DB env vars are `ASTRO_DB_REMOTE_URL` / `ASTRO_DB_APP_TOKEN` despite the project no longer using Astro DB. Schema: `src/infrastructure/db/schema.ts`; migrations in `drizzle/`.
+- **Turso env naming:** DB env vars are `ASTRO_DB_REMOTE_URL` / `ASTRO_DB_APP_TOKEN` despite the project no longer using Astro DB. Schema: `src/infrastructure/db/schema.ts`; migrations in `drizzle/`. ADR 0003 explains why they keep the name.
+- **Analytics are consent-gated:** GA/GTM load with `analytics_storage` denied until the visitor accepts the `analytics` category, set by an inline script in `<head>` before either initialises. Nothing in the code makes the requirement visible, so do not reorder or "clean up" that script. ADR 0013.
 - **Image CDN switches by env:** Cloudflare image service in production build, Contentful/passthrough otherwise (`CLOUDFLARE_ENV === "production"` in astro.config → adapter `imageService`).
 - **SSR externals:** `node:async_hooks` and `contentful` are externalized for SSR; the DB uses `@libsql/client/web` + `drizzle-orm/libsql/web`; `nodejs_compat` flag is enabled in `wrangler.toml`.
 
 ## Deploy
 
-Cloudflare Workers via wrangler (`wrangler.toml`): `main` is the `@astrojs/cloudflare` server entrypoint, `dist/` served as assets, `SESSION` KV binding, custom domain `biancafiore.me` on `env.production`. CI/CD runs through GitHub Actions workflows.
+Cloudflare Workers via wrangler (`wrangler.toml`): `main` is the `@astrojs/cloudflare` server entrypoint, `dist/` served as assets, `SESSION` KV binding, custom domain `biancafiore.me` on `env.production`. CI/CD runs through GitHub Actions workflows. The host and the runtime constraints it imposes are ADR 0001; content pages are prerendered and only dynamic paths hit the SSR runtime, ADR 0011.

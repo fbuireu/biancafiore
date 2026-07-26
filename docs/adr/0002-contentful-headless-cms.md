@@ -1,5 +1,23 @@
-# Contentful as the content source
+# 2. Contentful as the content source
 
-Articles, projects, authors, tags, testimonials and cities are authored in Contentful and fetched at request time through the CMS client, instead of local Markdown/MDX content collections. A hosted headless CMS lets the non-technical site owner edit content without touching the repo or a deploy, which is worth the external dependency and vendor lock-in for a client-owned site.
+Date: 2026-07-26
+
+## Status
+
+Accepted.
+
+## Context
+
+The site owner is not a developer and publishes regularly. Local Markdown/MDX content collections would put every edit behind a repo commit and a deploy, which is the wrong workflow for a client-owned site whose whole point is that its owner writes on it.
+
+## Decision
+
+Articles, projects, authors, tags, testimonials and cities are authored in Contentful and fetched through the CMS client, at the cost of an external dependency and vendor lock-in.
 
 To contain the lock-in, Contentful's shape stops at the infrastructure boundary: the client returns raw entries and everything downstream consumes pure DTOs, so a future CMS swap is a client + mapper change rather than an app-wide rewrite.
+
+## Consequences
+
+- The mapping layer that keeps Contentful out of the rest of the app is not incidental plumbing — it is what makes this reversible, and it is recorded separately as the anti-corruption layer (ADR 0012).
+- Builds must survive without credentials, so loaders bail out through `isContentfulConfigured()` rather than failing.
+- Content shape is owned outside the repo: a field renamed in Contentful breaks a DTO, and the domain glossary in `CONTEXT.md` is the only place the two vocabularies are reconciled.
