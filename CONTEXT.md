@@ -13,7 +13,7 @@ The collection of all Articles and the section that lists them (titled "The Blog
 _Avoid_: journal, news, feed, articles page.
 
 **Project**:
-A typology of work Bianca does — an area/discipline of her practice rather than a single deliverable — showcased in the portfolio with a name, a rich description, and an image.
+A typology of work Bianca does — an area/discipline of her practice rather than a single deliverable — showcased in the portfolio with a name, a rich description, and an image. The term is expected to widen: ADR 0010 proposes giving a Project its own page, which is what will force the Project/Article boundary to be settled.
 _Avoid_: discipline, work, case study, portfolio item, sample.
 
 **Testimonial**:

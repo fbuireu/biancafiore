@@ -40,6 +40,10 @@ const CONCEPTS_OUTSIDE_THE_GLOSSARY = new Set(["breadcrumb", "contact", "shared"
 
 const DOCUMENTED_PATH_EXAMPLES = new Set(["file.ts:123", "NNNN-kebab-title.md"]);
 
+const ADR_TEMPLATE_SECTIONS = ["Status", "Context", "Decision", "Consequences"];
+
+const ADR_STATUSES = new Set(["Template", "Proposed", "Accepted", "Superseded", "Deprecated"]);
+
 const DOCUMENTED_PACKAGE_VERSIONS: Record<string, string> = {
 	Astro: "astro",
 	Effect: "effect",
@@ -299,26 +303,45 @@ describe("cross-document links", () => {
 });
 
 describe("ADRs", () => {
-	it("numbers files sequentially, with no gaps or duplicates", () => {
-		const numbers = ADR_FILES.map((file) => file.split("/").pop()?.slice(0, 4)).map(Number);
+	const referencesIn = (doc: string) => {
+		const body = read(doc);
 
-		expect(numbers).toEqual(numbers.map((_, index) => index + 1));
+		return [
+			...[...body.matchAll(/ADR ([\d/\s]+)/g)].flatMap(([, numbers]) => numbers.match(/\d{4}/g) ?? []),
+			...[...body.matchAll(/docs\/adr\/(\d{4})-/g)].map(([, number]) => number),
+		];
+	};
+
+	it("numbers files sequentially from the template, with no gaps or duplicates", () => {
+		const numbers = ADR_FILES.map((file) => Number(file.split("/").pop()?.slice(0, 4)));
+
+		expect(numbers).toEqual(numbers.map((_, index) => index));
 	});
 
-	it("names every file NNNN-kebab-title.md and opens it with a heading", () => {
-		const malformed = ADR_FILES.filter(
-			(file) => !/^docs\/adr\/\d{4}(-[a-z\d]+)+\.md$/.test(file) || !/^(---[\s\S]*?---\s*)?# \S/.test(read(file)),
-		);
+	it("names every file NNNN-kebab-title.md", () => {
+		expect(ADR_FILES.filter((file) => !/^docs\/adr\/\d{4}(-[a-z\d]+)+\.md$/.test(file))).toEqual([]);
+	});
+
+	it("fills in the template: numbered heading, date, status, context, decision, consequences", () => {
+		const malformed = ADR_FILES.flatMap((file) => {
+			const body = read(file);
+			const number = Number(file.split("/").pop()?.slice(0, 4));
+			const missing = ADR_TEMPLATE_SECTIONS.filter((heading) => !body.includes(`\n## ${heading}\n`));
+			const status = body.match(/\n## Status\n\n(\w+)/)?.[1] ?? "";
+
+			return [
+				...(new RegExp(`^# ${number}\\. \\S`).test(body) ? [] : [`${file}: heading is not "# ${number}. Title"`]),
+				...(/\nDate: \d{4}-\d{2}-\d{2}\n/.test(body) ? [] : [`${file}: no "Date: YYYY-MM-DD" line`]),
+				...(ADR_STATUSES.has(status) ? [] : [`${file}: status is "${status}"`]),
+				...missing.map((heading) => `${file}: no "## ${heading}" section`),
+			];
+		});
 
 		expect(malformed).toEqual([]);
 	});
 
 	it("references only ADRs that exist", () => {
-		const referenced = DOCS.flatMap((doc) =>
-			[...read(doc).matchAll(/ADR ([\d/\s]+)/g)]
-				.flatMap(([, numbers]) => numbers.match(/\d{4}/g) ?? [])
-				.map((number) => ({ doc, number })),
-		);
+		const referenced = DOCS.flatMap((doc) => referencesIn(doc).map((number) => ({ doc, number })));
 
 		expect(referenced.length).toBeGreaterThan(0);
 		expect(
@@ -326,6 +349,12 @@ describe("ADRs", () => {
 				.filter(({ number }) => !ADR_FILES.some((file) => file.startsWith(`docs/adr/${number}-`)))
 				.map(({ doc, number }) => `${doc}: ADR ${number}`),
 		).toEqual([]);
+	});
+
+	it("is reachable: every ADR is linked from a guide, not only from other ADRs", () => {
+		const linked = new Set(["CLAUDE.md", "CONTEXT.md", ...NESTED_GUIDES].flatMap(referencesIn));
+
+		expect(ADR_FILES.filter((file) => !linked.has(file.split("/").pop()?.slice(0, 4) ?? ""))).toEqual([]);
 	});
 });
 
