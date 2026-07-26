@@ -1,4 +1,4 @@
 {
-	"src/**/*.{ts,tsx,css,astro}": ["pnpm format:changed", "pnpm lint:changed"],
-	"src/**/*.{test,spec}.{ts,tsx}": ["pnpm test:ut:changed"]
+	"{src,tests}/**/*.{ts,tsx,css,astro}": ["pnpm format:changed", "pnpm lint:changed"],
+	"{src,tests}/**/*.{test,spec}.{ts,tsx}": ["pnpm test:ut:changed"]
 }

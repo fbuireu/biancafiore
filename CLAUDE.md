@@ -35,6 +35,7 @@ pnpm lint:all         # biome lint (append :fix to autofix)
 pnpm format:all       # biome check --write
 
 pnpm test:ut          # vitest (unit)
+pnpm test:docs        # docs ⟷ code consistency alone (also runs inside test:ut)
 pnpm test:e2e         # playwright
 pnpm test:all         # unit + e2e
 
@@ -50,7 +51,7 @@ Env: copy `.env.example`. Local secrets go in `.dev.vars` (loaded by `drizzle.co
 
 ```
 src/
-  pages/              # routes (index, about, contact, projects, articles/[...slug], tags/[slug], tags/index, rss.xml.ts, 404/500)
+  pages/              # routes (index, about, contact, projects, articles/index, articles/[...slug], tags/index, tags/[slug], privacy-policy, terms-and-conditions, rss.xml.ts, 404, 500)
   actions/            # Astro server actions (contact form → Effect ContactLayer)
   content.config.ts   # content collections wired to @application/entities
   middleware.ts       # sets SECURITY_HEADERS on every response
@@ -65,7 +66,9 @@ src/
   const/ data/ utils/ db/
 ```
 
-Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/* @application/* @modules/* (→ src/ui/modules) @utils/* @assets/* (→ src/ui/assets) @styles/* @data/* @shared/* @content/*`. Prefer aliases over relative paths.
+Unit tests are co-located with the code they cover (`src/**/*.test.ts`); repo-level tests that belong to no single module live in `tests/` — currently `tests/docs-consistency.test.ts`, see the maintenance contract below. Both are picked up by `vitest.config.ts`; Playwright specs live in the `testDir` declared in `playwright.config.ts`.
+
+Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/* @application/* @modules/* (→ src/ui/modules) @utils/* @assets/* (→ src/ui/assets) @styles/* (→ src/ui/styles) @data/* @shared/* @content/*`. Prefer aliases over relative paths.
 
 **Nested guides** — read the one for the folder you're touching, they carry the detail this file deliberately omits:
 
@@ -87,7 +90,9 @@ Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/*
 
 ## Maintenance contract
 
-These documents are not generated. Nothing verifies them, so a change that does not update them leaves the tree describing code that no longer exists. When you change code, update the docs **in the same commit** — a follow-up commit is a promise, not a fix.
+These documents are not generated. A change that does not update them leaves the tree describing code that no longer exists, so when you change code, update the docs **in the same commit** — a follow-up commit is a promise, not a fix.
+
+`tests/docs-consistency.test.ts` makes the mechanical half of that contract executable: it reads these documents and asserts every checkable claim against the repo — scripts, aliases, the folder tree, the route list, env vars, cited paths, links, ADR numbering, the client/layer/stylesheet tables, the Gotchas invariants. It runs with `pnpm test:ut` (so, in CI on every PR). A failure means the docs and the code disagree — fix whichever one is wrong, and when the deliberate answer is "the doc leaves this out on purpose", say so in the allowlist at the top of that file rather than deleting the assertion. It cannot check prose or rationale; that part is still on you.
 
 | If you change | Update |
 | --- | --- |
@@ -98,6 +103,7 @@ These documents are not generated. Nothing verifies them, so a change that does 
 | A package script, a path alias, or the folder tree | the *Commands* / *Structure & aliases* sections here |
 | The layer boundaries, the rendering mode, or the deploy target | the *Stack* / *Deploy* sections here, plus the ADR that decided it |
 | A decision an ADR records | that ADR — amend it, or supersede it with a new one and say so in both `## Status` blocks |
+| A claim `tests/docs-consistency.test.ts` asserts, on purpose | the doc first; the test only when the claim itself is what changed |
 
 Propose an ADR in [`docs/adr/`](./docs/adr/) when a decision is **hard to reverse**, **surprising without context** and **the result of a real trade-off**. All three, or it is not an ADR. Number it one above the highest existing file (`NNNN-kebab-title.md`, `# N. Title` / Date / Status / Context / Decision / Consequences) and link it from wherever it bites — a Gotchas bullet here, a nested guide, a `CONTEXT.md` entry. There is no separate index; an ADR nothing links to will not be read.
 
