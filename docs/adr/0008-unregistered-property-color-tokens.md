@@ -1,5 +1,21 @@
-# Color tokens are intentionally not registered with @property
+# 8. Color tokens are intentionally not registered with @property
 
-Spacing, font-size and layout tokens are registered via `@property` (for typed syntax and `interpolate-size`/animation support), but color tokens are deliberately left unregistered. Registering a color custom property forces a typed `syntax` whose invalid/unset state resolves to `transparent`, which would poison theme fallbacks, and registered properties animate — making theme switches interpolate through intermediate colors instead of flipping instantly.
+Date: 2026-07-26
 
-Leaving color tokens as plain inherited custom properties keeps theme switching instant and fallback-safe. This is a deliberate omission: do not "complete" the token system by adding `@property` blocks for colors.
+## Status
+
+Accepted.
+
+## Context
+
+Spacing, font-size and layout tokens are registered via `@property`, for typed syntax and `interpolate-size`/animation support. Applying the same treatment to colour tokens looks like the obvious way to finish the token system, and it is wrong twice: a registered custom property forces a typed `syntax` whose invalid/unset state resolves to `transparent`, which poisons theme fallbacks, and registered properties animate, so a theme switch interpolates through intermediate colours instead of flipping.
+
+## Decision
+
+Colour tokens stay plain inherited custom properties, unregistered. This is a deliberate omission, not an oversight: do not "complete" the token system by adding `@property` blocks for colours.
+
+## Consequences
+
+- Theme switching stays instant and fallback-safe (ADR 0005).
+- Colour tokens get no type checking and cannot be transitioned, which is the accepted cost.
+- The asymmetry is invisible in the stylesheet, so it is called out in the styles guide as well as here — an editor who registers colours "for consistency" reintroduces both bugs at once.

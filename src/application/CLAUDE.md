@@ -1,6 +1,6 @@
 # src/application
 
-The anti-corruption layer between Contentful and the domain. Two halves, `dto/` (mapping) and `entities/` (loading). See ADR 0012.
+The anti-corruption layer between Contentful and the domain. Two halves, `dto/` (mapping) and `entities/` (loading). See ADR 0012 for the layering, and ADR 0002 for why the content is in Contentful at all — this folder is what keeps that choice reversible.
 
 ## dto/ — Contentful → domain
 
