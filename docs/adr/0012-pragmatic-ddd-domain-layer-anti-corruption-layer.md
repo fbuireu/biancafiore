@@ -21,6 +21,11 @@ It is deliberately pragmatic ("-ish"): there are no aggregates, repositories, or
 The load-bearing invariant: **`domain/` never imports from `application/` or `infrastructure/`**. It may use `astro/zod`, `astro:content`'s `reference()`, other `@domain/*`, and generic `@shared/utils` helpers only.
 
 ```mermaid
+---
+config:
+  look: handDrawn
+  theme: neutral
+---
 flowchart TD
     UI["pages / ui — via astro:content CollectionEntry"] --> APP
     subgraph APP["application — anti-corruption layer"]
