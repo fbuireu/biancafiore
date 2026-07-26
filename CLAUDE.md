@@ -77,6 +77,7 @@ Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/*
 | [`src/domain/`](./src/domain/CLAUDE.md) | per-concept `schema`/`types`/`rules` layout, purity rules |
 | [`src/application/`](./src/application/CLAUDE.md) | ACL: DTO mappers, collection loaders, adding a content type |
 | [`src/infrastructure/`](./src/infrastructure/CLAUDE.md) | Effect clients, tagged errors, `runCms` vs `ContactLayer`, secrets |
+| [`src/actions/`](./src/actions/CLAUDE.md) | The contact action: error→HTTP mapping, step order, the two email forms |
 | [`src/ui/styles/`](./src/ui/styles/CLAUDE.md) | `@layer` order, token system, colour scheme, page containers |
 | [`src/ui/modules/`](./src/ui/modules/CLAUDE.md) | component/CSS co-location, islands, data access |
 
