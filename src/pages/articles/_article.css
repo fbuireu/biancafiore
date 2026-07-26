@@ -1,11 +1,12 @@
-html.--is-article {
+html.page--article {
 	--article-body-size: 1.125rem;
 	--leading: 1.7;
 	--rhythm: calc(var(--article-body-size) * var(--leading));
 }
 
-:is(html, main).--is-article,
-html.--is-article body {
+html.page--article,
+html.page--article .page__main,
+html.page--article body {
 	background-color: var(--white);
 }
 
@@ -201,12 +202,12 @@ html.--is-article body {
 	background: var(--white);
 	text-align: center;
 
-	&.--has-featured {
+	&.article-masthead--featured {
 		margin-block-start: -4rem;
 		background-color: var(--white);
 	}
 
-	&:not(.--has-featured) {
+	&:not(.article-masthead--featured) {
 		margin-block-start: calc(var(--header-height) + 1rem);
 	}
 
@@ -237,7 +238,7 @@ html.--is-article body {
 	@container article-page (width <= 960px) {
 		padding-block: 32px 0;
 
-		&.--has-featured {
+		&.article-masthead--featured {
 			margin-block-start: -40px;
 		}
 	}
@@ -305,7 +306,7 @@ html.--is-article body {
 	width: 100%;
 }
 
-.article-wrapper.--two-columns {
+.article-wrapper--two-columns {
 	--article-columns-gap: clamp(1.5rem, 4cqi, 3rem);
 	--gutter: 2rem;
 	display: block;
@@ -335,11 +336,11 @@ html.--is-article body {
 	}
 }
 
-html.--debug-baseline .article-wrapper {
+html.page--debug-baseline .article-wrapper {
 	position: relative;
 }
 
-html.--debug-baseline .article-wrapper::after {
+html.page--debug-baseline .article-wrapper::after {
 	content: "";
 	position: absolute;
 	inset: 0;

@@ -100,7 +100,7 @@
 		background-color: var(--gold-bright);
 	}
 
-	&.--is-active {
+	&.testimonials__nav__dash--active {
 		inline-size: 32px;
 
 		&::after {
@@ -114,11 +114,11 @@
 }
 
 .testimonials__nav__arrow {
-	&.--is-prev {
+	&.testimonials__nav__arrow--prev {
 		margin-inline-end: 16px;
 	}
 
-	&.--is-next {
+	&.testimonials__nav__arrow--next {
 		margin-inline-start: 16px;
 	}
 
@@ -128,11 +128,11 @@
 		position: absolute;
 		translate: 0 -50%;
 
-		&.--is-prev {
+		&.testimonials__nav__arrow--prev {
 			inset-inline-start: 0;
 		}
 
-		&.--is-next {
+		&.testimonials__nav__arrow--next {
 			inset-inline-end: 0;
 		}
 	}

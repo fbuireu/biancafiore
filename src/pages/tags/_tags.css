@@ -1,5 +1,6 @@
-:is(html, main).--is-tags,
-html.--is-tags body {
+html.page--tags,
+html.page--tags .page__main,
+html.page--tags body {
 	background-color: var(--white);
 }
 

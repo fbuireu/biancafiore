@@ -27,21 +27,21 @@ const metadata: Partial<SeoMetadata> = {
     <ErrorLayer class="error-500">
         <div class="error-layer__ghost" aria-hidden="true">500</div>
         <div class="error-layer__inner">
-            <p class="editorial-eyebrow error-layer__eyebrow reveal --on-load --fade" data-reveal-index="1">Error 500 — Server error</p>
-            <h1 class="editorial-headline error-layer__title reveal --on-load" data-reveal-index="2">
+            <p class="editorial-eyebrow error-layer__eyebrow reveal reveal--on-load reveal--fade" data-reveal-index="1">Error 500 — Server error</p>
+            <h1 class="editorial-headline error-layer__title reveal reveal--on-load" data-reveal-index="2">
                 Something broke <em class="error-layer__accent">on our end.</em>
             </h1>
-            <p class="error-layer__lede reveal --on-load" data-reveal-index="3">
+            <p class="error-layer__lede reveal reveal--on-load" data-reveal-index="3">
                 This one's on us, not you. A part of the site stumbled mid-sentence. Give it a moment
                 and try again — and if it keeps happening, I'd genuinely like to know.
             </p>
-            <div class="error-layer__actions reveal --on-load" data-reveal-index="4">
-                <button class="error-layer__button error-500__reload --is-clickable" type="button">Try again</button>
+            <div class="error-layer__actions reveal reveal--on-load" data-reveal-index="4">
+                <button class="error-layer__button error-500__reload clickable" type="button">Try again</button>
                 <a class="editorial-cta" href={PAGES_ROUTES.HOME}>
                     Back to home <span class="editorial-cta__arrow" aria-hidden="true" set:html={stretchArrow} />
                 </a>
             </div>
-            <div class="error-layer__extra reveal --on-load" data-reveal-index="5">
+            <div class="error-layer__extra reveal reveal--on-load" data-reveal-index="5">
                 <p class="error-layer__code">Reference: 500 · {reference}</p>
                 <p class="error-500__help">
                     Still stuck? <EmailButton classNames="error-500__email" text="Email me" /> and I'll take a look.

@@ -2,7 +2,6 @@
 import type { CollectionEntry } from "astro:content";
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { PAGES_ROUTES } from "@const/index";
-import { articleVariantToClass } from "@modules/core/components/articleCard/utils/variants";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import clsx from "clsx";
 import "./article-card.css";
@@ -18,11 +17,7 @@ const remainingTags = (article.data.tags?.length ?? 0) - visibleTags.length;
 <a class="article-card__link" href={`${PAGES_ROUTES.ARTICLES}/${article.data.slug}`}
    aria-labelledby={`article-title-${article.data.slug}`}>{' '}</a>
 <article
-    class={clsx(
-        'article-card__item',
-        articleVariantToClass(article.data.variant),
-        { '--is-landscape': isLandscape },
-    )}
+    class={clsx('article-card__item', { 'article-card__item--landscape': isLandscape })}
 >
   {article.data.featuredImage && (
       <div class="article-card__media">
@@ -37,7 +32,7 @@ const remainingTags = (article.data.tags?.length ?? 0) - visibleTags.length;
           />
       </div>
   )}
-    <time class="article-card__publish-date editorial-meta --is-gold" datetime={article.data.publishDateISO}>
+    <time class="article-card__publish-date editorial-meta editorial-meta--gold" datetime={article.data.publishDateISO}>
       {article.data.publishDate}
     </time>
     <h3 class="article-card__title" id={`article-title-${article.data.slug}`}>
@@ -45,7 +40,7 @@ const remainingTags = (article.data.tags?.length ?? 0) - visibleTags.length;
     </h3>
     <p class="article-card__byline editorial-meta">
         by <a href={`${PAGES_ROUTES.TAGS}/${article.data.author.slug}`}
-              class="article-card__author --is-clickable --underline-on-hover">{article.data.author.name}</a>
+              class="article-card__author clickable underline-on-hover">{article.data.author.name}</a>
         · {article.data.readingTime} min
     </p>
     <div class="article-card__switch">
@@ -55,7 +50,7 @@ const remainingTags = (article.data.tags?.length ?? 0) - visibleTags.length;
             <ul class="article-card__tags__list">
               {visibleTags.map(({ slug, name }) => (
                   <li class="article-card__tag__item">
-                      <a class="--is-clickable --underline-on-hover" href={`${PAGES_ROUTES.TAGS}/${slug}`}>{name}</a>
+                      <a class="clickable underline-on-hover" href={`${PAGES_ROUTES.TAGS}/${slug}`}>{name}</a>
                   </li>
               ))}
               {remainingTags > 0 && (

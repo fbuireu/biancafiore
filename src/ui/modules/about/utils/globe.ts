@@ -60,7 +60,7 @@ function createPinSvg({ fill, title }: { fill: string; title: string }): SVGSVGE
 export function renderPin({ markerData }: RenderPinParams): HTMLElement {
 	const markerWrapper = document.createElement("button");
 	markerWrapper.type = "button";
-	markerWrapper.classList.add("marker-wrapper", `--is-${slugify(markerData.label)}`);
+	markerWrapper.classList.add("marker-wrapper", `marker-wrapper--${slugify(markerData.label)}`);
 
 	const marker = document.createElement("div");
 	marker.append(createPinSvg({ fill: "currentColor", title: markerData.label }));

@@ -32,21 +32,17 @@
 			fill: var(--gold);
 		}
 
-		&.--is-menu-open .logo__name {
+		.page--menu-open & .logo__name {
 			transition-delay: 1.75s;
 		}
 
-		&.--has-intersected .logo__name {
+		&.logo--intersected .logo__name {
 			color: var(--white);
 			transition-delay: 0s;
 		}
 	}
 
-	:not(.--is-menu-open) svg {
-		scale: 0.85;
-	}
-
-	&.--is-menu-open {
+	.page--menu-open & {
 		transform: translateY(2rem);
 		transition:
 			top 0.3s 0.75s,

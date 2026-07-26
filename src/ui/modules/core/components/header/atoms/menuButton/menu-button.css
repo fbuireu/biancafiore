@@ -24,7 +24,8 @@
 	position: relative;
 	z-index: 100;
 
-	&:is(.--has-intersected, .--is-menu-open) {
+	&.header__menu-button--intersected,
+	.page--menu-open & {
 		.header__menu-button__outline {
 			border-color: var(--background-main);
 		}
@@ -34,7 +35,7 @@
 		}
 	}
 
-	&.--is-menu-open {
+	.page--menu-open & {
 		.header__menu-button__outline {
 			transition: border-color 1s;
 		}

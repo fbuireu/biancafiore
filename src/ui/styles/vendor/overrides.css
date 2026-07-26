@@ -7,7 +7,7 @@
 	}
 
 	.site__logo {
-		&.--is-menu-open {
+		.page--menu-open & {
 			scale: 1;
 			transition: scale 0.2s;
 

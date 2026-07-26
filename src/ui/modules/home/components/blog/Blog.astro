@@ -20,10 +20,10 @@ const itemListSchema = buildItemListSchema(
 	articles.map(({ data: { slug } }) => new URL(`${PAGES_ROUTES.ARTICLE}${slug}`, SITE_URL).href),
 );
 ---
-<section class="blog --inverted-color-scheme">
+<section class="blog inverted-color-scheme">
     <div class="blog__inner">
         <h2 class="blog__title editorial-section-title reveal">
-            Fresh from <a class="blog__title__link --is-clickable --underline-on-hover"
+            Fresh from <a class="blog__title__link clickable underline-on-hover"
                           href={PAGES_ROUTES.ARTICLES}>the Blog</a>
         </h2>
         <ul class="blog__list">

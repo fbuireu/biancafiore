@@ -50,52 +50,47 @@
 		container-type: scroll-state;
 		overflow-x: hidden;
 
-		&.--is-articles {
+		&.page--articles {
 			container: articles-page / inline-size scroll-state;
 			width: 100%;
 		}
 
-		&.--is-home {
+		&.page--home {
 			container: home-page / inline-size scroll-state;
 			width: 100%;
 		}
 
-		&.--is-article {
+		&.page--article {
 			container: article-page / inline-size scroll-state;
 			width: 100%;
 		}
 
-		&.--is-about {
+		&.page--about {
 			container: about-page / inline-size scroll-state;
 			width: 100%;
 		}
 
-		&.--is-tag {
-			container: tag-page / inline-size scroll-state;
-			width: 100%;
-		}
-
-		&.--is-tags {
+		&.page--tags {
 			container: tags-page / inline-size scroll-state;
 			width: 100%;
 		}
 
-		&.--is-contact {
+		&.page--contact {
 			container: contact-page / inline-size scroll-state;
 			width: 100%;
 		}
 
-		&.--is-projects {
+		&.page--projects {
 			container: projects-page / inline-size scroll-state;
 			width: 100%;
 		}
 
-		&.--is-terms-and-conditions {
+		&.page--terms-and-conditions {
 			container: terms-and-conditions-page / inline-size scroll-state;
 			width: 100%;
 		}
 
-		&.--is-privacy-policy {
+		&.page--privacy-policy {
 			container: privacy-policy-page / inline-size scroll-state;
 			width: 100%;
 		}
@@ -127,7 +122,7 @@
 		min-height: 100dvh;
 		width: 100%;
 
-		&:not(.--is-projects, .--is-article) {
+		&:not(.page--projects, .page--article) {
 			margin: calc(var(--header-height)) auto 0;
 
 			@media (width <= 960px) {
@@ -156,7 +151,7 @@
 	svg {
 		-webkit-tap-highlight-color: transparent;
 
-		&:not(.logo, .theme_toggle_inner, .cookie_consent_icon, .marker-wrapper svg) {
+		&:not(.logo, .theme-toggle__inner, .marker-wrapper svg) {
 			fill: var(--neutral-main);
 			color: var(--neutral-main);
 		}

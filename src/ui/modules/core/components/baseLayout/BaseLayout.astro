@@ -12,12 +12,12 @@ type Props = Partial<SeoMetadata>;
 
 const props = Astro.props;
 const location = getPage(Astro.url);
-const className = { [`--is-${location}`]: location };
+const pageModifier = { [`page--${location}`]: location };
 const isUnderConstruction =
 	HIDE_CHROME &&
 	!["article", "articles", "tags", "terms-and-conditions", "privacy-policy", "404", "500"].includes(location ?? "");
 ---
-<html lang={DEFAULT_LOCALE_STRING} class:list={[className]}>
+<html lang={DEFAULT_LOCALE_STRING} class:list={["page", pageModifier]}>
 <Head {...props}><slot name="head" slot="head" /></Head>
 <body>
 <noscript>
@@ -28,7 +28,7 @@ const isUnderConstruction =
 </noscript>
 {!HIDE_CHROME && <Header />}
 {!isUnderConstruction && <ScrollTop />}
-<main class:list={[className]}>
+<main class="page__main">
     {isUnderConstruction
         ? (
             <div style="text-align:center;margin-top:40vh">

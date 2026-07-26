@@ -175,7 +175,7 @@
 	}
 }
 
-.article-card__item.--is-landscape {
+.article-card__item--landscape {
 	border-block-start: 1px solid var(--line);
 	padding-block: 30px;
 

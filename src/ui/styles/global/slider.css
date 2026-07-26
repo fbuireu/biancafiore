@@ -80,7 +80,7 @@
 			inline-size: 1.25rem;
 		}
 
-		&:is(.slider__btn--prev, .--is-prev) .stretch-arrow {
+		&:is(.slider__btn--prev, .testimonials__nav__arrow--prev) .stretch-arrow {
 			rotate: 0.5turn;
 		}
 

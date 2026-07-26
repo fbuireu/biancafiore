@@ -10,11 +10,7 @@ const CookieConsent = () => {
 	}, []);
 
 	return (
-		<button
-			type="button"
-			className="cookies_consent_button --is-clickable --underline-on-hover"
-			onClick={showPreferences}
-		>
+		<button type="button" className="cookie-consent__button clickable underline-on-hover" onClick={showPreferences}>
 			Manage cookies
 		</button>
 	);
