@@ -1,9 +1,16 @@
 # src/actions
 
-One Astro server action, `server.contact`, and nothing else. `accept: "form"`, with `contactFormSchema`
-(`@domain/contact/schema`) validating the input before the handler body runs. The handler is pure
-orchestration: every step is an Effect program from `@infrastructure/utils/*`, so nothing here talks to the
-database, Resend or reCAPTCHA directly. See ADR 0012 for why the layer boundary sits where it does.
+One Astro server action, `server.contact`, split across two files. `contact.ts` holds `submitContact`, the
+Effect program that orchestrates the submission; `index.ts` holds the Astro binding — `defineAction`,
+`accept: "form"`, `contactFormSchema` (`@domain/contact/schema`) validating the input before the handler body
+runs, the layer, and the error mapping. Every step of the program is an Effect from
+`@infrastructure/utils/*`, so nothing here talks to the database, Resend or reCAPTCHA directly. See ADR 0012
+for why the layer boundary sits where it does.
+
+**The split is what makes the action testable.** `contact.ts` imports nothing from `astro:*`, so
+`submitContact` can be run in a unit test against stub `Database` and `EmailClient` layers — see
+`contact.test.ts` and the doubles in `tests/doubles/`. Keep `astro:actions` out of it; the moment it imports
+`ActionError`, the program stops being reachable from vitest.
 
 ## Invariants & rules
 

@@ -24,6 +24,7 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 
 ```bash
 pnpm dev              # astro dev --open
+pnpm start            # astro dev, no browser — what Playwright's webServer boots
 pnpm build            # astro build
 pnpm preview          # astro preview
 pnpm wrangler:dev     # build + wrangler dev --remote (real Workers runtime)
@@ -66,7 +67,7 @@ src/
   const/ data/
 ```
 
-Unit tests are co-located with the code they cover (`src/**/*.test.ts`); the one test covering no single module is `docs/docs-consistency.test.ts`, colocated with the docs it checks — see the maintenance contract below. Both are picked up by `vitest.config.ts`; Playwright specs live in the `testDir` declared in `playwright.config.ts`.
+Unit tests are co-located with the code they cover (`src/**/*.test.ts`, and `src/**/*.test.tsx` for the React islands); the one test covering no single module is `docs/docs-consistency.test.ts`, colocated with the docs it checks — see the maintenance contract below. `tests/doubles/` holds the stub layers and virtual-module doubles those co-located tests import. All are picked up by `vitest.config.ts`; Playwright specs live in the `testDir` declared in `playwright.config.ts`.
 
 Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/* @application/* @modules/* (→ src/ui/modules) @utils/* @assets/* (→ src/ui/assets) @styles/* (→ src/ui/styles) @data/* @shared/* @content/*`. Prefer aliases over relative paths.
 
@@ -116,6 +117,7 @@ Two traps worth naming, because both have already happened here: deleting a reso
 - **`light-dark()` in prod:** lightningcss downlevels it into a polyfill that breaks nested `color-scheme` inversion in production (dev looks fine). `Features.LightDark` stays in `lightningcss.exclude` in `astro.config.ts`; `errorRecovery: true` is also set. ADR 0006, and [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
 - **`astro dev` hangs / SSR 500s / blank globe:** usually `.vite` cache thrash from running `astro check` or a second `astro dev` beside a live dev server (orphans deps chunks: `effect.js` → 500, `three`/`react-globe.gl` → blank). Fix: stop all dev processes, delete `node_modules/.vite`, restart.
 - **`HIDE_CHROME`** (public boolean env) hides site chrome (header/footer) — used for embedding/clean article rendering. Referenced in `ui/modules/core/components/baseLayout/BaseLayout.astro`, `articles/[...slug].astro`, the astro.config env schema, and the deploy workflow.
+- **Safari/WebKit loads nothing in dev:** the CSP carries `upgrade-insecure-requests`, and WebKit obeys it on `localhost` — every module script, font and `@vite/client` request is rewritten to `https://localhost:4321`, which the dev server does not speak, so the page renders inert with no JS at all. Chromium exempts localhost, so this is invisible there and only shows in Safari and Playwright's `webkit` project. `src/middleware.ts` strips that one directive when `import.meta.env.DEV`; production keeps it. Don't fold it back into `securityHeaders.ts` unconditionally.
 - **Turso env naming:** DB env vars are `ASTRO_DB_REMOTE_URL` / `ASTRO_DB_APP_TOKEN` despite the project no longer using Astro DB. Schema: `src/infrastructure/db/schema.ts`; migrations in `drizzle/`. ADR 0003 explains why they keep the name.
 - **Analytics are consent-gated:** GA/GTM load with `analytics_storage` denied until the visitor accepts the `analytics` category, set by an inline script in `<head>` before either initialises. Nothing in the code makes the requirement visible, so do not reorder or "clean up" that script. ADR 0013.
 - **Image CDN switches by env:** Cloudflare image service in production build, Contentful/passthrough otherwise (`CLOUDFLARE_ENV === "production"` in astro.config → adapter `imageService`).
