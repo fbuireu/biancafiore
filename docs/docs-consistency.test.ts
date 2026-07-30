@@ -636,6 +636,11 @@ describe("application guide: the anti-corruption boundary", () => {
 		).toEqual([]);
 	});
 
+	it("keeps every DTO create synchronous, as the guide states", () => {
+		expect(guide).toContain("Every `create` is synchronous");
+		expect(dtoFiles.filter((file) => /create:\s*async/.test(read(file)))).toEqual([]);
+	});
+
 	it("names the only infrastructure module a DTO is allowed to reach for", () => {
 		const reached = [
 			...new Set(
