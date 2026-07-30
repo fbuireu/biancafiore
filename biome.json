@@ -32,12 +32,7 @@
 				"noUnknownProperty": "info"
 			},
 			"suspicious": {
-				"noConsole": {
-					"level": "error",
-					"options": {
-						"allow": ["error"]
-					}
-				}
+				"noConsole": "error"
 			}
 		}
 	},

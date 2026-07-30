@@ -574,8 +574,14 @@ describe("actions guide", () => {
 		expect(action).toMatch(/saveContact\([^)]*\)\.pipe\(\s*Effect\.catchAll/);
 	});
 
+	it("logs through Effect rather than console, here and everywhere in src", () => {
+		expect(guide).toContain("Nothing here calls `console`");
+		expect(action).toContain("Effect.logError");
+		expect(SOURCE_FILES.filter((file) => /\bconsole\.\w+\(/.test(read(file)))).toEqual([]);
+	});
+
 	it("maps exactly the tags the guide says it maps", () => {
-		const mapped = [...action.matchAll(/case "(\w+)":\s*\n\s*return new ActionError\(\{ code: "(\w+)"/g)].map(
+		const mapped = [...action.matchAll(/case "(\w+)":[\s\S]{0,60}?ActionError\(\{ code: "(\w+)"/g)].map(
 			([, tag, code]) => `${tag} → ${code}`,
 		);
 
@@ -862,8 +868,7 @@ describe("conventions", () => {
 		const conventions = section(CLAUDE_MD, "Conventions");
 
 		expect(BIOME_JSON.formatter.lineWidth).toBe(Number(conventions.match(/Biome: (\d+) line width/)?.[1]));
-		expect(BIOME_JSON.linter.rules.suspicious.noConsole.level).toBe("error");
-		expect(BIOME_JSON.linter.rules.suspicious.noConsole.options.allow).toEqual(["error"]);
+		expect(BIOME_JSON.linter.rules.suspicious.noConsole).toBe("error");
 		expect(BIOME_JSON.assist.actions.source.organizeImports).toBe("on");
 		expect(BIOME_JSON.files.includes).toContain("!**/src/data/**/*");
 		expect(BIOME_JSON.files.includes).toContain("!**/public/**/*");
