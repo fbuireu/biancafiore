@@ -565,6 +565,26 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 	});
 });
 
+describe("actions guide", () => {
+	const guide = read("src/actions/CLAUDE.md");
+	const action = read("src/actions/index.ts");
+
+	it("logs a failed saveContact instead of failing the request", () => {
+		expect(guide).toContain("A failed `saveContact` is logged, not raised");
+		expect(action).toMatch(/saveContact\([^)]*\)\.pipe\(\s*Effect\.catchAll/);
+	});
+
+	it("maps exactly the tags the guide says it maps", () => {
+		const mapped = [...action.matchAll(/case "(\w+)":\s*\n\s*return new ActionError\(\{ code: "(\w+)"/g)].map(
+			([, tag, code]) => `${tag} → ${code}`,
+		);
+
+		expect(mapped.length).toBeGreaterThan(0);
+		expect(mapped.filter((pair) => !guide.includes(pair.split(" → ")[0]))).toEqual([]);
+		expect(mapped.filter((pair) => !guide.includes(pair.split(" → ")[1]))).toEqual([]);
+	});
+});
+
 describe("domain guide: purity", () => {
 	const guide = read("src/domain/CLAUDE.md");
 	const domainFiles = walk("src/domain").filter((file) => file.endsWith(".ts"));
