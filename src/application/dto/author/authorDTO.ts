@@ -5,8 +5,8 @@ import type { BaseDTO } from "@domain/shared/baseDTO";
 import { createImage } from "@shared/application/dto/utils/images";
 import { getArticlesByAuthor } from "./utils/articles";
 
-export const authorDTO: BaseDTO<[RawAuthor[], RawArticle[]], Promise<AuthorDTO[]>> = {
-	create: async ([raw, rawArticles]) => {
+export const authorDTO: BaseDTO<[RawAuthor[], RawArticle[]], AuthorDTO[]> = {
+	create: ([raw, rawArticles]) => {
 		return raw.map((rawAuthor): AuthorDTO => {
 			const articlesByAuthor = getArticlesByAuthor({ rawAuthor, rawArticles });
 

@@ -25,7 +25,7 @@ export const authors = defineCollection({
 			}),
 		);
 
-		const authors = await authorDTO.create([rawAuthors, rawArticles]);
+		const authors = authorDTO.create([rawAuthors, rawArticles]);
 
 		return authors.map((author) => ({
 			id: author.name,
