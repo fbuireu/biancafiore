@@ -70,6 +70,7 @@ const ABSOLUTE_URL = /^[a-z]+:/;
 const DOCUMENTED_LINE_WIDTH = /Biome: (\d+) line width/;
 const SOURCE_FILE = /\.(ts|tsx|astro)$/;
 const TYPESCRIPT_FILE = /\.(ts|tsx)$/;
+const CO_LOCATED_TEST_FILE = /\.test\.(ts|tsx)$/;
 const ROUTE_FILE = /\.(astro|ts)$/;
 const FILE_EXTENSION = /\.\w+$/;
 const PATH_WITH_LINE_NUMBER = /\.(ts|tsx|astro|css):\d+/;
@@ -93,7 +94,7 @@ const IMPORT_SOURCE = /from "([^"]+)"/g;
 const OUTWARD_IMPORT = /^@(application|infrastructure|modules)\//;
 const SHARED_UTILS_IMPORT = /import\s*\{([^}]+)\}\s*from\s*"@shared\/utils\/[^"]+"/g;
 const IMPURE_DOMAIN_CODE = /from "effect"|fetch\(|process\.env|astro:env/;
-const DOMAIN_RULES_CENSUS = /it exists for ([^;]+) and no one else/;
+const DOMAIN_RULES_CENSUS = /([^;.\n]*\bno one else\b)/;
 const IMPURE_DTO_CODE = /astro:env|from "effect"|getEntries|getImagePlaceholder/;
 const ASYNC_DTO_CREATE = /create:\s*async/;
 const DTO_INFRASTRUCTURE_IMPORT = /from "(@infrastructure\/[^"]+)"/g;
@@ -114,11 +115,15 @@ const LAYER_TABLE_ROW = /^\| ([^|]+) \| `([\w.-]+)`[^|]*\|$/gm;
 const STYLESHEET_CITATION = /`([\w/.-]+)`/g;
 const LAYER_STATEMENT = /^@layer .+;$/;
 const MODIFIER_BLOCK_DECLARATION = /^\t\.([a-z-]+)[^{\n]*\{/gm;
-const MIXED_UTILITIES_IN_MODULES = /Utilities used by unrelated blocks \(([^)]+)\)/;
-const MIXED_UTILITIES_IN_STYLES = /blocks used as a mix\* — ([^—]+) —/;
+const MIXED_UTILITY_TABLE_ROW = /^\| `([a-z][a-z-]*)` \| [^|]+ \|$/gm;
+const MIXED_UTILITY_BULLET = /^\t- `([a-z][a-z-]*)` — /gm;
+const STANDALONE_MODIFIER_CLASS = /\.--[\w-]+/g;
+const SMACSS_STATE_CLASS = /\.(?:is|has)-[\w-]+/g;
+const DTO_CITED_DEFAULT = /`(\?\? [^`\n]+)`/g;
 const LEAKED_INFRASTRUCTURE_IMPORT = /@infrastructure\/|from "contentful"/;
 const CITED_CONTAINER_QUERY = /@container ([a-z-]+) \(width <= \d+px\)/;
 const IMAGE_SERVICE_SWITCH = /imageService: isProductionBuild \? "cloudflare" : "passthrough"/;
+const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
 
 const toPosix = (value: string) => value.split("\\").join("/");
 const read = (relativePath: string) => readFileSync(join(ROOT, relativePath), "utf8").split("\r\n").join("\n");
@@ -184,7 +189,9 @@ const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("CLAUDE.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
 const DOCS = ["CLAUDE.md", "CONTEXT.md", ...NESTED_GUIDES, ...ADR_FILES];
 
-const SOURCE_FILES = walk("src").filter((file) => SOURCE_FILE.test(file));
+const production = (files: string[]) => files.filter((file) => !CO_LOCATED_TEST_FILE.test(file));
+
+const SOURCE_FILES = production(walk("src").filter((file) => SOURCE_FILE.test(file)));
 
 const namesIn = ({ text, pattern }: { text: string; pattern: RegExp }) =>
 	[...(text.match(pattern)?.[1] ?? "").matchAll(BACKTICKED_NAME)].map(([, name]) => name);
@@ -570,6 +577,15 @@ describe("gotchas", () => {
 		expect(ASTRO_CONFIG).toMatch(IMAGE_SERVICE_SWITCH);
 	});
 
+	it("keeps the https upgrade out of the dev CSP, which WebKit obeys on localhost", () => {
+		const middleware = read("src/middleware.ts");
+
+		expect(read("src/const/securityHeaders.ts")).toContain(HTTPS_UPGRADE_DIRECTIVE);
+		expect(middleware).toContain(HTTPS_UPGRADE_DIRECTIVE);
+		expect(middleware).toContain("import.meta.env.DEV");
+		expect(CLAUDE_MD).toContain(HTTPS_UPGRADE_DIRECTIVE);
+	});
+
 	it("reads HIDE_CHROME everywhere the gotcha says it does", () => {
 		const readers = [
 			"src/ui/modules/core/components/baseLayout/BaseLayout.astro",
@@ -591,7 +607,7 @@ describe("gotchas", () => {
 
 describe("infrastructure guide: secrets, errors and clients", () => {
 	const guide = read("src/infrastructure/CLAUDE.md");
-	const infrastructureFiles = walk("src/infrastructure").filter((file) => TYPESCRIPT_FILE.test(file));
+	const infrastructureFiles = production(walk("src/infrastructure").filter((file) => TYPESCRIPT_FILE.test(file)));
 
 	it("reads astro:env/server lazily, inside the layer, and never as a module import", () => {
 		expect(guide).toContain("Never import `astro:env/server` at module top level");
@@ -640,15 +656,16 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 describe("actions guide", () => {
 	const guide = read("src/actions/CLAUDE.md");
 	const action = read("src/actions/index.ts");
+	const program = read("src/actions/contact.ts");
 
 	it("logs a failed saveContact instead of failing the request", () => {
 		expect(guide).toContain("A failed `saveContact` is logged, not raised");
-		expect(action).toMatch(CAUGHT_SAVE_CONTACT);
+		expect(program).toMatch(CAUGHT_SAVE_CONTACT);
 	});
 
 	it("logs through Effect rather than console, here and everywhere in src", () => {
 		expect(guide).toContain("Nothing here calls `console`");
-		expect(action).toContain("Effect.logError");
+		expect(`${action}${program}`).toContain("Effect.logError");
 		expect(SOURCE_FILES.filter((file) => CONSOLE_CALL.test(read(file)))).toEqual([]);
 	});
 
@@ -663,7 +680,7 @@ describe("actions guide", () => {
 
 describe("domain guide: purity", () => {
 	const guide = read("src/domain/CLAUDE.md");
-	const domainFiles = walk("src/domain").filter((file) => file.endsWith(".ts"));
+	const domainFiles = production(walk("src/domain").filter((file) => file.endsWith(".ts")));
 
 	const externalImports = [
 		...new Set(
@@ -719,7 +736,7 @@ describe("domain guide: purity", () => {
 
 describe("application guide: the anti-corruption boundary", () => {
 	const guide = read("src/application/CLAUDE.md");
-	const dtoFiles = walk("src/application/dto").filter((file) => TYPESCRIPT_FILE.test(file));
+	const dtoFiles = production(walk("src/application/dto").filter((file) => TYPESCRIPT_FILE.test(file)));
 	const loaders = directoriesIn("src/application/entities").map(
 		(entity) => `src/application/entities/${entity}/${entity}.ts`,
 	);
@@ -728,6 +745,14 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(guide).toContain("DTOs are pure on purpose");
 		expect(dtoFiles.length).toBeGreaterThan(0);
 		expect(dtoFiles.filter((file) => IMPURE_DTO_CODE.test(read(file)))).toEqual([]);
+	});
+
+	it("applies every optional-field default it cites, so the domain DTO stays total", () => {
+		const cited = [...new Set([...guide.matchAll(DTO_CITED_DEFAULT)].map(([, fallback]) => fallback))];
+		const dtoLayer = dtoFiles.map((file) => read(file)).join("\n");
+
+		expect(cited.length).toBeGreaterThan(0);
+		expect(cited.filter((fallback) => !dtoLayer.includes(fallback))).toEqual([]);
 	});
 
 	it("keeps every DTO create synchronous, as the guide states", () => {
@@ -749,7 +774,7 @@ describe("application guide: the anti-corruption boundary", () => {
 	it("stops Contentful types at this layer: nothing downstream sees them", () => {
 		expect(guide).toContain("Contentful types stop here");
 
-		const downstream = [...walk("src/domain"), ...walk("src/ui")]
+		const downstream = production([...walk("src/domain"), ...walk("src/ui")])
 			.filter((file) => SOURCE_FILE.test(file))
 			.filter((file) => CONTENTFUL_TYPE.test(read(file)));
 
@@ -868,23 +893,49 @@ describe("modules guide: mixes, islands and data access", () => {
 	const guide = read("src/ui/modules/CLAUDE.md");
 	const stylesGuide = read("src/ui/styles/CLAUDE.md");
 
-	it("only claims utilities that modifiers.css actually declares as blocks", () => {
-		const declared = new Set(
+	const declaredModifiers = [
+		...new Set(
 			[...read("src/ui/styles/global/modifiers.css").matchAll(MODIFIER_BLOCK_DECLARATION)].map(([, name]) => name),
-		);
-		const claimed = [
-			...namesIn({ text: guide, pattern: MIXED_UTILITIES_IN_MODULES }),
-			...namesIn({ text: stylesGuide, pattern: MIXED_UTILITIES_IN_STYLES }),
-		];
+		),
+	].sort();
+
+	const tabulatedModifiers = [...stylesGuide.matchAll(MIXED_UTILITY_TABLE_ROW)].map(([, name]) => name);
+	const listedModifiers = [...guide.matchAll(MIXED_UTILITY_BULLET)].map(([, name]) => name);
+
+	it("only claims utilities that modifiers.css actually declares as blocks", () => {
+		const claimed = [...tabulatedModifiers, ...listedModifiers];
 
 		expect(claimed.length).toBeGreaterThan(0);
-		expect(claimed.filter((name) => !declared.has(name))).toEqual([]);
+		expect(claimed.filter((name) => !declaredModifiers.includes(name))).toEqual([]);
+	});
+
+	it("names every block modifiers.css declares in both guides, so none is left undocumented", () => {
+		expect(declaredModifiers.length).toBeGreaterThan(0);
+		expect([...tabulatedModifiers].sort()).toEqual(declaredModifiers);
+		expect([...listedModifiers].sort()).toEqual(declaredModifiers);
+	});
+
+	it("writes modifiers the way BEM does: fused onto a block, never standalone or `is-`/`has-` prefixed", () => {
+		expect(guide).toContain("No standalone `.--modifier` classes");
+		expect(guide).toContain("no `is-`/`has-` prefixes");
+
+		const stylesheets = walk("src/ui/modules").filter((file) => file.endsWith(".css"));
+		const violations = stylesheets.flatMap((file) => {
+			const source = read(file);
+
+			return [...source.matchAll(STANDALONE_MODIFIER_CLASS), ...source.matchAll(SMACSS_STATE_CLASS)].map(
+				([selector]) => `${file}: ${selector}`,
+			);
+		});
+
+		expect(stylesheets.length).toBeGreaterThan(0);
+		expect(violations).toEqual([]);
 	});
 
 	it("reads content through astro:content only, never Contentful or infrastructure", () => {
 		expect(guide).toContain("never by calling Contentful or `@infrastructure` directly");
 
-		const leaks = walk("src/ui")
+		const leaks = production(walk("src/ui"))
 			.filter((file) => SOURCE_FILE.test(file))
 			.filter((file) => LEAKED_INFRASTRUCTURE_IMPORT.test(read(file)));
 
@@ -902,7 +953,7 @@ describe("modules guide: mixes, islands and data access", () => {
 	});
 
 	it("names every React island under modules", () => {
-		const islands = walk("src/ui/modules").filter((file) => file.endsWith(".tsx"));
+		const islands = production(walk("src/ui/modules")).filter((file) => file.endsWith(".tsx"));
 		const documented = section(guide, "Islands");
 
 		expect(islands.length).toBeGreaterThan(0);
