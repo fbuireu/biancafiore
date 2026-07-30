@@ -29,9 +29,13 @@ Don't collapse them into one layer: CMS reads are process-wide, contact writes a
 
 ## utils/
 
-Effect programs that require a client in `R` and are composed by the action: `guards.ts` (zod validation → `ValidationError`, reCAPTCHA verification), `persistence.ts` (duplicate check, insert; maps SQLite constraint violations to `DuplicateContactError`), `email.tsx` (Resend payload + `normalizeEmail`). Keeping them here leaves `src/actions` as pure orchestration.
+The steps the contact action composes, so `src/actions` stays pure orchestration. Only some of them need a client in `R`:
 
-**Errors stay tagged.** Mapping to HTTP status or user-facing copy happens in `src/actions/index.ts` (`toActionError`), never here.
+- `guards.ts` — `validateContact` (zod → `ValidationError`) and `verifyRecaptcha`. **Neither requires a client**: `verifyRecaptcha` does its own lazy `astro:env/server` import and calls Google over plain `fetch`, and a score below `RECAPTCHA_MINIMUM_SCORE` (0.5) fails as a `ValidationError` too — there is no separate reCAPTCHA error tag.
+- `persistence.ts` — duplicate check and insert, both requiring `Database`; maps SQLite constraint violations to `DuplicateContactError`.
+- `email.tsx` — `sendEmail`, requiring `EmailClient`, plus two plain functions that are not Effects at all: `normalizeEmail` and `createEmail`.
+
+**Errors stay tagged**, and turning a tag into an HTTP status happens only in `src/actions/index.ts` (`toActionError`), never here. The *message* is the opposite: the copy for `ValidationError` and `DuplicateContactError` is written in this folder and reaches the visitor verbatim, because `toActionError` forwards `failure.value.message` for exactly those two tags. Only the generic 500 text belongs to the action.
 
 ## Other subfolders
 
