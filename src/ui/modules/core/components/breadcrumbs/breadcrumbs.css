@@ -9,9 +9,7 @@
 	}
 }
 
-.current-page {
-	color: var(--primary-main);
-
+.breadcrumb__item .current-page {
 	@container article-page (width <= 960px) {
 		overflow: hidden;
 		text-overflow: ellipsis;

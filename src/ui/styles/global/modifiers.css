@@ -11,6 +11,10 @@
 		color-scheme: light;
 	}
 
+	.current-page {
+		color: var(--primary-main);
+	}
+
 	.underline-on-hover {
 		--border-width: 1px;
 		border: none;
