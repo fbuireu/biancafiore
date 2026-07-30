@@ -50,6 +50,76 @@ const DOCUMENTED_PACKAGE_VERSIONS: Record<string, string> = {
 	React: "react",
 };
 
+const INLINE_CODE = /`([^`\n]+)`/g;
+const FENCED_BLOCK = /```(\w*)\n([\s\S]*?)```/g;
+const ANY_FENCED_BLOCK = /```[\s\S]*?```/g;
+const TRAILING_GLOB = /\*$/;
+const LEADING_RELATIVE = /^\.\//;
+const LEADING_SLASH = /^\//;
+const TRAILING_SLASH = /\/$/;
+const BACKTICKED_NAME = /`\.?([\w-]+)`/g;
+const DOCUMENTED_SCRIPT = /^pnpm\s+([a-z0-9:._-]+)/;
+const DOCUMENTED_NODE_VERSION = /Node \*\*([\d.]+)\*\*/;
+const DOCUMENTED_PNPM_VERSION = /pnpm \*\*([\d.]+)\*\*/;
+const DOCUMENTED_STACK_VERSION = /\*\*([A-Z][\w.]*) ([\d][\d.]*)\*\*/g;
+const DOCUMENTED_ALIAS = /@([a-z]+)\/\*(?:\s*\(→\s*([^)]+)\))?/g;
+const DOCUMENTED_ROUTES_COMMENT = /pages\/\s*#\s*routes \(([^)]+)\)/;
+const NESTED_GUIDE_LINK = /\]\(\.\/(src\/[\w/-]*CLAUDE\.md)\)/g;
+const RELATIVE_MARKDOWN_LINK = /\]\(([^)#][^)]*)\)/g;
+const ABSOLUTE_URL = /^[a-z]+:/;
+const DOCUMENTED_LINE_WIDTH = /Biome: (\d+) line width/;
+const SOURCE_FILE = /\.(ts|tsx|astro)$/;
+const TYPESCRIPT_FILE = /\.(ts|tsx)$/;
+const ROUTE_FILE = /\.(astro|ts)$/;
+const FILE_EXTENSION = /\.\w+$/;
+const PATH_WITH_LINE_NUMBER = /\.(ts|tsx|astro|css):\d+/;
+const NOT_A_BARE_PATH = /[<>*…(),\s]/;
+const ENV_SCHEMA_FIELD = /(\w+): envField\./g;
+const ENV_EXAMPLE_VARIABLE = /^([A-Z][A-Z0-9_]*)=/gm;
+const ADR_REFERENCE = /ADR ([\d/\s]+)/g;
+const ADR_NUMBER = /\d{4}/g;
+const ADR_PATH_REFERENCE = /docs\/adr\/(\d{4})-/g;
+const ADR_FILENAME = /^docs\/adr\/\d{4}(-[a-z\d]+)+\.md$/;
+const ADR_STATUS = /\n## Status\n\n(\w+)/;
+const ADR_DATE = /\nDate: \d{4}-\d{2}-\d{2}\n/;
+const CLIENT_TABLE_ROW = /^\| `(\w+)` \| `(\w+)` \| `([\w/.]+)` \|$/gm;
+const TAGGED_ERROR_DECLARATION = /export class (\w+) extends Data\.TaggedError/g;
+const MODULE_LEVEL_ENV_IMPORT = /^\s*import\s[^\n]*"astro:env\/server"/m;
+const RECAPTCHA_SCORE_DECLARATION = /const RECAPTCHA_MINIMUM_SCORE = ([\d.]+);/;
+const CAUGHT_SAVE_CONTACT = /saveContact\([^)]*\)\.pipe\(\s*Effect\.catchAll/;
+const CONSOLE_CALL = /\bconsole\.\w+\(/;
+const TAG_TO_STATUS_CASE = /case "(\w+)":[\s\S]{0,60}?ActionError\(\{ code: "(\w+)"/g;
+const IMPORT_SOURCE = /from "([^"]+)"/g;
+const OUTWARD_IMPORT = /^@(application|infrastructure|modules)\//;
+const SHARED_UTILS_IMPORT = /import\s*\{([^}]+)\}\s*from\s*"@shared\/utils\/[^"]+"/g;
+const IMPURE_DOMAIN_CODE = /from "effect"|fetch\(|process\.env|astro:env/;
+const DOMAIN_RULES_CENSUS = /it exists for ([^;]+) and no one else/;
+const IMPURE_DTO_CODE = /astro:env|from "effect"|getEntries|getImagePlaceholder/;
+const ASYNC_DTO_CREATE = /create:\s*async/;
+const DTO_INFRASTRUCTURE_IMPORT = /from "(@infrastructure\/[^"]+)"/g;
+const CONTENTFUL_TYPE = /from "contentful"|@contentful\/|EntryFieldTypes|EntrySkeletonType/;
+const DOMAIN_SCHEMA_BINDING = /schema:\s*\w+Schema/;
+const DOMAIN_IMPORT = /from "@domain\//;
+const LOADER_ID_ASSIGNMENT = /^\t*id:\s*(?:\w+\.)?(\w+),$/gm;
+const ANY_ID_ASSIGNMENT = /^\t*id:/m;
+const TYPE_SCALE_RATIO = /--ratio:\s*([\d.]+);/;
+const EDITORIAL_UTILITY_DECLARATION = /^\t\.(editorial-[a-z-]+)[^{\n]*\{/gm;
+const EDITORIAL_UTILITY_CITATION = /`\.(editorial-[a-z-]+)`/g;
+const REVEAL_MODIFIER_DECLARATION = /\.reveal--[a-z-]+[^{\n]*\{/g;
+const PAGE_CONTAINER_DECLARATION = /&\.page--([a-z-]+)\s*\{\s*container:\s*([a-z-]+)\s*\/\s*([^;]+);/g;
+const PAGES_ROUTES_BLOCK = /PAGES_ROUTES = \{([\s\S]*?)\n\} as const;/;
+const PAGES_ROUTES_KEY = /^\t"?([\w-]+)"?:/gm;
+const LAYER_ORDER_DECLARATION = /^@layer [^;{]+,[^;{]+;/m;
+const LAYER_TABLE_ROW = /^\| ([^|]+) \| `([\w.-]+)`[^|]*\|$/gm;
+const STYLESHEET_CITATION = /`([\w/.-]+)`/g;
+const LAYER_STATEMENT = /^@layer .+;$/;
+const MODIFIER_BLOCK_DECLARATION = /^\t\.([a-z-]+)[^{\n]*\{/gm;
+const MIXED_UTILITIES_IN_MODULES = /Utilities used by unrelated blocks \(([^)]+)\)/;
+const MIXED_UTILITIES_IN_STYLES = /blocks used as a mix\* — ([^—]+) —/;
+const LEAKED_INFRASTRUCTURE_IMPORT = /@infrastructure\/|from "contentful"/;
+const CITED_CONTAINER_QUERY = /@container ([a-z-]+) \(width <= \d+px\)/;
+const IMAGE_SERVICE_SWITCH = /imageService: isProductionBuild \? "cloudflare" : "passthrough"/;
+
 const toPosix = (value: string) => value.split("\\").join("/");
 const read = (relativePath: string) => readFileSync(join(ROOT, relativePath), "utf8").split("\r\n").join("\n");
 const readJson = (relativePath: string) => JSON.parse(read(relativePath));
@@ -83,12 +153,12 @@ const PROJECT_FILES = [
 	...INDEXED_DIRECTORIES.filter(exists).flatMap(walk),
 ];
 
-const stripFences = (markdown: string) => markdown.replace(/```[\s\S]*?```/g, "");
+const stripFences = (markdown: string) => markdown.replace(ANY_FENCED_BLOCK, "");
 
-const inlineCode = (markdown: string) => [...stripFences(markdown).matchAll(/`([^`\n]+)`/g)].map(([, code]) => code);
+const inlineCode = (markdown: string) => [...stripFences(markdown).matchAll(INLINE_CODE)].map(([, code]) => code);
 
 const fences = (markdown: string) =>
-	[...markdown.matchAll(/```(\w*)\n([\s\S]*?)```/g)].map(([, language, body]) => ({ language, body }));
+	[...markdown.matchAll(FENCED_BLOCK)].map(([, language, body]) => ({ language, body }));
 
 const section = (markdown: string, heading: string) => {
 	const lines = markdown.split("\n");
@@ -114,19 +184,20 @@ const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("CLAUDE.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
 const DOCS = ["CLAUDE.md", "CONTEXT.md", ...NESTED_GUIDES, ...ADR_FILES];
 
-const SOURCE_FILES = walk("src").filter((file) => /\.(ts|tsx|astro)$/.test(file));
+const SOURCE_FILES = walk("src").filter((file) => SOURCE_FILE.test(file));
 
 const namesIn = ({ text, pattern }: { text: string; pattern: RegExp }) =>
-	[...(text.match(pattern)?.[1] ?? "").matchAll(/`\.?([\w-]+)`/g)].map(([, name]) => name);
+	[...(text.match(pattern)?.[1] ?? "").matchAll(BACKTICKED_NAME)].map(([, name]) => name);
 
 const ALIAS_TARGETS = Object.entries(TSCONFIG.compilerOptions.paths as Record<string, string[]>).map(
-	([alias, [target]]) => [alias.replace(/\*$/, ""), target.replace(/^\.\//, "").replace(/\*$/, "")] as const,
+	([alias, [target]]) =>
+		[alias.replace(TRAILING_GLOB, ""), target.replace(LEADING_RELATIVE, "").replace(TRAILING_GLOB, "")] as const,
 );
 
 describe("commands and versions", () => {
 	const documentedScripts = fences(section(CLAUDE_MD, "Commands"))
 		.flatMap(({ body }) => body.split("\n"))
-		.flatMap((line) => line.match(/^pnpm\s+([a-z0-9:._-]+)/)?.[1] ?? []);
+		.flatMap((line) => line.match(DOCUMENTED_SCRIPT)?.[1] ?? []);
 
 	it("documents only scripts that exist in package.json", () => {
 		expect(documentedScripts.filter((script) => !(script in PACKAGE_JSON.scripts))).toEqual([]);
@@ -143,13 +214,13 @@ describe("commands and versions", () => {
 	it("pins the same Node and pnpm versions the guide claims", () => {
 		const versions = section(CLAUDE_MD, "Versions");
 
-		expect(versions.match(/Node \*\*([\d.]+)\*\*/)?.[1]).toBe(PACKAGE_JSON.engines.node);
-		expect(`pnpm@${versions.match(/pnpm \*\*([\d.]+)\*\*/)?.[1]}`).toBe(PACKAGE_JSON.packageManager);
+		expect(versions.match(DOCUMENTED_NODE_VERSION)?.[1]).toBe(PACKAGE_JSON.engines.node);
+		expect(`pnpm@${versions.match(DOCUMENTED_PNPM_VERSION)?.[1]}`).toBe(PACKAGE_JSON.packageManager);
 		expect(read(".nvmrc").trim()).toBe(PACKAGE_JSON.engines.node);
 	});
 
 	it("names stack versions that match the installed dependencies", () => {
-		const claimed = [...section(CLAUDE_MD, "Stack").matchAll(/\*\*([A-Z][\w.]*) ([\d][\d.]*)\*\*/g)]
+		const claimed = [...section(CLAUDE_MD, "Stack").matchAll(DOCUMENTED_STACK_VERSION)]
 			.filter(([, name]) => name in DOCUMENTED_PACKAGE_VERSIONS)
 			.map(([, name, version]) => ({ name, version }));
 
@@ -165,9 +236,10 @@ describe("commands and versions", () => {
 
 describe("structure and aliases", () => {
 	const aliasLine = CLAUDE_MD.split("\n").find((line) => line.startsWith("Path aliases")) ?? "";
-	const documentedAliases = [...aliasLine.matchAll(/@([a-z]+)\/\*(?:\s*\(→\s*([^)]+)\))?/g)].map(
-		([, name, target]) => ({ alias: `@${name}/`, target: target ?? `src/${name}` }),
-	);
+	const documentedAliases = [...aliasLine.matchAll(DOCUMENTED_ALIAS)].map(([, name, target]) => ({
+		alias: `@${name}/`,
+		target: target ?? `src/${name}`,
+	}));
 
 	const structureFence = fences(section(CLAUDE_MD, "Structure & aliases"))[0]?.body ?? "";
 
@@ -186,7 +258,7 @@ describe("structure and aliases", () => {
 			const parent = stack[stack.length - 1]?.path ?? "";
 
 			for (const name of names) {
-				const bare = name.replace(/\/$/, "");
+				const bare = name.replace(TRAILING_SLASH, "");
 				const path = parent ? `${parent}/${bare}` : bare;
 
 				entries.push(path);
@@ -206,7 +278,7 @@ describe("structure and aliases", () => {
 		const targets = new Map(ALIAS_TARGETS);
 
 		for (const { alias, target } of documentedAliases) {
-			expect(`${alias} → ${targets.get(alias)?.replace(/\/$/, "")}`).toBe(`${alias} → ${target}`);
+			expect(`${alias} → ${targets.get(alias)?.replace(TRAILING_SLASH, "")}`).toBe(`${alias} → ${target}`);
 		}
 	});
 
@@ -224,13 +296,13 @@ describe("structure and aliases", () => {
 	});
 
 	it("lists every route under src/pages", () => {
-		const documentedRoutes = (structureFence.match(/pages\/\s*#\s*routes \(([^)]+)\)/)?.[1] ?? "")
+		const documentedRoutes = (structureFence.match(DOCUMENTED_ROUTES_COMMENT)?.[1] ?? "")
 			.split(",")
 			.map((route) => route.trim())
-			.map((route) => `src/pages/${/\.\w+$/.test(route) ? route : `${route}.astro`}`);
+			.map((route) => `src/pages/${FILE_EXTENSION.test(route) ? route : `${route}.astro`}`);
 
 		const actualRoutes = walk("src/pages").filter(
-			(file) => !file.split("/").pop()?.startsWith("_") && /\.(astro|ts)$/.test(file),
+			(file) => !file.split("/").pop()?.startsWith("_") && ROUTE_FILE.test(file),
 		);
 
 		expect(documentedRoutes.filter((route) => !exists(route))).toEqual([]);
@@ -238,7 +310,7 @@ describe("structure and aliases", () => {
 	});
 
 	it("links a nested guide for every CLAUDE.md under src", () => {
-		const linked = [...section(CLAUDE_MD, "Structure & aliases").matchAll(/\]\(\.\/(src\/[\w/-]*CLAUDE\.md)\)/g)].map(
+		const linked = [...section(CLAUDE_MD, "Structure & aliases").matchAll(NESTED_GUIDE_LINK)].map(
 			([, target]) => target,
 		);
 
@@ -247,8 +319,8 @@ describe("structure and aliases", () => {
 });
 
 describe("environment", () => {
-	const schemaVariables = [...ASTRO_CONFIG.matchAll(/(\w+): envField\./g)].map(([, name]) => name).sort();
-	const exampleVariables = [...read(".env.example").matchAll(/^([A-Z][A-Z0-9_]*)=/gm)].map(([, name]) => name).sort();
+	const schemaVariables = [...ASTRO_CONFIG.matchAll(ENV_SCHEMA_FIELD)].map(([, name]) => name).sort();
+	const exampleVariables = [...read(".env.example").matchAll(ENV_EXAMPLE_VARIABLE)].map(([, name]) => name).sort();
 
 	it("declares the same variables in .env.example and the astro.config env schema", () => {
 		expect(exampleVariables).toEqual(schemaVariables);
@@ -259,14 +331,16 @@ describe("documented paths", () => {
 	const documentedPaths = DOCS.flatMap((doc) =>
 		inlineCode(read(doc))
 			.filter((token) => DOCUMENTED_PATH_EXTENSIONS.some((extension) => token.endsWith(extension)))
-			.filter((token) => !/[<>*…(),\s]/.test(token) && !token.startsWith("node:"))
+			.filter((token) => !NOT_A_BARE_PATH.test(token) && !token.startsWith("node:"))
 			.filter((token) => !DOCUMENTED_PATH_EXAMPLES.has(token))
 			.map((token) => ({ doc, token })),
 	);
 
 	const resolves = ({ doc, token }: { doc: string; token: string }) => {
 		const aliased = ALIAS_TARGETS.find(([alias]) => token.startsWith(alias));
-		const candidate = aliased ? token.replace(aliased[0], aliased[1]) : token.replace(/^\.\//, "").replace(/^\//, "");
+		const candidate = aliased
+			? token.replace(aliased[0], aliased[1])
+			: token.replace(LEADING_RELATIVE, "").replace(LEADING_SLASH, "");
 		const guideDirectory = toPosix(dirname(doc));
 
 		return (
@@ -284,7 +358,7 @@ describe("documented paths", () => {
 	it("never cites a line number, which rots as soon as anything above it moves", () => {
 		const citations = DOCS.flatMap((doc) =>
 			inlineCode(read(doc))
-				.filter((token) => /\.(ts|tsx|astro|css):\d+/.test(token) && !DOCUMENTED_PATH_EXAMPLES.has(token))
+				.filter((token) => PATH_WITH_LINE_NUMBER.test(token) && !DOCUMENTED_PATH_EXAMPLES.has(token))
 				.map((token) => `${doc}: ${token}`),
 		);
 
@@ -295,9 +369,9 @@ describe("documented paths", () => {
 describe("cross-document links", () => {
 	it("resolves every relative markdown link", () => {
 		const broken = DOCS.flatMap((doc) =>
-			[...read(doc).matchAll(/\]\(([^)#][^)]*)\)/g)]
+			[...read(doc).matchAll(RELATIVE_MARKDOWN_LINK)]
 				.map(([, target]) => target.split("#")[0])
-				.filter((target) => target.length > 0 && !/^[a-z]+:/.test(target))
+				.filter((target) => target.length > 0 && !ABSOLUTE_URL.test(target))
 				.map((target) => join(dirname(join(ROOT, doc)), target))
 				.filter((target) => !existsSync(target))
 				.map((target) => `${doc}: ${toPosix(target.replace(ROOT, ""))}`),
@@ -312,8 +386,8 @@ describe("ADRs", () => {
 		const body = read(doc);
 
 		return [
-			...[...body.matchAll(/ADR ([\d/\s]+)/g)].flatMap(([, numbers]) => numbers.match(/\d{4}/g) ?? []),
-			...[...body.matchAll(/docs\/adr\/(\d{4})-/g)].map(([, number]) => number),
+			...[...body.matchAll(ADR_REFERENCE)].flatMap(([, numbers]) => numbers.match(ADR_NUMBER) ?? []),
+			...[...body.matchAll(ADR_PATH_REFERENCE)].map(([, number]) => number),
 		];
 	};
 
@@ -324,7 +398,7 @@ describe("ADRs", () => {
 	});
 
 	it("names every file NNNN-kebab-title.md", () => {
-		expect(ADR_FILES.filter((file) => !/^docs\/adr\/\d{4}(-[a-z\d]+)+\.md$/.test(file))).toEqual([]);
+		expect(ADR_FILES.filter((file) => !ADR_FILENAME.test(file))).toEqual([]);
 	});
 
 	it("fills in the template: numbered heading, date, status, context, decision, consequences", () => {
@@ -332,11 +406,11 @@ describe("ADRs", () => {
 			const body = read(file);
 			const number = Number(file.split("/").pop()?.slice(0, 4));
 			const missing = ADR_TEMPLATE_SECTIONS.filter((heading) => !body.includes(`\n## ${heading}\n`));
-			const status = body.match(/\n## Status\n\n(\w+)/)?.[1] ?? "";
+			const status = body.match(ADR_STATUS)?.[1] ?? "";
 
 			return [
 				...(new RegExp(`^# ${number}\\. \\S`).test(body) ? [] : [`${file}: heading is not "# ${number}. Title"`]),
-				...(/\nDate: \d{4}-\d{2}-\d{2}\n/.test(body) ? [] : [`${file}: no "Date: YYYY-MM-DD" line`]),
+				...(ADR_DATE.test(body) ? [] : [`${file}: no "Date: YYYY-MM-DD" line`]),
 				...(ADR_STATUSES.has(status) ? [] : [`${file}: status is "${status}"`]),
 				...missing.map((heading) => `${file}: no "## ${heading}" section`),
 			];
@@ -396,7 +470,7 @@ describe("infrastructure guide", () => {
 	const guide = read("src/infrastructure/CLAUDE.md");
 
 	it("points each client tag at a file that declares it", () => {
-		const rows = [...guide.matchAll(/^\| `(\w+)` \| `(\w+)` \| `([\w/.]+)` \|$/gm)].map(([, tag, live, file]) => ({
+		const rows = [...guide.matchAll(CLIENT_TABLE_ROW)].map(([, tag, live, file]) => ({
 			tag,
 			live,
 			file,
@@ -429,8 +503,8 @@ describe("infrastructure guide", () => {
 
 describe("styles guide", () => {
 	const guide = read("src/ui/styles/CLAUDE.md");
-	const layerRows = [...guide.matchAll(/^\| ([^|]+) \| `([\w.-]+)`[^|]*\|$/gm)].map(([, files, layer]) => ({
-		files: [...files.matchAll(/`([\w/.-]+)`/g)].map(([, file]) => file),
+	const layerRows = [...guide.matchAll(LAYER_TABLE_ROW)].map(([, files, layer]) => ({
+		files: [...files.matchAll(STYLESHEET_CITATION)].map(([, file]) => file),
 		layer,
 	}));
 
@@ -442,7 +516,7 @@ describe("styles guide", () => {
 				.find(({ language }) => language === "css")
 				?.body.trim() ?? "";
 
-		expect(declaration).toMatch(/^@layer .+;$/);
+		expect(declaration).toMatch(LAYER_STATEMENT);
 		expect(read("src/ui/styles/index.css")).toContain(declaration);
 	});
 
@@ -493,7 +567,7 @@ describe("gotchas", () => {
 
 	it("switches the image service on CLOUDFLARE_ENV", () => {
 		expect(ASTRO_CONFIG).toContain('process.env.CLOUDFLARE_ENV === "production"');
-		expect(ASTRO_CONFIG).toMatch(/imageService: isProductionBuild \? "cloudflare" : "passthrough"/);
+		expect(ASTRO_CONFIG).toMatch(IMAGE_SERVICE_SWITCH);
 	});
 
 	it("reads HIDE_CHROME everywhere the gotcha says it does", () => {
@@ -517,7 +591,7 @@ describe("gotchas", () => {
 
 describe("infrastructure guide: secrets, errors and clients", () => {
 	const guide = read("src/infrastructure/CLAUDE.md");
-	const infrastructureFiles = walk("src/infrastructure").filter((file) => /\.(ts|tsx)$/.test(file));
+	const infrastructureFiles = walk("src/infrastructure").filter((file) => TYPESCRIPT_FILE.test(file));
 
 	it("reads astro:env/server lazily, inside the layer, and never as a module import", () => {
 		expect(guide).toContain("Never import `astro:env/server` at module top level");
@@ -526,7 +600,7 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 
 		expect(readers.length).toBeGreaterThan(0);
 		expect(readers.filter((file) => !read(file).includes('import("astro:env/server")'))).toEqual([]);
-		expect(readers.filter((file) => /^\s*import\s[^\n]*"astro:env\/server"/m.test(read(file)))).toEqual([]);
+		expect(readers.filter((file) => MODULE_LEVEL_ENV_IMPORT.test(read(file)))).toEqual([]);
 	});
 
 	it("dies on irrecoverable misconfiguration rather than failing typed, in the layer the guide names", () => {
@@ -537,9 +611,7 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 	it("declares every tagged error in errors.ts, never beside a client", () => {
 		expect(guide).toContain("don't define errors next to the client");
 
-		const declared = [
-			...read("src/infrastructure/errors.ts").matchAll(/export class (\w+) extends Data\.TaggedError/g),
-		];
+		const declared = [...read("src/infrastructure/errors.ts").matchAll(TAGGED_ERROR_DECLARATION)];
 
 		expect(declared.length).toBeGreaterThan(0);
 		expect(
@@ -557,7 +629,7 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 
 	it("cites the reCAPTCHA score the guard actually enforces", () => {
 		const guards = read("src/infrastructure/utils/guards.ts");
-		const score = guards.match(/const RECAPTCHA_MINIMUM_SCORE = ([\d.]+);/)?.[1];
+		const score = guards.match(RECAPTCHA_SCORE_DECLARATION)?.[1];
 
 		expect(score).toBeDefined();
 		expect(guards).toContain("< RECAPTCHA_MINIMUM_SCORE");
@@ -571,19 +643,17 @@ describe("actions guide", () => {
 
 	it("logs a failed saveContact instead of failing the request", () => {
 		expect(guide).toContain("A failed `saveContact` is logged, not raised");
-		expect(action).toMatch(/saveContact\([^)]*\)\.pipe\(\s*Effect\.catchAll/);
+		expect(action).toMatch(CAUGHT_SAVE_CONTACT);
 	});
 
 	it("logs through Effect rather than console, here and everywhere in src", () => {
 		expect(guide).toContain("Nothing here calls `console`");
 		expect(action).toContain("Effect.logError");
-		expect(SOURCE_FILES.filter((file) => /\bconsole\.\w+\(/.test(read(file)))).toEqual([]);
+		expect(SOURCE_FILES.filter((file) => CONSOLE_CALL.test(read(file)))).toEqual([]);
 	});
 
 	it("maps exactly the tags the guide says it maps", () => {
-		const mapped = [...action.matchAll(/case "(\w+)":[\s\S]{0,60}?ActionError\(\{ code: "(\w+)"/g)].map(
-			([, tag, code]) => `${tag} → ${code}`,
-		);
+		const mapped = [...action.matchAll(TAG_TO_STATUS_CASE)].map(([, tag, code]) => `${tag} → ${code}`);
 
 		expect(mapped.length).toBeGreaterThan(0);
 		expect(mapped.filter((pair) => !guide.includes(pair.split(" → ")[0]))).toEqual([]);
@@ -598,7 +668,7 @@ describe("domain guide: purity", () => {
 	const externalImports = [
 		...new Set(
 			domainFiles.flatMap((file) =>
-				[...read(file).matchAll(/from "([^"]+)"/g)]
+				[...read(file).matchAll(IMPORT_SOURCE)]
 					.map(([, source]) => source)
 					.filter((source) => !source.startsWith(".") && !source.startsWith("@domain/")),
 			),
@@ -607,7 +677,7 @@ describe("domain guide: purity", () => {
 
 	it("imports nothing outward, and the guide names every module it does import", () => {
 		expect(externalImports.length).toBeGreaterThan(0);
-		expect(externalImports.filter((source) => /^@(application|infrastructure|modules)\//.test(source))).toEqual([]);
+		expect(externalImports.filter((source) => OUTWARD_IMPORT.test(source))).toEqual([]);
 
 		const unnamed = externalImports.filter((source) => {
 			const documented = source.startsWith("@shared/") ? "@shared/utils/*" : source;
@@ -622,7 +692,7 @@ describe("domain guide: purity", () => {
 		const helpers = [
 			...new Set(
 				domainFiles.flatMap((file) =>
-					[...read(file).matchAll(/import\s*\{([^}]+)\}\s*from\s*"@shared\/utils\/[^"]+"/g)].flatMap(([, names]) =>
+					[...read(file).matchAll(SHARED_UTILS_IMPORT)].flatMap(([, names]) =>
 						names.split(",").map((name) => name.trim()),
 					),
 				),
@@ -635,12 +705,12 @@ describe("domain guide: purity", () => {
 
 	it("keeps rules synchronous: no Effect, no fetch, no env access", () => {
 		expect(guide).toContain("No Effect, no I/O, no env access");
-		expect(domainFiles.filter((file) => /from "effect"|fetch\(|process\.env|astro:env/.test(read(file)))).toEqual([]);
+		expect(domainFiles.filter((file) => IMPURE_DOMAIN_CODE.test(read(file)))).toEqual([]);
 	});
 
 	it("names exactly the concepts that carry a rules.ts", () => {
 		const withRules = directoriesIn("src/domain").filter((concept) => exists(`src/domain/${concept}/rules.ts`));
-		const claimed = namesIn({ text: guide, pattern: /it exists for ([^;]+) and no one else/ });
+		const claimed = namesIn({ text: guide, pattern: DOMAIN_RULES_CENSUS });
 
 		expect(claimed.length).toBeGreaterThan(0);
 		expect(claimed.sort()).toEqual(withRules.sort());
@@ -649,7 +719,7 @@ describe("domain guide: purity", () => {
 
 describe("application guide: the anti-corruption boundary", () => {
 	const guide = read("src/application/CLAUDE.md");
-	const dtoFiles = walk("src/application/dto").filter((file) => /\.(ts|tsx)$/.test(file));
+	const dtoFiles = walk("src/application/dto").filter((file) => TYPESCRIPT_FILE.test(file));
 	const loaders = directoriesIn("src/application/entities").map(
 		(entity) => `src/application/entities/${entity}/${entity}.ts`,
 	);
@@ -657,22 +727,18 @@ describe("application guide: the anti-corruption boundary", () => {
 	it("keeps DTOs free of I/O, Effect and env access", () => {
 		expect(guide).toContain("DTOs are pure on purpose");
 		expect(dtoFiles.length).toBeGreaterThan(0);
-		expect(
-			dtoFiles.filter((file) => /astro:env|from "effect"|getEntries|getImagePlaceholder/.test(read(file))),
-		).toEqual([]);
+		expect(dtoFiles.filter((file) => IMPURE_DTO_CODE.test(read(file)))).toEqual([]);
 	});
 
 	it("keeps every DTO create synchronous, as the guide states", () => {
 		expect(guide).toContain("Every `create` is synchronous");
-		expect(dtoFiles.filter((file) => /create:\s*async/.test(read(file)))).toEqual([]);
+		expect(dtoFiles.filter((file) => ASYNC_DTO_CREATE.test(read(file)))).toEqual([]);
 	});
 
 	it("names the only infrastructure module a DTO is allowed to reach for", () => {
 		const reached = [
 			...new Set(
-				dtoFiles.flatMap((file) =>
-					[...read(file).matchAll(/from "(@infrastructure\/[^"]+)"/g)].map(([, source]) => source),
-				),
+				dtoFiles.flatMap((file) => [...read(file).matchAll(DTO_INFRASTRUCTURE_IMPORT)].map(([, source]) => source)),
 			),
 		];
 
@@ -684,8 +750,8 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(guide).toContain("Contentful types stop here");
 
 		const downstream = [...walk("src/domain"), ...walk("src/ui")]
-			.filter((file) => /\.(ts|tsx|astro)$/.test(file))
-			.filter((file) => /from "contentful"|@contentful\/|EntryFieldTypes|EntrySkeletonType/.test(read(file)));
+			.filter((file) => SOURCE_FILE.test(file))
+			.filter((file) => CONTENTFUL_TYPE.test(read(file)));
 
 		expect(downstream).toEqual([]);
 	});
@@ -699,8 +765,8 @@ describe("application guide: the anti-corruption boundary", () => {
 			return (
 				!source.includes("if (!isContentfulConfigured()) return [];") ||
 				!source.includes("runCms(") ||
-				!/schema:\s*\w+Schema/.test(source) ||
-				!/from "@domain\//.test(source)
+				!DOMAIN_SCHEMA_BINDING.test(source) ||
+				!DOMAIN_IMPORT.test(source)
 			);
 		});
 
@@ -719,15 +785,13 @@ describe("application guide: the anti-corruption boundary", () => {
 	it("cites the id every loader assigns, and the one that assigns none", () => {
 		const step = guide.split("\n").find((line) => line.startsWith("4. ")) ?? "";
 		const assigned = [
-			...new Set(
-				loaders.flatMap((file) => [...read(file).matchAll(/^\t*id:\s*(?:\w+\.)?(\w+),$/gm)].map(([, field]) => field)),
-			),
+			...new Set(loaders.flatMap((file) => [...read(file).matchAll(LOADER_ID_ASSIGNMENT)].map(([, field]) => field))),
 		];
 
 		expect(assigned.length).toBeGreaterThan(0);
 		expect(assigned.filter((field) => !step.includes(field))).toEqual([]);
 
-		const withoutId = loaders.filter((file) => !/^\t*id:/m.test(read(file)));
+		const withoutId = loaders.filter((file) => !ANY_ID_ASSIGNMENT.test(read(file)));
 
 		expect(withoutId).toEqual(["src/application/entities/projects/projects.ts"]);
 		expect(step).toContain("`projects`");
@@ -738,7 +802,7 @@ describe("styles guide: derived constants and source order", () => {
 	const guide = read("src/ui/styles/CLAUDE.md");
 
 	it("cites the type-scale ratio the tokens are built from", () => {
-		const ratio = read("src/ui/styles/global/variables.css").match(/--ratio:\s*([\d.]+);/)?.[1];
+		const ratio = read("src/ui/styles/global/variables.css").match(TYPE_SCALE_RATIO)?.[1];
 
 		expect(ratio).toBeDefined();
 		expect(guide).toContain(`\`--ratio: ${ratio}\``);
@@ -747,12 +811,10 @@ describe("styles guide: derived constants and source order", () => {
 	it("lists every editorial utility global.css declares, and no others", () => {
 		const declared = [
 			...new Set(
-				[...read("src/ui/styles/global/global.css").matchAll(/^\t\.(editorial-[a-z-]+)[^{\n]*\{/gm)].map(
-					([, name]) => name,
-				),
+				[...read("src/ui/styles/global/global.css").matchAll(EDITORIAL_UTILITY_DECLARATION)].map(([, name]) => name),
 			),
 		].sort();
-		const listed = [...new Set([...guide.matchAll(/`\.(editorial-[a-z-]+)`/g)].map(([, name]) => name))].sort();
+		const listed = [...new Set([...guide.matchAll(EDITORIAL_UTILITY_CITATION)].map(([, name]) => name))].sort();
 
 		expect(declared.length).toBeGreaterThan(0);
 		expect(listed).toEqual(declared);
@@ -761,7 +823,7 @@ describe("styles guide: derived constants and source order", () => {
 	it("keeps the reveal modifiers after the class they only beat by source order", () => {
 		const reveal = read("src/ui/styles/global/reveal.css");
 		const base = reveal.indexOf(".reveal {");
-		const modifiers = [...reveal.matchAll(/\.reveal--[a-z-]+[^{\n]*\{/g)].map(({ index }) => index);
+		const modifiers = [...reveal.matchAll(REVEAL_MODIFIER_DECLARATION)].map(({ index }) => index);
 
 		expect(guide).toContain("keep them after `.reveal` in the file");
 		expect(base).toBeGreaterThan(-1);
@@ -771,11 +833,9 @@ describe("styles guide: derived constants and source order", () => {
 	});
 
 	it("names one container per route, derived from the page modifier", () => {
-		const containers = [
-			...read("src/ui/styles/base/base.css").matchAll(
-				/&\.page--([a-z-]+)\s*\{\s*container:\s*([a-z-]+)\s*\/\s*([^;]+);/g,
-			),
-		].map(([, route, name, axes]) => ({ route, name, axes: axes.trim() }));
+		const containers = [...read("src/ui/styles/base/base.css").matchAll(PAGE_CONTAINER_DECLARATION)].map(
+			([, route, name, axes]) => ({ route, name, axes: axes.trim() }),
+		);
 
 		expect(containers.length).toBeGreaterThan(0);
 		expect(guide).toContain("`inline-size scroll-state`");
@@ -784,8 +844,8 @@ describe("styles guide: derived constants and source order", () => {
 	});
 
 	it("has no page--tag, for the reason the guide gives", () => {
-		const block = read("src/const/const.ts").match(/PAGES_ROUTES = \{([\s\S]*?)\n\} as const;/)?.[1] ?? "";
-		const routes = [...block.matchAll(/^\t"?([\w-]+)"?:/gm)].map(([, key]) => key);
+		const block = read("src/const/const.ts").match(PAGES_ROUTES_BLOCK)?.[1] ?? "";
+		const routes = [...block.matchAll(PAGES_ROUTES_KEY)].map(([, key]) => key);
 
 		expect(guide).toContain("There is deliberately no `page--tag`");
 		expect(routes).toContain("TAGS");
@@ -797,7 +857,7 @@ describe("styles guide: derived constants and source order", () => {
 	it("declares the layer order in index.css and nowhere else", () => {
 		const declaring = walk("src/ui/styles")
 			.filter((file) => file.endsWith(".css"))
-			.filter((file) => /^@layer [^;{]+,[^;{]+;/m.test(read(file)));
+			.filter((file) => LAYER_ORDER_DECLARATION.test(read(file)));
 
 		expect(guide).toContain("no file re-declares the order");
 		expect(declaring).toEqual(["src/ui/styles/index.css"]);
@@ -810,11 +870,11 @@ describe("modules guide: mixes, islands and data access", () => {
 
 	it("only claims utilities that modifiers.css actually declares as blocks", () => {
 		const declared = new Set(
-			[...read("src/ui/styles/global/modifiers.css").matchAll(/^\t\.([a-z-]+)[^{\n]*\{/gm)].map(([, name]) => name),
+			[...read("src/ui/styles/global/modifiers.css").matchAll(MODIFIER_BLOCK_DECLARATION)].map(([, name]) => name),
 		);
 		const claimed = [
-			...namesIn({ text: guide, pattern: /Utilities used by unrelated blocks \(([^)]+)\)/ }),
-			...namesIn({ text: stylesGuide, pattern: /blocks used as a mix\* — ([^—]+) —/ }),
+			...namesIn({ text: guide, pattern: MIXED_UTILITIES_IN_MODULES }),
+			...namesIn({ text: stylesGuide, pattern: MIXED_UTILITIES_IN_STYLES }),
 		];
 
 		expect(claimed.length).toBeGreaterThan(0);
@@ -825,14 +885,14 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(guide).toContain("never by calling Contentful or `@infrastructure` directly");
 
 		const leaks = walk("src/ui")
-			.filter((file) => /\.(ts|tsx|astro)$/.test(file))
-			.filter((file) => /@infrastructure\/|from "contentful"/.test(read(file)));
+			.filter((file) => SOURCE_FILE.test(file))
+			.filter((file) => LEAKED_INFRASTRUCTURE_IMPORT.test(read(file)));
 
 		expect(leaks).toEqual([]);
 	});
 
 	it("cites a container query that matches a container base.css declares and a stylesheet uses", () => {
-		const cited = guide.match(/@container ([a-z-]+) \(width <= \d+px\)/);
+		const cited = guide.match(CITED_CONTAINER_QUERY);
 
 		expect(cited).not.toBeNull();
 		expect(read("src/ui/styles/base/base.css")).toContain(`container: ${cited?.[1]} /`);
@@ -867,7 +927,7 @@ describe("conventions", () => {
 	it("configures Biome the way the conventions claim", () => {
 		const conventions = section(CLAUDE_MD, "Conventions");
 
-		expect(BIOME_JSON.formatter.lineWidth).toBe(Number(conventions.match(/Biome: (\d+) line width/)?.[1]));
+		expect(BIOME_JSON.formatter.lineWidth).toBe(Number(conventions.match(DOCUMENTED_LINE_WIDTH)?.[1]));
 		expect(BIOME_JSON.linter.rules.suspicious.noConsole).toBe("error");
 		expect(BIOME_JSON.assist.actions.source.organizeImports).toBe("on");
 		expect(BIOME_JSON.files.includes).toContain("!**/src/data/**/*");
