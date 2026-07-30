@@ -114,6 +114,11 @@ const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("CLAUDE.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
 const DOCS = ["CLAUDE.md", "CONTEXT.md", ...NESTED_GUIDES, ...ADR_FILES];
 
+const SOURCE_FILES = walk("src").filter((file) => /\.(ts|tsx|astro)$/.test(file));
+
+const namesIn = ({ text, pattern }: { text: string; pattern: RegExp }) =>
+	[...(text.match(pattern)?.[1] ?? "").matchAll(/`\.?([\w-]+)`/g)].map(([, name]) => name);
+
 const ALIAS_TARGETS = Object.entries(TSCONFIG.compilerOptions.paths as Record<string, string[]>).map(
 	([alias, [target]]) => [alias.replace(/\*$/, ""), target.replace(/^\.\//, "").replace(/\*$/, "")] as const,
 );
@@ -507,6 +512,323 @@ describe("gotchas", () => {
 		expect(WRANGLER_TOML).toContain('directory = "dist"');
 		expect(WRANGLER_TOML).toContain('binding = "SESSION"');
 		expect(WRANGLER_TOML).toContain('pattern = "biancafiore.me"');
+	});
+});
+
+describe("infrastructure guide: secrets, errors and clients", () => {
+	const guide = read("src/infrastructure/CLAUDE.md");
+	const infrastructureFiles = walk("src/infrastructure").filter((file) => /\.(ts|tsx)$/.test(file));
+
+	it("reads astro:env/server lazily, inside the layer, and never as a module import", () => {
+		expect(guide).toContain("Never import `astro:env/server` at module top level");
+
+		const readers = SOURCE_FILES.filter((file) => read(file).includes("astro:env/server"));
+
+		expect(readers.length).toBeGreaterThan(0);
+		expect(readers.filter((file) => !read(file).includes('import("astro:env/server")'))).toEqual([]);
+		expect(readers.filter((file) => /^\s*import\s[^\n]*"astro:env\/server"/m.test(read(file)))).toEqual([]);
+	});
+
+	it("dies on irrecoverable misconfiguration rather than failing typed, in the layer the guide names", () => {
+		expect(guide).toContain("`Effect.die` (see `DatabaseLive`)");
+		expect(read("src/infrastructure/db/client.ts")).toContain("Effect.die(");
+	});
+
+	it("declares every tagged error in errors.ts, never beside a client", () => {
+		expect(guide).toContain("don't define errors next to the client");
+
+		const declared = [
+			...read("src/infrastructure/errors.ts").matchAll(/export class (\w+) extends Data\.TaggedError/g),
+		];
+
+		expect(declared.length).toBeGreaterThan(0);
+		expect(
+			SOURCE_FILES.filter((file) => file !== "src/infrastructure/errors.ts").filter((file) =>
+				read(file).includes("Data.TaggedError"),
+			),
+		).toEqual([]);
+	});
+
+	it("leaves the tag to HTTP mapping to the action, and to toActionError alone", () => {
+		expect(guide).toContain("(`toActionError`), never here");
+		expect(read("src/actions/index.ts")).toContain("function toActionError(");
+		expect(infrastructureFiles.filter((file) => read(file).includes("ActionError"))).toEqual([]);
+	});
+
+	it("cites the reCAPTCHA score the guard actually enforces", () => {
+		const guards = read("src/infrastructure/utils/guards.ts");
+		const score = guards.match(/const RECAPTCHA_MINIMUM_SCORE = ([\d.]+);/)?.[1];
+
+		expect(score).toBeDefined();
+		expect(guards).toContain("< RECAPTCHA_MINIMUM_SCORE");
+		expect(guide).toContain(`\`RECAPTCHA_MINIMUM_SCORE\` (${score})`);
+	});
+});
+
+describe("domain guide: purity", () => {
+	const guide = read("src/domain/CLAUDE.md");
+	const domainFiles = walk("src/domain").filter((file) => file.endsWith(".ts"));
+
+	const externalImports = [
+		...new Set(
+			domainFiles.flatMap((file) =>
+				[...read(file).matchAll(/from "([^"]+)"/g)]
+					.map(([, source]) => source)
+					.filter((source) => !source.startsWith(".") && !source.startsWith("@domain/")),
+			),
+		),
+	].sort();
+
+	it("imports nothing outward, and the guide names every module it does import", () => {
+		expect(externalImports.length).toBeGreaterThan(0);
+		expect(externalImports.filter((source) => /^@(application|infrastructure|modules)\//.test(source))).toEqual([]);
+
+		const unnamed = externalImports.filter((source) => {
+			const documented = source.startsWith("@shared/") ? "@shared/utils/*" : source;
+
+			return !guide.includes(`\`${documented}\``);
+		});
+
+		expect(unnamed).toEqual([]);
+	});
+
+	it("names the shared helpers the domain actually reaches for", () => {
+		const helpers = [
+			...new Set(
+				domainFiles.flatMap((file) =>
+					[...read(file).matchAll(/import\s*\{([^}]+)\}\s*from\s*"@shared\/utils\/[^"]+"/g)].flatMap(([, names]) =>
+						names.split(",").map((name) => name.trim()),
+					),
+				),
+			),
+		];
+
+		expect(helpers.length).toBeGreaterThan(0);
+		expect(helpers.filter((helper) => !guide.includes(`\`${helper}\``))).toEqual([]);
+	});
+
+	it("keeps rules synchronous: no Effect, no fetch, no env access", () => {
+		expect(guide).toContain("No Effect, no I/O, no env access");
+		expect(domainFiles.filter((file) => /from "effect"|fetch\(|process\.env|astro:env/.test(read(file)))).toEqual([]);
+	});
+
+	it("names exactly the concepts that carry a rules.ts", () => {
+		const withRules = directoriesIn("src/domain").filter((concept) => exists(`src/domain/${concept}/rules.ts`));
+		const claimed = namesIn({ text: guide, pattern: /it exists for ([^;]+) and no one else/ });
+
+		expect(claimed.length).toBeGreaterThan(0);
+		expect(claimed.sort()).toEqual(withRules.sort());
+	});
+});
+
+describe("application guide: the anti-corruption boundary", () => {
+	const guide = read("src/application/CLAUDE.md");
+	const dtoFiles = walk("src/application/dto").filter((file) => /\.(ts|tsx)$/.test(file));
+	const loaders = directoriesIn("src/application/entities").map(
+		(entity) => `src/application/entities/${entity}/${entity}.ts`,
+	);
+
+	it("keeps DTOs free of I/O, Effect and env access", () => {
+		expect(guide).toContain("DTOs are pure on purpose");
+		expect(dtoFiles.length).toBeGreaterThan(0);
+		expect(
+			dtoFiles.filter((file) => /astro:env|from "effect"|getEntries|getImagePlaceholder/.test(read(file))),
+		).toEqual([]);
+	});
+
+	it("names the only infrastructure module a DTO is allowed to reach for", () => {
+		const reached = [
+			...new Set(
+				dtoFiles.flatMap((file) =>
+					[...read(file).matchAll(/from "(@infrastructure\/[^"]+)"/g)].map(([, source]) => source),
+				),
+			),
+		];
+
+		expect(reached.length).toBeGreaterThan(0);
+		expect(reached.filter((source) => !guide.includes(`\`${source}\``))).toEqual([]);
+	});
+
+	it("stops Contentful types at this layer: nothing downstream sees them", () => {
+		expect(guide).toContain("Contentful types stop here");
+
+		const downstream = [...walk("src/domain"), ...walk("src/ui")]
+			.filter((file) => /\.(ts|tsx|astro)$/.test(file))
+			.filter((file) => /from "contentful"|@contentful\/|EntryFieldTypes|EntrySkeletonType/.test(read(file)));
+
+		expect(downstream).toEqual([]);
+	});
+
+	it("bails without credentials, fetches through runCms, and takes its schema from the domain", () => {
+		expect(loaders.length).toBeGreaterThan(0);
+
+		const broken = loaders.filter((file) => {
+			const source = read(file);
+
+			return (
+				!source.includes("if (!isContentfulConfigured()) return [];") ||
+				!source.includes("runCms(") ||
+				!/schema:\s*\w+Schema/.test(source) ||
+				!/from "@domain\//.test(source)
+			);
+		});
+
+		expect(broken).toEqual([]);
+	});
+
+	it("batches every multi-query loader with unbounded concurrency", () => {
+		expect(guide).toContain('Effect.all(..., { concurrency: "unbounded" })');
+
+		const batched = loaders.filter((file) => read(file).includes("Effect.all("));
+
+		expect(batched.length).toBeGreaterThan(0);
+		expect(batched.filter((file) => !read(file).includes('{ concurrency: "unbounded" }'))).toEqual([]);
+	});
+
+	it("cites the id every loader assigns, and the one that assigns none", () => {
+		const step = guide.split("\n").find((line) => line.startsWith("4. ")) ?? "";
+		const assigned = [
+			...new Set(
+				loaders.flatMap((file) => [...read(file).matchAll(/^\t*id:\s*(?:\w+\.)?(\w+),$/gm)].map(([, field]) => field)),
+			),
+		];
+
+		expect(assigned.length).toBeGreaterThan(0);
+		expect(assigned.filter((field) => !step.includes(field))).toEqual([]);
+
+		const withoutId = loaders.filter((file) => !/^\t*id:/m.test(read(file)));
+
+		expect(withoutId).toEqual(["src/application/entities/projects/projects.ts"]);
+		expect(step).toContain("`projects`");
+	});
+});
+
+describe("styles guide: derived constants and source order", () => {
+	const guide = read("src/ui/styles/CLAUDE.md");
+
+	it("cites the type-scale ratio the tokens are built from", () => {
+		const ratio = read("src/ui/styles/global/variables.css").match(/--ratio:\s*([\d.]+);/)?.[1];
+
+		expect(ratio).toBeDefined();
+		expect(guide).toContain(`\`--ratio: ${ratio}\``);
+	});
+
+	it("lists every editorial utility global.css declares, and no others", () => {
+		const declared = [
+			...new Set(
+				[...read("src/ui/styles/global/global.css").matchAll(/^\t\.(editorial-[a-z-]+)[^{\n]*\{/gm)].map(
+					([, name]) => name,
+				),
+			),
+		].sort();
+		const listed = [...new Set([...guide.matchAll(/`\.(editorial-[a-z-]+)`/g)].map(([, name]) => name))].sort();
+
+		expect(declared.length).toBeGreaterThan(0);
+		expect(listed).toEqual(declared);
+	});
+
+	it("keeps the reveal modifiers after the class they only beat by source order", () => {
+		const reveal = read("src/ui/styles/global/reveal.css");
+		const base = reveal.indexOf(".reveal {");
+		const modifiers = [...reveal.matchAll(/\.reveal--[a-z-]+[^{\n]*\{/g)].map(({ index }) => index);
+
+		expect(guide).toContain("keep them after `.reveal` in the file");
+		expect(base).toBeGreaterThan(-1);
+		expect(modifiers.length).toBeGreaterThan(0);
+		expect(modifiers.filter((at) => at < base)).toEqual([]);
+		expect(reveal).toContain("prefers-reduced-motion");
+	});
+
+	it("names one container per route, derived from the page modifier", () => {
+		const containers = [
+			...read("src/ui/styles/base/base.css").matchAll(
+				/&\.page--([a-z-]+)\s*\{\s*container:\s*([a-z-]+)\s*\/\s*([^;]+);/g,
+			),
+		].map(([, route, name, axes]) => ({ route, name, axes: axes.trim() }));
+
+		expect(containers.length).toBeGreaterThan(0);
+		expect(guide).toContain("`inline-size scroll-state`");
+		expect(containers.filter(({ route, name }) => name !== `${route}-page`)).toEqual([]);
+		expect(containers.filter(({ axes }) => axes !== "inline-size scroll-state")).toEqual([]);
+	});
+
+	it("has no page--tag, for the reason the guide gives", () => {
+		const block = read("src/const/const.ts").match(/PAGES_ROUTES = \{([\s\S]*?)\n\} as const;/)?.[1] ?? "";
+		const routes = [...block.matchAll(/^\t"?([\w-]+)"?:/gm)].map(([, key]) => key);
+
+		expect(guide).toContain("There is deliberately no `page--tag`");
+		expect(routes).toContain("TAGS");
+		expect(routes.indexOf("TAGS")).toBeLessThan(routes.indexOf("TAG"));
+		expect(read("src/ui/modules/core/utils/page.ts")).toContain("url.pathname.includes(route)");
+		expect(read("src/ui/styles/base/base.css")).not.toContain("page--tag ");
+	});
+
+	it("declares the layer order in index.css and nowhere else", () => {
+		const declaring = walk("src/ui/styles")
+			.filter((file) => file.endsWith(".css"))
+			.filter((file) => /^@layer [^;{]+,[^;{]+;/m.test(read(file)));
+
+		expect(guide).toContain("no file re-declares the order");
+		expect(declaring).toEqual(["src/ui/styles/index.css"]);
+	});
+});
+
+describe("modules guide: mixes, islands and data access", () => {
+	const guide = read("src/ui/modules/CLAUDE.md");
+	const stylesGuide = read("src/ui/styles/CLAUDE.md");
+
+	it("only claims utilities that modifiers.css actually declares as blocks", () => {
+		const declared = new Set(
+			[...read("src/ui/styles/global/modifiers.css").matchAll(/^\t\.([a-z-]+)[^{\n]*\{/gm)].map(([, name]) => name),
+		);
+		const claimed = [
+			...namesIn({ text: guide, pattern: /Utilities used by unrelated blocks \(([^)]+)\)/ }),
+			...namesIn({ text: stylesGuide, pattern: /blocks used as a mix\* — ([^—]+) —/ }),
+		];
+
+		expect(claimed.length).toBeGreaterThan(0);
+		expect(claimed.filter((name) => !declared.has(name))).toEqual([]);
+	});
+
+	it("reads content through astro:content only, never Contentful or infrastructure", () => {
+		expect(guide).toContain("never by calling Contentful or `@infrastructure` directly");
+
+		const leaks = walk("src/ui")
+			.filter((file) => /\.(ts|tsx|astro)$/.test(file))
+			.filter((file) => /@infrastructure\/|from "contentful"/.test(read(file)));
+
+		expect(leaks).toEqual([]);
+	});
+
+	it("cites a container query that matches a container base.css declares and a stylesheet uses", () => {
+		const cited = guide.match(/@container ([a-z-]+) \(width <= \d+px\)/);
+
+		expect(cited).not.toBeNull();
+		expect(read("src/ui/styles/base/base.css")).toContain(`container: ${cited?.[1]} /`);
+		expect(
+			walk("src/ui/modules").filter((file) => file.endsWith(".css") && read(file).includes(cited?.[0] ?? "")),
+		).not.toEqual([]);
+	});
+
+	it("names every React island under modules", () => {
+		const islands = walk("src/ui/modules").filter((file) => file.endsWith(".tsx"));
+		const documented = section(guide, "Islands");
+
+		expect(islands.length).toBeGreaterThan(0);
+
+		const unnamed = islands.filter((file) => {
+			const segments = file.replace("src/ui/modules/", "").split("/");
+			const folder = segments.at(-2) ?? "";
+			const parent = segments.at(-3) ?? "";
+
+			return (
+				!documented.includes(`${segments[0]}/${folder}\``) &&
+				!documented.includes(`\`${folder}\``) &&
+				!documented.includes(`${parent}/*`)
+			);
+		});
+
+		expect(unnamed).toEqual([]);
 	});
 });
 
