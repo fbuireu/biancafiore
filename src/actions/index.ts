@@ -43,7 +43,12 @@ export const server = {
 				const normalizedData = { ...data, email: normalizeEmail(data.email) };
 				yield* checkDuplicatedEntries(normalizedData);
 				const { id: emailId } = yield* sendEmail(data);
-				yield* saveContact({ emailId, ...normalizedData });
+
+				yield* saveContact({ emailId, ...normalizedData }).pipe(
+					Effect.catchAll(({ message }) =>
+						Effect.sync(() => console.error(`Contact ${emailId} was delivered but not persisted: ${message}`)),
+					),
+				);
 
 				return { ok: !!emailId };
 			});

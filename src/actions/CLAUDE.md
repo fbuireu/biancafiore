@@ -21,14 +21,21 @@ database, Resend or reCAPTCHA directly. See ADR 0012 for why the layer boundary 
   into a plain `{ success, value | error }` union, and only then does the handler `throw result.error`. Never
   throw an `ActionError` from inside the program — it would arrive as a defect and lose its mapping.
 - **Step order is load-bearing**: validate → verify reCAPTCHA → normalize → duplicate check → send email →
-  save. Two consequences worth knowing before reordering it. The reCAPTCHA check runs *after* schema
-  validation, so a malformed payload is rejected without spending a verification call. And the email goes out
-  **before** the row is written, so a `saveContact` failure leaves a visitor who has already had a reply with
-  nothing persisted — the generic 500 they see is accurate but the mail is not recallable.
+  save. The reCAPTCHA check runs *after* schema validation, so a malformed payload is rejected without
+  spending a verification call. The email goes out **before** the row is written because the row stores the
+  Resend `emailId`, so that order cannot simply be swapped.
+- **A failed `saveContact` is logged, not raised.** Once the mail is away the visitor's message has reached
+  Bianca; the row is bookkeeping for duplicate detection, not the deliverable. Failing the request there
+  would show a 500 for work that actually succeeded and invite a retry that passes the duplicate check —
+  because no row exists — and mails Bianca a second time. So it is caught, `console.error`'d with the
+  `emailId`, and the action still answers `ok`. The cost is accepted and narrow: a dropped row means that
+  address can contact again without being told it already did.
 - **Two forms of the address are in flight on purpose.** `normalizeEmail` trims, lowercases and strips the
   `+alias` segment; the normalized form is what `checkDuplicatedEntries` and `saveContact` use, so
   `a+anything@d.com` and `a@d.com` are treated as the same person. `sendEmail` is handed the **raw** validated
   data, so the reply reaches the address exactly as it was typed. Passing `normalizedData` to `sendEmail`
   would break alias delivery; passing `data` to `saveContact` would break duplicate detection.
-- The generic copy lives in one module-level constant. Keep user-facing failure text here, not in
-  `@infrastructure` — the layers below stay tagged and language-free.
+- The generic copy lives in one module-level constant — but only that one. The messages for the two mapped
+  tags are written where the error is raised, in `@infrastructure/utils`, and `toActionError` forwards
+  `failure.value.message` verbatim, so those strings reach the visitor unchanged. The layers below stay
+  tagged; they are not language-free.
