@@ -15,21 +15,21 @@ type ContactError = ValidationError | DuplicateContactError | EmailError | Datab
 const GENERIC_ERROR_MESSAGE =
 	"Whoopsie! Something went wrong. It's my fault (or actually my boyfriend's). Please try again in a few minutes after refreshing the page.";
 
-function toActionError(cause: Cause.Cause<ContactError>): ActionError {
+function toActionError(cause: Cause.Cause<ContactError>): Effect.Effect<ActionError> {
 	const failure = Cause.failureOption(cause);
 
 	if (Option.isSome(failure)) {
 		switch (failure.value._tag) {
 			case "ValidationError":
-				return new ActionError({ code: "BAD_REQUEST", message: failure.value.message });
+				return Effect.succeed(new ActionError({ code: "BAD_REQUEST", message: failure.value.message }));
 			case "DuplicateContactError":
-				return new ActionError({ code: "UNAUTHORIZED", message: failure.value.message });
+				return Effect.succeed(new ActionError({ code: "UNAUTHORIZED", message: failure.value.message }));
 		}
 	}
 
-	console.error(Cause.pretty(cause));
-
-	return new ActionError({ code: "INTERNAL_SERVER_ERROR", message: GENERIC_ERROR_MESSAGE });
+	return Effect.logError(Cause.pretty(cause)).pipe(
+		Effect.as(new ActionError({ code: "INTERNAL_SERVER_ERROR", message: GENERIC_ERROR_MESSAGE })),
+	);
 }
 
 export const server = {
@@ -46,7 +46,7 @@ export const server = {
 
 				yield* saveContact({ emailId, ...normalizedData }).pipe(
 					Effect.catchAll(({ message }) =>
-						Effect.sync(() => console.error(`Contact ${emailId} was delivered but not persisted: ${message}`)),
+						Effect.logError(`Contact ${emailId} was delivered but not persisted: ${message}`),
 					),
 				);
 
@@ -56,9 +56,10 @@ export const server = {
 			const result = await Effect.runPromise(
 				program.pipe(
 					Effect.provide(ContactLayer),
-					Effect.matchCause({
-						onSuccess: (value) => ({ success: true as const, value }),
-						onFailure: (cause) => ({ success: false as const, error: toActionError(cause) }),
+					Effect.matchCauseEffect({
+						onSuccess: (value) => Effect.succeed({ success: true as const, value }),
+						onFailure: (cause) =>
+							toActionError(cause).pipe(Effect.map((error) => ({ success: false as const, error }))),
 					}),
 				),
 			);

@@ -12,7 +12,7 @@ database, Resend or reCAPTCHA directly. See ADR 0012 for why the layer boundary 
   `@infrastructure/runtime` is for CMS reads only. Don't collapse the two.
 - **`toActionError` is the only place a tagged error becomes HTTP.** Exactly two are mapped:
   `ValidationError` → `BAD_REQUEST` and `DuplicateContactError` → `UNAUTHORIZED`. Everything else —
-  `EmailError`, `DatabaseError`, and any defect — logs `Cause.pretty(cause)` and collapses into one generic
+  `EmailError`, `DatabaseError`, and any defect — logs `Cause.pretty(cause)` via `Effect.logError` and collapses into one generic
   `INTERNAL_SERVER_ERROR` message. **Adding a tagged error in `@infrastructure/errors` without adding a case
   here silently degrades it to that generic message**, which is the failure mode to watch for.
 - `DuplicateContactError` answering `UNAUTHORIZED` rather than a conflict status is deliberate: the form must
@@ -27,9 +27,13 @@ database, Resend or reCAPTCHA directly. See ADR 0012 for why the layer boundary 
 - **A failed `saveContact` is logged, not raised.** Once the mail is away the visitor's message has reached
   Bianca; the row is bookkeeping for duplicate detection, not the deliverable. Failing the request there
   would show a 500 for work that actually succeeded and invite a retry that passes the duplicate check —
-  because no row exists — and mails Bianca a second time. So it is caught, `console.error`'d with the
-  `emailId`, and the action still answers `ok`. The cost is accepted and narrow: a dropped row means that
-  address can contact again without being told it already did.
+  because no row exists — and mails Bianca a second time. So it is caught, logged with the `emailId` through
+  `Effect.logError`, and the action still answers `ok`. The cost is accepted and narrow: a dropped row means
+  that address can contact again without being told it already did.
+- **Nothing here calls `console`.** Both log sites go through Effect's `Logger`, which is why the mapping runs
+  under `Effect.matchCauseEffect` rather than `Effect.matchCause` — the handler has to return an Effect for
+  the log to be part of the program. Biome's `noConsole` runs with no allowlist, so a `console.error` added
+  back fails the lint rather than review.
 - **Two forms of the address are in flight on purpose.** `normalizeEmail` trims, lowercases and strips the
   `+alias` segment; the normalized form is what `checkDuplicatedEntries` and `saveContact` use, so
   `a+anything@d.com` and `a@d.com` are treated as the same person. `sendEmail` is handed the **raw** validated
