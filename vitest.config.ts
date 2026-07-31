@@ -17,16 +17,34 @@ const aliasesFromTsconfig = Object.entries(paths).map(([alias, [target]]) => ({
 	replacement: `${ROOT}${target.replace(LEADING_RELATIVE, "").replace(TRAILING_GLOB, "")}`,
 }));
 
+const alias = [
+	...aliasesFromTsconfig,
+	{ find: "astro:env/server", replacement: `${ROOT}tests/doubles/astroEnvServer.ts` },
+	{ find: "astro:env/client", replacement: `${ROOT}tests/doubles/astroEnvClient.ts` },
+];
+
 export default defineConfig({
-	resolve: {
-		alias: [
-			...aliasesFromTsconfig,
-			{ find: "astro:env/server", replacement: `${ROOT}tests/doubles/astroEnvServer.ts` },
-			{ find: "astro:env/client", replacement: `${ROOT}tests/doubles/astroEnvClient.ts` },
-		],
-	},
+	resolve: { alias },
 	test: {
-		include: ["src/**/*.test.{ts,tsx}", "src/**/*.spec.{ts,tsx}", "docs/**/*.test.ts"],
+
+		projects: [
+			{
+				resolve: { alias },
+				test: {
+					name: "node",
+					environment: "node",
+					include: ["src/**/*.test.ts", "src/**/*.spec.ts", "docs/**/*.test.ts"],
+				},
+			},
+			{
+				resolve: { alias },
+				test: {
+					name: "dom",
+					environment: "happy-dom",
+					include: ["src/**/*.test.tsx", "src/**/*.spec.tsx"],
+				},
+			},
+		],
 		coverage: {
 			provider: "v8",
 			reporter: ["text", "lcov"],

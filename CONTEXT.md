@@ -85,7 +85,7 @@ The earlier publication a Republished Article first appeared in. It is a name, n
 _Avoid_: canonical, origin, reference, backlink.
 
 **Reading Time**:
-The estimated minutes needed to read an Article, derived from its word count.
+The estimated minutes needed to read an Article, derived from its word count and never less than one: the bylines print the figure as plain text, so the shortest piece — and a body with no words at all — still reads as a minute rather than as nothing.
 _Avoid_: read time, length, duration.
 
 **Description**:
