@@ -246,7 +246,6 @@
 		--grid-small: 720px;
 		--grid-medium: 960px;
 		--grid-article: 70ch;
-		--grid-large: 1024px;
 		--grid-content: 1180px;
 		--grid-extra-large: 1440px;
 		--grid-narrow: 880px;
@@ -449,12 +448,6 @@
 	syntax: "<length>";
 	inherits: false;
 	initial-value: 70ch;
-}
-
-@property --grid-large {
-	syntax: "<length>";
-	inherits: false;
-	initial-value: 1024px;
 }
 
 @property --grid-content {

@@ -19,7 +19,7 @@
 }
 
 .contact-form__text {
-	font-size: 1.5rem;
+	font-size: clamp(1.5rem, 2cqi, 1.75rem);
 }
 
 .contact-form__submit .plane__left-wing,

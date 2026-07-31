@@ -2,6 +2,20 @@
 import type { CollectionEntry } from "astro:content";
 import "./table-of-contents.css";
 
+const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
+const HTML_ENTITY_REGEX = /&(?:amp|lt|gt|quot|nbsp|#39);/g;
+const DECODED_HTML_ENTITIES: Record<string, string> = {
+	"&amp;": "&",
+	"&lt;": "<",
+	"&gt;": ">",
+	"&quot;": '"',
+	"&#39;": "'",
+	"&nbsp;": "\u00A0",
+};
+
+const readAsAuthored = (heading: string): string =>
+	heading.replace(HTML_TAG_REGEX, "").replace(HTML_ENTITY_REGEX, (entity) => DECODED_HTML_ENTITIES[entity] ?? entity);
+
 interface Props {
 	tableOfContents: CollectionEntry<"articles">["data"]["tableOfContents"];
 }
@@ -17,7 +31,7 @@ const { tableOfContents } = Astro.props;
               {tableOfContents.map(({ id, heading, level }, index) => (
                   <li class="article__table-of-contents__item" style={`--level: ${level};`}>
                       <a class="article__table-of-contents__item__link flex align-center underline-on-hover clickable"
-                         href={`#${id}`} style={`--for: --section-${index + 1}`}>{heading}</a>
+                         href={`#${id}`} style={`--for: --section-${index + 1}`}>{readAsAuthored(heading)}</a>
                   </li>
               ))}
             </ul>

@@ -18,14 +18,14 @@ export const authors = defineCollection({
 				return yield* Effect.all(
 					[
 						cms.getEntries<AuthorSkeleton>({ content_type: "author" }),
-						cms.getEntries<ArticleSkeleton>({ content_type: "article" }),
+						cms.getEntries<ArticleSkeleton>({ content_type: "article", order: ["-fields.publishDate"] }),
 					],
 					{ concurrency: "unbounded" },
 				);
 			}),
 		);
 
-		const authors = await authorDTO.create([rawAuthors, rawArticles]);
+		const authors = authorDTO.create([rawAuthors, rawArticles]);
 
 		return authors.map((author) => ({
 			id: author.name,

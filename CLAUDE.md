@@ -24,6 +24,7 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 
 ```bash
 pnpm dev              # astro dev --open
+pnpm start            # astro dev, no browser — what Playwright's webServer boots
 pnpm build            # astro build
 pnpm preview          # astro preview
 pnpm wrangler:dev     # build + wrangler dev --remote (real Workers runtime)
@@ -66,7 +67,7 @@ src/
   const/ data/
 ```
 
-Unit tests are co-located with the code they cover (`src/**/*.test.ts`); the one test covering no single module is `docs/docs-consistency.test.ts`, colocated with the docs it checks — see the maintenance contract below. Both are picked up by `vitest.config.ts`; Playwright specs live in the `testDir` declared in `playwright.config.ts`.
+Unit tests are co-located with the code they cover (`src/**/*.test.ts`, and `src/**/*.test.tsx` for the React islands); the one test covering no single module is `docs/docs-consistency.test.ts`, colocated with the docs it checks — see the maintenance contract below. `tests/doubles/` holds the stub layers, virtual-module doubles and MSW network doubles those co-located tests import — ADR 0017 sets the rule for which of the three a given dependency gets, and `tests/setup/` starts the MSW server for the node project. All are picked up by `vitest.config.ts`, which resolves the path aliases and Astro’s `astro:*` virtual modules itself rather than through `getViteConfig` — ADR 0016 records why that is forced, and which modules it leaves unreachable from a unit test. Playwright specs live in the `testDir` declared in `playwright.config.ts`.
 
 Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/* @application/* @modules/* (→ src/ui/modules) @utils/* @assets/* (→ src/ui/assets) @styles/* (→ src/ui/styles) @data/* @shared/* @content/*`. Prefer aliases over relative paths.
 
@@ -86,14 +87,15 @@ Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/*
 - **Design tokens over magic numbers**, and respect the CSS `@layer` order — cascade correctness depends on it. Details in [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
 - **Evergreen / Chromium-forward CSS.** Modern features are used freely (`light-dark()`, `interpolate-size`, `color-mix`, oklch); the build target is `esnext`.
 - **No code comments.** Rationale belongs in commit messages / PRs / memory, not inline.
-- **No Biome suppressions.** Fix the root cause (e.g. reorder selectors) instead of `biome-ignore`; suppress only if truly irreplaceable. Biome: 120 line width, `noConsole` error (only `console.error` allowed), organizeImports on. `src/data/**` and `public/**` are excluded from Biome.
+- **No Biome suppressions.** Fix the root cause (e.g. reorder selectors) instead of `biome-ignore`; suppress only if truly irreplaceable. Biome: 120 line width, `noConsole` error with no allowlist — no `console` at all, log through Effect's `Logger` (`Effect.logError`) — organizeImports on. `noConsole` is *not* part of Biome's recommended preset, so deleting that entry does not tighten it, it silently turns the rule off. `src/data/**` and `public/**` are excluded from Biome.
 - **Conventional commits** (commitlint + husky). semantic-release owns versioning. Do NOT add a Co-Authored-By / Claude trailer to commits or PRs.
 
 ## Maintenance contract
 
 These documents are not generated. A change that does not update them leaves the tree describing code that no longer exists, so when you change code, update the docs **in the same commit** — a follow-up commit is a promise, not a fix.
 
-`docs/docs-consistency.test.ts` makes the mechanical half of that contract executable: it reads these documents and asserts every checkable claim against the repo — scripts, aliases, the folder tree, the route list, env vars, cited paths, links, ADR numbering/template/references, the client/layer/stylesheet tables, the Gotchas invariants. It runs with `pnpm test:ut` (so, in CI on every PR). A failure means the docs and the code disagree — fix whichever one is wrong, and when the deliberate answer is "the doc leaves this out on purpose", say so in the allowlist at the top of that file rather than deleting the assertion. It cannot check prose or rationale; that part is still on you. ADR 0015 records why it exists and what it costs — the markdown shape of these documents is parsed, so reformatting one can fail the build.
+
+`docs/docs-consistency.test.ts` makes the mechanical half of that contract executable: it reads these documents and asserts every checkable claim against the repo — scripts, aliases, the folder tree, the route list, env vars, cited paths, links, ADR numbering/template/references, the client/layer/stylesheet tables, the Gotchas invariants. It also holds the nested guides to the *behaviour* they promise — lazy secret reads, `Effect.die` on irrecoverable misconfiguration, tagged errors declared in one file, domain and DTO purity, the loader procedure, CSS source order — and to the constants they quote, derived from the source rather than repeated, so an assertion breaks both when the constant moves and when the sentence citing it is deleted. It runs with `pnpm test:ut` (so, in CI on every PR). A failure means the docs and the code disagree — fix whichever one is wrong, and when the deliberate answer is "the doc leaves this out on purpose", say so in the allowlist at the top of that file rather than deleting the assertion. It still cannot check rationale — why a decision was made, whether an explanation is honest — and that part is on you. ADR 0015 records why it exists and what it costs — the markdown shape of these documents is parsed, so reformatting one can fail the build.
 
 | If you change | Update |
 | --- | --- |
@@ -114,7 +116,8 @@ Two traps worth naming, because both have already happened here: deleting a reso
 
 - **`light-dark()` in prod:** lightningcss downlevels it into a polyfill that breaks nested `color-scheme` inversion in production (dev looks fine). `Features.LightDark` stays in `lightningcss.exclude` in `astro.config.ts`; `errorRecovery: true` is also set. ADR 0006, and [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
 - **`astro dev` hangs / SSR 500s / blank globe:** usually `.vite` cache thrash from running `astro check` or a second `astro dev` beside a live dev server (orphans deps chunks: `effect.js` → 500, `three`/`react-globe.gl` → blank). Fix: stop all dev processes, delete `node_modules/.vite`, restart.
-- **`HIDE_CHROME`** (public boolean env) hides site chrome (header/footer) — used for embedding/clean article rendering. Referenced in `ui/modules/core/components/baseLayout/BaseLayout.astro`, `articles/[...slug].astro`, the astro.config env schema, and the deploy workflow.
+- **`HIDE_CHROME`** (public boolean env) does more than its name says. It hides the header and the article breadcrumbs, and in `BaseLayout.astro` it *replaces the page body* with an under-construction placeholder on every route outside the article / tag / legal / error allowlist — so `/`, `/about`, `/contact` and `/projects` serve no real content at all. The footer still renders either way. It is **`true` in the `development` environment**, which is why the PR preview is not a faithful target: e2e coverage there is limited to what survives it. Referenced in `ui/modules/core/components/baseLayout/BaseLayout.astro`, `articles/[...slug].astro`, the astro.config env schema, and the deploy workflow.
+- **Safari/WebKit loads nothing in dev:** the CSP carries `upgrade-insecure-requests`, and WebKit obeys it on `localhost` — every module script, font and `@vite/client` request is rewritten to `https://localhost:4321`, which the dev server does not speak, so the page renders inert with no JS at all. Chromium exempts localhost, so this is invisible there and only shows in Safari and Playwright's `webkit` project. `src/middleware.ts` strips that one directive when `import.meta.env.DEV`; production keeps it. Don't fold it back into `securityHeaders.ts` unconditionally.
 - **Turso env naming:** DB env vars are `ASTRO_DB_REMOTE_URL` / `ASTRO_DB_APP_TOKEN` despite the project no longer using Astro DB. Schema: `src/infrastructure/db/schema.ts`; migrations in `drizzle/`. ADR 0003 explains why they keep the name.
 - **Analytics are consent-gated:** GA/GTM load with `analytics_storage` denied until the visitor accepts the `analytics` category, set by an inline script in `<head>` before either initialises. Nothing in the code makes the requirement visible, so do not reorder or "clean up" that script. ADR 0013.
 - **Image CDN switches by env:** Cloudflare image service in production build, Contentful/passthrough otherwise (`CLOUDFLARE_ENV === "production"` in astro.config → adapter `imageService`).
