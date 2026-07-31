@@ -181,8 +181,8 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 					return `
 						<figure${wrapperClass ? ` class="${wrapperClass}"` : ""}>
 							<img
-								src="${optimizedSrc}"
-								srcset="${srcset}"
+								src="${escapeHtml(optimizedSrc)}"
+								srcset="${escapeHtml(srcset)}"
 								sizes="auto"
 								height="${height ?? ""}"
 								width="${width ?? ""}"
@@ -218,8 +218,8 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 							</div>
 							<img
 								class="split__image"
-								src="${optimizedSrc}"
-								srcset="${srcset}"
+								src="${escapeHtml(optimizedSrc)}"
+								srcset="${escapeHtml(srcset)}"
 								sizes="auto"
 								height="${height ?? ""}"
 								width="${width ?? ""}"
@@ -253,8 +253,8 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 					return `
             <figure class="full-bleed">
               <img
-                src="${optimizedSrc}"
-                srcset="${srcset}"
+                src="${escapeHtml(optimizedSrc)}"
+                srcset="${escapeHtml(srcset)}"
                 sizes="auto"
                 height="${height ?? ""}"
                 width="${width ?? ""}"

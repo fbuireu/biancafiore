@@ -69,7 +69,7 @@ The reader-facing hero of the Blog — the first Article flagged as featured tha
 _Avoid_: hero, spotlight, top story, pinned.
 
 **Favorite**:
-An Article the Author (Bianca) marks as her own pick, which sorts it to the top of the Article collection — and therefore of the Blog listing, the sliders and the feed, all of which read that one order — ahead of the normal reverse-chronological order. This is the Author's private preference and a Featured Article is the reader-facing hero: separate flags, chosen for different reasons, though a Favorite with a cover image can decide where the Featured fallback lands.
+An Article the Author (Bianca) marks as her own pick, which sorts it to the top of the Article collection — and therefore of the Blog listing and the sliders, which read that one order — ahead of the normal reverse-chronological order. The RSS feed is the exception: it re-sorts by publish date, because a subscriber's reader expects chronology rather than the Author's preference. This is the Author's private preference and a Featured Article is the reader-facing hero: separate flags, chosen for different reasons, though a Favorite with a cover image can decide where the Featured fallback lands.
 _Avoid_: starred, pinned, highlight, best-of.
 
 **Featured Image**:
