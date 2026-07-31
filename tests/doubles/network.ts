@@ -3,9 +3,18 @@ import { setupServer } from "msw/node";
 
 export const SITEVERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 
-export const server = setupServer();
+export const escapedRequests: string[] = [];
+
+export const server = setupServer(
+	http.all("*", ({ request }) => {
+		escapedRequests.push(`${request.method} ${request.url}`);
+
+		return HttpResponse.error();
+	}),
+);
 
 export interface RecaptchaCall {
+	url: string;
 	contentType: string | null;
 	secret: string | null;
 	response: string | null;
@@ -35,7 +44,7 @@ export function recaptchaDouble({
 			const contentType = request.headers.get("content-type");
 			const body = new URLSearchParams(await request.text());
 
-			calls.push({ contentType, secret: body.get("secret"), response: body.get("response") });
+			calls.push({ url: request.url, contentType, secret: body.get("secret"), response: body.get("response") });
 
 			if (unreachable) return HttpResponse.error();
 			if (malformed) return HttpResponse.text("not json at all");
