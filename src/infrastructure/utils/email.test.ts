@@ -8,6 +8,7 @@ const SUBMISSION = {
 };
 
 const EN_GB_TIMESTAMP = /\d{2}\/\d{2}\/\d{4}, \d{2}:\d{2}:\d{2}/;
+const MAILTO_SUBJECT = /mailto:[^"']*\?subject=([^"'&]+)/;
 
 describe("normalizeEmail", () => {
 	it("lowercases the whole address", () => {
@@ -59,10 +60,20 @@ describe("createEmail", () => {
 		expect(html).toContain("&lt;script&gt;");
 	});
 
-	it("builds a reply link addressed to the visitor with a readable subject line", async () => {
+	it("percent encodes the reply subject, so no raw space reaches the mailto href", async () => {
 		const { html } = await createEmail(SUBMISSION);
 
-		expect(html).toContain("mailto:ada@example.com?subject=Re: Web contact form submission from biancafiore.me");
+		expect(html).toContain(
+			"mailto:ada@example.com?subject=Re%3A%20Web%20contact%20form%20submission%20from%20biancafiore.me",
+		);
+	});
+
+	it("keeps the whole subject line readable once the mail client decodes it", async () => {
+		const { html } = await createEmail(SUBMISSION);
+		const [, subject] = html.match(MAILTO_SUBJECT) ?? [];
+
+		expect(subject).toBeDefined();
+		expect(decodeURIComponent(subject as string)).toBe("Re: Web contact form submission from biancafiore.me");
 	});
 
 	it("keeps the alias in the reply link, because the mail must reach the address as typed", async () => {

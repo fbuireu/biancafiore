@@ -4,14 +4,14 @@ import { slugify } from "@shared/utils/strings";
 
 const WORDS_PER_MINUTE = 200;
 const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
-const WORD_SPLIT_REGEX = /\s/g;
+const WHITESPACE_REGEX = /\s+/g;
 const HEADINGS_REGEX = /<h([2-6])>(.*?)<\/h\1>/g;
 const HEADING_LEVEL_OFFSET = 1;
 const MAX_DESCRIPTION_LENGTH = 200;
 
 export function getReadingTime(content: string): number {
-	const cleanContent = content.replace(HTML_TAG_REGEX, "");
-	const numberOfWords = cleanContent.split(WORD_SPLIT_REGEX).length;
+	const cleanContent = content.replace(HTML_TAG_REGEX, " ").trim();
+	const numberOfWords = cleanContent.split(WHITESPACE_REGEX).length;
 
 	return Math.ceil(numberOfWords / WORDS_PER_MINUTE);
 }
@@ -23,7 +23,7 @@ export function generateTableOfContents(html: string): TableOfContents {
 	for (const heading of headings) {
 		const level = Number(heading[1]) - HEADING_LEVEL_OFFSET;
 		const text = heading[2];
-		const id = slugify(text);
+		const id = slugify(text.replace(HTML_TAG_REGEX, ""));
 
 		items.push({ id, heading: text, level });
 	}
@@ -32,7 +32,7 @@ export function generateTableOfContents(html: string): TableOfContents {
 }
 
 export function deriveDescription(rawDescription: string): string {
-	const cleanDescription = rawDescription.replace(HTML_TAG_REGEX, " ").replace(/\s+/g, " ").trim();
+	const cleanDescription = rawDescription.replace(HTML_TAG_REGEX, " ").replace(WHITESPACE_REGEX, " ").trim();
 
 	return cleanDescription.length > MAX_DESCRIPTION_LENGTH
 		? `${cleanDescription.substring(0, MAX_DESCRIPTION_LENGTH)}...`

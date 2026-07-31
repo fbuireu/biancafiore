@@ -57,12 +57,16 @@ describe("getOptimizedImageUrl on the Cloudflare CDN", () => {
 		expect(url).toBe(`/cdn-cgi/image/format=auto,quality=85/${SOURCE}`);
 	});
 
-	it("keeps an explicit zero quality instead of falling back to the default", () => {
+	it("reads a zero quality as no quality, the same on both branches", () => {
 		useCdn(IMAGE_CDN.CLOUDFLARE);
 
 		expect(getOptimizedImageUrl({ source: SOURCE, options: { quality: 0 } })).toBe(
-			`/cdn-cgi/image/format=auto,quality=0/${SOURCE}`,
+			`/cdn-cgi/image/format=auto,quality=85/${SOURCE}`,
 		);
+
+		useCdn(IMAGE_CDN.CONTENTFUL);
+
+		expect(getOptimizedImageUrl({ source: SOURCE, options: { quality: 0 } })).toBe(`${SOURCE}?q=85`);
 	});
 
 	it("is the fallback branch whenever IMAGE_CDN is anything other than contentful", () => {
@@ -71,11 +75,27 @@ describe("getOptimizedImageUrl on the Cloudflare CDN", () => {
 		expect(getOptimizedImageUrl({ source: SOURCE })).toBe(`/cdn-cgi/image/format=auto,quality=85/${SOURCE}`);
 	});
 
-	it("leaves a relative source untouched because only // is treated as protocol-relative", () => {
+	it("appends a root-relative source with a single separating slash", () => {
 		useCdn(IMAGE_CDN.CLOUDFLARE);
 
 		expect(getOptimizedImageUrl({ source: "/local/hero.jpg" })).toBe(
-			"/cdn-cgi/image/format=auto,quality=85//local/hero.jpg",
+			"/cdn-cgi/image/format=auto,quality=85/local/hero.jpg",
+		);
+	});
+
+	it("appends a path-relative source unchanged", () => {
+		useCdn(IMAGE_CDN.CLOUDFLARE);
+
+		expect(getOptimizedImageUrl({ source: "local/hero.jpg" })).toBe(
+			"/cdn-cgi/image/format=auto,quality=85/local/hero.jpg",
+		);
+	});
+
+	it("falls back to the default quality when quality is passed as an explicit undefined", () => {
+		useCdn(IMAGE_CDN.CLOUDFLARE);
+
+		expect(getOptimizedImageUrl({ source: SOURCE, options: { quality: undefined, width: 800 } })).toBe(
+			`/cdn-cgi/image/format=auto,quality=85,width=800/${SOURCE}`,
 		);
 	});
 });
@@ -93,11 +113,11 @@ describe("getOptimizedImageUrl on the Contentful CDN", () => {
 		expect(getOptimizedImageUrl({ source: SOURCE, options: { quality: 40 } })).toBe(`${SOURCE}?q=40`);
 	});
 
-	it("loses the default quality when quality is passed as an explicit undefined", () => {
+	it("falls back to the default quality when quality is passed as an explicit undefined", () => {
 		useCdn(IMAGE_CDN.CONTENTFUL);
 
 		expect(getOptimizedImageUrl({ source: SOURCE, options: { quality: undefined, width: 800 } })).toBe(
-			`${SOURCE}?w=800`,
+			`${SOURCE}?w=800&q=85`,
 		);
 	});
 

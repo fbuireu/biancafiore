@@ -31,6 +31,13 @@ describe("createDate", () => {
 		});
 	});
 
+	it("reads the year in UTC, so a stay does not shift a year with the runtime timezone", () => {
+		expect(createDate({ startDate: "2021-01-01T00:30:00Z", endDate: "2021-12-31T23:30:00Z" })).toEqual({
+			startDate: 2021,
+			endDate: 2021,
+		});
+	});
+
 	it("accepts a full ISO timestamp as readily as a plain date", () => {
 		expect(createDate({ startDate: "2017-03-04T08:30:00.000Z" }).startDate).toBe(2017);
 	});

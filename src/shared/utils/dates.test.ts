@@ -32,6 +32,11 @@ describe("formatDate", () => {
 		expect(formatDate(new Date(1999, 11, 31, 23, 59, 59))).toBe("Friday, 31 December 1999");
 	});
 
+	it("names the UTC calendar day, so the same content reads the same in every timezone", () => {
+		expect(formatDate("2026-07-30T23:30:00Z")).toBe("Thursday, 30 July 2026");
+		expect(formatDate("2026-07-30T00:30:00Z")).toBe("Thursday, 30 July 2026");
+	});
+
 	it("interprets a date-only ISO string as UTC midnight, not local midnight", () => {
 		expect(formatDate("2026-07-30")).toBe(formatDate(new Date(Date.UTC(2026, 6, 30))));
 	});

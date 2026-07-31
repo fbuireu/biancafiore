@@ -28,10 +28,16 @@ describe("slugify", () => {
 		expect(slugify("Design — Systems")).toBe("design-systems");
 	});
 
-	it("trims surrounding whitespace but keeps leading and trailing hyphens", () => {
+	it("trims surrounding whitespace and strips the hyphens left at either end", () => {
 		expect(slugify("   spaced out   ")).toBe("spaced-out");
-		expect(slugify("-leading and trailing-")).toBe("-leading-and-trailing-");
-		expect(slugify("Trailing - ")).toBe("trailing-");
+		expect(slugify("-leading and trailing-")).toBe("leading-and-trailing");
+		expect(slugify("Trailing - ")).toBe("trailing");
+	});
+
+	it("strips the separators punctuation leaves at either end, not just the hyphens it was given", () => {
+		expect(slugify("— Leading dash")).toBe("leading-dash");
+		expect(slugify("Ends with an ampersand &")).toBe("ends-with-an-ampersand");
+		expect(slugify("Chapter 1 :")).toBe("chapter-1");
 	});
 
 	it("keeps underscores because they count as word characters", () => {
@@ -47,12 +53,14 @@ describe("slugify", () => {
 		expect(slugify("日本語")).toBe("");
 	});
 
-	it("collapses a string made only of separators down to one hyphen", () => {
-		expect(slugify("---")).toBe("-");
+	it("returns an empty string for a string made only of separators", () => {
+		expect(slugify("---")).toBe("");
+		expect(slugify(" - ")).toBe("");
 	});
 
 	it("leaves an already-slugified string unchanged", () => {
 		expect(slugify(slugify("Hello, World!"))).toBe("hello-world");
+		expect(slugify(slugify("- Dangling separators -"))).toBe("dangling-separators");
 	});
 });
 

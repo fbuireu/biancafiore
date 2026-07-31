@@ -43,14 +43,25 @@ describe("getReadingTime", () => {
 		expect(getReadingTime(`<article><p>${words(201)}</p></article>`)).toBe(2);
 	});
 
-	it("counts each whitespace character as a separator, so runs of whitespace inflate the count", () => {
-		expect(getReadingTime(words(200).replace(/ /g, "  "))).toBe(2);
+	it("treats a run of whitespace as a single separator instead of counting empty words", () => {
+		expect(getReadingTime(words(200).replace(/ /g, "  "))).toBe(1);
+		expect(getReadingTime(words(201).replace(/ /g, "\n\n\t"))).toBe(2);
 	});
 
-	it("welds words together when tags are the only thing between them", () => {
+	it("ignores the whitespace markup leaves around the text", () => {
+		expect(getReadingTime(`\n  <article>\n\t<p>${words(200)}</p>\n</article>\n`)).toBe(1);
+	});
+
+	it("keeps words apart when tags are the only thing between them", () => {
 		const paragraphs = Array.from({ length: 400 }, () => "<p>word</p>").join("");
 
-		expect(getReadingTime(paragraphs)).toBe(1);
+		expect(getReadingTime(paragraphs)).toBe(2);
+	});
+
+	it("counts the words of a paragraph list rather than the paragraphs", () => {
+		const paragraphs = Array.from({ length: 21 }, () => `<p>${words(10)}</p>`).join("");
+
+		expect(getReadingTime(paragraphs)).toBe(2);
 	});
 });
 
@@ -95,10 +106,15 @@ describe("generateTableOfContents", () => {
 		expect(generateTableOfContents("<h2>Broken\nacross lines</h2>")).toEqual([]);
 	});
 
-	it("slugifies the id while keeping the heading text verbatim, inline markup included", () => {
+	it("keeps the heading text verbatim but builds the id from the text the markup wraps", () => {
 		expect(generateTableOfContents("<h2>Deploying <code>astro</code></h2>")).toEqual([
-			{ id: "deploying-codeastrocode", heading: "Deploying <code>astro</code>", level: 1 },
+			{ id: "deploying-astro", heading: "Deploying <code>astro</code>", level: 1 },
 		]);
+	});
+
+	it("builds the same id as the article body for a heading that is entirely wrapped in markup", () => {
+		expect(generateTableOfContents("<h2><strong>Bold Section</strong></h2>")[0]?.id).toBe("bold-section");
+		expect(generateTableOfContents("<h2>A <em>mixed</em> <code>one</code></h2>")[0]?.id).toBe("a-mixed-one");
 	});
 
 	it("collapses the hyphens left behind by punctuation in the generated id", () => {
