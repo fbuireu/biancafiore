@@ -110,19 +110,19 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				const isTagPage = pathname.startsWith(PAGES_ROUTES.TAG) && pathname !== PAGES_ROUTES.TAG;
 
 				if (isExternal) {
-					return `<a href="${uri}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}<span aria-hidden="true" class="external-link-icon"> ↗</span></a>`;
+					return `<a href="${escapeHtml(uri)}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}<span aria-hidden="true" class="external-link-icon"> ↗</span></a>`;
 				}
 				if (isTagPage) {
-					return `<a href="${uri}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}</a>`;
+					return `<a href="${escapeHtml(uri)}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}</a>`;
 				}
-				return `<a href="${uri}">${next(inlineNode.content)}</a>`;
+				return `<a href="${escapeHtml(uri)}">${next(inlineNode.content)}</a>`;
 			},
 			[INLINES.EMBEDDED_ENTRY]: (node: Node) => {
 				const contentTypeId = node.data.target.sys.contentType.sys.id;
 				const { slug, title } = node.data.target.fields;
 
 				if (contentTypeId === "article" && slug && title) {
-					return `<a href="/articles/${slug}">${title}</a>`;
+					return `<a href="/articles/${escapeHtml(slug)}">${escapeHtml(String(title))}</a>`;
 				}
 				return "";
 			},
@@ -132,7 +132,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				const { slug } = inlineNode.data.target.fields;
 
 				if (contentTypeId === "article" && slug) {
-					return `<a href="/articles/${slug}">${next(inlineNode.content)}</a>`;
+					return `<a href="/articles/${escapeHtml(slug)}">${next(inlineNode.content)}</a>`;
 				}
 				return next(inlineNode.content);
 			},
@@ -142,7 +142,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				const { url } = file ?? {};
 
 				if (url) {
-					return `<a href="https:${url}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}</a>`;
+					return `<a href="https:${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}</a>`;
 				}
 				return next(inlineNode.content);
 			},
@@ -151,15 +151,15 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				const { code, url, title, image, layout, caption, heading, text } = node.data.target.fields;
 
 				if (contentTypeId === "codeBlock" && code) {
-					return `<pre><code>${code}</code></pre>`;
+					return `<pre><code>${escapeHtml(String(code))}</code></pre>`;
 				}
 
 				if (contentTypeId === "videoEmbed" && url && title) {
-					return `<iframe src="${toEmbedUrl(url)}" width="100%" title="${title}" allowfullscreen loading="lazy"></iframe>`;
+					return `<iframe src="${escapeHtml(toEmbedUrl(url))}" width="100%" title="${escapeHtml(String(title))}" allowfullscreen loading="lazy"></iframe>`;
 				}
 
 				if (contentTypeId === "iframeEmbed" && url) {
-					return `<iframe src="${url}" width="100%" title="${title ?? ""}" allowfullscreen loading="lazy"></iframe>`;
+					return `<iframe src="${escapeHtml(url)}" width="100%" title="${escapeHtml(String(title ?? ""))}" allowfullscreen loading="lazy"></iframe>`;
 				}
 
 				if (contentTypeId === "imageEmbed" && image?.fields?.file?.url) {

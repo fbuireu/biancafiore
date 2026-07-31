@@ -368,6 +368,38 @@ describe("articleDTO content derivations", () => {
 		);
 	});
 
+	it("shows the markup a code block contains instead of running it", () => {
+		const codeBlock = {
+			nodeType: "embedded-entry-block",
+			data: {
+				target: { sys: { contentType: { sys: { id: "codeBlock" } } }, fields: { code: '<script>x="1"</script>' } },
+			},
+			content: [],
+		};
+
+		const [article] = articleDTO.create([makeArticle({ content: [codeBlock] })]);
+
+		expect(article.content).toContain("<pre><code>&lt;script&gt;x=&quot;1&quot;&lt;/script&gt;</code></pre>");
+		expect(article.content).not.toContain("<script>");
+	});
+
+	it("keeps an embedded title inside its attribute when the author typed a quote", () => {
+		const videoEmbed = {
+			nodeType: "embedded-entry-block",
+			data: {
+				target: {
+					sys: { contentType: { sys: { id: "videoEmbed" } } },
+					fields: { url: "https://youtu.be/abc", title: 'She said "hello"' },
+				},
+			},
+			content: [],
+		};
+
+		const [article] = articleDTO.create([makeArticle({ content: [videoEmbed] })]);
+
+		expect(article.content).toContain('title="She said &quot;hello&quot;"');
+	});
+
 	it("escapes a heading in the body exactly as the table of contents stores it, so the two spell the same anchor", () => {
 		const [article] = articleDTO.create([makeArticle({ content: [heading({ level: 2, value: "Why & How" })] })]);
 		const [entry] = article.tableOfContents;

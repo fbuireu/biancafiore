@@ -98,6 +98,7 @@ const RECAPTCHA_SCORE_DECLARATION = /const RECAPTCHA_MINIMUM_SCORE = ([\d.]+);/;
 const CAUGHT_SAVE_CONTACT = /saveContact\([^)]*\)\.pipe\(\s*Effect\.catchAll/;
 const CONSOLE_CALL = /\bconsole\.\w+\(/;
 const TAG_TO_STATUS_CASE = /case "(\w+)":[\s\S]{0,60}?ActionError\(\{ code: "(\w+)"/g;
+const DOCUMENTED_TAG_TO_STATUS = /`(?:\w+Error)` → `[A-Z_]+`/g;
 const IMPORT_SOURCE = /from "([^"]+)"/g;
 const OUTWARD_IMPORT = /^@(application|infrastructure|modules)\//;
 const SHARED_UTILS_IMPORT = /import\s*\{([^}]+)\}\s*from\s*"@shared\/utils\/[^"]+"/g;
@@ -716,11 +717,11 @@ describe("actions guide", () => {
 	});
 
 	it("maps exactly the tags the guide says it maps", () => {
-		const mapped = [...action.matchAll(TAG_TO_STATUS_CASE)].map(([, tag, code]) => `${tag} → ${code}`);
+		const mapped = [...action.matchAll(TAG_TO_STATUS_CASE)].map(([, tag, code]) => `\`${tag}\` → \`${code}\``);
+		const documented = [...guide.matchAll(DOCUMENTED_TAG_TO_STATUS)].map(([pair]) => pair);
 
 		expect(mapped.length).toBeGreaterThan(0);
-		expect(mapped.filter((pair) => !guide.includes(pair.split(" → ")[0]))).toEqual([]);
-		expect(mapped.filter((pair) => !guide.includes(pair.split(" → ")[1]))).toEqual([]);
+		expect(documented.sort()).toEqual(mapped.sort());
 	});
 });
 
