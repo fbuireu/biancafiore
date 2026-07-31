@@ -3,7 +3,7 @@ import { validateContact, verifyRecaptcha } from "@infrastructure/utils/guards";
 import { Cause, Effect, Exit, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { resetSecrets, setSecret } from "../../../tests/doubles/astroEnvServer";
-import { recaptchaDouble } from "../../../tests/doubles/network";
+import { recaptchaDouble, SITEVERIFY_URL } from "../../../tests/doubles/network";
 
 const RECAPTCHA_ERROR_MESSAGE = "Mr. Robot, is that you? Please refresh the page and try again.";
 
@@ -60,6 +60,7 @@ describe("verifyRecaptcha", () => {
 
 		expect(recaptcha.calls).toStrictEqual([
 			{
+				url: SITEVERIFY_URL,
 				contentType: "application/x-www-form-urlencoded",
 				secret: "server-secret",
 				response: "visitor-token",

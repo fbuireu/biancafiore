@@ -72,10 +72,12 @@ const makeArticle = ({ slug, publishDate, isFavorite, featuredImage }: MakeArtic
 		},
 	}) as unknown as RawArticle;
 
+let cdn: ReturnType<typeof imageDouble>;
+
 beforeEach(() => {
 	resetCms();
 	vi.stubEnv("CONTENTFUL_SPACE_ID", "space-id");
-	imageDouble({ url: "https://images.ctfassets.net/*", bytes: PLACEHOLDER_BYTES.buffer });
+	cdn = imageDouble({ url: "https://images.ctfassets.net/*", bytes: PLACEHOLDER_BYTES.buffer });
 });
 
 afterEach(() => {
@@ -139,10 +141,10 @@ describe("articles loader", () => {
 			url: "//images.ctfassets.net/hero.jpg",
 			placeholder: PLACEHOLDER,
 		});
+		expect(cdn.calls).toStrictEqual(["https://images.ctfassets.net/hero.jpg?w=24&q=35&fm=webp"]);
 	});
 
 	it("leaves an article without a featured image without one, rather than inventing a placeholder", async () => {
-		const cdn = imageDouble({ url: "https://images.ctfassets.net/*", bytes: PLACEHOLDER_BYTES.buffer });
 		cmsAnswers({ article: [makeArticle({ slug: "plain", publishDate: "2024-03-15" })] });
 
 		const [entry] = await load();

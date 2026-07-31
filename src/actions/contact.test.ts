@@ -2,7 +2,7 @@ import type { ContactError } from "@actions/contact";
 import { submitContact } from "@actions/contact";
 import { LibsqlError } from "@libsql/client/web";
 import { DrizzleQueryError } from "drizzle-orm/errors";
-import { Cause, Effect, Exit, Layer, Option } from "effect";
+import { Cause, Effect, Exit, Layer, Logger, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resetSecrets, setSecret } from "../../tests/doubles/astroEnvServer";
 import { databaseDouble, databaseError, emailDouble, emailError } from "../../tests/doubles/contactLayers";
@@ -17,6 +17,23 @@ const VALID_INPUT = {
 
 const recaptchaResponds = (verdict: RecaptchaDoubleOptions) => recaptchaDouble(verdict);
 
+interface CapturedLog {
+	level: string;
+	message: string;
+}
+
+const logged: CapturedLog[] = [];
+
+const capturingLogger = Logger.replace(
+	Logger.defaultLogger,
+	Logger.make(({ logLevel, message }) => {
+		logged.push({
+			level: logLevel.label,
+			message: (Array.isArray(message) ? message : [message]).map(String).join(" "),
+		});
+	}),
+);
+
 const run = ({
 	database,
 	email,
@@ -25,12 +42,19 @@ const run = ({
 	database: ReturnType<typeof databaseDouble>;
 	email: ReturnType<typeof emailDouble>;
 	input?: typeof VALID_INPUT;
-}) => Effect.runPromiseExit(submitContact(input).pipe(Effect.provide(Layer.merge(database.layer, email.layer))));
+}) =>
+	Effect.runPromiseExit(
+		submitContact(input).pipe(
+			Effect.provide(Layer.merge(database.layer, email.layer)),
+			Effect.provide(capturingLogger),
+		),
+	);
 
 const failureTag = (exit: Exit.Exit<{ ok: boolean }, ContactError>): string | undefined =>
 	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause))?._tag : undefined;
 
 beforeEach(() => {
+	logged.length = 0;
 	setSecret("GOOGLE_RECAPTCHA_SECRET_KEY", "secret");
 	recaptchaResponds({ success: true, score: 0.9 });
 });
@@ -70,6 +94,26 @@ describe("submitContact", () => {
 
 		expect(exit).toStrictEqual(Exit.succeed({ ok: true }));
 		expect(database.inserted).toHaveLength(0);
+	});
+
+	it("logs the dropped row at error level, naming the emailId and the reason", async () => {
+		const database = databaseDouble({ failInsertWith: databaseError("turso unreachable") });
+		const email = emailDouble({ id: "sent-2" });
+
+		await run({ database, email });
+
+		expect(logged).toStrictEqual([
+			{ level: "ERROR", message: "Contact sent-2 was delivered but not persisted: turso unreachable" },
+		]);
+	});
+
+	it("logs nothing when the row is written", async () => {
+		const database = databaseDouble();
+		const email = emailDouble({ id: "sent-2" });
+
+		await run({ database, email });
+
+		expect(logged).toEqual([]);
 	});
 
 	it("answers ok to the loser of a duplicate race, whose mail has already gone out", async () => {
