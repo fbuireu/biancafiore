@@ -18,7 +18,7 @@ export const authors = defineCollection({
 				return yield* Effect.all(
 					[
 						cms.getEntries<AuthorSkeleton>({ content_type: "author" }),
-						cms.getEntries<ArticleSkeleton>({ content_type: "article" }),
+						cms.getEntries<ArticleSkeleton>({ content_type: "article", order: ["-fields.publishDate"] }),
 					],
 					{ concurrency: "unbounded" },
 				);

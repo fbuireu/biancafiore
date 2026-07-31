@@ -1,26 +1,62 @@
 import { Database } from "@infrastructure/db/client";
 import { EmailClient } from "@infrastructure/email/server";
 import { DatabaseError, EmailError } from "@infrastructure/errors";
+import { Column, getTableName, Param, SQL, Table } from "drizzle-orm";
 import { Effect, Layer } from "effect";
 import type { CreateEmailOptions } from "resend";
 
 type QueryKind = "select" | "insert";
 
+export interface RecordedQuery {
+	table?: string;
+	column?: string;
+	value?: unknown;
+	limit?: number;
+}
+
 interface StubQuery {
 	kind: QueryKind;
-	from: () => StubQuery;
-	where: () => StubQuery;
-	limit: () => StubQuery;
+	recorded: RecordedQuery;
+	from: (table: unknown) => StubQuery;
+	where: (condition: unknown) => StubQuery;
+	limit: (rows: number) => StubQuery;
 	values: (row: Record<string, unknown>) => StubQuery;
 	row?: Record<string, unknown>;
 }
 
-const stubQuery = (kind: QueryKind): StubQuery => {
+const tableNameOf = (table: unknown) => (table instanceof Table ? getTableName(table) : undefined);
+
+const filterOf = (condition: unknown): Pick<RecordedQuery, "column" | "value"> => {
+	if (!(condition instanceof SQL)) return {};
+
+	const chunks: unknown[] = condition.queryChunks;
+	const column = chunks.find((chunk): chunk is Column => chunk instanceof Column);
+	const parameter = chunks.find((chunk): chunk is Param => chunk instanceof Param);
+
+	return { column: column?.name, value: parameter?.value };
+};
+
+interface StubQueryParams {
+	kind: QueryKind;
+	table?: unknown;
+}
+
+const stubQuery = ({ kind, table }: StubQueryParams): StubQuery => {
 	const query: StubQuery = {
 		kind,
-		from: () => query,
-		where: () => query,
-		limit: () => query,
+		recorded: { table: tableNameOf(table) },
+		from: (from) => {
+			query.recorded.table = tableNameOf(from);
+			return query;
+		},
+		where: (condition) => {
+			Object.assign(query.recorded, filterOf(condition));
+			return query;
+		},
+		limit: (rows) => {
+			query.recorded.limit = rows;
+			return query;
+		},
 		values: (row) => {
 			query.row = row;
 			return query;
@@ -35,6 +71,7 @@ const databaseErrorFrom = (cause: unknown) =>
 
 export interface DatabaseDoubleOptions {
 	duplicates?: unknown[];
+	failSelectWith?: DatabaseError;
 	failInsertWith?: DatabaseError;
 	rejectInsertWith?: unknown;
 }
@@ -42,24 +79,31 @@ export interface DatabaseDoubleOptions {
 export interface DatabaseDouble {
 	layer: Layer.Layer<Database>;
 	inserted: Record<string, unknown>[];
+	selected: RecordedQuery[];
 }
 
 export function databaseDouble({
 	duplicates = [],
+	failSelectWith,
 	failInsertWith,
 	rejectInsertWith,
 }: DatabaseDoubleOptions = {}): DatabaseDouble {
 	const inserted: Record<string, unknown>[] = [];
+	const selected: RecordedQuery[] = [];
 
 	const db = {
-		select: () => stubQuery("select"),
-		insert: () => stubQuery("insert"),
+		select: () => stubQuery({ kind: "select" }),
+		insert: (table: unknown) => stubQuery({ kind: "insert", table }),
 	};
 
 	const run = (query: PromiseLike<unknown>) => {
-		const { kind, row } = query as unknown as StubQuery;
+		const { kind, recorded, row } = query as unknown as StubQuery;
 
-		if (kind === "select") return Effect.succeed(duplicates);
+		if (kind === "select") {
+			selected.push(recorded);
+
+			return failSelectWith ? Effect.fail(failSelectWith) : Effect.succeed(duplicates);
+		}
 
 		if (rejectInsertWith !== undefined) return Effect.fail(databaseErrorFrom(rejectInsertWith));
 
@@ -72,6 +116,7 @@ export function databaseDouble({
 
 	return {
 		inserted,
+		selected,
 		layer: Layer.succeed(Database, {
 			db,
 			run,

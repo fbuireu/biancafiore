@@ -38,6 +38,12 @@ const SCRIPTS_INTENTIONALLY_UNDOCUMENTED = new Set([
 
 const CONCEPTS_OUTSIDE_THE_GLOSSARY = new Set(["breadcrumb", "contact", "shared"]);
 
+const STYLESHEETS_STYLING_A_VENDOR_DOM = new Set(["src/ui/styles/vendor/cookie-consent.css"]);
+
+const STYLESHEET_OUTSIDE_A_COMPONENT_FOLDER = "src/ui/modules/core/components/form/shared.css";
+
+const ROUTES_WITH_NO_PAGE_CONTAINER = ["404", "500", "tag"];
+
 const DOCUMENTED_PATH_EXAMPLES = new Set(["file.ts:123", "NNNN-kebab-title.md"]);
 
 const ADR_TEMPLATE_SECTIONS = ["Status", "Context", "Decision", "Consequences"];
@@ -77,6 +83,8 @@ const PATH_WITH_LINE_NUMBER = /\.(ts|tsx|astro|css):\d+/;
 const NOT_A_BARE_PATH = /[<>*…(),\s]/;
 const ENV_SCHEMA_FIELD = /(\w+): envField\./g;
 const ENV_EXAMPLE_VARIABLE = /^([A-Z][A-Z0-9_]*)=/gm;
+const CLIENT_ENV_FIELD = /(\w+): envField\.\w+\(\{[^}]*\}\)/g;
+const EXPORTED_CONSTANT = /^export const (\w+)/gm;
 const ADR_REFERENCE = /ADR ([\d/\s]+)/g;
 const ADR_NUMBER = /\d{4}/g;
 const ADR_PATH_REFERENCE = /docs\/adr\/(\d{4})-/g;
@@ -106,19 +114,34 @@ const ANY_ID_ASSIGNMENT = /^\t*id:/m;
 const TYPE_SCALE_RATIO = /--ratio:\s*([\d.]+);/;
 const EDITORIAL_UTILITY_DECLARATION = /^\t\.(editorial-[a-z-]+)[^{\n]*\{/gm;
 const EDITORIAL_UTILITY_CITATION = /`\.(editorial-[a-z-]+)`/g;
+const GLOBAL_UTILITY_DECLARATION = /^\t\.([a-z][a-z-]*)[^{\n]*\{/gm;
+const GLOBAL_UTILITY_CENSUS = /^- \*\*`global\.css` utilities\.\*\* (.+)$/m;
+const CLASS_CITATION = /`\.([a-z][a-z-]*)`/g;
+const SEMANTIC_TOKEN_DECLARATION = /^\s+(--[a-z-]+): light-dark\(/gm;
+const SEMANTIC_TOKEN_CENSUS = /they are exactly ([^—]+)—/;
+const GRID_TOKEN_IN_QUERY = /@(?:container|media)[^{]*var\(--grid-/;
 const REVEAL_MODIFIER_DECLARATION = /\.reveal--[a-z-]+[^{\n]*\{/g;
-const PAGE_CONTAINER_DECLARATION = /&\.page--([a-z-]+)\s*\{\s*container:\s*([a-z-]+)\s*\/\s*([^;]+);/g;
+const PAGE_CONTAINER_DECLARATION = /&\.page--([a-z\d-]+)\s*\{\s*container:\s*([a-z\d-]+)\s*\/\s*([^;]+);/g;
 const PAGES_ROUTES_BLOCK = /PAGES_ROUTES = \{([\s\S]*?)\n\} as const;/;
 const PAGES_ROUTES_KEY = /^\t"?([\w-]+)"?:/gm;
 const LAYER_ORDER_DECLARATION = /^@layer [^;{]+,[^;{]+;/m;
 const LAYER_TABLE_ROW = /^\| ([^|]+) \| `([\w.-]+)`[^|]*\|$/gm;
 const STYLESHEET_CITATION = /`([\w/.-]+)`/g;
 const LAYER_STATEMENT = /^@layer .+;$/;
+const INVERTED_SECTION_MIX = /class="[^"]*\binverted-color-scheme\b/;
+const INVERTED_SECTION_CENSUS = /the components that do are ([^.]+)\./;
 const MODIFIER_BLOCK_DECLARATION = /^\t\.([a-z-]+)[^{\n]*\{/gm;
 const MIXED_UTILITY_TABLE_ROW = /^\| `([a-z][a-z-]*)` \| [^|]+ \|$/gm;
 const MIXED_UTILITY_BULLET = /^\t- `([a-z][a-z-]*)` — /gm;
 const STANDALONE_MODIFIER_CLASS = /\.--[\w-]+/g;
 const SMACSS_STATE_CLASS = /\.(?:is|has)-[\w-]+/g;
+const ANY_CLASS_TOKEN = /\.(-{0,2}[a-zA-Z_][\w-]*)/g;
+const COMPONENT_FILE = /^[A-Z][A-Za-z\d]*\.(astro|tsx)$/;
+const ASTRO_STYLE_BLOCK = /<style[\s>]/;
+const HYDRATION_DIRECTIVE = /<(\w+)[^>]*\sclient:([\w-]+)(?:="([^"]*)")?/g;
+const CLASS_ATTRIBUTE = /class(?::list)?=(?:"([^"]*)"|\{((?:[^{}]|\{[^}]*\})*)\})/g;
+const CLASS_WORD = /[a-zA-Z][\w-]*/g;
+const ISLAND_ROOT_CENSUS = /only three hydration roots[^—]*— ([^—]+) —/;
 const DTO_CITED_DEFAULT = /`(\?\? [^`\n]+)`/g;
 const LEAKED_INFRASTRUCTURE_IMPORT = /@infrastructure\/|from "contentful"/;
 const CITED_CONTAINER_QUERY = /@container ([a-z-]+) \(width <= \d+px\)/;
@@ -331,6 +354,19 @@ describe("environment", () => {
 
 	it("declares the same variables in .env.example and the astro.config env schema", () => {
 		expect(exampleVariables).toEqual(schemaVariables);
+	});
+
+	it("stands in for every client variable in the astro:env/client double, as ADR 0016 warns it must", () => {
+		const clientVariables = [...ASTRO_CONFIG.matchAll(CLIENT_ENV_FIELD)]
+			.filter(([declaration]) => declaration.includes('context: "client"'))
+			.map(([, name]) => name)
+			.sort();
+		const doubled = [...read("tests/doubles/astroEnvClient.ts").matchAll(EXPORTED_CONSTANT)]
+			.map(([, name]) => name)
+			.sort();
+
+		expect(clientVariables.length).toBeGreaterThan(0);
+		expect(doubled).toEqual(clientVariables);
 	});
 });
 
@@ -845,6 +881,41 @@ describe("styles guide: derived constants and source order", () => {
 		expect(listed).toEqual(declared);
 	});
 
+	it("censuses every block global.css declares, so an unlisted utility gets reinvented instead of reused", () => {
+		const declared = [
+			...new Set(
+				[...read("src/ui/styles/global/global.css").matchAll(GLOBAL_UTILITY_DECLARATION)].map(([, name]) => name),
+			),
+		].sort();
+		const census = guide.match(GLOBAL_UTILITY_CENSUS)?.[1] ?? "";
+		const listed = [...new Set([...census.matchAll(CLASS_CITATION)].map(([, name]) => name))].sort();
+
+		expect(declared.length).toBeGreaterThan(0);
+		expect(listed).toEqual(declared);
+	});
+
+	it("names every light-dark() token as semantic, and claims none that variables.css does not define", () => {
+		const declared = [
+			...new Set(
+				[...read("src/ui/styles/global/variables.css").matchAll(SEMANTIC_TOKEN_DECLARATION)].map(([, name]) => name),
+			),
+		].sort();
+		const censused = namesIn({ text: guide, pattern: SEMANTIC_TOKEN_CENSUS }).sort();
+
+		expect(declared.length).toBeGreaterThan(0);
+		expect(censused).toEqual(declared);
+	});
+
+	it("keeps the --grid-* tokens as widths: a query condition cannot read a custom property", () => {
+		expect(guide).toContain("never a query condition");
+
+		const misused = walk("src/ui")
+			.filter((file) => file.endsWith(".css"))
+			.filter((file) => GRID_TOKEN_IN_QUERY.test(read(file)));
+
+		expect(misused).toEqual([]);
+	});
+
 	it("keeps the reveal modifiers after the class they only beat by source order", () => {
 		const reveal = read("src/ui/styles/global/reveal.css");
 		const base = reveal.indexOf(".reveal {");
@@ -866,6 +937,15 @@ describe("styles guide: derived constants and source order", () => {
 		expect(guide).toContain("`inline-size scroll-state`");
 		expect(containers.filter(({ route, name }) => name !== `${route}-page`)).toEqual([]);
 		expect(containers.filter(({ axes }) => axes !== "inline-size scroll-state")).toEqual([]);
+
+		const block = read("src/const/const.ts").match(PAGES_ROUTES_BLOCK)?.[1] ?? "";
+		const uncontained = [...block.matchAll(PAGES_ROUTES_KEY)]
+			.map(([, key]) => key.toLowerCase())
+			.filter((route) => !containers.some(({ route: named }) => named === route))
+			.sort();
+
+		expect(uncontained).toEqual(ROUTES_WITH_NO_PAGE_CONTAINER);
+		expect(uncontained.filter((route) => !guide.includes(`\`${route}\``))).toEqual([]);
 	});
 
 	it("has no page--tag, for the reason the guide gives", () => {
@@ -877,6 +957,16 @@ describe("styles guide: derived constants and source order", () => {
 		expect(routes.indexOf("TAGS")).toBeLessThan(routes.indexOf("TAG"));
 		expect(read("src/ui/modules/core/utils/page.ts")).toContain("url.pathname.includes(route)");
 		expect(read("src/ui/styles/base/base.css")).not.toContain("page--tag ");
+	});
+
+	it("censuses every component that inverts against the page, and claims no others", () => {
+		const inverting = walk("src/ui/modules")
+			.filter((file) => file.endsWith(".astro") && INVERTED_SECTION_MIX.test(read(file)))
+			.map((file) => file.split("/").at(-2) ?? "");
+		const censused = namesIn({ text: guide, pattern: INVERTED_SECTION_CENSUS });
+
+		expect(inverting.length).toBeGreaterThan(0);
+		expect(censused.sort()).toEqual([...new Set(inverting)].sort());
 	});
 
 	it("declares the layer order in index.css and nowhere else", () => {
@@ -915,11 +1005,15 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect([...listedModifiers].sort()).toEqual(declaredModifiers);
 	});
 
+	const stylesheets = walk("src/ui")
+		.filter((file) => file.endsWith(".css"))
+		.filter((file) => !STYLESHEETS_STYLING_A_VENDOR_DOM.has(file));
+
 	it("writes modifiers the way BEM does: fused onto a block, never standalone or `is-`/`has-` prefixed", () => {
 		expect(guide).toContain("No standalone `.--modifier` classes");
 		expect(guide).toContain("no `is-`/`has-` prefixes");
+		expect(stylesGuide).toContain("never `is-`/`has-` state classes");
 
-		const stylesheets = walk("src/ui/modules").filter((file) => file.endsWith(".css"));
 		const violations = stylesheets.flatMap((file) => {
 			const source = read(file);
 
@@ -930,6 +1024,28 @@ describe("modules guide: mixes, islands and data access", () => {
 
 		expect(stylesheets.length).toBeGreaterThan(0);
 		expect(violations).toEqual([]);
+	});
+
+	it("fuses every modifier onto a block that exists, so none is a bare descendant standing in for one", () => {
+		expect(stylesGuide).toContain("rejects a modifier whose block appears nowhere");
+
+		const classesIn = (source: string) => [...source.matchAll(ANY_CLASS_TOKEN)].map(([, name]) => name);
+		const declared = new Set(stylesheets.flatMap((file) => classesIn(read(file))));
+
+		for (const file of production(walk("src/ui")).filter((file) => SOURCE_FILE.test(file))) {
+			for (const [, quoted, braced] of read(file).matchAll(CLASS_ATTRIBUTE)) {
+				for (const [word] of (quoted ?? braced ?? "").matchAll(CLASS_WORD)) declared.add(word);
+			}
+		}
+
+		const orphans = stylesheets.flatMap((file) =>
+			[...new Set(classesIn(read(file)))]
+				.filter((name) => name.includes("--") && !declared.has(name.slice(0, name.indexOf("--"))))
+				.map((name) => `${file}: .${name}`),
+		);
+
+		expect(declared.size).toBeGreaterThan(0);
+		expect(orphans).toEqual([]);
 	});
 
 	it("reads content through astro:content only, never Contentful or infrastructure", () => {
@@ -950,6 +1066,69 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(
 			walk("src/ui/modules").filter((file) => file.endsWith(".css") && read(file).includes(cited?.[0] ?? "")),
 		).not.toEqual([]);
+	});
+
+	it("names each component folder camelCase, the component PascalCase and the stylesheet kebab-case of both", () => {
+		expect(guide).toContain("no folder deviates");
+
+		const kebab = (name: string) => name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+		const folders = new Map<string, string[]>();
+
+		for (const file of walk("src/ui/modules")) {
+			const folder = file.slice(0, file.lastIndexOf("/"));
+
+			folders.set(folder, [...(folders.get(folder) ?? []), file.split("/").pop() ?? ""]);
+		}
+
+		const misnamed = [...folders].flatMap(([folder, names]) => {
+			const components = names.filter((name) => COMPONENT_FILE.test(name));
+
+			if (components.length === 0) return [];
+
+			const own = folder.split("/").pop() ?? "";
+
+			return [
+				...(/^[a-z][A-Za-z\d]*$/.test(own) ? [] : [`${folder}: folder is not camelCase`]),
+				...(components.some((name) => name.startsWith(own[0].toUpperCase() + own.slice(1)))
+					? []
+					: [`${folder}: no component named after the folder`]),
+				...names
+					.filter((name) => name.endsWith(".css") && name !== `${kebab(own)}.css`)
+					.map((name) => `${folder}/${name}`),
+			];
+		});
+
+		expect(folders.size).toBeGreaterThan(0);
+		expect(misnamed).toEqual([]);
+		expect(exists(STYLESHEET_OUTSIDE_A_COMPONENT_FOLDER)).toBe(true);
+		expect(guide).toContain("the only shared stylesheet in the tree");
+	});
+
+	it("leaves component CSS unscoped and unlayered, which is what makes class names the only isolation", () => {
+		expect(guide).toContain("the class names are the only isolation there is");
+		expect(guide).toContain("Component stylesheets are unlayered");
+
+		const components = production(walk("src/ui/modules")).filter((file) => file.endsWith(".astro"));
+
+		expect(components.filter((file) => ASTRO_STYLE_BLOCK.test(read(file)))).toEqual([]);
+		expect(walk("src/ui/modules").filter((file) => file.endsWith(".css") && read(file).includes("@layer"))).toEqual([]);
+	});
+
+	it("hydrates only the roots the Islands section censuses, and only with client:only", () => {
+		const hydrated = production(walk("src/ui"))
+			.filter((file) => SOURCE_FILE.test(file))
+			.flatMap((file) =>
+				[...read(file).matchAll(HYDRATION_DIRECTIVE)].map(([, name, directive, value]) => ({
+					name,
+					directive: `${directive}${value ? `="${value}"` : ""}`,
+				})),
+			);
+
+		expect(hydrated.length).toBeGreaterThan(0);
+		expect(hydrated.filter(({ directive }) => directive !== 'only="react"')).toEqual([]);
+		expect(hydrated.map(({ name }) => name).sort()).toEqual(
+			namesIn({ text: guide, pattern: ISLAND_ROOT_CENSUS }).sort(),
+		);
 	});
 
 	it("names every React island under modules", () => {

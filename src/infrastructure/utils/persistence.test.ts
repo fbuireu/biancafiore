@@ -25,6 +25,8 @@ const insertFailingWith = (cause: unknown) =>
 
 const insertRejectingWith = (driverError: unknown) => databaseDouble({ rejectInsertWith: driverError });
 
+const selectFailingWith = (message: string) => databaseDouble({ failSelectWith: new DatabaseError({ message }) });
+
 const drizzleWrapped = (cause: Error) => new DrizzleQueryError("insert into contact", [], cause);
 
 afterEach(() => {
@@ -54,6 +56,32 @@ describe("checkDuplicatedEntries", () => {
 		);
 
 		expect(failureOf(exit)).toMatchObject({ _tag: "DuplicateContactError", message: DUPLICATE_MESSAGE });
+	});
+
+	it("asks the Contact table for the email column matching the address it was given, one row at most", async () => {
+		const database = databaseDouble();
+
+		await Effect.runPromiseExit(
+			checkDuplicatedEntries({ name: "Ada", email: "ada@example.com", message: "Hello there" }).pipe(
+				Effect.provide(database.layer),
+			),
+		);
+
+		expect(database.selected).toStrictEqual([
+			{ table: "Contact", column: "email", value: "ada@example.com", limit: 1 },
+		]);
+	});
+
+	it("propagates a lookup that fails instead of reading the missing answer as no duplicate", async () => {
+		const database = selectFailingWith("turso unreachable");
+
+		const exit = await Effect.runPromiseExit(
+			checkDuplicatedEntries({ name: "Ada", email: "ada@example.com", message: "Hello there" }).pipe(
+				Effect.provide(database.layer),
+			),
+		);
+
+		expect(failureOf(exit)).toMatchObject({ _tag: "DatabaseError", message: "turso unreachable" });
 	});
 });
 

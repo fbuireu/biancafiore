@@ -55,9 +55,9 @@ const createSection = ({ level, id, text, content, index }: CreateSectionParams)
 	return `
     <section style="--is: --section-${index}">
       <h${level} id="${id}" class="article__heading flex align-baseline">
-        <a href="#${id}">${text}</a>
+        <a href="#${id}">${escapeHtml(text)}</a>
       </h${level}>
-      <p>${content}</p>
+      <p>${escapeHtml(content)}</p>
     </section>
   `;
 };

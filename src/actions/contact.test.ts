@@ -1,5 +1,8 @@
+import type { ContactError } from "@actions/contact";
 import { submitContact } from "@actions/contact";
-import { Effect, Exit, Layer } from "effect";
+import { LibsqlError } from "@libsql/client/web";
+import { DrizzleQueryError } from "drizzle-orm/errors";
+import { Cause, Effect, Exit, Layer, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resetSecrets, setSecret } from "../../tests/doubles/astroEnvServer";
 import { databaseDouble, databaseError, emailDouble, emailError } from "../../tests/doubles/contactLayers";
@@ -27,6 +30,9 @@ const run = ({
 	email: ReturnType<typeof emailDouble>;
 	input?: typeof VALID_INPUT;
 }) => Effect.runPromiseExit(submitContact(input).pipe(Effect.provide(Layer.merge(database.layer, email.layer))));
+
+const failureTag = (exit: Exit.Exit<{ ok: boolean }, ContactError>): string | undefined =>
+	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause))?._tag : undefined;
 
 beforeEach(() => {
 	setSecret("GOOGLE_RECAPTCHA_SECRET_KEY", "secret");
@@ -70,13 +76,30 @@ describe("submitContact", () => {
 		expect(database.inserted).toHaveLength(0);
 	});
 
+	it("answers ok to the loser of a duplicate race, whose mail has already gone out", async () => {
+		const database = databaseDouble({
+			rejectInsertWith: new DrizzleQueryError(
+				"insert into contact",
+				[],
+				new LibsqlError("UNIQUE constraint failed: contact.email", "SQLITE_CONSTRAINT_UNIQUE"),
+			),
+		});
+		const email = emailDouble({ id: "sent-3" });
+
+		const exit = await run({ database, email });
+
+		expect(exit).toStrictEqual(Exit.succeed({ ok: true }));
+		expect(email.sent).toHaveLength(1);
+		expect(database.inserted).toHaveLength(0);
+	});
+
 	it("fails without sending when the address already contacted", async () => {
 		const database = databaseDouble({ duplicates: [{ email: "ada@example.com" }] });
 		const email = emailDouble();
 
 		const exit = await run({ database, email });
 
-		expect(Exit.isFailure(exit)).toBe(true);
+		expect(failureTag(exit)).toBe("DuplicateContactError");
 		expect(email.sent).toHaveLength(0);
 	});
 
@@ -86,7 +109,7 @@ describe("submitContact", () => {
 
 		const exit = await run({ database, email });
 
-		expect(Exit.isFailure(exit)).toBe(true);
+		expect(failureTag(exit)).toBe("EmailError");
 		expect(database.inserted).toHaveLength(0);
 	});
 
@@ -96,7 +119,7 @@ describe("submitContact", () => {
 
 		const exit = await run({ database, email, input: { ...VALID_INPUT, email: "not-an-email" } });
 
-		expect(Exit.isFailure(exit)).toBe(true);
+		expect(failureTag(exit)).toBe("ValidationError");
 		expect(fetch).not.toHaveBeenCalled();
 	});
 
@@ -108,7 +131,7 @@ describe("submitContact", () => {
 
 		const exit = await run({ database, email });
 
-		expect(Exit.isFailure(exit)).toBe(true);
+		expect(failureTag(exit)).toBe("ValidationError");
 		expect(email.sent).toHaveLength(0);
 	});
 

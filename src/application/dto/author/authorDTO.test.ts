@@ -45,12 +45,14 @@ const makeAuthor = ({
 interface MakeArticleParams {
 	slug: string;
 	author?: unknown;
+	publishDate?: string;
 }
 
 const makeArticle = ({
 	slug,
 	author = { fields: { name: "Bianca Fiore", slug: "bianca-fiore" } },
-}: MakeArticleParams) => ({ fields: { slug, author } }) as unknown as RawArticle;
+	publishDate = "2024-01-01",
+}: MakeArticleParams) => ({ fields: { slug, author, publishDate } }) as unknown as RawArticle;
 
 describe("authorDTO field mapping", () => {
 	it("carries every authored field across and turns the profile image into url, dimensions and formats", () => {
@@ -119,7 +121,10 @@ describe("authorDTO article attribution", () => {
 	it("ignores articles written by somebody else", () => {
 		const [author] = authorDTO.create([
 			[makeAuthor({ name: "Bianca Fiore" })],
-			[makeArticle({ slug: "hers" }), makeArticle({ slug: "his", author: { fields: { name: "Someone Else" } } })],
+			[
+				makeArticle({ slug: "hers" }),
+				makeArticle({ slug: "his", author: { fields: { name: "Someone Else", slug: "someone-else" } } }),
+			],
 		]);
 
 		expect(author.articles).toEqual([{ id: "hers", collection: "articles" }]);
@@ -134,26 +139,70 @@ describe("authorDTO article attribution", () => {
 		expect(author.articles).toEqual([]);
 	});
 
-	it("matches on the author name rather than the slug, so two authors sharing a name share their articles", () => {
+	it("keeps two authors who share a display name apart, because the slug is what identifies an author", () => {
 		const [first, second] = authorDTO.create([
 			[
 				makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" }),
 				makeAuthor({ name: "Bianca Fiore", slug: "b-fiore" }),
 			],
-			[makeArticle({ slug: "only-article" })],
+			[
+				makeArticle({ slug: "hers", author: { fields: { name: "Bianca Fiore", slug: "bianca-fiore" } } }),
+				makeArticle({ slug: "the-namesakes", author: { fields: { name: "Bianca Fiore", slug: "b-fiore" } } }),
+			],
 		]);
 
-		expect(first.articles).toEqual([{ id: "only-article", collection: "articles" }]);
-		expect(second.articles).toEqual([{ id: "only-article", collection: "articles" }]);
+		expect(first.articles).toEqual([{ id: "hers", collection: "articles" }]);
+		expect(second.articles).toEqual([{ id: "the-namesakes", collection: "articles" }]);
 	});
 
-	it("names the first article of the input batch latestArticle, whatever its publish date", () => {
+	it("matches an author whose slug Contentful padded with whitespace on either side", () => {
 		const [author] = authorDTO.create([
-			[makeAuthor()],
-			[makeArticle({ slug: "oldest" }), makeArticle({ slug: "newest" })],
+			[makeAuthor({ slug: " bianca-fiore " })],
+			[makeArticle({ slug: "hers", author: { fields: { name: "Bianca Fiore", slug: "bianca-fiore  " } } })],
 		]);
 
-		expect(author.latestArticle).toEqual({ id: "oldest", collection: "articles" });
+		expect(author.articles).toEqual([{ id: "hers", collection: "articles" }]);
+	});
+
+	it("lists an author's articles newest first, whatever order the batch arrived in", () => {
+		const [author] = authorDTO.create([
+			[makeAuthor()],
+			[
+				makeArticle({ slug: "middle", publishDate: "2024-06-01" }),
+				makeArticle({ slug: "oldest", publishDate: "2019-03-01" }),
+				makeArticle({ slug: "newest", publishDate: "2026-07-30" }),
+			],
+		]);
+
+		expect(author.articles.map(({ id }) => id)).toEqual(["newest", "middle", "oldest"]);
+	});
+
+	it("names the newest of the author's articles latestArticle, even when it arrived last", () => {
+		const [author] = authorDTO.create([
+			[makeAuthor()],
+			[
+				makeArticle({ slug: "oldest", publishDate: "2019-03-01" }),
+				makeArticle({ slug: "newest", publishDate: "2026-07-30" }),
+			],
+		]);
+
+		expect(author.latestArticle).toEqual({ id: "newest", collection: "articles" });
+	});
+
+	it("ignores an article somebody else published more recently when naming latestArticle", () => {
+		const [author] = authorDTO.create([
+			[makeAuthor({ slug: "bianca-fiore" })],
+			[
+				makeArticle({
+					slug: "his",
+					author: { fields: { name: "Someone Else", slug: "someone-else" } },
+					publishDate: "2026-07-30",
+				}),
+				makeArticle({ slug: "hers", publishDate: "2025-01-01" }),
+			],
+		]);
+
+		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
 	});
 
 	it("leaves latestArticle undefined for an author with no articles", () => {
