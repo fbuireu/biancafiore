@@ -331,6 +331,46 @@ describe("articleDTO content derivations", () => {
 		expect(article.content).toContain('<a href="#the-craft">The Craft</a>');
 	});
 
+	it("numbers each section by its place in the table of contents, so the scroll timelines line up", () => {
+		const [article] = articleDTO.create([
+			makeArticle({
+				content: [
+					heading({ level: 2, value: "First" }),
+					heading({ level: 3, value: "Second" }),
+					heading({ level: 2, value: "Third" }),
+				],
+			}),
+		]);
+
+		expect(article.tableOfContents).toHaveLength(3);
+		expect(article.content).toContain('<section style="--is: --section-1">');
+		expect(article.content).toContain('<section style="--is: --section-2">');
+		expect(article.content).toContain('<section style="--is: --section-3">');
+	});
+
+	it("gives an h1 no timeline, because the table of contents never indexes one", () => {
+		const [article] = articleDTO.create([
+			makeArticle({ content: [heading({ level: 1, value: "Title" }), heading({ level: 2, value: "First" })] }),
+		]);
+
+		expect(article.tableOfContents).toHaveLength(1);
+		expect(article.content).toContain("<section>");
+		expect(article.content).toContain('<section style="--is: --section-1">');
+	});
+
+	it("drops a link whose scheme could execute instead of navigating", () => {
+		const scripted = {
+			nodeType: "hyperlink",
+			data: { uri: "javascript:alert(1)" },
+			content: [text("Click me")],
+		};
+
+		const [article] = articleDTO.create([makeArticle({ content: [{ ...paragraph("x"), content: [scripted] }] })]);
+
+		expect(article.content).toContain('href=""');
+		expect(article.content).not.toContain("javascript:");
+	});
+
 	it("wraps a heading in its own section and leaves the body paragraphs alone", () => {
 		const [article] = articleDTO.create([
 			makeArticle({ content: [heading({ level: 2, value: "The Craft" }), paragraph("Body text")] }),

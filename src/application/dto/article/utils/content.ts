@@ -3,7 +3,7 @@ import { PAGES_ROUTES } from "@const/index";
 import type { Block, Inline, Text } from "@contentful/rich-text-types";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import { getOptimizedImageUrl, getOptimizedSrcset } from "@infrastructure/images/imageOptimization";
-import { escapeHtml, slugify } from "@shared/utils/strings";
+import { escapeHtml, safeUrl, slugify } from "@shared/utils/strings";
 
 export const IMAGE_EMBED_LAYOUT = {
 	FULL_BLEED: "fullBleed",
@@ -14,6 +14,7 @@ const IMAGE_WRAPPER_CLASS: Record<ImageEmbedLayout, string> = {
 	[IMAGE_EMBED_LAYOUT.BREAKOUT]: "breakout",
 };
 const HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
+const INDEXED_HEADING_LEVELS = [2, 3, 4, 5, 6];
 
 type ImageEmbedLayout = (typeof IMAGE_EMBED_LAYOUT)[keyof typeof IMAGE_EMBED_LAYOUT];
 
@@ -25,14 +26,16 @@ type HeadingBlock = Block & { content: Text[] };
 
 interface CreateSectionParams {
 	level: number;
-	index: number;
+	ordinal?: number;
 	id: string;
 	text: string;
 }
 
-const createSection = ({ level, id, text, index }: CreateSectionParams) => {
+const createSection = ({ level, id, text, ordinal }: CreateSectionParams) => {
+	const timeline = ordinal ? ` style="--is: --section-${ordinal}"` : "";
+
 	return `
-    <section style="--is: --section-${index}">
+    <section${timeline}>
       <h${level} id="${id}" class="article__heading flex align-baseline">
         <a href="#${id}">${escapeHtml(text)}</a>
       </h${level}>
@@ -41,13 +44,17 @@ const createSection = ({ level, id, text, index }: CreateSectionParams) => {
 };
 
 export function parseHeadings() {
+	let indexed = 0;
+
 	return Object.fromEntries(
-		HEADING_LEVELS.map((level, index) => [
+		HEADING_LEVELS.map((level) => [
 			BLOCKS[`HEADING_${level}` as keyof typeof BLOCKS],
 			(node: HeadingBlock) => {
 				const text = node.content.map((child: Text) => child.value).join("");
 				const id = slugify(text);
-				return createSection({ level, index, id, text });
+				const ordinal = INDEXED_HEADING_LEVELS.includes(level) ? ++indexed : undefined;
+
+				return createSection({ level, ordinal, id, text });
 			},
 		]),
 	);
@@ -87,12 +94,12 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				const isTagPage = pathname.startsWith(PAGES_ROUTES.TAG) && pathname !== PAGES_ROUTES.TAG;
 
 				if (isExternal) {
-					return `<a href="${escapeHtml(uri)}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}<span aria-hidden="true" class="external-link-icon"> ↗</span></a>`;
+					return `<a href="${safeUrl(uri)}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}<span aria-hidden="true" class="external-link-icon"> ↗</span></a>`;
 				}
 				if (isTagPage) {
-					return `<a href="${escapeHtml(uri)}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}</a>`;
+					return `<a href="${safeUrl(uri)}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}</a>`;
 				}
-				return `<a href="${escapeHtml(uri)}">${next(inlineNode.content)}</a>`;
+				return `<a href="${safeUrl(uri)}">${next(inlineNode.content)}</a>`;
 			},
 			[INLINES.EMBEDDED_ENTRY]: (node: Node) => {
 				const contentTypeId = node.data.target.sys.contentType.sys.id;
@@ -119,7 +126,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				const { url } = file ?? {};
 
 				if (url) {
-					return `<a href="https:${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}</a>`;
+					return `<a href="${safeUrl(`https:${url}`)}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}</a>`;
 				}
 				return next(inlineNode.content);
 			},
@@ -132,11 +139,11 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				}
 
 				if (contentTypeId === "videoEmbed" && url && title) {
-					return `<iframe src="${escapeHtml(toEmbedUrl(url))}" width="100%" title="${escapeHtml(String(title))}" allowfullscreen loading="lazy"></iframe>`;
+					return `<iframe src="${safeUrl(toEmbedUrl(url))}" width="100%" title="${escapeHtml(String(title))}" allowfullscreen loading="lazy"></iframe>`;
 				}
 
 				if (contentTypeId === "iframeEmbed" && url) {
-					return `<iframe src="${escapeHtml(url)}" width="100%" title="${escapeHtml(String(title ?? ""))}" allowfullscreen loading="lazy"></iframe>`;
+					return `<iframe src="${safeUrl(url)}" width="100%" title="${escapeHtml(String(title ?? ""))}" allowfullscreen loading="lazy"></iframe>`;
 				}
 
 				if (contentTypeId === "imageEmbed" && image?.fields?.file?.url) {
