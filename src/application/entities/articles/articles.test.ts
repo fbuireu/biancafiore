@@ -3,6 +3,7 @@ import { articles } from "@application/entities/articles/articles";
 import { CmsError } from "@infrastructure/errors";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cmsAnswers, cmsFailsWith, cmsQueries, resetCms } from "../../../../tests/doubles/cmsLayer";
+import { imageDouble } from "../../../../tests/doubles/network";
 
 vi.mock("astro:content", async () => {
 	const { z } = await import("astro/zod");
@@ -74,10 +75,7 @@ const makeArticle = ({ slug, publishDate, isFavorite, featuredImage }: MakeArtic
 beforeEach(() => {
 	resetCms();
 	vi.stubEnv("CONTENTFUL_SPACE_ID", "space-id");
-	vi.stubGlobal(
-		"fetch",
-		vi.fn(async () => ({ ok: true, arrayBuffer: async () => PLACEHOLDER_BYTES.buffer })),
-	);
+	imageDouble({ url: "https://images.ctfassets.net/*", bytes: PLACEHOLDER_BYTES.buffer });
 });
 
 afterEach(() => {
@@ -144,12 +142,13 @@ describe("articles loader", () => {
 	});
 
 	it("leaves an article without a featured image without one, rather than inventing a placeholder", async () => {
+		const cdn = imageDouble({ url: "https://images.ctfassets.net/*", bytes: PLACEHOLDER_BYTES.buffer });
 		cmsAnswers({ article: [makeArticle({ slug: "plain", publishDate: "2024-03-15" })] });
 
 		const [entry] = await load();
 
 		expect(entry.featuredImage).toBeUndefined();
-		expect(fetch).not.toHaveBeenCalled();
+		expect(cdn.calls).toEqual([]);
 	});
 
 	it("fails the build instead of returning a short collection when Contentful errors", async () => {

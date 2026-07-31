@@ -6,6 +6,7 @@ import { Cause, Effect, Exit, Layer, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resetSecrets, setSecret } from "../../tests/doubles/astroEnvServer";
 import { databaseDouble, databaseError, emailDouble, emailError } from "../../tests/doubles/contactLayers";
+import { type RecaptchaDoubleOptions, recaptchaDouble } from "../../tests/doubles/network";
 
 const VALID_INPUT = {
 	name: "Ada",
@@ -14,12 +15,7 @@ const VALID_INPUT = {
 	recaptcha: "token",
 };
 
-const recaptchaResponds = (body: { success: boolean; score?: number }) => {
-	vi.stubGlobal(
-		"fetch",
-		vi.fn(async () => ({ json: async () => body })),
-	);
-};
+const recaptchaResponds = (verdict: RecaptchaDoubleOptions) => recaptchaDouble(verdict);
 
 const run = ({
 	database,
@@ -114,13 +110,14 @@ describe("submitContact", () => {
 	});
 
 	it("rejects a malformed payload before spending a reCAPTCHA call", async () => {
+		const recaptcha = recaptchaDouble({ score: 0.9 });
 		const database = databaseDouble();
 		const email = emailDouble();
 
 		const exit = await run({ database, email, input: { ...VALID_INPUT, email: "not-an-email" } });
 
 		expect(failureTag(exit)).toBe("ValidationError");
-		expect(fetch).not.toHaveBeenCalled();
+		expect(recaptcha.calls).toEqual([]);
 	});
 
 	it("rejects a reCAPTCHA score below the threshold", async () => {

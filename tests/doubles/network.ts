@@ -1,0 +1,76 @@
+import { HttpResponse, http } from "msw";
+import { setupServer } from "msw/node";
+
+export const SITEVERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
+
+export const server = setupServer();
+
+export interface RecaptchaCall {
+	contentType: string | null;
+	secret: string | null;
+	response: string | null;
+}
+
+export interface RecaptchaDoubleOptions {
+	success?: boolean;
+	score?: number;
+	unreachable?: boolean;
+	malformed?: boolean;
+}
+
+export interface RecaptchaDouble {
+	calls: RecaptchaCall[];
+}
+
+export function recaptchaDouble({
+	success = true,
+	score,
+	unreachable,
+	malformed,
+}: RecaptchaDoubleOptions = {}): RecaptchaDouble {
+	const calls: RecaptchaCall[] = [];
+
+	server.use(
+		http.post(SITEVERIFY_URL, async ({ request }) => {
+			const contentType = request.headers.get("content-type");
+			const body = new URLSearchParams(await request.text());
+
+			calls.push({ contentType, secret: body.get("secret"), response: body.get("response") });
+
+			if (unreachable) return HttpResponse.error();
+			if (malformed) return HttpResponse.text("not json at all");
+
+			return HttpResponse.json(score === undefined ? { success } : { success, score });
+		}),
+	);
+
+	return { calls };
+}
+
+export interface ImageDoubleOptions {
+	url: string;
+	bytes?: ArrayBuffer;
+	status?: number;
+	unreachable?: boolean;
+}
+
+export interface ImageDouble {
+	calls: string[];
+}
+
+export function imageDouble({ url, bytes, status = 200, unreachable }: ImageDoubleOptions): ImageDouble {
+	const calls: string[] = [];
+
+	server.use(
+		http.get(url, ({ request }) => {
+			calls.push(request.url);
+
+			if (unreachable) return HttpResponse.error();
+			if (status !== 200) return new HttpResponse(null, { status });
+
+			return HttpResponse.arrayBuffer(bytes ?? new ArrayBuffer(8), { headers: { "content-type": "image/webp" } });
+		}),
+	);
+
+	return { calls };
+}

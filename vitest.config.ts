@@ -36,6 +36,7 @@ export default defineConfig({
 					name: "node",
 					environment: "node",
 					env: { TZ: AWKWARD_TIMEZONE },
+					setupFiles: [`${ROOT}tests/setup/network.ts`],
 					include: ["src/**/*.test.ts", "src/**/*.spec.ts", "docs/**/*.test.ts"],
 				},
 			},
