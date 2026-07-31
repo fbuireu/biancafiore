@@ -26,7 +26,6 @@ const alias = [
 export default defineConfig({
 	resolve: { alias },
 	test: {
-
 		projects: [
 			{
 				resolve: { alias },
