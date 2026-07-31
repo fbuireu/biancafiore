@@ -37,6 +37,8 @@ The loader is the only place content I/O happens:
 
 Post-processing that *fetches* (`getImagePlaceholder`) happens in the loader, after the DTO — not inside it. Rewriting an image URL does not fetch, which is why the rich-text renderer in `dto/article/utils/content.ts` may do it inline.
 
+**Testing a loader.** A loader is reachable from Vitest, and `articles` and `authors` have tests; the other four do not yet. It costs two `vi.mock` calls per file: one for `astro:content`, and one that spreads the real `@infrastructure/cms/client` but swaps `CmsClientLive` for the stub layer in `tests/doubles/cmsLayer.ts`. Substitute the layer, never `runCms` — the point is to keep the real runtime, the real batching and the real `isContentfulConfigured` in the test and replace only the network. What the test cannot check is the `schema`: `reference()` has no stand-in, so no entry is ever parsed. ADR 0016 records both halves.
+
 ## Adding a content type
 
 domain concept (`schema`/`types`/`rules`) → `dto/<concept>` → `entities/<plural>` → register the collection in `src/content.config.ts`. Add the glossary term to `CONTEXT.md` in the same change.

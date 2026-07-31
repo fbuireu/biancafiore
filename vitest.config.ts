@@ -23,6 +23,7 @@ const alias = [
 	...aliasesFromTsconfig,
 	{ find: "astro:env/server", replacement: `${ROOT}tests/doubles/astroEnvServer.ts` },
 	{ find: "astro:env/client", replacement: `${ROOT}tests/doubles/astroEnvClient.ts` },
+	{ find: "astro:middleware", replacement: `${ROOT}tests/doubles/astroMiddleware.ts` },
 ];
 
 export default defineConfig({

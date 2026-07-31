@@ -31,6 +31,13 @@ describe("createDate", () => {
 		});
 	});
 
+	it("runs somewhere with a non-zero offset, without which the UTC case below proves nothing", () => {
+		expect([
+			new Date(Date.UTC(2021, 0, 1)).getTimezoneOffset(),
+			new Date(Date.UTC(2021, 6, 1)).getTimezoneOffset(),
+		]).not.toContain(0);
+	});
+
 	it("reads the year in UTC, so a stay does not shift a year with the runtime timezone", () => {
 		expect(createDate({ startDate: "2021-01-01T00:30:00Z", endDate: "2021-12-31T23:30:00Z" })).toEqual({
 			startDate: 2021,

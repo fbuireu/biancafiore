@@ -99,6 +99,8 @@ const CAUGHT_SAVE_CONTACT = /saveContact\([^)]*\)\.pipe\(\s*Effect\.catchAll/;
 const CONSOLE_CALL = /\bconsole\.\w+\(/;
 const TAG_TO_STATUS_CASE = /case "(\w+)":[\s\S]{0,60}?ActionError\(\{ code: "(\w+)"/g;
 const DOCUMENTED_TAG_TO_STATUS = /`(?:\w+Error)` → `[A-Z_]+`/g;
+const CONSTRUCTED_ACTION_ERROR = /new ActionError\(\{ code: "(\w+)"/g;
+const DOCUMENTED_CATCH_ALL_STATUS = /collapses into one generic `([A-Z_]+)` message/;
 const IMPORT_SOURCE = /from "([^"]+)"/g;
 const OUTWARD_IMPORT = /^@(application|infrastructure|modules)\//;
 const SHARED_UTILS_IMPORT = /import\s*\{([^}]+)\}\s*from\s*"@shared\/utils\/[^"]+"/g;
@@ -118,11 +120,10 @@ const EDITORIAL_UTILITY_CITATION = /`\.(editorial-[a-z-]+)`/g;
 const GLOBAL_UTILITY_DECLARATION = /^\t\.([a-z][a-z-]*)[^{\n]*\{/gm;
 const GLOBAL_UTILITY_CENSUS = /^- \*\*`global\.css` utilities\.\*\* (.+)$/m;
 const CLASS_CITATION = /`\.([a-z][a-z-]*)`/g;
-const QUOTED_STRING = /"([^"\n]*)"|'([^'\n]*)'/g;
 const GRID_MEASURE_ROOT_DECLARATION = /^\t\t(--grid-[a-z-]+):/gm;
 const GRID_MEASURE_PROPERTY_DECLARATION = /^@property (--grid-[a-z-]+)/gm;
 const GRID_MEASURE_USE = /var\((--grid-[a-z-]+)\)/g;
-const MODULE_FONT_SIZE = /font-size:\s*([^;]+);/g;
+const MODULE_FONT_SIZE = /font-size:\s*([^;}\n]+)/g;
 const CONTAINER_SCALED_CENSUS = /under `@modules` the components taking it are ([^.]+)\./;
 const UNLADDERED_FONT_SIZE_COUNT = /(\d+) further `font-size` declarations/;
 const UNLADDERED_FONT_SIZE_CENSUS = /neither on the ladder nor container-scaled, and they sit in ([^—]+)—/;
@@ -139,7 +140,6 @@ const LAYER_ORDER_DECLARATION = /^@layer [^;{]+,[^;{]+;/m;
 const LAYER_TABLE_ROW = /^\| ([^|]+) \| `([\w.-]+)`[^|]*\|$/gm;
 const STYLESHEET_CITATION = /`([\w/.-]+)`/g;
 const LAYER_STATEMENT = /^@layer .+;$/;
-const INVERTED_SECTION_MIX = /class="[^"]*\binverted-color-scheme\b/;
 const INVERTED_SECTION_CENSUS = /the components that do are ([^.]+)\./;
 const MODIFIER_BLOCK_DECLARATION = /^\t\.([a-z-]+)[^{\n]*\{/gm;
 const MIXED_UTILITY_TABLE_ROW = /^\| `([a-z][a-z-]*)` \| [^|]+ \|$/gm;
@@ -150,7 +150,7 @@ const ANY_CLASS_TOKEN = /\.(-{0,2}[a-zA-Z_][\w-]*)/g;
 const COMPONENT_FILE = /^[A-Z][A-Za-z\d]*\.(astro|tsx)$/;
 const ASTRO_STYLE_BLOCK = /<style[\s>]/;
 const HYDRATION_DIRECTIVE = /<(\w+)[^>]*\sclient:([\w-]+)(?:="([^"]*)")?/g;
-const CLASS_ATTRIBUTE = /class(?::list)?=(?:"([^"]*)"|\{((?:[^{}]|\{[^}]*\})*)\})/g;
+const CLASS_ATTRIBUTE = /class(?:Name|:list)?=(?:"([^"]*)"|'([^']*)'|\{((?:[^{}]|\{[^}]*\})*)\})/g;
 const CLASS_WORD = /[a-zA-Z][\w-]*/g;
 const ISLAND_ROOT_CENSUS = /only three hydration roots[^—]*— ([^—]+) —/;
 const DTO_CITED_DEFAULT = /`(\?\? [^`\n]+)`/g;
@@ -226,6 +226,11 @@ const DOCS = ["CLAUDE.md", "CONTEXT.md", ...NESTED_GUIDES, ...ADR_FILES];
 const production = (files: string[]) => files.filter((file) => !CO_LOCATED_TEST_FILE.test(file));
 
 const SOURCE_FILES = production(walk("src").filter((file) => SOURCE_FILE.test(file)));
+
+const classesApplied = (source: string) =>
+	[...source.matchAll(CLASS_ATTRIBUTE)].flatMap(([, doubled, singled, braced]) =>
+		[...(doubled ?? singled ?? braced ?? "").matchAll(CLASS_WORD)].map(([word]) => word),
+	);
 
 const namesIn = ({ text, pattern }: { text: string; pattern: RegExp }) =>
 	[...(text.match(pattern)?.[1] ?? "").matchAll(BACKTICKED_NAME)].map(([, name]) => name);
@@ -717,11 +722,24 @@ describe("actions guide", () => {
 	});
 
 	it("maps exactly the tags the guide says it maps", () => {
-		const mapped = [...action.matchAll(TAG_TO_STATUS_CASE)].map(([, tag, code]) => `\`${tag}\` → \`${code}\``);
+		const cases = [...action.matchAll(TAG_TO_STATUS_CASE)].map(([, tag, code]) => ({ tag, code }));
+		const mapped = cases.map(({ tag, code }) => `\`${tag}\` → \`${code}\``);
 		const documented = [...guide.matchAll(DOCUMENTED_TAG_TO_STATUS)].map(([pair]) => pair);
 
 		expect(mapped.length).toBeGreaterThan(0);
 		expect(documented.sort()).toEqual(mapped.sort());
+	});
+
+	it("builds no status the guide does not account for, whatever shape the mapping is written in", () => {
+		const catchAll = guide.match(DOCUMENTED_CATCH_ALL_STATUS)?.[1];
+		const documented = [...guide.matchAll(DOCUMENTED_TAG_TO_STATUS)]
+			.map(([pair]) => pair.split(" → ")[1].replaceAll("`", ""))
+			.sort();
+		const constructed = [...action.matchAll(CONSTRUCTED_ACTION_ERROR)].map(([, code]) => code);
+
+		expect(catchAll).toBeDefined();
+		expect(constructed.filter((code) => code === catchAll)).toEqual([catchAll]);
+		expect(constructed.filter((code) => code !== catchAll).sort()).toEqual(documented);
 	});
 });
 
@@ -912,11 +930,7 @@ describe("styles guide: derived constants and source order", () => {
 			),
 		];
 		const applied = new Set(
-			SOURCE_FILES.filter((file) => !file.startsWith("src/ui/styles/")).flatMap((file) =>
-				[...read(file).matchAll(QUOTED_STRING)].flatMap(([, double, single]) =>
-					[...(double ?? single ?? "").matchAll(CLASS_WORD)].map(([word]) => word),
-				),
-			),
+			SOURCE_FILES.filter((file) => !file.startsWith("src/ui/styles/")).flatMap((file) => classesApplied(read(file))),
 		);
 
 		expect(declared.length).toBeGreaterThan(0);
@@ -927,11 +941,7 @@ describe("styles guide: derived constants and source order", () => {
 	it("censuses every component still on the non-canonical .section-title", () => {
 		const onIt = walk("src/ui/modules")
 			.filter((file) => file.endsWith(".astro"))
-			.filter((file) =>
-				[...read(file).matchAll(CLASS_ATTRIBUTE)].some(([, quoted, expression]) =>
-					[...(quoted ?? expression ?? "").matchAll(CLASS_WORD)].some(([word]) => word === "section-title"),
-				),
-			)
+			.filter((file) => classesApplied(read(file)).includes("section-title"))
 			.map((file) => file.split("/").at(-2) ?? "");
 		const censused = namesIn({ text: guide, pattern: SECTION_TITLE_CENSUS });
 
@@ -1052,8 +1062,8 @@ describe("styles guide: derived constants and source order", () => {
 	});
 
 	it("censuses every component that inverts against the page, and claims no others", () => {
-		const inverting = walk("src/ui/modules")
-			.filter((file) => file.endsWith(".astro") && INVERTED_SECTION_MIX.test(read(file)))
+		const inverting = production(walk("src/ui/modules"))
+			.filter((file) => SOURCE_FILE.test(file) && classesApplied(read(file)).includes("inverted-color-scheme"))
 			.map((file) => file.split("/").at(-2) ?? "");
 		const censused = namesIn({ text: guide, pattern: INVERTED_SECTION_CENSUS });
 
@@ -1125,9 +1135,7 @@ describe("modules guide: mixes, islands and data access", () => {
 		const declared = new Set(stylesheets.flatMap((file) => classesIn(read(file))));
 
 		for (const file of production(walk("src/ui")).filter((file) => SOURCE_FILE.test(file))) {
-			for (const [, quoted, braced] of read(file).matchAll(CLASS_ATTRIBUTE)) {
-				for (const [word] of (quoted ?? braced ?? "").matchAll(CLASS_WORD)) declared.add(word);
-			}
+			for (const word of classesApplied(read(file))) declared.add(word);
 		}
 
 		const orphans = stylesheets.flatMap((file) =>
