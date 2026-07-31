@@ -66,7 +66,7 @@ src/
   const/ data/
 ```
 
-Unit tests are co-located with the code they cover (`src/**/*.test.ts`); repo-level tests that belong to no single module live in `tests/` — currently `tests/docs-consistency.test.ts`, see the maintenance contract below. Both are picked up by `vitest.config.ts`; Playwright specs live in the `testDir` declared in `playwright.config.ts`.
+Unit tests are co-located with the code they cover (`src/**/*.test.ts`); the one test covering no single module is `docs/docs-consistency.test.ts`, colocated with the docs it checks — see the maintenance contract below. Both are picked up by `vitest.config.ts`; Playwright specs live in the `testDir` declared in `playwright.config.ts`.
 
 Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/* @application/* @modules/* (→ src/ui/modules) @utils/* @assets/* (→ src/ui/assets) @styles/* (→ src/ui/styles) @data/* @shared/* @content/*`. Prefer aliases over relative paths.
 
@@ -93,7 +93,7 @@ Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/*
 
 These documents are not generated. A change that does not update them leaves the tree describing code that no longer exists, so when you change code, update the docs **in the same commit** — a follow-up commit is a promise, not a fix.
 
-`tests/docs-consistency.test.ts` makes the mechanical half of that contract executable: it reads these documents and asserts every checkable claim against the repo — scripts, aliases, the folder tree, the route list, env vars, cited paths, links, ADR numbering/template/references, the client/layer/stylesheet tables, the Gotchas invariants. It runs with `pnpm test:ut` (so, in CI on every PR). A failure means the docs and the code disagree — fix whichever one is wrong, and when the deliberate answer is "the doc leaves this out on purpose", say so in the allowlist at the top of that file rather than deleting the assertion. It cannot check prose or rationale; that part is still on you. ADR 0015 records why it exists and what it costs — the markdown shape of these documents is parsed, so reformatting one can fail the build.
+`docs/docs-consistency.test.ts` makes the mechanical half of that contract executable: it reads these documents and asserts every checkable claim against the repo — scripts, aliases, the folder tree, the route list, env vars, cited paths, links, ADR numbering/template/references, the client/layer/stylesheet tables, the Gotchas invariants. It runs with `pnpm test:ut` (so, in CI on every PR). A failure means the docs and the code disagree — fix whichever one is wrong, and when the deliberate answer is "the doc leaves this out on purpose", say so in the allowlist at the top of that file rather than deleting the assertion. It cannot check prose or rationale; that part is still on you. ADR 0015 records why it exists and what it costs — the markdown shape of these documents is parsed, so reformatting one can fail the build.
 
 | If you change | Update |
 | --- | --- |
@@ -104,7 +104,7 @@ These documents are not generated. A change that does not update them leaves the
 | A package script, a path alias, or the folder tree | the *Commands* / *Structure & aliases* sections here |
 | The layer boundaries, the rendering mode, or the deploy target | the *Stack* / *Deploy* sections here, plus the ADR that decided it |
 | A decision an ADR records | that ADR — amend it, or supersede it with a new one and say so in both `## Status` blocks |
-| A claim `tests/docs-consistency.test.ts` asserts, on purpose | the doc first; the test only when the claim itself is what changed |
+| A claim `docs/docs-consistency.test.ts` asserts, on purpose | the doc first; the test only when the claim itself is what changed |
 
 Propose an ADR in [`docs/adr/`](./docs/adr/) when a decision is **hard to reverse**, **surprising without context** and **the result of a real trade-off**. All three, or it is not an ADR. Copy [ADR 0000](./docs/adr/0000-adr-template.md), the template, and number it one above the highest existing file (`NNNN-kebab-title.md`, `# N. Title` / `Date:` / `## Status` / `## Context` / `## Decision` / `## Consequences`), then link it from wherever it bites — a Gotchas bullet here, a nested guide, a `CONTEXT.md` entry. There is no separate index; an ADR nothing links to will not be read, which is why both the template and the incoming link are asserted.
 
