@@ -41,8 +41,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/lcov.info
           fail_ci_if_error: false
-      - name: Build
-        run: pnpm build
 
   deploy-production:
     name: Deploy to production
