@@ -34,8 +34,13 @@ describe("getReadingTime", () => {
 		expect(getReadingTime(words(401))).toBe(3);
 	});
 
-	it("never reports less than one minute, even for empty content", () => {
+	it("floors an empty body at one minute, because both bylines print the number unconditionally", () => {
 		expect(getReadingTime("")).toBe(1);
+	});
+
+	it("floors a body that is markup and whitespace only, which is what a tags-only draft renders as", () => {
+		expect(getReadingTime("<p></p>")).toBe(1);
+		expect(getReadingTime("<article>\n\t<p>  </p>\n</article>")).toBe(1);
 	});
 
 	it("ignores html markup when counting words", () => {
@@ -98,22 +103,22 @@ describe("generateTableOfContents", () => {
 		expect(generateTableOfContents("<h2>Mismatched</h3>")).toEqual([]);
 	});
 
-	it("skips headings that carry attributes", () => {
+	it("drops a heading that carries a single attribute, silently and without failing", () => {
 		expect(generateTableOfContents('<h2 id="already-there">Section</h2>')).toEqual([]);
 	});
 
-	it("reads the bare headings of the default render and ignores the styled render, whose headings carry an id and a class", () => {
+	it("only ever sees bare headings because articleDTO feeds it contentHtml, the default render, not the styled one", () => {
 		const styled = '<h2 id="section" class="article__heading flex align-baseline"><a href="#section">Section</a></h2>';
 
 		expect(generateTableOfContents(styled)).toEqual([]);
 		expect(generateTableOfContents("<h2>Section</h2>")).toEqual([{ id: "section", heading: "Section", level: 1 }]);
 	});
 
-	it("skips headings whose text spans more than one line", () => {
+	it("drops a heading whose text wraps a line, so a soft break in Contentful costs that entry", () => {
 		expect(generateTableOfContents("<h2>Broken\nacross lines</h2>")).toEqual([]);
 	});
 
-	it("drops only the heading that wraps a line and keeps the rest of the table", () => {
+	it("returns a table one entry short rather than an error, which is what makes a dropped heading invisible", () => {
 		const items = generateTableOfContents("<h2>Broken\nacross lines</h2><h2>Intact</h2>");
 
 		expect(items.map(({ heading }) => heading)).toEqual(["Intact"]);

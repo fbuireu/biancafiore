@@ -117,6 +117,16 @@ const EDITORIAL_UTILITY_CITATION = /`\.(editorial-[a-z-]+)`/g;
 const GLOBAL_UTILITY_DECLARATION = /^\t\.([a-z][a-z-]*)[^{\n]*\{/gm;
 const GLOBAL_UTILITY_CENSUS = /^- \*\*`global\.css` utilities\.\*\* (.+)$/m;
 const CLASS_CITATION = /`\.([a-z][a-z-]*)`/g;
+const QUOTED_STRING = /"([^"\n]*)"|'([^'\n]*)'/g;
+const GRID_MEASURE_ROOT_DECLARATION = /^\t\t(--grid-[a-z-]+):/gm;
+const GRID_MEASURE_PROPERTY_DECLARATION = /^@property (--grid-[a-z-]+)/gm;
+const GRID_MEASURE_USE = /var\((--grid-[a-z-]+)\)/g;
+const MODULE_FONT_SIZE = /font-size:\s*([^;]+);/g;
+const CONTAINER_SCALED_CENSUS = /under `@modules` the components taking it are ([^.]+)\./;
+const UNLADDERED_FONT_SIZE_COUNT = /(\d+) further `font-size` declarations/;
+const UNLADDERED_FONT_SIZE_CENSUS = /neither on the ladder nor container-scaled, and they sit in ([^—]+)—/;
+const SECTION_TITLE_CENSUS = /a visual change to every component still on it, and those are ([^—]+)—/;
+const EDITORIAL_SECTION_TITLE_CONTAINER_CLAMP = /\.editorial-section-title \{[^}]*font-size:[^;]*cqi/;
 const SEMANTIC_TOKEN_DECLARATION = /^\s+(--[a-z-]+): light-dark\(/gm;
 const SEMANTIC_TOKEN_CENSUS = /they are exactly ([^—]+)—/;
 const GRID_TOKEN_IN_QUERY = /@(?:container|media)[^{]*var\(--grid-/;
@@ -892,6 +902,87 @@ describe("styles guide: derived constants and source order", () => {
 
 		expect(declared.length).toBeGreaterThan(0);
 		expect(listed).toEqual(declared);
+	});
+
+	it("declares no global.css utility that nothing applies", () => {
+		const declared = [
+			...new Set(
+				[...read("src/ui/styles/global/global.css").matchAll(GLOBAL_UTILITY_DECLARATION)].map(([, name]) => name),
+			),
+		];
+		const applied = new Set(
+			SOURCE_FILES.filter((file) => !file.startsWith("src/ui/styles/")).flatMap((file) =>
+				[...read(file).matchAll(QUOTED_STRING)].flatMap(([, double, single]) =>
+					[...(double ?? single ?? "").matchAll(CLASS_WORD)].map(([word]) => word),
+				),
+			),
+		);
+
+		expect(declared.length).toBeGreaterThan(0);
+		expect(guide).toContain("So does declaring one nothing uses");
+		expect(declared.filter((name) => !applied.has(name))).toEqual([]);
+	});
+
+	it("censuses every component still on the non-canonical .section-title", () => {
+		const onIt = walk("src/ui/modules")
+			.filter((file) => file.endsWith(".astro"))
+			.filter((file) =>
+				[...read(file).matchAll(CLASS_ATTRIBUTE)].some(([, quoted, expression]) =>
+					[...(quoted ?? expression ?? "").matchAll(CLASS_WORD)].some(([word]) => word === "section-title"),
+				),
+			)
+			.map((file) => file.split("/").at(-2) ?? "");
+		const censused = namesIn({ text: guide, pattern: SECTION_TITLE_CENSUS });
+
+		expect(guide).toContain("`.editorial-section-title` is the canonical one");
+		expect(onIt.length).toBeGreaterThan(0);
+		expect(censused.sort()).toEqual([...new Set(onIt)].sort());
+	});
+
+	it("names every component that leaves the ladder for a container-scaled clamp", () => {
+		const scaled = walk("src/ui/modules")
+			.filter((file) => file.endsWith(".css"))
+			.filter((file) =>
+				[...read(file).matchAll(MODULE_FONT_SIZE)].some(
+					([, value]) => !value.includes("var(--font-size") && value.includes("cqi"),
+				),
+			)
+			.map((file) => file.split("/").at(-2) ?? "");
+		const censused = namesIn({ text: guide, pattern: CONTAINER_SCALED_CENSUS });
+
+		expect(scaled.length).toBeGreaterThan(0);
+		expect(censused.sort()).toEqual([...new Set(scaled)].sort());
+		expect(read("src/ui/styles/global/global.css")).toMatch(EDITORIAL_SECTION_TITLE_CONTAINER_CLAMP);
+	});
+
+	it("pins how many module font sizes escape the ladder, so the drift can only shrink", () => {
+		const declarations = walk("src/ui/modules")
+			.filter((file) => file.endsWith(".css"))
+			.flatMap((file) => [...read(file).matchAll(MODULE_FONT_SIZE)].map(([, value]) => ({ file, value })));
+		const unladdered = declarations.filter(({ value }) => !value.includes("var(--font-size") && !value.includes("cqi"));
+		const censused = namesIn({ text: guide, pattern: UNLADDERED_FONT_SIZE_CENSUS });
+
+		expect(declarations.length).toBeGreaterThan(0);
+		expect(unladdered.length).toBe(Number(guide.match(UNLADDERED_FONT_SIZE_COUNT)?.[1]));
+		expect(censused.sort()).toEqual([...new Set(unladdered.map(({ file }) => file.split("/").at(-2) ?? ""))].sort());
+	});
+
+	it("declares every --grid-* measure twice, and none that nothing consumes", () => {
+		const variables = read("src/ui/styles/global/variables.css");
+		const inRoot = [...new Set([...variables.matchAll(GRID_MEASURE_ROOT_DECLARATION)].map(([, name]) => name))].sort();
+		const asProperty = [
+			...new Set([...variables.matchAll(GRID_MEASURE_PROPERTY_DECLARATION)].map(([, name]) => name)),
+		].sort();
+		const consumed = new Set(
+			walk("src")
+				.filter((file) => file.endsWith(".css") || SOURCE_FILE.test(file))
+				.flatMap((file) => [...read(file).matchAll(GRID_MEASURE_USE)].map(([, name]) => name)),
+		);
+
+		expect(guide).toContain("rejects any `--grid-*` nothing consumes");
+		expect(inRoot.length).toBeGreaterThan(0);
+		expect(asProperty).toEqual(inRoot);
+		expect(inRoot.filter((name) => !consumed.has(name))).toEqual([]);
 	});
 
 	it("names every light-dark() token as semantic, and claims none that variables.css does not define", () => {

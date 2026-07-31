@@ -3,6 +3,7 @@ import { ArticleType } from "@domain/article/types";
 import { slugify } from "@shared/utils/strings";
 
 const WORDS_PER_MINUTE = 200;
+const MINIMUM_READING_MINUTES = 1;
 const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 const WHITESPACE_REGEX = /\s+/g;
 const HEADINGS_REGEX = /<h([2-6])>(.*?)<\/h\1>/g;
@@ -24,9 +25,9 @@ function decodeHtmlEntities(html: string): string {
 
 export function getReadingTime(content: string): number {
 	const cleanContent = content.replace(HTML_TAG_REGEX, " ").trim();
-	const numberOfWords = cleanContent.split(WHITESPACE_REGEX).length;
+	const numberOfWords = cleanContent.split(WHITESPACE_REGEX).filter(Boolean).length;
 
-	return Math.ceil(numberOfWords / WORDS_PER_MINUTE);
+	return Math.max(MINIMUM_READING_MINUTES, Math.ceil(numberOfWords / WORDS_PER_MINUTE));
 }
 
 export function generateTableOfContents(html: string): TableOfContents {
