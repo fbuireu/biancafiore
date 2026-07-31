@@ -30,9 +30,13 @@ const stubQuery = (kind: QueryKind): StubQuery => {
 	return query;
 };
 
+const databaseErrorFrom = (cause: unknown) =>
+	new DatabaseError({ message: cause instanceof Error ? cause.message : String(cause), cause });
+
 export interface DatabaseDoubleOptions {
 	duplicates?: unknown[];
 	failInsertWith?: DatabaseError;
+	rejectInsertWith?: unknown;
 }
 
 export interface DatabaseDouble {
@@ -40,7 +44,11 @@ export interface DatabaseDouble {
 	inserted: Record<string, unknown>[];
 }
 
-export function databaseDouble({ duplicates = [], failInsertWith }: DatabaseDoubleOptions = {}): DatabaseDouble {
+export function databaseDouble({
+	duplicates = [],
+	failInsertWith,
+	rejectInsertWith,
+}: DatabaseDoubleOptions = {}): DatabaseDouble {
 	const inserted: Record<string, unknown>[] = [];
 
 	const db = {
@@ -52,6 +60,8 @@ export function databaseDouble({ duplicates = [], failInsertWith }: DatabaseDoub
 		const { kind, row } = query as unknown as StubQuery;
 
 		if (kind === "select") return Effect.succeed(duplicates);
+
+		if (rejectInsertWith !== undefined) return Effect.fail(databaseErrorFrom(rejectInsertWith));
 
 		if (failInsertWith) return Effect.fail(failInsertWith);
 

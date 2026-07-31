@@ -23,7 +23,11 @@ for why the layer boundary sits where it does.
   `INTERNAL_SERVER_ERROR` message. **Adding a tagged error in `@infrastructure/errors` without adding a case
   here silently degrades it to that generic message**, which is the failure mode to watch for.
 - `DuplicateContactError` answering `UNAUTHORIZED` rather than a conflict status is deliberate: the form must
-  not confirm to a stranger that an address is already on file.
+  not confirm to a stranger that an address is already on file. **Two steps can raise it**: normally
+  `checkDuplicatedEntries`, and — when two submissions for one address race past that check — the unique
+  constraint on `contact.email` surfacing from `saveContact`. Both reach the visitor as the same message, which
+  is why `isUniqueConstraintViolation` unwrapping drizzle's error correctly matters here and not only in
+  `@infrastructure/utils`: miss it and the loser of that race gets a 500 instead of this bullet's behaviour.
 - **The error is converted inside the Effect and thrown outside it.** `Effect.matchCause` turns both outcomes
   into a plain `{ success, value | error }` union, and only then does the handler `throw result.error`. Never
   throw an `ActionError` from inside the program — it would arrive as a defect and lose its mapping.

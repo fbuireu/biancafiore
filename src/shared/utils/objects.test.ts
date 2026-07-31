@@ -98,15 +98,15 @@ describe("groupBy", () => {
 		expect(Object.keys(groupBy({ array, keyFn: (item) => String(item.category) }))).toEqual(["undefined"]);
 	});
 
-	it("tolerates an item without a name while it is alone in its group", () => {
-		const array = [{ category: "solo" }];
+	it("rejects nameless items at compile time instead of guarding against them at runtime", () => {
+		const nameless = { category: "pair" };
+		const named = { ...nameless, name: "pair" };
 
-		expect(groupBy({ array, keyFn: (item) => item.category })).toEqual({ solo: [{ category: "solo" }] });
-	});
+		// @ts-expect-error
+		const rejected = () => groupBy({ array: [nameless, nameless], keyFn: ({ category }) => category });
+		const accepted = () => groupBy({ array: [named, named], keyFn: ({ category }) => category });
 
-	it("throws when a group holds two items that have no name to sort by", () => {
-		const array = [{ category: "pair" }, { category: "pair" }];
-
-		expect(() => groupBy({ array, keyFn: (item) => item.category })).toThrow(TypeError);
+		expect(rejected).toThrow(TypeError);
+		expect(accepted()).toEqual({ pair: [named, named] });
 	});
 });

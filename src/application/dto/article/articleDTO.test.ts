@@ -341,6 +341,32 @@ describe("articleDTO content derivations", () => {
 		expect(article.content).toContain("<p>Body text</p>");
 	});
 
+	it("points a table of contents entry at an id the rendered content actually defines", () => {
+		const [article] = articleDTO.create([
+			makeArticle({
+				content: [
+					{
+						nodeType: "heading-2",
+						data: {},
+						content: [text("Deploying "), { ...text("astro"), marks: [{ type: "code" }] }],
+					},
+				],
+			}),
+		]);
+		const [entry] = article.tableOfContents;
+
+		expect(entry.id).toBe("deploying-astro");
+		expect(article.content).toContain(`<h2 id="${entry.id}"`);
+	});
+
+	it("counts the words of every paragraph towards reading time, not just the first of each", () => {
+		const [article] = articleDTO.create([
+			makeArticle({ content: Array.from({ length: 201 }, (_, index) => paragraph(`word${index}`)) }),
+		]);
+
+		expect(article.readingTime).toBe(2);
+	});
+
 	it("rounds reading time up from two hundred words a minute", () => {
 		const words = (count: number) => Array.from({ length: count }, (_, index) => `word${index}`).join(" ");
 

@@ -7,7 +7,6 @@ import { render } from "@react-email/render";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
 
-const URL_ENCODED_SPACE_REGEX = /%20/g;
 const ALIAS_REGEX = /\+[^@]*(?=@)/;
 
 type ContactEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
@@ -23,11 +22,8 @@ export function normalizeEmail(email: string): string {
 
 export async function createEmail({ name, email, message }: ContactEmailParams): Promise<ContactEmailContent> {
 	const date = new Date().toLocaleString(DEFAULT_LOCALE_STRING);
-	const mailTo =
-		`mailto:${email}?subject=Re: ${encodeURIComponent(CONTACT_DETAILS.EMAIL_SUBJECT)} from biancafiore.me`.replaceAll(
-			URL_ENCODED_SPACE_REGEX,
-			" ",
-		);
+	const subject = encodeURIComponent(`Re: ${CONTACT_DETAILS.EMAIL_SUBJECT} from biancafiore.me`);
+	const mailTo = `mailto:${email}?subject=${subject}`;
 
 	const element = <ContactNotificationEmail name={name} email={email} message={message} date={date} mailTo={mailTo} />;
 

@@ -23,6 +23,10 @@ const failureOf = <E>(exit: Exit.Exit<unknown, E>): E | undefined =>
 const insertFailingWith = (cause: unknown) =>
 	databaseDouble({ failInsertWith: new DatabaseError({ message: "insert rejected", cause }) });
 
+const insertRejectingWith = (driverError: unknown) => databaseDouble({ rejectInsertWith: driverError });
+
+const drizzleWrapped = (cause: Error) => new DrizzleQueryError("insert into contact", [], cause);
+
 afterEach(() => {
 	vi.useRealTimers();
 });
@@ -112,14 +116,41 @@ describe("saveContact", () => {
 		expect(failureOf(exit)?._tag).toBe("DatabaseError");
 	});
 
-	it("only inspects the immediate cause, so a constraint error drizzle has wrapped stays a DatabaseError", async () => {
-		const database = insertFailingWith(
-			new DrizzleQueryError(
-				"insert into contact",
-				[],
-				new LibsqlError("UNIQUE constraint failed: contact.email", "SQLITE_CONSTRAINT_UNIQUE"),
-			),
+	it("unwraps the DrizzleQueryError drizzle raises around the driver rejection", async () => {
+		const database = insertRejectingWith(
+			drizzleWrapped(new LibsqlError("UNIQUE constraint failed: contact.email", "SQLITE_CONSTRAINT_UNIQUE")),
 		);
+
+		const exit = await Effect.runPromiseExit(saveContact(SUBMISSION).pipe(Effect.provide(database.layer)));
+
+		expect(failureOf(exit)).toMatchObject({ _tag: "DuplicateContactError", message: DUPLICATE_MESSAGE });
+	});
+
+	it("keeps walking the cause chain past more than one wrapper", async () => {
+		const database = insertRejectingWith(
+			drizzleWrapped(drizzleWrapped(new LibsqlError("UNIQUE constraint failed", "SQLITE_CONSTRAINT_UNIQUE"))),
+		);
+
+		const exit = await Effect.runPromiseExit(saveContact(SUBMISSION).pipe(Effect.provide(database.layer)));
+
+		expect(failureOf(exit)?._tag).toBe("DuplicateContactError");
+	});
+
+	it("leaves a wrapped non constraint libsql failure as a DatabaseError", async () => {
+		const database = insertRejectingWith(drizzleWrapped(new LibsqlError("database is locked", "SQLITE_BUSY")));
+
+		const exit = await Effect.runPromiseExit(saveContact(SUBMISSION).pipe(Effect.provide(database.layer)));
+
+		expect(failureOf(exit)?._tag).toBe("DatabaseError");
+	});
+
+	it("terminates on a cause chain that loops back on itself", async () => {
+		const outer = new Error("outer");
+		const inner = new Error("inner");
+		outer.cause = inner;
+		inner.cause = outer;
+
+		const database = insertRejectingWith(outer);
 
 		const exit = await Effect.runPromiseExit(saveContact(SUBMISSION).pipe(Effect.provide(database.layer)));
 
