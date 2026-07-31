@@ -331,13 +331,14 @@ describe("articleDTO content derivations", () => {
 		expect(article.content).toContain('<a href="#the-craft">The Craft</a>');
 	});
 
-	it("leaves the section paragraph empty, because the heading renderer receives the renderer's next callback", () => {
+	it("wraps a heading in its own section and leaves the body paragraphs alone", () => {
 		const [article] = articleDTO.create([
 			makeArticle({ content: [heading({ level: 2, value: "The Craft" }), paragraph("Body text")] }),
 		]);
 
-		expect(article.content).toContain("<p></p>");
+		expect(article.content).toContain('<a href="#the-craft">The Craft</a>');
 		expect(article.content).toContain("<p>Body text</p>");
+		expect(article.content).not.toContain("<p></p>");
 	});
 
 	it("points a table of contents entry at an id the rendered content actually defines", () => {

@@ -1,6 +1,6 @@
 import type { RawArticle } from "@application/dto/article/types";
 import { PAGES_ROUTES } from "@const/index";
-import type { Block, Inline, Text, TopLevelBlock } from "@contentful/rich-text-types";
+import type { Block, Inline, Text } from "@contentful/rich-text-types";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import { getOptimizedImageUrl, getOptimizedSrcset } from "@infrastructure/images/imageOptimization";
 import { escapeHtml, slugify } from "@shared/utils/strings";
@@ -28,36 +28,14 @@ interface CreateSectionParams {
 	index: number;
 	id: string;
 	text: string;
-	content: string;
 }
 
-interface ExtractContentFromNextNodesParams {
-	nextNodes: TopLevelBlock[];
-	level: number;
-}
-
-const extractContentFromNextNodes = ({ nextNodes, level }: ExtractContentFromNextNodesParams): string => {
-	if (!Array.isArray(nextNodes)) {
-		return "";
-	}
-
-	return nextNodes
-		.map((nextNode) => {
-			if (nextNode.nodeType !== BLOCKS[`HEADING_${level}` as keyof typeof BLOCKS]) {
-				return nextNode.content.map((child) => ("value" in child ? child.value : "")).join("");
-			}
-			return "";
-		})
-		.join("");
-};
-
-const createSection = ({ level, id, text, content, index }: CreateSectionParams) => {
+const createSection = ({ level, id, text, index }: CreateSectionParams) => {
 	return `
     <section style="--is: --section-${index}">
       <h${level} id="${id}" class="article__heading flex align-baseline">
         <a href="#${id}">${escapeHtml(text)}</a>
       </h${level}>
-      <p>${escapeHtml(content)}</p>
     </section>
   `;
 };
@@ -66,11 +44,10 @@ export function parseHeadings() {
 	return Object.fromEntries(
 		HEADING_LEVELS.map((level, index) => [
 			BLOCKS[`HEADING_${level}` as keyof typeof BLOCKS],
-			(node: HeadingBlock, nextNodes: TopLevelBlock[]) => {
+			(node: HeadingBlock) => {
 				const text = node.content.map((child: Text) => child.value).join("");
 				const id = slugify(text);
-				const content = extractContentFromNextNodes({ nextNodes, level });
-				return createSection({ level, index, id, text, content });
+				return createSection({ level, index, id, text });
 			},
 		]),
 	);
