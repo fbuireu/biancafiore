@@ -1,3 +1,56 @@
+# [1.8.0](https://github.com/fbuireu/biancafiore/compare/v1.7.0...v1.8.0) (2026-07-31)
+
+
+### Bug Fixes
+
+* **actions:** stop a failed contact save from reporting a delivered message as an error ([f0ca9c3](https://github.com/fbuireu/biancafiore/commit/f0ca9c31eb7330e6080452a160bf3d5c65b0a575))
+* build https image cdn ([5436228](https://github.com/fbuireu/biancafiore/commit/5436228b41a1134dbc6c9f156427748a1d97b949))
+* bump deps ([3cecfa2](https://github.com/fbuireu/biancafiore/commit/3cecfa26dad693838cedf296e339b86ae8e1b26b))
+* **ci:** stop a long commit message from breaking the deploy ([a05e7de](https://github.com/fbuireu/biancafiore/commit/a05e7dedc6fb9ead0d2c8a94d2f0cf6da049e2c3))
+* close three holes an adversarial pass found in the safety net ([bf9276f](https://github.com/fbuireu/biancafiore/commit/bf9276fb9d2f42307ffe2a948a133689448d681e))
+* **deps:** pin dependency effect to 3.21.4 ([#1118](https://github.com/fbuireu/biancafiore/issues/1118)) ([382785f](https://github.com/fbuireu/biancafiore/commit/382785f161faabfbad5470b76bd3277a330a0329))
+* **deps:** update astro monorepo ([#1131](https://github.com/fbuireu/biancafiore/issues/1131)) ([c384b6b](https://github.com/fbuireu/biancafiore/commit/c384b6b071e282a6a56718c810537570cdd186ca))
+* **deps:** update dependency @astrojs/compiler-rs to v0.3.1 ([#1132](https://github.com/fbuireu/biancafiore/issues/1132)) ([8b636e4](https://github.com/fbuireu/biancafiore/commit/8b636e4e4513f59316056bd874a2243fd0eddf62))
+* **deps:** update dependency astro to v7.1.0 [security] ([#1139](https://github.com/fbuireu/biancafiore/issues/1139)) ([9966f0d](https://github.com/fbuireu/biancafiore/commit/9966f0d12bb6ece7affe2732e010b3b53c45d593))
+* **deps:** update dependency contentful to v11.12.7 ([#1133](https://github.com/fbuireu/biancafiore/issues/1133)) ([abb432d](https://github.com/fbuireu/biancafiore/commit/abb432d9e558369c7953b4a333eacd4a37861bcf))
+* **deps:** update dependency resend to v6.17.2 ([#1134](https://github.com/fbuireu/biancafiore/issues/1134)) ([2593e10](https://github.com/fbuireu/biancafiore/commit/2593e107fabd19e681307370c8ef7a356d37cc49))
+* exclude light-dark() from lightningcss downleveling ([b091f64](https://github.com/fbuireu/biancafiore/commit/b091f64fb72b1ad0f719202c074d4b20ca543a7b))
+* mailto ([c761b8a](https://github.com/fbuireu/biancafiore/commit/c761b8ae8576e6e48655ff8154211ef36739b9bc))
+* make inverted band titles legible ([20137ee](https://github.com/fbuireu/biancafiore/commit/20137ee1a6e57169303bf8bdb728860f2ff67463))
+* minor css ([23b28b0](https://github.com/fbuireu/biancafiore/commit/23b28b0fed3c27b3cfa0271b92c64fb9e4e389a0))
+* minor css ([251847a](https://github.com/fbuireu/biancafiore/commit/251847a710da4c3d6c8d82998bbdf021e2cd8239))
+* minor css issues ([6683bb9](https://github.com/fbuireu/biancafiore/commit/6683bb9ffaca5eda6bd87a6e3857b9aca950f5f8))
+* number the scroll timelines by section, and refuse a link scheme that executes ([ed71e2c](https://github.com/fbuireu/biancafiore/commit/ed71e2c664097185da731d93806b0f53263330a3))
+* prevent featured image flash during article view transition ([#1123](https://github.com/fbuireu/biancafiore/issues/1123)) ([2baa88a](https://github.com/fbuireu/biancafiore/commit/2baa88a31ef13a1b749c962dd4d174524147c948))
+* refactor json+ld ([2fd1a83](https://github.com/fbuireu/biancafiore/commit/2fd1a83d0518a5c1f40309554c7271838b525618))
+* reindex tests/ after the docs guard test moved out of it ([6951e96](https://github.com/fbuireu/biancafiore/commit/6951e963107f518789a1652acf0bfd8ad3dcb6b2))
+* remove margin caption ([e610e11](https://github.com/fbuireu/biancafiore/commit/e610e11c7f91db34ccd1713b42e97c1baa666382))
+* remove margin caption ([03b7ee3](https://github.com/fbuireu/biancafiore/commit/03b7ee3e9626062a434005e9afad7348b8d27a23))
+* repair the nine defects the new test suites uncovered ([13ba772](https://github.com/fbuireu/biancafiore/commit/13ba772fc57505d260694ac0171b54448b5a5cad))
+* revert custom image service that returned 404 for transformed images ([0b69804](https://github.com/fbuireu/biancafiore/commit/0b698044aeda667ac57ecb8e1c1945bd1a27deb8))
+* tighten heading line-height with unitless leading tokens ([70ed4d4](https://github.com/fbuireu/biancafiore/commit/70ed4d4c33701f1b7294e8f4263cde4483b7083b))
+* type import vite ([da2fc55](https://github.com/fbuireu/biancafiore/commit/da2fc55e0fc100bfc96bd45e05e43002dc86d85c))
+* unique tags ([71741af](https://github.com/fbuireu/biancafiore/commit/71741afe9f0c940b0ae7640848b6ccefd019d141))
+* use white background on article and tag pages ([2f88d56](https://github.com/fbuireu/biancafiore/commit/2f88d56ff211e1be9c0e02bdc8020d4dd69104e3))
+
+
+### Features
+
+* add cdn fallback ([2d50fcc](https://github.com/fbuireu/biancafiore/commit/2d50fcc307bb38c5ae403bbcc2b6b998eaada023))
+* add new column icon ([820de20](https://github.com/fbuireu/biancafiore/commit/820de205ed6d165ae79569739830f3be142b2c75))
+* add stretch arrow ([7043249](https://github.com/fbuireu/biancafiore/commit/7043249ebb4363ab70935996bc116e01a9b7bf83))
+* add worker cdn images ([1878a4c](https://github.com/fbuireu/biancafiore/commit/1878a4cbd6c670d1146cdf61581316fc4f0fea63))
+* apply modern css rules ([e3a3044](https://github.com/fbuireu/biancafiore/commit/e3a30448e151494febff93d1198d5e5ae2e0fc4e))
+* improve dark-mode persistance + improvements ([ae9f071](https://github.com/fbuireu/biancafiore/commit/ae9f0713524993330e2a14432eef86d3d829bb10))
+* lots of cool stuff ([#1121](https://github.com/fbuireu/biancafiore/issues/1121)) ([5c17476](https://github.com/fbuireu/biancafiore/commit/5c174766cbc110e80d72371cb47b3855a06b3389))
+* major refactor ([35ee179](https://github.com/fbuireu/biancafiore/commit/35ee179be841ae832730a219d7427a25cabaf961))
+* migrate astro 7 ([a15bb4e](https://github.com/fbuireu/biancafiore/commit/a15bb4e043cbb5b2b84eba18efa1a33a92408bb8))
+* normalize fs ([a37f466](https://github.com/fbuireu/biancafiore/commit/a37f4664ab5ee0a51f4df26ed309fe235fa1abc0))
+* remove index in favor of attr() ([92564d2](https://github.com/fbuireu/biancafiore/commit/92564d2057597125a261a1407956c08b22f58932))
+* reuse middleware headers ([043fd35](https://github.com/fbuireu/biancafiore/commit/043fd354b62c03949360784e033789f2cbda8e3c))
+* reuse middleware headers ([e96d470](https://github.com/fbuireu/biancafiore/commit/e96d47001a18ef4e260202b939e43f6a7dd27ac7))
+* scroll-state scroll-to-top + Utopia-aligned type & space tokens ([#1117](https://github.com/fbuireu/biancafiore/issues/1117)) ([6fb8c52](https://github.com/fbuireu/biancafiore/commit/6fb8c52343c2b4be6146834d20dde73b61543c5d))
+
 # [1.19.0](https://github.com/fbuireu/biancafiore/compare/v1.18.1...v1.19.0) (2026-07-25)
 
 
