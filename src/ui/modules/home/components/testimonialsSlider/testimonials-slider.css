@@ -28,7 +28,7 @@
 	&::before {
 		color: var(--gold);
 		content: open-quote;
-		font-size: 48px;
+		font-size: clamp(48px, 5cqi, 64px);
 		line-height: 0;
 		margin-inline-end: 6px;
 		vertical-align: -12px;
