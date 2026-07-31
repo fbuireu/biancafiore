@@ -76,7 +76,8 @@ export const ContactForm = () => {
 			if (!executeRecaptcha) {
 				return;
 			}
-			const token = await executeRecaptcha();
+			const token = await executeRecaptcha().catch(() => undefined);
+
 			if (!token) {
 				setError("recaptcha", {
 					type: "manual",
@@ -84,6 +85,7 @@ export const ContactForm = () => {
 				});
 				return;
 			}
+
 			await submitForm(data, token);
 		},
 		[executeRecaptcha, setError, submitForm],

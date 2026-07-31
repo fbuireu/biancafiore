@@ -109,7 +109,7 @@ describe("projectDTO image and batching", () => {
 
 		const [project] = projectDTO.create([withoutDetails]);
 
-		expect(project.image.details).toEqual({ width: undefined, height: undefined });
+		expect(project.image.details).toStrictEqual({ width: undefined, height: undefined });
 	});
 
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {

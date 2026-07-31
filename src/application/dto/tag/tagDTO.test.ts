@@ -162,6 +162,37 @@ describe("tagDTO author entries", () => {
 		expect(grouped).toEqual({});
 	});
 
+	it("keeps two authors who share a display name apart, each counting only the articles under its own slug", () => {
+		const grouped = tagDTO.create([
+			[],
+			[
+				makeArticle({ slug: "hers", authorSlug: "bianca-fiore" }),
+				makeArticle({ slug: "the-namesakes", authorSlug: "b-fiore" }),
+			],
+			[
+				makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" }),
+				makeAuthor({ name: "Bianca Fiore", slug: "b-fiore" }),
+			],
+		]);
+
+		expect(grouped.B).toEqual([
+			{
+				name: "Bianca Fiore",
+				slug: "bianca-fiore",
+				type: "author",
+				count: 1,
+				articles: [{ id: "hers", collection: "articles" }],
+			},
+			{
+				name: "Bianca Fiore",
+				slug: "b-fiore",
+				type: "author",
+				count: 1,
+				articles: [{ id: "the-namesakes", collection: "articles" }],
+			},
+		]);
+	});
+
 	it("ignores author links Contentful left unresolved instead of counting them", () => {
 		const grouped = tagDTO.create([
 			[],

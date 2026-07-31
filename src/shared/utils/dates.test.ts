@@ -2,8 +2,6 @@ import { DEFAULT_DATE_FORMAT, DEFAULT_LOCALE_STRING } from "@const/index";
 import { formatDate } from "@shared/utils/dates";
 import { describe, expect, it } from "vitest";
 
-const LONG_UK_DATE = /^[A-Z][a-z]+, \d{1,2} [A-Z][a-z]+ \d{4}$/;
-
 describe("formatDate", () => {
 	it("is configured for en-GB with long weekday and month names", () => {
 		expect(DEFAULT_LOCALE_STRING).toBe("en-GB");
@@ -14,10 +12,8 @@ describe("formatDate", () => {
 		expect(formatDate(new Date(2026, 6, 30, 12))).toBe("Thursday, 30 July 2026");
 	});
 
-	it("renders a local-time string exactly like the equivalent Date instance", () => {
-		const date = new Date(2026, 6, 30, 12);
-
-		expect(formatDate("2026-07-30T12:00:00")).toBe(formatDate(date));
+	it("accepts a date-time string as readily as a Date, naming the same day", () => {
+		expect(formatDate("2026-07-30T12:00:00")).toBe("Thursday, 30 July 2026");
 	});
 
 	it("does not zero-pad single-digit days", () => {
@@ -37,14 +33,14 @@ describe("formatDate", () => {
 		expect(formatDate("2026-07-30T00:30:00Z")).toBe("Thursday, 30 July 2026");
 	});
 
-	it("interprets a date-only ISO string as UTC midnight, not local midnight", () => {
-		expect(formatDate("2026-07-30")).toBe(formatDate(new Date(Date.UTC(2026, 6, 30))));
+	it("interprets a date-only ISO string as UTC midnight, so it never slips to the day before", () => {
+		expect(formatDate("2026-07-30")).toBe("Thursday, 30 July 2026");
+		expect(formatDate("2024-01-01")).toBe("Monday, 1 January 2024");
 	});
 
-	it("produces the same shape for any valid date", () => {
-		expect(formatDate(new Date(2026, 6, 30, 12))).toMatch(LONG_UK_DATE);
-		expect(formatDate(new Date(1970, 0, 1, 12))).toMatch(LONG_UK_DATE);
-		expect(formatDate("2026-05-18T12:00:00")).toMatch(LONG_UK_DATE);
+	it("names the weekday and month of any date, not only of the ones the other cases pin", () => {
+		expect(formatDate(new Date(1970, 0, 1, 12))).toBe("Thursday, 1 January 1970");
+		expect(formatDate("2026-05-18T12:00:00")).toBe("Monday, 18 May 2026");
 	});
 
 	it("returns the literal Invalid Date for unparseable input instead of throwing", () => {

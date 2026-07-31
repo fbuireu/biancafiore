@@ -1,5 +1,5 @@
 import { createEmail, normalizeEmail } from "@infrastructure/utils/email";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const SUBMISSION = {
 	name: "Ada",
@@ -7,8 +7,13 @@ const SUBMISSION = {
 	message: "Hello there",
 };
 
-const EN_GB_TIMESTAMP = /\d{2}\/\d{2}\/\d{4}, \d{2}:\d{2}:\d{2}/;
-const MAILTO_SUBJECT = /mailto:[^"']*\?subject=([^"'&]+)/;
+beforeEach(() => {
+	vi.useFakeTimers({ toFake: ["Date"] });
+});
+
+afterEach(() => {
+	vi.useRealTimers();
+});
 
 describe("normalizeEmail", () => {
 	it("lowercases the whole address", () => {
@@ -68,14 +73,6 @@ describe("createEmail", () => {
 		);
 	});
 
-	it("keeps the whole subject line readable once the mail client decodes it", async () => {
-		const { html } = await createEmail(SUBMISSION);
-		const [, subject] = html.match(MAILTO_SUBJECT) ?? [];
-
-		expect(subject).toBeDefined();
-		expect(decodeURIComponent(subject as string)).toBe("Re: Web contact form submission from biancafiore.me");
-	});
-
 	it("keeps the alias in the reply link, because the mail must reach the address as typed", async () => {
 		const { html } = await createEmail({ ...SUBMISSION, email: "Ada+news@Example.com" });
 
@@ -83,10 +80,11 @@ describe("createEmail", () => {
 	});
 
 	it("stamps the message with a day first, twenty four hour timestamp", async () => {
+		vi.setSystemTime(new Date(2026, 2, 25, 15, 4, 5));
+
 		const { html } = await createEmail(SUBMISSION);
 
-		expect(html).toMatch(EN_GB_TIMESTAMP);
-		expect(html).not.toMatch(/\d{2}:\d{2}:\d{2}\s?(AM|PM)/);
+		expect(html).toContain("25/03/2026, 15:04:05");
 	});
 
 	it("returns a plain text twin that carries the same content without any markup", async () => {

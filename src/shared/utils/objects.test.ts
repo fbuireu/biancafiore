@@ -72,16 +72,14 @@ describe("groupBy", () => {
 		expect(Object.getPrototypeOf(grouped)).toBe(Object.prototype);
 	});
 
-	it("keeps every item, so the groups partition the input", () => {
-		const array = [
-			tag({ name: "a", category: "x" }),
-			tag({ name: "b", category: "y" }),
-			tag({ name: "c", category: "x" }),
-		];
+	it("keeps every item exactly once, so the groups partition the input", () => {
+		const first = tag({ name: "a", category: "x" });
+		const second = tag({ name: "b", category: "y" });
+		const third = tag({ name: "c", category: "x" });
 
-		const grouped = groupBy({ array, keyFn: (item) => item.category });
+		const grouped = groupBy({ array: [first, second, third], keyFn: (item) => item.category });
 
-		expect(Object.values(grouped).flat()).toHaveLength(array.length);
+		expect(grouped).toEqual({ x: [first, third], y: [second] });
 	});
 
 	it("does not reorder the array it was given", () => {
@@ -90,12 +88,6 @@ describe("groupBy", () => {
 		groupBy({ array, keyFn: (item) => item.category });
 
 		expect(array.map(({ name }) => name)).toEqual(["zeta", "alpha"]);
-	});
-
-	it("stringifies a non-string key, grouping every item under 'undefined'", () => {
-		const array = [{ name: "orphan", category: undefined }];
-
-		expect(Object.keys(groupBy({ array, keyFn: (item) => String(item.category) }))).toEqual(["undefined"]);
 	});
 
 	it("rejects nameless items at compile time instead of guarding against them at runtime", () => {

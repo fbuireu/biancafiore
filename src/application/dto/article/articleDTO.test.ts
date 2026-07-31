@@ -140,13 +140,12 @@ describe("articleDTO description", () => {
 		expect(article.description).toBe("Intro Body text");
 	});
 
-	it("truncates a fallback description longer than 200 characters and marks the cut with an ellipsis", () => {
-		const long = "lorem ".repeat(60).trim();
+	it("truncates a fallback description longer than 200 characters, keeping the opening words verbatim", () => {
+		const long = Array.from({ length: 60 }, (_, index) => `word${index}`).join(" ");
 
 		const [article] = articleDTO.create([makeArticle({ content: [paragraph(long)] })]);
 
-		expect(article.description).toHaveLength(203);
-		expect(article.description.endsWith("...")).toBe(true);
+		expect(article.description).toBe(`${long.slice(0, 200)}...`);
 	});
 
 	it("cleans an authored description rather than trusting the CMS whitespace", () => {
@@ -357,6 +356,25 @@ describe("articleDTO content derivations", () => {
 
 		expect(entry.id).toBe("deploying-astro");
 		expect(article.content).toContain(`<h2 id="${entry.id}"`);
+	});
+
+	it("escapes the markup characters an author types into a heading rather than emitting them raw", () => {
+		const [article] = articleDTO.create([
+			makeArticle({ content: [heading({ level: 2, value: `Why & How <b> "now" isn't it` })] }),
+		]);
+
+		expect(article.content).toContain(
+			'<a href="#why-how-b-now-isnt-it">Why &amp; How &lt;b&gt; &quot;now&quot; isn&#39;t it</a>',
+		);
+	});
+
+	it("escapes a heading in the body exactly as the table of contents stores it, so the two spell the same anchor", () => {
+		const [article] = articleDTO.create([makeArticle({ content: [heading({ level: 2, value: "Why & How" })] })]);
+		const [entry] = article.tableOfContents;
+
+		expect(entry.heading).toBe("Why &amp; How");
+		expect(entry.id).toBe("why-how");
+		expect(article.content).toContain(`<a href="#${entry.id}">Why &amp; How</a>`);
 	});
 
 	it("counts the words of every paragraph towards reading time, not just the first of each", () => {
