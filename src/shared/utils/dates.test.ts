@@ -28,6 +28,13 @@ describe("formatDate", () => {
 		expect(formatDate(new Date(Date.UTC(1999, 11, 31, 23, 59, 59)))).toBe("Friday, 31 December 1999");
 	});
 
+	it("runs somewhere with a non-zero offset, without which the UTC cases below prove nothing", () => {
+		expect([
+			new Date(Date.UTC(2026, 0, 1)).getTimezoneOffset(),
+			new Date(Date.UTC(2026, 6, 1)).getTimezoneOffset(),
+		]).not.toContain(0);
+	});
+
 	it("names the UTC calendar day, so the same content reads the same in every timezone", () => {
 		expect(formatDate("2026-07-30T23:30:00Z")).toBe("Thursday, 30 July 2026");
 		expect(formatDate("2026-07-30T00:30:00Z")).toBe("Thursday, 30 July 2026");
