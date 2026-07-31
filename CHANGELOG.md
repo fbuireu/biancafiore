@@ -1,3 +1,20 @@
+# [1.19.0](https://github.com/fbuireu/biancafiore/compare/v1.18.1...v1.19.0) (2026-07-31)
+
+
+### Bug Fixes
+
+* **actions:** stop a failed contact save from reporting a delivered message as an error ([4c6224e](https://github.com/fbuireu/biancafiore/commit/4c6224e5caf792ac44d821cd4cf1b3b80f44ab55))
+* **ci:** stop a long commit message from breaking the deploy ([59bec48](https://github.com/fbuireu/biancafiore/commit/59bec48245f158ed9345e2663a3f77b1c85c6cad))
+* close three holes an adversarial pass found in the safety net ([5cdb488](https://github.com/fbuireu/biancafiore/commit/5cdb488814238e8ccd9f3a62634a04d657c73001))
+* number the scroll timelines by section, and refuse a link scheme that executes ([037bc04](https://github.com/fbuireu/biancafiore/commit/037bc044e6ba02b91c97e69e4506670cf59af5e2))
+* reindex tests/ after the docs guard test moved out of it ([796bca1](https://github.com/fbuireu/biancafiore/commit/796bca1ca2c0111733d1f76e20f1c6802f2f488c))
+* repair the nine defects the new test suites uncovered ([5390955](https://github.com/fbuireu/biancafiore/commit/5390955c2e4516794c87107c78e221a35db6ad85))
+
+
+### Features
+
+* improve dark-mode persistance + improvements ([ec9b659](https://github.com/fbuireu/biancafiore/commit/ec9b6597e207f85a7154bb3c793cdb282f6b09d2))
+
 # [1.19.0](https://github.com/fbuireu/biancafiore/compare/v1.18.1...v1.19.0) (2026-07-25)
 
 
