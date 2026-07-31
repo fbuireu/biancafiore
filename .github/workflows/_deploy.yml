@@ -87,9 +87,10 @@ jobs:
           if [ -n "${INPUTS_WORKER_NAME}" ]; then
             NAME_FLAG="--name ${INPUTS_WORKER_NAME}"
           fi
-          pnpm exec wrangler deploy $NAME_FLAG
+          pnpm exec wrangler deploy $NAME_FLAG --message "$DEPLOY_MESSAGE"
         env:
           INPUTS_WORKER_NAME: ${{ inputs.worker_name }}
+          DEPLOY_MESSAGE: ${{ github.sha }} — ${{ github.event_name }}
       - name: Set Worker secrets
         run: |
           TARGET_FLAG=""
