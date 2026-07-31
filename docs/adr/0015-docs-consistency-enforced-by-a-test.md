@@ -20,7 +20,7 @@ None of these were noticed by review, because a document that reads plausibly is
 
 ## Decision
 
-`tests/docs-consistency.test.ts` reads the guides as data and asserts every mechanically checkable claim against the repository: package scripts, path aliases and the folders they map to, the folder tree, the route list, `.env.example` against the `env.schema` in `astro.config.ts`, every path and relative link cited in any document, ADR numbering, template and references, the infrastructure client table, the stylesheet layer table, the domain concepts against the glossary, and the invariants stated in Gotchas. It runs with `pnpm test:ut`, so it runs in CI on every pull request.
+`docs/docs-consistency.test.ts` reads the guides as data and asserts every mechanically checkable claim against the repository: package scripts, path aliases and the folders they map to, the folder tree, the route list, `.env.example` against the `env.schema` in `astro.config.ts`, every path and relative link cited in any document, ADR numbering, template and references, the infrastructure client table, the stylesheet layer table, the domain concepts against the glossary, and the invariants stated in Gotchas. It runs with `pnpm test:ut`, so it runs in CI on every pull request.
 
 Deliberate omissions are named allowlists at the top of that file — `SCRIPTS_INTENTIONALLY_UNDOCUMENTED`, `CONCEPTS_OUTSIDE_THE_GLOSSARY`, `DOCUMENTED_PATH_EXAMPLES`. When the honest answer is "the guide leaves this out on purpose", that answer is recorded rather than achieved by deleting the assertion.
 
