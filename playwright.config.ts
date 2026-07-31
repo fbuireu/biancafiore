@@ -3,6 +3,14 @@ import { defineConfig, devices } from "@playwright/test";
 const LOCAL_URL = "http://localhost:4321";
 const deployedUrl = process.env.E2E_URL;
 
+const accessClientId = process.env.CF_ACCESS_CLIENT_ID;
+const accessClientSecret = process.env.CF_ACCESS_CLIENT_SECRET;
+
+const accessHeaders =
+	accessClientId && accessClientSecret
+		? { "CF-Access-Client-Id": accessClientId, "CF-Access-Client-Secret": accessClientSecret }
+		: undefined;
+
 export default defineConfig({
 	webServer: deployedUrl
 		? undefined
@@ -23,6 +31,7 @@ export default defineConfig({
 	use: {
 		trace: "on-first-retry",
 		baseURL: deployedUrl ?? LOCAL_URL,
+		extraHTTPHeaders: accessHeaders,
 	},
 	projects: [
 		{
