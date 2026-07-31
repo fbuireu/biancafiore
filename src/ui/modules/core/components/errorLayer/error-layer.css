@@ -44,7 +44,7 @@
 }
 
 .error-layer__title {
-	font-size: clamp(38px, 4.5vw, 58px);
+	font-size: clamp(38px, 4.5cqi, 58px);
 	margin-block: 0 var(--space-m);
 }
 
@@ -56,7 +56,7 @@
 .error-layer__lede {
 	color: var(--ink-soft);
 	font-family: var(--font-serif);
-	font-size: clamp(18px, 1.6vw, 20px);
+	font-size: clamp(18px, 1.6cqi, 20px);
 	font-weight: 360;
 	line-height: var(--leading);
 	margin: 0 auto var(--space-l);

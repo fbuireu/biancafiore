@@ -80,7 +80,7 @@
 		color: var(--gold);
 		content: counter(my-work, decimal-leading-zero);
 		font-family: var(--font-display);
-		font-size: 22px;
+		font-size: clamp(22px, 2.2cqi, 26px);
 		transition: color 0.2s;
 	}
 
@@ -88,7 +88,7 @@
 		color: var(--muted);
 		content: "+";
 		font-family: var(--font-display);
-		font-size: 26px;
+		font-size: clamp(26px, 2.6cqi, 32px);
 		line-height: 1;
 		transition: color 0.3s;
 	}
