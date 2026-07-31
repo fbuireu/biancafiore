@@ -12,6 +12,8 @@ const HTML_ENTITIES: Record<string, string> = {
 	"'": "&#39;",
 };
 const UNSAFE_HTML_CHARACTERS = /[&<>"']/g;
+const SCHEME_REGEX = /^([a-z][a-z\d+.-]*):/;
+const SAFE_URL_SCHEMES = new Set(["http", "https", "mailto", "tel"]);
 
 export function slugify(text: string): string {
 	return text
@@ -31,4 +33,10 @@ export function deSlugify(slug: string): string {
 
 export function escapeHtml(value: string): string {
 	return value.replace(UNSAFE_HTML_CHARACTERS, (character) => HTML_ENTITIES[character] ?? character);
+}
+
+export function safeUrl(value: string): string {
+	const scheme = value.trim().toLowerCase().match(SCHEME_REGEX)?.[1];
+
+	return !scheme || SAFE_URL_SCHEMES.has(scheme) ? escapeHtml(value.trim()) : "";
 }
