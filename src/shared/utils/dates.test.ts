@@ -25,7 +25,7 @@ describe("formatDate", () => {
 	});
 
 	it("keeps the calendar day of a moment just before midnight", () => {
-		expect(formatDate(new Date(1999, 11, 31, 23, 59, 59))).toBe("Friday, 31 December 1999");
+		expect(formatDate(new Date(Date.UTC(1999, 11, 31, 23, 59, 59)))).toBe("Friday, 31 December 1999");
 	});
 
 	it("names the UTC calendar day, so the same content reads the same in every timezone", () => {

@@ -12,6 +12,8 @@ const { paths } = JSON.parse(readFileSync(new URL("./tsconfig.json", import.meta
 	paths: Record<string, string[]>;
 };
 
+const AWKWARD_TIMEZONE = "America/New_York";
+
 const aliasesFromTsconfig = Object.entries(paths).map(([alias, [target]]) => ({
 	find: alias.replace(TRAILING_GLOB, ""),
 	replacement: `${ROOT}${target.replace(LEADING_RELATIVE, "").replace(TRAILING_GLOB, "")}`,
@@ -32,6 +34,7 @@ export default defineConfig({
 				test: {
 					name: "node",
 					environment: "node",
+					env: { TZ: AWKWARD_TIMEZONE },
 					include: ["src/**/*.test.ts", "src/**/*.spec.ts", "docs/**/*.test.ts"],
 				},
 			},
