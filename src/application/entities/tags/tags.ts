@@ -28,7 +28,7 @@ export const tags = defineCollection({
 			}),
 		);
 
-		const tags = await tagDTO.create([rawTags, rawArticles, rawAuthors]);
+		const tags = tagDTO.create([rawTags, rawArticles, rawAuthors]);
 
 		return Object.keys(tags).map((letter) => ({
 			id: letter,

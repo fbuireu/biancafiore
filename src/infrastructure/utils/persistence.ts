@@ -30,7 +30,18 @@ interface SaveContactParams extends Except<ContactFormData, "recaptcha"> {
 }
 
 function isUniqueConstraintViolation(cause: unknown): boolean {
-	return cause instanceof LibsqlError && cause.code.startsWith("SQLITE_CONSTRAINT");
+	const visited = new Set<unknown>();
+	let current = cause;
+
+	while (current instanceof Error && !visited.has(current)) {
+		visited.add(current);
+
+		if (current instanceof LibsqlError && current.code.startsWith("SQLITE_CONSTRAINT")) return true;
+
+		current = current.cause;
+	}
+
+	return false;
 }
 
 export const saveContact = (

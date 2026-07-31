@@ -1,19 +1,37 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const LOCAL_URL = "http://localhost:4321";
+const deployedUrl = process.env.E2E_URL;
+
+const accessClientId = process.env.CF_ACCESS_CLIENT_ID;
+const accessClientSecret = process.env.CF_ACCESS_CLIENT_SECRET;
+
+const accessHeaders =
+	accessClientId && accessClientSecret
+		? { "CF-Access-Client-Id": accessClientId, "CF-Access-Client-Secret": accessClientSecret }
+		: undefined;
+
 export default defineConfig({
-	webServer: {
-		command: "pnpm start",
-		reuseExistingServer: !process.env.CI,
-	},
+	webServer: deployedUrl
+		? undefined
+		: {
+				command: "pnpm start",
+				url: LOCAL_URL,
+				env: { ASTRO_DEV_BACKGROUND: "1" },
+				reuseExistingServer: !process.env.CI,
+				timeout: 120_000,
+			},
 	testDir: "./e2e",
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 0,
 	workers: process.env.CI ? "50%" : undefined,
+	timeout: 90_000,
 	reporter: process.env.CI ? "github" : "html",
 	use: {
 		trace: "on-first-retry",
-		baseURL: `${process.env.E2E_URL ?? "http://localhost:4321"}`,
+		baseURL: deployedUrl ?? LOCAL_URL,
+		extraHTTPHeaders: accessHeaders,
 	},
 	projects: [
 		{

@@ -49,17 +49,25 @@ function toAbsoluteSrc(source: string): string {
 	return source.startsWith("//") ? `https:${source}` : source;
 }
 
+function toCdnImageSource(source: string): string {
+	const absoluteSource = toAbsoluteSrc(source);
+
+	return absoluteSource.startsWith("/") ? absoluteSource.slice(1) : absoluteSource;
+}
+
 export function getOptimizedImageUrl({ source, options = {} }: GetOptimizedImageUrlParams): string {
+	const quality = options.quality || DEFAULT_QUALITY;
+
 	if (import.meta.env.IMAGE_CDN === IMAGE_CDN.CONTENTFUL) {
-		return buildContentfulImageUrl({ source, options: { quality: DEFAULT_QUALITY, ...options } });
+		return buildContentfulImageUrl({ source, options: { ...options, quality } });
 	}
 
-	const params = [`format=${options.format ?? "auto"}`, `quality=${options.quality ?? DEFAULT_QUALITY}`];
+	const params = [`format=${options.format ?? "auto"}`, `quality=${quality}`];
 	if (options.width) params.push(`width=${options.width}`);
 	if (options.height) params.push(`height=${options.height}`);
 	if (options.fit) params.push(`fit=${options.fit}`);
 
-	return `${CDN_CGI_IMAGE}/${params.join(",")}/${toAbsoluteSrc(source)}`;
+	return `${CDN_CGI_IMAGE}/${params.join(",")}/${toCdnImageSource(source)}`;
 }
 
 export function getOptimizedSrcset({ source, widths, options = {} }: GetOptimizedSrcsetParams): string {

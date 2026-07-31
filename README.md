@@ -1,3 +1,5 @@
+[![Codecov](https://img.shields.io/codecov/c/gh/fbuireu/biancafiore?style=flat-square&logo=codecov)](https://codecov.io/gh/fbuireu/biancafiore)
+
 ## License
 
 All blog content (posts, articles, original images) is licensed under

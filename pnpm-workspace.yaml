@@ -4,6 +4,7 @@ allowBuilds:
   "@astrojs/compiler-rs": true
   "@biomejs/biome": true
   esbuild: true
+  msw: false
   sharp: true
   workerd: true
 minimumReleaseAge: 4320 # 3 days
