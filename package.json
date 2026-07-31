@@ -104,7 +104,7 @@
 		"lint-staged": "17.1.1",
 		"msw": "2.15.0",
 		"semantic-release": "25.0.8",
-		"typescript": "6.0.3",
+		"typescript": "7.0.2",
 		"vitest": "4.1.10",
 		"wrangler": "4.113.0"
 	}
