@@ -1,13 +1,18 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const LOCAL_URL = "http://localhost:4321";
+const deployedUrl = process.env.E2E_URL;
+
 export default defineConfig({
-	webServer: {
-		command: "pnpm start",
-		url: process.env.E2E_URL ?? "http://localhost:4321",
-		env: { ASTRO_DEV_BACKGROUND: "1" },
-		reuseExistingServer: !process.env.CI,
-		timeout: 120_000,
-	},
+	webServer: deployedUrl
+		? undefined
+		: {
+				command: "pnpm start",
+				url: LOCAL_URL,
+				env: { ASTRO_DEV_BACKGROUND: "1" },
+				reuseExistingServer: !process.env.CI,
+				timeout: 120_000,
+			},
 	testDir: "./e2e",
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
@@ -17,7 +22,7 @@ export default defineConfig({
 	reporter: process.env.CI ? "github" : "html",
 	use: {
 		trace: "on-first-retry",
-		baseURL: `${process.env.E2E_URL ?? "http://localhost:4321"}`,
+		baseURL: deployedUrl ?? LOCAL_URL,
 	},
 	projects: [
 		{
