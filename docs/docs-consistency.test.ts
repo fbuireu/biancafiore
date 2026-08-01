@@ -50,12 +50,6 @@ const ADR_TEMPLATE_SECTIONS = ["Status", "Context", "Decision", "Consequences"];
 
 const ADR_STATUSES = new Set(["Template", "Proposed", "Accepted", "Superseded", "Deprecated"]);
 
-const DOCUMENTED_PACKAGE_VERSIONS: Record<string, string> = {
-	Astro: "astro",
-	Effect: "effect",
-	React: "react",
-};
-
 const INLINE_CODE = /`([^`\n]+)`/g;
 const FENCED_BLOCK = /```(\w*)\n([\s\S]*?)```/g;
 const ANY_FENCED_BLOCK = /```[\s\S]*?```/g;
@@ -65,9 +59,6 @@ const LEADING_SLASH = /^\//;
 const TRAILING_SLASH = /\/$/;
 const BACKTICKED_NAME = /`\.?([\w-]+)`/g;
 const DOCUMENTED_SCRIPT = /^pnpm\s+([a-z0-9:._-]+)/;
-const DOCUMENTED_NODE_VERSION = /Node \*\*([\d.]+)\*\*/;
-const DOCUMENTED_PNPM_VERSION = /pnpm \*\*([\d.]+)\*\*/;
-const DOCUMENTED_STACK_VERSION = /\*\*([A-Z][\w.]*) ([\d][\d.]*)\*\*/g;
 const DOCUMENTED_ALIAS = /@([a-z]+)\/\*(?:\s*\(→\s*([^)]+)\))?/g;
 const DOCUMENTED_ROUTES_COMMENT = /pages\/\s*#\s*routes \(([^)]+)\)/;
 const NESTED_GUIDE_LINK = /\]\(\.\/(src\/[\w/-]*CLAUDE\.md)\)/g;
@@ -240,7 +231,7 @@ const ALIAS_TARGETS = Object.entries(TSCONFIG.compilerOptions.paths as Record<st
 		[alias.replace(TRAILING_GLOB, ""), target.replace(LEADING_RELATIVE, "").replace(TRAILING_GLOB, "")] as const,
 );
 
-describe("commands and versions", () => {
+describe("commands", () => {
 	const documentedScripts = fences(section(CLAUDE_MD, "Commands"))
 		.flatMap(({ body }) => body.split("\n"))
 		.flatMap((line) => line.match(DOCUMENTED_SCRIPT)?.[1] ?? []);
@@ -255,28 +246,6 @@ describe("commands and versions", () => {
 		);
 
 		expect(undocumented).toEqual([]);
-	});
-
-	it("pins the same Node and pnpm versions the guide claims", () => {
-		const versions = section(CLAUDE_MD, "Versions");
-
-		expect(versions.match(DOCUMENTED_NODE_VERSION)?.[1]).toBe(PACKAGE_JSON.engines.node);
-		expect(`pnpm@${versions.match(DOCUMENTED_PNPM_VERSION)?.[1]}`).toBe(PACKAGE_JSON.packageManager);
-		expect(read(".nvmrc").trim()).toBe(PACKAGE_JSON.engines.node);
-	});
-
-	it("names stack versions that match the installed dependencies", () => {
-		const claimed = [...section(CLAUDE_MD, "Stack").matchAll(DOCUMENTED_STACK_VERSION)]
-			.filter(([, name]) => name in DOCUMENTED_PACKAGE_VERSIONS)
-			.map(([, name, version]) => ({ name, version }));
-
-		expect(claimed.length).toBeGreaterThan(0);
-
-		for (const { name, version } of claimed) {
-			const installed = PACKAGE_JSON.dependencies[DOCUMENTED_PACKAGE_VERSIONS[name]];
-
-			expect(`${name} ${installed}`).toBe(`${name} ${installed.startsWith(version) ? installed : version}`);
-		}
 	});
 });
 

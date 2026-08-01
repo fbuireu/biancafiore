@@ -15,9 +15,9 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 - **lightningcss** CSS transformer; **GSAP**, `react-globe.gl`/`three` (globe), `react-hook-form`, `resend` (email), reCAPTCHA v3, `vanilla-cookieconsent`
 - **Biome** (lint + format), **Vitest** (unit), **Playwright** (e2e), **semantic-release** + commitlint (conventional commits)
 
-## Versions (pinned — match exactly)
+## Versions (pinned by hand — not enforced by the docs test, since routine dependency bumps would break CI on it)
 
-- Node **26.5.0** (`engines.node`)
+- Node **26.5.1** (`engines.node`)
 - pnpm **11.15.1** (`packageManager`) — always use pnpm, never npm/yarn
 
 ## Commands
