@@ -24,8 +24,8 @@
 	},
 	"scripts": {
 		"prepare": "husky",
-		"start:open": "astro dev --open",
 		"start": "astro dev",
+		"start:open": "pnpm start --open",
 		"build": "astro build",
 		"deploy": "wrangler deploy --env production",
 		"db:generate": "drizzle-kit generate",
