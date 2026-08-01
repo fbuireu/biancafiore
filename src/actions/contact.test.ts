@@ -4,9 +4,9 @@ import { LibsqlError } from "@libsql/client/web";
 import { DrizzleQueryError } from "drizzle-orm/errors";
 import { Cause, Effect, Exit, Layer, Logger, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { resetSecrets, setSecret } from "@testing/doubles/astroEnvServer";
-import { databaseDouble, databaseError, emailDouble, emailError } from "@testing/doubles/contactLayers";
-import { type RecaptchaDoubleOptions, recaptchaDouble } from "@testing/doubles/network";
+import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
+import { databaseDouble, databaseError, emailDouble, emailError } from "@tests/doubles/contactLayers";
+import { type RecaptchaDoubleOptions, recaptchaDouble } from "@tests/doubles/network";
 
 const VALID_INPUT = {
 	name: "Ada",

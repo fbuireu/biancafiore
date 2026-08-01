@@ -1,6 +1,6 @@
 import { getImagePlaceholder } from "@infrastructure/images/imagePlaceholder";
 import { describe, expect, it } from "vitest";
-import { imageDouble } from "@testing/doubles/network";
+import { imageDouble } from "@tests/doubles/network";
 
 const SOURCE = "https://images.ctfassets.net/space/asset/hero.jpg";
 const PLACEHOLDER_URL = `${SOURCE}?w=24&q=35&fm=webp`;

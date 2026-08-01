@@ -2,8 +2,8 @@ import type { RawArticle } from "@application/dto/article/types";
 import { articles } from "@application/entities/articles/articles";
 import { CmsError } from "@infrastructure/errors";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cmsAnswers, cmsFailsWith, cmsQueries, resetCms } from "@testing/doubles/cmsLayer";
-import { imageDouble } from "@testing/doubles/network";
+import { cmsAnswers, cmsFailsWith, cmsQueries, resetCms } from "@tests/doubles/cmsLayer";
+import { imageDouble } from "@tests/doubles/network";
 
 vi.mock("astro:content", async () => {
 	const { z } = await import("astro/zod");
@@ -16,7 +16,7 @@ vi.mock("astro:content", async () => {
 
 vi.mock("@infrastructure/cms/client", async () => {
 	const actual = await vi.importActual<typeof import("@infrastructure/cms/client")>("@infrastructure/cms/client");
-	const { cmsClientLayer } = await import("@testing/doubles/cmsLayer");
+	const { cmsClientLayer } = await import("@tests/doubles/cmsLayer");
 
 	return { ...actual, CmsClientLive: cmsClientLayer(actual.CmsClient) };
 });

@@ -12,7 +12,7 @@ afterEach(() => {
 
 	if (escaped.length > 0) {
 		throw new Error(
-			`This test asked the network for ${escaped.join(", ")}. Register a double for it in testing/doubles/network.ts.`,
+			`This test asked the network for ${escaped.join(", ")}. Register a double for it in tests/doubles/network.ts.`,
 		);
 	}
 });

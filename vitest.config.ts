@@ -21,9 +21,9 @@ const aliasesFromTsconfig = Object.entries(paths).map(([alias, [target]]) => ({
 
 const alias = [
 	...aliasesFromTsconfig,
-	{ find: "astro:env/server", replacement: `${ROOT}testing/doubles/astroEnvServer.ts` },
-	{ find: "astro:env/client", replacement: `${ROOT}testing/doubles/astroEnvClient.ts` },
-	{ find: "astro:middleware", replacement: `${ROOT}testing/doubles/astroMiddleware.ts` },
+	{ find: "astro:env/server", replacement: `${ROOT}tests/doubles/astroEnvServer.ts` },
+	{ find: "astro:env/client", replacement: `${ROOT}tests/doubles/astroEnvClient.ts` },
+	{ find: "astro:middleware", replacement: `${ROOT}tests/doubles/astroMiddleware.ts` },
 ];
 
 export default defineConfig({
@@ -36,7 +36,7 @@ export default defineConfig({
 					name: "node",
 					environment: "node",
 					env: { TZ: AWKWARD_TIMEZONE },
-					setupFiles: [`${ROOT}testing/setup/network.ts`],
+					setupFiles: [`${ROOT}tests/setup/network.ts`],
 					include: ["src/**/*.test.ts", "src/**/*.spec.ts", "docs/**/*.test.ts"],
 				},
 			},

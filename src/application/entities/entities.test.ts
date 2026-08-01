@@ -5,7 +5,7 @@ import { projects } from "@application/entities/projects/projects";
 import { tags } from "@application/entities/tags/tags";
 import { testimonials } from "@application/entities/testimonials/testimonials";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cmsAnswers, cmsQueries, resetCms } from "@testing/doubles/cmsLayer";
+import { cmsAnswers, cmsQueries, resetCms } from "@tests/doubles/cmsLayer";
 
 vi.mock("astro:content", async () => {
 	const { z } = await import("astro/zod");
@@ -18,7 +18,7 @@ vi.mock("astro:content", async () => {
 
 vi.mock("@infrastructure/cms/client", async () => {
 	const actual = await vi.importActual<typeof import("@infrastructure/cms/client")>("@infrastructure/cms/client");
-	const { cmsClientLayer } = await import("@testing/doubles/cmsLayer");
+	const { cmsClientLayer } = await import("@tests/doubles/cmsLayer");
 
 	return { ...actual, CmsClientLive: cmsClientLayer(actual.CmsClient) };
 });

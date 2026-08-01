@@ -19,7 +19,7 @@ const SKIPPED_DIRECTORIES = new Set([
 	"test-results",
 ]);
 
-const INDEXED_DIRECTORIES = [".github", "docs", "drizzle", "src", "testing"];
+const INDEXED_DIRECTORIES = [".github", "docs", "drizzle", "src", "tests"];
 
 const DOCUMENTED_PATH_EXTENSIONS = [".ts", ".tsx", ".astro", ".css", ".md", ".json", ".toml"];
 
@@ -346,7 +346,7 @@ describe("environment", () => {
 			.filter(([declaration]) => declaration.includes('context: "client"'))
 			.map(([, name]) => name)
 			.sort();
-		const doubled = [...read("testing/doubles/astroEnvClient.ts").matchAll(EXPORTED_CONSTANT)]
+		const doubled = [...read("tests/doubles/astroEnvClient.ts").matchAll(EXPORTED_CONSTANT)]
 			.map(([, name]) => name)
 			.sort();
 
