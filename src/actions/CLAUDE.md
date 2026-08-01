@@ -9,7 +9,7 @@ or reCAPTCHA directly. ADR 0004 records why the Effect world is sealed at this e
 
 **The split is what makes the action testable.** `contact.ts` imports nothing from `astro:*`, so
 `submitContact` runs in a unit test against stub `Database` and `EmailClient` layers — see `contact.test.ts`
-and the doubles in `tests/doubles/`. The one `astro:*` module the program still reaches is `astro:env/server`,
+and the doubles in `testing/doubles/`. The one `astro:*` module the program still reaches is `astro:env/server`,
 lazily imported inside `verifyRecaptcha`, and `vitest.config.ts` maps it onto a double. Keep `astro:actions` out
 of `contact.ts`: the moment it imports `ActionError`, the program stops resolving under vitest.
 

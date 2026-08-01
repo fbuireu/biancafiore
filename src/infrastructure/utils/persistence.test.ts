@@ -4,7 +4,7 @@ import { LibsqlError } from "@libsql/client/web";
 import { DrizzleQueryError } from "drizzle-orm/errors";
 import { Cause, Effect, Exit, Option } from "effect";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { databaseDouble } from "../../../tests/doubles/contactLayers";
+import { databaseDouble } from "@testing/doubles/contactLayers";
 
 const DUPLICATE_MESSAGE = "You already contacted. Please be patient, I will get back to you ASAP.";
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;

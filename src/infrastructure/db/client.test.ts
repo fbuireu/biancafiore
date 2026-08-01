@@ -1,7 +1,7 @@
 import { Database, DatabaseLive } from "@infrastructure/db/client";
 import { Cause, Effect, Exit, Option } from "effect";
 import { afterEach, describe, expect, it } from "vitest";
-import { resetSecrets, setSecret } from "../../../tests/doubles/astroEnvServer";
+import { resetSecrets, setSecret } from "@testing/doubles/astroEnvServer";
 
 const URL_SECRET = "ASTRO_DB_REMOTE_URL";
 const TOKEN_SECRET = "ASTRO_DB_APP_TOKEN";
