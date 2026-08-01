@@ -64,12 +64,13 @@ src/
     modules/          # feature areas: home, about, article(s), contact, projects, legal, core
     styles/           # global CSS layer stack + design tokens
     assets/           # images, svg-components (React)
+  tests/              # doubles + MSW setup the co-located unit tests import; never collected as tests
   const/ data/
 ```
 
-Unit tests are co-located with the code they cover (`src/**/*.test.ts`, and `src/**/*.test.tsx` for the React islands); the one test covering no single module is `docs/docs-consistency.test.ts`, colocated with the docs it checks — see the maintenance contract below. `tests/doubles/` holds the stub layers, virtual-module doubles and MSW network doubles those co-located tests import — ADR 0017 sets the rule for which of the three a given dependency gets, and `tests/setup/` starts the MSW server for the node project. All are picked up by `vitest.config.ts`, which resolves the path aliases and Astro’s `astro:*` virtual modules itself rather than through `getViteConfig` — ADR 0016 records why that is forced, and which modules it leaves unreachable from a unit test. Playwright specs live in the `testDir` declared in `playwright.config.ts`.
+Unit tests are co-located with the code they cover (`src/**/*.test.ts`, and `src/**/*.test.tsx` for the React islands); the one test covering no single module is `docs/docs-consistency.test.ts`, colocated with the docs it checks — see the maintenance contract below. `src/tests/doubles/` holds the stub layers, virtual-module doubles and MSW network doubles those co-located tests import — ADR 0017 sets the rule for which of the three a given dependency gets, and `src/tests/setup/` starts the MSW server for the node project. All are picked up by `vitest.config.ts`, which resolves the path aliases and Astro’s `astro:*` virtual modules itself rather than through `getViteConfig` — ADR 0016 records why that is forced, and which modules it leaves unreachable from a unit test. Playwright specs live in the `testDir` declared in `playwright.config.ts`.
 
-Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/* @application/* @modules/* (→ src/ui/modules) @utils/* @assets/* (→ src/ui/assets) @styles/* (→ src/ui/styles) @data/* @shared/* @content/* @tests/* (→ tests)`. Prefer aliases over relative paths.
+Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/* @application/* @modules/* (→ src/ui/modules) @utils/* @assets/* (→ src/ui/assets) @styles/* (→ src/ui/styles) @data/* @shared/* @content/* @tests/* (→ src/tests)`. Prefer aliases over relative paths.
 
 **Nested guides** — read the one for the folder you're touching, they carry the detail this file deliberately omits:
 
