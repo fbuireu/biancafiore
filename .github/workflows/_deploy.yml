@@ -82,26 +82,38 @@ jobs:
       - name: Build
         run: pnpm build
       - name: Deploy to Cloudflare Workers
-        run: |
-          NAME_FLAG=""
-          if [ -n "${INPUTS_WORKER_NAME}" ]; then
-            NAME_FLAG="--name ${INPUTS_WORKER_NAME}"
-          fi
-          pnpm exec wrangler deploy $NAME_FLAG --message "$DEPLOY_MESSAGE"
+        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         env:
           INPUTS_WORKER_NAME: ${{ inputs.worker_name }}
           DEPLOY_MESSAGE: ${{ github.sha }} — ${{ github.event_name }}
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          retry_wait_seconds: 15
+          shell: bash
+          command: |
+            NAME_FLAG=""
+            if [ -n "${INPUTS_WORKER_NAME}" ]; then
+              NAME_FLAG="--name ${INPUTS_WORKER_NAME}"
+            fi
+            pnpm exec wrangler deploy $NAME_FLAG --message "$DEPLOY_MESSAGE"
       - name: Set Worker secrets
-        run: |
-          TARGET_FLAG=""
-          if [ -n "${INPUTS_WORKER_NAME}" ]; then
-            TARGET_FLAG="--name ${INPUTS_WORKER_NAME}"
-          fi
-          node -e "
-          const required = ['RESEND_API_KEY','CONTENTFUL_SPACE_ID','CONTENTFUL_DELIVERY_TOKEN','CONTENTFUL_PREVIEW_TOKEN','CONTENTFUL_SIGNIN_TOKEN','ASTRO_DB_REMOTE_URL','ASTRO_DB_APP_TOKEN'];
-          const missing = required.filter(k => !process.env[k]);
-          if (missing.length) { console.error('Missing required secrets: ' + missing.join(', ')); process.exit(1); }
-          process.stdout.write(JSON.stringify(Object.fromEntries(required.map(k => [k, process.env[k]]))));
-          " | pnpm exec wrangler secret bulk $TARGET_FLAG
+        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         env:
           INPUTS_WORKER_NAME: ${{ inputs.worker_name }}
+        with:
+          timeout_minutes: 2
+          max_attempts: 3
+          retry_wait_seconds: 15
+          shell: bash
+          command: |
+            TARGET_FLAG=""
+            if [ -n "${INPUTS_WORKER_NAME}" ]; then
+              TARGET_FLAG="--name ${INPUTS_WORKER_NAME}"
+            fi
+            node -e "
+            const required = ['RESEND_API_KEY','CONTENTFUL_SPACE_ID','CONTENTFUL_DELIVERY_TOKEN','CONTENTFUL_PREVIEW_TOKEN','CONTENTFUL_SIGNIN_TOKEN','ASTRO_DB_REMOTE_URL','ASTRO_DB_APP_TOKEN'];
+            const missing = required.filter(k => !process.env[k]);
+            if (missing.length) { console.error('Missing required secrets: ' + missing.join(', ')); process.exit(1); }
+            process.stdout.write(JSON.stringify(Object.fromEntries(required.map(k => [k, process.env[k]]))));
+            " | pnpm exec wrangler secret bulk $TARGET_FLAG
