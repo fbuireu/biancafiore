@@ -60,7 +60,7 @@
 		"@astrojs/sitemap": "3.7.3",
 		"@contentful/rich-text-html-renderer": "17.2.3",
 		"@contentful/rich-text-types": "17.2.7",
-		"@hookform/resolvers": "5.4.0",
+		"@hookform/resolvers": "5.5.7",
 		"@libsql/client": "0.17.4",
 		"@react-email/components": "1.0.12",
 		"@react-email/render": "2.1.0",
