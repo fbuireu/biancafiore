@@ -18,6 +18,6 @@ To contain the lock-in, Contentful's shape stops at the infrastructure boundary:
 
 ## Consequences
 
-- The mapping layer that keeps Contentful out of the rest of the app is not incidental plumbing — it is what makes this reversible, and it is recorded separately as the anti-corruption layer (ADR 0012).
+- The mapping layer that keeps Contentful out of the rest of the app is not incidental plumbing — it is what makes this reversible, and it is recorded separately as the anti-corruption layer ([ADR 0012](./0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md)).
 - Builds must survive without credentials, so loaders bail out through `isContentfulConfigured()` rather than failing.
 - Content shape is owned outside the repo: a field renamed in Contentful breaks a DTO, and the domain glossary in `CONTEXT.md` is the only place the two vocabularies are reconciled.

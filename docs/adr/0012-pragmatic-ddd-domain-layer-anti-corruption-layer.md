@@ -8,7 +8,7 @@ Accepted.
 
 ## Context
 
-Content comes from Contentful (ADR 0002), whose entry shape — `sys`, `fields`, `Entry<Skeleton>` — is not the shape the site reasons about. Left unchecked it spreads: reading time, table of contents and favourite-first ordering end up computed inside mappers, next to `entry.fields.body`, and the editorial rules become impossible to read or test without a CMS payload.
+Content comes from Contentful ([ADR 0002](./0002-contentful-headless-cms.md)), whose entry shape — `sys`, `fields`, `Entry<Skeleton>` — is not the shape the site reasons about. Left unchecked it spreads: reading time, table of contents and favourite-first ordering end up computed inside mappers, next to `entry.fields.body`, and the editorial rules become impossible to read or test without a CMS payload.
 
 The opposite failure is as real. A textbook domain layer — aggregates, repositories, framework-free types — duplicates every schema Astro already types through `CollectionEntry`, and churns twice on every content change.
 

@@ -16,6 +16,6 @@ Analytics load with consent denied by default. An inline script in `<head>` read
 
 ## Consequences
 
-- The ordering is load-bearing: the consent default has to be set before GA/GTM initialise, so this script stays inline and stays first (ADR 0005 puts the theme bootstrap in the same position for the same reason).
+- The ordering is load-bearing: the consent default has to be set before GA/GTM initialise, so this script stays inline and stays first ([ADR 0005](./0005-theme-token-families-and-inline-bootstrap.md) puts the theme bootstrap in the same position for the same reason).
 - Analytics under-report by design; visitors who never accept are invisible.
-- The banner itself is one of the few React islands the project allows (ADR 0009); the consent default it depends on is plain inline script, and has to stay that way to run early enough.
+- The banner itself is one of the few React islands the project allows ([ADR 0009](./0009-css-first-javascript-only-when-necessary.md)); the consent default it depends on is plain inline script, and has to stay that way to run early enough.

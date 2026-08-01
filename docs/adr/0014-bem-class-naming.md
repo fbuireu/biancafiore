@@ -36,4 +36,4 @@ The rename exposed dead code that the old naming had hidden: a theme-toggle bran
 
 There is no `page--tag`. `getPage` resolves `/tags/<slug>` to `tags` because `PAGES_ROUTES.TAGS` is declared before `TAG` and the lookup uses `includes`, so tag detail pages share the `tags-page` container. Left as-is: reordering the routes would change which rules apply to those pages.
 
-The refactor predates the repo's first tests (ADR 0015), so it was verified by building `HEAD` and the refactored tree and diffing the classes in the emitted HTML against the selectors in the emitted CSS, requiring every orphan on either side to be accounted for.
+The refactor predates the repo's first tests ([ADR 0015](./0015-docs-consistency-enforced-by-a-test.md)), so it was verified by building `HEAD` and the refactored tree and diffing the classes in the emitted HTML against the selectors in the emitted CSS, requiring every orphan on either side to be accounted for.

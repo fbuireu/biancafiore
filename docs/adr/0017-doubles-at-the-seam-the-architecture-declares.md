@@ -12,7 +12,7 @@ Nothing outside the process may be reached from a test: Contentful, Turso, Resen
 
 This codebase reaches the outside world in two different shapes, and they are not alike.
 
-Most of it goes through a vendor SDK wrapped in an Effect layer — `CmsClient`, `Database`, `EmailClient`. ADR 0004 chose that shape precisely so the dependency is injected rather than imported, which means a test can hand the program a different layer and nothing else has to know.
+Most of it goes through a vendor SDK wrapped in an Effect layer — `CmsClient`, `Database`, `EmailClient`. [ADR 0004](./0004-effect-for-infrastructure-clients.md) chose that shape precisely so the dependency is injected rather than imported, which means a test can hand the program a different layer and nothing else has to know.
 
 Two call sites do not. `verifyRecaptcha` posts to Google's siteverify endpoint and `getImagePlaceholder` fetches an image derivative, both with a bare `fetch`. There is no seam there at all: the URL, the method and the body are assembled inline.
 

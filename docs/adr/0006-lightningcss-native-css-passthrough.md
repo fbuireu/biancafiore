@@ -8,7 +8,7 @@ Accepted.
 
 ## Context
 
-LightningCSS downlevels `light-dark()` into an inherited-variable polyfill. That polyfill breaks nested `color-scheme` inversion in production while dev looks fine, which is the worst shape a bug can have: invisible until deployed. The theming layer depends on native `light-dark()` reaching the browser untouched (ADR 0005).
+LightningCSS downlevels `light-dark()` into an inherited-variable polyfill. That polyfill breaks nested `color-scheme` inversion in production while dev looks fine, which is the worst shape a bug can have: invisible until deployed. The theming layer depends on native `light-dark()` reaching the browser untouched ([ADR 0005](./0005-theme-token-families-and-inline-bootstrap.md)).
 
 Separately, LightningCSS 1.33 rejects the valid `::search-text:current` selector, which fails the build outright.
 

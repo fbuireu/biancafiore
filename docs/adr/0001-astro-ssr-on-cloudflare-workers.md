@@ -18,4 +18,4 @@ Astro runs with `output: "server"` on the `@astrojs/cloudflare` adapter and ship
 
 - No Node built-ins at runtime: the DB uses `@libsql/client/web` + `drizzle-orm/libsql/web`, and `node:async_hooks` / `contentful` are externalized in `vite.ssr.external`.
 - Deploy, secrets, and env are Wrangler/Cloudflare-shaped; moving hosts means re-solving image handling and the runtime, so this is expensive to reverse.
-- Rendering is edge-shaped but not per-request by default: content pages opt back into prerendering (ADR 0011).
+- Rendering is edge-shaped but not per-request by default: content pages opt back into prerendering ([ADR 0011](./0011-hybrid-rendering-prerender-content-ssr-dynamic.md)).

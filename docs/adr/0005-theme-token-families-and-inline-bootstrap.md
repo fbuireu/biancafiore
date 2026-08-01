@@ -20,6 +20,6 @@ A render-blocking `is:inline` script in `<head>` sets `data-theme` and `color-sc
 
 ## Consequences
 
-- The bootstrap script is render-blocking on purpose. It is small, and it is the only way to avoid the flash on a page the server rendered without knowing the theme (ADR 0011).
-- Native `light-dark()` has to survive the build untouched, which is what forces the LightningCSS exclusion (ADR 0006).
+- The bootstrap script is render-blocking on purpose. It is small, and it is the only way to avoid the flash on a page the server rendered without knowing the theme ([ADR 0011](./0011-hybrid-rendering-prerender-content-ssr-dynamic.md)).
+- Native `light-dark()` has to survive the build untouched, which is what forces the LightningCSS exclusion ([ADR 0006](./0006-lightningcss-native-css-passthrough.md)).
 - A new colour token has to go into whichever family matches its behaviour; putting it in the wrong one produces a token that looks correct until a section inverts.
