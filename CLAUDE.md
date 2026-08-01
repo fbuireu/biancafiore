@@ -23,7 +23,7 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 ## Commands
 
 ```bash
-pnpm dev              # astro dev --open
+pnpm start:open       # astro dev --open
 pnpm start            # astro dev, no browser — what Playwright's webServer boots
 pnpm build            # astro build
 pnpm preview          # astro preview

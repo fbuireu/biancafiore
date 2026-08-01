@@ -24,7 +24,8 @@
 	},
 	"scripts": {
 		"prepare": "husky",
-		"dev": "astro dev --open",
+		"start:open": "astro dev --open",
+		"start": "astro dev",
 		"build": "astro build",
 		"deploy": "wrangler deploy --env production",
 		"db:generate": "drizzle-kit generate",
@@ -36,7 +37,6 @@
 		"sync": "astro sync",
 		"check": "astro check",
 		"test:all": "pnpm test:ut && pnpm test:e2e",
-		"start": "astro dev",
 		"test:ut": "vitest --logHeapUsage",
 		"test:ut:changed": "vitest related --run --passWithNoTests --bail=1",
 		"test:docs": "vitest run docs/docs-consistency.test.ts",
