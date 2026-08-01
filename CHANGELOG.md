@@ -1,3 +1,10 @@
+## [1.19.5](https://github.com/fbuireu/biancafiore/compare/v1.19.4...v1.19.5) (2026-08-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency resend to v6.18.1 ([#1150](https://github.com/fbuireu/biancafiore/issues/1150)) ([03dda90](https://github.com/fbuireu/biancafiore/commit/03dda90f71a1d6ba8247760c968355a19d77faf7))
+
 ## [1.19.3](https://github.com/fbuireu/biancafiore/compare/v1.19.2...v1.19.3) (2026-08-01)
 
 
