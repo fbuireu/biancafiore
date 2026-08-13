@@ -1,3 +1,10 @@
+# [1.20.0](https://github.com/fbuireu/biancafiore/compare/v1.19.7...v1.20.0) (2026-08-13)
+
+
+### Features
+
+* add text-scale meta tag ([f3ee467](https://github.com/fbuireu/biancafiore/commit/f3ee4676203394e8ebe810205a5780034a136d61))
+
 ## [1.19.7](https://github.com/fbuireu/biancafiore/compare/v1.19.6...v1.19.7) (2026-08-01)
 
 
