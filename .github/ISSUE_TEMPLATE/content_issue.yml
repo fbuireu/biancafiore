@@ -1,0 +1,34 @@
+name: Content Issue
+description: Report a typo, broken link, or mistake in an article or page content
+title: '[Content]: '
+labels: ['content', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Content on this site (articles, projects, testimonials) lives in a CMS, not in this repository — it cannot be fixed by a pull request. Report it here and it will be corrected in the CMS.
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      description: Where is the content?
+      placeholder: https://biancafiore.me/articles/...
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: What it says now
+      description: Quote the text with the problem
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: What it should say
+      description: Your suggested correction, if you have one
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Anything else that helps locate or understand the issue
