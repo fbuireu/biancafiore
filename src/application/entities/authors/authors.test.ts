@@ -1,14 +1,8 @@
 import type { RawArticle } from "@application/dto/article/types";
 import type { RawAuthor } from "@application/dto/author/types";
 import { authors } from "@application/entities/authors/authors";
+import { cmsAnswers, cmsHoldsUntilQueries, cmsQueries, cmsQueriesOverlapped, resetCms } from "@tests/doubles/cmsLayer";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import {
-	cmsAnswers,
-	cmsHoldsUntilQueries,
-	cmsQueries,
-	cmsQueriesOverlapped,
-	resetCms,
-} from "@tests/doubles/cmsLayer";
 
 vi.mock("astro:content", async () => {
 	const { z } = await import("astro/zod");

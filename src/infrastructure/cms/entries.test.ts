@@ -1,7 +1,5 @@
 import { fetchEntries } from "@infrastructure/cms/entries";
 import { CmsError } from "@infrastructure/errors";
-import type { EntrySkeletonType } from "contentful";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	cmsAnswers,
 	cmsFailsWith,
@@ -11,6 +9,8 @@ import {
 	cmsServesPagesOf,
 	resetCms,
 } from "@tests/doubles/cmsLayer";
+import type { EntrySkeletonType } from "contentful";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@infrastructure/cms/client", async () => {
 	const actual = await vi.importActual<typeof import("@infrastructure/cms/client")>("@infrastructure/cms/client");

@@ -1,8 +1,8 @@
 import { validateContact, verifyRecaptcha } from "@infrastructure/utils/guards";
-import { Cause, Effect, Exit, Option } from "effect";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
 import { recaptchaDouble, SITEVERIFY_URL } from "@tests/doubles/network";
+import { Cause, Effect, Exit, Option } from "effect";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 const RECAPTCHA_ERROR_MESSAGE = "Mr. Robot, is that you? Please refresh the page and try again.";
 

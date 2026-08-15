@@ -1,12 +1,12 @@
 import type { ContactError } from "@actions/contact";
 import { submitContact } from "@actions/contact";
 import { LibsqlError } from "@libsql/client/web";
-import { DrizzleQueryError } from "drizzle-orm/errors";
-import { Cause, Effect, Exit, Layer, Logger, Option } from "effect";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
 import { contactRow, databaseDouble, databaseError, emailDouble, emailError } from "@tests/doubles/contactLayers";
 import { type RecaptchaDoubleOptions, recaptchaDouble } from "@tests/doubles/network";
+import { DrizzleQueryError } from "drizzle-orm/errors";
+import { Cause, Effect, Exit, Layer, Logger, Option } from "effect";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const VALID_INPUT = {
 	name: "Ada",

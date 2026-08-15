@@ -1,9 +1,9 @@
 import type { RawArticle } from "@application/dto/article/types";
 import { articles } from "@application/entities/articles/articles";
 import { CmsError } from "@infrastructure/errors";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cmsAnswers, cmsFailsWith, cmsQueries, resetCms } from "@tests/doubles/cmsLayer";
 import { imageDouble } from "@tests/doubles/network";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("astro:content", async () => {
 	const { z } = await import("astro/zod");
