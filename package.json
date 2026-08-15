@@ -18,7 +18,7 @@
 	"author": "Ferran Buireu <fbuireu@gmail.com>",
 	"version": "1.20.3",
 	"type": "module",
-	"packageManager": "pnpm@11.17.0",
+	"packageManager": "pnpm@11.21.0",
 	"engines": {
 		"node": "26.5.1"
 	},
@@ -53,19 +53,19 @@
 		"lint:ts:typecheck": "tsc --project . --noEmit"
 	},
 	"dependencies": {
-		"@astrojs/cloudflare": "14.1.6",
-		"@astrojs/compiler-rs": "0.3.1",
+		"@astrojs/cloudflare": "14.2.1",
+		"@astrojs/compiler-rs": "0.4.0",
 		"@astrojs/react": "6.0.2",
 		"@astrojs/rss": "4.0.19",
 		"@astrojs/sitemap": "3.7.3",
 		"@contentful/rich-text-html-renderer": "17.2.3",
 		"@contentful/rich-text-types": "17.2.7",
-		"@hookform/resolvers": "5.5.7",
+		"@hookform/resolvers": "5.7.1",
 		"@libsql/client": "0.17.4",
 		"@react-email/components": "1.0.12",
 		"@react-email/render": "2.1.0",
 		"@tgwf/co2": "0.19.0",
-		"astro": "7.1.5",
+		"astro": "7.2.1",
 		"clsx": "2.1.1",
 		"contentful": "11.12.9",
 		"drizzle-orm": "0.45.2",
@@ -75,8 +75,8 @@
 		"react-dom": "19.2.8",
 		"react-globe.gl": "2.38.0",
 		"react-google-recaptcha-v3": "1.11.0",
-		"react-hook-form": "7.82.0",
-		"resend": "6.18.1",
+		"react-hook-form": "7.85.0",
+		"resend": "6.19.0",
 		"three": "0.185.1",
 		"vanilla-cookieconsent": "3.1.0"
 	},
@@ -92,7 +92,7 @@
 		"@semantic-release/git": "11.0.1",
 		"@semantic-release/npm": "13.1.5",
 		"@testing-library/react": "16.3.2",
-		"@types/node": "26.1.2",
+		"@types/node": "26.2.0",
 		"@types/react": "19.2.18",
 		"@types/react-dom": "19.2.4",
 		"@types/three": "0.185.4",
@@ -106,6 +106,6 @@
 		"semantic-release": "25.0.9",
 		"typescript": "6.0.3",
 		"vitest": "4.1.10",
-		"wrangler": "4.120.1"
+		"wrangler": "4.122.0"
 	}
 }
