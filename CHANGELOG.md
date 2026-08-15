@@ -1,3 +1,10 @@
+## [1.20.1](https://github.com/fbuireu/biancafiore/compare/v1.20.0...v1.20.1) (2026-08-15)
+
+
+### Bug Fixes
+
+* **images:** bound the placeholder fan-out instead of losing blur-ups in silence ([d4c2a3d](https://github.com/fbuireu/biancafiore/commit/d4c2a3d4eea3182f9ab571b0e9fccd4f42fa3a58))
+
 # [1.20.0](https://github.com/fbuireu/biancafiore/compare/v1.19.7...v1.20.0) (2026-08-13)
 
 
