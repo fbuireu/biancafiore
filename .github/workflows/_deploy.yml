@@ -77,10 +77,14 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/prepare-env
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
       - name: Build
-        run: pnpm build
+        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          retry_wait_seconds: 15
+          shell: bash
+          command: pnpm build
       - name: Deploy to Cloudflare Workers
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         env:
@@ -101,15 +105,17 @@ jobs:
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         env:
           INPUTS_WORKER_NAME: ${{ inputs.worker_name }}
+          INPUTS_WRANGLER_ENV: ${{ inputs.wrangler_env }}
         with:
           timeout_minutes: 2
           max_attempts: 3
           retry_wait_seconds: 15
           shell: bash
           command: |
-            TARGET_FLAG=""
             if [ -n "${INPUTS_WORKER_NAME}" ]; then
               TARGET_FLAG="--name ${INPUTS_WORKER_NAME}"
+            else
+              TARGET_FLAG="--env ${INPUTS_WRANGLER_ENV}"
             fi
             node -e "
             const required = ['RESEND_API_KEY','CONTENTFUL_SPACE_ID','CONTENTFUL_DELIVERY_TOKEN','CONTENTFUL_PREVIEW_TOKEN','CONTENTFUL_SIGNIN_TOKEN','ASTRO_DB_REMOTE_URL','ASTRO_DB_APP_TOKEN'];

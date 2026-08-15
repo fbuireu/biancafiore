@@ -21,8 +21,6 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/prepare-env
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
       - name: Delete preview Worker
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         env:
