@@ -46,6 +46,8 @@ pnpm db:push          # push schema to Turso
 pnpm db:studio        # drizzle studio
 ```
 
+`--pass-with-no-tests` belongs to `test:e2e:changed`, not to `test:e2e`. That variant is `--only-changed`, which matches nothing whenever a PR touches no spec — the common case, and what `end-2-end-tests.yml` runs on every event bar `workflow_dispatch`, so without the flag it would fail on almost every PR. On `test:e2e` the same flag would only hide a broken `testDir` or an emptied `e2e/`, which is why it is not there.
+
 Env: copy `.env.example`. Local secrets go in `.dev.vars` (loaded by `drizzle.config.ts` and wrangler). Env schema is declared/validated in `astro.config.ts` (`env.schema`) — add new vars there.
 
 ## Structure & aliases
