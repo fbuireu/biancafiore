@@ -62,24 +62,58 @@ export function recaptchaDouble({
 	return { calls };
 }
 
+export interface ImagesDoubleOptions {
+	urls: string[];
+	bytes?: ArrayBuffer;
+}
+
+export interface ImagesDouble {
+	calls: string[];
+	maxInFlight: number;
+}
+
+export function imagesDouble({ urls, bytes }: ImagesDoubleOptions): ImagesDouble {
+	const double: ImagesDouble = { calls: [], maxInFlight: 0 };
+	let inFlight = 0;
+
+	server.use(
+		...urls.map((url) =>
+			http.get(url, async ({ request }) => {
+				double.calls.push(request.url);
+				inFlight += 1;
+				double.maxInFlight = Math.max(double.maxInFlight, inFlight);
+
+				await new Promise((resolve) => setTimeout(resolve, 5));
+				inFlight -= 1;
+
+				return HttpResponse.arrayBuffer(bytes ?? new ArrayBuffer(8), { headers: { "content-type": "image/webp" } });
+			}),
+		),
+	);
+
+	return double;
+}
+
 export interface ImageDoubleOptions {
 	url: string;
 	bytes?: ArrayBuffer;
 	status?: number;
 	unreachable?: boolean;
+	failFirst?: number;
 }
 
 export interface ImageDouble {
 	calls: string[];
 }
 
-export function imageDouble({ url, bytes, status = 200, unreachable }: ImageDoubleOptions): ImageDouble {
+export function imageDouble({ url, bytes, status = 200, unreachable, failFirst = 0 }: ImageDoubleOptions): ImageDouble {
 	const calls: string[] = [];
 
 	server.use(
 		http.get(url, ({ request }) => {
 			calls.push(request.url);
 
+			if (calls.length <= failFirst) return HttpResponse.error();
 			if (unreachable) return HttpResponse.error();
 			if (status !== 200) return new HttpResponse(null, { status });
 

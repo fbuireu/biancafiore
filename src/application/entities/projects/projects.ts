@@ -3,7 +3,7 @@ import { projectDTO } from "@application/dto/project";
 import type { ProjectSkeleton } from "@application/dto/project/types";
 import { projectsSchema } from "@domain/project";
 import { fetchEntries } from "@infrastructure/cms/entries";
-import { getImagePlaceholder } from "@infrastructure/images/imagePlaceholder";
+import { getImagePlaceholders } from "@infrastructure/images/imagePlaceholder";
 
 export const projects = defineCollection({
 	loader: async () => {
@@ -11,12 +11,12 @@ export const projects = defineCollection({
 
 		const projects = projectDTO.create(rawProjects);
 
-		return Promise.all(
-			projects.map(async (project) => ({
-				...project,
-				image: { ...project.image, placeholder: await getImagePlaceholder({ source: project.image.url }) },
-			})),
-		);
+		const placeholders = await getImagePlaceholders(projects.map(({ image }) => image.url));
+
+		return projects.map((project) => ({
+			...project,
+			image: { ...project.image, placeholder: placeholders.get(project.image.url) },
+		}));
 	},
 	schema: projectsSchema,
 });

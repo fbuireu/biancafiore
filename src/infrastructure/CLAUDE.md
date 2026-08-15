@@ -52,7 +52,7 @@ The steps the contact action composes, so `src/actions` stays pure orchestration
 
 ## Other subfolders
 
-- `images/` — `imageOptimization`, `imagePlaceholder` (blur data URLs generated during loading)
+- `images/` — `imageOptimization`, `imagePlaceholder` (blur data URLs generated during loading). `getImagePlaceholders` takes every source at once and answers a `Map`, because **the burst is the module's decision, not the caller's**: it caps requests in flight, retries one that failed in transit, and logs how many placeholders were lost through Effect's `Logger`. Its predecessor read one source and left the fan-out to four loaders, all of which spread the whole collection over a single `Promise.all` — 62 simultaneous requests to `images.ctfassets.net` for Articles, of which the CDN dropped a sixth, and the bare `catch` reported none of it. The images shipped unblurred and the build said it succeeded. A source the module truly cannot read is simply absent from the `Map`
 - `integrations/` — build-time Astro integrations (`generateStaticHeaders`)
 - `db/schema.ts` — Drizzle tables; migrations live in `/drizzle`. Workers-safe imports only: `@libsql/client/web` + `drizzle-orm/libsql/web`.
 - `db/constraints.ts` — `isUniqueConstraintViolation`, the one place that knows a `LibsqlError` code. It is a plain predicate rather than a layer method so it can be unit-tested against real driver errors, which `DatabaseLive` cannot be: building that layer needs credentials and every query it issues would leave the process.

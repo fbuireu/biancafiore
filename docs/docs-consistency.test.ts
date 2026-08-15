@@ -174,6 +174,9 @@ const CITED_CONTAINER_QUERY = /@container ([a-z-]+) \(width <= \d+px\)/;
 const EMAIL_BUTTON_MODULE = "src/ui/modules/core/components/emailButton/utils/interactions.ts";
 const EMAIL_BUTTON_STYLESHEET = "src/ui/modules/core/components/emailButton/email-button.css";
 const EMAIL_BUTTON_HOOK_DECLARATION = /export const EMAIL_BUTTON_CLASS = "([\w-]+)";/;
+const PLACEHOLDER_MODULE = "src/infrastructure/images/imagePlaceholder/imagePlaceholder.ts";
+const PER_ENTRY_PLACEHOLDER_AWAIT = /placeholder:\s*await/;
+const BOUNDED_PLACEHOLDER_READ = /const PLACEHOLDER_CONCURRENCY = \d+;/;
 const BUNDLED_SCRIPT = /^\s*<script>/m;
 const PAGE_LOAD_LISTENER = /addEventListener\(\s*["']astro:page-load["']/;
 const THEME_MODULE = "src/ui/modules/core/components/themeToggle/utils/theme.ts";
@@ -869,6 +872,14 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(guide).toContain("DTOs are pure on purpose");
 		expect(dtoFiles.length).toBeGreaterThan(0);
 		expect(dtoFiles.filter((file) => IMPURE_DTO_CODE.test(read(file)))).toEqual([]);
+	});
+
+	it("leaves the placeholder fan-out to the module that owns it, never to a loader", () => {
+		expect(guide).toContain("never awaits one entry at a time");
+
+		expect(loaders.length).toBeGreaterThan(0);
+		expect(loaders.filter((file) => PER_ENTRY_PLACEHOLDER_AWAIT.test(read(file)))).toEqual([]);
+		expect(read(PLACEHOLDER_MODULE)).toMatch(BOUNDED_PLACEHOLDER_READ);
 	});
 
 	it("applies every optional-field default it cites, so the domain DTO stays total", () => {
