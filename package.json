@@ -98,7 +98,7 @@
 		"@types/three": "0.185.4",
 		"@vitest/coverage-v8": "4.1.10",
 		"drizzle-kit": "0.31.10",
-		"happy-dom": "20.11.1",
+		"happy-dom": "20.11.2",
 		"husky": "9.1.7",
 		"lightningcss": "1.33.0",
 		"lint-staged": "17.2.0",
