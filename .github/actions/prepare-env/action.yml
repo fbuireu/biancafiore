@@ -1,9 +1,9 @@
-name: 'Prepare Environment'
-description: 'Sets up Node.js and pnpm environment, then installs dependencies'
+name: Prepare environment
+description: Sets up pnpm, Node.js and dependencies
 runs:
   using: "composite"
   steps:
-    - name: Validate .nvmrc exists
+    - name: Verify .nvmrc is present
       shell: bash
       run: |
         if [ ! -f .nvmrc ]; then
@@ -11,7 +11,7 @@ runs:
           exit 1
         fi
 
-    - name: Install pnpm
+    - name: Setup pnpm
       uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
 
     - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
