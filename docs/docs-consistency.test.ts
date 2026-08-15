@@ -250,7 +250,10 @@ const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("CLAUDE.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
 const DOCS = ["CLAUDE.md", "CONTEXT.md", ...NESTED_GUIDES, ...ADR_FILES];
 
-const production = (files: string[]) => files.filter((file) => !CO_LOCATED_TEST_FILE.test(file));
+const TEST_INFRASTRUCTURE = "src/tests/";
+
+const production = (files: string[]) =>
+	files.filter((file) => !CO_LOCATED_TEST_FILE.test(file) && !file.startsWith(TEST_INFRASTRUCTURE));
 
 const SOURCE_FILES = production(walk("src").filter((file) => SOURCE_FILE.test(file)));
 
