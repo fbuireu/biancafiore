@@ -1,22 +1,17 @@
 import type { RawArticle } from "@application/dto/article/types";
-import type { RawAuthor } from "@application/dto/author/types";
+import { articleReference } from "@application/dto/article/utils/reference";
 import type { Reference } from "@domain/shared/reference";
 
 interface GetArticlesByAuthorParams {
-	rawAuthor: RawAuthor;
+	authorSlug: string;
 	rawArticles: RawArticle[];
 }
 
 const publishedAt = (article: RawArticle): number => new Date(article.fields.publishDate).getTime();
 
-export function getArticlesByAuthor({ rawAuthor, rawArticles }: GetArticlesByAuthorParams): Reference<"articles">[] {
-	const authorSlug = rawAuthor.fields.slug.trim();
-
+export function getArticlesByAuthor({ authorSlug, rawArticles }: GetArticlesByAuthorParams): Reference<"articles">[] {
 	return rawArticles
 		.filter((article) => "fields" in article.fields.author && article.fields.author.fields.slug.trim() === authorSlug)
 		.toSorted((first, second) => publishedAt(second) - publishedAt(first))
-		.map((article) => ({
-			id: article.fields.slug,
-			collection: "articles",
-		}));
+		.map((article) => articleReference(article));
 }

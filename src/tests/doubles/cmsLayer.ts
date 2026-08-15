@@ -8,14 +8,17 @@ export interface RecordedQuery {
 	content_type?: string;
 	order?: string[];
 	select?: string[];
+	skip?: number;
 	limit?: number;
 }
 
 const OVERLAP_DEADLINE = 1000;
+const UNLIMITED_PAGE = Number.POSITIVE_INFINITY;
 
 export const cmsQueries: RecordedQuery[] = [];
 
 let entriesByType: Record<string, unknown[]> = {};
+let pageSize = UNLIMITED_PAGE;
 let failure: CmsError | undefined;
 let held = 0;
 let overlapped = false;
@@ -25,6 +28,10 @@ let deadline: ReturnType<typeof setTimeout> | undefined;
 
 export function cmsAnswers(entries: Record<string, unknown[]>): void {
 	entriesByType = entries;
+}
+
+export function cmsServesPagesOf(size: number): void {
+	pageSize = size;
 }
 
 export function cmsFailsWith(error: CmsError): void {
@@ -56,6 +63,7 @@ export function resetCms(): void {
 	clearTimeout(deadline);
 	cmsQueries.length = 0;
 	entriesByType = {};
+	pageSize = UNLIMITED_PAGE;
 	failure = undefined;
 	held = 0;
 	overlapped = false;
@@ -71,9 +79,12 @@ export function cmsClientLayer(tag: CmsTag): Layer.Layer<CmsClient> {
 
 				if (held > 0 && cmsQueries.length >= held) open?.();
 
+				const matching = entriesByType[query.content_type ?? ""] ?? [];
+				const skip = query.skip ?? 0;
+				const limit = Math.min(query.limit ?? matching.length, pageSize);
 				const answer = failure
 					? Effect.fail(failure)
-					: Effect.succeed({ items: entriesByType[query.content_type ?? ""] ?? [] });
+					: Effect.succeed({ items: matching.slice(skip, skip + limit), total: matching.length, skip, limit });
 
 				return held > 0 ? Effect.promise(() => opened).pipe(Effect.andThen(answer)) : answer;
 			}),

@@ -1,19 +1,17 @@
-import type { CollectionEntry } from "astro:content";
 import { StretchArrow } from "@assets/images/svg-components/stretchArrow";
 import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn";
 import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
 import countries from "@data/countries.geojson.json";
 import { TabVisibility, useTabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
-import { calculateCenter, refineCities, renderPin } from "@modules/about/utils/globe";
+import { type CityPoint, calculateCenter, renderPin } from "@modules/about/utils/globe";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
 import { WORLD_GLOBE_CONFIG } from "./const";
-import type { ReactGlobePoint } from "./WorldGlobe";
 
 interface WorldGlobeCanvasProps {
-	cities: CollectionEntry<"cities">[];
+	points: CityPoint[];
 	width?: number;
 }
 
@@ -37,9 +35,8 @@ interface HandleActionParams {
 	type: (typeof MovementType)[keyof typeof MovementType];
 }
 
-const worldGlobeHeight = 458;
-
 const {
+	HEIGHT,
 	MESH_PHONG_MATERIAL_CONFIG,
 	HEXAGON_POLYGON_COLOR,
 	BACKGROUND_COLOR,
@@ -51,7 +48,7 @@ const {
 	ZOOM_OFFSET,
 } = WORLD_GLOBE_CONFIG;
 
-const WorldGlobeCanvas = ({ cities, width }: WorldGlobeCanvasProps) => {
+const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 	const tabVisibility = useTabVisibility();
 	const worldGlobeReference = useRef<GlobeMethods | undefined>(undefined);
 
@@ -65,14 +62,12 @@ const WorldGlobeCanvas = ({ cities, width }: WorldGlobeCanvasProps) => {
 		[],
 	);
 
-	const points = useMemo(() => refineCities(cities), [cities]);
-
 	const onGlobeReady = () => {
-		if (!worldGlobeReference.current || !cities) {
+		if (!worldGlobeReference.current) {
 			return;
 		}
 
-		const { latitude, longitude } = calculateCenter(cities);
+		const { latitude, longitude } = calculateCenter(points);
 		worldGlobeReference.current.controls().autoRotate = true;
 		worldGlobeReference.current.controls().enableZoom = false;
 		worldGlobeReference.current.controls().autoRotateSpeed = 0.25;
@@ -110,7 +105,7 @@ const WorldGlobeCanvas = ({ cities, width }: WorldGlobeCanvasProps) => {
 		<>
 			<Globe
 				ref={worldGlobeReference}
-				height={worldGlobeHeight}
+				height={HEIGHT}
 				width={width}
 				onGlobeReady={onGlobeReady}
 				pointsMerge={POINTS_MERGE}
@@ -125,7 +120,7 @@ const WorldGlobeCanvas = ({ cities, width }: WorldGlobeCanvasProps) => {
 				pointRadius="radius"
 				pointColor="color"
 				htmlElementsData={points}
-				htmlElement={(data) => renderPin({ markerData: data as ReactGlobePoint })}
+				htmlElement={(data) => renderPin({ markerData: data as CityPoint })}
 			/>
 			<div className="world-globe__controls flex row-wrap justify-center">
 				<div className="world-globe__direction-wrapper flex row-wrap">

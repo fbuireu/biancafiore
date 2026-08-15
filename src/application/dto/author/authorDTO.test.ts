@@ -78,7 +78,7 @@ describe("authorDTO field mapping", () => {
 			jobTitle: "Content writer",
 			currentCompany: "Freelance",
 			profileImage: {
-				url: "//cdn/bianca.avif",
+				url: "https://cdn/bianca.avif",
 				details: { width: 512, height: 512 },
 				formats: { avif: true, webp: false },
 			},
@@ -162,6 +162,19 @@ describe("authorDTO article attribution", () => {
 		]);
 
 		expect(author.articles).toEqual([{ id: "hers", collection: "articles" }]);
+	});
+
+	it("emits the trimmed slug it matched on, so the author tag it becomes addresses the page a byline links to", () => {
+		const [author] = authorDTO.create([[makeAuthor({ slug: " bianca-fiore " })], []]);
+
+		expect(author.slug).toBe("bianca-fiore");
+	});
+
+	it("references an article by its trimmed slug, because that is the id the articles collection stores", () => {
+		const [author] = authorDTO.create([[makeAuthor()], [makeArticle({ slug: " hers " })]]);
+
+		expect(author.articles).toEqual([{ id: "hers", collection: "articles" }]);
+		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
 	});
 
 	it("lists an author's articles newest first, whatever order the batch arrived in", () => {

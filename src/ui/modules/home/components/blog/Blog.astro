@@ -1,8 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import { SITE_URL } from "astro:env/client";
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
-import { PAGES_ROUTES } from "@const/index";
+import { absoluteUrl, articleHref, PAGES_ROUTES } from "@const/index";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import { buildItemListSchema } from "@modules/core/utils/jsonLd";
 import "./blog.css";
@@ -16,9 +15,7 @@ const MAX_ARTICLES = 3;
 const { limit = MAX_ARTICLES } = Astro.props;
 
 const articles = (await getCollection("articles")).slice(0, limit);
-const itemListSchema = buildItemListSchema(
-	articles.map(({ data: { slug } }) => new URL(`${PAGES_ROUTES.ARTICLE}${slug}`, SITE_URL).href),
-);
+const itemListSchema = buildItemListSchema(articles.map(({ data: { slug } }) => absoluteUrl(articleHref(slug))));
 ---
 <section class="blog inverted-color-scheme">
     <div class="blog__inner">

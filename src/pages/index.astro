@@ -1,8 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import { SITE_URL } from "astro:env/client";
-import { CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
+import { absoluteUrl, CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import { buildWebSiteSchema } from "@modules/core/utils/jsonLd";
@@ -37,17 +36,17 @@ const bianca = authors.find((a) => a.data.name === CONTACT_DETAILS.NAME) as Coll
 
 const metadata: Partial<SeoMetadata> = {
 	description: bianca.data.description,
-	image: `https:${bianca.data.profileImage.url}`,
+	image: bianca.data.profileImage.url,
 };
 
 const webSiteSchema = buildWebSiteSchema({
-	url: SITE_URL,
+	url: absoluteUrl(PAGES_ROUTES.HOME),
 	name: "Bianca Fiore",
 	description: bianca.data.description,
 	author: {
 		name: bianca.data.name,
 		jobTitle: bianca.data.jobTitle,
-		url: new URL(PAGES_ROUTES.ABOUT, SITE_URL).href,
+		url: absoluteUrl(PAGES_ROUTES.ABOUT),
 	},
 });
 ---

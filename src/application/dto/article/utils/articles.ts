@@ -1,42 +1,47 @@
 import type { RawArticle } from "@application/dto/article/types";
+import { articleReference, articleSlug } from "@application/dto/article/utils/reference";
 import type { Reference } from "@domain/shared/reference";
-import type { Entry, EntrySkeletonType, UnresolvedLink } from "contentful";
 
-function isResolvedEntry(entry: Entry<EntrySkeletonType> | UnresolvedLink<"Entry">): entry is Entry<EntrySkeletonType> {
-	return "fields" in entry;
-}
+export const INFERRED_RELATED_ARTICLES_LIMIT = 6;
 
-export function createRelatedArticles(
-	relatedArticles: Array<Entry<EntrySkeletonType> | UnresolvedLink<"Entry">> | undefined,
-): Reference<"articles">[] {
-	return (relatedArticles ?? []).filter(isResolvedEntry).map((relatedArticle) => ({
-		id: String(relatedArticle.fields.slug),
-		collection: "articles",
-	}));
-}
+type AuthoredRelatedArticle = NonNullable<RawArticle["fields"]["relatedArticles"]>[number];
+type ResolvedRelatedArticle = Extract<AuthoredRelatedArticle, { fields: unknown }>;
 
-interface GetRelatedArticlesParams {
+interface CreateRelatedArticlesParams {
 	rawArticle: RawArticle;
 	allRawArticles: RawArticle[];
+}
+
+function isResolvedEntry(entry: AuthoredRelatedArticle): entry is ResolvedRelatedArticle {
+	return "fields" in entry;
 }
 
 function getTagSlugs(article: RawArticle): string[] {
 	return (article.fields.tags ?? []).flatMap((tag) => ("fields" in tag ? [tag.fields.slug] : []));
 }
 
-export function getRelatedArticles({ rawArticle, allRawArticles }: GetRelatedArticlesParams): Reference<"articles">[] {
+export function createRelatedArticles({
+	rawArticle,
+	allRawArticles,
+}: CreateRelatedArticlesParams): Reference<"articles">[] {
+	const ownSlug = articleSlug(rawArticle);
+	const authored = rawArticle.fields.relatedArticles;
+
+	if (authored) {
+		return authored
+			.filter(isResolvedEntry)
+			.map((relatedArticle) => articleReference(relatedArticle))
+			.filter(({ id }) => id !== ownSlug);
+	}
+
 	const articleTags = new Set(getTagSlugs(rawArticle));
 
 	return allRawArticles
 		.filter((article) => {
-			if (article.fields.title === rawArticle.fields.title) return false;
+			if (articleSlug(article) === ownSlug) return false;
 
-			const allTags = getTagSlugs(article);
-			return allTags.some((slug) => articleTags.has(slug));
+			return getTagSlugs(article).some((slug) => articleTags.has(slug));
 		})
-		.slice(0, 6)
-		.map((relatedArticle) => ({
-			id: relatedArticle.fields.slug,
-			collection: "articles",
-		}));
+		.slice(0, INFERRED_RELATED_ARTICLES_LIMIT)
+		.map((relatedArticle) => articleReference(relatedArticle));
 }

@@ -1,4 +1,4 @@
-import type { tagSchema } from "@domain/tag/schema";
+import type { tagIndexEntrySchema, tagSchema } from "@domain/tag/schema";
 import type { z } from "astro/zod";
 
 export const TagType = {
@@ -6,11 +6,6 @@ export const TagType = {
 	AUTHOR: "author",
 } as const;
 
-export interface BaseTagDTO {
-	name: string;
-	slug: string;
-}
+export type TagDTO = z.infer<typeof tagSchema>;
 
-export type TagDTO = {
-	[key: string]: z.infer<typeof tagSchema>[];
-};
+export type TagIndexEntryDTO = z.infer<typeof tagIndexEntrySchema>;

@@ -2,21 +2,12 @@ import { defineCollection } from "astro:content";
 import { testimonialDTO } from "@application/dto/testimonial";
 import type { TestimonialSkeleton } from "@application/dto/testimonial/types";
 import { testimonialsSchema } from "@domain/testimonial";
-import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
+import { fetchEntries } from "@infrastructure/cms/entries";
 import { getImagePlaceholder } from "@infrastructure/images/imagePlaceholder";
-import { runCms } from "@infrastructure/runtime";
-import { Effect } from "effect";
 
 export const testimonials = defineCollection({
 	loader: async () => {
-		if (!isContentfulConfigured()) return [];
-
-		const { items: rawTestimonials } = await runCms(
-			Effect.gen(function* () {
-				const cms = yield* CmsClient;
-				return yield* cms.getEntries<TestimonialSkeleton>({ content_type: "testimonial" });
-			}),
-		);
+		const [rawTestimonials] = await fetchEntries<[TestimonialSkeleton]>({ content_type: "testimonial" });
 
 		const testimonials = testimonialDTO.create(rawTestimonials);
 

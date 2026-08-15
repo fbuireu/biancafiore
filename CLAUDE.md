@@ -8,7 +8,7 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 
 ## Stack
 
-- **Astro 7.1** (`output: "server"`), `@astrojs/cloudflare` adapter, React islands via `@astrojs/react`. ADR 0001 for the host, ADR 0011 for why content pages prerender anyway
+- **Astro 7.2** (`output: "server"`), `@astrojs/cloudflare` adapter, React islands via `@astrojs/react`. ADR 0001 for the host, ADR 0011 for why content pages prerender anyway
 - **Contentful** delivery/preview API (`contentful`, rich-text renderers). ADR 0002
 - **Drizzle ORM** + `@libsql/client` → **Turso** (migrated off Astro DB; env vars still named `ASTRO_DB_*`). ADR 0003
 - **Effect 3** — `Context.Tag` + `Layer` clients for cms/db/email. ADR 0004
@@ -59,7 +59,7 @@ src/
   domain/              # DDD domain layer: per-concept models (schema.ts/types.ts) + pure rules (rules.ts). See ADR 0012
   application/         # anti-corruption layer: entities/* loaders + dto/*DTO.ts Contentful mappers (call domain rules)
   shared/              # cross-cutting ui/utils + generic helpers (slugify, formatDate, groupBy)
-  infrastructure/     # cms/ db/ email/ clients (Effect), images/, integrations/, runtime.ts, layers.ts, errors.ts
+  infrastructure/     # cms/ db/ email/ clients (Effect), cms/entries.ts, images/, integrations/, layers.ts, errors.ts
   ui/
     modules/          # feature areas: home, about, article(s), contact, projects, legal, core
     styles/           # global CSS layer stack + design tokens
@@ -68,7 +68,7 @@ src/
   const/ data/
 ```
 
-Unit tests are co-located with the code they cover (`src/**/*.test.ts`, and `src/**/*.test.tsx` for the React islands); the one test covering no single module is `docs/docs-consistency.test.ts`, colocated with the docs it checks — see the maintenance contract below. `src/tests/doubles/` holds the stub layers, virtual-module doubles and MSW network doubles those co-located tests import — ADR 0017 sets the rule for which of the three a given dependency gets, and `src/tests/setup/` starts the MSW server for the node project. All are picked up by `vitest.config.ts`, which resolves the path aliases and Astro’s `astro:*` virtual modules itself rather than through `getViteConfig` — ADR 0016 records why that is forced, and which modules it leaves unreachable from a unit test. Playwright specs live in the `testDir` declared in `playwright.config.ts`.
+Unit tests are co-located with the code they cover (`src/**/*.test.ts`, and `src/**/*.test.tsx` for anything needing a DOM — the React islands and the browser-only modules beside them, such as the header's `backgroundObserver`, because the extension is what selects vitest's `dom` project); the one test covering no single module is `docs/docs-consistency.test.ts`, colocated with the docs it checks — see the maintenance contract below. `src/tests/doubles/` holds the stub layers, virtual-module doubles and MSW network doubles those co-located tests import — ADR 0017 sets the rule for which of the three a given dependency gets, and `src/tests/setup/` starts the MSW server for the node project. All are picked up by `vitest.config.ts`, which resolves the path aliases and Astro’s `astro:*` virtual modules itself rather than through `getViteConfig` — ADR 0016 records why that is forced, and which modules it leaves unreachable from a unit test. Playwright specs live in the `testDir` declared in `playwright.config.ts`.
 
 Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/* @application/* @modules/* (→ src/ui/modules) @utils/* @assets/* (→ src/ui/assets) @styles/* (→ src/ui/styles) @data/* @shared/* @content/* @tests/* (→ src/tests)`. Prefer aliases over relative paths.
 
@@ -78,7 +78,7 @@ Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/*
 | --- | --- |
 | [`src/domain/`](./src/domain/CLAUDE.md) | per-concept `schema`/`types`/`rules` layout, purity rules |
 | [`src/application/`](./src/application/CLAUDE.md) | ACL: DTO mappers, collection loaders, adding a content type |
-| [`src/infrastructure/`](./src/infrastructure/CLAUDE.md) | Effect clients, tagged errors, `runCms` vs `ContactLayer`, secrets |
+| [`src/infrastructure/`](./src/infrastructure/CLAUDE.md) | Effect clients, tagged errors, `fetchEntries` vs `ContactLayer`, secrets |
 | [`src/actions/`](./src/actions/CLAUDE.md) | The contact action: error→HTTP mapping, step order, the two email forms |
 | [`src/ui/styles/`](./src/ui/styles/CLAUDE.md) | `@layer` order, token system, colour scheme, page containers |
 | [`src/ui/modules/`](./src/ui/modules/CLAUDE.md) | component/CSS co-location, islands, data access |
@@ -87,6 +87,7 @@ Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/*
 
 - **Design tokens over magic numbers**, and respect the CSS `@layer` order — cascade correctness depends on it. Details in [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
 - **Evergreen / Chromium-forward CSS.** Modern features are used freely (`light-dark()`, `interpolate-size`, `color-mix`, oklch); the build target is `esnext`.
+- **One module spells a content URL.** `@const/routes.ts` turns a Slug into a path — `articleHref`, `tagHref`, `projectHref` — and `absoluteUrl` folds in the origin: it is the tree's only reader of `SITE_URL`, so a canonical URL and a JSON-LD URL cannot disagree about where the site lives. Never concatenate `PAGES_ROUTES` with a slug; the table itself stays for the routes that address a whole page, and because `getPage` classifies the current URL against its keys.
 - **No code comments.** Rationale belongs in commit messages / PRs / memory, not inline.
 - **No Biome suppressions.** Fix the root cause (e.g. reorder selectors) instead of `biome-ignore`; suppress only if truly irreplaceable. Biome: 120 line width, `noConsole` error with no allowlist — no `console` at all, log through Effect's `Logger` (`Effect.logError`) — organizeImports on. `noConsole` is *not* part of Biome's recommended preset, so deleting that entry does not tighten it, it silently turns the rule off. `src/data/**` and `public/**` are excluded from Biome.
 - **Conventional commits** (commitlint + husky). semantic-release owns versioning. Do NOT add a Co-Authored-By / Claude trailer to commits or PRs.
@@ -117,7 +118,7 @@ Two traps worth naming, because both have already happened here: deleting a reso
 
 - **`light-dark()` in prod:** lightningcss downlevels it into a polyfill that breaks nested `color-scheme` inversion in production (dev looks fine). `Features.LightDark` stays in `lightningcss.exclude` in `astro.config.ts`; `errorRecovery: true` is also set. ADR 0006, and [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
 - **`astro dev` hangs / SSR 500s / blank globe:** usually `.vite` cache thrash from running `astro check` or a second `astro dev` beside a live dev server (orphans deps chunks: `effect.js` → 500, `three`/`react-globe.gl` → blank). Fix: stop all dev processes, delete `node_modules/.vite`, restart.
-- **`HIDE_CHROME`** (public boolean env) does more than its name says. It hides the header and the article breadcrumbs, and in `BaseLayout.astro` it *replaces the page body* with an under-construction placeholder on every route outside the article / tag / legal / error allowlist — so `/`, `/about`, `/contact` and `/projects` serve no real content at all. The footer still renders either way. It is **`true` in the `development` environment**, which is why the PR preview is not a faithful target: e2e coverage there is limited to what survives it. Referenced in `ui/modules/core/components/baseLayout/BaseLayout.astro`, `articles/[...slug].astro`, the astro.config env schema, and the deploy workflow.
+- **`HIDE_CHROME`** (public boolean env) does more than its name says, so no component reads it: `siteChrome` in `@modules/core/utils/siteChrome.ts` is the tree's only reader, and callers ask it `showsHeader`, `showsBreadcrumbs`, `showsTableOfContents` and `servesRealContent` instead. It hides the header, the breadcrumbs on every page that carries them, and an Article's table of contents, and it *replaces the page body* with an under-construction placeholder on every route outside the articles / tags / legal / error allowlist — so `/`, `/about`, `/contact` and `/projects` serve no real content at all. The footer still renders either way. It is **`true` in the `development` environment**, which is why the PR preview is not a faithful target: e2e coverage there is limited to what survives it. Outside that module the name appears only in the astro.config env schema and the deploy workflow.
 - **Safari/WebKit loads nothing in dev:** the CSP carries `upgrade-insecure-requests`, and WebKit obeys it on `localhost` — every module script, font and `@vite/client` request is rewritten to `https://localhost:4321`, which the dev server does not speak, so the page renders inert with no JS at all. Chromium exempts localhost, so this is invisible there and only shows in Safari and Playwright's `webkit` project. `src/middleware.ts` strips that one directive when `import.meta.env.DEV`; production keeps it. Don't fold it back into `securityHeaders.ts` unconditionally.
 - **Turso env naming:** DB env vars are `ASTRO_DB_REMOTE_URL` / `ASTRO_DB_APP_TOKEN` despite the project no longer using Astro DB. Schema: `src/infrastructure/db/schema.ts`; migrations in `drizzle/`. ADR 0003 explains why they keep the name.
 - **Analytics are consent-gated:** GA/GTM load with `analytics_storage` denied until the visitor accepts the `analytics` category, set by an inline script in `<head>` before either initialises. Nothing in the code makes the requirement visible, so do not reorder or "clean up" that script. ADR 0013.

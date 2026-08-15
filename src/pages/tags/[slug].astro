@@ -1,11 +1,11 @@
 ---
-import { getCollection, getEntry } from "astro:content";
-import { SITE_URL } from "astro:env/client";
-import { PAGES_ROUTES } from "@const/index";
+import { getCollection } from "astro:content";
+import { absoluteUrl, articleHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import { resolveArticles } from "@modules/core/utils/entries";
 import { buildItemListSchema } from "@modules/core/utils/jsonLd";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import "./_tag.css";
@@ -17,53 +17,26 @@ export const prerender = true;
 
 export async function getStaticPaths() {
 	const tags = await getCollection("tags");
-	const uniqueTags = new Map<string, (typeof tags)[number]["data"]["tags"][number]>();
 
-	for (const tag of tags.flatMap((tag) => tag.data.tags)) {
-		if (!uniqueTags.has(tag.slug)) {
-			uniqueTags.set(tag.slug, tag);
-		}
-	}
-
-	return await Promise.all(
-		[...uniqueTags.values()].map(async (tag) => {
-			const articles = await Promise.all(
-				tag.articles.map(async (article) => await getEntry(article.collection, article.id)),
-			);
-
-			return {
-				params: {
-					slug: tag.slug,
-				},
-				props: {
-					tag: {
-						...tag,
-						articles: articles
-							.filter((article): article is NonNullable<typeof article> => Boolean(article))
-							.sort((a, b) => b.data.publishDateISO.localeCompare(a.data.publishDateISO)),
-					},
-				},
-			};
-		}),
-	);
+	return tags.map(({ data }) => ({ params: { slug: data.slug }, props: { tag: data } }));
 }
 
 const { slug } = Astro.params as TagParams;
 const { tag } = Astro.props;
+const articles = await resolveArticles(tag.articles);
+
 const metadata: Partial<SeoMetadata> = {
 	title: `#${slug}`,
 	description: `Articles tagged with #${slug}.`,
 };
 
-const itemListSchema = buildItemListSchema(
-	(tag.articles ?? []).map((article) => new URL(`${PAGES_ROUTES.ARTICLE}${article.data.slug}`, SITE_URL).href),
-);
+const itemListSchema = buildItemListSchema(articles.map((article) => absoluteUrl(articleHref(article.data.slug))));
 ---
 <BaseLayout {...metadata}>
     <Breadcrumbs />
-    <h1 class="flex justify-center reveal">#{slug}(&times;{tag.count})</h1>    <section class="common-wrapper">
+    <h1 class="flex justify-center reveal">#{slug}(&times;{articles.length})</h1>    <section class="common-wrapper">
     <ul class="tag__article__list grid">
-      {tag.articles?.map((article) => {
+      {articles.map((article) => {
         return (
             <li class="tag__article__item relative reveal">
                 <ArticleCard {...article} isLandscape />

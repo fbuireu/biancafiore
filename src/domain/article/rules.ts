@@ -1,27 +1,13 @@
-import type { ArticleDTO, TableOfContents } from "@domain/article/types";
+import type { ArticleDTO, ArticleHeading, TableOfContents } from "@domain/article/types";
 import { ArticleType } from "@domain/article/types";
-import { slugify } from "@shared/utils/strings";
 
 const WORDS_PER_MINUTE = 200;
 const MINIMUM_READING_MINUTES = 1;
 const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 const WHITESPACE_REGEX = /\s+/g;
-const HEADINGS_REGEX = /<h([2-6])>(.*?)<\/h\1>/g;
+const TABLE_OF_CONTENTS_LEVELS = [2, 3, 4, 5, 6];
 const HEADING_LEVEL_OFFSET = 1;
 const MAX_DESCRIPTION_LENGTH = 200;
-const HTML_ENTITY_REGEX = /&(?:amp|lt|gt|quot|nbsp|#39);/g;
-const DECODED_HTML_ENTITIES: Record<string, string> = {
-	"&amp;": "&",
-	"&lt;": "<",
-	"&gt;": ">",
-	"&quot;": '"',
-	"&#39;": "'",
-	"&nbsp;": "\u00A0",
-};
-
-function decodeHtmlEntities(html: string): string {
-	return html.replace(HTML_ENTITY_REGEX, (entity) => DECODED_HTML_ENTITIES[entity] ?? entity);
-}
 
 export function getReadingTime(content: string): number {
 	const cleanContent = content.replace(HTML_TAG_REGEX, " ").trim();
@@ -30,19 +16,14 @@ export function getReadingTime(content: string): number {
 	return Math.max(MINIMUM_READING_MINUTES, Math.ceil(numberOfWords / WORDS_PER_MINUTE));
 }
 
-export function generateTableOfContents(html: string): TableOfContents {
-	const items: TableOfContents = [];
-	const headings = html.matchAll(HEADINGS_REGEX);
+export function isTableOfContentsHeading(level: number): boolean {
+	return TABLE_OF_CONTENTS_LEVELS.includes(level);
+}
 
-	for (const heading of headings) {
-		const level = Number(heading[1]) - HEADING_LEVEL_OFFSET;
-		const text = heading[2];
-		const id = slugify(decodeHtmlEntities(text.replace(HTML_TAG_REGEX, "")));
-
-		items.push({ id, heading: text, level });
-	}
-
-	return items;
+export function generateTableOfContents(headings: ArticleHeading[]): TableOfContents {
+	return headings
+		.filter(({ level }) => isTableOfContentsHeading(level))
+		.map(({ id, text, level }) => ({ id, heading: text, level: level - HEADING_LEVEL_OFFSET }));
 }
 
 export function deriveDescription(rawDescription: string): string {
@@ -57,7 +38,7 @@ export function deriveVariant(hasFeaturedImage: boolean): (typeof ArticleType)[k
 	return hasFeaturedImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
 }
 
-export function sortFavoriteFirst(articles: ArticleDTO[]): ArticleDTO[] {
+export function sortFavoriteFirst<T extends Pick<ArticleDTO, "isFavorite" | "publishDateISO">>(articles: T[]): T[] {
 	return articles.toSorted(
 		(a, b) => Number(b.isFavorite) - Number(a.isFavorite) || b.publishDateISO.localeCompare(a.publishDateISO),
 	);

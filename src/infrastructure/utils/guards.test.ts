@@ -1,4 +1,3 @@
-import type { ValidationError } from "@infrastructure/errors";
 import { validateContact, verifyRecaptcha } from "@infrastructure/utils/guards";
 import { Cause, Effect, Exit, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -7,8 +6,13 @@ import { recaptchaDouble, SITEVERIFY_URL } from "@tests/doubles/network";
 
 const RECAPTCHA_ERROR_MESSAGE = "Mr. Robot, is that you? Please refresh the page and try again.";
 
-const messageOf = (exit: Exit.Exit<unknown, ValidationError>): string | undefined =>
-	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause))?.message : undefined;
+const failureOf = <E>(exit: Exit.Exit<unknown, E>): E | undefined =>
+	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause)) : undefined;
+
+const messageOf = <E extends { message: string }>(exit: Exit.Exit<unknown, E>): string | undefined =>
+	failureOf(exit)?.message;
+
+const tagOf = <E extends { _tag: string }>(exit: Exit.Exit<unknown, E>): string | undefined => failureOf(exit)?._tag;
 
 beforeEach(() => {
 	setSecret("GOOGLE_RECAPTCHA_SECRET_KEY", "server-secret");
@@ -83,6 +87,7 @@ describe("verifyRecaptcha", () => {
 
 		const exit = await Effect.runPromiseExit(verifyRecaptcha("visitor-token"));
 
+		expect(tagOf(exit)).toBe("ValidationError");
 		expect(messageOf(exit)).toBe(RECAPTCHA_ERROR_MESSAGE);
 	});
 
@@ -115,22 +120,51 @@ describe("verifyRecaptcha", () => {
 
 		const exit = await Effect.runPromiseExit(verifyRecaptcha("visitor-token"));
 
+		expect(tagOf(exit)).toBe("ValidationError");
 		expect(messageOf(exit)).toBe(RECAPTCHA_ERROR_MESSAGE);
 	});
 
-	it("answers with the same visitor facing message when the request itself never lands", async () => {
+	it("keeps an expired or replayed token the visitor's problem, not ours", async () => {
+		recaptchaDouble({ success: false, errorCodes: ["timeout-or-duplicate"] });
+
+		const exit = await Effect.runPromiseExit(verifyRecaptcha("visitor-token"));
+
+		expect(tagOf(exit)).toBe("ValidationError");
+		expect(messageOf(exit)).toBe(RECAPTCHA_ERROR_MESSAGE);
+	});
+
+	it("blames our key rather than the visitor when Google refuses the secret", async () => {
+		recaptchaDouble({ success: false, errorCodes: ["invalid-input-secret"] });
+
+		const exit = await Effect.runPromiseExit(verifyRecaptcha("visitor-token"));
+
+		expect(tagOf(exit)).toBe("RecaptchaError");
+		expect(messageOf(exit)).not.toBe(RECAPTCHA_ERROR_MESSAGE);
+	});
+
+	it("blames our key when the secret is absent altogether", async () => {
+		recaptchaDouble({ success: false, errorCodes: ["missing-input-secret"] });
+
+		const exit = await Effect.runPromiseExit(verifyRecaptcha("visitor-token"));
+
+		expect(tagOf(exit)).toBe("RecaptchaError");
+	});
+
+	it("says it never got a verdict when the request itself never lands", async () => {
 		recaptchaDouble({ unreachable: true });
 
 		const exit = await Effect.runPromiseExit(verifyRecaptcha("visitor-token"));
 
-		expect(messageOf(exit)).toBe(RECAPTCHA_ERROR_MESSAGE);
+		expect(tagOf(exit)).toBe("RecaptchaError");
+		expect(messageOf(exit)).not.toBe(RECAPTCHA_ERROR_MESSAGE);
 	});
 
-	it("treats an unreadable response body as a failed verification, not a defect", async () => {
+	it("treats an unreadable response body as no verdict, not as a defect and not as a bot", async () => {
 		recaptchaDouble({ malformed: true });
 
 		const exit = await Effect.runPromiseExit(verifyRecaptcha("visitor-token"));
 
-		expect(messageOf(exit)).toBe(RECAPTCHA_ERROR_MESSAGE);
+		expect(Exit.isFailure(exit)).toBe(true);
+		expect(tagOf(exit)).toBe("RecaptchaError");
 	});
 });

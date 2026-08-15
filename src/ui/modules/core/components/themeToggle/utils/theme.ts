@@ -1,80 +1,58 @@
-import { THEME_STORAGE_KEY } from "../const";
-
-export const ThemeType = {
-	DARK: "dark",
-	LIGHT: "light",
-} as const;
+import { DARK_SCHEME_QUERY, THEME_ATTRIBUTE, THEME_STORAGE_KEY, Theme, ThemePreference } from "../const";
+import { readPreference, resolveTheme, writePreference } from "./preference";
 
 const SELECTORS = {
 	THEME_INPUT: '.theme-toggle input[type="checkbox"]',
 	TOGGLE: ".theme-toggle",
 };
-const PREFERS_DARK_SCHEME = window.matchMedia("(prefers-color-scheme: dark)");
+const TOGGLED_MODIFIER = "theme-toggle--toggled";
+const PREFERS_DARK_SCHEME = window.matchMedia(DARK_SCHEME_QUERY);
 
-export const getCurrentTheme = (): (typeof ThemeType)[keyof typeof ThemeType] | null =>
-	localStorage.getItem(THEME_STORAGE_KEY) as (typeof ThemeType)[keyof typeof ThemeType] | null;
+const effectiveTheme = (): Theme =>
+	resolveTheme({ preference: readPreference(localStorage), prefersDark: PREFERS_DARK_SCHEME.matches });
 
-const getInitialTheme = (): (typeof ThemeType)[keyof typeof ThemeType] => {
-	const cachedTheme = getCurrentTheme();
-	const prefersDarkScheme = PREFERS_DARK_SCHEME.matches;
-
-	return cachedTheme ?? (prefersDarkScheme ? ThemeType.DARK : ThemeType.LIGHT);
-};
-
-const applyTheme = ({
-	theme,
-	document,
-}: {
-	theme: (typeof ThemeType)[keyof typeof ThemeType];
-	document: Document;
-}): void => {
-	document.documentElement.setAttribute(`data-${THEME_STORAGE_KEY}`, theme);
+const applyTheme = ({ theme, document }: { theme: Theme; document: Document }): void => {
+	document.documentElement.setAttribute(THEME_ATTRIBUTE, theme);
 	document.documentElement.style.colorScheme = theme;
-	localStorage.setItem(THEME_STORAGE_KEY, theme);
 
 	const TOGGLE = document.querySelector<HTMLElement>(SELECTORS.TOGGLE);
 	const THEME_INPUT = document.querySelector<HTMLInputElement>(SELECTORS.THEME_INPUT);
 
 	if (!TOGGLE || !THEME_INPUT) return;
 
-	const isDarkMode = theme === ThemeType.DARK;
+	const isDarkMode = theme === Theme.DARK;
 
 	THEME_INPUT.checked = isDarkMode;
-	TOGGLE.classList.toggle("theme-toggle--toggled", isDarkMode);
+	TOGGLE.classList.toggle(TOGGLED_MODIFIER, isDarkMode);
 };
 
-// Global listeners — run once at module load, survive view transitions
-window.addEventListener("storage", ({ key, newValue }) => {
-	if (key === THEME_STORAGE_KEY && newValue) {
-		const newTheme = newValue as (typeof ThemeType)[keyof typeof ThemeType];
-
-		applyTheme({ theme: newTheme, document });
-	}
+window.addEventListener("storage", ({ key }) => {
+	if (key === THEME_STORAGE_KEY) applyTheme({ theme: effectiveTheme(), document });
 });
 
 PREFERS_DARK_SCHEME.addEventListener("change", ({ matches }) => {
-	const newTheme = matches ? ThemeType.DARK : ThemeType.LIGHT;
-	const currentTheme = getCurrentTheme();
+	const preference = readPreference(localStorage);
 
-	if (newTheme !== currentTheme) applyTheme({ theme: newTheme, document });
+	if (preference !== ThemePreference.SYSTEM) return;
+
+	applyTheme({ theme: resolveTheme({ preference, prefersDark: matches }), document });
 });
 
 document.addEventListener("astro:before-swap", ({ newDocument }) => {
-	const theme = getCurrentTheme() ?? getInitialTheme();
-
-	applyTheme({ theme, document: newDocument });
+	applyTheme({ theme: effectiveTheme(), document: newDocument });
 });
 
 export function initializeThemeSetter(): void {
-	applyTheme({ theme: getInitialTheme(), document });
+	applyTheme({ theme: effectiveTheme(), document });
 
 	const THEME_INPUT = document.querySelector<HTMLInputElement>(SELECTORS.THEME_INPUT);
 
 	if (!THEME_INPUT) return;
 
 	THEME_INPUT.addEventListener("change", () => {
-		const newTheme = THEME_INPUT.checked ? ThemeType.DARK : ThemeType.LIGHT;
+		const preference = THEME_INPUT.checked ? ThemePreference.DARK : ThemePreference.LIGHT;
 
-		applyTheme({ theme: newTheme, document });
+		writePreference({ store: localStorage, preference });
+		applyTheme({ theme: preference, document });
 	});
 }

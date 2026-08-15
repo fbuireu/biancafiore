@@ -7,3 +7,35 @@
 		padding-inline: var(--space-s);
 	}
 }
+
+.latest-articles__title {
+	color: var(--white);
+	padding-block: 4rem;
+
+	.latest-articles__title__link {
+		color: var(--primary-main);
+		display: inline-block;
+	}
+}
+
+.latest-articles__slider {
+	--slides-per-view: 1;
+	--slider-gap: 0rem;
+
+	padding-block: 2rem 4rem;
+	position: relative;
+
+	.slider__track {
+		scroll-marker-group: none;
+	}
+
+	@media (width >= 720px) {
+		--slides-per-view: 2;
+		--slider-gap: 2rem;
+	}
+
+	@media (width >= 1024px) {
+		--slides-per-view: 4;
+		--slider-gap: 2rem;
+	}
+}

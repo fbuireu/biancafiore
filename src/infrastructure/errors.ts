@@ -15,6 +15,11 @@ export class EmailError extends Data.TaggedError("EmailError")<{
 	cause?: unknown;
 }> {}
 
+export class RecaptchaError extends Data.TaggedError("RecaptchaError")<{
+	message: string;
+	cause?: unknown;
+}> {}
+
 export class ValidationError extends Data.TaggedError("ValidationError")<{
 	message: string;
 }> {}

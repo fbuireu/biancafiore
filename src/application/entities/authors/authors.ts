@@ -3,26 +3,14 @@ import type { ArticleSkeleton } from "@application/dto/article/types";
 import { authorDTO } from "@application/dto/author";
 import type { AuthorSkeleton } from "@application/dto/author/types";
 import { authorSchema } from "@domain/author";
-import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
-import { runCms } from "@infrastructure/runtime";
+import { fetchEntries } from "@infrastructure/cms/entries";
 import { z } from "astro/zod";
-import { Effect } from "effect";
 
 export const authors = defineCollection({
 	loader: async () => {
-		if (!isContentfulConfigured()) return [];
-
-		const [{ items: rawAuthors }, { items: rawArticles }] = await runCms(
-			Effect.gen(function* () {
-				const cms = yield* CmsClient;
-				return yield* Effect.all(
-					[
-						cms.getEntries<AuthorSkeleton>({ content_type: "author" }),
-						cms.getEntries<ArticleSkeleton>({ content_type: "article", order: ["-fields.publishDate"] }),
-					],
-					{ concurrency: "unbounded" },
-				);
-			}),
+		const [rawAuthors, rawArticles] = await fetchEntries<[AuthorSkeleton, ArticleSkeleton]>(
+			{ content_type: "author" },
+			{ content_type: "article", order: ["-fields.publishDate"] },
 		);
 
 		const authors = authorDTO.create([rawAuthors, rawArticles]);

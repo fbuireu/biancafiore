@@ -51,11 +51,11 @@ The A–Z listing of every Tag that carries at least one Article, grouped into b
 _Avoid_: tag cloud, glossary, tag list.
 
 **Author Tag**:
-An Author surfaced inside the Tag Index as if they were a Tag, letting readers browse everything a given person wrote. Sits alongside topical Tags but is typed as an author rather than a tag.
+An Author surfaced inside the Tag Index as if they were a Tag, letting readers browse everything a given person wrote. Sits alongside topical Tags but is typed as an author rather than a tag. One Slug addresses one page, so an Author Tag that collides with a topical Tag yields to it: the Tag answers and the Author Tag leaves the Index rather than appearing twice in it and once at the page.
 _Avoid_: byline filter, author facet.
 
 **Count**:
-The number of Articles associated with a Tag or Author Tag, shown next to it in the Tag Index and on tag pages.
+The number of Articles associated with a Tag or Author Tag, shown next to it in the Tag Index and on tag pages. It is never stored: each page counts the list it is showing, so the number and the Articles under it cannot disagree.
 _Avoid_: total, frequency, tally.
 
 **Slug**:
@@ -69,7 +69,7 @@ The reader-facing hero of the Blog — the first Article flagged as featured tha
 _Avoid_: hero, spotlight, top story, pinned.
 
 **Favorite**:
-An Article the Author (Bianca) marks as her own pick, which sorts it to the top of the Article collection — and therefore of the Blog listing and the sliders, which read that one order — ahead of the normal reverse-chronological order. The RSS feed is the exception: it re-sorts by publish date, because a subscriber's reader expects chronology rather than the Author's preference. This is the Author's private preference and a Featured Article is the reader-facing hero: separate flags, chosen for different reasons, though a Favorite with a cover image can decide where the Featured fallback lands.
+An Article the Author (Bianca) marks as her own pick, which sorts it to the top of the Article collection — and therefore of the Blog listing, the sliders and the tag pages, which read that one order — ahead of the normal reverse-chronological order. The RSS feed is the exception: it re-sorts by publish date, because a subscriber's reader expects chronology rather than the Author's preference. This is the Author's private preference and a Featured Article is the reader-facing hero: separate flags, chosen for different reasons, though a Favorite with a cover image can decide where the Featured fallback lands.
 _Avoid_: starred, pinned, highlight, best-of.
 
 **Featured Image**:
@@ -93,7 +93,7 @@ The short summary of an Article shown in listings and metadata, taken from an au
 _Avoid_: excerpt, summary, teaser, abstract, blurb.
 
 **Related Articles**:
-The set of other Articles suggested alongside a given one — either hand-picked by the Author or, failing that, inferred from shared Tags.
+The set of *other* Articles suggested alongside a given one — either hand-picked by the Author or, failing that, inferred from shared Tags. Never the Article itself, whichever way the set was arrived at: identity here is the Slug, so two Articles that happen to share a title are still two Articles and each may suggest the other.
 _Avoid_: recommended, suggested, more like this, see also.
 
 **Table of Contents**:

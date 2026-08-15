@@ -6,7 +6,7 @@ export interface ImageFormats {
 }
 
 export const imageSchema = z.object({
-	url: z.string(),
+	url: z.url(),
 	details: z.object({
 		width: z.number(),
 		height: z.number(),

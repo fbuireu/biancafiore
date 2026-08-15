@@ -2,16 +2,16 @@
 import type { CollectionEntry } from "astro:content";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import SliderShell from "@modules/core/components/sliderShell/SliderShell.astro";
-import "./about-latest-articles-slider.css";
 
 interface Props {
 	articles: CollectionEntry<"articles">[];
+	class?: string;
 }
 
-const { articles } = Astro.props;
+const { articles, class: className } = Astro.props;
 ---
 
-<SliderShell class="about__latest-articles__slider slider-wrapper--reveal-items">
+<SliderShell class={`${className ?? ''} slider-wrapper--reveal-items`.trim()}>
 	{
 		articles.map((article, index) => (
 			<li class="slider__slide item-wrapper reveal" data-reveal-index={index}>

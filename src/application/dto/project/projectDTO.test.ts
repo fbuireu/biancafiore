@@ -92,7 +92,7 @@ describe("projectDTO image and batching", () => {
 		]);
 
 		expect(project.image).toEqual({
-			url: "//cdn/dispatch.avif",
+			url: "https://cdn/dispatch.avif",
 			details: { width: 640, height: 480 },
 			formats: { avif: true, webp: false },
 		});

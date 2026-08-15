@@ -2,21 +2,12 @@ import { defineCollection } from "astro:content";
 import { projectDTO } from "@application/dto/project";
 import type { ProjectSkeleton } from "@application/dto/project/types";
 import { projectsSchema } from "@domain/project";
-import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
+import { fetchEntries } from "@infrastructure/cms/entries";
 import { getImagePlaceholder } from "@infrastructure/images/imagePlaceholder";
-import { runCms } from "@infrastructure/runtime";
-import { Effect } from "effect";
 
 export const projects = defineCollection({
 	loader: async () => {
-		if (!isContentfulConfigured()) return [];
-
-		const { items: rawProjects } = await runCms(
-			Effect.gen(function* () {
-				const cms = yield* CmsClient;
-				return yield* cms.getEntries<ProjectSkeleton>({ content_type: "project" });
-			}),
-		);
+		const [rawProjects] = await fetchEntries<[ProjectSkeleton]>({ content_type: "project" });
 
 		const projects = projectDTO.create(rawProjects);
 

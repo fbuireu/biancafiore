@@ -7,14 +7,7 @@ export const tagSchema = z.object({
 	slug: z.string(),
 });
 
-export const tagIndexSchema = z.object({
-	id: z.string(),
-	name: z.string(),
-	tags: z.array(
-		tagSchema.extend({
-			type: z.enum([TagType.TAG, TagType.AUTHOR]),
-			count: z.number(),
-			articles: z.array(reference("articles")),
-		}),
-	),
+export const tagIndexEntrySchema = tagSchema.extend({
+	type: z.enum([TagType.TAG, TagType.AUTHOR]),
+	articles: z.array(reference("articles")),
 });

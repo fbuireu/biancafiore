@@ -1,8 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { getCollection, getEntry } from "astro:content";
-import { SITE_URL } from "astro:env/client";
-import { CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
+import { getCollection } from "astro:content";
+import { absoluteUrl, articleHref, CONTACT_DETAILS } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
 import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
@@ -10,38 +9,31 @@ import LittleMoreOfMe from "@modules/about/components/littleMoreOfMe/LittleMoreO
 import WhatIDo from "@modules/about/components/whatIDo/WhatIDo.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import { resolveArticle } from "@modules/core/utils/entries";
 import { buildProfilePageSchema } from "@modules/core/utils/jsonLd";
 
 export const prerender = true;
 
 const [cities, authors] = await Promise.all([getCollection("cities"), getCollection("authors")]);
 
-const author = authors
+const bianca = authors
 	.filter((author) => author.data.name === CONTACT_DETAILS.NAME)
 	.at(0) as CollectionEntry<"authors">;
 
-const bianca = {
-	...author,
-	data: {
-		...author.data,
-		...(author.data.latestArticle && {
-			latestArticle: await getEntry(author.data.latestArticle.collection, author.data.latestArticle.id),
-		}),
-	},
-};
+const latestArticle = await resolveArticle(bianca.data.latestArticle);
+
 const metadata: Partial<SeoMetadata> = {
 	title: "About me",
 	description: bianca.data.description,
-	image: `https:${bianca.data.profileImage.url}`,
+	image: bianca.data.profileImage.url,
 };
 
-const latestArticle = bianca.data.latestArticle as CollectionEntry<"articles"> | undefined;
 const profilePageSchema = buildProfilePageSchema({
 	person: {
 		id: "#bianca",
 		name: bianca.data.name,
 		url: Astro.url.href,
-		image: `https:${bianca.data.profileImage.url}`,
+		image: bianca.data.profileImage.url,
 		jobTitle: bianca.data.jobTitle,
 		company: bianca.data.currentCompany,
 		sameAs: [...bianca.data.socialNetworks],
@@ -49,7 +41,7 @@ const profilePageSchema = buildProfilePageSchema({
 	...(latestArticle && {
 		latestArticle: {
 			headline: latestArticle.data.title,
-			url: new URL(`${PAGES_ROUTES.ARTICLE}${latestArticle.data.slug}`, SITE_URL).href,
+			url: absoluteUrl(articleHref(latestArticle.data.slug)),
 			datePublished: latestArticle.data.publishDateISO,
 		},
 	}),

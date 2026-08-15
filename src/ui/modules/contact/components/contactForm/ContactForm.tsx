@@ -1,7 +1,7 @@
-import { actions, isActionError } from "astro:actions";
 import { contactFormSchema } from "@domain/contact/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { flyPlane } from "@modules/contact/utils/form";
+import { type ContactSubmission, UNDELIVERED_SUBMISSION } from "@modules/contact/utils/submission";
 import { Input } from "@modules/core/components/form/input";
 import { Recaptcha } from "@modules/core/components/form/recaptcha";
 import { Textarea } from "@modules/core/components/form/textarea";
@@ -10,11 +10,19 @@ import type { ContactFormData } from "@shared/ui/types";
 import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
 import { useCallback, useId, useRef, useState, useTransition } from "react";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
 import "./contact-form.css";
 
-export const ContactForm = () => {
+interface ContactFormProps {
+	submit: (contactData: FormData) => Promise<ContactSubmission>;
+	getRecaptchaToken?: () => Promise<string | undefined>;
+}
+
+const UNAUTHORIZED_STATUS = 401;
+const SUCCESS_DELAY = 2000;
+const MISSING_TOKEN_MESSAGE = "Mr. Robot, is that you?";
+
+export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => {
 	const {
 		register,
 		handleSubmit,
@@ -29,7 +37,6 @@ export const ContactForm = () => {
 	const nameId = useId();
 	const emailId = useId();
 	const messageId = useId();
-	const { executeRecaptcha } = useGoogleReCaptcha();
 	const submitRef = useRef<HTMLButtonElement>(null);
 
 	const submitForm = useCallback(
@@ -41,54 +48,48 @@ export const ContactForm = () => {
 
 			setFormStatus(FormStatus.LOADING);
 
-			try {
-				const contactData = new FormData();
-				contactData.append("name", data.name);
-				contactData.append("email", data.email);
-				contactData.append("message", data.message);
-				contactData.append("recaptcha", recaptcha);
+			const contactData = new FormData();
+			contactData.append("name", data.name);
+			contactData.append("email", data.email);
+			contactData.append("message", data.message);
+			contactData.append("recaptcha", recaptcha);
 
-				const { data: response, error } = await actions.contact(contactData);
+			const submission = await submit(contactData).catch(() => UNDELIVERED_SUBMISSION);
 
-				if (error) {
-					throw error;
-				}
-
-				if (response?.ok) {
-					flyPlane(button);
-					setTimeout(() => {
-						setFormStatus(FormStatus.SUCCESS);
-						reset();
-					}, 2000);
-				}
-			} catch (error) {
-				if (isActionError(error)) {
-					setFormStatus(error.status === 401 ? FormStatus.UNAUTHORIZED : FormStatus.ERROR);
-					setError("root", { type: "manual", message: error.message });
-				}
+			if (submission.ok) {
+				flyPlane(button);
+				setTimeout(() => {
+					setFormStatus(FormStatus.SUCCESS);
+					reset();
+				}, SUCCESS_DELAY);
+				return;
 			}
+
+			setFormStatus(submission.status === UNAUTHORIZED_STATUS ? FormStatus.UNAUTHORIZED : FormStatus.ERROR);
+			setError("root", { type: "manual", message: submission.message });
 		},
-		[reset, setError],
+		[reset, setError, submit],
 	);
 
 	const verifyRecaptcha = useCallback(
 		async (data: ContactFormData) => {
-			if (!executeRecaptcha) {
+			if (!getRecaptchaToken) {
 				return;
 			}
-			const token = await executeRecaptcha().catch(() => undefined);
+
+			const token = await getRecaptchaToken().catch(() => undefined);
 
 			if (!token) {
 				setError("recaptcha", {
 					type: "manual",
-					message: "Mr. Robot, is that you?",
+					message: MISSING_TOKEN_MESSAGE,
 				});
 				return;
 			}
 
 			await submitForm(data, token);
 		},
-		[executeRecaptcha, setError, submitForm],
+		[getRecaptchaToken, setError, submitForm],
 	);
 
 	return (

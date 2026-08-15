@@ -2,10 +2,13 @@ import { gsap, Power2, Power3, Power4 } from "gsap";
 
 const BACKGROUND_OBSERVER_SELECTORS = {
 	HEADER: ".header",
-	DARK_SECTION: ".blog, .latest-articles-wrapper",
+	INVERTED_SECTION: ".inverted-color-scheme",
 	HEADER_MENU_BUTTON: ".header__menu-button",
 	HEADER_MENU_LOGO: ".site__logo svg",
-	FOOTER: "footer",
+};
+const INTERSECTED_CLASSES = {
+	HEADER_MENU_BUTTON: "header__menu-button--intersected",
+	HEADER_MENU_LOGO: "logo--intersected",
 };
 const MENU_OPEN_CLASS = "page--menu-open";
 const TOGGLE_MENU_ANIMATION_CONFIG = {
@@ -29,39 +32,38 @@ const TOGGLE_MENU_SELECTORS = {
 	FIRST_MENU_LINK: ".navigation__menu__nav a",
 };
 
-const isIntersecting = (element: HTMLElement): boolean => {
-	const { HEADER: HEADER_SELECTOR } = BACKGROUND_OBSERVER_SELECTORS;
-	const headerOffsetHeight = (document.querySelector(HEADER_SELECTOR) as HTMLElement).offsetHeight / 2;
-	const threshold = element.offsetTop - headerOffsetHeight;
-	const sectionBottom = element.offsetTop + element.offsetHeight - headerOffsetHeight;
+const isIntersecting = ({ element, midline }: { element: Element; midline: number }): boolean => {
+	const { top, bottom } = element.getBoundingClientRect();
 
-	return window.scrollY >= threshold && window.scrollY < sectionBottom;
+	return midline >= top && midline < bottom;
 };
 
 export function backgroundObserver(): void {
 	const {
 		HEADER: HEADER_SELECTOR,
-		DARK_SECTION: DARK_SECTION_SELECTOR,
+		INVERTED_SECTION: INVERTED_SECTION_SELECTOR,
 		HEADER_MENU_BUTTON: HEADER_MENU_BUTTON_SELECTOR,
 		HEADER_MENU_LOGO: HEADER_MENU_LOGO_SELECTOR,
-		FOOTER: FOOTER_SELECTOR,
 	} = BACKGROUND_OBSERVER_SELECTORS;
 
-	const HEADER = document.querySelector(HEADER_SELECTOR) as HTMLElement;
-	const DARK_SECTION = document.querySelector(DARK_SECTION_SELECTOR) as HTMLElement;
-	const HEADER_MENU_BUTTON = document.querySelector(HEADER_MENU_BUTTON_SELECTOR) as unknown as HTMLElement;
-	const HEADER_MENU_LOGO = document.querySelector(HEADER_MENU_LOGO_SELECTOR) as unknown as HTMLElement;
-	const FOOTER = document.querySelector(FOOTER_SELECTOR) as unknown as HTMLElement;
+	const HEADER = document.querySelector(HEADER_SELECTOR);
 	const isMenuOpen = document.documentElement.classList.contains(MENU_OPEN_CLASS);
 
-	if (!HEADER || !DARK_SECTION || isMenuOpen) {
+	if (!HEADER || isMenuOpen) {
 		return;
 	}
 
-	const hasIntersected = isIntersecting(DARK_SECTION) || isIntersecting(FOOTER);
+	const { top: headerTop, height: headerHeight } = HEADER.getBoundingClientRect();
+	const midline = headerTop + headerHeight / 2;
+	const INVERTED_SECTIONS = Array.from(document.querySelectorAll(INVERTED_SECTION_SELECTOR));
+	const hasIntersected = INVERTED_SECTIONS.some((element) => isIntersecting({ element, midline }));
 
-	HEADER_MENU_BUTTON.classList.toggle("header__menu-button--intersected", hasIntersected);
-	HEADER_MENU_LOGO.classList.toggle("logo--intersected", hasIntersected);
+	document
+		.querySelector(HEADER_MENU_BUTTON_SELECTOR)
+		?.classList.toggle(INTERSECTED_CLASSES.HEADER_MENU_BUTTON, hasIntersected);
+	document
+		.querySelector(HEADER_MENU_LOGO_SELECTOR)
+		?.classList.toggle(INTERSECTED_CLASSES.HEADER_MENU_LOGO, hasIntersected);
 }
 
 window.addEventListener("scroll", backgroundObserver);

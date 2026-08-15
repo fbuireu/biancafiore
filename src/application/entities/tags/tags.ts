@@ -1,40 +1,26 @@
 import { defineCollection } from "astro:content";
+import type { ArticleSkeleton } from "@application/dto/article/types";
+import type { AuthorSkeleton } from "@application/dto/author/types";
 import { tagDTO } from "@application/dto/tag";
 import type { TagSkeleton } from "@application/dto/tag/types";
-import { tagIndexSchema } from "@domain/tag";
-import { CmsClient, isContentfulConfigured } from "@infrastructure/cms/client";
-import { runCms } from "@infrastructure/runtime";
-import { Effect } from "effect";
+import { tagIndexEntrySchema } from "@domain/tag";
+import { fetchEntries } from "@infrastructure/cms/entries";
 
 export const tags = defineCollection({
 	loader: async () => {
-		if (!isContentfulConfigured()) return [];
-
-		const [{ items: rawTags }, { items: rawArticles }, { items: rawAuthors }] = await runCms(
-			Effect.gen(function* () {
-				const cms = yield* CmsClient;
-				return yield* Effect.all(
-					[
-						cms.getEntries<TagSkeleton>({ content_type: "tag", limit: 1000 }),
-						cms.getEntries({
-							content_type: "article",
-							select: ["fields.slug", "fields.tags", "fields.author"],
-							limit: 1000,
-						}),
-						cms.getEntries({ content_type: "author", select: ["fields.name", "fields.slug"], limit: 1000 }),
-					],
-					{ concurrency: "unbounded" },
-				);
-			}),
+		const [rawTags, rawArticles, rawAuthors] = await fetchEntries<[TagSkeleton, ArticleSkeleton, AuthorSkeleton]>(
+			{ content_type: "tag" },
+			{
+				content_type: "article",
+				select: ["fields.slug", "fields.tags", "fields.author", "fields.isFavorite", "fields.publishDate"],
+			},
+			{ content_type: "author", select: ["fields.name", "fields.slug"] },
 		);
 
-		const tags = tagDTO.create([rawTags, rawArticles, rawAuthors]);
-
-		return Object.keys(tags).map((letter) => ({
-			id: letter,
-			name: letter,
-			tags: tags[letter],
+		return tagDTO.create([rawTags, rawArticles, rawAuthors]).map((tag) => ({
+			id: tag.slug,
+			...tag,
 		}));
 	},
-	schema: tagIndexSchema,
+	schema: tagIndexEntrySchema,
 });

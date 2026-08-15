@@ -4,13 +4,14 @@ import * as contentful from "contentful";
 import { Context, Effect, Layer } from "effect";
 
 type ContentfulClient = ReturnType<typeof contentful.createClient>;
-type GetEntriesQuery = Parameters<ContentfulClient["getEntries"]>[0];
+
+export type EntriesQuery = Parameters<ContentfulClient["getEntries"]>[0];
 
 export class CmsClient extends Context.Tag("CmsClient")<
 	CmsClient,
 	{
 		getEntries<Skeleton extends EntrySkeletonType = EntrySkeletonType>(
-			query: GetEntriesQuery,
+			query: EntriesQuery,
 		): Effect.Effect<EntryCollection<Skeleton, undefined>, CmsError>;
 	}
 >() {}
@@ -33,7 +34,7 @@ export const CmsClientLive = Layer.effect(
 		});
 
 		return {
-			getEntries: <Skeleton extends EntrySkeletonType = EntrySkeletonType>(query: GetEntriesQuery) =>
+			getEntries: <Skeleton extends EntrySkeletonType = EntrySkeletonType>(query: EntriesQuery) =>
 				Effect.tryPromise({
 					try: () => client.getEntries<Skeleton>(query),
 					catch: (cause) =>

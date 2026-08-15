@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { SITE_URL } from "astro:env/client";
-import { PAGES_ROUTES } from "@const/index";
+import { absoluteUrl, articleHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import FeaturedArticle from "@modules/articles/components/featuredArticle/FeaturedArticle.astro";
 import { getFeaturedArticle } from "@modules/articles/utils/featured";
@@ -15,14 +14,12 @@ export const prerender = true;
 
 const articles = await getCollection("articles");
 const featuredArticle = getFeaturedArticle(articles);
-const itemListSchema = buildItemListSchema(
-	articles.map((article) => new URL(`${PAGES_ROUTES.ARTICLE}${article.data.slug}`, SITE_URL).href),
-);
+const itemListSchema = buildItemListSchema(articles.map((article) => absoluteUrl(articleHref(article.data.slug))));
 
 const metadata: Partial<SeoMetadata> = {
 	title: "Articles",
 	description: "Articles I wrote while drinking coffee",
-	...(featuredArticle?.data.featuredImage && { image: `https:${featuredArticle.data.featuredImage.url}` }),
+	...(featuredArticle?.data.featuredImage && { image: featuredArticle.data.featuredImage.url }),
 };
 ---
 <BaseLayout {...metadata}>

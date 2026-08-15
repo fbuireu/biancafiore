@@ -48,7 +48,7 @@ describe("testimonialDTO", () => {
 			quote: "She turned our launch into a story",
 			role: "Head of Marketing",
 			image: {
-				url: "//cdn/ada.webp",
+				url: "https://cdn/ada.webp",
 				details: { width: 128, height: 128 },
 				formats: { avif: false, webp: true },
 			},

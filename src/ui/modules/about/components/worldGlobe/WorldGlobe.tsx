@@ -1,25 +1,20 @@
-import type { CollectionEntry } from "astro:content";
+import type { CityPoint } from "@modules/about/utils/globe";
 import { lazy, memo, Suspense, useEffect, useRef, useState } from "react";
+import { WORLD_GLOBE_CONFIG } from "./const";
 import "./world-globe.css";
 
-interface GlobeAllCitiesProps {
-	cities: CollectionEntry<"cities">[];
+interface WorldGlobeProps {
+	points: CityPoint[];
 	width?: number;
-}
-
-export interface ReactGlobePoint {
-	lat: number;
-	lng: number;
-	label: string;
 }
 
 const WorldGlobeCanvas = lazy(() => import("./WorldGlobeCanvas"));
 
-const WORLD_GLOBE_HEIGHT = 458;
+const { HEIGHT } = WORLD_GLOBE_CONFIG;
 
 const getResponsiveWidth = () => (window.innerWidth > 720 ? 680 : undefined);
 
-const WorldGlobe = memo(({ cities, width: widthProp }: GlobeAllCitiesProps) => {
+export const WorldGlobe = memo(({ points, width: widthProp }: WorldGlobeProps) => {
 	const [autoWidth, setAutoWidth] = useState<number | undefined>(() => getResponsiveWidth());
 	const width = widthProp ?? autoWidth;
 
@@ -61,11 +56,11 @@ const WorldGlobe = memo(({ cities, width: widthProp }: GlobeAllCitiesProps) => {
 		<aside
 			ref={containerRef}
 			className="world-globe-wrapper reveal reveal--fade"
-			style={!isVisible ? { height: WORLD_GLOBE_HEIGHT, width } : undefined}
+			style={!isVisible ? { height: HEIGHT, width } : undefined}
 		>
 			{isVisible && (
 				<Suspense fallback={null}>
-					<WorldGlobeCanvas cities={cities} width={width} />
+					<WorldGlobeCanvas points={points} width={width} />
 				</Suspense>
 			)}
 		</aside>
@@ -73,5 +68,3 @@ const WorldGlobe = memo(({ cities, width: widthProp }: GlobeAllCitiesProps) => {
 });
 
 WorldGlobe.displayName = "WorldGlobe";
-
-export default WorldGlobe;

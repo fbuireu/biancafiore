@@ -1,8 +1,9 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { PAGES_ROUTES } from "@const/index";
+import { articleHref, tagHref } from "@const/index";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import LinkWithArrow from "@modules/core/components/linkWithArrow/LinkWithArrow.astro";
+import { buildArticleShareLinks } from "./utils/share";
 import "./featured-article.css";
 
 interface Props {
@@ -10,15 +11,20 @@ interface Props {
 }
 
 const { featuredArticle } = Astro.props;
-const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`, Astro.url).href;
+const featuredArticleUrl = articleHref(featuredArticle.data.slug);
+const shareLinks = buildArticleShareLinks({
+	slug: featuredArticle.data.slug,
+	title: featuredArticle.data.title,
+	tags: featuredArticle.data.tags,
+});
 ---
 <div class="articles-wrapper">
     <section class="articles-wrapper__inner common-wrapper">
         <div class="featured-article-wrapper reveal">
-            <a href={`/articles/${featuredArticle.data.slug}`}>
+            <a href={featuredArticleUrl}>
                 <BlurImage
                     class="featured-article__image"
-                    src={`https:${featuredArticle.data.featuredImage!.url}`}
+                    src={featuredArticle.data.featuredImage!.url}
                     width={featuredArticle.data.featuredImage!.details.width}
                     height={featuredArticle.data.featuredImage!.details.height}
                     alt={featuredArticle.data.title}
@@ -27,7 +33,7 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                 />
             </a>
             <div class="featured-article__details-wrapper flex row-wrap">
-                <a class="featured-article__link-card" href={`/articles/${featuredArticle.data.slug}`}
+                <a class="featured-article__link-card" href={featuredArticleUrl}
                    aria-labelledby="featured-article-title">{' '}</a>
                 <div class="featured-article__details flex column-wrap">
                     <time class="featured-article__publish-date font-sans-serif"
@@ -40,14 +46,14 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                       featuredArticle.data.tags?.length && (
                           <ul class="featured-article__tags__list flex">
                             {featuredArticle.data.tags?.map(({ name, slug }) => (
-                                <a class="featured-article__tag__item underline-on-hover" href={`${PAGES_ROUTES.TAGS}/${slug}`}>
+                                <a class="featured-article__tag__item underline-on-hover" href={tagHref(slug)}>
                                     #{name}
                                 </a>
                             ))}
                           </ul>
                       )
                   }
-                <LinkWithArrow href={`${PAGES_ROUTES.ARTICLES}/${featuredArticle.data.slug}`} classNames="featured-article__cta">
+                <LinkWithArrow href={featuredArticleUrl} classNames="featured-article__cta">
                     Read more
                 </LinkWithArrow>
                 </div>
@@ -58,7 +64,7 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                             <a
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                href={`https://www.linkedin.com/sharing/share-offsite/?url=${featuredArticleShareUrl}`}
+                                href={shareLinks.linkedin}
                             >
                                 Linkedin
                             </a>
@@ -67,8 +73,7 @@ const featuredArticleShareUrl = new URL(`${PAGES_ROUTES.ARTICLES}/${featuredArti
                             <a
                                 target="_blank"
                                 rel="external"
-                                href={`https://twitter.com/intent/tweet?url=${featuredArticleShareUrl}&text=${featuredArticle.data.title}&hashtags=${featuredArticle.data.tags?.join(
-                                    ',')}`}>
+                                href={shareLinks.x}>
                                 X (former Twitter)
                             </a>
                         </li>

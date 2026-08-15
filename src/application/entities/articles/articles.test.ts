@@ -99,11 +99,19 @@ describe("articles loader", () => {
 
 		await load();
 
-		expect(cmsQueries).toEqual([{ content_type: "article", order: ["-fields.publishDate"] }]);
+		expect(cmsQueries).toEqual([expect.objectContaining({ content_type: "article", order: ["-fields.publishDate"] })]);
 	});
 
 	it("keys every entry by its slug", async () => {
 		cmsAnswers({ article: [makeArticle({ slug: "an-article", publishDate: "2024-03-15" })] });
+
+		const [entry] = await load();
+
+		expect(entry).toMatchObject({ id: "an-article", slug: "an-article" });
+	});
+
+	it("keys an entry by the trimmed slug, so a padded CMS slug still answers the references pointing at it", async () => {
+		cmsAnswers({ article: [makeArticle({ slug: "  an-article  ", publishDate: "2024-03-15" })] });
 
 		const [entry] = await load();
 
@@ -138,7 +146,7 @@ describe("articles loader", () => {
 		const [entry] = await load();
 
 		expect(entry.featuredImage).toMatchObject({
-			url: "//images.ctfassets.net/hero.jpg",
+			url: "https://images.ctfassets.net/hero.jpg",
 			placeholder: PLACEHOLDER,
 		});
 		expect(cdn.calls).toStrictEqual(["https://images.ctfassets.net/hero.jpg?w=24&q=35&fm=webp"]);

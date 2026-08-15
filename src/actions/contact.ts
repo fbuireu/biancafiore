@@ -1,14 +1,20 @@
 import type { Except } from "@const/types";
 import type { Database } from "@infrastructure/db/client";
 import type { EmailClient } from "@infrastructure/email/server";
-import type { DatabaseError, DuplicateContactError, EmailError, ValidationError } from "@infrastructure/errors";
+import type {
+	DatabaseError,
+	DuplicateContactError,
+	EmailError,
+	RecaptchaError,
+	ValidationError,
+} from "@infrastructure/errors";
 import { normalizeEmail, sendEmail } from "@infrastructure/utils/email";
 import { validateContact, verifyRecaptcha } from "@infrastructure/utils/guards";
 import { checkDuplicatedEntries, saveContact } from "@infrastructure/utils/persistence";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
 
-export type ContactError = ValidationError | DuplicateContactError | EmailError | DatabaseError;
+export type ContactError = ValidationError | RecaptchaError | DuplicateContactError | EmailError | DatabaseError;
 
 export type ContactParams = Except<ContactFormData, "emailId"> & { recaptcha: string };
 

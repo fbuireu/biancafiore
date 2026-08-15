@@ -88,7 +88,10 @@ describe("authors loader", () => {
 		await load();
 
 		expect(cmsQueries).toEqual(
-			expect.arrayContaining([{ content_type: "author" }, { content_type: "article", order: ["-fields.publishDate"] }]),
+			expect.arrayContaining([
+				expect.objectContaining({ content_type: "author" }),
+				expect.objectContaining({ content_type: "article", order: ["-fields.publishDate"] }),
+			]),
 		);
 		expect(cmsQueries).toHaveLength(2);
 		expect(cmsQueriesOverlapped()).toBe(true);

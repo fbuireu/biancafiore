@@ -86,11 +86,14 @@ const CLIENT_TABLE_ROW = /^\| `(\w+)` \| `(\w+)` \| `([\w/.]+)` \|$/gm;
 const TAGGED_ERROR_DECLARATION = /export class (\w+) extends Data\.TaggedError/g;
 const MODULE_LEVEL_ENV_IMPORT = /^\s*import\s[^\n]*"astro:env\/server"/m;
 const RECAPTCHA_SCORE_DECLARATION = /const RECAPTCHA_MINIMUM_SCORE = ([\d.]+);/;
+const DRIZZLE_IMPORT = /from "drizzle-orm(\/[\w/]+)?"/;
 const CAUGHT_SAVE_CONTACT = /saveContact\([^)]*\)\.pipe\(\s*Effect\.catchAll/;
 const CONSOLE_CALL = /\bconsole\.\w+\(/;
-const TAG_TO_STATUS_CASE = /case "(\w+)":[\s\S]{0,60}?ActionError\(\{ code: "(\w+)"/g;
+const TAG_TO_STATUS_CASE = /case "(\w+)":[\s\S]{0,60}?code: "(\w+)"/g;
 const DOCUMENTED_TAG_TO_STATUS = /`(?:\w+Error)` → `[A-Z_]+`/g;
-const CONSTRUCTED_ACTION_ERROR = /new ActionError\(\{ code: "(\w+)"/g;
+const ANSWERED_STATUS = /code: "(\w+)"/g;
+const CONSTRUCTED_ACTION_ERROR = /new ActionError\(\{/;
+const ASTRO_MODULE_IMPORT = /from "astro:/;
 const DOCUMENTED_CATCH_ALL_STATUS = /collapses into one generic `([A-Z_]+)` message/;
 const IMPORT_SOURCE = /from "([^"]+)"/g;
 const OUTWARD_IMPORT = /^@(application|infrastructure|modules)\//;
@@ -101,6 +104,13 @@ const IMPURE_DTO_CODE = /astro:env|from "effect"|getEntries|getImagePlaceholder/
 const ASYNC_DTO_CREATE = /create:\s*async/;
 const DTO_INFRASTRUCTURE_IMPORT = /from "(@infrastructure\/[^"]+)"/g;
 const CONTENTFUL_TYPE = /from "contentful"|@contentful\/|EntryFieldTypes|EntrySkeletonType/;
+const HAND_PREFIXED_ASSET_URL = /`https:\$\{/;
+const ABSOLUTE_IMAGE_URL_SCHEMA = /url:\s*z\.url\(\)/;
+const ASSET_SCHEME_CONSTANT = /ASSET_SCHEME = "https:"/;
+const CMS_LAYER_IMPORT = /import\s*\{[^}]*CmsClientLive[^}]*\}\s*from\s*"@infrastructure\/cms\/client"/;
+const LOADER_FETCH_ENTRIES = /await fetchEntries</;
+const CONTENTFUL_PAGE_CAP = /CONTENTFUL_MAX_PAGE_SIZE = (\d+)/;
+const LOADER_REACHING_PAST_FETCH_ENTRIES = /from "effect"|isContentfulConfigured|CmsClient|concurrency:/;
 const DOMAIN_SCHEMA_BINDING = /schema:\s*\w+Schema/;
 const DOMAIN_IMPORT = /from "@domain\//;
 const LOADER_ID_ASSIGNMENT = /^\t*id:\s*(?:\w+\.)?(\w+),$/gm;
@@ -125,6 +135,7 @@ const SEMANTIC_TOKEN_CENSUS = /they are exactly ([^—]+)—/;
 const GRID_TOKEN_IN_QUERY = /@(?:container|media)[^{]*var\(--grid-/;
 const REVEAL_MODIFIER_DECLARATION = /\.reveal--[a-z-]+[^{\n]*\{/g;
 const PAGE_CONTAINER_DECLARATION = /&\.page--([a-z\d-]+)\s*\{\s*container:\s*([a-z\d-]+)\s*\/\s*([^;]+);/g;
+const SITE_ORIGIN_READ = /\bSITE_URL\b/;
 const PAGES_ROUTES_BLOCK = /PAGES_ROUTES = \{([\s\S]*?)\n\} as const;/;
 const PAGES_ROUTES_KEY = /^\t"?([\w-]+)"?:/gm;
 const LAYER_ORDER_DECLARATION = /^@layer [^;{]+,[^;{]+;/m;
@@ -132,6 +143,8 @@ const LAYER_TABLE_ROW = /^\| ([^|]+) \| `([\w.-]+)`[^|]*\|$/gm;
 const STYLESHEET_CITATION = /`([\w/.-]+)`/g;
 const LAYER_STATEMENT = /^@layer .+;$/;
 const INVERTED_SECTION_CENSUS = /the components that do are ([^.]+)\./;
+const INVERTED_SECTION_MIX = "inverted-color-scheme";
+const INVERTED_SECTION_MARKUP = /class="([^"]*inverted-color-scheme[^"]*)"/g;
 const MODIFIER_BLOCK_DECLARATION = /^\t\.([a-z-]+)[^{\n]*\{/gm;
 const MIXED_UTILITY_TABLE_ROW = /^\| `([a-z][a-z-]*)` \| [^|]+ \|$/gm;
 const MIXED_UTILITY_BULLET = /^\t- `([a-z][a-z-]*)` — /gm;
@@ -145,10 +158,33 @@ const CLASS_ATTRIBUTE = /class(?:Name|:list)?=(?:"([^"]*)"|'([^']*)'|\{((?:[^{}]
 const CLASS_WORD = /[a-zA-Z][\w-]*/g;
 const ISLAND_ROOT_CENSUS = /only three hydration roots[^—]*— ([^—]+) —/;
 const DTO_CITED_DEFAULT = /`(\?\? [^`\n]+)`/g;
+const CREATE_AUTHOR_DEFINITION = /export function createAuthor\(/;
+const AUTHOR_FIELD_MAPPING = /\bsocialNetworks: [^;\n]+,$/m;
+const ARTICLE_REFERENCE_LITERAL = /collection: "articles"/;
+const NORMALISED_ARTICLE_SLUG = /slug: articleSlug\(/;
+const AUTHORED_RELATED_ARTICLES = /fields\.relatedArticles/;
+const RELATED_ARTICLES_CAP = /INFERRED_RELATED_ARTICLES_LIMIT = (\d+)/;
+const TITLE_AS_IDENTITY = /fields\.title ===/;
+const ARTICLE_SLUG_CALL = /articleSlug\(/;
 const LEAKED_INFRASTRUCTURE_IMPORT = /@infrastructure\/|from "contentful"/;
+const DEREFERENCING_MODULE = "src/ui/modules/core/utils/entries.ts";
+const GET_ENTRY_CALL = /\bgetEntry\(/;
+const EFFECT_IMPORT = /from "effect"/;
 const CITED_CONTAINER_QUERY = /@container ([a-z-]+) \(width <= \d+px\)/;
+const EMAIL_BUTTON_MODULE = "src/ui/modules/core/components/emailButton/utils/interactions.ts";
+const EMAIL_BUTTON_STYLESHEET = "src/ui/modules/core/components/emailButton/email-button.css";
+const EMAIL_BUTTON_HOOK_DECLARATION = /export const EMAIL_BUTTON_CLASS = "([\w-]+)";/;
+const BUNDLED_SCRIPT = /^\s*<script>/m;
+const PAGE_LOAD_LISTENER = /addEventListener\(\s*["']astro:page-load["']/;
+const THEME_MODULE = "src/ui/modules/core/components/themeToggle/utils/theme.ts";
+const THEME_PREFERENCE_MODULE = "src/ui/modules/core/components/themeToggle/utils/preference.ts";
+const THEME_KEY_DECLARATION = /export const THEME_STORAGE_KEY = "([\w-]+)" as const;/;
+const THEME_PERSISTENCE = /localStorage\.setItem|store\.setItem/;
+const DECODED_EMAIL_ADDRESS = /ENCODED_EMAIL_BIANCA/;
 const IMAGE_SERVICE_SWITCH = /imageService: isProductionBuild \? "cloudflare" : "passthrough"/;
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
+const CHROME_POLICY = "src/ui/modules/core/utils/siteChrome.ts";
+const CHROME_ANSWER = /^\t(\w+): boolean;$/gm;
 
 const toPosix = (value: string) => value.split("\\").join("/");
 const read = (relativePath: string) => readFileSync(join(ROOT, relativePath), "utf8").split("\r\n").join("\n");
@@ -516,8 +552,26 @@ describe("infrastructure guide", () => {
 
 	it("keeps the two runtimes it describes", () => {
 		expect(guide).toContain("ManagedRuntime");
-		expect(read("src/infrastructure/runtime.ts")).toContain("ManagedRuntime");
+		expect(read("src/infrastructure/cms/entries.ts")).toContain("ManagedRuntime");
 		expect(read("src/infrastructure/layers.ts")).toContain("ContactLayer");
+	});
+
+	it("owns the page cursor, and quotes the per-request cap the code walks it at", () => {
+		const entries = read("src/infrastructure/cms/entries.ts");
+		const cap = entries.match(CONTENTFUL_PAGE_CAP)?.[1];
+
+		expect(cap).toBeDefined();
+		expect(guide).toContain("the page cursor, and with it the promise that the answer is complete");
+		expect(guide).toContain(`capped at ${cap} per request`);
+		expect(entries).toContain("collection.total");
+	});
+
+	it("builds the CMS runtime from an imported layer, which is what keeps the doubles substitutable", () => {
+		const entries = read("src/infrastructure/cms/entries.ts");
+
+		expect(guide).toContain("imports `CmsClientLive` across the module boundary");
+		expect(entries).toMatch(CMS_LAYER_IMPORT);
+		expect(read("src/infrastructure/cms/client.ts")).not.toContain("ManagedRuntime");
 	});
 
 	it("keeps the Workers-safe database imports it promises", () => {
@@ -607,15 +661,31 @@ describe("gotchas", () => {
 		expect(CLAUDE_MD).toContain(HTTPS_UPGRADE_DIRECTIVE);
 	});
 
-	it("reads HIDE_CHROME everywhere the gotcha says it does", () => {
-		const readers = [
-			"src/ui/modules/core/components/baseLayout/BaseLayout.astro",
-			"src/pages/articles/[...slug].astro",
-			"astro.config.ts",
-			".github/workflows/_deploy.yml",
-		];
+	it("decides what HIDE_CHROME means in the one module the gotcha names, and reads it nowhere else", () => {
+		const readers = SOURCE_FILES.filter((file) => read(file).includes("HIDE_CHROME"));
 
-		expect(readers.filter((file) => !read(file).includes("HIDE_CHROME"))).toEqual([]);
+		expect(readers).toEqual([CHROME_POLICY]);
+		expect(CLAUDE_MD).toContain("`@modules/core/utils/siteChrome.ts`");
+		expect(read("astro.config.ts")).toContain("HIDE_CHROME");
+		expect(read(".github/workflows/_deploy.yml")).toContain("HIDE_CHROME");
+	});
+
+	it("asks the chrome policy rather than the flag, wherever chrome is conditional", () => {
+		const asking = SOURCE_FILES.filter((file) => read(file).includes("siteChrome(Astro.url)"));
+
+		expect(asking.sort()).toEqual(
+			[
+				"src/pages/articles/[...slug].astro",
+				"src/ui/modules/core/components/baseLayout/BaseLayout.astro",
+				"src/ui/modules/core/components/breadcrumbs/Breadcrumbs.astro",
+			].sort(),
+		);
+
+		const answers = [...read(CHROME_POLICY).matchAll(CHROME_ANSWER)].map(([, answer]) => answer);
+		const guide = read("src/ui/modules/CLAUDE.md");
+
+		expect(answers.length).toBeGreaterThan(0);
+		expect(answers.filter((answer) => !guide.includes(`\`${answer}\``))).toEqual([]);
 	});
 
 	it("serves dist as assets from a Workers deploy bound to the documented domain", () => {
@@ -658,10 +728,19 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 		).toEqual([]);
 	});
 
-	it("leaves the tag to HTTP mapping to the action, and to toActionError alone", () => {
-		expect(guide).toContain("(`toActionError`), never here");
-		expect(read("src/actions/index.ts")).toContain("function toActionError(");
+	it("leaves the tag to HTTP mapping to the action, and to contactErrorResponse alone", () => {
+		expect(guide).toContain("(`contactErrorResponse`), never here");
+		expect(read("src/actions/errorResponse.ts")).toContain("export const contactErrorResponse = (");
 		expect(infrastructureFiles.filter((file) => read(file).includes("ActionError"))).toEqual([]);
+	});
+
+	it("keeps the query builder inside the layer the tag hides it behind", () => {
+		expect(guide).toContain("never re-exports the vendor's own object");
+
+		const drizzleImporters = SOURCE_FILES.filter((file) => DRIZZLE_IMPORT.test(read(file)));
+
+		expect(drizzleImporters.length).toBeGreaterThan(0);
+		expect(drizzleImporters.filter((file) => !file.startsWith("src/infrastructure/db/"))).toEqual([]);
 	});
 
 	it("cites the reCAPTCHA score the guard actually enforces", () => {
@@ -678,6 +757,7 @@ describe("actions guide", () => {
 	const guide = read("src/actions/CLAUDE.md");
 	const action = read("src/actions/index.ts");
 	const program = read("src/actions/contact.ts");
+	const mapping = read("src/actions/errorResponse.ts");
 
 	it("logs a failed saveContact instead of failing the request", () => {
 		expect(guide).toContain("A failed `saveContact` is logged, not raised");
@@ -686,12 +766,12 @@ describe("actions guide", () => {
 
 	it("logs through Effect rather than console, here and everywhere in src", () => {
 		expect(guide).toContain("Nothing here calls `console`");
-		expect(`${action}${program}`).toContain("Effect.logError");
+		expect(`${program}${mapping}`).toContain("Effect.logError");
 		expect(SOURCE_FILES.filter((file) => CONSOLE_CALL.test(read(file)))).toEqual([]);
 	});
 
 	it("maps exactly the tags the guide says it maps", () => {
-		const cases = [...action.matchAll(TAG_TO_STATUS_CASE)].map(([, tag, code]) => ({ tag, code }));
+		const cases = [...mapping.matchAll(TAG_TO_STATUS_CASE)].map(([, tag, code]) => ({ tag, code }));
 		const mapped = cases.map(({ tag, code }) => `\`${tag}\` → \`${code}\``);
 		const documented = [...guide.matchAll(DOCUMENTED_TAG_TO_STATUS)].map(([pair]) => pair);
 
@@ -699,16 +779,23 @@ describe("actions guide", () => {
 		expect(documented.sort()).toEqual(mapped.sort());
 	});
 
-	it("builds no status the guide does not account for, whatever shape the mapping is written in", () => {
+	it("answers no status the guide does not account for, whatever shape the mapping is written in", () => {
 		const catchAll = guide.match(DOCUMENTED_CATCH_ALL_STATUS)?.[1];
 		const documented = [...guide.matchAll(DOCUMENTED_TAG_TO_STATUS)]
 			.map(([pair]) => pair.split(" → ")[1].replaceAll("`", ""))
 			.sort();
-		const constructed = [...action.matchAll(CONSTRUCTED_ACTION_ERROR)].map(([, code]) => code);
+		const answered = [...mapping.matchAll(ANSWERED_STATUS)].map(([, code]) => code);
 
 		expect(catchAll).toBeDefined();
-		expect(constructed.filter((code) => code === catchAll)).toEqual([catchAll]);
-		expect(constructed.filter((code) => code !== catchAll).sort()).toEqual(documented);
+		expect(answered.filter((code) => code === catchAll)).toEqual([catchAll]);
+		expect(answered.filter((code) => code !== catchAll).sort()).toEqual(documented);
+	});
+
+	it("keeps the mapping runnable from a test, and the astro edge free of statuses", () => {
+		expect(guide).toContain("so a unit test can run the mapping");
+		expect(mapping).not.toMatch(ASTRO_MODULE_IMPORT);
+		expect(action).toContain("contactErrorResponse(cause)");
+		expect(action).not.toMatch(CONSTRUCTED_ACTION_ERROR);
 	});
 });
 
@@ -789,6 +876,38 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(cited.filter((fallback) => !dtoLayer.includes(fallback))).toEqual([]);
 	});
 
+	it("turns a raw author into Author fields in the one module the guide names", () => {
+		expect(guide).toContain("One raw entry, one mapping");
+
+		const definitions = dtoFiles.filter((file) => CREATE_AUTHOR_DEFINITION.test(read(file)));
+
+		expect(definitions).toEqual(["src/application/dto/author/utils/author.ts"]);
+		expect(dtoFiles.filter((file) => AUTHOR_FIELD_MAPPING.test(read(file)))).toEqual(definitions);
+	});
+
+	it("addresses an Article from the one module the guide names, the collection id included", () => {
+		expect(guide).toContain("One raw entry, one address");
+
+		const builders = dtoFiles.filter((file) => ARTICLE_REFERENCE_LITERAL.test(read(file)));
+
+		expect(builders).toEqual(["src/application/dto/article/utils/reference.ts"]);
+		expect(read("src/application/dto/article/articleDTO.ts")).toMatch(NORMALISED_ARTICLE_SLUG);
+	});
+
+	it("decides Related Articles in the one module the guide names, on the slug and with the cap it quotes", () => {
+		expect(guide).toContain("One concept, one decision");
+
+		const decider = "src/application/dto/article/utils/articles.ts";
+		const source = read(decider);
+		const cap = source.match(RELATED_ARTICLES_CAP)?.[1];
+
+		expect(dtoFiles.filter((file) => AUTHORED_RELATED_ARTICLES.test(read(file)))).toEqual([decider]);
+		expect(cap).toBeDefined();
+		expect(guide).toContain(`\`INFERRED_RELATED_ARTICLES_LIMIT\` (${cap})`);
+		expect(source).toMatch(ARTICLE_SLUG_CALL);
+		expect(dtoFiles.filter((file) => TITLE_AS_IDENTITY.test(read(file)))).toEqual([]);
+	});
+
 	it("keeps every DTO create synchronous, as the guide states", () => {
 		expect(guide).toContain("Every `create` is synchronous");
 		expect(dtoFiles.filter((file) => ASYNC_DTO_CREATE.test(read(file)))).toEqual([]);
@@ -805,6 +924,18 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(reached.filter((source) => !guide.includes(`\`${source}\``))).toEqual([]);
 	});
 
+	it("absolutises the asset url here, so nothing downstream re-adds the scheme", () => {
+		expect(guide).toContain("An asset URL is absolutised here");
+		expect(read("src/domain/shared/image.ts")).toMatch(ABSOLUTE_IMAGE_URL_SCHEMA);
+		expect(read("src/shared/application/dto/utils/images.ts")).toMatch(ASSET_SCHEME_CONSTANT);
+
+		const downstream = production([...walk("src/pages"), ...walk("src/ui")])
+			.filter((file) => SOURCE_FILE.test(file))
+			.filter((file) => HAND_PREFIXED_ASSET_URL.test(read(file)));
+
+		expect(downstream).toEqual([]);
+	});
+
 	it("stops Contentful types at this layer: nothing downstream sees them", () => {
 		expect(guide).toContain("Contentful types stop here");
 
@@ -815,34 +946,31 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(downstream).toEqual([]);
 	});
 
-	it("bails without credentials, fetches through runCms, and takes its schema from the domain", () => {
+	it("fetches through fetchEntries, and takes its schema from the domain", () => {
 		expect(loaders.length).toBeGreaterThan(0);
+		expect(guide).toContain("`fetchEntries<[Skeleton, …]>(query, …)`");
 
 		const broken = loaders.filter((file) => {
 			const source = read(file);
 
-			return (
-				!source.includes("if (!isContentfulConfigured()) return [];") ||
-				!source.includes("runCms(") ||
-				!DOMAIN_SCHEMA_BINDING.test(source) ||
-				!DOMAIN_IMPORT.test(source)
-			);
+			return !LOADER_FETCH_ENTRIES.test(source) || !DOMAIN_SCHEMA_BINDING.test(source) || !DOMAIN_IMPORT.test(source);
 		});
 
 		expect(broken).toEqual([]);
 	});
 
-	it("batches every multi-query loader with unbounded concurrency", () => {
-		expect(guide).toContain('Effect.all(..., { concurrency: "unbounded" })');
+	it("leaves the credential bail, the batching and Effect itself to that one interface", () => {
+		expect(guide).toContain("no Effect, no `CmsClient`, no runtime, and no credential guard");
 
-		const batched = loaders.filter((file) => read(file).includes("Effect.all("));
+		const entries = read("src/infrastructure/cms/entries.ts");
 
-		expect(batched.length).toBeGreaterThan(0);
-		expect(batched.filter((file) => !read(file).includes('{ concurrency: "unbounded" }'))).toEqual([]);
+		expect(entries).toContain("if (!isContentfulConfigured())");
+		expect(entries).toContain('{ concurrency: "unbounded" }');
+		expect(loaders.filter((file) => LOADER_REACHING_PAST_FETCH_ENTRIES.test(read(file)))).toEqual([]);
 	});
 
 	it("cites the id every loader assigns, and the one that assigns none", () => {
-		const step = guide.split("\n").find((line) => line.startsWith("4. ")) ?? "";
+		const step = guide.split("\n").find((line) => line.startsWith("3. ")) ?? "";
 		const assigned = [
 			...new Set(loaders.flatMap((file) => [...read(file).matchAll(LOADER_ID_ASSIGNMENT)].map(([, field]) => field))),
 		];
@@ -1040,6 +1168,20 @@ describe("styles guide: derived constants and source order", () => {
 		expect(censused.sort()).toEqual([...new Set(inverting)].sort());
 	});
 
+	it("lets the header observe the mix rather than naming the blocks that carry it", () => {
+		const interactions = read("src/ui/modules/core/components/header/utils/interactions.ts");
+		const blocks = production(walk("src/ui/modules"))
+			.filter((file) => SOURCE_FILE.test(file))
+			.flatMap((file) => [...read(file).matchAll(INVERTED_SECTION_MARKUP)])
+			.flatMap(([, applied]) => [...applied.matchAll(CLASS_WORD)].map(([word]) => word))
+			.filter((name) => name !== INVERTED_SECTION_MIX);
+
+		expect(guide).toContain("observes every `.inverted-color-scheme`");
+		expect(blocks.length).toBeGreaterThan(0);
+		expect(interactions).toContain(`.${INVERTED_SECTION_MIX}`);
+		expect(blocks.filter((name) => interactions.includes(`.${name}`))).toEqual([]);
+	});
+
 	it("declares the layer order in index.css and nowhere else", () => {
 		const declaring = walk("src/ui/styles")
 			.filter((file) => file.endsWith(".css"))
@@ -1125,6 +1267,69 @@ describe("modules guide: mixes, islands and data access", () => {
 			.filter((file) => LEAKED_INFRASTRUCTURE_IMPORT.test(read(file)));
 
 		expect(leaks).toEqual([]);
+	});
+
+	it("dereferences through one module, on promises rather than Effect", () => {
+		expect(guide).toContain("`getEntry` is called nowhere else under `src/ui` or `src/pages`");
+		expect(guide).toContain("nothing under `src/ui` imports `effect` at all");
+
+		const resolver = read(DEREFERENCING_MODULE);
+
+		expect(resolver).toContain("export async function resolveArticle(");
+		expect(resolver).toContain("export async function resolveArticles(");
+
+		const sources = production([...walk("src/ui"), ...walk("src/pages")]).filter((file) => SOURCE_FILE.test(file));
+
+		expect(sources.filter((file) => file !== DEREFERENCING_MODULE && GET_ENTRY_CALL.test(read(file)))).toEqual([]);
+		expect(sources.filter((file) => file.startsWith("src/ui/") && EFFECT_IMPORT.test(read(file)))).toEqual([]);
+	});
+
+	it("declares the Email button's hook once, where its template, its stylesheet and its listener all read it", () => {
+		expect(guide).toContain("declared once, in that module");
+
+		const hook = read(EMAIL_BUTTON_MODULE).match(EMAIL_BUTTON_HOOK_DECLARATION)?.[1];
+
+		expect(hook).toBeDefined();
+		expect(read(EMAIL_BUTTON_STYLESHEET)).toContain(`.${hook}`);
+
+		const respelled = production([...walk("src/ui"), ...walk("src/pages")])
+			.filter((file) => file !== EMAIL_BUTTON_MODULE && file !== EMAIL_BUTTON_STYLESHEET)
+			.filter((file) => read(file).includes(hook ?? ""));
+
+		expect(respelled).toEqual([]);
+	});
+
+	it("bootstraps the theme from the module that owns the preference, and paints without persisting", () => {
+		expect(guide).toContain("Only a click on the toggle persists");
+		expect(guide).toContain("`Head.astro` renders `THEME_BOOTSTRAP_SCRIPT` with `set:html`");
+
+		const key = read("src/ui/modules/core/components/themeToggle/const.ts").match(THEME_KEY_DECLARATION)?.[1];
+		const head = read("src/ui/modules/core/components/head/Head.astro");
+
+		expect(key).toBeDefined();
+		expect(head).toContain("set:html={THEME_BOOTSTRAP_SCRIPT}");
+		expect(head).not.toContain(`"${key}"`);
+		expect(read(THEME_PREFERENCE_MODULE)).toContain("THEME_BOOTSTRAP_SCRIPT");
+		expect(THEME_PERSISTENCE.test(read(THEME_MODULE))).toBe(false);
+	});
+
+	it("keeps the address the base64 protects out of what the server renders", () => {
+		expect(guide).toContain("never server-rendered");
+
+		const templates = production([...walk("src/ui"), ...walk("src/pages")]).filter((file) => file.endsWith(".astro"));
+
+		expect(templates.length).toBeGreaterThan(0);
+		expect(templates.filter((file) => DECODED_EMAIL_ADDRESS.test(read(file)))).toEqual([]);
+	});
+
+	it("initialises every bundled script on astro:page-load, so a swapped-in body is still wired", () => {
+		expect(guide).toContain("once per session");
+
+		const templates = production([...walk("src/ui"), ...walk("src/pages")]).filter((file) => file.endsWith(".astro"));
+		const bundled = templates.filter((file) => BUNDLED_SCRIPT.test(read(file)));
+
+		expect(bundled.length).toBeGreaterThan(0);
+		expect(bundled.filter((file) => !PAGE_LOAD_LISTENER.test(read(file)))).toEqual([]);
 	});
 
 	it("cites a container query that matches a container base.css declares and a stylesheet uses", () => {
@@ -1231,5 +1436,12 @@ describe("conventions", () => {
 		expect(BIOME_JSON.assist.actions.source.organizeImports).toBe("on");
 		expect(BIOME_JSON.files.includes).toContain("!**/src/data/**/*");
 		expect(BIOME_JSON.files.includes).toContain("!**/public/**/*");
+	});
+
+	it("resolves the site origin in the one module the conventions name", () => {
+		const conventions = section(CLAUDE_MD, "Conventions");
+
+		expect(conventions).toContain("only reader of `SITE_URL`");
+		expect(SOURCE_FILES.filter((file) => SITE_ORIGIN_READ.test(read(file)))).toEqual(["src/const/routes.ts"]);
 	});
 });

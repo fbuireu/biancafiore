@@ -1,5 +1,4 @@
 ---
-import { CONTACT_DETAILS } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
@@ -91,7 +90,7 @@ const metadata: Partial<SeoMetadata> = {
     <LegalSection>
         <h4>Your Rights</h4>
         <p>You have the right to access, rectify, delete, restrict, or object to the processing of your personal data. You can
-          exercise these rights by emailing us at <EmailButton classNames="legal-page__email" text={atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA)} />.
+          exercise these rights by emailing us at <EmailButton classNames="legal-page__email" shows="address" />.
           If you believe your data protection rights have not been respected, you also have the right to lodge a complaint with
           your local data protection supervisory authority.</p>
     </LegalSection>

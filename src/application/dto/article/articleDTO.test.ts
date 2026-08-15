@@ -67,6 +67,7 @@ interface MakeArticleParams {
 	isFavorite?: boolean;
 	isRepublished?: boolean;
 	originalSource?: string;
+	author?: unknown;
 	tags?: unknown[];
 	relatedArticles?: unknown[];
 }
@@ -83,6 +84,7 @@ const makeArticle = ({
 	isFavorite,
 	isRepublished,
 	originalSource,
+	author = AUTHOR,
 	tags,
 	relatedArticles,
 }: MakeArticleParams = {}) =>
@@ -99,7 +101,7 @@ const makeArticle = ({
 			isFavorite,
 			isRepublished,
 			originalSource,
-			author: AUTHOR,
+			author,
 			tags,
 			relatedArticles,
 		},
@@ -168,7 +170,7 @@ describe("articleDTO images and variant", () => {
 		]);
 
 		expect(article.featuredImage).toEqual({
-			url: "//cdn/hero.avif",
+			url: "https://cdn/hero.avif",
 			details: { width: 1200, height: 630 },
 			formats: { avif: true, webp: false },
 		});
@@ -255,13 +257,40 @@ describe("articleDTO related articles", () => {
 		expect(article.relatedArticles?.at(0)).toEqual({ id: "sibling-0", collection: "articles" });
 	});
 
-	it("excludes candidates by title, so a namesake article is dropped even though it is a different entry", () => {
+	it("leaves an authored list uncapped, because an author who picks eight articles means eight", () => {
+		const picks = Array.from({ length: 8 }, (_, index) => ({ fields: { slug: `pick-${index}` } }));
+
+		const [article] = articleDTO.create([makeArticle({ slug: "first", relatedArticles: picks })]);
+
+		expect(article.relatedArticles).toHaveLength(8);
+	});
+
+	it("suggests a namesake article, because an article is excluded by its slug and not by its title", () => {
 		const craft = tag({ name: "Craft", slug: "craft" });
 
 		const [article] = articleDTO.create([
 			makeArticle({ slug: "first", title: "Same title", tags: [craft] }),
 			makeArticle({ slug: "namesake", title: "Same title", tags: [craft] }),
 		]);
+
+		expect(article.relatedArticles).toEqual([{ id: "namesake", collection: "articles" }]);
+	});
+
+	it("drops an authored reference an editor pointed back at the article itself", () => {
+		const [article] = articleDTO.create([
+			makeArticle({
+				slug: "first",
+				relatedArticles: [{ fields: { slug: "  first  " } }, { fields: { slug: "second" } }],
+			}),
+		]);
+
+		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
+	});
+
+	it("excludes the article from its own derived list even when it carries its own tags twice over", () => {
+		const craft = tag({ name: "Craft", slug: "craft" });
+
+		const [article] = articleDTO.create([makeArticle({ slug: "  first  ", title: "First", tags: [craft, craft] })]);
 
 		expect(article.relatedArticles).toEqual([]);
 	});
@@ -300,8 +329,34 @@ describe("articleDTO tags", () => {
 	});
 });
 
+describe("articleDTO slug", () => {
+	it("trims the article's own slug, so the collection is keyed on the string every reference spells", () => {
+		const [article] = articleDTO.create([makeArticle({ slug: "  a-piece  " })]);
+
+		expect(article.slug).toBe("a-piece");
+	});
+
+	it("keys a derived reference on the slug the referenced article carries, however Contentful padded it", () => {
+		const craft = tag({ name: "Craft", slug: "craft" });
+
+		const [first, second] = articleDTO.create([
+			makeArticle({ slug: "first", title: "First", tags: [craft] }),
+			makeArticle({ slug: "  second  ", title: "Second", tags: [craft] }),
+		]);
+
+		expect(second.slug).toBe("second");
+		expect(first.relatedArticles).toEqual([{ id: second.slug, collection: "articles" }]);
+	});
+
+	it("keys an authored reference the same way, rather than passing the padding through", () => {
+		const [article] = articleDTO.create([makeArticle({ relatedArticles: [{ fields: { slug: "  resolved-one  " } }] })]);
+
+		expect(article.relatedArticles).toEqual([{ id: "resolved-one", collection: "articles" }]);
+	});
+});
+
 describe("articleDTO content derivations", () => {
-	it("builds the table of contents from the unstyled headings, slugifying ids and shifting levels down by one", () => {
+	it("builds the table of contents from the headings the renderer collected, shifting levels down by one", () => {
 		const [article] = articleDTO.create([
 			makeArticle({
 				content: [
@@ -441,13 +496,40 @@ describe("articleDTO content derivations", () => {
 		expect(article.content).toContain('title="She said &quot;hello&quot;"');
 	});
 
-	it("escapes a heading in the body exactly as the table of contents stores it, so the two spell the same anchor", () => {
+	it("escapes a heading in the body but hands the table of contents the text as authored", () => {
 		const [article] = articleDTO.create([makeArticle({ content: [heading({ level: 2, value: "Why & How" })] })]);
 		const [entry] = article.tableOfContents;
 
-		expect(entry.heading).toBe("Why &amp; How");
+		expect(entry.heading).toBe("Why & How");
 		expect(entry.id).toBe("why-how");
 		expect(article.content).toContain(`<a href="#${entry.id}">Why &amp; How</a>`);
+	});
+
+	it("spells the anchor once, so an entity in a heading cannot split the id from the link", () => {
+		const [article] = articleDTO.create([makeArticle({ content: [heading({ level: 2, value: "Tips & Tricks" })] })]);
+		const [entry] = article.tableOfContents;
+
+		expect(entry.id).toBe("tips-tricks");
+		expect(article.content).toContain(`<h2 id="${entry.id}"`);
+	});
+
+	it("numbers each section by the position its entry takes in the table of contents", () => {
+		const [article] = articleDTO.create([
+			makeArticle({
+				content: [
+					heading({ level: 1, value: "Title" }),
+					heading({ level: 2, value: "First" }),
+					heading({ level: 3, value: "Second" }),
+				],
+			}),
+		]);
+
+		for (const [index, entry] of article.tableOfContents.entries()) {
+			expect(article.content).toContain(`<section style="--is: --section-${index + 1}">`);
+			expect(article.content).toContain(`<h${entry.level + 1} id="${entry.id}"`);
+		}
+
+		expect(article.tableOfContents).toHaveLength(2);
 	});
 
 	it("counts the words of every paragraph towards reading time, not just the first of each", () => {
@@ -480,12 +562,20 @@ describe("articleDTO author and batching", () => {
 			jobTitle: "Writer",
 			currentCompany: "Freelance",
 			profileImage: {
-				url: "//images.ctfassets.net/bianca.webp",
+				url: "https://images.ctfassets.net/bianca.webp",
 				details: { width: 1200, height: 630 },
 				formats: { avif: false, webp: true },
 			},
 			socialNetworks: ["https://linkedin.com/in/bianca"],
 		});
+	});
+
+	it("trims the byline slug, so it addresses the same page the author collection generates", () => {
+		const [article] = articleDTO.create([
+			makeArticle({ author: { fields: { ...AUTHOR.fields, name: " Bianca Fiore ", slug: " bianca-fiore " } } }),
+		]);
+
+		expect(article.author).toMatchObject({ name: "Bianca Fiore", slug: "bianca-fiore" });
 	});
 
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {

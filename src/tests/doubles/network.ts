@@ -23,6 +23,7 @@ export interface RecaptchaCall {
 export interface RecaptchaDoubleOptions {
 	success?: boolean;
 	score?: number;
+	errorCodes?: string[];
 	unreachable?: boolean;
 	malformed?: boolean;
 }
@@ -34,6 +35,7 @@ export interface RecaptchaDouble {
 export function recaptchaDouble({
 	success = true,
 	score,
+	errorCodes,
 	unreachable,
 	malformed,
 }: RecaptchaDoubleOptions = {}): RecaptchaDouble {
@@ -49,7 +51,11 @@ export function recaptchaDouble({
 			if (unreachable) return HttpResponse.error();
 			if (malformed) return HttpResponse.text("not json at all");
 
-			return HttpResponse.json(score === undefined ? { success } : { success, score });
+			return HttpResponse.json({
+				success,
+				...(score === undefined ? {} : { score }),
+				...(errorCodes === undefined ? {} : { "error-codes": errorCodes }),
+			});
 		}),
 	);
 

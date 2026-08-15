@@ -1,5 +1,6 @@
 import { getCollection } from "astro:content";
 import rss from "@astrojs/rss";
+import { articleHref } from "@const/index";
 import { DEFAULT_SEO_PARAMS } from "@modules/core/components/seo/const";
 import type { APIRoute } from "astro";
 
@@ -17,7 +18,7 @@ export const GET: APIRoute = async (context) => {
 				title: article.data.title,
 				description: article.data.description,
 				pubDate: new Date(article.data.publishDateISO),
-				link: `/articles/${article.data.slug}`,
+				link: articleHref(article.data.slug),
 			}))
 			.toSorted((a, b) => b.pubDate.getTime() - a.pubDate.getTime()),
 	});

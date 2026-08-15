@@ -48,17 +48,15 @@ describe("DatabaseLive", () => {
 		expect(Exit.isFailure(exit) && Cause.isDie(exit.cause)).toBe(true);
 	});
 
-	it("maps a rejected query to a typed DatabaseError rather than a defect", async () => {
+	it("hands out the two contact operations rather than the query builder", async () => {
 		setSecret(URL_SECRET, "libsql://example.turso.io");
 		setSecret(TOKEN_SECRET, "a-token");
 
-		const exit = await Effect.runPromiseExit(
-			Effect.flatMap(Database, ({ run }) => run(Promise.reject(new Error("turso unreachable")))).pipe(
-				Effect.provide(DatabaseLive),
-			),
-		);
+		const exit = await build();
 
-		expect(defectOf(exit)).toBeUndefined();
-		expect(failureOf(exit)).toMatchObject({ _tag: "DatabaseError", message: "turso unreachable" });
+		expect(Exit.isSuccess(exit) && Object.keys(exit.value).toSorted()).toStrictEqual([
+			"findContactByEmail",
+			"insertContact",
+		]);
 	});
 });

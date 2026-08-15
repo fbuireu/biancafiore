@@ -9,3 +9,9 @@ export const ArticleType = {
 export type ArticleDTO = z.infer<typeof articleSchema>;
 
 export type TableOfContents = ArticleDTO["tableOfContents"];
+
+export interface ArticleHeading {
+	level: number;
+	id: string;
+	text: string;
+}

@@ -1,17 +1,19 @@
 ---
+import { EMAIL_ADDRESS_PLACEHOLDER, EMAIL_BUTTON_ADDRESS_CLASS, EMAIL_BUTTON_CLASS } from "./utils/interactions";
 import "./email-button.css";
 
-interface Props {
-	classNames?: string;
-	text?: string;
-}
+type Props = { classNames?: string } & ({ shows?: "label"; label?: string } | { shows: "address"; label?: never });
 
-const { classNames, text = "Email" } = Astro.props;
+const { classNames, shows = "label", label = "Email" } = Astro.props;
+const showsAddress = shows === "address";
 ---
-<button class:list={[`${classNames} underline-on-hover mail-to__button`]}>{text}</button>
+<button
+  type="button"
+  class:list={[classNames, "underline-on-hover", EMAIL_BUTTON_CLASS, showsAddress && EMAIL_BUTTON_ADDRESS_CLASS]}
+>{showsAddress ? EMAIL_ADDRESS_PLACEHOLDER : label}</button>
 
 <script>
-  import { mailTo } from "@modules/core/components/emailButton/utils/interactions";
+  import { activateEmailButtons } from "@modules/core/components/emailButton/utils/interactions";
 
-  mailTo();
+  document.addEventListener("astro:page-load", () => activateEmailButtons());
 </script>

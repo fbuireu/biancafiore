@@ -1,34 +1,43 @@
 import type { CollectionEntry } from "astro:content";
-import type { ReactGlobePoint } from "@modules/about/components/worldGlobe";
-import { slugify } from "@shared/utils/strings";
 
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+
+export interface CityPoint {
+	lat: number;
+	lng: number;
+	label: string;
+	slug: string;
+}
+
+export function toCityPoints(cities: CollectionEntry<"cities">[]): CityPoint[] {
+	return cities.map(({ data }) => ({
+		lat: data.coordinates.latitude,
+		lng: data.coordinates.longitude,
+		label: data.name,
+		slug: data.slug,
+	}));
+}
 
 interface CalculateCenterReturn {
 	latitude: number;
 	longitude: number;
 }
 
-export function calculateCenter(city: CollectionEntry<"cities">[]): CalculateCenterReturn {
-	const latitudes = city.map(({ data }) => Number.parseFloat(String(data.coordinates.latitude)));
-	const longitudes = city.map(({ data }) => Number.parseFloat(String(data.coordinates.longitude)));
+export function calculateCenter(points: CityPoint[]): CalculateCenterReturn {
+	if (points.length === 0) {
+		return { latitude: 0, longitude: 0 };
+	}
 
-	const centerLatitude = latitudes.reduce((acc, latitude) => acc + latitude, 0) / latitudes.length;
-	const centerLongitude = longitudes.reduce((acc, longitude) => acc + longitude, 0) / longitudes.length;
+	const total = points.reduce(
+		(center, { lat, lng }) => ({ latitude: center.latitude + lat, longitude: center.longitude + lng }),
+		{ latitude: 0, longitude: 0 },
+	);
 
-	return { latitude: centerLatitude, longitude: centerLongitude };
-}
-
-export function refineCities(cities: CollectionEntry<"cities">[]): ReactGlobePoint[] {
-	return cities.map(({ data }) => ({
-		lat: data.coordinates.latitude,
-		lng: data.coordinates.longitude,
-		label: data.name,
-	}));
+	return { latitude: total.latitude / points.length, longitude: total.longitude / points.length };
 }
 
 interface RenderPinParams {
-	markerData: ReactGlobePoint;
+	markerData: CityPoint;
 }
 
 function createPinSvg({ fill, title }: { fill: string; title: string }): SVGSVGElement {
@@ -60,7 +69,7 @@ function createPinSvg({ fill, title }: { fill: string; title: string }): SVGSVGE
 export function renderPin({ markerData }: RenderPinParams): HTMLElement {
 	const markerWrapper = document.createElement("button");
 	markerWrapper.type = "button";
-	markerWrapper.classList.add("marker-wrapper", `marker-wrapper--${slugify(markerData.label)}`);
+	markerWrapper.classList.add("marker-wrapper", `marker-wrapper--${markerData.slug}`);
 
 	const marker = document.createElement("div");
 	marker.append(createPinSvg({ fill: "currentColor", title: markerData.label }));
@@ -72,7 +81,7 @@ export function renderPin({ markerData }: RenderPinParams): HTMLElement {
 	markerWrapper.append(label);
 
 	markerWrapper.onclick = () => {
-		const city = document.getElementById(slugify(markerData.label));
+		const city = document.getElementById(markerData.slug);
 		if (!city) {
 			return;
 		}

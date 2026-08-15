@@ -5,7 +5,7 @@ import { DrizzleQueryError } from "drizzle-orm/errors";
 import { Cause, Effect, Exit, Layer, Logger, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
-import { databaseDouble, databaseError, emailDouble, emailError } from "@tests/doubles/contactLayers";
+import { contactRow, databaseDouble, databaseError, emailDouble, emailError } from "@tests/doubles/contactLayers";
 import { type RecaptchaDoubleOptions, recaptchaDouble } from "@tests/doubles/network";
 
 const VALID_INPUT = {
@@ -118,10 +118,13 @@ describe("submitContact", () => {
 
 	it("answers ok to the loser of a duplicate race, whose mail has already gone out", async () => {
 		const database = databaseDouble({
-			rejectInsertWith: new DrizzleQueryError(
-				"insert into contact",
-				[],
-				new LibsqlError("UNIQUE constraint failed: contact.email", "SQLITE_CONSTRAINT_UNIQUE"),
+			failInsertWith: databaseError(
+				"UNIQUE constraint failed: contact.email",
+				new DrizzleQueryError(
+					"insert into contact",
+					[],
+					new LibsqlError("UNIQUE constraint failed: contact.email", "SQLITE_CONSTRAINT_UNIQUE"),
+				),
 			),
 		});
 		const email = emailDouble({ id: "sent-3" });
@@ -134,7 +137,7 @@ describe("submitContact", () => {
 	});
 
 	it("fails without sending when the address already contacted", async () => {
-		const database = databaseDouble({ duplicates: [{ email: "ada@example.com" }] });
+		const database = databaseDouble({ existingContact: contactRow("ada@example.com") });
 		const email = emailDouble();
 
 		const exit = await run({ database, email });
@@ -173,6 +176,18 @@ describe("submitContact", () => {
 		const exit = await run({ database, email });
 
 		expect(failureTag(exit)).toBe("ValidationError");
+		expect(email.sent).toHaveLength(0);
+	});
+
+	it("fails with a RecaptchaError, not a ValidationError, when our secret is the one rejected", async () => {
+		recaptchaResponds({ success: false, errorCodes: ["invalid-input-secret"] });
+
+		const database = databaseDouble();
+		const email = emailDouble();
+
+		const exit = await run({ database, email });
+
+		expect(failureTag(exit)).toBe("RecaptchaError");
 		expect(email.sent).toHaveLength(0);
 	});
 

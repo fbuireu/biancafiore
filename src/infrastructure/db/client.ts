@@ -1,16 +1,15 @@
 import * as schema from "@infrastructure/db/schema";
 import { DatabaseError } from "@infrastructure/errors";
 import { createClient } from "@libsql/client/web";
+import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/libsql/web";
 import { Context, Effect, Layer } from "effect";
-
-type DrizzleClient = ReturnType<typeof drizzle<typeof schema>>;
 
 export class Database extends Context.Tag("Database")<
 	Database,
 	{
-		readonly db: DrizzleClient;
-		run<A>(query: PromiseLike<A>): Effect.Effect<A, DatabaseError>;
+		findContactByEmail(email: string): Effect.Effect<schema.ContactRow | undefined, DatabaseError>;
+		insertContact(contact: schema.NewContact): Effect.Effect<void, DatabaseError>;
 	}
 >() {}
 
@@ -27,17 +26,22 @@ export const DatabaseLive = Layer.effect(
 
 		const db = drizzle(createClient({ url, authToken }), { schema });
 
+		const run = <A>(query: PromiseLike<A>): Effect.Effect<A, DatabaseError> =>
+			Effect.tryPromise({
+				try: () => Promise.resolve(query),
+				catch: (cause) =>
+					new DatabaseError({
+						message: cause instanceof Error ? cause.message : String(cause),
+						cause,
+					}),
+			});
+
 		return {
-			db,
-			run: <A>(query: PromiseLike<A>): Effect.Effect<A, DatabaseError> =>
-				Effect.tryPromise({
-					try: () => Promise.resolve(query),
-					catch: (cause) =>
-						new DatabaseError({
-							message: cause instanceof Error ? cause.message : String(cause),
-							cause,
-						}),
-				}),
+			findContactByEmail: (email: string) =>
+				run(db.select().from(schema.Contact).where(eq(schema.Contact.email, email)).limit(1)).pipe(
+					Effect.map((rows) => rows.at(0)),
+				),
+			insertContact: (contact: schema.NewContact) => run(db.insert(schema.Contact).values(contact)).pipe(Effect.asVoid),
 		};
 	}),
 );

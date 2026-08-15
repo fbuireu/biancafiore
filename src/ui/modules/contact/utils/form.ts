@@ -1,13 +1,5 @@
 import { gsap } from "gsap";
 
-export function getErrorMessage(error: unknown): unknown {
-	if (error instanceof Error) {
-		return error.message;
-	}
-
-	return error;
-}
-
 export function flyPlane(button: HTMLButtonElement): void {
 	if (button.dataset.flying !== "true") {
 		button.dataset.flying = "true";

@@ -1,7 +1,9 @@
 import type { RawArticle } from "@application/dto/article/types";
-import { PAGES_ROUTES } from "@const/index";
+import { articleHref, isTagPath } from "@const/index";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Block, Inline, Text } from "@contentful/rich-text-types";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
+import { type ArticleHeading, isTableOfContentsHeading } from "@domain/article";
 import { getOptimizedImageUrl, getOptimizedSrcset } from "@infrastructure/images/imageOptimization";
 import { escapeHtml, safeUrl, slugify } from "@shared/utils/strings";
 
@@ -14,7 +16,6 @@ const IMAGE_WRAPPER_CLASS: Record<ImageEmbedLayout, string> = {
 	[IMAGE_EMBED_LAYOUT.BREAKOUT]: "breakout",
 };
 const HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
-const INDEXED_HEADING_LEVELS = [2, 3, 4, 5, 6];
 
 type ImageEmbedLayout = (typeof IMAGE_EMBED_LAYOUT)[keyof typeof IMAGE_EMBED_LAYOUT];
 
@@ -43,18 +44,21 @@ const createSection = ({ level, id, text, ordinal }: CreateSectionParams) => {
   `;
 };
 
-export function parseHeadings() {
-	let indexed = 0;
-
+function parseHeadings(collected: ArticleHeading[]) {
 	return Object.fromEntries(
 		HEADING_LEVELS.map((level) => [
 			BLOCKS[`HEADING_${level}` as keyof typeof BLOCKS],
 			(node: HeadingBlock) => {
 				const text = node.content.map((child: Text) => child.value).join("");
 				const id = slugify(text);
-				const ordinal = INDEXED_HEADING_LEVELS.includes(level) ? ++indexed : undefined;
 
-				return createSection({ level, ordinal, id, text });
+				if (!isTableOfContentsHeading(level)) {
+					return createSection({ level, id, text });
+				}
+
+				collected.push({ level, id, text });
+
+				return createSection({ level, ordinal: collected.length, id, text });
 			},
 		]),
 	);
@@ -83,7 +87,12 @@ function toEmbedUrl(url: string): string {
 	return url;
 }
 
-export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
+interface RenderOptionsParams {
+	rawArticle: RawArticle;
+	collected: ArticleHeading[];
+}
+
+function renderOptions({ rawArticle, collected }: RenderOptionsParams): RenderOptionsReturn {
 	return {
 		renderNode: {
 			[INLINES.HYPERLINK]: (node: Node, next: Next) => {
@@ -91,7 +100,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				const { uri } = inlineNode.data;
 				const { hostname, pathname } = new URL(uri, "https://biancafiore.me");
 				const isExternal = hostname !== "biancafiore.me";
-				const isTagPage = pathname.startsWith(PAGES_ROUTES.TAG) && pathname !== PAGES_ROUTES.TAG;
+				const isTagPage = isTagPath(pathname);
 
 				if (isExternal) {
 					return `<a href="${safeUrl(uri)}" target="_blank" rel="noopener noreferrer">${next(inlineNode.content)}<span aria-hidden="true" class="external-link-icon"> ↗</span></a>`;
@@ -106,7 +115,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				const { slug, title } = node.data.target.fields;
 
 				if (contentTypeId === "article" && slug && title) {
-					return `<a href="/articles/${escapeHtml(slug)}">${escapeHtml(String(title))}</a>`;
+					return `<a href="${escapeHtml(articleHref(String(slug)))}">${escapeHtml(String(title))}</a>`;
 				}
 				return "";
 			},
@@ -116,7 +125,7 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				const { slug } = inlineNode.data.target.fields;
 
 				if (contentTypeId === "article" && slug) {
-					return `<a href="/articles/${escapeHtml(slug)}">${next(inlineNode.content)}</a>`;
+					return `<a href="${escapeHtml(articleHref(String(slug)))}">${next(inlineNode.content)}</a>`;
 				}
 				return next(inlineNode.content);
 			},
@@ -252,7 +261,19 @@ export function renderOptions(rawArticle: RawArticle): RenderOptionsReturn {
 				}
 				return "";
 			},
-			...parseHeadings(),
+			...parseHeadings(collected),
 		},
 	};
+}
+
+export interface RenderedArticle {
+	content: string;
+	headings: ArticleHeading[];
+}
+
+export function renderArticleContent(rawArticle: RawArticle): RenderedArticle {
+	const headings: ArticleHeading[] = [];
+	const content = documentToHtmlString(rawArticle.fields.content, renderOptions({ rawArticle, collected: headings }));
+
+	return { content, headings };
 }

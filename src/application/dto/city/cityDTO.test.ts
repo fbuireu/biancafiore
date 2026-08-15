@@ -116,7 +116,7 @@ describe("cityDTO passthrough fields", () => {
 			name: "Barcelona",
 			description: "Two summers by the sea",
 			image: {
-				url: "//cdn/barcelona.webp",
+				url: "https://cdn/barcelona.webp",
 				details: { width: 800, height: 600 },
 				formats: { avif: false, webp: true },
 			},

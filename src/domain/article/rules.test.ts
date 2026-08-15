@@ -3,9 +3,10 @@ import {
 	deriveVariant,
 	generateTableOfContents,
 	getReadingTime,
+	isTableOfContentsHeading,
 	sortFavoriteFirst,
 } from "@domain/article/rules";
-import type { ArticleDTO } from "@domain/article/types";
+import type { ArticleDTO, ArticleHeading } from "@domain/article/types";
 import { ArticleType } from "@domain/article/types";
 import { describe, expect, it } from "vitest";
 
@@ -17,6 +18,12 @@ interface ArticleStubParams {
 
 const articleStub = ({ slug, isFavorite, publishDateISO }: ArticleStubParams): ArticleDTO =>
 	({ slug, isFavorite, publishDateISO }) as ArticleDTO;
+
+const headingStub = (level: number, text: string): ArticleHeading => ({
+	level,
+	id: text.toLowerCase().replaceAll(" ", "-"),
+	text,
+});
 
 const words = (count: number): string => Array.from({ length: count }, () => "word").join(" ");
 
@@ -70,13 +77,30 @@ describe("getReadingTime", () => {
 	});
 });
 
+describe("isTableOfContentsHeading", () => {
+	it("admits every level from h2 to h6", () => {
+		expect([2, 3, 4, 5, 6].filter((level) => !isTableOfContentsHeading(level))).toEqual([]);
+	});
+
+	it("turns h1 away, because it belongs to the page title and not to the outline", () => {
+		expect(isTableOfContentsHeading(1)).toBe(false);
+	});
+
+	it("turns away a level no heading tag has", () => {
+		expect(isTableOfContentsHeading(0)).toBe(false);
+		expect(isTableOfContentsHeading(7)).toBe(false);
+	});
+});
+
 describe("generateTableOfContents", () => {
-	it("returns an empty table for content with no headings", () => {
-		expect(generateTableOfContents("<p>Just a paragraph</p>")).toEqual([]);
+	it("returns an empty table for an article with no headings", () => {
+		expect(generateTableOfContents([])).toEqual([]);
 	});
 
 	it("shifts heading levels down by one, so h2 is the top level", () => {
-		expect(generateTableOfContents("<h2>Intro</h2><h3>Detail</h3><h6>Aside</h6>")).toEqual([
+		expect(
+			generateTableOfContents([headingStub(2, "Intro"), headingStub(3, "Detail"), headingStub(6, "Aside")]),
+		).toEqual([
 			{ id: "intro", heading: "Intro", level: 1 },
 			{ id: "detail", heading: "Detail", level: 2 },
 			{ id: "aside", heading: "Aside", level: 5 },
@@ -84,80 +108,53 @@ describe("generateTableOfContents", () => {
 	});
 
 	it("keeps the headings in document order rather than sorting them by level", () => {
-		const items = generateTableOfContents("<h4>Third</h4><h2>First</h2><h3>Second</h3>");
+		const items = generateTableOfContents([headingStub(4, "Third"), headingStub(2, "First"), headingStub(3, "Second")]);
 
 		expect(items.map(({ heading }) => heading)).toEqual(["Third", "First", "Second"]);
 	});
 
 	it("ignores h1, which belongs to the page title and not to the table of contents", () => {
-		expect(generateTableOfContents("<h1>Title</h1><h2>Section</h2>")).toEqual([
+		expect(generateTableOfContents([headingStub(1, "Title"), headingStub(2, "Section")])).toEqual([
 			{ id: "section", heading: "Section", level: 1 },
 		]);
 	});
 
-	it("matches each heading separately instead of spanning from the first to the last", () => {
-		expect(generateTableOfContents("<h2>One</h2><h2>Two</h2>").map(({ heading }) => heading)).toEqual(["One", "Two"]);
+	it("takes the anchor id the renderer wrote instead of deriving a second one from the text", () => {
+		const [entry] = generateTableOfContents([{ level: 2, id: "tips-tricks", text: "Tips & Tricks" }]);
+
+		expect(entry.id).toBe("tips-tricks");
 	});
 
-	it("requires the closing tag to match the opening level", () => {
-		expect(generateTableOfContents("<h2>Mismatched</h3>")).toEqual([]);
+	it("carries the heading text as the author typed it, with no markup or entity left to undo", () => {
+		expect(
+			generateTableOfContents([
+				{ level: 2, id: "why-how", text: "Why & How" },
+				{ level: 2, id: "using-script-tags", text: "Using <script> Tags" },
+			]).map(({ heading }) => heading),
+		).toEqual(["Why & How", "Using <script> Tags"]);
 	});
 
-	it("drops a heading that carries a single attribute, silently and without failing", () => {
-		expect(generateTableOfContents('<h2 id="already-there">Section</h2>')).toEqual([]);
-	});
+	it("numbers its entries as the body numbers its sections, since both count the same headings", () => {
+		const items = generateTableOfContents([
+			headingStub(1, "Title"),
+			headingStub(2, "First"),
+			headingStub(3, "Second"),
+			headingStub(2, "Third"),
+		]);
 
-	it("only ever sees bare headings because articleDTO feeds it contentHtml, the default render, not the styled one", () => {
-		const styled = '<h2 id="section" class="article__heading flex align-baseline"><a href="#section">Section</a></h2>';
-
-		expect(generateTableOfContents(styled)).toEqual([]);
-		expect(generateTableOfContents("<h2>Section</h2>")).toEqual([{ id: "section", heading: "Section", level: 1 }]);
-	});
-
-	it("drops a heading whose text wraps a line, so a soft break in Contentful costs that entry", () => {
-		expect(generateTableOfContents("<h2>Broken\nacross lines</h2>")).toEqual([]);
-	});
-
-	it("returns a table one entry short rather than an error, which is what makes a dropped heading invisible", () => {
-		const items = generateTableOfContents("<h2>Broken\nacross lines</h2><h2>Intact</h2>");
-
-		expect(items.map(({ heading }) => heading)).toEqual(["Intact"]);
-	});
-
-	it("keeps the heading text verbatim but builds the id from the text the markup wraps", () => {
-		expect(generateTableOfContents("<h2>Deploying <code>astro</code></h2>")).toEqual([
-			{ id: "deploying-astro", heading: "Deploying <code>astro</code>", level: 1 },
+		expect(items.map(({ heading }, index) => `--section-${index + 1}: ${heading}`)).toEqual([
+			"--section-1: First",
+			"--section-2: Second",
+			"--section-3: Third",
 		]);
 	});
 
-	it("builds the same id as the article body for a heading that is entirely wrapped in markup", () => {
-		expect(generateTableOfContents("<h2><strong>Bold Section</strong></h2>")[0]?.id).toBe("bold-section");
-		expect(generateTableOfContents("<h2>A <em>mixed</em> <code>one</code></h2>")[0]?.id).toBe("a-mixed-one");
-	});
+	it("leaves the headings it was handed untouched", () => {
+		const headings = [headingStub(2, "Section")];
 
-	it("decodes the ampersand the renderer escaped, so the link points at the anchor the body rendered", () => {
-		expect(generateTableOfContents("<h2>Why &amp; How</h2>")[0]?.id).toBe("why-how");
-	});
+		generateTableOfContents(headings);
 
-	it("collapses the hyphens left behind by punctuation in the generated id", () => {
-		expect(generateTableOfContents("<h2>Design, Build &amp; Ship</h2>")[0]?.id).toBe("design-build-ship");
-	});
-
-	it("decodes the quotes the renderer escaped, both the double and the numeric single one", () => {
-		expect(generateTableOfContents("<h2>The &quot;Best&quot; Way</h2>")[0]?.id).toBe("the-best-way");
-		expect(generateTableOfContents("<h2>Bianca&#39;s Notes</h2>")[0]?.id).toBe("biancas-notes");
-	});
-
-	it("decodes an escaped angle bracket as text rather than stripping it as markup", () => {
-		expect(generateTableOfContents("<h2>Using &lt;script&gt; Tags</h2>")[0]?.id).toBe("using-script-tags");
-	});
-
-	it("decodes a non-breaking space into the separator the body slugifies it as", () => {
-		expect(generateTableOfContents("<h2>Chapter&nbsp;One</h2>")[0]?.id).toBe("chapter-one");
-	});
-
-	it("decodes each entity once, so a heading that literally reads &amp; still matches the body", () => {
-		expect(generateTableOfContents("<h2>AT&amp;amp;T</h2>")[0]?.id).toBe("atampt");
+		expect(headings).toEqual([{ level: 2, id: "section", text: "Section" }]);
 	});
 });
 
@@ -245,5 +242,14 @@ describe("sortFavoriteFirst", () => {
 
 	it("handles an empty list without failing", () => {
 		expect(sortFavoriteFirst([])).toEqual([]);
+	});
+
+	it("orders anything carrying the two fields it reads, which is what lets the tag index share the rule", () => {
+		const references = [
+			{ id: "recent", isFavorite: false, publishDateISO: "2026-01-01" },
+			{ id: "old-favorite", isFavorite: true, publishDateISO: "2019-01-01" },
+		];
+
+		expect(sortFavoriteFirst(references).map(({ id }) => id)).toEqual(["old-favorite", "recent"]);
 	});
 });

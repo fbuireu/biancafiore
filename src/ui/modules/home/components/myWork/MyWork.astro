@@ -2,17 +2,14 @@
 import { getCollection } from "astro:content";
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import "./my-work.css";
-import { SITE_URL } from "astro:env/client";
-import { PAGES_ROUTES } from "@const/index";
+import { absoluteUrl, projectHref } from "@const/index";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import { buildItemListSchema } from "@modules/core/utils/jsonLd";
 
 const projects = await getCollection("projects");
 
 const disciplinesCount = String(projects.length).padStart(2, "0");
-const itemListSchema = buildItemListSchema(
-	projects.map((project) => new URL(`${PAGES_ROUTES.PROJECTS}#${project.data.id}`, SITE_URL).href),
-);
+const itemListSchema = buildItemListSchema(projects.map((project) => absoluteUrl(projectHref(project.data.id))));
 ---
 <section class="my-work">
     <div class="my-work__inner">
@@ -21,7 +18,7 @@ const itemListSchema = buildItemListSchema(
             <p class="editorial-meta">{disciplinesCount} — Disciplines</p>
         </header>
         {projects.map((project, index) => {
-          const projectUrl = `${PAGES_ROUTES.PROJECTS}#${project.data.id}`;
+          const projectUrl = projectHref(project.data.id);
 
           return (
               <details class="my-work__item reveal" name="my-work" data-reveal-index={index}>
@@ -29,7 +26,7 @@ const itemListSchema = buildItemListSchema(
                       <h3 class="my-work__name">{project.data.name}</h3>
                       <BlurImage
                           class="my-work__thumbnail"
-                          src={`https:${project.data.image.url}`}
+                          src={project.data.image.url}
                           alt={project.data.name}
                           width={project.data.image.details.width}
                           height={project.data.image.details.height}

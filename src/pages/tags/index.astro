@@ -1,44 +1,45 @@
 ---
 import { getCollection } from "astro:content";
-import { SITE_URL } from "astro:env/client";
-import { PAGES_ROUTES } from "@const/index";
+import { absoluteUrl, tagHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import { buildItemListSchema } from "@modules/core/utils/jsonLd";
+import { groupBy } from "@shared/utils/objects";
 import "./_tags.css";
 
 export const prerender = true;
 
 const tags = await getCollection("tags");
-const allTags = tags.flatMap((letter) => letter.data.tags);
+const letters = groupBy({
+	array: tags.map(({ data }) => data),
+	keyFn: ({ name }) => name.charAt(0).toUpperCase(),
+});
 
 const metadata: Partial<SeoMetadata> = {
 	title: "Tags",
 	description: "Browse all topics and tags from Bianca Fiore's articles.",
 };
 
-const itemListSchema = buildItemListSchema(
-	allTags.map((tag) => new URL(`${PAGES_ROUTES.TAGS}/${tag.slug}`, SITE_URL).href),
-);
+const itemListSchema = buildItemListSchema(tags.map(({ data }) => absoluteUrl(tagHref(data.slug))));
 ---
 <BaseLayout {...metadata}>
     <Breadcrumbs />
     <section class="common-wrapper">
         <h1 class="flex justify-center reveal">All tags</h1>
         <ul class="tags__list grid">
-          {tags.map((letter, index) => {
-              return <li class="tags__item">
-                  <h2 class="tags__item__letter reveal">{letter.data.name}</h2>
+          {Object.entries(letters).map(([letter, letterTags]) => (
+              <li class="tags__item">
+                  <h2 class="tags__item__letter reveal">{letter}</h2>
                   <ul class="tags__item__list flex column-wrap">
-                    {tags[index].data.tags.map((tag) => (
+                    {letterTags.map((tag) => (
                         <li class="tag__item font-sans-serif clickable reveal">
-                            <a href={`${PAGES_ROUTES.TAGS}/${tag.slug}`} class="underline-on-hover">{tag.name}(&times;{tag.count})</a>
+                            <a href={tagHref(tag.slug)} class="underline-on-hover">{tag.name}(&times;{tag.articles.length})</a>
                         </li>
                     ))}
                   </ul>
               </li>
-          })}
+          ))}
         </ul>
     </section>
     <script is:inline type="application/ld+json" set:html={itemListSchema} />

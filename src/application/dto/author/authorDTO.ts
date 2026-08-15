@@ -2,22 +2,17 @@ import type { RawArticle } from "@application/dto/article/types";
 import type { RawAuthor } from "@application/dto/author/types";
 import type { AuthorDTO } from "@domain/author";
 import type { BaseDTO } from "@domain/shared/baseDTO";
-import { createImage } from "@shared/application/dto/utils/images";
 import { getArticlesByAuthor } from "./utils/articles";
+import { createAuthor } from "./utils/author";
 
 export const authorDTO: BaseDTO<[RawAuthor[], RawArticle[]], AuthorDTO[]> = {
 	create: ([raw, rawArticles]) => {
 		return raw.map((rawAuthor): AuthorDTO => {
-			const articlesByAuthor = getArticlesByAuthor({ rawAuthor, rawArticles });
+			const author = createAuthor(rawAuthor);
+			const articlesByAuthor = getArticlesByAuthor({ authorSlug: author.slug, rawArticles });
 
 			return {
-				name: rawAuthor.fields.name,
-				slug: rawAuthor.fields.slug,
-				description: rawAuthor.fields.description,
-				jobTitle: rawAuthor.fields.jobTitle,
-				currentCompany: rawAuthor.fields.currentCompany,
-				profileImage: createImage(rawAuthor.fields.profileImage),
-				socialNetworks: rawAuthor.fields.socialNetworks,
+				...author,
 				articles: articlesByAuthor,
 				latestArticle: articlesByAuthor.at(0),
 			};

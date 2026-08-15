@@ -44,7 +44,7 @@ const metadata: Partial<SeoMetadata> = {
             <div class="error-layer__extra reveal reveal--on-load" data-reveal-index="5">
                 <p class="error-layer__code">Reference: 500 · {reference}</p>
                 <p class="error-500__help">
-                    Still stuck? <EmailButton classNames="error-500__email" text="Email me" /> and I'll take a look.
+                    Still stuck? <EmailButton classNames="error-500__email" label="Email me" /> and I'll take a look.
                 </p>
             </div>
         </div>
@@ -52,7 +52,9 @@ const metadata: Partial<SeoMetadata> = {
 </BaseLayout>
 
 <script>
-	document.querySelector<HTMLButtonElement>(".error-500__reload")?.addEventListener("click", () => {
-		window.location.reload();
+	document.addEventListener("astro:page-load", () => {
+		document.querySelector<HTMLButtonElement>(".error-500__reload")?.addEventListener("click", () => {
+			window.location.reload();
+		});
 	});
 </script>
