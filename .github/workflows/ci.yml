@@ -24,8 +24,6 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/prepare-env
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
       - name: Lint
         run: pnpm lint:all
       - name: Generate types
@@ -83,8 +81,6 @@ jobs:
           token: ${{ secrets.PAT }}
           persist-credentials: false
       - uses: ./.github/actions/prepare-env
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
       - name: Generate types
         run: pnpm run sync
       - name: Semantic Release
@@ -182,8 +178,6 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/prepare-env
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
       - name: Install Playwright Browsers
         run: pnpm playwright install --with-deps
       - name: Run E2E Tests
