@@ -1,3 +1,10 @@
+## [1.20.3](https://github.com/fbuireu/biancafiore/compare/v1.20.2...v1.20.3) (2026-08-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency effect to v3.22.1 ([#1164](https://github.com/fbuireu/biancafiore/issues/1164)) ([5b304ee](https://github.com/fbuireu/biancafiore/commit/5b304ee91853689f24c6644b1af3a45613550071))
+
 ## [1.20.2](https://github.com/fbuireu/biancafiore/compare/v1.20.1...v1.20.2) (2026-08-15)
 
 
