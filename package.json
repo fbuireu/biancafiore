@@ -95,7 +95,7 @@
 		"@types/node": "26.1.2",
 		"@types/react": "19.2.17",
 		"@types/react-dom": "19.2.3",
-		"@types/three": "0.185.1",
+		"@types/three": "0.185.4",
 		"@vitest/coverage-v8": "4.1.10",
 		"drizzle-kit": "0.31.10",
 		"happy-dom": "20.11.1",
