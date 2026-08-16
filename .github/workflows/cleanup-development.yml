@@ -7,6 +7,13 @@ on:
 permissions:
   contents: read
 
+# Queues behind ci.yml, whose `E2E (preview)` job drives this same preview
+# Worker. The group is its `${{ github.workflow }}-${{ github.ref }}`; renaming
+# that workflow silently stops the wait.
+concurrency:
+  group: CI-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   cleanup:
     name: Delete preview Worker
