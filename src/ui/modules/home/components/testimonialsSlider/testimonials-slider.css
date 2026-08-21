@@ -68,6 +68,31 @@
 	line-height: var(--leading);
 }
 
+@supports (container-type: scroll-state) {
+	.testimonials__slider .testimonial {
+		opacity: 0.15;
+		transition:
+			opacity 0.4s ease,
+			translate 0.4s ease;
+		translate: 0 var(--space-2xs);
+	}
+
+	@container scroll-state(snapped: inline) {
+		.testimonials__slider .testimonial {
+			opacity: 1;
+			translate: 0 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.testimonials__slider .testimonial {
+			opacity: 1;
+			transition: none;
+			translate: 0 0;
+		}
+	}
+}
+
 .testimonials__nav {
 	align-items: center;
 	display: flex;
