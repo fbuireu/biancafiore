@@ -1,3 +1,10 @@
+# [1.21.0](https://github.com/fbuireu/biancafiore/compare/v1.20.3...v1.21.0) (2026-08-21)
+
+
+### Features
+
+* **home:** fade testimonials in as they snap via scroll-state ([#1171](https://github.com/fbuireu/biancafiore/issues/1171)) ([49d0628](https://github.com/fbuireu/biancafiore/commit/49d062853246960d2fae57f7baf2671f1fbb0c7d))
+
 ## [1.20.3](https://github.com/fbuireu/biancafiore/compare/v1.20.2...v1.20.3) (2026-08-15)
 
 
