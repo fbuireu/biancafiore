@@ -947,7 +947,7 @@ describe("application guide: the anti-corruption boundary", () => {
 	it("absolutises the asset url here, so nothing downstream re-adds the scheme", () => {
 		expect(guide).toContain("An asset URL is absolutised here");
 		expect(read("src/domain/shared/image.ts")).toMatch(ABSOLUTE_IMAGE_URL_SCHEMA);
-		expect(read("src/shared/application/dto/utils/images.ts")).toMatch(ASSET_SCHEME_CONSTANT);
+		expect(read("src/application/dto/shared/images.ts")).toMatch(ASSET_SCHEME_CONSTANT);
 
 		const downstream = production([...walk("src/pages"), ...walk("src/ui")])
 			.filter((file) => SOURCE_FILE.test(file))

@@ -32,7 +32,7 @@ const slides = isShuffled ? shuffle(articles) : articles;
 	{
 		slides.map((article, index) => (
 			<li class="slider__slide item-wrapper reveal" data-reveal-index={index}>
-				<ArticleCard {...article} />
+				<ArticleCard article={article} />
 			</li>
 		))
 	}

@@ -4,41 +4,46 @@ import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 interface Props {
 	class?: string;
 	hasButtons?: boolean;
+	hasDots?: boolean;
+	slideCount?: number;
+	label?: string;
 }
 
-const { class: className, hasButtons = true } = Astro.props;
+const { class: className, hasButtons = true, hasDots = false, slideCount = 0, label = "Slider" } = Astro.props;
+
+const dots = hasDots ? Array.from({ length: slideCount }, (_, index) => index) : [];
 ---
 
-<div class={`slider-wrapper ${className ?? ''}`.trim()} data-has-buttons={hasButtons}>
-	{hasButtons && (
-		<button class="slider__btn slider__btn--prev" aria-label="Previous slide" disabled><Fragment set:html={stretchArrow} /></button>
+<div class={`slider-wrapper ${className ?? ''}`.trim()} data-has-buttons={hasButtons} data-has-dots={hasDots}>
+	{hasButtons && !hasDots && (
+		<button class="slider__btn slider__btn--prev" type="button" aria-label="Previous slide" disabled><Fragment set:html={stretchArrow} /></button>
 	)}
 	<ul class="slider__track">
 		<slot />
 	</ul>
-	{hasButtons && (
-		<button class="slider__btn slider__btn--next" aria-label="Next slide"><Fragment set:html={stretchArrow} /></button>
+	{hasButtons && !hasDots && (
+		<button class="slider__btn slider__btn--next" type="button" aria-label="Next slide"><Fragment set:html={stretchArrow} /></button>
+	)}
+	{hasDots && (
+		<nav class="slider__nav" aria-label={label}>
+			<button class="slider__btn slider__btn--prev" type="button" aria-label="Previous slide" disabled><Fragment set:html={stretchArrow} /></button>
+			{dots.map((index) => (
+				<button
+					class:list={["slider__dot clickable", { "slider__dot--active": index === 0 }]}
+					type="button"
+					data-index={index}
+					aria-label={`Go to slide ${index + 1}`}
+				/>
+			))}
+			<button class="slider__btn slider__btn--next" type="button" aria-label="Next slide"><Fragment set:html={stretchArrow} /></button>
+		</nav>
 	)}
 </div>
 
 <script>
+	import { initSlider } from "@modules/core/components/sliderShell/utils/slider";
+
 	document.addEventListener('astro:page-load', () => {
-		document.querySelectorAll<HTMLElement>('.slider-wrapper[data-has-buttons="true"]').forEach((wrapper) => {
-			const track = wrapper.querySelector<HTMLElement>('.slider__track');
-			const prev = wrapper.querySelector<HTMLButtonElement>('.slider__btn--prev');
-			const next = wrapper.querySelector<HTMLButtonElement>('.slider__btn--next');
-			if (!track || !prev || !next) return;
-
-			const update = () => {
-				prev.disabled = track.scrollLeft <= 0;
-				next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 1;
-			};
-
-			prev.addEventListener('click', () => track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' }));
-			next.addEventListener('click', () => track.scrollBy({ left: track.clientWidth, behavior: 'smooth' }));
-			track.addEventListener('scroll', update, { passive: true });
-
-			update();
-		});
+		document.querySelectorAll<HTMLElement>('.slider-wrapper[data-has-buttons="true"]').forEach(initSlider);
 	});
 </script>

@@ -3,6 +3,7 @@ import { createRelatedArticles } from "@application/dto/article/utils/articles";
 import { renderArticleContent } from "@application/dto/article/utils/content";
 import { articleSlug } from "@application/dto/article/utils/reference";
 import { createAuthor } from "@application/dto/author/utils/author";
+import { createImage } from "@application/dto/shared/images";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import {
 	type ArticleDTO,
@@ -11,7 +12,6 @@ import {
 	generateTableOfContents,
 	getReadingTime,
 } from "@domain/article";
-import { createImage } from "@shared/application/dto/utils/images";
 import { formatDate } from "@shared/utils/dates";
 import { createTags } from "./utils/tags";
 

@@ -37,7 +37,7 @@ const metadata: Partial<SeoMetadata> = {
             rest
                 .map((article) => (
                     <li class="articles__grid__item grid relative reveal">
-                        <ArticleCard {...article} />
+                        <ArticleCard article={article} />
                     </li>
                 ))}
         </ul>

@@ -1,6 +1,6 @@
+import { createImage } from "@application/dto/shared/images";
 import type { RawTestimonial } from "@application/dto/testimonial/types";
 import type { TestimonialDTO } from "@domain/testimonial";
-import { createImage } from "@shared/application/dto/utils/images";
 
 export function createTestimonials(raw: RawTestimonial[]): TestimonialDTO[] {
 	return raw.map((rawTestimonial): TestimonialDTO => {

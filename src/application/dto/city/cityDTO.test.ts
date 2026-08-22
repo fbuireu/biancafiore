@@ -80,25 +80,25 @@ describe("createCities period", () => {
 	it("renders a closed stay as the two years joined by a hyphen", () => {
 		const [city] = createCities([makeCity({ startDate: "2019-06-01", endDate: "2021-09-30" })]);
 
-		expect(city.period).toBe("2019-2021");
+		expect(city.period).toEqual({ startYear: 2019, endYear: 2021 });
 	});
 
 	it("renders an open ended stay as Present when the CMS has no end date", () => {
 		const [city] = createCities([makeCity({ startDate: "2022-01-15" })]);
 
-		expect(city.period).toBe("2022-Present");
+		expect(city.period).toEqual({ startYear: 2022 });
 	});
 
 	it("treats an empty end date as an open ended stay too, because the field is spread only when truthy", () => {
 		const [city] = createCities([makeCity({ startDate: "2022-01-15", endDate: "" })]);
 
-		expect(city.period).toBe("2022-Present");
+		expect(city.period).toEqual({ startYear: 2022 });
 	});
 
 	it("uses the calendar year of each date, not the elapsed time between them", () => {
 		const [city] = createCities([makeCity({ startDate: "2019-12-31", endDate: "2020-01-01" })]);
 
-		expect(city.period).toBe("2019-2020");
+		expect(city.period).toEqual({ startYear: 2019, endYear: 2020 });
 	});
 });
 
@@ -119,6 +119,7 @@ describe("createCities passthrough fields", () => {
 				url: "https://cdn/barcelona.webp",
 				details: { width: 800, height: 600 },
 				formats: { avif: false, webp: true },
+				shareCrops: expect.any(Array),
 			},
 		});
 	});

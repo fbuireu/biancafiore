@@ -173,6 +173,7 @@ describe("createArticles images and variant", () => {
 			url: "https://cdn/hero.avif",
 			details: { width: 1200, height: 630 },
 			formats: { avif: true, webp: false },
+			shareCrops: expect.any(Array),
 		});
 	});
 
@@ -565,6 +566,7 @@ describe("createArticles author and batching", () => {
 				url: "https://images.ctfassets.net/bianca.webp",
 				details: { width: 1200, height: 630 },
 				formats: { avif: false, webp: true },
+				shareCrops: expect.any(Array),
 			},
 			socialNetworks: ["https://linkedin.com/in/bianca"],
 		});

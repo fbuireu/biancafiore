@@ -81,6 +81,7 @@ describe("createAuthors field mapping", () => {
 				url: "https://cdn/bianca.avif",
 				details: { width: 512, height: 512 },
 				formats: { avif: true, webp: false },
+				shareCrops: expect.any(Array),
 			},
 			socialNetworks: ["https://linkedin.com/in/bianca", "https://x.com/bianca"],
 			latestArticle: undefined,

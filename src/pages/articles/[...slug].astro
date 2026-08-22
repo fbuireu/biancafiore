@@ -57,7 +57,7 @@ const blogPostingSchema = buildBlogPostingSchema({
 	path: Astro.url.pathname,
 	headline: article.data.title,
 	description: article.data.description,
-	imageUrl: (article.data.featuredImage ?? article.data.author.profileImage).url,
+	imageCrops: (article.data.featuredImage ?? article.data.author.profileImage).shareCrops,
 	datePublished: article.data.publishDateISO,
 	dateModified: article.data.updatedAt,
 	author: {

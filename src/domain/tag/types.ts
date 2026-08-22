@@ -9,3 +9,8 @@ export const TagType = {
 export type TagDTO = z.infer<typeof tagSchema>;
 
 export type TagIndexEntryDTO = z.infer<typeof tagIndexEntrySchema>;
+
+export interface TagIndexBucket {
+	letter: string;
+	entries: TagIndexEntryDTO[];
+}

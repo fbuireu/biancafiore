@@ -95,6 +95,7 @@ describe("createProjects image and batching", () => {
 			url: "https://cdn/dispatch.avif",
 			details: { width: 640, height: 480 },
 			formats: { avif: true, webp: false },
+			shareCrops: expect.any(Array),
 		});
 	});
 

@@ -2,52 +2,64 @@
 import type { CollectionEntry } from "astro:content";
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { articleHref, tagHref } from "@const/index";
+import { toArticleCardContent } from "@modules/core/components/articleCard/utils/card";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import clsx from "clsx";
 import "./article-card.css";
 
-type Props = CollectionEntry<"articles"> & { isLandscape?: boolean };
+interface Props {
+	article: CollectionEntry<"articles">;
+	isLandscape?: boolean;
+}
 
-const { isLandscape = false, ...article } = Astro.props;
+const { article, isLandscape = false } = Astro.props;
 
-const MAX_TAGS = 4;
-const visibleTags = article.data.tags?.slice(0, MAX_TAGS) ?? [];
-const remainingTags = (article.data.tags?.length ?? 0) - visibleTags.length;
+const {
+	slug,
+	title,
+	description,
+	publishDate,
+	publishDateISO,
+	readingTime,
+	author,
+	featuredImage,
+	visibleTags,
+	remainingTags,
+} = toArticleCardContent(article);
 ---
-<a class="article-card__link" href={articleHref(article.data.slug)}
-   aria-labelledby={`article-title-${article.data.slug}`}>{' '}</a>
+<a class="article-card__link" href={articleHref(slug)} aria-labelledby={`article-title-${slug}`}>{' '}</a>
 <article
     class={clsx('article-card__item', { 'article-card__item--landscape': isLandscape })}
 >
-  {article.data.featuredImage && (
+  {featuredImage && (
       <div class="article-card__media">
           <BlurImage
               class="article-card__featured-image"
-              image={article.data.featuredImage}
-              alt={article.data.title}
-              transitionName={`featured-image-${article.data.slug}`}
+              image={featuredImage}
+              alt={title}
+              transitionName={`featured-image-${slug}`}
           />
       </div>
   )}
-    <time class="article-card__publish-date editorial-meta editorial-meta--gold" datetime={article.data.publishDateISO}>
-      {article.data.publishDate}
+    <time class="article-card__publish-date editorial-meta editorial-meta--gold" datetime={publishDateISO}>
+      {publishDate}
     </time>
-    <h3 class="article-card__title" id={`article-title-${article.data.slug}`}>
-      {article.data.title} <span class="article-card__arrow" aria-hidden="true" set:html={stretchArrow} />
+    <h3 class="article-card__title" id={`article-title-${slug}`}>
+      {title} <span class="article-card__arrow" aria-hidden="true" set:html={stretchArrow} />
     </h3>
     <p class="article-card__byline editorial-meta">
-        by <a href={tagHref(article.data.author.slug)}
-              class="article-card__author clickable underline-on-hover">{article.data.author.name}</a>
-        · {article.data.readingTime} min
+        by <a href={tagHref(author.slug)}
+              class="article-card__author clickable underline-on-hover">{author.name}</a>
+        · {readingTime} min
     </p>
     <div class="article-card__switch">
-        <p class="article-card__excerpt">{article.data.description}</p>
+        <p class="article-card__excerpt">{description}</p>
         <div class="article-card__topics">
             <p class="article-card__kicker editorial-kicker">In this story</p>
             <ul class="article-card__tags__list">
-              {visibleTags.map(({ slug, name }) => (
+              {visibleTags.map(({ slug: tagSlug, name }) => (
                   <li class="article-card__tag__item">
-                      <a class="clickable underline-on-hover" href={tagHref(slug)}>{name}</a>
+                      <a class="clickable underline-on-hover" href={tagHref(tagSlug)}>{name}</a>
                   </li>
               ))}
               {remainingTags > 0 && (

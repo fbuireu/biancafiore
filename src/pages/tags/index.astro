@@ -2,20 +2,17 @@
 import { getCollection } from "astro:content";
 import { tagHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
+import { buildTagIndexBuckets } from "@domain/tag";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import { buildTagListSchema } from "@modules/core/utils/jsonLd";
-import { groupBy } from "@shared/utils/objects";
 import "./_tags.css";
 
 export const prerender = true;
 
 const tags = await getCollection("tags");
-const letters = groupBy({
-	array: tags.map(({ data }) => data),
-	keyFn: ({ name }) => name.charAt(0).toUpperCase(),
-});
+const buckets = buildTagIndexBuckets(tags.map(({ data }) => data));
 
 const metadata: Partial<SeoMetadata> = {
 	title: "Tags",
@@ -29,11 +26,11 @@ const itemListSchema = buildTagListSchema(tags.map(({ data }) => data.slug));
     <section class="common-wrapper">
         <h1 class="flex justify-center reveal">All tags</h1>
         <ul class="tags__list grid">
-          {Object.entries(letters).map(([letter, letterTags]) => (
+          {buckets.map(({ letter, entries }) => (
               <li class="tags__item">
                   <h2 class="tags__item__letter reveal">{letter}</h2>
                   <ul class="tags__item__list flex column-wrap">
-                    {letterTags.map((tag) => (
+                    {entries.map((tag) => (
                         <li class="tag__item font-sans-serif clickable reveal">
                             <a href={tagHref(tag.slug)} class="underline-on-hover">{tag.name}(&times;{tag.articles.length})</a>
                         </li>

@@ -1,11 +1,5 @@
 import { absoluteUrl, articleHref, DEFAULT_LOCALE_STRING, projectHref, tagHref } from "@const/index";
 
-const ARTICLE_IMAGE_CROPS = [
-	{ width: 1200, height: 675 },
-	{ width: 1200, height: 900 },
-	{ width: 1200, height: 1200 },
-] as const;
-
 interface BuildWebSiteSchemaParams {
 	path: string;
 	name: string;
@@ -27,7 +21,7 @@ interface BuildBlogPostingSchemaParams {
 	path: string;
 	headline: string;
 	description: string;
-	imageUrl?: string;
+	imageCrops?: string[];
 	datePublished: string;
 	dateModified?: string;
 	author: {
@@ -62,10 +56,6 @@ interface BuildProfilePageSchemaParams {
 		path: string;
 		datePublished: string;
 	};
-}
-
-function buildArticleImageVariants(imageUrl: string): string[] {
-	return ARTICLE_IMAGE_CROPS.map(({ width, height }) => `${imageUrl}?w=${width}&h=${height}&fit=fill`);
 }
 
 function serializeJsonLd(data: unknown): string {
@@ -126,7 +116,7 @@ export function buildBlogPostingSchema({
 	path,
 	headline,
 	description,
-	imageUrl,
+	imageCrops,
 	datePublished,
 	dateModified,
 	author,
@@ -142,7 +132,7 @@ export function buildBlogPostingSchema({
 		headline,
 		description,
 		inLanguage: DEFAULT_LOCALE_STRING,
-		...(imageUrl && { image: buildArticleImageVariants(imageUrl) }),
+		...(imageCrops?.length && { image: imageCrops }),
 		datePublished,
 		dateModified,
 		author: {

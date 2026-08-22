@@ -51,6 +51,7 @@ describe("createTestimonials", () => {
 				url: "https://cdn/ada.webp",
 				details: { width: 128, height: 128 },
 				formats: { avif: false, webp: true },
+				shareCrops: expect.any(Array),
 			},
 		});
 	});

@@ -1,5 +1,5 @@
+import { createImage } from "@application/dto/shared/images";
 import { imageSchema } from "@domain/shared/image";
-import { createImage } from "@shared/application/dto/utils/images";
 import type { Asset } from "contentful";
 import { describe, expect, it } from "vitest";
 
@@ -51,5 +51,19 @@ describe("createImage", () => {
 		expect(createImage(asset({ contentType: "image/avif" })).formats).toStrictEqual({ avif: true, webp: false });
 		expect(createImage(asset({ contentType: "image/webp" })).formats).toStrictEqual({ avif: false, webp: true });
 		expect(createImage(asset({ contentType: "image/png" })).formats).toStrictEqual({ avif: false, webp: false });
+	});
+
+	it("carries the share crops a structured-data payload needs, so no template composes a CDN URL", () => {
+		expect(createImage(asset({ url: "//cdn/hero.jpg" })).shareCrops).toStrictEqual([
+			"https://cdn/hero.jpg?w=1200&h=675&fit=fill",
+			"https://cdn/hero.jpg?w=1200&h=900&fit=fill",
+			"https://cdn/hero.jpg?w=1200&h=1200&fit=fill",
+		]);
+	});
+
+	it("crops the absolutised url, so a protocol-relative asset does not reach a crawler half-written", () => {
+		for (const crop of createImage(asset({ url: "//cdn/hero.jpg" })).shareCrops) {
+			expect(crop.startsWith("https://")).toBe(true);
+		}
 	});
 });

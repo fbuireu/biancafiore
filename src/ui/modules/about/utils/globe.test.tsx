@@ -18,7 +18,7 @@ const city = (data: Partial<CollectionEntry<"cities">["data"]> = {}): Collection
 			name: "Barcelona",
 			slug: "barcelona",
 			coordinates: { latitude: 41.39, longitude: 2.16 },
-			period: "2015-Present",
+			period: { startYear: 2015 },
 			description: "Where the writing started.",
 			image: { url: "https://images.ctfassets.net/city.jpg", details: { width: 800, height: 600 } },
 			...data,

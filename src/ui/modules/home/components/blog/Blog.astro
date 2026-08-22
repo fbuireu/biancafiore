@@ -27,7 +27,7 @@ const itemListSchema = buildArticleListSchema(articles.map(({ data }) => data.sl
         <ul class="blog__list">
           {articles.map((article, index) => (
               <li class="blog__item item-wrapper reveal" data-reveal-index={index}>
-                  <ArticleCard {...article} />
+                  <ArticleCard article={article} />
               </li>
           ))}
         </ul>

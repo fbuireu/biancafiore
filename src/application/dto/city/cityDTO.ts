@@ -1,6 +1,6 @@
 import type { RawCity } from "@application/dto/city/types";
-import { type CityDTO, formatPeriod } from "@domain/city";
-import { createImage } from "@shared/application/dto/utils/images";
+import { createImage } from "@application/dto/shared/images";
+import { type CityDTO, createPeriod } from "@domain/city";
 import { slugify } from "@shared/utils/strings";
 
 export function createCities(raw: RawCity[]): CityDTO[] {
@@ -14,7 +14,7 @@ export function createCities(raw: RawCity[]): CityDTO[] {
 			name: rawCity.fields.name,
 			slug: slugify(rawCity.fields.name),
 			coordinates,
-			period: formatPeriod({
+			period: createPeriod({
 				startDate: String(rawCity.fields.startDate),
 				...(rawCity.fields.endDate && { endDate: String(rawCity.fields.endDate) }),
 			}),

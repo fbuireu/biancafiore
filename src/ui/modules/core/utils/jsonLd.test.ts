@@ -76,14 +76,15 @@ describe("buildBlogPostingSchema", () => {
 		expect(parse(buildBlogPostingSchema(BLOG_POSTING))).not.toHaveProperty("image");
 	});
 
-	it("emits one crop per declared aspect ratio for an article that has one", () => {
-		const schema = parse(buildBlogPostingSchema({ ...BLOG_POSTING, imageUrl: `${ORIGIN}/hero.jpg` }));
+	it("emits the crops the image carries, rather than composing a CDN URL of its own", () => {
+		const crops = [`${ORIGIN}/hero.jpg?w=1200`, `${ORIGIN}/hero.jpg?w=1200&h=900`];
+		const schema = parse(buildBlogPostingSchema({ ...BLOG_POSTING, imageCrops: crops }));
 
-		expect(schema.image).toEqual([
-			`${ORIGIN}/hero.jpg?w=1200&h=675&fit=fill`,
-			`${ORIGIN}/hero.jpg?w=1200&h=900&fit=fill`,
-			`${ORIGIN}/hero.jpg?w=1200&h=1200&fit=fill`,
-		]);
+		expect(schema.image).toEqual(crops);
+	});
+
+	it("omits the image for an article whose crops are empty", () => {
+		expect(parse(buildBlogPostingSchema({ ...BLOG_POSTING, imageCrops: [] }))).not.toHaveProperty("image");
 	});
 
 	it("omits keywords when the article carries no tags", () => {
