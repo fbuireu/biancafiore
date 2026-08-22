@@ -16,7 +16,7 @@ const itemListSchema = buildProjectListSchema(projects.map(({ data }) => data.id
     <div class="my-work__inner">
         <header class="my-work__header reveal">
             <h2 class="my-work__title editorial-section-title">My&nbsp;Work</h2>
-            <p class="editorial-meta">{disciplinesCount} — Disciplines</p>
+            <p class="editorial-meta">{disciplinesCount} Disciplines</p>
         </header>
         {projects.map((project, index) => {
           const projectUrl = projectHref(project.data.id);

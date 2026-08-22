@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the suggestion! This is a personal site, so not every idea will land — but well-argued ones are always read.
+        Thanks for the suggestion! This is a personal site, so not every idea will land, but well-argued ones are always read.
   - type: textarea
     id: problem
     attributes:

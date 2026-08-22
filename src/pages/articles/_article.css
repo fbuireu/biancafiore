@@ -172,7 +172,7 @@ html.page--article body {
 			margin-block-start: calc(var(--rhythm) / 2);
 
 			&::before {
-				content: "— ";
+				content: "– ";
 			}
 		}
 	}

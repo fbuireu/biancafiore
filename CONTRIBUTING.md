@@ -1,7 +1,7 @@
 # Contributing to biancafiore
 
-Thanks for considering it. This is the portfolio and blog of a content writer —
-an Astro SSR site on Cloudflare Workers with content served from Contentful —
+Thanks for considering it. This is the portfolio and blog of a content writer:
+an Astro SSR site on Cloudflare Workers with content served from Contentful,
 and that split decides what a contribution can be. Read this before your first
 pull request.
 
@@ -16,13 +16,13 @@ By participating you are expected to uphold the
 [Code of Conduct](./CODE_OF_CONDUCT.md), which is short and worth reading
 rather than summarising here.
 
-## What can be contributed here — and what cannot
+## What can be contributed here, and what cannot be
 
 **Code, yes.** Bug fixes, accessibility, performance, and build improvements
 are welcome through the normal fork-and-PR flow.
 
 **Content, no.** Articles, projects and testimonials live in Contentful, not in
-this repository. A typo in an article cannot be fixed by a PR — use the
+this repository. A typo in an article cannot be fixed by a PR: use the
 [content issue template](.github/ISSUE_TEMPLATE/content_issue.yml) instead and
 it will be corrected in the CMS.
 
@@ -45,7 +45,7 @@ pnpm start
 
 `pnpm wrangler:dev` runs the site in the real Workers runtime when a change
 touches anything server-side. If `astro dev` hangs or SSR starts returning
-500s, stop every dev process, delete `node_modules/.vite`, and restart — the
+500s, stop every dev process, delete `node_modules/.vite`, and restart. The
 Gotchas section of [CLAUDE.md](./CLAUDE.md) explains why.
 
 ## Checks

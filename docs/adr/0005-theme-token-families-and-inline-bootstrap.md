@@ -8,7 +8,7 @@ Accepted.
 
 ## Context
 
-Two different theming needs pull in opposite directions. Some tokens only have to follow the OS/user scheme, which native `light-dark()` (driven by `color-scheme`) expresses exactly. Others must invert independently of `color-scheme` — flipping `--black`/`--white` and recomputing `color-mix` ramps for sections that deliberately run against the page — and a single mechanism could not express both without fighting inheritance.
+Two different theming needs pull in opposite directions. Some tokens only have to follow the OS/user scheme, which native `light-dark()` (driven by `color-scheme`) expresses exactly. Others must invert independently of `color-scheme` (flipping `--black`/`--white` and recomputing `color-mix` ramps for sections that deliberately run against the page), and a single mechanism could not express both without fighting inheritance.
 
 Separately, the theme is persisted only in `localStorage` and pages can be prerendered/edge-cached, so the server cannot know which theme to render.
 
@@ -20,11 +20,11 @@ A render-blocking `is:inline` script in `<head>` sets `data-theme` and `color-sc
 
 What that script *is*, the theme module owns. `Head.astro` renders `THEME_BOOTSTRAP_SCRIPT` from `themeToggle/utils/preference.ts` with `set:html` on the same render-blocking `is:inline` tag, so the storage key, the `data-theme` attribute and the fallback rule are written once rather than restated as literals no type checker reads.
 
-What is stored is a **preference** — `dark`, `light` or `system` — and only a click on the toggle writes it. Nothing stored means `system`, which resolves against `prefers-color-scheme` at boot and follows it while it changes; a stored `dark` or `light` is an explicit choice and neither the OS nor a later paint may overwrite it.
+What is stored is a **preference** (`dark`, `light` or `system`) and only a click on the toggle writes it. Nothing stored means `system`, which resolves against `prefers-color-scheme` at boot and follows it while it changes; a stored `dark` or `light` is an explicit choice and neither the OS nor a later paint may overwrite it.
 
 ## Consequences
 
 - The bootstrap script is render-blocking on purpose. It is small, and it is the only way to avoid the flash on a page the server rendered without knowing the theme ([ADR 0011](./0011-hybrid-rendering-prerender-content-ssr-dynamic.md)).
 - Native `light-dark()` has to survive the build untouched, which is what forces the LightningCSS exclusion ([ADR 0006](./0006-lightningcss-native-css-passthrough.md)).
 - A new colour token has to go into whichever family matches its behaviour; putting it in the wrong one produces a token that looks correct until a section inverts.
-- Painting and persisting are separate steps now, and keeping them separate is the whole of the preference/theme distinction. Writing the theme on every paint reads as harmless and is not: it ends the OS-following behaviour after a single pageview, because after that there is always something stored, and it lets an OS change at sunset overwrite a choice the reader made by hand. Both are asserted in `themeToggle/utils/theme.test.tsx`, in the dom project, which is where a second visit is reachable at all — Playwright hands every spec a fresh context.
+- Painting and persisting are separate steps now, and keeping them separate is the whole of the preference/theme distinction. Writing the theme on every paint reads as harmless and is not: it ends the OS-following behaviour after a single pageview, because after that there is always something stored, and it lets an OS change at sunset overwrite a choice the reader made by hand. Both are asserted in `themeToggle/utils/theme.test.tsx`, in the dom project, which is where a second visit is reachable at all: Playwright hands every spec a fresh context.

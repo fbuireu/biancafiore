@@ -128,11 +128,11 @@ const GRID_MEASURE_USE = /var\((--grid-[a-z-]+)\)/g;
 const MODULE_FONT_SIZE = /font-size:\s*([^;}\n]+)/g;
 const CONTAINER_SCALED_CENSUS = /under `@modules` the components taking it are ([^.]+)\./;
 const UNLADDERED_FONT_SIZE_COUNT = /(\d+) further `font-size` declarations/;
-const UNLADDERED_FONT_SIZE_CENSUS = /neither on the ladder nor container-scaled, and they sit in ([^—]+)—/;
-const SECTION_TITLE_CENSUS = /a visual change to every component still on it, and those are ([^—]+)—/;
+const UNLADDERED_FONT_SIZE_CENSUS = /neither on the ladder nor container-scaled, and they sit in ([^:]+):/;
+const SECTION_TITLE_CENSUS = /a visual change to every component still on it, and those are ([^:]+):/;
 const EDITORIAL_SECTION_TITLE_CONTAINER_CLAMP = /\.editorial-section-title \{[^}]*font-size:[^;]*cqi/;
 const SEMANTIC_TOKEN_DECLARATION = /^\s+(--[a-z-]+): light-dark\(/gm;
-const SEMANTIC_TOKEN_CENSUS = /they are exactly ([^—]+)—/;
+const SEMANTIC_TOKEN_CENSUS = /they are exactly ([^:]+):/;
 const GRID_TOKEN_IN_QUERY = /@(?:container|media)[^{]*var\(--grid-/;
 const REVEAL_MODIFIER_DECLARATION = /\.reveal--[a-z-]+[^{\n]*\{/g;
 const PAGE_CONTAINER_DECLARATION = /&\.page--([a-z\d-]+)\s*\{\s*container:\s*([a-z\d-]+)\s*\/\s*([^;]+);/g;
@@ -148,7 +148,7 @@ const INVERTED_SECTION_MIX = "inverted-color-scheme";
 const INVERTED_SECTION_MARKUP = /class="([^"]*inverted-color-scheme[^"]*)"/g;
 const MODIFIER_BLOCK_DECLARATION = /^\t\.([a-z-]+)[^{\n]*\{/gm;
 const MIXED_UTILITY_TABLE_ROW = /^\| `([a-z][a-z-]*)` \| [^|]+ \|$/gm;
-const MIXED_UTILITY_BULLET = /^\t- `([a-z][a-z-]*)` — /gm;
+const MIXED_UTILITY_BULLET = /^\t- `([a-z][a-z-]*)`: /gm;
 const STANDALONE_MODIFIER_CLASS = /\.--[\w-]+/g;
 const SMACSS_STATE_CLASS = /\.(?:is|has)-[\w-]+/g;
 const ANY_CLASS_TOKEN = /\.(-{0,2}[a-zA-Z_][\w-]*)/g;
@@ -157,7 +157,7 @@ const ASTRO_STYLE_BLOCK = /<style[\s>]/;
 const HYDRATION_DIRECTIVE = /<(\w+)[^>]*\sclient:([\w-]+)(?:="([^"]*)")?/g;
 const CLASS_ATTRIBUTE = /class(?:Name|:list)?=(?:"([^"]*)"|'([^']*)'|\{((?:[^{}]|\{[^}]*\})*)\})/g;
 const CLASS_WORD = /[a-zA-Z][\w-]*/g;
-const ISLAND_ROOT_CENSUS = /only three hydration roots[^—]*— ([^—]+) —/;
+const ISLAND_ROOT_CENSUS = /only three hydration roots in the whole site: (.+?)\. Every one is/;
 const DTO_CITED_DEFAULT = /`(\?\? [^`\n]+)`/g;
 const CREATE_AUTHOR_DEFINITION = /export function createAuthor\(/;
 const AUTHOR_FIELD_MAPPING = /\bsocialNetworks: [^;\n]+,$/m;
@@ -979,7 +979,7 @@ describe("application guide: the anti-corruption boundary", () => {
 	});
 
 	it("leaves the credential bail, the batching and Effect itself to that one interface", () => {
-		expect(guide).toContain("no Effect, no `CmsClient`, no runtime, and no credential guard");
+		expect(guide).toContain("no Effect, no `CmsClient`, no runtime, no credential guard");
 
 		const entries = read("src/infrastructure/cms/entries.ts");
 
@@ -1290,7 +1290,7 @@ describe("modules guide: mixes, islands and data access", () => {
 
 	it("dereferences through one module, on promises rather than Effect", () => {
 		expect(guide).toContain("`getEntry` is called nowhere else under `src/ui` or `src/pages`");
-		expect(guide).toContain("nothing under `src/ui` imports `effect` at all");
+		expect(guide).toContain("Nothing under `src/ui` imports `effect` at all");
 
 		const resolver = read(DEREFERENCING_MODULE);
 
@@ -1362,7 +1362,7 @@ describe("modules guide: mixes, islands and data access", () => {
 	});
 
 	it("names each component folder camelCase, the component PascalCase and the stylesheet kebab-case of both", () => {
-		expect(guide).toContain("no folder deviates");
+		expect(guide).toContain("No folder deviates");
 
 		const kebab = (name: string) => name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
 		const folders = new Map<string, string[]>();

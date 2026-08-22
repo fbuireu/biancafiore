@@ -18,4 +18,4 @@ Colour tokens stay plain inherited custom properties, unregistered. This is a de
 
 - Theme switching stays instant and fallback-safe ([ADR 0005](./0005-theme-token-families-and-inline-bootstrap.md)).
 - Colour tokens get no type checking and cannot be transitioned, which is the accepted cost.
-- The asymmetry is invisible in the stylesheet, so it is called out in the styles guide as well as here — an editor who registers colours "for consistency" reintroduces both bugs at once.
+- The asymmetry is invisible in the stylesheet, so it is called out in the styles guide as well as here. An editor who registers colours "for consistency" reintroduces both bugs at once.

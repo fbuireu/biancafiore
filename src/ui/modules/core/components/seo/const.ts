@@ -3,7 +3,7 @@ import type { SeoMetadata } from "@const/types";
 
 export const DEFAULT_SEO_PARAMS: SeoMetadata = {
 	title: "Bianca Fiore",
-	description: "Bianca Fiore — personal website.",
+	description: "Bianca Fiore: personal website.",
 	robots: {
 		index: true,
 		follow: true,

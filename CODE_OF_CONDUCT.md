@@ -39,9 +39,9 @@ Examples of unacceptable behavior include:
 
 ## Scope
 
-This Code of Conduct applies within all community spaces of this project —
-[Issues](https://github.com/fbuireu/biancafiore/issues) and
-[Pull Requests](https://github.com/fbuireu/biancafiore/pulls) — and also
+This Code of Conduct applies within all community spaces of this project
+([Issues](https://github.com/fbuireu/biancafiore/issues) and
+[Pull Requests](https://github.com/fbuireu/biancafiore/pulls)), and also
 applies when an individual is officially representing the project in public
 spaces.
 
@@ -57,11 +57,11 @@ reviewed and investigated promptly and fairly.
 
 The maintainer is responsible for clarifying and enforcing these standards, and
 will take appropriate and fair corrective action in response to any behavior
-deemed inappropriate, threatening, offensive, or harmful — from a private
+deemed inappropriate, threatening, offensive, or harmful: from a private
 warning, through temporary restrictions on interaction, up to a permanent ban
 from the project's community spaces for repeated or egregious violations.
 
-Security vulnerabilities are not conduct reports — those follow the
+Security vulnerabilities are not conduct reports; those follow the
 [Security Policy](./SECURITY.md) instead.
 
 ## Attribution

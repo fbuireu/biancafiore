@@ -8,9 +8,9 @@ Accepted.
 
 ## Context
 
-Content comes from Contentful ([ADR 0002](./0002-contentful-headless-cms.md)), whose entry shape — `sys`, `fields`, `Entry<Skeleton>` — is not the shape the site reasons about. Left unchecked it spreads: reading time, table of contents and favourite-first ordering end up computed inside mappers, next to `entry.fields.body`, and the editorial rules become impossible to read or test without a CMS payload.
+Content comes from Contentful ([ADR 0002](./0002-contentful-headless-cms.md)), whose entry shape (`sys`, `fields`, `Entry<Skeleton>`) is not the shape the site reasons about. Left unchecked it spreads: reading time, table of contents and favourite-first ordering end up computed inside mappers, next to `entry.fields.body`, and the editorial rules become impossible to read or test without a CMS payload.
 
-The opposite failure is as real. A textbook domain layer — aggregates, repositories, framework-free types — duplicates every schema Astro already types through `CollectionEntry`, and churns twice on every content change.
+The opposite failure is as real. A textbook domain layer of aggregates, repositories and framework-free types duplicates every schema Astro already types through `CollectionEntry`, and churns twice on every content change.
 
 ## Decision
 
@@ -27,13 +27,13 @@ config:
   theme: neutral
 ---
 flowchart TD
-    UI["pages / ui — via astro:content CollectionEntry"] --> APP
-    subgraph APP["application — anti-corruption layer"]
-      L["entities/* — loaders (defineCollection)"]
-      M["dto/*DTO.ts — Contentful mappers"]
+    UI["pages and ui, via astro:content CollectionEntry"] --> APP
+    subgraph APP["application: the anti-corruption layer"]
+      L["entities/*: loaders (defineCollection)"]
+      M["dto/*DTO.ts: Contentful mappers"]
     end
-    APP --> DOM["domain/* — schemas · models · rules"]
-    APP --> INFRA["infrastructure — cms · db · email · images"]
+    APP --> DOM["domain/*: schemas · models · rules"]
+    APP --> INFRA["infrastructure: cms · db · email · images"]
     INFRA --> CMS[("Contentful")]
     M -- "raw entry → domain model, then apply rules" --> DOM
 ```
@@ -41,6 +41,6 @@ flowchart TD
 ## Consequences
 
 - Dependencies point inward only: `ui → application → domain`, with `application → infrastructure → Contentful`. `domain` depends on nothing outward, so the domain model and its rules are testable and CMS-agnostic even though the schemas are Astro-typed.
-- Rules that genuinely operate over raw Contentful entries and build cross-collection references (related-by-shared-tags, per-tag/author counts, articles-by-author) stay in the ACL on purpose — decoupling them would not preserve behaviour cheaply.
+- Rules that genuinely operate over raw Contentful entries and build cross-collection references (related-by-shared-tags, per-tag/author counts, articles-by-author) stay in the ACL on purpose, because decoupling them would not preserve behaviour cheaply.
 - A new content type is a four-step path rather than one file: domain concept → DTO → entity loader → collection registration, with the glossary term added to `CONTEXT.md` in the same change.
 - Concept names are binding. A folder, field or rule whose name disagrees with `CONTEXT.md` is a bug in one of the two.
