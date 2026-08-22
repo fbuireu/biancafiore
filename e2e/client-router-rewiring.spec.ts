@@ -3,6 +3,7 @@ import { THEME_ATTRIBUTE } from "@modules/core/components/themeToggle/const";
 import { expect, type Page, test } from "@playwright/test";
 
 const ARTICLE_CARD_LINK = ".article-card__link";
+const ARTICLE_URL = /\/articles\/.+/;
 const EMAIL_ADDRESS_BUTTON = `.${EMAIL_BUTTON_ADDRESS_CLASS}`;
 const MENU_BUTTON = ".header__menu-button";
 const MENU_OPEN_CLASS = "page--menu-open";
@@ -12,31 +13,40 @@ const THEME_TOGGLE = ".theme-toggle";
 
 const paintedTheme = (page: Page) => page.locator("html").getAttribute(THEME_ATTRIBUTE);
 
-const openAnArticle = async (page: Page, index: number) => {
+interface OpenAnArticleParams {
+	page: Page;
+	index: number;
+}
+
+const openAnArticle = async ({ page, index }: OpenAnArticleParams) => {
 	await page.goto("/articles");
-	await page.locator(ARTICLE_CARD_LINK).nth(index).click();
-	await expect(page).toHaveURL(/\/articles\/.+/);
+	await expect(page.locator("[data-astro-exec]").first()).toBeAttached();
+
+	const link = page.locator(ARTICLE_CARD_LINK).nth(index);
+
+	await link.scrollIntoViewIfNeeded();
+	await link.click();
+	await page.waitForURL(ARTICLE_URL);
 };
 
-/**
- * Every scripted component wires itself on `astro:page-load`, because ClientRouter runs a
- * bundled script once per session and swaps the body underneath it. Nothing else in the
- * project can see that: tsc, Biome, the unit suite, astro check and the build only ever
- * observe the first pageview. These specs are the only place a second one exists.
- */
 test.describe("wiring survives a ClientRouter swap", () => {
-	test("re-runs the initialisers rather than the scripts", async ({ page }) => {
-		await openAnArticle(page, 0);
-		await page.goBack();
-		await openAnArticle(page, 1);
+	test("swaps the document without re-running the bundled scripts", async ({ page }) => {
+		await openAnArticle({ page, index: 0 });
 
-		await expect(page.locator("[data-astro-exec]").first()).toBeAttached();
+		const executed = await page.locator("[data-astro-exec]").count();
+		const firstArticle = page.url();
+
+		await page.goBack();
+		await openAnArticle({ page, index: 1 });
+
+		expect(page.url()).not.toBe(firstArticle);
+		expect(await page.locator("[data-astro-exec]").count()).toBe(executed);
 	});
 
 	test("keeps the theme toggle repainting after two swaps", async ({ page }) => {
-		await openAnArticle(page, 0);
+		await openAnArticle({ page, index: 0 });
 		await page.goBack();
-		await openAnArticle(page, 1);
+		await openAnArticle({ page, index: 1 });
 
 		const before = await paintedTheme(page);
 
@@ -46,9 +56,9 @@ test.describe("wiring survives a ClientRouter swap", () => {
 	});
 
 	test("keeps the reading progress bar following the reader after two swaps", async ({ page }) => {
-		await openAnArticle(page, 0);
+		await openAnArticle({ page, index: 0 });
 		await page.goBack();
-		await openAnArticle(page, 1);
+		await openAnArticle({ page, index: 1 });
 
 		await page.mouse.wheel(0, 2000);
 
@@ -56,9 +66,9 @@ test.describe("wiring survives a ClientRouter swap", () => {
 	});
 
 	test("keeps the related-articles slider moving after two swaps", async ({ page }) => {
-		await openAnArticle(page, 0);
+		await openAnArticle({ page, index: 0 });
 		await page.goBack();
-		await openAnArticle(page, 1);
+		await openAnArticle({ page, index: 1 });
 
 		const next = page.locator(SLIDER_NEXT);
 
@@ -73,9 +83,9 @@ test.describe("wiring survives a ClientRouter swap", () => {
 	});
 
 	test("closes the menu on the first Escape, however many pages the reader has visited", async ({ page }) => {
-		await openAnArticle(page, 0);
+		await openAnArticle({ page, index: 0 });
 		await page.goBack();
-		await openAnArticle(page, 1);
+		await openAnArticle({ page, index: 1 });
 
 		const menuButton = page.locator(MENU_BUTTON);
 
