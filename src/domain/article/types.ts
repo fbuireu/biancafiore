@@ -14,4 +14,5 @@ export interface ArticleHeading {
 	level: number;
 	id: string;
 	text: string;
+	scope: string;
 }

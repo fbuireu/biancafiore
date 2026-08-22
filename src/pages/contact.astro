@@ -16,7 +16,7 @@ const metadata: Partial<SeoMetadata> = {
 };
 
 const contactPageSchema = buildContactPageSchema({
-	url: Astro.url.href,
+	path: Astro.url.pathname,
 	name: "Contact Bianca Fiore",
 	description: "Get in touch with Bianca Fiore.",
 });

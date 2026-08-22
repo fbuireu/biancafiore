@@ -73,7 +73,7 @@ export function watchBackground(): void {
 
 let menuListeners: AbortController | undefined;
 
-export function toggleMenu(): void {
+export function initMenu(): void {
 	const {
 		HTML: HTML_SELECTOR,
 		TOGGLE_MENU_BUTTON: TOGGLE_MENU_BUTTON_SELECTOR,

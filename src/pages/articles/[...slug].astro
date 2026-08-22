@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { absoluteUrl, PAGES_ROUTES } from "@const/index";
+import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
 import ColumnsToggle from "@modules/article/components/columnsToggle/ColumnsToggle.astro";
@@ -52,9 +52,9 @@ const metadata: Partial<SeoMetadata> = {
 	}),
 };
 const { showsTableOfContents } = siteChrome(Astro.url);
-const scopes = article.data.tableOfContents.map((_, index) => `--section-${index + 1}`).join(",");
+const scopes = article.data.tableOfContents.map(({ scope }) => scope).join(",");
 const blogPostingSchema = buildBlogPostingSchema({
-	url: Astro.url.href,
+	path: Astro.url.pathname,
 	headline: article.data.title,
 	description: article.data.description,
 	imageUrl: (article.data.featuredImage ?? article.data.author.profileImage).url,
@@ -63,11 +63,11 @@ const blogPostingSchema = buildBlogPostingSchema({
 	author: {
 		name: article.data.author.name,
 		jobTitle: article.data.author.jobTitle,
-		url: absoluteUrl(PAGES_ROUTES.ABOUT),
+		path: PAGES_ROUTES.ABOUT,
 	},
 	publisher: {
 		name: article.data.author.name,
-		url: absoluteUrl(PAGES_ROUTES.HOME),
+		path: PAGES_ROUTES.HOME,
 	},
 	keywords: article.data.tags?.map((tag: { name: string }) => tag.name),
 });

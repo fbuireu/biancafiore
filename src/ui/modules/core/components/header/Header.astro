@@ -15,10 +15,10 @@ import "./header.css";
     <Menu />
 </header>
 <script>
-	import { toggleMenu, watchBackground } from "@modules/core/components/header/utils/interactions";
+	import { initMenu, watchBackground } from "@modules/core/components/header/utils/interactions";
 
 	document.addEventListener("astro:page-load", () => {
 		watchBackground();
-		toggleMenu();
+		initMenu();
 	});
 </script>

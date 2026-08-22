@@ -114,6 +114,7 @@ const LOADER_REACHING_PAST_FETCH_ENTRIES = /from "effect"|isContentfulConfigured
 const DOMAIN_SCHEMA_BINDING = /schema:\s*\w+Schema/;
 const DOMAIN_IMPORT = /from "@domain\//;
 const ASTRO_SITE_READ = /Astro\.site/;
+const ASTRO_URL_ORIGIN_READ = /Astro\.url\.(?:href|origin)|origin: originPath/;
 const LOADER_ID_ASSIGNMENT = /\bid:\s*(?:\w+\.)?(\w+),/g;
 const ANY_ID_ASSIGNMENT = /\bid:\s/;
 const TYPE_SCALE_RATIO = /--ratio:\s*([\d.]+);/;
@@ -1463,6 +1464,7 @@ describe("conventions", () => {
 		expect(conventions).toContain("only reader of `SITE_URL`");
 		expect(SOURCE_FILES.filter((file) => SITE_ORIGIN_READ.test(read(file)))).toEqual(["src/const/routes.ts"]);
 		expect(SOURCE_FILES.filter((file) => ASTRO_SITE_READ.test(read(file)))).toEqual([]);
+		expect(SOURCE_FILES.filter((file) => ASTRO_URL_ORIGIN_READ.test(read(file)))).toEqual([]);
 	});
 
 	it("sets the consent default before anything that reads it, which is the order ADR 0013 calls load-bearing", () => {

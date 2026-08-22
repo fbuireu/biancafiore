@@ -25,15 +25,17 @@ export function getImageEmbedWrapperClass(layout?: string): string {
 
 type HeadingBlock = Block & { content: Text[] };
 
+const sectionScope = (ordinal: number): string => `--section-${ordinal}`;
+
 interface CreateSectionParams {
 	level: number;
-	ordinal?: number;
+	scope?: string;
 	id: string;
 	text: string;
 }
 
-const createSection = ({ level, id, text, ordinal }: CreateSectionParams) => {
-	const timeline = ordinal ? ` style="--is: --section-${ordinal}"` : "";
+const createSection = ({ level, id, text, scope }: CreateSectionParams) => {
+	const timeline = scope ? ` style="--is: ${scope}"` : "";
 
 	return `
     <section${timeline}>
@@ -56,9 +58,11 @@ function parseHeadings(collected: ArticleHeading[]) {
 					return createSection({ level, id, text });
 				}
 
-				collected.push({ level, id, text });
+				const scope = sectionScope(collected.length + 1);
 
-				return createSection({ level, ordinal: collected.length, id, text });
+				collected.push({ level, id, text, scope });
+
+				return createSection({ level, scope, id, text });
 			},
 		]),
 	);

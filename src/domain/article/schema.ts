@@ -29,6 +29,7 @@ export const articleSchema = z.object({
 				id: z.string(),
 				heading: z.string(),
 				level: z.number(),
+				scope: z.string(),
 			}),
 		)
 		.optional()

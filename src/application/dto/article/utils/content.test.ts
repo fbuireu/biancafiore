@@ -25,10 +25,11 @@ const makeArticle = (content: unknown[]): RawArticle =>
 	}) as unknown as RawArticle;
 
 describe("renderArticleContent headings", () => {
-	it("collects a heading's level, anchor id and authored text as it writes the section", () => {
-		const { headings } = renderArticleContent(makeArticle([heading({ level: 3, value: "Tips & Tricks" })]));
+	it("collects a heading's level, anchor id, authored text and the scope it stamped on the section", () => {
+		const { content, headings } = renderArticleContent(makeArticle([heading({ level: 3, value: "Tips & Tricks" })]));
 
-		expect(headings).toEqual([{ level: 3, id: "tips-tricks", text: "Tips & Tricks" }]);
+		expect(headings).toEqual([{ level: 3, id: "tips-tricks", text: "Tips & Tricks", scope: "--section-1" }]);
+		expect(content).toContain('<section style="--is: --section-1">');
 	});
 
 	it("collects the headings in document order, whatever order their levels come in", () => {
@@ -49,7 +50,7 @@ describe("renderArticleContent headings", () => {
 			makeArticle([heading({ level: 1, value: "Title" }), heading({ level: 2, value: "Section" })]),
 		);
 
-		expect(headings).toEqual([{ level: 2, id: "section", text: "Section" }]);
+		expect(headings).toEqual([{ level: 2, id: "section", text: "Section", scope: "--section-1" }]);
 		expect(content).toContain('<h1 id="title"');
 	});
 

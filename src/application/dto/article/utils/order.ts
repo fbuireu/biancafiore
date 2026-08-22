@@ -15,7 +15,7 @@ const publishDateISO = (rawArticle: RawArticle): string => {
 	return Number.isNaN(timestamp) ? "" : new Date(timestamp).toISOString();
 };
 
-export function toOrderableArticle(rawArticle: RawArticle): OrderableArticle {
+function toOrderableArticle(rawArticle: RawArticle): OrderableArticle {
 	return {
 		reference: articleReference(rawArticle),
 		isFavorite: rawArticle.fields.isFavorite ?? false,

@@ -368,8 +368,8 @@ describe("createArticles content derivations", () => {
 		]);
 
 		expect(article.tableOfContents).toEqual([
-			{ id: "the-first-section", heading: "The First Section", level: 1 },
-			{ id: "a-nested-one", heading: "A Nested One", level: 2 },
+			{ id: "the-first-section", heading: "The First Section", level: 2, scope: "--section-1" },
+			{ id: "a-nested-one", heading: "A Nested One", level: 3, scope: "--section-2" },
 		]);
 	});
 
@@ -524,9 +524,9 @@ describe("createArticles content derivations", () => {
 			}),
 		]);
 
-		for (const [index, entry] of article.tableOfContents.entries()) {
-			expect(article.content).toContain(`<section style="--is: --section-${index + 1}">`);
-			expect(article.content).toContain(`<h${entry.level + 1} id="${entry.id}"`);
+		for (const entry of article.tableOfContents) {
+			expect(article.content).toContain(`<section style="--is: ${entry.scope}">`);
+			expect(article.content).toContain(`<h${entry.level} id="${entry.id}"`);
 		}
 
 		expect(article.tableOfContents).toHaveLength(2);

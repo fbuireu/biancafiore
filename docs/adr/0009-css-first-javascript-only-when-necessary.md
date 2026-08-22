@@ -10,7 +10,7 @@ Accepted.
 
 ## Context
 
-Most of this site's interaction is presentational: reveals, theming, disclosure, layout response. Each of those has a well-known JavaScript answer and a newer platform answer, and the platform answers are not evenly supported. `animation-timeline: view()`, `@starting-style`, `light-dark()`, `interpolate-size`, `scroll-marker-group`, `d` as an animatable property, `attr()` with a type: these are the features the design leans on, and reaching for all of them at once is a decision about who can see the site properly, not a coding preference.
+Most of this site's interaction is presentational: reveals, theming, disclosure, layout response. Each of those has a well-known JavaScript answer and a newer platform answer, and the platform answers are not evenly supported. `animation-timeline: view()`, `@starting-style`, `light-dark()`, `interpolate-size`, `d` as an animatable property, `attr()` with a type: these are the features the design leans on, and reaching for all of them at once is a decision about who can see the site properly, not a coding preference.
 
 Writing it down as "prefer CSS, add JavaScript only when necessary" made the reversible half the headline and the irreversible half a clause. The preference can be revisited per component. The baseline cannot: by the time a dozen components depend on scroll timelines, supporting a browser without them means rebuilding them, not adding a polyfill.
 

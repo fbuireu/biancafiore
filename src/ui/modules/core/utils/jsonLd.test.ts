@@ -14,21 +14,21 @@ const ORIGIN = "https://biancafiore.test";
 
 const parse = (schema: string): Record<string, unknown> => JSON.parse(schema);
 
-const AUTHOR = { name: "Bianca Fiore", jobTitle: "Content writer", url: `${ORIGIN}/about` };
+const AUTHOR = { name: "Bianca Fiore", jobTitle: "Content writer", path: "/about" };
 
 const BLOG_POSTING = {
-	url: `${ORIGIN}/articles/a-piece`,
+	path: "/articles/a-piece",
 	headline: "A piece",
 	description: "About something",
 	datePublished: "2026-03-15T00:00:00.000Z",
 	author: AUTHOR,
-	publisher: { name: "Bianca Fiore", url: ORIGIN },
+	publisher: { name: "Bianca Fiore", path: "/" },
 };
 
 describe("serialisation", () => {
 	it("escapes the opening angle bracket, so a schema can never close the script tag that carries it", () => {
 		const schema = buildContactPageSchema({
-			url: `${ORIGIN}/contact`,
+			path: "/contact",
 			name: "</script><script>alert(1)</script>",
 			description: "Say hello",
 		});
@@ -99,7 +99,7 @@ describe("buildBlogPostingSchema", () => {
 	it("points mainEntityOfPage at the article's own url", () => {
 		expect(parse(buildBlogPostingSchema(BLOG_POSTING)).mainEntityOfPage).toEqual({
 			"@type": "WebPage",
-			"@id": BLOG_POSTING.url,
+			"@id": `${ORIGIN}${BLOG_POSTING.path}`,
 		});
 	});
 });
@@ -108,13 +108,13 @@ describe("buildBreadcrumbListSchema", () => {
 	it("numbers the trail from one and carries each url as the item", () => {
 		const schema = parse(
 			buildBreadcrumbListSchema([
-				{ name: "Home", url: ORIGIN },
-				{ name: "Articles", url: `${ORIGIN}/articles` },
+				{ name: "Home", path: "/" },
+				{ name: "Articles", path: "/articles" },
 			]),
 		);
 
 		expect(schema.itemListElement).toEqual([
-			{ "@type": "ListItem", position: 1, name: "Home", item: ORIGIN },
+			{ "@type": "ListItem", position: 1, name: "Home", item: `${ORIGIN}/` },
 			{ "@type": "ListItem", position: 2, name: "Articles", item: `${ORIGIN}/articles` },
 		]);
 	});
@@ -123,7 +123,7 @@ describe("buildBreadcrumbListSchema", () => {
 describe("buildProfilePageSchema and buildWebSiteSchema", () => {
 	it("names the author as a Person on the site schema", () => {
 		expect(
-			parse(buildWebSiteSchema({ url: ORIGIN, name: "Bianca Fiore", description: "A site", author: AUTHOR })).author,
+			parse(buildWebSiteSchema({ path: "/", name: "Bianca Fiore", description: "A site", author: AUTHOR })).author,
 		).toMatchObject({ "@type": "Person", name: "Bianca Fiore" });
 	});
 
@@ -132,7 +132,7 @@ describe("buildProfilePageSchema and buildWebSiteSchema", () => {
 			person: {
 				id: "#bianca",
 				name: "Bianca Fiore",
-				url: `${ORIGIN}/about`,
+				path: "/about",
 				image: `${ORIGIN}/bianca.jpg`,
 				jobTitle: "Content writer",
 				company: "Freelance",

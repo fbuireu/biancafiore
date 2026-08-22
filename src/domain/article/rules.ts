@@ -6,7 +6,6 @@ const MINIMUM_READING_MINUTES = 1;
 const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 const WHITESPACE_REGEX = /\s+/g;
 const TABLE_OF_CONTENTS_LEVELS = [2, 3, 4, 5, 6];
-const HEADING_LEVEL_OFFSET = 1;
 const MAX_DESCRIPTION_LENGTH = 200;
 
 export function getReadingTime(content: string): number {
@@ -21,9 +20,7 @@ export function isTableOfContentsHeading(level: number): boolean {
 }
 
 export function generateTableOfContents(headings: ArticleHeading[]): TableOfContents {
-	return headings
-		.filter(({ level }) => isTableOfContentsHeading(level))
-		.map(({ id, text, level }) => ({ id, heading: text, level: level - HEADING_LEVEL_OFFSET }));
+	return headings.map(({ id, text, level, scope }) => ({ id, heading: text, level, scope }));
 }
 
 export function deriveDescription(rawDescription: string): string {

@@ -25,9 +25,6 @@
 	padding-block: 2rem 4rem;
 	position: relative;
 
-	.slider__track {
-	}
-
 	@media (width >= 720px) {
 		--slides-per-view: 2;
 		--slider-gap: 2rem;

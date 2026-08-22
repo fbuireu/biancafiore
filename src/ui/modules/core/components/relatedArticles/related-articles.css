@@ -22,9 +22,6 @@
 	--slides-per-view: 1;
 	--slider-gap: 0rem;
 
-	.slider__track {
-	}
-
 	&[data-has-buttons="true"] {
 		align-items: center;
 		grid-template-columns: 2.5rem 1fr 2.5rem;
