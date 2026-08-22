@@ -11,7 +11,12 @@ const PREFERS_DARK_SCHEME = window.matchMedia(DARK_SCHEME_QUERY);
 const effectiveTheme = (): Theme =>
 	resolveTheme({ preference: readPreference(localStorage), prefersDark: PREFERS_DARK_SCHEME.matches });
 
-const applyTheme = ({ theme, document }: { theme: Theme; document: Document }): void => {
+interface ApplyThemeParams {
+	theme: Theme;
+	document: Document;
+}
+
+const applyTheme = ({ theme, document }: ApplyThemeParams): void => {
 	document.documentElement.setAttribute(THEME_ATTRIBUTE, theme);
 	document.documentElement.style.colorScheme = theme;
 

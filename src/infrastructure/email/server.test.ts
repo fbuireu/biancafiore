@@ -13,7 +13,7 @@ afterEach(() => {
 
 describe("EmailClientLive", () => {
 	it("builds a client when the api key is configured", async () => {
-		setSecret(API_KEY_SECRET, "re_test_key");
+		setSecret({ name: API_KEY_SECRET, value: "re_test_key" });
 
 		const exit = await build();
 
@@ -21,7 +21,7 @@ describe("EmailClientLive", () => {
 	});
 
 	it("hands out the one notification the site sends rather than the vendor's send", async () => {
-		setSecret(API_KEY_SECRET, "re_test_key");
+		setSecret({ name: API_KEY_SECRET, value: "re_test_key" });
 
 		const exit = await build();
 

@@ -19,7 +19,13 @@ interface ArticleStubParams {
 const articleStub = ({ slug, isFavorite, publishDateISO }: ArticleStubParams): ArticleDTO =>
 	({ slug, isFavorite, publishDateISO }) as ArticleDTO;
 
-const headingStub = (level: number, text: string, ordinal = 1): ArticleHeading => ({
+interface HeadingStubParams {
+	level: number;
+	text: string;
+	ordinal?: number;
+}
+
+const headingStub = ({ level, text, ordinal = 1 }: HeadingStubParams): ArticleHeading => ({
 	level,
 	id: text.toLowerCase().replaceAll(" ", "-"),
 	text,
@@ -99,20 +105,32 @@ describe("generateTableOfContents", () => {
 	});
 
 	it("carries the heading level untouched, so the stylesheet owns the indentation ramp", () => {
-		expect(generateTableOfContents([headingStub(2, "Intro", 1), headingStub(6, "Aside", 2)])).toEqual([
+		expect(
+			generateTableOfContents([
+				headingStub({ level: 2, text: "Intro", ordinal: 1 }),
+				headingStub({ level: 6, text: "Aside", ordinal: 2 }),
+			]),
+		).toEqual([
 			{ id: "intro", heading: "Intro", level: 2, scope: "--section-1" },
 			{ id: "aside", heading: "Aside", level: 6, scope: "--section-2" },
 		]);
 	});
 
 	it("carries the scope the renderer minted rather than counting the list a second time", () => {
-		const items = generateTableOfContents([headingStub(2, "First", 1), headingStub(3, "Second", 2)]);
+		const items = generateTableOfContents([
+			headingStub({ level: 2, text: "First", ordinal: 1 }),
+			headingStub({ level: 3, text: "Second", ordinal: 2 }),
+		]);
 
 		expect(items.map(({ scope }) => scope)).toEqual(["--section-1", "--section-2"]);
 	});
 
 	it("keeps the headings in document order rather than sorting them by level", () => {
-		const items = generateTableOfContents([headingStub(4, "Third"), headingStub(2, "First"), headingStub(3, "Second")]);
+		const items = generateTableOfContents([
+			headingStub({ level: 4, text: "Third" }),
+			headingStub({ level: 2, text: "First" }),
+			headingStub({ level: 3, text: "Second" }),
+		]);
 
 		expect(items.map(({ heading }) => heading)).toEqual(["Third", "First", "Second"]);
 	});

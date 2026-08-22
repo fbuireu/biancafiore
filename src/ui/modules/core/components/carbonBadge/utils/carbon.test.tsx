@@ -8,7 +8,12 @@ import {
 import { greenCheckDouble } from "@tests/doubles/network";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const entries = (navigation: number | undefined, resources: number[]) => {
+interface EntriesParams {
+	navigation?: number;
+	resources: number[];
+}
+
+const entries = ({ navigation, resources }: EntriesParams) => {
 	vi.spyOn(performance, "getEntriesByType").mockImplementation((type) =>
 		type === "navigation"
 			? ((navigation === undefined ? [] : [{ transferSize: navigation }]) as unknown as PerformanceEntry[])
@@ -28,19 +33,19 @@ afterEach(() => {
 
 describe("transferredBytes", () => {
 	it("counts the document itself alongside every resource it pulled", () => {
-		entries(1000, [200, 300]);
+		entries({ navigation: 1000, resources: [200, 300] });
 
 		expect(transferredBytes()).toBe(1500);
 	});
 
 	it("treats a resource the browser reported no size for as nothing, rather than as NaN", () => {
-		entries(1000, [undefined as unknown as number, 500]);
+		entries({ navigation: 1000, resources: [undefined as unknown as number, 500] });
 
 		expect(transferredBytes()).toBe(1500);
 	});
 
 	it("answers zero when the browser reported no navigation entry at all", () => {
-		entries(undefined, []);
+		entries({ resources: [] });
 
 		expect(transferredBytes()).toBe(0);
 	});
@@ -48,23 +53,23 @@ describe("transferredBytes", () => {
 
 describe("transferredBytes across a client-side navigation", () => {
 	it("counts only what the second page pulled, not the whole session", () => {
-		entries(1000, [200]);
+		entries({ navigation: 1000, resources: [200] });
 		expect(transferredBytes()).toBe(1200);
 
-		entries(1000, [200, 300, 400]);
+		entries({ navigation: 1000, resources: [200, 300, 400] });
 		expect(transferredBytes()).toBe(700);
 	});
 
 	it("counts the document once, since ClientRouter never replaces it", () => {
-		entries(1000, []);
+		entries({ navigation: 1000, resources: [] });
 		transferredBytes();
-		entries(1000, [50]);
+		entries({ navigation: 1000, resources: [50] });
 
 		expect(transferredBytes()).toBe(50);
 	});
 
 	it("answers nothing for a navigation that pulled nothing new", () => {
-		entries(1000, [200]);
+		entries({ navigation: 1000, resources: [200] });
 		transferredBytes();
 
 		expect(transferredBytes()).toBe(0);
@@ -114,7 +119,7 @@ describe("badgeMarkup", () => {
 
 describe("renderCarbonBadge", () => {
 	it("writes nothing when the browser measured no transfer at all", async () => {
-		entries(0, []);
+		entries({ navigation: 0, resources: [] });
 
 		await renderCarbonBadge();
 
@@ -123,7 +128,7 @@ describe("renderCarbonBadge", () => {
 
 	it("writes nothing when the page carries no badge to write into", async () => {
 		document.body.innerHTML = '<p id="untouched">nothing to do with the badge</p>';
-		entries(1000, []);
+		entries({ navigation: 1000, resources: [] });
 		greenCheckDouble({ green: true });
 
 		await renderCarbonBadge();
@@ -132,7 +137,7 @@ describe("renderCarbonBadge", () => {
 	});
 
 	it("prints a figure and a link once it has measured the page", async () => {
-		entries(500_000, []);
+		entries({ navigation: 500_000, resources: [] });
 		greenCheckDouble({ green: true });
 
 		await renderCarbonBadge();

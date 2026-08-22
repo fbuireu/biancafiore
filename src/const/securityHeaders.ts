@@ -17,11 +17,7 @@ const CONTENT_SECURITY_POLICY_DIRECTIVES = [
 	HTTPS_UPGRADE_DIRECTIVE,
 ];
 
-interface SecurityHeadersParams {
-	isDevelopment?: boolean;
-}
-
-export function securityHeaders({ isDevelopment = false }: SecurityHeadersParams = {}): Record<string, string> {
+export function securityHeaders(isDevelopment = false): Record<string, string> {
 	const directives = isDevelopment
 		? CONTENT_SECURITY_POLICY_DIRECTIVES.filter((directive) => directive !== HTTPS_UPGRADE_DIRECTIVE)
 		: CONTENT_SECURITY_POLICY_DIRECTIVES;

@@ -173,9 +173,9 @@ const DEREFERENCING_MODULE = "src/ui/modules/core/utils/entries.ts";
 const GET_ENTRY_CALL = /\bgetEntry\(/;
 const EFFECT_IMPORT = /from "effect"/;
 const CITED_CONTAINER_QUERY = /@container ([a-z-]+) \(width <= \d+px\)/;
-const EMAIL_BUTTON_MODULE = "src/ui/modules/core/components/emailButton/utils/interactions.ts";
+const EMAIL_BUTTON_MODULE = "src/ui/modules/core/components/emailButton/const.ts";
 const EMAIL_BUTTON_STYLESHEET = "src/ui/modules/core/components/emailButton/email-button.css";
-const EMAIL_BUTTON_HOOK_DECLARATION = /export const EMAIL_BUTTON_CLASS = "([\w-]+)";/;
+const EMAIL_BUTTON_HOOK_DECLARATION = /export const EMAIL_BUTTON_CLASS = "([\w-]+)" as const;/;
 const PLACEHOLDER_MODULE = "src/infrastructure/images/imagePlaceholder/imagePlaceholder.ts";
 const PER_ENTRY_PLACEHOLDER_AWAIT = /placeholder:\s*await/;
 const BOUNDED_PLACEHOLDER_READ = /const PLACEHOLDER_CONCURRENCY = \d+;/;
@@ -1175,7 +1175,7 @@ describe("styles guide: derived constants and source order", () => {
 		expect(guide).toContain("There is deliberately no `page--tag`");
 		expect(routes).toContain("TAGS");
 		expect(routes.indexOf("TAGS")).toBeLessThan(routes.indexOf("TAG"));
-		expect(read("src/ui/modules/core/utils/page.ts")).toContain("isWithin(url.pathname");
+		expect(read("src/ui/modules/core/utils/page.ts")).toContain("isWithin({ pathname: url.pathname");
 		expect(read("src/ui/styles/base/base.css")).not.toContain("page--tag ");
 	});
 

@@ -23,12 +23,18 @@ const renderForm = ({
 
 const submitButton = (): HTMLButtonElement => screen.getByRole("button", { name: /Send email|Sending/ });
 
-const answer = (label: string, value: string) => fireEvent.change(screen.getByLabelText(label), { target: { value } });
+interface AnswerParams {
+	label: string;
+	value: string;
+}
+
+const answer = ({ label, value }: AnswerParams) =>
+	fireEvent.change(screen.getByLabelText(label), { target: { value } });
 
 const send = async () => {
-	answer("(your name)", VISITOR.name);
-	answer("(your email)", VISITOR.email);
-	answer("(your message)", VISITOR.message);
+	answer({ label: "(your name)", value: VISITOR.name });
+	answer({ label: "(your email)", value: VISITOR.email });
+	answer({ label: "(your message)", value: VISITOR.message });
 
 	await act(async () => {
 		fireEvent.submit(submitButton().closest("form") as HTMLFormElement);

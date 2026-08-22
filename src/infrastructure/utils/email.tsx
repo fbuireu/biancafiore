@@ -7,14 +7,14 @@ import { render } from "@react-email/render";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
 
-type ContactEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
+type SendEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
 interface ContactEmailContent {
 	html: string;
 	text: string;
 }
 
-export async function createEmail({ name, email, message }: ContactEmailParams): Promise<ContactEmailContent> {
+export async function createEmail({ name, email, message }: SendEmailParams): Promise<ContactEmailContent> {
 	const date = new Date().toLocaleString(DEFAULT_LOCALE_STRING);
 	const subject = encodeURIComponent(`Re: ${CONTACT_DETAILS.EMAIL_SUBJECT} from biancafiore.me`);
 	const mailTo = `mailto:${email}?subject=${subject}`;
@@ -26,7 +26,7 @@ export async function createEmail({ name, email, message }: ContactEmailParams):
 	return { html, text };
 }
 
-export const sendEmail = (params: ContactEmailParams): Effect.Effect<{ id: string }, EmailError, EmailClient> =>
+export const sendEmail = (params: SendEmailParams): Effect.Effect<{ id: string }, EmailError, EmailClient> =>
 	Effect.gen(function* () {
 		const emails = yield* EmailClient;
 		const { html, text } = yield* Effect.promise(() => createEmail(params));

@@ -1,8 +1,5 @@
 import { CONTACT_DETAILS } from "@const/index";
-
-export const EMAIL_BUTTON_CLASS = "mail-to__button";
-export const EMAIL_BUTTON_ADDRESS_CLASS = `${EMAIL_BUTTON_CLASS}--address`;
-export const EMAIL_ADDRESS_PLACEHOLDER = "our email address";
+import { EMAIL_BUTTON_ADDRESS_CLASS, EMAIL_BUTTON_CLASS } from "@modules/core/components/emailButton/const";
 
 const emailAddress = () => atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA);
 

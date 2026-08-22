@@ -53,8 +53,6 @@ describe("onRequest", () => {
 		}
 
 		expect(production.get("Content-Security-Policy")).toBe(securityHeaders()["Content-Security-Policy"]);
-		expect(development.get("Content-Security-Policy")).toBe(
-			securityHeaders({ isDevelopment: true })["Content-Security-Policy"],
-		);
+		expect(development.get("Content-Security-Policy")).toBe(securityHeaders(true)["Content-Security-Policy"]);
 	});
 });

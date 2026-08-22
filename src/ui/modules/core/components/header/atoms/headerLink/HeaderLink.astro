@@ -6,7 +6,7 @@ type Props = HTMLAttributes<"a">;
 
 const { href, class: classNames, ...props } = Astro.props;
 
-const isCurrentPage = isWithin(Astro.url.pathname, String(href));
+const isCurrentPage = isWithin({ pathname: Astro.url.pathname, route: String(href) });
 ---
 <a
     href={href}

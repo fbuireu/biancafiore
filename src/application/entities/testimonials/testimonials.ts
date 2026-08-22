@@ -9,7 +9,7 @@ export const testimonials = defineCollection({
 	loader: async () => {
 		const [rawTestimonials] = await fetchEntries<[TestimonialSkeleton]>({ content_type: "testimonial" });
 
-		const testimonials = await withImagePlaceholders("image", createTestimonials(rawTestimonials));
+		const testimonials = await withImagePlaceholders({ field: "image", entries: createTestimonials(rawTestimonials) });
 
 		return testimonials.map((testimonial) => ({ id: testimonial.author, ...testimonial }));
 	},

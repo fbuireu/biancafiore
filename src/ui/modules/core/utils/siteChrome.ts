@@ -18,11 +18,11 @@ export type SiteChrome = {
 	servesRealContent: boolean;
 };
 
-export function siteChrome(url: URL, isChromeHidden: boolean = HIDE_CHROME): SiteChrome {
+export function siteChrome(url: URL): SiteChrome {
 	return {
-		showsHeader: !isChromeHidden,
-		showsBreadcrumbs: !isChromeHidden,
-		showsTableOfContents: !isChromeHidden,
-		servesRealContent: !isChromeHidden || PUBLISHED_ROUTES.some((route) => isWithin(url.pathname, route)),
+		showsHeader: !HIDE_CHROME,
+		showsBreadcrumbs: !HIDE_CHROME,
+		showsTableOfContents: !HIDE_CHROME,
+		servesRealContent: !HIDE_CHROME || PUBLISHED_ROUTES.some((route) => isWithin({ pathname: url.pathname, route })),
 	};
 }

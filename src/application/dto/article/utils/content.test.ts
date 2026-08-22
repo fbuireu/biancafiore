@@ -116,7 +116,13 @@ const embed = ({ contentType, fields = {}, inline = false }: EmbedParams) => ({
 	content: [],
 });
 
-const entryHyperlink = (contentType: string, fields: Record<string, unknown>, label = "read this") => ({
+interface EntryHyperlinkParams {
+	contentType: string;
+	fields: Record<string, unknown>;
+	label?: string;
+}
+
+const entryHyperlink = ({ contentType, fields, label = "read this" }: EntryHyperlinkParams) => ({
 	nodeType: "entry-hyperlink",
 	data: { target: { sys: { contentType: { sys: { id: contentType } } }, fields } },
 	content: [text(label)],
@@ -128,7 +134,12 @@ const assetHyperlink = (file: unknown, label = "the file") => ({
 	content: [text(label)],
 });
 
-const asset = (url: string, extra: Record<string, unknown> = {}) => ({
+interface AssetParams {
+	url: string;
+	extra?: Record<string, unknown>;
+}
+
+const asset = ({ url, extra = {} }: AssetParams) => ({
 	url,
 	details: { image: { width: 1200, height: 630 } },
 	...extra,
@@ -218,13 +229,17 @@ describe("renderArticleContent embedded articles", () => {
 
 describe("renderArticleContent entry and asset hyperlinks", () => {
 	it("addresses an Article an editor linked by its slug", () => {
-		const html = render([{ ...paragraph("x"), content: [entryHyperlink("article", { slug: "a-piece" })] }]);
+		const html = render([
+			{ ...paragraph("x"), content: [entryHyperlink({ contentType: "article", fields: { slug: "a-piece" } })] },
+		]);
 
 		expect(html).toContain('<a href="/articles/a-piece">read this</a>');
 	});
 
 	it("keeps the label but drops the link when the entry is not an Article", () => {
-		const html = render([{ ...paragraph("x"), content: [entryHyperlink("author", { slug: "bianca" })] }]);
+		const html = render([
+			{ ...paragraph("x"), content: [entryHyperlink({ contentType: "author", fields: { slug: "bianca" } })] },
+		]);
 
 		expect(html).toContain("read this");
 		expect(html).not.toContain("<a href");
@@ -308,7 +323,7 @@ describe("renderArticleContent video and iframe embeds", () => {
 describe("renderArticleContent image embeds", () => {
 	it("carries the asset's own dimensions onto the img, so the page reserves the space", () => {
 		const html = render([
-			embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset("//cdn/hero.jpg") } } } }),
+			embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset({ url: "//cdn/hero.jpg" }) } } } }),
 		]);
 
 		expect(html).toContain('width="1200"');
@@ -317,7 +332,7 @@ describe("renderArticleContent image embeds", () => {
 
 	it("emits a srcset, so a narrow screen does not download the widest crop", () => {
 		const html = render([
-			embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset("//cdn/hero.jpg") } } } }),
+			embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset({ url: "//cdn/hero.jpg" }) } } } }),
 		]);
 
 		expect(html).toContain("srcset=");
@@ -328,13 +343,13 @@ describe("renderArticleContent image embeds", () => {
 		const described = render([
 			embed({
 				contentType: "imageEmbed",
-				fields: { image: { fields: { file: asset("//cdn/a.jpg"), description: "A described image" } } },
+				fields: { image: { fields: { file: asset({ url: "//cdn/a.jpg" }), description: "A described image" } } },
 			}),
 		]);
 		const titled = render([
 			embed({
 				contentType: "imageEmbed",
-				fields: { image: { fields: { file: asset("//cdn/a.jpg"), title: "A titled image" } } },
+				fields: { image: { fields: { file: asset({ url: "//cdn/a.jpg" }), title: "A titled image" } } },
 			}),
 		]);
 
@@ -344,7 +359,9 @@ describe("renderArticleContent image embeds", () => {
 
 	it("emits an empty alt for a decorative image the editor described neither way", () => {
 		expect(
-			render([embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset("//cdn/a.jpg") } } } })]),
+			render([
+				embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } } }),
+			]),
 		).toContain('alt=""');
 	});
 
@@ -352,13 +369,15 @@ describe("renderArticleContent image embeds", () => {
 		const captioned = render([
 			embed({
 				contentType: "imageEmbed",
-				fields: { caption: "The caption", image: { fields: { file: asset("//cdn/a.jpg") } } },
+				fields: { caption: "The caption", image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } },
 			}),
 		]);
 
 		expect(captioned).toContain("<figcaption>The caption</figcaption>");
 		expect(
-			render([embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset("//cdn/a.jpg") } } } })]),
+			render([
+				embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } } }),
+			]),
 		).not.toContain("<figcaption>");
 	});
 
@@ -366,7 +385,7 @@ describe("renderArticleContent image embeds", () => {
 		const html = render([
 			embed({
 				contentType: "imageEmbed",
-				fields: { caption: "<script>alert(1)</script>", image: { fields: { file: asset("//cdn/a.jpg") } } },
+				fields: { caption: "<script>alert(1)</script>", image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } },
 			}),
 		]);
 
@@ -394,7 +413,7 @@ describe("renderArticleContent code and split blocks", () => {
 		const html = render([
 			embed({
 				contentType: "splitBlock",
-				fields: { heading: "A heading", text: "Some text", image: { fields: { file: asset("//cdn/a.jpg") } } },
+				fields: { heading: "A heading", text: "Some text", image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } },
 			}),
 		]);
 
@@ -423,7 +442,7 @@ describe("renderArticleContent tag links and embedded assets", () => {
 	});
 
 	it("renders an embedded asset full bleed, with the dimensions the asset carries", () => {
-		const html = render([embeddedAsset({ file: asset("//cdn/hero.jpg") })]);
+		const html = render([embeddedAsset({ file: asset({ url: "//cdn/hero.jpg" }) })]);
 
 		expect(html).toContain('class="full-bleed"');
 		expect(html).toContain('width="1200"');
@@ -431,11 +450,11 @@ describe("renderArticleContent tag links and embedded assets", () => {
 	});
 
 	it("falls back to the Article's own title for an asset the editor never described", () => {
-		expect(render([embeddedAsset({ file: asset("//cdn/hero.jpg") })])).toContain('alt="An article"');
+		expect(render([embeddedAsset({ file: asset({ url: "//cdn/hero.jpg" }) })])).toContain('alt="An article"');
 	});
 
 	it("prefers the asset's description, and repeats it as the caption", () => {
-		const html = render([embeddedAsset({ file: asset("//cdn/hero.jpg"), description: "The scene" })]);
+		const html = render([embeddedAsset({ file: asset({ url: "//cdn/hero.jpg" }), description: "The scene" })]);
 
 		expect(html).toContain('alt="The scene"');
 		expect(html).toContain("<figcaption>The scene</figcaption>");
@@ -449,7 +468,7 @@ describe("renderArticleContent tag links and embedded assets", () => {
 		const html = render([
 			embed({
 				contentType: "splitBlock",
-				fields: { image: { fields: { file: asset("//cdn/a.jpg"), description: "Alt text" } } },
+				fields: { image: { fields: { file: asset({ url: "//cdn/a.jpg" }), description: "Alt text" } } },
 			}),
 		]);
 

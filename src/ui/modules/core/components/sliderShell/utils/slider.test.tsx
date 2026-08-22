@@ -1,7 +1,15 @@
 import { activeSlideIndex, initSlider } from "@modules/core/components/sliderShell/utils/slider";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const boxOf = (left: number, width: number) => () => ({ left, width, right: left + width }) as DOMRect;
+interface BoxOfParams {
+	left: number;
+	width: number;
+}
+
+const boxOf =
+	({ left, width }: BoxOfParams) =>
+	() =>
+		({ left, width, right: left + width }) as DOMRect;
 
 interface RenderParams {
 	slides: number;
@@ -33,10 +41,10 @@ const render = ({ slides, dots = false, looping = false }: RenderParams) => {
 	Object.defineProperty(track, "clientWidth", { value: 300, configurable: true });
 	Object.defineProperty(track, "scrollWidth", { value: 300 * slides, configurable: true });
 	track.scrollBy = vi.fn();
-	track.getBoundingClientRect = boxOf(0, 300);
+	track.getBoundingClientRect = boxOf({ left: 0, width: 300 });
 
 	[...track.querySelectorAll<HTMLElement>(".slider__slide")].forEach((slide, index) => {
-		slide.getBoundingClientRect = boxOf(index * 300, 300);
+		slide.getBoundingClientRect = boxOf({ left: index * 300, width: 300 });
 		slide.scrollIntoView = vi.fn();
 	});
 
@@ -58,13 +66,13 @@ describe("activeSlideIndex", () => {
 	it("names the slide nearest the track's centre, not the one nearest its start", () => {
 		const { track, slides } = render({ slides: 3 });
 
-		expect(activeSlideIndex(track, slides)).toBe(0);
+		expect(activeSlideIndex({ track, slides })).toBe(0);
 
 		slides.forEach((slide, index) => {
-			slide.getBoundingClientRect = boxOf(index * 300 - 300, 300);
+			slide.getBoundingClientRect = boxOf({ left: index * 300 - 300, width: 300 });
 		});
 
-		expect(activeSlideIndex(track, slides)).toBe(1);
+		expect(activeSlideIndex({ track, slides })).toBe(1);
 	});
 });
 
@@ -132,7 +140,7 @@ describe("initSlider", () => {
 
 		initSlider(wrapper);
 		slides.forEach((slide, index) => {
-			slide.getBoundingClientRect = boxOf(index * 300 - 300, 300);
+			slide.getBoundingClientRect = boxOf({ left: index * 300 - 300, width: 300 });
 		});
 		track.dispatchEvent(new Event("scroll"));
 
@@ -172,7 +180,7 @@ describe("initSlider", () => {
 
 		initSlider(wrapper);
 		slides.forEach((slide, index) => {
-			slide.getBoundingClientRect = boxOf(index * 300 - 600, 300);
+			slide.getBoundingClientRect = boxOf({ left: index * 300 - 600, width: 300 });
 		});
 		track.dispatchEvent(new Event("scroll"));
 		next.click();

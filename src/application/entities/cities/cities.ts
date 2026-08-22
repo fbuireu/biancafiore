@@ -12,7 +12,7 @@ export const cities = defineCollection({
 			order: ["fields.startDate"],
 		});
 
-		const cities = await withImagePlaceholders("image", createCities(rawCities));
+		const cities = await withImagePlaceholders({ field: "image", entries: createCities(rawCities) });
 
 		return cities.map((city) => ({ id: city.name, ...city }));
 	},

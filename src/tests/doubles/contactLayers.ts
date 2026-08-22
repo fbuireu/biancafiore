@@ -28,7 +28,12 @@ export interface DatabaseDouble {
 	messageLookups: MessageLookup[];
 }
 
-export const contactRow = (email: string, overrides: Partial<ContactRow> = {}): ContactRow => ({
+export interface ContactRowParams {
+	email: string;
+	overrides?: Partial<ContactRow>;
+}
+
+export const contactRow = ({ email, overrides = {} }: ContactRowParams): ContactRow => ({
 	id: "contact-id",
 	name: "Ada",
 	email,

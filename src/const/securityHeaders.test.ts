@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
 
-const policy = (isDevelopment: boolean) => securityHeaders({ isDevelopment })["Content-Security-Policy"] as string;
+const policy = (isDevelopment: boolean) => securityHeaders(isDevelopment)["Content-Security-Policy"] as string;
 
 describe("securityHeaders", () => {
 	it("carries the https upgrade in production, where it is what the site wants", () => {
@@ -29,13 +29,13 @@ describe("securityHeaders", () => {
 
 	it("changes no header but the policy between the two environments", () => {
 		const { "Content-Security-Policy": _production, ...productionRest } = securityHeaders();
-		const { "Content-Security-Policy": _development, ...developmentRest } = securityHeaders({ isDevelopment: true });
+		const { "Content-Security-Policy": _development, ...developmentRest } = securityHeaders(true);
 
 		expect(productionRest).toStrictEqual(developmentRest);
 	});
 
 	it("exports the production policy as the constant the build-time _headers file reads", () => {
 		expect(SECURITY_HEADERS["Content-Security-Policy"]).toContain(HTTPS_UPGRADE_DIRECTIVE);
-		expect(SECURITY_HEADERS).toStrictEqual(securityHeaders({ isDevelopment: false }));
+		expect(SECURITY_HEADERS).toStrictEqual(securityHeaders(false));
 	});
 });

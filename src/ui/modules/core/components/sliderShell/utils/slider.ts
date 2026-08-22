@@ -10,17 +10,29 @@ const ACTIVE_DOT_CLASS = "slider__dot--active";
 const SCROLL_END_TOLERANCE = 1;
 const LOOPING_ATTRIBUTE = "data-is-looping";
 
-const distanceToCentre = (track: HTMLElement, slide: HTMLElement): number => {
+interface DistanceToCentreParams {
+	track: HTMLElement;
+	slide: HTMLElement;
+}
+
+const distanceToCentre = ({ track, slide }: DistanceToCentreParams): number => {
 	const trackBox = track.getBoundingClientRect();
 	const slideBox = slide.getBoundingClientRect();
 
 	return Math.abs(slideBox.left + slideBox.width / 2 - (trackBox.left + trackBox.width / 2));
 };
 
-export function activeSlideIndex(track: HTMLElement, slides: HTMLElement[]): number {
+export interface ActiveSlideIndexParams {
+	track: HTMLElement;
+	slides: HTMLElement[];
+}
+
+export function activeSlideIndex({ track, slides }: ActiveSlideIndexParams): number {
 	return slides.reduce(
 		(closest, slide, index) =>
-			distanceToCentre(track, slide) < distanceToCentre(track, slides[closest] as HTMLElement) ? index : closest,
+			distanceToCentre({ track, slide }) < distanceToCentre({ track, slide: slides[closest] as HTMLElement })
+				? index
+				: closest,
 		0,
 	);
 }
@@ -46,7 +58,7 @@ export function initSlider(wrapper: HTMLElement): void {
 
 		if (dots.length === 0) return;
 
-		const active = activeSlideIndex(track, slides);
+		const active = activeSlideIndex({ track, slides });
 
 		dots.forEach((dot, index) => {
 			dot.classList.toggle(ACTIVE_DOT_CLASS, index === active);
@@ -61,7 +73,7 @@ export function initSlider(wrapper: HTMLElement): void {
 			return;
 		}
 
-		centre((activeSlideIndex(track, slides) + direction + slides.length) % slides.length);
+		centre((activeSlideIndex({ track, slides }) + direction + slides.length) % slides.length);
 	};
 
 	previous.addEventListener("click", () => step(-1));

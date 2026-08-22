@@ -32,7 +32,7 @@ describe("checkDuplicatedEntries", () => {
 	});
 
 	it("refuses a second submission from an address that wrote inside the cooldown", async () => {
-		const database = databaseDouble({ contactWithinCooldown: contactRow("ada@example.com") });
+		const database = databaseDouble({ contactWithinCooldown: contactRow({ email: "ada@example.com" }) });
 
 		expect(failureOf(await check(database))).toMatchObject({
 			_tag: "DuplicateContactError",
@@ -41,7 +41,7 @@ describe("checkDuplicatedEntries", () => {
 	});
 
 	it("refuses a message the address has already sent, however long ago", async () => {
-		const database = databaseDouble({ contactWithSameMessage: contactRow("ada@example.com") });
+		const database = databaseDouble({ contactWithSameMessage: contactRow({ email: "ada@example.com" }) });
 
 		expect(failureOf(await check(database))).toMatchObject({
 			_tag: "DuplicateContactError",
@@ -51,8 +51,8 @@ describe("checkDuplicatedEntries", () => {
 
 	it("names the repeat rather than the cooldown when a submission is both", async () => {
 		const database = databaseDouble({
-			contactWithinCooldown: contactRow("ada@example.com"),
-			contactWithSameMessage: contactRow("ada@example.com"),
+			contactWithinCooldown: contactRow({ email: "ada@example.com" }),
+			contactWithSameMessage: contactRow({ email: "ada@example.com" }),
 		});
 
 		expect(failureOf(await check(database))?.message).toContain("this exact message");

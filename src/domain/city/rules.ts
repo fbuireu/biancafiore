@@ -2,7 +2,7 @@ import type { CityPeriod } from "@domain/city/types";
 
 const OPEN_END_LABEL = "Present";
 
-interface CityPeriodParams {
+interface CreatePeriodParams {
 	startDate: string;
 	endDate?: string;
 }
@@ -17,7 +17,7 @@ const yearOf = (date: string): number => {
 	return year;
 };
 
-export function createPeriod({ startDate, endDate }: CityPeriodParams): CityPeriod {
+export function createPeriod({ startDate, endDate }: CreatePeriodParams): CityPeriod {
 	return {
 		startYear: yearOf(startDate),
 		...(endDate && { endYear: yearOf(endDate) }),

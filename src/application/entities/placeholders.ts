@@ -3,10 +3,15 @@ import { getImagePlaceholders } from "@infrastructure/images/imagePlaceholder";
 
 type CarriesImage<FIELD extends string> = Partial<Record<FIELD, ImageDTO>>;
 
-export async function withImagePlaceholders<FIELD extends string, ENTRY extends CarriesImage<FIELD>>(
-	field: FIELD,
-	entries: ENTRY[],
-): Promise<ENTRY[]> {
+interface WithImagePlaceholdersParams<FIELD extends string, ENTRY extends CarriesImage<FIELD>> {
+	field: FIELD;
+	entries: ENTRY[];
+}
+
+export async function withImagePlaceholders<FIELD extends string, ENTRY extends CarriesImage<FIELD>>({
+	field,
+	entries,
+}: WithImagePlaceholdersParams<FIELD, ENTRY>): Promise<ENTRY[]> {
 	const placeholders = await getImagePlaceholders(
 		entries.flatMap((entry) => {
 			const image = entry[field];

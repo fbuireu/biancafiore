@@ -12,7 +12,10 @@ export const articles = defineCollection({
 			order: ["-fields.publishDate"],
 		});
 
-		const articles = await withImagePlaceholders("featuredImage", sortFavoriteFirst(createArticles(rawArticles)));
+		const articles = await withImagePlaceholders({
+			field: "featuredImage",
+			entries: sortFavoriteFirst(createArticles(rawArticles)),
+		});
 
 		return articles.map((article) => ({ id: article.slug, ...article }));
 	},

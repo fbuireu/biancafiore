@@ -53,7 +53,7 @@ const failureTag = (exit: Exit.Exit<{ ok: boolean }, ContactError>): string | un
 
 beforeEach(() => {
 	logged.length = 0;
-	setSecret("GOOGLE_RECAPTCHA_SECRET_KEY", "secret");
+	setSecret({ name: "GOOGLE_RECAPTCHA_SECRET_KEY", value: "secret" });
 	recaptchaResponds({ success: true, score: 0.9 });
 });
 
@@ -115,7 +115,7 @@ describe("submitContact", () => {
 	});
 
 	it("fails without sending when the address wrote inside the cooldown", async () => {
-		const database = databaseDouble({ contactWithinCooldown: contactRow("ada@example.com") });
+		const database = databaseDouble({ contactWithinCooldown: contactRow({ email: "ada@example.com" }) });
 		const email = emailDouble();
 
 		const exit = await run({ database, email });
@@ -125,7 +125,7 @@ describe("submitContact", () => {
 	});
 
 	it("fails without sending when the address has already sent this exact message", async () => {
-		const database = databaseDouble({ contactWithSameMessage: contactRow("ada@example.com") });
+		const database = databaseDouble({ contactWithSameMessage: contactRow({ email: "ada@example.com" }) });
 		const email = emailDouble();
 
 		const exit = await run({ database, email });

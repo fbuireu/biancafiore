@@ -5,6 +5,6 @@ type GetPageReturn = Lowercase<keyof typeof PAGES_ROUTES> | undefined;
 
 export function getPage(url: URL): GetPageReturn {
 	return Object.keys(PAGES_ROUTES)
-		.find((key) => isWithin(url.pathname, PAGES_ROUTES[key as keyof typeof PAGES_ROUTES]))
+		.find((key) => isWithin({ pathname: url.pathname, route: PAGES_ROUTES[key as keyof typeof PAGES_ROUTES] }))
 		?.toLowerCase() as GetPageReturn;
 }

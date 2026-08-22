@@ -2,7 +2,7 @@ import { defineMiddleware } from "astro:middleware";
 import { securityHeaders } from "@const/securityHeaders";
 
 const PRODUCTION_HEADERS = Object.entries(securityHeaders());
-const DEVELOPMENT_HEADERS = Object.entries(securityHeaders({ isDevelopment: true }));
+const DEVELOPMENT_HEADERS = Object.entries(securityHeaders(true));
 
 export const onRequest = defineMiddleware(async (_, next) => {
 	const response = await next();

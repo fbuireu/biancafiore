@@ -7,7 +7,13 @@ const MENU_OPEN_CLASS = "page--menu-open";
 const INTERSECTED_BUTTON_CLASS = "header__menu-button--intersected";
 const INTERSECTED_LOGO_CLASS = "logo--intersected";
 
-const place = ({ selector, top, height }: { selector: string; top: number; height: number }): void => {
+interface PlaceParams {
+	selector: string;
+	top: number;
+	height: number;
+}
+
+const place = ({ selector, top, height }: PlaceParams): void => {
 	const element = document.querySelector(selector);
 
 	if (!element) {

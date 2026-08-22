@@ -13,21 +13,21 @@ export const readPreference = (store: Pick<Storage, "getItem">): ThemePreference
 	return PREFERENCES.has(stored ?? "") ? (stored as ThemePreference) : ThemePreference.SYSTEM;
 };
 
-export const writePreference = ({
-	store,
-	preference,
-}: {
+export interface WritePreferenceParams {
 	store: Pick<Storage, "setItem">;
 	preference: ThemePreference;
-}): void => store.setItem(THEME_STORAGE_KEY, preference);
+}
 
-export const resolveTheme = ({
-	preference,
-	prefersDark,
-}: {
+export const writePreference = ({ store, preference }: WritePreferenceParams): void =>
+	store.setItem(THEME_STORAGE_KEY, preference);
+
+export interface ResolveThemeParams {
 	preference: ThemePreference;
 	prefersDark: boolean;
-}): Theme => (preference === ThemePreference.SYSTEM ? (prefersDark ? Theme.DARK : Theme.LIGHT) : preference);
+}
+
+export const resolveTheme = ({ preference, prefersDark }: ResolveThemeParams): Theme =>
+	preference === ThemePreference.SYSTEM ? (prefersDark ? Theme.DARK : Theme.LIGHT) : preference;
 
 export const THEME_BOOTSTRAP_SCRIPT = `(() => {
 	try {

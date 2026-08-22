@@ -9,7 +9,7 @@ export const projects = defineCollection({
 	loader: async () => {
 		const [rawProjects] = await fetchEntries<[ProjectSkeleton]>({ content_type: "project" });
 
-		return await withImagePlaceholders("image", createProjects(rawProjects));
+		return await withImagePlaceholders({ field: "image", entries: createProjects(rawProjects) });
 	},
 	schema: projectsSchema,
 });

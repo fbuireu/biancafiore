@@ -32,7 +32,12 @@ const TOGGLE_MENU_SELECTORS = {
 	FIRST_MENU_LINK: ".navigation__menu__nav a",
 };
 
-const isIntersecting = ({ element, midline }: { element: Element; midline: number }): boolean => {
+interface IsIntersectingParams {
+	element: Element;
+	midline: number;
+}
+
+const isIntersecting = ({ element, midline }: IsIntersectingParams): boolean => {
 	const { top, bottom } = element.getBoundingClientRect();
 
 	return midline >= top && midline < bottom;
