@@ -23,11 +23,8 @@ const remainingTags = (article.data.tags?.length ?? 0) - visibleTags.length;
       <div class="article-card__media">
           <BlurImage
               class="article-card__featured-image"
-              src={article.data.featuredImage.url}
-              width={article.data.featuredImage.details.width}
-              height={article.data.featuredImage.details.height}
+              image={article.data.featuredImage}
               alt={article.data.title}
-              placeholder={article.data.featuredImage.placeholder}
               transitionName={`featured-image-${article.data.slug}`}
           />
       </div>

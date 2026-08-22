@@ -40,7 +40,7 @@ const CONCEPTS_OUTSIDE_THE_GLOSSARY = new Set(["breadcrumb", "contact", "shared"
 
 const STYLESHEETS_STYLING_A_VENDOR_DOM = new Set(["src/ui/styles/vendor/cookie-consent.css"]);
 
-const STYLESHEET_OUTSIDE_A_COMPONENT_FOLDER = "src/ui/modules/core/components/form/shared.css";
+const STYLESHEET_OUTSIDE_A_COMPONENT_FOLDER = "src/ui/modules/contact/components/form/shared.css";
 
 const ROUTES_WITH_NO_PAGE_CONTAINER = ["404", "500", "tag"];
 
@@ -1168,7 +1168,7 @@ describe("styles guide: derived constants and source order", () => {
 		expect(guide).toContain("There is deliberately no `page--tag`");
 		expect(routes).toContain("TAGS");
 		expect(routes.indexOf("TAGS")).toBeLessThan(routes.indexOf("TAG"));
-		expect(read("src/ui/modules/core/utils/page.ts")).toContain("url.pathname.includes(route)");
+		expect(read("src/ui/modules/core/utils/page.ts")).toContain("isWithin(url.pathname");
 		expect(read("src/ui/styles/base/base.css")).not.toContain("page--tag ");
 	});
 

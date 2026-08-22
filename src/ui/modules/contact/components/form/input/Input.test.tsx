@@ -1,5 +1,4 @@
-import { Input } from "@modules/core/components/form/input";
-import { FormStatus } from "@shared/ui/types";
+import { Input } from "@modules/contact/components/form/input/Input";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
@@ -8,7 +7,7 @@ afterEach(cleanup);
 type InputProps = Parameters<typeof Input>[0];
 
 const renderInput = (props: Partial<InputProps> = {}) =>
-	render(<Input id="email" label="Email" formStatus={FormStatus.INITIAL} hasError={false} {...props} />);
+	render(<Input id="email" label="Email" hasError={false} {...props} />);
 
 const field = (): HTMLInputElement => screen.getByLabelText("Email") as HTMLInputElement;
 
@@ -30,8 +29,8 @@ describe("Input", () => {
 		expect(screen.queryByText("Enter a valid email")).toBeNull();
 	});
 
-	it("disables the field and withdraws the hover affordance while the form is unauthorized", () => {
-		const { container } = renderInput({ formStatus: FormStatus.UNAUTHORIZED });
+	it("disables the field and withdraws the hover affordance while the form is locked", () => {
+		const { container } = renderInput({ isLocked: true });
 
 		expect(field().disabled).toBe(true);
 		expect(container.querySelector(".contact-form__input-wrapper")?.className).not.toContain("underline-on-hover");

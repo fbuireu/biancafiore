@@ -1,5 +1,6 @@
 ---
 import { createBreadcrumbs } from "@domain/breadcrumb";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import { buildBreadcrumbListSchema } from "@modules/core/utils/jsonLd";
 import { siteChrome } from "@modules/core/utils/siteChrome";
 import "./breadcrumbs.css";
@@ -29,6 +30,6 @@ const breadcrumbListSchema = buildBreadcrumbListSchema(
         );
       })}
     </ul>
-    <script is:inline type="application/ld+json" set:html={breadcrumbListSchema} />
+    <JsonLd schema={breadcrumbListSchema} />
 </section>
 )}

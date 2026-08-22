@@ -1,9 +1,9 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { absoluteUrl, articleHref } from "@const/index";
 import ArticleSlider from "@modules/core/components/articleSlider/ArticleSlider.astro";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import { resolveArticles } from "@modules/core/utils/entries";
-import { buildItemListSchema } from "@modules/core/utils/jsonLd";
+import { buildArticleListSchema } from "@modules/core/utils/jsonLd";
 import "./related-articles.css";
 
 interface Props {
@@ -12,36 +12,16 @@ interface Props {
 
 const { article } = Astro.props;
 const relatedArticles = await resolveArticles(article.data.relatedArticles);
-const itemListSchema = buildItemListSchema(relatedArticles.map(({ data: { slug } }) => absoluteUrl(articleHref(slug))));
+const itemListSchema = buildArticleListSchema(relatedArticles.map(({ data }) => data.slug));
 ---
 {
     relatedArticles.length > 0 && (
     <section class="related-articles inverted-color-scheme">
       <div class="related-articles-wrapper common-wrapper">
         <h2 class="related-articles__title section-title reveal">You might also like</h2>
-        <ArticleSlider articles={relatedArticles} class="related-articles__slider common-wrapper" />
-        <script is:inline type="application/ld+json" set:html={itemListSchema} />
+        <ArticleSlider articles={relatedArticles} class="related-articles__slider common-wrapper" isShuffled />
+        <JsonLd schema={itemListSchema} />
       </div>
     </section>
         )
     }
-<script>
-	document.addEventListener("astro:page-load", () => {
-		const track = document.querySelector(".related-articles-wrapper .slider__track");
-
-		if (!track) {
-			return;
-		}
-
-		const slides = Array.from(track.children);
-
-		for (let i = slides.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[slides[i], slides[j]] = [slides[j], slides[i]];
-		}
-
-		for (const slide of slides) {
-			track.appendChild(slide);
-		}
-	});
-</script>

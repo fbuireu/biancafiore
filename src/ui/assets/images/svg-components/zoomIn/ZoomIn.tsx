@@ -13,7 +13,6 @@ export const ZoomIn = ({ fill = "currentColor", title = "Zoom In", classNames, .
 			<g
 				fill="none"
 				fillRule="evenodd"
-				stroke="#232326"
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				strokeWidth="1.5"

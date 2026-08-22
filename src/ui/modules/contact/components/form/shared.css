@@ -30,7 +30,7 @@
 
 .contact-form__input-wrapper,
 .contact-form__textarea-wrapper {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	border-bottom: 1px solid var(--line);
 	color: var(--neutral-main);
 	font-size: clamp(1.25rem, 1.6cqi, 1.375rem);
 	font-style: italic;
@@ -44,7 +44,7 @@
 
 .contact-form__input,
 .contact-form__textarea {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	border-bottom: 1px solid var(--line);
 	font-style: italic;
 	position: relative;
 	z-index: 10;

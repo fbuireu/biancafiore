@@ -13,7 +13,7 @@ const { testimonials } = Astro.props;
 ---
 
 <div class="testimonials__carousel reveal">
-	<SliderShell class="testimonials__slider" showTrack={false}>
+	<SliderShell class="testimonials__slider" hasButtons={false}>
 		{
 			testimonials.map((testimonial) => (
 				<li class="slider__slide testimonials__slide">
@@ -22,11 +22,8 @@ const { testimonials } = Astro.props;
 						<figcaption class="testimonial__attribution">
 							<BlurImage
 								class="testimonial__avatar"
-								src={testimonial.data.image.url}
+								image={testimonial.data.image}
 								alt={testimonial.data.author}
-								width={testimonial.data.image.details.width}
-								height={testimonial.data.image.details.height}
-								placeholder={testimonial.data.image.placeholder}
 								loading="lazy"
 							/>
 							<span class="testimonial__identity">

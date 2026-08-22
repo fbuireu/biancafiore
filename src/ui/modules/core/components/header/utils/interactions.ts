@@ -66,7 +66,12 @@ export function backgroundObserver(): void {
 		?.classList.toggle(INTERSECTED_CLASSES.HEADER_MENU_LOGO, hasIntersected);
 }
 
-window.addEventListener("scroll", backgroundObserver);
+export function watchBackground(): void {
+	window.addEventListener("scroll", backgroundObserver, { passive: true });
+	backgroundObserver();
+}
+
+let menuListeners: AbortController | undefined;
 
 export function toggleMenu(): void {
 	const {
@@ -91,6 +96,10 @@ export function toggleMenu(): void {
 	}
 
 	TOGGLE_MENU_BUTTON.dataset.menuInitialized = "true";
+
+	menuListeners?.abort();
+	menuListeners = new AbortController();
+	const { signal } = menuListeners;
 
 	let isMenuOpen = false;
 	let toggleMenuText = "Menu";
@@ -191,11 +200,15 @@ export function toggleMenu(): void {
 		}
 	});
 
-	document.addEventListener("keydown", (event) => {
-		if (event.key !== "Escape" || !isMenuOpen) {
-			return;
-		}
+	document.addEventListener(
+		"keydown",
+		(event) => {
+			if (event.key !== "Escape" || !isMenuOpen) {
+				return;
+			}
 
-		closeMenuAndFocusButton();
-	});
+			closeMenuAndFocusButton();
+		},
+		{ signal },
+	);
 }

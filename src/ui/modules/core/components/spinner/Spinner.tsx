@@ -1,4 +1,4 @@
-import { Infinite } from "@assets/images/svg-components/infinite";
+import { Infinite } from "@assets/images/svg-components/infinite/Infinite";
 import type { SVGProps } from "react";
 import "./spinner.css";
 

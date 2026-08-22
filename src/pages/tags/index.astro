@@ -1,10 +1,11 @@
 ---
 import { getCollection } from "astro:content";
-import { absoluteUrl, tagHref } from "@const/index";
+import { tagHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
-import { buildItemListSchema } from "@modules/core/utils/jsonLd";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import { buildTagListSchema } from "@modules/core/utils/jsonLd";
 import { groupBy } from "@shared/utils/objects";
 import "./_tags.css";
 
@@ -21,7 +22,7 @@ const metadata: Partial<SeoMetadata> = {
 	description: "Browse all topics and tags from Bianca Fiore's articles.",
 };
 
-const itemListSchema = buildItemListSchema(tags.map(({ data }) => absoluteUrl(tagHref(data.slug))));
+const itemListSchema = buildTagListSchema(tags.map(({ data }) => data.slug));
 ---
 <BaseLayout {...metadata}>
     <Breadcrumbs />
@@ -42,5 +43,5 @@ const itemListSchema = buildItemListSchema(tags.map(({ data }) => absoluteUrl(ta
           ))}
         </ul>
     </section>
-    <script is:inline type="application/ld+json" set:html={itemListSchema} />
+    <JsonLd schema={itemListSchema} />
 </BaseLayout>

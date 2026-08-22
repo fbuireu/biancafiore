@@ -24,11 +24,8 @@ const shareLinks = buildArticleShareLinks({
             <a href={featuredArticleUrl}>
                 <BlurImage
                     class="featured-article__image"
-                    src={featuredArticle.data.featuredImage!.url}
-                    width={featuredArticle.data.featuredImage!.details.width}
-                    height={featuredArticle.data.featuredImage!.details.height}
+                    image={featuredArticle.data.featuredImage!}
                     alt={featuredArticle.data.title}
-                    placeholder={featuredArticle.data.featuredImage!.placeholder}
                     loading="eager"
                 />
             </a>
@@ -59,7 +56,7 @@ const shareLinks = buildArticleShareLinks({
                 </div>
                 <div class="featured-article__share-wrapper flex row-wrap">
                     <p class="featured-article__share__title font-serif">SHARE IT!</p>
-                    <ul class="featured-article__share__links__list flex row-nowrap">
+                    <ul class="featured-article__share__links__list flex">
                         <li class="featured-article__share__link__item underline-on-hover clickable">
                             <a
                                 target="_blank"

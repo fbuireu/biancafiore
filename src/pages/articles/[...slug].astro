@@ -10,6 +10,7 @@ import TableOfContents from "@modules/article/components/tableOfContents/TableOf
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
 import { buildBlogPostingSchema } from "@modules/core/utils/jsonLd";
 import { siteChrome } from "@modules/core/utils/siteChrome";
@@ -76,13 +77,10 @@ const blogPostingSchema = buildBlogPostingSchema({
       article.data.featuredImage && (
           <section class="article__featured-image-wrapper">
               <BlurImage
-                  src={article.data.featuredImage.url}
-                  width={article.data.featuredImage.details.width}
-                  height={article.data.featuredImage.details.height}
+                  image={article.data.featuredImage}
                   widths={[640, 960, 1280, 1920]}
                   sizes="100vw"
                   alt={article.data.title}
-                  placeholder={article.data.featuredImage.placeholder}
                   loading="eager"
                   fetchpriority="high"
                   decoding="async"
@@ -107,6 +105,6 @@ const blogPostingSchema = buildBlogPostingSchema({
           <TableOfContents tableOfContents={article.data.tableOfContents} />
       }
     </article>
-    <script is:inline type="application/ld+json" set:html={blogPostingSchema} />
+    <JsonLd schema={blogPostingSchema} />
     <RelatedArticles article={article} />
 </BaseLayout>

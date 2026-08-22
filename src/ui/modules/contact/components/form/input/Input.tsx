@@ -1,4 +1,3 @@
-import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
 import type { InputHTMLAttributes } from "react";
 import "./input.css";
@@ -6,17 +5,17 @@ import "./input.css";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	hasError: boolean;
 	errorMessage?: string;
-	formStatus: (typeof FormStatus)[keyof typeof FormStatus];
+	isLocked?: boolean;
 	label?: string;
 }
 
-export const Input = ({ id, type, placeholder, label, formStatus, hasError, errorMessage, ...rest }: InputProps) => {
+export const Input = ({ id, type, placeholder, label, isLocked, hasError, errorMessage, ...rest }: InputProps) => {
 	const errorId = id ? `${id}-error` : undefined;
 
 	return (
 		<div
 			className={clsx("contact-form__input-wrapper", {
-				"underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
+				"underline-on-hover": !isLocked,
 			})}
 		>
 			<input
@@ -24,7 +23,7 @@ export const Input = ({ id, type, placeholder, label, formStatus, hasError, erro
 				type={type}
 				placeholder={placeholder}
 				className="contact-form__input"
-				disabled={formStatus === FormStatus.UNAUTHORIZED}
+				disabled={isLocked}
 				aria-invalid={hasError || undefined}
 				aria-describedby={hasError ? errorId : undefined}
 				{...rest}

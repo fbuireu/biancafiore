@@ -6,14 +6,31 @@ import SliderShell from "@modules/core/components/sliderShell/SliderShell.astro"
 interface Props {
 	articles: CollectionEntry<"articles">[];
 	class?: string;
+	isShuffled?: boolean;
 }
 
-const { articles, class: className } = Astro.props;
+const { articles, class: className, isShuffled = false } = Astro.props;
+
+const shuffle = (entries: CollectionEntry<"articles">[]): CollectionEntry<"articles">[] => {
+	const shuffled = [...entries];
+
+	for (let index = shuffled.length - 1; index > 0; index--) {
+		const swap = Math.floor(Math.random() * (index + 1));
+		[shuffled[index], shuffled[swap]] = [shuffled[swap], shuffled[index]] as [
+			CollectionEntry<"articles">,
+			CollectionEntry<"articles">,
+		];
+	}
+
+	return shuffled;
+};
+
+const slides = isShuffled ? shuffle(articles) : articles;
 ---
 
 <SliderShell class={`${className ?? ''} slider-wrapper--reveal-items`.trim()}>
 	{
-		articles.map((article, index) => (
+		slides.map((article, index) => (
 			<li class="slider__slide item-wrapper reveal" data-reveal-index={index}>
 				<ArticleCard {...article} />
 			</li>

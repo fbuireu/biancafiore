@@ -1,4 +1,4 @@
-import { ContactForm } from "@modules/contact/components/contactForm";
+import { ContactForm } from "@modules/contact/components/contactForm/ContactForm";
 import { type ContactSubmission, UNDELIVERED_MESSAGE } from "@modules/contact/utils/submission";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";

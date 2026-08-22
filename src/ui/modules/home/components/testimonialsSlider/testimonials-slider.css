@@ -2,8 +2,6 @@
 	& .slider__track {
 		--slides-per-view: 1;
 		--slider-gap: 0px;
-
-		scroll-marker-group: none;
 	}
 
 	& .slider__slide {

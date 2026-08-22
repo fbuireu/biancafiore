@@ -23,18 +23,6 @@
 		}
 	}
 
-	@keyframes spinner {
-		100% {
-			background-position: right calc(-1 * var(--cover-width)) top 0;
-		}
-	}
-
-	@keyframes float-side {
-		100% {
-			translate: var(--origin-x, -200cqi) var(--origin-y, 0);
-		}
-	}
-
 	@keyframes scale-by-index {
 		to {
 			transform: scale(calc(1.1 - calc(0.05 * var(--reverse-index))));

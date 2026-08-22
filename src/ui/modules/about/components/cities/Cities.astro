@@ -21,11 +21,8 @@ const numCards = cities.length + 1;
 				<article class="city-card__content">
 					<BlurImage
 						class="city-card__content__image"
-						src={data.image.url}
+						image={data.image}
 						alt={data.name}
-						width={data.image.details.width}
-						height={data.image.details.height}
-						placeholder={data.image.placeholder}
 						loading="lazy"
 						decoding="async"
 					/>

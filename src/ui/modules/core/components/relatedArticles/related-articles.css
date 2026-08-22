@@ -23,7 +23,6 @@
 	--slider-gap: 0rem;
 
 	.slider__track {
-		scroll-marker-group: none;
 	}
 
 	&[data-has-buttons="true"] {

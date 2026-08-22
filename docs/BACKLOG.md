@@ -22,6 +22,12 @@ Ideas not yet scheduled. This list used to live as a block of `// todo:` comment
 
 - Cloudinary for the heavy assets.
 
+## Known duplication, not yet worth the risk
+
+- **The stretch-arrow hover morph is written seven times.** `global.css` (`.editorial-cta`), `slider.css` (`.slider__btn`), `link-with-arrow.css`, `scroll-top.css`, `article-card.css`, `world-globe.css` and `_404.css` each set `d: var(--stretch-arrow-shaft-hover)` and `d: var(--stretch-arrow-tip-hover)` on hover. Six of the seven would collapse into one `@layer modifiers` block mixed in as a class on the hovering element, the way `underline-on-hover` already is. The seventh, `article-card`, is triggered by a sibling selector (`.article-card__link:is(:hover, :focus-visible) ~ .article-card__item`) rather than by the element's own `:hover`, so one mix cannot express it; deciding what to do about that case is what this is waiting on. The surrounding arrow boxes have already drifted (`translate: -7px 0` vs `-6px 0`, `0.35s` vs `0.3s`).
+- **The globe does not follow the theme.** `about/components/worldGlobe/const.ts` hardcodes `#d4a259` and `#f7ecd6`, which are `--gold` and `--surface` restated as fixed hex, so the toggle does not repaint the globe. The docs test's hex-literal check only reads `.css`, so nothing catches it. Fixing it means reading the resolved custom properties at runtime and re-reading them when `data-theme` changes.
+- **The three `ArticleSlider` placements repeat the same responsive ramp**, differing only in the final `--slides-per-view`. A default in `slider.css` plus one override per placement would say the same thing in three lines instead of thirty.
+
 ## Waiting on the platform
 
 - Replace the footer's and About's border dividers with CSS gap decorations (`row-rule`) once it is supported.

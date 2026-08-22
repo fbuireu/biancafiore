@@ -1,13 +1,14 @@
 ---
 import { getCollection } from "astro:content";
-import { absoluteUrl, articleHref, PAGES_ROUTES } from "@const/index";
+import { PAGES_ROUTES } from "@const/index";
 import ArticleSlider from "@modules/core/components/articleSlider/ArticleSlider.astro";
-import { buildItemListSchema } from "@modules/core/utils/jsonLd";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import { buildArticleListSchema } from "@modules/core/utils/jsonLd";
 import "./about-latest-articles.css";
 
 const articles = await getCollection("articles");
 
-const itemListSchema = buildItemListSchema(articles.map(({ data: { slug } }) => absoluteUrl(articleHref(slug))));
+const itemListSchema = buildArticleListSchema(articles.map(({ data }) => data.slug));
 ---
 <section class="about-latest-articles-wrapper common-wrapper">
     <h2 class="about-latest-articles__title editorial-section-title reveal">
@@ -19,6 +20,6 @@ const itemListSchema = buildItemListSchema(articles.map(({ data: { slug } }) => 
             <h6 class="about-latest-articles__quote__author">Ferran Buireu</h6>
         </div>
         <ArticleSlider articles={articles} class="about-latest-articles__slider" />
-        <script is:inline type="application/ld+json" set:html={itemListSchema} />
+        <JsonLd schema={itemListSchema} />
     </div>
 </section>

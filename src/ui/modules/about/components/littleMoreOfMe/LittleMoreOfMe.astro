@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import Cities from "@modules/about/components/cities/Cities.astro";
-import { WorldGlobe } from "@modules/about/components/worldGlobe";
+import { WorldGlobe } from "@modules/about/components/worldGlobe/WorldGlobe";
 import { toCityPoints } from "@modules/about/utils/globe";
 import "./little-more-of-me.css";
 
@@ -16,7 +16,7 @@ const points = toCityPoints(cities);
 
 <section class="little-more-of-me-wrapper common-wrapper">
     <h2 class="little-more-of-me__title editorial-section-title reveal">A little more of me</h2>
-    <div class="little-more-of-me__inner flex row-nowrap justify-space-between">
+    <div class="little-more-of-me__inner flex justify-space-between">
         <WorldGlobe points={points} client:only="react" />
         <Cities cities={cities} />
     </div>

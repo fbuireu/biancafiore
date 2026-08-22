@@ -1,0 +1,10 @@
+---
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+
+interface Props {
+	schema: string;
+}
+
+const { schema } = Astro.props;
+---
+<JsonLd schema={schema} />

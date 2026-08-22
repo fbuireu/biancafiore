@@ -2,6 +2,7 @@
 import { absoluteUrl, PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import { getSiteAuthor } from "@modules/core/utils/entries";
 import { buildWebSiteSchema } from "@modules/core/utils/jsonLd";
 import Blog from "@modules/home/components/blog/Blog.astro";
@@ -34,5 +35,5 @@ const webSiteSchema = buildWebSiteSchema({
     <MyWork />
     <Testimonials />
     <Blog />
-    <script is:inline type="application/ld+json" set:html={webSiteSchema} />
+    <JsonLd schema={webSiteSchema} />
 </BaseLayout>

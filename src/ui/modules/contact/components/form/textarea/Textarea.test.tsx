@@ -1,5 +1,4 @@
-import { Textarea } from "@modules/core/components/form/textarea";
-import { FormStatus } from "@shared/ui/types";
+import { Textarea } from "@modules/contact/components/form/textarea/Textarea";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
@@ -8,7 +7,7 @@ afterEach(cleanup);
 type TextareaProps = Parameters<typeof Textarea>[0];
 
 const renderTextarea = (props: Partial<TextareaProps> = {}) =>
-	render(<Textarea id="message" label="Message" formStatus={FormStatus.INITIAL} hasError={false} {...props} />);
+	render(<Textarea id="message" label="Message" hasError={false} {...props} />);
 
 const field = (): HTMLTextAreaElement => screen.getByLabelText("Message") as HTMLTextAreaElement;
 
@@ -30,8 +29,8 @@ describe("Textarea", () => {
 		expect(screen.queryByText("Tell us a little more")).toBeNull();
 	});
 
-	it("disables the field and withdraws the hover affordance while the form is unauthorized", () => {
-		const { container } = renderTextarea({ formStatus: FormStatus.UNAUTHORIZED });
+	it("disables the field and withdraws the hover affordance while the form is locked", () => {
+		const { container } = renderTextarea({ isLocked: true });
 
 		expect(field().disabled).toBe(true);
 		expect(container.querySelector(".contact-form__textarea-wrapper")?.className).not.toContain("underline-on-hover");

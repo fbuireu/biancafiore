@@ -40,7 +40,6 @@
 	grid-area: Latest-Articles;
 
 	.slider__track {
-		scroll-marker-group: none;
 	}
 
 	@media (width >= 1024px) {

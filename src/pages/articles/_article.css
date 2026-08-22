@@ -335,20 +335,3 @@ html.page--article body {
 		column-count: 1;
 	}
 }
-
-html.page--debug-baseline .article-wrapper {
-	position: relative;
-}
-
-html.page--debug-baseline .article-wrapper::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-	z-index: 9999;
-	pointer-events: none;
-	background-image: repeating-linear-gradient(
-		to bottom,
-		color-mix(in srgb, var(--primary-main), transparent 82%) 0 1px,
-		transparent 1px var(--rhythm)
-	);
-}

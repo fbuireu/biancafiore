@@ -10,19 +10,10 @@
 		padding: 0;
 		scroll-behavior: smooth;
 		scroll-snap-type: x mandatory;
-		scroll-marker-group: after;
 		scrollbar-width: none;
 
 		@media (prefers-reduced-motion: reduce) {
 			scroll-behavior: auto;
-		}
-
-		&::scroll-marker-group {
-			align-items: center;
-			display: flex;
-			gap: 0 0.7rem;
-			justify-content: center;
-			padding-block: 2rem;
 		}
 	}
 
@@ -114,22 +105,5 @@
 		height: auto;
 		scroll-snap-align: start;
 		width: calc((100% - (var(--slides-per-view) - 1) * var(--slider-gap, 2rem)) / var(--slides-per-view));
-
-		&::scroll-marker {
-			background-color: var(--neutral-light-1);
-			border-radius: 1rem;
-			content: "";
-			cursor: pointer;
-			height: 0.75rem;
-			transition:
-				width 0.3s,
-				background-color 0.3s;
-			width: 0.75rem;
-		}
-
-		&::scroll-marker:target-current {
-			background-color: var(--primary-main);
-			width: 1.5rem;
-		}
 	}
 }

@@ -1,4 +1,3 @@
-import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
 import type { InputHTMLAttributes, JSX } from "react";
 import "./textarea.css";
@@ -6,7 +5,7 @@ import "./textarea.css";
 interface TextareaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
 	hasError: boolean;
 	errorMessage?: string;
-	formStatus: (typeof FormStatus)[keyof typeof FormStatus];
+	isLocked?: boolean;
 	label: string;
 }
 
@@ -15,7 +14,7 @@ export const Textarea = ({
 	label,
 	hasError,
 	placeholder,
-	formStatus,
+	isLocked,
 	errorMessage,
 	...rest
 }: TextareaProps): JSX.Element => {
@@ -24,13 +23,13 @@ export const Textarea = ({
 	return (
 		<div
 			className={clsx("contact-form__textarea-wrapper flex column-wrap justify-flex-start", {
-				"underline-on-hover": formStatus !== FormStatus.UNAUTHORIZED,
+				"underline-on-hover": !isLocked,
 			})}
 		>
 			<textarea
 				id={id}
 				className="contact-form__textarea"
-				disabled={formStatus === FormStatus.UNAUTHORIZED}
+				disabled={isLocked}
 				placeholder={placeholder}
 				aria-invalid={hasError || undefined}
 				aria-describedby={hasError ? errorId : undefined}

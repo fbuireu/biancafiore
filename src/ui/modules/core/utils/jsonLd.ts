@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE_STRING } from "@const/index";
+import { absoluteUrl, articleHref, DEFAULT_LOCALE_STRING, projectHref, tagHref } from "@const/index";
 
 const ARTICLE_IMAGE_CROPS = [
 	{ width: 1200, height: 675 },
@@ -72,7 +72,7 @@ function serializeJsonLd(data: unknown): string {
 	return JSON.stringify(data).replaceAll("<", String.raw`\u003c`);
 }
 
-export function buildItemListSchema(urls: string[]): string {
+function buildItemListSchema(urls: string[]): string {
 	return serializeJsonLd({
 		"@context": "https://schema.org",
 		"@type": "ItemList",
@@ -82,6 +82,18 @@ export function buildItemListSchema(urls: string[]): string {
 			url,
 		})),
 	});
+}
+
+export function buildArticleListSchema(slugs: string[]): string {
+	return buildItemListSchema(slugs.map((slug) => absoluteUrl(articleHref(slug))));
+}
+
+export function buildProjectListSchema(ids: string[]): string {
+	return buildItemListSchema(ids.map((id) => absoluteUrl(projectHref(id))));
+}
+
+export function buildTagListSchema(slugs: string[]): string {
+	return buildItemListSchema(slugs.map((slug) => absoluteUrl(tagHref(slug))));
 }
 
 export function buildWebSiteSchema({ url, name, description, author }: BuildWebSiteSchemaParams): string {

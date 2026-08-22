@@ -3,20 +3,20 @@ import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 
 interface Props {
 	class?: string;
-	showTrack?: boolean;
+	hasButtons?: boolean;
 }
 
-const { class: className, showTrack = true } = Astro.props;
+const { class: className, hasButtons = true } = Astro.props;
 ---
 
-<div class={`slider-wrapper ${className ?? ''}`.trim()} data-has-buttons={showTrack}>
-	{showTrack && (
+<div class={`slider-wrapper ${className ?? ''}`.trim()} data-has-buttons={hasButtons}>
+	{hasButtons && (
 		<button class="slider__btn slider__btn--prev" aria-label="Previous slide" disabled><Fragment set:html={stretchArrow} /></button>
 	)}
 	<ul class="slider__track">
 		<slot />
 	</ul>
-	{showTrack && (
+	{hasButtons && (
 		<button class="slider__btn slider__btn--next" aria-label="Next slide"><Fragment set:html={stretchArrow} /></button>
 	)}
 </div>

@@ -1,4 +1,4 @@
-import { StretchArrow } from "@assets/images/svg-components/stretchArrow";
+import { StretchArrow } from "@assets/images/svg-components/stretchArrow/StretchArrow";
 import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn";
 import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
 import countries from "@data/countries.geojson.json";

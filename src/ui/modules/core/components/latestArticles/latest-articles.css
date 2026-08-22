@@ -9,7 +9,7 @@
 }
 
 .latest-articles__title {
-	color: var(--white);
+	color: var(--ink);
 	padding-block: 4rem;
 
 	.latest-articles__title__link {
@@ -26,7 +26,6 @@
 	position: relative;
 
 	.slider__track {
-		scroll-marker-group: none;
 	}
 
 	@media (width >= 720px) {

@@ -21,17 +21,21 @@ const applyColumns = ({ enabled, document }: ApplyColumnsParams): void => {
 	TOGGLE?.setAttribute("aria-pressed", String(enabled));
 };
 
-globalThis.addEventListener("storage", ({ key, newValue }) => {
+const applyOnOtherTabWrite = ({ key, newValue }: StorageEvent): void => {
 	if (key === ARTICLE_COLUMNS_STORAGE_KEY) {
 		applyColumns({ enabled: newValue === "true", document });
 	}
-});
+};
 
-document.addEventListener("astro:before-swap", ({ newDocument }) => {
+const applyBeforeSwap = (event: Event): void => {
+	const { newDocument } = event as Event & { newDocument: Document };
+
 	applyColumns({ enabled: isColumnsEnabled(), document: newDocument });
-});
+};
 
 export function initializeColumnsToggle(): void {
+	globalThis.addEventListener("storage", applyOnOtherTabWrite);
+	document.addEventListener("astro:before-swap", applyBeforeSwap);
 	applyColumns({ enabled: isColumnsEnabled(), document });
 
 	const TOGGLE = document.querySelector<HTMLButtonElement>(SELECTORS.TOGGLE);

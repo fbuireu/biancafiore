@@ -8,6 +8,7 @@ import LittleMoreOfMe from "@modules/about/components/littleMoreOfMe/LittleMoreO
 import WhatIDo from "@modules/about/components/whatIDo/WhatIDo.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import { getSiteAuthor, resolveArticle } from "@modules/core/utils/entries";
 import { buildProfilePageSchema } from "@modules/core/utils/jsonLd";
 
@@ -48,5 +49,5 @@ const profilePageSchema = buildProfilePageSchema({
     <WhatIDo />
     <LittleMoreOfMe cities={cities} />
     <AboutLatestArticles />
-    <script is:inline type="application/ld+json" set:html={profilePageSchema} />
+    <JsonLd schema={profilePageSchema} />
 </BaseLayout>

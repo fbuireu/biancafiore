@@ -1,10 +1,10 @@
 import { BOT_REFUSAL_MESSAGE, contactFormSchema } from "@domain/contact/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@modules/contact/components/form/input/Input";
+import { Recaptcha } from "@modules/contact/components/form/recaptcha/Recaptcha";
+import { Textarea } from "@modules/contact/components/form/textarea/Textarea";
 import { flyPlane } from "@modules/contact/utils/form";
 import { type ContactSubmission, UNDELIVERED_SUBMISSION } from "@modules/contact/utils/submission";
-import { Input } from "@modules/core/components/form/input";
-import { Recaptcha } from "@modules/core/components/form/recaptcha";
-import { Textarea } from "@modules/core/components/form/textarea";
 import Spinner from "@modules/core/components/spinner/Spinner";
 import type { ContactFormData } from "@shared/ui/types";
 import { FormStatus } from "@shared/ui/types";
@@ -32,7 +32,8 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 		resolver: zodResolver(contactFormSchema.omit({ recaptcha: true })),
 	});
 	const [pending, startTransition] = useTransition();
-	const [formStatus, setFormStatus] = useState<(typeof FormStatus)[keyof typeof FormStatus]>(FormStatus.INITIAL);
+	const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.INITIAL);
+	const isLocked = formStatus === FormStatus.UNAUTHORIZED;
 	const nameId = useId();
 	const emailId = useId();
 	const messageId = useId();
@@ -110,7 +111,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 						inputMode="text"
 						placeholder="Your name"
 						autoComplete="name"
-						formStatus={formStatus}
+						isLocked={isLocked}
 						hasError={!!errors.name}
 						errorMessage={errors.name?.message}
 						label="(your name)"
@@ -123,7 +124,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 						inputMode="email"
 						autoComplete="email"
 						placeholder="Your email"
-						formStatus={formStatus}
+						isLocked={isLocked}
 						hasError={!!errors.email}
 						errorMessage={errors.email?.message}
 						label="(your email)"
@@ -138,7 +139,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 						inputMode="text"
 						placeholder="Why you contact me?"
 						className="contact-form__textarea"
-						formStatus={formStatus}
+						isLocked={isLocked}
 						label="(your message)"
 						hasError={!!errors.message}
 						errorMessage={errors.message?.message}
@@ -146,9 +147,9 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 					/>
 					<Recaptcha hasError={!!errors.recaptcha} errorMessage={errors.recaptcha?.message} />
 					<div className="contact-form__generic-error-wrapper">
-						{([FormStatus.ERROR, FormStatus.UNAUTHORIZED] as (typeof FormStatus)[keyof typeof FormStatus][]).includes(
-							formStatus,
-						) && <p className="contact-form__generic-error-message">{errors.root?.message}</p>}
+						{([FormStatus.ERROR, FormStatus.UNAUTHORIZED] as FormStatus[]).includes(formStatus) && (
+							<p className="contact-form__generic-error-message">{errors.root?.message}</p>
+						)}
 					</div>
 					<button
 						ref={submitRef}

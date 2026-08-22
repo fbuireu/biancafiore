@@ -1,12 +1,12 @@
 import clsx from "clsx";
 import type { SVGProps } from "react";
 
-interface CookieProps extends SVGProps<SVGSVGElement> {
+interface InfiniteProps extends SVGProps<SVGSVGElement> {
 	classNames?: string;
 	title?: string;
 }
 
-export const Infinite = ({ fill = "currentColor", title = "Loading...", classNames, ...props }: CookieProps) => {
+export const Infinite = ({ fill = "currentColor", title = "Loading...", classNames, ...props }: InfiniteProps) => {
 	return (
 		<svg
 			className={clsx(classNames)}
