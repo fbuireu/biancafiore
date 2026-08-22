@@ -56,7 +56,7 @@ Gotchas section of [CLAUDE.md](./CLAUDE.md) explains why.
 
 ```bash
 pnpm check              # astro check (template + type check)
-pnpm lint:ts:typecheck  # tsc --noEmit
+pnpm typecheck          # astro sync && tsc --noEmit
 pnpm lint:all           # biome lint (append :fix to autofix)
 pnpm format:all         # biome check --write
 pnpm test:ut            # unit tests (vitest)

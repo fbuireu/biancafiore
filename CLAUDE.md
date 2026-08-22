@@ -31,11 +31,15 @@ pnpm wrangler:dev     # build + wrangler dev --remote (real Workers runtime)
 pnpm deploy           # wrangler deploy --env production
 
 pnpm check            # astro check (astro/tsx type + template check)
-pnpm lint:ts:typecheck# tsc --noEmit
+pnpm typecheck        # astro sync && tsc --noEmit
 pnpm lint:all         # biome lint (append :fix to autofix)
 pnpm format:all       # biome check --write
+pnpm format:check     # biome check, no writes — what verify runs
+pnpm verify           # format:check && typecheck && test:ut:coverage — the CI gate and pre-push
 
 pnpm test:ut          # vitest (unit)
+pnpm test:ut:watch    # vitest, watch mode
+pnpm test:ut:coverage # vitest --coverage
 pnpm test:docs        # docs ⟷ code consistency alone (also runs inside test:ut)
 pnpm test:e2e         # playwright
 pnpm test:all         # unit + e2e
@@ -92,7 +96,7 @@ Path aliases (`tsconfig.json`): `@const/* @infrastructure/* @domain/* @actions/*
 - **One module spells a content URL.** `@const/routes.ts` turns a Slug into a path — `articleHref`, `tagHref`, `projectHref` — and `absoluteUrl` folds in the origin: it is the tree's only reader of `SITE_URL`, so a canonical URL and a JSON-LD URL cannot disagree about where the site lives. Never concatenate `PAGES_ROUTES` with a slug; the table itself stays for the routes that address a whole page, and because `getPage` classifies the current URL against its keys.
 - **No code comments.** Rationale belongs in commit messages / PRs / memory, not inline.
 - **No Biome suppressions.** Fix the root cause (e.g. reorder selectors) instead of `biome-ignore`; suppress only if truly irreplaceable. Biome: 120 line width, `noConsole` error with no allowlist — no `console` at all, log through Effect's `Logger` (`Effect.logError`) — organizeImports on. `noConsole` is *not* part of Biome's recommended preset, so deleting that entry does not tighten it, it silently turns the rule off. `src/data/**` and `public/**` are excluded from Biome.
-- **Conventional commits** (commitlint + husky). semantic-release owns versioning. Do NOT add a Co-Authored-By / Claude trailer to commits or PRs.
+- **Conventional commits** (commitlint + husky). `pre-commit` formats staged files, `pre-push` runs `pnpm verify`. semantic-release owns versioning. Do NOT add a Co-Authored-By / Claude trailer to commits or PRs.
 
 ## Maintenance contract
 
