@@ -13,7 +13,7 @@ const showsAddress = shows === "address";
 >{showsAddress ? EMAIL_ADDRESS_PLACEHOLDER : label}</button>
 
 <script>
-  import { activateEmailButtons } from "@modules/core/components/emailButton/const";
+  import { activateEmailButtons } from "@modules/core/components/emailButton/utils/interactions";
 
   document.addEventListener("astro:page-load", () => activateEmailButtons());
 </script>
