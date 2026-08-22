@@ -26,14 +26,10 @@ Three consequences follow, and they are the parts worth recording:
 
 ## Consequences
 
-Menu state went from seven `classList.toggle` calls to one, which let five selector constants and five `querySelector` calls go.
+**An element that is a mix needs a modifier per block.** The contact tabs are `class="contact-tab underline-on-hover"`, and the single standalone `--is-active` class served both rules at once: the bold weight from `.contact-tab`, and the persistent underline (plus the hover suppression) from `.underline-on-hover`. Splitting it into `contact-tab--active` alone silently dropped the underline. `tabs.ts` toggles `contact-tab--active` and `underline-on-hover--active` together. Any shared modifier being split needs this check.
 
-**An element that is a mix needs a modifier per block.** The contact tabs are `class="contact-tab underline-on-hover"`, and the single old `--is-active` class served both rules at once: the bold weight from `.contact-tab`, and the persistent underline (plus the hover suppression) from `.underline-on-hover`. Splitting it into `contact-tab--active` alone silently dropped the underline. `tabs.ts` now toggles `contact-tab--active` and `underline-on-hover--active` together. Any shared modifier being split needs this check.
+**Fusing changes specificity, so source order decides.** `.reveal.--fade` was two classes and outranked `.reveal`; `.reveal--fade` is one and merely follows it. Fused modifiers must stay after their base rule in the file.
 
-Classes that exist purely as JS state and style nothing are `data-` attributes, not classes: the re-entrancy guard in `flyPlane` is now `button.dataset.flying`.
+**Classes that exist purely as JavaScript state and style nothing are `data-` attributes, not classes.** The re-entrancy guard in `flyPlane` is `button.dataset.flying`.
 
-The rename exposed dead code that the old naming had hidden: a theme-toggle branch whose CSS expected `.--is-dark` while the JS wrote `dark` (six selectors that never matched), an article-card variant map producing classes no stylesheet defined, a `--is-hidden` toggle nothing styled, and a `:not(…) svg` rule that could never match its own DOM. All removed.
-
-There is no `page--tag`. `getPage` resolves `/tags/<slug>` to `tags` because `PAGES_ROUTES.TAGS` is declared before `TAG` and the lookup uses `includes`, so tag detail pages share the `tags-page` container. Left as-is: reordering the routes would change which rules apply to those pages.
-
-The refactor predates the repo's first tests ([ADR 0015](./0015-docs-consistency-enforced-by-a-test.md)), so it was verified by building `HEAD` and the refactored tree and diffing the classes in the emitted HTML against the selectors in the emitted CSS, requiring every orphan on either side to be accounted for.
+The refactor itself, what it deleted and how it was verified before this repo had tests, is in the commit that made it.

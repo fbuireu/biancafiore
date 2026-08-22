@@ -12,7 +12,7 @@ Reveal-on-scroll is the site's most-used effect, and the usual ways to get it â€
 
 ## Decision
 
-Reveals are built entirely with native CSS: `animation-timeline: view()` / named `view-timeline`, `@starting-style`, and a `data-reveal-index` stagger read via `attr()`. No reveal JavaScript of any kind. A `.--on-load` variant swaps the scroll timeline for a plain load transition so non-scrolling pages (e.g. 404/500) can still animate in.
+Reveals are built entirely with native CSS: `animation-timeline: view()` / named `view-timeline`, `@starting-style`, and a `data-reveal-index` stagger read via `attr()`. No reveal JavaScript of any kind. A `.reveal--on-load` variant swaps the scroll timeline for a plain load transition so non-scrolling pages (e.g. 404/500) can still animate in. It was written `.--on-load` when this was decided; [ADR 0014](./0014-bem-class-naming.md) abolished that spelling.
 
 This is a concrete instance of the project-wide CSS-first principle ([ADR 0009](./0009-css-first-javascript-only-when-necessary.md)): GSAP is in the dependency tree but deliberately not used for reveals.
 

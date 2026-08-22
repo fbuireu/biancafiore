@@ -113,6 +113,7 @@ const CONTENTFUL_PAGE_CAP = /CONTENTFUL_MAX_PAGE_SIZE = (\d+)/;
 const LOADER_REACHING_PAST_FETCH_ENTRIES = /from "effect"|isContentfulConfigured|CmsClient|concurrency:/;
 const DOMAIN_SCHEMA_BINDING = /schema:\s*\w+Schema/;
 const DOMAIN_IMPORT = /from "@domain\//;
+const ASTRO_SITE_READ = /Astro\.site/;
 const LOADER_ID_ASSIGNMENT = /\bid:\s*(?:\w+\.)?(\w+),/g;
 const ANY_ID_ASSIGNMENT = /\bid:\s/;
 const TYPE_SCALE_RATIO = /--ratio:\s*([\d.]+);/;
@@ -337,6 +338,10 @@ describe("structure and aliases", () => {
 		for (const { alias, target } of documentedAliases) {
 			expect(`${alias} → ${targets.get(alias)?.replace(TRAILING_SLASH, "")}`).toBe(`${alias} → ${target}`);
 		}
+	});
+
+	it("maps every alias onto a folder that holds at least one tracked file", () => {
+		expect(ALIAS_TARGETS.filter(([, target]) => !isTracked(target.replace(TRAILING_SLASH, "")))).toEqual([]);
 	});
 
 	it("describes a folder tree that exists on disk", () => {
@@ -1457,5 +1462,16 @@ describe("conventions", () => {
 
 		expect(conventions).toContain("only reader of `SITE_URL`");
 		expect(SOURCE_FILES.filter((file) => SITE_ORIGIN_READ.test(read(file)))).toEqual(["src/const/routes.ts"]);
+		expect(SOURCE_FILES.filter((file) => ASTRO_SITE_READ.test(read(file)))).toEqual([]);
+	});
+
+	it("sets the consent default before anything that reads it, which is the order ADR 0013 calls load-bearing", () => {
+		const head = read("src/ui/modules/core/components/head/Head.astro");
+		const adr = read("docs/adr/0013-analytics-gated-behind-cookie-consent.md");
+
+		expect(adr).toContain("stays first");
+		expect(head.indexOf("gtag('consent', 'default'")).toBeGreaterThan(-1);
+		expect(head.indexOf("gtag('consent', 'default'")).toBeLessThan(head.indexOf("googletagmanager.com/gtag/js"));
+		expect(head.indexOf("gtag('consent', 'default'")).toBeLessThan(head.indexOf("googletagmanager.com/gtm.js"));
 	});
 });

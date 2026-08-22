@@ -1,6 +1,8 @@
-# 9. CSS-first UI, JavaScript only when necessary
+# 9. An evergreen, Chromium-forward browser baseline, and CSS-first UI on top of it
 
 Date: 2026-07-26
+
+Amended: 2026-08-22, to record the baseline as the decision rather than as a clause inside it.
 
 ## Status
 
@@ -8,16 +10,19 @@ Accepted.
 
 ## Context
 
-Most of this site's interaction is presentational — reveals, theming, disclosure, layout response. Each of those has a well-known JavaScript answer and a newer platform answer, and reaching for the JavaScript one by default is how a content site ends up shipping a bundle it does not need and running layout work on the main thread.
+Most of this site's interaction is presentational: reveals, theming, disclosure, layout response. Each of those has a well-known JavaScript answer and a newer platform answer, and the platform answers are not evenly supported. `animation-timeline: view()`, `@starting-style`, `light-dark()`, `interpolate-size`, `scroll-marker-group`, `d` as an animatable property, `attr()` with a type: these are the features the design leans on, and reaching for all of them at once is a decision about who can see the site properly, not a coding preference.
+
+Writing it down as "prefer CSS, add JavaScript only when necessary" made the reversible half the headline and the irreversible half a clause. The preference can be revisited per component. The baseline cannot: by the time a dozen components depend on scroll timelines, supporting a browser without them means rebuilding them, not adding a polyfill.
 
 ## Decision
 
-UI behaviour is implemented in CSS wherever the platform allows — scroll-driven animations, `@starting-style`, `light-dark()`/`color-scheme`, `interpolate-size`, container queries — and JavaScript is added only when an effect genuinely cannot be expressed in CSS. The motivation is performance (work off the main thread, less shipped JS) and resilience (graceful degradation, fewer moving parts), accepting a hard dependency on an evergreen/Chromium-forward baseline.
+**The supported baseline is evergreen and Chromium-forward.** Modern CSS is used without prefix stacks, feature queries beyond a graceful `@supports` fallback, or polyfills, and the build target is `esnext`.
 
-This is why reveal-on-scroll uses native scroll timelines rather than the GSAP already in the dependency tree ([ADR 0007](./0007-css-scroll-driven-reveal-animations.md)), and theming leans on `light-dark()`/`color-scheme` ([ADR 0005](./0005-theme-token-families-and-inline-bootstrap.md)) rather than JS. GSAP/JS remain only for the few interactions that truly need them (e.g. the menu open/close timeline, form micro-interactions).
+CSS-first UI follows from that rather than standing beside it: where the platform expresses an effect, it is expressed in CSS, and JavaScript is added only when it genuinely cannot be. That is why reveal-on-scroll uses native scroll timelines rather than the GSAP already in the dependency tree ([ADR 0007](./0007-css-scroll-driven-reveal-animations.md)), and why theming leans on `light-dark()` / `color-scheme` ([ADR 0005](./0005-theme-token-families-and-inline-bootstrap.md)). GSAP and hand-written JavaScript remain for the few interactions that need them, such as the menu open/close timeline and the form micro-interactions.
 
 ## Consequences
 
-- The baseline is a choice, not an accident: features are used without prefix stacks or polyfills, and a non-evergreen browser gets a degraded but readable page.
-- Adding a React island is a decision that has to be argued, not a default — the modules guide states the same rule at the point of use.
-- Some effects are harder to express this way than they would be in JavaScript. That cost is accepted; the escape hatch is real but has to be justified.
+- **A visitor on Safari or Firefox gets a working page, not the designed one.** Reveals resolve to the un-animated end state through `@supports`, so nothing is hidden; the scroll-driven stagger, the `interpolate-size` transitions and the fluid type ladder degrade to their static values. That is the accepted cost, and it is a real one for a portfolio whose audience includes editors and clients on whatever browser their employer installed.
+- The failure mode is invisible in development, because development happens in Chromium. Anything that depends on the baseline has to be checked in a second engine before it is trusted; Playwright's `webkit` project is the only place that happens today, and the site's CSP already made that project lie once (see the `upgrade-insecure-requests` gotcha in `CLAUDE.md`).
+- Adding a React island is a decision that has to be argued, not a default; the modules guide states the rule at the point of use.
+- Some effects are harder to express this way than they would be in JavaScript, and the escape hatch is real but has to be justified.

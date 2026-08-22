@@ -31,8 +31,6 @@ on:
         required: true
       CONTENTFUL_PREVIEW_TOKEN:
         required: true
-      CONTENTFUL_SIGNIN_TOKEN:
-        required: true
       ASTRO_DB_REMOTE_URL:
         required: true
       ASTRO_DB_APP_TOKEN:
@@ -68,7 +66,6 @@ jobs:
       CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
       CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
       CONTENTFUL_PREVIEW_TOKEN: ${{ secrets.CONTENTFUL_PREVIEW_TOKEN }}
-      CONTENTFUL_SIGNIN_TOKEN: ${{ secrets.CONTENTFUL_SIGNIN_TOKEN }}
       ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
       ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
     steps:
@@ -118,7 +115,7 @@ jobs:
               TARGET_FLAG="--env ${INPUTS_WRANGLER_ENV}"
             fi
             node -e "
-            const required = ['RESEND_API_KEY','CONTENTFUL_SPACE_ID','CONTENTFUL_DELIVERY_TOKEN','CONTENTFUL_PREVIEW_TOKEN','CONTENTFUL_SIGNIN_TOKEN','ASTRO_DB_REMOTE_URL','ASTRO_DB_APP_TOKEN'];
+            const required = ['RESEND_API_KEY','CONTENTFUL_SPACE_ID','CONTENTFUL_DELIVERY_TOKEN','CONTENTFUL_PREVIEW_TOKEN','ASTRO_DB_REMOTE_URL','ASTRO_DB_APP_TOKEN'];
             const missing = required.filter(k => !process.env[k]);
             if (missing.length) { console.error('Missing required secrets: ' + missing.join(', ')); process.exit(1); }
             process.stdout.write(JSON.stringify(Object.fromEntries(required.map(k => [k, process.env[k]]))));

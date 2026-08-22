@@ -2,7 +2,7 @@
 
 The content domain of a personal editorial site: a writer's blog and portfolio. It covers what gets written and shown (Articles, Projects, Testimonials), the people and places behind it (Authors, Cities), how writing is organized (Tags), and the editorial rules that shape how pieces are surfaced.
 
-Contact submissions and breadcrumbs have folders under `src/domain` but no entry here: they are site plumbing, not editorial vocabulary, and the docs-consistency test allowlists them as deliberate omissions.
+Contact submissions, breadcrumbs and the cross-concept `shared` primitives have folders under `src/domain` but no entry here: they are site plumbing, not editorial vocabulary, and the docs-consistency test allowlists all three as deliberate omissions.
 
 ## Content Types
 
@@ -15,7 +15,7 @@ The collection of all Articles and the section that lists them (titled "The Blog
 _Avoid_: journal, news, feed, articles page.
 
 **Project**:
-A typology of work Bianca does — an area of her practice rather than a single deliverable — showcased in the portfolio with a name, a rich-text description rendered to HTML, and an image. The home page counts them under the heading "Disciplines": that is reader-facing copy, the concept is a Project everywhere in code. The term is expected to widen: ADR 0010 proposes giving a Project its own page, which is what will force the Project/Article boundary to be settled.
+A typology of work Bianca does — an area of her practice rather than a single deliverable — showcased in the portfolio with a name, a rich-text description rendered to HTML, and an image. The home page counts them under the heading "Disciplines": that is reader-facing copy, the concept is a Project everywhere in code. Whether the term widens is open: ADR 0010 records the question that blocks it, which is what a Project would still be once it had a slug and a body. Until that is answered, a Project is addressed by a fragment on the Projects page and the schema is what a card needs.
 _Avoid_: work, case study, portfolio item, sample.
 
 **Testimonial**:
@@ -59,7 +59,7 @@ The number of Articles associated with a Tag or Author Tag, shown next to it in 
 _Avoid_: total, frequency, tally.
 
 **Slug**:
-The URL-safe identifier that addresses a page: an Article under /articles, a Tag or an Author Tag under /tags. There is no author route — a Byline links to the Author's slug under /tags, which is where an Author Tag lives. A City has a slug too, derived from its name, but it addresses no page: it is the anchor id of the city's card on About. A Project has none yet; ADR 0010 is what would give it one.
+The URL-safe identifier that addresses a page: an Article under /articles, a Tag or an Author Tag under /tags. There is no author route — a Byline links to the Author's slug under /tags, which is where an Author Tag lives. A City has a slug too, derived from its name, but it addresses no page: it is the anchor id of the city's card on About. A Project has none: it is addressed by an id in a fragment on `/projects`, which ADR 0010 records as the current answer rather than a placeholder.
 _Avoid_: permalink, handle, id.
 
 ## Editorial Concepts

@@ -14,12 +14,10 @@
 			"@actions/*": ["./src/actions/*"],
 			"@application/*": ["./src/application/*"],
 			"@modules/*": ["./src/ui/modules/*"],
-			"@utils/*": ["./src/utils/*"],
 			"@assets/*": ["./src/ui/assets/*"],
 			"@styles/*": ["./src/ui/styles/*"],
 			"@data/*": ["./src/data/*"],
 			"@shared/*": ["./src/shared/*"],
-			"@content/*": ["./src/content/*"],
 			"@tests/*": ["./src/tests/*"]
 		},
 		"plugins": [
