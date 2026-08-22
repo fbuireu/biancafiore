@@ -3,6 +3,12 @@
 	"files": {
 		"includes": ["**", "!**/src/data/**/*", "!**/public/**/*"]
 	},
+	"vcs": {
+		"enabled": true,
+		"useIgnoreFile": true,
+		"clientKind": "git",
+		"defaultBranch": "main"
+	},
 	"assist": {
 		"actions": {
 			"source": {
@@ -10,14 +16,10 @@
 			}
 		}
 	},
-	"vcs": {
-		"enabled": true,
-		"useIgnoreFile": true,
-		"clientKind": "git",
-		"defaultBranch": "main"
-	},
 	"formatter": {
-		"lineWidth": 120
+		"lineWidth": 120,
+		"indentStyle": "tab",
+		"lineEnding": "lf"
 	},
 	"css": {
 		"formatter": {
