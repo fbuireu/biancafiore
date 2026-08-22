@@ -8,7 +8,7 @@ import type {
 	RecaptchaError,
 	ValidationError,
 } from "@infrastructure/errors";
-import { normalizeEmail, sendEmail } from "@infrastructure/utils/email";
+import { sendEmail } from "@infrastructure/utils/email";
 import { validateContact, verifyRecaptcha } from "@infrastructure/utils/guards";
 import { checkDuplicatedEntries, saveContact } from "@infrastructure/utils/persistence";
 import type { ContactFormData } from "@shared/ui/types";
@@ -25,15 +25,14 @@ export const submitContact = ({
 	Effect.gen(function* () {
 		const data = yield* validateContact(params);
 		yield* verifyRecaptcha(recaptcha);
-		const normalizedData = { ...data, email: normalizeEmail(data.email) };
-		yield* checkDuplicatedEntries(normalizedData);
+		yield* checkDuplicatedEntries(data);
 		const { id: emailId } = yield* sendEmail(data);
 
-		yield* saveContact({ emailId, ...normalizedData }).pipe(
+		yield* saveContact({ emailId, ...data }).pipe(
 			Effect.catchAll(({ message }) =>
 				Effect.logError(`Contact ${emailId} was delivered but not persisted: ${message}`),
 			),
 		);
 
-		return { ok: !!emailId };
+		return { ok: true };
 	});

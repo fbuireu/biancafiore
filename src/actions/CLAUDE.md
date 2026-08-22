@@ -5,8 +5,8 @@ Effect program that orchestrates the submission; `errorResponse.ts` holds `conta
 failed `Cause` into the `{ code, message }` the visitor gets; `index.ts` holds the Astro binding and nothing
 else — `defineAction`, `accept: "form"`, `contactFormSchema` (`@domain/contact/schema`) validating the payload
 before the handler body runs, `ContactLayer`, and the `new ActionError(…)` throw. Every step is imported from
-`@infrastructure/utils/*` — all Effects except `normalizeEmail`, a plain function called inline — so nothing
-here talks to the database, Resend or reCAPTCHA directly. ADR 0004 records why the Effect world is sealed at
+`@infrastructure/utils/*` and every one of them is an Effect, so nothing here talks to the database, Resend or
+reCAPTCHA directly. ADR 0004 records why the Effect world is sealed at
 this edge and nowhere deeper.
 
 **The split is what makes the action testable.** `contact.ts` and `errorResponse.ts` import nothing from
@@ -20,8 +20,8 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
 ## Invariants & rules
 
 - **`ContactLayer` is provided here, per request** — `Effect.provide(ContactLayer)` inside the handler, never
-  at module scope. Contact writes are per-request; the long-lived `ManagedRuntime` behind `fetchEntries`
-  (`@infrastructure/cms/entries`) is for CMS reads only. Don't collapse the two.
+  at module scope. Why there are two runtimes rather than one is ADR 0004 and `src/infrastructure/CLAUDE.md`;
+  what belongs here is only that this one is built and discarded per request.
 - **`contactErrorResponse` is the only place a tagged error becomes HTTP.** Exactly two are mapped:
   `ValidationError` → `BAD_REQUEST` and `DuplicateContactError` → `UNAUTHORIZED`. Everything else —
   `EmailError`, `DatabaseError`, `RecaptchaError`, and any defect — logs `Cause.pretty(cause)` through
@@ -36,16 +36,13 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   `toContactSubmission` in `@modules/contact/utils/submission` — and that state disables every input and the
   submit button — the visitor is locked out rather than invited to retry. Answering `409` instead would leave the form
   live and the mapping silent, so this pair only makes sense read together.
-- **Only `checkDuplicatedEntries` raises `DuplicateContactError` anywhere the visitor can see it.** The unique
-  constraint on `contact.email` produces one too, from `saveContact`, when two submissions for the same
-  address race past that check — but by then both mails are away, and the catch-all below takes every failure
-  of that step, this one included. So the race ends like this: both visitors are answered `ok`, Bianca
-  receives two mails, and one row is missing, the loser's insert having been logged rather than raised. That
-  is the intended answer, not an oversight to tighten later — the loser's message *was* delivered, so
-  answering "you already contacted" would be false as well as confusing. The catch-all stays broad, and the
-  `UNAUTHORIZED` path is therefore unreachable from `saveContact`. `isUniqueConstraintViolation` unwrapping
-  drizzle's error still earns its keep, but over the log line and `saveContact`'s declared failure type rather
-  than over anything the visitor sees; `src/infrastructure/CLAUDE.md` carries that reasoning.
+- **Only `checkDuplicatedEntries` raises `DuplicateContactError` anywhere the visitor can see it.**
+  `saveContact` can raise one too, when two submissions for the same address race past that check, but the
+  catch-all below swallows it: both visitors are answered `ok`, and the loser loses only its row. That is the
+  intended answer, not an oversight to tighten later — the loser's message *was* delivered, so answering "you
+  already contacted" would be false as well as confusing. The `UNAUTHORIZED` path is therefore unreachable
+  from `saveContact`. Why that arm still earns its keep is `src/infrastructure/CLAUDE.md`, under
+  `persistence.ts`.
 - **The answer is decided inside the Effect and thrown outside it.** `Effect.matchCauseEffect` folds both
   outcomes into an Effect of a plain `{ success, value | error }` union, `Effect.runPromise` resolves it, and
   only then does the handler `throw new ActionError(result.error)`. It has to be the `Effect` variant of the
@@ -53,19 +50,14 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   for that log to be part of the program. Never throw an `ActionError` from inside the program — it would
   arrive as a defect, `Cause.failureOption` would find no failure, and the mapping would be lost. That last
   sentence is a test: `errorResponse.test.ts` dies with a `ValidationError` and asserts the generic 500.
-- **Step order is load-bearing**: validate → verify reCAPTCHA → normalize → duplicate check → send email →
-  save. The reCAPTCHA check runs *after* schema validation, so a malformed payload is rejected without
-  spending a verification call. The email goes out **before** the row is written because the row stores the
-  Resend `emailId`, so that order cannot simply be swapped.
-- **A refused reCAPTCHA is two different answers.** `verifyRecaptcha` fails with a `ValidationError` when
-  Google answered and the answer was not good enough — that is the visitor's, and they read the bot copy
-  behind a `BAD_REQUEST`. It fails with a `RecaptchaError` when no verdict was obtained at all: siteverify
-  unreachable, an unreadable body, or our secret key refused. That one is ours, so it takes the catch-all —
-  the operator gets `Cause.pretty` in the Worker log and the visitor gets the generic 500 instead of being
-  accused of being a bot for a key we rotated. Before the split both were one `ValidationError` with one
-  message, which meant a dead key refused every submission at 400 and wrote nothing to the log at all;
-  `guards.ts` carries which siteverify `error-codes` sit on which side. Either way the submission is refused —
-  fail-closed and blame-the-visitor are now separate decisions, so one can move without the other.
+- **Step order is load-bearing**: validate → verify reCAPTCHA → duplicate check → send email → save. The
+  reCAPTCHA check runs *after* schema validation, so a malformed payload is rejected without spending a
+  verification call. The email goes out **before** the row is written because the row stores the Resend
+  `emailId`, so that order cannot simply be swapped.
+- **A refused reCAPTCHA is two different answers**, and which one it is decides what the visitor reads: a
+  `ValidationError` reaches them as the bot copy behind a `BAD_REQUEST`, a `RecaptchaError` takes the
+  catch-all and reaches them as the generic 500. Which siteverify outcome produces which is `guards.ts`, and
+  `src/infrastructure/CLAUDE.md` states the rule for keeping new `error-codes` on the right side.
 - **A failed `saveContact` is logged, not raised.** Once the mail is away the visitor's message has reached
   Bianca; the row is bookkeeping for duplicate detection, not the deliverable. Failing the request there
   would show a 500 for work that actually succeeded and invite a retry that passes the duplicate check —
@@ -82,15 +74,22 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
 - **The email field trims before it validates** — `z.string().trim().pipe(z.email())`, not `z.email().trim()`.
   Zod applies `.trim()` in chain order, so validating first rejects any address pasted with a surrounding
   space and leaves the trim dead. Reordering those calls reintroduces that bug without failing a type check.
-- **Two forms of the address are in flight on purpose.** `normalizeEmail` trims, lowercases and strips the
-  `+alias` segment; the normalized form is what `checkDuplicatedEntries` and `saveContact` use, so
-  `a+anything@d.com` and `a@d.com` are treated as the same person. `sendEmail` is handed the **validated**
-  data, so the reply goes to the address as it was typed — alias and capitalisation intact, surrounding
-  whitespace aside. Passing `normalizedData` to `sendEmail` would break alias delivery; passing `data` to
-  `saveContact` would break duplicate detection.
-- The generic copy lives in one module-level constant in `errorResponse.ts` — but only that one. The copy for
-  the two mapped tags is written where each error is raised: the `ValidationError` text in the zod messages of
-  `@domain/contact/schema`, joined by `validateContact`, and in `guards.ts` for the reCAPTCHA rejection; the
-  `DuplicateContactError` text in `persistence.ts`. `contactErrorResponse` forwards `failure.value.message`
-  verbatim, so those strings reach the visitor unchanged. The layers below stay tagged; they are not
-  language-free.
+- **Two forms of the address are in flight on purpose, and this file is not what keeps them apart.**
+  `normalizeEmail` (`@domain/contact/rules`) trims, lowercases and strips the `+alias` segment, so
+  `a+anything@d.com` and `a@d.com` are one person; the address as typed is what the reply has to reach.
+  `submitContact` therefore hands every step the same validated `data` and normalises nowhere:
+  `checkDuplicatedEntries` and `saveContact` normalise on the way in, because the normalised form is *their*
+  requirement, and `persistence.test.ts` asserts each of them does. It used to be the orchestrator that built
+  a second record and chose which step got which, where both were the same TypeScript type and swapping them
+  type-checked — one assertion in `contact.test.ts` stood between the code and silently mailing the wrong
+  address.
+- The generic 500 copy lives in one module-level constant in `errorResponse.ts`, and it is the only string
+  this folder writes for a visitor. The copy for the two mapped tags is written where each error is raised:
+  the `ValidationError` text in the zod messages of `@domain/contact/schema`, joined by `validateContact`, and
+  in `guards.ts` for the reCAPTCHA rejection; the `DuplicateContactError` text in `persistence.ts`.
+  `contactErrorResponse` forwards `failure.value.message` verbatim, so those strings reach the visitor
+  unchanged. The layers below stay tagged; they are not language-free. The bot line is the one piece of copy
+  two layers both need, so it is declared once as `BOT_REFUSAL_MESSAGE` in `@domain/contact/schema` and read
+  by the zod message, by `guards.ts` and by the form's own missing-token branch. A separate
+  `UNDELIVERED_MESSAGE` lives in `@modules/contact/utils/submission`; it is not this constant's twin but the
+  answer to a different failure, the request never arriving, which no server-side error can describe.

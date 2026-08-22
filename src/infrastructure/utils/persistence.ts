@@ -1,4 +1,5 @@
 import type { Except } from "@const/types";
+import { normalizeEmail } from "@domain/contact/rules";
 import { Database } from "@infrastructure/db/client";
 import { isUniqueConstraintViolation } from "@infrastructure/db/constraints";
 import { type DatabaseError, DuplicateContactError } from "@infrastructure/errors";
@@ -14,7 +15,7 @@ export const checkDuplicatedEntries = (
 ): Effect.Effect<void, DatabaseError | DuplicateContactError, Database> =>
 	Effect.gen(function* () {
 		const database = yield* Database;
-		const existing = yield* database.findContactByEmail(data.email);
+		const existing = yield* database.findContactByEmail(normalizeEmail(data.email));
 
 		if (existing) {
 			return yield* Effect.fail(new DuplicateContactError({ message: DUPLICATE_CONTACT_MESSAGE }));
@@ -33,7 +34,13 @@ export const saveContact = (
 		const now = new Date().toISOString();
 
 		yield* database
-			.insertContact({ ...contactData, id: crypto.randomUUID(), createdDate: now, modifiedDate: now })
+			.insertContact({
+				...contactData,
+				email: normalizeEmail(contactData.email),
+				id: crypto.randomUUID(),
+				createdDate: now,
+				modifiedDate: now,
+			})
 			.pipe(
 				Effect.catchTag(
 					"DatabaseError",

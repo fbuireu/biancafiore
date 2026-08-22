@@ -1,7 +1,6 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import { absoluteUrl, articleHref, CONTACT_DETAILS } from "@const/index";
+import { absoluteUrl, articleHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
 import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
@@ -9,16 +8,12 @@ import LittleMoreOfMe from "@modules/about/components/littleMoreOfMe/LittleMoreO
 import WhatIDo from "@modules/about/components/whatIDo/WhatIDo.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
-import { resolveArticle } from "@modules/core/utils/entries";
+import { getSiteAuthor, resolveArticle } from "@modules/core/utils/entries";
 import { buildProfilePageSchema } from "@modules/core/utils/jsonLd";
 
 export const prerender = true;
 
-const [cities, authors] = await Promise.all([getCollection("cities"), getCollection("authors")]);
-
-const bianca = authors
-	.filter((author) => author.data.name === CONTACT_DETAILS.NAME)
-	.at(0) as CollectionEntry<"authors">;
+const [cities, bianca] = await Promise.all([getCollection("cities"), getSiteAuthor()]);
 
 const latestArticle = await resolveArticle(bianca.data.latestArticle);
 

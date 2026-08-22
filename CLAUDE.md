@@ -15,10 +15,9 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 - **lightningcss** CSS transformer; **GSAP**, `react-globe.gl`/`three` (globe), `react-hook-form`, `resend` (email), reCAPTCHA v3, `vanilla-cookieconsent`
 - **Biome** (lint + format), **Vitest** (unit), **Playwright** (e2e), **semantic-release** + commitlint (conventional commits)
 
-## Versions (pinned by hand — not enforced by the docs test, since routine dependency bumps would break CI on it)
+## Versions
 
-- Node **26.5.1** (`engines.node`)
-- pnpm **11.15.1** (`packageManager`) — always use pnpm, never npm/yarn
+`package.json` is the pin and the only place a version number is written: `engines.node` for the runtime, `packageManager` for the package manager. Numbers were repeated here once and drifted two releases behind within a month, because a dependency bump has no reason to open this file. **Always use pnpm, never npm or yarn** — that rule is not a version, so it lives here.
 
 ## Commands
 
@@ -115,6 +114,8 @@ These documents are not generated. A change that does not update them leaves the
 | The layer boundaries, the rendering mode, or the deploy target | the *Stack* / *Deploy* sections here, plus the ADR that decided it |
 | A decision an ADR records | that ADR — amend it, or supersede it with a new one and say so in both `## Status` blocks |
 | A claim `docs/docs-consistency.test.ts` asserts, on purpose | the doc first; the test only when the claim itself is what changed |
+
+An idea nobody has committed to is not an ADR and does not belong in a source comment either: it goes in [`docs/BACKLOG.md`](./docs/BACKLOG.md), which is where the block of `// todo:` comments that used to sit in `src/pages/index.astro` now lives. An entry leaves that file when it ships, when it is decided against, or when it turns into a decision worth an ADR.
 
 Propose an ADR in [`docs/adr/`](./docs/adr/) when a decision is **hard to reverse**, **surprising without context** and **the result of a real trade-off**. All three, or it is not an ADR. Copy [ADR 0000](./docs/adr/0000-adr-template.md), the template, and number it one above the highest existing file (`NNNN-kebab-title.md`, `# N. Title` / `Date:` / `## Status` / `## Context` / `## Decision` / `## Consequences`), then link it from wherever it bites — a Gotchas bullet here, a nested guide, a `CONTEXT.md` entry. There is no separate index; an ADR nothing links to will not be read, which is why both the template and the incoming link are asserted.
 

@@ -45,10 +45,12 @@ describe("checkDuplicatedEntries", () => {
 		expect(failureOf(exit)).toMatchObject({ _tag: "DuplicateContactError", message: DUPLICATE_MESSAGE });
 	});
 
-	it("looks the address up once, exactly as it was given", async () => {
+	it("looks the address up once, normalised, so an alias cannot escape the check", async () => {
 		const database = databaseDouble();
 
-		await Effect.runPromiseExit(checkDuplicatedEntries(ENQUIRY).pipe(Effect.provide(database.layer)));
+		await Effect.runPromiseExit(
+			checkDuplicatedEntries({ ...ENQUIRY, email: "  Ada+news@Example.com " }).pipe(Effect.provide(database.layer)),
+		);
 
 		expect(database.lookedUp).toStrictEqual(["ada@example.com"]);
 	});
@@ -78,6 +80,16 @@ describe("saveContact", () => {
 			modifiedDate: FROZEN_NOW,
 		});
 		expect(database.inserted[0]?.id).toMatch(UUID_PATTERN);
+	});
+
+	it("stores the normalised address, so the unique constraint sees one person once", async () => {
+		const database = databaseDouble();
+
+		await Effect.runPromiseExit(
+			saveContact({ ...SUBMISSION, email: "  Ada+news@Example.com " }).pipe(Effect.provide(database.layer)),
+		);
+
+		expect(database.inserted[0]?.email).toBe("ada@example.com");
 	});
 
 	it("gives every submission its own id", async () => {

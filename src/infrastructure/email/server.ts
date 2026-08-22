@@ -1,11 +1,22 @@
+import { CONTACT_DETAILS } from "@const/const";
 import { EmailError } from "@infrastructure/errors";
 import { Context, Effect, Layer } from "effect";
-import { type CreateEmailOptions, Resend } from "resend";
+import { Resend } from "resend";
+
+const CONTACT_FORM_CATEGORY = "web_contact_form";
+const UNKNOWN_FAILURE_MESSAGE = "Something went wrong while sending the email";
+
+export interface ContactNotification {
+	name: string;
+	email: string;
+	html: string;
+	text: string;
+}
 
 export class EmailClient extends Context.Tag("EmailClient")<
 	EmailClient,
 	{
-		send(payload: CreateEmailOptions): Effect.Effect<{ id: string }, EmailError>;
+		sendContactNotification(notification: ContactNotification): Effect.Effect<{ id: string }, EmailError>;
 	}
 >() {}
 
@@ -16,9 +27,23 @@ export const EmailClientLive = Layer.effect(
 		const emails = new Resend(getSecret("RESEND_API_KEY")).emails;
 
 		return {
-			send: (payload) =>
+			sendContactNotification: ({ name, email, html, text }: ContactNotification) =>
 				Effect.tryPromise({
-					try: () => emails.send(payload),
+					try: () =>
+						emails.send({
+							from: `${CONTACT_DETAILS.NAME} Web <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`,
+							to: atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA),
+							replyTo: email,
+							subject: `${CONTACT_DETAILS.EMAIL_SUBJECT} from ${name} (${email})`,
+							tags: [
+								{
+									name: "category",
+									value: CONTACT_FORM_CATEGORY,
+								},
+							],
+							html,
+							text,
+						}),
 					catch: (cause) =>
 						new EmailError({
 							message: cause instanceof Error ? cause.message : String(cause),
@@ -29,7 +54,7 @@ export const EmailClientLive = Layer.effect(
 						error || !data
 							? Effect.fail(
 									new EmailError({
-										message: error?.message ?? "Something went wrong while sending the email",
+										message: error?.message ?? UNKNOWN_FAILURE_MESSAGE,
 										cause: error,
 									}),
 								)

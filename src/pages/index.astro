@@ -1,9 +1,8 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
-import { absoluteUrl, CONTACT_DETAILS, PAGES_ROUTES } from "@const/index";
+import { absoluteUrl, PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import { getSiteAuthor } from "@modules/core/utils/entries";
 import { buildWebSiteSchema } from "@modules/core/utils/jsonLd";
 import Blog from "@modules/home/components/blog/Blog.astro";
 import MyWork from "@modules/home/components/myWork/MyWork.astro";
@@ -12,27 +11,7 @@ import Welcome from "@modules/home/components/welcome/Welcome.astro";
 
 export const prerender = true;
 
-// todo: emdash
-// todo: svg scroll offset driven animation in background
-// todo: remove hardcoded container queries values in favor of chars or otherunits (https://www.youtube.com/watch?v=9XKWnvpdSlU)
-// todo: add live collections (not for articles but for the rest of the content)
-// todo: add small transitions & animations
-//        - add small icons (reading time, tags, etc)?
-// todo: wait for wrangler webhook -->  add Algolia + filters (+ URL filtering) https://www.algolia.com/developers/contentful-search-algolia/ (webhook problem)
-// todo: cloudinary for heavy assets
-// todo: print mediaquery
-// todo: add resume (PDF) in about?
-// todo: multilanguage*
-// todo: add vitest
-// todo: add like system: https://twitter.com/jh3yy/status/1740501273009389943?t=HACFVwPJq343ZjQt3sPaMA&s=19
-// todo: check notion
-// todo: add comments section
-// todo: replace border dividers (footer social links, about social networks) with CSS gap decorations (row-rule) once supported
-// todo: replace HeaderLink current-page JS check with CSS route/navigation matching once supported: https://www.bram.us/2026/07/30/styling-the-navigation-declarative-route-and-navigation-matching-in-css/
-// valorar idea de que semblin 2 pagines(https://www.behance.net/gallery/177718861/Photography-Portfolio-Layout-(Download)?tracking_source=search_projects|writing+portfolio&l=2)
-
-const authors = await getCollection("authors");
-const bianca = authors.find((a) => a.data.name === CONTACT_DETAILS.NAME) as CollectionEntry<"authors">;
+const bianca = await getSiteAuthor();
 
 const metadata: Partial<SeoMetadata> = {
 	description: bianca.data.description,

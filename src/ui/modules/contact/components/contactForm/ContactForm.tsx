@@ -1,4 +1,4 @@
-import { contactFormSchema } from "@domain/contact/schema";
+import { BOT_REFUSAL_MESSAGE, contactFormSchema } from "@domain/contact/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { flyPlane } from "@modules/contact/utils/form";
 import { type ContactSubmission, UNDELIVERED_SUBMISSION } from "@modules/contact/utils/submission";
@@ -20,7 +20,6 @@ interface ContactFormProps {
 
 const UNAUTHORIZED_STATUS = 401;
 const SUCCESS_DELAY = 2000;
-const MISSING_TOKEN_MESSAGE = "Mr. Robot, is that you?";
 
 export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => {
 	const {
@@ -82,7 +81,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 			if (!token) {
 				setError("recaptcha", {
 					type: "manual",
-					message: MISSING_TOKEN_MESSAGE,
+					message: BOT_REFUSAL_MESSAGE,
 				});
 				return;
 			}

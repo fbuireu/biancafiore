@@ -28,6 +28,9 @@ node_modules/
 .astro/
 dist/
 
+# Generated at astro:build:start by generateStaticHeaders
+public/_headers
+
 # Infrastructure
 .wrangler/
 

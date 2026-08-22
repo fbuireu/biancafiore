@@ -3,7 +3,6 @@ export type Except<T, K extends keyof T> = { [P in keyof T as P extends K ? neve
 export interface SeoMetadata {
 	title: string;
 	description: string;
-	site: string;
 	robots?: {
 		index: boolean;
 		follow: boolean;

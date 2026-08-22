@@ -83,7 +83,7 @@ describe("submitContact", () => {
 
 		await run({ database, email });
 
-		expect(email.sent[0]?.replyTo).toBe("Ada+news@Example.com");
+		expect(email.sent[0]?.email).toBe("Ada+news@Example.com");
 	});
 
 	it("still answers ok when the row cannot be written", async () => {

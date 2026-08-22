@@ -1,12 +1,12 @@
 import type { Except } from "@const/types";
-import { contactFormSchema } from "@domain/contact/schema";
+import { BOT_REFUSAL_MESSAGE, contactFormSchema } from "@domain/contact/schema";
 import { RecaptchaError, ValidationError } from "@infrastructure/errors";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
 
 const RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 const RECAPTCHA_MINIMUM_SCORE = 0.5;
-const RECAPTCHA_ERROR_MESSAGE = "Mr. Robot, is that you? Please refresh the page and try again.";
+const RECAPTCHA_ERROR_MESSAGE = `${BOT_REFUSAL_MESSAGE} Please refresh the page and try again.`;
 const RECAPTCHA_UNANSWERED_MESSAGE = "reCAPTCHA siteverify could not be reached or did not answer readable JSON";
 const RECAPTCHA_SECRET_MESSAGE = "reCAPTCHA refused GOOGLE_RECAPTCHA_SECRET_KEY, so no verdict was obtained";
 const RECAPTCHA_SECRET_ERROR_CODES = new Set(["missing-input-secret", "invalid-input-secret"]);

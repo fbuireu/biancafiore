@@ -1,9 +1,8 @@
 import { Database } from "@infrastructure/db/client";
 import type { ContactRow, NewContact } from "@infrastructure/db/schema";
-import { EmailClient } from "@infrastructure/email/server";
+import { type ContactNotification, EmailClient } from "@infrastructure/email/server";
 import { DatabaseError, EmailError } from "@infrastructure/errors";
 import { Effect, Layer } from "effect";
-import type { CreateEmailOptions } from "resend";
 
 export interface DatabaseDoubleOptions {
 	existingContact?: ContactRow;
@@ -63,19 +62,19 @@ export interface EmailDoubleOptions {
 
 export interface EmailDouble {
 	layer: Layer.Layer<EmailClient>;
-	sent: { to: unknown; replyTo: unknown; subject: unknown }[];
+	sent: ContactNotification[];
 }
 
 export function emailDouble({ id = "email-id", failWith }: EmailDoubleOptions = {}): EmailDouble {
-	const sent: { to: unknown; replyTo: unknown; subject: unknown }[] = [];
+	const sent: ContactNotification[] = [];
 
 	return {
 		sent,
 		layer: Layer.succeed(EmailClient, {
-			send: (payload: CreateEmailOptions) => {
+			sendContactNotification: (notification) => {
 				if (failWith) return Effect.fail(failWith);
 
-				sent.push({ to: payload.to, replyTo: payload.replyTo, subject: payload.subject });
+				sent.push(notification);
 
 				return Effect.succeed({ id });
 			},
