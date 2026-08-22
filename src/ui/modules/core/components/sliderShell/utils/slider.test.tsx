@@ -6,11 +6,12 @@ const boxOf = (left: number, width: number) => () => ({ left, width, right: left
 interface RenderParams {
 	slides: number;
 	dots?: boolean;
+	looping?: boolean;
 }
 
-const render = ({ slides, dots = false }: RenderParams) => {
+const render = ({ slides, dots = false, looping = false }: RenderParams) => {
 	document.body.innerHTML = `
-		<div class="slider-wrapper" data-has-buttons="true">
+		<div class="slider-wrapper" data-has-buttons="true" data-is-looping="${looping}">
 			<button class="slider__btn slider__btn--prev" disabled></button>
 			<ul class="slider__track">
 				${Array.from({ length: slides }, () => '<li class="slider__slide"></li>').join("")}
@@ -142,5 +143,50 @@ describe("initSlider", () => {
 		document.body.innerHTML = '<div class="slider-wrapper"></div>';
 
 		expect(() => initSlider(document.querySelector(".slider-wrapper") as HTMLElement)).not.toThrow();
+	});
+
+	it("never disables a looping slider's buttons, because there is always somewhere to go", () => {
+		const { wrapper, previous, next } = render({ slides: 3, dots: true, looping: true });
+
+		initSlider(wrapper);
+
+		expect(previous.disabled).toBe(false);
+		expect(next.disabled).toBe(false);
+	});
+
+	it("wraps to the last slide when a looping slider steps back from the first", () => {
+		const { wrapper, slides, previous } = render({ slides: 3, dots: true, looping: true });
+
+		initSlider(wrapper);
+		previous.click();
+
+		expect(slides[2]?.scrollIntoView).toHaveBeenCalledWith({
+			behavior: "smooth",
+			block: "nearest",
+			inline: "center",
+		});
+	});
+
+	it("wraps to the first slide when a looping slider steps past the last", () => {
+		const { wrapper, track, slides, next } = render({ slides: 3, dots: true, looping: true });
+
+		initSlider(wrapper);
+		slides.forEach((slide, index) => {
+			slide.getBoundingClientRect = boxOf(index * 300 - 600, 300);
+		});
+		track.dispatchEvent(new Event("scroll"));
+		next.click();
+
+		expect(slides[0]?.scrollIntoView).toHaveBeenCalled();
+	});
+
+	it("steps a looping slider one slide at a time rather than paging by the track", () => {
+		const { wrapper, track, slides, next } = render({ slides: 3, dots: true, looping: true });
+
+		initSlider(wrapper);
+		next.click();
+
+		expect(track.scrollBy).not.toHaveBeenCalled();
+		expect(slides[1]?.scrollIntoView).toHaveBeenCalled();
 	});
 });

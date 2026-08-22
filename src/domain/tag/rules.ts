@@ -16,18 +16,12 @@ export function resolveSlugCollisions(entries: TagIndexEntryDTO[]): TagIndexEntr
 }
 
 export function buildTagIndexBuckets(entries: TagIndexEntryDTO[]): TagIndexBucket[] {
-	const buckets = new Map<string, TagIndexEntryDTO[]>();
+	const grouped = Object.groupBy(entries, ({ name }) => name.charAt(0).toUpperCase());
 
-	for (const entry of entries) {
-		const letter = entry.name.charAt(0).toUpperCase();
-
-		buckets.set(letter, [...(buckets.get(letter) ?? []), entry]);
-	}
-
-	return [...buckets.entries()]
+	return Object.entries(grouped)
 		.map(([letter, bucket]) => ({
 			letter,
-			entries: bucket.toSorted((first, second) => first.name.localeCompare(second.name)),
+			entries: (bucket ?? []).toSorted((first, second) => first.name.localeCompare(second.name)),
 		}))
 		.toSorted((first, second) => first.letter.localeCompare(second.letter));
 }

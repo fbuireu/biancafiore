@@ -12,7 +12,13 @@ const { testimonials } = Astro.props;
 ---
 
 <div class="testimonials__carousel reveal">
-	<SliderShell class="testimonials__slider" hasDots slideCount={testimonials.length} label="Testimonials navigation">
+	<SliderShell
+		class="testimonials__slider"
+		hasDots
+		isLooping
+		slideCount={testimonials.length}
+		label="Testimonials navigation"
+	>
 		{
 			testimonials.map((testimonial) => (
 				<li class="slider__slide testimonials__slide">

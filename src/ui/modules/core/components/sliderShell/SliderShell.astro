@@ -5,16 +5,24 @@ interface Props {
 	class?: string;
 	hasButtons?: boolean;
 	hasDots?: boolean;
+	isLooping?: boolean;
 	slideCount?: number;
 	label?: string;
 }
 
-const { class: className, hasButtons = true, hasDots = false, slideCount = 0, label = "Slider" } = Astro.props;
+const {
+	class: className,
+	hasButtons = true,
+	hasDots = false,
+	isLooping = false,
+	slideCount = 0,
+	label = "Slider",
+} = Astro.props;
 
 const dots = hasDots ? Array.from({ length: slideCount }, (_, index) => index) : [];
 ---
 
-<div class={`slider-wrapper ${className ?? ''}`.trim()} data-has-buttons={hasButtons} data-has-dots={hasDots}>
+<div class={`slider-wrapper ${className ?? ''}`.trim()} data-has-buttons={hasButtons} data-has-dots={hasDots} data-is-looping={isLooping}>
 	{hasButtons && !hasDots && (
 		<button class="slider__btn slider__btn--prev" type="button" aria-label="Previous slide" disabled><Fragment set:html={stretchArrow} /></button>
 	)}
@@ -26,7 +34,7 @@ const dots = hasDots ? Array.from({ length: slideCount }, (_, index) => index) :
 	)}
 	{hasDots && (
 		<nav class="slider__nav" aria-label={label}>
-			<button class="slider__btn slider__btn--prev" type="button" aria-label="Previous slide" disabled><Fragment set:html={stretchArrow} /></button>
+			<button class="slider__btn slider__btn--prev" type="button" aria-label="Previous slide" disabled={!isLooping}><Fragment set:html={stretchArrow} /></button>
 			{dots.map((index) => (
 				<button
 					class:list={["slider__dot clickable", { "slider__dot--active": index === 0 }]}

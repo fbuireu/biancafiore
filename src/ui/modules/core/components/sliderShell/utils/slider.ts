@@ -8,6 +8,7 @@ const SELECTORS = {
 
 const ACTIVE_DOT_CLASS = "slider__dot--active";
 const SCROLL_END_TOLERANCE = 1;
+const LOOPING_ATTRIBUTE = "data-is-looping";
 
 const distanceToCentre = (track: HTMLElement, slide: HTMLElement): number => {
 	const trackBox = track.getBoundingClientRect();
@@ -33,10 +34,15 @@ export function initSlider(wrapper: HTMLElement): void {
 
 	const slides = [...track.querySelectorAll<HTMLElement>(SELECTORS.SLIDE)];
 	const dots = [...wrapper.querySelectorAll<HTMLButtonElement>(SELECTORS.DOT)];
+	const isLooping = wrapper.getAttribute(LOOPING_ATTRIBUTE) === "true";
+
+	const centre = (index: number): void => {
+		slides.at(index)?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+	};
 
 	const update = (): void => {
-		previous.disabled = track.scrollLeft <= 0;
-		next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - SCROLL_END_TOLERANCE;
+		previous.disabled = !isLooping && track.scrollLeft <= 0;
+		next.disabled = !isLooping && track.scrollLeft >= track.scrollWidth - track.clientWidth - SCROLL_END_TOLERANCE;
 
 		if (dots.length === 0) return;
 
@@ -47,16 +53,22 @@ export function initSlider(wrapper: HTMLElement): void {
 		});
 	};
 
-	const page = (direction: number): void => track.scrollBy({ left: direction * track.clientWidth, behavior: "smooth" });
+	const step = (direction: number): void => {
+		if (!isLooping) {
+			track.scrollBy({ left: direction * track.clientWidth, behavior: "smooth" });
 
-	previous.addEventListener("click", () => page(-1));
-	next.addEventListener("click", () => page(1));
+			return;
+		}
+
+		centre((activeSlideIndex(track, slides) + direction + slides.length) % slides.length);
+	};
+
+	previous.addEventListener("click", () => step(-1));
+	next.addEventListener("click", () => step(1));
 	track.addEventListener("scroll", update, { passive: true });
 
 	dots.forEach((dot, index) => {
-		dot.addEventListener("click", () =>
-			slides.at(index)?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }),
-		);
+		dot.addEventListener("click", () => centre(index));
 	});
 
 	update();
