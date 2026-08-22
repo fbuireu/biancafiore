@@ -1,9 +1,9 @@
 import { defineCollection } from "astro:content";
-import { articleDTO } from "@application/dto/article";
+import { createArticles } from "@application/dto/article";
 import type { ArticleSkeleton } from "@application/dto/article/types";
+import { withImagePlaceholders } from "@application/entities/placeholders";
 import { articleSchema, sortFavoriteFirst } from "@domain/article";
 import { fetchEntries } from "@infrastructure/cms/entries";
-import { getImagePlaceholders } from "@infrastructure/images/imagePlaceholder";
 
 export const articles = defineCollection({
 	loader: async () => {
@@ -12,18 +12,9 @@ export const articles = defineCollection({
 			order: ["-fields.publishDate"],
 		});
 
-		const sortedArticles = sortFavoriteFirst(articleDTO.create(rawArticles));
-		const placeholders = await getImagePlaceholders(
-			sortedArticles.flatMap((article) => (article.featuredImage ? [article.featuredImage.url] : [])),
-		);
+		const articles = await withImagePlaceholders("featuredImage", sortFavoriteFirst(createArticles(rawArticles)));
 
-		return sortedArticles.map((article) => ({
-			id: article.slug,
-			...article,
-			featuredImage: article.featuredImage
-				? { ...article.featuredImage, placeholder: placeholders.get(article.featuredImage.url) }
-				: article.featuredImage,
-		}));
+		return articles.map((article) => ({ id: article.slug, ...article }));
 	},
 	schema: articleSchema,
 });

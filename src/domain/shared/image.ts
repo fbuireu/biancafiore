@@ -17,3 +17,5 @@ export const imageSchema = z.object({
 	}),
 	placeholder: z.string().optional(),
 });
+
+export type ImageDTO = z.infer<typeof imageSchema>;

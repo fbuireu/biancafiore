@@ -101,7 +101,7 @@ const SHARED_UTILS_IMPORT = /import\s*\{([^}]+)\}\s*from\s*"@shared\/utils\/[^"]
 const IMPURE_DOMAIN_CODE = /from "effect"|fetch\(|process\.env|astro:env/;
 const DOMAIN_RULES_CENSUS = /([^;.\n]*\bno one else\b)/;
 const IMPURE_DTO_CODE = /astro:env|from "effect"|getEntries|getImagePlaceholder/;
-const ASYNC_DTO_CREATE = /create:\s*async/;
+const ASYNC_DTO_MAPPER = /export\s+(?:const|async\s+function)\s+create\w+/;
 const DTO_INFRASTRUCTURE_IMPORT = /from "(@infrastructure\/[^"]+)"/g;
 const CONTENTFUL_TYPE = /from "contentful"|@contentful\/|EntryFieldTypes|EntrySkeletonType/;
 const HAND_PREFIXED_ASSET_URL = /`https:\$\{/;
@@ -113,8 +113,8 @@ const CONTENTFUL_PAGE_CAP = /CONTENTFUL_MAX_PAGE_SIZE = (\d+)/;
 const LOADER_REACHING_PAST_FETCH_ENTRIES = /from "effect"|isContentfulConfigured|CmsClient|concurrency:/;
 const DOMAIN_SCHEMA_BINDING = /schema:\s*\w+Schema/;
 const DOMAIN_IMPORT = /from "@domain\//;
-const LOADER_ID_ASSIGNMENT = /^\t*id:\s*(?:\w+\.)?(\w+),$/gm;
-const ANY_ID_ASSIGNMENT = /^\t*id:/m;
+const LOADER_ID_ASSIGNMENT = /\bid:\s*(?:\w+\.)?(\w+),/g;
+const ANY_ID_ASSIGNMENT = /\bid:\s/;
 const TYPE_SCALE_RATIO = /--ratio:\s*([\d.]+);/;
 const EDITORIAL_UTILITY_DECLARATION = /^\t\.(editorial-[a-z-]+)[^{\n]*\{/gm;
 const EDITORIAL_UTILITY_CITATION = /`\.(editorial-[a-z-]+)`/g;
@@ -875,7 +875,7 @@ describe("application guide: the anti-corruption boundary", () => {
 	});
 
 	it("leaves the placeholder fan-out to the module that owns it, never to a loader", () => {
-		expect(guide).toContain("never awaits one entry at a time");
+		expect(guide).toContain("never for a `Promise.all` of its own");
 
 		expect(loaders.length).toBeGreaterThan(0);
 		expect(loaders.filter((file) => PER_ENTRY_PLACEHOLDER_AWAIT.test(read(file)))).toEqual([]);
@@ -922,9 +922,9 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(dtoFiles.filter((file) => TITLE_AS_IDENTITY.test(read(file)))).toEqual([]);
 	});
 
-	it("keeps every DTO create synchronous, as the guide states", () => {
-		expect(guide).toContain("Every `create` is synchronous");
-		expect(dtoFiles.filter((file) => ASYNC_DTO_CREATE.test(read(file)))).toEqual([]);
+	it("keeps every DTO mapper synchronous, as the guide states", () => {
+		expect(guide).toContain("Every mapper is synchronous");
+		expect(dtoFiles.filter((file) => ASYNC_DTO_MAPPER.test(read(file)))).toEqual([]);
 	});
 
 	it("names the only infrastructure module a DTO is allowed to reach for", () => {
@@ -984,7 +984,7 @@ describe("application guide: the anti-corruption boundary", () => {
 	});
 
 	it("cites the id every loader assigns, and the one that assigns none", () => {
-		const step = guide.split("\n").find((line) => line.startsWith("3. ")) ?? "";
+		const step = guide.split("\n").find((line) => line.startsWith("4. ")) ?? "";
 		const assigned = [
 			...new Set(loaders.flatMap((file) => [...read(file).matchAll(LOADER_ID_ASSIGNMENT)].map(([, field]) => field))),
 		];

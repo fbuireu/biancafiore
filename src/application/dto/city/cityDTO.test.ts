@@ -1,4 +1,4 @@
-import { cityDTO } from "@application/dto/city";
+import { createCities } from "@application/dto/city";
 import type { RawCity } from "@application/dto/city/types";
 import { describe, expect, it } from "vitest";
 
@@ -48,63 +48,63 @@ const makeCity = ({
 		},
 	}) as unknown as RawCity;
 
-describe("cityDTO coordinates", () => {
+describe("createCities coordinates", () => {
 	it("renames Contentful's lat and lon to the domain's latitude and longitude", () => {
-		const [city] = cityDTO.create([makeCity({ latitude: 41.3874, longitude: 2.1686 })]);
+		const [city] = createCities([makeCity({ latitude: 41.3874, longitude: 2.1686 })]);
 
 		expect(city.coordinates).toEqual({ latitude: 41.3874, longitude: 2.1686 });
 	});
 
 	it("keeps a zero coordinate instead of dropping it as falsy", () => {
-		const [city] = cityDTO.create([makeCity({ latitude: 0, longitude: 0 })]);
+		const [city] = createCities([makeCity({ latitude: 0, longitude: 0 })]);
 
 		expect(city.coordinates).toEqual({ latitude: 0, longitude: 0 });
 	});
 });
 
-describe("cityDTO slug", () => {
+describe("createCities slug", () => {
 	it("derives the slug from the name, since the CMS entry carries no slug field", () => {
-		const [city] = cityDTO.create([makeCity({ name: "Buenos Aires" })]);
+		const [city] = createCities([makeCity({ name: "Buenos Aires" })]);
 
 		expect(city.slug).toBe("buenos-aires");
 	});
 
 	it("strips the diacritics and the punctuation a city name may carry", () => {
-		const [city] = cityDTO.create([makeCity({ name: "São Paulo, Brazil" })]);
+		const [city] = createCities([makeCity({ name: "São Paulo, Brazil" })]);
 
 		expect(city.slug).toBe("sao-paulo-brazil");
 	});
 });
 
-describe("cityDTO period", () => {
+describe("createCities period", () => {
 	it("renders a closed stay as the two years joined by a hyphen", () => {
-		const [city] = cityDTO.create([makeCity({ startDate: "2019-06-01", endDate: "2021-09-30" })]);
+		const [city] = createCities([makeCity({ startDate: "2019-06-01", endDate: "2021-09-30" })]);
 
 		expect(city.period).toBe("2019-2021");
 	});
 
 	it("renders an open ended stay as Present when the CMS has no end date", () => {
-		const [city] = cityDTO.create([makeCity({ startDate: "2022-01-15" })]);
+		const [city] = createCities([makeCity({ startDate: "2022-01-15" })]);
 
 		expect(city.period).toBe("2022-Present");
 	});
 
 	it("treats an empty end date as an open ended stay too, because the field is spread only when truthy", () => {
-		const [city] = cityDTO.create([makeCity({ startDate: "2022-01-15", endDate: "" })]);
+		const [city] = createCities([makeCity({ startDate: "2022-01-15", endDate: "" })]);
 
 		expect(city.period).toBe("2022-Present");
 	});
 
 	it("uses the calendar year of each date, not the elapsed time between them", () => {
-		const [city] = cityDTO.create([makeCity({ startDate: "2019-12-31", endDate: "2020-01-01" })]);
+		const [city] = createCities([makeCity({ startDate: "2019-12-31", endDate: "2020-01-01" })]);
 
 		expect(city.period).toBe("2019-2020");
 	});
 });
 
-describe("cityDTO passthrough fields", () => {
+describe("createCities passthrough fields", () => {
 	it("keeps the name and description verbatim and maps the image to url, dimensions and formats", () => {
-		const [city] = cityDTO.create([
+		const [city] = createCities([
 			makeCity({
 				name: "Barcelona",
 				description: "Two summers by the sea",
@@ -124,14 +124,14 @@ describe("cityDTO passthrough fields", () => {
 	});
 
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {
-		const result = cityDTO.create([]);
+		const result = createCities([]);
 
 		expect(result).toEqual([]);
 		expect(result).not.toBeInstanceOf(Promise);
 	});
 
 	it("preserves the order of the batch it was given", () => {
-		const cities = cityDTO.create([makeCity({ name: "Lisbon" }), makeCity({ name: "Berlin" })]);
+		const cities = createCities([makeCity({ name: "Lisbon" }), makeCity({ name: "Berlin" })]);
 
 		expect(cities.map(({ name }) => name)).toEqual(["Lisbon", "Berlin"]);
 	});

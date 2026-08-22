@@ -1,4 +1,4 @@
-import { projectDTO } from "@application/dto/project";
+import { createProjects } from "@application/dto/project";
 import type { RawProject } from "@application/dto/project/types";
 import { describe, expect, it } from "vitest";
 
@@ -37,41 +37,41 @@ const makeProject = ({
 }: MakeProjectParams = {}) =>
 	({ fields: { id, name, description: richText(description), image } }) as unknown as RawProject;
 
-describe("projectDTO identity", () => {
+describe("createProjects identity", () => {
 	it("uses the id the CMS entry declares", () => {
-		const [project] = projectDTO.create([makeProject({ id: "weekly-dispatch", name: "The Weekly Dispatch" })]);
+		const [project] = createProjects([makeProject({ id: "weekly-dispatch", name: "The Weekly Dispatch" })]);
 
 		expect(project.id).toBe("weekly-dispatch");
 	});
 
 	it("falls back to a slug of the name when the CMS entry has no id", () => {
-		const [project] = projectDTO.create([makeProject({ name: "The Weekly Dispatch" })]);
+		const [project] = createProjects([makeProject({ name: "The Weekly Dispatch" })]);
 
 		expect(project.id).toBe("the-weekly-dispatch");
 	});
 
 	it("strips punctuation and diacritics when slugifying the name into an id", () => {
-		const [project] = projectDTO.create([makeProject({ name: "Cafés & Cities: a Guide" })]);
+		const [project] = createProjects([makeProject({ name: "Cafés & Cities: a Guide" })]);
 
 		expect(project.id).toBe("cafes-cities-a-guide");
 	});
 
 	it("keeps an empty authored id, because the fallback is nullish and an empty string is not", () => {
-		const [project] = projectDTO.create([makeProject({ id: "", name: "The Weekly Dispatch" })]);
+		const [project] = createProjects([makeProject({ id: "", name: "The Weekly Dispatch" })]);
 
 		expect(project.id).toBe("");
 	});
 
 	it("leaves the name itself untouched by the slugification", () => {
-		const [project] = projectDTO.create([makeProject({ name: "The Weekly Dispatch" })]);
+		const [project] = createProjects([makeProject({ name: "The Weekly Dispatch" })]);
 
 		expect(project.name).toBe("The Weekly Dispatch");
 	});
 });
 
-describe("projectDTO description", () => {
+describe("createProjects description", () => {
 	it("renders the rich text description to an HTML string, because the domain never sees a Contentful document", () => {
-		const [project] = projectDTO.create([
+		const [project] = createProjects([
 			makeProject({ description: [paragraph("A newsletter"), paragraph("About cities")] }),
 		]);
 
@@ -79,15 +79,15 @@ describe("projectDTO description", () => {
 	});
 
 	it("renders an empty document to an empty string", () => {
-		const [project] = projectDTO.create([makeProject({ description: [] })]);
+		const [project] = createProjects([makeProject({ description: [] })]);
 
 		expect(project.description).toBe("");
 	});
 });
 
-describe("projectDTO image and batching", () => {
+describe("createProjects image and batching", () => {
 	it("maps the image to url, pixel dimensions and format flags", () => {
-		const [project] = projectDTO.create([
+		const [project] = createProjects([
 			makeProject({ image: asset({ url: "//cdn/dispatch.avif", contentType: "image/avif", width: 640, height: 480 }) }),
 		]);
 
@@ -107,20 +107,20 @@ describe("projectDTO image and batching", () => {
 			},
 		} as unknown as RawProject;
 
-		const [project] = projectDTO.create([withoutDetails]);
+		const [project] = createProjects([withoutDetails]);
 
 		expect(project.image.details).toStrictEqual({ width: undefined, height: undefined });
 	});
 
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {
-		const result = projectDTO.create([]);
+		const result = createProjects([]);
 
 		expect(result).toEqual([]);
 		expect(result).not.toBeInstanceOf(Promise);
 	});
 
 	it("preserves the order of the batch it was given", () => {
-		const projects = projectDTO.create([makeProject({ id: "one" }), makeProject({ id: "two" })]);
+		const projects = createProjects([makeProject({ id: "one" }), makeProject({ id: "two" })]);
 
 		expect(projects.map(({ id }) => id)).toEqual(["one", "two"]);
 	});

@@ -1,4 +1,4 @@
-import { testimonialDTO } from "@application/dto/testimonial";
+import { createTestimonials } from "@application/dto/testimonial";
 import type { RawTestimonial } from "@application/dto/testimonial/types";
 import { describe, expect, it } from "vitest";
 
@@ -32,9 +32,9 @@ const makeTestimonial = ({
 	image = asset(),
 }: MakeTestimonialParams = {}) => ({ fields: { author, quote, image, role } }) as unknown as RawTestimonial;
 
-describe("testimonialDTO", () => {
+describe("createTestimonials", () => {
 	it("carries author, quote and role across verbatim and drops nothing else in", () => {
-		const [testimonial] = testimonialDTO.create([
+		const [testimonial] = createTestimonials([
 			makeTestimonial({
 				author: "Ada Lovelace",
 				quote: "She turned our launch into a story",
@@ -56,13 +56,13 @@ describe("testimonialDTO", () => {
 	});
 
 	it("does not trim the quote, so the CMS whitespace reaches the domain unchanged", () => {
-		const [testimonial] = testimonialDTO.create([makeTestimonial({ quote: "  A padded quote  " })]);
+		const [testimonial] = createTestimonials([makeTestimonial({ quote: "  A padded quote  " })]);
 
 		expect(testimonial.quote).toBe("  A padded quote  ");
 	});
 
 	it("flags an avif asset as avif and nothing else", () => {
-		const [testimonial] = testimonialDTO.create([
+		const [testimonial] = createTestimonials([
 			makeTestimonial({ image: asset({ url: "//cdn/ada.avif", contentType: "image/avif" }) }),
 		]);
 
@@ -70,23 +70,20 @@ describe("testimonialDTO", () => {
 	});
 
 	it("flags a jpeg asset as neither avif nor webp", () => {
-		const [testimonial] = testimonialDTO.create([makeTestimonial({ image: asset({ contentType: "image/jpeg" }) })]);
+		const [testimonial] = createTestimonials([makeTestimonial({ image: asset({ contentType: "image/jpeg" }) })]);
 
 		expect(testimonial.image.formats).toEqual({ avif: false, webp: false });
 	});
 
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {
-		const result = testimonialDTO.create([]);
+		const result = createTestimonials([]);
 
 		expect(result).toEqual([]);
 		expect(result).not.toBeInstanceOf(Promise);
 	});
 
 	it("preserves the order of the batch it was given, leaving any ordering rule to the loader", () => {
-		const testimonials = testimonialDTO.create([
-			makeTestimonial({ author: "Zoe" }),
-			makeTestimonial({ author: "Ada" }),
-		]);
+		const testimonials = createTestimonials([makeTestimonial({ author: "Zoe" }), makeTestimonial({ author: "Ada" })]);
 
 		expect(testimonials.map(({ author }) => author)).toEqual(["Zoe", "Ada"]);
 	});

@@ -1,4 +1,5 @@
 import type { RawArticle } from "@application/dto/article/types";
+import { orderArticleReferences } from "@application/dto/article/utils/order";
 import { articleReference, articleSlug } from "@application/dto/article/utils/reference";
 import type { Reference } from "@domain/shared/reference";
 
@@ -36,12 +37,11 @@ export function createRelatedArticles({
 
 	const articleTags = new Set(getTagSlugs(rawArticle));
 
-	return allRawArticles
-		.filter((article) => {
+	return orderArticleReferences(
+		allRawArticles.filter((article) => {
 			if (articleSlug(article) === ownSlug) return false;
 
 			return getTagSlugs(article).some((slug) => articleTags.has(slug));
-		})
-		.slice(0, INFERRED_RELATED_ARTICLES_LIMIT)
-		.map((relatedArticle) => articleReference(relatedArticle));
+		}),
+	).slice(0, INFERRED_RELATED_ARTICLES_LIMIT);
 }

@@ -6,7 +6,7 @@ import type { Entry, UnresolvedLink } from "contentful";
 
 export function createAuthor(
 	author: Entry<AuthorSkeleton, undefined> | UnresolvedLink<"Entry">,
-): Except<AuthorDTO, "articles" | "latestArticle"> {
+): Except<AuthorDTO, "latestArticle"> {
 	const { fields } = author as RawAuthor;
 
 	return {

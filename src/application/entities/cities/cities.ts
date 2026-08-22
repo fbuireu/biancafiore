@@ -1,9 +1,9 @@
 import { defineCollection } from "astro:content";
-import { cityDTO } from "@application/dto/city";
+import { createCities } from "@application/dto/city";
 import type { CitySkeleton } from "@application/dto/city/types";
+import { withImagePlaceholders } from "@application/entities/placeholders";
 import { citiesSchema } from "@domain/city";
 import { fetchEntries } from "@infrastructure/cms/entries";
-import { getImagePlaceholders } from "@infrastructure/images/imagePlaceholder";
 
 export const cities = defineCollection({
 	loader: async () => {
@@ -12,15 +12,9 @@ export const cities = defineCollection({
 			order: ["fields.startDate"],
 		});
 
-		const cities = cityDTO.create(rawCities);
+		const cities = await withImagePlaceholders("image", createCities(rawCities));
 
-		const placeholders = await getImagePlaceholders(cities.map(({ image }) => image.url));
-
-		return cities.map((city) => ({
-			id: city.name,
-			...city,
-			image: { ...city.image, placeholder: placeholders.get(city.image.url) },
-		}));
+		return cities.map((city) => ({ id: city.name, ...city }));
 	},
 	schema: citiesSchema,
 });
