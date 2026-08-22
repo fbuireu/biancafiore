@@ -1,10 +1,8 @@
 ---
-import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
-
 interface Props {
 	schema: string;
 }
 
 const { schema } = Astro.props;
 ---
-<JsonLd schema={schema} />
+<script is:inline type="application/ld+json" set:html={schema} />
