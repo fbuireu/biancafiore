@@ -133,6 +133,22 @@ Two traps worth naming, because both have already happened here: deleting a reso
 
 ## Deploy
 
-Cloudflare Workers via wrangler (`wrangler.toml`): `main` is the `@astrojs/cloudflare` server entrypoint, `dist/` served as assets, `SESSION` KV binding, custom domain `biancafiore.me` on `env.production`. CI/CD runs through GitHub Actions workflows. The host and the runtime constraints it imposes are ADR 0001; content pages are prerendered and only dynamic paths hit the SSR runtime, ADR 0011.
+Cloudflare Workers via wrangler (`wrangler.toml`): `main` is the `@astrojs/cloudflare` server entrypoint, `dist/` served as assets, `SESSION` KV binding, custom domain `biancafiore.me` on `env.production`.
+
+CI/CD runs through GitHub Actions:
+
+| Workflow | Runs on | Does |
+| --- | --- | --- |
+| `ci.yml` | push to `main`, PRs | One `Check` job running `pnpm verify`, then both deploys, the E2E run and the release |
+| `_deploy.yml` | `workflow_call` | The shared deploy steps both environments call |
+| `cleanup-development.yml` | PR closed | Deletes the per-PR preview Worker |
+| `end-2-end-tests.yml` | `workflow_dispatch` | Playwright against production |
+| `publish-article.yml` | Contentful webhook | Rebuilds when an Article is published |
+| `zizmor.yml` | push to `main`, PRs | Security linting of the workflows themselves |
+| `dependency-review.yml` | PRs | Fails a PR that introduces a dependency with a known vulnerability |
+| `commit-message.yml` | PR opened / edited / reopened / synchronize | commitlint on the **pull request title** |
+| `renovate-auto-approve.yml`, `dependabot-auto-merge.yml` | dependency PRs | Approve and auto-merge the safe update types |
+
+**`commit-message.yml` guards the only message that survives.** `main` takes squash merges and the repository sets the squash title to `PR_TITLE`, so the pull request title *is* the commit semantic-release reads. The `commit-msg` hook validates the branch's own commits, which the squash then discards — and GitHub fills the PR title from the *branch name* whenever a PR carries more than one commit, so the default is rarely conventional. It re-runs on `synchronize` because a required check is evaluated against the head sha: without that trigger a new commit would leave it unreported and block the merge. The host and the runtime constraints it imposes are ADR 0001; content pages are prerendered and only dynamic paths hit the SSR runtime, ADR 0011.
 
 **A long commit message breaks the deploy, and the error does not say so.** `wrangler deploy` sends the latest commit message verbatim as the `workers/message` deployment annotation, with no truncation. Past a few thousand characters the API answers `Received a malformed response from the API` — a build that compiled fine, uploaded fine, and then died on metadata. A merge commit carrying a long pull request body is enough. `_deploy.yml` therefore passes `--message` explicitly with the sha and the trigger, so nothing about how a commit is written can reach that annotation.
