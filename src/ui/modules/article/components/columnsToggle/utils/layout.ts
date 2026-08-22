@@ -4,20 +4,20 @@ const SELECTORS = {
 	ARTICLE: ".article-wrapper",
 	TOGGLE: ".columns-toggle__button",
 } as const;
-const ACTIVE_CLASS = "article-wrapper--two-columns";
+export const ARTICLE_COLUMNS_ACTIVE_CLASS = "article-wrapper--two-columns";
 
 interface ApplyColumnsParams {
 	enabled: boolean;
 	document: Document;
 }
 
-const isColumnsEnabled = (): boolean => localStorage.getItem(ARTICLE_COLUMNS_STORAGE_KEY) === "true";
+export const isColumnsEnabled = (): boolean => localStorage.getItem(ARTICLE_COLUMNS_STORAGE_KEY) === "true";
 
-const applyColumns = ({ enabled, document }: ApplyColumnsParams): void => {
+export const applyColumns = ({ enabled, document }: ApplyColumnsParams): void => {
 	const ARTICLE = document.querySelector<HTMLElement>(SELECTORS.ARTICLE);
 	const TOGGLE = document.querySelector<HTMLButtonElement>(SELECTORS.TOGGLE);
 
-	ARTICLE?.classList.toggle(ACTIVE_CLASS, enabled);
+	ARTICLE?.classList.toggle(ARTICLE_COLUMNS_ACTIVE_CLASS, enabled);
 	TOGGLE?.setAttribute("aria-pressed", String(enabled));
 };
 

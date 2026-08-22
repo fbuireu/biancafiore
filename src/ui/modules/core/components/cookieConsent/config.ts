@@ -3,8 +3,8 @@ import type { CookieConsentConfig } from "vanilla-cookieconsent";
 import { updatePreferences } from "./utils/preferences";
 
 export const config: CookieConsentConfig = {
-	onFirstConsent: ({ cookie }) => updatePreferences(cookie),
-	onChange: ({ cookie }) => updatePreferences(cookie),
+	onFirstConsent: () => updatePreferences(),
+	onChange: () => updatePreferences(),
 	guiOptions: {
 		consentModal: {
 			layout: "box inline",

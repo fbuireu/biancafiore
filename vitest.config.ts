@@ -45,6 +45,7 @@ export default defineConfig({
 				test: {
 					name: "dom",
 					environment: "happy-dom",
+					setupFiles: [`${ROOT}src/tests/setup/network.ts`],
 					include: ["src/**/*.test.tsx", "src/**/*.spec.tsx"],
 				},
 			},

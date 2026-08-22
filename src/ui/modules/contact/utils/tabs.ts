@@ -1,3 +1,5 @@
+import { CALENDLY, CALENDLY_WIDGET_SCRIPT } from "@const/calendly";
+
 const TabId = {
 	EMAIL: "email",
 	APPOINTMENT: "appointment",
@@ -9,9 +11,8 @@ export const TAB_QUERY_KEY = "tab";
 
 const SELECTORS = {
 	TAB: ".contact-tab",
-	CALENDLY_WIDGET: ".calendly-inline-widget",
+	CALENDLY_WIDGET: `.${CALENDLY.WIDGET_CLASS}`,
 };
-const CALENDLY_SCRIPT_URL = "https://assets.calendly.com/assets/external/widget.js";
 
 const TAB_IDS: readonly string[] = Object.values(TabId);
 
@@ -35,12 +36,12 @@ const loadCalendly = (): void => {
 		return;
 	}
 
-	if (document.querySelector(`script[src="${CALENDLY_SCRIPT_URL}"]`)) {
+	if (document.querySelector(`script[src="${CALENDLY_WIDGET_SCRIPT}"]`)) {
 		return;
 	}
 
 	const script = document.createElement("script");
-	script.src = CALENDLY_SCRIPT_URL;
+	script.src = CALENDLY_WIDGET_SCRIPT;
 	script.async = true;
 	script.defer = true;
 	document.head.appendChild(script);

@@ -22,7 +22,7 @@ const { article } = Astro.props;
       {article.data.readingTime} minutes read
     </p>
   {
-      article.data.tags?.length && (
+      (article.data.tags?.length ?? 0) > 0 && (
           <ul class="article-details__tags__list flex row-wrap justify-center">
             {article.data.tags?.map(({ slug, name }) => (
                 <li class="article-details__tag__item font-sans-serif">

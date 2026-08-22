@@ -1,4 +1,5 @@
 ---
+import { CALENDLY, CALENDLY_MEETING_URL } from "@const/calendly";
 import { ContactFormProvider } from "../contactFormProvider/ContactFormProvider";
 import "./tabs.css";
 ---
@@ -23,8 +24,8 @@ import "./tabs.css";
 		</div>
 		<div id="appointment" class="contact-tab__content">
 			<div
-				class="calendly-inline-widget"
-				data-url="https://calendly.com/fbuireu/45min-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
+				class={CALENDLY.WIDGET_CLASS}
+				data-url={CALENDLY_MEETING_URL}
 			>
 			</div>
 		</div>

@@ -665,11 +665,12 @@ describe("gotchas", () => {
 	});
 
 	it("keeps the https upgrade out of the dev CSP, which WebKit obeys on localhost", () => {
+		const headers = read("src/const/securityHeaders.ts");
 		const middleware = read("src/middleware.ts");
 
-		expect(read("src/const/securityHeaders.ts")).toContain(HTTPS_UPGRADE_DIRECTIVE);
-		expect(middleware).toContain(HTTPS_UPGRADE_DIRECTIVE);
+		expect(headers).toContain(HTTPS_UPGRADE_DIRECTIVE);
 		expect(middleware).toContain("import.meta.env.DEV");
+		expect(middleware).not.toContain(HTTPS_UPGRADE_DIRECTIVE);
 		expect(CLAUDE_MD).toContain(HTTPS_UPGRADE_DIRECTIVE);
 	});
 
@@ -1469,11 +1470,15 @@ describe("conventions", () => {
 
 	it("sets the consent default before anything that reads it, which is the order ADR 0013 calls load-bearing", () => {
 		const head = read("src/ui/modules/core/components/head/Head.astro");
+		const gate = read("src/ui/modules/core/components/cookieConsent/utils/consentGate.ts");
 		const adr = read("docs/adr/0013-analytics-gated-behind-cookie-consent.md");
 
 		expect(adr).toContain("stays first");
-		expect(head.indexOf("gtag('consent', 'default'")).toBeGreaterThan(-1);
-		expect(head.indexOf("gtag('consent', 'default'")).toBeLessThan(head.indexOf("googletagmanager.com/gtag/js"));
-		expect(head.indexOf("gtag('consent', 'default'")).toBeLessThan(head.indexOf("googletagmanager.com/gtm.js"));
+		expect(gate).toContain("gtag('consent', 'default'");
+		expect(head.indexOf("consentBootstrapScript")).toBeGreaterThan(-1);
+		expect(head.indexOf("set:html={consentBootstrapScript(")).toBeLessThan(
+			head.indexOf("googletagmanager.com/gtag/js"),
+		);
+		expect(head.indexOf("set:html={consentBootstrapScript(")).toBeLessThan(head.indexOf("googletagmanager.com/gtm.js"));
 	});
 });
