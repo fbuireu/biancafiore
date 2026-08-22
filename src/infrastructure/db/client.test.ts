@@ -48,14 +48,15 @@ describe("DatabaseLive", () => {
 		expect(Exit.isFailure(exit) && Cause.isDie(exit.cause)).toBe(true);
 	});
 
-	it("hands out the two contact operations rather than the query builder", async () => {
+	it("hands out the contact operations rather than the query builder", async () => {
 		setSecret(URL_SECRET, "libsql://example.turso.io");
 		setSecret(TOKEN_SECRET, "a-token");
 
 		const exit = await build();
 
 		expect(Exit.isSuccess(exit) && Object.keys(exit.value).toSorted()).toStrictEqual([
-			"findContactByEmail",
+			"findContactWithMessage",
+			"findLatestContactSince",
 			"insertContact",
 		]);
 	});

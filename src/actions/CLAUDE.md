@@ -36,13 +36,12 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   `toContactSubmission` in `@modules/contact/utils/submission` — and that state disables every input and the
   submit button — the visitor is locked out rather than invited to retry. Answering `409` instead would leave the form
   live and the mapping silent, so this pair only makes sense read together.
-- **Only `checkDuplicatedEntries` raises `DuplicateContactError` anywhere the visitor can see it.**
-  `saveContact` can raise one too, when two submissions for the same address race past that check, but the
-  catch-all below swallows it: both visitors are answered `ok`, and the loser loses only its row. That is the
-  intended answer, not an oversight to tighten later — the loser's message *was* delivered, so answering "you
-  already contacted" would be false as well as confusing. The `UNAUTHORIZED` path is therefore unreachable
-  from `saveContact`. Why that arm still earns its keep is `src/infrastructure/CLAUDE.md`, under
-  `persistence.ts`.
+- **`checkDuplicatedEntries` is the only step that raises `DuplicateContactError`.** It refuses an address
+  that wrote inside the 24-hour cooldown, and one repeating a message it has sent before; both reach the
+  visitor as `UNAUTHORIZED` with the copy `persistence.ts` wrote. `saveContact` cannot raise it at all —
+  there is no unique constraint left for it to violate — so two submissions that race past the check are both
+  written and both answered `ok`, which is what a cooldown means. `src/infrastructure/CLAUDE.md` carries the
+  policy.
 - **The answer is decided inside the Effect and thrown outside it.** `Effect.matchCauseEffect` folds both
   outcomes into an Effect of a plain `{ success, value | error }` union, `Effect.runPromise` resolves it, and
   only then does the handler `throw new ActionError(result.error)`. It has to be the `Effect` variant of the

@@ -1,10 +1,8 @@
 import type { ContactError } from "@actions/contact";
 import { submitContact } from "@actions/contact";
-import { LibsqlError } from "@libsql/client/web";
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
 import { contactRow, databaseDouble, databaseError, emailDouble, emailError } from "@tests/doubles/contactLayers";
 import { type RecaptchaDoubleOptions, recaptchaDouble } from "@tests/doubles/network";
-import { DrizzleQueryError } from "drizzle-orm/errors";
 import { Cause, Effect, Exit, Layer, Logger, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -116,28 +114,18 @@ describe("submitContact", () => {
 		expect(logged).toEqual([]);
 	});
 
-	it("answers ok to the loser of a duplicate race, whose mail has already gone out", async () => {
-		const database = databaseDouble({
-			failInsertWith: databaseError(
-				"UNIQUE constraint failed: contact.email",
-				new DrizzleQueryError(
-					"insert into contact",
-					[],
-					new LibsqlError("UNIQUE constraint failed: contact.email", "SQLITE_CONSTRAINT_UNIQUE"),
-				),
-			),
-		});
-		const email = emailDouble({ id: "sent-3" });
+	it("fails without sending when the address wrote inside the cooldown", async () => {
+		const database = databaseDouble({ contactWithinCooldown: contactRow("ada@example.com") });
+		const email = emailDouble();
 
 		const exit = await run({ database, email });
 
-		expect(exit).toStrictEqual(Exit.succeed({ ok: true }));
-		expect(email.sent).toHaveLength(1);
-		expect(database.inserted).toHaveLength(0);
+		expect(failureTag(exit)).toBe("DuplicateContactError");
+		expect(email.sent).toHaveLength(0);
 	});
 
-	it("fails without sending when the address already contacted", async () => {
-		const database = databaseDouble({ existingContact: contactRow("ada@example.com") });
+	it("fails without sending when the address has already sent this exact message", async () => {
+		const database = databaseDouble({ contactWithSameMessage: contactRow("ada@example.com") });
 		const email = emailDouble();
 
 		const exit = await run({ database, email });

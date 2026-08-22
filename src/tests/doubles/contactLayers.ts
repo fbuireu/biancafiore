@@ -5,15 +5,27 @@ import { DatabaseError, EmailError } from "@infrastructure/errors";
 import { Effect, Layer } from "effect";
 
 export interface DatabaseDoubleOptions {
-	existingContact?: ContactRow;
+	contactWithinCooldown?: ContactRow;
+	contactWithSameMessage?: ContactRow;
 	failLookupWith?: DatabaseError;
 	failInsertWith?: DatabaseError;
+}
+
+export interface CooldownLookup {
+	email: string;
+	since: string;
+}
+
+export interface MessageLookup {
+	email: string;
+	message: string;
 }
 
 export interface DatabaseDouble {
 	layer: Layer.Layer<Database>;
 	inserted: NewContact[];
-	lookedUp: string[];
+	cooldownLookups: CooldownLookup[];
+	messageLookups: MessageLookup[];
 }
 
 export const contactRow = (email: string, overrides: Partial<ContactRow> = {}): ContactRow => ({
@@ -28,21 +40,29 @@ export const contactRow = (email: string, overrides: Partial<ContactRow> = {}): 
 });
 
 export function databaseDouble({
-	existingContact,
+	contactWithinCooldown,
+	contactWithSameMessage,
 	failLookupWith,
 	failInsertWith,
 }: DatabaseDoubleOptions = {}): DatabaseDouble {
 	const inserted: NewContact[] = [];
-	const lookedUp: string[] = [];
+	const cooldownLookups: CooldownLookup[] = [];
+	const messageLookups: MessageLookup[] = [];
 
 	return {
 		inserted,
-		lookedUp,
+		cooldownLookups,
+		messageLookups,
 		layer: Layer.succeed(Database, {
-			findContactByEmail: (email) => {
-				lookedUp.push(email);
+			findLatestContactSince: (params) => {
+				cooldownLookups.push(params);
 
-				return failLookupWith ? Effect.fail(failLookupWith) : Effect.succeed(existingContact);
+				return failLookupWith ? Effect.fail(failLookupWith) : Effect.succeed(contactWithinCooldown);
+			},
+			findContactWithMessage: (params) => {
+				messageLookups.push(params);
+
+				return failLookupWith ? Effect.fail(failLookupWith) : Effect.succeed(contactWithSameMessage);
 			},
 			insertContact: (contact) => {
 				if (failInsertWith) return Effect.fail(failInsertWith);
