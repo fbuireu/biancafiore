@@ -13,6 +13,7 @@ const HTML_ENTITIES: Record<string, string> = {
 };
 const UNSAFE_HTML_CHARACTERS = /[&<>"']/g;
 const SCHEME_REGEX = /^([a-z][a-z\d+.-]*):/;
+const URL_STRIPPED_CHARACTERS = /[\t\n\r]/g;
 const SAFE_URL_SCHEMES = new Set(["http", "https", "mailto", "tel"]);
 
 export function slugify(text: string): string {
@@ -36,7 +37,8 @@ export function escapeHtml(value: string): string {
 }
 
 export function safeUrl(value: string): string {
-	const scheme = value.trim().toLowerCase().match(SCHEME_REGEX)?.[1];
+	const url = value.replace(URL_STRIPPED_CHARACTERS, "").trim();
+	const scheme = url.toLowerCase().match(SCHEME_REGEX)?.[1];
 
-	return !scheme || SAFE_URL_SCHEMES.has(scheme) ? escapeHtml(value.trim()) : "";
+	return !scheme || SAFE_URL_SCHEMES.has(scheme) ? escapeHtml(url) : "";
 }

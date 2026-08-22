@@ -1,3 +1,4 @@
+import { CALENDLY } from "@const/calendly";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { initTabs, TAB_QUERY_KEY } from "./tabs";
 
@@ -13,7 +14,7 @@ const renderTabs = ({ booking = false }: { booking?: boolean } = {}): void => {
 		</ul>
 		<div id="email" class="contact-tab__content ${ACTIVE_CONTENT_CLASS}"></div>
 		<div id="appointment" class="contact-tab__content">
-			${booking ? '<div class="calendly-inline-widget"></div>' : ""}
+			${booking ? `<div class="${CALENDLY.WIDGET_CLASS}"></div>` : ""}
 		</div>
 	`;
 };

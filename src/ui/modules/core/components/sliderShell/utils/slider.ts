@@ -50,6 +50,7 @@ export function initSlider(wrapper: HTMLElement): void {
 
 		dots.forEach((dot, index) => {
 			dot.classList.toggle(ACTIVE_DOT_CLASS, index === active);
+			dot.setAttribute("aria-current", String(index === active));
 		});
 	};
 

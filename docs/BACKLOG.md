@@ -34,6 +34,16 @@ Ideas not yet scheduled. This list used to live as a block of `// todo:` comment
 - **`buildContentfulImageUrl` is exported so `imagePlaceholder` can bypass the CDN switch.** That bypass is correct (a `/cdn-cgi/image` path cannot be fetched at build time) but the interface says nothing about it, so a second caller would ship Contentful URLs from a Cloudflare build. Naming it for the intent, something like `getOriginImageUrl`, costs nothing and states why the hole exists.
 - **The three `ArticleSlider` placements repeat the same responsive ramp**, differing only in the final `--slides-per-view`. A default in `slider.css` plus one override per placement would say the same thing in three lines instead of thirty.
 
+## Known, deferred with a reason
+
+- **React ships site-wide for a cookie banner.** `CookieConsent` is `client:only="react"` in `Footer.astro`, which `BaseLayout` renders unconditionally, so `react-dom` (184 KB) is on every article page for a banner whose library, `vanilla-cookieconsent`, is framework-free by design. Rewriting it as an Astro component with a bundled script would take that 184 KB off the critical path of the site's core deliverable. It is deferred because the banner is the one place a mistake is a legal problem, and the consent gate has only just been given a module and a test.
+- **GSAP is a static import in the header.** 69.6 KB downloads on first paint of every page for an animation the reader may never trigger. A dynamic `import("gsap")` inside the click handler costs one `await`.
+- **The default OG image is a 953 KB JPEG.** `seo/const.ts` uses `biancaImage.src`, which forces the original into the output as the `og:image` for every page that does not override. A card wants roughly 1200x630.
+- **The e2e suite covers almost nothing on a preview.** All three contact specs skip themselves under `HIDE_CHROME`, and the theme-toggle spec survives only because the footer renders on the placeholder. The highest-value spec that does not exist is one that navigates twice through `ClientRouter` and asserts the wiring survived: the theme toggle still repaints, the email button still decodes, Escape closes the menu exactly once. It runs entirely inside `PUBLISHED_ROUTES`, so `HIDE_CHROME` can never skip it. `end-2-end-tests.yml` is `workflow_dispatch` only, so both of its ternaries are dead, not just the one `CLAUDE.md` already names.
+- **The open menu does not contain focus.** Escape works and returns focus to the button, so it is not a trap, but tabbing past the last menu link walks into content the overlay covers. `inert` on `main` and `footer` while `page--menu-open` is set is two lines.
+- **A heading anchor is not deduplicated.** Two `## Conclusion` headings in one Article produce two `id="conclusion"` and two table-of-contents links that both jump to the first; a heading of only punctuation yields `id=""`.
+- **`script-src 'unsafe-inline'` is site-wide.** The reason is real, both ADR 0005 and ADR 0013 need a script before paint, and there are only two such tags, both rendered by `Head.astro` from a module. That makes a hash or a nonce reachable from one place whenever it is worth doing.
+
 ## Waiting on the platform
 
 - Replace the footer's and About's border dividers with CSS gap decorations (`row-rule`) once it is supported.

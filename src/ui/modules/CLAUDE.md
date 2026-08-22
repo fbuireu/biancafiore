@@ -38,6 +38,7 @@ Every bundled `<script>` in the tree is one line: an `astro:page-load` listener 
 	- `inverted-color-scheme`: a section that inverts against the page, and the header's cue to invert its logo and menu button over it
 	- `current-page`: the entry pointing at the route already being viewed
 	- `item-wrapper`: a list item whose card link stretches over the whole item
+	- `visually-hidden`: an element the design hides but a screen reader and the tab order must still reach. The theme toggle's checkbox was `display: none`, which takes a control out of both, so the theme could not be changed by keyboard at all
 - **State owned by the page is a `page` modifier.** Anything that flips several unrelated blocks at once hangs off `<html>` and is consumed by descent, not by tagging each element: `.page--menu-open .reading-progress { … }`. See `@styles/CLAUDE.md`.
 - Consume tokens and shared utilities from `@styles` (`var(--font-size-h3)`, `var(--rhythm)`, `.editorial-headline`, `.reveal`, `.underline-on-hover`). Don't reinvent typography.
 - Prefer container queries against the page container declared in `styles/base/base.css` (`@container home-page (width <= 960px)`) over viewport media queries.

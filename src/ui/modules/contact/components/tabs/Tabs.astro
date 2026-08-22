@@ -11,18 +11,20 @@ import "./tabs.css";
 			<hr class="contact-tabs__divider" />
 			<p class="contact-tabs__body">Multiple ways to get in touch with me :)</p>
 		</div>
-		<ul class="contact-tabs flex">
-			<li class="contact-tab underline-on-hover" data-target="email">
-				<button>Email me</button>
+		<ul class="contact-tabs flex" role="tablist" aria-label="Ways to get in touch">
+			<li class="contact-tab underline-on-hover" data-target="email" role="presentation">
+				<button type="button" role="tab" id="email-tab" aria-controls="email" aria-selected="true">Email me</button>
 			</li>
-			<li class="contact-tab underline-on-hover" data-target="appointment">
-				<button>Make an appointment</button>
+			<li class="contact-tab underline-on-hover" data-target="appointment" role="presentation">
+				<button type="button" role="tab" id="appointment-tab" aria-controls="appointment" aria-selected="false">
+					Make an appointment
+				</button>
 			</li>
 		</ul>
-		<div id="email" class="contact-tab__content contact-tab__content--active">
+		<div id="email" class="contact-tab__content contact-tab__content--active" role="tabpanel" aria-labelledby="email-tab" tabindex="0">
 			<ContactFormProvider client:only="react" />
 		</div>
-		<div id="appointment" class="contact-tab__content">
+		<div id="appointment" class="contact-tab__content" role="tabpanel" aria-labelledby="appointment-tab" tabindex="0">
 			<div
 				class={CALENDLY.WIDGET_CLASS}
 				data-url={CALENDLY_MEETING_URL}

@@ -6,11 +6,24 @@ const GREEN_CHECK_API = "https://api.thegreenwebfoundation.org/api/v3/greencheck
 const GREEN_CHECK_PAGE = "https://www.thegreenwebfoundation.org/green-web-check/?url=";
 const GRAMS_PRECISION = 2;
 
+let countedResources = 0;
+let countedNavigation = false;
+
+export function resetTransferredBytes(): void {
+	countedResources = 0;
+	countedNavigation = false;
+}
+
 export function transferredBytes(): number {
 	const resources = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
 	const [navigation] = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
+	const fresh = resources.slice(countedResources);
+	const documentBytes = countedNavigation ? 0 : (navigation?.transferSize ?? 0);
 
-	return resources.reduce((total, resource) => total + (resource.transferSize ?? 0), navigation?.transferSize ?? 0);
+	countedResources = resources.length;
+	countedNavigation = true;
+
+	return fresh.reduce((total, resource) => total + (resource.transferSize ?? 0), documentBytes);
 }
 
 export async function isGreenHost(hostname: string): Promise<boolean> {

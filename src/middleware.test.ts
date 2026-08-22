@@ -1,4 +1,4 @@
-import { SECURITY_HEADERS } from "@const/securityHeaders";
+import { SECURITY_HEADERS, securityHeaders } from "@const/securityHeaders";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { onRequest } from "./middleware";
 
@@ -52,9 +52,9 @@ describe("onRequest", () => {
 			expect(`${header}: ${production.get(header)}`).toBe(`${header}: ${value}`);
 		}
 
-		expect(production.get("Content-Security-Policy")).toBe(SECURITY_HEADERS["Content-Security-Policy"]);
+		expect(production.get("Content-Security-Policy")).toBe(securityHeaders()["Content-Security-Policy"]);
 		expect(development.get("Content-Security-Policy")).toBe(
-			SECURITY_HEADERS["Content-Security-Policy"].replace(`; ${HTTPS_UPGRADE_DIRECTIVE}`, ""),
+			securityHeaders({ isDevelopment: true })["Content-Security-Policy"],
 		);
 	});
 });

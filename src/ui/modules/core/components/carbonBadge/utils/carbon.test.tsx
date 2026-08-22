@@ -2,6 +2,7 @@ import {
 	badgeMarkup,
 	isGreenHost,
 	renderCarbonBadge,
+	resetTransferredBytes,
 	transferredBytes,
 } from "@modules/core/components/carbonBadge/utils/carbon";
 import { greenCheckDouble } from "@tests/doubles/network";
@@ -17,6 +18,7 @@ const entries = (navigation: number | undefined, resources: number[]) => {
 
 beforeEach(() => {
 	document.body.innerHTML = '<div id="carbon-badge"></div>';
+	resetTransferredBytes();
 });
 
 afterEach(() => {
@@ -39,6 +41,31 @@ describe("transferredBytes", () => {
 
 	it("answers zero when the browser reported no navigation entry at all", () => {
 		entries(undefined, []);
+
+		expect(transferredBytes()).toBe(0);
+	});
+});
+
+describe("transferredBytes across a client-side navigation", () => {
+	it("counts only what the second page pulled, not the whole session", () => {
+		entries(1000, [200]);
+		expect(transferredBytes()).toBe(1200);
+
+		entries(1000, [200, 300, 400]);
+		expect(transferredBytes()).toBe(700);
+	});
+
+	it("counts the document once, since ClientRouter never replaces it", () => {
+		entries(1000, []);
+		transferredBytes();
+		entries(1000, [50]);
+
+		expect(transferredBytes()).toBe(50);
+	});
+
+	it("answers nothing for a navigation that pulled nothing new", () => {
+		entries(1000, [200]);
+		transferredBytes();
 
 		expect(transferredBytes()).toBe(0);
 	});
@@ -95,11 +122,13 @@ describe("renderCarbonBadge", () => {
 	});
 
 	it("writes nothing when the page carries no badge to write into", async () => {
-		document.body.innerHTML = "";
+		document.body.innerHTML = '<p id="untouched">nothing to do with the badge</p>';
 		entries(1000, []);
 		greenCheckDouble({ green: true });
 
-		await expect(renderCarbonBadge()).resolves.toBeUndefined();
+		await renderCarbonBadge();
+
+		expect(document.body.innerHTML).toBe('<p id="untouched">nothing to do with the badge</p>');
 	});
 
 	it("prints a figure and a link once it has measured the page", async () => {

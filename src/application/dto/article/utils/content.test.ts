@@ -91,7 +91,9 @@ describe("renderArticleContent headings", () => {
 	it("starts a fresh heading list per article rather than accumulating across calls", () => {
 		const article = makeArticle([heading({ level: 2, value: "Section" })]);
 
-		expect(renderArticleContent(article).headings).toEqual(renderArticleContent(article).headings);
+		renderArticleContent(article);
+		renderArticleContent(article);
+
 		expect(renderArticleContent(article).headings).toHaveLength(1);
 	});
 });

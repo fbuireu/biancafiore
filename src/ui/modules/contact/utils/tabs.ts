@@ -59,6 +59,7 @@ const applyTab = (tabId: TabId): void => {
 		const isActive = tabContentId === tabId;
 		tab.classList.toggle("contact-tab--active", isActive);
 		tab.classList.toggle("underline-on-hover--active", isActive);
+		tab.querySelector('[role="tab"]')?.setAttribute("aria-selected", String(isActive));
 		tabContent.classList.toggle("contact-tab__content--active", isActive);
 	}
 

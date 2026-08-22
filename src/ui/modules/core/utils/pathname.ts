@@ -1,6 +1,8 @@
 export function isWithin(pathname: string, route: string): boolean {
-	if (route === "/") return pathname === "/";
-	if (route.endsWith("/")) return pathname.startsWith(route) && pathname !== route;
+	const withoutTrailingSlash = pathname.length > 1 ? pathname.replace(/\/$/, "") : pathname;
 
-	return pathname === route || pathname.startsWith(`${route}/`);
+	if (route === "/") return withoutTrailingSlash === "/";
+	if (route.endsWith("/")) return withoutTrailingSlash.startsWith(route) && withoutTrailingSlash !== route;
+
+	return withoutTrailingSlash === route || withoutTrailingSlash.startsWith(`${route}/`);
 }

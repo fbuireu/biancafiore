@@ -1,4 +1,9 @@
 import { PAGES_ROUTES } from "@const/index";
+import {
+	ANALYTICS_CATEGORY,
+	CONSENT_COOKIE_NAME,
+	NECESSARY_CATEGORY,
+} from "@modules/core/components/cookieConsent/utils/consentGate";
 import type { CookieConsentConfig } from "vanilla-cookieconsent";
 import { updatePreferences } from "./utils/preferences";
 
@@ -15,11 +20,14 @@ export const config: CookieConsentConfig = {
 			position: "right",
 		},
 	},
+	cookie: {
+		name: CONSENT_COOKIE_NAME,
+	},
 	categories: {
-		necessary: {
+		[NECESSARY_CATEGORY]: {
 			enabled: true,
 		},
-		analytics: {
+		[ANALYTICS_CATEGORY]: {
 			autoClear: {
 				cookies: [
 					{
@@ -67,7 +75,7 @@ export const config: CookieConsentConfig = {
 						{
 							title: "Performance and Analytics cookies",
 							description: "These cookies allow the website to remember the choices you have made in the past.",
-							linkedCategory: "analytics",
+							linkedCategory: ANALYTICS_CATEGORY,
 							cookieTable: {
 								headers: {
 									name: "Name",

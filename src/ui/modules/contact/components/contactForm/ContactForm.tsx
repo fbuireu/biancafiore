@@ -9,7 +9,7 @@ import Spinner from "@modules/core/components/spinner/Spinner";
 import type { ContactFormData } from "@shared/ui/types";
 import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
-import { useCallback, useId, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useId, useRef, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import "./contact-form.css";
 
@@ -38,6 +38,11 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 	const emailId = useId();
 	const messageId = useId();
 	const submitRef = useRef<HTMLButtonElement>(null);
+	const successRef = useRef<HTMLHeadingElement>(null);
+
+	useEffect(() => {
+		if (formStatus === FormStatus.SUCCESS) successRef.current?.focus();
+	}, [formStatus]);
 
 	const submitForm = useCallback(
 		async (data: ContactFormData, recaptcha: string) => {
@@ -146,7 +151,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 						{...register("message")}
 					/>
 					<Recaptcha hasError={!!errors.recaptcha} errorMessage={errors.recaptcha?.message} />
-					<div className="contact-form__generic-error-wrapper">
+					<div className="contact-form__generic-error-wrapper" role="alert" aria-live="assertive">
 						{([FormStatus.ERROR, FormStatus.UNAUTHORIZED] as FormStatus[]).includes(formStatus) && (
 							<p className="contact-form__generic-error-message">{errors.root?.message}</p>
 						)}
@@ -166,8 +171,10 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 					</button>
 				</form>
 			) : (
-				<div className="contact-form__success-message flex column-wrap">
-					<h4>Form sent correctly! Will be in touch soon</h4>
+				<div className="contact-form__success-message flex column-wrap" role="status" aria-live="polite">
+					<h4 tabIndex={-1} ref={successRef}>
+						Form sent correctly! Will be in touch soon
+					</h4>
 				</div>
 			)}
 		</>

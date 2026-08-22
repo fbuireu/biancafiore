@@ -1,4 +1,5 @@
 export const ANALYTICS_CATEGORY = "analytics";
+export const NECESSARY_CATEGORY = "necessary";
 export const CONSENT_COOKIE_NAME = "cc_cookie";
 export const CONSENT_UPDATE_WAIT = 500;
 
@@ -10,24 +11,6 @@ export const CONSENT_STATUS = {
 export type ConsentStatus = (typeof CONSENT_STATUS)[keyof typeof CONSENT_STATUS];
 
 const literal = (value: string) => JSON.stringify(value);
-
-const consentCookiePattern = (): RegExp => new RegExp(`(^| )${CONSENT_COOKIE_NAME}=([^;]+)`);
-
-export function analyticsConsentIn(rawCookies: string): ConsentStatus {
-	const stored = rawCookies.match(consentCookiePattern())?.[2];
-
-	if (!stored) return CONSENT_STATUS.DENIED;
-
-	try {
-		const { categories } = JSON.parse(decodeURIComponent(stored));
-
-		return Array.isArray(categories) && categories.includes(ANALYTICS_CATEGORY)
-			? CONSENT_STATUS.GRANTED
-			: CONSENT_STATUS.DENIED;
-	} catch {
-		return CONSENT_STATUS.DENIED;
-	}
-}
 
 export const consentBootstrapScript = (analyticsId: string): string => `
 window.dataLayer = window.dataLayer || [];

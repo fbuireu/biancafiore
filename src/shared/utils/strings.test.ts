@@ -168,4 +168,17 @@ describe("safeUrl", () => {
 	it("refuses a scheme it does not know rather than allowing anything it has no rule for", () => {
 		expect(safeUrl("ftp://example.com/file")).toBe("");
 	});
+
+	it.each([
+		["a tab", "java\tscript:alert(1)"],
+		["a newline", "java\nscript:alert(1)"],
+		["a carriage return", "java\rscript:alert(1)"],
+		["several", "j\ta\nv\ra script:alert(1)".replace(" ", "")],
+	])("refuses a javascript scheme an editor split with %s, which the URL parser puts back together", (_name, url) => {
+		expect(safeUrl(url)).toBe("");
+	});
+
+	it("strips those characters from a link it does allow, so what ships is what was checked", () => {
+		expect(safeUrl("https://exa\tmple.com/a")).toBe("https://example.com/a");
+	});
 });

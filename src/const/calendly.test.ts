@@ -21,6 +21,19 @@ describe("the Calendly integration", () => {
 	});
 
 	it("asks for a meeting with the event details and the vendor banner hidden", () => {
-		expect(CALENDLY_MEETING_URL).toContain(CALENDLY.MEETING_OPTIONS);
+		expect(CALENDLY_MEETING_URL).toContain("hide_event_type_details=1");
+		expect(CALENDLY_MEETING_URL).toContain("hide_gdpr_banner=1");
+	});
+
+	it("addresses a real meeting rather than the booking origin's front page", () => {
+		expect(CALENDLY_MEETING_URL).toContain("/fbuireu/45min-meeting?");
+	});
+
+	it("loads the vendor's own widget entry point", () => {
+		expect(CALENDLY_WIDGET_SCRIPT).toBe("https://assets.calendly.com/assets/external/widget.js");
+	});
+
+	it("names the class the vendor mounts on, which the stylesheet also spells", () => {
+		expect(CALENDLY.WIDGET_CLASS).toBe("calendly-inline-widget");
 	});
 });

@@ -17,6 +17,7 @@ describe("securityHeaders", () => {
 	it("drops the directive rather than a substring, so the policy stays well formed", () => {
 		expect(policy(true).split("; ")).not.toContain("");
 		expect(policy(true).endsWith(";")).toBe(false);
+		expect(policy(true).split("; ")).toHaveLength(policy(false).split("; ").length - 1);
 	});
 
 	it("leaves every other directive alone in both environments", () => {
@@ -33,7 +34,8 @@ describe("securityHeaders", () => {
 		expect(productionRest).toStrictEqual(developmentRest);
 	});
 
-	it("is the production policy that the build-time _headers file is generated from", () => {
-		expect(SECURITY_HEADERS).toStrictEqual(securityHeaders());
+	it("exports the production policy as the constant the build-time _headers file reads", () => {
+		expect(SECURITY_HEADERS["Content-Security-Policy"]).toContain(HTTPS_UPGRADE_DIRECTIVE);
+		expect(SECURITY_HEADERS).toStrictEqual(securityHeaders({ isDevelopment: false }));
 	});
 });
