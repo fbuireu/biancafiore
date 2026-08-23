@@ -82,6 +82,8 @@ jobs:
           retry_wait_seconds: 15
           shell: bash
           command: pnpm build
+      - name: Verify the built output
+        run: pnpm exec vitest run --project built
       - name: Deploy to Cloudflare Workers
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         env:

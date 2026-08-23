@@ -5,8 +5,9 @@ import { type DatabaseError, DuplicateContactError } from "@infrastructure/error
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
 
-const COOLDOWN_MESSAGE = `You already contacted me in the last ${CONTACT_COOLDOWN_HOURS} hours. Please be patient, I will get back to you ASAP.`;
-const REPEATED_MESSAGE = "You already sent me this exact message. Please be patient, I will get back to you ASAP.";
+const ALREADY_HEARD_MESSAGE = `I have already heard from you in the last ${CONTACT_COOLDOWN_HOURS} hours. Please be patient, I will get back to you ASAP.`;
+const COOLDOWN_REASON = "inside the cooldown window";
+const REPEATED_REASON = "the same message as a previous submission";
 
 type CheckDuplicatedEntriesParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
@@ -25,13 +26,13 @@ export const checkDuplicatedEntries = (
 			{ concurrency: "unbounded" },
 		);
 
-		if (repeated) {
-			return yield* Effect.fail(new DuplicateContactError({ message: REPEATED_MESSAGE }));
+		if (!repeated && !withinCooldown) {
+			return;
 		}
 
-		if (withinCooldown) {
-			return yield* Effect.fail(new DuplicateContactError({ message: COOLDOWN_MESSAGE }));
-		}
+		yield* Effect.logInfo(`Contact refused: ${repeated ? REPEATED_REASON : COOLDOWN_REASON}`);
+
+		return yield* Effect.fail(new DuplicateContactError({ message: ALREADY_HEARD_MESSAGE }));
 	});
 
 interface SaveContactParams extends Except<ContactFormData, "recaptcha"> {

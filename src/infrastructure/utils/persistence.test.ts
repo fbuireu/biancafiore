@@ -43,19 +43,20 @@ describe("checkDuplicatedEntries", () => {
 	it("refuses a message the address has already sent, however long ago", async () => {
 		const database = databaseDouble({ contactWithSameMessage: contactRow({ email: "ada@example.com" }) });
 
-		expect(failureOf(await check(database))).toMatchObject({
-			_tag: "DuplicateContactError",
-			message: expect.stringContaining("this exact message"),
-		});
+		expect(failureOf(await check(database))?._tag).toBe("DuplicateContactError");
 	});
 
-	it("names the repeat rather than the cooldown when a submission is both", async () => {
-		const database = databaseDouble({
+	it("answers the two refusals identically, so a caller cannot tell which check fired", async () => {
+		const cooldown = databaseDouble({ contactWithinCooldown: contactRow({ email: "ada@example.com" }) });
+		const repeat = databaseDouble({ contactWithSameMessage: contactRow({ email: "ada@example.com" }) });
+		const both = databaseDouble({
 			contactWithinCooldown: contactRow({ email: "ada@example.com" }),
 			contactWithSameMessage: contactRow({ email: "ada@example.com" }),
 		});
 
-		expect(failureOf(await check(database))?.message).toContain("this exact message");
+		const answers = [failureOf(await check(cooldown)), failureOf(await check(repeat)), failureOf(await check(both))];
+
+		expect(new Set(answers.map((failure) => failure?.message)).size).toBe(1);
 	});
 
 	it("asks about the normalised address, so an alias cannot escape either check", async () => {
