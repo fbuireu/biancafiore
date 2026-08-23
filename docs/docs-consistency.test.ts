@@ -1516,7 +1516,6 @@ describe("conventions", () => {
 		expect(BIOME_JSON.formatter.lineWidth).toBe(Number(conventions.match(DOCUMENTED_LINE_WIDTH)?.[1]));
 		expect(BIOME_JSON.linter.rules.suspicious.noConsole).toBe("error");
 		expect(BIOME_JSON.assist.actions.source.organizeImports).toBe("on");
-		expect(BIOME_JSON.files.includes).toContain("!**/src/data/**/*");
 		expect(BIOME_JSON.files.includes).toContain("!**/public/**/*");
 	});
 

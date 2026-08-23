@@ -1,11 +1,10 @@
 import { StretchArrow } from "@assets/images/svg-components/stretchArrow/StretchArrow";
 import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn";
 import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
-import countries from "@data/countries.geojson.json";
 import { TabVisibility, useTabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
 import { type CityPoint, calculateCenter, renderPin } from "@modules/about/utils/globe";
 import { prefersReducedMotion } from "@modules/core/utils/motion";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
@@ -49,8 +48,32 @@ const {
 	ZOOM_OFFSET,
 } = WORLD_GLOBE_CONFIG;
 
+const COUNTRIES_URL = "/countries.json";
+
+interface CountryFeature {
+	type: string;
+	properties: Record<string, unknown>;
+	geometry: unknown;
+}
+
 const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 	const tabVisibility = useTabVisibility();
+	const [countries, setCountries] = useState<CountryFeature[]>([]);
+
+	useEffect(() => {
+		let isMounted = true;
+
+		fetch(COUNTRIES_URL)
+			.then((response) => response.json())
+			.then(({ features }: { features: CountryFeature[] }) => {
+				if (isMounted) setCountries(features);
+			})
+			.catch(() => undefined);
+
+		return () => {
+			isMounted = false;
+		};
+	}, []);
 	const worldGlobeReference = useRef<GlobeMethods | undefined>(undefined);
 
 	const globeMaterial = useMemo(
@@ -114,7 +137,7 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 				animateIn={ANIMATE_IN}
 				showAtmosphere={SHOW_ATMOSPHERE}
 				backgroundColor={BACKGROUND_COLOR}
-				hexPolygonsData={countries.features}
+				hexPolygonsData={countries}
 				hexPolygonColor={() => HEXAGON_POLYGON_COLOR}
 				globeMaterial={globeMaterial}
 				pointsData={points}

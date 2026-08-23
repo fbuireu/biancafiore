@@ -16,7 +16,6 @@
 			"@modules/*": ["./src/ui/modules/*"],
 			"@assets/*": ["./src/ui/assets/*"],
 			"@styles/*": ["./src/ui/styles/*"],
-			"@data/*": ["./src/data/*"],
 			"@shared/*": ["./src/shared/*"],
 			"@tests/*": ["./src/tests/*"]
 		},
