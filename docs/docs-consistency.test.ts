@@ -703,7 +703,7 @@ describe("gotchas", () => {
 
 	it("serves dist as assets from a Workers deploy bound to the documented domain", () => {
 		expect(WRANGLER_TOML).toContain('main = "@astrojs/cloudflare/entrypoints/server"');
-		expect(WRANGLER_TOML).toContain('directory = "dist"');
+		expect(WRANGLER_TOML).toContain('directory = "dist/client"');
 		expect(WRANGLER_TOML).toContain('binding = "SESSION"');
 		expect(WRANGLER_TOML).toContain('pattern = "biancafiore.me"');
 	});

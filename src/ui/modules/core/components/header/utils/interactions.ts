@@ -1,3 +1,4 @@
+import { motionTimeScale } from "@modules/core/utils/motion";
 import { gsap, Power2, Power3, Power4 } from "gsap";
 
 const BACKGROUND_OBSERVER_SELECTORS = {
@@ -102,6 +103,8 @@ function buildMenuTimeline(onButtonUpdate: () => void): MenuTimeline {
 		TOGGLE_MENU_ANIMATION_CONFIG;
 
 	const timeline = gsap.timeline({ paused: true });
+
+	timeline.timeScale(motionTimeScale());
 
 	timeline.eventCallback("onReverseComplete", () => backgroundObserver());
 	timeline.to(MENU_OVERLAY, { display: "block" });

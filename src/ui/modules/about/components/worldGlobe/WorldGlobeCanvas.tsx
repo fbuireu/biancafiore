@@ -4,6 +4,7 @@ import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
 import countries from "@data/countries.geojson.json";
 import { TabVisibility, useTabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
 import { type CityPoint, calculateCenter, renderPin } from "@modules/about/utils/globe";
+import { prefersReducedMotion } from "@modules/core/utils/motion";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
@@ -68,7 +69,7 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 		}
 
 		const { latitude, longitude } = calculateCenter(points);
-		worldGlobeReference.current.controls().autoRotate = true;
+		worldGlobeReference.current.controls().autoRotate = !prefersReducedMotion();
 		worldGlobeReference.current.controls().enableZoom = false;
 		worldGlobeReference.current.controls().autoRotateSpeed = 0.25;
 		worldGlobeReference.current.pointOfView({
@@ -82,7 +83,8 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 		if (!worldGlobeReference.current) {
 			return;
 		}
-		worldGlobeReference.current.controls().autoRotate = tabVisibility === TabVisibility.VISIBLE;
+		worldGlobeReference.current.controls().autoRotate =
+			tabVisibility === TabVisibility.VISIBLE && !prefersReducedMotion();
 	}, [tabVisibility]);
 
 	const handleAction = useCallback(({ movementDirection, type }: HandleActionParams) => {

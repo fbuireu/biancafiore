@@ -9,12 +9,12 @@
 	margin-block-end: var(--space-xs);
 }
 
-.legal-section h4 {
+.legal-section h2 {
 	margin-block-end: var(--space-2xs);
 	margin-block-start: var(--space-3xs);
 }
 
-.legal-section h5 {
+.legal-section h3 {
 	margin-block-end: var(--space-3xs);
 	margin-block-start: var(--space-s);
 }
@@ -36,8 +36,8 @@
 	counter-reset: legal-section;
 }
 
-.privacy-policy-wrapper .legal-section h4::before,
-.terms-and-conditions-wrapper .legal-section h4::before {
+.privacy-policy-wrapper .legal-section h2::before,
+.terms-and-conditions-wrapper .legal-section h2::before {
 	content: counter(legal-section) ". ";
 	counter-increment: legal-section;
 }

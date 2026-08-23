@@ -1,3 +1,5 @@
+import { scrollBehavior } from "@modules/core/utils/motion";
+
 const SELECTORS = {
 	TRACK: ".slider__track",
 	SLIDE: ".slider__slide",
@@ -49,7 +51,7 @@ export function initSlider(wrapper: HTMLElement): void {
 	const isLooping = wrapper.getAttribute(LOOPING_ATTRIBUTE) === "true";
 
 	const centre = (index: number): void => {
-		slides.at(index)?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+		slides.at(index)?.scrollIntoView({ behavior: scrollBehavior(), block: "nearest", inline: "center" });
 	};
 
 	const update = (): void => {
@@ -68,7 +70,7 @@ export function initSlider(wrapper: HTMLElement): void {
 
 	const step = (direction: number): void => {
 		if (!isLooping) {
-			track.scrollBy({ left: direction * track.clientWidth, behavior: "smooth" });
+			track.scrollBy({ left: direction * track.clientWidth, behavior: scrollBehavior() });
 
 			return;
 		}

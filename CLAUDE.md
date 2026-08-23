@@ -40,6 +40,7 @@ pnpm test:ut          # vitest (unit)
 pnpm test:ut:watch    # vitest, watch mode
 pnpm test:ut:coverage # vitest --coverage
 pnpm test:docs        # docs ⟷ code consistency alone (also runs inside test:ut)
+pnpm test:built       # build, then assert the emitted HTML, sitemap, feed and headers
 pnpm test:e2e         # playwright
 pnpm test:all         # unit + e2e
 
@@ -48,6 +49,8 @@ pnpm db:migrate       # apply migrations
 pnpm db:push          # push schema to Turso
 pnpm db:studio        # drizzle studio
 ```
+
+**`test:built` is the only suite that reads `dist/`.** Everything else in the tree reads source, and a whole class of defect lives only in what the build emits: the table of contents was passed as a child of the element `set:html` overwrites and so was discarded on every article, the sitemap filter dropped every page without a slug and then ate the `customPages` written to compensate, and the RSS feed published permalinks that redirect. None of those is visible to `tsc`, Biome, `astro check` or the unit suite. It runs in its own vitest project so `test:ut` stays buildless, and `ci.yml` runs it in the `check` job after `pnpm verify`.
 
 `--pass-with-no-tests` belongs to `test:e2e:changed`, not to `test:e2e`. That variant is `--only-changed`, which matches nothing whenever a PR touches no spec, the common case, so without the flag it would fail on almost every PR. On `test:e2e` the same flag would only hide a broken `testDir` or an emptied `e2e/`, which is why it is not there. **Nothing in CI runs the `:changed` variant today**: `end-2-end-tests.yml` is `workflow_dispatch` only, so its `E2E_COMMAND` ternary can only ever resolve to `pnpm test:e2e`, and the e2e that runs on a PR is the `e2e` job in `ci.yml`, against the preview URL. The script is kept for local use; the ternary is what to delete if that stays true.
 
@@ -136,6 +139,6 @@ Two traps worth naming, because both have already happened here: deleting a reso
 
 ## Deploy
 
-Cloudflare Workers via wrangler (`wrangler.toml`): `main` is the `@astrojs/cloudflare` server entrypoint, `dist/` served as assets, `SESSION` KV binding, custom domain `biancafiore.me` on `env.production`. CI/CD runs through GitHub Actions workflows. The host and the runtime constraints it imposes are ADR 0001; content pages are prerendered and only dynamic paths hit the SSR runtime, ADR 0011.
+Cloudflare Workers via wrangler (`wrangler.toml`): `main` is the `@astrojs/cloudflare` server entrypoint, `dist/client/` served as assets, `SESSION` KV binding, custom domain `biancafiore.me` on `env.production`. CI/CD runs through GitHub Actions workflows. The host and the runtime constraints it imposes are ADR 0001; content pages are prerendered and only dynamic paths hit the SSR runtime, ADR 0011.
 
 **A long commit message breaks the deploy, and the error does not say so.** `wrangler deploy` sends the latest commit message verbatim as the `workers/message` deployment annotation, with no truncation. Past a few thousand characters the API answers `Received a malformed response from the API`: a build that compiled fine, uploaded fine, and then died on metadata. A merge commit carrying a long pull request body is enough. `_deploy.yml` therefore passes `--message` explicitly with the sha and the trigger, so nothing about how a commit is written can reach that annotation.
