@@ -4,7 +4,7 @@ import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
 import { TabVisibility, useTabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
 import { type CityPoint, calculateCenter, renderPin } from "@modules/about/utils/globe";
 import { prefersReducedMotion } from "@modules/core/utils/motion";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { use, useCallback, useEffect, useMemo, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
@@ -56,24 +56,24 @@ interface CountryFeature {
 	geometry: unknown;
 }
 
+const fetchCountries = async (): Promise<CountryFeature[]> => {
+	try {
+		const response = await fetch(COUNTRIES_URL);
+		const { features } = (await response.json()) as { features: CountryFeature[] };
+
+		return features;
+	} catch {
+		return [];
+	}
+};
+
+let countries: Promise<CountryFeature[]> | undefined;
+
+const loadCountries = (): Promise<CountryFeature[]> => (countries ??= fetchCountries());
+
 const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 	const tabVisibility = useTabVisibility();
-	const [countries, setCountries] = useState<CountryFeature[]>([]);
-
-	useEffect(() => {
-		let isMounted = true;
-
-		fetch(COUNTRIES_URL)
-			.then((response) => response.json())
-			.then(({ features }: { features: CountryFeature[] }) => {
-				if (isMounted) setCountries(features);
-			})
-			.catch(() => undefined);
-
-		return () => {
-			isMounted = false;
-		};
-	}, []);
+	const hexPolygons = use(loadCountries());
 	const worldGlobeReference = useRef<GlobeMethods | undefined>(undefined);
 
 	const globeMaterial = useMemo(
@@ -137,7 +137,7 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 				animateIn={ANIMATE_IN}
 				showAtmosphere={SHOW_ATMOSPHERE}
 				backgroundColor={BACKGROUND_COLOR}
-				hexPolygonsData={countries}
+				hexPolygonsData={hexPolygons}
 				hexPolygonColor={() => HEXAGON_POLYGON_COLOR}
 				globeMaterial={globeMaterial}
 				pointsData={points}
