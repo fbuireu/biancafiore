@@ -83,7 +83,7 @@ const ADR_PATH_REFERENCE = /docs\/adr\/(\d{4})-/g;
 const ADR_FILENAME = /^docs\/adr\/\d{4}(-[a-z\d]+)+\.md$/;
 const ADR_STATUS = /\n## Status\n\n(\w+)/;
 const ADR_DATE = /\nDate: \d{4}-\d{2}-\d{2}\n/;
-const CLIENT_TABLE_ROW = /^\| `(\w+)` \| `(\w+)` \| `([\w/.]+)` \|$/gm;
+const CLIENT_TABLE_ROW = /^\| `(\w+)` \| `(\w+)` \| \[?`([\w/.]+)`\]?(?:\([^)]*\))? \|$/gm;
 const TAGGED_ERROR_DECLARATION = /export class (\w+) extends Data\.TaggedError/g;
 const MODULE_LEVEL_ENV_IMPORT = /^\s*import\s[^\n]*"astro:env\/server"/m;
 const RECAPTCHA_SCORE_DECLARATION = /const RECAPTCHA_MINIMUM_SCORE = ([\d.]+);/;

@@ -1,8 +1,8 @@
 # src/actions
 
-One Astro server action, `server.contact`, split across three files. `contact.ts` holds `submitContact`, the
-Effect program that orchestrates the submission; `errorResponse.ts` holds `contactErrorResponse`, which turns a
-failed `Cause` into the `{ code, message }` the visitor gets; `index.ts` holds the Astro binding and nothing
+One Astro server action, `server.contact`, split across three files. [`contact.ts`](./contact.ts) holds `submitContact`, the
+Effect program that orchestrates the submission; [`errorResponse.ts`](./errorResponse.ts) holds `contactErrorResponse`, which turns a
+failed `Cause` into the `{ code, message }` the visitor gets; [`index.ts`](./index.ts) holds the Astro binding and nothing
 else, `defineAction`, `accept: "form"`, `contactFormSchema` (`@domain/contact/schema`) validating the payload
 before the handler body runs, `ContactLayer`, and the `new ActionError(…)` throw. Every step is imported from
 `@infrastructure/utils/*` and every one of them is an Effect, so nothing here talks to the database, Resend or
@@ -11,16 +11,16 @@ this edge and nowhere deeper.
 
 **The split is what makes the action testable.** `contact.ts` and `errorResponse.ts` import nothing from
 `astro:*`, so `submitContact` runs in a unit test against stub `Database` and `EmailClient` layers (see
-`contact.test.ts` and the doubles in `src/tests/doubles/`), and **so a unit test can run the mapping** over real
-`Cause` values, defects included (`errorResponse.test.ts`). The one `astro:*` module the program still reaches
-is `astro:env/server`, lazily imported inside `verifyRecaptcha`, and `vitest.config.ts` maps it onto a double.
+[`contact.test.ts`](./contact.test.ts) and the doubles in `src/tests/doubles/`), and **so a unit test can run the mapping** over real
+`Cause` values, defects included ([`errorResponse.test.ts`](./errorResponse.test.ts)). The one `astro:*` module the program still reaches
+is `astro:env/server`, lazily imported inside `verifyRecaptcha`, and [`vitest.config.ts`](../../vitest.config.ts) maps it onto a double.
 Keep `astro:actions` out of both: the moment either imports `ActionError`, it stops resolving under vitest,
 which is why the code stays a plain `{ code, message }` and only `index.ts` knows it becomes an `ActionError`.
 
 ## Invariants & rules
 
 - **`ContactLayer` is provided here, per request**, with `Effect.provide(ContactLayer)` inside the handler, never
-  at module scope. Why there are two runtimes rather than one is ADR 0004 and `src/infrastructure/CLAUDE.md`;
+  at module scope. Why there are two runtimes rather than one is ADR 0004 and [`src/infrastructure/CLAUDE.md`](../infrastructure/CLAUDE.md);
   what belongs here is only that this one is built and discarded per request.
 - **`contactErrorResponse` is the only place a tagged error becomes HTTP.** Exactly two are mapped:
   `ValidationError` → `BAD_REQUEST` and `DuplicateContactError` → `UNAUTHORIZED`. Everything else

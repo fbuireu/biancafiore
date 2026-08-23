@@ -4,7 +4,7 @@ The global cascade. Everything here is cross-cutting; per-component styling live
 
 ## Layer order
 
-Declared once, in `index.css`:
+Declared once, in [`index.css`](./index.css):
 
 ```css
 @layer reset, vendor, overrides, base, theme, global, modifiers, animations;
@@ -14,15 +14,15 @@ Cascade correctness depends on this order, so respect it. Every file opens by na
 
 | Folder / file | Layer |
 | --- | --- |
-| `reset/reset.css` | `reset` |
-| `vendor/vendor.css` | `vendor` |
-| `vendor/overrides.css` | `overrides` |
-| `vendor/cookie-consent.css` | `overrides.cookie-consent` (nested sub-layer) |
-| `base/base.css` | `base` |
-| `global/variables.css` | `theme` |
-| `global/global.css`, `reveal.css`, `slider.css` | `global` |
-| `global/modifiers.css` | `modifiers` |
-| `global/animations.css` | `animations` |
+| [`reset/reset.css`](./reset/reset.css) | `reset` |
+| [`vendor/vendor.css`](./vendor/vendor.css) | `vendor` |
+| [`vendor/overrides.css`](./vendor/overrides.css) | `overrides` |
+| [`vendor/cookie-consent.css`](./vendor/cookie-consent.css) | `overrides.cookie-consent` (nested sub-layer) |
+| [`base/base.css`](./base/base.css) | `base` |
+| [`global/variables.css`](./global/variables.css) | `theme` |
+| [`global/global.css`](./global/global.css), `reveal.css`, `slider.css` | `global` |
+| [`global/modifiers.css`](./global/modifiers.css) | `modifiers` |
+| [`global/animations.css`](./global/animations.css) | `animations` |
 
 New files are wired through the folder's `index.css`, which `index.css` imports in layer order.
 
@@ -40,7 +40,7 @@ New files are wired through the folder's `index.css`, which `index.css` imports 
 
 `:root` is `color-scheme: light`; dark comes from `[data-theme="dark"]`, set before first paint by the bootstrap `core/components/head/Head.astro` renders from `themeToggle/utils/preference.ts`, with `prefers-color-scheme` as the fallback whenever the reader has chosen nothing; only a click on the toggle is persisted. Sections that invert against the page mix in the `inverted-color-scheme` block, which flips in both directions; the components that do are `blog`, `footer`, `latestArticles` and `relatedArticles`. The mix is a runtime contract as well as paint: `backgroundObserver` in `header/utils/interactions.ts` observes every `.inverted-color-scheme` on the page and inverts the logo and menu button while the sticky header's midline sits over one. So the header names no section's block class of its own, and a new inverting section needs no edit there.
 
-That nested inversion is exactly what breaks when lightningcss downlevels `light-dark()` into an inherited-var polyfill, hence `Features.LightDark` in `lightningcss.exclude` in `astro.config.ts`. Don't remove it; dev looks fine and prod doesn't. See ADR 0006.
+That nested inversion is exactly what breaks when lightningcss downlevels `light-dark()` into an inherited-var polyfill, hence `Features.LightDark` in `lightningcss.exclude` in [`astro.config.ts`](../../../astro.config.ts). Don't remove it; dev looks fine and prod doesn't. See ADR 0006.
 
 ## Conventions
 

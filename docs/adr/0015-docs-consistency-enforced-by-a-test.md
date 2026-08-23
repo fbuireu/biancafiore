@@ -8,11 +8,11 @@ Accepted.
 
 ## Context
 
-This repo carries an unusual amount of prose: a root `CLAUDE.md`, five nested guides, a glossary in `CONTEXT.md`, and this ADR directory. They are the primary interface to the codebase for anyone (increasingly, for an agent) arriving without context, and the maintenance contract already states the rule: when you change code, update the docs in the same commit.
+This repo carries an unusual amount of prose: a root [`CLAUDE.md`](../../CLAUDE.md), five nested guides, a glossary in [`CONTEXT.md`](../../CONTEXT.md), and this ADR directory. They are the primary interface to the codebase for anyone (increasingly, for an agent) arriving without context, and the maintenance contract already states the rule: when you change code, update the docs in the same commit.
 
 Nothing checked. Documentation rot is silent by construction: no build fails, no type breaks, and the only signal is a reader acting on a claim that stopped being true. The first run of a checker over these documents found three of them:
 
-- `@styles/*` was documented as mapping to `src/styles`; `tsconfig.json` maps it to `src/ui/styles`.
+- `@styles/*` was documented as mapping to `src/styles`; [`tsconfig.json`](../../tsconfig.json) maps it to `src/ui/styles`.
 - The route list omitted `articles/index`, `privacy-policy` and `terms-and-conditions`.
 - The folder tree listed `src/utils` and `src/db`, which do not exist in the repository at all.
 
@@ -20,7 +20,7 @@ None of these were noticed by review, because a document that reads plausibly is
 
 ## Decision
 
-`docs/docs-consistency.test.ts` reads the guides as data and asserts every mechanically checkable claim against the repository: package scripts, path aliases and the folders they map to, the folder tree, the route list, `.env.example` against the `env.schema` in `astro.config.ts`, every path and relative link cited in any document, ADR numbering, template and references, the infrastructure client table, the stylesheet layer table, the domain concepts against the glossary, and the invariants stated in Gotchas. It runs with `pnpm test:ut`, so it runs in CI on every pull request.
+[`docs/docs-consistency.test.ts`](../docs-consistency.test.ts) reads the guides as data and asserts every mechanically checkable claim against the repository: package scripts, path aliases and the folders they map to, the folder tree, the route list, `.env.example` against the `env.schema` in [`astro.config.ts`](../../astro.config.ts), every path and relative link cited in any document, ADR numbering, template and references, the infrastructure client table, the stylesheet layer table, the domain concepts against the glossary, and the invariants stated in Gotchas. It runs with `pnpm test:ut`, so it runs in CI on every pull request.
 
 A later pass extended it past references into the behavioural rules the nested guides state, which is where the second audit found its errors: that secrets are read lazily inside a layer and `astro:env/server` is never a module import, that irrecoverable misconfiguration is `Effect.die`, that every tagged error is declared in `errors.ts` and no tag becomes an HTTP status outside `contactErrorResponse`, that the domain imports nothing the guide does not name, that DTOs may build an image URL but never fetch one, that every loader bails without credentials and batches unbounded, and that the reveal modifiers stay below the class they beat only by source order. Constants a guide quotes (the reCAPTCHA threshold, the type-scale ratio, the container axes) are derived from the source and matched against the sentence, so the assertion fails both when the constant changes and when the sentence is deleted. Each of these was verified by mutation: break the code, watch that specific assertion go red, then revert.
 

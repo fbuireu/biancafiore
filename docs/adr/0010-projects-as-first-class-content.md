@@ -16,7 +16,7 @@ A month on, that has not moved, and the code has quietly answered the smaller qu
 
 ## Decision
 
-**A Project is addressed by a fragment on `/projects`, and that is the current answer, not a placeholder.** `projectHref` is the one module that spells it, exactly as `articleHref` and `tagHref` spell theirs, and `CONTEXT.md` says a Project has no Slug.
+**A Project is addressed by a fragment on `/projects`, and that is the current answer, not a placeholder.** `projectHref` is the one module that spells it, exactly as `articleHref` and `tagHref` spell theirs, and [`CONTEXT.md`](../../CONTEXT.md) says a Project has no Slug.
 
 **Whether Projects should become sluggable content remains open, and the question that blocks it is a glossary question, not a routing one**: if a Project gains a slug, a body and a detail page, what distinguishes it from an Article: audience, source, whether self-initiated writing belongs in one or the other? Until `CONTEXT.md` answers that, there is nothing to build.
 

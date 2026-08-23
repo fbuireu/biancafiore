@@ -1,11 +1,11 @@
 # Backlog
 
-Ideas not yet scheduled. This list used to live as a block of `// todo:` comments in `src/pages/index.astro`, which the *No code comments* convention rules out and which no reader of that page would look for. Items are removed when they ship or when they are decided against; an item that turns into a real decision becomes an ADR instead.
+Ideas not yet scheduled. This list used to live as a block of `// todo:` comments in [`src/pages/index.astro`](../src/pages/index.astro), which the *No code comments* convention rules out and which no reader of that page would look for. Items are removed when they ship or when they are decided against; an item that turns into a real decision becomes an ADR instead.
 
 ## Open decisions
 
-- **Do Projects become sluggable content with pages of their own?** [ADR 0010](./adr/0010-projects-as-first-class-content.md) is Proposed and blocked on a glossary question: what distinguishes a Project from an Article once it has a slug, a body and a page. Until `CONTEXT.md` answers that, a Project stays a fragment on `/projects` and has no canonical URL of its own.
-- **Does the wrangler deploy-message truncation deserve an ADR?** It is a paragraph at the bottom of `CLAUDE.md` today, and it constrains CI permanently: the annotation is passed explicitly so nothing about how a commit is written can reach it.
+- **Do Projects become sluggable content with pages of their own?** [ADR 0010](./adr/0010-projects-as-first-class-content.md) is Proposed and blocked on a glossary question: what distinguishes a Project from an Article once it has a slug, a body and a page. Until [`CONTEXT.md`](../CONTEXT.md) answers that, a Project stays a fragment on `/projects` and has no canonical URL of its own.
+- **Does the wrangler deploy-message truncation deserve an ADR?** It is a paragraph at the bottom of [`CLAUDE.md`](../CLAUDE.md) today, and it constrains CI permanently: the annotation is passed explicitly so nothing about how a commit is written can reach it.
 
 ## Content and features
 

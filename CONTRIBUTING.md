@@ -67,7 +67,7 @@ derives versions from and commitlint rejects anything else.
 ## The docs are part of the change
 
 This repo treats its documentation as part of the code: change one, update the
-other **in the same commit**. `docs/docs-consistency.test.ts` runs with the
+other **in the same commit**. [`docs/docs-consistency.test.ts`](./docs/docs-consistency.test.ts) runs with the
 unit tests and fails the build when the docs and the repo disagree.
 [ADR 0015](./docs/adr/0015-docs-consistency-enforced-by-a-test.md) explains why
 that test exists and what it costs; [CLAUDE.md](./CLAUDE.md) has the table of
