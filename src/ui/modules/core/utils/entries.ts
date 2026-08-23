@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection, getEntry } from "astro:content";
-import { CONTACT_DETAILS } from "@const/const";
+import { SITE_AUTHOR_SLUG } from "@const/const";
 import type { Reference } from "@domain/shared/reference";
 
 export async function resolveArticle(
@@ -21,10 +21,10 @@ export async function resolveArticles(references: Reference<"articles">[]): Prom
 
 export async function getSiteAuthor(): Promise<CollectionEntry<"authors">> {
 	const authors = await getCollection("authors");
-	const siteAuthor = authors.find(({ data }) => data.name === CONTACT_DETAILS.NAME);
+	const siteAuthor = authors.find(({ data }) => data.slug === SITE_AUTHOR_SLUG);
 
 	if (!siteAuthor) {
-		throw new Error(`The authors collection carries no author named ${CONTACT_DETAILS.NAME}`);
+		throw new Error(`The authors collection carries no author with the slug ${SITE_AUTHOR_SLUG}`);
 	}
 
 	return siteAuthor;
