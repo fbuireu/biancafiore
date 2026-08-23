@@ -1,16 +1,13 @@
 ---
-import { getCollection } from "astro:content";
 import { PAGES_ROUTES } from "@const/index";
 import ArticleSlider from "@modules/core/components/articleSlider/ArticleSlider.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
-import { buildArticleListSchema } from "@modules/core/utils/jsonLd";
+import { blogTeaser } from "@modules/core/utils/blogTeaser";
 import "./about-latest-articles.css";
 
 const MAX_LATEST_ARTICLES = 4;
 
-const articles = (await getCollection("articles")).slice(0, MAX_LATEST_ARTICLES);
-
-const itemListSchema = buildArticleListSchema(articles.map(({ data }) => data.slug));
+const { articles, itemListSchema } = await blogTeaser(MAX_LATEST_ARTICLES);
 ---
 <section class="about-latest-articles-wrapper common-wrapper">
     <h2 class="about-latest-articles__title editorial-section-title reveal">
