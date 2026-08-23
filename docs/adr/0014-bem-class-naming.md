@@ -8,7 +8,7 @@ Accepted. Supersedes the standalone-modifier convention used until this point.
 
 ## Context
 
-Component CSS is a plain stylesheet loaded next to its component — Astro does not scope it — so class names are the only isolation there is. Blocks and elements already followed BEM (`.blog__inner`, `.article-card__byline`), but modifiers did not: state and variants were standalone double-dash classes (`.--is-active`, `.--is-loading`, `.--inverted-color-scheme`) applied alongside the block, with only a handful of `.block--modifier` outliers.
+Component CSS is a plain stylesheet loaded next to its component (Astro does not scope it), so class names are the only isolation there is. Blocks and elements already followed BEM (`.blog__inner`, `.article-card__byline`), but modifiers did not: state and variants were standalone double-dash classes (`.--is-active`, `.--is-loading`, `.--inverted-color-scheme`) applied alongside the block, with only a handful of `.block--modifier` outliers.
 
 That split had three costs. The `is-`/`has-` prefixes are SMACSS vocabulary, so the codebase spoke two methodologies at once. A bare `.--is-current-page` declared in one component's stylesheet silently applied site-wide. And because a modifier belonged to no block, the same class name was toggled onto seven unrelated elements to express one piece of state.
 
@@ -18,7 +18,7 @@ Modifiers are fused onto their owner: `block--modifier` or `block__element--modi
 
 Three consequences follow, and they are the parts worth recording:
 
-**Cross-block utilities become blocks, used as a BEM mix.** `underline-on-hover`, `clickable`, `inverted-color-scheme` and `current-page` are used by unrelated blocks, so under strict BEM they would have to be duplicated as a modifier on each one — twelve synchronised copies of `underline-on-hover` alone. Instead they are blocks in their own right, mixed in: `class="navigation__menu__link underline-on-hover clickable"`. BEM sanctions the mix; the honest caveat is that a block is meant to be a UI entity and these are behavioural utilities, so this is the seam where BEM and utility CSS blur.
+**Cross-block utilities become blocks, used as a BEM mix.** `underline-on-hover`, `clickable`, `inverted-color-scheme` and `current-page` are used by unrelated blocks, so under strict BEM they would have to be duplicated as a modifier on each one: twelve synchronised copies of `underline-on-hover` alone. Instead they are blocks in their own right, mixed in: `class="navigation__menu__link underline-on-hover clickable"`. BEM sanctions the mix; the honest caveat is that a block is meant to be a UI entity and these are behavioural utilities, so this is the seam where BEM and utility CSS blur.
 
 **Page-wide state hangs off a `page` block on `<html>`.** `<main>` becomes `page__main`. The block carries both the route (`page--about`) and state that restyles several unrelated blocks at once (`page--menu-open`), consumed by descent: `.page--menu-open .reading-progress { … }`. `<html>` is the only ancestor common to `body`, the header and the reading progress bar, so it is the only element that can own this.
 

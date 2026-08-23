@@ -48,7 +48,7 @@ Fixes #<!-- issue number -->
 
 - [ ] My code follows the style guidelines of this project (`pnpm lint:all` and `pnpm format:all` pass)
 - [ ] I have performed a self-review of my own code
-- [ ] My change carries no inline comments — rationale lives in this PR, the commit messages, or the folder's guide
+- [ ] My change carries no inline comments; rationale lives in this PR, the commit messages, or the folder's guide
 - [ ] I updated any `CLAUDE.md`, [`CONTEXT.md`](../CONTEXT.md) or ADR my change affects, in this same PR
 - [ ] My changes generate no new warnings or errors
 - [ ] I have added tests that prove my fix is effective or that my feature works

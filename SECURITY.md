@@ -44,7 +44,7 @@ Send an email to **fbuireu@gmail.com** with:
 
 Most of the site is prerendered content; the dynamic surface is small:
 
-- **The contact form server action** — the one write path, backed by Turso and
+- **The contact form server action**: the one write path, backed by Turso and
   Resend, gated by reCAPTCHA v3.
 - **The security headers middleware**, which sets the CSP and friends on every
   response.
