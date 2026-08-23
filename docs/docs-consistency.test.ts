@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { NOINDEX_ROUTES } from "@const/noindexRoutes";
 import { describe, expect, it } from "vitest";
@@ -252,6 +252,9 @@ const BIOME_JSON = readJson("biome.json");
 const ASTRO_CONFIG = read("astro.config.ts");
 const WRANGLER_TOML = read("wrangler.toml");
 
+const IMPORT_META_ENV_READ = /import\.meta\.env\.([A-Z][A-Z0-9_]*)/g;
+const ENV_DTS_DECLARATION = /readonly ([A-Z][A-Z0-9_]*)/g;
+const ON_DEMAND_ROUTES = ["src/pages/404.astro", "src/pages/500.astro", "src/pages/contact.astro"];
 const ROBOTS_DISALLOW = /^Disallow: (.+)$/gm;
 const COLLECTION_FACTORY = "src/application/entities/collection.ts";
 const IDENTIFY_CHOICE = /identify: \(\w+\) => \w+\.(\w+)/g;
@@ -1516,6 +1519,32 @@ describe("conventions", () => {
 		expect(BIOME_JSON.files.includes).toContain("!**/public/**/*");
 	});
 
+	it("types exactly the variables something reads through import.meta.env, and no others", () => {
+		const consumed = new Set(
+			[...walk("src"), "astro.config.ts"]
+				.filter((file) => SOURCE_FILE.test(file) || file === "astro.config.ts")
+				.flatMap((file) => [...read(file).matchAll(IMPORT_META_ENV_READ)].map(([, name]) => name))
+				.filter((name) => name !== "DEV"),
+		);
+		const declared = new Set([...read("src/env.d.ts").matchAll(ENV_DTS_DECLARATION)].map(([, name]) => name));
+
+		expect(consumed.size).toBeGreaterThan(0);
+		expect([...declared].filter((name) => !consumed.has(name)).toSorted()).toEqual([]);
+		expect([...consumed].filter((name) => !declared.has(name)).toSorted()).toEqual([]);
+	});
+
+	it("declares prerender on every page ADR 0011 says ships as static HTML", () => {
+		const adr = read("docs/adr/0011-hybrid-rendering-prerender-content-ssr-dynamic.md");
+
+		expect(adr).toContain("forgetting the flag is what silently makes it dynamic");
+
+		const routes = walk("src/pages").filter((file) => ROUTE_FILE.test(file) && !basename(file).startsWith("_"));
+		const dynamic = routes.filter((file) => !read(file).includes("export const prerender = true"));
+
+		expect(routes.length).toBeGreaterThan(0);
+		expect(dynamic.toSorted()).toEqual(ON_DEMAND_ROUTES.toSorted());
+	});
+
 	it("disallows the same routes in robots.txt that it keeps out of the sitemap", () => {
 		const disallowed = [...read("public/robots.txt").matchAll(ROBOTS_DISALLOW)].map(([, route]) => route.trim());
 
@@ -1543,7 +1572,11 @@ describe("conventions", () => {
 		const conventions = section(CLAUDE_MD, "Conventions");
 
 		expect(conventions).toContain("only reader of `SITE_URL`");
-		expect(SOURCE_FILES.filter((file) => SITE_ORIGIN_READ.test(read(file)))).toEqual(["src/const/routes.ts"]);
+		const readers = SOURCE_FILES.filter((file) => !file.endsWith(".d.ts")).filter((file) =>
+			SITE_ORIGIN_READ.test(read(file)),
+		);
+
+		expect(readers).toEqual(["src/const/routes.ts"]);
 		expect(SOURCE_FILES.filter((file) => ASTRO_SITE_READ.test(read(file)))).toEqual([]);
 		expect(SOURCE_FILES.filter((file) => ASTRO_URL_ORIGIN_READ.test(read(file)))).toEqual([]);
 	});

@@ -7,7 +7,7 @@ const COOKIE_NAME = "cc_cookie";
 const ANALYTICS_TOGGLE = "Performance and Analytics cookies";
 
 const analyticsConsentUpdates = (): string[] =>
-	window.dataLayer
+	(window.dataLayer as [string, string, Record<string, string>][])
 		.filter((entry) => entry[0] === "consent" && entry[1] === "update")
 		.map((entry) => entry[2].analytics_storage);
 
