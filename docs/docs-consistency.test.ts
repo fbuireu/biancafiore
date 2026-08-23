@@ -251,6 +251,10 @@ const BIOME_JSON = readJson("biome.json");
 const ASTRO_CONFIG = read("astro.config.ts");
 const WRANGLER_TOML = read("wrangler.toml");
 
+const NEWLINE = "\n";
+const SCHEMA_BOOLEAN_DEFAULT = /(\w+): z\.boolean\(\)\.default\(false\)/g;
+const CONTEXT_TAG_CLASS = /class\s+\w+\s+extends\s+Context\.Tag/;
+const LAUNDERED_SECRET = /getSecret\([^)]*\)\s+as\s+string/;
 const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("CLAUDE.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
 const DOCS = ["CLAUDE.md", "CONTEXT.md", ...NESTED_GUIDES, ...ADR_FILES];
@@ -560,11 +564,22 @@ describe("infrastructure guide", () => {
 			expect(`${file}: ${source.includes(`class ${tag} extends Context.Tag`)}`).toBe(`${file}: true`);
 			expect(`${file}: ${source.includes(`const ${live} = Layer.effect`)}`).toBe(`${file}: true`);
 		}
+
+		const declared = SOURCE_FILES.filter((file) => CONTEXT_TAG_CLASS.test(read(file))).map((file) =>
+			file.replace("src/infrastructure/", ""),
+		);
+
+		expect(declared.toSorted()).toEqual(rows.map(({ file }) => file).toSorted());
 	});
 
-	it("keeps the two runtimes it describes", () => {
+	it("keeps the two runtimes it describes, and only those two", () => {
 		expect(guide).toContain("ManagedRuntime");
-		expect(read("src/infrastructure/cms/entries.ts")).toContain("ManagedRuntime");
+
+		const managed = SOURCE_FILES.filter((file) => read(file).includes("ManagedRuntime.make("));
+		const provided = SOURCE_FILES.filter((file) => read(file).includes("Effect.provide(ContactLayer)"));
+
+		expect(managed).toEqual(["src/infrastructure/cms/entries.ts"]);
+		expect(provided).toEqual(["src/actions/index.ts"]);
 		expect(read("src/infrastructure/layers.ts")).toContain("ContactLayer");
 	});
 
@@ -723,9 +738,16 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 		expect(readers.filter((file) => MODULE_LEVEL_ENV_IMPORT.test(read(file)))).toEqual([]);
 	});
 
-	it("dies on irrecoverable misconfiguration rather than failing typed, in the layer the guide names", () => {
+	it("dies on irrecoverable misconfiguration rather than failing typed, in every layer that reads a secret", () => {
 		expect(guide).toContain("`Effect.die` (see `DatabaseLive`)");
-		expect(read("src/infrastructure/db/client.ts")).toContain("Effect.die(");
+
+		const secretReaders = infrastructureFiles
+			.filter((file) => read(file).includes("Layer.effect("))
+			.filter((file) => read(file).includes("getSecret("));
+
+		expect(secretReaders.length).toBeGreaterThan(1);
+		expect(secretReaders.filter((file) => !read(file).includes("Effect.die("))).toEqual([]);
+		expect(secretReaders.filter((file) => LAUNDERED_SECRET.test(read(file)))).toEqual([]);
 	});
 
 	it("declares every tagged error in errors.ts, never beside a client", () => {
@@ -891,10 +913,18 @@ describe("application guide: the anti-corruption boundary", () => {
 
 	it("applies every optional-field default it cites, so the domain DTO stays total", () => {
 		const cited = [...new Set([...guide.matchAll(DTO_CITED_DEFAULT)].map(([, fallback]) => fallback))];
-		const dtoLayer = dtoFiles.map((file) => read(file)).join("\n");
+		const dtoLayer = dtoFiles.map((file) => read(file)).join(NEWLINE);
+		const defaulted = walk("src/domain")
+			.filter((file) => file.endsWith("schema.ts"))
+			.flatMap((file) => [...read(file).matchAll(SCHEMA_BOOLEAN_DEFAULT)].map(([, field]) => field));
 
 		expect(cited.length).toBeGreaterThan(0);
 		expect(cited.filter((fallback) => !dtoLayer.includes(fallback))).toEqual([]);
+
+		expect(defaulted.length).toBeGreaterThan(0);
+		expect(defaulted.filter((field) => !dtoLayer.includes(`${field}: rawArticle.fields.${field} ?? false`))).toEqual(
+			[],
+		);
 	});
 
 	it("turns a raw author into Author fields in the one module the guide names", () => {
@@ -1204,7 +1234,7 @@ describe("styles guide: derived constants and source order", () => {
 	});
 
 	it("declares the layer order in index.css and nowhere else", () => {
-		const declaring = walk("src/ui/styles")
+		const declaring = [...walk("src/ui"), ...walk("src/pages")]
 			.filter((file) => file.endsWith(".css"))
 			.filter((file) => LAYER_ORDER_DECLARATION.test(read(file)));
 
@@ -1410,7 +1440,7 @@ describe("modules guide: mixes, islands and data access", () => {
 	});
 
 	it("hydrates only the roots the Islands section censuses, and only with client:only", () => {
-		const hydrated = production(walk("src/ui"))
+		const hydrated = production([...walk("src/ui"), ...walk("src/pages")])
 			.filter((file) => SOURCE_FILE.test(file))
 			.flatMap((file) =>
 				[...read(file).matchAll(HYDRATION_DIRECTIVE)].map(([, name, directive, value]) => ({

@@ -24,7 +24,13 @@ export const EmailClientLive = Layer.effect(
 	EmailClient,
 	Effect.gen(function* () {
 		const { getSecret } = yield* Effect.promise(() => import("astro:env/server"));
-		const emails = new Resend(getSecret("RESEND_API_KEY")).emails;
+		const apiKey = getSecret("RESEND_API_KEY");
+
+		if (!apiKey) {
+			return yield* Effect.die(new Error("RESEND_API_KEY must be defined"));
+		}
+
+		const emails = new Resend(apiKey).emails;
 
 		return {
 			sendContactNotification: ({ name, email, html, text }: ContactNotification) =>
