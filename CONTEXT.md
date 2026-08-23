@@ -15,7 +15,7 @@ The collection of all Articles and the section that lists them (titled "The Blog
 _Avoid_: journal, news, feed, articles page.
 
 **Project**:
-A typology of work Bianca does — an area of her practice rather than a single deliverable — showcased in the portfolio with a name, a rich-text description rendered to HTML, and an image. The home page counts them under the heading "Disciplines": that is reader-facing copy, the concept is a Project everywhere in code. The term is expected to widen: ADR 0010 proposes giving a Project its own page, which is what will force the Project/Article boundary to be settled.
+A typology of work Bianca does (an area of her practice rather than a single deliverable), showcased in the portfolio with a name, a rich-text description rendered to HTML, and an image. The home page counts them under the heading "Disciplines": that is reader-facing copy, the concept is a Project everywhere in code. The term is expected to widen: ADR 0010 proposes giving a Project its own page, which is what will force the Project/Article boundary to be settled.
 _Avoid_: work, case study, portfolio item, sample.
 
 **Testimonial**:
@@ -25,11 +25,11 @@ _Avoid_: review, endorsement, recommendation, quote (bare).
 ## People & Places
 
 **Author**:
-The person credited with writing an Article, described by name, job title, current company, bio, profile image, and social links. In practice almost always Bianca, but the model is deliberately not exclusive to one Author — multiple Authors are supported. One Author is one Slug: the name is a display label, so two Authors sharing a name are still two Authors, each with their own Articles.
+The person credited with writing an Article, described by name, job title, current company, bio, profile image, and social links. In practice almost always Bianca, but the model is deliberately not exclusive to one Author: multiple Authors are supported. One Author is one Slug: the name is a display label, so two Authors sharing a name are still two Authors, each with their own Articles.
 _Avoid_: writer, contributor, user, admin.
 
 **Byline**:
-The Author attribution shown on an Article — who wrote it. Distinct from the Author entity itself.
+The Author attribution shown on an Article: who wrote it. Distinct from the Author entity itself.
 _Avoid_: credit, signature.
 
 **City**:
@@ -37,7 +37,7 @@ A place where the Author has lived, tied to their biography, carrying a name, a 
 _Avoid_: location, place, destination.
 
 **Period**:
-The span the Author lived in a City — a required start and an optional end; an open (missing) end reads as "Present".
+The span the Author lived in a City: a required start and an optional end; an open (missing) end reads as "Present".
 _Avoid_: duration, dates, timeframe.
 
 ## Taxonomy
@@ -59,17 +59,17 @@ The number of Articles associated with a Tag or Author Tag, shown next to it in 
 _Avoid_: total, frequency, tally.
 
 **Slug**:
-The URL-safe identifier that addresses a page: an Article under /articles, a Tag or an Author Tag under /tags. There is no author route — a Byline links to the Author's slug under /tags, which is where an Author Tag lives. A City has a slug too, derived from its name, but it addresses no page: it is the anchor id of the city's card on About. A Project has none yet; ADR 0010 is what would give it one.
+The URL-safe identifier that addresses a page: an Article under /articles, a Tag or an Author Tag under /tags. There is no author route: a Byline links to the Author's slug under /tags, which is where an Author Tag lives. A City has a slug too, derived from its name, but it addresses no page: it is the anchor id of the city's card on About. A Project has none yet; ADR 0010 is what would give it one.
 _Avoid_: permalink, handle, id.
 
 ## Editorial Concepts
 
 **Featured Article**:
-The reader-facing hero of the Blog — the first Article flagged as featured that also has a cover image, falling back to the first Article with a cover image if none is flagged. "First" means first in the Blog's listing order, so the fallback follows the Favorite-first sort rather than pure recency.
+The reader-facing hero of the Blog: the first Article flagged as featured that also has a cover image, falling back to the first Article with a cover image if none is flagged. "First" means first in the Blog's listing order, so the fallback follows the Favorite-first sort rather than pure recency.
 _Avoid_: hero, spotlight, top story, pinned.
 
 **Favorite**:
-An Article the Author (Bianca) marks as her own pick, which sorts it to the top of the Article collection — and therefore of the Blog listing, the sliders and the tag pages, which read that one order — ahead of the normal reverse-chronological order. The RSS feed is the exception: it re-sorts by publish date, because a subscriber's reader expects chronology rather than the Author's preference. This is the Author's private preference and a Featured Article is the reader-facing hero: separate flags, chosen for different reasons, though a Favorite with a cover image can decide where the Featured fallback lands.
+An Article the Author (Bianca) marks as her own pick, which sorts it to the top of the Article collection (and therefore of the Blog listing, the sliders and the tag pages, which read that one order) ahead of the normal reverse-chronological order. The RSS feed is the exception: it re-sorts by publish date, because a subscriber's reader expects chronology rather than the Author's preference. This is the Author's private preference and a Featured Article is the reader-facing hero: separate flags, chosen for different reasons, though a Favorite with a cover image can decide where the Featured fallback lands.
 _Avoid_: starred, pinned, highlight, best-of.
 
 **Featured Image**:
@@ -77,7 +77,7 @@ The cover image of an Article, shown at the top of the piece and in listings. An
 _Avoid_: cover, thumbnail, hero image, banner.
 
 **Republished Article**:
-An Article that first appeared elsewhere and is re-run here, flagged as such so a banner — labelled "Archival note" to the reader — can credit the earlier publication.
+An Article that first appeared elsewhere and is re-run here, flagged as such so a banner (labelled "Archival note" to the reader) can credit the earlier publication.
 _Avoid_: cross-post, syndicated, reprint, mirror.
 
 **Original Source**:
@@ -85,7 +85,7 @@ The earlier publication a Republished Article first appeared in. It is a name, n
 _Avoid_: canonical, origin, reference, backlink.
 
 **Reading Time**:
-The estimated minutes needed to read an Article, derived from its word count and never less than one: the bylines print the figure as plain text, so the shortest piece — and a body with no words at all — still reads as a minute rather than as nothing.
+The estimated minutes needed to read an Article, derived from its word count and never less than one: the bylines print the figure as plain text, so the shortest piece (and a body with no words at all) still reads as a minute rather than as nothing.
 _Avoid_: read time, length, duration.
 
 **Description**:
@@ -93,7 +93,7 @@ The short summary of an Article shown in listings and metadata, taken from an au
 _Avoid_: excerpt, summary, teaser, abstract, blurb.
 
 **Related Articles**:
-The set of *other* Articles suggested alongside a given one — either hand-picked by the Author or, failing that, inferred from shared Tags. Never the Article itself, whichever way the set was arrived at: identity here is the Slug, so two Articles that happen to share a title are still two Articles and each may suggest the other.
+The set of *other* Articles suggested alongside a given one: either hand-picked by the Author or, failing that, inferred from shared Tags. Never the Article itself, whichever way the set was arrived at: identity here is the Slug, so two Articles that happen to share a title are still two Articles and each may suggest the other.
 _Avoid_: recommended, suggested, more like this, see also.
 
 **Table of Contents**:
