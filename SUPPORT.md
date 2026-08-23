@@ -20,6 +20,12 @@ so a typo in an article is fixed there rather than here: use the
 [content issue](https://github.com/fbuireu/biancafiore/issues/new?template=content_issue.yml) template, or the
 contact form.
 
+## Anything else
+
+[Discussions](https://github.com/fbuireu/biancafiore/discussions) is open to anyone with a GitHub account:
+a question about how something here is built, or a proposal worth talking through before it becomes a feature
+request.
+
 ## Vulnerabilities
 
 Privately, through the [security policy](https://github.com/fbuireu/biancafiore/security/policy), never as a

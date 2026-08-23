@@ -3,6 +3,9 @@ contact_links:
   - name: The live site
     url: https://biancafiore.me
     about: See the site the issue is about
+  - name: Question, idea or discussion
+    url: https://github.com/fbuireu/biancafiore/discussions
+    about: Ask a question, or propose something before opening a feature request.
   - name: Security Policy
     url: https://github.com/fbuireu/biancafiore/security/policy
     about: Review our security policy and report vulnerabilities privately
