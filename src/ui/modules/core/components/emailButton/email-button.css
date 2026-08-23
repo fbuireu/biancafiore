@@ -1,3 +1,0 @@
-.mail-to__button:focus-visible {
-	outline-color: light-dark(inherit, var(--neutral-main));
-}
