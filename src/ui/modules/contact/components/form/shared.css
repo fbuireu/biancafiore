@@ -47,10 +47,6 @@
 		transition: width 0.2s;
 		width: 0;
 	}
-
-	&:is(:has(:focus, :not(:placeholder-shown)))::after {
-		width: 100%;
-	}
 }
 
 .contact-form__input,

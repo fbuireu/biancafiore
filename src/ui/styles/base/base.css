@@ -122,12 +122,10 @@
 		min-height: 100dvh;
 		width: 100%;
 
-		&:not(.page--projects, .page--article) {
-			margin: calc(var(--header-height)) auto 0;
+		margin: calc(var(--header-height)) auto 0;
 
-			@media (width <= 960px) {
-				margin: 0 auto;
-			}
+		@media (width <= 960px) {
+			margin: 0 auto;
 		}
 	}
 

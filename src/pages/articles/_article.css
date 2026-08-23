@@ -21,17 +21,8 @@ html.page--article body {
 	gap: 0 0.5rem;
 	scroll-margin-block-start: var(--header-height);
 
-	svg {
-		display: none;
-	}
-
 	&:hover {
 		color: var(--primary-main);
-
-		svg {
-			display: flex;
-			fill: var(--primary-main);
-		}
 	}
 }
 

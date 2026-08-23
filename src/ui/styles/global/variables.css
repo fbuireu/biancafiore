@@ -29,7 +29,6 @@
 		--gold-bright: light-dark(#b58e4d, #ddc084);
 		--surface: light-dark(#f1ede3, #1d1a13);
 		--header-height: 80px;
-		--global-max-width: 1440px;
 		--base-font-size: 16px;
 		--leading: 1.5;
 		--leading-heading: 1.2;
@@ -241,7 +240,6 @@
 		--space-xl: clamp(3rem, calc(2.7857rem + 1.0714vw), 3.75rem);
 		--space-2xl: clamp(4rem, calc(3.7143rem + 1.4286vw), 5rem);
 		--space-3xl: clamp(6rem, calc(5.5714rem + 2.1429vw), 7.5rem);
-		--global-border-radius: 0.25rem;
 		--grid-extra-small: 575px;
 		--grid-small: 720px;
 		--grid-medium: 960px;
@@ -286,12 +284,6 @@
 	syntax: "<length>";
 	inherits: false;
 	initial-value: 80px;
-}
-
-@property --global-max-width {
-	syntax: "<length>";
-	inherits: false;
-	initial-value: 1440px;
 }
 
 @property --leading {
@@ -420,12 +412,6 @@
 	initial-value: 6rem;
 }
 
-@property --global-border-radius {
-	syntax: "<length>";
-	inherits: false;
-	initial-value: 0.25rem;
-}
-
 @property --grid-extra-small {
 	syntax: "<length>";
 	inherits: false;
@@ -482,7 +468,7 @@
 
 @property --ease-elastic {
 	syntax: "*";
-	inherits: false;
+	inherits: true;
 }
 
 @property --reveal {
