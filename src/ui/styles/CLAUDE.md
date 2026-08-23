@@ -65,3 +65,4 @@ That nested inversion is exactly what breaks when lightningcss downlevels `light
 | `inverted-color-scheme` | Flips `color-scheme` against the page in both directions, for the sections censused under [Colour scheme](#colour-scheme), and is what the header watches to invert with them. |
 | `current-page` | Paints the entry for the route you are already on in `--primary-main` (header links, the last breadcrumb). |
 | `item-wrapper` | Gives a list item a positioning context, so a card's stretched `inset: 0` link (`.article-card__link`) covers the whole item instead of the nearest positioned ancestor. |
+| `visually-hidden` | Takes an element out of the page's appearance while leaving it to a screen reader and the tab order. The theme toggle's checkbox used `display: none`, which removes a control from both. |

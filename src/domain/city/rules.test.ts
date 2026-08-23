@@ -1,76 +1,52 @@
-import { createDate, formatPeriod } from "@domain/city/rules";
+import { createPeriod, formatPeriod } from "@domain/city/rules";
 import { describe, expect, it } from "vitest";
 
-describe("createDate", () => {
-	it("reduces both ends of a stay to their year", () => {
-		expect(createDate({ startDate: "2015-06-15T12:00:00", endDate: "2018-09-01T12:00:00" })).toEqual({
-			startDate: 2015,
-			endDate: 2018,
+describe("createPeriod", () => {
+	it("keeps the years the Author lived in a City, not the dates the CMS holds", () => {
+		expect(createPeriod({ startDate: "2019-06-01", endDate: "2021-09-30" })).toEqual({
+			startYear: 2019,
+			endYear: 2021,
 		});
 	});
 
-	it("marks a stay with no end date as still ongoing", () => {
-		expect(createDate({ startDate: "2021-06-15T12:00:00" })).toEqual({ startDate: 2021, endDate: "Present" });
+	it("leaves the end open when the Author has not left, which is what Present means", () => {
+		expect(createPeriod({ startDate: "2022-01-15" })).toEqual({ startYear: 2022 });
 	});
 
-	it("treats an empty end date the same as a missing one", () => {
-		expect(createDate({ startDate: "2021-06-15T12:00:00", endDate: "" }).endDate).toBe("Present");
+	it("treats an empty end date as no end date at all", () => {
+		expect(createPeriod({ startDate: "2022-01-15", endDate: "" })).toEqual({ startYear: 2022 });
 	});
 
-	it("always reports an end, so the field is never left undefined", () => {
-		const period = createDate({ startDate: "2021-06-15T12:00:00" });
-
-		expect("endDate" in period).toBe(true);
-		expect(period.endDate).not.toBeUndefined();
+	it("reads the year in UTC, so a January start is the same year west of it", () => {
+		expect(createPeriod({ startDate: "2020-01-01T00:00:00Z" }).startYear).toBe(2020);
 	});
 
-	it("collapses a stay that begins and ends in the same year to one repeated year", () => {
-		expect(createDate({ startDate: "2020-01-10T12:00:00", endDate: "2020-12-20T12:00:00" })).toEqual({
-			startDate: 2020,
-			endDate: 2020,
+	it("keeps a period that opens and closes across a new year as two years", () => {
+		expect(createPeriod({ startDate: "2019-12-31", endDate: "2020-01-01" })).toEqual({
+			startYear: 2019,
+			endYear: 2020,
 		});
 	});
 
-	it("runs somewhere with a non-zero offset, without which the UTC case below proves nothing", () => {
-		expect([
-			new Date(Date.UTC(2021, 0, 1)).getTimezoneOffset(),
-			new Date(Date.UTC(2021, 6, 1)).getTimezoneOffset(),
-		]).not.toContain(0);
+	it("refuses a start the CMS left unreadable rather than minting a NaN that reaches the page", () => {
+		expect(() => createPeriod({ startDate: "not-a-date" })).toThrow(/unreadable date/);
 	});
 
-	it("reads the year in UTC, so a stay does not shift a year with the runtime timezone", () => {
-		expect(createDate({ startDate: "2021-01-01T00:30:00Z", endDate: "2021-12-31T23:30:00Z" })).toEqual({
-			startDate: 2021,
-			endDate: 2021,
-		});
-	});
-
-	it("accepts a full ISO timestamp as readily as a plain date", () => {
-		expect(createDate({ startDate: "2017-03-04T08:30:00.000Z" }).startDate).toBe(2017);
-	});
-
-	it("yields NaN instead of raising when the date cannot be parsed", () => {
-		expect(Number.isNaN(createDate({ startDate: "not-a-date" }).startDate)).toBe(true);
-		expect(Number.isNaN(createDate({ startDate: "2020-06-15T12:00:00", endDate: "whenever" }).endDate as number)).toBe(
-			true,
-		);
+	it("refuses an unreadable end for the same reason", () => {
+		expect(() => createPeriod({ startDate: "2019-01-01", endDate: "not-a-date" })).toThrow(/unreadable date/);
 	});
 });
 
 describe("formatPeriod", () => {
-	it("joins the two years with a hyphen", () => {
-		expect(formatPeriod({ startDate: "2015-06-15T12:00:00", endDate: "2018-09-01T12:00:00" })).toBe("2015-2018");
+	it("prints a closed period as its two years", () => {
+		expect(formatPeriod({ startYear: 2015, endYear: 2018 })).toBe("2015-2018");
 	});
 
-	it('reads as "Present" while the stay is still open', () => {
-		expect(formatPeriod({ startDate: "2021-06-15T12:00:00" })).toBe("2021-Present");
+	it("prints an open period as running to Present, the word CONTEXT.md gives it", () => {
+		expect(formatPeriod({ startYear: 2021 })).toBe("2021-Present");
 	});
 
-	it("repeats the year for a stay contained in a single year", () => {
-		expect(formatPeriod({ startDate: "2020-01-10T12:00:00", endDate: "2020-12-20T12:00:00" })).toBe("2020-2020");
-	});
-
-	it("surfaces an unparseable date as NaN in the rendered period", () => {
-		expect(formatPeriod({ startDate: "not-a-date" })).toBe("NaN-Present");
+	it("prints a single year as that year on both sides, since the Author has not left", () => {
+		expect(formatPeriod({ startYear: 2024, endYear: 2024 })).toBe("2024-2024");
 	});
 });

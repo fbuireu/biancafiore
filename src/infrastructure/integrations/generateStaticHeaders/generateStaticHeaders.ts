@@ -1,6 +1,6 @@
 import { writeFileSync } from "node:fs";
+import { SECURITY_HEADERS } from "@const/securityHeaders";
 import type { AstroIntegration } from "astro";
-import { SECURITY_HEADERS } from "../../../const/securityHeaders";
 
 export function generateStaticHeaders(): AstroIntegration {
 	return {

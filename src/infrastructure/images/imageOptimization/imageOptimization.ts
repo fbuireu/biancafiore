@@ -21,7 +21,7 @@ const CONTENTFUL_FIT = {
 type ImageFormat = "auto" | keyof typeof CONTENTFUL_FORMAT;
 type ImageFit = keyof typeof CONTENTFUL_FIT;
 
-export interface ImageTransformOptions {
+interface ImageTransformOptions {
 	width?: number;
 	height?: number;
 	quality?: number;

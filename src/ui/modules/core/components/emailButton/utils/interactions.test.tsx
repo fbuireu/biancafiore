@@ -1,15 +1,19 @@
 import { CONTACT_DETAILS } from "@const/index";
-import { afterEach, describe, expect, it, vi } from "vitest";
 import {
-	activateEmailButtons,
 	EMAIL_ADDRESS_PLACEHOLDER,
 	EMAIL_BUTTON_ADDRESS_CLASS,
 	EMAIL_BUTTON_CLASS,
-} from "./interactions";
+} from "@modules/core/components/emailButton/const";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { activateEmailButtons } from "./interactions";
 
 const ADDRESS = atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA);
 
-const button = ({ shows }: { shows: "label" | "address" }): HTMLButtonElement => {
+interface ButtonParams {
+	shows: "label" | "address";
+}
+
+const button = ({ shows }: ButtonParams): HTMLButtonElement => {
 	const element = document.createElement("button");
 
 	element.type = "button";
@@ -20,7 +24,12 @@ const button = ({ shows }: { shows: "label" | "address" }): HTMLButtonElement =>
 	return element;
 };
 
-const click = (element: HTMLElement, { trusted }: { trusted: boolean }) => {
+interface ClickParams {
+	element: HTMLElement;
+	trusted: boolean;
+}
+
+const click = ({ element, trusted }: ClickParams) => {
 	const event = new MouseEvent("click", { bubbles: true, cancelable: true });
 
 	Object.defineProperty(event, "isTrusted", { value: trusted });
@@ -40,7 +49,7 @@ describe("activateEmailButtons", () => {
 		const element = button({ shows: "label" });
 
 		activateEmailButtons();
-		click(element, { trusted: true });
+		click({ element: element, trusted: true });
 
 		expect(assign).toHaveBeenCalledWith(`mailto:${ADDRESS}`);
 	});
@@ -50,7 +59,7 @@ describe("activateEmailButtons", () => {
 		const element = button({ shows: "label" });
 
 		activateEmailButtons();
-		click(element, { trusted: false });
+		click({ element: element, trusted: false });
 
 		expect(assign).not.toHaveBeenCalled();
 	});
@@ -59,7 +68,7 @@ describe("activateEmailButtons", () => {
 		const assign = composerTargets();
 		const element = button({ shows: "label" });
 
-		click(element, { trusted: true });
+		click({ element: element, trusted: true });
 
 		expect(assign).not.toHaveBeenCalled();
 	});
@@ -92,11 +101,11 @@ describe("activateEmailButtons", () => {
 		document.body.append(root);
 
 		activateEmailButtons(root);
-		click(outside, { trusted: true });
+		click({ element: outside, trusted: true });
 
 		expect(assign).not.toHaveBeenCalled();
 
-		click(inside, { trusted: true });
+		click({ element: inside, trusted: true });
 
 		expect(assign).toHaveBeenCalledWith(`mailto:${ADDRESS}`);
 	});
@@ -107,7 +116,7 @@ describe("activateEmailButtons", () => {
 
 		activateEmailButtons();
 		activateEmailButtons();
-		click(element, { trusted: true });
+		click({ element: element, trusted: true });
 
 		expect(assign).toHaveBeenCalledTimes(1);
 	});

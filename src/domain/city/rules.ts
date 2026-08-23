@@ -1,22 +1,29 @@
-interface CreateDateParams {
+import type { CityPeriod } from "@domain/city/types";
+
+const OPEN_END_LABEL = "Present";
+
+interface CreatePeriodParams {
 	startDate: string;
 	endDate?: string;
 }
 
-interface CreateDateReturn {
-	startDate: number;
-	endDate?: number | "Present";
-}
+const yearOf = (date: string): number => {
+	const year = new Date(date).getUTCFullYear();
 
-export function createDate({ startDate, endDate }: CreateDateParams): CreateDateReturn {
+	if (Number.isNaN(year)) {
+		throw new Error(`A City reached the mapper with an unreadable date: ${date}`);
+	}
+
+	return year;
+};
+
+export function createPeriod({ startDate, endDate }: CreatePeriodParams): CityPeriod {
 	return {
-		startDate: new Date(startDate).getUTCFullYear(),
-		endDate: endDate ? new Date(endDate).getUTCFullYear() : "Present",
+		startYear: yearOf(startDate),
+		...(endDate && { endYear: yearOf(endDate) }),
 	};
 }
 
-export function formatPeriod(params: CreateDateParams): string {
-	const { startDate, endDate } = createDate(params);
-
-	return `${startDate}-${endDate}`;
+export function formatPeriod({ startYear, endYear }: CityPeriod): string {
+	return `${startYear}-${endYear ?? OPEN_END_LABEL}`;
 }

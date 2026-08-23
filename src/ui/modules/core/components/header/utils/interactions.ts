@@ -1,3 +1,4 @@
+import { motionTimeScale } from "@modules/core/utils/motion";
 import { gsap, Power2, Power3, Power4 } from "gsap";
 
 const BACKGROUND_OBSERVER_SELECTORS = {
@@ -30,9 +31,15 @@ const TOGGLE_MENU_SELECTORS = {
 	NAVIGATION_ITEMS: ".navigation__menu__item > *",
 	QUOTE: ".navigation__menu__quote > *",
 	FIRST_MENU_LINK: ".navigation__menu__nav a",
+	COVERED_BY_MENU: "main, footer, .scroll-top-wrapper",
 };
 
-const isIntersecting = ({ element, midline }: { element: Element; midline: number }): boolean => {
+interface IsIntersectingParams {
+	element: Element;
+	midline: number;
+}
+
+const isIntersecting = ({ element, midline }: IsIntersectingParams): boolean => {
 	const { top, bottom } = element.getBoundingClientRect();
 
 	return midline >= top && midline < bottom;
@@ -66,136 +73,139 @@ export function backgroundObserver(): void {
 		?.classList.toggle(INTERSECTED_CLASSES.HEADER_MENU_LOGO, hasIntersected);
 }
 
-window.addEventListener("scroll", backgroundObserver);
+export function watchBackground(): void {
+	window.addEventListener("scroll", backgroundObserver, { passive: true });
+	backgroundObserver();
+}
 
-export function toggleMenu(): void {
-	const {
-		HTML: HTML_SELECTOR,
-		TOGGLE_MENU_BUTTON: TOGGLE_MENU_BUTTON_SELECTOR,
-		MENU_OVERLAY,
-		OVERLAY_PATH,
-		BUTTON_OUTLINE,
-		HEADER_MENU,
-		NAVIGATION_ITEMS,
-		QUOTE,
+export interface MenuTimeline {
+	reversed(value?: boolean): unknown;
+	eventCallback(type: "onComplete", callback: () => void): unknown;
+}
+
+export interface MenuElements {
+	html: HTMLElement;
+	button: HTMLElement;
+	text: HTMLElement | null;
+}
+
+export interface WireMenuParams {
+	elements: MenuElements;
+	signal: AbortSignal;
+	buildTimeline?: (onButtonUpdate: () => void) => MenuTimeline;
+}
+
+const MENU_TEXT_LABEL = { OPEN: "Close", CLOSED: "Menu" } as const;
+const CLOSE_LABEL_DELAY = 500;
+
+function buildMenuTimeline(onButtonUpdate: () => void): MenuTimeline {
+	const { MENU_OVERLAY, OVERLAY_PATH, BUTTON_OUTLINE, HEADER_MENU, NAVIGATION_ITEMS, QUOTE, HEADER_MENU_TEXT } =
+		TOGGLE_MENU_SELECTORS;
+	const { POWER4_IN_OUT, POWER2_EASE_IN, POWER2_EASE_OUT, POWER3_OUT, PATH_START, PATH_END } =
+		TOGGLE_MENU_ANIMATION_CONFIG;
+
+	const timeline = gsap.timeline({ paused: true });
+
+	timeline.timeScale(motionTimeScale());
+
+	timeline.eventCallback("onReverseComplete", () => backgroundObserver());
+	timeline.to(MENU_OVERLAY, { display: "block" });
+	timeline.to(
 		HEADER_MENU_TEXT,
-		FIRST_MENU_LINK: FIRST_MENU_LINK_SELECTOR,
-	} = TOGGLE_MENU_SELECTORS;
+		{ top: "1.75rem", left: "1.25rem", fontSize: "1.5rem", x: "-1rem", y: 0, ease: POWER4_IN_OUT, duration: 1 },
+		"<",
+	);
+	timeline.add(() => onButtonUpdate(), "<");
+	timeline.to(
+		BUTTON_OUTLINE,
+		{ width: "90px", height: "90px", x: "-1rem", y: 0, ease: POWER4_IN_OUT, duration: 1 },
+		"<",
+	);
+	timeline
+		.to(OVERLAY_PATH, { attr: { d: PATH_START }, ease: POWER2_EASE_IN, duration: 1 }, "<")
+		.to(OVERLAY_PATH, { attr: { d: PATH_END }, ease: POWER2_EASE_OUT, duration: 1 }, "-=0.5");
+	timeline.to(HEADER_MENU, { visibility: "visible", duration: 1 }, "-=0.5");
+	timeline.to(NAVIGATION_ITEMS, { top: 0, ease: POWER3_OUT, stagger: { amount: 0.5 }, duration: 0.75 }, "<").reverse();
+	timeline.to(QUOTE, { top: 0, ease: POWER3_OUT, duration: 0.75 }, "<");
 
-	const HTML = document.querySelector(HTML_SELECTOR) as HTMLHtmlElement;
-	const TOGGLE_MENU_BUTTON = document.querySelector(TOGGLE_MENU_BUTTON_SELECTOR) as HTMLElement;
-	const MENU_TEXT = document.querySelector(HEADER_MENU_TEXT) as HTMLElement;
+	return timeline;
+}
 
-	if (!TOGGLE_MENU_BUTTON || TOGGLE_MENU_BUTTON.dataset.menuInitialized === "true") {
-		return;
+const setInert = (isMenuOpen: boolean): void => {
+	for (const region of document.querySelectorAll<HTMLElement>(TOGGLE_MENU_SELECTORS.COVERED_BY_MENU)) {
+		region.inert = isMenuOpen;
 	}
+};
 
-	TOGGLE_MENU_BUTTON.dataset.menuInitialized = "true";
+export function wireMenu({ elements, signal, buildTimeline = buildMenuTimeline }: WireMenuParams): void {
+	const { html, button, text } = elements;
 
 	let isMenuOpen = false;
-	let toggleMenuText = "Menu";
-	const timeline = gsap.timeline({ paused: true });
-	timeline.eventCallback("onReverseComplete", () => backgroundObserver());
-
-	HTML.classList.remove(MENU_OPEN_CLASS);
-	HTML.style.overflow = "";
-
-	const toggleMenuItems = (): void => {
-		const { POWER4_IN_OUT, POWER2_EASE_IN, POWER2_EASE_OUT, POWER3_OUT, PATH_START, PATH_END } =
-			TOGGLE_MENU_ANIMATION_CONFIG;
-
-		timeline.to(MENU_OVERLAY, { display: "block" });
-		timeline.to(
-			MENU_TEXT,
-			{
-				top: "1.75rem",
-				left: "1.25rem",
-				fontSize: "1.5rem",
-				x: "-1rem",
-				y: 0,
-				ease: POWER4_IN_OUT,
-				duration: 1,
-			},
-			"<",
-		);
-		timeline.add(() => updateButton(), "<");
-		timeline.to(
-			BUTTON_OUTLINE,
-			{
-				width: "90px",
-				height: "90px",
-				x: "-1rem",
-				y: 0,
-				ease: POWER4_IN_OUT,
-				duration: 1,
-			},
-			"<",
-		);
-		timeline
-			.to(OVERLAY_PATH, { attr: { d: PATH_START }, ease: POWER2_EASE_IN, duration: 1 }, "<")
-			.to(OVERLAY_PATH, { attr: { d: PATH_END }, ease: POWER2_EASE_OUT, duration: 1 }, "-=0.5");
-		timeline.to(HEADER_MENU, { visibility: "visible", duration: 1 }, "-=0.5");
-		timeline
-			.to(
-				NAVIGATION_ITEMS,
-				{
-					top: 0,
-					ease: POWER3_OUT,
-					stagger: { amount: 0.5 },
-					duration: 0.75,
-				},
-				"<",
-			)
-			.reverse();
-		timeline.to(
-			QUOTE,
-			{
-				top: 0,
-				ease: POWER3_OUT,
-				duration: 0.75,
-			},
-			"<",
-		);
-	};
-
-	toggleMenuItems();
 
 	const updateButton = (): void => {
-		if (!MENU_TEXT) return;
-
-		toggleMenuText = isMenuOpen ? "Close" : "Menu";
-		const timeout = isMenuOpen ? 500 : 0;
+		if (!text) return;
 
 		document.documentElement.style.overflow = isMenuOpen ? "hidden" : "initial";
 
-		setTimeout(() => {
-			MENU_TEXT.textContent = toggleMenuText;
-		}, timeout);
+		setTimeout(
+			() => {
+				text.textContent = isMenuOpen ? MENU_TEXT_LABEL.OPEN : MENU_TEXT_LABEL.CLOSED;
+			},
+			isMenuOpen ? CLOSE_LABEL_DELAY : 0,
+		);
 	};
 
-	const closeMenuAndFocusButton = (): void => {
-		TOGGLE_MENU_BUTTON.click();
-		TOGGLE_MENU_BUTTON.focus();
-	};
+	const timeline = buildTimeline(updateButton);
 
-	TOGGLE_MENU_BUTTON.addEventListener("click", () => {
-		isMenuOpen = !isMenuOpen;
-		timeline.reversed(!timeline.reversed());
-		TOGGLE_MENU_BUTTON.setAttribute("aria-expanded", String(isMenuOpen));
-
-		HTML.classList.toggle(MENU_OPEN_CLASS, isMenuOpen);
-
-		if (isMenuOpen) {
-			const FIRST_MENU_LINK = document.querySelector(FIRST_MENU_LINK_SELECTOR) as HTMLElement;
-			FIRST_MENU_LINK?.focus();
-		}
+	timeline.eventCallback("onComplete", () => {
+		document.querySelector<HTMLElement>(TOGGLE_MENU_SELECTORS.FIRST_MENU_LINK)?.focus();
 	});
 
-	document.addEventListener("keydown", (event) => {
-		if (event.key !== "Escape" || !isMenuOpen) {
-			return;
-		}
+	html.classList.remove(MENU_OPEN_CLASS);
+	html.style.overflow = "";
 
-		closeMenuAndFocusButton();
+	button.addEventListener(
+		"click",
+		() => {
+			isMenuOpen = !isMenuOpen;
+			timeline.reversed(!timeline.reversed());
+			button.setAttribute("aria-expanded", String(isMenuOpen));
+			html.classList.toggle(MENU_OPEN_CLASS, isMenuOpen);
+
+			setInert(isMenuOpen);
+		},
+		{ signal },
+	);
+
+	document.addEventListener(
+		"keydown",
+		(event) => {
+			if (event.key !== "Escape" || !isMenuOpen) return;
+
+			button.click();
+			button.focus();
+		},
+		{ signal },
+	);
+}
+
+let menuListeners: AbortController | undefined;
+
+export function initMenu(): void {
+	const html = document.querySelector<HTMLElement>(TOGGLE_MENU_SELECTORS.HTML);
+	const button = document.querySelector<HTMLElement>(TOGGLE_MENU_SELECTORS.TOGGLE_MENU_BUTTON);
+
+	if (!html || !button || button.dataset.menuInitialized === "true") {
+		return;
+	}
+
+	button.dataset.menuInitialized = "true";
+
+	menuListeners?.abort();
+	menuListeners = new AbortController();
+
+	wireMenu({
+		elements: { html, button, text: document.querySelector<HTMLElement>(TOGGLE_MENU_SELECTORS.HEADER_MENU_TEXT) },
+		signal: menuListeners.signal,
 	});
 }

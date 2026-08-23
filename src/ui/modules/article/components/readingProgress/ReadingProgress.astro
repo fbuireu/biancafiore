@@ -4,9 +4,9 @@ import "./reading-progress.css";
 <div class="reading-progress" />
 
 <script>
-	import { getReadingProgress } from "@modules/article/components/readingProgress/utils/progress";
+	import { initReadingProgress } from "@modules/article/components/readingProgress/utils/progress";
 
 	document.addEventListener("astro:page-load", () => {
-		getReadingProgress();
+		initReadingProgress();
 	});
 </script>

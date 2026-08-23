@@ -1,3 +1,5 @@
+import { CALENDLY, CALENDLY_WIDGET_SCRIPT } from "@const/calendly";
+
 const TabId = {
 	EMAIL: "email",
 	APPOINTMENT: "appointment",
@@ -9,13 +11,18 @@ export const TAB_QUERY_KEY = "tab";
 
 const SELECTORS = {
 	TAB: ".contact-tab",
-	CALENDLY_WIDGET: ".calendly-inline-widget",
+	CALENDLY_WIDGET: `.${CALENDLY.WIDGET_CLASS}`,
 };
-const CALENDLY_SCRIPT_URL = "https://assets.calendly.com/assets/external/widget.js";
 
 const TAB_IDS: readonly string[] = Object.values(TabId);
 
 const isTabId = (value?: string | null): value is TabId => !!value && TAB_IDS.includes(value);
+
+export function activeTab(url: URL): TabId {
+	const requested = url.searchParams.get(TAB_QUERY_KEY);
+
+	return isTabId(requested) ? requested : TabId.EMAIL;
+}
 
 const getTabs = (): NodeListOf<HTMLElement> => document.querySelectorAll(SELECTORS.TAB);
 
@@ -35,12 +42,12 @@ const loadCalendly = (): void => {
 		return;
 	}
 
-	if (document.querySelector(`script[src="${CALENDLY_SCRIPT_URL}"]`)) {
+	if (document.querySelector(`script[src="${CALENDLY_WIDGET_SCRIPT}"]`)) {
 		return;
 	}
 
 	const script = document.createElement("script");
-	script.src = CALENDLY_SCRIPT_URL;
+	script.src = CALENDLY_WIDGET_SCRIPT;
 	script.async = true;
 	script.defer = true;
 	document.head.appendChild(script);
@@ -58,6 +65,7 @@ const applyTab = (tabId: TabId): void => {
 		const isActive = tabContentId === tabId;
 		tab.classList.toggle("contact-tab--active", isActive);
 		tab.classList.toggle("underline-on-hover--active", isActive);
+		tab.querySelector('[role="tab"]')?.setAttribute("aria-selected", String(isActive));
 		tabContent.classList.toggle("contact-tab__content--active", isActive);
 	}
 

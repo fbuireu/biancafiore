@@ -4,6 +4,7 @@ import sitemap from "@astrojs/sitemap";
 import { defineConfig, envField, fontProviders, memoryCache } from "astro/config";
 import { Features } from "lightningcss";
 import { IMAGE_CDN } from "./src/const/imageCdn";
+import { NOINDEX_ROUTES } from "./src/const/noindexRoutes";
 import { generateStaticHeaders } from "./src/infrastructure/integrations/generateStaticHeaders";
 
 const isProductionBuild = process.env.CLOUDFLARE_ENV === "production";
@@ -80,13 +81,10 @@ export default defineConfig({
 		react(),
 		sitemap({
 			filter: (page) => {
-				const SITEMAP_ALLOWED_SEGMENTS = ["articles", "tags"];
 				const { pathname } = new URL(page);
-				const [, segment, slug] = pathname.split("/");
 
-				return SITEMAP_ALLOWED_SEGMENTS.includes(segment) && Boolean(slug);
+				return !NOINDEX_ROUTES.some((route) => pathname === route || pathname === `${route}/`);
 			},
-			customPages: ["https://biancafiore.me/tags"],
 		}),
 	],
 	adapter: cloudflare({ imageService: isProductionBuild ? "cloudflare" : "passthrough" }),

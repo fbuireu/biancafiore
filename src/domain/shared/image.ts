@@ -16,4 +16,7 @@ export const imageSchema = z.object({
 		webp: z.boolean(),
 	}),
 	placeholder: z.string().optional(),
+	shareCrops: z.array(z.string()).default([]),
 });
+
+export type ImageDTO = z.infer<typeof imageSchema>;

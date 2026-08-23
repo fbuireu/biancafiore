@@ -1,39 +1,40 @@
-import { articleReference } from "@application/dto/article/utils/reference";
+import type { RawArticle } from "@application/dto/article/types";
+import { orderArticleReferences } from "@application/dto/article/utils/order";
+import type { RawAuthor } from "@application/dto/author/types";
 import type { RawTag } from "@application/dto/tag/types";
-import { sortFavoriteFirst } from "@domain/article";
-import type { Reference } from "@domain/shared/reference";
 import { type TagIndexEntryDTO, TagType } from "@domain/tag";
-import type { Entry, EntrySkeletonType } from "contentful";
 
-const toArticleReferences = (rawArticles: Entry<EntrySkeletonType>[]): Reference<"articles">[] =>
-	sortFavoriteFirst(
-		rawArticles.map((article) => ({
-			reference: articleReference(article),
-			isFavorite: Boolean(article.fields.isFavorite),
-			publishDateISO: String(article.fields.publishDate ?? ""),
-		})),
-	).map(({ reference }) => reference);
+export const TAG_INDEX_ARTICLE_FIELDS: `fields.${string}`[] = [
+	"fields.slug",
+	"fields.tags",
+	"fields.author",
+	"fields.isFavorite",
+	"fields.publishDate",
+];
+
+export const TAG_INDEX_AUTHOR_FIELDS: `fields.${string}`[] = ["fields.name", "fields.slug"];
+
+const authorSlugOf = (article: RawArticle): string | undefined =>
+	"fields" in article.fields.author ? article.fields.author.fields.slug.trim() : undefined;
+
+const tagSlugsOf = (article: RawArticle): string[] =>
+	(article.fields.tags ?? []).flatMap((tag) => ("fields" in tag ? [tag.fields.slug.trim()] : []));
 
 interface GetAuthorsParams {
-	rawAuthors: Entry<EntrySkeletonType>[];
-	rawArticles: Entry<EntrySkeletonType>[];
+	rawAuthors: RawAuthor[];
+	rawArticles: RawArticle[];
 }
 
 export function getAuthors({ rawAuthors, rawArticles }: GetAuthorsParams): TagIndexEntryDTO[] {
-	return rawAuthors.flatMap((author) => {
-		const slug = String(author.fields.slug).trim();
-		const articles = toArticleReferences(
-			rawArticles.filter((article) => {
-				const articleAuthor = article.fields.author as Entry<EntrySkeletonType> | undefined;
-				return String(articleAuthor?.fields?.slug).trim() === slug;
-			}),
-		);
+	return rawAuthors.flatMap((rawAuthor) => {
+		const slug = rawAuthor.fields.slug.trim();
+		const articles = orderArticleReferences(rawArticles.filter((article) => authorSlugOf(article) === slug));
 
 		if (articles.length === 0) return [];
 
 		return [
 			{
-				name: String(author.fields.name).trim(),
+				name: rawAuthor.fields.name.trim(),
 				slug,
 				type: TagType.AUTHOR,
 				articles,
@@ -42,34 +43,22 @@ export function getAuthors({ rawAuthors, rawArticles }: GetAuthorsParams): TagIn
 	});
 }
 
-interface GetTags {
+interface GetTagsParams {
 	rawTags: RawTag[];
-	rawArticles: Entry<EntrySkeletonType>[];
+	rawArticles: RawArticle[];
 }
 
-interface GetArticlesByTagParams {
-	rawTag: RawTag;
-	rawArticles: Entry<EntrySkeletonType>[];
-}
-
-const getArticlesByTag = ({ rawTag, rawArticles }: GetArticlesByTagParams): Reference<"articles">[] =>
-	toArticleReferences(
-		rawArticles.filter((article) => {
-			const tags = article.fields.tags as Array<Entry<EntrySkeletonType>> | undefined;
-			return tags?.some((tag) => String(tag.fields?.slug).trim() === String(rawTag.fields.slug).trim());
-		}),
-	);
-
-export function getTags({ rawTags, rawArticles }: GetTags): TagIndexEntryDTO[] {
+export function getTags({ rawTags, rawArticles }: GetTagsParams): TagIndexEntryDTO[] {
 	return rawTags.flatMap((rawTag) => {
-		const articles = getArticlesByTag({ rawTag, rawArticles });
+		const slug = rawTag.fields.slug.trim();
+		const articles = orderArticleReferences(rawArticles.filter((article) => tagSlugsOf(article).includes(slug)));
 
 		if (articles.length === 0) return [];
 
 		return [
 			{
-				name: String(rawTag.fields.name).trim(),
-				slug: String(rawTag.fields.slug).trim(),
+				name: rawTag.fields.name.trim(),
+				slug,
 				type: TagType.TAG,
 				articles,
 			},

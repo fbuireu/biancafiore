@@ -2,6 +2,7 @@ import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 
 export const SITEVERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
+export const GREEN_CHECK_URL = "https://api.thegreenwebfoundation.org/api/v3/greencheck/*";
 
 export const escapedRequests: string[] = [];
 
@@ -118,6 +119,37 @@ export function imageDouble({ url, bytes, status = 200, unreachable, failFirst =
 			if (status !== 200) return new HttpResponse(null, { status });
 
 			return HttpResponse.arrayBuffer(bytes ?? new ArrayBuffer(8), { headers: { "content-type": "image/webp" } });
+		}),
+	);
+
+	return { calls };
+}
+
+export interface GreenCheckDoubleOptions {
+	green?: boolean;
+	unreachable?: boolean;
+	malformed?: boolean;
+}
+
+export interface GreenCheckDouble {
+	calls: string[];
+}
+
+export function greenCheckDouble({
+	green = false,
+	unreachable,
+	malformed,
+}: GreenCheckDoubleOptions = {}): GreenCheckDouble {
+	const calls: string[] = [];
+
+	server.use(
+		http.get(GREEN_CHECK_URL, ({ request }) => {
+			calls.push(request.url);
+
+			if (unreachable) return HttpResponse.error();
+			if (malformed) return HttpResponse.text("not json at all");
+
+			return HttpResponse.json({ green });
 		}),
 	);
 

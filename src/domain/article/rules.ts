@@ -1,12 +1,11 @@
 import type { ArticleDTO, ArticleHeading, TableOfContents } from "@domain/article/types";
-import { ArticleType } from "@domain/article/types";
+import { formatDate } from "@shared/utils/dates";
 
 const WORDS_PER_MINUTE = 200;
 const MINIMUM_READING_MINUTES = 1;
 const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 const WHITESPACE_REGEX = /\s+/g;
 const TABLE_OF_CONTENTS_LEVELS = [2, 3, 4, 5, 6];
-const HEADING_LEVEL_OFFSET = 1;
 const MAX_DESCRIPTION_LENGTH = 200;
 
 export function getReadingTime(content: string): number {
@@ -21,9 +20,7 @@ export function isTableOfContentsHeading(level: number): boolean {
 }
 
 export function generateTableOfContents(headings: ArticleHeading[]): TableOfContents {
-	return headings
-		.filter(({ level }) => isTableOfContentsHeading(level))
-		.map(({ id, text, level }) => ({ id, heading: text, level: level - HEADING_LEVEL_OFFSET }));
+	return headings.map(({ id, text, level, scope }) => ({ id, heading: text, level, scope }));
 }
 
 export function deriveDescription(rawDescription: string): string {
@@ -34,8 +31,18 @@ export function deriveDescription(rawDescription: string): string {
 		: cleanDescription;
 }
 
-export function deriveVariant(hasFeaturedImage: boolean): (typeof ArticleType)[keyof typeof ArticleType] {
-	return hasFeaturedImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
+export function publishDateISO(date: string): string {
+	const timestamp = Date.parse(date);
+
+	if (Number.isNaN(timestamp)) {
+		throw new Error(`An Article reached the mapper with an unreadable publish date: ${date}`);
+	}
+
+	return new Date(timestamp).toISOString();
+}
+
+export function formatPublishDate(isoDate: string): string {
+	return formatDate(isoDate);
 }
 
 export function sortFavoriteFirst<T extends Pick<ArticleDTO, "isFavorite" | "publishDateISO">>(articles: T[]): T[] {

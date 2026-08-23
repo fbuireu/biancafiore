@@ -8,7 +8,7 @@ body:
       value: |
         Thanks for taking the time to fill out this bug report! Please provide as much detail as possible.
 
-        Note: typos or mistakes *in the content* (articles, projects) are not code bugs — please use the Content Issue template instead.
+        Note: typos or mistakes *in the content* (articles, projects) are not code bugs; please use the Content Issue template instead.
   - type: textarea
     id: description
     attributes:

@@ -1,4 +1,4 @@
-import { deSlugify, escapeHtml, slugify } from "@shared/utils/strings";
+import { deSlugify, escapeHtml, safeUrl, slugify } from "@shared/utils/strings";
 import { describe, expect, it } from "vitest";
 
 describe("slugify", () => {
@@ -127,5 +127,58 @@ describe("escapeHtml", () => {
 
 	it("returns an empty string for empty input", () => {
 		expect(escapeHtml("")).toBe("");
+	});
+});
+
+describe("safeUrl", () => {
+	it.each(["http://example.com", "https://example.com/a", "mailto:ada@example.com", "tel:+34600000000"])(
+		"lets %s through, because its scheme is one an editor may link to",
+		(url) => {
+			expect(safeUrl(url)).toBe(url);
+		},
+	);
+
+	it.each([
+		"javascript:alert(1)",
+		"JavaScript:alert(1)",
+		"  javascript:alert(1)  ",
+		"data:text/html;base64,PHNjcmlwdD4=",
+		"vbscript:msgbox(1)",
+		"file:///etc/passwd",
+	])("answers nothing at all for %s, so the attribute it feeds is emptied rather than trusted", (url) => {
+		expect(safeUrl(url)).toBe("");
+	});
+
+	it("lets a relative link through, since it carries no scheme to refuse", () => {
+		expect(safeUrl("/articles/a-piece")).toBe("/articles/a-piece");
+	});
+
+	it("lets a protocol-relative link through, for the same reason", () => {
+		expect(safeUrl("//images.ctfassets.net/hero.jpg")).toBe("//images.ctfassets.net/hero.jpg");
+	});
+
+	it("escapes what it lets through, so a quote cannot close the attribute carrying it", () => {
+		expect(safeUrl('https://example.com/?q="><script>')).toBe("https://example.com/?q=&quot;&gt;&lt;script&gt;");
+	});
+
+	it("trims before it decides, so padding cannot smuggle a scheme past the check", () => {
+		expect(safeUrl("   https://example.com   ")).toBe("https://example.com");
+	});
+
+	it("refuses a scheme it does not know rather than allowing anything it has no rule for", () => {
+		expect(safeUrl("ftp://example.com/file")).toBe("");
+	});
+
+	it.each([
+		["a tab", "java\tscript:alert(1)"],
+		["a newline", "java\nscript:alert(1)"],
+		["a carriage return", "java\rscript:alert(1)"],
+		["several", "j\ta\nv\ra script:alert(1)".replace(" ", "")],
+	])("refuses a javascript scheme an editor split with %s, which the URL parser puts back together", (_name, url) => {
+		expect(safeUrl(url)).toBe("");
+	});
+
+	it("strips those characters from a link it does allow, so what ships is what was checked", () => {
+		expect(safeUrl("https://exa\tmple.com/a")).toBe("https://example.com/a");
 	});
 });

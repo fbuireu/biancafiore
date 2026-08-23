@@ -20,8 +20,8 @@ afterEach(() => {
 
 describe("DatabaseLive", () => {
 	it("builds a client when both secrets are configured", async () => {
-		setSecret(URL_SECRET, "libsql://example.turso.io");
-		setSecret(TOKEN_SECRET, "a-token");
+		setSecret({ name: URL_SECRET, value: "libsql://example.turso.io" });
+		setSecret({ name: TOKEN_SECRET, value: "a-token" });
 
 		const exit = await build();
 
@@ -32,7 +32,7 @@ describe("DatabaseLive", () => {
 		["url", TOKEN_SECRET, "a-token"],
 		["auth token", URL_SECRET, "libsql://example.turso.io"],
 	])("dies rather than failing typed when the %s is missing", async (_missing, present, value) => {
-		setSecret(present, value);
+		setSecret({ name: present, value: value });
 
 		const exit = await build();
 
@@ -48,14 +48,15 @@ describe("DatabaseLive", () => {
 		expect(Exit.isFailure(exit) && Cause.isDie(exit.cause)).toBe(true);
 	});
 
-	it("hands out the two contact operations rather than the query builder", async () => {
-		setSecret(URL_SECRET, "libsql://example.turso.io");
-		setSecret(TOKEN_SECRET, "a-token");
+	it("hands out the contact operations rather than the query builder", async () => {
+		setSecret({ name: URL_SECRET, value: "libsql://example.turso.io" });
+		setSecret({ name: TOKEN_SECRET, value: "a-token" });
 
 		const exit = await build();
 
 		expect(Exit.isSuccess(exit) && Object.keys(exit.value).toSorted()).toStrictEqual([
-			"findContactByEmail",
+			"findContactWithMessage",
+			"findLatestContactSince",
 			"insertContact",
 		]);
 	});

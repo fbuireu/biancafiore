@@ -1,15 +1,16 @@
 ---
-import { breadcrumbDTO } from "@domain/breadcrumb";
+import { createBreadcrumbs } from "@domain/breadcrumb";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import { buildBreadcrumbListSchema } from "@modules/core/utils/jsonLd";
 import { siteChrome } from "@modules/core/utils/siteChrome";
 import "./breadcrumbs.css";
 
-const { pathname: currentPath, origin: originPath } = Astro.url;
+const { pathname: currentPath } = Astro.url;
 
 const { showsBreadcrumbs } = siteChrome(Astro.url);
-const breadcrumbs = breadcrumbDTO.create({ currentPath });
+const breadcrumbs = createBreadcrumbs(currentPath);
 const breadcrumbListSchema = buildBreadcrumbListSchema(
-	breadcrumbs.map(({ link, label }) => ({ name: label, url: `${originPath}${link}` })),
+	breadcrumbs.map(({ link, label }) => ({ name: label, path: link })),
 );
 ---
 {showsBreadcrumbs && (
@@ -29,6 +30,6 @@ const breadcrumbListSchema = buildBreadcrumbListSchema(
         );
       })}
     </ul>
-    <script is:inline type="application/ld+json" set:html={breadcrumbListSchema} />
+    <JsonLd schema={breadcrumbListSchema} />
 </section>
 )}

@@ -1,5 +1,6 @@
 import { HIDE_CHROME } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
+import { isWithin } from "@modules/core/utils/pathname";
 
 const PUBLISHED_ROUTES = [
 	PAGES_ROUTES.ARTICLES,
@@ -17,15 +18,11 @@ export type SiteChrome = {
 	servesRealContent: boolean;
 };
 
-function isWithin(pathname: string, route: string): boolean {
-	return pathname === route || pathname.startsWith(`${route}/`);
-}
-
-export function siteChrome(url: URL, isChromeHidden: boolean = HIDE_CHROME): SiteChrome {
+export function siteChrome(url: URL): SiteChrome {
 	return {
-		showsHeader: !isChromeHidden,
-		showsBreadcrumbs: !isChromeHidden,
-		showsTableOfContents: !isChromeHidden,
-		servesRealContent: !isChromeHidden || PUBLISHED_ROUTES.some((route) => isWithin(url.pathname, route)),
+		showsHeader: !HIDE_CHROME,
+		showsBreadcrumbs: !HIDE_CHROME,
+		showsTableOfContents: !HIDE_CHROME,
+		servesRealContent: !HIDE_CHROME || PUBLISHED_ROUTES.some((route) => isWithin({ pathname: url.pathname, route })),
 	};
 }

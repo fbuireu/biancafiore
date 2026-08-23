@@ -1,21 +1,22 @@
 ---
 import { getCollection } from "astro:content";
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import "./my-work.css";
-import { absoluteUrl, projectHref } from "@const/index";
+import { projectHref } from "@const/index";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
-import { buildItemListSchema } from "@modules/core/utils/jsonLd";
+import { buildProjectListSchema } from "@modules/core/utils/jsonLd";
 
 const projects = await getCollection("projects");
 
 const disciplinesCount = String(projects.length).padStart(2, "0");
-const itemListSchema = buildItemListSchema(projects.map((project) => absoluteUrl(projectHref(project.data.id))));
+const itemListSchema = buildProjectListSchema(projects.map(({ data }) => data.id));
 ---
 <section class="my-work">
     <div class="my-work__inner">
         <header class="my-work__header reveal">
             <h2 class="my-work__title editorial-section-title">My&nbsp;Work</h2>
-            <p class="editorial-meta">{disciplinesCount} — Disciplines</p>
+            <p class="editorial-meta">{disciplinesCount} Disciplines</p>
         </header>
         {projects.map((project, index) => {
           const projectUrl = projectHref(project.data.id);
@@ -26,11 +27,8 @@ const itemListSchema = buildItemListSchema(projects.map((project) => absoluteUrl
                       <h3 class="my-work__name">{project.data.name}</h3>
                       <BlurImage
                           class="my-work__thumbnail"
-                          src={project.data.image.url}
+                          image={project.data.image}
                           alt={project.data.name}
-                          width={project.data.image.details.width}
-                          height={project.data.image.details.height}
-                          placeholder={project.data.image.placeholder}
                           loading="lazy"
                       />
                   </summary>
@@ -44,5 +42,5 @@ const itemListSchema = buildItemListSchema(projects.map((project) => absoluteUrl
           );
         })}
     </div>
-    <script is:inline type="application/ld+json" set:html={itemListSchema} />
+    <JsonLd schema={itemListSchema} />
 </section>

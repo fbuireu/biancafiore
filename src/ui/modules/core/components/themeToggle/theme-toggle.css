@@ -11,12 +11,13 @@
 	}
 }
 
-.theme-toggle__input {
-	display: none;
-}
-
 .theme-toggle {
 	cursor: pointer;
+
+	&:has(.theme-toggle__input:focus-visible) {
+		outline: 2px solid var(--gold);
+		outline-offset: 4px;
+	}
 	--theme-toggle-animation-duration: 500ms;
 
 	.theme-toggle__inner {

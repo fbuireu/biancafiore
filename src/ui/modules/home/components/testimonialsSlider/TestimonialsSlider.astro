@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import SliderShell from "@modules/core/components/sliderShell/SliderShell.astro";
 import "./testimonials-slider.css";
@@ -12,8 +11,14 @@ interface Props {
 const { testimonials } = Astro.props;
 ---
 
-<div class="testimonials__carousel reveal">
-	<SliderShell class="testimonials__slider" showTrack={false}>
+<div class="reveal">
+	<SliderShell
+		class="testimonials__slider"
+		hasDots
+		isLooping
+		slideCount={testimonials.length}
+		label="Testimonials navigation"
+	>
 		{
 			testimonials.map((testimonial) => (
 				<li class="slider__slide testimonials__slide">
@@ -22,11 +27,8 @@ const { testimonials } = Astro.props;
 						<figcaption class="testimonial__attribution">
 							<BlurImage
 								class="testimonial__avatar"
-								src={testimonial.data.image.url}
+								image={testimonial.data.image}
 								alt={testimonial.data.author}
-								width={testimonial.data.image.details.width}
-								height={testimonial.data.image.details.height}
-								placeholder={testimonial.data.image.placeholder}
 								loading="lazy"
 							/>
 							<span class="testimonial__identity">
@@ -39,71 +41,4 @@ const { testimonials } = Astro.props;
 			))
 		}
 	</SliderShell>
-	<nav class="testimonials__nav" aria-label="Testimonials navigation">
-		<button class="slider__btn testimonials__nav__arrow testimonials__nav__arrow--prev" type="button" aria-label="Previous testimonial">
-			<Fragment set:html={stretchArrow} />
-		</button>
-		{
-			testimonials.map((testimonial, index) => (
-				<button
-					class:list={["testimonials__nav__dash clickable", { "testimonials__nav__dash--active": index === 0 }]}
-					type="button"
-					data-index={index}
-					aria-label={`Go to testimonial by ${testimonial.data.author}`}
-				/>
-			))
-		}
-		<button class="slider__btn testimonials__nav__arrow testimonials__nav__arrow--next" type="button" aria-label="Next testimonial">
-			<Fragment set:html={stretchArrow} />
-		</button>
-	</nav>
 </div>
-
-<script>
-	document.addEventListener("astro:page-load", () => {
-		document.querySelectorAll<HTMLElement>(".testimonials__carousel").forEach((carousel) => {
-			const track = carousel.querySelector<HTMLElement>(".slider__track");
-			if (!track) return;
-
-			const slides = Array.from(track.querySelectorAll<HTMLElement>(".slider__slide"));
-			const dashes = Array.from(carousel.querySelectorAll<HTMLButtonElement>(".testimonials__nav__dash"));
-
-			const distanceToCenter = (slide: HTMLElement): number => {
-				const trackRect = track.getBoundingClientRect();
-				const slideRect = slide.getBoundingClientRect();
-
-				return Math.abs(slideRect.left + slideRect.width / 2 - (trackRect.left + trackRect.width / 2));
-			};
-
-			const getActiveIndex = (): number =>
-				slides.reduce(
-					(closest, slide, index) => (distanceToCenter(slide) < distanceToCenter(slides[closest]) ? index : closest),
-					0,
-				);
-
-			const setActiveDash = (activeIndex: number): void => {
-				dashes.forEach((dash, index) => dash.classList.toggle("testimonials__nav__dash--active", index === activeIndex));
-			};
-
-			const goTo = (index: number): void => {
-				const target = (index + slides.length) % slides.length;
-
-				slides.at(target)?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-				setActiveDash(target);
-			};
-
-			dashes.forEach((dash, index) => {
-				dash.addEventListener("click", () => goTo(index));
-			});
-
-			carousel
-				.querySelector<HTMLButtonElement>(".testimonials__nav__arrow--prev")
-				?.addEventListener("click", () => goTo(getActiveIndex() - 1));
-			carousel
-				.querySelector<HTMLButtonElement>(".testimonials__nav__arrow--next")
-				?.addEventListener("click", () => goTo(getActiveIndex() + 1));
-
-			track.addEventListener("scroll", () => setActiveDash(getActiveIndex()), { passive: true });
-		});
-	});
-</script>

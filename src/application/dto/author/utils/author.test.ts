@@ -45,6 +45,7 @@ describe("createAuthor", () => {
 				url: "https://images.ctfassets.net/bianca.avif",
 				details: { width: 512, height: 512 },
 				formats: { avif: true, webp: false },
+				shareCrops: expect.any(Array),
 			},
 			socialNetworks: ["https://linkedin.com/in/bianca"],
 		});

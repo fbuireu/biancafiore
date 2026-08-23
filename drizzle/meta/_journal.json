@@ -8,6 +8,13 @@
 			"when": 1782401375207,
 			"tag": "0000_nice_jack_power",
 			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "6",
+			"when": 1787394797239,
+			"tag": "0001_known_dreadnoughts",
+			"breakpoints": true
 		}
 	]
 }

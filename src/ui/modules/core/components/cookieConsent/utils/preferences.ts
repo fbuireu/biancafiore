@@ -1,17 +1,19 @@
-import type { CookieValue } from "vanilla-cookieconsent";
+import {
+	ANALYTICS_CATEGORY,
+	CONSENT_STATUS,
+	CONSENT_UPDATE_WAIT,
+} from "@modules/core/components/cookieConsent/utils/consentGate";
 import { acceptedCategory } from "vanilla-cookieconsent";
 
-export function updatePreferences(cookie: CookieValue): void {
+export function updatePreferences(): void {
 	function gtag() {
 		// biome-ignore lint/complexity/noArguments: GA integration
 		window.dataLayer.push(arguments);
 	}
 
-	const category = cookie.categories.at(0) ?? "analytics";
-
 	// @ts-expect-error: gtag uses arguments internally, TS can't infer the call signature
 	gtag("consent", "update", {
-		analytics_storage: acceptedCategory(category) ? "granted" : "denied",
-		wait_for_update: 500,
+		analytics_storage: acceptedCategory(ANALYTICS_CATEGORY) ? CONSENT_STATUS.GRANTED : CONSENT_STATUS.DENIED,
+		wait_for_update: CONSENT_UPDATE_WAIT,
 	});
 }

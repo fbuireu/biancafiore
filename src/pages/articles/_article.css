@@ -21,17 +21,8 @@ html.page--article body {
 	gap: 0 0.5rem;
 	scroll-margin-block-start: var(--header-height);
 
-	svg {
-		display: none;
-	}
-
 	&:hover {
 		color: var(--primary-main);
-
-		svg {
-			display: flex;
-			fill: var(--primary-main);
-		}
 	}
 }
 
@@ -172,7 +163,7 @@ html.page--article body {
 			margin-block-start: calc(var(--rhythm) / 2);
 
 			&::before {
-				content: "— ";
+				content: "– ";
 			}
 		}
 	}
@@ -334,21 +325,4 @@ html.page--article body {
 		max-inline-size: min(var(--grid-article), 100% - 2rem);
 		column-count: 1;
 	}
-}
-
-html.page--debug-baseline .article-wrapper {
-	position: relative;
-}
-
-html.page--debug-baseline .article-wrapper::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-	z-index: 9999;
-	pointer-events: none;
-	background-image: repeating-linear-gradient(
-		to bottom,
-		color-mix(in srgb, var(--primary-main), transparent 82%) 0 1px,
-		transparent 1px var(--rhythm)
-	);
 }

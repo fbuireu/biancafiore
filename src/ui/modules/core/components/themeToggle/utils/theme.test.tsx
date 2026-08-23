@@ -44,7 +44,12 @@ const visit = async (): Promise<void> => {
 	initializeThemeSetter();
 };
 
-const choose = (input: HTMLInputElement, theme: Theme): void => {
+interface ChooseParams {
+	input: HTMLInputElement;
+	theme: Theme;
+}
+
+const choose = ({ input, theme }: ChooseParams): void => {
 	input.checked = theme === Theme.DARK;
 	input.dispatchEvent(new Event("change"));
 };
@@ -116,7 +121,7 @@ describe("the theme runtime", () => {
 
 		expect(toggledClass()).toBe(true);
 
-		choose(input, Theme.LIGHT);
+		choose({ input: input, theme: Theme.LIGHT });
 
 		expect(paintedTheme()).toBe(Theme.LIGHT);
 		expect(storedPreference()).toBe(ThemePreference.LIGHT);
@@ -129,7 +134,7 @@ describe("the theme runtime", () => {
 		const input = renderToggle();
 		await visit();
 
-		choose(input, Theme.LIGHT);
+		choose({ input: input, theme: Theme.LIGHT });
 
 		os.flipTo(false);
 		os.flipTo(true);
@@ -144,7 +149,7 @@ describe("the theme runtime", () => {
 		const input = renderToggle();
 		await visit();
 
-		choose(input, Theme.LIGHT);
+		choose({ input: input, theme: Theme.LIGHT });
 
 		operatingSystem(true);
 		renderToggle();

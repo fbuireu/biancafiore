@@ -15,7 +15,7 @@ const messageOf = <E extends { message: string }>(exit: Exit.Exit<unknown, E>): 
 const tagOf = <E extends { _tag: string }>(exit: Exit.Exit<unknown, E>): string | undefined => failureOf(exit)?._tag;
 
 beforeEach(() => {
-	setSecret("GOOGLE_RECAPTCHA_SECRET_KEY", "server-secret");
+	setSecret({ name: "GOOGLE_RECAPTCHA_SECRET_KEY", value: "server-secret" });
 });
 
 afterEach(() => {

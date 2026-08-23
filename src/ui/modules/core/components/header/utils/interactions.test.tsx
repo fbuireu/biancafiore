@@ -1,5 +1,5 @@
-import { backgroundObserver } from "@modules/core/components/header/utils/interactions";
-import { beforeEach, describe, expect, it } from "vitest";
+import { backgroundObserver, wireMenu } from "@modules/core/components/header/utils/interactions";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 const HEADER_HEIGHT = 80;
 const HEADER_MIDLINE = HEADER_HEIGHT / 2;
@@ -7,7 +7,13 @@ const MENU_OPEN_CLASS = "page--menu-open";
 const INTERSECTED_BUTTON_CLASS = "header__menu-button--intersected";
 const INTERSECTED_LOGO_CLASS = "logo--intersected";
 
-const place = ({ selector, top, height }: { selector: string; top: number; height: number }): void => {
+interface PlaceParams {
+	selector: string;
+	top: number;
+	height: number;
+}
+
+const place = ({ selector, top, height }: PlaceParams): void => {
 	const element = document.querySelector(selector);
 
 	if (!element) {
@@ -104,5 +110,148 @@ describe("backgroundObserver", () => {
 		document.body.innerHTML = `<footer class="inverted-color-scheme"></footer>`;
 
 		expect(() => backgroundObserver()).not.toThrow();
+	});
+});
+
+describe("wireMenu", () => {
+	const render = () => {
+		document.body.innerHTML = `
+			<button class="header__menu-button"><span class="header__menu-text">Menu</span></button>
+			<nav class="navigation__menu__nav"><a href="/about">About</a></nav>
+			<main><a href="/articles">Articles</a></main>
+			<footer><a href="/contact">Contact</a></footer>`;
+
+		const button = document.querySelector<HTMLElement>(".header__menu-button") as HTMLElement;
+
+		return {
+			html: document.documentElement,
+			button,
+			text: document.querySelector<HTMLElement>(".header__menu-text"),
+		};
+	};
+
+	const timelineDouble = () => {
+		let reversed = true;
+
+		return {
+			calls: [] as boolean[],
+			completed: undefined as (() => void) | undefined,
+			eventCallback(_type: "onComplete", callback: () => void) {
+				this.completed = callback;
+
+				return this;
+			},
+			reversed(value?: boolean) {
+				if (value === undefined) return reversed;
+
+				reversed = value;
+				this.calls.push(value);
+
+				return reversed;
+			},
+		};
+	};
+
+	const wire = (controller: AbortController, elements = render()) => {
+		const timeline = timelineDouble();
+
+		wireMenu({ elements, signal: controller.signal, buildTimeline: () => timeline });
+
+		return { elements, timeline };
+	};
+
+	afterEach(() => {
+		document.body.innerHTML = "";
+		document.documentElement.className = "";
+	});
+
+	it("opens on a click and says so to assistive technology", () => {
+		const { elements } = wire(new AbortController());
+
+		elements.button.click();
+
+		expect(elements.button.getAttribute("aria-expanded")).toBe("true");
+		expect(document.documentElement.classList.contains("page--menu-open")).toBe(true);
+	});
+
+	it("closes on a second click", () => {
+		const { elements } = wire(new AbortController());
+
+		elements.button.click();
+		elements.button.click();
+
+		expect(elements.button.getAttribute("aria-expanded")).toBe("false");
+		expect(document.documentElement.classList.contains("page--menu-open")).toBe(false);
+	});
+
+	it("drives the timeline rather than animating anything itself", () => {
+		const { elements, timeline } = wire(new AbortController());
+
+		elements.button.click();
+
+		expect(timeline.calls).toEqual([false]);
+	});
+
+	it("closes on Escape while the menu is open", () => {
+		const { elements } = wire(new AbortController());
+
+		elements.button.click();
+		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+
+		expect(elements.button.getAttribute("aria-expanded")).toBe("false");
+	});
+
+	it("ignores Escape while the menu is closed, so it cannot open it", () => {
+		const { elements } = wire(new AbortController());
+
+		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+
+		expect(elements.button.getAttribute("aria-expanded")).toBeNull();
+	});
+
+	it("stops listening on document once its signal is aborted, so a second run cannot stack a third", () => {
+		const controller = new AbortController();
+		const { elements } = wire(controller);
+
+		elements.button.click();
+		controller.abort();
+		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+
+		expect(elements.button.getAttribute("aria-expanded")).toBe("true");
+	});
+
+	it("clears the open state it inherited, so a swapped-in page never starts open", () => {
+		document.documentElement.classList.add("page--menu-open");
+
+		wire(new AbortController());
+
+		expect(document.documentElement.classList.contains("page--menu-open")).toBe(false);
+	});
+
+	it("moves focus to the first menu link only once the overlay has finished opening", () => {
+		const { elements, timeline } = wire(new AbortController());
+
+		elements.button.click();
+
+		expect(document.activeElement).not.toBe(document.querySelector(".navigation__menu__nav a"));
+
+		timeline.completed?.();
+
+		expect(document.activeElement).toBe(document.querySelector(".navigation__menu__nav a"));
+	});
+
+	it("takes the page the overlay covers out of the tab order while it is open", () => {
+		const { elements } = wire(new AbortController());
+		const covered = () => [...document.querySelectorAll<HTMLElement>("main, footer")];
+
+		expect(covered().every((region) => region.inert)).toBe(false);
+
+		elements.button.click();
+
+		expect(covered().every((region) => region.inert)).toBe(true);
+
+		elements.button.click();
+
+		expect(covered().some((region) => region.inert)).toBe(false);
 	});
 });

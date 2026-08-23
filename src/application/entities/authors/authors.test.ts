@@ -1,5 +1,6 @@
 import type { RawArticle } from "@application/dto/article/types";
 import type { RawAuthor } from "@application/dto/author/types";
+import { AUTHOR_LATEST_ARTICLE_FIELDS } from "@application/dto/author/utils/articles";
 import { authors } from "@application/entities/authors/authors";
 import { cmsAnswers, cmsHoldsUntilQueries, cmsQueries, cmsQueriesOverlapped, resetCms } from "@tests/doubles/cmsLayer";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -75,7 +76,7 @@ describe("authors loader", () => {
 		expect(cmsQueries).toEqual([]);
 	});
 
-	it("asks for authors and for their articles newest first, in one batch", async () => {
+	it("asks for authors and for only the article fields the latest-article rule reads, in one batch", async () => {
 		cmsAnswers({ author: [BIANCA], article: [] });
 		cmsHoldsUntilQueries(2);
 
@@ -84,7 +85,7 @@ describe("authors loader", () => {
 		expect(cmsQueries).toEqual(
 			expect.arrayContaining([
 				expect.objectContaining({ content_type: "author" }),
-				expect.objectContaining({ content_type: "article", order: ["-fields.publishDate"] }),
+				expect.objectContaining({ content_type: "article", select: AUTHOR_LATEST_ARTICLE_FIELDS }),
 			]),
 		);
 		expect(cmsQueries).toHaveLength(2);
@@ -99,7 +100,7 @@ describe("authors loader", () => {
 		expect(entry).toMatchObject({ id: "Bianca Fiore", name: "Bianca Fiore", slug: "bianca-fiore" });
 	});
 
-	it("lists an author's articles newest first, and calls the newest one the latest", async () => {
+	it("calls the author's newest article the latest, whatever order the batch arrived in", async () => {
 		cmsAnswers({
 			author: [makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" })],
 			article: [
@@ -111,15 +112,10 @@ describe("authors loader", () => {
 
 		const [entry] = await load();
 
-		expect(entry.articles).toEqual([
-			{ id: "newest", collection: "articles" },
-			{ id: "middle", collection: "articles" },
-			{ id: "oldest", collection: "articles" },
-		]);
 		expect(entry.latestArticle).toEqual({ id: "newest", collection: "articles" });
 	});
 
-	it("gives an author only their own articles, and no latest article when they have none", async () => {
+	it("gives an author only their own article, and no latest article when they have none", async () => {
 		cmsAnswers({
 			author: [
 				makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" }),
@@ -130,8 +126,7 @@ describe("authors loader", () => {
 
 		const [bianca, ghost] = await load();
 
-		expect(bianca.articles).toEqual([{ id: "hers", collection: "articles" }]);
-		expect(ghost.articles).toEqual([]);
+		expect(bianca.latestArticle).toEqual({ id: "hers", collection: "articles" });
 		expect(ghost.latestArticle).toBeUndefined();
 	});
 });

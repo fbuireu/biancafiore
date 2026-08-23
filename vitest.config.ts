@@ -26,6 +26,8 @@ const alias = [
 	{ find: "astro:middleware", replacement: `${ROOT}src/tests/doubles/astroMiddleware.ts` },
 ];
 
+const BUILT_OUTPUT_SUITE = "docs/built-output.test.ts";
+
 export default defineConfig({
 	resolve: { alias },
 	test: {
@@ -38,6 +40,15 @@ export default defineConfig({
 					env: { TZ: AWKWARD_TIMEZONE },
 					setupFiles: [`${ROOT}src/tests/setup/network.ts`],
 					include: ["src/**/*.test.ts", "src/**/*.spec.ts", "docs/**/*.test.ts"],
+					exclude: [BUILT_OUTPUT_SUITE],
+				},
+			},
+			{
+				resolve: { alias },
+				test: {
+					name: "built",
+					environment: "node",
+					include: [BUILT_OUTPUT_SUITE],
 				},
 			},
 			{
@@ -45,6 +56,7 @@ export default defineConfig({
 				test: {
 					name: "dom",
 					environment: "happy-dom",
+					setupFiles: [`${ROOT}src/tests/setup/network.ts`],
 					include: ["src/**/*.test.tsx", "src/**/*.spec.tsx"],
 				},
 			},

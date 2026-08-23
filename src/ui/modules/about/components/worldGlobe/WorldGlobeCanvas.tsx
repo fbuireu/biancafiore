@@ -1,10 +1,10 @@
-import { StretchArrow } from "@assets/images/svg-components/stretchArrow";
+import { StretchArrow } from "@assets/images/svg-components/stretchArrow/StretchArrow";
 import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn";
 import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
-import countries from "@data/countries.geojson.json";
 import { TabVisibility, useTabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
 import { type CityPoint, calculateCenter, renderPin } from "@modules/about/utils/globe";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { prefersReducedMotion } from "@modules/core/utils/motion";
+import { use, useCallback, useEffect, useMemo, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
@@ -48,8 +48,32 @@ const {
 	ZOOM_OFFSET,
 } = WORLD_GLOBE_CONFIG;
 
+const COUNTRIES_URL = "/countries.json";
+
+interface CountryFeature {
+	type: string;
+	properties: Record<string, unknown>;
+	geometry: unknown;
+}
+
+const fetchCountries = async (): Promise<CountryFeature[]> => {
+	try {
+		const response = await fetch(COUNTRIES_URL);
+		const { features } = (await response.json()) as { features: CountryFeature[] };
+
+		return features;
+	} catch {
+		return [];
+	}
+};
+
+let countries: Promise<CountryFeature[]> | undefined;
+
+const loadCountries = (): Promise<CountryFeature[]> => (countries ??= fetchCountries());
+
 const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 	const tabVisibility = useTabVisibility();
+	const hexPolygons = use(loadCountries());
 	const worldGlobeReference = useRef<GlobeMethods | undefined>(undefined);
 
 	const globeMaterial = useMemo(
@@ -68,7 +92,7 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 		}
 
 		const { latitude, longitude } = calculateCenter(points);
-		worldGlobeReference.current.controls().autoRotate = true;
+		worldGlobeReference.current.controls().autoRotate = !prefersReducedMotion();
 		worldGlobeReference.current.controls().enableZoom = false;
 		worldGlobeReference.current.controls().autoRotateSpeed = 0.25;
 		worldGlobeReference.current.pointOfView({
@@ -82,7 +106,8 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 		if (!worldGlobeReference.current) {
 			return;
 		}
-		worldGlobeReference.current.controls().autoRotate = tabVisibility === TabVisibility.VISIBLE;
+		worldGlobeReference.current.controls().autoRotate =
+			tabVisibility === TabVisibility.VISIBLE && !prefersReducedMotion();
 	}, [tabVisibility]);
 
 	const handleAction = useCallback(({ movementDirection, type }: HandleActionParams) => {
@@ -112,7 +137,7 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 				animateIn={ANIMATE_IN}
 				showAtmosphere={SHOW_ATMOSPHERE}
 				backgroundColor={BACKGROUND_COLOR}
-				hexPolygonsData={countries.features}
+				hexPolygonsData={hexPolygons}
 				hexPolygonColor={() => HEXAGON_POLYGON_COLOR}
 				globeMaterial={globeMaterial}
 				pointsData={points}

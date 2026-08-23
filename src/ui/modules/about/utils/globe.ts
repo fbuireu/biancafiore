@@ -40,7 +40,12 @@ interface RenderPinParams {
 	markerData: CityPoint;
 }
 
-function createPinSvg({ fill, title }: { fill: string; title: string }): SVGSVGElement {
+interface CreatePinSvgParams {
+	fill: string;
+	title: string;
+}
+
+function createPinSvg({ fill, title }: CreatePinSvgParams): SVGSVGElement {
 	const svg = document.createElementNS(SVG_NAMESPACE, "svg");
 	svg.setAttribute("viewBox", "-4 0 36 36");
 

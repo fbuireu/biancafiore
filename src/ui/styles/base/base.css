@@ -17,7 +17,7 @@
 			color: var(--neutral-main);
 		}
 
-		&:focus-visible:not(input, textarea) {
+		&:focus-visible {
 			outline: 2px solid var(--primary-main);
 			outline-offset: 2px;
 		}
@@ -122,12 +122,10 @@
 		min-height: 100dvh;
 		width: 100%;
 
-		&:not(.page--projects, .page--article) {
-			margin: calc(var(--header-height)) auto 0;
+		margin: calc(var(--header-height)) auto 0;
 
-			@media (width <= 960px) {
-				margin: 0 auto;
-			}
+		@media (width <= 960px) {
+			margin: 0 auto;
 		}
 	}
 

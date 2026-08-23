@@ -1,21 +1,14 @@
 ---
-import { getCollection } from "astro:content";
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
-import { absoluteUrl, articleHref, PAGES_ROUTES } from "@const/index";
+import { PAGES_ROUTES } from "@const/index";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
-import { buildItemListSchema } from "@modules/core/utils/jsonLd";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import { blogTeaser } from "@modules/core/utils/blogTeaser";
 import "./blog.css";
-
-interface Props {
-	limit?: number;
-}
 
 const MAX_ARTICLES = 3;
 
-const { limit = MAX_ARTICLES } = Astro.props;
-
-const articles = (await getCollection("articles")).slice(0, limit);
-const itemListSchema = buildItemListSchema(articles.map(({ data: { slug } }) => absoluteUrl(articleHref(slug))));
+const { articles, itemListSchema } = await blogTeaser(MAX_ARTICLES);
 ---
 <section class="blog inverted-color-scheme">
     <div class="blog__inner">
@@ -26,7 +19,7 @@ const itemListSchema = buildItemListSchema(articles.map(({ data: { slug } }) => 
         <ul class="blog__list">
           {articles.map((article, index) => (
               <li class="blog__item item-wrapper reveal" data-reveal-index={index}>
-                  <ArticleCard {...article} />
+                  <ArticleCard article={article} />
               </li>
           ))}
         </ul>
@@ -35,6 +28,6 @@ const itemListSchema = buildItemListSchema(articles.map(({ data: { slug } }) => 
                 All articles <span class="editorial-cta__arrow" aria-hidden="true" set:html={stretchArrow} />
             </a>
         </div>
-        <script is:inline type="application/ld+json" set:html={itemListSchema} />
+        <JsonLd schema={itemListSchema} />
     </div>
 </section>

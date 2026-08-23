@@ -1,25 +1,25 @@
 ---
 import { getCollection } from "astro:content";
-import { absoluteUrl, articleHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import FeaturedArticle from "@modules/articles/components/featuredArticle/FeaturedArticle.astro";
-import { getFeaturedArticle } from "@modules/articles/utils/featured";
+import { partitionFeatured } from "@modules/articles/utils/featured";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
-import { buildItemListSchema } from "@modules/core/utils/jsonLd";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import { buildArticleListSchema } from "@modules/core/utils/jsonLd";
 import "./_articles.css";
 
 export const prerender = true;
 
 const articles = await getCollection("articles");
-const featuredArticle = getFeaturedArticle(articles);
-const itemListSchema = buildItemListSchema(articles.map((article) => absoluteUrl(articleHref(article.data.slug))));
+const { featured, rest } = partitionFeatured(articles);
+const itemListSchema = buildArticleListSchema(articles.map(({ data }) => data.slug));
 
 const metadata: Partial<SeoMetadata> = {
 	title: "Articles",
 	description: "Articles I wrote while drinking coffee",
-	...(featuredArticle?.data.featuredImage && { image: featuredArticle.data.featuredImage.url }),
+	...(featured?.data.featuredImage && { image: featured.data.featuredImage.url }),
 };
 ---
 <BaseLayout {...metadata}>
@@ -29,19 +29,18 @@ const metadata: Partial<SeoMetadata> = {
         <Breadcrumbs />
     </header>
   {
-      featuredArticle && <FeaturedArticle featuredArticle={featuredArticle} />
+      featured && <FeaturedArticle featuredArticle={featured} />
   }
     <section class="articles__grid common-wrapper">
         <ul class="articles__grid__list flex row-wrap">
           {
-            articles
-                .filter((article) => article.data.slug !== featuredArticle?.data.slug)
+            rest
                 .map((article) => (
                     <li class="articles__grid__item grid relative reveal">
-                        <ArticleCard {...article} />
+                        <ArticleCard article={article} />
                     </li>
                 ))}
         </ul>
     </section>
-    <script is:inline type="application/ld+json" set:html={itemListSchema} />
+    <JsonLd schema={itemListSchema} />
 </BaseLayout>

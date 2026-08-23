@@ -1,0 +1,83 @@
+{
+	"version": "6",
+	"dialect": "sqlite",
+	"id": "7632aaad-805c-4a28-b214-6e58a383c75c",
+	"prevId": "0103edcb-4fcd-4e30-a4f7-10ba888ae9ca",
+	"tables": {
+		"Contact": {
+			"name": "Contact",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"name": {
+					"name": "name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"email": {
+					"name": "email",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"message": {
+					"name": "message",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"emailId": {
+					"name": "emailId",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"createdDate": {
+					"name": "createdDate",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"modifiedDate": {
+					"name": "modifiedDate",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"Contact_email_createdDate_idx": {
+					"name": "Contact_email_createdDate_idx",
+					"columns": ["email", "createdDate"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		}
+	},
+	"views": {},
+	"enums": {},
+	"_meta": {
+		"schemas": {},
+		"tables": {},
+		"columns": {}
+	},
+	"internal": {
+		"indexes": {}
+	}
+}

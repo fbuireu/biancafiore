@@ -3,17 +3,20 @@ const SELECTORS = {
 	PROGRESS_BAR: ".reading-progress",
 };
 
-export function getReadingProgress(): void {
-	const ARTICLE = document.querySelector(SELECTORS.ARTICLE) as HTMLElement;
-	const PROGRESS_BAR = document.querySelector(SELECTORS.PROGRESS_BAR) as HTMLElement;
+function paintReadingProgress(): void {
+	const article = document.querySelector<HTMLElement>(SELECTORS.ARTICLE);
+	const progressBar = document.querySelector<HTMLElement>(SELECTORS.PROGRESS_BAR);
 
-	if (!ARTICLE || !PROGRESS_BAR) {
+	if (!article || !progressBar) {
 		return;
 	}
 
-	const readingProgress = Math.min(Math.ceil((window.scrollY / ARTICLE.offsetHeight) * 100), 100);
+	const readingProgress = Math.min(Math.ceil((window.scrollY / article.offsetHeight) * 100), 100);
 
-	PROGRESS_BAR.style.width = `${readingProgress}%`;
+	progressBar.style.width = `${readingProgress}%`;
 }
 
-window.addEventListener("scroll", getReadingProgress);
+export function initReadingProgress(): void {
+	window.addEventListener("scroll", paintReadingProgress, { passive: true });
+	paintReadingProgress();
+}

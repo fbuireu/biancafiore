@@ -1,23 +1,15 @@
 import { defineCollection } from "astro:content";
-import { testimonialDTO } from "@application/dto/testimonial";
+import { createTestimonials } from "@application/dto/testimonial";
 import type { TestimonialSkeleton } from "@application/dto/testimonial/types";
+import { cmsCollection } from "@application/entities/collection";
 import { testimonialsSchema } from "@domain/testimonial";
-import { fetchEntries } from "@infrastructure/cms/entries";
-import { getImagePlaceholders } from "@infrastructure/images/imagePlaceholder";
 
 export const testimonials = defineCollection({
-	loader: async () => {
-		const [rawTestimonials] = await fetchEntries<[TestimonialSkeleton]>({ content_type: "testimonial" });
-
-		const testimonials = testimonialDTO.create(rawTestimonials);
-
-		const placeholders = await getImagePlaceholders(testimonials.map(({ image }) => image.url));
-
-		return testimonials.map((testimonial) => ({
-			id: testimonial.author,
-			...testimonial,
-			image: { ...testimonial.image, placeholder: placeholders.get(testimonial.image.url) },
-		}));
-	},
+	loader: cmsCollection<TestimonialSkeleton, ReturnType<typeof createTestimonials>[number], "image">({
+		query: { content_type: "testimonial" },
+		map: createTestimonials,
+		imageField: "image",
+		identify: (testimonial) => testimonial.author,
+	}),
 	schema: testimonialsSchema,
 });

@@ -1,30 +1,45 @@
 ---
+import { CALENDLY, CALENDLY_MEETING_URL } from "@const/calendly";
+import { activeTab } from "@modules/contact/utils/tabs";
 import { ContactFormProvider } from "../contactFormProvider/ContactFormProvider";
 import "./tabs.css";
+
+const selected = activeTab(Astro.url);
 ---
 
 <section class="contact-tabs-wrapper">
 	<div class="contact-tabs__inner common-wrapper">
 		<div class="contact-tabs__header flex column-wrap">
-			<h4 class="contact-tabs__title section-title">Contact me</h4>
+			<h2 class="contact-tabs__title section-title">Contact me</h2>
 			<hr class="contact-tabs__divider" />
 			<p class="contact-tabs__body">Multiple ways to get in touch with me :)</p>
 		</div>
-		<ul class="contact-tabs flex">
-			<li class="contact-tab underline-on-hover" data-target="email">
-				<button>Email me</button>
+		<ul class="contact-tabs flex" role="tablist" aria-label="Ways to get in touch">
+			<li class:list={[
+					"contact-tab underline-on-hover",
+					{ "contact-tab--active": selected === "email", "underline-on-hover--active": selected === "email" },
+				]} data-target="email" role="presentation">
+				<button type="button" role="tab" id="email-tab" aria-controls="email" aria-selected={selected === "email"}>Email me</button>
 			</li>
-			<li class="contact-tab underline-on-hover" data-target="appointment">
-				<button>Make an appointment</button>
+			<li class:list={[
+					"contact-tab underline-on-hover",
+					{
+						"contact-tab--active": selected === "appointment",
+						"underline-on-hover--active": selected === "appointment",
+					},
+				]} data-target="appointment" role="presentation">
+				<button type="button" role="tab" id="appointment-tab" aria-controls="appointment" aria-selected={selected === "appointment"}>
+					Make an appointment
+				</button>
 			</li>
 		</ul>
-		<div id="email" class="contact-tab__content contact-tab__content--active">
-			<ContactFormProvider client:only="react" />
+		<div id="email" class:list={["contact-tab__content", { "contact-tab__content--active": selected === "email" }]} role="tabpanel" aria-labelledby="email-tab" tabindex="0">
+			<ContactFormProvider client:load />
 		</div>
-		<div id="appointment" class="contact-tab__content">
+		<div id="appointment" class:list={["contact-tab__content", { "contact-tab__content--active": selected === "appointment" }]} role="tabpanel" aria-labelledby="appointment-tab" tabindex="0">
 			<div
-				class="calendly-inline-widget"
-				data-url="https://calendly.com/fbuireu/45min-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
+				class={CALENDLY.WIDGET_CLASS}
+				data-url={CALENDLY_MEETING_URL}
 			>
 			</div>
 		</div>

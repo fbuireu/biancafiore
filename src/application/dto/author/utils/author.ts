@@ -1,12 +1,12 @@
 import type { AuthorSkeleton, RawAuthor } from "@application/dto/author/types";
+import { createImage } from "@application/dto/shared/images";
 import type { Except } from "@const/types";
 import type { AuthorDTO } from "@domain/author";
-import { createImage } from "@shared/application/dto/utils/images";
 import type { Entry, UnresolvedLink } from "contentful";
 
 export function createAuthor(
 	author: Entry<AuthorSkeleton, undefined> | UnresolvedLink<"Entry">,
-): Except<AuthorDTO, "articles" | "latestArticle"> {
+): Except<AuthorDTO, "latestArticle"> {
 	const { fields } = author as RawAuthor;
 
 	return {

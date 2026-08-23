@@ -12,11 +12,11 @@ The pure domain layer. One folder per domain concept, named in the singular afte
   index.ts    # barrel: export * from each of the above
 ```
 
-Not every concept needs all three. `rules.ts` is the exception rather than the norm: it exists for `article`, `breadcrumb`, `city`, `tag` and no one else; `contact` is schema-only, `breadcrumb` is rules + types, and the rest are schema + types. Add a file when there is something to put in it.
+Not every concept needs all three. `rules.ts` is the exception rather than the norm: it exists for `article`, `breadcrumb`, `city`, `contact`, `tag` and no one else; `contact` carries a schema and the one rule that decides when two addresses are the same person, `breadcrumb` is rules + types, and the rest are schema + types. Add a file when there is something to put in it.
 
 ## Hard rules
 
-- **No dependencies outward.** Nothing here may import from `@application/*`, `@infrastructure/*` or `@modules/*`. The only allowed non-domain imports are `astro/zod`, `reference` from `astro:content`, and `@shared/utils/*` for generic helpers (`deSlugify`).
+- **No dependencies outward.** Nothing here may import from `@application/*`, `@infrastructure/*` or `@modules/*`. The only allowed non-domain imports are `astro/zod`, `reference` from `astro:content`, and `@shared/utils/*` for generic helpers (`deSlugify`, `formatDate`).
 - **No Effect, no I/O, no env access.** Rules are synchronous pure functions over plain data. If something needs to fetch, it belongs in `@application/entities`; if it needs a client, in `@infrastructure`. Pure also means *deterministic*, which the `Date` API makes easy to lose: `createDate` reads `getUTCFullYear`, never the local one, so a January start date is the same year on a machine behind UTC as it is on the CI box that prerendered the page.
 - **Rules are named after the domain, not the caller.** `getReadingTime`, `deriveDescription`, `deriveVariant`, `sortFavoriteFirst`, `resolveSlugCollisions`: the DTO calls them, but they read as editorial rules, not as mapper helpers.
 - **A rule is generic over the fields it reads, not over the concept that owns it.** `sortFavoriteFirst` is the single implementation of the Blog's order, and it is typed over `Pick<ArticleDTO, "isFavorite" | "publishDateISO">` so the tag index can order its Article references by the same rule rather than re-sorting them at the page. Widening a rule that way is preferable to a second sort somewhere downstream; a route that orders content on its own is the thing this rules out.
@@ -27,7 +27,6 @@ Not every concept needs all three. `rules.ts` is the exception rather than the n
 
 Cross-concept primitives only:
 
-- [`baseDTO.ts`](./shared/baseDTO.ts): `BaseDTO<INPUT, OUTPUT, CONFIGURATION>`, the `create` contract every application DTO implements
 - [`image.ts`](./shared/image.ts): `imageSchema`, reused by any concept carrying an image. Its `url` is an **absolute** URL and is validated as one (`z.url()`): Contentful's protocol-relative `//images.ctfassets.net/…` is absolutised at the ACL, so nothing reading this field has to finish it first
 - [`reference.ts`](./shared/reference.ts): shared reference shape
 

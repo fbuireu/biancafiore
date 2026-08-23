@@ -7,7 +7,12 @@ const TOGGLED_MODIFIER = "theme-toggle--toggled";
 
 const storedPreference = (page: Page) => page.evaluate((key) => localStorage.getItem(key), THEME_STORAGE_KEY);
 
-const choosePreference = (page: Page, preference: string) =>
+interface ChoosePreferenceParams {
+	page: Page;
+	preference: string;
+}
+
+const choosePreference = ({ page, preference }: ChoosePreferenceParams) =>
 	page.evaluate(([key, value]) => localStorage.setItem(key, value), [THEME_STORAGE_KEY, preference]);
 
 const settle = async (page: Page, theme: "dark" | "light") => {
@@ -95,7 +100,7 @@ test.describe("theme toggle", () => {
 
 		test("lets a stored preference win over the operating system", async ({ page }) => {
 			await page.goto("/");
-			await choosePreference(page, "dark");
+			await choosePreference({ page, preference: "dark" });
 
 			await page.reload();
 
@@ -104,7 +109,7 @@ test.describe("theme toggle", () => {
 
 		test("applies the stored theme before the page renders, so there is no flash", async ({ page }) => {
 			await page.goto("/");
-			await choosePreference(page, "dark");
+			await choosePreference({ page, preference: "dark" });
 
 			await page.goto("/", { waitUntil: "commit" });
 

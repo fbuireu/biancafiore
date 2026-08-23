@@ -1,57 +1,51 @@
-import { DEFAULT_LOCALE_STRING } from "@const/index";
-
-const ARTICLE_IMAGE_CROPS = [
-	{ width: 1200, height: 675 },
-	{ width: 1200, height: 900 },
-	{ width: 1200, height: 1200 },
-] as const;
+import { absoluteUrl, articleHref, DEFAULT_LOCALE_STRING, projectHref, tagHref } from "@const/index";
 
 interface BuildWebSiteSchemaParams {
-	url: string;
+	path: string;
 	name: string;
 	description: string;
 	author: {
 		name: string;
 		jobTitle: string;
-		url: string;
+		path: string;
 	};
 }
 
 interface BuildContactPageSchemaParams {
-	url: string;
+	path: string;
 	name: string;
 	description: string;
 }
 
 interface BuildBlogPostingSchemaParams {
-	url: string;
+	path: string;
 	headline: string;
 	description: string;
-	imageUrl?: string;
+	imageCrops?: string[];
 	datePublished: string;
 	dateModified?: string;
 	author: {
 		name: string;
 		jobTitle: string;
-		url: string;
+		path: string;
 	};
 	publisher: {
 		name: string;
-		url: string;
+		path: string;
 	};
 	keywords?: string[];
 }
 
 interface BreadcrumbListItem {
 	name: string;
-	url: string;
+	path: string;
 }
 
 interface BuildProfilePageSchemaParams {
 	person: {
 		id: string;
 		name: string;
-		url: string;
+		path: string;
 		image: string;
 		jobTitle: string;
 		company: string;
@@ -59,20 +53,16 @@ interface BuildProfilePageSchemaParams {
 	};
 	latestArticle?: {
 		headline: string;
-		url: string;
+		path: string;
 		datePublished: string;
 	};
-}
-
-function buildArticleImageVariants(imageUrl: string): string[] {
-	return ARTICLE_IMAGE_CROPS.map(({ width, height }) => `${imageUrl}?w=${width}&h=${height}&fit=fill`);
 }
 
 function serializeJsonLd(data: unknown): string {
 	return JSON.stringify(data).replaceAll("<", String.raw`\u003c`);
 }
 
-export function buildItemListSchema(urls: string[]): string {
+function buildItemListSchema(urls: string[]): string {
 	return serializeJsonLd({
 		"@context": "https://schema.org",
 		"@type": "ItemList",
@@ -84,43 +74,57 @@ export function buildItemListSchema(urls: string[]): string {
 	});
 }
 
-export function buildWebSiteSchema({ url, name, description, author }: BuildWebSiteSchemaParams): string {
+export function buildArticleListSchema(slugs: string[]): string {
+	return buildItemListSchema(slugs.map((slug) => absoluteUrl(articleHref(slug))));
+}
+
+export function buildProjectListSchema(ids: string[]): string {
+	return buildItemListSchema(ids.map((id) => absoluteUrl(projectHref(id))));
+}
+
+export function buildTagListSchema(slugs: string[]): string {
+	return buildItemListSchema(slugs.map((slug) => absoluteUrl(tagHref(slug))));
+}
+
+export function buildWebSiteSchema({ path, name, description, author }: BuildWebSiteSchemaParams): string {
 	return serializeJsonLd({
 		"@context": "https://schema.org",
 		"@type": "WebSite",
-		url,
+		url: absoluteUrl(path),
 		name,
 		description,
 		author: {
 			"@type": "Person",
 			name: author.name,
 			jobTitle: author.jobTitle,
-			url: author.url,
+			url: absoluteUrl(author.path),
 		},
 	});
 }
 
-export function buildContactPageSchema({ url, name, description }: BuildContactPageSchemaParams): string {
+export function buildContactPageSchema({ path, name, description }: BuildContactPageSchemaParams): string {
 	return serializeJsonLd({
 		"@context": "https://schema.org",
 		"@type": "ContactPage",
-		url,
+		url: absoluteUrl(path),
 		name,
 		description,
 	});
 }
 
 export function buildBlogPostingSchema({
-	url,
+	path,
 	headline,
 	description,
-	imageUrl,
+	imageCrops,
 	datePublished,
 	dateModified,
 	author,
 	publisher,
 	keywords,
 }: BuildBlogPostingSchemaParams): string {
+	const url = absoluteUrl(path);
+
 	return serializeJsonLd({
 		"@context": "https://schema.org",
 		"@type": "BlogPosting",
@@ -128,19 +132,19 @@ export function buildBlogPostingSchema({
 		headline,
 		description,
 		inLanguage: DEFAULT_LOCALE_STRING,
-		...(imageUrl && { image: buildArticleImageVariants(imageUrl) }),
+		...(imageCrops?.length && { image: imageCrops }),
 		datePublished,
 		dateModified,
 		author: {
 			"@type": "Person",
 			name: author.name,
 			jobTitle: author.jobTitle,
-			url: author.url,
+			url: absoluteUrl(author.path),
 		},
 		publisher: {
 			"@type": "Person",
 			name: publisher.name,
-			url: publisher.url,
+			url: absoluteUrl(publisher.path),
 		},
 		...(keywords && keywords.length > 0 && { keywords: keywords.join(", ") }),
 		mainEntityOfPage: {
@@ -154,11 +158,11 @@ export function buildBreadcrumbListSchema(items: BreadcrumbListItem[]): string {
 	return serializeJsonLd({
 		"@context": "https://schema.org",
 		"@type": "BreadcrumbList",
-		itemListElement: items.map(({ name, url }, index) => ({
+		itemListElement: items.map(({ name, path }, index) => ({
 			"@type": "ListItem",
 			position: index + 1,
 			name,
-			item: url,
+			item: absoluteUrl(path),
 		})),
 	});
 }
@@ -171,7 +175,7 @@ export function buildProfilePageSchema({ person, latestArticle }: BuildProfilePa
 			"@id": person.id,
 			"@type": "Person",
 			name: person.name,
-			url: person.url,
+			url: absoluteUrl(person.path),
 			image: person.image,
 			jobTitle: person.jobTitle,
 			worksFor: {
@@ -185,7 +189,7 @@ export function buildProfilePageSchema({ person, latestArticle }: BuildProfilePa
 				{
 					"@type": "Article",
 					headline: latestArticle.headline,
-					url: latestArticle.url,
+					url: absoluteUrl(latestArticle.path),
 					datePublished: latestArticle.datePublished,
 					author: { "@id": person.id },
 				},

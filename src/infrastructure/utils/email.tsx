@@ -7,20 +7,14 @@ import { render } from "@react-email/render";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
 
-const ALIAS_REGEX = /\+[^@]*(?=@)/;
+type SendEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
-type ContactEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
-
-export interface ContactEmailContent {
+interface ContactEmailContent {
 	html: string;
 	text: string;
 }
 
-export function normalizeEmail(email: string): string {
-	return email.trim().toLowerCase().replace(ALIAS_REGEX, "");
-}
-
-export async function createEmail({ name, email, message }: ContactEmailParams): Promise<ContactEmailContent> {
+export async function createEmail({ name, email, message }: SendEmailParams): Promise<ContactEmailContent> {
 	const date = new Date().toLocaleString(DEFAULT_LOCALE_STRING);
 	const subject = encodeURIComponent(`Re: ${CONTACT_DETAILS.EMAIL_SUBJECT} from biancafiore.me`);
 	const mailTo = `mailto:${email}?subject=${subject}`;
@@ -32,23 +26,10 @@ export async function createEmail({ name, email, message }: ContactEmailParams):
 	return { html, text };
 }
 
-export const sendEmail = (params: ContactEmailParams): Effect.Effect<{ id: string }, EmailError, EmailClient> =>
+export const sendEmail = (params: SendEmailParams): Effect.Effect<{ id: string }, EmailError, EmailClient> =>
 	Effect.gen(function* () {
 		const emails = yield* EmailClient;
-		const { html, text } = yield* Effect.promise(() => createEmail({ ...params }));
+		const { html, text } = yield* Effect.promise(() => createEmail(params));
 
-		return yield* emails.send({
-			from: `Bianca Fiore Web <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`,
-			to: atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA),
-			replyTo: params.email,
-			subject: `${CONTACT_DETAILS.EMAIL_SUBJECT} from ${params.name} (${params.email})`,
-			tags: [
-				{
-					name: "category",
-					value: "web_contact_form",
-				},
-			],
-			html,
-			text,
-		});
+		return yield* emails.sendContactNotification({ name: params.name, email: params.email, html, text });
 	});

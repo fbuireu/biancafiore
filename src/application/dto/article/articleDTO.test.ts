@@ -1,4 +1,4 @@
-import { articleDTO } from "@application/dto/article";
+import { createArticles } from "@application/dto/article";
 import type { RawArticle } from "@application/dto/article/types";
 import { describe, expect, it, vi } from "vitest";
 
@@ -60,7 +60,7 @@ interface MakeArticleParams {
 	title?: string;
 	content?: unknown[];
 	description?: string;
-	publishDate?: string;
+	publishDate?: string | null;
 	updatedAt?: string;
 	featuredImage?: unknown;
 	featuredArticle?: boolean;
@@ -107,15 +107,15 @@ const makeArticle = ({
 		},
 	}) as unknown as RawArticle;
 
-describe("articleDTO defaults for optional CMS fields", () => {
+describe("createArticles defaults for optional CMS fields", () => {
 	it("defaults isFavorite and isRepublished to false when Contentful omits both flags", () => {
-		const [article] = articleDTO.create([makeArticle()]);
+		const [article] = createArticles([makeArticle()]);
 
 		expect(article).toMatchObject({ isFavorite: false, isRepublished: false, originalSource: undefined });
 	});
 
 	it("keeps the authored flags when Contentful does send them", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ isFavorite: true, isRepublished: true, originalSource: "https://medium.com/post" }),
 		]);
 
@@ -127,15 +127,15 @@ describe("articleDTO defaults for optional CMS fields", () => {
 	});
 
 	it("passes isFeaturedArticle through untouched, since it is a required CMS field with no default", () => {
-		const [article] = articleDTO.create([makeArticle({ featuredArticle: true })]);
+		const [article] = createArticles([makeArticle({ featuredArticle: true })]);
 
 		expect(article.isFeaturedArticle).toBe(true);
 	});
 });
 
-describe("articleDTO description", () => {
+describe("createArticles description", () => {
 	it("falls back to the rendered content, stripped of markup and collapsed, when there is no description", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ content: [heading({ level: 2, value: "Intro" }), paragraph("Body text")] }),
 		]);
 
@@ -145,27 +145,27 @@ describe("articleDTO description", () => {
 	it("truncates a fallback description longer than 200 characters, keeping the opening words verbatim", () => {
 		const long = Array.from({ length: 60 }, (_, index) => `word${index}`).join(" ");
 
-		const [article] = articleDTO.create([makeArticle({ content: [paragraph(long)] })]);
+		const [article] = createArticles([makeArticle({ content: [paragraph(long)] })]);
 
 		expect(article.description).toBe(`${long.slice(0, 200)}...`);
 	});
 
 	it("cleans an authored description rather than trusting the CMS whitespace", () => {
-		const [article] = articleDTO.create([makeArticle({ description: "  A   <em>bold</em>\nclaim  " })]);
+		const [article] = createArticles([makeArticle({ description: "  A   <em>bold</em>\nclaim  " })]);
 
 		expect(article.description).toBe("A bold claim");
 	});
 
 	it("keeps an empty authored description, because the fallback is nullish and an empty string is not", () => {
-		const [article] = articleDTO.create([makeArticle({ description: "", content: [paragraph("Fallback")] })]);
+		const [article] = createArticles([makeArticle({ description: "", content: [paragraph("Fallback")] })]);
 
 		expect(article.description).toBe("");
 	});
 });
 
-describe("articleDTO images and variant", () => {
+describe("createArticles images", () => {
 	it("maps a featured image to url, pixel dimensions and format flags", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ featuredImage: asset({ url: "//cdn/hero.avif", contentType: "image/avif" }) }),
 		]);
 
@@ -173,47 +173,48 @@ describe("articleDTO images and variant", () => {
 			url: "https://cdn/hero.avif",
 			details: { width: 1200, height: 630 },
 			formats: { avif: true, webp: false },
+			shareCrops: expect.any(Array),
 		});
 	});
 
-	it("derives the default variant from the presence of a featured image", () => {
-		const [article] = articleDTO.create([makeArticle({ featuredImage: asset() })]);
-
-		expect(article.variant).toBe("default");
-	});
-
-	it("leaves featuredImage undefined and falls back to the no_image variant without one", () => {
-		const [article] = articleDTO.create([makeArticle()]);
+	it("leaves featuredImage undefined without one", () => {
+		const [article] = createArticles([makeArticle()]);
 
 		expect(article.featuredImage).toBeUndefined();
-		expect(article.variant).toBe("no_image");
 	});
 });
 
-describe("articleDTO dates", () => {
-	it("formats the publish date for en-GB and keeps a machine readable copy beside it", () => {
-		const [article] = articleDTO.create([makeArticle({ publishDate: "2024-03-15" })]);
+describe("createArticles dates", () => {
+	it("stores the machine readable date and leaves the label to the renderer", () => {
+		const [article] = createArticles([makeArticle({ publishDate: "2024-03-15" })]);
 
-		expect(article.publishDate).toBe("Friday, 15 March 2024");
 		expect(article.publishDateISO).toBe("2024-03-15T00:00:00.000Z");
+		expect(article).not.toHaveProperty("publishDate");
+	});
+
+	it.each([
+		["missing", null],
+		["unreadable", "not a date"],
+	])("refuses an entry whose publish date is %s, naming the value rather than throwing bare", (_name, publishDate) => {
+		expect(() => createArticles([makeArticle({ publishDate })])).toThrow("unreadable publish date");
 	});
 
 	it("reads updatedAt off sys, not off fields", () => {
-		const [article] = articleDTO.create([makeArticle({ updatedAt: "2024-04-01T10:00:00.000Z" })]);
+		const [article] = createArticles([makeArticle({ updatedAt: "2024-04-01T10:00:00.000Z" })]);
 
 		expect(article.updatedAt).toBe("2024-04-01T10:00:00.000Z");
 	});
 
 	it("falls back to the publish date when Contentful reports no updatedAt", () => {
-		const [article] = articleDTO.create([makeArticle({ publishDate: "2024-03-15" })]);
+		const [article] = createArticles([makeArticle({ publishDate: "2024-03-15" })]);
 
 		expect(article.updatedAt).toBe("2024-03-15T00:00:00.000Z");
 	});
 });
 
-describe("articleDTO related articles", () => {
+describe("createArticles related articles", () => {
 	it("maps authored related articles to slug references and drops links Contentful left unresolved", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({
 				relatedArticles: [{ fields: { slug: "resolved-one" } }, { sys: { type: "Link", linkType: "Entry", id: "x" } }],
 			}),
@@ -224,7 +225,7 @@ describe("articleDTO related articles", () => {
 
 	it("treats an empty authored list as an answer and never falls back to the tag matching", () => {
 		const sharedTag = tag({ name: "Craft", slug: "craft" });
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ slug: "first", tags: [sharedTag], relatedArticles: [] }),
 			makeArticle({ slug: "second", title: "Second", tags: [sharedTag] }),
 		]);
@@ -236,7 +237,7 @@ describe("articleDTO related articles", () => {
 		const craft = tag({ name: "Craft", slug: "craft" });
 		const travel = tag({ name: "Travel", slug: "travel" });
 
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ slug: "first", title: "First", tags: [craft] }),
 			makeArticle({ slug: "second", title: "Second", tags: [craft, travel] }),
 			makeArticle({ slug: "third", title: "Third", tags: [travel] }),
@@ -251,7 +252,7 @@ describe("articleDTO related articles", () => {
 			makeArticle({ slug: `sibling-${index}`, title: `Sibling ${index}`, tags: [craft] }),
 		);
 
-		const [article] = articleDTO.create([makeArticle({ slug: "first", title: "First", tags: [craft] }), ...siblings]);
+		const [article] = createArticles([makeArticle({ slug: "first", title: "First", tags: [craft] }), ...siblings]);
 
 		expect(article.relatedArticles).toHaveLength(6);
 		expect(article.relatedArticles?.at(0)).toEqual({ id: "sibling-0", collection: "articles" });
@@ -260,7 +261,7 @@ describe("articleDTO related articles", () => {
 	it("leaves an authored list uncapped, because an author who picks eight articles means eight", () => {
 		const picks = Array.from({ length: 8 }, (_, index) => ({ fields: { slug: `pick-${index}` } }));
 
-		const [article] = articleDTO.create([makeArticle({ slug: "first", relatedArticles: picks })]);
+		const [article] = createArticles([makeArticle({ slug: "first", relatedArticles: picks })]);
 
 		expect(article.relatedArticles).toHaveLength(8);
 	});
@@ -268,7 +269,7 @@ describe("articleDTO related articles", () => {
 	it("suggests a namesake article, because an article is excluded by its slug and not by its title", () => {
 		const craft = tag({ name: "Craft", slug: "craft" });
 
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ slug: "first", title: "Same title", tags: [craft] }),
 			makeArticle({ slug: "namesake", title: "Same title", tags: [craft] }),
 		]);
@@ -277,7 +278,7 @@ describe("articleDTO related articles", () => {
 	});
 
 	it("drops an authored reference an editor pointed back at the article itself", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({
 				slug: "first",
 				relatedArticles: [{ fields: { slug: "  first  " } }, { fields: { slug: "second" } }],
@@ -290,13 +291,13 @@ describe("articleDTO related articles", () => {
 	it("excludes the article from its own derived list even when it carries its own tags twice over", () => {
 		const craft = tag({ name: "Craft", slug: "craft" });
 
-		const [article] = articleDTO.create([makeArticle({ slug: "  first  ", title: "First", tags: [craft, craft] })]);
+		const [article] = createArticles([makeArticle({ slug: "  first  ", title: "First", tags: [craft, craft] })]);
 
 		expect(article.relatedArticles).toEqual([]);
 	});
 
 	it("derives nothing for an article with no tags at all", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ slug: "first", title: "First" }),
 			makeArticle({ slug: "second", title: "Second", tags: [tag({ name: "Craft", slug: "craft" })] }),
 		]);
@@ -305,21 +306,21 @@ describe("articleDTO related articles", () => {
 	});
 });
 
-describe("articleDTO tags", () => {
+describe("createArticles tags", () => {
 	it("trims the whitespace Contentful preserves around tag names and slugs", () => {
-		const [article] = articleDTO.create([makeArticle({ tags: [tag({ name: "  Craft  ", slug: " craft " })] })]);
+		const [article] = createArticles([makeArticle({ tags: [tag({ name: "  Craft  ", slug: " craft " })] })]);
 
 		expect(article.tags).toEqual([{ name: "Craft", slug: "craft" }]);
 	});
 
 	it("maps a missing tag list to an empty array rather than undefined", () => {
-		const [article] = articleDTO.create([makeArticle()]);
+		const [article] = createArticles([makeArticle()]);
 
 		expect(article.tags).toEqual([]);
 	});
 
 	it("drops tag links Contentful did not resolve", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({
 				tags: [{ sys: { type: "Link", linkType: "Entry", id: "x" } }, tag({ name: "Craft", slug: "craft" })],
 			}),
@@ -329,9 +330,9 @@ describe("articleDTO tags", () => {
 	});
 });
 
-describe("articleDTO slug", () => {
+describe("createArticles slug", () => {
 	it("trims the article's own slug, so the collection is keyed on the string every reference spells", () => {
-		const [article] = articleDTO.create([makeArticle({ slug: "  a-piece  " })]);
+		const [article] = createArticles([makeArticle({ slug: "  a-piece  " })]);
 
 		expect(article.slug).toBe("a-piece");
 	});
@@ -339,7 +340,7 @@ describe("articleDTO slug", () => {
 	it("keys a derived reference on the slug the referenced article carries, however Contentful padded it", () => {
 		const craft = tag({ name: "Craft", slug: "craft" });
 
-		const [first, second] = articleDTO.create([
+		const [first, second] = createArticles([
 			makeArticle({ slug: "first", title: "First", tags: [craft] }),
 			makeArticle({ slug: "  second  ", title: "Second", tags: [craft] }),
 		]);
@@ -349,15 +350,15 @@ describe("articleDTO slug", () => {
 	});
 
 	it("keys an authored reference the same way, rather than passing the padding through", () => {
-		const [article] = articleDTO.create([makeArticle({ relatedArticles: [{ fields: { slug: "  resolved-one  " } }] })]);
+		const [article] = createArticles([makeArticle({ relatedArticles: [{ fields: { slug: "  resolved-one  " } }] })]);
 
 		expect(article.relatedArticles).toEqual([{ id: "resolved-one", collection: "articles" }]);
 	});
 });
 
-describe("articleDTO content derivations", () => {
+describe("createArticles content derivations", () => {
 	it("builds the table of contents from the headings the renderer collected, shifting levels down by one", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({
 				content: [
 					heading({ level: 2, value: "The First Section" }),
@@ -368,26 +369,26 @@ describe("articleDTO content derivations", () => {
 		]);
 
 		expect(article.tableOfContents).toEqual([
-			{ id: "the-first-section", heading: "The First Section", level: 1 },
-			{ id: "a-nested-one", heading: "A Nested One", level: 2 },
+			{ id: "the-first-section", heading: "The First Section", level: 2, scope: "--section-1" },
+			{ id: "a-nested-one", heading: "A Nested One", level: 3, scope: "--section-2" },
 		]);
 	});
 
 	it("ignores h1 headings, which are outside the h2-h6 range the table of contents scans", () => {
-		const [article] = articleDTO.create([makeArticle({ content: [heading({ level: 1, value: "Title" })] })]);
+		const [article] = createArticles([makeArticle({ content: [heading({ level: 1, value: "Title" })] })]);
 
 		expect(article.tableOfContents).toEqual([]);
 	});
 
 	it("wraps every heading in a linked section in the rendered content", () => {
-		const [article] = articleDTO.create([makeArticle({ content: [heading({ level: 2, value: "The Craft" })] })]);
+		const [article] = createArticles([makeArticle({ content: [heading({ level: 2, value: "The Craft" })] })]);
 
 		expect(article.content).toContain('<h2 id="the-craft" class="article__heading flex align-baseline">');
 		expect(article.content).toContain('<a href="#the-craft">The Craft</a>');
 	});
 
 	it("numbers each section by its place in the table of contents, so the scroll timelines line up", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({
 				content: [
 					heading({ level: 2, value: "First" }),
@@ -404,7 +405,7 @@ describe("articleDTO content derivations", () => {
 	});
 
 	it("gives an h1 no timeline, because the table of contents never indexes one", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ content: [heading({ level: 1, value: "Title" }), heading({ level: 2, value: "First" })] }),
 		]);
 
@@ -420,14 +421,14 @@ describe("articleDTO content derivations", () => {
 			content: [text("Click me")],
 		};
 
-		const [article] = articleDTO.create([makeArticle({ content: [{ ...paragraph("x"), content: [scripted] }] })]);
+		const [article] = createArticles([makeArticle({ content: [{ ...paragraph("x"), content: [scripted] }] })]);
 
 		expect(article.content).toContain('href=""');
 		expect(article.content).not.toContain("javascript:");
 	});
 
 	it("wraps a heading in its own section and leaves the body paragraphs alone", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ content: [heading({ level: 2, value: "The Craft" }), paragraph("Body text")] }),
 		]);
 
@@ -437,7 +438,7 @@ describe("articleDTO content derivations", () => {
 	});
 
 	it("points a table of contents entry at an id the rendered content actually defines", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({
 				content: [
 					{
@@ -455,7 +456,7 @@ describe("articleDTO content derivations", () => {
 	});
 
 	it("escapes the markup characters an author types into a heading rather than emitting them raw", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ content: [heading({ level: 2, value: `Why & How <b> "now" isn't it` })] }),
 		]);
 
@@ -473,7 +474,7 @@ describe("articleDTO content derivations", () => {
 			content: [],
 		};
 
-		const [article] = articleDTO.create([makeArticle({ content: [codeBlock] })]);
+		const [article] = createArticles([makeArticle({ content: [codeBlock] })]);
 
 		expect(article.content).toContain("<pre><code>&lt;script&gt;x=&quot;1&quot;&lt;/script&gt;</code></pre>");
 		expect(article.content).not.toContain("<script>");
@@ -491,13 +492,13 @@ describe("articleDTO content derivations", () => {
 			content: [],
 		};
 
-		const [article] = articleDTO.create([makeArticle({ content: [videoEmbed] })]);
+		const [article] = createArticles([makeArticle({ content: [videoEmbed] })]);
 
 		expect(article.content).toContain('title="She said &quot;hello&quot;"');
 	});
 
 	it("escapes a heading in the body but hands the table of contents the text as authored", () => {
-		const [article] = articleDTO.create([makeArticle({ content: [heading({ level: 2, value: "Why & How" })] })]);
+		const [article] = createArticles([makeArticle({ content: [heading({ level: 2, value: "Why & How" })] })]);
 		const [entry] = article.tableOfContents;
 
 		expect(entry.heading).toBe("Why & How");
@@ -506,7 +507,7 @@ describe("articleDTO content derivations", () => {
 	});
 
 	it("spells the anchor once, so an entity in a heading cannot split the id from the link", () => {
-		const [article] = articleDTO.create([makeArticle({ content: [heading({ level: 2, value: "Tips & Tricks" })] })]);
+		const [article] = createArticles([makeArticle({ content: [heading({ level: 2, value: "Tips & Tricks" })] })]);
 		const [entry] = article.tableOfContents;
 
 		expect(entry.id).toBe("tips-tricks");
@@ -514,7 +515,7 @@ describe("articleDTO content derivations", () => {
 	});
 
 	it("numbers each section by the position its entry takes in the table of contents", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({
 				content: [
 					heading({ level: 1, value: "Title" }),
@@ -524,16 +525,16 @@ describe("articleDTO content derivations", () => {
 			}),
 		]);
 
-		for (const [index, entry] of article.tableOfContents.entries()) {
-			expect(article.content).toContain(`<section style="--is: --section-${index + 1}">`);
-			expect(article.content).toContain(`<h${entry.level + 1} id="${entry.id}"`);
+		for (const entry of article.tableOfContents) {
+			expect(article.content).toContain(`<section style="--is: ${entry.scope}">`);
+			expect(article.content).toContain(`<h${entry.level} id="${entry.id}"`);
 		}
 
 		expect(article.tableOfContents).toHaveLength(2);
 	});
 
 	it("counts the words of every paragraph towards reading time, not just the first of each", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ content: Array.from({ length: 201 }, (_, index) => paragraph(`word${index}`)) }),
 		]);
 
@@ -543,17 +544,17 @@ describe("articleDTO content derivations", () => {
 	it("rounds reading time up from two hundred words a minute", () => {
 		const words = (count: number) => Array.from({ length: count }, (_, index) => `word${index}`).join(" ");
 
-		const [exactlyOneMinute] = articleDTO.create([makeArticle({ content: [paragraph(words(200))] })]);
-		const [oneWordOver] = articleDTO.create([makeArticle({ content: [paragraph(words(201))] })]);
+		const [exactlyOneMinute] = createArticles([makeArticle({ content: [paragraph(words(200))] })]);
+		const [oneWordOver] = createArticles([makeArticle({ content: [paragraph(words(201))] })]);
 
 		expect(exactlyOneMinute.readingTime).toBe(1);
 		expect(oneWordOver.readingTime).toBe(2);
 	});
 });
 
-describe("articleDTO author and batching", () => {
+describe("createArticles author and batching", () => {
 	it("embeds the author without the author's own article references", () => {
-		const [article] = articleDTO.create([makeArticle()]);
+		const [article] = createArticles([makeArticle()]);
 
 		expect(article.author).toEqual({
 			name: "Bianca Fiore",
@@ -565,13 +566,14 @@ describe("articleDTO author and batching", () => {
 				url: "https://images.ctfassets.net/bianca.webp",
 				details: { width: 1200, height: 630 },
 				formats: { avif: false, webp: true },
+				shareCrops: expect.any(Array),
 			},
 			socialNetworks: ["https://linkedin.com/in/bianca"],
 		});
 	});
 
 	it("trims the byline slug, so it addresses the same page the author collection generates", () => {
-		const [article] = articleDTO.create([
+		const [article] = createArticles([
 			makeArticle({ author: { fields: { ...AUTHOR.fields, name: " Bianca Fiore ", slug: " bianca-fiore " } } }),
 		]);
 
@@ -579,14 +581,14 @@ describe("articleDTO author and batching", () => {
 	});
 
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {
-		const result = articleDTO.create([]);
+		const result = createArticles([]);
 
 		expect(result).toEqual([]);
 		expect(result).not.toBeInstanceOf(Promise);
 	});
 
 	it("preserves the order of the batch it was given", () => {
-		const articles = articleDTO.create([
+		const articles = createArticles([
 			makeArticle({ slug: "first", title: "First" }),
 			makeArticle({ slug: "second", title: "Second" }),
 		]);

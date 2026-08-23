@@ -10,24 +10,15 @@
 		padding: 0;
 		scroll-behavior: smooth;
 		scroll-snap-type: x mandatory;
-		scroll-marker-group: after;
 		scrollbar-width: none;
 
 		@media (prefers-reduced-motion: reduce) {
 			scroll-behavior: auto;
 		}
-
-		&::scroll-marker-group {
-			align-items: center;
-			display: flex;
-			gap: 0 0.7rem;
-			justify-content: center;
-			padding-block: 2rem;
-		}
 	}
 
 	.slider-wrapper {
-		&[data-has-buttons="true"] {
+		&[data-has-buttons="true"][data-has-dots="false"] {
 			align-items: center;
 			display: grid;
 			gap: 1rem;
@@ -80,7 +71,7 @@
 			inline-size: 1.25rem;
 		}
 
-		&:is(.slider__btn--prev, .testimonials__nav__arrow--prev) .stretch-arrow {
+		&.slider__btn--prev .stretch-arrow {
 			rotate: 0.5turn;
 		}
 
@@ -114,22 +105,47 @@
 		height: auto;
 		scroll-snap-align: start;
 		width: calc((100% - (var(--slides-per-view) - 1) * var(--slider-gap, 2rem)) / var(--slides-per-view));
+	}
 
-		&::scroll-marker {
-			background-color: var(--neutral-light-1);
-			border-radius: 1rem;
+	.slider__nav {
+		align-items: center;
+		display: flex;
+		gap: 8px;
+		justify-content: center;
+		margin-block-start: 28px;
+		position: relative;
+	}
+
+	.slider__dot {
+		background: transparent;
+		block-size: 28px;
+		border: 0;
+		inline-size: 14px;
+		padding: 0;
+		position: relative;
+		transition: inline-size 0.3s;
+
+		&::after {
+			background-color: var(--faint);
+			block-size: 2px;
 			content: "";
-			cursor: pointer;
-			height: 0.75rem;
-			transition:
-				width 0.3s,
-				background-color 0.3s;
-			width: 0.75rem;
+			inset-block-start: 50%;
+			inset-inline: 0;
+			position: absolute;
+			transition: background-color 0.3s;
+			translate: 0 -50%;
 		}
 
-		&::scroll-marker:target-current {
-			background-color: var(--primary-main);
-			width: 1.5rem;
+		&:hover::after {
+			background-color: var(--gold-bright);
+		}
+
+		&.slider__dot--active {
+			inline-size: 32px;
+
+			&::after {
+				background-color: var(--gold);
+			}
 		}
 	}
 }

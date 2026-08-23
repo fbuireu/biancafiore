@@ -1,4 +1,4 @@
-import { ContactForm } from "@modules/contact/components/contactForm";
+import { ContactForm } from "@modules/contact/components/contactForm/ContactForm";
 import { type ContactSubmission, UNDELIVERED_MESSAGE } from "@modules/contact/utils/submission";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -23,12 +23,18 @@ const renderForm = ({
 
 const submitButton = (): HTMLButtonElement => screen.getByRole("button", { name: /Send email|Sending/ });
 
-const answer = (label: string, value: string) => fireEvent.change(screen.getByLabelText(label), { target: { value } });
+interface AnswerParams {
+	label: string;
+	value: string;
+}
+
+const answer = ({ label, value }: AnswerParams) =>
+	fireEvent.change(screen.getByLabelText(label), { target: { value } });
 
 const send = async () => {
-	answer("(your name)", VISITOR.name);
-	answer("(your email)", VISITOR.email);
-	answer("(your message)", VISITOR.message);
+	answer({ label: "(your name)", value: VISITOR.name });
+	answer({ label: "(your email)", value: VISITOR.email });
+	answer({ label: "(your message)", value: VISITOR.message });
 
 	await act(async () => {
 		fireEvent.submit(submitButton().closest("form") as HTMLFormElement);

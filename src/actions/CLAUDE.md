@@ -94,3 +94,11 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   `DuplicateContactError` text in [`persistence.ts`](../infrastructure/utils/persistence.ts). `contactErrorResponse` forwards `failure.value.message`
   verbatim, so those strings reach the visitor unchanged. The layers below stay tagged; they are not
   language-free.
+- **The duplicate check answers one sentence, whatever fired it.** The cooldown and the exact-repeat
+  check are two questions with two purposes, but they share a refusal, because `contactErrorResponse`
+  forwards it verbatim to an unauthenticated caller. Two distinct sentences made the form a free oracle
+  over the contacts table: submit any address and the wording told you whether it had written in the last
+  `CONTACT_COOLDOWN_HOURS`, or whether it had ever sent that exact text, and the check runs before any
+  mail leaves, so probing cost nothing and left no trace. Which check fired goes to `Effect.logInfo`
+  instead, where Bianca can read it and a caller cannot. What remains visible is the minimum a legitimate
+  repeat sender needs: that they have already been heard.

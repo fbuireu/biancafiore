@@ -1,13 +1,11 @@
 import {
 	deriveDescription,
-	deriveVariant,
 	generateTableOfContents,
 	getReadingTime,
 	isTableOfContentsHeading,
 	sortFavoriteFirst,
 } from "@domain/article/rules";
 import type { ArticleDTO, ArticleHeading } from "@domain/article/types";
-import { ArticleType } from "@domain/article/types";
 import { describe, expect, it } from "vitest";
 
 interface ArticleStubParams {
@@ -19,10 +17,17 @@ interface ArticleStubParams {
 const articleStub = ({ slug, isFavorite, publishDateISO }: ArticleStubParams): ArticleDTO =>
 	({ slug, isFavorite, publishDateISO }) as ArticleDTO;
 
-const headingStub = (level: number, text: string): ArticleHeading => ({
+interface HeadingStubParams {
+	level: number;
+	text: string;
+	ordinal?: number;
+}
+
+const headingStub = ({ level, text, ordinal = 1 }: HeadingStubParams): ArticleHeading => ({
 	level,
 	id: text.toLowerCase().replaceAll(" ", "-"),
 	text,
+	scope: `--section-${ordinal}`,
 });
 
 const words = (count: number): string => Array.from({ length: count }, () => "word").join(" ");
@@ -97,30 +102,41 @@ describe("generateTableOfContents", () => {
 		expect(generateTableOfContents([])).toEqual([]);
 	});
 
-	it("shifts heading levels down by one, so h2 is the top level", () => {
+	it("carries the heading level untouched, so the stylesheet owns the indentation ramp", () => {
 		expect(
-			generateTableOfContents([headingStub(2, "Intro"), headingStub(3, "Detail"), headingStub(6, "Aside")]),
+			generateTableOfContents([
+				headingStub({ level: 2, text: "Intro", ordinal: 1 }),
+				headingStub({ level: 6, text: "Aside", ordinal: 2 }),
+			]),
 		).toEqual([
-			{ id: "intro", heading: "Intro", level: 1 },
-			{ id: "detail", heading: "Detail", level: 2 },
-			{ id: "aside", heading: "Aside", level: 5 },
+			{ id: "intro", heading: "Intro", level: 2, scope: "--section-1" },
+			{ id: "aside", heading: "Aside", level: 6, scope: "--section-2" },
 		]);
 	});
 
+	it("carries the scope the renderer minted rather than counting the list a second time", () => {
+		const items = generateTableOfContents([
+			headingStub({ level: 2, text: "First", ordinal: 1 }),
+			headingStub({ level: 3, text: "Second", ordinal: 2 }),
+		]);
+
+		expect(items.map(({ scope }) => scope)).toEqual(["--section-1", "--section-2"]);
+	});
+
 	it("keeps the headings in document order rather than sorting them by level", () => {
-		const items = generateTableOfContents([headingStub(4, "Third"), headingStub(2, "First"), headingStub(3, "Second")]);
+		const items = generateTableOfContents([
+			headingStub({ level: 4, text: "Third" }),
+			headingStub({ level: 2, text: "First" }),
+			headingStub({ level: 3, text: "Second" }),
+		]);
 
 		expect(items.map(({ heading }) => heading)).toEqual(["Third", "First", "Second"]);
 	});
 
-	it("ignores h1, which belongs to the page title and not to the table of contents", () => {
-		expect(generateTableOfContents([headingStub(1, "Title"), headingStub(2, "Section")])).toEqual([
-			{ id: "section", heading: "Section", level: 1 },
-		]);
-	});
-
 	it("takes the anchor id the renderer wrote instead of deriving a second one from the text", () => {
-		const [entry] = generateTableOfContents([{ level: 2, id: "tips-tricks", text: "Tips & Tricks" }]);
+		const [entry] = generateTableOfContents([
+			{ level: 2, id: "tips-tricks", text: "Tips & Tricks", scope: "--section-1" },
+		]);
 
 		expect(entry.id).toBe("tips-tricks");
 	});
@@ -128,33 +144,10 @@ describe("generateTableOfContents", () => {
 	it("carries the heading text as the author typed it, with no markup or entity left to undo", () => {
 		expect(
 			generateTableOfContents([
-				{ level: 2, id: "why-how", text: "Why & How" },
-				{ level: 2, id: "using-script-tags", text: "Using <script> Tags" },
+				{ level: 2, id: "why-how", text: "Why & How", scope: "--section-1" },
+				{ level: 2, id: "using-script-tags", text: "Using <script> Tags", scope: "--section-2" },
 			]).map(({ heading }) => heading),
 		).toEqual(["Why & How", "Using <script> Tags"]);
-	});
-
-	it("numbers its entries as the body numbers its sections, since both count the same headings", () => {
-		const items = generateTableOfContents([
-			headingStub(1, "Title"),
-			headingStub(2, "First"),
-			headingStub(3, "Second"),
-			headingStub(2, "Third"),
-		]);
-
-		expect(items.map(({ heading }, index) => `--section-${index + 1}: ${heading}`)).toEqual([
-			"--section-1: First",
-			"--section-2: Second",
-			"--section-3: Third",
-		]);
-	});
-
-	it("leaves the headings it was handed untouched", () => {
-		const headings = [headingStub(2, "Section")];
-
-		generateTableOfContents(headings);
-
-		expect(headings).toEqual([{ level: 2, id: "section", text: "Section" }]);
 	});
 });
 
@@ -188,16 +181,6 @@ describe("deriveDescription", () => {
 		const body = "a".repeat(200);
 
 		expect(deriveDescription(`<strong>${body}</strong>`)).toBe(body);
-	});
-});
-
-describe("deriveVariant", () => {
-	it("renders an article with a featured image as the default variant", () => {
-		expect(deriveVariant(true)).toBe(ArticleType.DEFAULT);
-	});
-
-	it("falls back to the imageless variant when there is no featured image", () => {
-		expect(deriveVariant(false)).toBe(ArticleType.NO_IMAGE);
 	});
 });
 

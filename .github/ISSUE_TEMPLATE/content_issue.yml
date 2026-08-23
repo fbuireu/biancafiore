@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Content on this site (articles, projects, testimonials) lives in a CMS, not in this repository — it cannot be fixed by a pull request. Report it here and it will be corrected in the CMS.
+        Content on this site (articles, projects, testimonials) lives in a CMS, not in this repository, so it cannot be fixed by a pull request. Report it here and it will be corrected in the CMS.
   - type: input
     id: url
     attributes:

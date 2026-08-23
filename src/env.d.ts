@@ -2,17 +2,9 @@
 
 interface ImportMetaEnv {
 	readonly IMAGE_CDN: import("./const/const").ImageCdn;
-	readonly PUBLIC_SITE_URL: string;
+	readonly SITE_URL: string;
 	readonly BIANCA_EMAIL: string;
 	readonly TWITTER_HANDLE: string;
-	readonly GOOGLE_ANALYTICS_ID: string;
-	readonly GOOGLE_TAG_MANAGER_ID: string;
-	readonly GOOGLE_RECAPTCHA_SITE_KEY: string;
-	readonly GOOGLE_RECAPTCHA_SECRET_KEY: string;
-	readonly RESEND_API_KEY: string;
-	readonly CONTENTFUL_SPACE_ID: string;
-	readonly CONTENTFUL_DELIVERY_TOKEN: string;
-	readonly CONTENTFUL_PREVIEW_TOKEN: string;
 }
 
 interface ImportMeta {
@@ -32,6 +24,8 @@ declare module "@tgwf/co2" {
 	}
 }
 
+type DataLayerEntry = IArguments | unknown[];
+
 interface Window {
-	dataLayer: any[];
+	dataLayer: DataLayerEntry[];
 }

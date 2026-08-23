@@ -1,18 +1,19 @@
 import { getCollection } from "astro:content";
 import rss from "@astrojs/rss";
-import { articleHref } from "@const/index";
+import { absoluteUrl, articleHref, PAGES_ROUTES } from "@const/index";
 import { DEFAULT_SEO_PARAMS } from "@modules/core/components/seo/const";
 import type { APIRoute } from "astro";
 
 export const prerender = true;
 
-export const GET: APIRoute = async (context) => {
+export const GET: APIRoute = async () => {
 	const articles = await getCollection("articles");
 
 	return rss({
 		title: DEFAULT_SEO_PARAMS.title,
 		description: DEFAULT_SEO_PARAMS.description,
-		site: context.site ?? DEFAULT_SEO_PARAMS.site,
+		site: absoluteUrl(PAGES_ROUTES.HOME),
+		trailingSlash: false,
 		items: articles
 			.map((article) => ({
 				title: article.data.title,

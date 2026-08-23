@@ -1,5 +1,6 @@
+import { CALENDLY } from "@const/calendly";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { initTabs, TAB_QUERY_KEY } from "./tabs";
+import { activeTab, initTabs, TAB_QUERY_KEY } from "./tabs";
 
 const CONTACT_PATH = "/contact";
 const ACTIVE_TAB_CLASS = "contact-tab--active";
@@ -13,7 +14,7 @@ const renderTabs = ({ booking = false }: { booking?: boolean } = {}): void => {
 		</ul>
 		<div id="email" class="contact-tab__content ${ACTIVE_CONTENT_CLASS}"></div>
 		<div id="appointment" class="contact-tab__content">
-			${booking ? '<div class="calendly-inline-widget"></div>' : ""}
+			${booking ? `<div class="${CALENDLY.WIDGET_CLASS}"></div>` : ""}
 		</div>
 	`;
 };
@@ -36,7 +37,7 @@ const tab = (target: string): HTMLElement => {
 	return element;
 };
 
-const activeTab = (): string | undefined =>
+const paintedTab = (): string | undefined =>
 	document.querySelector<HTMLElement>(`.${ACTIVE_CONTENT_CLASS}`)?.id ??
 	document.querySelector<HTMLElement>(`.${ACTIVE_TAB_CLASS}`)?.dataset.target;
 
@@ -64,7 +65,7 @@ describe("initTabs", () => {
 
 		initTabs(contactUrl(`?${TAB_QUERY_KEY}=appointment`));
 
-		expect(activeTab()).toBe("appointment");
+		expect(paintedTab()).toBe("appointment");
 		expect(push).not.toHaveBeenCalled();
 		expect(replace).not.toHaveBeenCalled();
 	});
@@ -74,7 +75,7 @@ describe("initTabs", () => {
 
 		initTabs(contactUrl());
 
-		expect(activeTab()).toBe("email");
+		expect(paintedTab()).toBe("email");
 		expect(push).not.toHaveBeenCalled();
 		expect(replace).not.toHaveBeenCalled();
 	});
@@ -84,7 +85,7 @@ describe("initTabs", () => {
 
 		initTabs(contactUrl(`?${TAB_QUERY_KEY}=carrier-pigeon`));
 
-		expect(activeTab()).toBe("email");
+		expect(paintedTab()).toBe("email");
 		expect(push).not.toHaveBeenCalled();
 		expect(replace).not.toHaveBeenCalled();
 	});
@@ -94,7 +95,7 @@ describe("initTabs", () => {
 
 		initTabs();
 
-		expect(activeTab()).toBe("appointment");
+		expect(paintedTab()).toBe("appointment");
 	});
 
 	it("does nothing on a page that carries no tabs", () => {
@@ -114,7 +115,7 @@ describe("choosing a tab", () => {
 		initTabs(contactUrl());
 		tab("appointment").click();
 
-		expect(activeTab()).toBe("appointment");
+		expect(paintedTab()).toBe("appointment");
 		expect(push).not.toHaveBeenCalled();
 		expect(replace).toHaveBeenCalledTimes(1);
 		expect(replace).toHaveBeenCalledWith(expect.anything(), "", `${CONTACT_PATH}?${TAB_QUERY_KEY}=appointment`);
@@ -142,7 +143,7 @@ describe("choosing a tab", () => {
 		renderTabs();
 		initTabs(shared);
 
-		expect(activeTab()).toBe("appointment");
+		expect(paintedTab()).toBe("appointment");
 	});
 
 	it("keeps the rest of the query string and the fragment", () => {
@@ -182,5 +183,22 @@ describe("choosing a tab", () => {
 		tab("appointment").click();
 
 		expect(replace).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe("activeTab", () => {
+	it.each([
+		["names a tab", "appointment", "appointment"],
+		["names the default", "email", "email"],
+		["names nothing the module knows", "carrier-pigeon", "email"],
+		["is empty", "", "email"],
+	])("answers %s with the tab the server should render", (_name, requested, expected) => {
+		const url = new URL(`https://biancafiore.test/contact?${TAB_QUERY_KEY}=${requested}`);
+
+		expect(activeTab(url)).toBe(expected);
+	});
+
+	it("answers the default when the link carries no tab at all", () => {
+		expect(activeTab(new URL("https://biancafiore.test/contact"))).toBe("email");
 	});
 });

@@ -1,6 +1,11 @@
 const secrets = new Map<string, string>();
 
-export function setSecret(name: string, value: string): void {
+interface SetSecretParams {
+	name: string;
+	value: string;
+}
+
+export function setSecret({ name, value }: SetSecretParams): void {
 	secrets.set(name, value);
 }
 

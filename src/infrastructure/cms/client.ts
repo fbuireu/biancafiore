@@ -24,12 +24,18 @@ export const CmsClientLive = Layer.effect(
 	CmsClient,
 	Effect.gen(function* () {
 		const { getSecret } = yield* Effect.promise(() => import("astro:env/server"));
+		const space = getSecret("CONTENTFUL_SPACE_ID");
+		const accessToken = import.meta.env.DEV
+			? getSecret("CONTENTFUL_PREVIEW_TOKEN")
+			: getSecret("CONTENTFUL_DELIVERY_TOKEN");
+
+		if (!space || !accessToken) {
+			return yield* Effect.die(new Error("CONTENTFUL_SPACE_ID and a Contentful access token must be defined"));
+		}
 
 		const client = contentful.createClient({
-			space: getSecret("CONTENTFUL_SPACE_ID") as string,
-			accessToken: import.meta.env.DEV
-				? (getSecret("CONTENTFUL_PREVIEW_TOKEN") as string)
-				: (getSecret("CONTENTFUL_DELIVERY_TOKEN") as string),
+			space,
+			accessToken,
 			host: import.meta.env.DEV ? "preview.contentful.com" : "cdn.contentful.com",
 		});
 

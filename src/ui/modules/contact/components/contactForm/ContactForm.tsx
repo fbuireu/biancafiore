@@ -1,15 +1,16 @@
-import { contactFormSchema } from "@domain/contact/schema";
+import { BOT_REFUSAL_MESSAGE, contactFormSchema } from "@domain/contact/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@modules/contact/components/form/input/Input";
+import { Recaptcha } from "@modules/contact/components/form/recaptcha/Recaptcha";
+import { Textarea } from "@modules/contact/components/form/textarea/Textarea";
 import { flyPlane } from "@modules/contact/utils/form";
 import { type ContactSubmission, UNDELIVERED_SUBMISSION } from "@modules/contact/utils/submission";
-import { Input } from "@modules/core/components/form/input";
-import { Recaptcha } from "@modules/core/components/form/recaptcha";
-import { Textarea } from "@modules/core/components/form/textarea";
 import Spinner from "@modules/core/components/spinner/Spinner";
+import { successDelay } from "@modules/core/utils/motion";
 import type { ContactFormData } from "@shared/ui/types";
 import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
-import { useCallback, useId, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useId, useRef, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import "./contact-form.css";
 
@@ -20,7 +21,6 @@ interface ContactFormProps {
 
 const UNAUTHORIZED_STATUS = 401;
 const SUCCESS_DELAY = 2000;
-const MISSING_TOKEN_MESSAGE = "Mr. Robot, is that you?";
 
 export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => {
 	const {
@@ -33,11 +33,17 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 		resolver: zodResolver(contactFormSchema.omit({ recaptcha: true })),
 	});
 	const [pending, startTransition] = useTransition();
-	const [formStatus, setFormStatus] = useState<(typeof FormStatus)[keyof typeof FormStatus]>(FormStatus.INITIAL);
+	const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.INITIAL);
+	const isLocked = formStatus === FormStatus.UNAUTHORIZED;
 	const nameId = useId();
 	const emailId = useId();
 	const messageId = useId();
 	const submitRef = useRef<HTMLButtonElement>(null);
+	const successRef = useRef<HTMLHeadingElement>(null);
+
+	useEffect(() => {
+		if (formStatus === FormStatus.SUCCESS) successRef.current?.focus();
+	}, [formStatus]);
 
 	const submitForm = useCallback(
 		async (data: ContactFormData, recaptcha: string) => {
@@ -61,7 +67,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 				setTimeout(() => {
 					setFormStatus(FormStatus.SUCCESS);
 					reset();
-				}, SUCCESS_DELAY);
+				}, successDelay(SUCCESS_DELAY));
 				return;
 			}
 
@@ -82,7 +88,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 			if (!token) {
 				setError("recaptcha", {
 					type: "manual",
-					message: MISSING_TOKEN_MESSAGE,
+					message: BOT_REFUSAL_MESSAGE,
 				});
 				return;
 			}
@@ -111,7 +117,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 						inputMode="text"
 						placeholder="Your name"
 						autoComplete="name"
-						formStatus={formStatus}
+						isLocked={isLocked}
 						hasError={!!errors.name}
 						errorMessage={errors.name?.message}
 						label="(your name)"
@@ -124,7 +130,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 						inputMode="email"
 						autoComplete="email"
 						placeholder="Your email"
-						formStatus={formStatus}
+						isLocked={isLocked}
 						hasError={!!errors.email}
 						errorMessage={errors.email?.message}
 						label="(your email)"
@@ -139,17 +145,17 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 						inputMode="text"
 						placeholder="Why you contact me?"
 						className="contact-form__textarea"
-						formStatus={formStatus}
+						isLocked={isLocked}
 						label="(your message)"
 						hasError={!!errors.message}
 						errorMessage={errors.message?.message}
 						{...register("message")}
 					/>
 					<Recaptcha hasError={!!errors.recaptcha} errorMessage={errors.recaptcha?.message} />
-					<div className="contact-form__generic-error-wrapper">
-						{([FormStatus.ERROR, FormStatus.UNAUTHORIZED] as (typeof FormStatus)[keyof typeof FormStatus][]).includes(
-							formStatus,
-						) && <p className="contact-form__generic-error-message">{errors.root?.message}</p>}
+					<div className="contact-form__generic-error-wrapper" role="alert" aria-live="assertive">
+						{([FormStatus.ERROR, FormStatus.UNAUTHORIZED] as FormStatus[]).includes(formStatus) && (
+							<p className="contact-form__generic-error-message">{errors.root?.message}</p>
+						)}
 					</div>
 					<button
 						ref={submitRef}
@@ -166,8 +172,10 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 					</button>
 				</form>
 			) : (
-				<div className="contact-form__success-message flex column-wrap">
-					<h4>Form sent correctly! Will be in touch soon</h4>
+				<div className="contact-form__success-message flex column-wrap" role="status" aria-live="polite">
+					<h3 tabIndex={-1} ref={successRef}>
+						Form sent correctly! Will be in touch soon
+					</h3>
 				</div>
 			)}
 		</>

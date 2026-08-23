@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { formatPeriod } from "@domain/city";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import "./cities.css";
 
@@ -21,15 +22,12 @@ const numCards = cities.length + 1;
 				<article class="city-card__content">
 					<BlurImage
 						class="city-card__content__image"
-						src={data.image.url}
+						image={data.image}
 						alt={data.name}
-						width={data.image.details.width}
-						height={data.image.details.height}
-						placeholder={data.image.placeholder}
 						loading="lazy"
 						decoding="async"
 					/>
-					<h4 class="city-card__content__period editorial-meta editorial-meta--gold">{data.period}</h4>
+					<p class="city-card__content__period editorial-meta editorial-meta--gold">{formatPeriod(data.period)}</p>
 					<h3 class="city-card__content__name font-serif">{data.name}</h3>
 					<p class="city-card__content__description">{data.description}</p>
 				</article>

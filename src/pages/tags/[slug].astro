@@ -1,12 +1,12 @@
 ---
 import { getCollection } from "astro:content";
-import { absoluteUrl, articleHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import { resolveArticles } from "@modules/core/utils/entries";
-import { buildItemListSchema } from "@modules/core/utils/jsonLd";
+import { buildArticleListSchema } from "@modules/core/utils/jsonLd";
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 import "./_tag.css";
 
@@ -30,7 +30,7 @@ const metadata: Partial<SeoMetadata> = {
 	description: `Articles tagged with #${slug}.`,
 };
 
-const itemListSchema = buildItemListSchema(articles.map((article) => absoluteUrl(articleHref(article.data.slug))));
+const itemListSchema = buildArticleListSchema(articles.map(({ data }) => data.slug));
 ---
 <BaseLayout {...metadata}>
     <Breadcrumbs />
@@ -39,11 +39,11 @@ const itemListSchema = buildItemListSchema(articles.map((article) => absoluteUrl
       {articles.map((article) => {
         return (
             <li class="tag__article__item relative reveal">
-                <ArticleCard {...article} isLandscape />
+                <ArticleCard article={article} isLandscape />
             </li>
         )
       })}
     </ul>
 </section>
-    <script is:inline type="application/ld+json" set:html={itemListSchema} />
+    <JsonLd schema={itemListSchema} />
 </BaseLayout>

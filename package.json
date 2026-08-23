@@ -45,7 +45,7 @@
 		"format:changed": "pnpm format --changed",
 		"format:check": "biome check --no-errors-on-unmatched .",
 		"typecheck": "pnpm sync && tsc --project . --noEmit",
-		"test:ut": "vitest run --logHeapUsage",
+		"test:ut": "vitest run --logHeapUsage --project node --project dom",
 		"test:ut:watch": "vitest --logHeapUsage",
 		"test:ut:coverage": "pnpm test:ut --coverage",
 		"test:ut:changed": "pnpm test:ut --changed",
@@ -54,7 +54,8 @@
 		"test:e2e": "playwright test",
 		"test:e2e:ui": "pnpm test:e2e --ui",
 		"test:e2e:changed": "pnpm test:e2e --only-changed --pass-with-no-tests",
-		"verify": "pnpm format:check && pnpm typecheck && pnpm test:ut:coverage"
+		"verify": "pnpm format:check && pnpm typecheck && pnpm test:ut:coverage",
+		"test:built": "pnpm build && vitest run --project built"
 	},
 	"dependencies": {
 		"@astrojs/cloudflare": "14.2.2",

@@ -1,4 +1,4 @@
-import { resolveSlugCollisions } from "@domain/tag/rules";
+import { buildTagIndexBuckets, resolveSlugCollisions } from "@domain/tag/rules";
 import type { TagIndexEntryDTO } from "@domain/tag/types";
 import { TagType } from "@domain/tag/types";
 import { describe, expect, it } from "vitest";
@@ -17,6 +17,14 @@ const entryStub = ({ name, slug, type, articles = [] }: EntryStubParams): TagInd
 		type,
 		articles: articles.map((id) => ({ id, collection: "articles" })),
 	}) as TagIndexEntryDTO;
+
+interface EntryParams {
+	name: string;
+	type?: TagIndexEntryDTO["type"];
+}
+
+const entry = ({ name, type = TagType.TAG }: EntryParams): TagIndexEntryDTO =>
+	entryStub({ name, slug: name.toLowerCase().replaceAll(" ", "-"), type });
 
 describe("resolveSlugCollisions", () => {
 	it("leaves entries that address distinct slugs alone, in the order they arrived", () => {
@@ -60,5 +68,50 @@ describe("resolveSlugCollisions", () => {
 
 	it("handles an empty index without failing", () => {
 		expect(resolveSlugCollisions([])).toEqual([]);
+	});
+});
+
+describe("buildTagIndexBuckets", () => {
+	it("buckets entries by the first letter of their name, uppercased", () => {
+		const buckets = buildTagIndexBuckets([
+			entry({ name: "craft" }),
+			entry({ name: "Culture" }),
+			entry({ name: "travel" }),
+		]);
+
+		expect(buckets.map(({ letter }) => letter)).toEqual(["C", "T"]);
+	});
+
+	it("orders the buckets A to Z, whatever order the entries arrived in", () => {
+		const buckets = buildTagIndexBuckets([
+			entry({ name: "zoology" }),
+			entry({ name: "anthropology" }),
+			entry({ name: "music" }),
+		]);
+
+		expect(buckets.map(({ letter }) => letter)).toEqual(["A", "M", "Z"]);
+	});
+
+	it("orders the entries inside a bucket by name, so the listing reads alphabetically", () => {
+		const [bucket] = buildTagIndexBuckets([
+			entry({ name: "crochet" }),
+			entry({ name: "craft" }),
+			entry({ name: "culture" }),
+		]);
+
+		expect(bucket?.entries.map(({ name }) => name)).toEqual(["craft", "crochet", "culture"]);
+	});
+
+	it("puts an Author Tag in the same bucket as a topical Tag, since both are addressed the same way", () => {
+		const [bucket] = buildTagIndexBuckets([
+			entry({ name: "Bianca Fiore", type: TagType.AUTHOR }),
+			entry({ name: "brutalism" }),
+		]);
+
+		expect(bucket?.entries.map(({ type }) => type)).toEqual([TagType.AUTHOR, TagType.TAG]);
+	});
+
+	it("answers no buckets for an index with nothing filed under it", () => {
+		expect(buildTagIndexBuckets([])).toEqual([]);
 	});
 });

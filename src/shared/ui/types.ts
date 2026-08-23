@@ -14,3 +14,5 @@ export const FormStatus = {
 	ERROR: "error",
 	UNAUTHORIZED: "unauthorized",
 } as const;
+
+export type FormStatus = (typeof FormStatus)[keyof typeof FormStatus];

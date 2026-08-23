@@ -10,7 +10,12 @@ const storeHolding = (stored: string | null) => ({
 	setItem: vi.fn(),
 });
 
-const boot = ({ stored, prefersDark }: { stored: string | null; prefersDark: boolean }) => {
+interface BootParams {
+	stored: string | null;
+	prefersDark: boolean;
+}
+
+const boot = ({ stored, prefersDark }: BootParams) => {
 	const store = storeHolding(stored);
 	const documentElement = { setAttribute: vi.fn(), style: {} as { colorScheme?: string } };
 

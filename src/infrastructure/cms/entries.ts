@@ -12,9 +12,14 @@ type RawEntry = EntryCollection<EntrySkeletonType, undefined>["items"][number];
 
 const CONTENTFUL_MAX_PAGE_SIZE = 1000;
 
+interface FetchEveryPageParams {
+	cms: Context.Tag.Service<CmsClient>;
+	query: PagedQuery;
+}
+
 const cmsRuntime = ManagedRuntime.make(CmsClientLive);
 
-const fetchEveryPage = (cms: Context.Tag.Service<CmsClient>, query: PagedQuery) =>
+const fetchEveryPage = ({ cms, query }: FetchEveryPageParams) =>
 	Effect.gen(function* () {
 		const wanted = query.limit;
 		const start = query.skip ?? 0;
@@ -45,7 +50,7 @@ export const fetchEntries = <Skeletons extends readonly EntrySkeletonType[]>(
 		Effect.gen(function* () {
 			const cms = yield* CmsClient;
 			const collections = yield* Effect.all(
-				queries.map((query) => fetchEveryPage(cms, query as PagedQuery)),
+				queries.map((query) => fetchEveryPage({ cms, query: query as PagedQuery })),
 				{ concurrency: "unbounded" },
 			);
 

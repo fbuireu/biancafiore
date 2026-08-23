@@ -1,5 +1,5 @@
 import type { RawArticle } from "@application/dto/article/types";
-import { authorDTO } from "@application/dto/author";
+import { createAuthors } from "@application/dto/author";
 import type { RawAuthor } from "@application/dto/author/types";
 import { describe, expect, it } from "vitest";
 
@@ -54,10 +54,10 @@ const makeArticle = ({
 	publishDate = "2024-01-01",
 }: MakeArticleParams) => ({ fields: { slug, author, publishDate } }) as unknown as RawArticle;
 
-describe("authorDTO field mapping", () => {
+describe("createAuthors field mapping", () => {
 	it("carries every authored field across and turns the profile image into url, dimensions and formats", () => {
-		const [author] = authorDTO.create([
-			[
+		const [author] = createAuthors({
+			rawAuthors: [
 				makeAuthor({
 					name: "Bianca Fiore",
 					slug: "bianca-fiore",
@@ -68,8 +68,8 @@ describe("authorDTO field mapping", () => {
 					socialNetworks: ["https://linkedin.com/in/bianca", "https://x.com/bianca"],
 				}),
 			],
-			[],
-		]);
+			rawArticles: [],
+		});
 
 		expect(author).toEqual({
 			name: "Bianca Fiore",
@@ -81,131 +81,116 @@ describe("authorDTO field mapping", () => {
 				url: "https://cdn/bianca.avif",
 				details: { width: 512, height: 512 },
 				formats: { avif: true, webp: false },
+				shareCrops: expect.any(Array),
 			},
 			socialNetworks: ["https://linkedin.com/in/bianca", "https://x.com/bianca"],
-			articles: [],
 			latestArticle: undefined,
 		});
 	});
 
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {
-		const result = authorDTO.create([[], []]);
+		const result = createAuthors({ rawAuthors: [], rawArticles: [] });
 
 		expect(result).toEqual([]);
 		expect(result).not.toBeInstanceOf(Promise);
 	});
 
 	it("preserves the order of the authors it was given", () => {
-		const authors = authorDTO.create([
-			[makeAuthor({ name: "Zoe", slug: "zoe" }), makeAuthor({ name: "Ada", slug: "ada" })],
-			[],
-		]);
+		const authors = createAuthors({
+			rawAuthors: [makeAuthor({ name: "Zoe", slug: "zoe" }), makeAuthor({ name: "Ada", slug: "ada" })],
+			rawArticles: [],
+		});
 
 		expect(authors.map(({ name }) => name)).toEqual(["Zoe", "Ada"]);
 	});
 });
 
-describe("authorDTO article attribution", () => {
-	it("collects the slugs of every article whose embedded author matches, as articles collection references", () => {
-		const [author] = authorDTO.create([
-			[makeAuthor({ name: "Bianca Fiore" })],
-			[makeArticle({ slug: "first" }), makeArticle({ slug: "second" })],
-		]);
+describe("createAuthors article attribution", () => {
+	it("names an article whose embedded author matches, as an articles collection reference", () => {
+		const [author] = createAuthors({
+			rawAuthors: [makeAuthor({ name: "Bianca Fiore" })],
+			rawArticles: [makeArticle({ slug: "only-one" })],
+		});
 
-		expect(author.articles).toEqual([
-			{ id: "first", collection: "articles" },
-			{ id: "second", collection: "articles" },
-		]);
+		expect(author.latestArticle).toEqual({ id: "only-one", collection: "articles" });
 	});
 
 	it("ignores articles written by somebody else", () => {
-		const [author] = authorDTO.create([
-			[makeAuthor({ name: "Bianca Fiore" })],
-			[
+		const [author] = createAuthors({
+			rawAuthors: [makeAuthor({ name: "Bianca Fiore" })],
+			rawArticles: [
 				makeArticle({ slug: "hers" }),
 				makeArticle({ slug: "his", author: { fields: { name: "Someone Else", slug: "someone-else" } } }),
 			],
-		]);
+		});
 
-		expect(author.articles).toEqual([{ id: "hers", collection: "articles" }]);
+		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
 	});
 
 	it("ignores author links Contentful left unresolved instead of throwing on the missing fields", () => {
-		const [author] = authorDTO.create([
-			[makeAuthor()],
-			[makeArticle({ slug: "unresolved", author: { sys: { type: "Link", linkType: "Entry", id: "x" } } })],
-		]);
+		const [author] = createAuthors({
+			rawAuthors: [makeAuthor()],
+			rawArticles: [makeArticle({ slug: "unresolved", author: { sys: { type: "Link", linkType: "Entry", id: "x" } } })],
+		});
 
-		expect(author.articles).toEqual([]);
+		expect(author.latestArticle).toBeUndefined();
 	});
 
 	it("keeps two authors who share a display name apart, because the slug is what identifies an author", () => {
-		const [first, second] = authorDTO.create([
-			[
+		const [first, second] = createAuthors({
+			rawAuthors: [
 				makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" }),
 				makeAuthor({ name: "Bianca Fiore", slug: "b-fiore" }),
 			],
-			[
+			rawArticles: [
 				makeArticle({ slug: "hers", author: { fields: { name: "Bianca Fiore", slug: "bianca-fiore" } } }),
 				makeArticle({ slug: "the-namesakes", author: { fields: { name: "Bianca Fiore", slug: "b-fiore" } } }),
 			],
-		]);
+		});
 
-		expect(first.articles).toEqual([{ id: "hers", collection: "articles" }]);
-		expect(second.articles).toEqual([{ id: "the-namesakes", collection: "articles" }]);
+		expect(first.latestArticle).toEqual({ id: "hers", collection: "articles" });
+		expect(second.latestArticle).toEqual({ id: "the-namesakes", collection: "articles" });
 	});
 
 	it("matches an author whose slug Contentful padded with whitespace on either side", () => {
-		const [author] = authorDTO.create([
-			[makeAuthor({ slug: " bianca-fiore " })],
-			[makeArticle({ slug: "hers", author: { fields: { name: "Bianca Fiore", slug: "bianca-fiore  " } } })],
-		]);
+		const [author] = createAuthors({
+			rawAuthors: [makeAuthor({ slug: " bianca-fiore " })],
+			rawArticles: [
+				makeArticle({ slug: "hers", author: { fields: { name: "Bianca Fiore", slug: "bianca-fiore  " } } }),
+			],
+		});
 
-		expect(author.articles).toEqual([{ id: "hers", collection: "articles" }]);
+		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
 	});
 
 	it("emits the trimmed slug it matched on, so the author tag it becomes addresses the page a byline links to", () => {
-		const [author] = authorDTO.create([[makeAuthor({ slug: " bianca-fiore " })], []]);
+		const [author] = createAuthors({ rawAuthors: [makeAuthor({ slug: " bianca-fiore " })], rawArticles: [] });
 
 		expect(author.slug).toBe("bianca-fiore");
 	});
 
 	it("references an article by its trimmed slug, because that is the id the articles collection stores", () => {
-		const [author] = authorDTO.create([[makeAuthor()], [makeArticle({ slug: " hers " })]]);
+		const [author] = createAuthors({ rawAuthors: [makeAuthor()], rawArticles: [makeArticle({ slug: " hers " })] });
 
-		expect(author.articles).toEqual([{ id: "hers", collection: "articles" }]);
 		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
 	});
 
-	it("lists an author's articles newest first, whatever order the batch arrived in", () => {
-		const [author] = authorDTO.create([
-			[makeAuthor()],
-			[
-				makeArticle({ slug: "middle", publishDate: "2024-06-01" }),
-				makeArticle({ slug: "oldest", publishDate: "2019-03-01" }),
-				makeArticle({ slug: "newest", publishDate: "2026-07-30" }),
-			],
-		]);
-
-		expect(author.articles.map(({ id }) => id)).toEqual(["newest", "middle", "oldest"]);
-	});
-
 	it("names the newest of the author's articles latestArticle, even when it arrived last", () => {
-		const [author] = authorDTO.create([
-			[makeAuthor()],
-			[
+		const [author] = createAuthors({
+			rawAuthors: [makeAuthor()],
+			rawArticles: [
 				makeArticle({ slug: "oldest", publishDate: "2019-03-01" }),
 				makeArticle({ slug: "newest", publishDate: "2026-07-30" }),
 			],
-		]);
+		});
 
 		expect(author.latestArticle).toEqual({ id: "newest", collection: "articles" });
 	});
 
 	it("ignores an article somebody else published more recently when naming latestArticle", () => {
-		const [author] = authorDTO.create([
-			[makeAuthor({ slug: "bianca-fiore" })],
-			[
+		const [author] = createAuthors({
+			rawAuthors: [makeAuthor({ slug: "bianca-fiore" })],
+			rawArticles: [
 				makeArticle({
 					slug: "his",
 					author: { fields: { name: "Someone Else", slug: "someone-else" } },
@@ -213,15 +198,14 @@ describe("authorDTO article attribution", () => {
 				}),
 				makeArticle({ slug: "hers", publishDate: "2025-01-01" }),
 			],
-		]);
+		});
 
 		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
 	});
 
 	it("leaves latestArticle undefined for an author with no articles", () => {
-		const [author] = authorDTO.create([[makeAuthor()], []]);
+		const [author] = createAuthors({ rawAuthors: [makeAuthor()], rawArticles: [] });
 
-		expect(author.articles).toEqual([]);
 		expect(author.latestArticle).toBeUndefined();
 	});
 });

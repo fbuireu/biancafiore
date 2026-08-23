@@ -1,12 +1,10 @@
+import { CONTACT_COOLDOWN_HOURS } from "@domain/contact/rules";
 import { DatabaseError } from "@infrastructure/errors";
 import { checkDuplicatedEntries, saveContact } from "@infrastructure/utils/persistence";
-import { LibsqlError } from "@libsql/client/web";
 import { contactRow, databaseDouble } from "@tests/doubles/contactLayers";
-import { DrizzleQueryError } from "drizzle-orm/errors";
 import { Cause, Effect, Exit, Option } from "effect";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-const DUPLICATE_MESSAGE = "You already contacted. Please be patient, I will get back to you ASAP.";
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const FROZEN_NOW = "2026-07-30T09:15:00.000Z";
 
@@ -17,48 +15,84 @@ const SUBMISSION = { ...ENQUIRY, emailId: "sent-1" };
 const failureOf = <E>(exit: Exit.Exit<unknown, E>): E | undefined =>
 	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause)) : undefined;
 
-const insertFailingWith = (cause: unknown) =>
-	databaseDouble({ failInsertWith: new DatabaseError({ message: "insert rejected", cause }) });
-
 const lookupFailingWith = (message: string) => databaseDouble({ failLookupWith: new DatabaseError({ message }) });
 
-const drizzleWrapped = (cause: Error) => new DrizzleQueryError("insert into contact", [], cause);
+const check = (database: ReturnType<typeof databaseDouble>, data = ENQUIRY) =>
+	Effect.runPromiseExit(checkDuplicatedEntries(data).pipe(Effect.provide(database.layer)));
 
 afterEach(() => {
 	vi.useRealTimers();
 });
 
 describe("checkDuplicatedEntries", () => {
-	it("passes silently when no row holds the address", async () => {
+	it("passes silently when the address is outside the cooldown and the message is new", async () => {
 		const database = databaseDouble();
 
-		const exit = await Effect.runPromiseExit(checkDuplicatedEntries(ENQUIRY).pipe(Effect.provide(database.layer)));
-
-		expect(exit).toStrictEqual(Exit.succeed(undefined));
+		expect(await check(database)).toStrictEqual(Exit.succeed(undefined));
 	});
 
-	it("fails with the visitor facing duplicate message as soon as a row comes back", async () => {
-		const database = databaseDouble({ existingContact: contactRow("ada@example.com") });
+	it("refuses a second submission from an address that wrote inside the cooldown", async () => {
+		const database = databaseDouble({ contactWithinCooldown: contactRow({ email: "ada@example.com" }) });
 
-		const exit = await Effect.runPromiseExit(checkDuplicatedEntries(ENQUIRY).pipe(Effect.provide(database.layer)));
-
-		expect(failureOf(exit)).toMatchObject({ _tag: "DuplicateContactError", message: DUPLICATE_MESSAGE });
+		expect(failureOf(await check(database))).toMatchObject({
+			_tag: "DuplicateContactError",
+			message: expect.stringContaining(`${CONTACT_COOLDOWN_HOURS} hours`),
+		});
 	});
 
-	it("looks the address up once, exactly as it was given", async () => {
+	it("refuses a message the address has already sent, however long ago", async () => {
+		const database = databaseDouble({ contactWithSameMessage: contactRow({ email: "ada@example.com" }) });
+
+		expect(failureOf(await check(database))?._tag).toBe("DuplicateContactError");
+	});
+
+	it("answers the two refusals identically, so a caller cannot tell which check fired", async () => {
+		const cooldown = databaseDouble({ contactWithinCooldown: contactRow({ email: "ada@example.com" }) });
+		const repeat = databaseDouble({ contactWithSameMessage: contactRow({ email: "ada@example.com" }) });
+		const both = databaseDouble({
+			contactWithinCooldown: contactRow({ email: "ada@example.com" }),
+			contactWithSameMessage: contactRow({ email: "ada@example.com" }),
+		});
+
+		const answers = [failureOf(await check(cooldown)), failureOf(await check(repeat)), failureOf(await check(both))];
+
+		expect(new Set(answers.map((failure) => failure?.message)).size).toBe(1);
+	});
+
+	it("asks about the normalised address, so an alias cannot escape either check", async () => {
 		const database = databaseDouble();
 
-		await Effect.runPromiseExit(checkDuplicatedEntries(ENQUIRY).pipe(Effect.provide(database.layer)));
+		await check(database, { ...ENQUIRY, email: "  Ada+news@Example.com " });
 
-		expect(database.lookedUp).toStrictEqual(["ada@example.com"]);
+		expect(database.cooldownLookups.map(({ email }) => email)).toStrictEqual(["ada@example.com"]);
+		expect(database.messageLookups.map(({ email }) => email)).toStrictEqual(["ada@example.com"]);
+	});
+
+	it("asks for submissions no older than the cooldown window", async () => {
+		vi.useFakeTimers({ toFake: ["Date"] });
+		vi.setSystemTime(new Date(FROZEN_NOW));
+		const database = databaseDouble();
+
+		await check(database);
+
+		expect(database.cooldownLookups.at(0)?.since).toBe("2026-07-29T09:15:00.000Z");
+	});
+
+	it("asks about the message exactly as it was written, so a different enquiry still gets through", async () => {
+		const database = databaseDouble();
+
+		await check(database);
+
+		expect(database.messageLookups.at(0)?.message).toBe("Hello there");
 	});
 
 	it("propagates a lookup that fails instead of reading the missing answer as no duplicate", async () => {
 		const database = lookupFailingWith("turso unreachable");
 
-		const exit = await Effect.runPromiseExit(checkDuplicatedEntries(ENQUIRY).pipe(Effect.provide(database.layer)));
-
-		expect(failureOf(exit)).toMatchObject({ _tag: "DatabaseError", message: "turso unreachable" });
+		expect(failureOf(await check(database))).toMatchObject({
+			_tag: "DatabaseError",
+			message: "turso unreachable",
+		});
 	});
 });
 
@@ -80,6 +114,16 @@ describe("saveContact", () => {
 		expect(database.inserted[0]?.id).toMatch(UUID_PATTERN);
 	});
 
+	it("stores the normalised address, so the cooldown sees one person once", async () => {
+		const database = databaseDouble();
+
+		await Effect.runPromiseExit(
+			saveContact({ ...SUBMISSION, email: "  Ada+news@Example.com " }).pipe(Effect.provide(database.layer)),
+		);
+
+		expect(database.inserted[0]?.email).toBe("ada@example.com");
+	});
+
 	it("gives every submission its own id", async () => {
 		const database = databaseDouble();
 
@@ -89,38 +133,12 @@ describe("saveContact", () => {
 		expect(database.inserted[0]?.id).not.toBe(database.inserted[1]?.id);
 	});
 
-	it("turns a constraint violation the insert failed with into a DuplicateContactError", async () => {
-		const database = insertFailingWith(new LibsqlError("UNIQUE constraint failed", "SQLITE_CONSTRAINT"));
-
-		const exit = await Effect.runPromiseExit(saveContact(SUBMISSION).pipe(Effect.provide(database.layer)));
-
-		expect(failureOf(exit)).toMatchObject({ _tag: "DuplicateContactError", message: DUPLICATE_MESSAGE });
-	});
-
-	it("reads through the DrizzleQueryError wrapper the driver rejection arrives in", async () => {
-		const database = insertFailingWith(
-			drizzleWrapped(new LibsqlError("UNIQUE constraint failed: contact.email", "SQLITE_CONSTRAINT_UNIQUE")),
-		);
-
-		const exit = await Effect.runPromiseExit(saveContact(SUBMISSION).pipe(Effect.provide(database.layer)));
-
-		expect(failureOf(exit)?._tag).toBe("DuplicateContactError");
-	});
-
-	it("leaves any other insert failure as the DatabaseError it already was", async () => {
-		const database = insertFailingWith(new LibsqlError("database is locked", "SQLITE_BUSY"));
+	it("leaves a failed insert as the DatabaseError it already was, and writes nothing", async () => {
+		const database = databaseDouble({ failInsertWith: new DatabaseError({ message: "insert rejected" }) });
 
 		const exit = await Effect.runPromiseExit(saveContact(SUBMISSION).pipe(Effect.provide(database.layer)));
 
 		expect(failureOf(exit)).toMatchObject({ _tag: "DatabaseError", message: "insert rejected" });
-	});
-
-	it("leaves a DatabaseError carrying no cause at all as a DatabaseError, and writes nothing", async () => {
-		const database = insertFailingWith(undefined);
-
-		const exit = await Effect.runPromiseExit(saveContact(SUBMISSION).pipe(Effect.provide(database.layer)));
-
-		expect(failureOf(exit)?._tag).toBe("DatabaseError");
 		expect(database.inserted).toHaveLength(0);
 	});
 });

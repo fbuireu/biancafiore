@@ -1,7 +1,6 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import { absoluteUrl, articleHref, CONTACT_DETAILS } from "@const/index";
+import { articleHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
 import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
@@ -9,16 +8,13 @@ import LittleMoreOfMe from "@modules/about/components/littleMoreOfMe/LittleMoreO
 import WhatIDo from "@modules/about/components/whatIDo/WhatIDo.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
-import { resolveArticle } from "@modules/core/utils/entries";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import { getSiteAuthor, resolveArticle } from "@modules/core/utils/entries";
 import { buildProfilePageSchema } from "@modules/core/utils/jsonLd";
 
 export const prerender = true;
 
-const [cities, authors] = await Promise.all([getCollection("cities"), getCollection("authors")]);
-
-const bianca = authors
-	.filter((author) => author.data.name === CONTACT_DETAILS.NAME)
-	.at(0) as CollectionEntry<"authors">;
+const [cities, bianca] = await Promise.all([getCollection("cities"), getSiteAuthor()]);
 
 const latestArticle = await resolveArticle(bianca.data.latestArticle);
 
@@ -32,7 +28,7 @@ const profilePageSchema = buildProfilePageSchema({
 	person: {
 		id: "#bianca",
 		name: bianca.data.name,
-		url: Astro.url.href,
+		path: Astro.url.pathname,
 		image: bianca.data.profileImage.url,
 		jobTitle: bianca.data.jobTitle,
 		company: bianca.data.currentCompany,
@@ -41,7 +37,7 @@ const profilePageSchema = buildProfilePageSchema({
 	...(latestArticle && {
 		latestArticle: {
 			headline: latestArticle.data.title,
-			url: absoluteUrl(articleHref(latestArticle.data.slug)),
+			path: articleHref(latestArticle.data.slug),
 			datePublished: latestArticle.data.publishDateISO,
 		},
 	}),
@@ -53,5 +49,5 @@ const profilePageSchema = buildProfilePageSchema({
     <WhatIDo />
     <LittleMoreOfMe cities={cities} />
     <AboutLatestArticles />
-    <script is:inline type="application/ld+json" set:html={profilePageSchema} />
+    <JsonLd schema={profilePageSchema} />
 </BaseLayout>

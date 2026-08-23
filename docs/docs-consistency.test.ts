@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { NOINDEX_ROUTES } from "@const/noindexRoutes";
 import { describe, expect, it } from "vitest";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
@@ -40,7 +41,7 @@ const CONCEPTS_OUTSIDE_THE_GLOSSARY = new Set(["breadcrumb", "contact", "shared"
 
 const STYLESHEETS_STYLING_A_VENDOR_DOM = new Set(["src/ui/styles/vendor/cookie-consent.css"]);
 
-const STYLESHEET_OUTSIDE_A_COMPONENT_FOLDER = "src/ui/modules/core/components/form/shared.css";
+const STYLESHEET_OUTSIDE_A_COMPONENT_FOLDER = "src/ui/modules/contact/components/form/shared.css";
 
 const ROUTES_WITH_NO_PAGE_CONTAINER = ["404", "500", "tag"];
 
@@ -101,7 +102,7 @@ const SHARED_UTILS_IMPORT = /import\s*\{([^}]+)\}\s*from\s*"@shared\/utils\/[^"]
 const IMPURE_DOMAIN_CODE = /from "effect"|fetch\(|process\.env|astro:env/;
 const DOMAIN_RULES_CENSUS = /([^;.\n]*\bno one else\b)/;
 const IMPURE_DTO_CODE = /astro:env|from "effect"|getEntries|getImagePlaceholder/;
-const ASYNC_DTO_CREATE = /create:\s*async/;
+const ASYNC_DTO_MAPPER = /export\s+(?:const|async\s+function)\s+create\w+/;
 const DTO_INFRASTRUCTURE_IMPORT = /from "(@infrastructure\/[^"]+)"/g;
 const CONTENTFUL_TYPE = /from "contentful"|@contentful\/|EntryFieldTypes|EntrySkeletonType/;
 const HAND_PREFIXED_ASSET_URL = /`https:\$\{/;
@@ -113,8 +114,10 @@ const CONTENTFUL_PAGE_CAP = /CONTENTFUL_MAX_PAGE_SIZE = (\d+)/;
 const LOADER_REACHING_PAST_FETCH_ENTRIES = /from "effect"|isContentfulConfigured|CmsClient|concurrency:/;
 const DOMAIN_SCHEMA_BINDING = /schema:\s*\w+Schema/;
 const DOMAIN_IMPORT = /from "@domain\//;
-const LOADER_ID_ASSIGNMENT = /^\t*id:\s*(?:\w+\.)?(\w+),$/gm;
-const ANY_ID_ASSIGNMENT = /^\t*id:/m;
+const ASTRO_SITE_READ = /Astro\.site/;
+const ASTRO_URL_ORIGIN_READ = /Astro\.url\.(?:href|origin)|origin: originPath/;
+const LOADER_ID_ASSIGNMENT = /\bid:\s*(?:\w+\.)?(\w+),/g;
+const ANY_ID_ASSIGNMENT = /\bid:\s/;
 const TYPE_SCALE_RATIO = /--ratio:\s*([\d.]+);/;
 const EDITORIAL_UTILITY_DECLARATION = /^\t\.(editorial-[a-z-]+)[^{\n]*\{/gm;
 const EDITORIAL_UTILITY_CITATION = /`\.(editorial-[a-z-]+)`/g;
@@ -171,9 +174,9 @@ const DEREFERENCING_MODULE = "src/ui/modules/core/utils/entries.ts";
 const GET_ENTRY_CALL = /\bgetEntry\(/;
 const EFFECT_IMPORT = /from "effect"/;
 const CITED_CONTAINER_QUERY = /@container ([a-z-]+) \(width <= \d+px\)/;
-const EMAIL_BUTTON_MODULE = "src/ui/modules/core/components/emailButton/utils/interactions.ts";
+const EMAIL_BUTTON_MODULE = "src/ui/modules/core/components/emailButton/const.ts";
 const EMAIL_BUTTON_STYLESHEET = "src/ui/modules/core/components/emailButton/email-button.css";
-const EMAIL_BUTTON_HOOK_DECLARATION = /export const EMAIL_BUTTON_CLASS = "([\w-]+)";/;
+const EMAIL_BUTTON_HOOK_DECLARATION = /export const EMAIL_BUTTON_CLASS = "([\w-]+)" as const;/;
 const PLACEHOLDER_MODULE = "src/infrastructure/images/imagePlaceholder/imagePlaceholder.ts";
 const PER_ENTRY_PLACEHOLDER_AWAIT = /placeholder:\s*await/;
 const BOUNDED_PLACEHOLDER_READ = /const PLACEHOLDER_CONCURRENCY = \d+;/;
@@ -249,6 +252,19 @@ const BIOME_JSON = readJson("biome.json");
 const ASTRO_CONFIG = read("astro.config.ts");
 const WRANGLER_TOML = read("wrangler.toml");
 
+const IMPORT_META_ENV_READ = /import\.meta\.env\.([A-Z][A-Z0-9_]*)/g;
+const ENV_DTS_DECLARATION = /readonly ([A-Z][A-Z0-9_]*)/g;
+const MODULE_SCOPE_SIDE_EFFECT = /^(?:\w[\w.]*\.addEventListener\(|(?:const|let)\s+\w+\s*=\s*window\.matchMedia\()/m;
+const ON_DEMAND_ROUTES = ["src/pages/404.astro", "src/pages/500.astro", "src/pages/contact.astro"];
+const ROBOTS_DISALLOW = /^Disallow: (.+)$/gm;
+const COLLECTION_FACTORY = "src/application/entities/collection.ts";
+const IDENTIFY_CHOICE = /identify: \(\w+\) => \w+\.(\w+)/g;
+const SPREAD_AFTER_ID = /\{\s*id:[^}]*\.\.\./;
+const HYDRATION_DIRECTIVES_ALLOWED = new Set(['only="react"', "load"]);
+const NEWLINE = "\n";
+const SCHEMA_BOOLEAN_DEFAULT = /(\w+): z\.boolean\(\)\.default\(false\)/g;
+const CONTEXT_TAG_CLASS = /class\s+\w+\s+extends\s+Context\.Tag/;
+const LAUNDERED_SECRET = /getSecret\([^)]*\)\s+as\s+string/;
 const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("CLAUDE.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
 const DOCS = ["CLAUDE.md", "CONTEXT.md", ...NESTED_GUIDES, ...ADR_FILES];
@@ -337,6 +353,10 @@ describe("structure and aliases", () => {
 		for (const { alias, target } of documentedAliases) {
 			expect(`${alias} → ${targets.get(alias)?.replace(TRAILING_SLASH, "")}`).toBe(`${alias} → ${target}`);
 		}
+	});
+
+	it("maps every alias onto a folder that holds at least one tracked file", () => {
+		expect(ALIAS_TARGETS.filter(([, target]) => !isTracked(target.replace(TRAILING_SLASH, "")))).toEqual([]);
 	});
 
 	it("describes a folder tree that exists on disk", () => {
@@ -555,11 +575,22 @@ describe("infrastructure guide", () => {
 			expect(`${file}: ${source.includes(`class ${tag} extends Context.Tag`)}`).toBe(`${file}: true`);
 			expect(`${file}: ${source.includes(`const ${live} = Layer.effect`)}`).toBe(`${file}: true`);
 		}
+
+		const declared = SOURCE_FILES.filter((file) => CONTEXT_TAG_CLASS.test(read(file))).map((file) =>
+			file.replace("src/infrastructure/", ""),
+		);
+
+		expect(declared.toSorted()).toEqual(rows.map(({ file }) => file).toSorted());
 	});
 
-	it("keeps the two runtimes it describes", () => {
+	it("keeps the two runtimes it describes, and only those two", () => {
 		expect(guide).toContain("ManagedRuntime");
-		expect(read("src/infrastructure/cms/entries.ts")).toContain("ManagedRuntime");
+
+		const managed = SOURCE_FILES.filter((file) => read(file).includes("ManagedRuntime.make("));
+		const provided = SOURCE_FILES.filter((file) => read(file).includes("Effect.provide(ContactLayer)"));
+
+		expect(managed).toEqual(["src/infrastructure/cms/entries.ts"]);
+		expect(provided).toEqual(["src/actions/index.ts"]);
 		expect(read("src/infrastructure/layers.ts")).toContain("ContactLayer");
 	});
 
@@ -660,11 +691,12 @@ describe("gotchas", () => {
 	});
 
 	it("keeps the https upgrade out of the dev CSP, which WebKit obeys on localhost", () => {
+		const headers = read("src/const/securityHeaders.ts");
 		const middleware = read("src/middleware.ts");
 
-		expect(read("src/const/securityHeaders.ts")).toContain(HTTPS_UPGRADE_DIRECTIVE);
-		expect(middleware).toContain(HTTPS_UPGRADE_DIRECTIVE);
+		expect(headers).toContain(HTTPS_UPGRADE_DIRECTIVE);
 		expect(middleware).toContain("import.meta.env.DEV");
+		expect(middleware).not.toContain(HTTPS_UPGRADE_DIRECTIVE);
 		expect(CLAUDE_MD).toContain(HTTPS_UPGRADE_DIRECTIVE);
 	});
 
@@ -697,7 +729,7 @@ describe("gotchas", () => {
 
 	it("serves dist as assets from a Workers deploy bound to the documented domain", () => {
 		expect(WRANGLER_TOML).toContain('main = "@astrojs/cloudflare/entrypoints/server"');
-		expect(WRANGLER_TOML).toContain('directory = "dist"');
+		expect(WRANGLER_TOML).toContain('directory = "dist/client"');
 		expect(WRANGLER_TOML).toContain('binding = "SESSION"');
 		expect(WRANGLER_TOML).toContain('pattern = "biancafiore.me"');
 	});
@@ -717,9 +749,16 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 		expect(readers.filter((file) => MODULE_LEVEL_ENV_IMPORT.test(read(file)))).toEqual([]);
 	});
 
-	it("dies on irrecoverable misconfiguration rather than failing typed, in the layer the guide names", () => {
+	it("dies on irrecoverable misconfiguration rather than failing typed, in every layer that reads a secret", () => {
 		expect(guide).toContain("`Effect.die` (see `DatabaseLive`)");
-		expect(read("src/infrastructure/db/client.ts")).toContain("Effect.die(");
+
+		const secretReaders = infrastructureFiles
+			.filter((file) => read(file).includes("Layer.effect("))
+			.filter((file) => read(file).includes("getSecret("));
+
+		expect(secretReaders.length).toBeGreaterThan(1);
+		expect(secretReaders.filter((file) => !read(file).includes("Effect.die("))).toEqual([]);
+		expect(secretReaders.filter((file) => LAUNDERED_SECRET.test(read(file)))).toEqual([]);
 	});
 
 	it("declares every tagged error in errors.ts, never beside a client", () => {
@@ -876,7 +915,7 @@ describe("application guide: the anti-corruption boundary", () => {
 	});
 
 	it("leaves the placeholder fan-out to the module that owns it, never to a loader", () => {
-		expect(guide).toContain("never awaits one entry at a time");
+		expect(guide).toContain("`Promise.all(entries.map(async (entry)");
 
 		expect(loaders.length).toBeGreaterThan(0);
 		expect(loaders.filter((file) => PER_ENTRY_PLACEHOLDER_AWAIT.test(read(file)))).toEqual([]);
@@ -885,10 +924,18 @@ describe("application guide: the anti-corruption boundary", () => {
 
 	it("applies every optional-field default it cites, so the domain DTO stays total", () => {
 		const cited = [...new Set([...guide.matchAll(DTO_CITED_DEFAULT)].map(([, fallback]) => fallback))];
-		const dtoLayer = dtoFiles.map((file) => read(file)).join("\n");
+		const dtoLayer = dtoFiles.map((file) => read(file)).join(NEWLINE);
+		const defaulted = walk("src/domain")
+			.filter((file) => file.endsWith("schema.ts"))
+			.flatMap((file) => [...read(file).matchAll(SCHEMA_BOOLEAN_DEFAULT)].map(([, field]) => field));
 
 		expect(cited.length).toBeGreaterThan(0);
 		expect(cited.filter((fallback) => !dtoLayer.includes(fallback))).toEqual([]);
+
+		expect(defaulted.length).toBeGreaterThan(0);
+		expect(defaulted.filter((field) => !dtoLayer.includes(`${field}: rawArticle.fields.${field} ?? false`))).toEqual(
+			[],
+		);
 	});
 
 	it("turns a raw author into Author fields in the one module the guide names", () => {
@@ -923,9 +970,9 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(dtoFiles.filter((file) => TITLE_AS_IDENTITY.test(read(file)))).toEqual([]);
 	});
 
-	it("keeps every DTO create synchronous, as the guide states", () => {
+	it("keeps every DTO mapper synchronous, as the guide states", () => {
 		expect(guide).toContain("Every `create` is synchronous");
-		expect(dtoFiles.filter((file) => ASYNC_DTO_CREATE.test(read(file)))).toEqual([]);
+		expect(dtoFiles.filter((file) => ASYNC_DTO_MAPPER.test(read(file)))).toEqual([]);
 	});
 
 	it("names the only infrastructure module a DTO is allowed to reach for", () => {
@@ -942,7 +989,7 @@ describe("application guide: the anti-corruption boundary", () => {
 	it("absolutises the asset url here, so nothing downstream re-adds the scheme", () => {
 		expect(guide).toContain("An asset URL is absolutised here");
 		expect(read("src/domain/shared/image.ts")).toMatch(ABSOLUTE_IMAGE_URL_SCHEMA);
-		expect(read("src/shared/application/dto/utils/images.ts")).toMatch(ASSET_SCHEME_CONSTANT);
+		expect(read("src/application/dto/shared/images.ts")).toMatch(ASSET_SCHEME_CONSTANT);
 
 		const downstream = production([...walk("src/pages"), ...walk("src/ui")])
 			.filter((file) => SOURCE_FILE.test(file))
@@ -967,11 +1014,13 @@ describe("application guide: the anti-corruption boundary", () => {
 
 		const broken = loaders.filter((file) => {
 			const source = read(file);
+			const fetches = LOADER_FETCH_ENTRIES.test(source) || source.includes("cmsCollection");
 
-			return !LOADER_FETCH_ENTRIES.test(source) || !DOMAIN_SCHEMA_BINDING.test(source) || !DOMAIN_IMPORT.test(source);
+			return !fetches || !DOMAIN_SCHEMA_BINDING.test(source) || !DOMAIN_IMPORT.test(source);
 		});
 
 		expect(broken).toEqual([]);
+		expect(read(COLLECTION_FACTORY)).toMatch(LOADER_FETCH_ENTRIES);
 	});
 
 	it("leaves the credential bail, the batching and Effect itself to that one interface", () => {
@@ -984,19 +1033,17 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(loaders.filter((file) => LOADER_REACHING_PAST_FETCH_ENTRIES.test(read(file)))).toEqual([]);
 	});
 
-	it("cites the id every loader assigns, and the one that assigns none", () => {
-		const step = guide.split("\n").find((line) => line.startsWith("3. ")) ?? "";
+	it("cites the id every loader assigns, and spreads before it rather than after", () => {
+		const step = guide.split(NEWLINE).find((line) => line.includes("return entries carrying an `id`")) ?? "";
 		const assigned = [
-			...new Set(loaders.flatMap((file) => [...read(file).matchAll(LOADER_ID_ASSIGNMENT)].map(([, field]) => field))),
+			...new Set(loaders.flatMap((file) => [...read(file).matchAll(IDENTIFY_CHOICE)].map(([, field]) => field))),
 		];
 
 		expect(assigned.length).toBeGreaterThan(0);
 		expect(assigned.filter((field) => !step.includes(field))).toEqual([]);
 
-		const withoutId = loaders.filter((file) => !ANY_ID_ASSIGNMENT.test(read(file)));
-
-		expect(withoutId).toEqual(["src/application/entities/projects/projects.ts"]);
-		expect(step).toContain("`projects`");
+		expect(read(COLLECTION_FACTORY)).toContain("...entry, id: identify(entry)");
+		expect([...loaders, COLLECTION_FACTORY].filter((file) => SPREAD_AFTER_ID.test(read(file)))).toEqual([]);
 	});
 });
 
@@ -1169,7 +1216,7 @@ describe("styles guide: derived constants and source order", () => {
 		expect(guide).toContain("There is deliberately no `page--tag`");
 		expect(routes).toContain("TAGS");
 		expect(routes.indexOf("TAGS")).toBeLessThan(routes.indexOf("TAG"));
-		expect(read("src/ui/modules/core/utils/page.ts")).toContain("url.pathname.includes(route)");
+		expect(read("src/ui/modules/core/utils/page.ts")).toContain("isWithin({ pathname: url.pathname");
 		expect(read("src/ui/styles/base/base.css")).not.toContain("page--tag ");
 	});
 
@@ -1198,7 +1245,7 @@ describe("styles guide: derived constants and source order", () => {
 	});
 
 	it("declares the layer order in index.css and nowhere else", () => {
-		const declaring = walk("src/ui/styles")
+		const declaring = [...walk("src/ui"), ...walk("src/pages")]
 			.filter((file) => file.endsWith(".css"))
 			.filter((file) => LAYER_ORDER_DECLARATION.test(read(file)));
 
@@ -1403,8 +1450,8 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(walk("src/ui/modules").filter((file) => file.endsWith(".css") && read(file).includes("@layer"))).toEqual([]);
 	});
 
-	it("hydrates only the roots the Islands section censuses, and only with client:only", () => {
-		const hydrated = production(walk("src/ui"))
+	it("hydrates only the roots the Islands section censuses, and only where a server render is impossible", () => {
+		const hydrated = production([...walk("src/ui"), ...walk("src/pages")])
 			.filter((file) => SOURCE_FILE.test(file))
 			.flatMap((file) =>
 				[...read(file).matchAll(HYDRATION_DIRECTIVE)].map(([, name, directive, value]) => ({
@@ -1414,7 +1461,10 @@ describe("modules guide: mixes, islands and data access", () => {
 			);
 
 		expect(hydrated.length).toBeGreaterThan(0);
-		expect(hydrated.filter(({ directive }) => directive !== 'only="react"')).toEqual([]);
+		expect(hydrated.filter(({ directive }) => !HYDRATION_DIRECTIVES_ALLOWED.has(directive))).toEqual([]);
+		expect(hydrated.filter(({ directive }) => directive === "load").map(({ name }) => name)).toEqual([
+			"ContactFormProvider",
+		]);
 		expect(hydrated.map(({ name }) => name).sort()).toEqual(
 			namesIn({ text: guide, pattern: ISLAND_ROOT_CENSUS }).sort(),
 		);
@@ -1442,6 +1492,24 @@ describe("modules guide: mixes, islands and data access", () => {
 	});
 });
 
+const FUNCTION_SIGNATURE = /(?:export\s+)?(?:async\s+)?function\s+([A-Za-z0-9_]+)\s*(?:<[^>]*>)?\s*\(([^)]*)\)/g;
+const ARROW_SIGNATURE =
+	/(?:export\s+)?const\s+([A-Za-z0-9_]+)\s*(?::[^=]*)?=\s*(?:async\s*)?\(([^)]*)\)\s*(?::[^=]*)?=>/g;
+const TRAILING_COMMA = /,\s*$/;
+
+function topLevelArity(parameters: string): number {
+	let depth = 0;
+	let arity = 1;
+
+	for (const character of parameters) {
+		if ("<([{".includes(character)) depth += 1;
+		else if (">)]}".includes(character)) depth -= 1;
+		else if (character === "," && depth === 0) arity += 1;
+	}
+
+	return arity;
+}
+
 describe("conventions", () => {
 	it("configures Biome the way the conventions claim", () => {
 		const conventions = section(CLAUDE_MD, "Conventions");
@@ -1449,14 +1517,94 @@ describe("conventions", () => {
 		expect(BIOME_JSON.formatter.lineWidth).toBe(Number(conventions.match(DOCUMENTED_LINE_WIDTH)?.[1]));
 		expect(BIOME_JSON.linter.rules.suspicious.noConsole).toBe("error");
 		expect(BIOME_JSON.assist.actions.source.organizeImports).toBe("on");
-		expect(BIOME_JSON.files.includes).toContain("!**/src/data/**/*");
 		expect(BIOME_JSON.files.includes).toContain("!**/public/**/*");
+	});
+
+	it("types exactly the variables something reads through import.meta.env, and no others", () => {
+		const consumed = new Set(
+			[...walk("src"), "astro.config.ts"]
+				.filter((file) => SOURCE_FILE.test(file) || file === "astro.config.ts")
+				.flatMap((file) => [...read(file).matchAll(IMPORT_META_ENV_READ)].map(([, name]) => name))
+				.filter((name) => name !== "DEV"),
+		);
+		const declared = new Set([...read("src/env.d.ts").matchAll(ENV_DTS_DECLARATION)].map(([, name]) => name));
+
+		expect(consumed.size).toBeGreaterThan(0);
+		expect([...declared].filter((name) => !consumed.has(name)).toSorted()).toEqual([]);
+		expect([...consumed].filter((name) => !declared.has(name)).toSorted()).toEqual([]);
+	});
+
+	it("registers no listener and reads no media query at module scope, as the modules guide claims", () => {
+		const guide = read("src/ui/modules/CLAUDE.md");
+
+		expect(guide).toContain("Neither does the module it imports");
+
+		const modules = production(walk("src/ui").filter((file) => TYPESCRIPT_FILE.test(file)));
+		const offenders = modules.filter((file) => MODULE_SCOPE_SIDE_EFFECT.test(read(file)));
+
+		expect(modules.length).toBeGreaterThan(0);
+		expect(offenders).toEqual([]);
+	});
+
+	it("declares prerender on every page ADR 0011 says ships as static HTML", () => {
+		const adr = read("docs/adr/0011-hybrid-rendering-prerender-content-ssr-dynamic.md");
+
+		expect(adr).toContain("forgetting the flag is what silently makes it dynamic");
+
+		const routes = walk("src/pages").filter((file) => ROUTE_FILE.test(file) && !basename(file).startsWith("_"));
+		const dynamic = routes.filter((file) => !read(file).includes("export const prerender = true"));
+
+		expect(routes.length).toBeGreaterThan(0);
+		expect(dynamic.toSorted()).toEqual(ON_DEMAND_ROUTES.toSorted());
+	});
+
+	it("disallows the same routes in robots.txt that it keeps out of the sitemap", () => {
+		const disallowed = [...read("public/robots.txt").matchAll(ROBOTS_DISALLOW)].map(([, route]) => route.trim());
+
+		expect(disallowed.length).toBeGreaterThan(0);
+		expect(disallowed.toSorted()).toEqual([...NOINDEX_ROUTES].toSorted());
+	});
+
+	it("passes two or more arguments as one object typed after the function", () => {
+		const conventions = section(CLAUDE_MD, "Conventions");
+
+		expect(conventions).toContain("One argument is positional; two or more are one object");
+
+		const positional = SOURCE_FILES.flatMap((file) =>
+			[...read(file).matchAll(FUNCTION_SIGNATURE), ...read(file).matchAll(ARROW_SIGNATURE)]
+				.map(([, name, parameters]) => ({ name, parameters: (parameters ?? "").trim().replace(TRAILING_COMMA, "") }))
+				.filter(({ parameters }) => parameters.length > 0 && !parameters.startsWith("{"))
+				.filter(({ parameters }) => topLevelArity(parameters) > 1)
+				.map(({ name }) => `${file}: ${name}`),
+		);
+
+		expect(positional).toEqual([]);
 	});
 
 	it("resolves the site origin in the one module the conventions name", () => {
 		const conventions = section(CLAUDE_MD, "Conventions");
 
 		expect(conventions).toContain("only reader of `SITE_URL`");
-		expect(SOURCE_FILES.filter((file) => SITE_ORIGIN_READ.test(read(file)))).toEqual(["src/const/routes.ts"]);
+		const readers = SOURCE_FILES.filter((file) => !file.endsWith(".d.ts")).filter((file) =>
+			SITE_ORIGIN_READ.test(read(file)),
+		);
+
+		expect(readers).toEqual(["src/const/routes.ts"]);
+		expect(SOURCE_FILES.filter((file) => ASTRO_SITE_READ.test(read(file)))).toEqual([]);
+		expect(SOURCE_FILES.filter((file) => ASTRO_URL_ORIGIN_READ.test(read(file)))).toEqual([]);
+	});
+
+	it("sets the consent default before anything that reads it, which is the order ADR 0013 calls load-bearing", () => {
+		const head = read("src/ui/modules/core/components/head/Head.astro");
+		const gate = read("src/ui/modules/core/components/cookieConsent/utils/consentGate.ts");
+		const adr = read("docs/adr/0013-analytics-gated-behind-cookie-consent.md");
+
+		expect(adr).toContain("stays first");
+		expect(gate).toContain("gtag('consent', 'default'");
+		expect(head.indexOf("consentBootstrapScript")).toBeGreaterThan(-1);
+		expect(head.indexOf("set:html={consentBootstrapScript(")).toBeLessThan(
+			head.indexOf("googletagmanager.com/gtag/js"),
+		);
+		expect(head.indexOf("set:html={consentBootstrapScript(")).toBeLessThan(head.indexOf("googletagmanager.com/gtm.js"));
 	});
 });

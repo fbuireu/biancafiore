@@ -14,6 +14,7 @@ export const PAGES_ROUTES = {
 	"500": "/500",
 	HOME: "/",
 } as const;
+export const SITE_AUTHOR_SLUG = "bianca-fiore" as const;
 export const CONTACT_DETAILS = {
 	NAME: "Bianca Fiore",
 	EMAIL_SUBJECT: "Web contact form submission",
