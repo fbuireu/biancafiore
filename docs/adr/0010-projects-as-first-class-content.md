@@ -19,5 +19,5 @@ It is recorded as proposed rather than accepted because the question it opens is
 ## Consequences
 
 - The minimal current Project schema is deliberate and expected to grow. Do not treat it as final, and do not "simplify" it on the assumption that it is finished.
-- Landing this means answering the boundary question in `CONTEXT.md` first, since Project and Article are glossary terms before they are schemas.
+- Landing this means answering the boundary question in [`CONTEXT.md`](../../CONTEXT.md) first, since Project and Article are glossary terms before they are schemas.
 - Adding a slug and a detail page is the ordinary content-type path: domain concept → DTO → entity loader → route (see the application guide).

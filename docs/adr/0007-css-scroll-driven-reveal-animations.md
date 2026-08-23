@@ -20,4 +20,4 @@ This is a concrete instance of the project-wide CSS-first principle ([ADR 0009](
 
 - Requires a browser with scroll-driven animation support, which is the evergreen/Chromium-forward baseline the project already accepts ([ADR 0009](./0009-css-first-javascript-only-when-necessary.md)).
 - Degrades to fully-visible rather than to nothing: an `@supports` fallback and `prefers-reduced-motion` both resolve to the un-animated end state, so content is never hidden by a missing feature.
-- The modifiers are fused (`.reveal--fade`), so they carry the same specificity as `.reveal` and only win by source order — they must stay after it in `reveal.css` ([ADR 0014](./0014-bem-class-naming.md)).
+- The modifiers are fused (`.reveal--fade`), so they carry the same specificity as `.reveal` and only win by source order — they must stay after it in [`reveal.css`](../../src/ui/styles/global/reveal.css) ([ADR 0014](./0014-bem-class-naming.md)).
