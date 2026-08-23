@@ -15,7 +15,7 @@ export const tags = defineCollection({
 			{ content_type: "author", select: TAG_INDEX_AUTHOR_FIELDS },
 		);
 
-		return createTagIndex({ rawTags, rawArticles, rawAuthors }).map((tag) => ({ id: tag.slug, ...tag }));
+		return createTagIndex({ rawTags, rawArticles, rawAuthors }).map((tag) => ({ ...tag, id: tag.slug }));
 	},
 	schema: tagIndexEntrySchema,
 });

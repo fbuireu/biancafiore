@@ -251,6 +251,9 @@ const BIOME_JSON = readJson("biome.json");
 const ASTRO_CONFIG = read("astro.config.ts");
 const WRANGLER_TOML = read("wrangler.toml");
 
+const COLLECTION_FACTORY = "src/application/entities/collection.ts";
+const IDENTIFY_CHOICE = /identify: \(\w+\) => \w+\.(\w+)/g;
+const SPREAD_AFTER_ID = /\{\s*id:[^}]*\.\.\./;
 const HYDRATION_DIRECTIVES_ALLOWED = new Set(['only="react"', "load"]);
 const NEWLINE = "\n";
 const SCHEMA_BOOLEAN_DEFAULT = /(\w+): z\.boolean\(\)\.default\(false\)/g;
@@ -1004,11 +1007,13 @@ describe("application guide: the anti-corruption boundary", () => {
 
 		const broken = loaders.filter((file) => {
 			const source = read(file);
+			const fetches = LOADER_FETCH_ENTRIES.test(source) || source.includes("cmsCollection");
 
-			return !LOADER_FETCH_ENTRIES.test(source) || !DOMAIN_SCHEMA_BINDING.test(source) || !DOMAIN_IMPORT.test(source);
+			return !fetches || !DOMAIN_SCHEMA_BINDING.test(source) || !DOMAIN_IMPORT.test(source);
 		});
 
 		expect(broken).toEqual([]);
+		expect(read(COLLECTION_FACTORY)).toMatch(LOADER_FETCH_ENTRIES);
 	});
 
 	it("leaves the credential bail, the batching and Effect itself to that one interface", () => {
@@ -1021,19 +1026,17 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(loaders.filter((file) => LOADER_REACHING_PAST_FETCH_ENTRIES.test(read(file)))).toEqual([]);
 	});
 
-	it("cites the id every loader assigns, and the one that assigns none", () => {
-		const step = guide.split("\n").find((line) => line.startsWith("4. ")) ?? "";
+	it("cites the id every loader assigns, and spreads before it rather than after", () => {
+		const step = guide.split(NEWLINE).find((line) => line.startsWith("4. ")) ?? "";
 		const assigned = [
-			...new Set(loaders.flatMap((file) => [...read(file).matchAll(LOADER_ID_ASSIGNMENT)].map(([, field]) => field))),
+			...new Set(loaders.flatMap((file) => [...read(file).matchAll(IDENTIFY_CHOICE)].map(([, field]) => field))),
 		];
 
 		expect(assigned.length).toBeGreaterThan(0);
 		expect(assigned.filter((field) => !step.includes(field))).toEqual([]);
 
-		const withoutId = loaders.filter((file) => !ANY_ID_ASSIGNMENT.test(read(file)));
-
-		expect(withoutId).toEqual(["src/application/entities/projects/projects.ts"]);
-		expect(step).toContain("`projects`");
+		expect(read(COLLECTION_FACTORY)).toContain("...entry, id: identify(entry)");
+		expect([...loaders, COLLECTION_FACTORY].filter((file) => SPREAD_AFTER_ID.test(read(file)))).toEqual([]);
 	});
 });
 
