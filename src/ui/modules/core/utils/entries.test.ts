@@ -1,12 +1,15 @@
-import { resolveArticle, resolveArticles } from "@modules/core/utils/entries";
+import { SITE_AUTHOR_SLUG } from "@const/const";
+import { getSiteAuthor, resolveArticle, resolveArticles } from "@modules/core/utils/entries";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { stored, asked } = vi.hoisted(() => ({
+const { stored, asked, authors } = vi.hoisted(() => ({
 	stored: new Map<string, unknown>(),
 	asked: [] as string[],
+	authors: [] as { data: { slug: string; name: string } }[],
 }));
 
 vi.mock("astro:content", () => ({
+	getCollection: async () => authors,
 	getEntry: async (collection: string, id: string) => {
 		asked.push(`${collection}:${id}`);
 
@@ -66,5 +69,26 @@ describe("resolveArticles", () => {
 	it("asks for nothing when the reference list is empty", async () => {
 		expect(await resolveArticles([])).toEqual([]);
 		expect(asked).toEqual([]);
+	});
+});
+
+describe("getSiteAuthor", () => {
+	beforeEach(() => {
+		authors.length = 0;
+	});
+
+	it("picks the Author by the slug the site addresses, not by a display name an editor retouches", async () => {
+		authors.push(
+			{ data: { slug: "someone-else", name: "Bianca Fiore" } },
+			{ data: { slug: SITE_AUTHOR_SLUG, name: "Bianca Maria Fiore" } },
+		);
+
+		expect((await getSiteAuthor()).data.slug).toBe(SITE_AUTHOR_SLUG);
+	});
+
+	it("throws with the slug it looked for rather than answering an Author the site is not about", async () => {
+		authors.push({ data: { slug: "someone-else", name: "Someone Else" } });
+
+		await expect(getSiteAuthor()).rejects.toThrow(SITE_AUTHOR_SLUG);
 	});
 });

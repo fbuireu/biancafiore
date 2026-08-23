@@ -13,13 +13,23 @@ const THEME_TOGGLE = ".theme-toggle";
 
 const paintedTheme = (page: Page) => page.locator("html").getAttribute(THEME_ATTRIBUTE);
 
+interface VisitParams {
+	page: Page;
+	path: string;
+}
+
+const visit = async ({ page, path }: VisitParams) => {
+	await page.goto(path, { waitUntil: "commit" });
+	await page.waitForLoadState("domcontentloaded");
+};
+
 interface OpenAnArticleParams {
 	page: Page;
 	index: number;
 }
 
 const openAnArticle = async ({ page, index }: OpenAnArticleParams) => {
-	await page.goto("/articles");
+	await visit({ page, path: "/articles" });
 	await expect(page.locator("[data-astro-exec]").first()).toBeAttached();
 
 	const link = page.locator(ARTICLE_CARD_LINK).nth(index);
@@ -104,9 +114,9 @@ test.describe("wiring survives a ClientRouter swap", () => {
 	});
 
 	test("keeps decoding the email address after two swaps", async ({ page }) => {
-		await page.goto("/articles");
-		await page.goto("/terms-and-conditions");
-		await page.goto("/privacy-policy");
+		await visit({ page, path: "/articles" });
+		await visit({ page, path: "/terms-and-conditions" });
+		await visit({ page, path: "/privacy-policy" });
 
 		const address = page.locator(EMAIL_ADDRESS_BUTTON).first();
 
