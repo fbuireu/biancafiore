@@ -1448,6 +1448,24 @@ describe("modules guide: mixes, islands and data access", () => {
 	});
 });
 
+const FUNCTION_SIGNATURE = /(?:export\s+)?(?:async\s+)?function\s+([A-Za-z0-9_]+)\s*(?:<[^>]*>)?\s*\(([^)]*)\)/g;
+const ARROW_SIGNATURE =
+	/(?:export\s+)?const\s+([A-Za-z0-9_]+)\s*(?::[^=]*)?=\s*(?:async\s*)?\(([^)]*)\)\s*(?::[^=]*)?=>/g;
+const TRAILING_COMMA = /,\s*$/;
+
+function topLevelArity(parameters: string): number {
+	let depth = 0;
+	let arity = 1;
+
+	for (const character of parameters) {
+		if ("<([{".includes(character)) depth += 1;
+		else if (">)]}".includes(character)) depth -= 1;
+		else if (character === "," && depth === 0) arity += 1;
+	}
+
+	return arity;
+}
+
 describe("conventions", () => {
 	it("configures Biome the way the conventions claim", () => {
 		const conventions = section(CLAUDE_MD, "Conventions");
@@ -1457,6 +1475,22 @@ describe("conventions", () => {
 		expect(BIOME_JSON.assist.actions.source.organizeImports).toBe("on");
 		expect(BIOME_JSON.files.includes).toContain("!**/src/data/**/*");
 		expect(BIOME_JSON.files.includes).toContain("!**/public/**/*");
+	});
+
+	it("passes two or more arguments as one object typed after the function", () => {
+		const conventions = section(CLAUDE_MD, "Conventions");
+
+		expect(conventions).toContain("One argument is positional; two or more are one object");
+
+		const positional = SOURCE_FILES.flatMap((file) =>
+			[...read(file).matchAll(FUNCTION_SIGNATURE), ...read(file).matchAll(ARROW_SIGNATURE)]
+				.map(([, name, parameters]) => ({ name, parameters: (parameters ?? "").trim().replace(TRAILING_COMMA, "") }))
+				.filter(({ parameters }) => parameters.length > 0 && !parameters.startsWith("{"))
+				.filter(({ parameters }) => topLevelArity(parameters) > 1)
+				.map(({ name }) => `${file}: ${name}`),
+		);
+
+		expect(positional).toEqual([]);
 	});
 
 	it("resolves the site origin in the one module the conventions name", () => {

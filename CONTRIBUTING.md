@@ -58,10 +58,11 @@ repeated here, because a second copy is a copy that goes stale.
 ## Conventions that will bite you if you skip them
 
 The *Conventions* section of [CLAUDE.md](./CLAUDE.md) is the list, and it is
-the one the docs test checks. The four that catch people out: **no code
+the one the docs test checks. The five that catch people out: **no code
 comments**, **no Biome suppressions**, **design tokens over magic numbers**,
-and **conventional commits**, which semantic-release derives versions from and
-commitlint rejects anything else.
+**one argument is positional and two or more are a single object typed
+`<FunctionName>Params`**, and **conventional commits**, which semantic-release
+derives versions from and commitlint rejects anything else.
 
 ## The docs are part of the change
 
