@@ -25,7 +25,7 @@ import "./carbon-badge.css";
       const data = await res.json();
       isGreen = data.green === true;
     } catch {
-      // silently fail — assume non-green
+      // silently fail: assume non-green
     }
 
     const calculator = new co2({ model: "swd" });
