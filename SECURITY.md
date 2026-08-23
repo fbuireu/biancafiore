@@ -19,9 +19,10 @@ If you discover a security vulnerability, please report it privately:
 2. Click "Report a vulnerability"
 3. Fill in the details about the vulnerability
 
-### Alternative: Email
+### Alternative: The contact form
 
-Send an email to **fbuireu@gmail.com** with:
+If you cannot use private reporting, write through the
+[contact form](https://biancafiore.me/contact), and include:
 
 - Type of issue (e.g., injection through the contact form, header bypass,
   leaked secret, etc.)
