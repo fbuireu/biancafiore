@@ -18,8 +18,14 @@ interface VisitParams {
 	path: string;
 }
 
+const SUPERSEDED = "interrupted by another navigation";
+
 const visit = async ({ page, path }: VisitParams) => {
-	await page.goto(path, { waitUntil: "commit" });
+	await page.goto(path).catch((error: Error) => {
+		if (!error.message.includes(SUPERSEDED)) throw error;
+	});
+
+	await page.waitForURL(`**${path}`);
 	await page.waitForLoadState("domcontentloaded");
 };
 
