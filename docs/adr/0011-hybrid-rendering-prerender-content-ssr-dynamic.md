@@ -17,5 +17,5 @@ Every content page opts into static prerendering with `export const prerender = 
 ## Consequences
 
 - Prerendered pages are identical for every visitor, so per-user state cannot be server-rendered — the theme is applied by a client bootstrap before first paint ([ADR 0005](./0005-theme-token-families-and-inline-bootstrap.md)).
-- Content changes need a build, not a request. Publishing in Contentful fires a webhook that dispatches `publish-article.yml`, which redeploys production — so the rebuild is automatic, but an entry edited without that webhook firing stays invisible until the next deploy.
+- Content changes need a build, not a request. Publishing in Contentful fires a webhook that dispatches [`publish-article.yml`](../../.github/workflows/publish-article.yml), which redeploys production — so the rebuild is automatic, but an entry edited without that webhook firing stays invisible until the next deploy.
 - A page that starts needing request-time data has to drop its `prerender` flag deliberately; forgetting the flag is what silently makes it dynamic.

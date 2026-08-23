@@ -28,7 +28,7 @@ Three consequences follow, and they are the parts worth recording:
 
 Menu state went from seven `classList.toggle` calls to one, which let five selector constants and five `querySelector` calls go.
 
-**An element that is a mix needs a modifier per block.** The contact tabs are `class="contact-tab underline-on-hover"`, and the single old `--is-active` class served both rules at once: the bold weight from `.contact-tab`, and the persistent underline (plus the hover suppression) from `.underline-on-hover`. Splitting it into `contact-tab--active` alone silently dropped the underline. `tabs.ts` now toggles `contact-tab--active` and `underline-on-hover--active` together. Any shared modifier being split needs this check.
+**An element that is a mix needs a modifier per block.** The contact tabs are `class="contact-tab underline-on-hover"`, and the single old `--is-active` class served both rules at once: the bold weight from `.contact-tab`, and the persistent underline (plus the hover suppression) from `.underline-on-hover`. Splitting it into `contact-tab--active` alone silently dropped the underline. [`tabs.ts`](../../src/ui/modules/contact/utils/tabs.ts) now toggles `contact-tab--active` and `underline-on-hover--active` together. Any shared modifier being split needs this check.
 
 Classes that exist purely as JS state and style nothing are `data-` attributes, not classes: the re-entrancy guard in `flyPlane` is now `button.dataset.flying`.
 

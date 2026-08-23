@@ -42,5 +42,5 @@ flowchart TD
 
 - Dependencies point inward only: `ui → application → domain`, with `application → infrastructure → Contentful`. `domain` depends on nothing outward, so the domain model and its rules are testable and CMS-agnostic even though the schemas are Astro-typed.
 - Rules that genuinely operate over raw Contentful entries and build cross-collection references (related-by-shared-tags, per-tag/author counts, articles-by-author) stay in the ACL on purpose — decoupling them would not preserve behaviour cheaply.
-- A new content type is a four-step path rather than one file: domain concept → DTO → entity loader → collection registration, with the glossary term added to `CONTEXT.md` in the same change.
+- A new content type is a four-step path rather than one file: domain concept → DTO → entity loader → collection registration, with the glossary term added to [`CONTEXT.md`](../../CONTEXT.md) in the same change.
 - Concept names are binding. A folder, field or rule whose name disagrees with `CONTEXT.md` is a bug in one of the two.

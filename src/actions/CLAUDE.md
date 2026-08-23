@@ -1,8 +1,8 @@
 # src/actions
 
-One Astro server action, `server.contact`, split across three files. `contact.ts` holds `submitContact`, the
-Effect program that orchestrates the submission; `errorResponse.ts` holds `contactErrorResponse`, which turns a
-failed `Cause` into the `{ code, message }` the visitor gets; `index.ts` holds the Astro binding and nothing
+One Astro server action, `server.contact`, split across three files. [`contact.ts`](./contact.ts) holds `submitContact`, the
+Effect program that orchestrates the submission; [`errorResponse.ts`](./errorResponse.ts) holds `contactErrorResponse`, which turns a
+failed `Cause` into the `{ code, message }` the visitor gets; [`index.ts`](./index.ts) holds the Astro binding and nothing
 else — `defineAction`, `accept: "form"`, `contactFormSchema` (`@domain/contact/schema`) validating the payload
 before the handler body runs, `ContactLayer`, and the `new ActionError(…)` throw. Every step is imported from
 `@infrastructure/utils/*` — all Effects except `normalizeEmail`, a plain function called inline — so nothing
@@ -11,9 +11,9 @@ this edge and nowhere deeper.
 
 **The split is what makes the action testable.** `contact.ts` and `errorResponse.ts` import nothing from
 `astro:*`, so `submitContact` runs in a unit test against stub `Database` and `EmailClient` layers — see
-`contact.test.ts` and the doubles in `src/tests/doubles/` — and **so a unit test can run the mapping** over real
-`Cause` values, defects included (`errorResponse.test.ts`). The one `astro:*` module the program still reaches
-is `astro:env/server`, lazily imported inside `verifyRecaptcha`, and `vitest.config.ts` maps it onto a double.
+[`contact.test.ts`](./contact.test.ts) and the doubles in `src/tests/doubles/` — and **so a unit test can run the mapping** over real
+`Cause` values, defects included ([`errorResponse.test.ts`](./errorResponse.test.ts)). The one `astro:*` module the program still reaches
+is `astro:env/server`, lazily imported inside `verifyRecaptcha`, and [`vitest.config.ts`](../../vitest.config.ts) maps it onto a double.
 Keep `astro:actions` out of both: the moment either imports `ActionError`, it stops resolving under vitest —
 which is why the code stays a plain `{ code, message }` and only `index.ts` knows it becomes an `ActionError`.
 
@@ -31,7 +31,7 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   widening that union without answering the new tag fails the type check rather than review. For the three
   unmapped tags that answer is the decision, not the default: their copy names our infrastructure, so the
   switch is deliberately left with two cases and no `INTERNAL_SERVER_ERROR` literal beyond the catch-all's.
-- **`UNAUTHORIZED` is the status the form reacts to, which is why it is not a conflict code.** `ContactForm.tsx`
+- **`UNAUTHORIZED` is the status the form reacts to, which is why it is not a conflict code.** [`ContactForm.tsx`](../ui/modules/contact/components/contactForm/ContactForm.tsx)
   keys `FormStatus.UNAUTHORIZED` off a 401 — the status the action's error carries, forwarded verbatim by
   `toContactSubmission` in `@modules/contact/utils/submission` — and that state disables every input and the
   submit button — the visitor is locked out rather than invited to retry. Answering `409` instead would leave the form
@@ -45,7 +45,7 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   answering "you already contacted" would be false as well as confusing. The catch-all stays broad, and the
   `UNAUTHORIZED` path is therefore unreachable from `saveContact`. `isUniqueConstraintViolation` unwrapping
   drizzle's error still earns its keep, but over the log line and `saveContact`'s declared failure type rather
-  than over anything the visitor sees; `src/infrastructure/CLAUDE.md` carries that reasoning.
+  than over anything the visitor sees; [`src/infrastructure/CLAUDE.md`](../infrastructure/CLAUDE.md) carries that reasoning.
 - **The answer is decided inside the Effect and thrown outside it.** `Effect.matchCauseEffect` folds both
   outcomes into an Effect of a plain `{ success, value | error }` union, `Effect.runPromise` resolves it, and
   only then does the handler `throw new ActionError(result.error)`. It has to be the `Effect` variant of the
@@ -64,7 +64,7 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   the operator gets `Cause.pretty` in the Worker log and the visitor gets the generic 500 instead of being
   accused of being a bot for a key we rotated. Before the split both were one `ValidationError` with one
   message, which meant a dead key refused every submission at 400 and wrote nothing to the log at all;
-  `guards.ts` carries which siteverify `error-codes` sit on which side. Either way the submission is refused —
+  [`guards.ts`](../infrastructure/utils/guards.ts) carries which siteverify `error-codes` sit on which side. Either way the submission is refused —
   fail-closed and blame-the-visitor are now separate decisions, so one can move without the other.
 - **A failed `saveContact` is logged, not raised.** Once the mail is away the visitor's message has reached
   Bianca; the row is bookkeeping for duplicate detection, not the deliverable. Failing the request there
@@ -91,6 +91,6 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
 - The generic copy lives in one module-level constant in `errorResponse.ts` — but only that one. The copy for
   the two mapped tags is written where each error is raised: the `ValidationError` text in the zod messages of
   `@domain/contact/schema`, joined by `validateContact`, and in `guards.ts` for the reCAPTCHA rejection; the
-  `DuplicateContactError` text in `persistence.ts`. `contactErrorResponse` forwards `failure.value.message`
+  `DuplicateContactError` text in [`persistence.ts`](../infrastructure/utils/persistence.ts). `contactErrorResponse` forwards `failure.value.message`
   verbatim, so those strings reach the visitor unchanged. The layers below stay tagged; they are not
   language-free.

@@ -77,7 +77,7 @@ pnpm test:e2e           # end-to-end tests (playwright)
 ## The docs are part of the change
 
 This repo treats its documentation as part of the code: change one, update the
-other **in the same commit**. `docs/docs-consistency.test.ts` runs with the
+other **in the same commit**. [`docs/docs-consistency.test.ts`](./docs/docs-consistency.test.ts) runs with the
 unit tests and fails the build when the docs and the repo disagree — and it
 parses the markdown shape of the guides, so even reformatting one can fail.
 [CLAUDE.md](./CLAUDE.md) has the full table of what to update for a given

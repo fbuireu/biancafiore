@@ -18,7 +18,7 @@ Theming uses two token families on purpose: semantic tokens defined with native 
 
 A render-blocking `is:inline` script in `<head>` sets `data-theme` and `color-scheme` before first paint, to prevent a fresh-tab flash. `color-scheme` forcing was removed from the menu so it follows the active theme instead of pinning to one.
 
-What that script *is*, the theme module owns. `Head.astro` renders `THEME_BOOTSTRAP_SCRIPT` from `themeToggle/utils/preference.ts` with `set:html` on the same render-blocking `is:inline` tag, so the storage key, the `data-theme` attribute and the fallback rule are written once rather than restated as literals no type checker reads.
+What that script *is*, the theme module owns. [`Head.astro`](../../src/ui/modules/core/components/head/Head.astro) renders `THEME_BOOTSTRAP_SCRIPT` from `themeToggle/utils/preference.ts` with `set:html` on the same render-blocking `is:inline` tag, so the storage key, the `data-theme` attribute and the fallback rule are written once rather than restated as literals no type checker reads.
 
 What is stored is a **preference** — `dark`, `light` or `system` — and only a click on the toggle writes it. Nothing stored means `system`, which resolves against `prefers-color-scheme` at boot and follows it while it changes; a stored `dark` or `light` is an explicit choice and neither the OS nor a later paint may overwrite it.
 
