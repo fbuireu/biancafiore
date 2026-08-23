@@ -267,7 +267,7 @@ const CONTEXT_TAG_CLASS = /class\s+\w+\s+extends\s+Context\.Tag/;
 const LAUNDERED_SECRET = /getSecret\([^)]*\)\s+as\s+string/;
 const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("CLAUDE.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
-const DOCS = ["CLAUDE.md", "CONTEXT.md", ...NESTED_GUIDES, ...ADR_FILES];
+const DOCS = ["CLAUDE.md", "CONTEXT.md", "docs/BACKLOG.md", ...NESTED_GUIDES, ...ADR_FILES];
 
 const TEST_INFRASTRUCTURE = "src/tests/";
 

@@ -117,6 +117,7 @@ These documents are not generated. A change that does not update them leaves the
 | The layer boundaries, the rendering mode, or the deploy target | the *Stack* / *Deploy* sections here, plus the ADR that decided it |
 | A decision an ADR records | that ADR: amend it, or supersede it with a new one and say so in both `## Status` blocks |
 | A claim `docs/docs-consistency.test.ts` asserts, on purpose | the doc first; the test only when the claim itself is what changed |
+| An item in [`docs/BACKLOG.md`](./docs/BACKLOG.md) ships, or is decided against | delete the entry: it is a list of what is *not* done, so a stale entry is a lie about the tree. An item that becomes a decision leaves as an ADR |
 
 Propose an ADR in [`docs/adr/`](./docs/adr/) when a decision is **hard to reverse**, **surprising without context** and **the result of a real trade-off**. All three, or it is not an ADR. Copy [ADR 0000](./docs/adr/0000-adr-template.md), the template, and number it one above the highest existing file (`NNNN-kebab-title.md`, `# N. Title` / `Date:` / `## Status` / `## Context` / `## Decision` / `## Consequences`), then link it from wherever it bites: a Gotchas bullet here, a nested guide, a [`CONTEXT.md`](./CONTEXT.md) entry. There is no separate index; an ADR nothing links to will not be read, which is why both the template and the incoming link are asserted.
 
