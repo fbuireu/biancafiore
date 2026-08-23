@@ -70,7 +70,7 @@ pnpm test:e2e           # end-to-end tests (playwright)
 - **No Biome suppressions.** Fix the root cause instead of `biome-ignore`.
   `noConsole` is an error with no allowlist: log through Effect's `Logger`.
 - **Design tokens over magic numbers**, and respect the CSS `@layer` order.
-  Details in the styles guide under `src/ui/styles/`.
+  Details in the styles guide under [`src/ui/styles/`](./src/ui/styles).
 - **Conventional commits are mandatory**: semantic-release derives versions
   and the changelog from them, and commitlint rejects anything else.
 
