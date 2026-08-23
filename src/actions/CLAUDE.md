@@ -11,7 +11,7 @@ this edge and nowhere deeper.
 
 **The split is what makes the action testable.** `contact.ts` and `errorResponse.ts` import nothing from
 `astro:*`, so `submitContact` runs in a unit test against stub `Database` and `EmailClient` layers (see
-[`contact.test.ts`](./contact.test.ts) and the doubles in `src/tests/doubles/`), and **so a unit test can run the mapping** over real
+[`contact.test.ts`](./contact.test.ts) and the doubles in [`src/tests/doubles/`](../tests/doubles)), and **so a unit test can run the mapping** over real
 `Cause` values, defects included ([`errorResponse.test.ts`](./errorResponse.test.ts)). The one `astro:*` module the program still reaches
 is `astro:env/server`, lazily imported inside `verifyRecaptcha`, and [`vitest.config.ts`](../../vitest.config.ts) maps it onto a double.
 Keep `astro:actions` out of both: the moment either imports `ActionError`, it stops resolving under vitest,
