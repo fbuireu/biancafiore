@@ -31,6 +31,7 @@ const TOGGLE_MENU_SELECTORS = {
 	NAVIGATION_ITEMS: ".navigation__menu__item > *",
 	QUOTE: ".navigation__menu__quote > *",
 	FIRST_MENU_LINK: ".navigation__menu__nav a",
+	COVERED_BY_MENU: "main, footer, .scroll-top-wrapper",
 };
 
 interface IsIntersectingParams {
@@ -79,6 +80,7 @@ export function watchBackground(): void {
 
 export interface MenuTimeline {
 	reversed(value?: boolean): unknown;
+	eventCallback(type: "onComplete", callback: () => void): unknown;
 }
 
 export interface MenuElements {
@@ -129,6 +131,12 @@ function buildMenuTimeline(onButtonUpdate: () => void): MenuTimeline {
 	return timeline;
 }
 
+const setInert = (isMenuOpen: boolean): void => {
+	for (const region of document.querySelectorAll<HTMLElement>(TOGGLE_MENU_SELECTORS.COVERED_BY_MENU)) {
+		region.inert = isMenuOpen;
+	}
+};
+
 export function wireMenu({ elements, signal, buildTimeline = buildMenuTimeline }: WireMenuParams): void {
 	const { html, button, text } = elements;
 
@@ -149,6 +157,10 @@ export function wireMenu({ elements, signal, buildTimeline = buildMenuTimeline }
 
 	const timeline = buildTimeline(updateButton);
 
+	timeline.eventCallback("onComplete", () => {
+		document.querySelector<HTMLElement>(TOGGLE_MENU_SELECTORS.FIRST_MENU_LINK)?.focus();
+	});
+
 	html.classList.remove(MENU_OPEN_CLASS);
 	html.style.overflow = "";
 
@@ -160,9 +172,7 @@ export function wireMenu({ elements, signal, buildTimeline = buildMenuTimeline }
 			button.setAttribute("aria-expanded", String(isMenuOpen));
 			html.classList.toggle(MENU_OPEN_CLASS, isMenuOpen);
 
-			if (isMenuOpen) {
-				document.querySelector<HTMLElement>(TOGGLE_MENU_SELECTORS.FIRST_MENU_LINK)?.focus();
-			}
+			setInert(isMenuOpen);
 		},
 		{ signal },
 	);

@@ -117,7 +117,9 @@ describe("wireMenu", () => {
 	const render = () => {
 		document.body.innerHTML = `
 			<button class="header__menu-button"><span class="header__menu-text">Menu</span></button>
-			<nav class="navigation__menu__nav"><a href="/about">About</a></nav>`;
+			<nav class="navigation__menu__nav"><a href="/about">About</a></nav>
+			<main><a href="/articles">Articles</a></main>
+			<footer><a href="/contact">Contact</a></footer>`;
 
 		const button = document.querySelector<HTMLElement>(".header__menu-button") as HTMLElement;
 
@@ -133,6 +135,12 @@ describe("wireMenu", () => {
 
 		return {
 			calls: [] as boolean[],
+			completed: undefined as (() => void) | undefined,
+			eventCallback(_type: "onComplete", callback: () => void) {
+				this.completed = callback;
+
+				return this;
+			},
 			reversed(value?: boolean) {
 				if (value === undefined) return reversed;
 
@@ -220,11 +228,30 @@ describe("wireMenu", () => {
 		expect(document.documentElement.classList.contains("page--menu-open")).toBe(false);
 	});
 
-	it("moves focus to the first menu link when it opens", () => {
-		const { elements } = wire(new AbortController());
+	it("moves focus to the first menu link only once the overlay has finished opening", () => {
+		const { elements, timeline } = wire(new AbortController());
 
 		elements.button.click();
 
+		expect(document.activeElement).not.toBe(document.querySelector(".navigation__menu__nav a"));
+
+		timeline.completed?.();
+
 		expect(document.activeElement).toBe(document.querySelector(".navigation__menu__nav a"));
+	});
+
+	it("takes the page the overlay covers out of the tab order while it is open", () => {
+		const { elements } = wire(new AbortController());
+		const covered = () => [...document.querySelectorAll<HTMLElement>("main, footer")];
+
+		expect(covered().every((region) => region.inert)).toBe(false);
+
+		elements.button.click();
+
+		expect(covered().every((region) => region.inert)).toBe(true);
+
+		elements.button.click();
+
+		expect(covered().some((region) => region.inert)).toBe(false);
 	});
 });
