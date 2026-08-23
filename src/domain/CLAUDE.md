@@ -29,7 +29,7 @@ Cross-concept primitives only:
 
 - [`baseDTO.ts`](./shared/baseDTO.ts) — `BaseDTO<INPUT, OUTPUT, CONFIGURATION>`, the `create` contract every application DTO implements
 - [`image.ts`](./shared/image.ts) — `imageSchema`, reused by any concept carrying an image. Its `url` is an **absolute** URL and is validated as one (`z.url()`): Contentful's protocol-relative `//images.ctfassets.net/…` is absolutised at the ACL, so nothing reading this field has to finish it first
-- `reference.ts` — shared reference shape
+- [`reference.ts`](./shared/reference.ts) — shared reference shape
 
 ## Consumers
 
