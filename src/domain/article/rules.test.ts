@@ -1,13 +1,11 @@
 import {
 	deriveDescription,
-	deriveVariant,
 	generateTableOfContents,
 	getReadingTime,
 	isTableOfContentsHeading,
 	sortFavoriteFirst,
 } from "@domain/article/rules";
 import type { ArticleDTO, ArticleHeading } from "@domain/article/types";
-import { ArticleType } from "@domain/article/types";
 import { describe, expect, it } from "vitest";
 
 interface ArticleStubParams {
@@ -183,16 +181,6 @@ describe("deriveDescription", () => {
 		const body = "a".repeat(200);
 
 		expect(deriveDescription(`<strong>${body}</strong>`)).toBe(body);
-	});
-});
-
-describe("deriveVariant", () => {
-	it("renders an article with a featured image as the default variant", () => {
-		expect(deriveVariant(true)).toBe(ArticleType.DEFAULT);
-	});
-
-	it("falls back to the imageless variant when there is no featured image", () => {
-		expect(deriveVariant(false)).toBe(ArticleType.NO_IMAGE);
 	});
 });
 

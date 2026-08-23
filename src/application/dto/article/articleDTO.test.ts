@@ -163,7 +163,7 @@ describe("createArticles description", () => {
 	});
 });
 
-describe("createArticles images and variant", () => {
+describe("createArticles images", () => {
 	it("maps a featured image to url, pixel dimensions and format flags", () => {
 		const [article] = createArticles([
 			makeArticle({ featuredImage: asset({ url: "//cdn/hero.avif", contentType: "image/avif" }) }),
@@ -177,17 +177,10 @@ describe("createArticles images and variant", () => {
 		});
 	});
 
-	it("derives the default variant from the presence of a featured image", () => {
-		const [article] = createArticles([makeArticle({ featuredImage: asset() })]);
-
-		expect(article.variant).toBe("default");
-	});
-
-	it("leaves featuredImage undefined and falls back to the no_image variant without one", () => {
+	it("leaves featuredImage undefined without one", () => {
 		const [article] = createArticles([makeArticle()]);
 
 		expect(article.featuredImage).toBeUndefined();
-		expect(article.variant).toBe("no_image");
 	});
 });
 

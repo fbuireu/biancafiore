@@ -37,6 +37,17 @@
 	margin-block-end: 1.5rem;
 	position: relative;
 
+	&::after {
+		background-color: var(--primary-main);
+		bottom: -1px;
+		content: "";
+		height: 1px;
+		inset-inline-start: 0;
+		position: absolute;
+		transition: width 0.2s;
+		width: 0;
+	}
+
 	&:is(:has(:focus, :not(:placeholder-shown)))::after {
 		width: 100%;
 	}

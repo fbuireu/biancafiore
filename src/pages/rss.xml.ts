@@ -13,6 +13,7 @@ export const GET: APIRoute = async () => {
 		title: DEFAULT_SEO_PARAMS.title,
 		description: DEFAULT_SEO_PARAMS.description,
 		site: absoluteUrl(PAGES_ROUTES.HOME),
+		trailingSlash: false,
 		items: articles
 			.map((article) => ({
 				title: article.data.title,

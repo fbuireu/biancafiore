@@ -99,11 +99,12 @@ const blogPostingSchema = buildBlogPostingSchema({
       <RepublishedBanner originalSource={article.data.originalSource} />
     )}
     <ColumnsToggle />
-    <article class="article-wrapper" set:html={article.data.content} style={`--scopes: ${scopes}`}>
+    <article class="article-wrapper" style={`--scopes: ${scopes}`}>
       {
           showsTableOfContents && article.data.tableOfContents.length > 1 &&
           <TableOfContents tableOfContents={article.data.tableOfContents} />
       }
+      <Fragment set:html={article.data.content} />
     </article>
     <JsonLd schema={blogPostingSchema} />
     <RelatedArticles article={article} />

@@ -1,5 +1,4 @@
 import type { ArticleDTO, ArticleHeading, TableOfContents } from "@domain/article/types";
-import { ArticleType } from "@domain/article/types";
 
 const WORDS_PER_MINUTE = 200;
 const MINIMUM_READING_MINUTES = 1;
@@ -29,10 +28,6 @@ export function deriveDescription(rawDescription: string): string {
 	return cleanDescription.length > MAX_DESCRIPTION_LENGTH
 		? `${cleanDescription.substring(0, MAX_DESCRIPTION_LENGTH)}...`
 		: cleanDescription;
-}
-
-export function deriveVariant(hasFeaturedImage: boolean): (typeof ArticleType)[keyof typeof ArticleType] {
-	return hasFeaturedImage ? ArticleType.DEFAULT : ArticleType.NO_IMAGE;
 }
 
 export function sortFavoriteFirst<T extends Pick<ArticleDTO, "isFavorite" | "publishDateISO">>(articles: T[]): T[] {

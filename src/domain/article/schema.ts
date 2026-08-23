@@ -1,5 +1,4 @@
 import { reference } from "astro:content";
-import { ArticleType } from "@domain/article/types";
 import { authorSchema } from "@domain/author";
 import { imageSchema } from "@domain/shared/image";
 import { tagSchema } from "@domain/tag";
@@ -18,7 +17,6 @@ export const articleSchema = z.object({
 	isFavorite: z.boolean().default(false),
 	isRepublished: z.boolean().default(false),
 	originalSource: z.string().optional(),
-	variant: z.enum([ArticleType.NO_IMAGE, ArticleType.DEFAULT]),
 	content: z.string(),
 	readingTime: z.number(),
 	tags: z.array(tagSchema).optional(),

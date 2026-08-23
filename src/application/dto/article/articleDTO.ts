@@ -5,13 +5,7 @@ import { articleSlug } from "@application/dto/article/utils/reference";
 import { createAuthor } from "@application/dto/author/utils/author";
 import { createImage } from "@application/dto/shared/images";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import {
-	type ArticleDTO,
-	deriveDescription,
-	deriveVariant,
-	generateTableOfContents,
-	getReadingTime,
-} from "@domain/article";
+import { type ArticleDTO, deriveDescription, generateTableOfContents, getReadingTime } from "@domain/article";
 import { formatDate } from "@shared/utils/dates";
 import { createTags } from "./utils/tags";
 
@@ -30,7 +24,6 @@ export function createArticles(raw: RawArticle[]): ArticleDTO[] {
 			publishDateISO: new Date(rawArticle.fields.publishDate).toISOString(),
 			updatedAt: rawArticle.sys.updatedAt ?? new Date(rawArticle.fields.publishDate).toISOString(),
 			featuredImage,
-			variant: deriveVariant(Boolean(rawArticle.fields.featuredImage)),
 			content,
 			isFeaturedArticle: rawArticle.fields.featuredArticle,
 			isFavorite: rawArticle.fields.isFavorite ?? false,

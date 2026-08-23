@@ -4,7 +4,7 @@ const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
 
 const CONTENT_SECURITY_POLICY_DIRECTIVES = [
 	"default-src 'self'",
-	`script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com https://unpkg.com ${CALENDLY.ASSETS_ORIGIN}`,
+	`script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com ${CALENDLY.ASSETS_ORIGIN}`,
 	`style-src 'self' 'unsafe-inline' ${CALENDLY.ASSETS_ORIGIN}`,
 	"img-src 'self' data: https:",
 	"font-src 'self' data:",
