@@ -12,13 +12,11 @@ const VISITOR = {
 const TOKEN = "recaptcha-token";
 const SUCCESS_DELAY = 2000;
 
-const ACTION_PATH = "/_actions/contact";
-
 const renderForm = ({
 	submit = vi.fn<(contactData: FormData) => Promise<ContactSubmission>>(async () => ({ ok: true })),
 	getRecaptchaToken = vi.fn<() => Promise<string | undefined>>(async () => TOKEN),
 } = {}) => {
-	render(<ContactForm submit={submit} getRecaptchaToken={getRecaptchaToken} action={ACTION_PATH} />);
+	render(<ContactForm submit={submit} getRecaptchaToken={getRecaptchaToken} />);
 
 	return { submit, getRecaptchaToken };
 };
@@ -135,7 +133,7 @@ describe("ContactForm", () => {
 
 	it("waits rather than accusing the visitor when reCAPTCHA has not loaded yet", async () => {
 		const submit = vi.fn<(contactData: FormData) => Promise<ContactSubmission>>(async () => ({ ok: true }));
-		render(<ContactForm submit={submit} action={ACTION_PATH} />);
+		render(<ContactForm submit={submit} />);
 
 		await send();
 

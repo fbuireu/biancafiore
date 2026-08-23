@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { NOINDEX_ROUTES } from "@const/noindexRoutes";
 import { describe, expect, it } from "vitest";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
@@ -251,6 +252,7 @@ const BIOME_JSON = readJson("biome.json");
 const ASTRO_CONFIG = read("astro.config.ts");
 const WRANGLER_TOML = read("wrangler.toml");
 
+const ROBOTS_DISALLOW = /^Disallow: (.+)$/gm;
 const COLLECTION_FACTORY = "src/application/entities/collection.ts";
 const IDENTIFY_CHOICE = /identify: \(\w+\) => \w+\.(\w+)/g;
 const SPREAD_AFTER_ID = /\{\s*id:[^}]*\.\.\./;
@@ -1512,6 +1514,13 @@ describe("conventions", () => {
 		expect(BIOME_JSON.assist.actions.source.organizeImports).toBe("on");
 		expect(BIOME_JSON.files.includes).toContain("!**/src/data/**/*");
 		expect(BIOME_JSON.files.includes).toContain("!**/public/**/*");
+	});
+
+	it("disallows the same routes in robots.txt that it keeps out of the sitemap", () => {
+		const disallowed = [...read("public/robots.txt").matchAll(ROBOTS_DISALLOW)].map(([, route]) => route.trim());
+
+		expect(disallowed.length).toBeGreaterThan(0);
+		expect(disallowed.toSorted()).toEqual([...NOINDEX_ROUTES].toSorted());
 	});
 
 	it("passes two or more arguments as one object typed after the function", () => {

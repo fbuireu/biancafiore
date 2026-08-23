@@ -1,17 +1,14 @@
-import { withImagePlaceholders } from "@application/entities/placeholders";
-import type { ImageDTO } from "@domain/shared/image";
+import { type CarriesImage, withImagePlaceholders } from "@application/entities/placeholders";
 import type { EntriesQuery } from "@infrastructure/cms/client";
 import { fetchEntries } from "@infrastructure/cms/entries";
 import type { EntryCollection, EntrySkeletonType } from "contentful";
-
-type CarriesImage<FIELD extends string> = Partial<Record<FIELD, ImageDTO>>;
 
 type RawItems<SKELETON extends EntrySkeletonType> = EntryCollection<SKELETON, undefined>["items"];
 
 interface CmsCollectionParams<
 	SKELETON extends EntrySkeletonType,
 	ENTRY extends CarriesImage<FIELD>,
-	FIELD extends string,
+	FIELD extends Extract<keyof ENTRY, string>,
 > {
 	query: NonNullable<EntriesQuery>;
 	map: (raw: RawItems<SKELETON>) => ENTRY[];
@@ -23,7 +20,7 @@ interface CmsCollectionParams<
 export function cmsCollection<
 	SKELETON extends EntrySkeletonType,
 	ENTRY extends CarriesImage<FIELD>,
-	FIELD extends string,
+	FIELD extends Extract<keyof ENTRY, string>,
 >({ query, map, identify, imageField, order }: CmsCollectionParams<SKELETON, ENTRY, FIELD>) {
 	return async () => {
 		const [raw] = await fetchEntries<[SKELETON]>(query);

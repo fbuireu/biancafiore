@@ -1,7 +1,7 @@
 import type { ImageDTO } from "@domain/shared/image";
 import { getImagePlaceholders } from "@infrastructure/images/imagePlaceholder";
 
-type CarriesImage<FIELD extends string> = Partial<Record<FIELD, ImageDTO>>;
+export type CarriesImage<FIELD extends string> = Partial<Record<FIELD, ImageDTO>>;
 
 interface WithImagePlaceholdersParams<FIELD extends string, ENTRY extends CarriesImage<FIELD>> {
 	field: FIELD;

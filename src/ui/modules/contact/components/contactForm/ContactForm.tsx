@@ -6,6 +6,7 @@ import { Textarea } from "@modules/contact/components/form/textarea/Textarea";
 import { flyPlane } from "@modules/contact/utils/form";
 import { type ContactSubmission, UNDELIVERED_SUBMISSION } from "@modules/contact/utils/submission";
 import Spinner from "@modules/core/components/spinner/Spinner";
+import { successDelay } from "@modules/core/utils/motion";
 import type { ContactFormData } from "@shared/ui/types";
 import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
@@ -16,13 +17,12 @@ import "./contact-form.css";
 interface ContactFormProps {
 	submit: (contactData: FormData) => Promise<ContactSubmission>;
 	getRecaptchaToken?: () => Promise<string | undefined>;
-	action: string;
 }
 
 const UNAUTHORIZED_STATUS = 401;
 const SUCCESS_DELAY = 2000;
 
-export const ContactForm = ({ submit, getRecaptchaToken, action }: ContactFormProps) => {
+export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => {
 	const {
 		register,
 		handleSubmit,
@@ -67,7 +67,7 @@ export const ContactForm = ({ submit, getRecaptchaToken, action }: ContactFormPr
 				setTimeout(() => {
 					setFormStatus(FormStatus.SUCCESS);
 					reset();
-				}, SUCCESS_DELAY);
+				}, successDelay(SUCCESS_DELAY));
 				return;
 			}
 
@@ -102,8 +102,6 @@ export const ContactForm = ({ submit, getRecaptchaToken, action }: ContactFormPr
 		<>
 			{formStatus !== FormStatus.SUCCESS ? (
 				<form
-					method="POST"
-					action={action}
 					className={clsx("contact-form flex row-wrap", {
 						"contact-form--disabled": formStatus === FormStatus.UNAUTHORIZED,
 					})}
@@ -175,9 +173,9 @@ export const ContactForm = ({ submit, getRecaptchaToken, action }: ContactFormPr
 				</form>
 			) : (
 				<div className="contact-form__success-message flex column-wrap" role="status" aria-live="polite">
-					<h4 tabIndex={-1} ref={successRef}>
+					<h3 tabIndex={-1} ref={successRef}>
 						Form sent correctly! Will be in touch soon
-					</h4>
+					</h3>
 				</div>
 			)}
 		</>

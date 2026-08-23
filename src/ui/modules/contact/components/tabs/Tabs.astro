@@ -15,10 +15,19 @@ const selected = activeTab(Astro.url);
 			<p class="contact-tabs__body">Multiple ways to get in touch with me :)</p>
 		</div>
 		<ul class="contact-tabs flex" role="tablist" aria-label="Ways to get in touch">
-			<li class:list={["contact-tab underline-on-hover", { "contact-tab--active": selected === "email" }]} data-target="email" role="presentation">
+			<li class:list={[
+					"contact-tab underline-on-hover",
+					{ "contact-tab--active": selected === "email", "underline-on-hover--active": selected === "email" },
+				]} data-target="email" role="presentation">
 				<button type="button" role="tab" id="email-tab" aria-controls="email" aria-selected={selected === "email"}>Email me</button>
 			</li>
-			<li class:list={["contact-tab underline-on-hover", { "contact-tab--active": selected === "appointment" }]} data-target="appointment" role="presentation">
+			<li class:list={[
+					"contact-tab underline-on-hover",
+					{
+						"contact-tab--active": selected === "appointment",
+						"underline-on-hover--active": selected === "appointment",
+					},
+				]} data-target="appointment" role="presentation">
 				<button type="button" role="tab" id="appointment-tab" aria-controls="appointment" aria-selected={selected === "appointment"}>
 					Make an appointment
 				</button>
