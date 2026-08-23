@@ -8,6 +8,7 @@ const HEADING_TAG = /<h([1-6])[^>]*>/g;
 const LOCATION = /<loc>([^<]*)<\/loc>/g;
 const SCOPES = /--scopes: ([^"]*)"/;
 const TABLE_OF_CONTENTS = "article__table-of-contents";
+const HIDES_CHROME = process.env.HIDE_CHROME === "true";
 
 const read = (path: string): string => readFileSync(path, "utf-8");
 
@@ -31,7 +32,7 @@ describe("the built output", () => {
 		).toBe(true);
 	});
 
-	it("renders the table of contents on every article whose headings earn one", () => {
+	it("renders the table of contents on every article whose headings earn one, unless the chrome is hidden", () => {
 		const owed = articlePages().filter((page) => {
 			const scopes = SCOPES.exec(read(page))?.[1]?.trim() ?? "";
 
@@ -39,7 +40,10 @@ describe("the built output", () => {
 		});
 
 		expect(owed.length).toBeGreaterThan(0);
-		expect(owed.filter((page) => !read(page).includes(TABLE_OF_CONTENTS))).toEqual([]);
+
+		const rendered = owed.filter((page) => read(page).includes(TABLE_OF_CONTENTS));
+
+		expect(rendered.length).toBe(HIDES_CHROME ? 0 : owed.length);
 	});
 
 	it("keeps the rendered article body, which set:html once replaced with nothing else", () => {
