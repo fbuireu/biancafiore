@@ -2,6 +2,7 @@ name: Content Issue
 description: Report a typo, broken link, or mistake in an article or page content
 title: '[Content]: '
 labels: ['content', 'triage']
+assignees: ['fbuireu']
 body:
   - type: markdown
     attributes:
