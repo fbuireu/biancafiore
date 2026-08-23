@@ -1,7 +1,7 @@
 # Contributing to biancafiore
 
-Thanks for considering it. This is the portfolio and blog of a content writer:
-an Astro SSR site on Cloudflare Workers with content served from Contentful,
+Thanks for considering it. This is the portfolio and blog of a content writer
+(an Astro SSR site on Cloudflare Workers with content served from Contentful),
 and that split decides what a contribution can be. Read this before your first
 pull request.
 
@@ -13,16 +13,20 @@ nested guides it links. If you want the vocabulary, that is
 ## Code of Conduct
 
 By participating you are expected to uphold the
-[Code of Conduct](./CODE_OF_CONDUCT.md), which is short and worth reading
-rather than summarising here.
+[Code of Conduct](./CODE_OF_CONDUCT.md). In short:
 
-## What can be contributed here, and what cannot be
+- **Be respectful**: different viewpoints and experiences are valuable
+- **Be constructive**: focus on what is best for the project
+- **Be collaborative**: work together towards common goals
+- **Be patient**: we all have different levels of experience
+
+## What can be contributed here, and what cannot
 
 **Code, yes.** Bug fixes, accessibility, performance, and build improvements
 are welcome through the normal fork-and-PR flow.
 
 **Content, no.** Articles, projects and testimonials live in Contentful, not in
-this repository. A typo in an article cannot be fixed by a PR: use the
+this repository. A typo in an article cannot be fixed by a PR; use the
 [content issue template](.github/ISSUE_TEMPLATE/content_issue.yml) instead and
 it will be corrected in the CMS.
 
@@ -45,43 +49,46 @@ pnpm start
 
 `pnpm wrangler:dev` runs the site in the real Workers runtime when a change
 touches anything server-side. If `astro dev` hangs or SSR starts returning
-500s, stop every dev process, delete `node_modules/.vite`, and restart. The
+500s, stop every dev process, delete `node_modules/.vite`, and restart; the
 Gotchas section of [CLAUDE.md](./CLAUDE.md) explains why.
 
 ## Checks
 
-`pnpm verify` is the gate: it runs the formatter check, the type check and the
-unit suite with coverage, and it is what `pre-push` runs. The full list of
-scripts is the *Commands* section of [CLAUDE.md](./CLAUDE.md); it is not
-repeated here, because a second copy is a copy that goes stale.
+```bash
+pnpm check              # astro check (template + type check)
+pnpm typecheck          # astro sync && tsc --noEmit
+pnpm lint:all           # biome lint (append :fix to autofix)
+pnpm format:all         # biome check --write
+pnpm test:ut            # unit tests (vitest)
+pnpm test:e2e           # end-to-end tests (playwright)
+```
 
 ## Conventions that will bite you if you skip them
 
-The *Conventions* section of [CLAUDE.md](./CLAUDE.md) is the list, and it is
-the one the docs test checks. The five that catch people out: **no code
-comments**, **no Biome suppressions**, **design tokens over magic numbers**,
-**one argument is positional and two or more are a single object typed
-`<FunctionName>Params`**, and **conventional commits**, which semantic-release
-derives versions from and commitlint rejects anything else.
+- **No code comments.** Rationale belongs in commit messages, PRs, or the
+  folder's guide, not inline.
+- **No Biome suppressions.** Fix the root cause instead of `biome-ignore`.
+  `noConsole` is an error with no allowlist: log through Effect's `Logger`.
+- **Design tokens over magic numbers**, and respect the CSS `@layer` order.
+  Details in the styles guide under `src/ui/styles/`.
+- **Conventional commits are mandatory**: semantic-release derives versions
+  and the changelog from them, and commitlint rejects anything else.
 
 ## The docs are part of the change
 
 This repo treats its documentation as part of the code: change one, update the
 other **in the same commit**. [`docs/docs-consistency.test.ts`](./docs/docs-consistency.test.ts) runs with the
-unit tests and fails the build when the docs and the repo disagree.
-[ADR 0015](./docs/adr/0015-docs-consistency-enforced-by-a-test.md) explains why
-that test exists and what it costs; [CLAUDE.md](./CLAUDE.md) has the table of
-what to update for a given change.
+unit tests and fails the build when the docs and the repo disagree. It also
+parses the markdown shape of the guides, so even reformatting one can fail.
+[CLAUDE.md](./CLAUDE.md) has the full table of what to update for a given
+change.
 
 ## Pull requests
 
 1. Fork, branch from `main`, make the change.
 2. Run the checks above; fill in the PR template.
-3. CI deploys a per-PR preview Worker. Where the `HIDE_CHROME` environment
-   variable is set, most of the site serves an under-construction placeholder
-   there rather than its real content
-   ([ADR 0018](./docs/adr/0018-hide-chrome-replaces-the-page.md)), so a preview
-   is not a faithful target for every route.
+3. CI deploys a per-PR preview Worker. Note that previews run with
+   `HIDE_CHROME`, so parts of the site are deliberately hidden there.
 4. After merge to `main`, semantic-release versions and deploys automatically.
 
 Thanks for contributing! 🎉

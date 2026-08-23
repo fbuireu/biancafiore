@@ -83,7 +83,7 @@ const ADR_PATH_REFERENCE = /docs\/adr\/(\d{4})-/g;
 const ADR_FILENAME = /^docs\/adr\/\d{4}(-[a-z\d]+)+\.md$/;
 const ADR_STATUS = /\n## Status\n\n(\w+)/;
 const ADR_DATE = /\nDate: \d{4}-\d{2}-\d{2}\n/;
-const CLIENT_TABLE_ROW = /^\| `(\w+)` \| `(\w+)` \| \[?`([\w/.]+)`\]?(?:\([^)]*\))? \|$/gm;
+const CLIENT_TABLE_ROW = /^\| `(\w+)` \| `(\w+)` \| \[?`([\w/.]+)`(?:\]\([^)]+\))? \|$/gm;
 const TAGGED_ERROR_DECLARATION = /export class (\w+) extends Data\.TaggedError/g;
 const MODULE_LEVEL_ENV_IMPORT = /^\s*import\s[^\n]*"astro:env\/server"/m;
 const RECAPTCHA_SCORE_DECLARATION = /const RECAPTCHA_MINIMUM_SCORE = ([\d.]+);/;
@@ -130,11 +130,11 @@ const GRID_MEASURE_USE = /var\((--grid-[a-z-]+)\)/g;
 const MODULE_FONT_SIZE = /font-size:\s*([^;}\n]+)/g;
 const CONTAINER_SCALED_CENSUS = /under `@modules` the components taking it are ([^.]+)\./;
 const UNLADDERED_FONT_SIZE_COUNT = /(\d+) further `font-size` declarations/;
-const UNLADDERED_FONT_SIZE_CENSUS = /neither on the ladder nor container-scaled, and they sit in ([^:]+):/;
-const SECTION_TITLE_CENSUS = /a visual change to every component still on it, and those are ([^:]+):/;
+const UNLADDERED_FONT_SIZE_CENSUS = /neither on the ladder nor container-scaled, and they sit in ([^(\n]+)\(/;
+const SECTION_TITLE_CENSUS = /a visual change to every component still on it, and those are ([^(\n]+)\(/;
 const EDITORIAL_SECTION_TITLE_CONTAINER_CLAMP = /\.editorial-section-title \{[^}]*font-size:[^;]*cqi/;
 const SEMANTIC_TOKEN_DECLARATION = /^\s+(--[a-z-]+): light-dark\(/gm;
-const SEMANTIC_TOKEN_CENSUS = /they are exactly ([^:]+):/;
+const SEMANTIC_TOKEN_CENSUS = /they are exactly ([^.\n]+)\./;
 const GRID_TOKEN_IN_QUERY = /@(?:container|media)[^{]*var\(--grid-/;
 const REVEAL_MODIFIER_DECLARATION = /\.reveal--[a-z-]+[^{\n]*\{/g;
 const PAGE_CONTAINER_DECLARATION = /&\.page--([a-z\d-]+)\s*\{\s*container:\s*([a-z\d-]+)\s*\/\s*([^;]+);/g;
@@ -159,7 +159,7 @@ const ASTRO_STYLE_BLOCK = /<style[\s>]/;
 const HYDRATION_DIRECTIVE = /<(\w+)[^>]*\sclient:([\w-]+)(?:="([^"]*)")?/g;
 const CLASS_ATTRIBUTE = /class(?:Name|:list)?=(?:"([^"]*)"|'([^']*)'|\{((?:[^{}]|\{[^}]*\})*)\})/g;
 const CLASS_WORD = /[a-zA-Z][\w-]*/g;
-const ISLAND_ROOT_CENSUS = /only three hydration roots in the whole site: (.+?)\. `WorldGlobe`/;
+const ISLAND_ROOT_CENSUS = /only three hydration roots in the whole site: ([^\n]+?)\. Every one is/;
 const DTO_CITED_DEFAULT = /`(\?\? [^`\n]+)`/g;
 const CREATE_AUTHOR_DEFINITION = /export function createAuthor\(/;
 const AUTHOR_FIELD_MAPPING = /\bsocialNetworks: [^;\n]+,$/m;
@@ -422,6 +422,7 @@ describe("documented paths", () => {
 		inlineCode(read(doc))
 			.filter((token) => DOCUMENTED_PATH_EXTENSIONS.some((extension) => token.endsWith(extension)))
 			.filter((token) => !NOT_A_BARE_PATH.test(token) && !token.startsWith("node:"))
+			.filter((token) => !DOCUMENTED_PATH_EXTENSIONS.includes(token))
 			.filter((token) => !DOCUMENTED_PATH_EXAMPLES.has(token))
 			.map((token) => ({ doc, token })),
 	);
@@ -914,7 +915,7 @@ describe("application guide: the anti-corruption boundary", () => {
 	});
 
 	it("leaves the placeholder fan-out to the module that owns it, never to a loader", () => {
-		expect(guide).toContain("never for a `Promise.all` of its own");
+		expect(guide).toContain("`Promise.all(entries.map(async (entry)");
 
 		expect(loaders.length).toBeGreaterThan(0);
 		expect(loaders.filter((file) => PER_ENTRY_PLACEHOLDER_AWAIT.test(read(file)))).toEqual([]);
@@ -970,7 +971,7 @@ describe("application guide: the anti-corruption boundary", () => {
 	});
 
 	it("keeps every DTO mapper synchronous, as the guide states", () => {
-		expect(guide).toContain("Every mapper is synchronous");
+		expect(guide).toContain("Every `create` is synchronous");
 		expect(dtoFiles.filter((file) => ASYNC_DTO_MAPPER.test(read(file)))).toEqual([]);
 	});
 
@@ -1023,7 +1024,7 @@ describe("application guide: the anti-corruption boundary", () => {
 	});
 
 	it("leaves the credential bail, the batching and Effect itself to that one interface", () => {
-		expect(guide).toContain("no Effect, no `CmsClient`, no runtime, no credential guard");
+		expect(guide).toContain("no Effect, no `CmsClient`, no runtime, and no credential guard");
 
 		const entries = read("src/infrastructure/cms/entries.ts");
 
@@ -1033,7 +1034,7 @@ describe("application guide: the anti-corruption boundary", () => {
 	});
 
 	it("cites the id every loader assigns, and spreads before it rather than after", () => {
-		const step = guide.split(NEWLINE).find((line) => line.startsWith("4. ")) ?? "";
+		const step = guide.split(NEWLINE).find((line) => line.includes("return entries carrying an `id`")) ?? "";
 		const assigned = [
 			...new Set(loaders.flatMap((file) => [...read(file).matchAll(IDENTIFY_CHOICE)].map(([, field]) => field))),
 		];
@@ -1332,7 +1333,7 @@ describe("modules guide: mixes, islands and data access", () => {
 
 	it("dereferences through one module, on promises rather than Effect", () => {
 		expect(guide).toContain("`getEntry` is called nowhere else under `src/ui` or `src/pages`");
-		expect(guide).toContain("Nothing under `src/ui` imports `effect` at all");
+		expect(guide).toContain("nothing under `src/ui` imports `effect` at all");
 
 		const resolver = read(DEREFERENCING_MODULE);
 
@@ -1404,7 +1405,7 @@ describe("modules guide: mixes, islands and data access", () => {
 	});
 
 	it("names each component folder camelCase, the component PascalCase and the stylesheet kebab-case of both", () => {
-		expect(guide).toContain("No folder deviates");
+		expect(guide).toContain("no folder deviates");
 
 		const kebab = (name: string) => name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
 		const folders = new Map<string, string[]>();

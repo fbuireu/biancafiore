@@ -1,30 +1,23 @@
-# 10. Projects are addressed by fragment, and whether they become pages is still open
+# 10. Projects will become first-class sluggable content, mirroring Articles
 
 Date: 2026-07-26
 
-Amended: 2026-08-22, because the routing layer answered half the question while this stayed Proposed.
-
 ## Status
 
-Proposed. The Project↔Article boundary is unresolved; the addressing is not.
+Proposed. Not implemented; the Project↔Article boundary has to be resolved before it lands.
 
 ## Context
 
-A Project is a lightweight portfolio typology (`name`, rich `description`, `image`) surfaced as a card on the home "Disciplines" list and on the Projects page. Read as a finished model, that schema invites being treated as final. It is not, and the original form of this ADR said so: the intended direction was to give Projects the same shape as Articles, with `/projects/{slug}` detail pages.
-
-A month on, that has not moved, and the code has quietly answered the smaller question in the opposite direction. `projectHref(id)` returns `` `${PAGES_ROUTES.PROJECTS}#${id}` ``: a **fragment on one page**, not a path to a page of its own. `createProjects` derives that id from `fields.id`, falling back to a slugified name, and the JSON-LD `ItemList` on both surfaces lists those fragments as the canonical address of a Project. That is a design somebody built deliberately, and it only makes sense if a Project does not get a page.
+Today a Project is a lightweight portfolio typology (`name`, rich `description`, `image`) surfaced only as a card on the home "Disciplines" list and the Projects page, with no detail page of its own. Read as a finished model, that schema invites being treated as final; it is not.
 
 ## Decision
 
-**A Project is addressed by a fragment on `/projects`, and that is the current answer, not a placeholder.** `projectHref` is the one module that spells it, exactly as `articleHref` and `tagHref` spell theirs, and [`CONTEXT.md`](../../CONTEXT.md) says a Project has no Slug.
+The intended direction is to give Projects the same shape as Articles: individual `/projects/{slug}` detail pages with rich content, so a Project becomes a full content entity rather than a catalog card.
 
-**Whether Projects should become sluggable content remains open, and the question that blocks it is a glossary question, not a routing one**: if a Project gains a slug, a body and a detail page, what distinguishes it from an Article: audience, source, whether self-initiated writing belongs in one or the other? Until `CONTEXT.md` answers that, there is nothing to build.
-
-This ADR stays `Proposed` because that question is genuinely undecided. What it no longer does is instruct a maintainer to preserve a schema for a feature with no owner.
+It is recorded as proposed rather than accepted because the question it opens is not answered yet: if a Project gains a slug, a body and a detail page, what still distinguishes it from an Article: audience, source, whether self-initiated writing belongs in one or the other?
 
 ## Consequences
 
-- The current Project schema is minimal because a card needs no more, and adding to it needs a reason of its own. It is no longer "expected to grow": treat it as the schema for what a Project is today.
-- Fragments are what search engines are given, so a Project has no canonical URL of its own and cannot be shared, indexed or linked to independently of the Projects page. That is the cost of the current answer and the strongest argument for revisiting it.
-- Landing the detail-page version means answering the boundary question in `CONTEXT.md` first, then the ordinary content-type path: domain concept → mapper → entity loader → route (see the application guide). `projectHref` is the seam that would change, and it is the only one.
-- An open question with no owner rots. This one is listed in [`docs/BACKLOG.md`](../BACKLOG.md), which is where it gets picked up or dropped.
+- The minimal current Project schema is deliberate and expected to grow. Do not treat it as final, and do not "simplify" it on the assumption that it is finished.
+- Landing this means answering the boundary question in [`CONTEXT.md`](../../CONTEXT.md) first, since Project and Article are glossary terms before they are schemas.
+- Adding a slug and a detail page is the ordinary content-type path: domain concept → DTO → entity loader → route (see the application guide).

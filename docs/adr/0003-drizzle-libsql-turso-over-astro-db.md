@@ -16,6 +16,6 @@ Persistence goes straight to Drizzle ORM over libSQL/Turso (`@libsql/client/web`
 
 ## Consequences
 
-- The env vars are still named `ASTRO_DB_REMOTE_URL` / `ASTRO_DB_APP_TOKEN`, for continuity with the Turso instance provisioned under Astro DB. A historical artifact, not a remaining dependency: renaming them means re-provisioning secrets in CI and Cloudflare, which is why they stay.
+- The env vars are still named `ASTRO_DB_REMOTE_URL` / `ASTRO_DB_APP_TOKEN`, for continuity with the Turso instance provisioned under Astro DB. A historical artifact, not a remaining dependency; renaming them means re-provisioning secrets in CI and Cloudflare, which is why they stay.
 - Migrations are files in `drizzle/` that someone has to run; nothing generates them at build time.
 - The client is Workers-shaped (`drizzle-orm/libsql/web`), so Node-only Drizzle examples do not transfer ([ADR 0001](./0001-astro-ssr-on-cloudflare-workers.md)).

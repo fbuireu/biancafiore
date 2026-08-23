@@ -15,14 +15,15 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 - **lightningcss** CSS transformer; **GSAP**, `react-globe.gl`/`three` (globe), `react-hook-form`, `resend` (email), reCAPTCHA v3, `vanilla-cookieconsent`
 - **Biome** (lint + format), **Vitest** (unit), **Playwright** (e2e), **semantic-release** + commitlint (conventional commits)
 
-## Versions
+## Versions (pinned by hand, not enforced by the docs test, since routine dependency bumps would break CI on it)
 
-[`package.json`](./package.json) is the pin and the only place a version number is written: `engines.node` for the runtime, `packageManager` for the package manager. Numbers were repeated here once and drifted two releases behind within a month, because a dependency bump has no reason to open this file. **Always use pnpm, never npm or yarn**: that rule is not a version, so it lives here.
+- Node **26.5.1** (`engines.node`)
+- pnpm **11.15.1** (`packageManager`): always use pnpm, never npm/yarn
 
 ## Commands
 
 ```bash
-pnpm start            # astro dev, no browser; what Playwright's webServer boots
+pnpm start            # astro dev, no browser (what Playwright's webServer boots)
 pnpm start:open       # pnpm start --open
 pnpm build            # astro build
 pnpm preview          # astro preview
@@ -33,8 +34,8 @@ pnpm check            # astro check (astro/tsx type + template check)
 pnpm typecheck        # astro sync && tsc --noEmit
 pnpm lint:all         # biome lint (append :fix to autofix)
 pnpm format:all       # biome check --write
-pnpm format:check     # biome check, no writes; what verify runs
-pnpm verify           # format:check && typecheck && test:ut:coverage; the CI gate and pre-push
+pnpm format:check     # biome check, no writes (what verify runs)
+pnpm verify           # format:check && typecheck && test:ut:coverage (the CI gate and pre-push)
 
 pnpm test:ut          # vitest (unit)
 pnpm test:ut:watch    # vitest, watch mode
@@ -50,9 +51,7 @@ pnpm db:push          # push schema to Turso
 pnpm db:studio        # drizzle studio
 ```
 
-**`test:built` is the only suite that reads `dist/`.** Everything else in the tree reads source, and a whole class of defect lives only in what the build emits: the table of contents was passed as a child of the element `set:html` overwrites and so was discarded on every article, the sitemap filter dropped every page without a slug and then ate the `customPages` written to compensate, and the RSS feed published permalinks that redirect. None of those is visible to `tsc`, Biome, `astro check` or the unit suite. It runs in its own vitest project so `test:ut` stays buildless, and `ci.yml` runs it in the `check` job after `pnpm verify`.
-
-`--pass-with-no-tests` belongs to `test:e2e:changed`, not to `test:e2e`. That variant is `--only-changed`, which matches nothing whenever a PR touches no spec, the common case, so without the flag it would fail on almost every PR. On `test:e2e` the same flag would only hide a broken `testDir` or an emptied `e2e/`, which is why it is not there. **Nothing in CI runs the `:changed` variant today**: `end-2-end-tests.yml` is `workflow_dispatch` only, so its `E2E_COMMAND` ternary can only ever resolve to `pnpm test:e2e`, and the e2e that runs on a PR is the `e2e` job in `ci.yml`, against the preview URL. The script is kept for local use; the ternary is what to delete if that stays true.
+`--pass-with-no-tests` belongs to `test:e2e:changed`, not to `test:e2e`. That variant is `--only-changed`, which matches nothing whenever a PR touches no spec: the common case, and what [`end-2-end-tests.yml`](./.github/workflows/end-2-end-tests.yml) runs on every event bar `workflow_dispatch`, so without the flag it would fail on almost every PR. On `test:e2e` the same flag would only hide a broken `testDir` or an emptied `e2e/`, which is why it is not there.
 
 Env: copy `.env.example`. Local secrets go in `.dev.vars` (loaded by [`drizzle.config.ts`](./drizzle.config.ts) and wrangler). Env schema is declared/validated in [`astro.config.ts`](./astro.config.ts) (`env.schema`); add new vars there.
 
@@ -63,11 +62,11 @@ src/
   pages/              # routes (index, about, contact, projects, articles/index, articles/[...slug], tags/index, tags/[slug], privacy-policy, terms-and-conditions, rss.xml.ts, 404, 500)
   actions/            # Astro server actions (contact form → Effect ContactLayer)
   content.config.ts   # content collections wired to @application/entities
-  middleware.ts       # sets the security headers on every response
-  domain/             # DDD domain layer: per-concept models (schema.ts/types.ts) + pure rules (rules.ts). See ADR 0012
-  application/        # anti-corruption layer: entities/* loaders + dto/* Contentful mappers (call domain rules)
-  shared/             # cross-cutting only: ui/ types and utils/ generic helpers (slugify, formatDate, escapeHtml)
-  infrastructure/     # cms/ db/ email/ clients (Effect), cms/entries.ts, images/, integrations/, utils/ (the contact action's steps), layers.ts, errors.ts
+  middleware.ts       # sets SECURITY_HEADERS on every response
+  domain/              # DDD domain layer: per-concept models (schema.ts/types.ts) + pure rules (rules.ts). See ADR 0012
+  application/         # anti-corruption layer: entities/* loaders + dto/*DTO.ts Contentful mappers (call domain rules)
+  shared/              # cross-cutting ui/utils + generic helpers (slugify, formatDate, groupBy)
+  infrastructure/     # cms/ db/ email/ clients (Effect), cms/entries.ts, images/, integrations/, layers.ts, errors.ts
   ui/
     modules/          # feature areas: home, about, article(s), contact, projects, legal, core
     styles/           # global CSS layer stack + design tokens
@@ -76,11 +75,11 @@ src/
   const/
 ```
 
-Unit tests are co-located with the code they cover (`src/**/*.test.ts`, and `src/**/*.test.tsx` for anything needing a DOM: the React islands and the browser-only modules beside them, such as the header's `backgroundObserver`, because the extension is what selects vitest's `dom` project). The one test covering no single module is [`docs/docs-consistency.test.ts`](./docs/docs-consistency.test.ts), colocated with the docs it checks; see the maintenance contract below. `src/tests/doubles/` holds the stub layers, virtual-module doubles and MSW network doubles those co-located tests import (ADR 0017 sets the rule for which of the three a given dependency gets), and `src/tests/setup/` starts the MSW server for the node project. All are picked up by [`vitest.config.ts`](./vitest.config.ts), which resolves the path aliases and Astro’s `astro:*` virtual modules itself rather than through `getViteConfig`. ADR 0016 records why that is forced, and which modules it leaves unreachable from a unit test. Playwright specs live in the `testDir` declared in [`playwright.config.ts`](./playwright.config.ts).
+Unit tests are co-located with the code they cover (`src/**/*.test.ts`, and `src/**/*.test.tsx` for anything needing a DOM: the React islands and the browser-only modules beside them, such as the header's `backgroundObserver`, because the extension is what selects vitest's `dom` project); the one test covering no single module is [`docs/docs-consistency.test.ts`](./docs/docs-consistency.test.ts), colocated with the docs it checks; see the maintenance contract below. `src/tests/doubles/` holds the stub layers, virtual-module doubles and MSW network doubles those co-located tests import; ADR 0017 sets the rule for which of the three a given dependency gets, and `src/tests/setup/` starts the MSW server for the node project. All are picked up by [`vitest.config.ts`](./vitest.config.ts), which resolves the path aliases and Astro’s `astro:*` virtual modules itself rather than through `getViteConfig`; ADR 0016 records why that is forced, and which modules it leaves unreachable from a unit test. Playwright specs live in the `testDir` declared in [`playwright.config.ts`](./playwright.config.ts).
 
-Path aliases ([`tsconfig.json`](./tsconfig.json)): `@const/* @infrastructure/* @domain/* @actions/* @application/* @modules/* (→ src/ui/modules) @assets/* (→ src/ui/assets) @styles/* (→ src/ui/styles) @shared/* @tests/* (→ src/tests)`. Prefer aliases over relative paths. Two of them used to point at directories holding no tracked file at all, which the tree assertions could not see because they skip empty directories by design; the docs test now fails an alias whose target is empty.
+Path aliases ([`tsconfig.json`](./tsconfig.json)): `@const/* @infrastructure/* @domain/* @actions/* @application/* @modules/* (→ src/ui/modules) @assets/* (→ src/ui/assets) @styles/* (→ src/ui/styles) @shared/* @tests/* (→ src/tests)`. Prefer aliases over relative paths.
 
-**Nested guides**: read the one for the folder you're touching. They carry the detail this file deliberately omits.
+**Nested guides**. Read the one for the folder you're touching; they carry the detail this file deliberately omits:
 
 | Folder | Covers |
 | --- | --- |
@@ -93,25 +92,25 @@ Path aliases ([`tsconfig.json`](./tsconfig.json)): `@const/* @infrastructure/* @
 
 ## Conventions
 
-- **Design tokens over magic numbers**, and respect the CSS `@layer` order, because cascade correctness depends on it. Details in [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
+- **Design tokens over magic numbers**, and respect the CSS `@layer` order; cascade correctness depends on it. Details in [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
 - **Evergreen / Chromium-forward CSS.** Modern features are used freely (`light-dark()`, `interpolate-size`, `color-mix`, oklch); the build target is `esnext`.
-- **One module spells a content URL.** `@const/routes.ts` turns an identifier into a path, `articleHref` and `tagHref` from a Slug, `projectHref` from a Project's id, which yields a fragment on `/projects` because a Project has no page of its own (ADR 0010), and `absoluteUrl` folds in the origin: it is the tree's only reader of `SITE_URL`, so a canonical URL and a JSON-LD URL cannot disagree about where the site lives. Never concatenate `PAGES_ROUTES` with a slug; the table itself stays for the routes that address a whole page, and because `getPage` classifies the current URL against its keys.
+- **One module spells a content URL.** [`@const/routes.ts`](./src/const/routes.ts) turns a Slug into a path (`articleHref`, `tagHref`, `projectHref`), and `absoluteUrl` folds in the origin: it is the tree's only reader of `SITE_URL`, so a canonical URL and a JSON-LD URL cannot disagree about where the site lives. Never concatenate `PAGES_ROUTES` with a slug; the table itself stays for the routes that address a whole page, and because `getPage` classifies the current URL against its keys.
 - **One argument is positional; two or more are one object, typed `<FunctionName>Params`.** `securityHeaders(isDevelopment)`, `createBreadcrumbs(currentPath)`, `siteChrome(url)`; `isWithin({ pathname, route }): IsWithinParams`, `withImagePlaceholders({ field, entries }): WithImagePlaceholdersParams`. The type is named after the function, not after the concept, so a reader landing on the type knows what takes it. A test-only override is not a second argument: `siteChrome` used to take `isChromeHidden` so a test could vary it, and the test mocks `astro:env/client` instead.
 - **No code comments.** Rationale belongs in commit messages / PRs / memory, not inline.
-- **No Biome suppressions.** Fix the root cause (e.g. reorder selectors) instead of `biome-ignore`; suppress only if truly irreplaceable. Biome: 120 line width, `noConsole` error with no allowlist (no `console` at all: log through Effect's `Logger`, `Effect.logError`), organizeImports on. `noConsole` is *not* part of Biome's recommended preset, so deleting that entry does not tighten it, it silently turns the rule off. `public/**` is excluded from Biome.
+- **No Biome suppressions.** Fix the root cause (e.g. reorder selectors) instead of `biome-ignore`; suppress only if truly irreplaceable. Biome: 120 line width; `noConsole` error with no allowlist, meaning no `console` at all, log through Effect's `Logger` (`Effect.logError`); organizeImports on. `noConsole` is *not* part of Biome's recommended preset, so deleting that entry does not tighten it, it silently turns the rule off. `public/**` is excluded from Biome.
 - **Conventional commits** (commitlint + husky). `pre-commit` formats staged files, `pre-push` runs `pnpm verify`. semantic-release owns versioning. Do NOT add a Co-Authored-By / Claude trailer to commits or PRs.
 
 ## Maintenance contract
 
-These documents are not generated. A change that does not update them leaves the tree describing code that no longer exists, so when you change code, update the docs **in the same commit**. A follow-up commit is a promise, not a fix.
+These documents are not generated. A change that does not update them leaves the tree describing code that no longer exists, so when you change code, update the docs **in the same commit**: a follow-up commit is a promise, not a fix.
 
 
-`docs/docs-consistency.test.ts` makes the mechanical half of that contract executable: it reads these documents and asserts every checkable claim against the repo: scripts, aliases, the folder tree, the route list, env vars, cited paths, links, ADR numbering/template/references, the client/layer/stylesheet tables and the Gotchas invariants. It also holds the nested guides to the *behaviour* they promise (lazy secret reads, `Effect.die` on irrecoverable misconfiguration, tagged errors declared in one file, domain and DTO purity, the loader procedure, CSS source order) and to the constants they quote, derived from the source rather than repeated, so an assertion breaks both when the constant moves and when the sentence citing it is deleted. It runs with `pnpm test:ut` (so, in CI on every PR). A failure means the docs and the code disagree; fix whichever one is wrong, and when the deliberate answer is "the doc leaves this out on purpose", say so in the allowlist at the top of that file rather than deleting the assertion. It still cannot check rationale (why a decision was made, whether an explanation is honest), and that part is on you. ADR 0015 records why it exists and what it costs: the markdown shape of these documents is parsed, so reformatting one can fail the build.
+`docs/docs-consistency.test.ts` makes the mechanical half of that contract executable: it reads these documents and asserts every checkable claim against the repo: scripts, aliases, the folder tree, the route list, env vars, cited paths, links, ADR numbering/template/references, the client/layer/stylesheet tables, the Gotchas invariants. It also holds the nested guides to the *behaviour* they promise (lazy secret reads, `Effect.die` on irrecoverable misconfiguration, tagged errors declared in one file, domain and DTO purity, the loader procedure, CSS source order), and to the constants they quote, derived from the source rather than repeated, so an assertion breaks both when the constant moves and when the sentence citing it is deleted. It runs with `pnpm test:ut` (so, in CI on every PR). A failure means the docs and the code disagree: fix whichever one is wrong, and when the deliberate answer is "the doc leaves this out on purpose", say so in the allowlist at the top of that file rather than deleting the assertion. It still cannot check rationale (why a decision was made, whether an explanation is honest), and that part is on you. ADR 0015 records why it exists and what it costs: the markdown shape of these documents is parsed, so reformatting one can fail the build.
 
 | If you change | Update |
 | --- | --- |
 | What a domain word means, or introduce a new one | [`CONTEXT.md`](./CONTEXT.md): the glossary, vocabulary only |
-| A folder's layout, the files a concept is made of, or a rule its guide states | that folder's nested [`CLAUDE.md`](./CLAUDE.md) (table above) |
+| A folder's layout, the files a concept is made of, or a rule its guide states | that folder's nested `CLAUDE.md` (table above) |
 | A behaviour a doc states as an invariant or a gotcha | that bullet, or delete it if it stopped being true |
 | An env var | `env.schema` in `astro.config.ts`, `.env.example`, and the Gotchas bullet if it has one |
 | A package script, a path alias, or the folder tree | the *Commands* / *Structure & aliases* sections here |
@@ -119,9 +118,7 @@ These documents are not generated. A change that does not update them leaves the
 | A decision an ADR records | that ADR: amend it, or supersede it with a new one and say so in both `## Status` blocks |
 | A claim `docs/docs-consistency.test.ts` asserts, on purpose | the doc first; the test only when the claim itself is what changed |
 
-An idea nobody has committed to is not an ADR and does not belong in a source comment either: it goes in [`docs/BACKLOG.md`](./docs/BACKLOG.md), which is where the block of `// todo:` comments that used to sit in `src/pages/index.astro` now lives. An entry leaves that file when it ships, when it is decided against, or when it turns into a decision worth an ADR.
-
-Propose an ADR in [`docs/adr/`](./docs/adr/) when a decision is **hard to reverse**, **surprising without context** and **the result of a real trade-off**. All three, or it is not an ADR. Copy [ADR 0000](./docs/adr/0000-adr-template.md), the template, and number it one above the highest existing file (`NNNN-kebab-title.md`, `# N. Title` / `Date:` / `## Status` / `## Context` / `## Decision` / `## Consequences`), then link it from wherever it bites: a Gotchas bullet here, a nested guide, a `CONTEXT.md` entry. There is no separate index; an ADR nothing links to will not be read, which is why both the template and the incoming link are asserted.
+Propose an ADR in [`docs/adr/`](./docs/adr/) when a decision is **hard to reverse**, **surprising without context** and **the result of a real trade-off**. All three, or it is not an ADR. Copy [ADR 0000](./docs/adr/0000-adr-template.md), the template, and number it one above the highest existing file (`NNNN-kebab-title.md`, `# N. Title` / `Date:` / `## Status` / `## Context` / `## Decision` / `## Consequences`), then link it from wherever it bites: a Gotchas bullet here, a nested guide, a [`CONTEXT.md`](./CONTEXT.md) entry. There is no separate index; an ADR nothing links to will not be read, which is why both the template and the incoming link are asserted.
 
 Two traps worth naming, because both have already happened here: deleting a resolved entry from a "known inconsistencies" or gotchas list is part of the fix, not tidying to do later; and a `file.ts:123` citation silently rots the moment anything above it moves, so prefer naming the symbol.
 
@@ -129,16 +126,31 @@ Two traps worth naming, because both have already happened here: deleting a reso
 
 - **`light-dark()` in prod:** lightningcss downlevels it into a polyfill that breaks nested `color-scheme` inversion in production (dev looks fine). `Features.LightDark` stays in `lightningcss.exclude` in `astro.config.ts`; `errorRecovery: true` is also set. ADR 0006, and [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
 - **`astro dev` hangs / SSR 500s / blank globe:** usually `.vite` cache thrash from running `astro check` or a second `astro dev` beside a live dev server (orphans deps chunks: `effect.js` → 500, `three`/`react-globe.gl` → blank). Fix: stop all dev processes, delete `node_modules/.vite`, restart.
-- **`HIDE_CHROME`** (public boolean env) does more than its name says, so no component reads it: `siteChrome` in `@modules/core/utils/siteChrome.ts` is the tree's only reader, and callers ask it `showsHeader`, `showsBreadcrumbs`, `showsTableOfContents` and `servesRealContent` instead. It hides the header, the breadcrumbs on every page that carries them, and an Article's table of contents, and it *replaces the page body* with an under-construction placeholder on every route outside the articles / tags / legal / error allowlist, so `/`, `/about`, `/contact` and `/projects` serve no real content at all. The footer still renders either way. Whether it is on in a given deployment is **not decided in this repository**: `_deploy.yml` passes `${{ vars.HIDE_CHROME || 'false' }}`, so a GitHub environment variable decides, and a preview is only a faithful target where that variable is unset. ADR 0018 records why the flag exists and what publishing a route means. Outside `siteChrome` the name appears in the astro.config env schema, the deploy workflow and the `astro:env/client` double.
-- **Safari/WebKit loads nothing in dev:** the CSP carries `upgrade-insecure-requests`, and WebKit obeys it on `localhost`: every module script, font and `@vite/client` request is rewritten to `https://localhost:4321`, which the dev server does not speak, so the page renders inert with no JS at all. Chromium exempts localhost, so this is invisible there and only shows in Safari and Playwright's `webkit` project. `securityHeaders({ isDevelopment })` in `@const/securityHeaders` is what drops that one directive, and [`src/middleware.ts`](./src/middleware.ts) asks it once per environment at module load; production keeps it. The removal used to be a `.replace("; upgrade-insecure-requests", "")` in the middleware, which bet on the join separator and on the directive not being first in the list, so reordering the array would have silently stopped stripping it. Don't put the directive list and the removal in different files again.
-- **One address may write again, but not immediately and not the same words twice.** The contact table has no `UNIQUE` index on `email`: it did until [`drizzle/0001_known_dreadnoughts.sql`](./drizzle/0001_known_dreadnoughts.sql), and while it did, one address could ever send exactly one message. The refusal is now a policy in `@infrastructure/utils/persistence`: a 24-hour cooldown (`CONTACT_COOLDOWN_HOURS` in `@domain/contact/rules`) plus an unbounded check for the identical message. Re-adding a unique constraint would silently restore the old behaviour with nothing in that file changing.
+- **`HIDE_CHROME`** (public boolean env) does more than its name says, so no component reads it: `siteChrome` in [`@modules/core/utils/siteChrome.ts`](./src/ui/modules/core/utils/siteChrome.ts) is the tree's only reader, and callers ask it `showsHeader`, `showsBreadcrumbs`, `showsTableOfContents` and `servesRealContent` instead. It hides the header, the breadcrumbs on every page that carries them, and an Article's table of contents, and it *replaces the page body* with an under-construction placeholder on every route outside the articles / tags / legal / error allowlist, so `/`, `/about`, `/contact` and `/projects` serve no real content at all. The footer still renders either way. It is **`true` in the `development` environment**, which is why the PR preview is not a faithful target: e2e coverage there is limited to what survives it. Outside that module the name appears only in the astro.config env schema and the deploy workflow. [ADR 0018](./docs/adr/0018-hide-chrome-replaces-the-page.md) records why the flag exists and what publishing a route means.
+- **Safari/WebKit loads nothing in dev:** the CSP carries `upgrade-insecure-requests`, and WebKit obeys it on `localhost`: every module script, font and `@vite/client` request is rewritten to `https://localhost:4321`, which the dev server does not speak, so the page renders inert with no JS at all. Chromium exempts localhost, so this is invisible there and only shows in Safari and Playwright's `webkit` project. [`src/middleware.ts`](./src/middleware.ts) strips that one directive when `import.meta.env.DEV`; production keeps it. Don't fold it back into [`securityHeaders.ts`](./src/const/securityHeaders.ts) unconditionally.
 - **Turso env naming:** DB env vars are `ASTRO_DB_REMOTE_URL` / `ASTRO_DB_APP_TOKEN` despite the project no longer using Astro DB. Schema: [`src/infrastructure/db/schema.ts`](./src/infrastructure/db/schema.ts); migrations in `drizzle/`. ADR 0003 explains why they keep the name.
-- **Analytics are consent-gated:** GA/GTM load with `analytics_storage` denied until the visitor accepts the `analytics` category, set by an inline script in `<head>` before either initialises. `consentBootstrapScript` in `@modules/core/components/cookieConsent/utils/consentGate` builds that script, and the docs test asserts it precedes both loaders. Nothing in the code makes the requirement visible, so do not reorder or "clean up" that script. **Do not put `define:vars` on it either**: Astro drops `set:html` content when both are on one tag, which shipped an empty consent default once. The analytics id is a parameter. ADR 0013.
+- **Analytics are consent-gated:** GA/GTM load with `analytics_storage` denied until the visitor accepts the `analytics` category, set by an inline script in `<head>` before either initialises. Nothing in the code makes the requirement visible, so do not reorder or "clean up" that script. ADR 0013.
 - **Image CDN switches by env:** Cloudflare image service in production build, Contentful/passthrough otherwise (`CLOUDFLARE_ENV === "production"` in astro.config → adapter `imageService`).
 - **SSR externals:** `node:async_hooks` and `contentful` are externalized for SSR; the DB uses `@libsql/client/web` + `drizzle-orm/libsql/web`; `nodejs_compat` flag is enabled in [`wrangler.toml`](./wrangler.toml).
 
 ## Deploy
 
-Cloudflare Workers via wrangler (`wrangler.toml`): `main` is the `@astrojs/cloudflare` server entrypoint, `dist/client/` served as assets, `SESSION` KV binding, custom domain `biancafiore.me` on `env.production`. CI/CD runs through GitHub Actions workflows. The host and the runtime constraints it imposes are ADR 0001; content pages are prerendered and only dynamic paths hit the SSR runtime, ADR 0011.
+Cloudflare Workers via wrangler (`wrangler.toml`): `main` is the `@astrojs/cloudflare` server entrypoint, `dist/` served as assets, `SESSION` KV binding, custom domain `biancafiore.me` on `env.production`.
+
+CI/CD runs through GitHub Actions:
+
+| Workflow | Runs on | Does |
+| --- | --- | --- |
+| [`ci.yml`](./.github/workflows/ci.yml) | push to `main`, PRs | One `Check` job running `pnpm verify`, then both deploys, the E2E run and the release |
+| [`_deploy.yml`](./.github/workflows/_deploy.yml) | `workflow_call` | The shared deploy steps both environments call |
+| [`cleanup-development.yml`](./.github/workflows/cleanup-development.yml) | PR closed | Deletes the per-PR preview Worker |
+| `end-2-end-tests.yml` | `workflow_dispatch` | Playwright against production |
+| [`publish-article.yml`](./.github/workflows/publish-article.yml) | Contentful webhook | Rebuilds when an Article is published |
+| [`zizmor.yml`](./.github/workflows/zizmor.yml) | push to `main`, PRs | Security linting of the workflows themselves |
+| [`dependency-review.yml`](./.github/workflows/dependency-review.yml) | PRs | Fails a PR that introduces a dependency with a known vulnerability |
+| [`commit-message.yml`](./.github/workflows/commit-message.yml) | PR opened / edited / reopened / synchronize | commitlint on the **pull request title** |
+| [`renovate-auto-approve.yml`](./.github/workflows/renovate-auto-approve.yml), [`dependabot-auto-merge.yml`](./.github/workflows/dependabot-auto-merge.yml) | dependency PRs | Approve and auto-merge the safe update types |
+
+**`commit-message.yml` guards the only message that survives.** `main` takes squash merges and the repository sets the squash title to `PR_TITLE`, so the pull request title *is* the commit semantic-release reads. The `commit-msg` hook validates the branch's own commits, which the squash then discards, and GitHub fills the PR title from the *branch name* whenever a PR carries more than one commit, so the default is rarely conventional. It re-runs on `synchronize` because a required check is evaluated against the head sha: without that trigger a new commit would leave it unreported and block the merge. The host and the runtime constraints it imposes are ADR 0001; content pages are prerendered and only dynamic paths hit the SSR runtime, ADR 0011.
 
 **A long commit message breaks the deploy, and the error does not say so.** `wrangler deploy` sends the latest commit message verbatim as the `workers/message` deployment annotation, with no truncation. Past a few thousand characters the API answers `Received a malformed response from the API`: a build that compiled fine, uploaded fine, and then died on metadata. A merge commit carrying a long pull request body is enough. `_deploy.yml` therefore passes `--message` explicitly with the sha and the trigger, so nothing about how a commit is written can reach that annotation.
