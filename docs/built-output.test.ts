@@ -65,7 +65,7 @@ describe("the built output", () => {
 	});
 
 	it("skips no heading level and never puts a deeper heading above a shallower one", () => {
-		const outlines = ["about", "contact", "privacy-policy", "terms-and-conditions"].map((route) => ({
+		const outlines = ["about", "privacy-policy", "terms-and-conditions"].map((route) => ({
 			route,
 			levels: headingLevels(read(pageAt(route))),
 		}));
@@ -76,6 +76,10 @@ describe("the built output", () => {
 			expect(`${route}: ${JSON.stringify(skips)}`).toBe(`${route}: []`);
 			expect(`${route}: ${levels[0]}`).toBe(`${route}: 1`);
 		}
+	});
+
+	it("leaves the contact page on demand, because a prerendered page can take no POST", () => {
+		expect(existsSync(pageAt("contact"))).toBe(false);
 	});
 
 	it("serves no script origin the site does not use", () => {

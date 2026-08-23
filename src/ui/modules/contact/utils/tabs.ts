@@ -18,6 +18,12 @@ const TAB_IDS: readonly string[] = Object.values(TabId);
 
 const isTabId = (value?: string | null): value is TabId => !!value && TAB_IDS.includes(value);
 
+export function activeTab(url: URL): TabId {
+	const requested = url.searchParams.get(TAB_QUERY_KEY);
+
+	return isTabId(requested) ? requested : TabId.EMAIL;
+}
+
 const getTabs = (): NodeListOf<HTMLElement> => document.querySelectorAll(SELECTORS.TAB);
 
 const loadCalendly = (): void => {

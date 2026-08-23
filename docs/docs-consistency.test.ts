@@ -158,7 +158,7 @@ const ASTRO_STYLE_BLOCK = /<style[\s>]/;
 const HYDRATION_DIRECTIVE = /<(\w+)[^>]*\sclient:([\w-]+)(?:="([^"]*)")?/g;
 const CLASS_ATTRIBUTE = /class(?:Name|:list)?=(?:"([^"]*)"|'([^']*)'|\{((?:[^{}]|\{[^}]*\})*)\})/g;
 const CLASS_WORD = /[a-zA-Z][\w-]*/g;
-const ISLAND_ROOT_CENSUS = /only three hydration roots in the whole site: (.+?)\. Every one is/;
+const ISLAND_ROOT_CENSUS = /only three hydration roots in the whole site: (.+?)\. `WorldGlobe`/;
 const DTO_CITED_DEFAULT = /`(\?\? [^`\n]+)`/g;
 const CREATE_AUTHOR_DEFINITION = /export function createAuthor\(/;
 const AUTHOR_FIELD_MAPPING = /\bsocialNetworks: [^;\n]+,$/m;
@@ -251,6 +251,7 @@ const BIOME_JSON = readJson("biome.json");
 const ASTRO_CONFIG = read("astro.config.ts");
 const WRANGLER_TOML = read("wrangler.toml");
 
+const HYDRATION_DIRECTIVES_ALLOWED = new Set(['only="react"', "load"]);
 const NEWLINE = "\n";
 const SCHEMA_BOOLEAN_DEFAULT = /(\w+): z\.boolean\(\)\.default\(false\)/g;
 const CONTEXT_TAG_CLASS = /class\s+\w+\s+extends\s+Context\.Tag/;
@@ -1439,7 +1440,7 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(walk("src/ui/modules").filter((file) => file.endsWith(".css") && read(file).includes("@layer"))).toEqual([]);
 	});
 
-	it("hydrates only the roots the Islands section censuses, and only with client:only", () => {
+	it("hydrates only the roots the Islands section censuses, and only where a server render is impossible", () => {
 		const hydrated = production([...walk("src/ui"), ...walk("src/pages")])
 			.filter((file) => SOURCE_FILE.test(file))
 			.flatMap((file) =>
@@ -1450,7 +1451,10 @@ describe("modules guide: mixes, islands and data access", () => {
 			);
 
 		expect(hydrated.length).toBeGreaterThan(0);
-		expect(hydrated.filter(({ directive }) => directive !== 'only="react"')).toEqual([]);
+		expect(hydrated.filter(({ directive }) => !HYDRATION_DIRECTIVES_ALLOWED.has(directive))).toEqual([]);
+		expect(hydrated.filter(({ directive }) => directive === "load").map(({ name }) => name)).toEqual([
+			"ContactFormProvider",
+		]);
 		expect(hydrated.map(({ name }) => name).sort()).toEqual(
 			namesIn({ text: guide, pattern: ISLAND_ROOT_CENSUS }).sort(),
 		);

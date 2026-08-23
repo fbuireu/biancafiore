@@ -16,12 +16,13 @@ import "./contact-form.css";
 interface ContactFormProps {
 	submit: (contactData: FormData) => Promise<ContactSubmission>;
 	getRecaptchaToken?: () => Promise<string | undefined>;
+	action: string;
 }
 
 const UNAUTHORIZED_STATUS = 401;
 const SUCCESS_DELAY = 2000;
 
-export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => {
+export const ContactForm = ({ submit, getRecaptchaToken, action }: ContactFormProps) => {
 	const {
 		register,
 		handleSubmit,
@@ -101,6 +102,8 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 		<>
 			{formStatus !== FormStatus.SUCCESS ? (
 				<form
+					method="POST"
+					action={action}
 					className={clsx("contact-form flex row-wrap", {
 						"contact-form--disabled": formStatus === FormStatus.UNAUTHORIZED,
 					})}
