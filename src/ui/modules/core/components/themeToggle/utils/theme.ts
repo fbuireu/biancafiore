@@ -1,3 +1,4 @@
+import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
 import { DARK_SCHEME_QUERY, THEME_ATTRIBUTE, THEME_STORAGE_KEY, Theme, ThemePreference } from "../const";
 import { readPreference, resolveTheme, writePreference } from "./preference";
 
@@ -6,10 +7,17 @@ const SELECTORS = {
 	TOGGLE: ".theme-toggle",
 };
 const TOGGLED_MODIFIER = "theme-toggle--toggled";
-const PREFERS_DARK_SCHEME = window.matchMedia(DARK_SCHEME_QUERY);
+
+let darkScheme: MediaQueryList | undefined;
+
+const prefersDarkScheme = (): MediaQueryList => {
+	darkScheme ??= window.matchMedia(DARK_SCHEME_QUERY);
+
+	return darkScheme;
+};
 
 const effectiveTheme = (): Theme =>
-	resolveTheme({ preference: readPreference(localStorage), prefersDark: PREFERS_DARK_SCHEME.matches });
+	resolveTheme({ preference: readPreference(localStorage), prefersDark: prefersDarkScheme().matches });
 
 interface ApplyThemeParams {
 	theme: Theme;
@@ -31,23 +39,27 @@ const applyTheme = ({ theme, document }: ApplyThemeParams): void => {
 	TOGGLE.classList.toggle(TOGGLED_MODIFIER, isDarkMode);
 };
 
-window.addEventListener("storage", ({ key }) => {
+function applyOnOtherTabWrite({ key }: StorageEvent): void {
 	if (key === THEME_STORAGE_KEY) applyTheme({ theme: effectiveTheme(), document });
-});
+}
 
-PREFERS_DARK_SCHEME.addEventListener("change", ({ matches }) => {
+function applyOnSchemeChange({ matches }: MediaQueryListEvent): void {
 	const preference = readPreference(localStorage);
 
 	if (preference !== ThemePreference.SYSTEM) return;
 
 	applyTheme({ theme: resolveTheme({ preference, prefersDark: matches }), document });
-});
+}
 
-document.addEventListener("astro:before-swap", ({ newDocument }) => {
+function applyBeforeSwap({ newDocument }: TransitionBeforeSwapEvent): void {
 	applyTheme({ theme: effectiveTheme(), document: newDocument });
-});
+}
 
 export function initializeThemeSetter(): void {
+	window.addEventListener("storage", applyOnOtherTabWrite);
+	prefersDarkScheme().addEventListener("change", applyOnSchemeChange);
+	document.addEventListener("astro:before-swap", applyBeforeSwap);
+
 	applyTheme({ theme: effectiveTheme(), document });
 
 	const THEME_INPUT = document.querySelector<HTMLInputElement>(SELECTORS.THEME_INPUT);

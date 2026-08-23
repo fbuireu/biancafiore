@@ -254,6 +254,7 @@ const WRANGLER_TOML = read("wrangler.toml");
 
 const IMPORT_META_ENV_READ = /import\.meta\.env\.([A-Z][A-Z0-9_]*)/g;
 const ENV_DTS_DECLARATION = /readonly ([A-Z][A-Z0-9_]*)/g;
+const MODULE_SCOPE_SIDE_EFFECT = /^(?:\w[\w.]*\.addEventListener\(|(?:const|let)\s+\w+\s*=\s*window\.matchMedia\()/m;
 const ON_DEMAND_ROUTES = ["src/pages/404.astro", "src/pages/500.astro", "src/pages/contact.astro"];
 const ROBOTS_DISALLOW = /^Disallow: (.+)$/gm;
 const COLLECTION_FACTORY = "src/application/entities/collection.ts";
@@ -1531,6 +1532,18 @@ describe("conventions", () => {
 		expect(consumed.size).toBeGreaterThan(0);
 		expect([...declared].filter((name) => !consumed.has(name)).toSorted()).toEqual([]);
 		expect([...consumed].filter((name) => !declared.has(name)).toSorted()).toEqual([]);
+	});
+
+	it("registers no listener and reads no media query at module scope, as the modules guide claims", () => {
+		const guide = read("src/ui/modules/CLAUDE.md");
+
+		expect(guide).toContain("Neither does the module it imports");
+
+		const modules = production(walk("src/ui").filter((file) => TYPESCRIPT_FILE.test(file)));
+		const offenders = modules.filter((file) => MODULE_SCOPE_SIDE_EFFECT.test(read(file)));
+
+		expect(modules.length).toBeGreaterThan(0);
+		expect(offenders).toEqual([]);
 	});
 
 	it("declares prerender on every page ADR 0011 says ships as static HTML", () => {
