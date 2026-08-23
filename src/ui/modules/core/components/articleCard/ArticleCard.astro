@@ -2,6 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { articleHref, tagHref } from "@const/index";
+import { formatPublishDate } from "@domain/article";
 import { toArticleCardContent } from "@modules/core/components/articleCard/utils/card";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import clsx from "clsx";
@@ -14,18 +15,8 @@ interface Props {
 
 const { article, isLandscape = false } = Astro.props;
 
-const {
-	slug,
-	title,
-	description,
-	publishDate,
-	publishDateISO,
-	readingTime,
-	author,
-	featuredImage,
-	visibleTags,
-	remainingTags,
-} = toArticleCardContent(article);
+const { slug, title, description, publishDateISO, readingTime, author, featuredImage, visibleTags, remainingTags } =
+	toArticleCardContent(article);
 ---
 <a class="article-card__link" href={articleHref(slug)} aria-labelledby={`article-title-${slug}`}>{' '}</a>
 <article
@@ -42,7 +33,7 @@ const {
       </div>
   )}
     <time class="article-card__publish-date editorial-meta editorial-meta--gold" datetime={publishDateISO}>
-      {publishDate}
+      {formatPublishDate(publishDateISO)}
     </time>
     <h3 class="article-card__title" id={`article-title-${slug}`}>
       {title} <span class="article-card__arrow" aria-hidden="true" set:html={stretchArrow} />

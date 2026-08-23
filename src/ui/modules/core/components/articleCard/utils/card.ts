@@ -12,7 +12,6 @@ export interface ArticleCardContent {
 	slug: string;
 	title: string;
 	description: string;
-	publishDate: string;
 	publishDateISO: string;
 	readingTime: number;
 	author: { slug: string; name: string };
@@ -29,7 +28,6 @@ export function toArticleCardContent({ data }: CollectionEntry<"articles">): Art
 		slug: data.slug,
 		title: data.title,
 		description: data.description,
-		publishDate: data.publishDate,
 		publishDateISO: data.publishDateISO,
 		readingTime: data.readingTime,
 		author: { slug: data.author.slug, name: data.author.name },

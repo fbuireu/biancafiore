@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { tagHref } from "@const/index";
+import { formatPublishDate } from "@domain/article";
 import "./article-details.css";
 
 interface Props {
@@ -11,7 +12,7 @@ const { article } = Astro.props;
 ---
 <div class="article-details">
     <time class="article-details__publish-date font-sans-serif" datetime={article.data.publishDateISO}>
-      {article.data.publishDate}
+      {formatPublishDate(article.data.publishDateISO)}
     </time>
     <h1 class="article-details__title editorial-headline">
       {article.data.title}

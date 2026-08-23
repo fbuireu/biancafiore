@@ -5,8 +5,13 @@ import { articleSlug } from "@application/dto/article/utils/reference";
 import { createAuthor } from "@application/dto/author/utils/author";
 import { createImage } from "@application/dto/shared/images";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import { type ArticleDTO, deriveDescription, generateTableOfContents, getReadingTime } from "@domain/article";
-import { formatDate } from "@shared/utils/dates";
+import {
+	type ArticleDTO,
+	deriveDescription,
+	generateTableOfContents,
+	getReadingTime,
+	publishDateISO,
+} from "@domain/article";
 import { createTags } from "./utils/tags";
 
 export function createArticles(raw: RawArticle[]): ArticleDTO[] {
@@ -20,9 +25,8 @@ export function createArticles(raw: RawArticle[]): ArticleDTO[] {
 			author: createAuthor(rawArticle.fields.author),
 			slug: articleSlug(rawArticle),
 			description: deriveDescription(rawArticle.fields.description ?? documentToHtmlString(rawArticle.fields.content)),
-			publishDate: formatDate(rawArticle.fields.publishDate),
-			publishDateISO: new Date(rawArticle.fields.publishDate).toISOString(),
-			updatedAt: rawArticle.sys.updatedAt ?? new Date(rawArticle.fields.publishDate).toISOString(),
+			publishDateISO: publishDateISO(rawArticle.fields.publishDate),
+			updatedAt: rawArticle.sys.updatedAt ?? publishDateISO(rawArticle.fields.publishDate),
 			featuredImage,
 			content,
 			isFeaturedArticle: rawArticle.fields.featuredArticle,

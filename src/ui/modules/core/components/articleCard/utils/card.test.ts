@@ -25,7 +25,6 @@ describe("toArticleCardContent", () => {
 			"author",
 			"description",
 			"featuredImage",
-			"publishDate",
 			"publishDateISO",
 			"readingTime",
 			"remainingTags",

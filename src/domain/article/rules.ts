@@ -1,4 +1,5 @@
 import type { ArticleDTO, ArticleHeading, TableOfContents } from "@domain/article/types";
+import { formatDate } from "@shared/utils/dates";
 
 const WORDS_PER_MINUTE = 200;
 const MINIMUM_READING_MINUTES = 1;
@@ -28,6 +29,20 @@ export function deriveDescription(rawDescription: string): string {
 	return cleanDescription.length > MAX_DESCRIPTION_LENGTH
 		? `${cleanDescription.substring(0, MAX_DESCRIPTION_LENGTH)}...`
 		: cleanDescription;
+}
+
+export function publishDateISO(date: string): string {
+	const timestamp = Date.parse(date);
+
+	if (Number.isNaN(timestamp)) {
+		throw new Error(`An Article reached the mapper with an unreadable publish date: ${date}`);
+	}
+
+	return new Date(timestamp).toISOString();
+}
+
+export function formatPublishDate(isoDate: string): string {
+	return formatDate(isoDate);
 }
 
 export function sortFavoriteFirst<T extends Pick<ArticleDTO, "isFavorite" | "publishDateISO">>(articles: T[]): T[] {

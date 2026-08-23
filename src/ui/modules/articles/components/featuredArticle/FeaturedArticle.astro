@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { articleHref, tagHref } from "@const/index";
+import { formatPublishDate } from "@domain/article";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import LinkWithArrow from "@modules/core/components/linkWithArrow/LinkWithArrow.astro";
 import { buildArticleShareLinks } from "./utils/share";
@@ -35,7 +36,7 @@ const shareLinks = buildArticleShareLinks({
                 <div class="featured-article__details flex column-wrap">
                     <time class="featured-article__publish-date font-sans-serif"
                           datetime={featuredArticle.data.publishDateISO}>
-                      {featuredArticle.data.publishDate}
+                      {formatPublishDate(featuredArticle.data.publishDateISO)}
                     </time>
                     <h2 class="featured-article__title" id="featured-article-title">{featuredArticle.data.title}</h2>
                     <p class="featured-article__description" set:html={featuredArticle.data.description} />

@@ -60,7 +60,7 @@ interface MakeArticleParams {
 	title?: string;
 	content?: unknown[];
 	description?: string;
-	publishDate?: string;
+	publishDate?: string | null;
 	updatedAt?: string;
 	featuredImage?: unknown;
 	featuredArticle?: boolean;
@@ -185,11 +185,18 @@ describe("createArticles images", () => {
 });
 
 describe("createArticles dates", () => {
-	it("formats the publish date for en-GB and keeps a machine readable copy beside it", () => {
+	it("stores the machine readable date and leaves the label to the renderer", () => {
 		const [article] = createArticles([makeArticle({ publishDate: "2024-03-15" })]);
 
-		expect(article.publishDate).toBe("Friday, 15 March 2024");
 		expect(article.publishDateISO).toBe("2024-03-15T00:00:00.000Z");
+		expect(article).not.toHaveProperty("publishDate");
+	});
+
+	it.each([
+		["missing", null],
+		["unreadable", "not a date"],
+	])("refuses an entry whose publish date is %s, naming the value rather than throwing bare", (_name, publishDate) => {
+		expect(() => createArticles([makeArticle({ publishDate })])).toThrow("unreadable publish date");
 	});
 
 	it("reads updatedAt off sys, not off fields", () => {

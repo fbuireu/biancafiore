@@ -9,7 +9,6 @@ export const articleSchema = z.object({
 	author: authorSchema,
 	slug: z.string(),
 	description: z.string(),
-	publishDate: z.string(),
 	publishDateISO: z.string(),
 	updatedAt: z.string(),
 	featuredImage: imageSchema.optional(),
