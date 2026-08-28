@@ -160,7 +160,7 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/prepare-env
       - name: Install Playwright browsers
-        run: pnpm playwright install --with-deps
+        run: pnpm exec playwright install --with-deps
       - name: Run E2E tests
         run: pnpm test:e2e
       - name: Upload artifact

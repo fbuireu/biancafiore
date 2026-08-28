@@ -30,10 +30,10 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pnpm playwright install --with-deps chromium webkit
+        run: pnpm exec playwright install --with-deps chromium webkit
       - name: Install Playwright OS dependencies
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: pnpm playwright install-deps chromium webkit
+        run: pnpm exec playwright install-deps chromium webkit
       - name: Run E2E tests
         run: pnpm test:e2e
         env:
