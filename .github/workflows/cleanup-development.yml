@@ -18,6 +18,7 @@ jobs:
   cleanup:
     name: Delete preview Worker
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment: development
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
