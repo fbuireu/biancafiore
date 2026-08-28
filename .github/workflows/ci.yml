@@ -79,7 +79,7 @@ jobs:
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
-        run: npx semantic-release
+        run: pnpm exec semantic-release
 
   deploy-development:
     name: Deploy to development
