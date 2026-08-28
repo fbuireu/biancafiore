@@ -75,31 +75,19 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/prepare-env
       - name: Build
-        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          retry_wait_seconds: 15
-          shell: bash
-          command: pnpm build
+        run: pnpm build
       - name: Verify the built output
         run: pnpm exec vitest run --project built
       - name: Deploy to Cloudflare Workers
-        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         env:
           INPUTS_WORKER_NAME: ${{ inputs.worker_name }}
           DEPLOY_MESSAGE: ${{ github.sha }} (${{ github.event_name }})
-        with:
-          timeout_minutes: 5
-          max_attempts: 3
-          retry_wait_seconds: 15
-          shell: bash
-          command: |
-            NAME_FLAG=""
-            if [ -n "${INPUTS_WORKER_NAME}" ]; then
-              NAME_FLAG="--name ${INPUTS_WORKER_NAME}"
-            fi
-            pnpm exec wrangler deploy $NAME_FLAG --message "$DEPLOY_MESSAGE"
+        run: |
+          NAME_FLAG=""
+          if [ -n "${INPUTS_WORKER_NAME}" ]; then
+            NAME_FLAG="--name ${INPUTS_WORKER_NAME}"
+          fi
+          pnpm exec wrangler deploy $NAME_FLAG --message "$DEPLOY_MESSAGE"
       - name: Set Worker secrets
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         env:
