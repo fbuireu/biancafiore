@@ -93,6 +93,7 @@ jobs:
       - name: Deploy to Cloudflare Workers
         env:
           INPUTS_WORKER_NAME: ${{ inputs.worker_name }}
+          INPUTS_WRANGLER_ENV: ${{ inputs.wrangler_env }}
           DEPLOY_MESSAGE: ${{ github.sha }} (${{ github.event_name }})
           SECRETS_FILE: ${{ runner.temp }}/worker-secrets.json
         run: |
@@ -100,7 +101,7 @@ jobs:
           if [ -n "${INPUTS_WORKER_NAME}" ]; then
             NAME_FLAG="--name ${INPUTS_WORKER_NAME}"
           fi
-          pnpm exec wrangler deploy $NAME_FLAG --message "$DEPLOY_MESSAGE" --secrets-file "$SECRETS_FILE"
+          pnpm exec wrangler deploy --env "$INPUTS_WRANGLER_ENV" --message "$DEPLOY_MESSAGE" --secrets-file "$SECRETS_FILE" $NAME_FLAG
       - name: Remove the secrets file
         if: always()
         env:
