@@ -167,6 +167,11 @@ built. That is why `_deploy.yml` runs `vitest run --project built` as its own st
 job, and why the run summary carries one report of ~840 tests and a second of 8. Neither is a duplicate of the
 other, and `pnpm test:built` is the local command that builds and runs the second.
 
+**The smoke job labels its own report.** Playwright's `github` reporter annotates every run with the same
+`🎭 Playwright Run Summary`, whichever suite produced it, so a step writes a *Production smoke tests* heading to
+`$GITHUB_STEP_SUMMARY` first, naming the address it ran against and the sha it followed. The artifact is
+`playwright-smoke-report` for the same reason.
+
 **Playwright writes its HTML report on CI as well as its annotations.** The reporter used to be
 `process.env.CI ? "github" : "html"`, so on a runner the only output was the inline annotation and the
 `playwright-report/` directory never existed: both upload steps, in `e2e` and in `smoke`, warned *No files were
