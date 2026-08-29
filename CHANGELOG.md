@@ -1,3 +1,15 @@
+## [1.21.1](https://github.com/fbuireu/biancafiore/compare/v1.21.0...v1.21.1) (2026-08-29)
+
+
+### Bug Fixes
+
+* **application:** give the publish date one rule instead of three ([0c8b5ed](https://github.com/fbuireu/biancafiore/commit/0c8b5ed7f9e2552f48a4e18a0425436a2708d492))
+* **application:** key the authors collection on the slug the glossary calls identity ([a66f458](https://github.com/fbuireu/biancafiore/commit/a66f458cc2bee1313f101d788cd721cb2d95a3c2))
+* **application:** normalise updatedAt through the rule that dates an Article ([730f14e](https://github.com/fbuireu/biancafiore/commit/730f14ead2474a07c9ee93ab1b9526a334c75db2))
+* **application:** refuse an unresolved author link instead of casting past it ([62c1a21](https://github.com/fbuireu/biancafiore/commit/62c1a218cbaeec242bb6e0f0c47c24d0ca21696a))
+* **domain:** refuse an Original Source the Republished flag would hide ([81957b6](https://github.com/fbuireu/biancafiore/commit/81957b6d0f92485ceca54598f7cde878eaa234cd))
+* **modules:** let the tag route read the discriminant the tag index stores ([354c0a6](https://github.com/fbuireu/biancafiore/commit/354c0a6a51b8e85513061e6b04dba80eccdc3222))
+
 # [1.21.0](https://github.com/fbuireu/biancafiore/compare/v1.20.3...v1.21.0) (2026-08-21)
 
 
