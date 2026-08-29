@@ -160,7 +160,18 @@ CI/CD runs through GitHub Actions:
 
 **`/rss.xml` and `/sitemap-index.xml` answer `403` in production to a request from a datacenter address, and that is why they are not smoke cases.** Both were, on the first run of this job: the homepage, the 404 and `robots.txt` passed and those two failed with `403` under both browser projects, from a GitHub runner sending a real browser user agent. Nothing in this tree returns 403 (the middleware only sets headers), so the answer comes from the edge rather than from the Worker. **A browser gets both**, checked on 2026-08-29: the feed renders its channel and items, so the Worker serves them and the zone is answering the runner differently from a person. That is worth knowing beyond CI: a feed reader is also an automated client on a datacenter address, so the rule that failed the test may be refusing subscribers, and nothing here would show it. Cloudflare's **Security Events** log names the rule that blocked a given request, which is where a fix starts; the fix is a Cloudflare setting, not a change in this tree. Put the two cases back in the smoke set once that rule stops matching, since a smoke case that depends on the caller's address is evidence about the caller, not about the deploy.
 
-**`smoke` gates `release`.** A tag means the version is live *and answering*, not merely that `wrangler deploy` exited zero. That is why `release` needs `deploy-production` and `smoke`, and it is the same rule the sibling repositories run.
+**`smoke` gates `release`, and a failing one rolls production back.** A tag means the version is live *and
+answering*, not merely that `wrangler deploy` exited zero, which is why `release` needs `deploy-production` and
+`smoke`. On its own that leaves a bad version serving traffic with only the tag withheld, so `rollback` runs
+`wrangler rollback --env production --yes` when `deploy-production` succeeded and `smoke` failed, returning the
+Worker to the version that was live before. It is a separate job rather than a step in `smoke` because it needs the
+Cloudflare credentials, and `smoke` deliberately declares no `environment:`; putting the rollback there would hand
+every smoke run a token it has no use for.
+
+**What that costs is worth stating.** The smoke set is small on purpose, but a case that fails for a reason outside
+the Worker now reverts a deploy that was fine: the `403` below is exactly that shape, which is why those two paths
+are not in the set. Keep it that way. A case whose result depends on the caller's address does not belong in a set
+that can undo a release.
 
 **The deploy names its wrangler environment on the command line, and it used to name it only by accident.** `wrangler.toml` puts the `SESSION` KV id and the `biancafiore.me` custom domain under `[env.production]`, and a different KV id under `[env.development]`, so which environment the deploy selects decides which namespace a preview writes to. `_deploy.yml` passed no `--env`; what selected it was `CLOUDFLARE_ENV`, which wrangler reads as an equivalent of the flag and which is declared at job level here because the **build** needs it. That worked, and it meant the deploy's target was set by a variable named for something else, three screens away, with nothing saying so. The flag is explicit now, from the same `wrangler_env` input, which is also what the sibling repos pass.
 
