@@ -7,7 +7,7 @@ permissions:
 
 env:
   CI: true
-  E2E_URL: ${{ vars.SITE_URL }}
+  E2E_URL: ${{ vars.E2E_PRODUCTION_URL }}
 jobs:
   end-to-end-tests:
     name: Run E2E tests
