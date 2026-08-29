@@ -43,7 +43,7 @@ jobs:
     with:
       environment: production
       wrangler_env: production
-      url: https://biancafiore.me
+      url: ${{ vars.SITE_URL }}
     secrets:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
