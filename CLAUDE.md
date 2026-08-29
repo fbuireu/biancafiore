@@ -177,8 +177,10 @@ other, and `pnpm test:built` is the local command that builds and runs the secon
 `playwright-report/` directory never existed: both upload steps, in `e2e` and in `smoke`, warned *No files were
 found with the provided path* on every run and uploaded nothing, including the runs that failed and were the whole
 reason to have an artifact. It is `[["github"], ["html", { open: "never" }]]` on CI now, which keeps the annotation
-and produces the directory with the traces in it. The sibling repositories never had this: both declare
-`reporter: "html"` unconditionally.
+and produces the directory with the traces in it. The sibling repositories now carry the same pair, for a
+reason this one did not have: their smoke jobs print a step-summary line naming the *Playwright Run Summary*
+annotation, and while they declared `reporter: "html"` alone that annotation was never emitted, so the line
+pointed at output that did not exist.
 
 **`smoke` gates `release`, and a failing one rolls production back.** A tag means the version is live *and
 answering*, not merely that `wrangler deploy` exited zero, which is why `release` needs `deploy-production` and
