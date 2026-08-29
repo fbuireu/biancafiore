@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const UNKNOWN_PATH = "/this-does-not-exist-xyz";
 
-test.describe("production smoke", () => {
+test.describe("smoke", () => {
 	test("the homepage answers with a rendered document @smoke", async ({ page }) => {
 		const response = await page.goto("/");
 
@@ -20,6 +20,7 @@ test.describe("production smoke", () => {
 		const response = await request.get("/robots.txt");
 
 		expect(response.status()).toBe(200);
+		expect(response.headers()["content-type"]).toContain("text/plain");
 		expect(await response.text()).toContain("Sitemap:");
 	});
 });
