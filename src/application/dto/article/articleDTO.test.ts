@@ -606,3 +606,17 @@ describe("createArticles, given an author link Contentful did not resolve", () =
 		);
 	});
 });
+
+describe("createArticles updatedAt, which leaves as dateModified and modifiedTime", () => {
+	it("normalises what sys reports to the same ISO instant the publish date gets", () => {
+		const [article] = createArticles([makeArticle({ updatedAt: "2024-04-01T10:00:00+02:00" })]);
+
+		expect(article?.updatedAt).toBe("2024-04-01T08:00:00.000Z");
+	});
+
+	it("refuses an updatedAt it cannot read, rather than emitting it into the structured data", () => {
+		expect(() => createArticles([makeArticle({ updatedAt: "not-a-date" })])).toThrow(
+			"An Article reached the mapper with an unreadable publish date: not-a-date",
+		);
+	});
+});

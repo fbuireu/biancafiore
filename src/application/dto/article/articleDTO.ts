@@ -26,7 +26,7 @@ export function createArticles(raw: RawArticle[]): ArticleDTO[] {
 			slug: articleSlug(rawArticle),
 			description: deriveDescription(rawArticle.fields.description ?? documentToHtmlString(rawArticle.fields.content)),
 			publishDateISO: publishDateISO(rawArticle.fields.publishDate),
-			updatedAt: rawArticle.sys.updatedAt ?? publishDateISO(rawArticle.fields.publishDate),
+			updatedAt: publishDateISO(rawArticle.sys.updatedAt ?? rawArticle.fields.publishDate),
 			featuredImage,
 			content,
 			isFeaturedArticle: rawArticle.fields.featuredArticle,
