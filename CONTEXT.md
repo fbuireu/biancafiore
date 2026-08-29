@@ -81,7 +81,7 @@ An Article that first appeared elsewhere and is re-run here, flagged as such so 
 _Avoid_: cross-post, syndicated, reprint, mirror.
 
 **Original Source**:
-The earlier publication a Republished Article first appeared in. It is a name, not a URL, and the banner prints it as plain text: the copy says the original is no longer online, which is the reason it is credited rather than linked.
+The earlier publication a Republished Article first appeared in. It is a name, not a URL, and the banner prints it as plain text: the copy says the original is no longer online, which is the reason it is credited rather than linked. It only means anything alongside the Republished flag, so an Original Source named without it is refused at the mapper rather than dropped: a Republished Article with no source still reads as "a platform", but a source the flag hides would be a credit the reader never sees.
 _Avoid_: canonical, origin, reference, backlink.
 
 **Reading Time**:

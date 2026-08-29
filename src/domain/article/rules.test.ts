@@ -1,4 +1,5 @@
 import {
+	creditedSource,
 	deriveDescription,
 	generateTableOfContents,
 	getReadingTime,
@@ -234,5 +235,27 @@ describe("sortFavoriteFirst", () => {
 		];
 
 		expect(sortFavoriteFirst(references).map(({ id }) => id)).toEqual(["old-favorite", "recent"]);
+	});
+});
+
+describe("creditedSource", () => {
+	it("credits the publication a Republished Article names", () => {
+		expect(creditedSource({ isRepublished: true, originalSource: "The Content Standard" })).toBe(
+			"The Content Standard",
+		);
+	});
+
+	it("leaves a Republished Article with no named source uncredited, which the banner words for", () => {
+		expect(creditedSource({ isRepublished: true, originalSource: undefined })).toBeUndefined();
+	});
+
+	it("carries nothing for an Article that first appeared here", () => {
+		expect(creditedSource({ isRepublished: false, originalSource: undefined })).toBeUndefined();
+	});
+
+	it("refuses a named source the flag would have hidden, rather than dropping the credit silently", () => {
+		expect(() => creditedSource({ isRepublished: false, originalSource: "The Content Standard" })).toThrow(
+			"An Article names an original source (The Content Standard) but is not flagged as republished, so nothing would credit it",
+		);
 	});
 });

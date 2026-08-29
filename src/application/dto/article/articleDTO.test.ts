@@ -620,3 +620,17 @@ describe("createArticles updatedAt, which leaves as dateModified and modifiedTim
 		);
 	});
 });
+
+describe("createArticles republication credit", () => {
+	it("refuses an original source the republished flag would have hidden", () => {
+		expect(() =>
+			createArticles([makeArticle({ isRepublished: false, originalSource: "The Content Standard" })]),
+		).toThrow("An Article names an original source (The Content Standard) but is not flagged as republished");
+	});
+
+	it("drops an original source an editor left behind after clearing the flag on a draft", () => {
+		const [article] = createArticles([makeArticle({ isRepublished: undefined, originalSource: undefined })]);
+
+		expect(article).toMatchObject({ isRepublished: false, originalSource: undefined });
+	});
+});

@@ -7,6 +7,7 @@ import { createImage } from "@application/dto/shared/images";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import {
 	type ArticleDTO,
+	creditedSource,
 	deriveDescription,
 	generateTableOfContents,
 	getReadingTime,
@@ -19,6 +20,7 @@ export function createArticles(raw: RawArticle[]): ArticleDTO[] {
 		const relatedArticles = createRelatedArticles({ rawArticle, allRawArticles: raw });
 		const featuredImage = rawArticle.fields.featuredImage && createImage(rawArticle.fields.featuredImage);
 		const { content, headings } = renderArticleContent(rawArticle);
+		const isRepublished = rawArticle.fields.isRepublished ?? false;
 
 		return {
 			title: rawArticle.fields.title,
@@ -31,8 +33,8 @@ export function createArticles(raw: RawArticle[]): ArticleDTO[] {
 			content,
 			isFeaturedArticle: rawArticle.fields.featuredArticle,
 			isFavorite: rawArticle.fields.isFavorite ?? false,
-			isRepublished: rawArticle.fields.isRepublished ?? false,
-			originalSource: rawArticle.fields.originalSource,
+			isRepublished,
+			originalSource: creditedSource({ isRepublished, originalSource: rawArticle.fields.originalSource }),
 			readingTime: getReadingTime(content),
 			tags: createTags(rawArticle.fields.tags),
 			relatedArticles,

@@ -31,6 +31,21 @@ export function deriveDescription(rawDescription: string): string {
 		: cleanDescription;
 }
 
+interface CreditedSourceParams {
+	isRepublished: boolean;
+	originalSource?: string;
+}
+
+export function creditedSource({ isRepublished, originalSource }: CreditedSourceParams): string | undefined {
+	if (!isRepublished && originalSource) {
+		throw new Error(
+			`An Article names an original source (${originalSource}) but is not flagged as republished, so nothing would credit it`,
+		);
+	}
+
+	return isRepublished ? originalSource : undefined;
+}
+
 export function publishDateISO(date: string): string {
 	const timestamp = Date.parse(date);
 

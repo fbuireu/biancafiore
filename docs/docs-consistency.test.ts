@@ -261,6 +261,8 @@ const SPREAD_AFTER_ID = /\{\s*id:[^}]*\.\.\./;
 const HYDRATION_DIRECTIVES_ALLOWED = new Set(['only="react"', "load"]);
 const NEWLINE = "\n";
 const SCHEMA_BOOLEAN_DEFAULT = /(\w+): z\.boolean\(\)\.default\(false\)/g;
+const DEFAULTED_IN_THE_DTO_LAYER = (field: string) =>
+	new RegExp(String.raw`\b${field}\s*[:=]\s*rawArticle\.fields\.${field} \?\? false`);
 const CONTEXT_TAG_CLASS = /class\s+\w+\s+extends\s+Context\.Tag/;
 const LAUNDERED_SECRET = /getSecret\([^)]*\)\s+as\s+string/;
 const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("CLAUDE.md"));
@@ -931,9 +933,7 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(cited.filter((fallback) => !dtoLayer.includes(fallback))).toEqual([]);
 
 		expect(defaulted.length).toBeGreaterThan(0);
-		expect(defaulted.filter((field) => !dtoLayer.includes(`${field}: rawArticle.fields.${field} ?? false`))).toEqual(
-			[],
-		);
+		expect(defaulted.filter((field) => !DEFAULTED_IN_THE_DTO_LAYER(field).test(dtoLayer))).toEqual([]);
 	});
 
 	it("turns a raw author into Author fields in the one module the guide names", () => {
