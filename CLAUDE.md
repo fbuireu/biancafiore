@@ -160,6 +160,21 @@ CI/CD runs through GitHub Actions:
 
 **`/rss.xml` and `/sitemap-index.xml` answer `403` in production to a request from a datacenter address, and that is why they are not smoke cases.** Both were, on the first run of this job: the homepage, the 404 and `robots.txt` passed and those two failed with `403` under both browser projects, from a GitHub runner sending a real browser user agent. Nothing in this tree returns 403 (the middleware only sets headers), so the answer comes from the edge rather than from the Worker. **A browser gets both**, checked on 2026-08-29: the feed renders its channel and items, so the Worker serves them and the zone is answering the runner differently from a person. That is worth knowing beyond CI: a feed reader is also an automated client on a datacenter address, so the rule that failed the test may be refusing subscribers, and nothing here would show it. Cloudflare's **Security Events** log names the rule that blocked a given request, which is where a fix starts; the fix is a Cloudflare setting, not a change in this tree. Put the two cases back in the smoke set once that rule stops matching, since a smoke case that depends on the caller's address is evidence about the caller, not about the deploy.
 
+**A CI run shows two Vitest summaries, and they are two different suites.** `vitest.config.ts` declares three
+projects: `node` and `dom` are the unit suite, which `pnpm verify` runs in the `Check` job, and `built` is the
+handful of assertions over the emitted HTML, sitemap, feed and headers, which cannot run until something has been
+built. That is why `_deploy.yml` runs `vitest run --project built` as its own step after the build, in the deploy
+job, and why the run summary carries one report of ~840 tests and a second of 8. Neither is a duplicate of the
+other, and `pnpm test:built` is the local command that builds and runs the second.
+
+**Playwright writes its HTML report on CI as well as its annotations.** The reporter used to be
+`process.env.CI ? "github" : "html"`, so on a runner the only output was the inline annotation and the
+`playwright-report/` directory never existed: both upload steps, in `e2e` and in `smoke`, warned *No files were
+found with the provided path* on every run and uploaded nothing, including the runs that failed and were the whole
+reason to have an artifact. It is `[["github"], ["html", { open: "never" }]]` on CI now, which keeps the annotation
+and produces the directory with the traces in it. The sibling repositories never had this: both declare
+`reporter: "html"` unconditionally.
+
 **`smoke` gates `release`, and a failing one rolls production back.** A tag means the version is live *and
 answering*, not merely that `wrangler deploy` exited zero, which is why `release` needs `deploy-production` and
 `smoke`. On its own that leaves a bad version serving traffic with only the tag withheld, so `rollback` runs

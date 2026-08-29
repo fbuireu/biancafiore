@@ -27,7 +27,7 @@ export default defineConfig({
 	retries: process.env.CI ? 2 : 0,
 	workers: process.env.CI ? "50%" : undefined,
 	timeout: 90_000,
-	reporter: process.env.CI ? "github" : "html",
+	reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : "html",
 	use: {
 		trace: "on-first-retry",
 		baseURL: deployedUrl ?? LOCAL_URL,
