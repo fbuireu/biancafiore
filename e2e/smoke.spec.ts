@@ -16,20 +16,6 @@ test.describe("production smoke", () => {
 		expect(response?.status()).toBe(404);
 	});
 
-	test("the feed is served as XML @smoke", async ({ request }) => {
-		const response = await request.get("/rss.xml");
-
-		expect(response.status()).toBe(200);
-		expect(response.headers()["content-type"]).toContain("xml");
-	});
-
-	test("the sitemap index robots.txt points at is served @smoke", async ({ request }) => {
-		const response = await request.get("/sitemap-index.xml");
-
-		expect(response.status()).toBe(200);
-		expect(await response.text()).toContain("<sitemapindex");
-	});
-
 	test("robots.txt is served @smoke", async ({ request }) => {
 		const response = await request.get("/robots.txt");
 

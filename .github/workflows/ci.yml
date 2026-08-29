@@ -65,8 +65,14 @@ jobs:
       contents: read
     env:
       CI: true
-      E2E_URL: https://biancafiore.me
+      E2E_URL: ${{ vars.SITE_URL }}
     steps:
+      - name: Require the production URL
+        run: |
+          if [ -z "$E2E_URL" ]; then
+            echo "SITE_URL is empty, so Playwright would fall back to localhost, boot a dev server and pass against it"
+            exit 1
+          fi
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
