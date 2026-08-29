@@ -257,6 +257,8 @@ const ON_DEMAND_ROUTES = ["src/pages/404.astro", "src/pages/500.astro", "src/pag
 const ROBOTS_DISALLOW = /^Disallow: (.+)$/gm;
 const COLLECTION_FACTORY = "src/application/entities/collection.ts";
 const IDENTIFY_CHOICE = /identify: \(\w+\) => \w+\.(\w+)/g;
+const INLINE_IDENTITY = /\.\.\.\w+, id: \w+\.(\w+) \}/g;
+const CITED_IDENTITY = /`(\w+)` → `(\w+)`/g;
 const SPREAD_AFTER_ID = /\{\s*id:[^}]*\.\.\./;
 const HYDRATION_DIRECTIVES_ALLOWED = new Set(['only="react"', "load"]);
 const NEWLINE = "\n";
@@ -1033,12 +1035,25 @@ describe("application guide: the anti-corruption boundary", () => {
 
 	it("cites the id every loader assigns, and spreads before it rather than after", () => {
 		const step = guide.split(NEWLINE).find((line) => line.includes("return entries carrying an `id`")) ?? "";
-		const assigned = [
-			...new Set(loaders.flatMap((file) => [...read(file).matchAll(IDENTIFY_CHOICE)].map(([, field]) => field))),
-		];
+		const identities = loaders.map((file) => {
+			const source = read(file);
+
+			return {
+				file,
+				fields: [
+					...[...source.matchAll(IDENTIFY_CHOICE)].map(([, field]) => field),
+					...[...source.matchAll(INLINE_IDENTITY)].map(([, field]) => field),
+				],
+			};
+		});
+		const assigned = identities
+			.map(({ file, fields }) => `${file.split("/").at(-2)} → ${[...new Set(fields)].join(", ")}`)
+			.sort();
+		const cited = [...step.matchAll(CITED_IDENTITY)].map(([, collection, field]) => `${collection} → ${field}`).sort();
 
 		expect(assigned.length).toBeGreaterThan(0);
-		expect(assigned.filter((field) => !step.includes(field))).toEqual([]);
+		expect(identities.filter(({ fields }) => fields.length === 0).map(({ file }) => file)).toEqual([]);
+		expect(cited).toEqual(assigned);
 
 		expect(read(COLLECTION_FACTORY)).toContain("...entry, id: identify(entry)");
 		expect([...loaders, COLLECTION_FACTORY].filter((file) => SPREAD_AFTER_ID.test(read(file)))).toEqual([]);

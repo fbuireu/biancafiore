@@ -92,12 +92,26 @@ describe("authors loader", () => {
 		expect(cmsQueriesOverlapped()).toBe(true);
 	});
 
-	it("keys every entry by the author's name", async () => {
+	it("keys every entry by the author's slug, the identity CONTEXT.md gives an Author", async () => {
 		cmsAnswers({ author: [BIANCA], article: [] });
 
 		const [entry] = await load();
 
-		expect(entry).toMatchObject({ id: "Bianca Fiore", name: "Bianca Fiore", slug: "bianca-fiore" });
+		expect(entry).toMatchObject({ id: "bianca-fiore", name: "Bianca Fiore", slug: "bianca-fiore" });
+	});
+
+	it("keeps two authors who share a display name apart, since the name is a label and the slug is the identity", async () => {
+		cmsAnswers({
+			author: [
+				makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" }),
+				makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore-ii" }),
+			],
+			article: [],
+		});
+
+		const entries = await load();
+
+		expect(entries.map(({ id }) => id)).toEqual(["bianca-fiore", "bianca-fiore-ii"]);
 	});
 
 	it("calls the author's newest article the latest, whatever order the batch arrived in", async () => {

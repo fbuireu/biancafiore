@@ -15,7 +15,7 @@ export const authors = defineCollection({
 
 		const authors = createAuthors({ rawAuthors, rawArticles });
 
-		return authors.map((author) => ({ ...author, id: author.name }));
+		return authors.map((author) => ({ ...author, id: author.slug }));
 	},
 	schema: authorSchema.extend({
 		latestArticle: reference("articles").optional(),
