@@ -20,7 +20,9 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 - Node **26.7.0** (`engines.node`, and `.nvmrc`, which is what every CI job installs from)
 - pnpm **11.21.0** (`packageManager`, which `pnpm/action-setup` reads): always use pnpm, never npm/yarn
 
-Both numbers are asserted against the manifest that pins them, `.nvmrc` against `engines.node`, and no workflow may pin either a second time. This section used to say it was deliberately unchecked, so a bump would not fail CI on a doc edit; it then said Node 26.5.1 and pnpm 11.15.1 while the manifest pinned 26.7.0 and 11.21.0, and nothing said so. A bump now costs one line here in the same commit, which is what the maintenance contract asks for everywhere else.
+**The digits above are a snapshot; the manifest is what pins.** They are deliberately not asserted against it, so a Renovate bump does not fail CI on an unrelated doc edit, and the cost of that is exactly what it sounds like: this section said Node 26.5.1 and pnpm 11.15.1 for a while after the manifest had moved to 26.7.0 and 11.21.0. Read `engines.node` or `.nvmrc` before acting on a number here.
+
+What *is* asserted is the part a bump cannot rot: each runtime is pinned exactly once. `.nvmrc` and `engines.node` are the same fact written twice and must agree, and no workflow may pin either a second time, since `prepare-env` reads `node-version-file: .nvmrc` and `pnpm/action-setup` reads `packageManager`. A bot that bumps the manifest moves both together, so those rules never fire on a routine update.
 
 ## Commands
 
