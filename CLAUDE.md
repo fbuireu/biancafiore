@@ -15,10 +15,12 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 - **lightningcss** CSS transformer; **GSAP**, `react-globe.gl`/`three` (globe), `react-hook-form`, `resend` (email), reCAPTCHA v3, `vanilla-cookieconsent`
 - **Biome** (lint + format), **Vitest** (unit), **Playwright** (e2e), **semantic-release** + commitlint (conventional commits)
 
-## Versions (pinned by hand, not enforced by the docs test, since routine dependency bumps would break CI on it)
+## Versions
 
-- Node **26.5.1** (`engines.node`)
-- pnpm **11.15.1** (`packageManager`): always use pnpm, never npm/yarn
+- Node **26.7.0** (`engines.node`, and `.nvmrc`, which is what every CI job installs from)
+- pnpm **11.21.0** (`packageManager`, which `pnpm/action-setup` reads): always use pnpm, never npm/yarn
+
+Both numbers are asserted against the manifest that pins them, `.nvmrc` against `engines.node`, and no workflow may pin either a second time. This section used to say it was deliberately unchecked, so a bump would not fail CI on a doc edit; it then said Node 26.5.1 and pnpm 11.15.1 while the manifest pinned 26.7.0 and 11.21.0, and nothing said so. A bump now costs one line here in the same commit, which is what the maintenance contract asks for everywhere else.
 
 ## Commands
 

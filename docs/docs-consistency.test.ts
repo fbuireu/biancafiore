@@ -258,6 +258,9 @@ const ROBOTS_DISALLOW = /^Disallow: (.+)$/gm;
 const COLLECTION_FACTORY = "src/application/entities/collection.ts";
 const IDENTIFY_CHOICE = /identify: \(\w+\) => \w+\.(\w+)/g;
 const INLINE_IDENTITY = /\.\.\.\w+, id: \w+\.(\w+) \}/g;
+const PINNED_VERSION = /^- (Node|pnpm) \*\*([\d.]+)\*\*/;
+const EXACT_VERSION = /^\d+\.\d+\.\d+$/;
+const REPINNED_RUNTIME = /^\s*(?:node-version|version):\s*["']?\d/m;
 const CITED_IDENTITY = /`(\w+)` → `(\w+)`/g;
 const SPREAD_AFTER_ID = /\{\s*id:[^}]*\.\.\./;
 const HYDRATION_DIRECTIVES_ALLOWED = new Set(['only="react"', "load"]);
@@ -1619,5 +1622,42 @@ describe("conventions", () => {
 			head.indexOf("googletagmanager.com/gtag/js"),
 		);
 		expect(head.indexOf("set:html={consentBootstrapScript(")).toBeLessThan(head.indexOf("googletagmanager.com/gtm.js"));
+	});
+});
+
+describe("pinned versions", () => {
+	const section = CLAUDE_MD.split(NEWLINE).filter((line) => PINNED_VERSION.test(line));
+	const pinned = section.flatMap((line) => {
+		const [, runtime, version] = line.match(PINNED_VERSION) ?? [];
+
+		return runtime && version ? [{ runtime, version }] : [];
+	});
+
+	it("cites a version for every runtime the manifest pins, and none it does not", () => {
+		expect(pinned.map(({ runtime }) => runtime).sort()).toEqual(["Node", "pnpm"]);
+	});
+
+	it("cites the Node version package.json pins, and .nvmrc the same one", () => {
+		const engine = PACKAGE_JSON.engines.node;
+
+		expect(engine).toMatch(EXACT_VERSION);
+		expect(read(".nvmrc").trim()).toBe(engine);
+		expect(pinned.find(({ runtime }) => runtime === "Node")?.version).toBe(engine);
+	});
+
+	it("cites the pnpm version packageManager pins", () => {
+		const [name, version] = PACKAGE_JSON.packageManager.split("@");
+
+		expect(name).toBe("pnpm");
+		expect(version).toMatch(EXACT_VERSION);
+		expect(pinned.find(({ runtime }) => runtime === "pnpm")?.version).toBe(version);
+	});
+
+	it("lets no workflow pin either one a second time, since CI reads both from the manifest", () => {
+		const workflows = walk(".github").filter((file) => file.endsWith(".yml"));
+		const repinned = workflows.filter((file) => REPINNED_RUNTIME.test(read(file)));
+
+		expect(workflows.length).toBeGreaterThan(0);
+		expect(repinned).toEqual([]);
 	});
 });
