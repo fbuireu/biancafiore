@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const LOCAL_URL = "http://localhost:4321";
-const deployedUrl = process.env.E2E_URL;
+const deployedUrl = process.env.BASE_URL;
 
 const accessClientId = process.env.CF_ACCESS_CLIENT_ID;
 const accessClientSecret = process.env.CF_ACCESS_CLIENT_SECRET;

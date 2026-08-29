@@ -65,11 +65,11 @@ jobs:
       contents: read
     env:
       CI: true
-      E2E_URL: ${{ vars.SITE_URL }}
+      BASE_URL: ${{ vars.SITE_URL }}
     steps:
       - name: Require the production URL
         run: |
-          if [ -z "$E2E_URL" ]; then
+          if [ -z "$BASE_URL" ]; then
             echo "SITE_URL is empty, so Playwright would fall back to localhost, boot a dev server and pass against it"
             exit 1
           fi
@@ -96,7 +96,7 @@ jobs:
           {
             echo "## Production smoke tests"
             echo
-            echo "Playwright ran the \`@smoke\` cases against <$E2E_URL> after deploying \`$GITHUB_SHA\`."
+            echo "Playwright ran the \`@smoke\` cases against <$BASE_URL> after deploying \`$GITHUB_SHA\`."
             echo "The Playwright Run Summary annotation on this run belongs to this job. The preview E2E suite does not run on \`main\`."
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Run smoke tests against production
@@ -226,7 +226,7 @@ jobs:
       contents: read
     env:
       CI: true
-      E2E_URL: https://pr-${{ github.event.pull_request.number }}-biancafiore-development.fbuireu.workers.dev
+      BASE_URL: https://pr-${{ github.event.pull_request.number }}-biancafiore-development.fbuireu.workers.dev
       CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
       CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
     steps:
