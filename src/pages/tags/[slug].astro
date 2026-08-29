@@ -7,11 +7,11 @@ import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro"
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import { resolveArticles } from "@modules/core/utils/entries";
 import { buildArticleListSchema } from "@modules/core/utils/jsonLd";
-import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
+import { tagPageCopy } from "@modules/core/utils/tagPage";
+import type { InferGetStaticPropsType } from "astro";
 import "./_tag.css";
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-type TagParams = InferGetStaticParamsType<typeof getStaticPaths>;
 
 export const prerender = true;
 
@@ -21,20 +21,17 @@ export async function getStaticPaths() {
 	return tags.map(({ data }) => ({ params: { slug: data.slug }, props: { tag: data } }));
 }
 
-const { slug } = Astro.params as TagParams;
 const { tag } = Astro.props;
 const articles = await resolveArticles(tag.articles);
+const { heading, title, description } = tagPageCopy(tag);
 
-const metadata: Partial<SeoMetadata> = {
-	title: `#${slug}`,
-	description: `Articles tagged with #${slug}.`,
-};
+const metadata: Partial<SeoMetadata> = { title, description };
 
 const itemListSchema = buildArticleListSchema(articles.map(({ data }) => data.slug));
 ---
 <BaseLayout {...metadata}>
     <Breadcrumbs />
-    <h1 class="flex justify-center reveal">#{slug}(&times;{articles.length})</h1>    <section class="common-wrapper">
+    <h1 class="flex justify-center reveal">{heading}(&times;{articles.length})</h1>    <section class="common-wrapper">
     <ul class="tag__article__list grid">
       {articles.map((article) => {
         return (

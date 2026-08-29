@@ -51,7 +51,7 @@ The A–Z listing of every Tag that carries at least one Article, grouped into b
 _Avoid_: tag cloud, glossary, tag list.
 
 **Author Tag**:
-An Author surfaced inside the Tag Index as if they were a Tag, letting readers browse everything a given person wrote. Sits alongside topical Tags but is typed as an author rather than a tag. One Slug addresses one page, so an Author Tag that collides with a topical Tag yields to it: the Tag answers and the Author Tag leaves the Index rather than appearing twice in it and once at the page.
+An Author surfaced inside the Tag Index as if they were a Tag, letting readers browse everything a given person wrote. Sits alongside topical Tags but is typed as an author rather than a tag. One Slug addresses one page, so an Author Tag that collides with a topical Tag yields to it: the Tag answers and the Author Tag leaves the Index rather than appearing twice in it and once at the page. It is typed as an author all the way to the page, which names the person and says the Articles were written by them, rather than heading itself with a hash and calling them a topic.
 _Avoid_: byline filter, author facet.
 
 **Count**:
