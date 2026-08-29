@@ -65,7 +65,7 @@ jobs:
       contents: read
     env:
       CI: true
-      E2E_URL: ${{ vars.SITE_URL || 'https://biancafiore.me' }}
+      E2E_URL: ${{ vars.SITE_URL }}
     steps:
       - name: Require the production URL
         run: |
