@@ -1,6 +1,6 @@
 import type { RawArticle } from "@application/dto/article/types";
 import { articleReference } from "@application/dto/article/utils/reference";
-import { sortFavoriteFirst } from "@domain/article";
+import { publishDateISO, sortFavoriteFirst } from "@domain/article/rules";
 import type { Reference } from "@domain/shared/reference";
 
 interface OrderableArticle {
@@ -9,17 +9,11 @@ interface OrderableArticle {
 	publishDateISO: string;
 }
 
-const publishDateISO = (rawArticle: RawArticle): string => {
-	const timestamp = Date.parse(rawArticle.fields.publishDate);
-
-	return Number.isNaN(timestamp) ? "" : new Date(timestamp).toISOString();
-};
-
 function toOrderableArticle(rawArticle: RawArticle): OrderableArticle {
 	return {
 		reference: articleReference(rawArticle),
 		isFavorite: rawArticle.fields.isFavorite ?? false,
-		publishDateISO: publishDateISO(rawArticle),
+		publishDateISO: publishDateISO(rawArticle.fields.publishDate),
 	};
 }
 

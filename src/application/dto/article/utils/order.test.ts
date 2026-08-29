@@ -52,31 +52,31 @@ describe("orderArticleReferences", () => {
 		expect(idsOf(ordered)).toEqual(["later", "earlier"]);
 	});
 
-	it("sorts an article the CMS gave no publish date last, rather than throwing on it", () => {
-		const ordered = orderArticleReferences([
-			makeArticle({ slug: "undated", publishDate: null }),
-			makeArticle({ slug: "dated", publishDate: "2019-01-01" }),
-		]);
-
-		expect(idsOf(ordered)).toEqual(["dated", "undated"]);
+	it("refuses an article the CMS gave no publish date, the way the article mapper already did", () => {
+		expect(() =>
+			orderArticleReferences([
+				makeArticle({ slug: "undated", publishDate: null }),
+				makeArticle({ slug: "dated", publishDate: "2019-01-01" }),
+			]),
+		).toThrow("An Article reached the mapper with an unreadable publish date");
 	});
 
-	it("sorts an unparseable publish date last for the same reason", () => {
-		const ordered = orderArticleReferences([
-			makeArticle({ slug: "nonsense", publishDate: "not-a-date" }),
-			makeArticle({ slug: "dated", publishDate: "2019-01-01" }),
-		]);
-
-		expect(idsOf(ordered)).toEqual(["dated", "nonsense"]);
+	it("refuses an unparseable publish date for the same reason", () => {
+		expect(() =>
+			orderArticleReferences([
+				makeArticle({ slug: "nonsense", publishDate: "not-a-date" }),
+				makeArticle({ slug: "dated", publishDate: "2019-01-01" }),
+			]),
+		).toThrow("An Article reached the mapper with an unreadable publish date: not-a-date");
 	});
 
-	it("still puts an undated favourite ahead of a dated article that is not one", () => {
-		const ordered = orderArticleReferences([
-			makeArticle({ slug: "dated", publishDate: "2026-01-01" }),
-			makeArticle({ slug: "undated-favourite", publishDate: null, isFavorite: true }),
-		]);
-
-		expect(idsOf(ordered)).toEqual(["undated-favourite", "dated"]);
+	it("refuses an undated favourite too, since being one does not date it", () => {
+		expect(() =>
+			orderArticleReferences([
+				makeArticle({ slug: "dated", publishDate: "2026-01-01" }),
+				makeArticle({ slug: "undated-favourite", publishDate: null, isFavorite: true }),
+			]),
+		).toThrow("An Article reached the mapper with an unreadable publish date");
 	});
 
 	it("references an article by its trimmed slug, the id the collection is keyed on", () => {

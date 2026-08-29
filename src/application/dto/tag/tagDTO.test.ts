@@ -20,15 +20,15 @@ interface MakeArticleParams {
 	authorSlug?: string;
 	tagSlugs?: string[];
 	isFavorite?: boolean;
-	publishDate?: string;
+	publishDate?: string | null;
 }
 
-const makeArticle = ({ slug, authorSlug, tagSlugs, isFavorite, publishDate }: MakeArticleParams) =>
+const makeArticle = ({ slug, authorSlug, tagSlugs, isFavorite, publishDate = "2024-01-01" }: MakeArticleParams) =>
 	({
 		fields: {
 			slug,
 			isFavorite,
-			publishDate,
+			publishDate: publishDate ?? undefined,
 			author: authorSlug === undefined ? undefined : { fields: { slug: authorSlug } },
 			tags: tagSlugs?.map((tagSlug) => ({ fields: { slug: tagSlug } })),
 		},
@@ -139,17 +139,27 @@ describe("createTagIndex article order", () => {
 		expect(entries.at(0)?.articles.map(({ id }) => id)).toEqual(["favorite", "newest", "older"]);
 	});
 
-	it("keeps the CMS order for articles Contentful never gave a publish date", () => {
+	it("keeps the CMS order for articles Contentful published on the same date", () => {
 		const entries = createTagIndex({
 			rawTags: [makeTag({ name: "Craft", slug: "craft" })],
 			rawArticles: [
-				makeArticle({ slug: "first", tagSlugs: ["craft"] }),
-				makeArticle({ slug: "second", tagSlugs: ["craft"] }),
+				makeArticle({ slug: "first", tagSlugs: ["craft"], publishDate: "2024-01-01" }),
+				makeArticle({ slug: "second", tagSlugs: ["craft"], publishDate: "2024-01-01" }),
 			],
 			rawAuthors: [],
 		});
 
 		expect(entries.at(0)?.articles.map(({ id }) => id)).toEqual(["first", "second"]);
+	});
+
+	it("refuses an article Contentful never gave a publish date, so the index cannot list one the collection rejects", () => {
+		expect(() =>
+			createTagIndex({
+				rawTags: [makeTag({ name: "Craft", slug: "craft" })],
+				rawArticles: [makeArticle({ slug: "undated", tagSlugs: ["craft"], publishDate: null })],
+				rawAuthors: [],
+			}),
+		).toThrow("An Article reached the mapper with an unreadable publish date");
 	});
 });
 

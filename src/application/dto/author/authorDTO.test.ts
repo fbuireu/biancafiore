@@ -219,3 +219,14 @@ describe("createAuthors, given an author link Contentful did not resolve", () =>
 		);
 	});
 });
+
+describe("createAuthors, given an unreadable publish date", () => {
+	it("refuses it rather than reading the article as the epoch and ranking it last", () => {
+		expect(() =>
+			createAuthors({
+				rawAuthors: [makeAuthor()],
+				rawArticles: [makeArticle({ slug: "nonsense", publishDate: "not-a-date" })],
+			}),
+		).toThrow("An Article reached the mapper with an unreadable publish date: not-a-date");
+	});
+});
