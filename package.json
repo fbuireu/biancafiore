@@ -24,8 +24,8 @@
 	},
 	"scripts": {
 		"prepare": "husky",
-		"start": "astro dev",
-		"start:open": "pnpm start --open",
+		"dev": "astro dev",
+		"dev:open": "pnpm dev --open",
 		"build": "astro build",
 		"preview": "astro preview",
 		"deploy": "wrangler deploy --env production",

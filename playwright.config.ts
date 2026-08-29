@@ -15,7 +15,7 @@ export default defineConfig({
 	webServer: deployedUrl
 		? undefined
 		: {
-				command: "pnpm start",
+				command: "pnpm dev",
 				url: LOCAL_URL,
 				env: { ASTRO_DEV_BACKGROUND: "1" },
 				reuseExistingServer: !process.env.CI,

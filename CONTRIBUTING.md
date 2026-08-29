@@ -44,7 +44,7 @@ pnpm install
 cp .env.example .env
 
 # Start the dev server (no browser)
-pnpm start
+pnpm dev
 ```
 
 `pnpm wrangler:dev` runs the site in the real Workers runtime when a change
