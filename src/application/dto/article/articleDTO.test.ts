@@ -596,3 +596,13 @@ describe("createArticles author and batching", () => {
 		expect(articles.map(({ slug }) => slug)).toEqual(["first", "second"]);
 	});
 });
+
+describe("createArticles, given an author link Contentful did not resolve", () => {
+	it("refuses the batch by the link id rather than emitting an article with no byline", () => {
+		const unresolved = { sys: { type: "Link", linkType: "Entry", id: "2fJkLpQrS" } };
+
+		expect(() => createArticles([makeArticle({ author: unresolved })])).toThrow(
+			"A raw author entry reached the mapper unresolved (2fJkLpQrS), so no byline can name it",
+		);
+	});
+});

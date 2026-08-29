@@ -209,3 +209,13 @@ describe("createAuthors article attribution", () => {
 		expect(author.latestArticle).toBeUndefined();
 	});
 });
+
+describe("createAuthors, given an author link Contentful did not resolve", () => {
+	it("refuses it by the link id, the same way the article mapper does", () => {
+		const unresolved = { sys: { type: "Link", linkType: "Entry", id: "7zXbYcVdE" } } as unknown as RawAuthor;
+
+		expect(() => createAuthors({ rawAuthors: [unresolved], rawArticles: [] })).toThrow(
+			"A raw author entry reached the mapper unresolved (7zXbYcVdE), so no byline can name it",
+		);
+	});
+});

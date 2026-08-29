@@ -4,10 +4,18 @@ import type { Except } from "@const/types";
 import type { AuthorDTO } from "@domain/author";
 import type { Entry, UnresolvedLink } from "contentful";
 
-export function createAuthor(
-	author: Entry<AuthorSkeleton, undefined> | UnresolvedLink<"Entry">,
-): Except<AuthorDTO, "latestArticle"> {
-	const { fields } = author as RawAuthor;
+type LinkedAuthor = Entry<AuthorSkeleton, undefined> | UnresolvedLink<"Entry">;
+
+function resolvedAuthor(author: LinkedAuthor): RawAuthor {
+	if (!("fields" in author)) {
+		throw new Error(`A raw author entry reached the mapper unresolved (${author.sys.id}), so no byline can name it`);
+	}
+
+	return author as RawAuthor;
+}
+
+export function createAuthor(author: LinkedAuthor): Except<AuthorDTO, "latestArticle"> {
+	const { fields } = resolvedAuthor(author);
 
 	return {
 		name: fields.name.trim(),
