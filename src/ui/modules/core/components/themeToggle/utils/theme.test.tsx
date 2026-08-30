@@ -169,3 +169,40 @@ describe("the theme runtime", () => {
 		expect(paintedTheme()).toBe(Theme.DARK);
 	});
 });
+
+describe("the theme runtime on a page without the toggle", () => {
+	it("still paints the document, since every page carries the colour scheme", async () => {
+		operatingSystem(true);
+		document.body.innerHTML = "";
+
+		await visit();
+
+		expect(paintedTheme()).toBe(Theme.DARK);
+		expect(document.documentElement.style.colorScheme).toBe(Theme.DARK);
+	});
+
+	it("wires no change listener there is no control to fire it", async () => {
+		operatingSystem(false);
+		document.body.innerHTML = `<label class="theme-toggle"></label>`;
+
+		await visit();
+
+		expect(storedPreference()).toBeNull();
+		expect(toggledClass()).toBe(false);
+	});
+});
+
+describe("a view transition", () => {
+	it("paints the document being swapped in, which the toggle's own listeners cannot reach", async () => {
+		operatingSystem(false);
+		const input = renderToggle();
+		await visit();
+		choose({ input, theme: Theme.DARK });
+
+		const newDocument = document.implementation.createHTMLDocument();
+		document.dispatchEvent(Object.assign(new Event("astro:before-swap"), { newDocument }) as unknown as Event);
+
+		expect(newDocument.documentElement.getAttribute(THEME_ATTRIBUTE)).toBe(Theme.DARK);
+		expect(newDocument.documentElement.style.colorScheme).toBe(Theme.DARK);
+	});
+});

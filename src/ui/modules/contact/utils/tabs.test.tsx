@@ -1,4 +1,4 @@
-import { CALENDLY } from "@const/calendly";
+import { CALENDLY, CALENDLY_WIDGET_SCRIPT } from "@const/calendly";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { activeTab, initTabs, TAB_QUERY_KEY } from "./tabs";
 
@@ -200,5 +200,87 @@ describe("activeTab", () => {
 
 	it("answers the default when the link carries no tab at all", () => {
 		expect(activeTab(new URL("https://biancafiore.test/contact"))).toBe("email");
+	});
+});
+
+describe("the appointment widget", () => {
+	const appended: HTMLScriptElement[] = [];
+
+	const injectedScripts = () => appended.filter((script) => script.src === CALENDLY_WIDGET_SCRIPT);
+
+	const widget = () => document.querySelector<HTMLElement>(`.${CALENDLY.WIDGET_CLASS}`) as HTMLElement;
+
+	const alreadyOnThePage = () => {
+		const script = document.createElement("script");
+
+		script.type = "text/plain";
+		script.src = CALENDLY_WIDGET_SCRIPT;
+		document.head.insertBefore(script, null);
+	};
+
+	beforeEach(() => {
+		appended.length = 0;
+		vi.spyOn(document.head, "appendChild").mockImplementation((node) => {
+			appended.push(node as HTMLScriptElement);
+
+			return node;
+		});
+	});
+
+	afterEach(() => {
+		document.head.innerHTML = "";
+	});
+
+	it("initialises in place when the vendor script has already loaded", () => {
+		renderTabs({ booking: true });
+		const initInlineWidgets = bookingWidget();
+
+		initTabs(contactUrl(`?${TAB_QUERY_KEY}=appointment`));
+
+		expect(initInlineWidgets).toHaveBeenCalledOnce();
+		expect(injectedScripts()).toHaveLength(0);
+	});
+
+	it("loads the vendor script once, and only when the tab is actually asked for", () => {
+		renderTabs({ booking: true });
+
+		initTabs(contactUrl());
+		expect(injectedScripts()).toHaveLength(0);
+
+		tab("appointment").click();
+
+		const [script] = injectedScripts();
+		expect(script.async).toBe(true);
+		expect(script.defer).toBe(true);
+	});
+
+	it("marks the widget so a second visit to the tab does not ask again", () => {
+		renderTabs({ booking: true });
+
+		initTabs(contactUrl(`?${TAB_QUERY_KEY}=appointment`));
+
+		expect(widget().dataset.calendlyInitialized).toBe("true");
+
+		tab("email").click();
+		tab("appointment").click();
+
+		expect(injectedScripts()).toHaveLength(1);
+	});
+
+	it("does not inject a second copy when one is already on the page", () => {
+		renderTabs({ booking: true });
+		alreadyOnThePage();
+
+		initTabs(contactUrl(`?${TAB_QUERY_KEY}=appointment`));
+
+		expect(injectedScripts()).toHaveLength(0);
+	});
+
+	it("asks for nothing on a page that carries no widget", () => {
+		renderTabs();
+
+		initTabs(contactUrl(`?${TAB_QUERY_KEY}=appointment`));
+
+		expect(injectedScripts()).toHaveLength(0);
 	});
 });

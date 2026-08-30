@@ -1,5 +1,10 @@
-import { backgroundObserver, wireMenu } from "@modules/core/components/header/utils/interactions";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+	backgroundObserver,
+	initMenu,
+	watchBackground,
+	wireMenu,
+} from "@modules/core/components/header/utils/interactions";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const HEADER_HEIGHT = 80;
 const HEADER_MIDLINE = HEADER_HEIGHT / 2;
@@ -253,5 +258,217 @@ describe("wireMenu", () => {
 		elements.button.click();
 
 		expect(covered().some((region) => region.inert)).toBe(false);
+	});
+});
+
+describe("watchBackground", () => {
+	afterEach(() => {
+		document.body.innerHTML = "";
+		document.documentElement.className = "";
+		vi.restoreAllMocks();
+	});
+
+	it("paints the header once immediately rather than waiting for the first scroll", () => {
+		render(`<section class="hero inverted-color-scheme"></section>`);
+		place({ selector: ".hero", top: HEADER_MIDLINE - 10, height: 500 });
+
+		watchBackground();
+
+		expect(isInverted()).toBe(true);
+	});
+
+	it("listens passively, so the observer cannot block the scroll it reacts to", () => {
+		const addEventListener = vi.spyOn(window, "addEventListener");
+		render("");
+
+		watchBackground();
+
+		expect(addEventListener).toHaveBeenCalledWith("scroll", expect.any(Function), { passive: true });
+	});
+
+	it("repaints on a scroll rather than only on the load", () => {
+		render(`<section class="hero inverted-color-scheme"></section>`);
+		place({ selector: ".hero", top: 1000, height: 500 });
+		watchBackground();
+		expect(isInverted()).toBe(false);
+
+		place({ selector: ".hero", top: HEADER_MIDLINE - 10, height: 500 });
+		window.dispatchEvent(new Event("scroll"));
+
+		expect(isInverted()).toBe(true);
+	});
+});
+
+describe("the menu button label", () => {
+	const CLOSE_LABEL_DELAY = 500;
+
+	const wireWithUpdates = (text: HTMLElement | null) => {
+		document.body.innerHTML = `<button class="header__menu-button"></button>`;
+		const button = document.querySelector<HTMLElement>(".header__menu-button") as HTMLElement;
+		if (text) button.appendChild(text);
+
+		let update = () => {};
+
+		wireMenu({
+			elements: { html: document.documentElement, button, text },
+			signal: new AbortController().signal,
+			buildTimeline: (onButtonUpdate) => {
+				update = onButtonUpdate;
+
+				return {
+					eventCallback: () => undefined,
+					reversed: (value?: boolean) => (value === undefined ? true : value),
+				};
+			},
+		});
+
+		return { button, update };
+	};
+
+	const label = () => {
+		const element = document.createElement("span");
+		element.className = "header__menu-text";
+		element.textContent = "Menu";
+
+		return element;
+	};
+
+	beforeEach(() => {
+		vi.useFakeTimers();
+	});
+
+	afterEach(() => {
+		vi.useRealTimers();
+		document.body.innerHTML = "";
+		document.documentElement.className = "";
+		document.documentElement.style.overflow = "";
+	});
+
+	it("waits for the overlay to cover the page before it reads Close", () => {
+		const text = label();
+		const { button, update } = wireWithUpdates(text);
+
+		button.click();
+		update();
+
+		expect(text.textContent).toBe("Menu");
+
+		vi.advanceTimersByTime(CLOSE_LABEL_DELAY);
+
+		expect(text.textContent).toBe("Close");
+	});
+
+	it("goes back to Menu with no delay, so the label is never behind the overlay", () => {
+		const text = label();
+		const { button, update } = wireWithUpdates(text);
+
+		button.click();
+		update();
+		vi.advanceTimersByTime(CLOSE_LABEL_DELAY);
+
+		button.click();
+		update();
+		vi.advanceTimersByTime(0);
+
+		expect(text.textContent).toBe("Menu");
+	});
+
+	it("locks the page behind an open menu and releases it on close", () => {
+		const { button, update } = wireWithUpdates(label());
+
+		button.click();
+		update();
+		expect(document.documentElement.style.overflow).toBe("hidden");
+
+		button.click();
+		update();
+		expect(document.documentElement.style.overflow).toBe("initial");
+	});
+
+	it("does not touch the page's overflow when there is no label to update", () => {
+		const { button, update } = wireWithUpdates(null);
+
+		button.click();
+		update();
+
+		expect(document.documentElement.style.overflow).toBe("");
+	});
+});
+
+describe("initMenu", () => {
+	const render = () => {
+		document.documentElement.className = "";
+		document.body.innerHTML = `
+			<button class="header__menu-button"><span class="header__menu-text">Menu</span></button>
+			<div class="header__menu-overlay-wrapper"><svg><path d="M0 0"></path></svg></div>
+			<div class="header__menu-button__outline"></div>
+			<nav class="header__menu">
+				<div class="navigation__menu__nav"><a href="/about">About</a></div>
+				<li class="navigation__menu__item"><a href="/projects">Projects</a></li>
+				<div class="navigation__menu__quote"><p>A quote</p></div>
+			</nav>
+			<main></main>`;
+
+		return document.querySelector<HTMLElement>(".header__menu-button") as HTMLElement;
+	};
+
+	afterEach(() => {
+		document.body.innerHTML = "";
+		document.documentElement.className = "";
+		document.documentElement.style.overflow = "";
+	});
+
+	it("does nothing on a page with no menu button", () => {
+		document.body.innerHTML = "";
+
+		expect(() => initMenu()).not.toThrow();
+	});
+
+	it("wires the real timeline, so a click opens the menu", () => {
+		const button = render();
+
+		initMenu();
+		button.click();
+
+		expect(button.getAttribute("aria-expanded")).toBe("true");
+		expect(document.documentElement.classList.contains(MENU_OPEN_CLASS)).toBe(true);
+	});
+
+	it("marks the button so a second page-load does not wire it twice", () => {
+		const button = render();
+
+		initMenu();
+		expect(button.dataset.menuInitialized).toBe("true");
+
+		initMenu();
+		button.click();
+
+		expect(button.getAttribute("aria-expanded")).toBe("true");
+	});
+
+	it("makes what the menu covers inert while it is open", () => {
+		const button = render();
+
+		initMenu();
+		button.click();
+
+		expect((document.querySelector("main") as HTMLElement).inert).toBe(true);
+
+		button.click();
+
+		expect((document.querySelector("main") as HTMLElement).inert).toBe(false);
+	});
+
+	it("closes on Escape once it is open, and ignores it while it is closed", () => {
+		const button = render();
+		initMenu();
+
+		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+		expect(document.documentElement.classList.contains(MENU_OPEN_CLASS)).toBe(false);
+
+		button.click();
+		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+
+		expect(document.documentElement.classList.contains(MENU_OPEN_CLASS)).toBe(false);
 	});
 });
