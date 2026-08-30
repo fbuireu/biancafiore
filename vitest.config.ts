@@ -1,7 +1,8 @@
 /// <reference types="vitest" />
-import { readFileSync } from "node:fs";
+import { appendFileSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
+import type { TestModule } from "vitest/node";
 
 const ROOT = fileURLToPath(new URL(".", import.meta.url));
 
@@ -28,9 +29,18 @@ const alias = [
 
 const BUILT_OUTPUT_SUITE = "docs/built-output.test.ts";
 
+const summaryLabel = {
+	onTestRunEnd(testModules: readonly TestModule[]) {
+		if (!process.env.GITHUB_STEP_SUMMARY || testModules.length === 0) return;
+		const projects = [...new Set(testModules.map((module) => module.project.name))].sort();
+		appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n## Vitest run: ${projects.join(" + ")}\n`);
+	},
+};
+
 export default defineConfig({
 	resolve: { alias },
 	test: {
+		reporters: process.env.GITHUB_ACTIONS ? ["default", summaryLabel, "github-actions"] : ["default"],
 		projects: [
 			{
 				resolve: { alias },
