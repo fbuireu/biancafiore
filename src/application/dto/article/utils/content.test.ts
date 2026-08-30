@@ -480,3 +480,75 @@ describe("renderArticleContent tag links and embedded assets", () => {
 		expect(render([embed({ contentType: "splitBlock", fields: { heading: "Only a heading" } })]).trim()).toBe("");
 	});
 });
+
+describe("renderArticleContent image embeds with an incomplete asset", () => {
+	const bareAsset = { url: "//cdn/hero.jpg" };
+
+	const imageEmbed = (fields: Record<string, unknown>) =>
+		embed({ contentType: "imageEmbed", fields: { image: { fields: { file: bareAsset, ...fields } } } });
+
+	it("renders an asset carrying no dimensions rather than dropping it", () => {
+		const html = render([imageEmbed({})]);
+
+		expect(html).toContain("<figure");
+		expect(html).toContain('height=""');
+		expect(html).toContain('width=""');
+	});
+
+	it("asks the CDN for a sensible width when the asset declares none", () => {
+		const html = render([imageEmbed({})]);
+
+		expect(html).toContain("width=768");
+	});
+
+	it("labels the image with its description", () => {
+		const html = render([imageEmbed({ description: "A view of the bay", title: "hero" })]);
+
+		expect(html).toContain('alt="A view of the bay"');
+	});
+
+	it("falls back to the title when the asset carries no description", () => {
+		expect(render([imageEmbed({ title: "hero" })])).toContain('alt="hero"');
+	});
+
+	it("renders an empty alt rather than the word undefined when it carries neither", () => {
+		expect(render([imageEmbed({})])).toContain('alt=""');
+	});
+
+	it("escapes an alt that carries markup", () => {
+		const html = render([imageEmbed({ description: 'A "quoted" <b>bay</b>' })]);
+
+		expect(html).toContain("&quot;quoted&quot;");
+		expect(html).not.toContain("<b>bay</b>");
+	});
+
+	it("renders no figcaption when there is no caption to render", () => {
+		expect(render([imageEmbed({})])).not.toContain("<figcaption");
+	});
+
+	it("renders no wrapper class when the embed names no layout", () => {
+		expect(render([imageEmbed({})])).toContain("<figure>");
+	});
+});
+
+describe("renderArticleContent split blocks with an incomplete asset", () => {
+	const splitBlock = (fields: Record<string, unknown>) =>
+		embed({
+			contentType: "splitBlock",
+			fields: { heading: "A heading", image: { fields: { file: { url: "//cdn/side.jpg" }, ...fields } } },
+		});
+
+	it("renders an asset carrying no dimensions rather than dropping the block", () => {
+		const html = render([splitBlock({})]);
+
+		expect(html).toContain('height=""');
+		expect(html).toContain('width=""');
+		expect(html).toContain("width=768");
+	});
+
+	it("prefers the description to the title for the alt, and falls back to neither", () => {
+		expect(render([splitBlock({ description: "Beside the text" })])).toContain('alt="Beside the text"');
+		expect(render([splitBlock({ title: "side" })])).toContain('alt="side"');
+		expect(render([splitBlock({})])).toContain('alt=""');
+	});
+});
