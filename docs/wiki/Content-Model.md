@@ -32,12 +32,15 @@ config:
   theme: neutral
 ---
 flowchart LR
-    CF[("Contentful")] --> F["fetchEntries"]
-    F --> D["dto/*DTO.ts<br/>raw entry → domain model"]
-    D --> R["domain rules"]
-    R --> C["content collection"]
-    C --> P["page"]
+    cms[("Contentful")] -- "network" --> fetch["fetchEntries<br/>pages until exhausted"]
+    fetch --> loader["the entity loader"]
+    loader --> dto["dto/*DTO.ts<br/>raw entry → domain model"]
+    dto --> rules["domain rules"]
+    rules --> collection["content collection"]
+    collection -- "astro:content" --> page["page"]
 ```
+
+**These arrows are the path one entry travels at build time, not imports.** The import graph is a different picture and is on **[Architecture](Architecture)**; reading this one as dependencies would get the direction of half of them wrong.
 
 Four things are worth knowing about that path.
 
@@ -47,7 +50,7 @@ Four things are worth knowing about that path.
 
 **Bad data fails the build rather than degrading a page.** A malformed publish date, an unresolved author link or an Original Source the Republished flag would hide are refused where they are mapped. One entry taking the build down is the deliberate trade: the alternative is one page quietly rendering wrong.
 
-**Identity is stated per concept.** Articles, Tags and Authors are keyed on their slug; Cities on their name, because a City's slug is derived from it and the two are one identity; Testimonials on the quoted person's name, because a Testimonial has no other identifier. That last one has a known cost: two quotes from one person would collapse. It is recorded rather than fixed with an id the CMS does not have.
+**Identity is stated per concept.** Articles, Tags and Authors are keyed on their slug; Cities on their name, because a City's slug is derived from it and the two are one identity; Projects on the id their mapper derives; Testimonials on the quoted person's name, because a Testimonial has no other identifier. That last one has a known cost: two quotes from one person would collapse. It is recorded rather than fixed with an id the CMS does not have.
 
 ---
 

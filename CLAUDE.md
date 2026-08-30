@@ -61,7 +61,7 @@ Env: copy [`.env.example`](./.env.example). Local secrets go in `.dev.vars` (loa
 
 ## Structure & aliases
 
-The layout is a **DDD-ish** layered architecture: `ui → application → domain`, `application → infrastructure`, and `domain/` importing nothing outward. The "-ish" is a stated split, not a hedge. [ADR 0012](./docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md) names which practices it keeps (the ubiquitous language [`CONTEXT.md`](./CONTEXT.md) holds, the bounded context's anti-corruption layer, the dependency rule) and which it drops (aggregates, repositories, domain events, framework-free types), each with the reason; [ADR 0019](./docs/adr/0019-three-questions-before-modelling.md) decides how much of a concept earns a type of its own.
+The layout is a **DDD-ish** layered architecture: every layer points inward at `domain/`, which imports nothing outward. The chain is shorter than the folder names suggest, and [`content.config.ts`](./src/content.config.ts) is the tree's **only** importer of `application/`: a page reads content through `astro:content`, never through a loader. The "-ish" is a stated split, not a hedge. [ADR 0012](./docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md) names which practices it keeps (the ubiquitous language [`CONTEXT.md`](./CONTEXT.md) holds, the bounded context's anti-corruption layer, the dependency rule) and which it drops (aggregates, repositories, domain events, framework-free types), each with the reason; [ADR 0019](./docs/adr/0019-three-questions-before-modelling.md) decides how much of a concept earns a type of its own.
 
 ```
 src/

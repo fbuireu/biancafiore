@@ -8,19 +8,33 @@ config:
   look: handDrawn
   theme: neutral
 ---
-flowchart TD
-    UI["pages / ui: via astro:content CollectionEntry"] --> APP
-    subgraph APP["application: anti-corruption layer"]
-      L["entities/*: loaders (defineCollection)"]
-      M["dto/*DTO.ts: Contentful mappers"]
+flowchart RL
+    subgraph application["application: anti-corruption layer"]
+        loaders["entities/*: loaders (defineCollection)"]
+        dto["dto/*DTO.ts: Contentful mappers"]
     end
-    APP --> DOM["domain/*: schemas · models · rules"]
-    APP --> INFRA["infrastructure: cms · db · email · images"]
-    INFRA --> CMS[("Contentful")]
-    M -- "raw entry → domain model, then apply rules" --> DOM
+    pages["pages · middleware"] --> ui["ui: components · islands · styles"]
+    pages --> domain["domain: schemas · models · rules"]
+    ui --> domain
+    actions["actions: the contact form"] --> infrastructure["infrastructure: cms · db · email · images"]
+    actions --> domain
+    config["content.config.ts"] --> loaders
+    loaders --> dto
+    loaders --> infrastructure
+    loaders --> domain
+    dto --> infrastructure
+    dto --> domain
+    infrastructure --> domain
+
+    classDef pure fill:#8a6a0f,stroke:#dfb317,stroke-width:2px,color:#fff
+    classDef shell fill:#9b2530,stroke:#d73a49,stroke-width:2px,color:#fff
+    class domain,dto pure
+    class infrastructure,loaders,actions,pages,ui,config shell
 ```
 
-Every arrow is an import a layer may make; anything not drawn is forbidden.
+Every arrow is an import some file really makes, read off the tree rather than intended; anything not drawn is forbidden. Gold is pure, red owns the side effects. `dto` reaches `infrastructure` and stays gold because what it imports there builds a CDN URL string: the line is I/O, not layering.
+
+Two edges are deliberately absent, because neither is an import. **Pages and components never reach the application layer**: one module registers the content collections, and a route then reads them through `astro:content`, which is what lets a page be typed against `CollectionEntry` without knowing a mapper exists. And **Contentful enters at `infrastructure`**, over the network.
 
 ---
 

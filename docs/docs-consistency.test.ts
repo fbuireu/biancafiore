@@ -480,6 +480,40 @@ describe("cross-document links", () => {
 	});
 });
 
+describe("the layer map the architecture ADR draws", () => {
+	const importersOf = (alias: string) =>
+		SOURCE_FILES.filter((file) =>
+			[...read(file).matchAll(IMPORT_SOURCE)].some(([, source]) => source.startsWith(alias)),
+		);
+
+	it("is reached from outside only by content.config.ts, which is what makes astro:content the seam", () => {
+		const outside = importersOf("@application/").filter((file) => !file.startsWith("src/application/"));
+
+		expect(outside).toEqual(["src/content.config.ts"]);
+	});
+
+	it("draws no arrow from a page or a component to the application layer, because none exists", () => {
+		const adr = read("docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md");
+		const drawn = [...adr.matchAll(/^\s{4}(\w+)\s*(?:\[[^\]]*\])?\s*-->\s*(\w+)/gm)].map(
+			([, from, to]) => `${from}->${to}`,
+		);
+
+		expect(drawn).not.toContain("pages->application");
+		expect(drawn).not.toContain("ui->application");
+		expect(drawn).toContain("config->loaders");
+	});
+
+	it("draws every layer that reaches the domain, and the domain reaching none of them", () => {
+		const reachingDomain = ["src/ui/", "src/pages/", "src/actions/", "src/application/", "src/infrastructure/"].filter(
+			(folder) => importersOf("@domain/").some((file) => file.startsWith(folder)),
+		);
+
+		expect(reachingDomain).toHaveLength(5);
+		expect(importersOf("@application/").filter((file) => file.startsWith("src/domain/"))).toEqual([]);
+		expect(importersOf("@infrastructure/").filter((file) => file.startsWith("src/domain/"))).toEqual([]);
+	});
+});
+
 describe("the published wiki", () => {
 	it("publishes a Home page, which is the entry point the sync writes", () => {
 		expect(WIKI_FILES).toContain("docs/wiki/Home.md");

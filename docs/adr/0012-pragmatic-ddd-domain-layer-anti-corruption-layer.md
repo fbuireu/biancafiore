@@ -28,7 +28,7 @@ Per practice, that lands here. A strategic row is the shape of the tree; a tacti
 | --- | --- | --- |
 | **Ubiquitous language** | Strategic | Kept, and binding. [`CONTEXT.md`](../../CONTEXT.md) defines the terms and the code spells them: a folder, field or rule whose name disagrees with the glossary is a bug in one of the two. |
 | **Bounded context with an anti-corruption layer** | Strategic | Kept, and it carries the most weight of the three. Contentful's `sys` / `fields` / `Entry<Skeleton>` stops at [`application/`](../../src/application), which is what keeps [ADR 0002](./0002-contentful-headless-cms.md) reversible. |
-| **Layers with an inward dependency rule** | Strategic | Kept: `ui → application → domain`, `application → infrastructure`, and [`domain/`](../../src/domain) importing nothing outward. The docs test reads the imports rather than trusting this sentence. |
+| **Layers with an inward dependency rule** | Strategic | Kept: every layer points inward at [`domain/`](../../src/domain), and `domain` imports nothing outward. The docs test reads the imports rather than trusting this sentence, which is how the claim that `ui` reaches `application` was caught: it never has. |
 | **Entities and value objects** | Tactical | Partly. A concept gets a Zod schema and an inferred type, and identity is stated per concept (one Author is one Slug). A wrapper around a primitive has to earn itself against [ADR 0019](./0019-three-questions-before-modelling.md) first, which is why there is no `Slug` brand. |
 | **Aggregates and aggregate roots** | Tactical | Dropped. An aggregate is a consistency boundary for *writes*, and nothing here writes content: Contentful owns that. The one write path in the tree is a contact submission, which is a single row with no invariant spanning it. |
 | **Repositories** | Tactical | Dropped as a domain abstraction. [`fetchEntries`](../../src/infrastructure/cms/entries.ts) is the single read seam and Astro's content collections are the read model, so an interface in `domain/` would be a second name for a call that already exists once. |
@@ -45,21 +45,37 @@ config:
   look: handDrawn
   theme: neutral
 ---
-flowchart TD
-    UI["pages / ui: via astro:content CollectionEntry"] --> APP
-    subgraph APP["application: anti-corruption layer"]
-      L["entities/*: loaders (defineCollection)"]
-      M["dto/*DTO.ts: Contentful mappers"]
+flowchart RL
+    subgraph application["application: anti-corruption layer"]
+        loaders["entities/*: loaders (defineCollection)"]
+        dto["dto/*DTO.ts: Contentful mappers"]
     end
-    APP --> DOM["domain/*: schemas · models · rules"]
-    APP --> INFRA["infrastructure: cms · db · email · images"]
-    INFRA --> CMS[("Contentful")]
-    M -- "raw entry → domain model, then apply rules" --> DOM
+    pages["pages · middleware"] --> ui["ui: components · islands · styles"]
+    pages --> domain["domain: schemas · models · rules"]
+    ui --> domain
+    actions["actions: the contact form"] --> infrastructure["infrastructure: cms · db · email · images"]
+    actions --> domain
+    config["content.config.ts"] --> loaders
+    loaders --> dto
+    loaders --> infrastructure
+    loaders --> domain
+    dto --> infrastructure
+    dto --> domain
+    infrastructure --> domain
+
+    classDef pure fill:#8a6a0f,stroke:#dfb317,stroke-width:2px,color:#fff
+    classDef shell fill:#9b2530,stroke:#d73a49,stroke-width:2px,color:#fff
+    class domain,dto pure
+    class infrastructure,loaders,actions,pages,ui,config shell
 ```
+
+Every arrow is an import some file really makes, read off the tree rather than intended; anything not drawn is forbidden. Gold is pure, red owns the side effects. `dto` reaches `infrastructure` and stays gold because what it imports there builds a CDN URL string: the line is I/O, not layering, which is why `dto` sits on the pure side of a layer that also loads.
+
+Two things the arrows deliberately do not show, because neither is an import. **Pages and components never reach the application layer**: [`content.config.ts`](../../src/content.config.ts) is the only module in the tree that imports it, and a route then reads the registered collections through `astro:content`. That indirection is the seam, and it is what lets a page be typed against `CollectionEntry` without knowing a mapper exists. And **Contentful enters at `infrastructure`**, over the network, which is the transport detail everything above it is built to absorb.
 
 ## Consequences
 
-- Dependencies point inward only: `ui → application → domain`, with `application → infrastructure → Contentful`. `domain` depends on nothing outward, so the domain model and its rules are testable and CMS-agnostic even though the schemas are Astro-typed.
+- Dependencies point inward only, and the chain is shorter than it looks: `content.config.ts → application → domain`, `application → infrastructure → domain`, and `pages`/`ui` straight to `domain` for the types they render. `domain` depends on nothing outward, so the domain model and its rules are testable and CMS-agnostic even though the schemas are Astro-typed. This ADR said `ui → application → domain` for a year and no file ever did that; a test now asserts the single importer instead.
 - Rules that genuinely operate over raw Contentful entries and build cross-collection references (related-by-shared-tags, per-tag/author counts, articles-by-author) stay in the ACL on purpose: decoupling them would not preserve behaviour cheaply.
 - A new content type is a four-step path rather than one file: domain concept → DTO → entity loader → collection registration, with the glossary term added to [`CONTEXT.md`](../../CONTEXT.md) in the same change.
 - Concept names are binding. A folder, field or rule whose name disagrees with `CONTEXT.md` is a bug in one of the two.
