@@ -146,7 +146,7 @@ CI/CD runs through GitHub Actions:
 
 | Workflow | Runs on | Does |
 | --- | --- | --- |
-| [`ci.yml`](./.github/workflows/ci.yml) | push to `main`, PRs | One `Check` job running `pnpm verify`, then both deploys, the E2E run against the preview, the production smoke run and the release |
+| [`ci.yml`](./.github/workflows/ci.yml) | push to `main`, PRs, `workflow_dispatch` | One `Check` job running `pnpm verify`, then both deploys, the E2E run against the preview, the production smoke run and the release. A dispatch on `main` redeploys production with the smoke run behind it and cuts no release: the Worker secrets ride the deploy and the build inlines the public env, so a rotated credential reaches nothing until something redeploys, and rotation changes no file a push filter could see |
 | [`_deploy.yml`](./.github/workflows/_deploy.yml) | `workflow_call` | The shared deploy steps both environments call |
 | [`cleanup-development.yml`](./.github/workflows/cleanup-development.yml) | PR closed | Deletes the per-PR preview Worker |
 | `end-2-end-tests.yml` | `workflow_dispatch` | Playwright against production |
