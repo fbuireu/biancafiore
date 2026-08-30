@@ -1,0 +1,52 @@
+# CI/CD
+
+Everything runs through GitHub Actions, and the site deploys to Cloudflare Workers with wrangler. The custom domain sits on the production environment; per-PR previews get their own Worker, deleted when the pull request closes.
+
+---
+
+## The workflows
+
+| Workflow | Runs on | Does |
+|---|---|---|
+| `ci.yml` | push to `main`, pull requests | One `Check` job running `pnpm verify`, then both deploys, the end-to-end run against the preview, the production smoke run and the release |
+| `_deploy.yml` | `workflow_call` | The shared deploy steps both environments call |
+| `cleanup-development.yml` | pull request closed | Deletes the per-PR preview Worker |
+| `end-2-end-tests.yml` | `workflow_dispatch` | Playwright against production |
+| `publish-article.yml` | Contentful webhook | Rebuilds when an Article is published |
+| `sync-wiki.yml` | push to `main` touching `docs/wiki/**` | Publishes this wiki |
+| `zizmor.yml` | push to `main`, pull requests | Security linting of the workflows themselves |
+| `dependency-review.yml` | pull requests | Fails a pull request introducing a known-vulnerable dependency |
+| `commit-message.yml` | pull request opened / edited / reopened / synchronize | commitlint on the **pull request title** |
+| `renovate-auto-approve.yml`, `dependabot-auto-merge.yml` | dependency pull requests | Approve and auto-merge the safe update types |
+
+---
+
+## Why the pull request title is the one that matters
+
+`main` takes squash merges and the repository sets the squash title from the pull request title, so **that title is the commit semantic-release reads**. The local `commit-msg` hook validates the branch's own commits, which the squash then discards, and GitHub fills the pull request title from the *branch name* whenever a pull request carries more than one commit, so the default is rarely conventional.
+
+The check re-runs on `synchronize` because a required check is evaluated against the head sha: without that trigger a new commit would leave it unreported and block the merge.
+
+---
+
+## The smoke run, and the rollback
+
+**The smoke job is the only one that touches production, and until it existed nothing did.** The end-to-end run needs the preview deploy, which happens on pull requests only, so a push to `main` used to deploy production, cut a tag, and make no request to the live site at all.
+
+The preview is not a faithful target either: `HIDE_CHROME` is true there, so the suite sees an under-construction placeholder on four routes. See [Rendering and Routing](Rendering-and-Routing).
+
+Three cases carry a `@smoke` tag, and they are the cheapest things that prove the Worker is answering rather than merely deployed: the homepage with a non-empty title, an unknown path answering 404, and `robots.txt`. None of them names a feature, because a smoke case can only assert what the deploy it follows has already published. **The same trio runs in every repository that deploys**, written the same way, so a set that differs between them is drift rather than a decision.
+
+The step passes no `--pass-with-no-tests`, and that is the point: Playwright exits non-zero on an empty set, so the flag would make a typo in the tag filter green.
+
+**A failing smoke rolls production back.** A tag means the version is live *and answering*, so the release job needs both the production deploy and the smoke run. On its own that would leave a bad version serving traffic with only the tag withheld, so a separate rollback job returns the Worker to the previously live version when the deploy succeeded and the smoke failed. It is a separate job because it needs the Cloudflare credentials, and the smoke job deliberately declares no environment.
+
+**What that costs is worth stating.** A case that fails for a reason outside the Worker now reverts a deploy that was fine. A case whose result depends on the caller's address does not belong in a set that can undo a release, which is why the feed and the sitemap are not in it: both answer `403` to a request from a datacenter address, from the edge rather than from the Worker, while a browser gets both.
+
+---
+
+## Things the deploy learned the hard way
+
+- **A long commit message breaks it, and the error does not say so.** wrangler sends the latest commit message verbatim as a deployment annotation with no truncation, and past a few thousand characters the API answers `Received a malformed response from the API`: a build that compiled, uploaded, and then died on metadata. A merge commit carrying a long pull request body is enough. The annotation is now passed explicitly.
+- **The secrets ride the deploy.** They are written to a file outside the workspace and uploaded with the version, rather than written after the deploy, which used to make every deploy two versions with a window in between where new code ran against the previous values.
+- **Neither the build nor the deploy is wrapped in a retry.** A wrapper cannot tell a bad argument from a bad network, and both fail deterministically far more often than they fail for a reason a second attempt fixes.

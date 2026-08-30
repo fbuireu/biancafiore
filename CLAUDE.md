@@ -61,6 +61,8 @@ Env: copy [`.env.example`](./.env.example). Local secrets go in `.dev.vars` (loa
 
 ## Structure & aliases
 
+The layout is a **DDD-ish** layered architecture: `ui → application → domain`, `application → infrastructure`, and `domain/` importing nothing outward. The "-ish" is a stated split, not a hedge. [ADR 0012](./docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md) names which practices it keeps (the ubiquitous language [`CONTEXT.md`](./CONTEXT.md) holds, the bounded context's anti-corruption layer, the dependency rule) and which it drops (aggregates, repositories, domain events, framework-free types), each with the reason; [ADR 0019](./docs/adr/0019-three-questions-before-modelling.md) decides how much of a concept earns a type of its own.
+
 ```
 src/
   pages/              # routes (index, about, contact, projects, articles/index, articles/[...slug], tags/index, tags/[slug], privacy-policy, terms-and-conditions, rss.xml.ts, 404, 500)
@@ -121,7 +123,10 @@ These documents are not generated. A change that does not update them leaves the
 | The layer boundaries, the rendering mode, or the deploy target | the *Stack* / *Deploy* sections here, plus the ADR that decided it |
 | A decision an ADR records | that ADR: amend it, or supersede it with a new one and say so in both `## Status` blocks |
 | A claim `docs/docs-consistency.test.ts` asserts, on purpose | the doc first; the test only when the claim itself is what changed |
+| What a reader who is not editing this tree would see: the layers, the content model, what renders where, how a deploy works | the page it belongs to in [`docs/wiki/`](./docs/wiki), which is the only documentation a non-contributor reads |
 | An item in [`docs/BACKLOG.md`](./docs/BACKLOG.md) ships, or is decided against | delete the entry: it is a list of what is *not* done, so a stale entry is a lie about the tree. An item that becomes a decision leaves as an ADR |
+
+**[`docs/wiki/`](./docs/wiki) is published, and it is the shape rather than the rules.** [`sync-wiki.yml`](./.github/workflows/sync-wiki.yml) rsyncs it into the repository's GitHub wiki on every push to `main` that touches it, `--delete` included, so the wiki is a mirror and editing a page in the GitHub UI is a change the next sync throws away. The same workflow, byte for byte, publishes the sibling repositories' wikis. Three rules follow from where those pages end up, and the docs test asserts all three: a **filename is the page name** (`Getting-Started.md` is reachable as `Getting-Started`), a link to another page is that **bare name and never a path**, and a link into this repository is an **absolute `https://github.com/` URL**, because a wiki page has no relative route back into the tree. What a page must not do is restate a rule the tree already states: the normative statement lives beside the code, a wiki copy of it is a second one nothing checks, and the page's job is to say where it is.
 
 Propose an ADR in [`docs/adr/`](./docs/adr/) when a decision is **hard to reverse**, **surprising without context** and **the result of a real trade-off**. All three, or it is not an ADR. Copy [ADR 0000](./docs/adr/0000-adr-template.md), the template, and number it one above the highest existing file (`NNNN-kebab-title.md`, `# N. Title` / `Date:` / `## Status` / `## Context` / `## Decision` / `## Consequences`), then link it from wherever it bites: a Gotchas bullet here, a nested guide, a [`CONTEXT.md`](./CONTEXT.md) entry. There is no separate index; an ADR nothing links to will not be read, which is why both the template and the incoming link are asserted.
 
@@ -151,6 +156,7 @@ CI/CD runs through GitHub Actions:
 | [`cleanup-development.yml`](./.github/workflows/cleanup-development.yml) | PR closed | Deletes the per-PR preview Worker |
 | `end-2-end-tests.yml` | `workflow_dispatch` | Playwright against production |
 | [`publish-article.yml`](./.github/workflows/publish-article.yml) | Contentful webhook | Rebuilds when an Article is published |
+| [`sync-wiki.yml`](./.github/workflows/sync-wiki.yml) | push to `main` touching `docs/wiki/**` | Publishes [`docs/wiki/`](./docs/wiki) to the repository's GitHub wiki |
 | [`zizmor.yml`](./.github/workflows/zizmor.yml) | push to `main`, PRs | Security linting of the workflows themselves |
 | [`dependency-review.yml`](./.github/workflows/dependency-review.yml) | PRs | Fails a PR that introduces a dependency with a known vulnerability |
 | [`commit-message.yml`](./.github/workflows/commit-message.yml) | PR opened / edited / reopened / synchronize | commitlint on the **pull request title** |

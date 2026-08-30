@@ -272,7 +272,10 @@ const CONTEXT_TAG_CLASS = /class\s+\w+\s+extends\s+Context\.Tag/;
 const LAUNDERED_SECRET = /getSecret\([^)]*\)\s+as\s+string/;
 const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("CLAUDE.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
-const DOCS = ["CLAUDE.md", "CONTEXT.md", "docs/BACKLOG.md", ...NESTED_GUIDES, ...ADR_FILES];
+const WIKI_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/wiki/"));
+const DOCS = ["CLAUDE.md", "CONTEXT.md", "docs/BACKLOG.md", ...NESTED_GUIDES, ...ADR_FILES, ...WIKI_FILES];
+const isWiki = (doc: string) => doc.startsWith("docs/wiki/");
+const wikiPages = new Set(WIKI_FILES.map((file) => basename(file, ".md")));
 
 const TEST_INFRASTRUCTURE = "src/tests/";
 
@@ -464,7 +467,7 @@ describe("documented paths", () => {
 
 describe("cross-document links", () => {
 	it("resolves every relative markdown link", () => {
-		const broken = DOCS.flatMap((doc) =>
+		const broken = DOCS.filter((doc) => !isWiki(doc)).flatMap((doc) =>
 			[...read(doc).matchAll(RELATIVE_MARKDOWN_LINK)]
 				.map(([, target]) => target.split("#")[0])
 				.filter((target) => target.length > 0 && !ABSOLUTE_URL.test(target))
@@ -474,6 +477,36 @@ describe("cross-document links", () => {
 		);
 
 		expect(broken).toEqual([]);
+	});
+});
+
+describe("the published wiki", () => {
+	it("publishes a Home page, which is the entry point the sync writes", () => {
+		expect(WIKI_FILES).toContain("docs/wiki/Home.md");
+		expect(wikiPages.size).toBeGreaterThan(1);
+	});
+
+	it("links only wiki pages that exist, since a wiki link is a page name and not a path", () => {
+		const broken = DOCS.filter(isWiki).flatMap((doc) =>
+			[...read(doc).matchAll(RELATIVE_MARKDOWN_LINK)]
+				.map(([, target]) => target.split("#")[0])
+				.filter((target) => target.length > 0 && !ABSOLUTE_URL.test(target) && !target.includes("/"))
+				.filter((target) => !wikiPages.has(target))
+				.map((target) => `${doc}: ${target}`),
+		);
+
+		expect(broken).toEqual([]);
+	});
+
+	it("never points a reader at a repository path, which a wiki page cannot resolve", () => {
+		const unreachable = DOCS.filter(isWiki).flatMap((doc) =>
+			[...read(doc).matchAll(RELATIVE_MARKDOWN_LINK)]
+				.map(([, target]) => target.split("#")[0])
+				.filter((target) => target.startsWith("./") || target.startsWith("../"))
+				.map((target) => `${doc}: ${target}`),
+		);
+
+		expect(unreachable).toEqual([]);
 	});
 });
 
