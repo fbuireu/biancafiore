@@ -1,3 +1,10 @@
+## [1.21.2](https://github.com/fbuireu/biancafiore/compare/v1.21.1...v1.21.2) (2026-08-30)
+
+
+### Bug Fixes
+
+* **docs:** draw the arrows the tree really has, not the ones it was meant to ([b5ae1c1](https://github.com/fbuireu/biancafiore/commit/b5ae1c1cfee00c57ba57469a5787542b91a9a0bb))
+
 ## [1.21.1](https://github.com/fbuireu/biancafiore/compare/v1.21.0...v1.21.1) (2026-08-29)
 
 
