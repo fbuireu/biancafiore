@@ -1,3 +1,10 @@
+## [1.21.3](https://github.com/fbuireu/biancafiore/compare/v1.21.2...v1.21.3) (2026-09-01)
+
+
+### Bug Fixes
+
+* **deps:** update astro monorepo ([#1179](https://github.com/fbuireu/biancafiore/issues/1179)) ([260bb48](https://github.com/fbuireu/biancafiore/commit/260bb48b0e4a8e3365148bab3e90e7c349cd05aa))
+
 ## [1.21.2](https://github.com/fbuireu/biancafiore/compare/v1.21.1...v1.21.2) (2026-08-30)
 
 
