@@ -259,6 +259,8 @@ const COLLECTION_FACTORY = "src/application/entities/collection.ts";
 const IDENTIFY_CHOICE = /identify: \(\w+\) => \w+\.(\w+)/g;
 const INLINE_IDENTITY = /\.\.\.\w+, id: \w+\.(\w+) \}/g;
 const PINNED_RUNTIME = /^- (Node|pnpm)\b/;
+const VERSIONS_SECTION = /^## Versions$([\s\S]*?)^## /m;
+const QUOTED_VERSION = /\d+\.\d+/;
 const EXACT_VERSION = /^\d+\.\d+\.\d+$/;
 const REPINNED_RUNTIME = /^\s*(?:node-version|version):\s*["']?\d/m;
 const CITED_IDENTITY = /`(\w+)` → `(\w+)`/g;
@@ -1695,11 +1697,23 @@ describe("conventions", () => {
 describe("pinned versions", () => {
 	const pinned = CLAUDE_MD.split(NEWLINE).flatMap((line) => line.match(PINNED_RUNTIME)?.[1] ?? []);
 
-	it("names both runtimes it pins, and quotes a version for neither", () => {
+	it("names every runtime it pins", () => {
 		expect(pinned.sort()).toEqual(["Node", "pnpm"]);
 	});
 
-	it("pins Node once: .nvmrc and engines.node are the same fact, so they say the same thing", () => {
+	// The rules below hold the pins to each other; this one holds the section to the decision, and without it
+	// the digits creep back one bullet at a time. Only the line that opens a bullet is checked, because the
+	// prose under it narrates the versions this section used to quote wrongly, and that history is the reason
+	// the decision exists.
+	it("quotes a version for none of them, since nothing here would keep one current", () => {
+		const section = CLAUDE_MD.match(VERSIONS_SECTION)?.[1] ?? "";
+		const quoting = section.split(NEWLINE).filter((line) => line.startsWith("- ") && QUOTED_VERSION.test(line));
+
+		expect(section).not.toBe("");
+		expect(quoting).toEqual([]);
+	});
+
+	it("pins Node once: .nvmrc and engines.node are one fact, so they say the same thing", () => {
 		const engine = PACKAGE_JSON.engines.node;
 
 		expect(engine).toMatch(EXACT_VERSION);
@@ -1713,7 +1727,7 @@ describe("pinned versions", () => {
 		expect(version).toMatch(EXACT_VERSION);
 	});
 
-	it("lets no workflow pin either one a second time, since CI reads both from the manifest", () => {
+	it("lets no workflow or composite action pin a runtime the manifest already pins", () => {
 		const workflows = walk(".github").filter((file) => file.endsWith(".yml"));
 		const repinned = workflows.filter((file) => REPINNED_RUNTIME.test(read(file)));
 
