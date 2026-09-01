@@ -258,7 +258,7 @@ const ROBOTS_DISALLOW = /^Disallow: (.+)$/gm;
 const COLLECTION_FACTORY = "src/application/entities/collection.ts";
 const IDENTIFY_CHOICE = /identify: \(\w+\) => \w+\.(\w+)/g;
 const INLINE_IDENTITY = /\.\.\.\w+, id: \w+\.(\w+) \}/g;
-const PINNED_VERSION = /^- (Node|pnpm) \*\*([\d.]+)\*\*/;
+const PINNED_RUNTIME = /^- (Node|pnpm)\b/;
 const EXACT_VERSION = /^\d+\.\d+\.\d+$/;
 const REPINNED_RUNTIME = /^\s*(?:node-version|version):\s*["']?\d/m;
 const CITED_IDENTITY = /`(\w+)` → `(\w+)`/g;
@@ -1693,15 +1693,10 @@ describe("conventions", () => {
 });
 
 describe("pinned versions", () => {
-	const section = CLAUDE_MD.split(NEWLINE).filter((line) => PINNED_VERSION.test(line));
-	const pinned = section.flatMap((line) => {
-		const [, runtime, version] = line.match(PINNED_VERSION) ?? [];
+	const pinned = CLAUDE_MD.split(NEWLINE).flatMap((line) => line.match(PINNED_RUNTIME)?.[1] ?? []);
 
-		return runtime && version ? [{ runtime, version }] : [];
-	});
-
-	it("names both runtimes it pins, whatever digits it quotes for them", () => {
-		expect(pinned.map(({ runtime }) => runtime).sort()).toEqual(["Node", "pnpm"]);
+	it("names both runtimes it pins, and quotes a version for neither", () => {
+		expect(pinned.sort()).toEqual(["Node", "pnpm"]);
 	});
 
 	it("pins Node once: .nvmrc and engines.node are the same fact, so they say the same thing", () => {

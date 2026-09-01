@@ -17,10 +17,10 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 
 ## Versions
 
-- Node **26.7.0** (`engines.node`, and `.nvmrc`, which is what every CI job installs from)
-- pnpm **11.21.0** (`packageManager`, which `pnpm/action-setup` reads): always use pnpm, never npm/yarn
+- Node (`engines.node`, and `.nvmrc`, which is what every CI job installs from)
+- pnpm (`packageManager`, which `pnpm/action-setup` reads): always use pnpm, never npm/yarn
 
-**The digits above are a snapshot; the manifest is what pins.** They are deliberately not asserted against it, so a Renovate bump does not fail CI on an unrelated doc edit, and the cost of that is exactly what it sounds like: this section said Node 26.5.1 and pnpm 11.15.1 for a while after the manifest had moved to 26.7.0 and 11.21.0. Read `engines.node` or `.nvmrc` before acting on a number here.
+**This section names where each runtime is pinned and never what the pin says**, and the two failures that led here are worth keeping. Asserting the digit against the manifest fails every bot pull request on a documentation line the bot cannot edit, which is what contribKit did until it stopped. Quoting the digit without asserting it rots, which is what this section did: it said Node 26.5.1 and pnpm 11.15.1 for a while after the manifest had moved. The only repository here that still quotes its pins is github-star-tracker, and only because two Renovate `customManagers` rewrite the prose in the same pull request as the manifest. Without that, read `engines.node` or `.nvmrc`.
 
 What *is* asserted is the part a bump cannot rot: each runtime is pinned exactly once. `.nvmrc` and `engines.node` are the same fact written twice and must agree, and no workflow may pin either a second time, since `prepare-env` reads `node-version-file: .nvmrc` and `pnpm/action-setup` reads `packageManager`. A bot that bumps the manifest moves both together, so those rules never fire on a routine update.
 
