@@ -1714,17 +1714,16 @@ describe("pinned versions", () => {
 	});
 
 	it("pins Node once: .nvmrc and engines.node are one fact, so they say the same thing", () => {
-		const engine = PACKAGE_JSON.engines.node;
-
-		expect(engine).toMatch(EXACT_VERSION);
-		expect(read(".nvmrc").trim()).toBe(engine);
+		expect(read(".nvmrc").trim()).toBe(PACKAGE_JSON.engines.node);
 	});
 
 	it("pins pnpm once, through packageManager", () => {
-		const [name, version] = PACKAGE_JSON.packageManager.split("@");
+		expect(PACKAGE_JSON.packageManager.split("@")[0]).toBe("pnpm");
+	});
 
-		expect(name).toBe("pnpm");
-		expect(version).toMatch(EXACT_VERSION);
+	it("pins every runtime to an exact version, never a range", () => {
+		expect(PACKAGE_JSON.engines.node).toMatch(EXACT_VERSION);
+		expect(PACKAGE_JSON.packageManager.split("@")[1]).toMatch(EXACT_VERSION);
 	});
 
 	it("lets no workflow or composite action pin a runtime the manifest already pins", () => {
