@@ -58,9 +58,9 @@
 		"test:built": "pnpm build && vitest run --project built"
 	},
 	"dependencies": {
-		"@astrojs/cloudflare": "14.2.2",
+		"@astrojs/cloudflare": "14.2.5",
 		"@astrojs/compiler-rs": "0.4.0",
-		"@astrojs/react": "6.0.3",
+		"@astrojs/react": "6.0.4",
 		"@astrojs/rss": "4.0.19",
 		"@astrojs/sitemap": "3.7.3",
 		"@contentful/rich-text-html-renderer": "17.2.3",
@@ -70,7 +70,7 @@
 		"@react-email/components": "1.0.12",
 		"@react-email/render": "2.1.0",
 		"@tgwf/co2": "0.19.0",
-		"astro": "7.2.3",
+		"astro": "7.2.9",
 		"clsx": "2.1.1",
 		"contentful": "11.12.9",
 		"drizzle-orm": "0.45.2",
