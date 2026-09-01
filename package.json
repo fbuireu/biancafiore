@@ -111,6 +111,6 @@
 		"semantic-release": "25.0.9",
 		"typescript": "6.0.3",
 		"vitest": "4.1.11",
-		"wrangler": "4.124.0"
+		"wrangler": "4.127.0"
 	}
 }
