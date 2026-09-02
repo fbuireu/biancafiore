@@ -1,6 +1,6 @@
 name: CI
 
-run-name: ${{ github.event_name == 'workflow_dispatch' && inputs.reason && format('Redeploy production: {0}', inputs.reason) || '' }}
+run-name: "${{ github.event_name == 'workflow_dispatch' && inputs.reason && format('Redeploy production: {0}', inputs.reason) || '' }}"
 
 on:
   push:
