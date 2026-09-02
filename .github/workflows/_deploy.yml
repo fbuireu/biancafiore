@@ -102,7 +102,7 @@ jobs:
         env:
           INPUTS_WORKER_NAME: ${{ inputs.worker_name }}
           WRANGLER_ENV: ${{ steps.stage.outputs.wrangler_env }}
-          DEPLOY_MESSAGE: ${{ github.sha }} (${{ github.event_name }})
+          DEPLOY_MESSAGE: ${{ github.sha }}-${{ github.event_name }}
           SECRETS_FILE: ${{ runner.temp }}/worker-secrets.json
         run: |
           NAME_FLAG=""
