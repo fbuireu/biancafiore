@@ -4,14 +4,14 @@ Agent-facing guide for **biancafiore**, the portfolio/blog of a content writer. 
 
 ## What this is
 
-Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Contentful** (CMS), dynamic data (contact submissions) from **Drizzle + libSQL/Turso**. Uses **Effect** for infrastructure clients, **React 19** islands for interactive bits (globe, forms), and **lightningcss** for CSS. Static-content-heavy with a few server actions.
+Astro **SSR** site deployed to **Cloudflare Workers**. Content comes from **Contentful** (CMS), dynamic data (contact submissions) from **Drizzle + libSQL/Turso**. Uses **Effect** for infrastructure clients, **React** islands for interactive bits (globe, forms), and **lightningcss** for CSS. Static-content-heavy with a few server actions.
 
 ## Stack
 
-- **Astro 7.2** (`output: "server"`), `@astrojs/cloudflare` adapter, React islands via `@astrojs/react`. ADR 0001 for the host, ADR 0011 for why content pages prerender anyway
+- **Astro** (`output: "server"`), `@astrojs/cloudflare` adapter, React islands via `@astrojs/react`. ADR 0001 for the host, ADR 0011 for why content pages prerender anyway
 - **Contentful** delivery/preview API (`contentful`, rich-text renderers). ADR 0002
 - **Drizzle ORM** + `@libsql/client` → **Turso** (migrated off Astro DB; env vars still named `ASTRO_DB_*`). ADR 0003
-- **Effect 3**: `Context.Tag` + `Layer` clients for cms/db/email. ADR 0004
+- **Effect**: `Context.Tag` + `Layer` clients for cms/db/email. ADR 0004
 - **lightningcss** CSS transformer; **GSAP**, `react-globe.gl`/`three` (globe), `react-hook-form`, `resend` (email), reCAPTCHA v3, `vanilla-cookieconsent`
 - **Biome** (lint + format), **Vitest** (unit), **Playwright** (e2e), **semantic-release** + commitlint (conventional commits)
 
@@ -22,7 +22,7 @@ Astro 7 **SSR** site deployed to **Cloudflare Workers**. Content comes from **Co
 
 **This section names where each runtime is pinned and never what the pin says**, and the two failures that led here are worth keeping. Asserting the digit against the manifest fails every bot pull request on a documentation line the bot cannot edit, which is what contribKit did until it stopped. Quoting the digit without asserting it rots, which is what this section did: it said Node 26.5.1 and pnpm 11.15.1 for a while after the manifest had moved. Read `engines.node` or `.nvmrc`.
 
-What *is* asserted is the part a bump cannot rot: each runtime is pinned exactly once. `.nvmrc` and `engines.node` are the same fact written twice and must agree, and no workflow may pin either a second time, since `prepare-env` reads `node-version-file: .nvmrc` and `pnpm/action-setup` reads `packageManager`. A bot that bumps the manifest moves both together, so those rules never fire on a routine update.
+What *is* asserted is the part a bump cannot rot: each runtime is pinned exactly once. `.nvmrc` and `engines.node` are the same fact written twice and must agree, and no workflow may pin either a second time, since `prepare-env` reads `node-version-file: .nvmrc` and `pnpm/action-setup` reads `packageManager`. A bot that bumps the manifest moves both together, so those rules never fire on a routine update. A last rule reaches the sentences this section cannot see: no document outside the ADRs names a runtime or a framework beside a version, and the two lines here that narrate the stale digits by number are allow-listed by name, because history is not a claim about the tree.
 
 ## Commands
 
