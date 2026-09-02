@@ -46,7 +46,7 @@ The step passes no `--pass-with-no-tests`, and that is the point: Playwright exi
 
 ## What gates a merge
 
-The ruleset on `main` requires four contexts: `Check`, `Lint the pull request title`, `Dependency Review` and `zizmor`. `Check` is an aggregate job that needs every other job in `ci.yml` and fails when any of them failed or was cancelled, so the end-to-end run against the preview gates a merge without being named, which it could not be: every job in that workflow is conditional on the event, and a required check that never reports blocks the merge forever. Approvals are not required; the checks are the gate.
+The ruleset on `main` requires four contexts: `Check`, `Lint the pull request title`, `Dependency Review` and `zizmor`. `Check` is an aggregate job that needs every other job in `ci.yml` and fails when any of them failed or was cancelled, so the end-to-end run against the preview gates a merge without being named, which it could not be: every job in that workflow is conditional on the event, and a required check that never reports blocks the merge forever. Approvals are not required; the checks are the gate. Two settings back it: a `release-tags` ruleset that forbids deleting or moving any `v*` tag, and a deployment-branch policy on the `production` environment that accepts `main` only.
 
 **The preview Worker outlives the end-to-end run, and it used to be deleted under it.** Closing a pull request does not cancel the CI run already going, so the cleanup queues behind that run, in a concurrency group spelled from the pull request number. A weekly sweep deletes any preview Worker whose pull request is closed, for the cases a cleanup missed.
 
