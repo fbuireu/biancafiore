@@ -1,11 +1,18 @@
 name: CI
 
+run-name: ${{ github.event_name == 'workflow_dispatch' && inputs.reason && format('Redeploy production: {0}', inputs.reason) || '' }}
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      reason:
+        description: Why production is being redeployed (shown as the run name)
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -15,8 +22,8 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  check:
-    name: Check
+  verify:
+    name: Verify
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -37,12 +44,11 @@ jobs:
 
   deploy-production:
     name: Deploy to production
-    needs: [check]
-    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' }}
+    needs: [verify]
+    if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
     uses: ./.github/workflows/_deploy.yml
     with:
       environment: production
-      wrangler_env: production
       url: ${{ vars.SITE_URL }}
     secrets:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -58,13 +64,10 @@ jobs:
   smoke:
     name: Production smoke tests
     needs: [deploy-production]
-    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' }}
+    if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    permissions:
-      contents: read
     env:
-      CI: true
       BASE_URL: ${{ vars.SITE_URL }}
     steps:
       - name: Require the production URL
@@ -83,7 +86,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install --with-deps chromium webkit
@@ -101,7 +104,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Run smoke tests against production
         run: pnpm exec playwright test --grep "@smoke"
-      - name: Upload artifact
+      - name: Upload Playwright report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -116,8 +119,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: production
-    permissions:
-      contents: read
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -133,7 +134,7 @@ jobs:
 
   release:
     name: Semantic Release
-    needs: [check, deploy-production, smoke]
+    needs: [verify, deploy-production, smoke]
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -161,12 +162,11 @@ jobs:
 
   deploy-development:
     name: Deploy to development
-    needs: [check]
+    needs: [verify]
     if: ${{ github.event_name == 'pull_request' }}
     uses: ./.github/workflows/_deploy.yml
     with:
       environment: development
-      wrangler_env: development
       worker_name: pr-${{ github.event.pull_request.number }}-biancafiore-development
       url: https://pr-${{ github.event.pull_request.number }}-biancafiore-development.fbuireu.workers.dev
     secrets:
@@ -190,6 +190,7 @@ jobs:
       pull-requests: write
     env:
       PREVIEW_MARKER: '<!-- preview-deployment -->'
+      PREVIEW_URL: https://pr-${{ github.event.pull_request.number }}-biancafiore-development.fbuireu.workers.dev
     steps:
       - name: Find existing comment
         uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4.0.0
@@ -198,7 +199,6 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: github-actions[bot]
           body-includes: ${{ env.PREVIEW_MARKER }}
-
       - name: Upsert preview comment
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5.0.0
         with:
@@ -211,7 +211,7 @@ jobs:
 
             | | |
             |---|---|
-            | **URL** | https://pr-${{ github.event.pull_request.number }}-biancafiore-development.fbuireu.workers.dev |
+            | **URL** | ${{ env.PREVIEW_URL }} |
             | **Branch** | `${{ github.head_ref }}` |
             | **Commit** | `${{ github.event.pull_request.head.sha }}` |
 
@@ -220,12 +220,9 @@ jobs:
     needs: [deploy-development]
     if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 30
     environment: development
-    permissions:
-      contents: read
     env:
-      CI: true
       BASE_URL: https://pr-${{ github.event.pull_request.number }}-biancafiore-development.fbuireu.workers.dev
       CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
       CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
@@ -240,7 +237,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install --with-deps chromium webkit
@@ -249,10 +246,21 @@ jobs:
         run: pnpm exec playwright install-deps chromium webkit
       - name: Run E2E tests
         run: pnpm test:e2e
-      - name: Upload artifact
-        if: always()
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: playwright-report
           path: playwright-report/
-          retention-days: 30
+          retention-days: 7
+
+  check:
+    name: Check
+    needs: [verify, deploy-development, e2e, deploy-production, smoke, release]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Fail if any job above did not succeed
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1

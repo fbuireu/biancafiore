@@ -1734,3 +1734,44 @@ describe("pinned versions", () => {
 		expect(repinned).toEqual([]);
 	});
 });
+
+describe("the workflows", () => {
+	const workflows = walk(".github/workflows").filter((file) => file.endsWith(".yml"));
+	const steps = workflows.flatMap((file) =>
+		read(file)
+			.split("- name:")
+			.map((step) => ({ file, step })),
+	);
+	const RETRY_WRAPPER = "nick-fields/retry";
+	const DEPLOY_COMMAND = /\bwrangler deploy\b/;
+	const BUILD_COMMAND = /\b(?:astro build|pnpm build)\b/;
+	const SECRET_COMMAND = /\bwrangler secret\b/;
+	const CLEANUP_GROUP = /group: CI-refs\/pull\/\$\{\{ github\.event\.pull_request\.number \}\}\/merge/;
+	const AGGREGATE_NEEDS = /name: Check\n\s+needs: \[([^\]]+)\]\n\s+if: \$\{\{ always\(\) \}\}/;
+
+	it("runs every deploy, build and secret write without a retry wrapper", () => {
+		const wrapped = steps
+			.filter(({ step }) => DEPLOY_COMMAND.test(step) || BUILD_COMMAND.test(step) || SECRET_COMMAND.test(step))
+			.filter(({ step }) => step.includes(RETRY_WRAPPER))
+			.map(({ file, step }) => `${file} ->${step.split("\n")[0]}`);
+		const deploying = steps.filter(({ step }) => DEPLOY_COMMAND.test(step)).length;
+
+		expect(deploying).toBeGreaterThan(0);
+		expect(wrapped).toEqual([]);
+	});
+
+	it("queues the preview Worker cleanup behind the pull request's own CI run", () => {
+		expect(read(".github/workflows/ci.yml")).toMatch(/^name: CI$/m);
+		expect(read(".github/workflows/cleanup-development.yml")).toMatch(CLEANUP_GROUP);
+	});
+
+	it("aggregates every gated job under Check, so the preview E2E run gates a merge", () => {
+		const needs = (read(".github/workflows/ci.yml").match(AGGREGATE_NEEDS)?.[1] ?? "")
+			.split(",")
+			.map((job) => job.trim());
+
+		expect(needs).toEqual(
+			expect.arrayContaining(["verify", "deploy-development", "e2e", "deploy-production", "smoke", "release"]),
+		);
+	});
+});

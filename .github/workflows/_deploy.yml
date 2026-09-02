@@ -6,9 +6,9 @@ on:
       environment:
         required: true
         type: string
-      wrangler_env:
-        required: true
-        type: string
+        description: >-
+          The GitHub Environment. The wrangler environment is its last dash-separated
+          segment, derived here rather than passed, so a caller cannot pair the two wrongly.
       url:
         required: false
         type: string
@@ -40,7 +40,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-${{ inputs.wrangler_env }}-${{ inputs.worker_name }}
+  group: deploy-${{ inputs.environment }}-${{ inputs.worker_name }}
   cancel-in-progress: false
 
 jobs:
@@ -54,7 +54,6 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      CLOUDFLARE_ENV: ${{ inputs.wrangler_env }}
       SITE_URL: ${{ vars.SITE_URL }}
       BIANCA_EMAIL: ${{ vars.BIANCA_EMAIL }}
       TWITTER_HANDLE: ${{ vars.TWITTER_HANDLE }}
@@ -75,9 +74,18 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/prepare-env
+      - name: Resolve the wrangler environment from the GitHub Environment
+        id: stage
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+        run: echo "wrangler_env=${ENVIRONMENT##*-}" >> "$GITHUB_OUTPUT"
       - name: Build
+        env:
+          CLOUDFLARE_ENV: ${{ steps.stage.outputs.wrangler_env }}
         run: pnpm build
       - name: Verify the built output
+        env:
+          CLOUDFLARE_ENV: ${{ steps.stage.outputs.wrangler_env }}
         run: pnpm exec vitest run --project built
       - name: Collect the Worker secrets
         env:
@@ -93,7 +101,7 @@ jobs:
       - name: Deploy to Cloudflare Workers
         env:
           INPUTS_WORKER_NAME: ${{ inputs.worker_name }}
-          INPUTS_WRANGLER_ENV: ${{ inputs.wrangler_env }}
+          WRANGLER_ENV: ${{ steps.stage.outputs.wrangler_env }}
           DEPLOY_MESSAGE: ${{ github.sha }} (${{ github.event_name }})
           SECRETS_FILE: ${{ runner.temp }}/worker-secrets.json
         run: |
@@ -101,7 +109,7 @@ jobs:
           if [ -n "${INPUTS_WORKER_NAME}" ]; then
             NAME_FLAG="--name ${INPUTS_WORKER_NAME}"
           fi
-          pnpm exec wrangler deploy --env "$INPUTS_WRANGLER_ENV" --message "$DEPLOY_MESSAGE" --secrets-file "$SECRETS_FILE" $NAME_FLAG
+          pnpm exec wrangler deploy --env "$WRANGLER_ENV" --message "$DEPLOY_MESSAGE" --secrets-file "$SECRETS_FILE" $NAME_FLAG
       - name: Remove the secrets file
         if: always()
         env:

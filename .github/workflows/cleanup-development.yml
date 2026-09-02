@@ -3,22 +3,22 @@ name: Cleanup - Development
 on:
   pull_request:
     types: [closed]
+  schedule:
+    - cron: 0 3 * * 1
+  workflow_dispatch:
 
 permissions:
   contents: read
 
-# Queues behind ci.yml, whose `E2E (preview)` job drives this same preview
-# Worker. The group is its `${{ github.workflow }}-${{ github.ref }}`; renaming
-# that workflow silently stops the wait.
-concurrency:
-  group: CI-${{ github.ref }}
-  cancel-in-progress: false
-
 jobs:
   cleanup:
-    name: Delete preview Worker
+    name: Delete the preview Worker
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    concurrency:
+      group: CI-refs/pull/${{ github.event.pull_request.number }}/merge
+      cancel-in-progress: false
     environment: development
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -43,3 +43,45 @@ jobs:
             echo "$output"
             echo "$output" | grep -qi "does not exist" && exit 0
             exit 1
+
+  sweep:
+    name: Sweep orphaned preview Workers
+    if: ${{ github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: read
+    environment: development
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      WORKER_PATTERN: ^pr-([0-9]+)-biancafiore-development$
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare-env
+      - name: Delete the preview Workers whose pull request is closed
+        run: |
+          scripts=$(curl -fsS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts" \
+            | jq -r '.result[].id')
+          for name in $scripts; do
+            [[ "$name" =~ $WORKER_PATTERN ]] || continue
+            number="${BASH_REMATCH[1]}"
+            state=$(gh pr view "$number" --json state --jq .state 2>/dev/null || echo "UNKNOWN")
+            if [ "$state" = "OPEN" ]; then
+              echo "Keeping $name: pull request #$number is open"
+              continue
+            fi
+            if [ "$state" = "UNKNOWN" ]; then
+              echo "Keeping $name: could not read pull request #$number"
+              continue
+            fi
+            echo "Deleting $name: pull request #$number is $state"
+            pnpm exec wrangler delete "$name" --force
+          done

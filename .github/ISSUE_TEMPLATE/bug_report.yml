@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug or unexpected behavior on the site
+description: Report a bug or unexpected behavior in the site
 title: '[Bug]: '
 labels: ['bug', 'triage']
 assignees: ['fbuireu']
@@ -9,7 +9,7 @@ body:
       value: |
         Thanks for taking the time to fill out this bug report! Please provide as much detail as possible.
 
-        Note: typos or mistakes *in the content* (articles, projects) are not code bugs; please use the Content Issue template instead.
+        Typos or mistakes *in the content* (articles, projects) are not code bugs; please use the Content Issue template instead.
   - type: textarea
     id: description
     attributes:
@@ -22,7 +22,7 @@ body:
     id: url
     attributes:
       label: Page URL
-      description: Where on the site did it happen?
+      description: Where did it happen?
       placeholder: https://biancafiore.me/...
     validations:
       required: true
@@ -55,7 +55,6 @@ body:
     id: environment
     attributes:
       label: Browser and OS
-      description: Which browser and operating system were you using?
       placeholder: Safari 26 on iOS, Chrome 140 on Windows...
     validations:
       required: true
@@ -63,4 +62,4 @@ body:
     id: additional
     attributes:
       label: Additional Context
-      description: Screenshots, console errors, or any other relevant information
+      description: Screenshots, logs, console errors, or any other relevant information

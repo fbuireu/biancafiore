@@ -8,16 +8,15 @@ Everything runs through GitHub Actions, and the site deploys to Cloudflare Worke
 
 | Workflow | Runs on | Does |
 |---|---|---|
-| `ci.yml` | push to `main`, pull requests | One `Check` job running `pnpm verify`, then both deploys, the end-to-end run against the preview, the production smoke run and the release |
+| `ci.yml` | push to `main`, pull requests, manual dispatch | A `Verify` job running `pnpm verify`, then both deploys, the end-to-end run against the preview, the production smoke run and the release, and a `Check` job that aggregates them all: the one context the branch ruleset requires |
 | `_deploy.yml` | `workflow_call` | The shared deploy steps both environments call |
-| `cleanup-development.yml` | pull request closed | Deletes the per-PR preview Worker |
-| `end-2-end-tests.yml` | `workflow_dispatch` | Playwright against production |
-| `publish-article.yml` | Contentful webhook | Rebuilds when an Article is published |
+| `cleanup-development.yml` | pull request closed; weekly | Deletes the per-PR preview Worker once its CI run has finished, and sweeps the Workers of closed pull requests every week |
+| `publish-article.yml` | Contentful webhook | Dispatches `ci.yml`, so a published Article redeploys production with the same smoke run and rollback as a push |
 | `sync-wiki.yml` | push to `main` touching `docs/wiki/**` | Publishes this wiki |
 | `zizmor.yml` | push to `main`, pull requests | Security linting of the workflows themselves |
 | `dependency-review.yml` | pull requests | Fails a pull request introducing a known-vulnerable dependency |
 | `commit-message.yml` | pull request opened / edited / reopened / synchronize | commitlint on the **pull request title** |
-| `renovate-auto-approve.yml`, `dependabot-auto-merge.yml` | dependency pull requests | Approve and auto-merge the safe update types |
+| `dependabot-auto-merge.yml` | Dependabot pull requests | Auto-merges the safe update types; Renovate merges its own once `Check` is green |
 
 ---
 
@@ -42,6 +41,14 @@ The step passes no `--pass-with-no-tests`, and that is the point: Playwright exi
 **A failing smoke rolls production back.** A tag means the version is live *and answering*, so the release job needs both the production deploy and the smoke run. On its own that would leave a bad version serving traffic with only the tag withheld, so a separate rollback job returns the Worker to the previously live version when the deploy succeeded and the smoke failed. It is a separate job because it needs the Cloudflare credentials, and the smoke job deliberately declares no environment.
 
 **What that costs is worth stating.** A case that fails for a reason outside the Worker now reverts a deploy that was fine. A case whose result depends on the caller's address does not belong in a set that can undo a release, which is why the feed and the sitemap are not in it: both answer `403` to a request from a datacenter address, from the edge rather than from the Worker, while a browser gets both.
+
+---
+
+## What gates a merge
+
+The ruleset on `main` requires four contexts: `Check`, `Lint the pull request title`, `Dependency Review` and `zizmor`. `Check` is an aggregate job that needs every other job in `ci.yml` and fails when any of them failed or was cancelled, so the end-to-end run against the preview gates a merge without being named, which it could not be: every job in that workflow is conditional on the event, and a required check that never reports blocks the merge forever. Approvals are not required; the checks are the gate.
+
+**The preview Worker outlives the end-to-end run, and it used to be deleted under it.** Closing a pull request does not cancel the CI run already going, so the cleanup queues behind that run, in a concurrency group spelled from the pull request number. A weekly sweep deletes any preview Worker whose pull request is closed, for the cases a cleanup missed.
 
 ---
 

@@ -9,28 +9,19 @@ on:
   repository_dispatch:
     types: [article-published, article-unpublished]
 
-permissions:
-  contents: read
-
-concurrency:
-  group: publish-production
-  cancel-in-progress: false
+permissions: {}
 
 jobs:
   publish:
-    name: Publish
-    uses: ./.github/workflows/_deploy.yml
-    with:
-      environment: production
-      wrangler_env: production
-      url: ${{ vars.SITE_URL }}
-    secrets:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      GOOGLE_RECAPTCHA_SECRET_KEY: ${{ secrets.GOOGLE_RECAPTCHA_SECRET_KEY }}
-      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-      CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
-      CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
-      CONTENTFUL_PREVIEW_TOKEN: ${{ secrets.CONTENTFUL_PREVIEW_TOKEN }}
-      ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
-      ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
+    name: Redeploy production through CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      actions: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      REASON: ${{ github.event.action == 'article-published' && format('article "{0}" published', github.event.client_payload.title) || format('article ({0}) unpublished', github.event.client_payload.id) }}
+    steps:
+      - name: Dispatch the CI workflow on main
+        run: gh workflow run ci.yml --ref main -f reason="$REASON"

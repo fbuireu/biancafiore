@@ -7,13 +7,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the suggestion! This is a personal site, so not every idea will land, but well-argued ones are always read.
+        Thanks for the suggestion! Not every idea will land, but well-argued ones are always read.
   - type: textarea
     id: problem
     attributes:
       label: Problem Statement
       description: What problem would this solve, or what would it improve?
-      placeholder: As a reader, I find it hard to...
+      placeholder: As a user, I find it hard to...
     validations:
       required: true
   - type: textarea
