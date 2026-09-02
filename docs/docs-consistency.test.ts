@@ -1782,7 +1782,7 @@ describe("the workflows", () => {
 // dated and quotes the versions it decided on; the entries below are the sentences that narrate a past bump
 // or a past mistake by its number, which is history rather than a claim about the tree.
 const STATED_VERSION =
-	/\b(?:Node(?:\.js)?|pnpm|TypeScript|Astro|Next(?:\.js)?|React|Effect|Flutter|Dart|[Ww]rangler|Ruby|Starlight)\s+(?:v|@)?\d+(?:\.\d+)*\b/g;
+	/\b(?:Node(?:\.js)?|pnpm|TypeScript|Astro|Next(?:\.js)?|React|Effect|Flutter|Dart|[Ww]rangler|Ruby|Starlight|Tailwind(?: CSS)?)\s+(?:v|@)?\d+(?:\.\d+)*\b/g;
 const NARRATED_VERSIONS: Record<string, string[]> = { "CLAUDE.md": ["Node 26.5.1", "pnpm 11.15.1"] };
 
 describe("stated versions", () => {
