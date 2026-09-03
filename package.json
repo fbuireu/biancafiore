@@ -1,5 +1,7 @@
 {
 	"name": "biancafiore",
+	"version": "1.21.3",
+	"private": true,
 	"description": "A portfolio for the best content writer ever",
 	"keywords": [
 		"astro",
@@ -16,12 +18,20 @@
 		"resend"
 	],
 	"author": "Ferran Buireu <fbuireu@gmail.com>",
-	"version": "1.21.3",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fbuireu/biancafiore.git"
+	},
+	"homepage": "https://biancafiore.me",
+	"bugs": {
+		"url": "https://github.com/fbuireu/biancafiore/issues"
+	},
 	"type": "module",
-	"packageManager": "pnpm@11.21.0",
 	"engines": {
 		"node": "26.7.0"
 	},
+	"packageManager": "pnpm@11.21.0",
 	"scripts": {
 		"prepare": "husky",
 		"dev": "astro dev",
@@ -48,7 +58,7 @@
 		"test:ut": "vitest run --logHeapUsage --project node --project dom",
 		"test:ut:watch": "vitest --logHeapUsage",
 		"test:ut:coverage": "pnpm test:ut --coverage",
-		"test:ut:changed": "pnpm test:ut --changed",
+		"test:ut:changed": "pnpm test:ut --changed origin/main",
 		"test:docs": "pnpm test:ut docs/docs-consistency.test.ts",
 		"test:all": "pnpm test:ut && pnpm test:e2e",
 		"test:e2e": "playwright test",
