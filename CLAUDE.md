@@ -39,7 +39,7 @@ pnpm typecheck        # astro sync && tsc --noEmit
 pnpm lint:all         # biome lint (append :fix to autofix)
 pnpm format:all       # biome check --write
 pnpm format:check     # biome check, no writes (what verify runs)
-pnpm verify           # format:check && typecheck && test:ut:coverage (the CI gate and pre-push)
+pnpm verify           # format:check && typecheck && check && test:ut:coverage (the CI gate and pre-push)
 
 pnpm test:ut          # vitest (unit)
 pnpm test:ut:watch    # vitest, watch mode

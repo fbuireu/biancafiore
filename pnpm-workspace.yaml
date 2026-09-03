@@ -7,6 +7,7 @@ allowBuilds:
   msw: false
   sharp: true
   workerd: true
+savePrefix: ""
 minimumReleaseAge: 4320 # 3 days
 blockExoticSubdeps: true
 minimumReleaseAgeExclude:
