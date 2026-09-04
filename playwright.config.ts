@@ -3,13 +3,15 @@ import { defineConfig, devices } from "@playwright/test";
 const LOCAL_URL = "http://localhost:4321";
 const deployedUrl = process.env.BASE_URL;
 
-const accessClientId = process.env.CF_ACCESS_CLIENT_ID;
-const accessClientSecret = process.env.CF_ACCESS_CLIENT_SECRET;
-
-const accessHeaders =
-	accessClientId && accessClientSecret
-		? { "CF-Access-Client-Id": accessClientId, "CF-Access-Client-Secret": accessClientSecret }
-		: undefined;
+const accessHeaders = ((): Record<string, string> => {
+	const id = process.env.CF_ACCESS_CLIENT_ID;
+	const secret = process.env.CF_ACCESS_CLIENT_SECRET;
+	if (!id && !secret) return {};
+	if (!id || !secret) {
+		throw new Error(`CF Access misconfigured: ${!id ? "CF_ACCESS_CLIENT_ID" : "CF_ACCESS_CLIENT_SECRET"} is missing`);
+	}
+	return { "CF-Access-Client-Id": id, "CF-Access-Client-Secret": secret };
+})();
 
 export default defineConfig({
 	webServer: deployedUrl

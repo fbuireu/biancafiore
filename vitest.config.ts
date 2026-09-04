@@ -15,6 +15,8 @@ const { paths } = JSON.parse(readFileSync(new URL("./tsconfig.json", import.meta
 
 const AWKWARD_TIMEZONE = "America/New_York";
 
+const MIN_THRESHOLD = 85;
+
 const aliasesFromTsconfig = Object.entries(paths).map(([alias, [target]]) => ({
 	find: alias.replace(TRAILING_GLOB, ""),
 	replacement: `${ROOT}${target.replace(LEADING_RELATIVE, "").replace(TRAILING_GLOB, "")}`,
@@ -86,6 +88,12 @@ export default defineConfig({
 				"src/data/**",
 				"src/env.d.ts",
 			],
+			thresholds: {
+				lines: MIN_THRESHOLD,
+				functions: MIN_THRESHOLD,
+				branches: MIN_THRESHOLD,
+				statements: MIN_THRESHOLD,
+			},
 		},
 	},
 });
