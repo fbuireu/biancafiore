@@ -175,7 +175,7 @@ CI/CD runs through GitHub Actions:
 projects: `node` and `dom` are the unit suite, which `pnpm verify` runs in the `Verify` job, and `built` is the
 handful of assertions over the emitted HTML, sitemap, feed and headers, which cannot run until something has been
 built. That is why `_deploy.yml` runs `vitest run --project built` as its own step after the build, in the deploy
-job, and why the run summary carries one report of ~840 tests and a second of 8. Neither is a duplicate of the
+job, and why the run summary carries two reports rather than one. Neither is a duplicate of the
 other, and `pnpm test:built` is the local command that builds and runs the second. Each block now says which
 it is: the heading inside Vitest's `github-actions` reporter is a constant with no rename option, so
 `vitest.config.ts` registers `summaryLabel`, a reporter that writes a *Vitest run: \<projects\>* heading above
