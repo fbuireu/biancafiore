@@ -43,7 +43,6 @@ The load-bearing invariant: **`domain/` never imports from `application/` or `in
 ---
 config:
   look: handDrawn
-  theme: neutral
 ---
 flowchart RL
     subgraph application["application: anti-corruption layer"]
@@ -63,8 +62,8 @@ flowchart RL
     dto --> domain
     infrastructure --> domain
 
-    classDef pure fill:#8a6a0f,stroke:#dfb317,stroke-width:2px,color:#fff
-    classDef shell fill:#9b2530,stroke:#d73a49,stroke-width:2px,color:#fff
+    classDef pure stroke:#dfb317,stroke-width:3px
+    classDef shell stroke:#d73a49,stroke-width:3px
     class domain,dto pure
     class infrastructure,loaders,actions,pages,ui,config shell
 ```

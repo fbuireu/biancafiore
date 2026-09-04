@@ -29,7 +29,6 @@ Concept names are binding. A folder, field or rule whose name disagrees with the
 ---
 config:
   look: handDrawn
-  theme: neutral
 ---
 flowchart LR
     cms[("Contentful")] -- "network" --> fetch["fetchEntries<br/>pages until exhausted"]
