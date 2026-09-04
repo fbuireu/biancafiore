@@ -34,7 +34,7 @@ The check re-runs on `synchronize` because a required check is evaluated against
 
 The preview is not a faithful target either: `HIDE_CHROME` is true there, so the suite sees an under-construction placeholder on four routes. See [Rendering and Routing](Rendering-and-Routing).
 
-Three cases carry a `@smoke` tag, and they are the cheapest things that prove the Worker is answering rather than merely deployed: the homepage with a non-empty title, an unknown path answering 404, and `robots.txt`. None of them names a feature, because a smoke case can only assert what the deploy it follows has already published. **The same trio runs in every repository that deploys**, written the same way, so a set that differs between them is drift rather than a decision.
+A short set of cases carries a `@smoke` tag, and they are the cheapest things that prove the Worker is answering rather than merely deployed: the homepage with a non-empty title, an unknown path answering 404, and `robots.txt`. None of them names a feature, because a smoke case can only assert what the deploy it follows has already published. **The same trio runs in every repository that deploys**, written the same way, so a set that differs between them is drift rather than a decision.
 
 The step passes no `--pass-with-no-tests`, and that is the point: Playwright exits non-zero on an empty set, so the flag would make a typo in the tag filter green.
 
