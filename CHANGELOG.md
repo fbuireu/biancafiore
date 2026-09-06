@@ -1,3 +1,10 @@
+## [1.21.4](https://github.com/fbuireu/biancafiore/compare/v1.21.3...v1.21.4) (2026-09-06)
+
+
+### Bug Fixes
+
+* **deps:** pin astro and the cloudflare adapter to a pair that builds ([#1185](https://github.com/fbuireu/biancafiore/issues/1185)) ([b441e99](https://github.com/fbuireu/biancafiore/commit/b441e99df6e0f9e5a0dbc9c8b368c625c71f5155))
+
 ## [1.21.3](https://github.com/fbuireu/biancafiore/compare/v1.21.2...v1.21.3) (2026-09-01)
 
 
