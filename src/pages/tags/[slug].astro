@@ -35,7 +35,7 @@ const itemListSchema = buildArticleListSchema(articles.map(({ data }) => data.sl
     <ul class="tag__article__list grid">
       {articles.map((article) => {
         return (
-            <li class="tag__article__item relative reveal">
+            <li class="tag__article__item relative reveal-once">
                 <ArticleCard article={article} isLandscape />
             </li>
         )

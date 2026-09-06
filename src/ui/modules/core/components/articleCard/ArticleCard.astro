@@ -47,7 +47,7 @@ const { slug, title, description, publishDateISO, readingTime, author, featuredI
         <p class="article-card__excerpt">{description}</p>
         <div class="article-card__topics">
             <p class="article-card__kicker editorial-kicker">In this story</p>
-            <ul class="article-card__tags__list">
+            <ul class="article-card__tags__list flex row-balance">
               {visibleTags.map(({ slug: tagSlug, name }) => (
                   <li class="article-card__tag__item">
                       <a class="clickable underline-on-hover" href={tagHref(tagSlug)}>{name}</a>

@@ -31,7 +31,7 @@ const itemListSchema = buildTagListSchema(tags.map(({ data }) => data.slug));
                   <h2 class="tags__item__letter reveal">{letter}</h2>
                   <ul class="tags__item__list flex column-wrap">
                     {entries.map((tag) => (
-                        <li class="tag__item font-sans-serif clickable reveal">
+                        <li class="tag__item font-sans-serif clickable reveal-once">
                             <a href={tagHref(tag.slug)} class="underline-on-hover">{tag.name}(&times;{tag.articles.length})</a>
                         </li>
                     ))}

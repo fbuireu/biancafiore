@@ -42,7 +42,7 @@ const shareLinks = buildArticleShareLinks({
                     <p class="featured-article__description" set:html={featuredArticle.data.description} />
                   {
                       (featuredArticle.data.tags?.length ?? 0) > 0 && (
-                          <ul class="featured-article__tags__list flex">
+                          <ul class="featured-article__tags__list flex row-balance">
                             {featuredArticle.data.tags?.map(({ name, slug }) => (
                                 <a class="featured-article__tag__item underline-on-hover" href={tagHref(slug)}>
                                     #{name}

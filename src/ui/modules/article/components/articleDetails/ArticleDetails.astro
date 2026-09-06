@@ -24,7 +24,7 @@ const { article } = Astro.props;
     </p>
   {
       (article.data.tags?.length ?? 0) > 0 && (
-          <ul class="article-details__tags__list flex row-wrap justify-center">
+          <ul class="article-details__tags__list flex row-balance justify-center">
             {article.data.tags?.map(({ slug, name }) => (
                 <li class="article-details__tag__item font-sans-serif">
                     <a href={tagHref(slug)} class="underline-on-hover">#{name}</a>

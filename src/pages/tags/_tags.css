@@ -34,5 +34,10 @@ html.page--tags body {
 }
 
 .tag__item {
+	--reveal-distance: 1rem;
 	text-transform: capitalize;
+
+	a {
+		display: inline-block;
+	}
 }

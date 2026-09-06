@@ -56,4 +56,35 @@
 			--reveal: 1;
 		}
 	}
+
+	.reveal-once {
+		--reveal-index: 0;
+		--reveal-index-cap: 8;
+		--reveal-delay: 80ms;
+		--reveal-duration: 700ms;
+		--reveal-distance: 3rem;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		@supports (animation-timeline: view()) {
+			.reveal-once {
+				--in-view: false;
+				animation: reveal-in-view both;
+				animation-timeline: view();
+				animation-range: entry 10% cover 30%;
+				container-name: reveal-once;
+			}
+
+			.reveal-once > * {
+				animation: reveal-up var(--reveal-duration) ease both paused;
+				animation-delay: calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-delay));
+			}
+
+			@container reveal-once style(--in-view: true) {
+				.reveal-once > * {
+					animation-play-state: running;
+				}
+			}
+		}
+	}
 }

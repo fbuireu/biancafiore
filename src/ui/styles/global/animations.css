@@ -112,4 +112,13 @@
 			opacity: var(--reveal);
 		}
 	}
+
+	@keyframes reveal-in-view {
+		from {
+			--in-view: false;
+		}
+		to {
+			--in-view: true;
+		}
+	}
 }

@@ -164,6 +164,11 @@
 		flex-flow: row wrap;
 	}
 
+	.row-balance {
+		flex-flow: row wrap;
+		flex-wrap: balance;
+	}
+
 	.column-wrap {
 		flex-flow: column wrap;
 	}

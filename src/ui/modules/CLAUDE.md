@@ -38,7 +38,7 @@ A bundled `<script>` initialises on `astro:page-load`, never at module scope. **
 	- `item-wrapper`: a list item whose card link stretches over the whole item
 	- `visually-hidden`: an element the design hides but a screen reader and the tab order must still reach. The theme toggle's checkbox was `display: none`, which takes a control out of both, so the theme could not be changed by keyboard at all
 - **State owned by the page is a `page` modifier.** Anything that flips several unrelated blocks at once hangs off `<html>` and is consumed by descent, not by tagging each element: `.page--menu-open .reading-progress { … }`. See [`@styles/CLAUDE.md`](../styles/CLAUDE.md).
-- Consume tokens and shared utilities from `@styles` (`var(--font-size-h3)`, `var(--rhythm)`, `.editorial-headline`, `.reveal`, `.underline-on-hover`). Don't reinvent typography.
+- Consume tokens and shared utilities from `@styles` (`var(--font-size-h3)`, `var(--rhythm)`, `.editorial-headline`, `.reveal`, `.reveal-once`, `.underline-on-hover`). Don't reinvent typography.
 - Prefer container queries against the page container declared in [`styles/base/base.css`](../styles/base/base.css) (`@container home-page (width <= 960px)`) over viewport media queries.
 - A style that only this component uses never goes into `@styles/global`; that folder is for genuinely cross-cutting rules.
 

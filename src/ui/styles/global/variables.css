@@ -476,3 +476,9 @@
 	inherits: false;
 	initial-value: 1;
 }
+
+@property --in-view {
+	syntax: "<custom-ident>";
+	inherits: false;
+	initial-value: false;
+}

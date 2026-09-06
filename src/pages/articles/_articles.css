@@ -13,10 +13,6 @@
 }
 
 @container articles-page (width > 960px) {
-	.articles__grid__item {
-		--reveal-stagger-distance: 6rem;
-	}
-
 	.articles__grid__item:nth-child(4n + 2) {
 		--reveal-index: 1;
 	}
