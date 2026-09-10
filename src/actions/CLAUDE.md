@@ -1,6 +1,6 @@
 # src/actions
 
-One Astro server action, `server.contact`, split across three files. [`contact.ts`](./contact.ts) holds `submitContact`, the
+One Astro server action, `server.contact`, split across a handful of files. [`contact.ts`](./contact.ts) holds `submitContact`, the
 Effect program that orchestrates the submission; [`errorResponse.ts`](./errorResponse.ts) holds `contactErrorResponse`, which turns a
 failed `Cause` into the `{ code, message }` the visitor gets; [`index.ts`](./index.ts) holds the Astro binding and nothing
 else: `defineAction`, `accept: "form"`, `contactFormSchema` (`@domain/contact/schema`) validating the payload
@@ -22,13 +22,13 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
 - **`ContactLayer` is provided here, per request**: `Effect.provide(ContactLayer)` inside the handler, never
   at module scope. Contact writes are per-request; the long-lived `ManagedRuntime` behind `fetchEntries`
   (`@infrastructure/cms/entries`) is for CMS reads only. Don't collapse the two.
-- **`contactErrorResponse` is the only place a tagged error becomes HTTP.** Exactly two are mapped:
+- **`contactErrorResponse` is the only place a tagged error becomes HTTP.** Exactly these are mapped:
   `ValidationError` → `BAD_REQUEST` and `DuplicateContactError` → `UNAUTHORIZED`. Everything else
   (`EmailError`, `DatabaseError`, `RecaptchaError`, and any defect) logs `Cause.pretty(cause)` through
   `Effect.logError` and collapses into one generic `INTERNAL_SERVER_ERROR` message. **Adding a tagged error in
   `@infrastructure/errors` without adding a case here silently degrades it to that generic message**, which is
   the failure mode to watch for: `errorResponse.test.ts` keys its census off `ContactError["_tag"]`, so
-  widening that union without answering the new tag fails the type check rather than review. For the three
+  widening that union without answering the new tag fails the type check rather than review. For the
   unmapped tags that answer is the decision, not the default: their copy names our infrastructure, so the
   switch is deliberately left with two cases and no `INTERNAL_SERVER_ERROR` literal beyond the catch-all's.
 - **`UNAUTHORIZED` is the status the form reacts to, which is why it is not a conflict code.** [`ContactForm.tsx`](../ui/modules/contact/components/contactForm/ContactForm.tsx)
@@ -96,7 +96,7 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   language-free.
 - **The duplicate check answers one sentence, whatever fired it.** The cooldown and the exact-repeat
   check are two questions with two purposes, but they share a refusal, because `contactErrorResponse`
-  forwards it verbatim to an unauthenticated caller. Two distinct sentences made the form a free oracle
+  forwards it verbatim to an unauthenticated caller. Distinct sentences made the form a free oracle
   over the contacts table: submit any address and the wording told you whether it had written in the last
   `CONTACT_COOLDOWN_HOURS`, or whether it had ever sent that exact text, and the check runs before any
   mail leaves, so probing cost nothing and left no trace. Which check fired goes to `Effect.logInfo`

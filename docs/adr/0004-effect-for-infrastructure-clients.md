@@ -12,7 +12,7 @@ Error handling across the CMS, database and email calls was ad-hoc `try/catch` w
 
 ## Decision
 
-Effect was adopted to turn those thrown errors into typed, composable failure channels (`Data.TaggedError`), and grew into full dependency injection (`Context.Tag` + `Layer.effect`) across the three clients, with the contact action composing them in an `Effect.gen` pipeline. A deliberately heavy choice for a portfolio site, it earns its keep on the one non-trivial flow (validate → recaptcha → dedupe → send → persist).
+Effect was adopted to turn those thrown errors into typed, composable failure channels (`Data.TaggedError`), and grew into full dependency injection (`Context.Tag` + `Layer.effect`) across the clients, with the contact action composing them in an `Effect.gen` pipeline. A deliberately heavy choice for a portfolio site, it earns its keep on the one non-trivial flow (validate → recaptcha → dedupe → send → persist).
 
 ## Consequences
 

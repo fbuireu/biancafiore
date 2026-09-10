@@ -23,7 +23,7 @@ Rules for a new client:
 
 ## Reading content: `fetchEntries`
 
-[`cms/entries.ts`](./cms/entries.ts) is the only way content is read, and the only thing `@application/entities` imports to read it. `fetchEntries<[Skeleton, …]>(query, …)` takes one Contentful query per array of raw entries it answers with and returns a plain promise, so a loader needs no Effect, no `CmsClient` and no runtime of its own. Five things belong to it rather than to its six callers:
+[`cms/entries.ts`](./cms/entries.ts) is the only way content is read, and the only thing `@application/entities` imports to read it. `fetchEntries<[Skeleton, …]>(query, …)` takes one Contentful query per array of raw entries it answers with and returns a plain promise, so a loader needs no Effect, no `CmsClient` and no runtime of its own. Some things belong to it rather than to its callers:
 
 - the long-lived `ManagedRuntime` over `CmsClientLive`, one CMS client for the whole build/process
 - the `isContentfulConfigured()` bail, which answers an empty array per query instead of fetching, so a loader cannot forget it
@@ -51,6 +51,6 @@ The steps the contact action composes, so [`src/actions`](../actions) stays pure
 
 ## Other subfolders
 
-- `images/`: `imageOptimization`, `imagePlaceholder` (blur data URLs generated during loading). `getImagePlaceholders` takes every source at once and answers a `Map`, because **the burst is the module's decision, not the caller's**: it caps requests in flight, retries one that failed in transit, and logs how many placeholders were lost through Effect's `Logger`. Its predecessor read one source and left the fan-out to four loaders, all of which spread the whole collection over a single `Promise.all`: 62 simultaneous requests to `images.ctfassets.net` for Articles, of which the CDN dropped a sixth, and the bare `catch` reported none of it. The images shipped unblurred and the build said it succeeded. A source the module truly cannot read is simply absent from the `Map`
+- `images/`: `imageOptimization`, `imagePlaceholder` (blur data URLs generated during loading). `getImagePlaceholders` takes every source at once and answers a `Map`, because **the burst is the module's decision, not the caller's**: it caps requests in flight, retries one that failed in transit, and logs how many placeholders were lost through Effect's `Logger`. Its predecessor read one source and left the fan-out to the loaders, all of which spread the whole collection over a single `Promise.all`: 62 simultaneous requests to `images.ctfassets.net` for Articles, of which the CDN dropped a sixth, and the bare `catch` reported none of it. The images shipped unblurred and the build said it succeeded. A source the module truly cannot read is simply absent from the `Map`
 - `integrations/`: build-time Astro integrations (`generateStaticHeaders`)
 - [`db/schema.ts`](./db/schema.ts): Drizzle tables; migrations live in `/drizzle`. Workers-safe imports only: `@libsql/client/web` + `drizzle-orm/libsql/web`.

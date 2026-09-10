@@ -41,7 +41,7 @@ flowchart LR
 
 **These arrows are the path one entry travels at build time, not imports.** The import graph is a different picture and is on **[Architecture](Architecture)**; reading this one as dependencies would get the direction of half of them wrong.
 
-Four things are worth knowing about that path.
+Some things are worth knowing about that path.
 
 **Reading is complete by construction.** One module is the only way content is read, and it owns the page cursor: each query is walked page by page until every matching entry is in hand. Contentful's undeclared default is 100, so a query naming no limit would silently answer the first hundred, and under the Articles' reverse-chronological order what it drops is the oldest writing, with no error. A limit in a loader is therefore an editorial decision, never a guess at how much content exists.
 
@@ -67,7 +67,7 @@ Contact submissions are the one thing this site writes. They go to **Turso** thr
 
 ## Adding a content type
 
-Four steps, in this order, and the glossary entry belongs in the same change:
+These steps, in this order, and the glossary entry belongs in the same change:
 
 1. a domain concept: `schema.ts`, `types.ts`, and `rules.ts` if there is a rule to put in it
 2. a DTO that maps the raw Contentful entry onto it

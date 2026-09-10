@@ -20,9 +20,9 @@ The opposite failure is as real. A textbook domain layer (aggregates, repositori
 
 DDD is a set of practices, not one architecture, and the suffix is a stated split rather than a hedge. The failure mode it names is real: **DDD asks for the abstraction before the code has earned it, and the boilerplate then hides the rules it was meant to protect.**
 
-The split runs along the strategic/tactical line. **The strategic half is not negotiable** and this ADR fixes it: the ubiquitous language of [`CONTEXT.md`](../../CONTEXT.md), the layer boundaries, the dependency direction, the pure domain, and the anti-corruption layer that keeps Contentful out of it. **The tactical half is applied where it pays**, and the test is the three questions of [ADR 0019](./0019-three-questions-before-modelling.md), asked in order: can the illegal state be reached, does anything read it, does it cross a boundary. Three "no" answers mean write the rule down rather than encode it.
+The split runs along the strategic/tactical line. **The strategic half is not negotiable** and this ADR fixes it: the ubiquitous language of [`CONTEXT.md`](../../CONTEXT.md), the layer boundaries, the dependency direction, the pure domain, and the anti-corruption layer that keeps Contentful out of it. **The tactical half is applied where it pays**, and the test is the questions of [ADR 0019](./0019-three-questions-before-modelling.md), asked in order: can the illegal state be reached, does anything read it, does it cross a boundary. A "no" to every one of them means write the rule down rather than encode it.
 
-Per practice, that lands here. A strategic row is the shape of the tree; a tactical row is a call, and a reviewer who thinks one fell on the wrong side has the three questions to argue with rather than a preference.
+Per practice, that lands here. A strategic row is the shape of the tree; a tactical row is a call, and a reviewer who thinks one fell on the wrong side has those questions to argue with rather than a preference.
 
 | Practice | Half | Here |
 | --- | --- | --- |
@@ -35,7 +35,7 @@ Per practice, that lands here. A strategic row is the shape of the tree; a tacti
 | **Domain events** | Tactical | Dropped. Nothing in the process reacts to content changing, because a publish is not an event this runtime observes: [`publish-article.yml`](../../.github/workflows/publish-article.yml) takes the Contentful webhook and rebuilds the site. |
 | **Framework-free domain types** | Tactical | Dropped deliberately. Schemas keep `astro/zod` and `reference()` because Astro drives app-wide typing through `CollectionEntry`; a parallel framework-free model would be the same shapes written twice and churned on every content change. |
 
-Three of the four dropped rows share one reason worth stating once: aggregates, repositories and domain events all assume an application that owns its own writes, and this one does not. Content is authored in Contentful and read here.
+Most of the dropped rows share one reason worth stating once: aggregates, repositories and domain events all assume an application that owns its own writes, and this one does not. Content is authored in Contentful and read here.
 
 The load-bearing invariant: **`domain/` never imports from `application/` or `infrastructure/`**. It may use `astro/zod`, `astro:content`'s `reference()`, other `@domain/*`, and generic `@shared/utils` helpers only.
 
@@ -70,11 +70,11 @@ flowchart RL
 
 Every arrow is an import some file really makes, read off the tree rather than intended; anything not drawn is forbidden. Gold is pure, red owns the side effects. `dto` reaches `infrastructure` and stays gold because what it imports there builds a CDN URL string: the line is I/O, not layering, which is why `dto` sits on the pure side of a layer that also loads.
 
-Two things the arrows deliberately do not show, because neither is an import. **Pages and components never reach the application layer**: [`content.config.ts`](../../src/content.config.ts) is the only module in the tree that imports it, and a route then reads the registered collections through `astro:content`. That indirection is the seam, and it is what lets a page be typed against `CollectionEntry` without knowing a mapper exists. And **Contentful enters at `infrastructure`**, over the network, which is the transport detail everything above it is built to absorb.
+Some things the arrows deliberately do not show, because neither is an import. **Pages and components never reach the application layer**: [`content.config.ts`](../../src/content.config.ts) is the only module in the tree that imports it, and a route then reads the registered collections through `astro:content`. That indirection is the seam, and it is what lets a page be typed against `CollectionEntry` without knowing a mapper exists. And **Contentful enters at `infrastructure`**, over the network, which is the transport detail everything above it is built to absorb.
 
 ## Consequences
 
 - Dependencies point inward only, and the chain is shorter than it looks: `content.config.ts → application → domain`, `application → infrastructure → domain`, and `pages`/`ui` straight to `domain` for the types they render. `domain` depends on nothing outward, so the domain model and its rules are testable and CMS-agnostic even though the schemas are Astro-typed. This ADR said `ui → application → domain` for a year and no file ever did that; a test now asserts the single importer instead.
 - Rules that genuinely operate over raw Contentful entries and build cross-collection references (related-by-shared-tags, per-tag/author counts, articles-by-author) stay in the ACL on purpose: decoupling them would not preserve behaviour cheaply.
-- A new content type is a four-step path rather than one file: domain concept → DTO → entity loader → collection registration, with the glossary term added to [`CONTEXT.md`](../../CONTEXT.md) in the same change.
+- A new content type is a multi-step path rather than one file: domain concept → DTO → entity loader → collection registration, with the glossary term added to [`CONTEXT.md`](../../CONTEXT.md) in the same change.
 - Concept names are binding. A folder, field or rule whose name disagrees with `CONTEXT.md` is a bug in one of the two.

@@ -33,7 +33,7 @@ flowchart RL
 
 Every arrow is an import some file really makes, read off the tree rather than intended; anything not drawn is forbidden. Gold is pure, red owns the side effects. `dto` reaches `infrastructure` and stays gold because what it imports there builds a CDN URL string: the line is I/O, not layering.
 
-Two edges are deliberately absent, because neither is an import. **Pages and components never reach the application layer**: one module registers the content collections, and a route then reads them through `astro:content`, which is what lets a page be typed against `CollectionEntry` without knowing a mapper exists. And **Contentful enters at `infrastructure`**, over the network.
+Some edges are deliberately absent, because neither is an import. **Pages and components never reach the application layer**: one module registers the content collections, and a route then reads them through `astro:content`, which is what lets a page be typed against `CollectionEntry` without knowing a mapper exists. And **Contentful enters at `infrastructure`**, over the network.
 
 ---
 
@@ -59,7 +59,7 @@ The split runs along the strategic/tactical line, and only one half is negotiabl
 
 **The strategic half is taken whole.** One ubiquitous language, defined in [`CONTEXT.md`](https://github.com/fbuireu/biancafiore/blob/main/CONTEXT.md), where every domain word also lists the synonyms it displaces so a near-miss cannot drift in. A pure domain that performs no I/O, reads no env and holds no Effect. And the anti-corruption layer that keeps Contentful's `sys` and `fields` from reaching any of it, which is what keeps the CMS choice reversible.
 
-**The tactical half is applied where it pays**, and the test is three questions asked in order: can the illegal state actually be reached, does anything read it, does it cross a boundary. Three "no" answers mean write the rule down instead of encoding it, because a divergence that is named is finished work.
+**The tactical half is applied where it pays**, and the test is a set of questions asked in order: can the illegal state actually be reached, does anything read it, does it cross a boundary. A "no" to every one of them means write the rule down instead of encoding it, because a divergence that is named is finished work.
 
 What that rejected, concretely. There are **no aggregates**: an aggregate is a consistency boundary for writes, and nothing here writes content, since Contentful owns that and the only write path in the tree is a contact submission. There are **no repositories** as a domain abstraction, because a single read seam already exists and Astro's content collections are the read model. There are **no domain events**, because a publish is not an event this runtime observes: a Contentful webhook rebuilds the site instead. And the schemas are deliberately **not framework-free**, because Astro drives app-wide typing through `CollectionEntry` and a parallel model would be the same shapes written twice.
 

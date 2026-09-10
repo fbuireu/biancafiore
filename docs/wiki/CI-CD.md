@@ -32,9 +32,9 @@ The check re-runs on `synchronize` because a required check is evaluated against
 
 **The smoke job is the only one that touches production, and until it existed nothing did.** The end-to-end run needs the preview deploy, which happens on pull requests only, so a push to `main` used to deploy production, cut a tag, and make no request to the live site at all.
 
-The preview is not a faithful target either: `HIDE_CHROME` is true there, so the suite sees an under-construction placeholder on four routes. See [Rendering and Routing](Rendering-and-Routing).
+The preview is not a faithful target either: `HIDE_CHROME` is true there, so the suite sees an under-construction placeholder on the unpublished routes. See [Rendering and Routing](Rendering-and-Routing).
 
-A short set of cases carries a `@smoke` tag, and they are the cheapest things that prove the Worker is answering rather than merely deployed: the homepage with a non-empty title, an unknown path answering 404, and `robots.txt`. None of them names a feature, because a smoke case can only assert what the deploy it follows has already published. **The same trio runs in every repository that deploys**, written the same way, so a set that differs between them is drift rather than a decision.
+A short set of cases carries a `@smoke` tag, and they are the cheapest things that prove the Worker is answering rather than merely deployed: the homepage with a non-empty title, an unknown path answering 404, and `robots.txt`. None of them names a feature, because a smoke case can only assert what the deploy it follows has already published. **The same set runs in every repository that deploys**, written the same way, so a set that differs between them is drift rather than a decision.
 
 The step passes no `--pass-with-no-tests`, and that is the point: Playwright exits non-zero on an empty set, so the flag would make a typo in the tag filter green.
 
@@ -46,7 +46,7 @@ The step passes no `--pass-with-no-tests`, and that is the point: Playwright exi
 
 ## What gates a merge
 
-The ruleset on `main` requires four contexts: `Check`, `Lint the pull request title`, `Dependency Review` and `zizmor`. `Check` is an aggregate job that needs every other job in `ci.yml` and fails when any of them failed or was cancelled, so the end-to-end run against the preview gates a merge without being named, which it could not be: every job in that workflow is conditional on the event, and a required check that never reports blocks the merge forever. Approvals are not required; the checks are the gate. Two settings back it: a `release-tags` ruleset that forbids deleting or moving any `v*` tag, and a deployment-branch policy on the `production` environment that accepts `main` only.
+The ruleset on `main` requires these contexts: `Check`, `Lint the pull request title`, `Dependency Review` and `zizmor`. `Check` is an aggregate job that needs every other job in `ci.yml` and fails when any of them failed or was cancelled, so the end-to-end run against the preview gates a merge without being named, which it could not be: every job in that workflow is conditional on the event, and a required check that never reports blocks the merge forever. Approvals are not required; the checks are the gate. Settings outside it back it up: a `release-tags` ruleset that forbids deleting or moving any `v*` tag, and a deployment-branch policy on the `production` environment that accepts `main` only.
 
 **The preview Worker outlives the end-to-end run, and it used to be deleted under it.** Closing a pull request does not cancel the CI run already going, so the cleanup queues behind that run, in a concurrency group spelled from the pull request number. A weekly sweep deletes any preview Worker whose pull request is closed, for the cases a cleanup missed.
 

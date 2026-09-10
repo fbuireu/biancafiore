@@ -38,7 +38,7 @@ A public boolean env var that does considerably more than its name suggests, whi
 
 It hides the header, the breadcrumbs on every page carrying them, and an Article's table of contents. It also **replaces the page body** with an under-construction placeholder on every route outside the articles, tags, legal and error allowlist, so `/`, `/about`, `/contact` and `/projects` serve no real content at all. The footer renders either way.
 
-It is `true` in the `development` environment, which is what makes the per-PR preview an unfaithful target: the end-to-end suite that runs there sees the placeholder on four routes, and the contact specs skip themselves entirely. [ADR 0018](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0018-hide-chrome-replaces-the-page.md) records why the flag exists and what publishing a route means.
+It is `true` in the `development` environment, which is what makes the per-PR preview an unfaithful target: the end-to-end suite that runs there sees the placeholder on the unpublished routes, and the contact specs skip themselves entirely. [ADR 0018](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0018-hide-chrome-replaces-the-page.md) records why the flag exists and what publishing a route means.
 
 ---
 

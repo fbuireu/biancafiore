@@ -25,14 +25,14 @@ An Astro SSR site on Cloudflare Workers, with editorial content authored in Cont
 | **[Content Model](Content-Model)** | The domain vocabulary, and how Contentful reaches it |
 | **[Rendering and Routing](Rendering-and-Routing)** | What prerenders, what runs on request, and `HIDE_CHROME` |
 | **[Styling](Styling)** | The cascade layers, the token system, the colour scheme |
-| **[CI/CD](CI-CD)** | Workflows, the two deploys, the smoke run and the rollback |
+| **[CI/CD](CI-CD)** | Workflows, the deploys, the smoke run and the rollback |
 | **[Troubleshooting](Troubleshooting)** | The failures that have actually happened here |
 
 ---
 
 ## Where The Rules Live
 
-This wiki is the shape, not the rules. Anything normative lives in the repository beside the code it governs, and a test asserts it: restating it here would be a second copy that nothing checks.
+This wiki is the shape, not the rules. Anything normative lives in the repository beside the code it governs, and a test asserts it: restating it here would be another copy that nothing checks.
 
 | Question | Where |
 |---|---|
