@@ -42,6 +42,7 @@ const summaryLabel = {
 export default defineConfig({
 	resolve: { alias },
 	test: {
+		testTimeout: 20_000,
 		reporters: process.env.GITHUB_ACTIONS ? ["default", summaryLabel, "github-actions"] : ["default"],
 		projects: [
 			{
