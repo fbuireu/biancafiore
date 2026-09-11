@@ -40,8 +40,9 @@ pnpm lint:all         # biome lint (append :fix to autofix)
 pnpm format:all       # biome check --write
 pnpm format:check     # biome check, no writes (what verify runs)
 pnpm since            # prints the push target the :changed variants diff against
-pnpm verify           # format:check && typecheck && check && test:ut:coverage (the CI gate)
-pnpm verify:changed   # the same with test:ut:changed in place of coverage (what pre-push runs)
+pnpm verify:static    # format:check && typecheck && check: everything verify does but the suite
+pnpm verify           # verify:static && test:ut:coverage (the CI gate)
+pnpm verify:changed   # verify:static && test:ut:changed (what pre-push runs)
 
 pnpm test:ut          # vitest (unit)
 pnpm test:ut:watch    # vitest, watch mode

@@ -64,8 +64,9 @@
 		"test:all": "pnpm test:ut && pnpm test:e2e",
 		"test:e2e": "playwright test",
 		"test:e2e:ui": "pnpm test:e2e --ui",
-		"verify": "pnpm format:check && pnpm typecheck && pnpm check && pnpm test:ut:coverage",
-		"verify:changed": "pnpm format:check && pnpm typecheck && pnpm check && pnpm test:ut:changed",
+		"verify:static": "pnpm format:check && pnpm typecheck && pnpm check",
+		"verify": "pnpm verify:static && pnpm test:ut:coverage",
+		"verify:changed": "pnpm verify:static && pnpm test:ut:changed",
 		"test:built": "pnpm build && vitest run --project built",
 		"test:e2e:changed": "pnpm test:e2e --only-changed --pass-with-no-tests"
 	},
