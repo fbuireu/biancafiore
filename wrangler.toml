@@ -6,6 +6,12 @@ compatibility_date = "2026-03-12"
 [observability]
 enabled = true
 
+[observability.traces]
+enabled = true
+
+[cache]
+enabled = true
+
 [assets]
 directory = "dist/client"
 binding = "ASSETS"

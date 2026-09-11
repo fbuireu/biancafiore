@@ -149,7 +149,11 @@ Traps worth naming, because each has already happened here: deleting a resolved 
 
 ## Deploy
 
-Cloudflare Workers via wrangler (`wrangler.toml`): `main` is the `@astrojs/cloudflare` server entrypoint, `dist/` served as assets, `SESSION` KV binding, custom domain `biancafiore.me` on `env.production`.
+Cloudflare Workers via wrangler (`wrangler.toml`): `main` is the `@astrojs/cloudflare` server entrypoint, `dist/` served as assets, `SESSION` KV binding, custom domain `biancafiore.me` on `env.production`, plus `[cache]` and `[observability.traces]`.
+
+**The Worker caches what its fetch handler answers, and a deploy is what clears it.** `[cache] enabled = true` is safe here because every route answers the same bytes to everybody: the content pages carry `prerender = true`, the only routes rendered per request are `contact`, `404` and `500`, none of which reads anything off the request that is not already in the URL, [`src/middleware.ts`](./src/middleware.ts) discards its context entirely and sets a header set decided at build time, and nothing reads the `SESSION` binding, which exists because Astro wants a session driver rather than because a page stores anything. `cross_version_cache` is left at its default of `false` **on purpose**: the cache key carries the Worker version, so every deploy starts cold, and `publish-article.yml` redeploys on a Contentful publish, which is what makes a newly published Article appear at once. Turning it on would raise the hit rate and make that Article wait out its TTL instead. Nothing sets `Cache-Control`, so freshness is heuristic; set it explicitly if that stops being good enough. `cache` is an inheritable field, so the one block covers both environments.
+
+**Traces are opted into separately from logs.** `[observability] enabled = true` turns on Workers Logs alone, which is why the dashboard reported Workers Traces as disabled while observability was on; `[observability.traces]` is what asks for them.
 
 CI/CD runs through GitHub Actions:
 
