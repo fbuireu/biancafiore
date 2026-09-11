@@ -42,7 +42,7 @@ pnpm test:built         # build, then assert the emitted HTML, sitemap, feed and
 pnpm test:e2e           # playwright
 ```
 
-A run shows more than one Vitest summary and they are different suites, each with its own config: the `node` and `dom` projects are the unit tests, and the built-output suite is the handful of assertions over the emitted output, which cannot run until something has been built.
+A run shows more than one Vitest summary and they are different suites: the `node` and `dom` projects are the unit tests, and `built` is the handful of assertions over the emitted output, which cannot run until something has been built.
 
 ## Database
 

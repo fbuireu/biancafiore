@@ -173,17 +173,16 @@ CI/CD runs through GitHub Actions:
 
 **`/rss.xml` and `/sitemap-index.xml` answer `403` in production to a request from a datacenter address, and that is why they are not smoke cases.** Both were, on the first run of this job: the homepage, the 404 and `robots.txt` passed and those two failed with `403` under both browser projects, from a GitHub runner sending a real browser user agent. Nothing in this tree returns 403 (the middleware only sets headers), so the answer comes from the edge rather than from the Worker. **A browser gets both**, checked on 2026-08-29: the feed renders its channel and items, so the Worker serves them and the zone is answering the runner differently from a person. That is worth knowing beyond CI: a feed reader is also an automated client on a datacenter address, so the rule that failed the test may be refusing subscribers, and nothing here would show it. Cloudflare's **Security Events** log names the rule that blocked a given request, which is where a fix starts; the fix is a Cloudflare setting, not a change in this tree. Put the two cases back in the smoke set once that rule stops matching, since a smoke case that depends on the caller's address is evidence about the caller, not about the deploy.
 
-**A CI run shows more than one Vitest summary, and they are different suites, so each has a config of its own.**
-[`vitest.config.ts`](./vitest.config.ts) is the unit suite, projects `node` and `dom`, which `pnpm verify` runs
-in the `Verify` job. [`vitest.built.config.ts`](./vitest.built.config.ts) is the handful of assertions over the
-emitted HTML, sitemap, feed and headers, which cannot run until something has been built, which is why
-`_deploy.yml` runs it as its own step after the build, in the deploy job; `pnpm test:built` is the local command
-that builds and runs it. Neither block duplicates the other. Each says which it is because the heading inside
-Vitest's `github-actions` reporter is a constant with no rename option, so `vitest.config.ts` declares and
-exports `summaryLabel`, a reporter that writes the label it is given above the block on CI only, and the built
-config imports it. A suite names itself rather than deriving the name from the projects that happened to run,
-which is why the two need two configs: `reporters` is one of Vitest's `NonProjectOptions`, so a project cannot
-carry one. forever-pto uses the same helper the same way, shaped to its own config.
+**A CI run shows more than one Vitest summary, and they are different suites.** `vitest.config.ts` declares the
+projects: `node` and `dom` are the unit suite, which `pnpm verify` runs in the `Verify` job, and `built` is the
+handful of assertions over the emitted HTML, sitemap, feed and headers, which cannot run until something has been
+built. That is why `_deploy.yml` runs `vitest run --project built` as its own step after the build, in the deploy
+job, and why the run summary carries more than one report. Neither is a duplicate of the
+other, and `pnpm test:built` is the local command that builds and runs the `built` one. Each block now says which
+it is: the heading inside Vitest's `github-actions` reporter is a constant with no rename option, so
+`vitest.config.ts` registers `summaryLabel`, a reporter that writes a *Vitest run: \<projects\>* heading above
+its block from the names of the projects that actually ran, on CI only. The same labelling exists in
+forever-pto and contribKit, each shaped to its own config.
 
 **The smoke job labels its own report.** Playwright's `github` reporter annotates every run with the same
 `🎭 Playwright Run Summary`, whichever suite produced it, so a step writes a *Production smoke tests* heading to
