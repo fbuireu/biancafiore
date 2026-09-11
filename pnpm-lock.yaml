@@ -233,6 +233,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: 5.0.0
         version: 5.0.0(vitest@5.0.0)
+      conventional-changelog-conventionalcommits:
+        specifier: 10.4.0
+        version: 10.4.0
       drizzle-kit:
         specifier: 0.31.10
         version: 0.31.10
