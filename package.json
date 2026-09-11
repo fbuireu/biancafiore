@@ -113,7 +113,6 @@
 		"@types/react-dom": "19.2.7",
 		"@types/three": "0.185.4",
 		"@vitest/coverage-v8": "5.0.0",
-		"conventional-changelog-conventionalcommits": "10.4.0",
 		"drizzle-kit": "0.31.10",
 		"happy-dom": "20.14.0",
 		"husky": "9.1.7",
