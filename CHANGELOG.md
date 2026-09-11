@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/fbuireu/biancafiore/compare/v1.21.4...v1.22.0) (2026-09-11)
+
+
+### Features
+
+* **contact:** move between the tabs with the arrow keys ([5cc1639](https://github.com/fbuireu/biancafiore/commit/5cc16390982f0aef2ce83b78a91f1ecad90b6edf))
+
 ## [1.21.4](https://github.com/fbuireu/biancafiore/compare/v1.21.3...v1.21.4) (2026-09-06)
 
 
