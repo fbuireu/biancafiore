@@ -127,8 +127,10 @@ const GRID_MEASURE_PROPERTY_DECLARATION = /^@property (--grid-[a-z-]+)/gm;
 const GRID_MEASURE_USE = /var\((--grid-[a-z-]+)\)/g;
 const MODULE_FONT_SIZE = /font-size:\s*([^;}\n]+)/g;
 const CONTAINER_SCALED_CENSUS = /under `@modules` the components taking it are ([^.]+)\./;
-const UNLADDERED_FONT_SIZE_COUNT = /(\d+) further `font-size` declarations/;
 const UNLADDERED_FONT_SIZE_CENSUS = /neither on the ladder nor container-scaled, and they sit in ([^(\n]+)\(/;
+const UNLADDERED_FONT_SIZE_PARENTHETICAL =
+	/neither on the ladder nor container-scaled, and they sit in [^(\n]+\(([^)]*)\)/;
+const BACKTICKED_LENGTH = /`(\d[\d.]*[a-z%]+)`/g;
 const SECTION_TITLE_CENSUS = /a visual change to every component still on it, and those are ([^(\n]+)\(/;
 const EDITORIAL_SECTION_TITLE_CONTAINER_CLAMP = /\.editorial-section-title \{[^}]*font-size:[^;]*cqi/;
 const SEMANTIC_TOKEN_DECLARATION = /^\s+(--[a-z-]+): light-dark\(/gm;
@@ -1210,15 +1212,18 @@ describe("styles guide: derived constants and source order", () => {
 		expect(read("src/ui/styles/global/global.css")).toMatch(EDITORIAL_SECTION_TITLE_CONTAINER_CLAMP);
 	});
 
-	it("pins how many module font sizes escape the ladder, so the drift can only shrink", () => {
+	it("pins which module font sizes escape the ladder, so the drift can only shrink", () => {
 		const declarations = walk("src/ui/modules")
 			.filter((file) => file.endsWith(".css"))
 			.flatMap((file) => [...read(file).matchAll(MODULE_FONT_SIZE)].map(([, value]) => ({ file, value })));
 		const unladdered = declarations.filter(({ value }) => !value.includes("var(--font-size") && !value.includes("cqi"));
 		const censused = namesIn({ text: guide, pattern: UNLADDERED_FONT_SIZE_CENSUS });
+		const censusedValues = [
+			...(guide.match(UNLADDERED_FONT_SIZE_PARENTHETICAL)?.[1] ?? "").matchAll(BACKTICKED_LENGTH),
+		].map(([, value]) => value);
 
 		expect(declarations.length).toBeGreaterThan(0);
-		expect(unladdered.length).toBe(Number(guide.match(UNLADDERED_FONT_SIZE_COUNT)?.[1]));
+		expect(unladdered.map(({ value }) => value.trim()).sort()).toEqual(censusedValues.sort());
 		expect(censused.sort()).toEqual([...new Set(unladdered.map(({ file }) => file.split("/").at(-2) ?? ""))].sort());
 	});
 

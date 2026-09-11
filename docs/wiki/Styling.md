@@ -30,7 +30,7 @@ Cascade correctness depends on that order. Every file opens by naming its slot a
 | **Spacing** | A ramp of viewport clamps. Round to the nearest step rather than inventing one between two |
 | **Layout** | Named measures, which are widths and never query conditions: a container query cannot read a custom property in its condition |
 
-The type ladder is viewport-driven, so type that must scale with its **container** opts out with a container-relative clamp instead. That is sanctioned, and the components doing it are a census in the styles guide: reaching for one in a further component means adding it to that list. The docs test pins the counts, so a new exception cannot appear quietly.
+The type ladder is viewport-driven, so type that must scale with its **container** opts out with a container-relative clamp instead. That is sanctioned, and the components doing it are a census in the styles guide: reaching for one in a further component means adding it to that list. The docs test pins those lists, so a new exception cannot appear quietly.
 
 ---
 
