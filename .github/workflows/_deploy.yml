@@ -86,7 +86,7 @@ jobs:
       - name: Verify the built output
         env:
           CLOUDFLARE_ENV: ${{ steps.stage.outputs.wrangler_env }}
-        run: pnpm exec vitest run --project built
+        run: pnpm exec vitest run --config vitest.built.config.ts
       - name: Collect the Worker secrets
         env:
           SECRETS_FILE: ${{ runner.temp }}/worker-secrets.json

@@ -2,7 +2,6 @@
 import { appendFileSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
-import type { TestModule } from "vitest/node";
 
 const ROOT = fileURLToPath(new URL(".", import.meta.url));
 
@@ -22,27 +21,29 @@ const aliasesFromTsconfig = Object.entries(paths).map(([alias, [target]]) => ({
 	replacement: `${ROOT}${target.replace(LEADING_RELATIVE, "").replace(TRAILING_GLOB, "")}`,
 }));
 
-const alias = [
+export const alias = [
 	...aliasesFromTsconfig,
 	{ find: "astro:env/server", replacement: `${ROOT}src/tests/doubles/astroEnvServer.ts` },
 	{ find: "astro:env/client", replacement: `${ROOT}src/tests/doubles/astroEnvClient.ts` },
 	{ find: "astro:middleware", replacement: `${ROOT}src/tests/doubles/astroMiddleware.ts` },
 ];
 
-const BUILT_OUTPUT_SUITE = "docs/built-output.test.ts";
+export const BUILT_OUTPUT_SUITE = "docs/built-output.test.ts";
 
-const summaryLabel = {
-	onTestRunEnd(testModules: readonly TestModule[]) {
-		if (!process.env.GITHUB_STEP_SUMMARY || testModules.length === 0) return;
-		const projects = [...new Set(testModules.map((module) => module.project.name))].sort();
-		appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n## Vitest run: ${projects.join(" + ")}\n`);
+export const summaryLabel = (label: string) => ({
+	onTestRunEnd() {
+		if (process.env.GITHUB_STEP_SUMMARY) {
+			appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n## ${label}\n`);
+		}
 	},
-};
+});
 
 export default defineConfig({
 	resolve: { alias },
 	test: {
-		reporters: process.env.GITHUB_ACTIONS ? ["default", summaryLabel, "github-actions"] : ["default"],
+		reporters: process.env.GITHUB_ACTIONS
+			? ["default", summaryLabel("Unit suite (biancafiore)"), "github-actions"]
+			: ["default"],
 		projects: [
 			{
 				resolve: { alias },
@@ -53,14 +54,6 @@ export default defineConfig({
 					setupFiles: [`${ROOT}src/tests/setup/network.ts`],
 					include: ["src/**/*.test.ts", "src/**/*.spec.ts", "docs/**/*.test.ts"],
 					exclude: [BUILT_OUTPUT_SUITE],
-				},
-			},
-			{
-				resolve: { alias },
-				test: {
-					name: "built",
-					environment: "node",
-					include: [BUILT_OUTPUT_SUITE],
 				},
 			},
 			{
