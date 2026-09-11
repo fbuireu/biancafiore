@@ -11,6 +11,7 @@ export const TAB_QUERY_KEY = "tab";
 
 const SELECTORS = {
 	TAB: ".contact-tab",
+	TAB_BUTTON: ".contact-tab button",
 	CALENDLY_WIDGET: `.${CALENDLY.WIDGET_CLASS}`,
 };
 
@@ -25,6 +26,23 @@ export function activeTab(url: URL): TabId {
 }
 
 const getTabs = (): NodeListOf<HTMLElement> => document.querySelectorAll(SELECTORS.TAB);
+
+const getTabButtons = (): NodeListOf<HTMLElement> => document.querySelectorAll(SELECTORS.TAB_BUTTON);
+
+interface NextTabIndexParams {
+	key: string;
+	index: number;
+	length: number;
+}
+
+const nextTabIndex = ({ key, index, length }: NextTabIndexParams): number => {
+	if (key === "ArrowRight") return (index + 1) % length;
+	if (key === "ArrowLeft") return (index - 1 + length) % length;
+	if (key === "Home") return 0;
+	if (key === "End") return length - 1;
+
+	return -1;
+};
 
 const loadCalendly = (): void => {
 	const WIDGET = document.querySelector<HTMLElement>(SELECTORS.CALENDLY_WIDGET);
@@ -65,7 +83,13 @@ const applyTab = (tabId: TabId): void => {
 		const isActive = tabContentId === tabId;
 		tab.classList.toggle("contact-tab--active", isActive);
 		tab.classList.toggle("underline-on-hover--active", isActive);
-		tab.querySelector('[role="tab"]')?.setAttribute("aria-selected", String(isActive));
+		const button = tab.querySelector<HTMLElement>("button");
+
+		if (button) {
+			button.setAttribute("aria-selected", String(isActive));
+			button.tabIndex = isActive ? 0 : -1;
+		}
+
 		tabContent.classList.toggle("contact-tab__content--active", isActive);
 	}
 
@@ -103,6 +127,22 @@ export function initTabs(url: URL = new URL(window.location.href)): void {
 	for (const tab of TABS) {
 		tab.addEventListener("click", selectTab);
 	}
+
+	const BUTTONS = getTabButtons();
+
+	BUTTONS.forEach((button, index) => {
+		button.addEventListener("keydown", (event) => {
+			const target = nextTabIndex({ key: (event as KeyboardEvent).key, index, length: BUTTONS.length });
+
+			if (target < 0) {
+				return;
+			}
+
+			event.preventDefault();
+			BUTTONS[target].focus();
+			BUTTONS[target].click();
+		});
+	});
 
 	const REQUESTED_TAB = url.searchParams.get(TAB_QUERY_KEY);
 

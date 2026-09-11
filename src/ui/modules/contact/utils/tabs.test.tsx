@@ -37,6 +37,20 @@ const tab = (target: string): HTMLElement => {
 	return element;
 };
 
+const tabButton = (target: string): HTMLElement => {
+	const button = tab(target).querySelector<HTMLElement>("button");
+
+	if (!button) {
+		throw new Error(`no button for ${target}`);
+	}
+
+	return button;
+};
+
+const press = ({ target, key }: { target: string; key: string }): void => {
+	tabButton(target).dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }));
+};
+
 const paintedTab = (): string | undefined =>
 	document.querySelector<HTMLElement>(`.${ACTIVE_CONTENT_CLASS}`)?.id ??
 	document.querySelector<HTMLElement>(`.${ACTIVE_TAB_CLASS}`)?.dataset.target;
@@ -282,5 +296,63 @@ describe("the appointment widget", () => {
 		initTabs(contactUrl(`?${TAB_QUERY_KEY}=appointment`));
 
 		expect(injectedScripts()).toHaveLength(0);
+	});
+});
+
+describe("keyboard navigation", () => {
+	it("moves to the next tab with ArrowRight, wrapping past the last", () => {
+		initTabs(contactUrl());
+
+		press({ target: "email", key: "ArrowRight" });
+		expect(paintedTab()).toBe("appointment");
+
+		press({ target: "appointment", key: "ArrowRight" });
+		expect(paintedTab()).toBe("email");
+	});
+
+	it("moves to the previous tab with ArrowLeft, wrapping past the first", () => {
+		initTabs(contactUrl());
+
+		press({ target: "email", key: "ArrowLeft" });
+
+		expect(paintedTab()).toBe("appointment");
+	});
+
+	it("jumps to the last tab with End and back with Home", () => {
+		initTabs(contactUrl());
+
+		press({ target: "email", key: "End" });
+		expect(paintedTab()).toBe("appointment");
+
+		press({ target: "appointment", key: "Home" });
+		expect(paintedTab()).toBe("email");
+	});
+
+	it("stays where it is for a key that means nothing here", () => {
+		initTabs(contactUrl());
+
+		press({ target: "email", key: "ArrowDown" });
+
+		expect(paintedTab()).toBe("email");
+	});
+
+	it("keeps one tab in the tab order and takes the others out", () => {
+		initTabs(contactUrl());
+
+		expect(tabButton("email").tabIndex).toBe(0);
+		expect(tabButton("appointment").tabIndex).toBe(-1);
+
+		press({ target: "email", key: "ArrowRight" });
+
+		expect(tabButton("appointment").tabIndex).toBe(0);
+		expect(tabButton("email").tabIndex).toBe(-1);
+	});
+
+	it("takes focus with it, so the reader lands on the tab it selected", () => {
+		initTabs(contactUrl());
+
+		press({ target: "email", key: "ArrowRight" });
+
+		expect(document.activeElement).toBe(tabButton("appointment"));
 	});
 });
