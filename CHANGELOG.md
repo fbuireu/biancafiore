@@ -1,3 +1,11 @@
+## [1.23.1](https://github.com/fbuireu/biancafiore/compare/v1.23.0...v1.23.1) (2026-09-11)
+
+
+### Bug Fixes
+
+* stop the :changed scripts shelling out for their base ([573674f](https://github.com/fbuireu/biancafiore/commit/573674f3e4e7180dd2de683c0b56b06479dface4))
+* teach the release parsers the ! grammar without a preset ([b2c0f0e](https://github.com/fbuireu/biancafiore/commit/b2c0f0e9dbde29fc29bde9b2d71f7b04bf8b8931))
+
 # [1.23.0](https://github.com/fbuireu/biancafiore/compare/v1.22.0...v1.23.0) (2026-09-11)
 
 
