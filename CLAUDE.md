@@ -39,7 +39,9 @@ pnpm typecheck        # astro sync && tsc --noEmit
 pnpm lint:all         # biome lint (append :fix to autofix)
 pnpm format:all       # biome check --write
 pnpm format:check     # biome check, no writes (what verify runs)
-pnpm verify           # format:check && typecheck && check && test:ut:coverage (the CI gate and pre-push)
+pnpm since            # prints the push target the :changed variants diff against
+pnpm verify           # format:check && typecheck && check && test:ut:coverage (the CI gate)
+pnpm verify:changed   # the same with test:ut:changed in place of coverage (what pre-push runs)
 
 pnpm test:ut          # vitest (unit)
 pnpm test:ut:watch    # vitest, watch mode
@@ -56,6 +58,10 @@ pnpm db:studio        # drizzle studio
 ```
 
 `--pass-with-no-tests` belongs to `test:e2e:changed`, not to `test:e2e`. That variant is `--only-changed`, which matches nothing whenever the working tree touches no spec, the common case, so without the flag it would fail almost every time; on `test:e2e` the same flag would only hide a broken `testDir` or an emptied `e2e/`, which is why it is not there. **No workflow runs it**, and the sentence here used to say a manual `end-2-end-tests.yml` did, on every event bar `workflow_dispatch`. That workflow answered `workflow_dispatch` and nothing else, so the ternaries selecting between the two commands and between two URLs each had one reachable branch; the ternaries went first, with the `E2E_SELF_HOSTED_URL` repository variable the dead branch read, and the workflow itself went next: nothing ever dispatched it, no sibling repository has an equivalent, and the only production run that matters is the `smoke` job below. `test:e2e:changed` stays as a local command, like `lint:changed`, `format:changed` and `test:ut:changed`, none of which CI runs either.
+
+**`pnpm since` is where every `:changed` variant gets its base, and having one is the point.** It resolves `@{push}`, the ref the current branch would push to, and falls back to `origin/main` when the branch has no upstream yet. Biome and Vitest each default to something else and neither default is right here: Biome's `--changed` diffs against `vcs.defaultBranch`, which is `main`, so on `main` it selected nothing at all and `pnpm format:changed` reported *Checked 0 files* however much had changed; Vitest's `--changed` took a hardcoded `origin/main`, which is the wrong base on any other branch. Both failure modes are a green check that checked nothing, which is worse than a slow one.
+
+**`pre-push` runs `verify:changed`, not `verify`, and the coverage floor is why.** [`vitest.config.ts`](./vitest.config.ts) sets `coverage.include` over all of `src`, which is what makes v8 report a file no test loaded as zero, so a changed-only subset drags the global average under the floor and fails on a clean tree: a scoped run and the threshold cannot both hold, and coverage is therefore a CI concern. That costs nothing, because the `Verify` job runs the full `pnpm verify` on the pushed sha and `Check` needs it, so a push whose coverage dropped deploys nothing and cuts no release. What the hook buys is that the whole-repo run stops standing between you and a push, which is when a hook starts getting skipped with `--no-verify` and protects nothing at all.
 
 Env: copy [`.env.example`](./.env.example). Local secrets go in `.dev.vars` (loaded by [`drizzle.config.ts`](./drizzle.config.ts) and wrangler). Env schema is declared/validated in [`astro.config.ts`](./astro.config.ts) (`env.schema`); add new vars there.
 
@@ -108,7 +114,7 @@ Path aliases ([`tsconfig.json`](./tsconfig.json)): `@const/* @infrastructure/* @
 - **One argument is positional; two or more are one object, typed `<FunctionName>Params`.** `securityHeaders(isDevelopment)`, `createBreadcrumbs(currentPath)`, `siteChrome(url)`; `isWithin({ pathname, route }): IsWithinParams`, `withImagePlaceholders({ field, entries }): WithImagePlaceholdersParams`. The type is named after the function, not after the concept, so a reader landing on the type knows what takes it. A test-only override is not a second argument: `siteChrome` used to take `isChromeHidden` so a test could vary it, and the test mocks `astro:env/client` instead.
 - **No code comments.** Rationale belongs in commit messages / PRs / memory, not inline.
 - **No Biome suppressions.** Fix the root cause (e.g. reorder selectors) instead of `biome-ignore`; suppress only if truly irreplaceable. Biome: 120 line width; `noConsole` error with no allowlist, meaning no `console` at all, log through Effect's `Logger` (`Effect.logError`); organizeImports on. `noConsole` is *not* part of Biome's recommended preset, so deleting that entry does not tighten it, it silently turns the rule off. `public/**` is excluded from Biome.
-- **Conventional commits** (commitlint + husky). `pre-commit` formats staged files, `pre-push` runs `pnpm verify`. semantic-release owns versioning. Do NOT add a Co-Authored-By / Claude trailer to commits or PRs.
+- **Conventional commits** (commitlint + husky). `pre-commit` formats staged files, `pre-push` runs `pnpm verify:changed`. semantic-release owns versioning. Do NOT add a Co-Authored-By / Claude trailer to commits or PRs.
 
 ## Maintenance contract
 
