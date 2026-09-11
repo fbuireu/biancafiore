@@ -1,3 +1,10 @@
+# [1.23.0](https://github.com/fbuireu/biancafiore/compare/v1.22.0...v1.23.0) (2026-09-11)
+
+
+### Features
+
+* **deploy:** cache the Worker's responses and turn on traces ([0650862](https://github.com/fbuireu/biancafiore/commit/065086254bcfcf5a44c1733c8eb456235e47bed3))
+
 # [1.22.0](https://github.com/fbuireu/biancafiore/compare/v1.21.4...v1.22.0) (2026-09-11)
 
 
