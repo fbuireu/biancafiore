@@ -1,5 +1,5 @@
 import { DEFAULT_LOCALE_STRING } from "@const/index";
-import { Body, Button, Container, Head, Heading, Hr, Html, Preview, Section, Text } from "@react-email/components";
+import { Body, Button, Container, Head, Heading, Hr, Html, Preview, Section, Text } from "react-email";
 
 interface ContactNotificationEmailProps {
 	name: string;

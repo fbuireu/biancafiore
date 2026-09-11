@@ -3,9 +3,9 @@ import type { Except } from "@const/types";
 import { ContactNotificationEmail } from "@infrastructure/email/ContactNotificationEmail";
 import { EmailClient } from "@infrastructure/email/server";
 import type { EmailError } from "@infrastructure/errors";
-import { render } from "@react-email/render";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
+import { render } from "react-email";
 
 type SendEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
