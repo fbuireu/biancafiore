@@ -64,7 +64,7 @@ everywhere, which would delete the compile-time signal with nothing to replace i
   and a `destinations` entry naming one that does not is the failure to remember.
 - **Rotating the log sink is a dashboard change**, not a deploy. No credential for it appears anywhere in this
   tree, which is why `docs/docs-consistency.test.ts` asserts that the only credential-shaped Better Stack name in
-  `src`, `.env.example` and `astro.config.ts` is `BETTER_STACK_TRACKING_TOKEN` — the **browser** tag's token, which
+  `src`, `.env.example` and `astro.config.ts` is `BETTER_STACK_TRACKING_TOKEN`, the **browser** tag's token, which
   is public by construction and belongs to [ADR 0013](./0013-analytics-gated-behind-cookie-consent.md) rather than
   to this one. The export's endpoint and bearer token are a different pair and live on the Cloudflare destination.
 - **A destination belongs to the account, not to the Worker**, so these names share one namespace with every other
