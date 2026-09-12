@@ -1,9 +1,17 @@
 import type { ContactError } from "@actions/contact";
 import { submitContact } from "@actions/contact";
+import type { DatabaseError } from "@infrastructure/errors";
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
-import { contactRow, databaseDouble, databaseError, emailDouble, emailError } from "@tests/doubles/contactLayers";
+import {
+	contactRow,
+	databaseDouble,
+	databaseError,
+	emailDouble,
+	emailError,
+	loggerDouble,
+} from "@tests/doubles/contactLayers";
 import { type RecaptchaDoubleOptions, recaptchaDouble } from "@tests/doubles/network";
-import { Cause, Effect, Exit, Layer, Logger, Option } from "effect";
+import { Cause, Effect, Exit, Layer, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const VALID_INPUT = {
@@ -15,22 +23,7 @@ const VALID_INPUT = {
 
 const recaptchaResponds = (verdict: RecaptchaDoubleOptions) => recaptchaDouble(verdict);
 
-interface CapturedLog {
-	level: string;
-	message: string;
-}
-
-const logged: CapturedLog[] = [];
-
-const capturingLogger = Logger.replace(
-	Logger.defaultLogger,
-	Logger.make(({ logLevel, message }) => {
-		logged.push({
-			level: logLevel.label,
-			message: (Array.isArray(message) ? message : [message]).map(String).join(" "),
-		});
-	}),
-);
+const log = loggerDouble();
 
 const run = ({
 	database,
@@ -42,17 +35,14 @@ const run = ({
 	input?: typeof VALID_INPUT;
 }) =>
 	Effect.runPromiseExit(
-		submitContact(input).pipe(
-			Effect.provide(Layer.merge(database.layer, email.layer)),
-			Effect.provide(capturingLogger),
-		),
+		submitContact(input).pipe(Effect.provide(Layer.mergeAll(database.layer, email.layer, log.layer))),
 	);
 
 const failureTag = (exit: Exit.Exit<{ ok: boolean }, ContactError>): string | undefined =>
 	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause))?._tag : undefined;
 
 beforeEach(() => {
-	logged.length = 0;
+	log.lines.length = 0;
 	setSecret({ name: "GOOGLE_RECAPTCHA_SECRET_KEY", value: "secret" });
 	recaptchaResponds({ success: true, score: 0.9 });
 });
@@ -100,9 +90,13 @@ describe("submitContact", () => {
 
 		await run({ database, email });
 
-		expect(logged).toStrictEqual([
-			{ level: "ERROR", message: "Contact sent-2 was delivered but not persisted: turso unreachable" },
-		]);
+		expect(log.lines).toHaveLength(1);
+		expect(log.lines[0]).toMatchObject({
+			level: "error",
+			message: "Contact was delivered but not persisted",
+			context: { emailId: "sent-2" },
+		});
+		expect((log.lines[0]?.error as DatabaseError | undefined)?.message).toBe("turso unreachable");
 	});
 
 	it("logs nothing when the row is written", async () => {
@@ -111,7 +105,7 @@ describe("submitContact", () => {
 
 		await run({ database, email });
 
-		expect(logged).toEqual([]);
+		expect(log.lines).toEqual([]);
 	});
 
 	it("fails without sending when the address wrote inside the cooldown", async () => {

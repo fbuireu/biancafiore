@@ -89,7 +89,7 @@ const MODULE_LEVEL_ENV_IMPORT = /^\s*import\s[^\n]*"astro:env\/server"/m;
 const RECAPTCHA_SCORE_DECLARATION = /const RECAPTCHA_MINIMUM_SCORE = ([\d.]+);/;
 const DRIZZLE_IMPORT = /from "drizzle-orm(\/[\w/]+)?"/;
 const CAUGHT_SAVE_CONTACT = /saveContact\([^)]*\)\.pipe\(\s*Effect\.catchAll/;
-const CONSOLE_CALL = /\bconsole\.\w+\(/;
+const CONSOLE_CALL = /\bconsole(\.\w+|\[\w+\])\(/;
 const TAG_TO_STATUS_CASE = /case "(\w+)":[\s\S]{0,60}?code: "(\w+)"/g;
 const DOCUMENTED_TAG_TO_STATUS = /`(?:\w+Error)` → `[A-Z_]+`/g;
 const ANSWERED_STATUS = /code: "(\w+)"/g;
@@ -188,6 +188,15 @@ const THEME_KEY_DECLARATION = /export const THEME_STORAGE_KEY = "([\w-]+)" as co
 const THEME_PERSISTENCE = /localStorage\.setItem|store\.setItem/;
 const DECODED_EMAIL_ADDRESS = /ENCODED_EMAIL_BIANCA/;
 const IMAGE_SERVICE_SWITCH = /imageService: isProductionBuild \? "cloudflare" : "passthrough"/;
+const HEAD_SAMPLING_RATE = /head_sampling_rate = ([\d.]+)/g;
+const EXPORT_DESTINATION = /destinations = \["([^"]+)"\]/g;
+const LOGGING_MODULE = "src/infrastructure/logging/logger.ts";
+const LOGGING_CONTRACT = "src/infrastructure/logging/contract.ts";
+const LOGGING_SERVICE = "src/infrastructure/logging/service.ts";
+const TELEMETRY_MODULE = "src/ui/modules/core/utils/telemetry.ts";
+const TAG_ORIGIN = /BETTER_STACK_TAG_ORIGIN = "([^"]+)"/;
+const BETTER_STACK_CREDENTIAL = /BETTER_STACK_[A-Z_]*(?:TOKEN|SECRET|KEY|INGESTING_URL|SOURCE)/g;
+const OBSERVABILITY_TABLES = ["observability", "observability.logs", "observability.traces"];
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
 const CHROME_POLICY = "src/ui/modules/core/utils/siteChrome.ts";
 const CHROME_ANSWER = /^\t(\w+): boolean;$/gm;
@@ -224,6 +233,18 @@ const PROJECT_FILES = [
 		.map((entry) => entry.name),
 	...INDEXED_DIRECTORIES.filter(exists).flatMap(walk),
 ];
+
+const wranglerTable = (table: string): string => {
+	const heading = `\n[${table}]\n`;
+	const opens = WRANGLER_TOML.indexOf(heading);
+
+	if (opens === -1) return "";
+
+	const body = WRANGLER_TOML.slice(opens + heading.length);
+	const closes = body.indexOf("\n[");
+
+	return (closes === -1 ? body : body.slice(0, closes)).trim();
+};
 
 const stripFences = (markdown: string) => markdown.replace(ANY_FENCED_BLOCK, "");
 
@@ -649,7 +670,9 @@ describe("infrastructure guide", () => {
 			const source = read(`src/infrastructure/${file}`);
 
 			expect(`${file}: ${source.includes(`class ${tag} extends Context.Tag`)}`).toBe(`${file}: true`);
-			expect(`${file}: ${source.includes(`const ${live} = Layer.effect`)}`).toBe(`${file}: true`);
+			const built = source.includes(`const ${live} = Layer.effect`) || source.includes(`const ${live} = Layer.sync`);
+
+			expect(`${file}: ${built}`).toBe(`${file}: true`);
 		}
 
 		const declared = SOURCE_FILES.filter((file) => CONTEXT_TAG_CLASS.test(read(file))).map((file) =>
@@ -811,6 +834,153 @@ describe("gotchas", () => {
 	});
 });
 
+describe("observability", () => {
+	const destinations = (stage: string) =>
+		[...WRANGLER_TOML.matchAll(EXPORT_DESTINATION)].map(([, name]) => name).filter((name) => name.includes(stage));
+
+	it("ships each stage into its own export destinations, which nothing else can check", () => {
+		expect(CLAUDE_MD).toContain("A destination belongs to the account, not to the Worker");
+
+		const production = destinations("production");
+		const development = destinations("development");
+
+		expect([...new Set(production)]).toEqual(["biancafiore-web-production-logs", "biancafiore-web-production-traces"]);
+		expect([...new Set(development)]).toEqual([
+			"biancafiore-web-development-logs",
+			"biancafiore-web-development-traces",
+		]);
+		expect(production.filter((name) => development.includes(name))).toEqual([]);
+	});
+
+	it("mirrors production at the top level, so a bare deploy cannot reach the other stage's source", () => {
+		expect(CLAUDE_MD).toContain("The top level is production's twin");
+
+		const blocks = (prefix: string) =>
+			OBSERVABILITY_TABLES.map((table) => wranglerTable(`${prefix}${table}`)).join("|");
+
+		expect(blocks("")).toBe(blocks("env.production."));
+		expect(blocks("")).not.toBe(blocks("env.development."));
+	});
+
+	it("restates the same observability settings in every stage bar the destinations they point at", () => {
+		const settings = (prefix: string) =>
+			OBSERVABILITY_TABLES.map((table) => wranglerTable(`${prefix}${table}`).replace(EXPORT_DESTINATION, "")).join("|");
+
+		expect(settings("env.production.")).toBe(settings("env.development."));
+		expect(settings("env.production.")).toContain("redact_query_string = true");
+	});
+
+	it("samples nothing away, on the logs and the traces of every stage", () => {
+		expect(CLAUDE_MD).toContain("Sampling is `1`");
+		expect([...WRANGLER_TOML.matchAll(HEAD_SAMPLING_RATE)].map(([, rate]) => rate)).toEqual(
+			Array.from({ length: 6 }, () => "1"),
+		);
+	});
+
+	it("keeps the export credential out of the tree, leaving the public tracking token as the only one named", () => {
+		expect(CLAUDE_MD).toContain("Rotating the log sink is a dashboard change");
+
+		const named = [
+			...ASTRO_CONFIG.matchAll(BETTER_STACK_CREDENTIAL),
+			...read(".env.example").matchAll(BETTER_STACK_CREDENTIAL),
+		]
+			.concat(SOURCE_FILES.flatMap((file) => [...read(file).matchAll(BETTER_STACK_CREDENTIAL)]))
+			.map(([name]) => name);
+
+		expect(named.length).toBeGreaterThan(0);
+		expect([...new Set(named)]).toEqual(["BETTER_STACK_TRACKING_TOKEN"]);
+	});
+
+	it("writes the line through console, and exempts exactly the one file that does", () => {
+		const exempt = BIOME_JSON.overrides
+			.filter(
+				({ linter }: { linter?: { rules?: { suspicious?: { noConsole?: string } } } }) =>
+					linter?.rules?.suspicious?.noConsole === "off",
+			)
+			.flatMap(({ includes }: { includes: string[] }) => includes);
+
+		expect(exempt).toEqual([`**/${LOGGING_MODULE}`]);
+		expect(SOURCE_FILES.filter((file) => CONSOLE_CALL.test(read(file)))).toEqual([LOGGING_MODULE]);
+	});
+
+	it("spells the line the way the sibling repositories spell it, with the context spread first", () => {
+		const logger = read(LOGGING_MODULE);
+
+		expect(read(LOGGING_CONTRACT)).toContain('LOG_SERVICE = "biancafiore-web"');
+		expect(logger).toContain(
+			"console[level](JSON.stringify({ ...redacted(context), service: LOG_SERVICE, level, message }));",
+		);
+	});
+
+	it("resolves the tag to the very object plain code imports, so the two cannot disagree", () => {
+		const guide = read("src/infrastructure/CLAUDE.md");
+
+		expect(guide).toContain("the tag and the import cannot disagree");
+		expect(read(LOGGING_SERVICE)).toContain("Layer.sync(LoggerService, () => logger)");
+		expect(read("src/infrastructure/layers.ts")).toContain("LoggerServiceLive");
+	});
+
+	it("carries LoggerService in R wherever a program logs, which is what the annotation turns into a signal", () => {
+		const guide = read("src/infrastructure/CLAUDE.md");
+		const logging = SOURCE_FILES.filter(
+			(file) => file !== LOGGING_SERVICE && read(file).includes("yield* LoggerService"),
+		);
+
+		expect(guide).toContain("carries `LoggerService` in its `R`");
+		expect(logging.length).toBeGreaterThan(0);
+		expect(logging.filter((file) => !read(file).includes("LoggerService> =>"))).toEqual([]);
+	});
+
+	it("gates the Better Stack tag by withholding it, since it has no consent mode of its own", () => {
+		const adr = read("docs/adr/0013-analytics-gated-behind-cookie-consent.md");
+		const preferences = read("src/ui/modules/core/components/cookieConsent/utils/preferences.ts");
+		const config = read("src/ui/modules/core/components/cookieConsent/config.ts");
+
+		expect(adr).toContain("gated by not existing");
+		expect(preferences).toContain("acceptedService(BETTER_STACK_SERVICE, ANALYTICS_CATEGORY)");
+		expect(config).toContain("onConsent: () => updatePreferences()");
+		expect(config).toContain("[BETTER_STACK_SERVICE]:");
+	});
+
+	it("tells the shared RUM source which stage it is, since one source serves both", () => {
+		const telemetry = read(TELEMETRY_MODULE);
+
+		expect(CLAUDE_MD).toContain("is a **repository** variable");
+		expect(read("docs/adr/0013-analytics-gated-behind-cookie-consent.md")).toContain(
+			"One Better Stack source serves both stages",
+		);
+		expect(telemetry).toContain('"init", { environment: trackingEnvironmentFor(window.location.hostname) }');
+		expect(telemetry).toContain(".workers.dev");
+	});
+
+	it("lets the edge-injected beacon through the CSP, since nothing in the tree can gate it", () => {
+		const headers = read("src/const/securityHeaders.ts");
+
+		expect(CLAUDE_MD).toContain("Cloudflare Web Analytics is the exception and nothing here can gate it");
+		expect(read("docs/adr/0013-analytics-gated-behind-cookie-consent.md")).toContain("the stated exception");
+		expect(headers).toContain("https://static.cloudflareinsights.com");
+		expect(read("src/pages/privacy-policy.astro")).toContain("Cloudflare Web Analytics");
+	});
+
+	it("lets the tag through the CSP it would otherwise be blocked by", () => {
+		const headers = read("src/const/securityHeaders.ts");
+		const origin = TAG_ORIGIN.exec(read(TELEMETRY_MODULE))?.[1];
+
+		expect(origin).toBeTruthy();
+		expect(headers.match(new RegExp(origin ?? "", "g"))).toHaveLength(2);
+	});
+
+	it("keeps the public tracking token apart from the export credential that never enters the tree", () => {
+		expect(CLAUDE_MD).toContain("is not the credential the log export uses");
+		expect(ASTRO_CONFIG).toContain("BETTER_STACK_TRACKING_TOKEN: envField.string({");
+		expect(read(".github/workflows/_deploy.yml")).toContain("BETTER_STACK_TRACKING_TOKEN: ${{ vars.");
+	});
+
+	it("reports an unhandled render error from the page Astro shows for one", () => {
+		expect(read("src/pages/500.astro")).toContain('logger.logError({ message: "Unhandled server error"');
+	});
+});
+
 describe("infrastructure guide: secrets, errors and clients", () => {
 	const guide = read("src/infrastructure/CLAUDE.md");
 	const infrastructureFiles = production(walk("src/infrastructure").filter((file) => TYPESCRIPT_FILE.test(file)));
@@ -886,10 +1056,10 @@ describe("actions guide", () => {
 		expect(program).toMatch(CAUGHT_SAVE_CONTACT);
 	});
 
-	it("logs through Effect rather than console, here and everywhere in src", () => {
+	it("logs through the LoggerService tag rather than console, here and everywhere in src", () => {
 		expect(guide).toContain("Nothing here calls `console`");
-		expect(`${program}${mapping}`).toContain("Effect.logError");
-		expect(SOURCE_FILES.filter((file) => CONSOLE_CALL.test(read(file)))).toEqual([]);
+		expect(`${program}${mapping}`).toContain("yield* LoggerService");
+		expect(SOURCE_FILES.filter((file) => CONSOLE_CALL.test(read(file)))).toEqual([LOGGING_MODULE]);
 	});
 
 	it("maps exactly the tags the guide says it maps", () => {

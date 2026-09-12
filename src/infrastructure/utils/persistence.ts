@@ -2,6 +2,7 @@ import type { Except } from "@const/types";
 import { CONTACT_COOLDOWN_HOURS, contactCooldownStart, normalizeEmail } from "@domain/contact/rules";
 import { Database } from "@infrastructure/db/client";
 import { type DatabaseError, DuplicateContactError } from "@infrastructure/errors";
+import { LoggerService } from "@infrastructure/logging/service";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
 
@@ -13,9 +14,10 @@ type CheckDuplicatedEntriesParams = Except<ContactFormData, "recaptcha" | "email
 
 export const checkDuplicatedEntries = (
 	data: CheckDuplicatedEntriesParams,
-): Effect.Effect<void, DatabaseError | DuplicateContactError, Database> =>
+): Effect.Effect<void, DatabaseError | DuplicateContactError, Database | LoggerService> =>
 	Effect.gen(function* () {
 		const database = yield* Database;
+		const logger = yield* LoggerService;
 		const email = normalizeEmail(data.email);
 
 		const [withinCooldown, repeated] = yield* Effect.all(
@@ -30,7 +32,7 @@ export const checkDuplicatedEntries = (
 			return;
 		}
 
-		yield* Effect.logInfo(`Contact refused: ${repeated ? REPEATED_REASON : COOLDOWN_REASON}`);
+		logger.info({ message: "Contact refused", context: { reason: repeated ? REPEATED_REASON : COOLDOWN_REASON } });
 
 		return yield* Effect.fail(new DuplicateContactError({ message: ALREADY_HEARD_MESSAGE }));
 	});

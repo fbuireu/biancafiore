@@ -40,6 +40,16 @@
 	},
 	"overrides": [
 		{
+			"includes": ["**/src/infrastructure/logging/logger.ts"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noConsole": "off"
+					}
+				}
+			}
+		},
+		{
 			"includes": ["**/*.astro"],
 			"linter": {
 				"rules": {

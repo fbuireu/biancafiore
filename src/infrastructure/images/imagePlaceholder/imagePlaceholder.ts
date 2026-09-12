@@ -1,5 +1,5 @@
 import { buildContentfulImageUrl } from "@infrastructure/images/imageOptimization";
-import { Effect } from "effect";
+import { logger } from "@infrastructure/logging/logger";
 
 const PLACEHOLDER_WIDTH = 24;
 const PLACEHOLDER_QUALITY = 35;
@@ -53,9 +53,10 @@ export async function getImagePlaceholders(sources: string[]): Promise<Map<strin
 	const lost = wanted.length - placeholders.size;
 
 	if (lost > 0) {
-		await Effect.runPromise(
-			Effect.logError(`${lost} of ${wanted.length} image placeholders could not be read; those images ship unblurred`),
-		);
+		logger.warn({
+			message: "Image placeholders could not be read; those images ship unblurred",
+			context: { lost, wanted: wanted.length },
+		});
 	}
 
 	return placeholders;

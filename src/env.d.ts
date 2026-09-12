@@ -28,4 +28,5 @@ type DataLayerEntry = IArguments | unknown[];
 
 interface Window {
 	dataLayer: DataLayerEntry[];
+	betterstack?: (command: string, ...args: unknown[]) => void;
 }

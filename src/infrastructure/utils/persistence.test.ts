@@ -1,8 +1,8 @@
 import { CONTACT_COOLDOWN_HOURS } from "@domain/contact/rules";
 import { DatabaseError } from "@infrastructure/errors";
 import { checkDuplicatedEntries, saveContact } from "@infrastructure/utils/persistence";
-import { contactRow, databaseDouble } from "@tests/doubles/contactLayers";
-import { Cause, Effect, Exit, Option } from "effect";
+import { contactRow, databaseDouble, loggerDouble } from "@tests/doubles/contactLayers";
+import { Cause, Effect, Exit, Layer, Option } from "effect";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -18,7 +18,9 @@ const failureOf = <E>(exit: Exit.Exit<unknown, E>): E | undefined =>
 const lookupFailingWith = (message: string) => databaseDouble({ failLookupWith: new DatabaseError({ message }) });
 
 const check = (database: ReturnType<typeof databaseDouble>, data = ENQUIRY) =>
-	Effect.runPromiseExit(checkDuplicatedEntries(data).pipe(Effect.provide(database.layer)));
+	Effect.runPromiseExit(
+		checkDuplicatedEntries(data).pipe(Effect.provide(Layer.merge(database.layer, loggerDouble().layer))),
+	);
 
 afterEach(() => {
 	vi.useRealTimers();

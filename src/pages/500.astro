@@ -2,6 +2,7 @@
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
+import { logger } from "@infrastructure/logging/logger";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
 import ErrorLayer from "@modules/core/components/errorLayer/ErrorLayer.astro";
@@ -12,6 +13,10 @@ interface Props {
 }
 
 const { error } = Astro.props;
+
+if (error !== undefined)
+	logger.logError({ message: "Unhandled server error", error, context: { path: Astro.url.pathname } });
+
 const title = "500: Whoops!";
 const reference = error instanceof Error ? error.message : "Internal error";
 const metadata: Partial<SeoMetadata> = {

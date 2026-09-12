@@ -52,6 +52,16 @@ The ruleset on `main` requires these contexts: `Check`, `Lint the pull request t
 
 ---
 
+## Where the logs go
+
+Cloudflare keeps Workers Logs and Workers Traces for the site Worker and **exports both** to Better Stack through its own OTLP export: each stage names its own pair of destinations, configured in the account's dashboard with the endpoint and the token, so nothing in the repository holds a credential and rotating the sink needs no deploy. Neither signal is sampled: the rate is the one setting that loses data without a symptom, and this site serves too little traffic for sampling to save anything.
+
+The application's own log lines reach the same place through `console`. That is deliberate rather than lazy: the export attributes console output to the active span and stamps its trace id, so a failed request's log line and the span it failed on answer one query, with nothing in the code producing the join. A sink posted to over HTTP from inside the Worker is invisible to the runtime and its lines would arrive with an empty trace id. Every line is one JSON object carrying the same `service`, `level` and `message` keys the sibling repositories use, so one query reads all three. Build-time logs stay human-readable in the build output and reach no sink at all.
+
+**The destinations are dashboard settings, and a deploy naming one that does not exist fails.** The reasoning is recorded in [ADR 0020](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0020-logs-and-traces-leave-through-cloudflares-export.md).
+
+---
+
 ## Things the deploy learned the hard way
 
 - **A long commit message breaks it, and the error does not say so.** wrangler sends the latest commit message verbatim as a deployment annotation with no truncation, and past a few thousand characters the API answers `Received a malformed response from the API`: a build that compiled, uploaded, and then died on metadata. A merge commit carrying a long pull request body is enough. The annotation is now passed explicitly.

@@ -2,6 +2,8 @@ import { Database } from "@infrastructure/db/client";
 import type { ContactRow, NewContact } from "@infrastructure/db/schema";
 import { type ContactNotification, EmailClient } from "@infrastructure/email/server";
 import { DatabaseError, EmailError } from "@infrastructure/errors";
+import { LOG_LEVEL, type LogLevel } from "@infrastructure/logging/contract";
+import { LoggerService } from "@infrastructure/logging/service";
 import { Effect, Layer } from "effect";
 
 export interface DatabaseDoubleOptions {
@@ -110,3 +112,29 @@ export function emailDouble({ id = "email-id", failWith }: EmailDoubleOptions = 
 export const databaseError = (message: string, cause?: unknown) => new DatabaseError({ message, cause });
 
 export const emailError = (message: string) => new EmailError({ message });
+
+export interface LoggedLine {
+	level: LogLevel;
+	message: string;
+	context?: Record<string, unknown>;
+	error?: unknown;
+}
+
+export interface LoggerDouble {
+	layer: Layer.Layer<LoggerService>;
+	lines: LoggedLine[];
+}
+
+export function loggerDouble(): LoggerDouble {
+	const lines: LoggedLine[] = [];
+
+	return {
+		lines,
+		layer: Layer.succeed(LoggerService, {
+			info: ({ message, context }) => lines.push({ level: LOG_LEVEL.INFO, message, context }),
+			warn: ({ message, context }) => lines.push({ level: LOG_LEVEL.WARN, message, context }),
+			error: ({ message, context }) => lines.push({ level: LOG_LEVEL.ERROR, message, context }),
+			logError: ({ message, error, context }) => lines.push({ level: LOG_LEVEL.ERROR, message, context, error }),
+		}),
+	};
+}

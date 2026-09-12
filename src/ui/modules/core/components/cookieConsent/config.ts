@@ -1,6 +1,8 @@
 import { PAGES_ROUTES } from "@const/index";
 import {
 	ANALYTICS_CATEGORY,
+	BETTER_STACK_COOKIES,
+	BETTER_STACK_SERVICE,
 	CONSENT_COOKIE_NAME,
 	NECESSARY_CATEGORY,
 } from "@modules/core/components/cookieConsent/utils/consentGate";
@@ -8,7 +10,7 @@ import type { CookieConsentConfig } from "vanilla-cookieconsent";
 import { updatePreferences } from "./utils/preferences";
 
 export const config: CookieConsentConfig = {
-	onFirstConsent: () => updatePreferences(),
+	onConsent: () => updatePreferences(),
 	onChange: () => updatePreferences(),
 	guiOptions: {
 		consentModal: {
@@ -33,6 +35,9 @@ export const config: CookieConsentConfig = {
 					{
 						name: /^(_ga|_gid)/,
 					},
+					{
+						name: BETTER_STACK_COOKIES,
+					},
 				],
 			},
 			services: {
@@ -42,6 +47,14 @@ export const config: CookieConsentConfig = {
 					cookies: [
 						{
 							name: /^(_ga|_gid)/,
+						},
+					],
+				},
+				[BETTER_STACK_SERVICE]: {
+					label: '<a href="https://betterstack.com/privacy" target="_blank">Better Stack Telemetry</a>',
+					cookies: [
+						{
+							name: BETTER_STACK_COOKIES,
 						},
 					],
 				},
@@ -66,6 +79,7 @@ export const config: CookieConsentConfig = {
 					acceptNecessaryBtn: "Reject all",
 					savePreferencesBtn: "Save preferences",
 					closeIconLabel: "Close modal",
+					serviceCounterLabel: "Service|Services",
 					sections: [
 						{
 							title: "Cookie usage",
@@ -74,7 +88,8 @@ export const config: CookieConsentConfig = {
 						},
 						{
 							title: "Performance and Analytics cookies",
-							description: "These cookies allow the website to remember the choices you have made in the past.",
+							description:
+								"These let us measure how the site is used and how well it performs. Each service can be allowed on its own, and neither loads until you say so.",
 							linkedCategory: ANALYTICS_CATEGORY,
 							cookieTable: {
 								headers: {
@@ -96,6 +111,13 @@ export const config: CookieConsentConfig = {
 										domain: "Google Analytics",
 										description:
 											'Cookie set by <a href="https://policies.google.com/technologies/cookies?hl=en-US" target="_blank" rel="external">Google Analytics</a>',
+										expiration: "Session",
+									},
+									{
+										name: "bs_*",
+										domain: "Better Stack",
+										description:
+											'Cookie set by <a href="https://betterstack.com/privacy" target="_blank" rel="external">Better Stack</a> to measure page performance and script errors',
 										expiration: "Session",
 									},
 								],

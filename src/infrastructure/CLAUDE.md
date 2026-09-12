@@ -11,6 +11,9 @@ Each client is a `Context.Tag` class plus a `Layer.effect` implementation, co-lo
 | `CmsClient` | `CmsClientLive` | [`cms/client.ts`](./cms/client.ts) |
 | `Database` | `DatabaseLive` | [`db/client.ts`](./db/client.ts) |
 | `EmailClient` | `EmailClientLive` | [`email/server.ts`](./email/server.ts) |
+| `LoggerService` | `LoggerServiceLive` | [`logging/service.ts`](./logging/service.ts) |
+
+`LoggerServiceLive` is the one built with `Layer.sync` rather than `Layer.effect`, and that is the whole shape of it: it constructs nothing, reads no secret and cannot fail, because the adapter it hands back is a module-level object that was already there.
 
 Rules for a new client:
 
@@ -49,8 +52,20 @@ The steps the contact action composes, so [`src/actions`](../actions) stays pure
 
 **Errors stay tagged**, and turning a tag into an HTTP status happens only in [`src/actions/errorResponse.ts`](../actions/errorResponse.ts) (`contactErrorResponse`), never here. The *message* is the opposite: the copy for `ValidationError` and `DuplicateContactError` is written in this folder and reaches the visitor verbatim, because `contactErrorResponse` forwards `failure.value.message` for exactly those two tags. Every other message here is written for the Worker log instead: `RecaptchaError`'s says which of our own things failed, and no visitor ever reads it. Only the generic 500 text belongs to the action.
 
+## `logging/`
+
+Three files, and the first two are **byte for byte what contribKit and forever-pto carry**, bar the service name and the alias this tree's import convention wants: keep them that way, because the whole point is that one Better Stack query reads all three repositories. [`logging/contract.ts`](./logging/contract.ts) holds `LOG_SERVICE`, `LOG_LEVEL` and `stripQuery`; [`logging/logger.ts`](./logging/logger.ts) holds the `logger` object, four methods over one `write`; [`logging/service.ts`](./logging/service.ts) is this repository's Effect seam, `LoggerService` plus `Layer.sync(LoggerService, () => logger)`.
+
+**`console` is the transport, on purpose**, and the single `noConsole` exemption in `biome.json` covers `logger.ts` and no other file. Cloudflare's log export reads console output, attributes it to the active span and stamps the trace id on the way out; a sink posted to over HTTP from inside the Worker is invisible to the runtime and its lines land beside the spans they belong to without joining them. ADR 0020.
+
+**The spread order in `write` is load-bearing**: `...redacted(context)` first, then `service`, `level` and `message`, so a caller passing `{ level: "info" }` or `{ service: "something-else" }` cannot relabel its own line. Writing it the other way round reads identically and was a real bug in forever-pto before it was a rule anywhere. `logger.test.ts` turns red on all three if the order is inverted. `redacted` strips the query string off a `url` **a caller puts in the context**, which is a different thing from wrangler's `redact_query_string` covering the request URL Cloudflare itself records. A value `JSON.stringify` cannot hold loses the line rather than throwing at the caller.
+
+**A program that logs carries `LoggerService` in its `R`, and its return type is annotated**, which is the only reason the tag earns its place over the plain import: `R` then answers "does this program log?", and an unintended log becomes a compile error at the function that introduced it. An inferred `R` simply widens and gets nothing from this, so the annotation is load-bearing rather than stylistic. `LoggerServiceLive` resolves to the very object `logger.ts` exports, so the tag and the import cannot disagree.
+
+**The plain import is for code with no layer to provide one**: [`500.astro`](../pages/500.astro), whose frontmatter has no runtime, and `getImagePlaceholders`, which runs inside `astro build`. Neither is a second mechanism; both are the same object reached the only way available there.
+
 ## Other subfolders
 
-- `images/`: `imageOptimization`, `imagePlaceholder` (blur data URLs generated during loading). `getImagePlaceholders` takes every source at once and answers a `Map`, because **the burst is the module's decision, not the caller's**: it caps requests in flight, retries one that failed in transit, and logs how many placeholders were lost through Effect's `Logger`. Its predecessor read one source and left the fan-out to the loaders, all of which spread the whole collection over a single `Promise.all`: 62 simultaneous requests to `images.ctfassets.net` for Articles, of which the CDN dropped a sixth, and the bare `catch` reported none of it. The images shipped unblurred and the build said it succeeded. A source the module truly cannot read is simply absent from the `Map`
+- `images/`: `imageOptimization`, `imagePlaceholder` (blur data URLs generated during loading). `getImagePlaceholders` takes every source at once and answers a `Map`, because **the burst is the module's decision, not the caller's**: it caps requests in flight, retries one that failed in transit, and logs how many placeholders were lost through the `logger` import. Its predecessor read one source and left the fan-out to the loaders, all of which spread the whole collection over a single `Promise.all`: 62 simultaneous requests to `images.ctfassets.net` for Articles, of which the CDN dropped a sixth, and the bare `catch` reported none of it. The images shipped unblurred and the build said it succeeded. A source the module truly cannot read is simply absent from the `Map`
 - `integrations/`: build-time Astro integrations (`generateStaticHeaders`)
 - [`db/schema.ts`](./db/schema.ts): Drizzle tables; migrations live in `/drizzle`. Workers-safe imports only: `@libsql/client/web` + `drizzle-orm/libsql/web`.

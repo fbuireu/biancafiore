@@ -7,27 +7,13 @@ import {
 	RecaptchaError,
 	ValidationError,
 } from "@infrastructure/errors";
-import { Cause, Effect, Logger } from "effect";
+import { loggerDouble } from "@tests/doubles/contactLayers";
+import { Cause, Effect } from "effect";
 import { beforeEach, describe, expect, it } from "vitest";
 
 const RAISED_MESSAGE = "the copy written where the error was raised";
 
-interface CapturedLog {
-	level: string;
-	message: string;
-}
-
-const logged: CapturedLog[] = [];
-
-const capturingLogger = Logger.replace(
-	Logger.defaultLogger,
-	Logger.make(({ logLevel, message }) => {
-		logged.push({
-			level: logLevel.label,
-			message: (Array.isArray(message) ? message : [message]).map(String).join(" "),
-		});
-	}),
-);
+const log = loggerDouble();
 
 const raise: Record<ContactError["_tag"], (message: string) => ContactError> = {
 	ValidationError: (message) => new ValidationError({ message }),
@@ -38,10 +24,10 @@ const raise: Record<ContactError["_tag"], (message: string) => ContactError> = {
 };
 
 const respondTo = (cause: Cause.Cause<ContactError>): Promise<ContactErrorResponse> =>
-	Effect.runPromise(contactErrorResponse(cause).pipe(Effect.provide(capturingLogger)));
+	Effect.runPromise(contactErrorResponse(cause).pipe(Effect.provide(log.layer)));
 
 beforeEach(() => {
-	logged.length = 0;
+	log.lines.length = 0;
 });
 
 describe("contactErrorResponse", () => {
@@ -49,14 +35,14 @@ describe("contactErrorResponse", () => {
 		const response = await respondTo(Cause.fail(raise.ValidationError(RAISED_MESSAGE)));
 
 		expect(response).toStrictEqual({ code: "BAD_REQUEST", message: RAISED_MESSAGE });
-		expect(logged).toEqual([]);
+		expect(log.lines).toEqual([]);
 	});
 
 	it("answers a duplicate with UNAUTHORIZED and the copy persistence wrote", async () => {
 		const response = await respondTo(Cause.fail(raise.DuplicateContactError(RAISED_MESSAGE)));
 
 		expect(response).toStrictEqual({ code: "UNAUTHORIZED", message: RAISED_MESSAGE });
-		expect(logged).toEqual([]);
+		expect(log.lines).toEqual([]);
 	});
 
 	it("gives every contact error the status the guide documents", async () => {
@@ -82,8 +68,8 @@ describe("contactErrorResponse", () => {
 
 		expect(response.code).toBe("INTERNAL_SERVER_ERROR");
 		expect(response.message).not.toContain("siteverify unreachable");
-		expect(logged).toHaveLength(1);
-		expect(logged[0]?.message).toContain("siteverify unreachable");
+		expect(log.lines).toHaveLength(1);
+		expect(log.lines[0]?.message).toContain("siteverify unreachable");
 	});
 
 	it("keeps the copy of an unmapped tag away from the visitor, behind one generic message", async () => {
@@ -97,9 +83,9 @@ describe("contactErrorResponse", () => {
 	it("logs the pretty cause at error level whenever it collapses one", async () => {
 		await respondTo(Cause.fail(raise.EmailError("resend down")));
 
-		expect(logged).toHaveLength(1);
-		expect(logged[0]?.level).toBe("ERROR");
-		expect(logged[0]?.message).toContain("resend down");
+		expect(log.lines).toHaveLength(1);
+		expect(log.lines[0]?.level).toBe("error");
+		expect(log.lines[0]?.message).toContain("resend down");
 	});
 
 	it("treats a defect as unmapped, even one carrying a tag it would otherwise map", async () => {
@@ -107,13 +93,13 @@ describe("contactErrorResponse", () => {
 
 		expect(response.code).toBe("INTERNAL_SERVER_ERROR");
 		expect(response.message).not.toContain(RAISED_MESSAGE);
-		expect(logged).toHaveLength(1);
+		expect(log.lines).toHaveLength(1);
 	});
 
 	it("treats a thrown string defect the same way, and still logs it", async () => {
 		const response = await respondTo(Cause.die("boom"));
 
 		expect(response.code).toBe("INTERNAL_SERVER_ERROR");
-		expect(logged[0]?.message).toContain("boom");
+		expect(log.lines[0]?.message).toContain("boom");
 	});
 });

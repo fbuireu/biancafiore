@@ -2,6 +2,8 @@ export const ANALYTICS_CATEGORY = "analytics";
 export const NECESSARY_CATEGORY = "necessary";
 export const CONSENT_COOKIE_NAME = "cc_cookie";
 export const CONSENT_UPDATE_WAIT = 500;
+export const BETTER_STACK_SERVICE = "betterstack";
+export const BETTER_STACK_COOKIES = /^bs_/;
 
 export const CONSENT_STATUS = {
 	GRANTED: "granted",

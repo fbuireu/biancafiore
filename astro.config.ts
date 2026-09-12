@@ -117,6 +117,11 @@ export default defineConfig({
 				access: "public",
 				context: "client",
 			}),
+			BETTER_STACK_TRACKING_TOKEN: envField.string({
+				access: "public",
+				context: "client",
+				optional: true,
+			}),
 			GOOGLE_RECAPTCHA_SECRET_KEY: envField.string({
 				access: "secret",
 				context: "server",

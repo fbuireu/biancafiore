@@ -5,9 +5,18 @@ compatibility_date = "2026-03-12"
 
 [observability]
 enabled = true
+redact_query_string = true
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+head_sampling_rate = 1
+destinations = ["biancafiore-web-production-logs"]
 
 [observability.traces]
 enabled = true
+head_sampling_rate = 1
+destinations = ["biancafiore-web-production-traces"]
 
 [cache]
 enabled = true
@@ -25,12 +34,42 @@ preview_id = "fde64789020f4160b0d835d190d8d5d6"
 [env.development]
 name = "biancafiore-development"
 
+[env.development.observability]
+enabled = true
+redact_query_string = true
+
+[env.development.observability.logs]
+enabled = true
+invocation_logs = true
+head_sampling_rate = 1
+destinations = ["biancafiore-web-development-logs"]
+
+[env.development.observability.traces]
+enabled = true
+head_sampling_rate = 1
+destinations = ["biancafiore-web-development-traces"]
+
 [[env.development.kv_namespaces]]
 binding = "SESSION"
 id = "fde64789020f4160b0d835d190d8d5d6"
 
 [env.production]
 name = "biancafiore"
+
+[env.production.observability]
+enabled = true
+redact_query_string = true
+
+[env.production.observability.logs]
+enabled = true
+invocation_logs = true
+head_sampling_rate = 1
+destinations = ["biancafiore-web-production-logs"]
+
+[env.production.observability.traces]
+enabled = true
+head_sampling_rate = 1
+destinations = ["biancafiore-web-production-traces"]
 
 [[env.production.kv_namespaces]]
 binding = "SESSION"

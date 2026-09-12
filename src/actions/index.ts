@@ -12,12 +12,12 @@ export const server = {
 		handler: async (params: ContactParams) => {
 			const result = await Effect.runPromise(
 				submitContact(params).pipe(
-					Effect.provide(ContactLayer),
 					Effect.matchCauseEffect({
 						onSuccess: (value) => Effect.succeed({ success: true as const, value }),
 						onFailure: (cause) =>
 							contactErrorResponse(cause).pipe(Effect.map((error) => ({ success: false as const, error }))),
 					}),
+					Effect.provide(ContactLayer),
 				),
 			);
 

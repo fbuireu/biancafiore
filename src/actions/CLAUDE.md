@@ -25,7 +25,7 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
 - **`contactErrorResponse` is the only place a tagged error becomes HTTP.** Exactly these are mapped:
   `ValidationError` → `BAD_REQUEST` and `DuplicateContactError` → `UNAUTHORIZED`. Everything else
   (`EmailError`, `DatabaseError`, `RecaptchaError`, and any defect) logs `Cause.pretty(cause)` through
-  `Effect.logError` and collapses into one generic `INTERNAL_SERVER_ERROR` message. **Adding a tagged error in
+  `LoggerService` and collapses into one generic `INTERNAL_SERVER_ERROR` message. **Adding a tagged error in
   `@infrastructure/errors` without adding a case here silently degrades it to that generic message**, which is
   the failure mode to watch for: `errorResponse.test.ts` keys its census off `ContactError["_tag"]`, so
   widening that union without answering the new tag fails the type check rather than review. For the
@@ -70,10 +70,12 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   Bianca; the row is bookkeeping for duplicate detection, not the deliverable. Failing the request there
   would show a 500 for work that actually succeeded and invite a retry that passes the duplicate check
   (because no row exists) and mails Bianca a second time. So `Effect.catchAll` takes every failure of that
-  step, logs it with the `emailId` through `Effect.logError`, and the action still answers `ok`. The cost is
+  step, logs it with the `emailId` through `logger.logError`, and the action still answers `ok`. The cost is
   accepted and narrow: a dropped row means that address can contact again without being told it already did.
-- **Nothing here calls `console`.** Both log sites go through Effect's `Logger`. Biome's `noConsole` runs with
-  no allowlist, so a `console.error` added back fails the lint rather than review.
+- **Nothing here calls `console`.** Both log sites `yield* LoggerService` and carry it in their `R`, which is
+  what makes an unintended log a compile error rather than a review note; the one file that does call `console`
+  is the transport itself, [`@infrastructure/logging/logger.ts`](../infrastructure/logging/logger.ts), and it is
+  the only path `biome.json` exempts from `noConsole`. ADR 0020.
 - **The payload is validated twice, on purpose.** `defineAction`'s `input` validates at the edge, and
   `validateContact` re-runs the same schema (minus `recaptcha`) inside the program, which is what makes
   `submitContact` self-sufficient enough to unit-test. The two are not interchangeable: `submitContact`
@@ -99,6 +101,6 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   forwards it verbatim to an unauthenticated caller. Distinct sentences made the form a free oracle
   over the contacts table: submit any address and the wording told you whether it had written in the last
   `CONTACT_COOLDOWN_HOURS`, or whether it had ever sent that exact text, and the check runs before any
-  mail leaves, so probing cost nothing and left no trace. Which check fired goes to `Effect.logInfo`
+  mail leaves, so probing cost nothing and left no trace. Which check fired goes to `logger.info`
   instead, where Bianca can read it and a caller cannot. What remains visible is the minimum a legitimate
   repeat sender needs: that they have already been heard.
