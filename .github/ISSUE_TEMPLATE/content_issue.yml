@@ -1,5 +1,5 @@
 name: Content Issue
-description: Report a typo, broken link, or mistake in an article or page content
+description: Report a typo, a broken link or a mistake in an article, a project or a page
 title: '[Content]: '
 labels: ['content', 'triage']
 assignees: ['fbuireu']
@@ -11,8 +11,8 @@ body:
   - type: input
     id: url
     attributes:
-      label: Page URL
-      description: Where is the content?
+      label: Location
+      description: The page URL, or where the text appears
       placeholder: https://biancafiore.me/articles/...
     validations:
       required: true

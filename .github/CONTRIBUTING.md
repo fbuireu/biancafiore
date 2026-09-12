@@ -25,9 +25,9 @@ By participating you are expected to uphold the [Code of Conduct](./CODE_OF_COND
 Check the existing issues first, then use the [bug report template](ISSUE_TEMPLATE/bug_report.yml). Include
 what you did, what you expected, and what actually happened, with the browser and OS.
 
-**A typo in an article is not a bug in this repository.** Articles, projects and testimonials live in
+**A mistake in the text is a content issue, not a bug.** Articles, projects and testimonials live in
 Contentful, so a pull request cannot fix them; use the
-[content issue template](ISSUE_TEMPLATE/content_issue.yml) instead and it will be corrected in the CMS.
+[content issue template](ISSUE_TEMPLATE/content_issue.yml) and it will be corrected in the CMS.
 
 Security issues go through the [Security Policy](./SECURITY.md), never a public issue.
 

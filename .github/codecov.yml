@@ -7,3 +7,12 @@ coverage:
     patch:
       default:
         informational: true
+
+ignore:
+  - "**/*.d.ts"
+  - "**/types.ts"
+  - "**/schema.ts"
+  - "**/*.astro"
+  - "src/const/**"
+  - "src/data/**"
+  - "src/tests/**"
