@@ -70,7 +70,7 @@
 		"test:e2e:changed": "pnpm test:e2e --only-changed --pass-with-no-tests"
 	},
 	"dependencies": {
-		"@astrojs/cloudflare": "14.3.0",
+		"@astrojs/cloudflare": "14.3.1",
 		"@astrojs/compiler-rs": "0.4.0",
 		"@astrojs/react": "6.0.5",
 		"@astrojs/rss": "4.0.19",
@@ -80,20 +80,20 @@
 		"@hookform/resolvers": "5.9.1",
 		"@libsql/client": "0.18.0",
 		"@tgwf/co2": "0.19.0",
-		"astro": "7.3.1",
+		"astro": "7.3.2",
 		"clsx": "2.1.1",
-		"contentful": "11.12.9",
+		"contentful": "11.12.10",
 		"drizzle-orm": "0.45.2",
 		"effect": "3.22.1",
 		"gsap": "3.15.0",
-		"react-email": "6.9.3",
 		"react": "19.2.8",
 		"react-dom": "19.2.8",
+		"react-email": "6.9.5",
 		"react-globe.gl": "2.38.0",
 		"react-google-recaptcha-v3": "1.11.0",
 		"react-hook-form": "7.87.0",
 		"resend": "6.26.0",
-		"three": "0.185.1",
+		"three": "0.186.0",
 		"vanilla-cookieconsent": "3.1.0"
 	},
 	"devDependencies": {
@@ -122,6 +122,6 @@
 		"semantic-release": "25.0.9",
 		"typescript": "6.0.3",
 		"vitest": "5.0.0",
-		"wrangler": "4.129.1"
+		"wrangler": "4.130.0"
 	}
 }
