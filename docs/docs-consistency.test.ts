@@ -2058,7 +2058,7 @@ describe("the release config parses the commit grammar commitlint accepts", () =
 			);
 			const message = Array.isArray(entry) ? String(entry[1]?.message) : "";
 
-			return message.startsWith("chore(release): ${nextRelease.version}") && message.includes("[skip ci]")
+			return message.startsWith(`chore(release): \${nextRelease.version}`) && message.includes("[skip ci]")
 				? []
 				: [`${file}: ${message}`];
 		});
