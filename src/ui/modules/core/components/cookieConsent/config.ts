@@ -4,12 +4,14 @@ import {
 	BETTER_STACK_COOKIES,
 	BETTER_STACK_SERVICE,
 	CONSENT_COOKIE_NAME,
+	CONSENT_REVISION,
 	NECESSARY_CATEGORY,
 } from "@modules/core/components/cookieConsent/utils/consentGate";
 import type { CookieConsentConfig } from "vanilla-cookieconsent";
 import { updatePreferences } from "./utils/preferences";
 
 export const config: CookieConsentConfig = {
+	revision: CONSENT_REVISION,
 	onConsent: () => updatePreferences(),
 	onChange: () => updatePreferences(),
 	guiOptions: {

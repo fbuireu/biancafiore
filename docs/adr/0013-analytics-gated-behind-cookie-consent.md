@@ -22,6 +22,12 @@ Analytics load with consent denied by default. An inline script in `<head>` read
 
 - The ordering is load-bearing: the consent default has to be set before GA/GTM initialise, so this script stays inline and stays first ([ADR 0005](./0005-theme-token-families-and-inline-bootstrap.md) puts the theme bootstrap in the same position for the same reason).
 - Analytics under-report by design; visitors who never accept are invisible.
+- **Adding a service to a category is a `revision` bump, or returning visitors never see it.** vanilla-cookieconsent
+  stores the accepted *services* in `cc_cookie` and defaults `revision` to `0`. A visitor who accepted before a
+  service existed carries a cookie that does not list it, so `acceptedService` answers false for that visitor
+  forever and the banner never asks again: the tag simply never loads, with nothing anywhere saying why. Introducing
+  `betterstack` is what made this concrete, and `CONSENT_REVISION` in `consentGate.ts` is now the one place that
+  number lives. **Bump it in the same commit that adds or removes a service**, which re-prompts everyone once.
 - **One Better Stack source serves both stages, and the `environment` attribute is what keeps them apart.**
   `BETTER_STACK_TRACKING_TOKEN` is a **repository** variable rather than an environment one, so preview and
   production send to the same source; `loadBetterStack` passes `init` an `environment` derived from the hostname

@@ -195,6 +195,7 @@ const LOGGING_CONTRACT = "src/infrastructure/logging/contract.ts";
 const LOGGING_SERVICE = "src/infrastructure/logging/service.ts";
 const TELEMETRY_MODULE = "src/ui/modules/core/utils/telemetry.ts";
 const TAG_ORIGIN = /BETTER_STACK_TAG_ORIGIN = "([^"]+)"/;
+const CONSENT_REVISION_DECLARATION = /CONSENT_REVISION = (\d+);/;
 const BETTER_STACK_CREDENTIAL = /BETTER_STACK_[A-Z_]*(?:TOKEN|SECRET|KEY|INGESTING_URL|SOURCE)/g;
 const OBSERVABILITY_TABLES = ["observability", "observability.logs", "observability.traces"];
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
@@ -940,6 +941,17 @@ describe("observability", () => {
 		expect(preferences).toContain("acceptedService(BETTER_STACK_SERVICE, ANALYTICS_CATEGORY)");
 		expect(config).toContain("onConsent: () => updatePreferences()");
 		expect(config).toContain("[BETTER_STACK_SERVICE]:");
+	});
+
+	it("declares a consent revision, since a stale cookie hides a service that did not exist when it was written", () => {
+		const gate = read("src/ui/modules/core/components/cookieConsent/utils/consentGate.ts");
+		const revision = Number(CONSENT_REVISION_DECLARATION.exec(gate)?.[1]);
+
+		expect(read("docs/adr/0013-analytics-gated-behind-cookie-consent.md")).toContain(
+			"Adding a service to a category is a `revision` bump",
+		);
+		expect(revision).toBeGreaterThan(0);
+		expect(read("src/ui/modules/core/components/cookieConsent/config.ts")).toContain("revision: CONSENT_REVISION,");
 	});
 
 	it("tells the shared RUM source which stage it is, since one source serves both", () => {
