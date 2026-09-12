@@ -1,3 +1,10 @@
+# [1.24.0](https://github.com/fbuireu/biancafiore/compare/v1.23.2...v1.24.0) (2026-09-12)
+
+
+### Features
+
+* ship logs, traces and RUM to Better Stack ([8494c2b](https://github.com/fbuireu/biancafiore/commit/8494c2b6ebffbcb1f38e4ca757d932667ac11577))
+
 ## [1.23.2](https://github.com/fbuireu/biancafiore/compare/v1.23.1...v1.23.2) (2026-09-12)
 
 
