@@ -1,3 +1,10 @@
+## [1.24.1](https://github.com/fbuireu/biancafiore/compare/v1.24.0...v1.24.1) (2026-09-12)
+
+
+### Bug Fixes
+
+* admit the Better Stack ingest host beside its script host ([baad2a0](https://github.com/fbuireu/biancafiore/commit/baad2a0733895cb98d0be532e98546b15dfd185b))
+
 # [1.24.0](https://github.com/fbuireu/biancafiore/compare/v1.23.2...v1.24.0) (2026-09-12)
 
 
