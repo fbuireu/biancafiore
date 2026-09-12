@@ -1,3 +1,10 @@
+## [1.23.2](https://github.com/fbuireu/biancafiore/compare/v1.23.1...v1.23.2) (2026-09-12)
+
+
+### Bug Fixes
+
+* let GA4 reach its regional collect endpoint ([ee1a424](https://github.com/fbuireu/biancafiore/commit/ee1a42492be5bf4135c1dc58dc5e35c86d272c8d))
+
 ## [1.23.1](https://github.com/fbuireu/biancafiore/compare/v1.23.0...v1.23.1) (2026-09-11)
 
 
