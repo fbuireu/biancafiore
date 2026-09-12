@@ -1,3 +1,10 @@
+## [1.24.2](https://github.com/fbuireu/biancafiore/compare/v1.24.1...v1.24.2) (2026-09-12)
+
+
+### Bug Fixes
+
+* bs tracking ([6da4763](https://github.com/fbuireu/biancafiore/commit/6da476352afe57f25bb0bf7b1e5279d6d1e58932))
+
 ## [1.24.1](https://github.com/fbuireu/biancafiore/compare/v1.24.0...v1.24.1) (2026-09-12)
 
 
