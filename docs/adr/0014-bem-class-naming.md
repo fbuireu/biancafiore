@@ -34,6 +34,6 @@ Classes that exist purely as JS state and style nothing are `data-` attributes, 
 
 The rename exposed dead code that the old naming had hidden: a theme-toggle branch whose CSS expected `.--is-dark` while the JS wrote `dark` (six selectors that never matched), an article-card variant map producing classes no stylesheet defined, a `--is-hidden` toggle nothing styled, and a `:not(…) svg` rule that could never match its own DOM. All removed.
 
-There is no `page--tag`. `getPage` resolves `/tags/<slug>` to `tags` because `PAGES_ROUTES.TAGS` is declared before `TAG` and the lookup uses `includes`, so tag detail pages share the `tags-page` container. Left as-is: reordering the routes would change which rules apply to those pages.
+There is no `page--tag`. `getPage` resolves `/tags/<slug>` to `tags` because `PAGES_ROUTES.TAGS` is declared before `TAG` and it takes the first key `isWithin` matches, which counts a route as containing everything under it, so tag detail pages share the `tags-page` container. Left as-is: reordering the routes would change which rules apply to those pages.
 
 The refactor predates the repo's first tests ([ADR 0015](./0015-docs-consistency-enforced-by-a-test.md)), so it was verified by building `HEAD` and the refactored tree and diffing the classes in the emitted HTML against the selectors in the emitted CSS, requiring every orphan on either side to be accounted for.
