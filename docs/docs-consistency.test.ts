@@ -2007,7 +2007,7 @@ describe("stated versions", () => {
 	});
 
 	it("states the current version of nothing a bot moves, outside the ADRs", () => {
-		const documents = [...DOCS, "README.md", "CONTRIBUTING.md"].filter(
+		const documents = [...DOCS, "README.md", ".github/CONTRIBUTING.md"].filter(
 			(file) => !file.startsWith("docs/adr/") && existsSync(join(ROOT, file)),
 		);
 		const stated = documents.flatMap((file) =>

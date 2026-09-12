@@ -60,4 +60,4 @@ pnpm db:studio          # drizzle studio
 - **No code comments**, and **no Biome suppressions**. Both are conventions with teeth; [Troubleshooting](Troubleshooting) covers the ones that bite.
 - **The docs are part of the change.** Change code and documentation in the same commit: a test reads these documents and fails the build when they disagree with the repository.
 
-The full contributor guide is [`CONTRIBUTING.md`](https://github.com/fbuireu/biancafiore/blob/main/CONTRIBUTING.md).
+The full contributor guide is [`CONTRIBUTING.md`](https://github.com/fbuireu/biancafiore/blob/main/.github/CONTRIBUTING.md).

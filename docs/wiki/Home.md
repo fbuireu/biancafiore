@@ -40,7 +40,7 @@ This wiki is the shape, not the rules. Anything normative lives in the repositor
 | What rule does one folder obey? | the `CLAUDE.md` inside that folder |
 | Why was a decision made this way? | [`docs/adr/`](https://github.com/fbuireu/biancafiore/tree/main/docs/adr) |
 | What is known-broken or deliberately deferred? | [`docs/BACKLOG.md`](https://github.com/fbuireu/biancafiore/blob/main/docs/BACKLOG.md) |
-| How do I contribute? | [`CONTRIBUTING.md`](https://github.com/fbuireu/biancafiore/blob/main/CONTRIBUTING.md) |
+| How do I contribute? | [`CONTRIBUTING.md`](https://github.com/fbuireu/biancafiore/blob/main/.github/CONTRIBUTING.md) |
 
 ---
 

@@ -44,9 +44,10 @@
 
 <!-- Check all that apply, with an "x" -->
 
-- [ ] My code follows the style guidelines of this project (`pnpm lint:all` and `pnpm format:all` pass)
+- [ ] `pnpm verify` passes (format check, typecheck, `astro check` and coverage)
 - [ ] I have performed a self-review of my own code
-- [ ] My change carries no inline comments; rationale lives in this PR, the commit messages, or the folder's guide
+- [ ] My change carries no inline comments; rationale lives in this PR, the commit messages, an ADR or the folder's guide
+- [ ] I used the glossary's words ([`CONTEXT.md`](../CONTEXT.md)) rather than synonyms
 - [ ] I updated any `CLAUDE.md`, [`CONTEXT.md`](../CONTEXT.md), ADR or wiki page my change affects, in this same PR, and `pnpm test:docs` passes
 - [ ] My changes generate no new warnings or errors
 - [ ] I have added tests that prove my fix is effective or that my feature works
