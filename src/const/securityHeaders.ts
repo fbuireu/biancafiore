@@ -8,7 +8,7 @@ const CONTENT_SECURITY_POLICY_DIRECTIVES = [
 	`style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${CALENDLY.ASSETS_ORIGIN}`,
 	"img-src 'self' data: https:",
 	"font-src 'self' data: https://fonts.gstatic.com",
-	"connect-src 'self' https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com https://www.google.com https://api.websitecarbon.com https://api.thegreenwebfoundation.org https://betterstack.net https://cloudflareinsights.com",
+	"connect-src 'self' https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com https://www.google.com https://api.websitecarbon.com https://api.thegreenwebfoundation.org https://betterstack.net https://*.betterstackdata.com https://cloudflareinsights.com",
 	"worker-src 'self' blob:",
 	`frame-src 'self' https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com ${CALENDLY.BOOKING_ORIGIN}`,
 	"object-src 'none'",
