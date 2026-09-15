@@ -1,6 +1,6 @@
 {
 	"name": "biancafiore",
-	"version": "1.24.2",
+	"version": "1.24.3",
 	"private": true,
 	"description": "Portfolio and blog of content writer Bianca Fiore. Astro SSR on Cloudflare Workers, content from Contentful",
 	"keywords": [
