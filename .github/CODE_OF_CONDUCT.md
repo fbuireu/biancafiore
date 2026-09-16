@@ -50,7 +50,7 @@ spaces.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the maintainer at **fbuireu@gmail.com**. All complaints will be
+reported to the maintainer at **hello@biancafiore.me**. All complaints will be
 reviewed and investigated promptly and fairly.
 
 This is a single-maintainer project, so the person who receives a report is also
