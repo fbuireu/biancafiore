@@ -39,6 +39,10 @@
 	}
 }
 
+.blog__item {
+	--reveal-index: calc(sibling-index() - 1);
+}
+
 .blog__footer {
 	margin-block-start: 60px;
 	text-align: center;

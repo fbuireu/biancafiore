@@ -15,14 +15,14 @@
 	}
 }
 
-@supports not (z-index: attr(data-index type(<number>))) {
+@supports not (z-index: attr(data-num-cards type(<number>))) {
 	.city-card__list {
 		--num-cards: 1;
 	}
 }
 
 .city-card__item {
-	--index: attr(data-index type(<number>), 1);
+	--index: sibling-index();
 	--index0: calc(var(--index) - 1);
 	--reverse-index: calc(var(--num-cards) - var(--index0));
 	padding-top: calc(var(--index) * 0.5rem);
@@ -31,12 +31,6 @@
 
 	@container about-page (width <= 960px) {
 		padding-inline: 1rem;
-	}
-}
-
-@supports not (z-index: attr(data-index type(<number>))) {
-	.city-card__item {
-		--index: 1;
 	}
 }
 

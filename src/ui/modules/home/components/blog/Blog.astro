@@ -17,8 +17,8 @@ const { articles, itemListSchema } = await blogTeaser(MAX_ARTICLES);
                           href={PAGES_ROUTES.ARTICLES}>the Blog</a>
         </h2>
         <ul class="blog__list">
-          {articles.map((article, index) => (
-              <li class="blog__item item-wrapper reveal" data-reveal-index={index}>
+          {articles.map((article) => (
+              <li class="blog__item item-wrapper reveal">
                   <ArticleCard article={article} />
               </li>
           ))}

@@ -43,6 +43,10 @@
 		animation-timeline: --reveal-slider;
 	}
 
+	.slider-wrapper--reveal-items .slider__slide {
+		--reveal-index: calc(sibling-index() - 1);
+	}
+
 	@supports not (z-index: attr(data-reveal-index type(<number>))) {
 		.reveal {
 			--reveal-index: 0;

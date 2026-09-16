@@ -12,18 +12,8 @@
 	}
 }
 
-@container articles-page (width > 960px) {
-	.articles__grid__item:nth-child(4n + 2) {
-		--reveal-index: 1;
-	}
-
-	.articles__grid__item:nth-child(4n + 3) {
-		--reveal-index: 2;
-	}
-
-	.articles__grid__item:nth-child(4n + 4) {
-		--reveal-index: 3;
-	}
+.articles__grid__item {
+	--reveal-index: mod(sibling-index() - 1, var(--items-per-row));
 }
 
 .articles__intro {

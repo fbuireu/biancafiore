@@ -29,6 +29,7 @@
 }
 
 .my-work__item {
+	--reveal-index: calc(sibling-index() - 2);
 	border-bottom: 1px solid var(--line);
 	counter-increment: my-work;
 

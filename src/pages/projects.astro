@@ -21,7 +21,7 @@ const metadata: Partial<SeoMetadata> = {
     <ProjectsIntro />
   {projects.map((project, index) => (
       <ProjectSection id={project.data.id}>
-          <article data-index={index} class="project-wrapper">
+          <article class="project-wrapper">
               <div class="project-image-wrapper">
                   <BlurImage class="project-image" layout="full-width" image={project.data.image} alt={project.data.name}
                          loading={index === 0 ? "eager" : "lazy"} />

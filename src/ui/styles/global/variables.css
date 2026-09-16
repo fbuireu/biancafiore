@@ -482,3 +482,21 @@
 	inherits: false;
 	initial-value: false;
 }
+
+@property --index {
+	syntax: "<integer>";
+	inherits: true;
+	initial-value: 1;
+}
+
+@property --stack-index {
+	syntax: "<integer>";
+	inherits: true;
+	initial-value: 1;
+}
+
+@property --reveal-index {
+	syntax: "<number>";
+	inherits: true;
+	initial-value: 0;
+}

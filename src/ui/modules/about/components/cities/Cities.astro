@@ -13,12 +13,8 @@ const numCards = cities.length + 1;
 ---
 <ul class="city-card__list" data-num-cards={numCards}>
 	{
-		cities.map(({ data }, index) => (
-			<li
-				class="city-card__item"
-				data-index={index + 1}
-				id={data.slug}
-			>
+		cities.map(({ data }) => (
+			<li class="city-card__item" id={data.slug}>
 				<article class="city-card__content">
 					<BlurImage
 						class="city-card__content__image"

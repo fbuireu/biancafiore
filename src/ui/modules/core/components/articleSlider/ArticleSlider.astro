@@ -30,8 +30,8 @@ const slides = isShuffled ? shuffle(articles) : articles;
 
 <SliderShell class={`${className ?? ''} slider-wrapper--reveal-items`.trim()}>
 	{
-		slides.map((article, index) => (
-			<li class="slider__slide item-wrapper reveal" data-reveal-index={index}>
+		slides.map((article) => (
+			<li class="slider__slide item-wrapper reveal">
 				<ArticleCard article={article} />
 			</li>
 		))

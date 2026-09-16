@@ -34,6 +34,7 @@
 }
 
 .what-i-do__list__item {
+	--reveal-index: calc(sibling-index() - 1);
 	border-block-end: 1px solid var(--line-soft);
 	font-family: var(--font-serif);
 	font-size: var(--font-size-h6);
