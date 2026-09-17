@@ -30,7 +30,8 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   the failure mode to watch for: `errorResponse.test.ts` keys its census off `ContactError["_tag"]`, so
   widening that union without answering the new tag fails the type check rather than review. For the
   unmapped tags that answer is the decision, not the default: their copy names our infrastructure, so the
-  switch is deliberately left with two cases and no `INTERNAL_SERVER_ERROR` literal beyond the catch-all's.
+  switch is deliberately left with only the mapped cases above and no `INTERNAL_SERVER_ERROR` literal beyond
+  the catch-all's.
 - **`UNAUTHORIZED` is the status the form reacts to, which is why it is not a conflict code.** [`ContactForm.tsx`](../ui/modules/contact/components/contactForm/ContactForm.tsx)
   keys `FormStatus.UNAUTHORIZED` off a 401 (the status the action's error carries, forwarded verbatim by
   `toContactSubmission` in `@modules/contact/utils/submission`), and that state disables every input and the

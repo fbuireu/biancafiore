@@ -12,7 +12,7 @@ The pure domain layer. One folder per domain concept, named in the singular afte
   index.ts    # barrel: export * from each of the above
 ```
 
-Not every concept needs all of them. `rules.ts` is the exception rather than the norm: it exists for `article`, `breadcrumb`, `city`, `contact`, `tag` and no one else; `contact` carries a schema and two rules, one deciding when two addresses are the same person and one bounding the cooldown, `breadcrumb` is rules + types, and the rest are schema + types. Add a file when there is something to put in it.
+Not every concept needs all of them. `rules.ts` is the exception rather than the norm: it exists for `article`, `breadcrumb`, `city`, `contact`, `tag` and no one else; `contact` carries a schema and rules deciding when two addresses are the same person and bounding the cooldown, `breadcrumb` is rules + types, and the rest are schema + types. Add a file when there is something to put in it.
 
 ## Hard rules
 

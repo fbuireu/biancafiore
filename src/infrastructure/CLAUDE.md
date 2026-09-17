@@ -54,7 +54,7 @@ The steps the contact action composes, so [`src/actions`](../actions) stays pure
 
 ## `logging/`
 
-Three files, and the first two are **byte for byte what contribKit and forever-pto carry**, bar the service name and the alias this tree's import convention wants: keep them that way, because the whole point is that one Better Stack query reads all three repositories. [`logging/contract.ts`](./logging/contract.ts) holds `LOG_SERVICE`, `LOG_LEVEL` and `stripQuery`; [`logging/logger.ts`](./logging/logger.ts) holds the `logger` object, four methods over one `write`; [`logging/service.ts`](./logging/service.ts) is this repository's Effect seam, `LoggerService` plus `Layer.sync(LoggerService, () => logger)`.
+Three files, and the first two are **byte for byte what contribKit and forever-pto carry**, bar the service name and the alias this tree's import convention wants: keep them that way, because the whole point is that one Better Stack query reads all three repositories. [`logging/contract.ts`](./logging/contract.ts) holds `LOG_SERVICE`, `LOG_LEVEL` and `stripQuery`; [`logging/logger.ts`](./logging/logger.ts) holds the `logger` object, its methods each over one `write`; [`logging/service.ts`](./logging/service.ts) is this repository's Effect seam, `LoggerService` plus `Layer.sync(LoggerService, () => logger)`.
 
 **`console` is the transport, on purpose**, and the single `noConsole` exemption in `biome.json` covers `logger.ts` and no other file. Cloudflare's log export reads console output, attributes it to the active span and stamps the trace id on the way out; a sink posted to over HTTP from inside the Worker is invisible to the runtime and its lines land beside the spans they belong to without joining them. ADR 0020.
 
