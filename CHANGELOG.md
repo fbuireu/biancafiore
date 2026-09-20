@@ -1,3 +1,10 @@
+# [1.25.0](https://github.com/fbuireu/biancafiore/compare/v1.24.3...v1.25.0) (2026-09-20)
+
+
+### Features
+
+* bump react ([3d49863](https://github.com/fbuireu/biancafiore/commit/3d49863d9ed86eb1928bade1ab30cb69d54f7783))
+
 ## [1.24.3](https://github.com/fbuireu/biancafiore/compare/v1.24.2...v1.24.3) (2026-09-15)
 
 
