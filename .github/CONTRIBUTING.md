@@ -5,7 +5,7 @@ Cloudflare Workers with content served from Contentful, and that split decides w
 **code lives here, content does not**. Read this before your first pull request; it will save you a rejected
 commit.
 
-If you want the shape of the codebase, that is [CLAUDE.md](../CLAUDE.md) and the nested guides it links. If
+If you want the shape of the codebase, that is [AGENTS.md](../AGENTS.md) and the nested guides it links. If
 you want the vocabulary, that is [CONTEXT.md](../CONTEXT.md). If you want the *why*, that is
 [docs/adr/](../docs/adr/).
 
@@ -42,7 +42,7 @@ already being talked about.
 Use the [documentation template](ISSUE_TEMPLATE/documentation.yml), or just open a pull request. The
 user-facing documentation is the [wiki](../docs/wiki/), edited **in this repository** and published by
 [`sync-wiki.yml`](./workflows/sync-wiki.yml) on every push touching it, so an edit made in the wiki UI is
-overwritten on the next sync. The agent-facing guides (`CLAUDE.md` and friends) are held to the code by a
+overwritten on the next sync. The agent-facing guides (`AGENTS.md` and friends) are held to the code by a
 test, so read *The docs are part of the change* below before editing one.
 
 ## Getting started
@@ -66,7 +66,7 @@ pnpm dev
 
 `pnpm wrangler:dev` runs the site in the real Workers runtime when a change touches anything server-side.
 If `astro dev` hangs or SSR starts returning 500s, stop every dev process, delete `node_modules/.vite`, and
-restart; the Gotchas section of [CLAUDE.md](../CLAUDE.md) explains why.
+restart; the Gotchas section of [AGENTS.md](../AGENTS.md) explains why.
 
 ## Checks
 
@@ -86,7 +86,7 @@ pnpm verify             # format check, typecheck, astro check and coverage: wha
 Husky runs lint-staged on `pre-commit`, commitlint on `commit-msg` and `pnpm verify:changed` on `pre-push`.
 The hook runs the changed-only variant rather than `verify` because the coverage floor and a subset run
 cannot both hold; CI runs the full `pnpm verify` on the pushed sha, so a push whose coverage dropped still
-fails its check. [CLAUDE.md](../CLAUDE.md) explains the trade.
+fails its check. [AGENTS.md](../AGENTS.md) explains the trade.
 
 ## Conventions that will bite you if you skip them
 
@@ -135,7 +135,7 @@ commit**. A follow-up commit is a promise, not a fix.
 [`docs/docs-consistency.test.ts`](../docs/docs-consistency.test.ts) runs with the unit tests and fails the
 build when the docs and the repo disagree. It also parses the markdown shape of the guides, so even
 reformatting one can fail. When it fails, fix whichever side is wrong, and never delete an assertion to get
-green. [CLAUDE.md](../CLAUDE.md) has the full table of what to update for a given change.
+green. [AGENTS.md](../AGENTS.md) has the full table of what to update for a given change.
 
 ## Pull requests
 

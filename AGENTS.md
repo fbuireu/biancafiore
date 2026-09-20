@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 Agent-facing guide for **biancafiore**, the portfolio/blog of a content writer. See [CONTEXT.md](./CONTEXT.md) for the domain glossary (article/project/testimonial/tag terminology, `isRepublished`/`originalSource`, etc.); do not duplicate it here.
 
@@ -99,16 +99,16 @@ Path aliases ([`tsconfig.json`](./tsconfig.json)): `@const/* @infrastructure/* @
 
 | Folder | Covers |
 | --- | --- |
-| [`src/domain/`](./src/domain/CLAUDE.md) | per-concept `schema`/`types`/`rules` layout, purity rules |
-| [`src/application/`](./src/application/CLAUDE.md) | ACL: DTO mappers, collection loaders, adding a content type |
-| [`src/infrastructure/`](./src/infrastructure/CLAUDE.md) | Effect clients, tagged errors, `fetchEntries` vs `ContactLayer`, secrets |
-| [`src/actions/`](./src/actions/CLAUDE.md) | The contact action: error→HTTP mapping, step order, the two email forms |
-| [`src/ui/styles/`](./src/ui/styles/CLAUDE.md) | `@layer` order, token system, colour scheme, page containers |
-| [`src/ui/modules/`](./src/ui/modules/CLAUDE.md) | component/CSS co-location, islands, data access |
+| [`src/domain/`](./src/domain/AGENTS.md) | per-concept `schema`/`types`/`rules` layout, purity rules |
+| [`src/application/`](./src/application/AGENTS.md) | ACL: DTO mappers, collection loaders, adding a content type |
+| [`src/infrastructure/`](./src/infrastructure/AGENTS.md) | Effect clients, tagged errors, `fetchEntries` vs `ContactLayer`, secrets |
+| [`src/actions/`](./src/actions/AGENTS.md) | The contact action: error→HTTP mapping, step order, the two email forms |
+| [`src/ui/styles/`](./src/ui/styles/AGENTS.md) | `@layer` order, token system, colour scheme, page containers |
+| [`src/ui/modules/`](./src/ui/modules/AGENTS.md) | component/CSS co-location, islands, data access |
 
 ## Conventions
 
-- **Design tokens over magic numbers**, and respect the CSS `@layer` order; cascade correctness depends on it. Details in [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
+- **Design tokens over magic numbers**, and respect the CSS `@layer` order; cascade correctness depends on it. Details in [`src/ui/styles/AGENTS.md`](./src/ui/styles/AGENTS.md).
 - **Evergreen / Chromium-forward CSS.** Modern features are used freely (`light-dark()`, `interpolate-size`, `color-mix`, oklch); the build target is `esnext`.
 - **One module spells a content URL.** [`@const/routes.ts`](./src/const/routes.ts) turns a Slug into a path (`articleHref`, `tagHref`, `projectHref`), and `absoluteUrl` folds in the origin: it is the tree's only reader of `SITE_URL`, so a canonical URL and a JSON-LD URL cannot disagree about where the site lives. Never concatenate `PAGES_ROUTES` with a slug; the table itself stays for the routes that address a whole page, and because `getPage` classifies the current URL against its keys.
 - **One argument is positional; two or more are one object, typed `<FunctionName>Params`.** `securityHeaders(isDevelopment)`, `createBreadcrumbs(currentPath)`, `siteChrome(url)`; `isWithin({ pathname, route }): IsWithinParams`, `withImagePlaceholders({ field, entries }): WithImagePlaceholdersParams`. The type is named after the function, not after the concept, so a reader landing on the type knows what takes it. A test-only override is not a second argument: `siteChrome` used to take `isChromeHidden` so a test could vary it, and the test mocks `astro:env/client` instead.
@@ -126,7 +126,7 @@ These documents are not generated. A change that does not update them leaves the
 | If you change | Update |
 | --- | --- |
 | What a domain word means, or introduce a new one | [`CONTEXT.md`](./CONTEXT.md): the glossary, vocabulary only |
-| A folder's layout, the files a concept is made of, or a rule its guide states | that folder's nested `CLAUDE.md` (table above) |
+| A folder's layout, the files a concept is made of, or a rule its guide states | that folder's nested `AGENTS.md` (table above) |
 | A behaviour a doc states as an invariant or a gotcha | that bullet, or delete it if it stopped being true |
 | An env var | `env.schema` in `astro.config.ts`, `.env.example`, and the Gotchas bullet if it has one |
 | A package script, a path alias, or the folder tree | the *Commands* / *Structure & aliases* sections here |
@@ -144,7 +144,7 @@ Traps worth naming, because each has already happened here: deleting a resolved 
 
 ## Gotchas
 
-- **`light-dark()` in prod:** lightningcss downlevels it into a polyfill that breaks nested `color-scheme` inversion in production (dev looks fine). `Features.LightDark` stays in `lightningcss.exclude` in `astro.config.ts`; `errorRecovery: true` is also set. ADR 0006, and [`src/ui/styles/CLAUDE.md`](./src/ui/styles/CLAUDE.md).
+- **`light-dark()` in prod:** lightningcss downlevels it into a polyfill that breaks nested `color-scheme` inversion in production (dev looks fine). `Features.LightDark` stays in `lightningcss.exclude` in `astro.config.ts`; `errorRecovery: true` is also set. ADR 0006, and [`src/ui/styles/AGENTS.md`](./src/ui/styles/AGENTS.md).
 - **`astro dev` hangs / SSR 500s / blank globe:** usually `.vite` cache thrash from running `astro check` or a second `astro dev` beside a live dev server (orphans deps chunks: `effect.js` → 500, `three`/`react-globe.gl` → blank). Fix: stop all dev processes, delete `node_modules/.vite`, restart.
 - **`HIDE_CHROME`** (public boolean env) does more than its name says, so no component reads it: `siteChrome` in [`@modules/core/utils/siteChrome.ts`](./src/ui/modules/core/utils/siteChrome.ts) is the tree's only reader, and callers ask it `showsHeader`, `showsBreadcrumbs`, `showsTableOfContents` and `servesRealContent` instead. It hides the header, the breadcrumbs on every page that carries them, and an Article's table of contents, and it *replaces the page body* with an under-construction placeholder on every route outside the articles / tags / legal / error allowlist, so `/`, `/about`, `/contact` and `/projects` serve no real content at all. The footer still renders either way. It is **`true` in the `development` environment**, which is why the PR preview is not a faithful target: e2e coverage there is limited to what survives it. Outside that module the name appears only in the astro.config env schema and the deploy workflow. [ADR 0018](./docs/adr/0018-hide-chrome-replaces-the-page.md) records why the flag exists and what publishing a route means.
 - **Safari/WebKit loads nothing in dev:** the CSP carries `upgrade-insecure-requests`, and WebKit obeys it on `localhost`: every module script, font and `@vite/client` request is rewritten to `https://localhost:4321`, which the dev server does not speak, so the page renders inert with no JS at all. Chromium exempts localhost, so this is invisible there and only shows in Safari and Playwright's `webkit` project. [`src/middleware.ts`](./src/middleware.ts) strips that one directive when `import.meta.env.DEV`; production keeps it. Don't fold it back into [`securityHeaders.ts`](./src/const/securityHeaders.ts) unconditionally.

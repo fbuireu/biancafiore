@@ -47,7 +47,7 @@ Some edges are deliberately absent, because neither is an import. **Pages and co
 | **ui** | Astro components and React islands, grouped by feature area, with styles beside them | Rendering |
 | **pages** | Routes, and the composition root | Whatever a route needs |
 
-Each layer states its own rules in a colocated `CLAUDE.md`, and those guides are what the maintenance contract keeps honest.
+Each layer states its own rules in a colocated `AGENTS.md`, and those guides are what the maintenance contract keeps honest.
 
 ---
 
@@ -74,7 +74,7 @@ Value objects are decided per concept rather than by default, which is why there
 | What does this domain word mean? | [`CONTEXT.md`](https://github.com/fbuireu/biancafiore/blob/main/CONTEXT.md), and **[Content Model](Content-Model)** |
 | Why is the tree layered at all, and what did the (ish) drop? | [ADR 0012](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md) |
 | When does a concept earn a type of its own? | [ADR 0019](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0019-three-questions-before-modelling.md) |
-| What does one layer actually guarantee? | the `CLAUDE.md` inside that layer's folder |
+| What does one layer actually guarantee? | the `AGENTS.md` inside that layer's folder |
 | What renders when, and where? | **[Rendering and Routing](Rendering-and-Routing)** |
 | Why Effect for the infrastructure clients? | [ADR 0004](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0004-effect-for-infrastructure-clients.md) |
 

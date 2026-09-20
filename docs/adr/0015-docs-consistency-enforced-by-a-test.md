@@ -8,7 +8,7 @@ Accepted.
 
 ## Context
 
-This repo carries an unusual amount of prose: a root [`CLAUDE.md`](../../CLAUDE.md), the nested guides, a glossary in [`CONTEXT.md`](../../CONTEXT.md), and this ADR directory. They are the primary interface to the codebase for anyone (increasingly, for an agent) arriving without context, and the maintenance contract already states the rule: when you change code, update the docs in the same commit.
+This repo carries an unusual amount of prose: a root [`AGENTS.md`](../../AGENTS.md), the nested guides, a glossary in [`CONTEXT.md`](../../CONTEXT.md), and this ADR directory. They are the primary interface to the codebase for anyone (increasingly, for an agent) arriving without context, and the maintenance contract already states the rule: when you change code, update the docs in the same commit.
 
 Nothing checked. Documentation rot is silent by construction: no build fails, no type breaks, and the only signal is a reader acting on a claim that stopped being true. The first run of a checker over these documents found several:
 

@@ -62,7 +62,7 @@ const BACKTICKED_NAME = /`\.?([\w-]+)`/g;
 const DOCUMENTED_SCRIPT = /^pnpm\s+([a-z0-9:._-]+)/;
 const DOCUMENTED_ALIAS = /@([a-z]+)\/\*(?:\s*\(→\s*([^)]+)\))?/g;
 const DOCUMENTED_ROUTES_COMMENT = /pages\/\s*#\s*routes \(([^)]+)\)/;
-const NESTED_GUIDE_LINK = /\]\(\.\/(src\/[\w/-]*CLAUDE\.md)\)/g;
+const NESTED_GUIDE_LINK = /\]\(\.\/(src\/[\w/-]*AGENTS\.md)\)/g;
 const RELATIVE_MARKDOWN_LINK = /\]\(([^)#][^)]*)\)/g;
 const ABSOLUTE_URL = /^[a-z]+:/;
 const DOCUMENTED_LINE_WIDTH = /Biome: (\d+) line width/;
@@ -266,7 +266,7 @@ const section = (markdown: string, heading: string) => {
 	return (end === -1 ? rest : rest.slice(0, end)).join("\n");
 };
 
-const CLAUDE_MD = read("CLAUDE.md");
+const CLAUDE_MD = read("AGENTS.md");
 const CONTEXT_MD = read("CONTEXT.md");
 const PACKAGE_JSON = readJson("package.json");
 const TSCONFIG = readJson("tsconfig.json");
@@ -296,10 +296,10 @@ const DEFAULTED_IN_THE_DTO_LAYER = (field: string) =>
 	new RegExp(String.raw`\b${field}\s*[:=]\s*rawArticle\.fields\.${field} \?\? false`);
 const CONTEXT_TAG_CLASS = /class\s+\w+\s+extends\s+Context\.Tag/;
 const LAUNDERED_SECRET = /getSecret\([^)]*\)\s+as\s+string/;
-const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("CLAUDE.md"));
+const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("AGENTS.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
 const WIKI_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/wiki/"));
-const DOCS = ["CLAUDE.md", "CONTEXT.md", "docs/BACKLOG.md", ...NESTED_GUIDES, ...ADR_FILES, ...WIKI_FILES];
+const DOCS = ["AGENTS.md", "CONTEXT.md", "docs/BACKLOG.md", ...NESTED_GUIDES, ...ADR_FILES, ...WIKI_FILES];
 const isWiki = (doc: string) => doc.startsWith("docs/wiki/");
 const wikiPages = new Set(WIKI_FILES.map((file) => basename(file, ".md")));
 
@@ -420,7 +420,7 @@ describe("structure and aliases", () => {
 		expect(actualRoutes.filter((route) => !documentedRoutes.includes(route))).toEqual([]);
 	});
 
-	it("links a nested guide for every CLAUDE.md under src", () => {
+	it("links a nested guide for every AGENTS.md under src", () => {
 		const linked = [...section(CLAUDE_MD, "Structure & aliases").matchAll(NESTED_GUIDE_LINK)].map(
 			([, target]) => target,
 		);
@@ -620,7 +620,7 @@ describe("ADRs", () => {
 	});
 
 	it("is reachable: every ADR is linked from a guide, not only from other ADRs", () => {
-		const linked = new Set(["CLAUDE.md", "CONTEXT.md", ...NESTED_GUIDES].flatMap(referencesIn));
+		const linked = new Set(["AGENTS.md", "CONTEXT.md", ...NESTED_GUIDES].flatMap(referencesIn));
 
 		expect(ADR_FILES.filter((file) => !linked.has(file.split("/").pop()?.slice(0, 4) ?? ""))).toEqual([]);
 	});
@@ -638,7 +638,7 @@ describe("domain vocabulary", () => {
 	});
 
 	it("names every domain concept in the domain guide", () => {
-		const guide = read("src/domain/CLAUDE.md");
+		const guide = read("src/domain/AGENTS.md");
 		const named = (concept: string) => guide.includes(`\`${concept}\``) || guide.includes(`## ${concept}/`);
 
 		expect(concepts.filter((concept) => !named(concept))).toEqual([]);
@@ -656,7 +656,7 @@ describe("domain vocabulary", () => {
 });
 
 describe("infrastructure guide", () => {
-	const guide = read("src/infrastructure/CLAUDE.md");
+	const guide = read("src/infrastructure/AGENTS.md");
 
 	it("points each client tag at a file that declares it", () => {
 		const rows = [...guide.matchAll(CLIENT_TABLE_ROW)].map(([, tag, live, file]) => ({
@@ -722,7 +722,7 @@ describe("infrastructure guide", () => {
 });
 
 describe("styles guide", () => {
-	const guide = read("src/ui/styles/CLAUDE.md");
+	const guide = read("src/ui/styles/AGENTS.md");
 	const layerRows = [...guide.matchAll(LAYER_TABLE_ROW)].map(([, files, layer]) => ({
 		files: [...files.matchAll(STYLESHEET_CITATION)].map(([, file]) => file),
 		layer,
@@ -766,7 +766,7 @@ describe("styles guide", () => {
 
 describe("modules guide", () => {
 	it("names every feature area under src/ui/modules", () => {
-		const guide = read("src/ui/modules/CLAUDE.md");
+		const guide = read("src/ui/modules/AGENTS.md");
 		const features = directoriesIn("src/ui/modules");
 
 		expect(features.filter((feature) => !guide.includes(`\`${feature}\``))).toEqual([]);
@@ -821,7 +821,7 @@ describe("gotchas", () => {
 		);
 
 		const answers = [...read(CHROME_POLICY).matchAll(CHROME_ANSWER)].map(([, answer]) => answer);
-		const guide = read("src/ui/modules/CLAUDE.md");
+		const guide = read("src/ui/modules/AGENTS.md");
 
 		expect(answers.length).toBeGreaterThan(0);
 		expect(answers.filter((answer) => !guide.includes(`\`${answer}\``))).toEqual([]);
@@ -914,7 +914,7 @@ describe("observability", () => {
 	});
 
 	it("resolves the tag to the very object plain code imports, so the two cannot disagree", () => {
-		const guide = read("src/infrastructure/CLAUDE.md");
+		const guide = read("src/infrastructure/AGENTS.md");
 
 		expect(guide).toContain("the tag and the import cannot disagree");
 		expect(read(LOGGING_SERVICE)).toContain("Layer.sync(LoggerService, () => logger)");
@@ -922,7 +922,7 @@ describe("observability", () => {
 	});
 
 	it("carries LoggerService in R wherever a program logs, which is what the annotation turns into a signal", () => {
-		const guide = read("src/infrastructure/CLAUDE.md");
+		const guide = read("src/infrastructure/AGENTS.md");
 		const logging = SOURCE_FILES.filter(
 			(file) => file !== LOGGING_SERVICE && read(file).includes("yield* LoggerService"),
 		);
@@ -994,7 +994,7 @@ describe("observability", () => {
 });
 
 describe("infrastructure guide: secrets, errors and clients", () => {
-	const guide = read("src/infrastructure/CLAUDE.md");
+	const guide = read("src/infrastructure/AGENTS.md");
 	const infrastructureFiles = production(walk("src/infrastructure").filter((file) => TYPESCRIPT_FILE.test(file)));
 
 	it("reads astro:env/server lazily, inside the layer, and never as a module import", () => {
@@ -1058,7 +1058,7 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 });
 
 describe("actions guide", () => {
-	const guide = read("src/actions/CLAUDE.md");
+	const guide = read("src/actions/AGENTS.md");
 	const action = read("src/actions/index.ts");
 	const program = read("src/actions/contact.ts");
 	const mapping = read("src/actions/errorResponse.ts");
@@ -1104,7 +1104,7 @@ describe("actions guide", () => {
 });
 
 describe("domain guide: purity", () => {
-	const guide = read("src/domain/CLAUDE.md");
+	const guide = read("src/domain/AGENTS.md");
 	const domainFiles = production(walk("src/domain").filter((file) => file.endsWith(".ts")));
 
 	const externalImports = [
@@ -1160,7 +1160,7 @@ describe("domain guide: purity", () => {
 });
 
 describe("application guide: the anti-corruption boundary", () => {
-	const guide = read("src/application/CLAUDE.md");
+	const guide = read("src/application/AGENTS.md");
 	const dtoFiles = production(walk("src/application/dto").filter((file) => TYPESCRIPT_FILE.test(file)));
 	const loaders = directoriesIn("src/application/entities").map(
 		(entity) => `src/application/entities/${entity}/${entity}.ts`,
@@ -1317,7 +1317,7 @@ describe("application guide: the anti-corruption boundary", () => {
 });
 
 describe("styles guide: derived constants and source order", () => {
-	const guide = read("src/ui/styles/CLAUDE.md");
+	const guide = read("src/ui/styles/AGENTS.md");
 
 	it("cites the type-scale ratio the tokens are built from", () => {
 		const ratio = read("src/ui/styles/global/variables.css").match(TYPE_SCALE_RATIO)?.[1];
@@ -1527,8 +1527,8 @@ describe("styles guide: derived constants and source order", () => {
 });
 
 describe("modules guide: mixes, islands and data access", () => {
-	const guide = read("src/ui/modules/CLAUDE.md");
-	const stylesGuide = read("src/ui/styles/CLAUDE.md");
+	const guide = read("src/ui/modules/AGENTS.md");
+	const stylesGuide = read("src/ui/styles/AGENTS.md");
 
 	const declaredModifiers = [
 		...new Set(
@@ -1807,7 +1807,7 @@ describe("conventions", () => {
 	});
 
 	it("registers no listener and reads no media query at module scope, as the modules guide claims", () => {
-		const guide = read("src/ui/modules/CLAUDE.md");
+		const guide = read("src/ui/modules/AGENTS.md");
 
 		expect(guide).toContain("Neither does the module it imports");
 
@@ -1998,7 +1998,7 @@ const declaredIn = (manifests: { dependencies?: object; devDependencies?: object
 	new Set(manifests.flatMap((manifest) => Object.keys({ ...manifest.dependencies, ...manifest.devDependencies })));
 const POLICED_NAMES = policedNames({ declared: declaredIn([PACKAGE_JSON]), runtimes: ["Node", "Node.js", "pnpm"] });
 const STATED_VERSION = statedVersionPattern(POLICED_NAMES);
-const NARRATED_VERSIONS: Record<string, string[]> = { "CLAUDE.md": ["Node 26.5.1", "pnpm 11.15.1"] };
+const NARRATED_VERSIONS: Record<string, string[]> = { "AGENTS.md": ["Node 26.5.1", "pnpm 11.15.1"] };
 
 describe("stated versions", () => {
 	it("polices the runtimes and every versioned dependency the manifests declare, and nothing else", () => {

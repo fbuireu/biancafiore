@@ -20,4 +20,4 @@ The Vite CSS transformer stays LightningCSS, configured with `exclude: Features.
 
 - Do not remove either flag: dropping the exclude reintroduces the production theme bug, and dropping error recovery breaks the build on that selector.
 - Both flags compensate for upstream behaviour, so both are candidates for removal once LightningCSS changes, and both need a production check, not a dev check, before that happens.
-- The failure mode is silent in dev, which is why it is repeated as a Gotchas bullet in [`CLAUDE.md`](../../CLAUDE.md) and in the styles guide instead of living only here.
+- The failure mode is silent in dev, which is why it is repeated as a Gotchas bullet in [`AGENTS.md`](../../AGENTS.md) and in the styles guide instead of living only here.

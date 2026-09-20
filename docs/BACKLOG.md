@@ -5,7 +5,7 @@ Ideas not yet scheduled. This list used to live as a block of `// todo:` comment
 ## Open decisions
 
 - **Do Projects become sluggable content with pages of their own?** [ADR 0010](./adr/0010-projects-as-first-class-content.md) is Proposed and blocked on a glossary question: what distinguishes a Project from an Article once it has a slug, a body and a page. Until [`CONTEXT.md`](../CONTEXT.md) answers that, a Project stays a fragment on `/projects` and has no canonical URL of its own.
-- **Does the wrangler deploy-message truncation deserve an ADR?** It is a paragraph at the bottom of [`CLAUDE.md`](../CLAUDE.md) today, and it constrains CI permanently: the annotation is passed explicitly so nothing about how a commit is written can reach it.
+- **Does the wrangler deploy-message truncation deserve an ADR?** It is a paragraph at the bottom of [`AGENTS.md`](../AGENTS.md) today, and it constrains CI permanently: the annotation is passed explicitly so nothing about how a commit is written can reach it.
 
 ## Content and features
 

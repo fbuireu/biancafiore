@@ -15,7 +15,7 @@ body:
       description: Which document is it about?
       options:
         - README
-        - CLAUDE.md guides
+        - AGENTS.md guides
         - CONTEXT.md glossary
         - An ADR
         - The wiki
