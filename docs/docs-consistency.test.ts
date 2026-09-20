@@ -1722,7 +1722,7 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(walk("src/ui/modules").filter((file) => file.endsWith(".css") && read(file).includes("@layer"))).toEqual([]);
 	});
 
-	it("hydrates only the roots the Islands section censuses, and only where a server render is impossible", () => {
+	it("hydrates only the roots the Islands section censuses, and server-renders every root that can survive it", () => {
 		const hydrated = production([...walk("src/ui"), ...walk("src/pages")])
 			.filter((file) => SOURCE_FILE.test(file))
 			.flatMap((file) =>
@@ -1734,9 +1734,12 @@ describe("modules guide: mixes, islands and data access", () => {
 
 		expect(hydrated.length).toBeGreaterThan(0);
 		expect(hydrated.filter(({ directive }) => !HYDRATION_DIRECTIVES_ALLOWED.has(directive))).toEqual([]);
-		expect(hydrated.filter(({ directive }) => directive === "load").map(({ name }) => name)).toEqual([
-			"ContactFormProvider",
-		]);
+		expect(
+			hydrated
+				.filter(({ directive }) => directive === "load")
+				.map(({ name }) => name)
+				.sort(),
+		).toEqual(["ContactFormProvider", "WorldGlobe"]);
 		expect(hydrated.map(({ name }) => name).sort()).toEqual(
 			namesIn({ text: guide, pattern: ISLAND_ROOT_CENSUS }).sort(),
 		);

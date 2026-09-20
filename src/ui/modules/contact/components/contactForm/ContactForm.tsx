@@ -10,7 +10,7 @@ import { successDelay } from "@modules/core/utils/motion";
 import type { ContactFormData } from "@shared/ui/types";
 import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
-import { useCallback, useEffect, useId, useRef, useState, useTransition } from "react";
+import { startTransition, useCallback, useEffect, useId, useRef, useState, useTransition, ViewTransition } from "react";
 import { useForm } from "react-hook-form";
 import "./contact-form.css";
 
@@ -32,7 +32,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 	} = useForm<ContactFormData>({
 		resolver: zodResolver(contactFormSchema.omit({ recaptcha: true })),
 	});
-	const [pending, startTransition] = useTransition();
+	const [pending, startSubmission] = useTransition();
 	const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.INITIAL);
 	const isLocked = formStatus === FormStatus.UNAUTHORIZED;
 	const nameId = useId();
@@ -65,8 +65,10 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 			if (submission.ok) {
 				flyPlane(button);
 				setTimeout(() => {
-					setFormStatus(FormStatus.SUCCESS);
-					reset();
+					startTransition(() => {
+						setFormStatus(FormStatus.SUCCESS);
+						reset();
+					});
 				}, successDelay(SUCCESS_DELAY));
 				return;
 			}
@@ -99,7 +101,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 	);
 
 	return (
-		<>
+		<ViewTransition>
 			{formStatus !== FormStatus.SUCCESS ? (
 				<form
 					className={clsx("contact-form flex row-wrap", {
@@ -107,7 +109,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 					})}
 					onSubmit={(event) => {
 						event.preventDefault();
-						handleSubmit((data) => startTransition(() => verifyRecaptcha(data)))();
+						handleSubmit((data) => startSubmission(() => verifyRecaptcha(data)))();
 					}}
 				>
 					<p className="contact-form__text"> My name is</p>
@@ -178,6 +180,6 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 					</h3>
 				</div>
 			)}
-		</>
+		</ViewTransition>
 	);
 };

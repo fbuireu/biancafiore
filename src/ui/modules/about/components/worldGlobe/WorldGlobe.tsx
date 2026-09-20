@@ -1,5 +1,6 @@
 import type { CityPoint } from "@modules/about/utils/globe";
-import { lazy, memo, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, memo, Suspense, use, useEffect, useRef, useState } from "react";
+import { browser } from "react-dom";
 import { WORLD_GLOBE_CONFIG } from "./const";
 import "./world-globe.css";
 
@@ -12,9 +13,13 @@ const WorldGlobeCanvas = lazy(() => import("./WorldGlobeCanvas"));
 
 const { HEIGHT } = WORLD_GLOBE_CONFIG;
 
+const WRAPPER_CLASS_NAME = "world-globe-wrapper reveal reveal--fade";
+
 const getResponsiveWidth = () => (window.innerWidth > 720 ? 680 : undefined);
 
-export const WorldGlobe = memo(({ points, width: widthProp }: WorldGlobeProps) => {
+const BrowserWorldGlobe = ({ points, width: widthProp }: WorldGlobeProps) => {
+	use(browser());
+
 	const [autoWidth, setAutoWidth] = useState<number | undefined>(() => getResponsiveWidth());
 	const width = widthProp ?? autoWidth;
 
@@ -53,11 +58,7 @@ export const WorldGlobe = memo(({ points, width: widthProp }: WorldGlobeProps) =
 	}, [isVisible]);
 
 	return (
-		<aside
-			ref={containerRef}
-			className="world-globe-wrapper reveal reveal--fade"
-			style={!isVisible ? { height: HEIGHT, width } : undefined}
-		>
+		<aside ref={containerRef} className={WRAPPER_CLASS_NAME} style={!isVisible ? { height: HEIGHT, width } : undefined}>
 			{isVisible && (
 				<Suspense fallback={null}>
 					<WorldGlobeCanvas points={points} width={width} />
@@ -65,6 +66,12 @@ export const WorldGlobe = memo(({ points, width: widthProp }: WorldGlobeProps) =
 			)}
 		</aside>
 	);
-});
+};
+
+export const WorldGlobe = memo(({ points, width }: WorldGlobeProps) => (
+	<Suspense fallback={<aside className={WRAPPER_CLASS_NAME} style={{ height: HEIGHT, width }} />}>
+		<BrowserWorldGlobe points={points} width={width} />
+	</Suspense>
+));
 
 WorldGlobe.displayName = "WorldGlobe";

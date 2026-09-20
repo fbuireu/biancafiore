@@ -1,5 +1,6 @@
 import type { CityPoint } from "@modules/about/utils/globe";
 import { act, cleanup, render, screen } from "@testing-library/react";
+import { renderToString } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { WORLD_GLOBE_CONFIG } from "./const";
 import { WorldGlobe } from "./WorldGlobe";
@@ -64,6 +65,14 @@ afterEach(() => {
 });
 
 describe("WorldGlobe", () => {
+	it("server-renders a placeholder of the canvas's height and leaves the rest to the browser", () => {
+		const html = renderToString(<WorldGlobe points={POINTS} />);
+
+		expect(html).toContain(`height:${WORLD_GLOBE_CONFIG.HEIGHT}px`);
+		expect(html).toContain("world-globe-wrapper");
+		expect(html).not.toContain("globe-canvas");
+	});
+
 	it("renders no canvas until the reader has scrolled near it", () => {
 		render(<WorldGlobe points={POINTS} />);
 

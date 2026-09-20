@@ -17,7 +17,7 @@ const points = toCityPoints(cities);
 <section class="little-more-of-me-wrapper common-wrapper">
     <h2 class="little-more-of-me__title editorial-section-title reveal">A little more of me</h2>
     <div class="little-more-of-me__inner flex justify-space-between">
-        <WorldGlobe points={points} client:only="react" />
+        <WorldGlobe points={points} client:load />
         <Cities cities={cities} />
     </div>
 </section>
