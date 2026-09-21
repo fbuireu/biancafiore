@@ -64,6 +64,4 @@ The application's own log lines reach the same place through `console`. That is 
 
 ## Things the deploy learned the hard way
 
-- **A long commit message breaks it, and the error does not say so.** wrangler sends the latest commit message verbatim as a deployment annotation with no truncation, and past a few thousand characters the API answers `Received a malformed response from the API`: a build that compiled, uploaded, and then died on metadata. A merge commit carrying a long pull request body is enough. The annotation is now passed explicitly.
-- **The secrets ride the deploy.** They are written to a file outside the workspace and uploaded with the version, rather than written after the deploy, which used to make every deploy two versions with a window in between where new code ran against the previous values.
-- **Neither the build nor the deploy is wrapped in a retry.** A wrapper cannot tell a bad argument from a bad network, and both fail deterministically far more often than they fail for a reason a second attempt fixes.
+The commit-message truncation, the secrets-file timing and the reason there is no retry wrapper are recorded once, in [`AGENTS.md`](https://github.com/fbuireu/biancafiore/blob/main/AGENTS.md)'s Deploy section, rather than restated here.
