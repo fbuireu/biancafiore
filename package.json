@@ -33,7 +33,7 @@
 	"engines": {
 		"node": "26.7.0"
 	},
-	"packageManager": "pnpm@12.4.2",
+	"packageManager": "pnpm@12.5.1",
 	"scripts": {
 		"prepare": "husky",
 		"dev": "astro dev",
@@ -102,15 +102,15 @@
 		"@astrojs/check": "0.9.10",
 		"@astrojs/ts-plugin": "1.10.12",
 		"@biomejs/biome": "2.5.14",
-		"@commitlint/cli": "21.2.2",
-		"@commitlint/config-conventional": "21.2.2",
-		"@commitlint/format": "21.2.2",
+		"@commitlint/cli": "21.2.3",
+		"@commitlint/config-conventional": "21.2.3",
+		"@commitlint/format": "21.2.3",
 		"@playwright/test": "1.63.0",
 		"@semantic-release/changelog": "7.0.0",
 		"@semantic-release/git": "11.0.1",
 		"@semantic-release/npm": "13.1.5",
 		"@testing-library/react": "16.3.3",
-		"@types/node": "26.6.1",
+		"@types/node": "26.6.2",
 		"@types/react": "19.3.0",
 		"@types/react-dom": "19.3.0",
 		"@types/three": "0.186.0",
@@ -124,6 +124,6 @@
 		"semantic-release": "25.0.9",
 		"typescript": "6.0.3",
 		"vitest": "5.0.1",
-		"wrangler": "4.133.0"
+		"wrangler": "4.135.0"
 	}
 }

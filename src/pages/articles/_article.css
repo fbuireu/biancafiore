@@ -43,6 +43,10 @@ html.page--article body {
 		margin-block-end: 0;
 	}
 
+	& > section:first-of-type {
+		margin-block-start: 2rem;
+	}
+
 	& > p:first-of-type::first-letter {
 		color: var(--primary-main);
 		font-family: var(--font-display);
