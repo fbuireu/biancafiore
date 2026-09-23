@@ -44,7 +44,7 @@ html.page--article body {
 	}
 
 	& > section:first-of-type {
-		margin-block-start: 2rem;
+		margin-block-end: 2rem;
 	}
 
 	& > p:first-of-type::first-letter {
