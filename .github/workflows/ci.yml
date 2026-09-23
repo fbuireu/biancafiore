@@ -1,6 +1,6 @@
 name: CI
 
-run-name: "${{ github.event_name == 'workflow_dispatch' && inputs.reason && format('{0}: {1}', inputs.release && 'Redeploy and release production' || 'Redeploy production', inputs.reason) || '' }}"
+run-name: "${{ github.event_name == 'workflow_dispatch' && inputs.reason && format('Redeploy production: {0}', inputs.reason) || '' }}"
 
 on:
   push:
@@ -13,11 +13,6 @@ on:
         description: Why production is being redeployed (shown as the run name)
         required: false
         type: string
-      release:
-        description: Also run Semantic Release, for a push whose release was refused because another commit landed on main while it ran
-        required: false
-        type: boolean
-        default: false
 
 permissions:
   contents: read
@@ -140,7 +135,7 @@ jobs:
   release:
     name: Semantic Release
     needs: [verify, deploy-production, smoke]
-    if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.release)) }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -157,6 +152,14 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PAT }}
           persist-credentials: false
+      - name: Release from the head of main
+        run: |
+          git fetch --quiet origin main
+          if git merge-base --is-ancestor HEAD origin/main; then
+            git merge --ff-only --quiet origin/main
+          else
+            echo "::warning::main no longer contains this run's sha, so the release stays on it and semantic-release will stand down. The run for main's new head releases instead."
+          fi
       - uses: ./.github/actions/prepare-env
       - name: Generate types
         run: pnpm run sync
