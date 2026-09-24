@@ -46,7 +46,7 @@ jobs:
     name: Deploy to production
     needs: [verify]
     if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
-    uses: ./.github/workflows/_deploy.yml
+    uses: $/.github/workflows/_deploy.yml
     with:
       environment: production
       url: ${{ vars.SITE_URL }}
@@ -172,7 +172,7 @@ jobs:
     name: Deploy to development
     needs: [verify]
     if: ${{ github.event_name == 'pull_request' }}
-    uses: ./.github/workflows/_deploy.yml
+    uses: $/.github/workflows/_deploy.yml
     with:
       environment: development
       worker_name: pr-${{ github.event.pull_request.number }}-biancafiore-development
