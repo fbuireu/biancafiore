@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/prepare-env
+      - uses: $/.github/actions/prepare-env
       - name: Delete preview Worker
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         env:
@@ -64,7 +64,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/prepare-env
+      - uses: $/.github/actions/prepare-env
       - name: Delete the preview Workers whose pull request is closed
         run: |
           scripts=$(curl -fsS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \

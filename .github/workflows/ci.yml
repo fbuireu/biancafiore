@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/prepare-env
+      - uses: $/.github/actions/prepare-env
       - name: Verify
         run: pnpm verify
       - name: Upload coverage to Codecov
@@ -80,7 +80,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/prepare-env
+      - uses: $/.github/actions/prepare-env
       - name: Cache Playwright browsers
         id: playwright-cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -128,7 +128,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/prepare-env
+      - uses: $/.github/actions/prepare-env
       - name: Roll back to the previous version
         run: pnpm exec wrangler rollback --env production --yes --message "$ROLLBACK_MESSAGE"
 
@@ -160,7 +160,7 @@ jobs:
           else
             echo "::warning::main no longer contains this run's sha, so the release stays on it and semantic-release will stand down. The run for main's new head releases instead."
           fi
-      - uses: ./.github/actions/prepare-env
+      - uses: $/.github/actions/prepare-env
       - name: Generate types
         run: pnpm run sync
       - name: Semantic Release
@@ -239,7 +239,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/prepare-env
+      - uses: $/.github/actions/prepare-env
       - name: Cache Playwright browsers
         id: playwright-cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
