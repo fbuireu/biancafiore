@@ -180,7 +180,7 @@ const EMAIL_BUTTON_HOOK_DECLARATION = /export const EMAIL_BUTTON_CLASS = "([\w-]
 const PLACEHOLDER_MODULE = "src/infrastructure/images/imagePlaceholder/imagePlaceholder.ts";
 const PER_ENTRY_PLACEHOLDER_AWAIT = /placeholder:\s*await/;
 const BOUNDED_PLACEHOLDER_READ = /const PLACEHOLDER_CONCURRENCY = \d+;/;
-const BUNDLED_SCRIPT = /^\s*<script>/m;
+const BUNDLED_SCRIPT = /^\s*<script\s*>/im;
 const PAGE_LOAD_LISTENER = /addEventListener\(\s*["']astro:page-load["']/;
 const THEME_MODULE = "src/ui/modules/core/components/themeToggle/utils/theme.ts";
 const THEME_PREFERENCE_MODULE = "src/ui/modules/core/components/themeToggle/utils/preference.ts";
