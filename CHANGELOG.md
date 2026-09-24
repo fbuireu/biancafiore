@@ -1,3 +1,10 @@
+## [1.25.2](https://github.com/fbuireu/biancafiore/compare/v1.25.1...v1.25.2) (2026-09-24)
+
+
+### Bug Fixes
+
+* margin end ([d67d099](https://github.com/fbuireu/biancafiore/commit/d67d0990a144922af1d189158e63197b6f213620))
+
 ## [1.25.1](https://github.com/fbuireu/biancafiore/compare/v1.25.0...v1.25.1) (2026-09-23)
 
 
