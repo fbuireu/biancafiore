@@ -1,3 +1,10 @@
+## [1.25.1](https://github.com/fbuireu/biancafiore/compare/v1.25.0...v1.25.1) (2026-09-23)
+
+
+### Bug Fixes
+
+* **chore:** bump deps ([b145067](https://github.com/fbuireu/biancafiore/commit/b145067fe993ed6b6aa3da307ce490ca9639d19f))
+
 # [1.25.0](https://github.com/fbuireu/biancafiore/compare/v1.24.3...v1.25.0) (2026-09-20)
 
 
