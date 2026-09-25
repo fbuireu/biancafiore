@@ -32,4 +32,4 @@ Cross-concept primitives only:
 
 ## Consumers
 
-`schema` is handed to `defineCollection` in `@application/entities/*`; `rules` are called from `@application/dto/*` and from those loaders, with one deliberate exception: `breadcrumbDTO`, which derives from the current URL rather than from content and is therefore called straight from [`Breadcrumbs.astro`](../ui/modules/core/components/breadcrumbs/Breadcrumbs.astro), no application layer in between. Nothing in this folder knows Contentful exists.
+`schema` is handed to `defineCollection` in `@application/entities/*`; `rules` are called from `@application/dto/*` and from those loaders, with one deliberate exception: `createBreadcrumbs`, which derives from the current URL rather than from content and is therefore called straight from [`Breadcrumbs.astro`](../ui/modules/core/components/breadcrumbs/Breadcrumbs.astro), no application layer in between. Nothing in this folder knows Contentful exists.

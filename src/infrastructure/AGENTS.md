@@ -39,7 +39,7 @@ It imports `CmsClientLive` across the module boundary rather than building the r
 ## Two runtimes, on purpose
 
 - `cms/entries.ts`: the `ManagedRuntime` above. Process-wide, read-only.
-- [`layers.ts`](./layers.ts): `ContactLayer` (`DatabaseLive` + `EmailClientLive`), provided per request with `Effect.provide` inside the contact action. Nothing here holds request state.
+- [`layers.ts`](./layers.ts): `ContactLayer` (`DatabaseLive` + `EmailClientLive` + `LoggerServiceLive`), provided per request with `Effect.provide` inside the contact action. Nothing here holds request state.
 
 Don't collapse them into one layer: CMS reads are process-wide, contact writes are per-request.
 

@@ -1,6 +1,6 @@
 # src/ui/modules
 
-Feature areas. `about`, `article`, `articles`, `contact`, `home`, `legal`, `projects` map to routes; `core` is everything shared by more than one of them, plus what [`src/pages`](../../pages) reaches for directly (`baseLayout`, `head`, `header`, `footer`, `seo`, `form`, `cookieConsent`, `themeToggle`, `articleCard`, `breadcrumbs`, `errorLayer`…).
+Feature areas. `about`, `article`, `articles`, `contact`, `home`, `legal`, `projects` map to routes; `core` is everything shared by more than one of them, plus what [`src/pages`](../../pages) reaches for directly (`baseLayout`, `head`, `header`, `footer`, `seo`, `cookieConsent`, `themeToggle`, `articleCard`, `breadcrumbs`, `errorLayer`…).
 
 Imported as `@modules/<feature>/components/<name>/<Component>.astro`.
 
@@ -44,7 +44,7 @@ A bundled `<script>` initialises on `astro:page-load`, never at module scope. **
 
 ## Islands
 
-React is used only where interaction demands it: `about/worldGlobe` (three / react-globe.gl), `contact/contactForm` + `contactFormProvider` (react-hook-form), `core/cookieConsent`, `core/form/*`, `core/spinner`. Everything else is `.astro`, rendered on the server.
+React is used only where interaction demands it: `about/worldGlobe` (three / react-globe.gl), `contact/contactForm` + `contactFormProvider` (react-hook-form), `contact/form/*`, `core/cookieConsent`, `core/spinner`. Everything else is `.astro`, rendered on the server.
 
 Writing a React component does not create an island. There are only three hydration roots in the whole site: `WorldGlobe` in [`LittleMoreOfMe.astro`](./about/components/littleMoreOfMe/LittleMoreOfMe.astro), `ContactFormProvider` in [`Tabs.astro`](./contact/components/tabs/Tabs.astro), `CookieConsent` in [`Footer.astro`](./core/components/footer/Footer.astro). Every one is hydrated the earliest way it can be, which is not the same directive for all three. `CookieConsent` is `client:only="react"` because it does not survive a server render: it mounts `vanilla-cookieconsent`. `WorldGlobe` is `client:load` even though its inner component reads `window.innerWidth` in a `useState` initialiser: the root wraps it in `<Suspense>` and the inner component opens with `use(browser())` from `react-dom`, so the server emits the fallback, an `<aside>` of the canvas's height, and the browser renders the rest on hydration without a recoverable error. That is what puts the reserved height in the HTML instead of leaving the island empty until its script runs. `ContactFormProvider` is also `client:load`, so the form is server-rendered and hydrated on load, which it can afford because `react-google-recaptcha-v3`'s provider renders its children either way and `useGoogleReCaptcha` simply has no `executeRecaptcha` until the script is in: the same absence the `getRecaptchaToken` prop already models below. The other React files are children of those and hydrate with their root. So an island costs a hydration directive at a call site, which is the moment to ask whether CSS or an Astro component would do (ADR 0009).
 

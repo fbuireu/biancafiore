@@ -77,8 +77,8 @@ src/
   middleware.ts       # sets SECURITY_HEADERS on every response
   domain/              # DDD domain layer: per-concept models (schema.ts/types.ts) + pure rules (rules.ts). See ADR 0012
   application/         # anti-corruption layer: entities/* loaders + dto/*DTO.ts Contentful mappers (call domain rules)
-  shared/              # cross-cutting ui/utils + generic helpers (slugify, formatDate, groupBy)
-  infrastructure/     # cms/ db/ email/ clients (Effect), cms/entries.ts, images/, integrations/, layers.ts, errors.ts
+  shared/              # cross-cutting ui/utils + generic helpers (slugify, deSlugify, formatDate, escapeHtml, safeUrl)
+  infrastructure/     # cms/ db/ email/ logging/ clients (Effect), cms/entries.ts, utils/, images/, integrations/, layers.ts, errors.ts
   ui/
     modules/          # feature areas: home, about, article(s), contact, projects, legal, core
     styles/           # global CSS layer stack + design tokens
