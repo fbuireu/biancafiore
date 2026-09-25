@@ -50,7 +50,7 @@ Deliberate. A malformed publish date, an unresolved author link, or an Original 
 
 ## A deploy dies after a clean build and upload
 
-If the error is `Received a malformed response from the API`, look at the commit message length before anything else. wrangler sends it verbatim as a deployment annotation, and a merge commit carrying a long pull request body is enough to exceed what the API accepts. See [CI/CD](CI-CD).
+If the error is `Received a malformed response from the API`, look at the deployment message before anything else. Left to itself, wrangler sends the latest commit message verbatim as a deployment annotation, and a merge commit carrying a long pull request body is enough to exceed what the API accepts. The shared deploy workflow now passes a short message of its own, the sha and the trigger, so a commit cannot reach that annotation; a deploy run any other way can still hit it. See [CI/CD](CI-CD).
 
 ---
 

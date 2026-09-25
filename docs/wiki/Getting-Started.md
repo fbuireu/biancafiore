@@ -27,10 +27,10 @@ pnpm wrangler:dev       # build + wrangler dev --remote
 ## The checks
 
 ```bash
-pnpm verify             # format:check && typecheck && test:ut:coverage
+pnpm verify             # format:check && typecheck && check && test:ut:coverage
 ```
 
-That one command is the CI gate and the `pre-push` hook, so running it locally is running what the pull request will run. Its parts, plus the rest:
+That one command is the CI gate, so running it locally is running what the pull request will run. The `pre-push` hook runs `pnpm verify:changed`, the same static checks followed by only the unit tests affected by what changed since `origin/main`. Its parts, plus the rest:
 
 ```bash
 pnpm check              # astro check (type + template)

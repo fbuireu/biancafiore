@@ -43,7 +43,7 @@ Some edges are deliberately absent, because neither is an import. **Pages and co
 |---|---|---|
 | **domain** | Zod schemas, inferred types, and pure editorial rules: reading time, table of contents, favourite-first sort, city period | None |
 | **application** | The anti-corruption layer, in two halves: `dto/` maps raw Contentful entries to domain models, `entities/` loads them as Astro content collections | Content I/O, in the loaders only |
-| **infrastructure** | The Effect clients: Contentful, Turso, email, image optimisation | Network, database, SMTP |
+| **infrastructure** | The Effect clients: Contentful, Turso, email, image optimisation | Network, database, email API |
 | **ui** | Astro components and React islands, grouped by feature area, with styles beside them | Rendering |
 | **pages** | Routes, and the composition root | Whatever a route needs |
 

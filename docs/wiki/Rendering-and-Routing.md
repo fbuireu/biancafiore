@@ -1,6 +1,6 @@
 # Rendering and Routing
 
-The site is configured as `output: "server"` on the Cloudflare adapter, and then almost none of it is rendered on request. Every content page opts into prerendering with `export const prerender = true`, so the site ships as HTML served from the edge and the SSR runtime is invoked only for genuinely dynamic paths: the contact server action, and the on-demand 404 and 500. [ADR 0011](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0011-hybrid-rendering-prerender-content-ssr-dynamic.md) records the trade; [ADR 0001](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0001-astro-ssr-on-cloudflare-workers.md) records the host and the constraints it imposes.
+The site is configured as `output: "server"` on the Cloudflare adapter, and then almost none of it is rendered on request. Every content page opts into prerendering with `export const prerender = true`, so the site ships as HTML served from the edge and the SSR runtime is invoked only for genuinely dynamic paths: the contact page and its server action, and the on-demand 404 and 500. [ADR 0011](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0011-hybrid-rendering-prerender-content-ssr-dynamic.md) records the trade; [ADR 0001](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0001-astro-ssr-on-cloudflare-workers.md) records the host and the constraints it imposes.
 
 A test asserts `prerender` on every page the ADR says ships as static HTML, so a route cannot quietly start costing a request.
 
