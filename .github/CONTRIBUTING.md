@@ -118,8 +118,9 @@ you choose is the version bump you get.
 
 Breaking changes take a `!` after the type or a `BREAKING CHANGE:` footer, and bump the major.
 
-A scope is optional and unconstrained: [`commitlint.config.ts`](../commitlint.config.ts) extends
-`@commitlint/config-conventional` and declares no `scope-enum`.
+A scope is optional and free-form: [`commitlint.config.ts`](../commitlint.config.ts) extends
+`@commitlint/config-conventional` and declares no `scope-enum`. It does constrain the case of a scope
+(`scope-case`: lower, Pascal or camel case) and caps the header at 130 characters (`header-max-length`).
 
 **`main` takes squash merges, so the pull request title is the commit that lands.** The `commit-msg` hook
 lints what you type locally, and [`commit-message.yml`](./workflows/commit-message.yml) lints the pull
