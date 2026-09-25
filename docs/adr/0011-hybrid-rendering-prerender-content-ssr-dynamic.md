@@ -12,7 +12,7 @@ The adapter runs `output: "server"` ([ADR 0001](./0001-astro-ssr-on-cloudflare-w
 
 ## Decision
 
-Every content page opts into static prerendering with `export const prerender = true`, so the site ships as prerendered HTML served from the edge, and the Workers SSR runtime is only invoked for genuinely dynamic paths: the contact server action and on-demand 404/500.
+Every content page opts into static prerendering with `export const prerender = true`, so the site ships as prerendered HTML served from the edge, and the Workers SSR runtime is only invoked for genuinely dynamic paths: the contact page and its server action, and on-demand 404/500.
 
 ## Consequences
 
