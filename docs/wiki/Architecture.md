@@ -6,6 +6,7 @@ The site follows a **Domain-Driven Design<sub>(ish)</sub>** layering behind an a
 ---
 config:
   look: handDrawn
+  layout: dagre
 ---
 flowchart RL
     subgraph application["application: anti-corruption layer"]

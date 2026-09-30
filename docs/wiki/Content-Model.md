@@ -29,6 +29,7 @@ Concept names are binding. A folder, field or rule whose name disagrees with the
 ---
 config:
   look: handDrawn
+  layout: dagre
 ---
 flowchart LR
     cms[("Contentful")] -- "network" --> fetch["fetchEntries<br/>pages until exhausted"]

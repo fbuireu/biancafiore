@@ -43,6 +43,7 @@ The load-bearing invariant: **`domain/` never imports from `application/` or `in
 ---
 config:
   look: handDrawn
+  layout: dagre
 ---
 flowchart RL
     subgraph application["application: anti-corruption layer"]
