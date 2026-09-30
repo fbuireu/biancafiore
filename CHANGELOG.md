@@ -1,3 +1,10 @@
+## [1.25.4](https://github.com/fbuireu/biancafiore/compare/v1.25.3...v1.25.4) (2026-09-30)
+
+
+### Bug Fixes
+
+* validate Contentful assets, rich-text embeds, the globe data and the contact tabs with zod ([d51b103](https://github.com/fbuireu/biancafiore/commit/d51b103a3c76c9e3e6ed2ae55506ced9f9ba8df5))
+
 ## [1.25.3](https://github.com/fbuireu/biancafiore/compare/v1.25.2...v1.25.3) (2026-09-30)
 
 
