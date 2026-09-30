@@ -4,7 +4,7 @@ import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
 import { TabVisibility, useTabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
 import { type CityPoint, calculateCenter, renderPin } from "@modules/about/utils/globe";
 import { prefersReducedMotion } from "@modules/core/utils/motion";
-import { use, useCallback, useEffect, useMemo, useRef } from "react";
+import { use, useEffect, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
@@ -50,6 +50,12 @@ const {
 
 const COUNTRIES_URL = "/countries.json";
 
+const GLOBE_MATERIAL = new Three.MeshPhongMaterial({
+	color: MESH_PHONG_MATERIAL_CONFIG.COLOR,
+	opacity: MESH_PHONG_MATERIAL_CONFIG.OPACITY,
+	transparent: MESH_PHONG_MATERIAL_CONFIG.TRANSPARENT,
+});
+
 interface CountryFeature {
 	type: string;
 	properties: Record<string, unknown>;
@@ -76,16 +82,6 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 	const hexPolygons = use(loadCountries());
 	const worldGlobeReference = useRef<GlobeMethods | undefined>(undefined);
 
-	const globeMaterial = useMemo(
-		() =>
-			new Three.MeshPhongMaterial({
-				color: MESH_PHONG_MATERIAL_CONFIG.COLOR,
-				opacity: MESH_PHONG_MATERIAL_CONFIG.OPACITY,
-				transparent: MESH_PHONG_MATERIAL_CONFIG.TRANSPARENT,
-			}),
-		[],
-	);
-
 	const onGlobeReady = () => {
 		if (!worldGlobeReference.current) {
 			return;
@@ -110,7 +106,7 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 			tabVisibility === TabVisibility.VISIBLE && !prefersReducedMotion();
 	}, [tabVisibility]);
 
-	const handleAction = useCallback(({ movementDirection, type }: HandleActionParams) => {
+	const handleAction = ({ movementDirection, type }: HandleActionParams) => {
 		if (!worldGlobeReference.current) return;
 		const { lng: currentLongitude, altitude: currentZoom } = worldGlobeReference.current.pointOfView();
 
@@ -124,7 +120,7 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 
 			worldGlobeReference.current.pointOfView({ altitude: newZoom }, ANIMATION_DURATION);
 		}
-	}, []);
+	};
 
 	return (
 		<>
@@ -139,7 +135,7 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 				backgroundColor={BACKGROUND_COLOR}
 				hexPolygonsData={hexPolygons}
 				hexPolygonColor={() => HEXAGON_POLYGON_COLOR}
-				globeMaterial={globeMaterial}
+				globeMaterial={GLOBE_MATERIAL}
 				pointsData={points}
 				pointAltitude="altitude"
 				pointRadius="radius"

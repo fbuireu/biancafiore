@@ -78,7 +78,7 @@ export default defineConfig({
 	},
 	integrations: [
 		generateStaticHeaders(),
-		react(),
+		react({ compiler: true }),
 		sitemap({
 			filter: (page) => {
 				const { pathname } = new URL(page);

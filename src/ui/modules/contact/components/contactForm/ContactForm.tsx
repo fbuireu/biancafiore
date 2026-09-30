@@ -10,13 +10,18 @@ import { successDelay } from "@modules/core/utils/motion";
 import type { ContactFormData } from "@shared/ui/types";
 import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
-import { startTransition, useCallback, useEffect, useId, useRef, useState, useTransition, ViewTransition } from "react";
+import { startTransition, useEffect, useId, useRef, useState, useTransition, ViewTransition } from "react";
 import { useForm } from "react-hook-form";
 import "./contact-form.css";
 
 interface ContactFormProps {
 	submit: (contactData: FormData) => Promise<ContactSubmission>;
 	getRecaptchaToken?: () => Promise<string | undefined>;
+}
+
+interface SubmitFormParams {
+	data: ContactFormData;
+	recaptcha: string;
 }
 
 const UNAUTHORIZED_STATUS = 401;
@@ -45,60 +50,54 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 		if (formStatus === FormStatus.SUCCESS) successRef.current?.focus();
 	}, [formStatus]);
 
-	const submitForm = useCallback(
-		async (data: ContactFormData, recaptcha: string) => {
-			const button = submitRef.current;
-			if (!button) {
-				return;
-			}
+	const submitForm = async ({ data, recaptcha }: SubmitFormParams) => {
+		const button = submitRef.current;
+		if (!button) {
+			return;
+		}
 
-			setFormStatus(FormStatus.LOADING);
+		setFormStatus(FormStatus.LOADING);
 
-			const contactData = new FormData();
-			contactData.append("name", data.name);
-			contactData.append("email", data.email);
-			contactData.append("message", data.message);
-			contactData.append("recaptcha", recaptcha);
+		const contactData = new FormData();
+		contactData.append("name", data.name);
+		contactData.append("email", data.email);
+		contactData.append("message", data.message);
+		contactData.append("recaptcha", recaptcha);
 
-			const submission = await submit(contactData).catch(() => UNDELIVERED_SUBMISSION);
+		const submission = await submit(contactData).catch(() => UNDELIVERED_SUBMISSION);
 
-			if (submission.ok) {
-				flyPlane(button);
-				setTimeout(() => {
-					startTransition(() => {
-						setFormStatus(FormStatus.SUCCESS);
-						reset();
-					});
-				}, successDelay(SUCCESS_DELAY));
-				return;
-			}
-
-			setFormStatus(submission.status === UNAUTHORIZED_STATUS ? FormStatus.UNAUTHORIZED : FormStatus.ERROR);
-			setError("root", { type: "manual", message: submission.message });
-		},
-		[reset, setError, submit],
-	);
-
-	const verifyRecaptcha = useCallback(
-		async (data: ContactFormData) => {
-			if (!getRecaptchaToken) {
-				return;
-			}
-
-			const token = await getRecaptchaToken().catch(() => undefined);
-
-			if (!token) {
-				setError("recaptcha", {
-					type: "manual",
-					message: BOT_REFUSAL_MESSAGE,
+		if (submission.ok) {
+			flyPlane(button);
+			setTimeout(() => {
+				startTransition(() => {
+					setFormStatus(FormStatus.SUCCESS);
+					reset();
 				});
-				return;
-			}
+			}, successDelay(SUCCESS_DELAY));
+			return;
+		}
 
-			await submitForm(data, token);
-		},
-		[getRecaptchaToken, setError, submitForm],
-	);
+		setFormStatus(submission.status === UNAUTHORIZED_STATUS ? FormStatus.UNAUTHORIZED : FormStatus.ERROR);
+		setError("root", { type: "manual", message: submission.message });
+	};
+
+	const verifyRecaptcha = async (data: ContactFormData) => {
+		if (!getRecaptchaToken) {
+			return;
+		}
+
+		const token = await getRecaptchaToken().catch(() => undefined);
+
+		if (!token) {
+			setError("recaptcha", {
+				type: "manual",
+				message: BOT_REFUSAL_MESSAGE,
+			});
+			return;
+		}
+
+		await submitForm({ data, recaptcha: token });
+	};
 
 	return (
 		<ViewTransition>

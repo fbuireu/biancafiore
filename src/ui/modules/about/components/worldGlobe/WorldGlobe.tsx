@@ -1,5 +1,5 @@
 import type { CityPoint } from "@modules/about/utils/globe";
-import { lazy, memo, Suspense, use, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, use, useEffect, useRef, useState } from "react";
 import { browser } from "react-dom";
 import { WORLD_GLOBE_CONFIG } from "./const";
 import "./world-globe.css";
@@ -68,10 +68,8 @@ const BrowserWorldGlobe = ({ points, width: widthProp }: WorldGlobeProps) => {
 	);
 };
 
-export const WorldGlobe = memo(({ points, width }: WorldGlobeProps) => (
+export const WorldGlobe = ({ points, width }: WorldGlobeProps) => (
 	<Suspense fallback={<aside className={WRAPPER_CLASS_NAME} style={{ height: HEIGHT, width }} />}>
 		<BrowserWorldGlobe points={points} width={width} />
 	</Suspense>
-));
-
-WorldGlobe.displayName = "WorldGlobe";
+);
