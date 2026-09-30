@@ -1,3 +1,10 @@
+## [1.25.3](https://github.com/fbuireu/biancafiore/compare/v1.25.2...v1.25.3) (2026-09-30)
+
+
+### Bug Fixes
+
+* validate the reCAPTCHA verdict with zod 4.6 instead of casting it ([f56d559](https://github.com/fbuireu/biancafiore/commit/f56d559c244a9e2c7baa709fe0baeee7343afddb))
+
 ## [1.25.2](https://github.com/fbuireu/biancafiore/compare/v1.25.1...v1.25.2) (2026-09-24)
 
 
