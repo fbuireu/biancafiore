@@ -1,3 +1,4 @@
+import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
 import { ARTICLE_COLUMNS_STORAGE_KEY } from "../const";
 
 const SELECTORS = {
@@ -27,9 +28,7 @@ const applyOnOtherTabWrite = ({ key, newValue }: StorageEvent): void => {
 	}
 };
 
-const applyBeforeSwap = (event: Event): void => {
-	const { newDocument } = event as Event & { newDocument: Document };
-
+const applyBeforeSwap = ({ newDocument }: TransitionBeforeSwapEvent): void => {
 	applyColumns({ enabled: isColumnsEnabled(), document: newDocument });
 };
 

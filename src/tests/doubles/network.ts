@@ -132,6 +132,7 @@ export interface GreenCheckDoubleOptions {
 	green?: boolean;
 	unreachable?: boolean;
 	malformed?: boolean;
+	answer?: unknown;
 }
 
 export interface GreenCheckDouble {
@@ -142,6 +143,7 @@ export function greenCheckDouble({
 	green = false,
 	unreachable,
 	malformed,
+	answer,
 }: GreenCheckDoubleOptions = {}): GreenCheckDouble {
 	const calls: string[] = [];
 
@@ -151,6 +153,7 @@ export function greenCheckDouble({
 
 			if (unreachable) return HttpResponse.error();
 			if (malformed) return HttpResponse.text("not json at all");
+			if (answer !== undefined) return HttpResponse.json(answer);
 
 			return HttpResponse.json({ green });
 		}),

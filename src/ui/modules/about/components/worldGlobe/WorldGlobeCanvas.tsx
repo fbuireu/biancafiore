@@ -9,6 +9,7 @@ import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
 import { WORLD_GLOBE_CONFIG } from "./const";
+import { type CountryFeature, fetchCountries } from "./utils/countries";
 
 interface WorldGlobeCanvasProps {
 	points: CityPoint[];
@@ -48,30 +49,11 @@ const {
 	ZOOM_OFFSET,
 } = WORLD_GLOBE_CONFIG;
 
-const COUNTRIES_URL = "/countries.json";
-
 const GLOBE_MATERIAL = new Three.MeshPhongMaterial({
 	color: MESH_PHONG_MATERIAL_CONFIG.COLOR,
 	opacity: MESH_PHONG_MATERIAL_CONFIG.OPACITY,
 	transparent: MESH_PHONG_MATERIAL_CONFIG.TRANSPARENT,
 });
-
-interface CountryFeature {
-	type: string;
-	properties: Record<string, unknown>;
-	geometry: unknown;
-}
-
-const fetchCountries = async (): Promise<CountryFeature[]> => {
-	try {
-		const response = await fetch(COUNTRIES_URL);
-		const { features } = (await response.json()) as { features: CountryFeature[] };
-
-		return features;
-	} catch {
-		return [];
-	}
-};
 
 let countries: Promise<CountryFeature[]> | undefined;
 

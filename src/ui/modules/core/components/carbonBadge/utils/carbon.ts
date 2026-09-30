@@ -1,7 +1,7 @@
 import { absoluteUrl } from "@const/routes";
 import { co2 } from "@tgwf/co2";
 
-const BADGE_ID = "carbon-badge";
+export const BADGE_ID = "carbon-badge";
 const GREEN_CHECK_API = "https://api.thegreenwebfoundation.org/api/v3/greencheck";
 const GREEN_CHECK_PAGE = "https://www.thegreenwebfoundation.org/green-web-check/?url=";
 const GRAMS_PRECISION = 2;

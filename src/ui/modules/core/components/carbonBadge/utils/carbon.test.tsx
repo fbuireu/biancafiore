@@ -95,6 +95,18 @@ describe("isGreenHost", () => {
 		await expect(isGreenHost("biancafiore.me")).resolves.toBe(false);
 	});
 
+	it.each([
+		["null", null],
+		["a list", [true]],
+		["a green flag spelled as text", { green: "true" }],
+		["a green flag spelled as a number", { green: 1 }],
+		["an answer with no green flag at all", { url: "biancafiore.me" }],
+	])("understates when the answer is %s, since only a literal true is a claim", async (_name, answer) => {
+		greenCheckDouble({ answer });
+
+		await expect(isGreenHost("biancafiore.me")).resolves.toBe(false);
+	});
+
 	it("asks about the host it was given", async () => {
 		const check = greenCheckDouble({ green: false });
 

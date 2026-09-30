@@ -1,4 +1,5 @@
 import { CALENDLY, CALENDLY_WIDGET_SCRIPT } from "@const/calendly";
+import { z } from "astro/zod";
 
 const TabId = {
 	EMAIL: "email",
@@ -15,14 +16,16 @@ const SELECTORS = {
 	CALENDLY_WIDGET: `.${CALENDLY.WIDGET_CLASS}`,
 };
 
-const TAB_IDS: readonly string[] = Object.values(TabId);
+const tabIdSchema = z.enum(TabId);
 
-const isTabId = (value?: string | null): value is TabId => !!value && TAB_IDS.includes(value);
+const selectedTabSchema = z.object({ dataset: z.object({ target: tabIdSchema }) });
+
+const calendlySchema = z.object({ initInlineWidgets: z.function().optional() });
 
 export function activeTab(url: URL): TabId {
 	const requested = url.searchParams.get(TAB_QUERY_KEY);
 
-	return isTabId(requested) ? requested : TabId.EMAIL;
+	return tabIdSchema.validate(requested) ? requested : TabId.EMAIL;
 }
 
 const getTabs = (): NodeListOf<HTMLElement> => document.querySelectorAll(SELECTORS.TAB);
@@ -53,9 +56,9 @@ const loadCalendly = (): void => {
 
 	WIDGET.dataset.calendlyInitialized = "true";
 
-	const calendly = (window as Window & { Calendly?: { initInlineWidgets?: () => void } }).Calendly;
+	const calendly = "Calendly" in window ? window.Calendly : undefined;
 
-	if (calendly) {
+	if (calendlySchema.validate(calendly)) {
 		calendly.initInlineWidgets?.();
 		return;
 	}
@@ -105,12 +108,12 @@ const publishTab = (tabId: TabId): void => {
 	history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
 };
 
-function selectTab(event: Event): void {
-	const { target } = (event.currentTarget as HTMLElement).dataset;
-
-	if (!isTabId(target)) {
+function selectTab({ currentTarget }: Event): void {
+	if (!selectedTabSchema.validate(currentTarget)) {
 		return;
 	}
+
+	const { target } = currentTarget.dataset;
 
 	applyTab(target);
 	publishTab(target);
@@ -120,7 +123,7 @@ export function initTabs(url: URL = new URL(window.location.href)): void {
 	const TABS = getTabs();
 	const DEFAULT_TAB = TABS[0]?.dataset.target;
 
-	if (!isTabId(DEFAULT_TAB)) {
+	if (!tabIdSchema.validate(DEFAULT_TAB)) {
 		return;
 	}
 
@@ -132,7 +135,7 @@ export function initTabs(url: URL = new URL(window.location.href)): void {
 
 	BUTTONS.forEach((button, index) => {
 		button.addEventListener("keydown", (event) => {
-			const target = nextTabIndex({ key: (event as KeyboardEvent).key, index, length: BUTTONS.length });
+			const target = nextTabIndex({ key: event.key, index, length: BUTTONS.length });
 
 			if (target < 0) {
 				return;
@@ -146,5 +149,5 @@ export function initTabs(url: URL = new URL(window.location.href)): void {
 
 	const REQUESTED_TAB = url.searchParams.get(TAB_QUERY_KEY);
 
-	applyTab(isTabId(REQUESTED_TAB) ? REQUESTED_TAB : DEFAULT_TAB);
+	applyTab(tabIdSchema.validate(REQUESTED_TAB) ? REQUESTED_TAB : DEFAULT_TAB);
 }

@@ -1,5 +1,6 @@
 import type { ImageFormats } from "@domain/shared/image";
 import { buildContentfulImageUrl } from "@infrastructure/images/imageOptimization";
+import { z } from "astro/zod";
 import type { Asset, UnresolvedLink } from "contentful";
 
 const PROTOCOL_RELATIVE_PREFIX = "//";
@@ -10,6 +11,18 @@ const SHARE_CROPS = [
 	{ width: 1200, height: 900 },
 	{ width: 1200, height: 1200 },
 ] as const;
+
+const assetFileSchema = z.object({
+	fields: z.object({
+		file: z.object({
+			url: z.string(),
+			contentType: z.string(),
+			details: z.object({
+				image: z.object({ width: z.number(), height: z.number() }).optional(),
+			}),
+		}),
+	}),
+});
 
 interface CreateImageReturn {
 	url: string;
@@ -22,8 +35,13 @@ interface CreateImageReturn {
 }
 
 export function createImage(rawImage: Asset<undefined> | UnresolvedLink<"Asset">): CreateImageReturn {
-	const asset = rawImage as Asset<undefined>;
-	const { contentType, details, url } = asset.fields.file as NonNullable<Asset<undefined>["fields"]["file"]>;
+	if (!assetFileSchema.validate(rawImage)) {
+		throw new Error(
+			`An image asset reached the mapper unresolved or without a file (${rawImage.sys.id}), so nothing can render it`,
+		);
+	}
+
+	const { contentType, details, url } = rawImage.fields.file;
 
 	const absoluteUrl = url.startsWith(PROTOCOL_RELATIVE_PREFIX) ? `${ASSET_SCHEME}${url}` : url;
 

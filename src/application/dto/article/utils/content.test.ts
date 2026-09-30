@@ -422,6 +422,12 @@ describe("renderArticleContent code and split blocks", () => {
 		expect(html).toContain('class="split"');
 	});
 
+	it("renders nothing for an embedded entry of a type it does not know, even one carrying a usable image", () => {
+		const image = { fields: { file: asset({ url: "//cdn/a.jpg" }) } };
+
+		expect(render([embed({ contentType: "somethingElse", fields: { image } })]).trim()).toBe("");
+	});
+
 	it("renders nothing at all for an embedded entry of a type it does not know", () => {
 		expect(render([embed({ contentType: "somethingElse", fields: { url: "https://example.com" } })]).trim()).toBe("");
 	});
@@ -538,5 +544,77 @@ describe("renderArticleContent split blocks with an incomplete asset", () => {
 		expect(render([splitBlock({ description: "Beside the text" })])).toContain('alt="Beside the text"');
 		expect(render([splitBlock({ title: "side" })])).toContain('alt="side"');
 		expect(render([splitBlock({})])).toContain('alt=""');
+	});
+});
+
+describe("renderArticleContent nodes whose data is not the shape Contentful promised", () => {
+	const unresolvedEntry = { sys: { type: "Link", linkType: "Entry", id: "3kLmNoP" } };
+	const unresolvedAsset = { sys: { type: "Link", linkType: "Asset", id: "8qRsTuV" } };
+
+	it("keeps a hyperlink's label but links nowhere when the node carries no uri", () => {
+		const html = render([
+			{ ...paragraph("x"), content: [{ nodeType: "hyperlink", data: {}, content: [text("label")] }] },
+		]);
+
+		expect(html).toContain("label");
+		expect(html).not.toContain("<a href");
+	});
+
+	it("renders nothing for an embedded entry Contentful left as an unresolved link, rather than failing the build", () => {
+		const inline = { nodeType: "embedded-entry-inline", data: { target: unresolvedEntry }, content: [] };
+		const block = { nodeType: "embedded-entry-block", data: { target: unresolvedEntry }, content: [] };
+
+		expect(render([{ ...paragraph("x"), content: [inline] }, block])).not.toContain("<a href");
+		expect(render([block]).trim()).toBe("");
+	});
+
+	it("keeps the label of an entry hyperlink whose target was left unresolved", () => {
+		const link = { nodeType: "entry-hyperlink", data: { target: unresolvedEntry }, content: [text("read this")] };
+		const html = render([{ ...paragraph("x"), content: [link] }]);
+
+		expect(html).toContain("read this");
+		expect(html).not.toContain("<a href");
+	});
+
+	it("keeps the label of an asset hyperlink, and renders no embedded asset, whose target was left unresolved", () => {
+		const link = { nodeType: "asset-hyperlink", data: { target: unresolvedAsset }, content: [text("the file")] };
+		const block = { nodeType: "embedded-asset-block", data: { target: unresolvedAsset }, content: [] };
+
+		expect(render([{ ...paragraph("x"), content: [link] }])).not.toContain("<a href");
+		expect(render([block]).trim()).toBe("");
+	});
+
+	it("renders no wrapper class for a layout it does not know, even one every object inherits", () => {
+		const html = render([
+			embed({
+				contentType: "imageEmbed",
+				fields: { layout: "toString", image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } },
+			}),
+		]);
+
+		expect(html).toContain("<figure>");
+		expect(html).not.toContain("function");
+	});
+
+	it("wraps an image in the class its known layout names", () => {
+		const html = render([
+			embed({
+				contentType: "imageEmbed",
+				fields: { layout: "breakout", image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } },
+			}),
+		]);
+
+		expect(html).toContain('<figure class="breakout">');
+	});
+
+	it("renders nothing for an image whose dimensions are not numbers, rather than writing them into the markup", () => {
+		const file = { url: "//cdn/a.jpg", details: { image: { width: '1" onerror="alert(1)', height: 630 } } };
+
+		expect(render([embed({ contentType: "imageEmbed", fields: { image: { fields: { file } } } })])).not.toContain(
+			"onerror",
+		);
+		expect(
+			render([{ nodeType: "embedded-asset-block", data: { target: { fields: { file } } }, content: [] }]),
+		).not.toContain("onerror");
 	});
 });

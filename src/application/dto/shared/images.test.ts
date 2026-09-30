@@ -60,4 +60,38 @@ describe("createImage", () => {
 			"https://cdn/hero.jpg?w=1200&h=1200&fit=fill",
 		]);
 	});
+
+	it("refuses an asset link Contentful left unresolved, naming it rather than failing on the missing fields", () => {
+		const unresolved = { sys: { type: "Link", linkType: "Asset", id: "4aBcDeF" } } as unknown as Asset<undefined>;
+
+		expect(() => createImage(unresolved)).toThrow(
+			"An image asset reached the mapper unresolved or without a file (4aBcDeF), so nothing can render it",
+		);
+	});
+
+	it("refuses an asset that carries no file, naming it", () => {
+		const withoutFile = { sys: { id: "5gHiJkL" }, fields: { title: "An empty asset" } } as unknown as Asset<undefined>;
+
+		expect(() => createImage(withoutFile)).toThrow("(5gHiJkL)");
+	});
+
+	it("refuses an asset whose file url is not a string, rather than failing inside the url handling", () => {
+		const numericUrl = {
+			sys: { id: "6mNoPqR" },
+			fields: { file: { url: 42, contentType: "image/jpeg", details: {} } },
+		} as unknown as Asset<undefined>;
+
+		expect(() => createImage(numericUrl)).toThrow("(6mNoPqR)");
+	});
+
+	it("refuses an asset whose dimensions are not numbers, rather than passing them on as if they were", () => {
+		const textualDimensions = {
+			sys: { id: "7sTuVwX" },
+			fields: {
+				file: { url: "//cdn/a.jpg", contentType: "image/jpeg", details: { image: { width: "1200", height: "630" } } },
+			},
+		} as unknown as Asset<undefined>;
+
+		expect(() => createImage(textualDimensions)).toThrow("(7sTuVwX)");
+	});
 });

@@ -11,7 +11,7 @@ function resolvedAuthor(author: LinkedAuthor): RawAuthor {
 		throw new Error(`A raw author entry reached the mapper unresolved (${author.sys.id}), so no byline can name it`);
 	}
 
-	return author as RawAuthor;
+	return author;
 }
 
 export function createAuthor(author: LinkedAuthor): Except<AuthorDTO, "latestArticle"> {

@@ -200,6 +200,22 @@ describe("choosing a tab", () => {
 	});
 });
 
+describe("a tab naming no known panel", () => {
+	it("ignores a click on it rather than publishing what it names", () => {
+		const stray = document.createElement("li");
+		stray.className = "contact-tab";
+		stray.dataset.target = "carrier-pigeon";
+		document.querySelector("ul")?.append(stray);
+		initTabs(contactUrl());
+		const { replace } = watchHistory();
+
+		stray.click();
+
+		expect(replace).not.toHaveBeenCalled();
+		expect(paintedTab()).toBe("email");
+	});
+});
+
 describe("activeTab", () => {
 	it.each([
 		["names a tab", "appointment", "appointment"],
@@ -288,6 +304,14 @@ describe("the appointment widget", () => {
 		initTabs(contactUrl(`?${TAB_QUERY_KEY}=appointment`));
 
 		expect(injectedScripts()).toHaveLength(0);
+	});
+
+	it("loads the vendor script rather than throwing when the Calendly global is not the vendor's", () => {
+		renderTabs({ booking: true });
+		Object.assign(window, { Calendly: { initInlineWidgets: "not a function" } });
+
+		expect(() => initTabs(contactUrl(`?${TAB_QUERY_KEY}=appointment`))).not.toThrow();
+		expect(injectedScripts()).toHaveLength(1);
 	});
 
 	it("asks for nothing on a page that carries no widget", () => {

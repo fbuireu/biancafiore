@@ -44,7 +44,9 @@ vi.mock("three", () => ({
 
 const COUNTRIES_URL = "*/countries.json";
 
-const FEATURES = [{ type: "Feature", properties: { name: "Spain" }, geometry: {} }];
+const FEATURES = [
+	{ type: "Feature", properties: { name: "Spain" }, geometry: { type: "Polygon", coordinates: [[[0, 0]]] } },
+];
 
 const POINTS: CityPoint[] = [
 	{ lat: 40, lng: 0, label: "North", slug: "north" },
@@ -230,5 +232,38 @@ describe("WorldGlobeCanvas", () => {
 
 		expect(globeProps.at(-1)?.hexPolygonsData).toStrictEqual([]);
 		expect(screen.getByTestId("globe")).toBeDefined();
+	});
+
+	it.each([
+		["a body that is not json", () => HttpResponse.text("<!doctype html>")],
+		["json that is not an object", () => HttpResponse.json(null)],
+		["an object carrying no features", () => HttpResponse.json({})],
+		["features that are not a list", () => HttpResponse.json({ features: "Spain" })],
+		["a feature carrying no geometry", () => HttpResponse.json({ features: [{ type: "Feature", properties: {} }] })],
+		[
+			"a feature whose geometry is not a polygon",
+			() =>
+				HttpResponse.json({
+					features: [{ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: [0, 0] } }],
+				}),
+		],
+	])("draws an empty globe rather than handing the renderer %s", async (_name, answer) => {
+		server.use(http.get(COUNTRIES_URL, answer));
+
+		await mountCanvas();
+
+		expect(globeProps.at(-1)?.hexPolygonsData).toStrictEqual([]);
+	});
+
+	it("draws both polygons and multipolygons, which is what the countries file carries", async () => {
+		const features = [
+			{ type: "Feature", properties: { name: "Spain" }, geometry: { type: "Polygon", coordinates: [[[0, 0]]] } },
+			{ type: "Feature", properties: { name: "Italy" }, geometry: { type: "MultiPolygon", coordinates: [[[[0, 0]]]] } },
+		];
+		server.use(http.get(COUNTRIES_URL, () => HttpResponse.json({ type: "FeatureCollection", features })));
+
+		await mountCanvas();
+
+		expect(globeProps.at(-1)?.hexPolygonsData).toStrictEqual(features);
 	});
 });
