@@ -157,7 +157,13 @@ describe("wireMenu", () => {
 		};
 	};
 
-	const wire = (controller: AbortController, elements = render()) => {
+	let controller: AbortController;
+
+	beforeEach(() => {
+		controller = new AbortController();
+	});
+
+	const wire = (elements = render()) => {
 		const timeline = timelineDouble();
 
 		wireMenu({ elements, signal: controller.signal, buildTimeline: () => timeline });
@@ -166,12 +172,13 @@ describe("wireMenu", () => {
 	};
 
 	afterEach(() => {
+		controller.abort();
 		document.body.innerHTML = "";
 		document.documentElement.className = "";
 	});
 
 	it("opens on a click and says so to assistive technology", () => {
-		const { elements } = wire(new AbortController());
+		const { elements } = wire();
 
 		elements.button.click();
 
@@ -180,7 +187,7 @@ describe("wireMenu", () => {
 	});
 
 	it("closes on a second click", () => {
-		const { elements } = wire(new AbortController());
+		const { elements } = wire();
 
 		elements.button.click();
 		elements.button.click();
@@ -190,7 +197,7 @@ describe("wireMenu", () => {
 	});
 
 	it("drives the timeline rather than animating anything itself", () => {
-		const { elements, timeline } = wire(new AbortController());
+		const { elements, timeline } = wire();
 
 		elements.button.click();
 
@@ -198,7 +205,7 @@ describe("wireMenu", () => {
 	});
 
 	it("closes on Escape while the menu is open", () => {
-		const { elements } = wire(new AbortController());
+		const { elements } = wire();
 
 		elements.button.click();
 		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
@@ -207,7 +214,7 @@ describe("wireMenu", () => {
 	});
 
 	it("ignores Escape while the menu is closed, so it cannot open it", () => {
-		const { elements } = wire(new AbortController());
+		const { elements } = wire();
 
 		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
 
@@ -215,8 +222,7 @@ describe("wireMenu", () => {
 	});
 
 	it("stops listening on document once its signal is aborted, so a second run cannot stack a third", () => {
-		const controller = new AbortController();
-		const { elements } = wire(controller);
+		const { elements } = wire();
 
 		elements.button.click();
 		controller.abort();
@@ -228,13 +234,13 @@ describe("wireMenu", () => {
 	it("clears the open state it inherited, so a swapped-in page never starts open", () => {
 		document.documentElement.classList.add("page--menu-open");
 
-		wire(new AbortController());
+		wire();
 
 		expect(document.documentElement.classList.contains("page--menu-open")).toBe(false);
 	});
 
 	it("moves focus to the first menu link only once the overlay has finished opening", () => {
-		const { elements, timeline } = wire(new AbortController());
+		const { elements, timeline } = wire();
 
 		elements.button.click();
 
@@ -246,7 +252,7 @@ describe("wireMenu", () => {
 	});
 
 	it("takes the page the overlay covers out of the tab order while it is open", () => {
-		const { elements } = wire(new AbortController());
+		const { elements } = wire();
 		const covered = () => [...document.querySelectorAll<HTMLElement>("main, footer")];
 
 		expect(covered().every((region) => region.inert)).toBe(false);
@@ -302,6 +308,8 @@ describe("watchBackground", () => {
 describe("the menu button label", () => {
 	const CLOSE_LABEL_DELAY = 500;
 
+	let controller: AbortController;
+
 	const wireWithUpdates = (text: HTMLElement | null) => {
 		document.body.innerHTML = `<button class="header__menu-button"></button>`;
 		const button = document.querySelector<HTMLElement>(".header__menu-button") as HTMLElement;
@@ -311,7 +319,7 @@ describe("the menu button label", () => {
 
 		wireMenu({
 			elements: { html: document.documentElement, button, text },
-			signal: new AbortController().signal,
+			signal: controller.signal,
 			buildTimeline: (onButtonUpdate) => {
 				update = onButtonUpdate;
 
@@ -334,10 +342,12 @@ describe("the menu button label", () => {
 	};
 
 	beforeEach(() => {
+		controller = new AbortController();
 		vi.useFakeTimers();
 	});
 
 	afterEach(() => {
+		controller.abort();
 		vi.useRealTimers();
 		document.body.innerHTML = "";
 		document.documentElement.className = "";

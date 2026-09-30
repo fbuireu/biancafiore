@@ -161,7 +161,7 @@ describe("safeUrl", () => {
 		expect(safeUrl('https://example.com/?q="><script>')).toBe("https://example.com/?q=&quot;&gt;&lt;script&gt;");
 	});
 
-	it("trims before it decides, so padding cannot smuggle a scheme past the check", () => {
+	it("ships a link it lets through without the padding around it", () => {
 		expect(safeUrl("   https://example.com   ")).toBe("https://example.com");
 	});
 

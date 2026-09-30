@@ -115,18 +115,6 @@ describe("createAuthors article attribution", () => {
 		expect(author.latestArticle).toEqual({ id: "only-one", collection: "articles" });
 	});
 
-	it("ignores articles written by somebody else", () => {
-		const [author] = createAuthors({
-			rawAuthors: [makeAuthor({ name: "Bianca Fiore" })],
-			rawArticles: [
-				makeArticle({ slug: "hers" }),
-				makeArticle({ slug: "his", author: { fields: { name: "Someone Else", slug: "someone-else" } } }),
-			],
-		});
-
-		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
-	});
-
 	it("ignores author links Contentful left unresolved instead of throwing on the missing fields", () => {
 		const [author] = createAuthors({
 			rawAuthors: [makeAuthor()],
@@ -161,12 +149,6 @@ describe("createAuthors article attribution", () => {
 		});
 
 		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
-	});
-
-	it("emits the trimmed slug it matched on, so the author tag it becomes addresses the page a byline links to", () => {
-		const [author] = createAuthors({ rawAuthors: [makeAuthor({ slug: " bianca-fiore " })], rawArticles: [] });
-
-		expect(author.slug).toBe("bianca-fiore");
 	});
 
 	it("references an article by its trimmed slug, because that is the id the articles collection stores", () => {

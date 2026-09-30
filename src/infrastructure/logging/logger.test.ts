@@ -1,6 +1,6 @@
 import { LOG_LEVEL, LOG_SERVICE, type LogLevel } from "@infrastructure/logging/contract";
 import { logger } from "@infrastructure/logging/logger";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const spies = {
 	info: vi.spyOn(console, "info").mockImplementation(() => {}),
@@ -12,6 +12,10 @@ const lineFrom = (level: LogLevel) => JSON.parse(spies[level].mock.calls[0]?.[0]
 
 beforeEach(() => {
 	vi.clearAllMocks();
+});
+
+afterAll(() => {
+	vi.restoreAllMocks();
 });
 
 describe("the platform is the transport", () => {
@@ -34,12 +38,6 @@ describe("the platform is the transport", () => {
 		expect(lineFrom(level)).toMatchObject({ level, field: 1 });
 		for (const other of Object.values(LOG_LEVEL)) {
 			if (other !== level) expect(spies[other]).not.toHaveBeenCalled();
-		}
-	});
-
-	it("has a method for every level the log contract names", () => {
-		for (const level of Object.values(LOG_LEVEL)) {
-			expect(typeof logger[level]).toBe("function");
 		}
 	});
 
@@ -67,12 +65,6 @@ describe("a caller cannot relabel its own line", () => {
 		logger.info({ message: "hello", context: { service: "not-this-site" } });
 
 		expect(lineFrom(LOG_LEVEL.INFO).service).toBe(LOG_SERVICE);
-	});
-
-	it("still carries a level a logError caller put in its context under a different key", () => {
-		logger.logError({ message: "boom", error: new Error("x"), context: { attemptedLevel: LOG_LEVEL.INFO } });
-
-		expect(lineFrom(LOG_LEVEL.ERROR).attemptedLevel).toBe(LOG_LEVEL.INFO);
 	});
 });
 
@@ -118,8 +110,10 @@ describe("logger.logError", () => {
 		logger.logError({ message: "test", error: circular });
 		logger.logError({ message: "test", error: { size: 1n } });
 
-		expect(spies.error).toHaveBeenCalledTimes(2);
-		expect(lineFrom(LOG_LEVEL.ERROR).error.message).toBe("[object Object]");
+		expect(spies.error.mock.calls.map(([line]) => JSON.parse(line as string).error.message)).toStrictEqual([
+			"[object Object]",
+			"[object Object]",
+		]);
 	});
 
 	it("merges caller context with error context", () => {

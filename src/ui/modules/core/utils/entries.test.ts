@@ -2,8 +2,9 @@ import { SITE_AUTHOR_SLUG } from "@const/const";
 import { getSiteAuthor, resolveArticle, resolveArticles } from "@modules/core/utils/entries";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { stored, asked, authors } = vi.hoisted(() => ({
+const { stored, answerDelays, asked, authors } = vi.hoisted(() => ({
 	stored: new Map<string, unknown>(),
+	answerDelays: new Map<string, number>(),
 	asked: [] as string[],
 	authors: [] as { data: { slug: string; name: string } }[],
 }));
@@ -12,6 +13,8 @@ vi.mock("astro:content", () => ({
 	getCollection: async () => authors,
 	getEntry: async (collection: string, id: string) => {
 		asked.push(`${collection}:${id}`);
+
+		await new Promise((resolve) => setTimeout(resolve, answerDelays.get(id) ?? 0));
 
 		return stored.get(`${collection}:${id}`);
 	},
@@ -29,6 +32,7 @@ const slugsOf = (entries: { data: { slug: string } }[]) => entries.map(({ data }
 
 beforeEach(() => {
 	stored.clear();
+	answerDelays.clear();
 	asked.length = 0;
 });
 
@@ -52,6 +56,7 @@ describe("resolveArticle", () => {
 describe("resolveArticles", () => {
 	it("keeps the order the collection stored, not the order they resolve in", async () => {
 		store("third", "first", "second");
+		answerDelays.set("third", 20).set("first", 10);
 
 		const articles = await resolveArticles([reference("third"), reference("first"), reference("second")]);
 

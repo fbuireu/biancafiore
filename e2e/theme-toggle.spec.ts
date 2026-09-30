@@ -21,7 +21,7 @@ const settle = async (page: Page, theme: "dark" | "light") => {
 };
 
 test.describe("theme toggle", () => {
-	test.describe("with no stored preference", () => {
+	test.describe("with a dark operating system", () => {
 		test.use({ colorScheme: "dark" });
 
 		test("follows the operating system when it prefers dark", async ({ page }) => {
@@ -110,23 +110,18 @@ test.describe("theme toggle", () => {
 		test("applies the stored theme before the page renders, so there is no flash", async ({ page }) => {
 			await page.goto("/");
 			await choosePreference({ page, preference: "dark" });
+			await page.addInitScript((attribute) => {
+				new MutationObserver((_, observer) => {
+					if (!document.body) return;
 
-			await page.goto("/", { waitUntil: "commit" });
+					document.documentElement.dataset.themeAtFirstParse = document.documentElement.getAttribute(attribute) ?? "";
+					observer.disconnect();
+				}).observe(document, { childList: true, subtree: true });
+			}, THEME_ATTRIBUTE);
 
-			await expect(page.locator("html")).toHaveAttribute(THEME_ATTRIBUTE, "dark");
-		});
-
-		test("returns to light when toggled back", async ({ page }) => {
 			await page.goto("/");
-			await settle(page, "light");
 
-			await page.locator(TOGGLE).click();
-			await settle(page, "dark");
-
-			await page.locator(TOGGLE).click();
-
-			await settle(page, "light");
-			expect(await storedPreference(page)).toBe("light");
+			await expect(page.locator("html")).toHaveAttribute("data-theme-at-first-parse", "dark");
 		});
 	});
 });

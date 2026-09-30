@@ -81,7 +81,7 @@ describe("EmailClient.sendContactNotification", () => {
 		expect(Exit.isSuccess(exit) && exit.value).toStrictEqual({ id: "email-1" });
 	});
 
-	it("addresses Bianca, replies to the visitor, and never puts either address in the subject", async () => {
+	it("addresses Bianca, replies to the visitor, and names the visitor in the subject", async () => {
 		send.mockResolvedValue({ data: { id: "email-1" }, error: null });
 
 		await sendContact();
@@ -91,6 +91,7 @@ describe("EmailClient.sendContactNotification", () => {
 		expect(payload.to).toBe(atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA));
 		expect(payload.from).toContain(atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM));
 		expect(payload.replyTo).toBe("reader@example.com");
+		expect(payload.subject).toBe(`${CONTACT_DETAILS.EMAIL_SUBJECT} from A Reader (reader@example.com)`);
 		expect(payload.html).toBe("<p>Hello</p>");
 		expect(payload.text).toBe("Hello");
 	});

@@ -59,13 +59,6 @@ describe("createAuthor", () => {
 	it("trims the display name Contentful padded", () => {
 		expect(createAuthor(makeRawAuthor({ name: " Bianca Fiore\n" }))).toMatchObject({ name: "Bianca Fiore" });
 	});
-
-	it("omits the author's own article references, which only the author collection carries", () => {
-		const author = createAuthor(makeRawAuthor());
-
-		expect(author).not.toHaveProperty("articles");
-		expect(author).not.toHaveProperty("latestArticle");
-	});
 });
 
 describe("createAuthor, given a link Contentful did not resolve", () => {

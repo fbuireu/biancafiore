@@ -12,7 +12,7 @@ import {
 } from "@tests/doubles/contactLayers";
 import { type RecaptchaDoubleOptions, recaptchaDouble } from "@tests/doubles/network";
 import { Cause, Effect, Exit, Layer, Option } from "effect";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 const VALID_INPUT = {
 	name: "Ada",
@@ -49,7 +49,6 @@ beforeEach(() => {
 
 afterEach(() => {
 	resetSecrets();
-	vi.unstubAllGlobals();
 });
 
 describe("submitContact", () => {

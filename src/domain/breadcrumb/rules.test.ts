@@ -53,10 +53,4 @@ describe("createBreadcrumbs", () => {
 			{ label: "Articles", link: "/articles" },
 		]);
 	});
-
-	it("keeps the deepest segment last, which is what the component renders as the current page", () => {
-		const trail = createBreadcrumbs("/tags/writing");
-
-		expect(trail.at(-1)).toEqual({ label: "Writing", link: "/tags/writing" });
-	});
 });

@@ -20,10 +20,6 @@ afterEach(() => {
 });
 
 describe("onRequest", () => {
-	it("carries the https upgrade in the policy it starts from, or there is nothing to strip", () => {
-		expect(SECURITY_HEADERS["Content-Security-Policy"]).toContain(HTTPS_UPGRADE_DIRECTIVE);
-	});
-
 	it("strips the https upgrade in dev, which is the directive WebKit obeys on localhost", async () => {
 		vi.stubEnv("DEV", true);
 

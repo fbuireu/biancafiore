@@ -77,7 +77,7 @@ describe("activeSlideIndex", () => {
 });
 
 describe("initSlider", () => {
-	it("pages by the width of the track, so a slider showing four moves four", () => {
+	it("pages by the width of the track, so it moves as many slides as it shows", () => {
 		const { wrapper, track, next } = render({ slides: 5 });
 
 		initSlider(wrapper);
@@ -99,6 +99,7 @@ describe("initSlider", () => {
 	it("disables the previous button at the start rather than wrapping to the end", () => {
 		const { wrapper, previous, next } = render({ slides: 5 });
 
+		previous.disabled = false;
 		initSlider(wrapper);
 
 		expect(previous.disabled).toBe(true);

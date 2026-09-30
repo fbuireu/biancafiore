@@ -16,6 +16,16 @@ const parse = (schema: string): Record<string, unknown> => JSON.parse(schema);
 
 const AUTHOR = { name: "Bianca Fiore", jobTitle: "Content writer", path: "/about" };
 
+const PERSON = {
+	id: "#bianca",
+	name: "Bianca Fiore",
+	path: "/about",
+	image: `${ORIGIN}/bianca.jpg`,
+	jobTitle: "Content writer",
+	company: "Freelance",
+	sameAs: [],
+};
+
 const BLOG_POSTING = {
 	path: "/articles/a-piece",
 	headline: "A piece",
@@ -129,18 +139,25 @@ describe("buildProfilePageSchema and buildWebSiteSchema", () => {
 	});
 
 	it("omits the latest article for an author who has written nothing", () => {
-		const schema = buildProfilePageSchema({
-			person: {
-				id: "#bianca",
-				name: "Bianca Fiore",
-				path: "/about",
-				image: `${ORIGIN}/bianca.jpg`,
-				jobTitle: "Content writer",
-				company: "Freelance",
-				sameAs: [],
-			},
-		});
+		expect(parse(buildProfilePageSchema({ person: PERSON }))).not.toHaveProperty("hasPart");
+	});
 
-		expect(schema).not.toContain("BlogPosting");
+	it("credits the latest article to the person the page is about", () => {
+		const schema = parse(
+			buildProfilePageSchema({
+				person: PERSON,
+				latestArticle: { headline: "A piece", path: "/articles/a-piece", datePublished: "2026-03-15" },
+			}),
+		);
+
+		expect(schema.hasPart).toEqual([
+			{
+				"@type": "Article",
+				headline: "A piece",
+				url: `${ORIGIN}/articles/a-piece`,
+				datePublished: "2026-03-15",
+				author: { "@id": PERSON.id },
+			},
+		]);
 	});
 });

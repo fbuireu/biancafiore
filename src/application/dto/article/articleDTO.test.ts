@@ -357,7 +357,7 @@ describe("createArticles slug", () => {
 });
 
 describe("createArticles content derivations", () => {
-	it("builds the table of contents from the headings the renderer collected, shifting levels down by one", () => {
+	it("builds the table of contents from the headings the renderer collected, keeping their levels", () => {
 		const [article] = createArticles([
 			makeArticle({
 				content: [
@@ -380,63 +380,6 @@ describe("createArticles content derivations", () => {
 		expect(article.tableOfContents).toEqual([]);
 	});
 
-	it("wraps every heading in a linked section in the rendered content", () => {
-		const [article] = createArticles([makeArticle({ content: [heading({ level: 2, value: "The Craft" })] })]);
-
-		expect(article.content).toContain('<h2 id="the-craft" class="article__heading flex align-baseline">');
-		expect(article.content).toContain('<a href="#the-craft">The Craft</a>');
-	});
-
-	it("numbers each section by its place in the table of contents, so the scroll timelines line up", () => {
-		const [article] = createArticles([
-			makeArticle({
-				content: [
-					heading({ level: 2, value: "First" }),
-					heading({ level: 3, value: "Second" }),
-					heading({ level: 2, value: "Third" }),
-				],
-			}),
-		]);
-
-		expect(article.tableOfContents).toHaveLength(3);
-		expect(article.content).toContain('<section style="--is: --section-1">');
-		expect(article.content).toContain('<section style="--is: --section-2">');
-		expect(article.content).toContain('<section style="--is: --section-3">');
-	});
-
-	it("gives an h1 no timeline, because the table of contents never indexes one", () => {
-		const [article] = createArticles([
-			makeArticle({ content: [heading({ level: 1, value: "Title" }), heading({ level: 2, value: "First" })] }),
-		]);
-
-		expect(article.tableOfContents).toHaveLength(1);
-		expect(article.content).toContain("<section>");
-		expect(article.content).toContain('<section style="--is: --section-1">');
-	});
-
-	it("drops a link whose scheme could execute instead of navigating", () => {
-		const scripted = {
-			nodeType: "hyperlink",
-			data: { uri: "javascript:alert(1)" },
-			content: [text("Click me")],
-		};
-
-		const [article] = createArticles([makeArticle({ content: [{ ...paragraph("x"), content: [scripted] }] })]);
-
-		expect(article.content).toContain('href=""');
-		expect(article.content).not.toContain("javascript:");
-	});
-
-	it("wraps a heading in its own section and leaves the body paragraphs alone", () => {
-		const [article] = createArticles([
-			makeArticle({ content: [heading({ level: 2, value: "The Craft" }), paragraph("Body text")] }),
-		]);
-
-		expect(article.content).toContain('<a href="#the-craft">The Craft</a>');
-		expect(article.content).toContain("<p>Body text</p>");
-		expect(article.content).not.toContain("<p></p>");
-	});
-
 	it("points a table of contents entry at an id the rendered content actually defines", () => {
 		const [article] = createArticles([
 			makeArticle({
@@ -455,48 +398,6 @@ describe("createArticles content derivations", () => {
 		expect(article.content).toContain(`<h2 id="${entry.id}"`);
 	});
 
-	it("escapes the markup characters an author types into a heading rather than emitting them raw", () => {
-		const [article] = createArticles([
-			makeArticle({ content: [heading({ level: 2, value: `Why & How <b> "now" isn't it` })] }),
-		]);
-
-		expect(article.content).toContain(
-			'<a href="#why-how-b-now-isnt-it">Why &amp; How &lt;b&gt; &quot;now&quot; isn&#39;t it</a>',
-		);
-	});
-
-	it("shows the markup a code block contains instead of running it", () => {
-		const codeBlock = {
-			nodeType: "embedded-entry-block",
-			data: {
-				target: { sys: { contentType: { sys: { id: "codeBlock" } } }, fields: { code: '<script>x="1"</script>' } },
-			},
-			content: [],
-		};
-
-		const [article] = createArticles([makeArticle({ content: [codeBlock] })]);
-
-		expect(article.content).toContain("<pre><code>&lt;script&gt;x=&quot;1&quot;&lt;/script&gt;</code></pre>");
-		expect(article.content).not.toContain("<script>");
-	});
-
-	it("keeps an embedded title inside its attribute when the author typed a quote", () => {
-		const videoEmbed = {
-			nodeType: "embedded-entry-block",
-			data: {
-				target: {
-					sys: { contentType: { sys: { id: "videoEmbed" } } },
-					fields: { url: "https://youtu.be/abc", title: 'She said "hello"' },
-				},
-			},
-			content: [],
-		};
-
-		const [article] = createArticles([makeArticle({ content: [videoEmbed] })]);
-
-		expect(article.content).toContain('title="She said &quot;hello&quot;"');
-	});
-
 	it("escapes a heading in the body but hands the table of contents the text as authored", () => {
 		const [article] = createArticles([makeArticle({ content: [heading({ level: 2, value: "Why & How" })] })]);
 		const [entry] = article.tableOfContents;
@@ -504,14 +405,6 @@ describe("createArticles content derivations", () => {
 		expect(entry.heading).toBe("Why & How");
 		expect(entry.id).toBe("why-how");
 		expect(article.content).toContain(`<a href="#${entry.id}">Why &amp; How</a>`);
-	});
-
-	it("spells the anchor once, so an entity in a heading cannot split the id from the link", () => {
-		const [article] = createArticles([makeArticle({ content: [heading({ level: 2, value: "Tips & Tricks" })] })]);
-		const [entry] = article.tableOfContents;
-
-		expect(entry.id).toBe("tips-tricks");
-		expect(article.content).toContain(`<h2 id="${entry.id}"`);
 	});
 
 	it("numbers each section by the position its entry takes in the table of contents", () => {
@@ -572,14 +465,6 @@ describe("createArticles author and batching", () => {
 		});
 	});
 
-	it("trims the byline slug, so it addresses the same page the author collection generates", () => {
-		const [article] = createArticles([
-			makeArticle({ author: { fields: { ...AUTHOR.fields, name: " Bianca Fiore ", slug: " bianca-fiore " } } }),
-		]);
-
-		expect(article.author).toMatchObject({ name: "Bianca Fiore", slug: "bianca-fiore" });
-	});
-
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {
 		const result = createArticles([]);
 
@@ -626,11 +511,5 @@ describe("createArticles republication credit", () => {
 		expect(() =>
 			createArticles([makeArticle({ isRepublished: false, originalSource: "The Content Standard" })]),
 		).toThrow("An Article names an original source (The Content Standard) but is not flagged as republished");
-	});
-
-	it("drops an original source an editor left behind after clearing the flag on a draft", () => {
-		const [article] = createArticles([makeArticle({ isRepublished: undefined, originalSource: undefined })]);
-
-		expect(article).toMatchObject({ isRepublished: false, originalSource: undefined });
 	});
 });

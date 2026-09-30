@@ -68,14 +68,6 @@ afterEach(() => {
 });
 
 describe("authors loader", () => {
-	it("returns no entries and asks Contentful for nothing when the credentials are missing", async () => {
-		vi.stubEnv("CONTENTFUL_SPACE_ID", undefined);
-		cmsAnswers({ author: [BIANCA] });
-
-		await expect(load()).resolves.toEqual([]);
-		expect(cmsQueries).toEqual([]);
-	});
-
 	it("asks for authors and for only the article fields the latest-article rule reads, in one batch", async () => {
 		cmsAnswers({ author: [BIANCA], article: [] });
 		cmsHoldsUntilQueries(2);

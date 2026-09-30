@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 import { type CityPoint, calculateCenter, renderPin, toCityPoints } from "@modules/about/utils/globe";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const point = (overrides: Partial<CityPoint> = {}): CityPoint => ({
 	lat: 0,
@@ -26,14 +26,8 @@ const city = (data: Partial<CollectionEntry<"cities">["data"]> = {}): Collection
 	}) as CollectionEntry<"cities">;
 
 describe("toCityPoints", () => {
-	it("projects a City onto the coordinates, name and Slug the globe reads", () => {
+	it("projects a City onto the coordinates, name and Slug the globe reads, and ships nothing else", () => {
 		expect(toCityPoints([city()])).toEqual([{ lat: 41.39, lng: 2.16, label: "Barcelona", slug: "barcelona" }]);
-	});
-
-	it("ships nothing the globe never looks at", () => {
-		const [projected] = toCityPoints([city()]);
-
-		expect(Object.keys(projected ?? {}).sort()).toEqual(["label", "lat", "lng", "slug"]);
 	});
 
 	it("keeps the order the collection stored, so pins and cards agree", () => {
@@ -79,6 +73,10 @@ describe("renderPin", () => {
 		document.body.innerHTML = "";
 	});
 
+	afterEach(() => {
+		vi.unstubAllGlobals();
+	});
+
 	it("names the marker after the city's slug rather than re-deriving it from the label", () => {
 		const pin = renderPin({ markerData: point({ label: "New York City", slug: "new-york-city" }) });
 
@@ -98,8 +96,6 @@ describe("renderPin", () => {
 		renderPin({ markerData: point({ label: "Sydney", slug: "sydney" }) }).click();
 
 		expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
-
-		vi.unstubAllGlobals();
 	});
 
 	it("does nothing when no card carries that slug", () => {
@@ -109,7 +105,5 @@ describe("renderPin", () => {
 		renderPin({ markerData: point({ slug: "nowhere" }) }).click();
 
 		expect(scrollTo).not.toHaveBeenCalled();
-
-		vi.unstubAllGlobals();
 	});
 });

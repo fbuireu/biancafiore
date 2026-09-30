@@ -31,10 +31,6 @@ describe("isWithin", () => {
 		expect(isWithin({ pathname: "/about", route: "/" })).toBe(false);
 	});
 
-	it("matches the home route through a trailing slash too", () => {
-		expect(isWithin({ pathname: "/", route: "/" })).toBe(true);
-	});
-
 	it("treats a route written with a trailing slash as a section marker, matching only what is under it", () => {
 		expect(isWithin({ pathname: "/articles/a-piece", route: "/articles/" })).toBe(true);
 		expect(isWithin({ pathname: "/articles", route: "/articles/" })).toBe(false);

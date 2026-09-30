@@ -1,16 +1,24 @@
 import { motionTimeScale, prefersReducedMotion, scrollBehavior, successDelay } from "@modules/core/utils/motion";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-const preference = (matches: boolean) =>
-	vi.stubGlobal("matchMedia", vi.fn().mockReturnValue({ matches }) as unknown as typeof window.matchMedia);
+const preference = (matches: boolean) => {
+	const matchMedia = vi.fn().mockReturnValue({ matches });
+
+	vi.stubGlobal("matchMedia", matchMedia as unknown as typeof window.matchMedia);
+
+	return matchMedia;
+};
+
+afterEach(() => {
+	vi.unstubAllGlobals();
+});
 
 describe("prefersReducedMotion", () => {
-	beforeEach(() => vi.unstubAllGlobals());
-
 	it("reports the preference the reader set on their operating system", () => {
-		preference(true);
+		const matchMedia = preference(true);
 
 		expect(prefersReducedMotion()).toBe(true);
+		expect(matchMedia).toHaveBeenCalledWith("(prefers-reduced-motion: reduce)");
 	});
 
 	it("reports no preference when the reader has asked for nothing", () => {
@@ -21,8 +29,6 @@ describe("prefersReducedMotion", () => {
 });
 
 describe("scrollBehavior", () => {
-	beforeEach(() => vi.unstubAllGlobals());
-
 	it("jumps rather than glides for a reader who asked for less motion", () => {
 		preference(true);
 
@@ -37,8 +43,6 @@ describe("scrollBehavior", () => {
 });
 
 describe("motionTimeScale", () => {
-	beforeEach(() => vi.unstubAllGlobals());
-
 	it("collapses a timeline for a reader who asked for less motion", () => {
 		preference(true);
 
@@ -53,8 +57,6 @@ describe("motionTimeScale", () => {
 });
 
 describe("successDelay", () => {
-	beforeEach(() => vi.unstubAllGlobals());
-
 	it("waits for no animation that was collapsed to nothing", () => {
 		preference(true);
 

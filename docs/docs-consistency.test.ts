@@ -1891,10 +1891,6 @@ describe("pinned versions", () => {
 		expect(pinned.sort()).toEqual(["Node", "pnpm"]);
 	});
 
-	// The rules below hold the pins to each other; this one holds the section to the decision, and without it
-	// the digits creep back one bullet at a time. Only the line that opens a bullet is checked, because the
-	// prose under it narrates the versions this section used to quote wrongly, and that history is the reason
-	// the decision exists.
 	it("quotes a version for none of them, since nothing here would keep one current", () => {
 		const section = CLAUDE_MD.match(VERSIONS_SECTION)?.[1] ?? "";
 		const quoting = section.split(NEWLINE).filter((line) => line.startsWith("- ") && QUOTED_VERSION.test(line));
@@ -1966,14 +1962,6 @@ describe("the workflows", () => {
 	});
 });
 
-// A version written into prose is a claim a bot invalidates on its own, and the rule above reads one section
-// of one guide. This one reads every document: a tool named beside a version states what its manifest already
-// states, and the manifest is the only copy Renovate keeps current. ADRs are exempt because a decision is
-// dated and quotes the versions it decided on; the entries below are the sentences that narrate a past bump
-// or a past mistake by its number, which is history rather than a claim about the tree.
-// Which names are policed is read from the manifests: a repository that never declared Astro has no business
-// forbidding "Astro 7", and a dependency added tomorrow is policed the day its manifest names it. The runtimes
-// are the only names every repository carries.
 const VERSIONED_DEPENDENCIES: Record<string, string[]> = {
 	astro: ["Astro"],
 	"@astrojs/starlight": ["Starlight"],
@@ -2005,8 +1993,16 @@ const NARRATED_VERSIONS: Record<string, string[]> = { "AGENTS.md": ["Node 26.5.1
 
 describe("stated versions", () => {
 	it("polices the runtimes and every versioned dependency the manifests declare, and nothing else", () => {
-		expect(POLICED_NAMES).toEqual(expect.arrayContaining(["Node", "pnpm"]));
-		expect(POLICED_NAMES.length).toBeGreaterThan(2);
+		const declared = declaredIn([PACKAGE_JSON]);
+		const namesOf = (isDeclared: boolean) =>
+			Object.entries(VERSIONED_DEPENDENCIES)
+				.filter(([dependency]) => declared.has(dependency) === isDeclared)
+				.flatMap(([, names]) => names);
+
+		expect(namesOf(true).length).toBeGreaterThan(0);
+		expect(namesOf(false).length).toBeGreaterThan(0);
+		expect(POLICED_NAMES).toEqual(expect.arrayContaining(["Node", "pnpm", ...namesOf(true)]));
+		expect(POLICED_NAMES.filter((name) => namesOf(false).includes(name))).toEqual([]);
 	});
 
 	it("states the current version of nothing a bot moves, outside the ADRs", () => {
@@ -2061,10 +2057,6 @@ describe("the release config parses the commit grammar commitlint accepts", () =
 		expect(wrong).toEqual([]);
 	});
 
-	// The release commit is the one commit on `main` commitlint never checks: the hook runs on a branch and
-	// the pull-request title check reads the title. Its shape is `chore(release): <version> [skip ci]`, and
-	// the `[skip ci]` is load-bearing, because without it that push starts the run that cuts the next
-	// release. The monorepo siblings name the package in the scope instead, `chore(<package>): release …`.
 	it("commits the release under the release scope, and tells CI to leave it alone", () => {
 		const wrong = configs.flatMap((file) => {
 			const { plugins } = readJson(file) as { plugins: ReleasePlugin[] };
@@ -2081,10 +2073,6 @@ describe("the release config parses the commit grammar commitlint accepts", () =
 		expect(wrong).toEqual([]);
 	});
 
-	// `assets` names what a release actually rewrites. `pnpm-lock.yaml` was on every list here and moved in
-	// none of the last twenty release commits: pnpm's lockfile does not record the importer's own version,
-	// so the npm plugin's bump never touches it. A list that names a file the release cannot change reads
-	// as a claim about what a release does.
 	it("commits only the files a release rewrites", () => {
 		const listed = configs.flatMap((file) => {
 			const { plugins } = readJson(file) as { plugins: ReleasePlugin[] };

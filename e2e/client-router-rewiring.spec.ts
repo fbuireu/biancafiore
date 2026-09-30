@@ -2,6 +2,7 @@ import { EMAIL_ADDRESS_PLACEHOLDER, EMAIL_BUTTON_ADDRESS_CLASS } from "@modules/
 import { THEME_ATTRIBUTE } from "@modules/core/components/themeToggle/const";
 import { expect, type Page, test } from "@playwright/test";
 
+const ARTICLE_BODY = ".article-wrapper";
 const ARTICLE_CARD_LINK = ".article-card__link";
 const ARTICLE_URL = /\/articles\/.+/;
 const EMAIL_ADDRESS_BUTTON = `.${EMAIL_BUTTON_ADDRESS_CLASS}`;
@@ -34,15 +35,38 @@ interface OpenAnArticleParams {
 	index: number;
 }
 
-const openAnArticle = async ({ page, index }: OpenAnArticleParams) => {
-	await visit({ page, path: "/articles" });
-	await expect(page.locator("[data-astro-exec]").first()).toBeAttached();
-
+const clickArticleCard = async ({ page, index }: OpenAnArticleParams) => {
 	const link = page.locator(ARTICLE_CARD_LINK).nth(index);
 
 	await link.scrollIntoViewIfNeeded();
 	await link.click();
 	await page.waitForURL(ARTICLE_URL);
+	await expect(page.locator(ARTICLE_BODY)).toBeAttached();
+};
+
+const openAnArticle = async ({ page, index }: OpenAnArticleParams) => {
+	await visit({ page, path: "/articles" });
+	await expect(page.locator("[data-astro-exec]").first()).toBeAttached();
+
+	await clickArticleCard({ page, index });
+};
+
+const openAnotherArticle = async ({ page, index }: OpenAnArticleParams) => {
+	await page.goBack();
+	await page.waitForURL("**/articles");
+	await expect(page.locator(ARTICLE_BODY)).toHaveCount(0);
+
+	await clickArticleCard({ page, index });
+};
+
+interface FollowFooterLinkParams {
+	page: Page;
+	path: string;
+}
+
+const followFooterLink = async ({ page, path }: FollowFooterLinkParams) => {
+	await page.locator(`footer a[href="${path}"]`).first().click();
+	await page.waitForURL(`**${path}`);
 };
 
 test.describe("wiring survives a ClientRouter swap", () => {
@@ -52,8 +76,7 @@ test.describe("wiring survives a ClientRouter swap", () => {
 		const executed = await page.locator("[data-astro-exec]").count();
 		const firstArticle = page.url();
 
-		await page.goBack();
-		await openAnArticle({ page, index: 1 });
+		await openAnotherArticle({ page, index: 1 });
 
 		expect(page.url()).not.toBe(firstArticle);
 		expect(await page.locator("[data-astro-exec]").count()).toBe(executed);
@@ -61,8 +84,7 @@ test.describe("wiring survives a ClientRouter swap", () => {
 
 	test("keeps the theme toggle repainting after two swaps", async ({ page }) => {
 		await openAnArticle({ page, index: 0 });
-		await page.goBack();
-		await openAnArticle({ page, index: 1 });
+		await openAnotherArticle({ page, index: 1 });
 
 		const before = await paintedTheme(page);
 
@@ -73,8 +95,7 @@ test.describe("wiring survives a ClientRouter swap", () => {
 
 	test("keeps the reading progress bar following the reader after two swaps", async ({ page }) => {
 		await openAnArticle({ page, index: 0 });
-		await page.goBack();
-		await openAnArticle({ page, index: 1 });
+		await openAnotherArticle({ page, index: 1 });
 
 		await page.mouse.wheel(0, 2000);
 
@@ -83,8 +104,7 @@ test.describe("wiring survives a ClientRouter swap", () => {
 
 	test("keeps the related-articles slider moving after two swaps", async ({ page }) => {
 		await openAnArticle({ page, index: 0 });
-		await page.goBack();
-		await openAnArticle({ page, index: 1 });
+		await openAnotherArticle({ page, index: 1 });
 
 		const next = page.locator(SLIDER_NEXT);
 
@@ -100,8 +120,7 @@ test.describe("wiring survives a ClientRouter swap", () => {
 
 	test("closes the menu on the first Escape, however many pages the reader has visited", async ({ page }) => {
 		await openAnArticle({ page, index: 0 });
-		await page.goBack();
-		await openAnArticle({ page, index: 1 });
+		await openAnotherArticle({ page, index: 1 });
 
 		const menuButton = page.locator(MENU_BUTTON);
 
@@ -121,8 +140,8 @@ test.describe("wiring survives a ClientRouter swap", () => {
 
 	test("keeps decoding the email address after two swaps", async ({ page }) => {
 		await visit({ page, path: "/articles" });
-		await visit({ page, path: "/terms-and-conditions" });
-		await visit({ page, path: "/privacy-policy" });
+		await followFooterLink({ page, path: "/terms-and-conditions" });
+		await followFooterLink({ page, path: "/privacy-policy" });
 
 		const address = page.locator(EMAIL_ADDRESS_BUTTON).first();
 

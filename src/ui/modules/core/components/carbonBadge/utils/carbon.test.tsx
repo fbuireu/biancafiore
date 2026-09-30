@@ -112,8 +112,11 @@ describe("badgeMarkup", () => {
 	});
 
 	it("marks a green host with a recycling glyph, and leaves a grey one plain", () => {
+		const grey = badgeMarkup({ grams: "0.21", isGreen: false });
+
 		expect(badgeMarkup({ grams: "0.21", isGreen: true })).toContain("♻️ 0.21g");
-		expect(badgeMarkup({ grams: "0.21", isGreen: false })).toContain(">\n        0.21g");
+		expect(grey).toContain("0.21g");
+		expect(grey).not.toContain("♻️");
 	});
 });
 
@@ -129,11 +132,12 @@ describe("renderCarbonBadge", () => {
 	it("writes nothing when the page carries no badge to write into", async () => {
 		document.body.innerHTML = '<p id="untouched">nothing to do with the badge</p>';
 		entries({ navigation: 1000, resources: [] });
-		greenCheckDouble({ green: true });
+		const check = greenCheckDouble({ green: true });
 
 		await renderCarbonBadge();
 
 		expect(document.body.innerHTML).toBe('<p id="untouched">nothing to do with the badge</p>');
+		expect(check.calls).toStrictEqual([]);
 	});
 
 	it("prints a figure and a link once it has measured the page", async () => {

@@ -37,7 +37,7 @@ describe.each(ICONS)("%s", (_name, Icon, defaultTitle) => {
 		expect(svgOf(container).querySelector("title")?.textContent).toBe("Expand the image");
 	});
 
-	it("adds the classes it is handed rather than replacing its own", () => {
+	it("carries the classes it is handed onto the svg", () => {
 		const { container } = render(<Icon classNames="article__zoom" />);
 
 		expect(svgOf(container).getAttribute("class")).toContain("article__zoom");
@@ -72,9 +72,10 @@ describe("the zoom marks", () => {
 });
 
 describe("StretchArrow", () => {
-	it("keeps the block class its stylesheet animates", () => {
+	it("keeps the block class its stylesheet animates beside the ones it is handed", () => {
 		const { container } = render(<StretchArrow classNames="reveal" />);
 
 		expect(svgOf(container).getAttribute("class")).toContain("stretch-arrow");
+		expect(svgOf(container).getAttribute("class")).toContain("reveal");
 	});
 });

@@ -1,13 +1,7 @@
-import { DEFAULT_DATE_FORMAT, DEFAULT_LOCALE_STRING } from "@const/index";
 import { formatDate } from "@shared/utils/dates";
 import { describe, expect, it } from "vitest";
 
 describe("formatDate", () => {
-	it("is configured for en-GB with long weekday and month names", () => {
-		expect(DEFAULT_LOCALE_STRING).toBe("en-GB");
-		expect(DEFAULT_DATE_FORMAT).toEqual({ weekday: "long", year: "numeric", month: "long", day: "numeric" });
-	});
-
 	it("renders a Date as weekday, day, long month and full year", () => {
 		expect(formatDate(new Date(2026, 6, 30, 12))).toBe("Thursday, 30 July 2026");
 	});

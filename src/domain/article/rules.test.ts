@@ -66,10 +66,6 @@ describe("getReadingTime", () => {
 		expect(getReadingTime(words(201).replace(/ /g, "\n\n\t"))).toBe(2);
 	});
 
-	it("ignores the whitespace markup leaves around the text", () => {
-		expect(getReadingTime(`\n  <article>\n\t<p>${words(200)}</p>\n</article>\n`)).toBe(1);
-	});
-
 	it("keeps words apart when tags are the only thing between them", () => {
 		const paragraphs = Array.from({ length: 400 }, () => "<p>word</p>").join("");
 
@@ -117,11 +113,11 @@ describe("generateTableOfContents", () => {
 
 	it("carries the scope the renderer minted rather than counting the list a second time", () => {
 		const items = generateTableOfContents([
-			headingStub({ level: 2, text: "First", ordinal: 1 }),
-			headingStub({ level: 3, text: "Second", ordinal: 2 }),
+			headingStub({ level: 2, text: "First", ordinal: 3 }),
+			headingStub({ level: 3, text: "Second", ordinal: 7 }),
 		]);
 
-		expect(items.map(({ scope }) => scope)).toEqual(["--section-1", "--section-2"]);
+		expect(items.map(({ scope }) => scope)).toEqual(["--section-3", "--section-7"]);
 	});
 
 	it("keeps the headings in document order rather than sorting them by level", () => {
@@ -136,10 +132,10 @@ describe("generateTableOfContents", () => {
 
 	it("takes the anchor id the renderer wrote instead of deriving a second one from the text", () => {
 		const [entry] = generateTableOfContents([
-			{ level: 2, id: "tips-tricks", text: "Tips & Tricks", scope: "--section-1" },
+			{ level: 2, id: "the-renderers-anchor", text: "Tips & Tricks", scope: "--section-1" },
 		]);
 
-		expect(entry.id).toBe("tips-tricks");
+		expect(entry.id).toBe("the-renderers-anchor");
 	});
 
 	it("carries the heading text as the author typed it, with no markup or entity left to undo", () => {

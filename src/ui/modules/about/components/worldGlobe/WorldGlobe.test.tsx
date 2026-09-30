@@ -15,16 +15,13 @@ vi.mock("./WorldGlobeCanvas", () => ({
 	},
 }));
 
-const observers = vi.hoisted(() => [] as { fire: (isIntersecting: boolean) => void; disconnect: () => void }[]);
+const observers = vi.hoisted(() => [] as { fire: (isIntersecting: boolean) => void }[]);
 
 const disconnected = vi.hoisted(() => ({ count: 0 }));
 
 class ObserverDouble {
 	constructor(private readonly callback: (entries: { isIntersecting: boolean }[]) => void) {
-		observers.push({
-			fire: (isIntersecting: boolean) => this.callback([{ isIntersecting }]),
-			disconnect: () => this.disconnect(),
-		});
+		observers.push({ fire: (isIntersecting: boolean) => this.callback([{ isIntersecting }]) });
 	}
 
 	observe() {}
@@ -62,6 +59,7 @@ beforeEach(() => {
 afterEach(() => {
 	cleanup();
 	vi.unstubAllGlobals();
+	vi.restoreAllMocks();
 });
 
 describe("WorldGlobe", () => {

@@ -1,9 +1,9 @@
 import CookieConsent from "@modules/core/components/cookieConsent/CookieConsent";
+import { CONSENT_COOKIE_NAME } from "@modules/core/components/cookieConsent/utils/consentGate";
 import { cleanup, render, screen } from "@testing-library/react";
 import { eraseCookies, getCookie } from "vanilla-cookieconsent";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-const COOKIE_NAME = "cc_cookie";
 const ANALYTICS_TOGGLE = "Performance and Analytics cookies";
 
 const analyticsConsentUpdates = (): string[] =>
@@ -34,7 +34,7 @@ beforeEach(() => {
 
 afterEach(() => {
 	cleanup();
-	eraseCookies(COOKIE_NAME);
+	eraseCookies(CONSENT_COOKIE_NAME);
 });
 
 describe("CookieConsent", () => {

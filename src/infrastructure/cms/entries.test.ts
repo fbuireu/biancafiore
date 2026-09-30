@@ -33,17 +33,11 @@ afterEach(() => {
 });
 
 describe("fetchEntries", () => {
-	it("answers with the entries of the one query it was given", async () => {
+	it("answers with the entries of the one query it was given, asked for at Contentful's maximum page size", async () => {
 		const [articles] = await fetchEntries<[EntrySkeletonType]>({ content_type: "article" });
 
 		expect(articles).toEqual([ARTICLE]);
 		expect(cmsQueries).toEqual([{ content_type: "article", skip: 0, limit: 1000 }]);
-	});
-
-	it("asks for the whole result set at Contentful's maximum page size, so no caller passes a limit", async () => {
-		await fetchEntries<[EntrySkeletonType]>({ content_type: "article" });
-
-		expect(cmsQueries).toEqual([expect.objectContaining({ limit: 1000 })]);
 	});
 
 	it("keeps asking until the collection's total is reached, so a short page never truncates the answer", async () => {

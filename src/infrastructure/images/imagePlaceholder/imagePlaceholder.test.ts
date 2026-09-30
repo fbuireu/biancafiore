@@ -22,19 +22,10 @@ describe("getImagePlaceholders", () => {
 		expect(cdn.calls).toStrictEqual([PLACEHOLDER_URL]);
 	});
 
-	it("answers each source with its bytes as a base64 webp data URL", async () => {
+	it("answers each source, keyed by the source rather than the derivative, with its bytes as a base64 webp data URL", async () => {
 		imageDouble({ url: SOURCE, bytes: BYTES.buffer });
 
 		await expect(getImagePlaceholders([SOURCE])).resolves.toStrictEqual(new Map([[SOURCE, DATA_URL]]));
-	});
-
-	it("keys the answer by the source it was given, not by the derivative it requested", async () => {
-		imageDouble({ url: SOURCE, bytes: BYTES.buffer });
-
-		const placeholders = await getImagePlaceholders([SOURCE]);
-
-		expect(placeholders.get(SOURCE)).toBe(DATA_URL);
-		expect(placeholders.has(PLACEHOLDER_URL)).toBe(false);
 	});
 
 	it("never opens more requests at once than the concurrency it owns", async () => {

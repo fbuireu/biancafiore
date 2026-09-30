@@ -46,7 +46,7 @@ describe("formatPeriod", () => {
 		expect(formatPeriod({ startYear: 2021 })).toBe("2021-Present");
 	});
 
-	it("prints a single year as that year on both sides, since the Author has not left", () => {
+	it("prints a stay that opened and closed in one year as that year on both sides", () => {
 		expect(formatPeriod({ startYear: 2024, endYear: 2024 })).toBe("2024-2024");
 	});
 });

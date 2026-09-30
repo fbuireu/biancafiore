@@ -49,7 +49,7 @@ describe("getOptimizedImageUrl on the Cloudflare CDN", () => {
 		expect(url).toBe(`/cdn-cgi/image/format=avif,quality=85/${SOURCE}`);
 	});
 
-	it("drops a zero width because the dimensions are checked for truthiness, not for being defined", () => {
+	it("drops a zero width and height because the dimensions are checked for truthiness, not for being defined", () => {
 		useCdn(IMAGE_CDN.CLOUDFLARE);
 
 		const url = getOptimizedImageUrl({ source: SOURCE, options: { width: 0, height: 0 } });

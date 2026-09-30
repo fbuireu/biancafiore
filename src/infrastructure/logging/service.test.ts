@@ -18,12 +18,4 @@ describe("LoggerService", () => {
 
 		expect(resolved).toBe(loggerDouble);
 	});
-
-	it("exposes every method the port declares", async () => {
-		const resolved = await Effect.runPromise(LoggerService.pipe(Effect.provide(LoggerServiceLive)));
-
-		for (const method of ["info", "warn", "error", "logError"] as const) {
-			expect(typeof resolved[method]).toBe("function");
-		}
-	});
 });

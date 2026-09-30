@@ -10,7 +10,6 @@ const makeArticle = (data: Record<string, unknown> = {}) =>
 			slug: "a-piece",
 			title: "A piece",
 			description: "About something",
-			publishDate: "Friday, 15 March 2024",
 			publishDateISO: "2024-03-15T00:00:00.000Z",
 			readingTime: 4,
 			author: { slug: "bianca-fiore", name: "Bianca Fiore", description: "Writes" },
@@ -20,7 +19,7 @@ const makeArticle = (data: Record<string, unknown> = {}) =>
 	}) as unknown as CollectionEntry<"articles">;
 
 describe("toArticleCardContent", () => {
-	it("carries only what the card renders, not the entry the page happened to have", () => {
+	it("carries only what the card renders, not the entry the page happened to have, the rendered body included", () => {
 		expect(Object.keys(toArticleCardContent(makeArticle())).toSorted()).toStrictEqual([
 			"author",
 			"description",
@@ -32,10 +31,6 @@ describe("toArticleCardContent", () => {
 			"title",
 			"visibleTags",
 		]);
-	});
-
-	it("leaves the rendered article body behind, which is the largest thing on the entry", () => {
-		expect(toArticleCardContent(makeArticle())).not.toHaveProperty("content");
 	});
 
 	it("takes the Byline down to the slug it links to and the name it prints", () => {

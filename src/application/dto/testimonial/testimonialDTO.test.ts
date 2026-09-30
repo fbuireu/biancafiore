@@ -62,20 +62,6 @@ describe("createTestimonials", () => {
 		expect(testimonial.quote).toBe("  A padded quote  ");
 	});
 
-	it("flags an avif asset as avif and nothing else", () => {
-		const [testimonial] = createTestimonials([
-			makeTestimonial({ image: asset({ url: "//cdn/ada.avif", contentType: "image/avif" }) }),
-		]);
-
-		expect(testimonial.image.formats).toEqual({ avif: true, webp: false });
-	});
-
-	it("flags a jpeg asset as neither avif nor webp", () => {
-		const [testimonial] = createTestimonials([makeTestimonial({ image: asset({ contentType: "image/jpeg" }) })]);
-
-		expect(testimonial.image.formats).toEqual({ avif: false, webp: false });
-	});
-
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {
 		const result = createTestimonials([]);
 

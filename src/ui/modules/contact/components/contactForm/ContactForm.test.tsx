@@ -100,7 +100,7 @@ describe("ContactForm", () => {
 		expect((screen.getByLabelText("(your name)") as HTMLInputElement).disabled).toBe(false);
 	});
 
-	it("stops waiting when the submission never answers, instead of spinning forever", async () => {
+	it("says the message did not go out when the submission rejects, instead of spinning forever", async () => {
 		renderForm({
 			submit: vi.fn(() => Promise.reject(new Error("Failed to fetch"))),
 		});

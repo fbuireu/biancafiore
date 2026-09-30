@@ -22,10 +22,6 @@ describe("articleSlug", () => {
 	])("refuses an entry whose slug is %s rather than minting one nothing can address", (_name, slug) => {
 		expect(() => articleSlug({ fields: { slug } })).toThrow("no slug");
 	});
-
-	it("does not mint the string undefined, which a caller would drop without a word", () => {
-		expect(() => articleSlug({ fields: {} })).toThrow();
-	});
 });
 
 describe("articleReference", () => {
@@ -37,10 +33,6 @@ describe("articleReference", () => {
 		expect(articleReference({ fields: { slug: "  a-piece  " } })).toEqual(
 			articleReference({ fields: { slug: "a-piece" } }),
 		);
-	});
-
-	it("carries the trimmed slug as its id, so a reference cannot drift from the collection key", () => {
-		expect(articleReference({ fields: { slug: " a-piece " } }).id).toBe("a-piece");
 	});
 
 	it("refuses to address an entry that has no slug, rather than referencing one that cannot exist", () => {

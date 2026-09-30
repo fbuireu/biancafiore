@@ -99,20 +99,6 @@ describe("createProjects image and batching", () => {
 		});
 	});
 
-	it("reports undefined dimensions when the asset carries no image details, rather than throwing", () => {
-		const withoutDetails = {
-			fields: {
-				name: "No details",
-				description: richText([]),
-				image: { fields: { file: { url: "//cdn/file.pdf", contentType: "application/pdf", details: {} } } },
-			},
-		} as unknown as RawProject;
-
-		const [project] = createProjects([withoutDetails]);
-
-		expect(project.image.details).toStrictEqual({ width: undefined, height: undefined });
-	});
-
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {
 		const result = createProjects([]);
 

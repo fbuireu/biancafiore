@@ -35,6 +35,7 @@ beforeEach(() => {
 
 afterEach(() => {
 	resetSecrets();
+	vi.unstubAllEnvs();
 });
 
 describe("CmsClientLive", () => {
@@ -75,7 +76,8 @@ describe("CmsClientLive", () => {
 		expect(Exit.isFailure(exit) && Cause.isDie(exit.cause)).toBe(true);
 	});
 
-	it("pairs the preview token with the preview host, never one with the other's", async () => {
+	it("pairs the preview token with the preview host in development", async () => {
+		vi.stubEnv("DEV", true);
 		configure();
 
 		await build();
@@ -84,6 +86,19 @@ describe("CmsClientLive", () => {
 			space: "a-space",
 			accessToken: "a-preview-token",
 			host: "preview.contentful.com",
+		});
+	});
+
+	it("pairs the delivery token with the delivery host everywhere else", async () => {
+		vi.stubEnv("DEV", false);
+		configure();
+
+		await build();
+
+		expect(createClient).toHaveBeenCalledWith({
+			space: "a-space",
+			accessToken: "a-delivery-token",
+			host: "cdn.contentful.com",
 		});
 	});
 });
@@ -109,7 +124,7 @@ describe("CmsClient.getEntries", () => {
 		expect(getEntries).toHaveBeenCalledWith(A_QUERY);
 	});
 
-	it("turns a rejected read into a CmsError carrying the vendor's own message", async () => {
+	it("turns a rejected read into a CmsError carrying the vendor's own message, rather than a defect", async () => {
 		getEntries.mockRejectedValue(new Error("The access token you sent could not be found"));
 
 		const exit = await getEntriesOf(A_QUERY);
@@ -130,14 +145,6 @@ describe("CmsClient.getEntries", () => {
 
 		expect((failure as CmsError).message).toBe("gateway timeout");
 		expect((failure as CmsError).cause).toBe("gateway timeout");
-	});
-
-	it("fails rather than dying, so a caller can recover from a lost read", async () => {
-		getEntries.mockRejectedValue(new Error("network down"));
-
-		const exit = await getEntriesOf(A_QUERY);
-
-		expect(Exit.isFailure(exit) && Cause.isDie(exit.cause)).toBe(false);
 	});
 });
 

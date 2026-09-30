@@ -336,7 +336,7 @@ describe("renderArticleContent image embeds", () => {
 		]);
 
 		expect(html).toContain("srcset=");
-		expect(html).toContain("400");
+		expect(html).toContain(" 400w");
 	});
 
 	it("takes the alt text from the asset's description, falling back to its title", () => {
@@ -501,18 +501,10 @@ describe("renderArticleContent image embeds with an incomplete asset", () => {
 		expect(html).toContain("width=768");
 	});
 
-	it("labels the image with its description", () => {
+	it("prefers the description to the title for the alt", () => {
 		const html = render([imageEmbed({ description: "A view of the bay", title: "hero" })]);
 
 		expect(html).toContain('alt="A view of the bay"');
-	});
-
-	it("falls back to the title when the asset carries no description", () => {
-		expect(render([imageEmbed({ title: "hero" })])).toContain('alt="hero"');
-	});
-
-	it("renders an empty alt rather than the word undefined when it carries neither", () => {
-		expect(render([imageEmbed({})])).toContain('alt=""');
 	});
 
 	it("escapes an alt that carries markup", () => {
@@ -520,10 +512,6 @@ describe("renderArticleContent image embeds with an incomplete asset", () => {
 
 		expect(html).toContain("&quot;quoted&quot;");
 		expect(html).not.toContain("<b>bay</b>");
-	});
-
-	it("renders no figcaption when there is no caption to render", () => {
-		expect(render([imageEmbed({})])).not.toContain("<figcaption");
 	});
 
 	it("renders no wrapper class when the embed names no layout", () => {

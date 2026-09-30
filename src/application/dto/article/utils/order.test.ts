@@ -1,8 +1,6 @@
 import type { RawArticle } from "@application/dto/article/types";
 import { orderArticleReferences } from "@application/dto/article/utils/order";
-import { describe, expect, it, vi } from "vitest";
-
-vi.mock("astro:content", () => ({ reference: () => ({ parse: (value: unknown) => value }) }));
+import { describe, expect, it } from "vitest";
 
 interface MakeArticleParams {
 	slug: string;

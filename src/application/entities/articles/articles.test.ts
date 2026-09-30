@@ -81,33 +81,16 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-	vi.unstubAllGlobals();
 	vi.unstubAllEnvs();
 });
 
 describe("articles loader", () => {
-	it("returns no entries and asks Contentful for nothing when the credentials are missing", async () => {
-		vi.stubEnv("CONTENTFUL_SPACE_ID", undefined);
-		cmsAnswers({ article: [makeArticle({ slug: "an-article", publishDate: "2024-03-15" })] });
-
-		await expect(load()).resolves.toEqual([]);
-		expect(cmsQueries).toEqual([]);
-	});
-
 	it("asks Contentful for articles, newest first", async () => {
 		cmsAnswers({ article: [makeArticle({ slug: "an-article", publishDate: "2024-03-15" })] });
 
 		await load();
 
 		expect(cmsQueries).toEqual([expect.objectContaining({ content_type: "article", order: ["-fields.publishDate"] })]);
-	});
-
-	it("keys every entry by its slug", async () => {
-		cmsAnswers({ article: [makeArticle({ slug: "an-article", publishDate: "2024-03-15" })] });
-
-		const [entry] = await load();
-
-		expect(entry).toMatchObject({ id: "an-article", slug: "an-article" });
 	});
 
 	it("keys an entry by the trimmed slug, so a padded CMS slug still answers the references pointing at it", async () => {

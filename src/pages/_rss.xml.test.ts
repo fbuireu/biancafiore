@@ -39,6 +39,7 @@ const context = {} as Parameters<typeof GET>[0];
 
 beforeEach(() => {
 	rss.mockClear();
+	getCollection.mockReset();
 	getCollection.mockResolvedValue([]);
 });
 
@@ -103,6 +104,6 @@ describe("the feed", () => {
 	it("reads the Articles collection and no other", async () => {
 		await GET(context);
 
-		expect(getCollection).toHaveBeenCalledWith("articles");
+		expect(getCollection.mock.calls).toStrictEqual([["articles"]]);
 	});
 });

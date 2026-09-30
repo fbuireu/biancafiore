@@ -181,12 +181,13 @@ describe("the theme runtime on a page without the toggle", () => {
 		expect(document.documentElement.style.colorScheme).toBe(Theme.DARK);
 	});
 
-	it("wires no change listener there is no control to fire it", async () => {
-		operatingSystem(false);
+	it("paints the document but leaves a toggle with no input undressed, rather than throwing", async () => {
+		operatingSystem(true);
 		document.body.innerHTML = `<label class="theme-toggle"></label>`;
 
 		await visit();
 
+		expect(paintedTheme()).toBe(Theme.DARK);
 		expect(storedPreference()).toBeNull();
 		expect(toggledClass()).toBe(false);
 	});

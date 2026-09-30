@@ -53,17 +53,11 @@ describe("createImage", () => {
 		expect(createImage(asset({ contentType: "image/png" })).formats).toStrictEqual({ avif: false, webp: false });
 	});
 
-	it("carries the share crops a structured-data payload needs, so no template composes a CDN URL", () => {
+	it("carries the share crops a structured-data payload needs, cut from the absolutised url", () => {
 		expect(createImage(asset({ url: "//cdn/hero.jpg" })).shareCrops).toStrictEqual([
 			"https://cdn/hero.jpg?w=1200&h=675&fit=fill",
 			"https://cdn/hero.jpg?w=1200&h=900&fit=fill",
 			"https://cdn/hero.jpg?w=1200&h=1200&fit=fill",
 		]);
-	});
-
-	it("crops the absolutised url, so a protocol-relative asset does not reach a crawler half-written", () => {
-		for (const crop of createImage(asset({ url: "//cdn/hero.jpg" })).shareCrops) {
-			expect(crop.startsWith("https://")).toBe(true);
-		}
 	});
 });

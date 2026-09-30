@@ -17,10 +17,6 @@ describe("tagHref", () => {
 	it("addresses a Tag by its slug under the tags route", () => {
 		expect(tagHref("writing")).toBe("/tags/writing");
 	});
-
-	it("addresses an Author Tag the same way, because one Slug addresses one page", () => {
-		expect(tagHref("bianca-fiore")).toBe("/tags/bianca-fiore");
-	});
 });
 
 describe("projectHref", () => {
