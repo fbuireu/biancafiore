@@ -167,4 +167,30 @@ describe("verifyRecaptcha", () => {
 		expect(Exit.isFailure(exit)).toBe(true);
 		expect(tagOf(exit)).toBe("RecaptchaError");
 	});
+
+	it.each([
+		["an empty object", {}],
+		["null", null],
+		["a verdict whose success is not a boolean", { success: "true", score: 0.9 }],
+		["a passing verdict whose score is a string", { success: true, score: "0.9" }],
+		["a refusal whose error codes are not a list", { success: false, "error-codes": "invalid-input-secret" }],
+	])(
+		"treats readable JSON that is not a siteverify answer, such as %s, as no verdict rather than a bot",
+		async (_label, answer) => {
+			recaptchaDouble({ answer });
+
+			const exit = await Effect.runPromiseExit(verifyRecaptcha("visitor-token"));
+
+			expect(tagOf(exit)).toBe("RecaptchaError");
+			expect(messageOf(exit)).not.toBe(RECAPTCHA_ERROR_MESSAGE);
+		},
+	);
+
+	it("accepts a siteverify answer carrying fields the guard does not read", async () => {
+		recaptchaDouble({ answer: { success: true, score: 0.9, action: "contact", hostname: "biancafiore.me" } });
+
+		const exit = await Effect.runPromiseExit(verifyRecaptcha("visitor-token"));
+
+		expect(Exit.isSuccess(exit)).toBe(true);
+	});
 });

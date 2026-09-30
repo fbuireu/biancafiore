@@ -27,6 +27,7 @@ export interface RecaptchaDoubleOptions {
 	errorCodes?: string[];
 	unreachable?: boolean;
 	malformed?: boolean;
+	answer?: unknown;
 }
 
 export interface RecaptchaDouble {
@@ -39,6 +40,7 @@ export function recaptchaDouble({
 	errorCodes,
 	unreachable,
 	malformed,
+	answer,
 }: RecaptchaDoubleOptions = {}): RecaptchaDouble {
 	const calls: RecaptchaCall[] = [];
 
@@ -51,6 +53,7 @@ export function recaptchaDouble({
 
 			if (unreachable) return HttpResponse.error();
 			if (malformed) return HttpResponse.text("not json at all");
+			if (answer !== undefined) return HttpResponse.json(answer);
 
 			return HttpResponse.json({
 				success,

@@ -59,8 +59,8 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
 - **A refused reCAPTCHA is two different answers.** `verifyRecaptcha` fails with a `ValidationError` when
   Google answered and the answer was not good enough: that is the visitor's, and they read the bot copy
   behind a `BAD_REQUEST`. It fails with a `RecaptchaError` when no verdict was obtained at all: siteverify
-  unreachable, an unreadable body, or our secret key refused. That one is ours, so it takes the catch-all:
-  the operator gets `Cause.pretty` in the Worker log and the visitor gets the generic 500 instead of being
+  unreachable, an unreadable body or one that is not a siteverify answer, or our secret key refused. That one
+  is ours, so it takes the catch-all: the operator gets `Cause.pretty` in the Worker log and the visitor gets the generic 500 instead of being
   accused of being a bot for a key we rotated. Before the split both were one `ValidationError` with one
   message, which meant a dead key refused every submission at 400 and wrote nothing to the log at all;
   [`guards.ts`](../infrastructure/utils/guards.ts) carries which siteverify `error-codes` sit on which side. Either way the submission is refused;
