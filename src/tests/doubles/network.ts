@@ -4,6 +4,8 @@ import { setupServer } from "msw/node";
 export const SITEVERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 export const GREEN_CHECK_URL = "https://api.thegreenwebfoundation.org/api/v3/greencheck/*";
 
+const CORS_HEADERS = { "access-control-allow-origin": "*" };
+
 export const escapedRequests: string[] = [];
 
 export const server = setupServer(
@@ -148,6 +150,7 @@ export function greenCheckDouble({
 	const calls: string[] = [];
 
 	server.use(
+		http.options(GREEN_CHECK_URL, () => new HttpResponse(null, { status: 204, headers: CORS_HEADERS })),
 		http.get(GREEN_CHECK_URL, ({ request }) => {
 			calls.push(request.url);
 

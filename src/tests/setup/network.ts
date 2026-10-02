@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeAll } from "vitest";
 import { escapedRequests, server } from "../doubles/network";
 
 beforeAll(() => {
-	server.listen({ onUnhandledRequest: "error" });
+	server.listen({ onUnhandledFrame: "error" });
 });
 
 afterEach(() => {

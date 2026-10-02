@@ -7,13 +7,17 @@ const PLACEHOLDER_CONCURRENCY = 6;
 const PLACEHOLDER_ATTEMPTS = 2;
 
 async function requestPlaceholder(url: string): Promise<string | undefined> {
-	const response = await fetch(url).catch(() => undefined);
+	try {
+		const response = await fetch(url);
 
-	if (!response?.ok) return undefined;
+		if (!response.ok) return undefined;
 
-	const buffer = await response.arrayBuffer().catch(() => undefined);
+		const buffer = await response.arrayBuffer();
 
-	return buffer && `data:image/webp;base64,${Buffer.from(buffer).toString("base64")}`;
+		return `data:image/webp;base64,${Buffer.from(buffer).toString("base64")}`;
+	} catch {
+		return undefined;
+	}
 }
 
 async function readPlaceholder(source: string): Promise<string | undefined> {
