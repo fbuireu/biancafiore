@@ -1,3 +1,10 @@
+## [1.25.5](https://github.com/fbuireu/biancafiore/compare/v1.25.4...v1.25.5) (2026-10-02)
+
+
+### Bug Fixes
+
+* write down the coding standards and fix what reviewing against them found ([dd34fb4](https://github.com/fbuireu/biancafiore/commit/dd34fb4d6e89f4ef94902957d681c8aa24aa8af0))
+
 ## [1.25.4](https://github.com/fbuireu/biancafiore/compare/v1.25.3...v1.25.4) (2026-09-30)
 
 
