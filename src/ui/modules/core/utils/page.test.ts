@@ -1,5 +1,5 @@
-import { getPage } from "@modules/core/utils/page";
 import { describe, expect, it } from "vitest";
+import { getPage } from "./page";
 
 const at = (pathname: string) => new URL(pathname, "https://biancafiore.test");
 

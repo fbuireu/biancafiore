@@ -3,6 +3,7 @@ import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import { DEFAULT_SEO_PARAMS } from "@modules/core/components/seo/const";
 import { getSiteAuthor } from "@modules/core/utils/entries";
 import { buildWebSiteSchema } from "@modules/core/utils/jsonLd";
 import Blog from "@modules/home/components/blog/Blog.astro";
@@ -21,7 +22,7 @@ const metadata: Partial<SeoMetadata> = {
 
 const webSiteSchema = buildWebSiteSchema({
 	path: PAGES_ROUTES.HOME,
-	name: "Bianca Fiore",
+	name: DEFAULT_SEO_PARAMS.title,
 	description: bianca.data.description,
 	author: {
 		name: bianca.data.name,

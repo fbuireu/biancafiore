@@ -1,6 +1,6 @@
-import { config } from "@modules/core/components/cookieConsent/config";
 import { useEffect } from "react";
 import { reset, run, showPreferences } from "vanilla-cookieconsent";
+import { config } from "./config";
 
 const CookieConsent = () => {
 	useEffect(() => {

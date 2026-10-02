@@ -19,9 +19,9 @@ const shareLinks = buildArticleShareLinks({
 	tags: featuredArticle.data.tags,
 });
 ---
-<div class="articles-wrapper">
-    <section class="articles-wrapper__inner common-wrapper">
-        <div class="featured-article-wrapper reveal">
+<div class="featured-article-wrapper">
+    <section class="featured-article__inner common-wrapper">
+        <div class="featured-article__grid reveal">
             <a href={featuredArticleUrl}>
                 <BlurImage
                     class="featured-article__image"
@@ -39,7 +39,7 @@ const shareLinks = buildArticleShareLinks({
                       {formatPublishDate(featuredArticle.data.publishDateISO)}
                     </time>
                     <h2 class="featured-article__title" id="featured-article-title">{featuredArticle.data.title}</h2>
-                    <p class="featured-article__description" set:html={featuredArticle.data.description} />
+                    <p class="featured-article__description">{featuredArticle.data.description}</p>
                   {
                       (featuredArticle.data.tags?.length ?? 0) > 0 && (
                           <ul class="featured-article__tags__list flex row-balance">

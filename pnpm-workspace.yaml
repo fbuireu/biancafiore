@@ -8,7 +8,7 @@ allowBuilds:
   sharp: true
   workerd: true
 savePrefix: ""
-minimumReleaseAge: 4320 # 3 days
+minimumReleaseAge: 4320
 blockExoticSubdeps: true
 minimumReleaseAgeExclude:
   # Renovate security update: astro@7.1.0

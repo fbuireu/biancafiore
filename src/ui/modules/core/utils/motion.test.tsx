@@ -1,5 +1,5 @@
-import { motionTimeScale, prefersReducedMotion, scrollBehavior, successDelay } from "@modules/core/utils/motion";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { motionTimeScale, prefersReducedMotion, scrollBehavior, successDelay } from "./motion";
 
 const preference = (matches: boolean) => {
 	const matchMedia = vi.fn().mockReturnValue({ matches });

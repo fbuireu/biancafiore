@@ -1,6 +1,6 @@
-import { createArticles } from "@application/dto/article";
-import type { RawArticle } from "@application/dto/article/types";
 import { describe, expect, it, vi } from "vitest";
+import { createArticles } from "./articleDTO";
+import type { RawArticle } from "./types";
 
 vi.mock("astro:content", () => ({ reference: () => ({ parse: (value: unknown) => value }) }));
 
@@ -28,7 +28,7 @@ interface AssetParams {
 }
 
 const asset = ({
-	url = "//images.ctfassets.net/hero.jpg",
+	url = "//images.ctfassets.net/featured.jpg",
 	contentType = "image/jpeg",
 	width = 1200,
 	height = 630,
@@ -166,11 +166,11 @@ describe("createArticles description", () => {
 describe("createArticles images", () => {
 	it("maps a featured image to url, pixel dimensions and format flags", () => {
 		const [article] = createArticles([
-			makeArticle({ featuredImage: asset({ url: "//cdn/hero.avif", contentType: "image/avif" }) }),
+			makeArticle({ featuredImage: asset({ url: "//cdn/featured.avif", contentType: "image/avif" }) }),
 		]);
 
 		expect(article.featuredImage).toEqual({
-			url: "https://cdn/hero.avif",
+			url: "https://cdn/featured.avif",
 			details: { width: 1200, height: 630 },
 			formats: { avif: true, webp: false },
 			shareCrops: expect.any(Array),

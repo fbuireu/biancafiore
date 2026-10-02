@@ -1,6 +1,6 @@
 ---
 import { CALENDLY, CALENDLY_MEETING_URL } from "@const/calendly";
-import { activeTab } from "@modules/contact/utils/tabs";
+import { activeTab } from "../../utils/tabs";
 import { ContactFormProvider } from "../contactFormProvider/ContactFormProvider";
 import "./tabs.css";
 
@@ -47,7 +47,7 @@ const selected = activeTab(Astro.url);
 </section>
 
 <script>
-	import { initTabs } from "@modules/contact/utils/tabs";
+	import { initTabs } from "../../utils/tabs";
 
 	document.addEventListener("astro:page-load", () => {
 		initTabs();

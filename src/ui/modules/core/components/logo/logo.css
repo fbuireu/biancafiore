@@ -1,7 +1,4 @@
 .site__logo {
-	animation: shrink linear both;
-	animation-range: 0 5vw;
-	animation-timeline: scroll();
 	flex-basis: min-content;
 	height: fit-content;
 	inset: 1.25rem 0 1rem 0;
@@ -57,5 +54,11 @@
 
 	@media (width >= 525px) {
 		inset: auto 0;
+	}
+
+	@supports (animation-timeline: scroll()) {
+		animation: shrink linear both;
+		animation-range: 0 5vw;
+		animation-timeline: scroll();
 	}
 }

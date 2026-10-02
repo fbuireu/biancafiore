@@ -58,7 +58,7 @@
 	text-align: left;
 }
 
-.testimonial__author {
+.testimonial__quotee {
 	color: var(--ink);
 	font-family: var(--font-serif);
 	font-size: var(--font-size-h6);

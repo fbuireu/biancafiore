@@ -1,5 +1,3 @@
-import type { ContactError } from "@actions/contact";
-import { type ContactErrorResponse, contactErrorResponse } from "@actions/errorResponse";
 import {
 	DatabaseError,
 	DuplicateContactError,
@@ -10,6 +8,8 @@ import {
 import { loggerDouble } from "@tests/doubles/contactLayers";
 import { Cause, Effect } from "effect";
 import { beforeEach, describe, expect, it } from "vitest";
+import type { ContactError } from "./contact";
+import { type ContactErrorResponse, contactErrorResponse } from "./errorResponse";
 
 const RAISED_MESSAGE = "the copy written where the error was raised";
 

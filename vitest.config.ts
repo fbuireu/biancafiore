@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { appendFileSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
@@ -52,7 +51,7 @@ export default defineConfig({
 					environment: "node",
 					env: { TZ: AWKWARD_TIMEZONE },
 					setupFiles: [`${ROOT}src/tests/setup/network.ts`],
-					include: ["src/**/*.test.ts", "src/**/*.spec.ts", "docs/**/*.test.ts"],
+					include: ["src/**/*.test.ts", "docs/**/*.test.ts"],
 					exclude: [BUILT_OUTPUT_SUITE],
 				},
 			},
@@ -70,7 +69,7 @@ export default defineConfig({
 					name: "dom",
 					environment: "happy-dom",
 					setupFiles: [`${ROOT}src/tests/setup/network.ts`],
-					include: ["src/**/*.test.tsx", "src/**/*.spec.tsx"],
+					include: ["src/**/*.test.tsx"],
 				},
 			},
 		],
@@ -86,7 +85,6 @@ export default defineConfig({
 				"src/**/index.ts",
 				"src/**/schema.ts",
 				"src/const/**",
-				"src/data/**",
 				"src/env.d.ts",
 			],
 			thresholds: {

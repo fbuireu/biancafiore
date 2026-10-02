@@ -1,8 +1,8 @@
-import type { RawArticle } from "@application/dto/article/types";
-import { orderArticleReferences } from "@application/dto/article/utils/order";
-import type { RawAuthor } from "@application/dto/author/types";
-import type { RawTag } from "@application/dto/tag/types";
 import { type TagIndexEntryDTO, TagType } from "@domain/tag";
+import type { RawArticle } from "../../article/types";
+import { orderArticleReferences } from "../../article/utils/order";
+import type { RawAuthor } from "../../author/types";
+import type { RawTag } from "../types";
 
 export const TAG_INDEX_ARTICLE_FIELDS: `fields.${string}`[] = [
 	"fields.slug",

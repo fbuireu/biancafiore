@@ -1,22 +1,22 @@
 ---
-import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
+import EmailButton from "../emailButton/EmailButton.astro";
 import { SOCIAL_NETWORKS } from "./const";
 import "./social-networks.css";
 ---
-<ul class="social__networks__list flex row-wrap">
+<ul class="social-networks__list flex row-wrap">
   {Object.entries(SOCIAL_NETWORKS).map(([key, value]) => (
-      <li class="social__networks__item">
+      <li class="social-networks__item">
           <a
               href={value}
               target="_blank"
               rel="external"
-              class="social__networks__link underline-on-hover"
+              class="social-networks__link underline-on-hover"
           >
             {key.toLowerCase()}
           </a>
       </li>
   ))}
-    <li class="social__networks__item">
-        <EmailButton classNames="social__networks__link" />
+    <li class="social-networks__item">
+        <EmailButton classNames="social-networks__link" />
     </li>
 </ul>

@@ -8,9 +8,9 @@ const loggerDouble = {
 	logError: vi.fn(),
 };
 
-vi.mock("@infrastructure/logging/logger", () => ({ logger: loggerDouble }));
+vi.mock("./logger", () => ({ logger: loggerDouble }));
 
-const { LoggerService, LoggerServiceLive } = await import("@infrastructure/logging/service");
+const { LoggerService, LoggerServiceLive } = await import("./service");
 
 describe("LoggerService", () => {
 	it("resolves to the same logger object plain code imports, so the tag and the import cannot disagree", async () => {

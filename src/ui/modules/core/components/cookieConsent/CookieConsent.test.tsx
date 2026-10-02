@@ -1,8 +1,8 @@
-import CookieConsent from "@modules/core/components/cookieConsent/CookieConsent";
-import { CONSENT_COOKIE_NAME } from "@modules/core/components/cookieConsent/utils/consentGate";
 import { cleanup, render, screen } from "@testing-library/react";
 import { eraseCookies, getCookie } from "vanilla-cookieconsent";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import CookieConsent from "./CookieConsent";
+import { CONSENT_COOKIE_NAME } from "./utils/consentGate";
 
 const ANALYTICS_TOGGLE = "Performance and Analytics cookies";
 
@@ -35,6 +35,8 @@ beforeEach(() => {
 afterEach(() => {
 	cleanup();
 	eraseCookies(CONSENT_COOKIE_NAME);
+	Reflect.deleteProperty(window, "dataLayer");
+	Reflect.deleteProperty(navigator, "webdriver");
 });
 
 describe("CookieConsent", () => {

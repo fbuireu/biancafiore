@@ -4,7 +4,7 @@ Date: 2026-07-26
 
 ## Status
 
-Accepted.
+Accepted. Amended 2026-10-02: the domain also reads the site's fixed locale from `@const/locale`, a module that imports nothing, because a rule that orders text has to order it the same way on every machine, for the reason the Decision now records.
 
 ## Context
 
@@ -14,7 +14,7 @@ The opposite failure is as real. A textbook domain layer (aggregates, repositori
 
 ## Decision
 
-[`src/domain/`](../../src/domain) owns the domain **models** (Zod `schema.ts` + inferred `types.ts` + vocab enums such as `ArticleType`/`TagType`) and the pure **rules** (`rules.ts`: reading time, table of contents, description/variant derivation, favourite-first sort, city period, ...), one folder per concept (`article`, `author`, `city`, `project`, `tag`, `testimonial`, `contact`, `breadcrumb`, `shared`), each carrying only the files it needs (e.g. `breadcrumb` has rules and types but no schema, `contact` has a schema and rules but no types, and concepts whose rules stay in the ACL have no `rules.ts`). The Contentful mappers (`application/dto/*/*DTO.ts`) and Astro loaders (`application/entities/*`) stay as an **anti-corruption layer (ACL)** that turns raw Contentful entries into domain models and then calls domain rules.
+[`src/domain/`](../../src/domain) owns the domain **models** (Zod `schema.ts` + inferred `types.ts` + vocab enums such as `TagType`) and the pure **rules** (`rules.ts`: reading time, table of contents, description derivation, favourite-first sort, city period, ...), one folder per concept (`article`, `author`, `city`, `project`, `tag`, `testimonial`, `contact`, `breadcrumb`, `shared`), each carrying only the files it needs (e.g. `breadcrumb` has rules and types but no schema, `contact` has a schema and rules but no types, and concepts whose rules stay in the ACL have no `rules.ts`). The Contentful mappers (`application/dto/*/*DTO.ts`) and Astro loaders (`application/entities/*`) stay as an **anti-corruption layer (ACL)** that turns raw Contentful entries into domain models and then calls domain rules.
 
 ### What the "-ish" means
 
@@ -37,7 +37,7 @@ Per practice, that lands here. A strategic row is the shape of the tree; a tacti
 
 Most of the dropped rows share one reason worth stating once: aggregates, repositories and domain events all assume an application that owns its own writes, and this one does not. Content is authored in Contentful and read here.
 
-The load-bearing invariant: **`domain/` never imports from `application/` or `infrastructure/`**. It may use `astro/zod`, `astro:content`'s `reference()`, other `@domain/*`, and generic `@shared/utils` helpers only.
+The load-bearing invariant: **`domain/` never imports from `application/` or `infrastructure/`**. It may use `astro/zod`, `astro:content`'s `reference()`, other `@domain/*`, generic `@shared/utils` helpers and `DEFAULT_LOCALE_STRING` from `@const/locale` only. The locale is there because `localeCompare` without one collates under the locale of whatever machine runs it: CI prerenders under one, an author builds under another, and a Swedish one files Ö after Z, so the Tag Index a build prints would depend on where it ran.
 
 ```mermaid
 ---
@@ -75,7 +75,7 @@ Some things the arrows deliberately do not show, because neither is an import. *
 
 ## Consequences
 
-- Dependencies point inward only, and the chain is shorter than it looks: `content.config.ts → application → domain`, `application → infrastructure → domain`, and `pages`/`ui` straight to `domain` for the types they render. `domain` depends on nothing outward, so the domain model and its rules are testable and CMS-agnostic even though the schemas are Astro-typed. This ADR said `ui → application → domain` for a year and no file ever did that; a test now asserts the single importer instead.
+- Dependencies point inward only, and the chain is shorter than it looks: `content.config.ts → application → domain`, `application → infrastructure → domain`, and `pages`/`ui` straight to `domain` for the types they render and the rules they call (`buildTagIndexBuckets`, `sortReverseChronological`, `formatPublishDate`). `domain` depends on nothing outward, so the domain model and its rules are testable and CMS-agnostic even though the schemas are Astro-typed. This ADR said `ui → application → domain` for a year and no file ever did that; a test now asserts the single importer instead.
 - Rules that genuinely operate over raw Contentful entries and build cross-collection references (related-by-shared-tags, per-tag/author counts, articles-by-author) stay in the ACL on purpose: decoupling them would not preserve behaviour cheaply.
 - A new content type is a multi-step path rather than one file: domain concept → DTO → entity loader → collection registration, with the glossary term added to [`CONTEXT.md`](../../CONTEXT.md) in the same change.
 - Concept names are binding. A folder, field or rule whose name disagrees with `CONTEXT.md` is a bug in one of the two.

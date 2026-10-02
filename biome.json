@@ -30,9 +30,6 @@
 		"includes": ["**", "!**/*.d.ts*"],
 		"rules": {
 			"preset": "recommended",
-			"correctness": {
-				"noUnknownProperty": "info"
-			},
 			"suspicious": {
 				"noConsole": "error"
 			}

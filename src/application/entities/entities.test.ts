@@ -1,11 +1,11 @@
-import { articles } from "@application/entities/articles/articles";
-import { authors } from "@application/entities/authors/authors";
-import { cities } from "@application/entities/cities/cities";
-import { projects } from "@application/entities/projects/projects";
-import { tags } from "@application/entities/tags/tags";
-import { testimonials } from "@application/entities/testimonials/testimonials";
 import { cmsAnswers, cmsQueries, resetCms } from "@tests/doubles/cmsLayer";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { articles } from "./articles/articles";
+import { authors } from "./authors/authors";
+import { cities } from "./cities/cities";
+import { projects } from "./projects/projects";
+import { tags } from "./tags/tags";
+import { testimonials } from "./testimonials/testimonials";
 
 vi.mock("astro:content", async () => {
 	const { z } = await import("astro/zod");

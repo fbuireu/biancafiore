@@ -1,7 +1,7 @@
-import { createImage } from "@application/dto/shared/images";
 import { imageSchema } from "@domain/shared/image";
 import type { Asset } from "contentful";
 import { describe, expect, it } from "vitest";
+import { createImage } from "./images";
 
 interface AssetParams {
 	url?: string;
@@ -39,12 +39,13 @@ describe("createImage", () => {
 		expect(createImage(asset({ width: 640, height: 480 })).details).toStrictEqual({ width: 640, height: 480 });
 	});
 
-	it("reports undefined dimensions when the asset carries no image details, rather than throwing", () => {
-		const withoutDetails = {
-			fields: { file: { url: "//cdn/file.pdf", contentType: "application/pdf", details: {} } },
+	it("refuses an asset that carries no pixel dimensions, naming it, since no image renders without them", () => {
+		const withoutDimensions = {
+			sys: { id: "8yZaBcD" },
+			fields: { file: { url: "//cdn/drawing.svg", contentType: "image/svg+xml", details: { size: 2048 } } },
 		} as unknown as Asset<undefined>;
 
-		expect(createImage(withoutDetails).details).toStrictEqual({ width: undefined, height: undefined });
+		expect(() => createImage(withoutDimensions)).toThrow("(8yZaBcD)");
 	});
 
 	it("flags the modern formats off the content type and nothing else", () => {
@@ -65,7 +66,7 @@ describe("createImage", () => {
 		const unresolved = { sys: { type: "Link", linkType: "Asset", id: "4aBcDeF" } } as unknown as Asset<undefined>;
 
 		expect(() => createImage(unresolved)).toThrow(
-			"An image asset reached the mapper unresolved or without a file (4aBcDeF), so nothing can render it",
+			"An image asset reached the mapper unresolved, without a file or without its pixel dimensions (4aBcDeF), so nothing can render it",
 		);
 	});
 

@@ -1,14 +1,10 @@
 .article__table-of-contents__nav {
-	animation: fade-in linear forwards;
-	animation-range: var(--animation-range);
-	animation-timeline: view();
 	view-timeline-name: --toc;
 	background-color: var(--white);
 	border-left: 4px solid var(--primary-dark-1);
 	left: 50vw;
 	line-height: normal;
 	max-width: var(--grid-sidebar);
-	opacity: 0;
 	padding: 0.25rem 1rem;
 	position: absolute;
 	--animation-range: entry 70cqh;
@@ -16,10 +12,20 @@
 
 	@container article-page (width <= 960px) {
 		left: auto;
-		opacity: 1;
 		position: relative;
 		translate: 0;
 		width: 100%;
+	}
+
+	@supports (animation-timeline: view()) {
+		animation: fade-in linear forwards;
+		animation-range: var(--animation-range);
+		animation-timeline: view();
+		opacity: 0;
+
+		@container article-page (width <= 960px) {
+			opacity: 1;
+		}
 	}
 }
 
@@ -87,12 +93,15 @@
 	max-width: 100%;
 	overflow: hidden;
 	position: relative;
-	animation: toc-slide-in linear both;
-	animation-timeline: --toc;
-	animation-range: var(--animation-range);
 
-	@container article-page (width <= 960px) {
-		animation: none;
+	@supports (animation-timeline: view()) {
+		animation: toc-slide-in linear both;
+		animation-timeline: --toc;
+		animation-range: var(--animation-range);
+
+		@container article-page (width <= 960px) {
+			animation: none;
+		}
 	}
 }
 
@@ -116,9 +125,11 @@
 	z-index: 1;
 
 	&:not(:focus-visible) {
-		animation: bold forwards;
-		animation-range: entry calc(100cqh - var(--header-height) - 1rem);
-		animation-timeline: var(--for);
+		@supports (animation-timeline: view()) {
+			animation: bold forwards;
+			animation-range: entry calc(100cqh - var(--header-height) - 1rem);
+			animation-timeline: var(--for);
+		}
 
 		&::before {
 			background: var(--primary-main);

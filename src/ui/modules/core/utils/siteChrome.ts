@@ -1,6 +1,6 @@
 import { HIDE_CHROME } from "astro:env/client";
 import { PAGES_ROUTES } from "@const/index";
-import { isWithin } from "@modules/core/utils/pathname";
+import { isWithin } from "./pathname";
 
 const PUBLISHED_ROUTES = [
 	PAGES_ROUTES.ARTICLES,

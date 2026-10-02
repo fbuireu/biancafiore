@@ -36,9 +36,6 @@
 
 .city-card__content {
 	align-items: stretch;
-	animation: linear scale-by-index forwards;
-	animation-range: exit-crossing var(--start-range) exit-crossing var(--end-range);
-	animation-timeline: --cities-scales-in-view;
 	background: var(--surface);
 	border: 1px solid var(--line);
 	box-shadow: 0 1rem 2.5rem -1rem var(--neutral-light-3);
@@ -52,6 +49,12 @@
 
 	@container about-page (width <= 720px) {
 		gap: 0.5rem;
+	}
+
+	@supports (animation-timeline: view()) {
+		animation: linear scale-by-index forwards;
+		animation-range: exit-crossing var(--start-range) exit-crossing var(--end-range);
+		animation-timeline: --cities-scales-in-view;
 	}
 }
 

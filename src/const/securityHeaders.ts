@@ -1,4 +1,4 @@
-import { CALENDLY } from "@const/calendly";
+import { CALENDLY } from "./calendly";
 
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
 

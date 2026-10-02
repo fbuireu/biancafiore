@@ -1,4 +1,5 @@
-import type { ImageFormats } from "@domain/shared/image";
+import type { Except } from "@const/types";
+import type { ImageDTO } from "@domain/shared/image";
 import { buildContentfulImageUrl } from "@infrastructure/images/imageOptimization";
 import { z } from "astro/zod";
 import type { Asset, UnresolvedLink } from "contentful";
@@ -12,32 +13,28 @@ const SHARE_CROPS = [
 	{ width: 1200, height: 1200 },
 ] as const;
 
-const assetFileSchema = z.object({
+export const assetFileSchema = z.object({
+	url: z.string(),
+	details: z
+		.object({ image: z.object({ width: z.number().optional(), height: z.number().optional() }).optional() })
+		.optional(),
+});
+
+const imageAssetSchema = z.object({
 	fields: z.object({
-		file: z.object({
-			url: z.string(),
+		file: assetFileSchema.extend({
 			contentType: z.string(),
 			details: z.object({
-				image: z.object({ width: z.number(), height: z.number() }).optional(),
+				image: z.object({ width: z.number(), height: z.number() }),
 			}),
 		}),
 	}),
 });
 
-interface CreateImageReturn {
-	url: string;
-	details: {
-		width: number;
-		height: number;
-	};
-	formats: ImageFormats;
-	shareCrops: string[];
-}
-
-export function createImage(rawImage: Asset<undefined> | UnresolvedLink<"Asset">): CreateImageReturn {
-	if (!assetFileSchema.validate(rawImage)) {
+export function createImage(rawImage: Asset<undefined> | UnresolvedLink<"Asset">): Except<ImageDTO, "placeholder"> {
+	if (!imageAssetSchema.validate(rawImage)) {
 		throw new Error(
-			`An image asset reached the mapper unresolved or without a file (${rawImage.sys.id}), so nothing can render it`,
+			`An image asset reached the mapper unresolved, without a file or without its pixel dimensions (${rawImage.sys.id}), so nothing can render it`,
 		);
 	}
 
@@ -51,8 +48,8 @@ export function createImage(rawImage: Asset<undefined> | UnresolvedLink<"Asset">
 			buildContentfulImageUrl({ source: absoluteUrl, options: { width, height, fit: "cover" } }),
 		),
 		details: {
-			width: details.image?.width as number,
-			height: details.image?.height as number,
+			width: details.image.width,
+			height: details.image.height,
 		},
 		formats: {
 			avif: contentType === "image/avif",

@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
-import { type CityPoint, calculateCenter, renderPin, toCityPoints } from "@modules/about/utils/globe";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { type CityPoint, calculateCenter, renderPin, toCityPoints } from "./globe";
 
 const point = (overrides: Partial<CityPoint> = {}): CityPoint => ({
 	lat: 0,
@@ -69,16 +69,13 @@ describe("calculateCenter", () => {
 });
 
 describe("renderPin", () => {
-	beforeEach(() => {
+	afterEach(() => {
+		vi.unstubAllGlobals();
 		document.body.innerHTML = "";
 	});
 
-	afterEach(() => {
-		vi.unstubAllGlobals();
-	});
-
 	it("names the marker after the city's slug rather than re-deriving it from the label", () => {
-		const pin = renderPin({ markerData: point({ label: "New York City", slug: "new-york-city" }) });
+		const pin = renderPin(point({ label: "New York City", slug: "new-york-city" }));
 
 		expect([...pin.classList]).toEqual(["marker-wrapper", "marker-wrapper--new-york-city"]);
 		expect(pin.querySelector(".marker__label")?.textContent).toBe("New York City");
@@ -93,7 +90,7 @@ describe("renderPin", () => {
 		card.id = "sydney";
 		document.body.append(card);
 
-		renderPin({ markerData: point({ label: "Sydney", slug: "sydney" }) }).click();
+		renderPin(point({ label: "Sydney", slug: "sydney" })).click();
 
 		expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
 	});
@@ -102,7 +99,7 @@ describe("renderPin", () => {
 		const scrollTo = vi.fn();
 		vi.stubGlobal("scrollTo", scrollTo);
 
-		renderPin({ markerData: point({ slug: "nowhere" }) }).click();
+		renderPin(point({ slug: "nowhere" })).click();
 
 		expect(scrollTo).not.toHaveBeenCalled();
 	});

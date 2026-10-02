@@ -1,10 +1,5 @@
-import {
-	backgroundObserver,
-	initMenu,
-	watchBackground,
-	wireMenu,
-} from "@modules/core/components/header/utils/interactions";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { backgroundObserver, initMenu, watchBackground, wireMenu } from "./interactions";
 
 const HEADER_HEIGHT = 80;
 const HEADER_MIDLINE = HEADER_HEIGHT / 2;
@@ -46,7 +41,7 @@ const isInverted = () =>
 	logo().classList.contains(INTERSECTED_LOGO_CLASS) && menuButton().classList.contains(INTERSECTED_BUTTON_CLASS);
 
 describe("backgroundObserver", () => {
-	beforeEach(() => {
+	afterEach(() => {
 		document.body.innerHTML = "";
 	});
 
@@ -163,7 +158,8 @@ describe("wireMenu", () => {
 		controller = new AbortController();
 	});
 
-	const wire = (elements = render()) => {
+	const wire = () => {
+		const elements = render();
 		const timeline = timelineDouble();
 
 		wireMenu({ elements, signal: controller.signal, buildTimeline: () => timeline });

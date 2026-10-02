@@ -1,5 +1,5 @@
-import type { BreadcrumbDTOItem } from "@domain/breadcrumb/types";
 import { deSlugify } from "@shared/utils/strings";
+import type { BreadcrumbDTOItem } from "./types";
 
 export function createBreadcrumbs(currentPath: string): BreadcrumbDTOItem[] {
 	const pathSegments = currentPath.split("/").filter((segment) => segment.trim() !== "");

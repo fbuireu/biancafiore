@@ -30,7 +30,7 @@ pnpm wrangler:dev       # build + wrangler dev --remote
 pnpm verify             # format:check && typecheck && check && test:ut:coverage
 ```
 
-That one command is the CI gate, so running it locally is running what the pull request will run. The `pre-push` hook runs `pnpm verify:changed`, the same static checks followed by only the unit tests affected by what changed since `origin/main`. Its parts, plus the rest:
+That one command is the CI gate, so running it locally is running what the pull request will run. The `pre-push` hook runs `pnpm verify:changed`, the same static checks followed by only the unit tests affected by what changed since `origin/main`, and then the docs test, which a changed-only run cannot select. Its parts, plus the rest:
 
 ```bash
 pnpm check              # astro check (type + template)
@@ -57,7 +57,7 @@ pnpm db:studio          # drizzle studio
 ## Before your first pull request
 
 - **Conventional commits are mandatory.** commitlint enforces them, semantic-release derives the version and changelog from them. The **pull request title** is the one that survives, because `main` takes squash merges.
-- **No code comments**, and **no Biome suppressions**. Both are conventions with teeth; [Troubleshooting](Troubleshooting) covers the ones that bite.
+- **How code is written here** is [`CODING_STANDARDS.md`](https://github.com/fbuireu/biancafiore/blob/main/CODING_STANDARDS.md), which opens with what the tooling already enforces.
 - **The docs are part of the change.** Change code and documentation in the same commit: a test reads these documents and fails the build when they disagree with the repository.
 
 The full contributor guide is [`CONTRIBUTING.md`](https://github.com/fbuireu/biancafiore/blob/main/.github/CONTRIBUTING.md).

@@ -1,51 +1,59 @@
-import { CONTACT_COOLDOWN_HOURS } from "@domain/contact/rules";
-import { DatabaseError } from "@infrastructure/errors";
-import { checkDuplicatedEntries, saveContact } from "@infrastructure/utils/persistence";
 import { contactRow, databaseDouble, loggerDouble } from "@tests/doubles/contactLayers";
 import { Cause, Effect, Exit, Layer, Option } from "effect";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { DatabaseError } from "../errors";
+import { checkDuplicateContact, saveContact } from "./persistence";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const FROZEN_NOW = "2026-07-30T09:15:00.000Z";
 
 const ENQUIRY = { name: "Ada", email: "ada@example.com", message: "Hello there" };
 
+const REFUSAL = "I've already received a message from you, and I'll reply as soon as I can.";
+
 const SUBMISSION = { ...ENQUIRY, emailId: "sent-1" };
+
+const log = loggerDouble();
 
 const failureOf = <E>(exit: Exit.Exit<unknown, E>): E | undefined =>
 	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause)) : undefined;
 
 const lookupFailingWith = (message: string) => databaseDouble({ failLookupWith: new DatabaseError({ message }) });
 
-const check = (database: ReturnType<typeof databaseDouble>, data = ENQUIRY) =>
-	Effect.runPromiseExit(
-		checkDuplicatedEntries(data).pipe(Effect.provide(Layer.merge(database.layer, loggerDouble().layer))),
-	);
+interface CheckParams {
+	database: ReturnType<typeof databaseDouble>;
+	data?: typeof ENQUIRY;
+}
+
+const check = ({ database, data = ENQUIRY }: CheckParams) =>
+	Effect.runPromiseExit(checkDuplicateContact(data).pipe(Effect.provide(Layer.merge(database.layer, log.layer))));
+
+beforeEach(() => {
+	log.lines.length = 0;
+});
 
 afterEach(() => {
 	vi.useRealTimers();
 });
 
-describe("checkDuplicatedEntries", () => {
+describe("checkDuplicateContact", () => {
 	it("passes silently when the address is outside the cooldown and the message is new", async () => {
 		const database = databaseDouble();
 
-		expect(await check(database)).toStrictEqual(Exit.succeed(undefined));
+		expect(await check({ database })).toStrictEqual(Exit.succeed(undefined));
+		expect(log.lines).toEqual([]);
 	});
 
 	it("refuses a second submission from an address that wrote inside the cooldown", async () => {
 		const database = databaseDouble({ contactWithinCooldown: contactRow({ email: "ada@example.com" }) });
 
-		expect(failureOf(await check(database))).toMatchObject({
-			_tag: "DuplicateContactError",
-			message: expect.stringContaining(`${CONTACT_COOLDOWN_HOURS} hours`),
-		});
+		expect(failureOf(await check({ database }))).toMatchObject({ _tag: "DuplicateContactError", message: REFUSAL });
 	});
 
-	it("refuses a message the address has already sent, however long ago", async () => {
+	it("refuses a message the address has already sent, however long ago, without claiming it arrived recently", async () => {
 		const database = databaseDouble({ contactWithSameMessage: contactRow({ email: "ada@example.com" }) });
 
-		expect(failureOf(await check(database))?._tag).toBe("DuplicateContactError");
+		expect(failureOf(await check({ database }))).toMatchObject({ _tag: "DuplicateContactError", message: REFUSAL });
 	});
 
 	it("answers the two refusals identically, so a caller cannot tell which check fired", async () => {
@@ -56,15 +64,29 @@ describe("checkDuplicatedEntries", () => {
 			contactWithSameMessage: contactRow({ email: "ada@example.com" }),
 		});
 
-		const answers = [failureOf(await check(cooldown)), failureOf(await check(repeat)), failureOf(await check(both))];
+		const answers = [
+			failureOf(await check({ database: cooldown })),
+			failureOf(await check({ database: repeat })),
+			failureOf(await check({ database: both })),
+		];
 
 		expect(new Set(answers.map((failure) => failure?.message)).size).toBe(1);
+	});
+
+	it("logs which check fired, because the one sentence the caller reads cannot say", async () => {
+		await check({ database: databaseDouble({ contactWithinCooldown: contactRow({ email: "ada@example.com" }) }) });
+		await check({ database: databaseDouble({ contactWithSameMessage: contactRow({ email: "ada@example.com" }) }) });
+
+		expect(log.lines.map(({ level, context }) => [level, context?.reason])).toStrictEqual([
+			["info", "inside the cooldown window"],
+			["info", "the same message as a previous submission"],
+		]);
 	});
 
 	it("asks about the normalised address, so an alias cannot escape either check", async () => {
 		const database = databaseDouble();
 
-		await check(database, { ...ENQUIRY, email: "  Ada+news@Example.com " });
+		await check({ database, data: { ...ENQUIRY, email: "  Ada+news@Example.com " } });
 
 		expect(database.cooldownLookups.map(({ email }) => email)).toStrictEqual(["ada@example.com"]);
 		expect(database.messageLookups.map(({ email }) => email)).toStrictEqual(["ada@example.com"]);
@@ -75,7 +97,7 @@ describe("checkDuplicatedEntries", () => {
 		vi.setSystemTime(new Date(FROZEN_NOW));
 		const database = databaseDouble();
 
-		await check(database);
+		await check({ database });
 
 		expect(database.cooldownLookups.at(0)?.since).toBe("2026-07-29T09:15:00.000Z");
 	});
@@ -83,7 +105,7 @@ describe("checkDuplicatedEntries", () => {
 	it("asks about the message exactly as it was written, so a different enquiry still gets through", async () => {
 		const database = databaseDouble();
 
-		await check(database);
+		await check({ database });
 
 		expect(database.messageLookups.at(0)?.message).toBe("Hello there");
 	});
@@ -91,7 +113,7 @@ describe("checkDuplicatedEntries", () => {
 	it("propagates a lookup that fails instead of reading the missing answer as no duplicate", async () => {
 		const database = lookupFailingWith("turso unreachable");
 
-		expect(failureOf(await check(database))).toMatchObject({
+		expect(failureOf(await check({ database }))).toMatchObject({
 			_tag: "DatabaseError",
 			message: "turso unreachable",
 		});

@@ -1,5 +1,5 @@
-import { LOG_LEVEL, LOG_SERVICE, stripQuery } from "@infrastructure/logging/contract";
 import { describe, expect, it } from "vitest";
+import { LOG_LEVEL, LOG_SERVICE, stripQuery } from "./contract";
 
 describe("the log contract", () => {
 	it("names this site the way its export destinations name it", () => {

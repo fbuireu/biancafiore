@@ -6,7 +6,7 @@ import { LOG_LEVEL, type LogLevel } from "@infrastructure/logging/contract";
 import { LoggerService } from "@infrastructure/logging/service";
 import { Effect, Layer } from "effect";
 
-export interface DatabaseDoubleOptions {
+export interface DatabaseDoubleParams {
 	contactWithinCooldown?: ContactRow;
 	contactWithSameMessage?: ContactRow;
 	failLookupWith?: DatabaseError;
@@ -51,7 +51,7 @@ export function databaseDouble({
 	contactWithSameMessage,
 	failLookupWith,
 	failInsertWith,
-}: DatabaseDoubleOptions = {}): DatabaseDouble {
+}: DatabaseDoubleParams = {}): DatabaseDouble {
 	const inserted: NewContact[] = [];
 	const cooldownLookups: CooldownLookup[] = [];
 	const messageLookups: MessageLookup[] = [];
@@ -82,7 +82,7 @@ export function databaseDouble({
 	};
 }
 
-export interface EmailDoubleOptions {
+export interface EmailDoubleParams {
 	id?: string;
 	failWith?: EmailError;
 }
@@ -92,7 +92,7 @@ export interface EmailDouble {
 	sent: ContactNotification[];
 }
 
-export function emailDouble({ id = "email-id", failWith }: EmailDoubleOptions = {}): EmailDouble {
+export function emailDouble({ id = "email-id", failWith }: EmailDoubleParams = {}): EmailDouble {
 	const sent: ContactNotification[] = [];
 
 	return {
@@ -109,7 +109,7 @@ export function emailDouble({ id = "email-id", failWith }: EmailDoubleOptions = 
 	};
 }
 
-export const databaseError = (message: string, cause?: unknown) => new DatabaseError({ message, cause });
+export const databaseError = (message: string) => new DatabaseError({ message });
 
 export const emailError = (message: string) => new EmailError({ message });
 

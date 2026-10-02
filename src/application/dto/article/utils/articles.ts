@@ -1,7 +1,7 @@
-import type { RawArticle } from "@application/dto/article/types";
-import { orderArticleReferences } from "@application/dto/article/utils/order";
-import { articleReference, articleSlug } from "@application/dto/article/utils/reference";
 import type { Reference } from "@domain/shared/reference";
+import type { RawArticle } from "../types";
+import { orderArticleReferences } from "./order";
+import { articleReference, articleSlug } from "./reference";
 
 export const INFERRED_RELATED_ARTICLES_LIMIT = 6;
 

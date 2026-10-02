@@ -1,5 +1,6 @@
-import type { CmsClient } from "@infrastructure/cms/client";
+import type { CmsClient, EntriesQuery } from "@infrastructure/cms/client";
 import type { CmsError } from "@infrastructure/errors";
+import type { EntryCollection, EntrySkeletonType } from "contentful";
 import { Effect, Layer } from "effect";
 
 type CmsTag = typeof import("@infrastructure/cms/client").CmsClient;
@@ -73,20 +74,23 @@ export function resetCms(): void {
 
 export function cmsClientLayer(tag: CmsTag): Layer.Layer<CmsClient> {
 	return Layer.succeed(tag, {
-		getEntries: (query: RecordedQuery) =>
+		getEntries: <Skeleton extends EntrySkeletonType = EntrySkeletonType>(query: EntriesQuery) =>
 			Effect.suspend(() => {
-				cmsQueries.push(query);
+				const recorded = query as RecordedQuery;
+
+				cmsQueries.push(recorded);
 
 				if (held > 0 && cmsQueries.length >= held) open?.();
 
-				const matching = entriesByType[query.content_type ?? ""] ?? [];
-				const skip = query.skip ?? 0;
-				const limit = Math.min(query.limit ?? matching.length, pageSize);
+				const matching = entriesByType[recorded.content_type ?? ""] ?? [];
+				const skip = recorded.skip ?? 0;
+				const limit = Math.min(recorded.limit ?? matching.length, pageSize);
+				const collection = { items: matching.slice(skip, skip + limit), total: matching.length, skip, limit };
 				const answer = failure
 					? Effect.fail(failure)
-					: Effect.succeed({ items: matching.slice(skip, skip + limit), total: matching.length, skip, limit });
+					: Effect.succeed(collection as unknown as EntryCollection<Skeleton, undefined>);
 
 				return held > 0 ? Effect.promise(() => opened).pipe(Effect.andThen(answer)) : answer;
 			}),
-	} as never);
+	});
 }

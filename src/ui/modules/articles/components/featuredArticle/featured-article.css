@@ -1,4 +1,4 @@
-.articles-wrapper {
+.featured-article-wrapper {
 	background-color: var(--surface);
 }
 
@@ -8,7 +8,7 @@
 	width: 100%;
 }
 
-.featured-article-wrapper {
+.featured-article__grid {
 	display: grid;
 	gap: 0 2rem;
 	grid: "Featured-Article-Image Featured-Article-Content" minmax(auto, 70dvh) / minmax(60%, 1fr) 1fr;

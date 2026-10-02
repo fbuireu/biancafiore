@@ -11,23 +11,23 @@ import type {
 import { LoggerService } from "@infrastructure/logging/service";
 import { sendEmail } from "@infrastructure/utils/email";
 import { validateContact, verifyRecaptcha } from "@infrastructure/utils/guards";
-import { checkDuplicatedEntries, saveContact } from "@infrastructure/utils/persistence";
+import { checkDuplicateContact, saveContact } from "@infrastructure/utils/persistence";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
 
 export type ContactError = ValidationError | RecaptchaError | DuplicateContactError | EmailError | DatabaseError;
 
-export type ContactParams = Except<ContactFormData, "emailId"> & { recaptcha: string };
+export type SubmitContactParams = Except<ContactFormData, "emailId"> & { recaptcha: string };
 
 export const submitContact = ({
 	recaptcha,
 	...params
-}: ContactParams): Effect.Effect<{ ok: boolean }, ContactError, Database | EmailClient | LoggerService> =>
+}: SubmitContactParams): Effect.Effect<{ ok: boolean }, ContactError, Database | EmailClient | LoggerService> =>
 	Effect.gen(function* () {
 		const logger = yield* LoggerService;
 		const data = yield* validateContact(params);
 		yield* verifyRecaptcha(recaptcha);
-		yield* checkDuplicatedEntries(data);
+		yield* checkDuplicateContact(data);
 		const { id: emailId } = yield* sendEmail(data);
 
 		yield* saveContact({ emailId, ...data }).pipe(

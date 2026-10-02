@@ -1,9 +1,9 @@
 import type { Except } from "@const/types";
 import { BOT_REFUSAL_MESSAGE, contactFormSchema } from "@domain/contact/schema";
-import { RecaptchaError, ValidationError } from "@infrastructure/errors";
 import type { ContactFormData } from "@shared/ui/types";
 import { z } from "astro/zod";
 import { Effect } from "effect";
+import { RecaptchaError, ValidationError } from "../errors";
 
 const RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 const RECAPTCHA_MINIMUM_SCORE = 0.5;
@@ -12,9 +12,11 @@ const RECAPTCHA_UNANSWERED_MESSAGE = "reCAPTCHA siteverify could not be reached 
 const RECAPTCHA_SECRET_MESSAGE = "reCAPTCHA refused GOOGLE_RECAPTCHA_SECRET_KEY, so no verdict was obtained";
 const RECAPTCHA_SECRET_ERROR_CODES = new Set(["missing-input-secret", "invalid-input-secret"]);
 
-type ValidateContact = Except<ContactFormData, "recaptcha" | "emailId">;
+type ValidateContactParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
-export const validateContact = (contact: ValidateContact): Effect.Effect<ValidateContact, ValidationError> =>
+export const validateContact = (
+	contact: ValidateContactParams,
+): Effect.Effect<ValidateContactParams, ValidationError> =>
 	Effect.suspend(() => {
 		const { success, data, error } = contactFormSchema.omit({ recaptcha: true }).safeParse(contact);
 

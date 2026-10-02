@@ -1,7 +1,7 @@
-import { imageSchema } from "@domain/shared/image";
 import { z } from "astro/zod";
+import { imageSchema } from "../shared/image";
 
-export const projectsSchema = z.object({
+export const projectSchema = z.object({
 	id: z.string(),
 	name: z.string(),
 	description: z.string(),

@@ -1,12 +1,6 @@
-import {
-	badgeMarkup,
-	isGreenHost,
-	renderCarbonBadge,
-	resetTransferredBytes,
-	transferredBytes,
-} from "@modules/core/components/carbonBadge/utils/carbon";
 import { greenCheckDouble } from "@tests/doubles/network";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { badgeMarkup, isGreenHost, renderCarbonBadge, resetTransferredBytes, transferredBytes } from "./carbon";
 
 interface EntriesParams {
 	navigation?: number;

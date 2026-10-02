@@ -1,6 +1,6 @@
-import { CmsClient, CmsClientLive, type EntriesQuery, isContentfulConfigured } from "@infrastructure/cms/client";
 import type { EntryCollection, EntrySkeletonType } from "contentful";
 import { type Context, Effect, ManagedRuntime } from "effect";
+import { CmsClient, CmsClientLive, type EntriesQuery, isContentfulConfigured } from "./client";
 
 type RawEntries<Skeletons extends readonly EntrySkeletonType[]> = {
 	[Index in keyof Skeletons]: EntryCollection<Skeletons[Index], undefined>["items"];

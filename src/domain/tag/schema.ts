@@ -1,6 +1,6 @@
 import { reference } from "astro:content";
-import { TagType } from "@domain/tag/types";
 import { z } from "astro/zod";
+import { TagType } from "./types";
 
 export const tagSchema = z.object({
 	name: z.string(),

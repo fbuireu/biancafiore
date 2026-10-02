@@ -1,8 +1,8 @@
 import { defineCollection } from "astro:content";
-import { createCities } from "@application/dto/city";
-import type { CitySkeleton } from "@application/dto/city/types";
-import { cmsCollection } from "@application/entities/collection";
-import { citiesSchema } from "@domain/city";
+import { citySchema } from "@domain/city";
+import { createCities } from "../../dto/city";
+import type { CitySkeleton } from "../../dto/city/types";
+import { cmsCollection } from "../collection";
 
 export const cities = defineCollection({
 	loader: cmsCollection<CitySkeleton, ReturnType<typeof createCities>[number], "image">({
@@ -11,5 +11,5 @@ export const cities = defineCollection({
 		imageField: "image",
 		identify: (city) => city.name,
 	}),
-	schema: citiesSchema,
+	schema: citySchema,
 });

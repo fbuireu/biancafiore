@@ -1,15 +1,15 @@
 import { ActionError, defineAction } from "astro:actions";
-import { type ContactParams, submitContact } from "@actions/contact";
-import { contactErrorResponse } from "@actions/errorResponse";
 import { contactFormSchema } from "@domain/contact/schema";
 import { ContactLayer } from "@infrastructure/layers";
 import { Effect } from "effect";
+import { type SubmitContactParams, submitContact } from "./contact";
+import { contactErrorResponse } from "./errorResponse";
 
 export const server = {
 	contact: defineAction({
 		accept: "form",
 		input: contactFormSchema,
-		handler: async (params: ContactParams) => {
+		handler: async (params: SubmitContactParams) => {
 			const result = await Effect.runPromise(
 				submitContact(params).pipe(
 					Effect.matchCauseEffect({

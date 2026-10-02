@@ -1,10 +1,10 @@
 ---
-import { BADGE_ID } from "@modules/core/components/carbonBadge/utils/carbon";
+import { BADGE_ID } from "./utils/carbon";
 import "./carbon-badge.css";
 ---
 <div class="carbon-badge font-sans-serif" id={BADGE_ID} aria-live="polite"></div>
 <script>
-  import { renderCarbonBadge } from "@modules/core/components/carbonBadge/utils/carbon";
+  import { renderCarbonBadge } from "./utils/carbon";
 
   document.addEventListener("astro:page-load", () => renderCarbonBadge());
 </script>

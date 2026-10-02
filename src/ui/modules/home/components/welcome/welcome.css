@@ -1,4 +1,4 @@
-.hero {
+.welcome {
 	padding-block: 104px 88px;
 
 	@container home-page (width <= 960px) {
@@ -6,13 +6,13 @@
 	}
 }
 
-.hero__inner {
+.welcome__inner {
 	margin-inline: auto;
 	max-width: var(--grid-content);
 	padding-inline: clamp(1.25rem, 5cqi, 64px);
 }
 
-.hero__grid {
+.welcome__grid {
 	align-items: end;
 	display: grid;
 	gap: 64px;
@@ -24,26 +24,26 @@
 	}
 }
 
-.hero__eyebrow {
+.welcome__eyebrow {
 	margin-block-end: 30px;
 }
 
-.hero__title {
+.welcome__title {
 	font-size: clamp(44px, 7.2cqi, 92px);
 	margin: 0;
 }
 
-.hero__ampersand {
+.welcome__ampersand {
 	font-family: var(--font-serif);
 	font-style: italic;
 	font-weight: 380;
 }
 
-.hero__aside {
+.welcome__aside {
 	padding-block-end: 8px;
 }
 
-.hero__lede {
+.welcome__lede {
 	color: var(--ink-soft);
 	font-family: var(--font-serif);
 	font-size: clamp(18px, 1.72cqi, 22px);
@@ -52,7 +52,7 @@
 	margin-block-end: 26px;
 }
 
-.hero__portrait {
+.welcome__portrait {
 	border: 1px solid var(--line);
 	display: block;
 	height: 360px;

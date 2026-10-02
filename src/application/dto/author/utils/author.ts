@@ -1,10 +1,10 @@
-import type { AuthorSkeleton, RawAuthor } from "@application/dto/author/types";
-import { createImage } from "@application/dto/shared/images";
 import type { Except } from "@const/types";
 import type { AuthorDTO } from "@domain/author";
-import type { Entry, UnresolvedLink } from "contentful";
+import type { UnresolvedLink } from "contentful";
+import { createImage } from "../../shared/images";
+import type { RawAuthor } from "../types";
 
-type LinkedAuthor = Entry<AuthorSkeleton, undefined> | UnresolvedLink<"Entry">;
+type LinkedAuthor = RawAuthor | UnresolvedLink<"Entry">;
 
 function resolvedAuthor(author: LinkedAuthor): RawAuthor {
 	if (!("fields" in author)) {

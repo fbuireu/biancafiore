@@ -44,11 +44,11 @@ Some edges are deliberately absent, because neither is an import. **Pages and co
 |---|---|---|
 | **domain** | Zod schemas, inferred types, and pure editorial rules: reading time, table of contents, favourite-first sort, city period | None |
 | **application** | The anti-corruption layer, in two halves: `dto/` maps raw Contentful entries to domain models, `entities/` loads them as Astro content collections | Content I/O, in the loaders only |
-| **infrastructure** | The Effect clients: Contentful, Turso, email, image optimisation | Network, database, email API |
+| **infrastructure** | The Effect clients (Contentful, Turso, email, logging), and the build-time image and header helpers | Network, database, email API |
 | **ui** | Astro components and React islands, grouped by feature area, with styles beside them | Rendering |
 | **pages** | Routes, and the composition root | Whatever a route needs |
 
-Each layer states its own rules in a colocated `AGENTS.md`, and those guides are what the maintenance contract keeps honest.
+Each layer has a colocated `AGENTS.md` for whoever edits it, and the maintenance contract keeps those guides honest.
 
 ---
 
@@ -75,8 +75,9 @@ Value objects are decided per concept rather than by default, which is why there
 | What does this domain word mean? | [`CONTEXT.md`](https://github.com/fbuireu/biancafiore/blob/main/CONTEXT.md), and **[Content Model](Content-Model)** |
 | Why is the tree layered at all, and what did the (ish) drop? | [ADR 0012](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md) |
 | When does a concept earn a type of its own? | [ADR 0019](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0019-three-questions-before-modelling.md) |
-| What does one layer actually guarantee? | the `AGENTS.md` inside that layer's folder |
+| How is code in a layer written? | [`CODING_STANDARDS.md`](https://github.com/fbuireu/biancafiore/blob/main/CODING_STANDARDS.md) |
+| What does someone editing one layer need to know? | the `AGENTS.md` inside that layer's folder |
 | What renders when, and where? | **[Rendering and Routing](Rendering-and-Routing)** |
 | Why Effect for the infrastructure clients? | [ADR 0004](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0004-effect-for-infrastructure-clients.md) |
 
-Neither half of the split is a matter of taste. The layer boundaries are asserted by a test that reads the imports rather than trusting the sentence above, and the vocabulary is what the glossary and the per-folder guides are for.
+Neither half of the split is a matter of taste. The layer boundaries are asserted by a test that reads the imports rather than trusting the sentence above, and the vocabulary is the glossary's.

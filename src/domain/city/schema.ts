@@ -1,12 +1,12 @@
-import { imageSchema } from "@domain/shared/image";
 import { z } from "astro/zod";
+import { imageSchema } from "../shared/image";
 
 export const cityPeriodSchema = z.object({
 	startYear: z.number(),
 	endYear: z.number().optional(),
 });
 
-export const citiesSchema = z.object({
+export const citySchema = z.object({
 	name: z.string(),
 	slug: z.string(),
 	coordinates: z.object({

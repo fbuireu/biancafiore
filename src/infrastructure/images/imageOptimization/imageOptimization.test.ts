@@ -1,13 +1,9 @@
 import { IMAGE_CDN } from "@const/index";
-import {
-	buildContentfulImageUrl,
-	getOptimizedImageUrl,
-	getOptimizedSrcset,
-} from "@infrastructure/images/imageOptimization";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { buildContentfulImageUrl, getOptimizedImageUrl, getOptimizedSrcset } from "./imageOptimization";
 
-const SOURCE = "https://images.ctfassets.net/space/asset/hero.jpg";
-const PROTOCOL_RELATIVE_SOURCE = "//images.ctfassets.net/space/asset/hero.jpg";
+const SOURCE = "https://images.ctfassets.net/space/asset/image.jpg";
+const PROTOCOL_RELATIVE_SOURCE = "//images.ctfassets.net/space/asset/image.jpg";
 
 const useCdn = (cdn: string) => vi.stubEnv("IMAGE_CDN", cdn);
 
@@ -78,16 +74,16 @@ describe("getOptimizedImageUrl on the Cloudflare CDN", () => {
 	it("appends a root-relative source with a single separating slash", () => {
 		useCdn(IMAGE_CDN.CLOUDFLARE);
 
-		expect(getOptimizedImageUrl({ source: "/local/hero.jpg" })).toBe(
-			"/cdn-cgi/image/format=auto,quality=85/local/hero.jpg",
+		expect(getOptimizedImageUrl({ source: "/local/image.jpg" })).toBe(
+			"/cdn-cgi/image/format=auto,quality=85/local/image.jpg",
 		);
 	});
 
 	it("appends a path-relative source unchanged", () => {
 		useCdn(IMAGE_CDN.CLOUDFLARE);
 
-		expect(getOptimizedImageUrl({ source: "local/hero.jpg" })).toBe(
-			"/cdn-cgi/image/format=auto,quality=85/local/hero.jpg",
+		expect(getOptimizedImageUrl({ source: "local/image.jpg" })).toBe(
+			"/cdn-cgi/image/format=auto,quality=85/local/image.jpg",
 		);
 	});
 
@@ -200,8 +196,8 @@ describe("buildContentfulImageUrl", () => {
 	});
 
 	it("returns a source that is not a parseable URL verbatim, ignoring the options", () => {
-		expect(buildContentfulImageUrl({ source: "/local/hero.jpg", options: { width: 800, quality: 30 } })).toBe(
-			"/local/hero.jpg",
+		expect(buildContentfulImageUrl({ source: "/local/image.jpg", options: { width: 800, quality: 30 } })).toBe(
+			"/local/image.jpg",
 		);
 	});
 

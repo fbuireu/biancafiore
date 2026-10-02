@@ -10,11 +10,11 @@ A test asserts `prerender` on every page the ADR says ships as static HTML, so a
 
 | Route | What it serves |
 |---|---|
-| `/` | Home: the Featured Article, the Blog listing, Projects, Testimonials |
+| `/` | Home: a welcome, the Projects, the Testimonials and the first Articles of the Blog |
 | `/about` | The Author's biography, and the Cities globe |
 | `/contact` | The contact form, backed by a server action |
 | `/projects` | The portfolio |
-| `/articles` | The Blog index |
+| `/articles` | The Blog, led by the Featured Article |
 | `/articles/[...slug]` | An Article |
 | `/tags` | The Tag Index, A to Z |
 | `/tags/[slug]` | A Tag, or an Author Tag |
@@ -28,7 +28,7 @@ A test asserts `prerender` on every page the ADR says ships as static HTML, so a
 
 ## The middleware
 
-Every response gets the security header set from one middleware. One directive is stripped in development, deliberately: the CSP carries `upgrade-insecure-requests`, and WebKit obeys it on `localhost`, rewriting every module script, font and dev-client request to `https://localhost:4321`, which the dev server does not speak. The page then renders inert with no JavaScript at all. Chromium exempts localhost, so this is invisible there and shows only in Safari and Playwright's `webkit` project. Production keeps the directive.
+Every response carries the same security header set, built by one function: the middleware sets it on what the Worker renders, and a `_headers` file written at build time carries it for the prerendered pages. One directive is stripped in development, deliberately: the CSP carries `upgrade-insecure-requests`, and WebKit obeys it on `localhost`, rewriting every module script, font and dev-client request to `https://localhost:4321`, which the dev server does not speak. The page then renders inert with no JavaScript at all. Chromium exempts localhost, so this is invisible there and shows only in Safari and Playwright's `webkit` project. Production keeps the directive.
 
 ---
 

@@ -30,12 +30,12 @@ const visit = async ({ page, path }: VisitParams) => {
 	await page.waitForLoadState("domcontentloaded");
 };
 
-interface OpenAnArticleParams {
+interface ClickArticleCardParams {
 	page: Page;
 	index: number;
 }
 
-const clickArticleCard = async ({ page, index }: OpenAnArticleParams) => {
+const clickArticleCard = async ({ page, index }: ClickArticleCardParams) => {
 	const link = page.locator(ARTICLE_CARD_LINK).nth(index);
 
 	await link.scrollIntoViewIfNeeded();
@@ -44,6 +44,11 @@ const clickArticleCard = async ({ page, index }: OpenAnArticleParams) => {
 	await expect(page.locator(ARTICLE_BODY)).toBeAttached();
 };
 
+interface OpenAnArticleParams {
+	page: Page;
+	index: number;
+}
+
 const openAnArticle = async ({ page, index }: OpenAnArticleParams) => {
 	await visit({ page, path: "/articles" });
 	await expect(page.locator("[data-astro-exec]").first()).toBeAttached();
@@ -51,7 +56,12 @@ const openAnArticle = async ({ page, index }: OpenAnArticleParams) => {
 	await clickArticleCard({ page, index });
 };
 
-const openAnotherArticle = async ({ page, index }: OpenAnArticleParams) => {
+interface OpenAnotherArticleParams {
+	page: Page;
+	index: number;
+}
+
+const openAnotherArticle = async ({ page, index }: OpenAnotherArticleParams) => {
 	await page.goBack();
 	await page.waitForURL("**/articles");
 	await expect(page.locator(ARTICLE_BODY)).toHaveCount(0);
@@ -108,7 +118,7 @@ test.describe("wiring survives a ClientRouter swap", () => {
 
 		const next = page.locator(SLIDER_NEXT);
 
-		test.skip((await next.count()) === 0, "this article suggests too few Articles to scroll");
+		test.skip((await next.count()) === 0, "this Article has no Related Articles");
 
 		const track = page.locator(".related-articles__slider .slider__track");
 		const before = await track.evaluate((element) => element.scrollLeft);

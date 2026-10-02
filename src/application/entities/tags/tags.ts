@@ -1,11 +1,11 @@
 import { defineCollection } from "astro:content";
-import type { ArticleSkeleton } from "@application/dto/article/types";
-import type { AuthorSkeleton } from "@application/dto/author/types";
-import { createTagIndex } from "@application/dto/tag";
-import type { TagSkeleton } from "@application/dto/tag/types";
-import { TAG_INDEX_ARTICLE_FIELDS, TAG_INDEX_AUTHOR_FIELDS } from "@application/dto/tag/utils/tags";
 import { tagIndexEntrySchema } from "@domain/tag";
 import { fetchEntries } from "@infrastructure/cms/entries";
+import type { ArticleSkeleton } from "../../dto/article/types";
+import type { AuthorSkeleton } from "../../dto/author/types";
+import { createTagIndex } from "../../dto/tag";
+import type { TagSkeleton } from "../../dto/tag/types";
+import { TAG_INDEX_ARTICLE_FIELDS, TAG_INDEX_AUTHOR_FIELDS } from "../../dto/tag/utils/tags";
 
 export const tags = defineCollection({
 	loader: async () => {

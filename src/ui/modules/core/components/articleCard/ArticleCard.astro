@@ -3,9 +3,9 @@ import type { CollectionEntry } from "astro:content";
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { articleHref, tagHref } from "@const/index";
 import { formatPublishDate } from "@domain/article";
-import { toArticleCardContent } from "@modules/core/components/articleCard/utils/card";
-import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import clsx from "clsx";
+import BlurImage from "../blurImage/BlurImage.astro";
+import { toArticleCardContent } from "./utils/card";
 import "./article-card.css";
 
 interface Props {

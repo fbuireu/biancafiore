@@ -1,10 +1,10 @@
 import { defineCollection, reference } from "astro:content";
-import type { ArticleSkeleton } from "@application/dto/article/types";
-import { createAuthors } from "@application/dto/author";
-import type { AuthorSkeleton } from "@application/dto/author/types";
-import { AUTHOR_LATEST_ARTICLE_FIELDS } from "@application/dto/author/utils/articles";
 import { authorSchema } from "@domain/author";
 import { fetchEntries } from "@infrastructure/cms/entries";
+import type { ArticleSkeleton } from "../../dto/article/types";
+import { createAuthors } from "../../dto/author";
+import type { AuthorSkeleton } from "../../dto/author/types";
+import { AUTHOR_LATEST_ARTICLE_FIELDS } from "../../dto/author/utils/articles";
 
 export const authors = defineCollection({
 	loader: async () => {

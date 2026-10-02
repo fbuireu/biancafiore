@@ -24,6 +24,6 @@ This is a concrete instance of the project-wide CSS-first principle ([ADR 0009](
 
 - Requires a browser with scroll-driven animation support, which is the evergreen/Chromium-forward baseline the project already accepts ([ADR 0009](./0009-css-first-javascript-only-when-necessary.md)).
 - Degrades to fully-visible rather than to nothing: an `@supports` fallback and `prefers-reduced-motion` both resolve to the un-animated end state, so content is never hidden by a missing feature.
-- The two mechanisms are a real cost: a reader has to know which one a call site wants, and the answer is structural rather than aesthetic (a leaf element can only take `.reveal`). The guide states the rule at the point of use.
+- The two mechanisms are a real cost: a reader has to know which one a call site wants, and the answer is structural rather than aesthetic (a leaf element can only take `.reveal`). [`CODING_STANDARDS.md`](../../CODING_STANDARDS.md) states which one a call site takes, and the styles guide how each is wired.
 - `.reveal-once` depends on style container queries as well as scroll-driven animations. In practice a browser that ships one ships the other, and the `@supports (animation-timeline: view())` guard resolves to the visible end state either way, but the guard tests only half of what the mechanism needs.
 - The modifiers are fused (`.reveal--fade`), so they carry the same specificity as `.reveal` and only win by source order; they must stay after it in [`reveal.css`](../../src/ui/styles/global/reveal.css) ([ADR 0014](./0014-bem-class-naming.md)).

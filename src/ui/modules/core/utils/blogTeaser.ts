@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import { buildArticleListSchema } from "@modules/core/utils/jsonLd";
+import { buildArticleListSchema } from "./jsonLd";
 
 interface BlogTeaser {
 	articles: CollectionEntry<"articles">[];

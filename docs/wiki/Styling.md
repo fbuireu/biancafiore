@@ -1,6 +1,6 @@
 # Styling
 
-CSS-first, evergreen and Chromium-forward. Modern features are used freely (`light-dark()`, `interpolate-size`, `color-mix`, oklch) and the build target is `esnext`. JavaScript is reached for only when CSS genuinely cannot express the thing, which [ADR 0009](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0009-css-first-javascript-only-when-necessary.md) records as a decision rather than a preference.
+CSS-first, evergreen and Chromium-forward. Modern features are used freely (`light-dark()`, `interpolate-size`, `color-mix`, oklch). The JavaScript build targets `esnext`; the CSS is transformed by lightningcss for the browsers Vite supports by default, which is why `light-dark()` has to be kept out of that transform (below). JavaScript is reached for only when CSS genuinely cannot express the thing, which [ADR 0009](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0009-css-first-javascript-only-when-necessary.md) records as a decision rather than a preference.
 
 Global, cross-cutting styling lives in one folder; per-component styling lives beside its component.
 
@@ -20,14 +20,14 @@ Cascade correctness depends on that order. Every file opens by naming its slot a
 
 ## Tokens
 
-**Design tokens over magic numbers** is the rule, and the token families are derived rather than listed.
+The token families are derived rather than listed.
 
 | Family | How it works |
 |---|---|
-| **Colour** | An oklch base per family with light and dark steps derived through `color-mix`. The semantic tokens are the `light-dark()` pairs. Add a step to a family rather than a one-off hex; no component stylesheet contains a hex literal |
-| **Type scale** | Fully derived: a ratio builds the minimum ladder, per-level growth builds the maximum, and each size is a `clamp()` between them, rounded for baseline snapping. Do not add a step outside the ladder |
+| **Colour** | An oklch base per family with light and dark steps derived through `color-mix`. The semantic tokens are the `light-dark()` pairs |
+| **Type scale** | Fully derived: a ratio builds the minimum ladder, per-level growth builds the maximum, and each size is a `clamp()` between them, rounded for baseline snapping |
 | **Rhythm** | Vertical spacing derives from a rhythm token, not from arbitrary pixel margins |
-| **Spacing** | A ramp of viewport clamps. Round to the nearest step rather than inventing one between two |
+| **Spacing** | A ramp of viewport clamps |
 | **Layout** | Named measures, which are widths and never query conditions: a container query cannot read a custom property in its condition |
 
 The type ladder is viewport-driven, so type that must scale with its **container** opts out with a container-relative clamp instead. That is sanctioned, and the components doing it are a census in the styles guide: reaching for one in a further component means adding it to that list. The docs test pins those lists, so a new exception cannot appear quietly.
@@ -50,8 +50,6 @@ BEM, recorded in [ADR 0014](https://github.com/fbuireu/biancafiore/blob/main/doc
 
 ---
 
-## Conventions with teeth
+## Where the rules are
 
-- **No Biome suppressions.** Fix the root cause, for instance by reordering selectors, instead of a `biome-ignore`.
-- **No code comments.** Rationale goes in the commit, the pull request or the folder's guide.
-- **Respect the layer order.** It is the one thing here that fails silently and in production only.
+How styles are written, from BEM blocks to tokens and reveal animations, is in [`CODING_STANDARDS.md`](https://github.com/fbuireu/biancafiore/blob/main/CODING_STANDARDS.md), and the layer order, the token censuses and the gotchas are in the styles guide beside the stylesheets.

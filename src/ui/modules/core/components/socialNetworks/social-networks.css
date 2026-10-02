@@ -1,4 +1,4 @@
-.social__networks__list {
+.social-networks__list {
 	width: 100%;
 	justify-content: center;
 	margin: var(--space-2xl) auto;
@@ -18,11 +18,11 @@
 	}
 }
 
-.social__networks__link {
+.social-networks__link {
 	text-transform: capitalize;
 }
 
-.social__networks__item {
+.social-networks__item {
 	max-width: calc(100% / 4);
 	padding-block: var(--space-3xs);
 	padding-inline: 0;

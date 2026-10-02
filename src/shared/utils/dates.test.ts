@@ -1,5 +1,5 @@
-import { formatDate } from "@shared/utils/dates";
 import { describe, expect, it } from "vitest";
+import { formatDate } from "./dates";
 
 describe("formatDate", () => {
 	it("renders a Date as weekday, day, long month and full year", () => {

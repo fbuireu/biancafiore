@@ -10,7 +10,7 @@ const entries = vi.hoisted(() => [
 
 vi.mock("astro:content", () => ({ getCollection: vi.fn(async () => entries) }));
 
-const { blogTeaser } = await import("@modules/core/utils/blogTeaser");
+const { blogTeaser } = await import("./blogTeaser");
 
 describe("blogTeaser", () => {
 	beforeEach(() => vi.clearAllMocks());

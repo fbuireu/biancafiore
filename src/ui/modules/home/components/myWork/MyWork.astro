@@ -9,14 +9,14 @@ import { buildProjectListSchema } from "@modules/core/utils/jsonLd";
 
 const projects = await getCollection("projects");
 
-const disciplinesCount = String(projects.length).padStart(2, "0");
+const projectCount = String(projects.length).padStart(2, "0");
 const itemListSchema = buildProjectListSchema(projects.map(({ data }) => data.id));
 ---
 <section class="my-work">
     <div class="my-work__inner">
         <header class="my-work__header reveal">
             <h2 class="my-work__title editorial-section-title">My&nbsp;Work</h2>
-            <p class="editorial-meta">{disciplinesCount} Disciplines</p>
+            <p class="editorial-meta">{projectCount} Disciplines</p>
         </header>
         {projects.map((project) => {
           const projectUrl = projectHref(project.data.id);

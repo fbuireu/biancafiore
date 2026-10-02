@@ -1,8 +1,8 @@
 ---
 import { createBreadcrumbs } from "@domain/breadcrumb";
-import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
-import { buildBreadcrumbListSchema } from "@modules/core/utils/jsonLd";
-import { siteChrome } from "@modules/core/utils/siteChrome";
+import { buildBreadcrumbListSchema } from "../../utils/jsonLd";
+import { siteChrome } from "../../utils/siteChrome";
+import JsonLd from "../jsonLd/JsonLd.astro";
 import "./breadcrumbs.css";
 
 const { pathname: currentPath } = Astro.url;

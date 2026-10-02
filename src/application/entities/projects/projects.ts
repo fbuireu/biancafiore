@@ -1,8 +1,8 @@
 import { defineCollection } from "astro:content";
-import { createProjects } from "@application/dto/project";
-import type { ProjectSkeleton } from "@application/dto/project/types";
-import { cmsCollection } from "@application/entities/collection";
-import { projectsSchema } from "@domain/project";
+import { projectSchema } from "@domain/project";
+import { createProjects } from "../../dto/project";
+import type { ProjectSkeleton } from "../../dto/project/types";
+import { cmsCollection } from "../collection";
 
 export const projects = defineCollection({
 	loader: cmsCollection<ProjectSkeleton, ReturnType<typeof createProjects>[number], "image">({
@@ -11,5 +11,5 @@ export const projects = defineCollection({
 		imageField: "image",
 		identify: (project) => project.id,
 	}),
-	schema: projectsSchema,
+	schema: projectSchema,
 });

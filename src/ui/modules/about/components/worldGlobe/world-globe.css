@@ -1,4 +1,4 @@
-canvas {
+.world-globe-wrapper canvas {
 	cursor: grab;
 
 	@container about-page (width <= 960px) {

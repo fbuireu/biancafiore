@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import {
 	creditedSource,
 	deriveDescription,
@@ -5,9 +6,9 @@ import {
 	getReadingTime,
 	isTableOfContentsHeading,
 	sortFavoriteFirst,
-} from "@domain/article/rules";
-import type { ArticleDTO, ArticleHeading } from "@domain/article/types";
-import { describe, expect, it } from "vitest";
+	sortReverseChronological,
+} from "./rules";
+import type { ArticleDTO, ArticleHeading } from "./types";
 
 interface ArticleStubParams {
 	slug: string;
@@ -84,7 +85,7 @@ describe("isTableOfContentsHeading", () => {
 		expect([2, 3, 4, 5, 6].filter((level) => !isTableOfContentsHeading(level))).toEqual([]);
 	});
 
-	it("turns h1 away, because it belongs to the page title and not to the outline", () => {
+	it("turns h1 away, because it belongs to the page title and not to the Table of Contents", () => {
 		expect(isTableOfContentsHeading(1)).toBe(false);
 	});
 
@@ -179,6 +180,24 @@ describe("deriveDescription", () => {
 
 		expect(deriveDescription(`<strong>${body}</strong>`)).toBe(body);
 	});
+
+	it("decodes every entity the rich-text renderer escapes, because a card, the metadata and the feed print the description as text", () => {
+		expect(deriveDescription("<p>It&#39;s Tom &amp; Jerry, &quot;always&quot; &lt;3 &gt;_&lt;</p>")).toBe(
+			`It's Tom & Jerry, "always" <3 >_<`,
+		);
+	});
+
+	it("decodes once, so a body that spells an entity out keeps it as written", () => {
+		expect(deriveDescription("<p>Type &amp;lt; for a less-than sign</p>")).toBe("Type &lt; for a less-than sign");
+	});
+
+	it("keeps a tag the author wrote as text, because only rendered markup is stripped", () => {
+		expect(deriveDescription("<p>Wrap it in &lt;em&gt; for emphasis</p>")).toBe("Wrap it in <em> for emphasis");
+	});
+
+	it("counts an entity as the one character a reader sees when it measures the limit", () => {
+		expect(deriveDescription("&amp;".repeat(200))).toBe("&".repeat(200));
+	});
 });
 
 describe("sortFavoriteFirst", () => {
@@ -212,12 +231,12 @@ describe("sortFavoriteFirst", () => {
 	it("returns a new array and leaves the input untouched", () => {
 		const articles = [
 			articleStub({ slug: "plain", isFavorite: false, publishDateISO: "2025-01-01" }),
-			articleStub({ slug: "starred", isFavorite: true, publishDateISO: "2020-01-01" }),
+			articleStub({ slug: "favorite", isFavorite: true, publishDateISO: "2020-01-01" }),
 		];
 		const sorted = sortFavoriteFirst(articles);
 
 		expect(sorted).not.toBe(articles);
-		expect(articles.map(({ slug }) => slug)).toEqual(["plain", "starred"]);
+		expect(articles.map(({ slug }) => slug)).toEqual(["plain", "favorite"]);
 	});
 
 	it("handles an empty list without failing", () => {
@@ -231,6 +250,55 @@ describe("sortFavoriteFirst", () => {
 		];
 
 		expect(sortFavoriteFirst(references).map(({ id }) => id)).toEqual(["old-favorite", "recent"]);
+	});
+});
+
+describe("sortReverseChronological", () => {
+	it("orders by publish date alone, because the feed owes a subscriber chronology rather than the Author's pick", () => {
+		const sorted = sortReverseChronological([
+			articleStub({ slug: "favorite-2019", isFavorite: true, publishDateISO: "2019-01-01T00:00:00.000Z" }),
+			articleStub({ slug: "plain-2026", isFavorite: false, publishDateISO: "2026-01-01T00:00:00.000Z" }),
+			articleStub({ slug: "plain-2024", isFavorite: false, publishDateISO: "2024-06-15T09:30:00.000Z" }),
+		]);
+
+		expect(sorted.map(({ slug }) => slug)).toEqual(["plain-2026", "plain-2024", "favorite-2019"]);
+	});
+
+	it("tells apart two Articles published on the same day by the time of day", () => {
+		const sorted = sortReverseChronological([
+			articleStub({ slug: "morning", isFavorite: false, publishDateISO: "2025-03-04T08:00:00.000Z" }),
+			articleStub({ slug: "evening", isFavorite: false, publishDateISO: "2025-03-04T20:00:00.000Z" }),
+		]);
+
+		expect(sorted.map(({ slug }) => slug)).toEqual(["evening", "morning"]);
+	});
+
+	it("keeps the collection's order between Articles published at the same moment", () => {
+		const tied = ["first", "second", "third"].map((slug) =>
+			articleStub({ slug, isFavorite: slug === "third", publishDateISO: "2025-01-01T00:00:00.000Z" }),
+		);
+
+		expect(sortReverseChronological(tied).map(({ slug }) => slug)).toEqual(["first", "second", "third"]);
+	});
+
+	it("returns a new array and leaves the input untouched", () => {
+		const articles = [
+			articleStub({ slug: "older", isFavorite: false, publishDateISO: "2020-01-01T00:00:00.000Z" }),
+			articleStub({ slug: "newer", isFavorite: false, publishDateISO: "2025-01-01T00:00:00.000Z" }),
+		];
+		const sorted = sortReverseChronological(articles);
+
+		expect(sorted).not.toBe(articles);
+		expect(articles.map(({ slug }) => slug)).toEqual(["older", "newer"]);
+	});
+
+	it("orders anything carrying a publish date, which is what lets the feed hand it a collection's data", () => {
+		const data = [
+			{ title: "older", publishDateISO: "2020-01-01T00:00:00.000Z" },
+			{ title: "newer", publishDateISO: "2025-01-01T00:00:00.000Z" },
+		];
+
+		expect(sortReverseChronological(data).map(({ title }) => title)).toEqual(["newer", "older"]);
 	});
 });
 

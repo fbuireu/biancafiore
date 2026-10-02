@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { NOINDEX_ROUTES } from "@const/noindexRoutes";
+import ts from "typescript";
 import { describe, expect, it } from "vitest";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
@@ -44,6 +45,14 @@ const STYLESHEETS_STYLING_A_VENDOR_DOM = new Set(["src/ui/styles/vendor/cookie-c
 const STYLESHEET_OUTSIDE_A_COMPONENT_FOLDER = "src/ui/modules/contact/components/form/shared.css";
 
 const ROUTES_WITH_NO_PAGE_CONTAINER = ["404", "500", "tag"];
+
+const HEX_COLOURS_AWAITING_A_TOKEN = ["src/ui/modules/about/components/worldGlobe/const.ts"];
+
+const PLAIN_LOGGER_READERS = [
+	"src/infrastructure/images/imagePlaceholder/imagePlaceholder.ts",
+	"src/infrastructure/logging/service.ts",
+	"src/pages/500.astro",
+];
 
 const DOCUMENTED_PATH_EXAMPLES = new Set(["file.ts:123", "NNNN-kebab-title.md"]);
 
@@ -100,7 +109,7 @@ const IMPORT_SOURCE = /from "([^"]+)"/g;
 const OUTWARD_IMPORT = /^@(application|infrastructure|modules)\//;
 const SHARED_UTILS_IMPORT = /import\s*\{([^}]+)\}\s*from\s*"@shared\/utils\/[^"]+"/g;
 const IMPURE_DOMAIN_CODE = /from "effect"|fetch\(|process\.env|astro:env/;
-const DOMAIN_RULES_CENSUS = /([^;.\n]*\bno one else\b)/;
+const DOMAIN_RULES_CENSUS = /`rules\.ts` exists for ([^;\n]+?) and no one else/;
 const IMPURE_DTO_CODE = /astro:env|from "effect"|getEntries|getImagePlaceholder/;
 const ASYNC_DTO_MAPPER = /export\s+(?:const|async\s+function)\s+create\w+/;
 const DTO_INFRASTRUCTURE_IMPORT = /from "(@infrastructure\/[^"]+)"/g;
@@ -108,7 +117,7 @@ const CONTENTFUL_TYPE = /from "contentful"|@contentful\/|EntryFieldTypes|EntrySk
 const HAND_PREFIXED_ASSET_URL = /`https:\$\{/;
 const ABSOLUTE_IMAGE_URL_SCHEMA = /url:\s*z\.url\(\)/;
 const ASSET_SCHEME_CONSTANT = /ASSET_SCHEME = "https:"/;
-const CMS_LAYER_IMPORT = /import\s*\{[^}]*CmsClientLive[^}]*\}\s*from\s*"@infrastructure\/cms\/client"/;
+const CMS_LAYER_IMPORT = /import\s*\{[^}]*CmsClientLive[^}]*\}\s*from\s*"\.\/client"/;
 const LOADER_FETCH_ENTRIES = /await fetchEntries</;
 const CONTENTFUL_PAGE_CAP = /CONTENTFUL_MAX_PAGE_SIZE = (\d+)/;
 const LOADER_REACHING_PAST_FETCH_ENTRIES = /from "effect"|isContentfulConfigured|CmsClient|concurrency:/;
@@ -137,6 +146,9 @@ const SEMANTIC_TOKEN_DECLARATION = /^\s+(--[a-z-]+): light-dark\(/gm;
 const SEMANTIC_TOKEN_CENSUS = /they are exactly ([^.\n]+)\./;
 const GRID_TOKEN_IN_QUERY = /@(?:container|media)[^{]*var\(--grid-/;
 const REVEAL_MODIFIER_DECLARATION = /\.reveal--[a-z-]+[^{\n]*\{/g;
+const CSS_COMMENT = /\/\*[\s\S]*?\*\//g;
+const ANIMATION_TIMELINE_DECLARATION = /^animation-timeline\s*:/;
+const SCROLL_DRIVEN_SUPPORTS = /^@supports\s*\(\s*animation-timeline\s*:/;
 const PAGE_CONTAINER_DECLARATION = /&\.page--([a-z\d-]+)\s*\{\s*container:\s*([a-z\d-]+)\s*\/\s*([^;]+);/g;
 const SITE_ORIGIN_READ = /\bSITE_URL\b/;
 const PAGES_ROUTES_BLOCK = /PAGES_ROUTES = \{([\s\S]*?)\n\} as const;/;
@@ -163,6 +175,7 @@ const ISLAND_ROOT_CENSUS = /only three hydration roots in the whole site: ([^\n]
 const DTO_CITED_DEFAULT = /`(\?\? [^`\n]+)`/g;
 const CREATE_AUTHOR_DEFINITION = /export function createAuthor\(/;
 const AUTHOR_FIELD_MAPPING = /\bsocialNetworks: [^;\n]+,$/m;
+const BYLINE_FIELD_READ = /\bfields\.(?:jobTitle|currentCompany|profileImage|socialNetworks)\b/;
 const ARTICLE_REFERENCE_LITERAL = /collection: "articles"/;
 const NORMALISED_ARTICLE_SLUG = /slug: articleSlug\(/;
 const AUTHORED_RELATED_ARTICLES = /fields\.relatedArticles/;
@@ -201,6 +214,61 @@ const OBSERVABILITY_TABLES = ["observability", "observability.logs", "observabil
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
 const CHROME_POLICY = "src/ui/modules/core/utils/siteChrome.ts";
 const CHROME_ANSWER = /^\t(\w+): boolean;$/gm;
+const ASTRO_FENCE = "---\n";
+const ASTRO_FRONTMATTER = /^---\n([\s\S]*?)\n---/;
+const ASTRO_SCRIPT = /<script\b[^>]*>([\s\S]*?)<\/script>/g;
+const TEMPLATE_COMMENT = /<!--[\s\S]*?-->|\{\s*\/\*[\s\S]*?\*\/\s*\}/g;
+const TOOL_DIRECTIVE = /^(?:\/\/\/\s*<reference\b|\/\/\s*(?:biome-ignore|@ts-expect-error)\b|\/\*\s*biome-ignore\b)/;
+const IMPORT_SPECIFIER = /(?:\bfrom|\bimport|@import)\s*\(?\s*["']([^"']+)["']/g;
+const MOCKED_MODULE =
+	/\bvi\.(?:mock|doMock|unmock|importActual|importMock)\s*(?:<(?:[^<>]|<[^<>]*>)*>)?\s*\(\s*["']([^"']+)["']/g;
+const EFFECT_LOG = /\bEffect\.log\w*\(/;
+const FETCH_REPLACED = /\bstubGlobal\(\s*["'`]fetch["'`]|\b(?:globalThis|window|global)\.fetch\s*=(?!=)/;
+const PROCESS_ENV_WRITE = /\bprocess\.env(?:\.\w+|\[[^\]]+\])\s*=(?!=)|\bdelete\s+process\.env\b/;
+const JSON_READ = /\.json\(\)|JSON\.parse\(/;
+const CAST_JSON = /(?:\.json\(\)|JSON\.parse\([^;]*?\))\)?\s+as\s/;
+const ZOD_SPECIFIER = /^zod(?:\/|$)/;
+const DEPENDENCY_FIELDS = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"];
+const HAND_WRITTEN_MEMOISATION = /\buse(?:Memo|Callback)\(|\bmemo\(/;
+const REACT_COMPILER = "react({ compiler: true })";
+const TEARDOWN_HOOK = /\bafter(?:Each|All)\(/g;
+const SETUP_HOOK = /\bbefore(?:Each|All)\(/g;
+const LOCALE_COMPARE_CALL = /\.localeCompare\(/g;
+const DOM_TEST_FILE = /\.test\.tsx$/;
+const DOM_WRITE =
+	/\bdocument\.(?:body|head)\.(?:innerHTML\s*=(?!=)|append(?:Child)?\(|prepend\(|insertAdjacent(?:HTML|Element)\()|\brender(?:Hook)?\(/;
+const DOM_EMPTYING = /\bcleanup\b|\bdocument\.(?:body|head)\.(?:innerHTML\s*=\s*(?:""|''|``)|replaceChildren\(\s*\))/;
+const STUB_RESTORES = [
+	{ stub: /\bvi\.stubGlobal\(/, restore: "vi.unstubAllGlobals()" },
+	{ stub: /\bvi\.stubEnv\(/, restore: "vi.unstubAllEnvs()" },
+	{ stub: /\bvi\.spyOn\(/, restore: "vi.restoreAllMocks()" },
+	{ stub: /\bvi\.useFakeTimers\(/, restore: "vi.useRealTimers()" },
+];
+const REAL_CLOCK_YEAR = /new Date\(\)\.get(?:UTC)?FullYear\(\)/;
+const CLOCK_BRACKET = /\bconst\s+(?:before|after)\w*\s*=\s*(?:Math\.floor\()?Date\.now\(\)/;
+const EXPORTED_SCHEMA = /^export const (\w+Schema)\b/gm;
+const UPPERCASE = /^[A-Z]$/;
+const IN_PLACE_REORDER = /\.(?:sort|reverse|splice)\(/;
+const LOCAL_TIME_DATE_API =
+	/\.(?:get|set)(?:FullYear|Month|Date|Day|Hours|Minutes|Seconds|Milliseconds)\(|\.getTimezoneOffset\(|\.toLocale(?:Date|Time)?String\(/;
+const CONTENT_PATH_LITERAL = /["'`]\/(?:articles|tags|projects)\//;
+const JOINED_ROUTE =
+	/\$\{PAGES_ROUTES(?:\.[A-Z_]+|\[[^\]]+\])\}(?:\/|#|\$\{)|PAGES_ROUTES(?:\.[A-Z_]+|\[[^\]]+\])\s*\+/;
+const PLAIN_LOGGER_IMPORT =
+	/import\s*\{[^}]*\blogger\b[^}]*\}\s*from\s*"(?:@infrastructure\/logging|\.|(?:\.\.\/)+logging)\/logger"/;
+const BARREL_FILE = /\/index\.tsx?$/;
+const REGISTERED_PROPERTY = /@property\s+(--[\w-]+)/g;
+const REGISTERED_COLOUR = /@property\s+--[\w-]+\s*\{[^}]*syntax:\s*["']<color>["']/;
+const HEX_COLOUR = /(?<![\w&])#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{1,5})?(?![\w-])/;
+const SIBLING_COUNTING_PROPERTY = /(--[\w-]+)\s*:[^;{}]*sibling-(?:index|count)\(\)/g;
+const PASS_WITH_NO_TESTS = "--pass-with-no-tests";
+const SHELL_SUBSTITUTION = /\$\(|`/;
+const COVERAGE_EXCLUDE = /coverage: \{[\s\S]*?exclude: \[([\s\S]*?)\]/;
+const QUOTED_GLOB = /"([^"]+)"/g;
+const GLOB_TOKEN = /\*\*\/|\*\*|\*|\{[^}]*\}|[.+?^$()|[\]\\]/g;
+const MERMAID_DIAGRAM = /```mermaid\n([\s\S]*?)```/g;
+const MERMAID_FRONTMATTER = /^---\n([\s\S]*?)\n---\n/;
+const DAGRE_LAYOUT = /^\s+layout: dagre$/m;
 
 const toPosix = (value: string) => value.split("\\").join("/");
 const read = (relativePath: string) => readFileSync(join(ROOT, relativePath), "utf8").split("\r\n").join("\n");
@@ -254,7 +322,12 @@ const inlineCode = (markdown: string) => [...stripFences(markdown).matchAll(INLI
 const fences = (markdown: string) =>
 	[...markdown.matchAll(FENCED_BLOCK)].map(([, language, body]) => ({ language, body }));
 
-const section = (markdown: string, heading: string) => {
+interface SectionParams {
+	markdown: string;
+	heading: string;
+}
+
+const section = ({ markdown, heading }: SectionParams) => {
 	const lines = markdown.split("\n");
 	const start = lines.findIndex((line) => line.startsWith(`## ${heading}`));
 
@@ -266,7 +339,7 @@ const section = (markdown: string, heading: string) => {
 	return (end === -1 ? rest : rest.slice(0, end)).join("\n");
 };
 
-const CLAUDE_MD = read("AGENTS.md");
+const AGENTS_MD = read("AGENTS.md");
 const CONTEXT_MD = read("CONTEXT.md");
 const PACKAGE_JSON = readJson("package.json");
 const TSCONFIG = readJson("tsconfig.json");
@@ -279,11 +352,13 @@ const ENV_DTS_DECLARATION = /readonly ([A-Z][A-Z0-9_]*)/g;
 const MODULE_SCOPE_SIDE_EFFECT = /^(?:\w[\w.]*\.addEventListener\(|(?:const|let)\s+\w+\s*=\s*window\.matchMedia\()/m;
 const ON_DEMAND_ROUTES = ["src/pages/404.astro", "src/pages/500.astro", "src/pages/contact.astro"];
 const ROBOTS_DISALLOW = /^Disallow: (.+)$/gm;
+const ROBOTS_SITEMAP = /^Sitemap: (.+)$/gm;
+const SITE_DECLARATION = /^\tsite: "([^"]+)",$/m;
 const COLLECTION_FACTORY = "src/application/entities/collection.ts";
 const IDENTIFY_CHOICE = /identify: \(\w+\) => \w+\.(\w+)/g;
 const INLINE_IDENTITY = /\.\.\.\w+, id: \w+\.(\w+) \}/g;
 const PINNED_RUNTIME = /^- (Node|pnpm)\b/;
-const VERSIONS_SECTION = /^## Versions$([\s\S]*?)^## /m;
+const VERSIONS_HEADING = "Versions";
 const QUOTED_VERSION = /\d+\.\d+/;
 const EXACT_VERSION = /^\d+\.\d+\.\d+$/;
 const REPINNED_RUNTIME = /^\s*(?:node-version|version|ruby-version|wranglerVersion):\s*["']?\d/m;
@@ -299,7 +374,9 @@ const LAUNDERED_SECRET = /getSecret\([^)]*\)\s+as\s+string/;
 const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("AGENTS.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
 const WIKI_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/wiki/"));
-const DOCS = ["AGENTS.md", "CONTEXT.md", "docs/BACKLOG.md", ...NESTED_GUIDES, ...ADR_FILES, ...WIKI_FILES];
+const CODING_STANDARDS = "CODING_STANDARDS.md";
+const GUIDES = ["AGENTS.md", "CONTEXT.md", CODING_STANDARDS, ...NESTED_GUIDES];
+const DOCS = [...GUIDES, "docs/BACKLOG.md", ".github/CONTRIBUTING.md", ...ADR_FILES, ...WIKI_FILES];
 const isWiki = (doc: string) => doc.startsWith("docs/wiki/");
 const wikiPages = new Set(WIKI_FILES.map((file) => basename(file, ".md")));
 
@@ -315,20 +392,82 @@ const classesApplied = (source: string) =>
 		[...(doubled ?? singled ?? braced ?? "").matchAll(CLASS_WORD)].map(([word]) => word),
 	);
 
-const namesIn = ({ text, pattern }: { text: string; pattern: RegExp }) =>
+interface NamesInParams {
+	text: string;
+	pattern: RegExp;
+}
+
+const namesIn = ({ text, pattern }: NamesInParams) =>
 	[...(text.match(pattern)?.[1] ?? "").matchAll(BACKTICKED_NAME)].map(([, name]) => name);
+
+const classSpelling = (name: string) => new RegExp(String.raw`\.${name}(?![\w-])|["'\x60\s]${name}["'\x60\s]`);
+
+const timelinesOutsideSupports = (stylesheet: string) => {
+	const preludes: string[] = [];
+	const unguarded: string[] = [];
+	let statement = "";
+
+	const settle = () => {
+		const declaration = statement.trim();
+
+		if (
+			ANIMATION_TIMELINE_DECLARATION.test(declaration) &&
+			!preludes.some((prelude) => SCROLL_DRIVEN_SUPPORTS.test(prelude))
+		) {
+			unguarded.push(declaration);
+		}
+
+		statement = "";
+	};
+
+	for (const character of stylesheet.replace(CSS_COMMENT, "")) {
+		if (character === "{") {
+			preludes.push(statement.trim());
+			statement = "";
+		} else if (character === "}") {
+			settle();
+			preludes.pop();
+		} else if (character === ";") {
+			settle();
+		} else {
+			statement += character;
+		}
+	}
+
+	return unguarded;
+};
 
 const ALIAS_TARGETS = Object.entries(TSCONFIG.compilerOptions.paths as Record<string, string[]>).map(
 	([alias, [target]]) =>
 		[alias.replace(TRAILING_GLOB, ""), target.replace(LEADING_RELATIVE, "").replace(TRAILING_GLOB, "")] as const,
 );
 
+describe("the censuses this file reads", () => {
+	it("reads a non-empty tree, since every empty-list assertion below passes over nothing", () => {
+		const censuses = {
+			PROJECT_FILES,
+			SOURCE_FILES,
+			HAND_WRITTEN_CODE,
+			DOCS,
+			NESTED_GUIDES,
+			ADR_FILES,
+			WIKI_FILES,
+			YAML_FILES,
+		};
+
+		expect(Object.entries(censuses).filter(([, files]) => files.length === 0)).toEqual([]);
+		expect(NESTED_GUIDES.length).toBeGreaterThan(1);
+		expect(ADR_FILES.length).toBeGreaterThan(1);
+	});
+});
+
 describe("commands", () => {
-	const documentedScripts = fences(section(CLAUDE_MD, "Commands"))
+	const documentedScripts = fences(section({ markdown: AGENTS_MD, heading: "Commands" }))
 		.flatMap(({ body }) => body.split("\n"))
 		.flatMap((line) => line.match(DOCUMENTED_SCRIPT)?.[1] ?? []);
 
 	it("documents only scripts that exist in package.json", () => {
+		expect(documentedScripts.length).toBeGreaterThan(0);
 		expect(documentedScripts.filter((script) => !(script in PACKAGE_JSON.scripts))).toEqual([]);
 	});
 
@@ -342,13 +481,13 @@ describe("commands", () => {
 });
 
 describe("structure and aliases", () => {
-	const aliasLine = CLAUDE_MD.split("\n").find((line) => line.startsWith("Path aliases")) ?? "";
+	const aliasLine = AGENTS_MD.split("\n").find((line) => line.startsWith("Path aliases")) ?? "";
 	const documentedAliases = [...aliasLine.matchAll(DOCUMENTED_ALIAS)].map(([, name, target]) => ({
 		alias: `@${name}/`,
 		target: target ?? `src/${name}`,
 	}));
 
-	const structureFence = fences(section(CLAUDE_MD, "Structure & aliases"))[0]?.body ?? "";
+	const structureFence = fences(section({ markdown: AGENTS_MD, heading: "Structure & aliases" }))[0]?.body ?? "";
 
 	const treeEntries = (() => {
 		const stack: { indent: number; path: string }[] = [];
@@ -390,20 +529,23 @@ describe("structure and aliases", () => {
 	});
 
 	it("maps every alias onto a folder that holds at least one tracked file", () => {
+		expect(ALIAS_TARGETS.length).toBeGreaterThan(0);
 		expect(ALIAS_TARGETS.filter(([, target]) => !isTracked(target.replace(TRAILING_SLASH, "")))).toEqual([]);
 	});
 
 	it("describes a folder tree that exists on disk", () => {
+		expect(treeEntries.length).toBeGreaterThan(0);
 		expect(treeEntries.filter((entry) => !isTracked(entry))).toEqual([]);
 	});
 
 	it("lists every populated folder under src and src/ui", () => {
-		const missing = [
+		const populated = [
 			...populatedDirectoriesIn("src").map((name) => `src/${name}`),
 			...populatedDirectoriesIn("src/ui").map((name) => `src/ui/${name}`),
-		].filter((directory) => !treeEntries.includes(directory));
+		];
 
-		expect(missing).toEqual([]);
+		expect(populated.length).toBeGreaterThan(0);
+		expect(populated.filter((directory) => !treeEntries.includes(directory))).toEqual([]);
 	});
 
 	it("lists every route under src/pages", () => {
@@ -416,14 +558,16 @@ describe("structure and aliases", () => {
 			(file) => !file.split("/").pop()?.startsWith("_") && ROUTE_FILE.test(file),
 		);
 
+		expect(documentedRoutes.length).toBeGreaterThan(0);
+		expect(actualRoutes.length).toBeGreaterThan(0);
 		expect(documentedRoutes.filter((route) => !exists(route))).toEqual([]);
 		expect(actualRoutes.filter((route) => !documentedRoutes.includes(route))).toEqual([]);
 	});
 
 	it("links a nested guide for every AGENTS.md under src", () => {
-		const linked = [...section(CLAUDE_MD, "Structure & aliases").matchAll(NESTED_GUIDE_LINK)].map(
-			([, target]) => target,
-		);
+		const linked = [
+			...section({ markdown: AGENTS_MD, heading: "Structure & aliases" }).matchAll(NESTED_GUIDE_LINK),
+		].map(([, target]) => target);
 
 		expect([...new Set(linked)].sort()).toEqual(NESTED_GUIDES.sort());
 	});
@@ -451,8 +595,13 @@ describe("environment", () => {
 	});
 });
 
+interface DocumentedPath {
+	doc: string;
+	token: string;
+}
+
 describe("documented paths", () => {
-	const documentedPaths = DOCS.flatMap((doc) =>
+	const documentedPaths: DocumentedPath[] = DOCS.flatMap((doc) =>
 		inlineCode(read(doc))
 			.filter((token) => DOCUMENTED_PATH_EXTENSIONS.some((extension) => token.endsWith(extension)))
 			.filter((token) => !NOT_A_BARE_PATH.test(token) && !token.startsWith("node:"))
@@ -461,7 +610,7 @@ describe("documented paths", () => {
 			.map((token) => ({ doc, token })),
 	);
 
-	const resolves = ({ doc, token }: { doc: string; token: string }) => {
+	const resolves = ({ doc, token }: DocumentedPath) => {
 		const aliased = ALIAS_TARGETS.find(([alias]) => token.startsWith(alias));
 		const candidate = aliased
 			? token.replace(aliased[0], aliased[1])
@@ -487,21 +636,24 @@ describe("documented paths", () => {
 				.map((token) => `${doc}: ${token}`),
 		);
 
+		expect(PATH_WITH_LINE_NUMBER.test("src/middleware.ts:12")).toBe(true);
 		expect(citations).toEqual([]);
 	});
 });
 
 describe("cross-document links", () => {
 	it("resolves every relative markdown link", () => {
-		const broken = DOCS.filter((doc) => !isWiki(doc)).flatMap((doc) =>
+		const links = DOCS.filter((doc) => !isWiki(doc)).flatMap((doc) =>
 			[...read(doc).matchAll(RELATIVE_MARKDOWN_LINK)]
 				.map(([, target]) => target.split("#")[0])
 				.filter((target) => target.length > 0 && !ABSOLUTE_URL.test(target))
-				.map((target) => join(dirname(join(ROOT, doc)), target))
-				.filter((target) => !existsSync(target))
-				.map((target) => `${doc}: ${toPosix(target.replace(ROOT, ""))}`),
+				.map((target) => ({ doc, target: join(dirname(join(ROOT, doc)), target) })),
 		);
+		const broken = links
+			.filter(({ target }) => !existsSync(target))
+			.map(({ doc, target }) => `${doc}: ${toPosix(target.replace(ROOT, ""))}`);
 
+		expect(links.length).toBeGreaterThan(0);
 		expect(broken).toEqual([]);
 	});
 });
@@ -547,18 +699,22 @@ describe("the published wiki", () => {
 	});
 
 	it("links only wiki pages that exist, since a wiki link is a page name and not a path", () => {
-		const broken = DOCS.filter(isWiki).flatMap((doc) =>
+		const links = DOCS.filter(isWiki).flatMap((doc) =>
 			[...read(doc).matchAll(RELATIVE_MARKDOWN_LINK)]
 				.map(([, target]) => target.split("#")[0])
 				.filter((target) => target.length > 0 && !ABSOLUTE_URL.test(target) && !target.includes("/"))
-				.filter((target) => !wikiPages.has(target))
-				.map((target) => `${doc}: ${target}`),
+				.map((target) => ({ doc, target })),
 		);
 
-		expect(broken).toEqual([]);
+		expect(links.length).toBeGreaterThan(0);
+		expect(links.filter(({ target }) => !wikiPages.has(target)).map(({ doc, target }) => `${doc}: ${target}`)).toEqual(
+			[],
+		);
 	});
 
 	it("never points a reader at a repository path, which a wiki page cannot resolve", () => {
+		expect([..."[a](../README.md)".matchAll(RELATIVE_MARKDOWN_LINK)].length).toBe(1);
+
 		const unreachable = DOCS.filter(isWiki).flatMap((doc) =>
 			[...read(doc).matchAll(RELATIVE_MARKDOWN_LINK)]
 				.map(([, target]) => target.split("#")[0])
@@ -567,6 +723,18 @@ describe("the published wiki", () => {
 		);
 
 		expect(unreachable).toEqual([]);
+	});
+});
+
+describe("diagrams", () => {
+	it("pins every Mermaid diagram to the dagre layout, so a renderer that defaults to ELK draws it as it was drawn", () => {
+		const diagrams = DOCS.flatMap((doc) => [...read(doc).matchAll(MERMAID_DIAGRAM)].map(([, body]) => ({ doc, body })));
+		const pinned = (body: string) => DAGRE_LAYOUT.test(body.match(MERMAID_FRONTMATTER)?.[1] ?? "");
+
+		expect(pinned("---\nconfig:\n  look: handDrawn\n  layout: dagre\n---\nflowchart LR")).toBe(true);
+		expect(pinned("flowchart LR\n  a --> b")).toBe(false);
+		expect(diagrams.length).toBeGreaterThan(0);
+		expect(diagrams.filter(({ body }) => !pinned(body)).map(({ doc }) => doc)).toEqual([]);
 	});
 });
 
@@ -619,8 +787,8 @@ describe("ADRs", () => {
 		).toEqual([]);
 	});
 
-	it("is reachable: every ADR is linked from a guide, not only from other ADRs", () => {
-		const linked = new Set(["AGENTS.md", "CONTEXT.md", ...NESTED_GUIDES].flatMap(referencesIn));
+	it("is reachable: every ADR is linked from a guide or the coding standards, not only from other ADRs", () => {
+		const linked = new Set(GUIDES.flatMap(referencesIn));
 
 		expect(ADR_FILES.filter((file) => !linked.has(file.split("/").pop()?.slice(0, 4) ?? ""))).toEqual([]);
 	});
@@ -630,6 +798,8 @@ describe("domain vocabulary", () => {
 	const concepts = directoriesIn("src/domain");
 
 	it("gives every domain concept a glossary entry in CONTEXT.md", () => {
+		expect(concepts.length).toBeGreaterThan(CONCEPTS_OUTSIDE_THE_GLOSSARY.size);
+
 		const missing = concepts
 			.filter((concept) => !CONCEPTS_OUTSIDE_THE_GLOSSARY.has(concept))
 			.filter((concept) => !CONTEXT_MD.includes(`**${concept[0].toUpperCase()}${concept.slice(1)}**`));
@@ -645,13 +815,18 @@ describe("domain vocabulary", () => {
 	});
 
 	it("maps every application DTO onto a domain concept", () => {
-		expect(directoriesIn("src/application/dto").filter((concept) => !concepts.includes(concept))).toEqual([]);
+		const dtos = directoriesIn("src/application/dto");
+
+		expect(dtos.length).toBeGreaterThan(0);
+		expect(dtos.filter((concept) => !concepts.includes(concept))).toEqual([]);
 	});
 
 	it("registers every entity loader as a content collection", () => {
 		const contentConfig = read("src/content.config.ts");
+		const entities = directoriesIn("src/application/entities");
 
-		expect(directoriesIn("src/application/entities").filter((entity) => !contentConfig.includes(entity))).toEqual([]);
+		expect(entities.length).toBeGreaterThan(0);
+		expect(entities.filter((entity) => !contentConfig.includes(entity))).toEqual([]);
 	});
 });
 
@@ -744,13 +919,15 @@ describe("styles guide", () => {
 		const tabulated = layerRows.flatMap(({ files, layer }) => files.map((file) => ({ file, layer })));
 
 		expect(tabulated.length).toBeGreaterThan(0);
+		expect(stylesheets.length).toBeGreaterThan(0);
 
 		for (const { file, layer } of tabulated) {
 			const match = stylesheets.filter((stylesheet) => stylesheet.endsWith(`/${file}`));
 
+			expect(`${file}: ${match.length}`).toBe(`${file}: 1`);
+
 			const opening = read(match[0]).trimStart().split("\n")[0];
 
-			expect(`${file}: ${match.length}`).toBe(`${file}: 1`);
 			expect(`${file}: ${opening.includes(`@layer ${layer}`) || opening.includes(`layer(${layer})`)}`).toBe(
 				`${file}: true`,
 			);
@@ -769,6 +946,7 @@ describe("modules guide", () => {
 		const guide = read("src/ui/modules/AGENTS.md");
 		const features = directoriesIn("src/ui/modules");
 
+		expect(features.length).toBeGreaterThan(0);
 		expect(features.filter((feature) => !guide.includes(`\`${feature}\``))).toEqual([]);
 	});
 });
@@ -797,14 +975,14 @@ describe("gotchas", () => {
 		expect(headers).toContain(HTTPS_UPGRADE_DIRECTIVE);
 		expect(middleware).toContain("import.meta.env.DEV");
 		expect(middleware).not.toContain(HTTPS_UPGRADE_DIRECTIVE);
-		expect(CLAUDE_MD).toContain(HTTPS_UPGRADE_DIRECTIVE);
+		expect(AGENTS_MD).toContain(HTTPS_UPGRADE_DIRECTIVE);
 	});
 
 	it("decides what HIDE_CHROME means in the one module the gotcha names, and reads it nowhere else", () => {
 		const readers = SOURCE_FILES.filter((file) => read(file).includes("HIDE_CHROME"));
 
 		expect(readers).toEqual([CHROME_POLICY]);
-		expect(CLAUDE_MD).toContain("`@modules/core/utils/siteChrome.ts`");
+		expect(AGENTS_MD).toContain("`@modules/core/utils/siteChrome.ts`");
 		expect(read("astro.config.ts")).toContain("HIDE_CHROME");
 		expect(read(".github/workflows/_deploy.yml")).toContain("HIDE_CHROME");
 	});
@@ -840,21 +1018,24 @@ describe("observability", () => {
 		[...WRANGLER_TOML.matchAll(EXPORT_DESTINATION)].map(([, name]) => name).filter((name) => name.includes(stage));
 
 	it("ships each stage into its own export destinations, which nothing else can check", () => {
-		expect(CLAUDE_MD).toContain("A destination belongs to the account, not to the Worker");
+		expect(AGENTS_MD).toContain("A destination belongs to the account, not to the Worker");
 
-		const production = destinations("production");
-		const development = destinations("development");
+		const productionDestinations = destinations("production");
+		const developmentDestinations = destinations("development");
 
-		expect([...new Set(production)]).toEqual(["biancafiore-web-production-logs", "biancafiore-web-production-traces"]);
-		expect([...new Set(development)]).toEqual([
+		expect([...new Set(productionDestinations)]).toEqual([
+			"biancafiore-web-production-logs",
+			"biancafiore-web-production-traces",
+		]);
+		expect([...new Set(developmentDestinations)]).toEqual([
 			"biancafiore-web-development-logs",
 			"biancafiore-web-development-traces",
 		]);
-		expect(production.filter((name) => development.includes(name))).toEqual([]);
+		expect(productionDestinations.filter((name) => developmentDestinations.includes(name))).toEqual([]);
 	});
 
 	it("mirrors production at the top level, so a bare deploy cannot reach the other stage's source", () => {
-		expect(CLAUDE_MD).toContain("The top level is production's twin");
+		expect(AGENTS_MD).toContain("The top level is production's twin");
 
 		const blocks = (prefix: string) =>
 			OBSERVABILITY_TABLES.map((table) => wranglerTable(`${prefix}${table}`)).join("|");
@@ -872,14 +1053,14 @@ describe("observability", () => {
 	});
 
 	it("samples nothing away, on the logs and the traces of every stage", () => {
-		expect(CLAUDE_MD).toContain("Sampling is `1`");
+		expect(AGENTS_MD).toContain("Sampling is `1`");
 		expect([...WRANGLER_TOML.matchAll(HEAD_SAMPLING_RATE)].map(([, rate]) => rate)).toEqual(
 			Array.from({ length: 6 }, () => "1"),
 		);
 	});
 
 	it("keeps the export credential out of the tree, leaving the public tracking token as the only one named", () => {
-		expect(CLAUDE_MD).toContain("Rotating the log sink is a dashboard change");
+		expect(AGENTS_MD).toContain("Rotating the log sink is a dashboard change");
 
 		const named = [
 			...ASTRO_CONFIG.matchAll(BETTER_STACK_CREDENTIAL),
@@ -909,7 +1090,7 @@ describe("observability", () => {
 
 		expect(read(LOGGING_CONTRACT)).toContain('LOG_SERVICE = "biancafiore-web"');
 		expect(logger).toContain(
-			"console[level](JSON.stringify({ ...redacted(context), service: LOG_SERVICE, level, message }));",
+			"console[level](JSON.stringify({ ...serializable(redacted(context)), service: LOG_SERVICE, level, message }));",
 		);
 	});
 
@@ -957,7 +1138,7 @@ describe("observability", () => {
 	it("tells the shared RUM source which stage it is, since one source serves both", () => {
 		const telemetry = read(TELEMETRY_MODULE);
 
-		expect(CLAUDE_MD).toContain("is a **repository** variable");
+		expect(AGENTS_MD).toContain("is a **repository** variable");
 		expect(read("docs/adr/0013-analytics-gated-behind-cookie-consent.md")).toContain(
 			"One Better Stack source serves both stages",
 		);
@@ -968,7 +1149,7 @@ describe("observability", () => {
 	it("lets the edge-injected beacon through the CSP, since nothing in the tree can gate it", () => {
 		const headers = read("src/const/securityHeaders.ts");
 
-		expect(CLAUDE_MD).toContain("Cloudflare Web Analytics is the exception and nothing here can gate it");
+		expect(AGENTS_MD).toContain("Cloudflare Web Analytics is the exception and nothing here can gate it");
 		expect(read("docs/adr/0013-analytics-gated-behind-cookie-consent.md")).toContain("the stated exception");
 		expect(headers).toContain("https://static.cloudflareinsights.com");
 		expect(read("src/pages/privacy-policy.astro")).toContain("Cloudflare Web Analytics");
@@ -983,7 +1164,7 @@ describe("observability", () => {
 	});
 
 	it("keeps the public tracking token apart from the export credential that never enters the tree", () => {
-		expect(CLAUDE_MD).toContain("is not the credential the log export uses");
+		expect(AGENTS_MD).toContain("is not the credential the log export uses");
 		expect(ASTRO_CONFIG).toContain("BETTER_STACK_TRACKING_TOKEN: envField.string({");
 		expect(read(".github/workflows/_deploy.yml")).toContain("BETTER_STACK_TRACKING_TOKEN: ${{ vars.");
 	});
@@ -1035,12 +1216,11 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 	it("leaves the tag to HTTP mapping to the action, and to contactErrorResponse alone", () => {
 		expect(guide).toContain("(`contactErrorResponse`), never here");
 		expect(read("src/actions/errorResponse.ts")).toContain("export const contactErrorResponse = (");
+		expect(infrastructureFiles.length).toBeGreaterThan(0);
 		expect(infrastructureFiles.filter((file) => read(file).includes("ActionError"))).toEqual([]);
 	});
 
 	it("keeps the query builder inside the layer the tag hides it behind", () => {
-		expect(guide).toContain("never re-exports the vendor's own object");
-
 		const drizzleImporters = SOURCE_FILES.filter((file) => DRIZZLE_IMPORT.test(read(file)));
 
 		expect(drizzleImporters.length).toBeGreaterThan(0);
@@ -1069,7 +1249,6 @@ describe("actions guide", () => {
 	});
 
 	it("logs through the LoggerService tag rather than console, here and everywhere in src", () => {
-		expect(guide).toContain("Nothing here calls `console`");
 		expect(`${program}${mapping}`).toContain("yield* LoggerService");
 		expect(SOURCE_FILES.filter((file) => CONSOLE_CALL.test(read(file)))).toEqual([LOGGING_MODULE]);
 	});
@@ -1147,6 +1326,7 @@ describe("domain guide: purity", () => {
 
 	it("keeps rules synchronous: no Effect, no fetch, no env access", () => {
 		expect(guide).toContain("No Effect, no I/O, no env access");
+		expect(domainFiles.length).toBeGreaterThan(0);
 		expect(domainFiles.filter((file) => IMPURE_DOMAIN_CODE.test(read(file)))).toEqual([]);
 	});
 
@@ -1165,6 +1345,12 @@ describe("application guide: the anti-corruption boundary", () => {
 	const loaders = directoriesIn("src/application/entities").map(
 		(entity) => `src/application/entities/${entity}/${entity}.ts`,
 	);
+	const loaderSteps = [
+		...loaders,
+		...production(
+			readdirSync(join(ROOT, "src/application/entities")).map((name) => `src/application/entities/${name}`),
+		).filter((file) => TYPESCRIPT_FILE.test(file)),
+	];
 
 	it("keeps DTOs free of I/O, Effect and env access", () => {
 		expect(guide).toContain("DTOs are pure on purpose");
@@ -1173,10 +1359,8 @@ describe("application guide: the anti-corruption boundary", () => {
 	});
 
 	it("leaves the placeholder fan-out to the module that owns it, never to a loader", () => {
-		expect(guide).toContain("`Promise.all(entries.map(async (entry)");
-
-		expect(loaders.length).toBeGreaterThan(0);
-		expect(loaders.filter((file) => PER_ENTRY_PLACEHOLDER_AWAIT.test(read(file)))).toEqual([]);
+		expect(loaderSteps.length).toBeGreaterThan(loaders.length);
+		expect(loaderSteps.filter((file) => PER_ENTRY_PLACEHOLDER_AWAIT.test(read(file)))).toEqual([]);
 		expect(read(PLACEHOLDER_MODULE)).toMatch(BOUNDED_PLACEHOLDER_READ);
 	});
 
@@ -1194,18 +1378,16 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(defaulted.filter((field) => !DEFAULTED_IN_THE_DTO_LAYER(field).test(dtoLayer))).toEqual([]);
 	});
 
-	it("turns a raw author into Author fields in the one module the guide names", () => {
-		expect(guide).toContain("One raw entry, one mapping");
-
+	it("turns a raw author into Byline fields in createAuthor alone, the one module the guide names", () => {
 		const definitions = dtoFiles.filter((file) => CREATE_AUTHOR_DEFINITION.test(read(file)));
 
+		expect(guide).toContain("`createAuthor` in [`dto/author/utils/author.ts`]");
 		expect(definitions).toEqual(["src/application/dto/author/utils/author.ts"]);
 		expect(dtoFiles.filter((file) => AUTHOR_FIELD_MAPPING.test(read(file)))).toEqual(definitions);
+		expect(dtoFiles.filter((file) => BYLINE_FIELD_READ.test(read(file)))).toEqual(definitions);
 	});
 
 	it("addresses an Article from the one module the guide names, the collection id included", () => {
-		expect(guide).toContain("One raw entry, one address");
-
 		const builders = dtoFiles.filter((file) => ARTICLE_REFERENCE_LITERAL.test(read(file)));
 
 		expect(builders).toEqual(["src/application/dto/article/utils/reference.ts"]);
@@ -1213,8 +1395,6 @@ describe("application guide: the anti-corruption boundary", () => {
 	});
 
 	it("decides Related Articles in the one module the guide names, on the slug and with the cap it quotes", () => {
-		expect(guide).toContain("One concept, one decision");
-
 		const decider = "src/application/dto/article/utils/articles.ts";
 		const source = read(decider);
 		const cap = source.match(RELATED_ARTICLES_CAP)?.[1];
@@ -1247,21 +1427,19 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(read("src/domain/shared/image.ts")).toMatch(ABSOLUTE_IMAGE_URL_SCHEMA);
 		expect(read("src/application/dto/shared/images.ts")).toMatch(ASSET_SCHEME_CONSTANT);
 
-		const downstream = production([...walk("src/pages"), ...walk("src/ui")])
-			.filter((file) => SOURCE_FILE.test(file))
-			.filter((file) => HAND_PREFIXED_ASSET_URL.test(read(file)));
+		const readers = production([...walk("src/pages"), ...walk("src/ui")]).filter((file) => SOURCE_FILE.test(file));
 
-		expect(downstream).toEqual([]);
+		expect(readers.length).toBeGreaterThan(0);
+		expect(readers.filter((file) => HAND_PREFIXED_ASSET_URL.test(read(file)))).toEqual([]);
 	});
 
 	it("stops Contentful types at this layer: nothing downstream sees them", () => {
 		expect(guide).toContain("Contentful types stop here");
 
-		const downstream = production([...walk("src/domain"), ...walk("src/ui")])
-			.filter((file) => SOURCE_FILE.test(file))
-			.filter((file) => CONTENTFUL_TYPE.test(read(file)));
+		const downstream = production([...walk("src/domain"), ...walk("src/ui")]).filter((file) => SOURCE_FILE.test(file));
 
-		expect(downstream).toEqual([]);
+		expect(downstream.length).toBeGreaterThan(0);
+		expect(downstream.filter((file) => CONTENTFUL_TYPE.test(read(file)))).toEqual([]);
 	});
 
 	it("fetches through fetchEntries, and takes its schema from the domain", () => {
@@ -1286,7 +1464,8 @@ describe("application guide: the anti-corruption boundary", () => {
 
 		expect(entries).toContain("if (!isContentfulConfigured())");
 		expect(entries).toContain('{ concurrency: "unbounded" }');
-		expect(loaders.filter((file) => LOADER_REACHING_PAST_FETCH_ENTRIES.test(read(file)))).toEqual([]);
+		expect(loaderSteps.length).toBeGreaterThan(loaders.length);
+		expect(loaderSteps.filter((file) => LOADER_REACHING_PAST_FETCH_ENTRIES.test(read(file)))).toEqual([]);
 	});
 
 	it("cites the id every loader assigns, and spreads before it rather than after", () => {
@@ -1442,11 +1621,10 @@ describe("styles guide: derived constants and source order", () => {
 	it("keeps the --grid-* tokens as widths: a query condition cannot read a custom property", () => {
 		expect(guide).toContain("never a query condition");
 
-		const misused = walk("src/ui")
-			.filter((file) => file.endsWith(".css"))
-			.filter((file) => GRID_TOKEN_IN_QUERY.test(read(file)));
+		const stylesheets = walk("src/ui").filter((file) => file.endsWith(".css"));
 
-		expect(misused).toEqual([]);
+		expect(stylesheets.length).toBeGreaterThan(0);
+		expect(stylesheets.filter((file) => GRID_TOKEN_IN_QUERY.test(read(file)))).toEqual([]);
 	});
 
 	it("keeps the reveal modifiers after the class they only beat by source order", () => {
@@ -1459,6 +1637,24 @@ describe("styles guide: derived constants and source order", () => {
 		expect(modifiers.length).toBeGreaterThan(0);
 		expect(modifiers.filter((at) => at < base)).toEqual([]);
 		expect(reveal).toContain("prefers-reduced-motion");
+	});
+
+	it("scrolls an animation only inside @supports, since without the feature it holds its last frame", () => {
+		expect(guide).toContain("runs in zero seconds and holds its last frame");
+
+		const stylesheets = walk("src").filter((file) => file.endsWith(".css"));
+		const unguarded = stylesheets.flatMap((file) =>
+			timelinesOutsideSupports(read(file)).map((declaration) => `${file}: ${declaration}`),
+		);
+
+		expect(
+			timelinesOutsideSupports("@supports (animation-timeline: view()) { .a { animation-timeline: view(); } }"),
+		).toEqual([]);
+		expect(
+			timelinesOutsideSupports("@supports not (animation-timeline: view()) { .a { animation-timeline: view() } }"),
+		).toEqual(["animation-timeline: view()"]);
+		expect(stylesheets.length).toBeGreaterThan(0);
+		expect(unguarded).toEqual([]);
 	});
 
 	it("names one container per route, derived from the page modifier", () => {
@@ -1557,8 +1753,6 @@ describe("modules guide: mixes, islands and data access", () => {
 		.filter((file) => !STYLESHEETS_STYLING_A_VENDOR_DOM.has(file));
 
 	it("writes modifiers the way BEM does: fused onto a block, never standalone or `is-`/`has-` prefixed", () => {
-		expect(guide).toContain("No standalone `.--modifier` classes");
-		expect(guide).toContain("no `is-`/`has-` prefixes");
 		expect(stylesGuide).toContain("never `is-`/`has-` state classes");
 
 		const violations = stylesheets.flatMap((file) => {
@@ -1596,11 +1790,10 @@ describe("modules guide: mixes, islands and data access", () => {
 	it("reads content through astro:content only, never Contentful or infrastructure", () => {
 		expect(guide).toContain("never by calling Contentful or `@infrastructure` directly");
 
-		const leaks = production(walk("src/ui"))
-			.filter((file) => SOURCE_FILE.test(file))
-			.filter((file) => LEAKED_INFRASTRUCTURE_IMPORT.test(read(file)));
+		const components = production(walk("src/ui")).filter((file) => SOURCE_FILE.test(file));
 
-		expect(leaks).toEqual([]);
+		expect(components.length).toBeGreaterThan(0);
+		expect(components.filter((file) => LEAKED_INFRASTRUCTURE_IMPORT.test(read(file)))).toEqual([]);
 	});
 
 	it("dereferences through one module, on promises rather than Effect", () => {
@@ -1614,6 +1807,7 @@ describe("modules guide: mixes, islands and data access", () => {
 
 		const sources = production([...walk("src/ui"), ...walk("src/pages")]).filter((file) => SOURCE_FILE.test(file));
 
+		expect(sources.length).toBeGreaterThan(0);
 		expect(sources.filter((file) => file !== DEREFERENCING_MODULE && GET_ENTRY_CALL.test(read(file)))).toEqual([]);
 		expect(sources.filter((file) => file.startsWith("src/ui/") && EFFECT_IMPORT.test(read(file)))).toEqual([]);
 	});
@@ -1621,16 +1815,18 @@ describe("modules guide: mixes, islands and data access", () => {
 	it("declares the Email button's hook once, where its template, its stylesheet and its listener all read it", () => {
 		expect(guide).toContain("declared once, in that module");
 
-		const hook = read(EMAIL_BUTTON_MODULE).match(EMAIL_BUTTON_HOOK_DECLARATION)?.[1];
+		const hook = read(EMAIL_BUTTON_MODULE).match(EMAIL_BUTTON_HOOK_DECLARATION)?.[1] ?? "";
+		const spelling = classSpelling(hook);
+		const candidates = production([...walk("src/ui"), ...walk("src/pages")]).filter(
+			(file) => file !== EMAIL_BUTTON_MODULE && file !== EMAIL_BUTTON_STYLESHEET,
+		);
 
-		expect(hook).toBeDefined();
-		expect(read(EMAIL_BUTTON_STYLESHEET)).toContain(`.${hook}`);
-
-		const respelled = production([...walk("src/ui"), ...walk("src/pages")])
-			.filter((file) => file !== EMAIL_BUTTON_MODULE && file !== EMAIL_BUTTON_STYLESHEET)
-			.filter((file) => read(file).includes(hook ?? ""));
-
-		expect(respelled).toEqual([]);
+		expect(hook).not.toBe("");
+		expect(spelling.test(read(EMAIL_BUTTON_STYLESHEET))).toBe(true);
+		expect(spelling.test(`<a class="x ${hook}">`)).toBe(true);
+		expect(spelling.test(`import "./${hook}.css";`)).toBe(false);
+		expect(candidates.length).toBeGreaterThan(0);
+		expect(candidates.filter((file) => spelling.test(read(file)))).toEqual([]);
 	});
 
 	it("bootstraps the theme from the module that owns the preference, and paints without persisting", () => {
@@ -1717,9 +1913,12 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(guide).toContain("Component stylesheets are unlayered");
 
 		const components = production(walk("src/ui/modules")).filter((file) => file.endsWith(".astro"));
+		const stylesheets = walk("src/ui/modules").filter((file) => file.endsWith(".css"));
 
+		expect(components.length).toBeGreaterThan(0);
+		expect(stylesheets.length).toBeGreaterThan(0);
 		expect(components.filter((file) => ASTRO_STYLE_BLOCK.test(read(file)))).toEqual([]);
-		expect(walk("src/ui/modules").filter((file) => file.endsWith(".css") && read(file).includes("@layer"))).toEqual([]);
+		expect(stylesheets.filter((file) => read(file).includes("@layer"))).toEqual([]);
 	});
 
 	it("hydrates only the roots the Islands section censuses, and server-renders every root that can survive it", () => {
@@ -1747,7 +1946,7 @@ describe("modules guide: mixes, islands and data access", () => {
 
 	it("names every React island under modules", () => {
 		const islands = production(walk("src/ui/modules")).filter((file) => file.endsWith(".tsx"));
-		const documented = section(guide, "Islands");
+		const documented = section({ markdown: guide, heading: "Islands" });
 
 		expect(islands.length).toBeGreaterThan(0);
 
@@ -1769,8 +1968,79 @@ describe("modules guide: mixes, islands and data access", () => {
 
 const FUNCTION_SIGNATURE = /(?:export\s+)?(?:async\s+)?function\s+([A-Za-z0-9_]+)\s*(?:<[^>]*>)?\s*\(([^)]*)\)/g;
 const ARROW_SIGNATURE =
-	/(?:export\s+)?const\s+([A-Za-z0-9_]+)\s*(?::[^=]*)?=\s*(?:async\s*)?\(([^)]*)\)\s*(?::[^=]*)?=>/g;
+	/(?:export\s+)?const\s+([A-Za-z0-9_]+)\s*(?::[^=]*)?=\s*(?:useCallback\(\s*)?(?:async\s*)?\(([^)]*)\)\s*(?::[^=]*)?=>/g;
+const DESTRUCTURED_PARAMETER =
+	/(?:function\s+(\w+)\s*(?:<[^>()]*>)?|(?:const|let)\s+(\w+)\s*(?::[^=]*)?=\s*(?:useCallback\(\s*)?(?:async\s*)?(?:<[^>()]*>)?)\s*\(\s*\{[^{}]*\}\s*:\s*(\{|[A-Z]\w*)/g;
+const INLINE_TYPE = "{";
+const OPENING = "(";
+const PARAMETER_OBJECT_SUFFIX = "Params";
+const DECLARED_PARAMS_TYPE = /^\s*(?:export\s+)?(?:interface|type)\s+(\w+Params)\b/gm;
+const MISNAMED_PARAMETER_OBJECT = /(?:Options|Opts|Args|Arguments)$/;
 const TRAILING_COMMA = /,\s*$/;
+
+const HAND_WRITTEN_CODE = [
+	...readdirSync(ROOT).filter((name) => TYPESCRIPT_FILE.test(name)),
+	...walk("src").filter((file) => SOURCE_FILE.test(file)),
+	...walk("e2e").filter((file) => TYPESCRIPT_FILE.test(file)),
+	...walk("docs").filter((file) => TYPESCRIPT_FILE.test(file)),
+];
+
+const paramsTypeFor = (name: string) => `${name[0].toUpperCase()}${name.slice(1)}${PARAMETER_OBJECT_SUFFIX}`;
+
+const positionalSignatures = (source: string) =>
+	[...source.matchAll(FUNCTION_SIGNATURE), ...source.matchAll(ARROW_SIGNATURE)]
+		.map(([, name, parameters]) => ({ name, parameters: (parameters ?? "").trim().replace(TRAILING_COMMA, "") }))
+		.filter(({ parameters }) => parameters.length > 0 && !parameters.startsWith("{"))
+		.filter(({ parameters }) => topLevelArity(parameters) > 1)
+		.map(({ name }) => name);
+
+interface CodeSource {
+	file: string;
+	source: string;
+}
+
+const parameterObjects = (source: string) =>
+	[...source.matchAll(DESTRUCTURED_PARAMETER)].map(([, declared, assigned, type]) => ({
+		name: declared ?? assigned,
+		type,
+	}));
+
+const declaredFunctions = (source: string) => [
+	...[...source.matchAll(FUNCTION_SIGNATURE), ...source.matchAll(ARROW_SIGNATURE)].map(([, name]) => name),
+	...parameterObjects(source).map(({ name }) => name),
+];
+
+const countOf = (names: string[]) =>
+	names.reduce((counts, name) => counts.set(name, (counts.get(name) ?? 0) + 1), new Map<string, number>());
+
+const roleTypes = (sources: CodeSource[]) => {
+	const takers = countOf(sources.flatMap(({ source }) => parameterObjects(source).map(({ type }) => type)));
+	const declarations = countOf(
+		sources.flatMap(({ source }) => [...source.matchAll(DECLARED_PARAMS_TYPE)].map(([, type]) => type)),
+	);
+	const functionNamed = new Set(sources.flatMap(({ source }) => declaredFunctions(source).map(paramsTypeFor)));
+
+	return new Set(
+		[...takers]
+			.filter(([type, taken]) => taken > 1 && declarations.get(type) === 1 && !functionNamed.has(type))
+			.map(([type]) => type),
+	);
+};
+
+const misnamedParameterObjects = (sources: CodeSource[]) => {
+	const roles = roleTypes(sources);
+
+	return sources.flatMap(({ file, source }) =>
+		parameterObjects(source)
+			.filter(
+				({ name, type }) =>
+					type === INLINE_TYPE ||
+					MISNAMED_PARAMETER_OBJECT.test(type) ||
+					(type.endsWith(PARAMETER_OBJECT_SUFFIX) && type !== paramsTypeFor(name) && !roles.has(type)),
+			)
+			.map(({ name, type }) => `${file}: ${name} takes ${type === INLINE_TYPE ? "an inline type" : type}`),
+	);
+};
 
 function topLevelArity(parameters: string): number {
 	let depth = 0;
@@ -1787,7 +2057,7 @@ function topLevelArity(parameters: string): number {
 
 describe("conventions", () => {
 	it("configures Biome the way the conventions claim", () => {
-		const conventions = section(CLAUDE_MD, "Conventions");
+		const conventions = section({ markdown: AGENTS_MD, heading: "Conventions" });
 
 		expect(BIOME_JSON.formatter.lineWidth).toBe(Number(conventions.match(DOCUMENTED_LINE_WIDTH)?.[1]));
 		expect(BIOME_JSON.linter.rules.suspicious.noConsole).toBe("error");
@@ -1840,24 +2110,65 @@ describe("conventions", () => {
 		expect(disallowed.toSorted()).toEqual([...NOINDEX_ROUTES].toSorted());
 	});
 
-	it("passes two or more arguments as one object typed after the function", () => {
-		const conventions = section(CLAUDE_MD, "Conventions");
+	it("points robots.txt at the sitemap index the site writes, which the smoke run leaves to this file", () => {
+		const site = ASTRO_CONFIG.match(SITE_DECLARATION)?.[1];
+		const sitemaps = [...read("public/robots.txt").matchAll(ROBOTS_SITEMAP)].map(([, url]) => url.trim());
 
-		expect(conventions).toContain("One argument is positional; two or more are one object");
+		expect(site).toBeDefined();
+		expect(ASTRO_CONFIG).toContain("sitemap(");
+		expect(sitemaps).toEqual([`${site}/sitemap-index.xml`]);
+	});
 
-		const positional = SOURCE_FILES.flatMap((file) =>
-			[...read(file).matchAll(FUNCTION_SIGNATURE), ...read(file).matchAll(ARROW_SIGNATURE)]
-				.map(([, name, parameters]) => ({ name, parameters: (parameters ?? "").trim().replace(TRAILING_COMMA, "") }))
-				.filter(({ parameters }) => parameters.length > 0 && !parameters.startsWith("{"))
-				.filter(({ parameters }) => topLevelArity(parameters) > 1)
-				.map(({ name }) => `${file}: ${name}`),
+	it("passes two or more arguments as one object, in production code, the tests, e2e and this file alike", () => {
+		const conventions = section({ markdown: AGENTS_MD, heading: "Conventions" });
+		const positional = HAND_WRITTEN_CODE.flatMap((file) =>
+			positionalSignatures(read(file)).map((name) => `${file}: ${name}`),
 		);
 
+		expect(conventions).toContain("One argument is positional; two or more are one object");
+		expect(positionalSignatures(`const submit = useCallback(async ${OPENING}data, token) => data);`)).toEqual([
+			"submit",
+		]);
+		expect(HAND_WRITTEN_CODE.filter((file) => file.startsWith("e2e/")).length).toBeGreaterThan(0);
+		expect(HAND_WRITTEN_CODE.filter((file) => CO_LOCATED_TEST_FILE.test(file)).length).toBeGreaterThan(0);
 		expect(positional).toEqual([]);
 	});
 
+	it("types a parameter object after the function that takes it, the role sibling functions share, or the record it unpacks, never inline", () => {
+		const misnamed = misnamedParameterObjects(HAND_WRITTEN_CODE.map((file) => ({ file, source: read(file) })));
+		const findingsIn = (source: string) => misnamedParameterObjects([{ file: "a.ts", source }]);
+		const paged = "interface PagedParams { page: number }\n";
+		const first = `const first = ${OPENING}{ page }: PagedParams) => page;\n`;
+		const last = `const last = ${OPENING}{ page }: PagedParams) => page;\n`;
+
+		expect(findingsIn(`function makeTag${OPENING}{ name }: MakeTagParams) {}`)).toEqual([]);
+		expect(findingsIn(`const toRow = ${OPENING}{ id }: ContactRow) => id;`)).toEqual([]);
+		expect(findingsIn(`const settle = async ${OPENING}{ page }: ThemeParams) => page;`)).toEqual([
+			"a.ts: settle takes ThemeParams",
+		]);
+		expect(findingsIn(`function double${OPENING}{ url }: DoubleOptions) {}`)).toEqual([
+			"a.ts: double takes DoubleOptions",
+		]);
+		expect(findingsIn(`const resolves = ${OPENING}{ doc }: { doc: string }) => doc;`)).toEqual([
+			"a.ts: resolves takes an inline type",
+		]);
+		expect(findingsIn(`${paged}${first}${last}`)).toEqual([]);
+		expect(findingsIn(`${paged}${first}`)).toEqual(["a.ts: first takes PagedParams"]);
+		expect(findingsIn(`${paged}${first}${last}const paged = ${OPENING}{ page }: PagedParams) => page;\n`)).toEqual([
+			"a.ts: first takes PagedParams",
+			"a.ts: last takes PagedParams",
+		]);
+		expect(
+			misnamedParameterObjects([
+				{ file: "a.ts", source: `${paged}${first}` },
+				{ file: "b.ts", source: `${paged}${last}` },
+			]),
+		).toEqual(["a.ts: first takes PagedParams", "b.ts: last takes PagedParams"]);
+		expect(misnamed).toEqual([]);
+	});
+
 	it("resolves the site origin in the one module the conventions name", () => {
-		const conventions = section(CLAUDE_MD, "Conventions");
+		const conventions = section({ markdown: AGENTS_MD, heading: "Conventions" });
 
 		expect(conventions).toContain("only reader of `SITE_URL`");
 		const readers = SOURCE_FILES.filter((file) => !file.endsWith(".d.ts")).filter((file) =>
@@ -1884,18 +2195,485 @@ describe("conventions", () => {
 	});
 });
 
+interface Comment {
+	at: number;
+	text: string;
+}
+
+interface ScriptCommentsParams {
+	source: string;
+	kind: ts.ScriptKind;
+}
+
+const scriptComments = ({ source, kind }: ScriptCommentsParams): Comment[] => {
+	const file = ts.createSourceFile("scanned", source, ts.ScriptTarget.Latest, true, kind);
+	const found = new Map<number, string>();
+	const visit = (node: ts.Node): void => {
+		if (node.kind >= ts.SyntaxKind.FirstJSDocNode && node.kind <= ts.SyntaxKind.LastJSDocNode) return;
+
+		const children = node.getChildren(file);
+
+		if (children.length === 0) {
+			const start = node.getStart(file);
+			const trivia = [
+				...(ts.getTrailingCommentRanges(source, node.getFullStart()) ?? []),
+				...(ts.getLeadingCommentRanges(source, node.getFullStart()) ?? []),
+			];
+
+			for (const { pos, end } of trivia) if (end <= start) found.set(pos, source.slice(pos, end));
+		}
+
+		for (const child of children) visit(child);
+	};
+
+	visit(file);
+
+	return [...found].map(([at, text]) => ({ at, text }));
+};
+
+const astroComments = (source: string): Comment[] => {
+	const frontmatter = source.match(ASTRO_FRONTMATTER)?.[1];
+	const regions = [
+		...(frontmatter === undefined ? [] : [{ offset: ASTRO_FENCE.length, body: frontmatter }]),
+		...[...source.matchAll(ASTRO_SCRIPT)].map((match) => ({
+			offset: (match.index ?? 0) + match[0].indexOf(">") + 1,
+			body: match[1],
+		})),
+	];
+
+	return [
+		...regions.flatMap(({ offset, body }) =>
+			scriptComments({ source: body, kind: ts.ScriptKind.TS }).map(({ at, text }) => ({ at: offset + at, text })),
+		),
+		...[...source.matchAll(TEMPLATE_COMMENT)].map((match) => ({ at: match.index ?? 0, text: match[0] })),
+	];
+};
+
+interface CommentsInParams {
+	file: string;
+	source: string;
+}
+
+const commentsIn = ({ file, source }: CommentsInParams): Comment[] => {
+	if (file.endsWith(".astro")) return astroComments(source);
+	if (file.endsWith(".css"))
+		return [...source.matchAll(CSS_COMMENT)].map((match) => ({ at: match.index ?? 0, text: match[0] }));
+
+	return scriptComments({ source, kind: file.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS });
+};
+
+interface LineAtParams {
+	source: string;
+	at: number;
+}
+
+const lineAt = ({ source, at }: LineAtParams) => source.slice(0, at).split(NEWLINE).length;
+
+const COMMENTED_SOURCES = [...HAND_WRITTEN_CODE, ...walk("src").filter((file) => file.endsWith(".css"))];
+
+interface CallArgumentsParams {
+	source: string;
+	call: RegExp;
+}
+
+const callArguments = ({ source, call }: CallArgumentsParams): string[] =>
+	[...source.matchAll(call)].map(({ index }) => {
+		const opening = source.indexOf("(", index);
+		let depth = 0;
+
+		for (let at = opening; at < source.length; at += 1) {
+			if (source[at] === "(") depth += 1;
+			else if (source[at] === ")") depth -= 1;
+
+			if (depth === 0) return source.slice(opening + 1, at);
+		}
+
+		return "";
+	});
+
+const missingRestores = (source: string): string[] =>
+	STUB_RESTORES.filter(({ stub }) => stub.test(source))
+		.filter(({ restore }) => !callArguments({ source, call: TEARDOWN_HOOK }).some((body) => body.includes(restore)))
+		.map(({ restore }) => restore);
+
+const unlocalisedComparisons = (source: string): string[] =>
+	callArguments({ source, call: LOCALE_COMPARE_CALL }).filter((args) => topLevelArity(args) < 2);
+
+const documentLeaks = (source: string): string[] => [
+	...(DOM_WRITE.test(source) && !callArguments({ source, call: TEARDOWN_HOOK }).some((body) => DOM_EMPTYING.test(body))
+		? ["written and never emptied in an afterEach or afterAll"]
+		: []),
+	...(callArguments({ source, call: SETUP_HOOK }).some((body) => DOM_EMPTYING.test(body))
+		? ["emptied in a beforeEach or beforeAll"]
+		: []),
+];
+
+const UNIT_TESTS = HAND_WRITTEN_CODE.filter((file) => file.startsWith("src/") && CO_LOCATED_TEST_FILE.test(file));
+
+const zodDeclarationsIn = (manifest: Record<string, Record<string, string> | undefined>): string[] =>
+	DEPENDENCY_FIELDS.filter((field) => manifest[field]?.zod !== undefined);
+
+const unitOf = (file: string) => {
+	const parts = file.split("/");
+
+	if (parts[1] === "ui" && parts[2] === "modules") return parts.slice(0, 4).join("/");
+	if (parts[1] === "ui") return parts.slice(0, 3).join("/");
+
+	return parts.length > 2 ? parts.slice(0, 2).join("/") : parts[0];
+};
+
+const moduleSpecifiers = (source: string): string[] =>
+	[...source.matchAll(IMPORT_SPECIFIER), ...source.matchAll(MOCKED_MODULE)].map(([, specifier]) => specifier);
+
+interface ImportTargetParams {
+	file: string;
+	specifier: string;
+}
+
+const importTarget = ({ file, specifier }: ImportTargetParams): string | undefined => {
+	if (specifier.startsWith(".")) return toPosix(join(dirname(file), specifier));
+
+	const alias = ALIAS_TARGETS.find(([name]) => specifier.startsWith(name));
+
+	return alias && specifier.replace(alias[0], alias[1]);
+};
+
+const globToRegExp = (glob: string) =>
+	new RegExp(
+		`^${glob.replace(GLOB_TOKEN, (token) => {
+			if (token === "**/") return "(?:.*/)?";
+			if (token === "**") return ".*";
+			if (token === "*") return "[^/]*";
+			if (token.startsWith("{")) return `(?:${token.slice(1, -1).split(",").join("|")})`;
+
+			return `\\${token}`;
+		})}$`,
+	);
+
+describe("the hand-written code", () => {
+	it("carries no comment but a tool directive, since a line's reason lives in the commit, the pull request, an ADR or CODING_STANDARDS.md", () => {
+		const commented = COMMENTED_SOURCES.flatMap((file) => {
+			const source = read(file);
+
+			return commentsIn({ file, source })
+				.filter(({ text }) => !TOOL_DIRECTIVE.test(text))
+				.map(({ at }) => `${file}:${lineAt({ source, at })}`);
+		});
+		const spoken = (sample: CommentsInParams) => commentsIn(sample).map(({ text }) => text);
+
+		expect(spoken({ file: "a.ts", source: 'const url = "https://a.b"; const slash = /\\/\\//; // said' })).toEqual([
+			"// said",
+		]);
+		expect(spoken({ file: "a.tsx", source: 'const link = <a href="https://a.b">//text, not a comment</a>;' })).toEqual(
+			[],
+		);
+		expect(spoken({ file: "a.astro", source: "---\nconst a = 1; /* said */\n---\n<p>a</p><!-- said -->" })).toEqual([
+			"/* said */",
+			"<!-- said -->",
+		]);
+		expect(spoken({ file: "a.css", source: ".a { color: red; } /* said */" })).toEqual(["/* said */"]);
+		expect(TOOL_DIRECTIVE.test("// biome-ignore lint/style/noArguments: the vendor reads them")).toBe(true);
+		expect(TOOL_DIRECTIVE.test("// @ts-ignore")).toBe(false);
+		expect(COMMENTED_SOURCES.filter((file) => file.startsWith("e2e/")).length).toBeGreaterThan(0);
+		expect(COMMENTED_SOURCES.filter((file) => file.endsWith(".css")).length).toBeGreaterThan(0);
+		expect(commented).toEqual([]);
+	});
+
+	it("writes an import that leaves its layer or feature with the alias and one that stays inside it relative, so an alias always marks a crossed boundary, and reaches src/actions from nowhere outside it", () => {
+		const imports = walk("src")
+			.filter((file) => SOURCE_FILE.test(file) || file.endsWith(".css"))
+			.flatMap((file) => moduleSpecifiers(read(file)).map((specifier) => ({ file, specifier })))
+			.flatMap(({ file, specifier }) => {
+				const target = importTarget({ file, specifier });
+
+				return target === undefined
+					? []
+					: [
+							{
+								file,
+								specifier,
+								target,
+								aliased: !specifier.startsWith("."),
+								crossing: unitOf(file) !== unitOf(target),
+							},
+						];
+			});
+		const misspelled = imports
+			.filter(({ aliased, crossing }) => aliased !== crossing)
+			.map(({ file, specifier }) => `${file}: ${specifier}`);
+		const reachingActions = imports
+			.filter(({ file, target }) => target.startsWith("src/actions/") && !file.startsWith("src/actions/"))
+			.map(({ file, specifier }) => `${file}: ${specifier}`);
+
+		expect(
+			moduleSpecifiers(
+				'vi.mock("./client"); const real = await vi.importActual<typeof import("./client")>("./client");',
+			),
+		).toEqual(["./client", "./client", "./client"]);
+		expect(importTarget({ file: "src/domain/article/rules.ts", specifier: "../shared/image" })).toBe(
+			"src/domain/shared/image",
+		);
+		expect(importTarget({ file: "src/pages/about.astro", specifier: "astro:content" })).toBeUndefined();
+		expect(unitOf("src/ui/modules/home/components/blog/Blog.astro")).toBe("src/ui/modules/home");
+		expect(unitOf("src/domain/article/rules.ts")).toBe("src/domain");
+		expect(imports.filter(({ aliased }) => aliased).length).toBeGreaterThan(0);
+		expect(imports.filter(({ specifier }) => specifier.startsWith("../")).length).toBeGreaterThan(0);
+		expect(misspelled).toEqual([]);
+		expect(reachingActions).toEqual([]);
+	});
+
+	it("logs through logger or LoggerService and never through Effect's own log, whose lines reach the export in another shape", () => {
+		const sources = HAND_WRITTEN_CODE.filter((file) => file.startsWith("src/"));
+
+		expect(sources.length).toBeGreaterThan(0);
+		expect(sources.filter((file) => EFFECT_LOG.test(read(file)))).toEqual([]);
+	});
+
+	it("doubles a bare fetch with MSW and never replaces the global, which would answer a wrong request as readily", () => {
+		expect(HAND_WRITTEN_CODE.length).toBeGreaterThan(0);
+		expect(HAND_WRITTEN_CODE.filter((file) => FETCH_REPLACED.test(read(file)))).toEqual([]);
+	});
+
+	it("varies the environment under test through vi.stubEnv, never by writing to the process environment", () => {
+		const tests = HAND_WRITTEN_CODE.filter(
+			(file) => CO_LOCATED_TEST_FILE.test(file) || file.startsWith(TEST_INFRASTRUCTURE) || file.startsWith("e2e/"),
+		);
+
+		expect(tests.length).toBeGreaterThan(0);
+		expect(tests.filter((file) => PROCESS_ENV_WRITE.test(read(file)))).toEqual([]);
+	});
+
+	it("undoes every stubbed global, stubbed variable, spy, faked clock and node appended to the document in an afterEach or afterAll, which a failing assertion cannot skip", () => {
+		const stubbing = STUB_RESTORES.map(({ stub }) => UNIT_TESTS.filter((file) => stub.test(read(file))).length);
+		const leaking = UNIT_TESTS.flatMap((file) => missingRestores(read(file)).map((restore) => `${file}: ${restore}`));
+		const domTests = UNIT_TESTS.filter((file) => DOM_TEST_FILE.test(file));
+		const leakingDocuments = domTests.flatMap((file) => documentLeaks(read(file)).map((leak) => `${file}: ${leak}`));
+
+		expect(missingRestores('it("a", () => { vi.stubGlobal("a", 1); vi.unstubAllGlobals(); });')).toEqual([
+			"vi.unstubAllGlobals()",
+		]);
+		expect(missingRestores('afterEach(() => { if (a) { b(); } vi.restoreAllMocks(); }); vi.spyOn(a, "b");')).toEqual(
+			[],
+		);
+		expect(documentLeaks('it("a", () => { document.body.append(card); });')).toEqual([
+			"written and never emptied in an afterEach or afterAll",
+		]);
+		expect(documentLeaks('afterEach(cleanup);\nit("a", () => { render(null); });')).toEqual([]);
+		expect(
+			documentLeaks(
+				'beforeEach(() => { document.body.innerHTML = MARKUP; });\nafterEach(() => { document.body.innerHTML = ""; });',
+			),
+		).toEqual([]);
+		expect(
+			documentLeaks(
+				'beforeEach(() => { document.body.innerHTML = ""; });\nit("a", () => { document.body.append(card); });',
+			),
+		).toEqual(["written and never emptied in an afterEach or afterAll", "emptied in a beforeEach or beforeAll"]);
+		expect(stubbing).not.toContain(0);
+		expect(domTests.filter((file) => DOM_WRITE.test(read(file))).length).toBeGreaterThan(0);
+		expect(leaking).toEqual([]);
+		expect(leakingDocuments).toEqual([]);
+	});
+
+	it("passes a locale to every localeCompare in src, so no order a visitor sees depends on the machine that built it", () => {
+		const sources = HAND_WRITTEN_CODE.filter((file) => file.startsWith("src/"));
+		const unlocalised = sources.flatMap((file) =>
+			unlocalisedComparisons(read(file)).map((args) => `${file}: localeCompare(${args})`),
+		);
+
+		expect(unlocalisedComparisons("a.name.localeCompare(b.name)")).toEqual(["b.name"]);
+		expect(unlocalisedComparisons("a.localeCompare(b, DEFAULT_LOCALE_STRING)")).toEqual([]);
+		expect(unlocalisedComparisons("a.localeCompare(pick(b, c))")).toEqual(["pick(b, c)"]);
+		expect(sources.filter((file) => read(file).includes(".localeCompare(")).length).toBeGreaterThan(0);
+		expect(unlocalised).toEqual([]);
+	});
+
+	it("pins the clock rather than reading the year off it or bracketing Date.now()", () => {
+		const unpinned = UNIT_TESTS.filter((file) => REAL_CLOCK_YEAR.test(read(file)) || CLOCK_BRACKET.test(read(file)));
+
+		expect(REAL_CLOCK_YEAR.test("year: new Date().getFullYear(),")).toBe(true);
+		expect(REAL_CLOCK_YEAR.test("const year = new Date().getUTCFullYear();")).toBe(true);
+		expect(CLOCK_BRACKET.test("const before = Math.floor(Date.now() / 1000);")).toBe(true);
+		expect(UNIT_TESTS.length).toBeGreaterThan(0);
+		expect(unpinned).toEqual([]);
+	});
+
+	it("casts nothing a .json() or JSON.parse call answers, which a schema checks or a literal comparison reads instead", () => {
+		const readers = SOURCE_FILES.filter((file) => JSON_READ.test(read(file)));
+
+		expect(CAST_JSON.test("return (await response.json()) as Verdict;")).toBe(true);
+		expect(CAST_JSON.test("const { categories } = JSON.parse(decodeURIComponent(stored)) as Consent;")).toBe(true);
+		expect(CAST_JSON.test("const answer: unknown = await response.json();")).toBe(false);
+		expect(readers.length).toBeGreaterThan(0);
+		expect(readers.filter((file) => CAST_JSON.test(read(file)))).toEqual([]);
+	});
+
+	it("imports Zod only through astro/zod, and declares no zod of its own", () => {
+		const specifiers = HAND_WRITTEN_CODE.flatMap((file) =>
+			[...read(file).matchAll(IMPORT_SPECIFIER)].map(([, specifier]) => ({ file, specifier })),
+		);
+		const direct = specifiers
+			.filter(({ specifier }) => ZOD_SPECIFIER.test(specifier))
+			.map(({ file, specifier }) => `${file} imports ${specifier}`);
+
+		expect(zodDeclarationsIn({ devDependencies: { zod: "x" } })).toEqual(["devDependencies"]);
+		expect(specifiers.filter(({ specifier }) => specifier === "astro/zod").length).toBeGreaterThan(0);
+		expect(direct).toEqual([]);
+		expect(zodDeclarationsIn(PACKAGE_JSON)).toEqual([]);
+	});
+
+	it("memoises nothing by hand, since astro.config.ts compiles every component with the React Compiler", () => {
+		const modules = SOURCE_FILES.filter((file) => TYPESCRIPT_FILE.test(file));
+
+		expect(ASTRO_CONFIG).toContain(REACT_COMPILER);
+		expect(HAND_WRITTEN_MEMOISATION.test("const submit = useCallback(async () => {}, []);")).toBe(true);
+		expect(HAND_WRITTEN_MEMOISATION.test("export const WorldGlobe = memo(() => null);")).toBe(true);
+		expect(HAND_WRITTEN_MEMOISATION.test("const reference = useRef(null);")).toBe(false);
+		expect(modules.filter((file) => file.endsWith(".tsx")).length).toBeGreaterThan(0);
+		expect(modules.filter((file) => HAND_WRITTEN_MEMOISATION.test(read(file)))).toEqual([]);
+	});
+});
+
+describe("the domain and the application layer", () => {
+	const domainSources = walk("src/domain").filter(
+		(file) => TYPESCRIPT_FILE.test(file) && !CO_LOCATED_TEST_FILE.test(file),
+	);
+
+	it("names every schema after its concept, in the singular", () => {
+		const schemas = domainSources
+			.filter((file) => !file.startsWith("src/domain/shared/"))
+			.flatMap((file) =>
+				[...read(file).matchAll(EXPORTED_SCHEMA)].map(([, name]) => ({ file, name, concept: file.split("/")[2] })),
+			);
+		const misnamed = schemas
+			.filter(({ name, concept }) => !name.startsWith(concept) || !UPPERCASE.test(name[concept.length] ?? ""))
+			.map(({ file, name }) => `${file}: ${name}`);
+
+		expect(schemas.length).toBeGreaterThan(0);
+		expect(misnamed).toEqual([]);
+	});
+
+	it("reorders no array in place in a domain rule, since a DTO and a page can hold the same array", () => {
+		expect(domainSources.length).toBeGreaterThan(0);
+		expect(domainSources.filter((file) => IN_PLACE_REORDER.test(read(file)))).toEqual([]);
+	});
+
+	it("reads no local-time Date API in either layer, since CI prerenders in one time zone and an author builds in another", () => {
+		const sources = production([...walk("src/domain"), ...walk("src/application")]).filter((file) =>
+			TYPESCRIPT_FILE.test(file),
+		);
+
+		expect(sources.length).toBeGreaterThan(domainSources.length);
+		expect(sources.filter((file) => LOCAL_TIME_DATE_API.test(read(file)))).toEqual([]);
+	});
+});
+
+describe("one module spells each thing", () => {
+	it("spells a content URL in @const alone: no literal path to an Article, a Tag or a Project, and no route joined to a slug", () => {
+		const elsewhere = SOURCE_FILES.filter((file) => !file.startsWith("src/const/"));
+
+		expect(elsewhere.length).toBeGreaterThan(0);
+		expect(read("src/const/routes.ts")).toMatch(JOINED_ROUTE);
+		expect(elsewhere.filter((file) => CONTENT_PATH_LITERAL.test(read(file)) || JOINED_ROUTE.test(read(file)))).toEqual(
+			[],
+		);
+	});
+
+	it("imports the plain logger only where no layer can provide LoggerService, so an unintended log stays a compile error", () => {
+		const importers = SOURCE_FILES.filter((file) => PLAIN_LOGGER_IMPORT.test(read(file)));
+
+		expect(importers.toSorted()).toEqual(PLAIN_LOGGER_READERS.toSorted());
+	});
+
+	it("carries no index.ts barrel under src/ui/modules, since a component is imported by its own path", () => {
+		const modules = walk("src/ui/modules");
+
+		expect(modules.length).toBeGreaterThan(0);
+		expect(modules.filter((file) => BARREL_FILE.test(file))).toEqual([]);
+	});
+});
+
+describe("colour", () => {
+	it("registers no colour token with @property, so a theme switch flips it rather than interpolating it", () => {
+		const stylesheets = walk("src").filter((file) => file.endsWith(".css"));
+
+		expect(stylesheets.length).toBeGreaterThan(0);
+		expect([...read("src/ui/styles/global/variables.css").matchAll(REGISTERED_PROPERTY)].length).toBeGreaterThan(0);
+		expect(REGISTERED_COLOUR.test('@property --ink { syntax: "<color>"; inherits: true; }')).toBe(true);
+		expect(stylesheets.filter((file) => REGISTERED_COLOUR.test(read(file)))).toEqual([]);
+	});
+
+	it("writes no hex colour in a component or route stylesheet or a module under src/ui, bar the globe the backlog names", () => {
+		const sources = production([...walk("src/ui"), ...walk("src/pages")])
+			.filter((file) => !file.startsWith("src/ui/styles/"))
+			.filter((file) => SOURCE_FILE.test(file) || file.endsWith(".css"));
+		const coloured = sources.filter((file) => HEX_COLOUR.test(read(file)));
+
+		expect(sources.filter((file) => file.endsWith(".css")).length).toBeGreaterThan(0);
+		expect(HEX_COLOUR.test("fill: #c0ffee;")).toBe(true);
+		expect(HEX_COLOUR.test('href="#contact" &#39;')).toBe(false);
+		expect(coloured.toSorted()).toEqual(HEX_COLOURS_AWAITING_A_TOKEN);
+	});
+
+	it("registers every custom property that counts siblings, or a child would read its own index", () => {
+		const registered = new Set(
+			[...read("src/ui/styles/global/variables.css").matchAll(REGISTERED_PROPERTY)].map(([, name]) => name),
+		);
+		const counting = walk("src")
+			.filter((file) => file.endsWith(".css"))
+			.flatMap((file) => [...read(file).matchAll(SIBLING_COUNTING_PROPERTY)].map(([, name]) => ({ file, name })));
+
+		expect(counting.length).toBeGreaterThan(0);
+		expect(counting.filter(({ name }) => !registered.has(name)).map(({ file, name }) => `${file}: ${name}`)).toEqual(
+			[],
+		);
+	});
+});
+
+describe("the scripts and the coverage config", () => {
+	it("passes --pass-with-no-tests to test:e2e:changed alone, and to no workflow, where it would turn an empty run green", () => {
+		const scripts = Object.entries(PACKAGE_JSON.scripts as Record<string, string>);
+		const workflows = walk(".github").filter((file) => file.endsWith(".yml"));
+
+		expect(scripts.filter(([, command]) => command.includes(PASS_WITH_NO_TESTS)).map(([name]) => name)).toEqual([
+			"test:e2e:changed",
+		]);
+		expect(workflows.length).toBeGreaterThan(0);
+		expect(workflows.filter((file) => read(file).includes(PASS_WITH_NO_TESTS))).toEqual([]);
+	});
+
+	it("runs no package script through a shell substitution, which cmd on Windows passes on as literal text", () => {
+		const scripts = Object.entries(PACKAGE_JSON.scripts as Record<string, string>);
+
+		expect(scripts.length).toBeGreaterThan(0);
+		expect(scripts.filter(([, command]) => SHELL_SUBSTITUTION.test(command)).map(([name]) => name)).toEqual([]);
+	});
+
+	it("excludes from coverage only globs that match a file, since a stale entry is a false claim about the tree", () => {
+		const globs = [...(read("vitest.config.ts").match(COVERAGE_EXCLUDE)?.[1] ?? "").matchAll(QUOTED_GLOB)].map(
+			([, glob]) => glob,
+		);
+
+		expect(globs.length).toBeGreaterThan(0);
+		expect(globToRegExp("src/**/*.test.{ts,tsx}").test("src/a/b.test.tsx")).toBe(true);
+		expect(globToRegExp("src/**/types.ts").test("src/types.ts")).toBe(true);
+		expect(globToRegExp("src/data/**").test("src/database/a.ts")).toBe(false);
+		expect(globs.filter((glob) => !PROJECT_FILES.some((file) => globToRegExp(glob).test(file)))).toEqual([]);
+	});
+});
+
 describe("pinned versions", () => {
-	const pinned = CLAUDE_MD.split(NEWLINE).flatMap((line) => line.match(PINNED_RUNTIME)?.[1] ?? []);
+	const pinned = AGENTS_MD.split(NEWLINE).flatMap((line) => line.match(PINNED_RUNTIME)?.[1] ?? []);
 
 	it("names every runtime it pins", () => {
 		expect(pinned.sort()).toEqual(["Node", "pnpm"]);
 	});
 
 	it("quotes a version for none of them, since nothing here would keep one current", () => {
-		const section = CLAUDE_MD.match(VERSIONS_SECTION)?.[1] ?? "";
-		const quoting = section.split(NEWLINE).filter((line) => line.startsWith("- ") && QUOTED_VERSION.test(line));
+		const versions = section({ markdown: AGENTS_MD, heading: VERSIONS_HEADING });
+		const quoting = versions.split(NEWLINE).filter((line) => QUOTED_VERSION.test(line));
 
-		expect(section).not.toBe("");
+		expect(versions).not.toBe("");
 		expect(quoting).toEqual([]);
 	});
 
@@ -1920,6 +2698,91 @@ describe("pinned versions", () => {
 		expect(repinned).toEqual([]);
 	});
 });
+
+const YAML_FILE = /\.ya?ml$/;
+const GENERATED_YAML = new Set(["pnpm-lock.yaml"]);
+const USES_LINE = /^\s*(?:-\s+)?uses:\s*(\S+)(.*)$/;
+const SELF_REFERENCE = /^[$.]\//;
+const PINNED_TARGET = /^[\w.-]+\/[\w./-]+@[0-9a-f]{40}$/;
+const PIN_COMMENT = /^\s+#\s\S+$/;
+const YAML_DIRECTIVE = /^#\s*(?:zizmor|yaml-language-server):/;
+const RENOVATE_ANNOTATION = /^# Renovate security update: \S/;
+const RENOVATE_ANNOTATED_FILE = "pnpm-workspace.yaml";
+const BLOCK_SCALAR = /(?:^|[:-])\s+[|>][-+\d]*$/;
+const BARE_BLOCK_ITEM = /^\s*-\s+[|>]/;
+const YAML_LEAD = /^(\s*)(-\s+)?/;
+const QUOTE_OPENING = /(?:^|[:[{,-])\s*$/;
+
+const YAML_FILES = PROJECT_FILES.filter((file) => YAML_FILE.test(file) && !GENERATED_YAML.has(basename(file)));
+
+const unpinnedUses = (source: string): string[] =>
+	source.split(NEWLINE).flatMap((line) => {
+		const [, target, rest = ""] = line.match(USES_LINE) ?? [];
+
+		if (target === undefined || SELF_REFERENCE.test(target)) return [];
+
+		return PINNED_TARGET.test(target) && PIN_COMMENT.test(rest) ? [] : [target];
+	});
+
+const yamlCommentIn = (line: string): string | undefined => {
+	let quote: string | undefined;
+
+	for (let at = 0; at < line.length; at += 1) {
+		const character = line[at];
+
+		if (quote) {
+			if (character === "\\" && quote === '"') at += 1;
+			else if (character === quote) quote = undefined;
+		} else if ((character === '"' || character === "'") && QUOTE_OPENING.test(line.slice(0, at))) {
+			quote = character;
+		} else if (character === "#" && (at === 0 || line[at - 1] === " " || line[at - 1] === "\t")) {
+			return line.slice(at);
+		}
+	}
+
+	return undefined;
+};
+
+interface YamlComment {
+	line: number;
+	comment: string;
+}
+
+const yamlComments = (source: string): YamlComment[] => {
+	const comments: YamlComment[] = [];
+	let blockIndent: number | undefined;
+
+	for (const [index, line] of source.split(NEWLINE).entries()) {
+		const [, spaces = "", dash = ""] = line.match(YAML_LEAD) ?? [];
+
+		if (blockIndent !== undefined && (line.trim() === "" || spaces.length > blockIndent)) continue;
+
+		const comment = yamlCommentIn(line);
+		const code = (comment === undefined ? line : line.slice(0, line.length - comment.length)).trimEnd();
+
+		blockIndent = BLOCK_SCALAR.test(code) ? spaces.length + (BARE_BLOCK_ITEM.test(code) ? 0 : dash.length) : undefined;
+
+		if (comment !== undefined) comments.push({ line: index + 1, comment });
+	}
+
+	return comments;
+};
+
+interface AllowedYamlCommentParams {
+	file: string;
+	line: string;
+	comment: string;
+}
+
+const allowedYamlComment = ({ file, line, comment }: AllowedYamlCommentParams): boolean => {
+	const [, target] = line.match(USES_LINE) ?? [];
+
+	return (
+		(target !== undefined && PINNED_TARGET.test(target)) ||
+		YAML_DIRECTIVE.test(comment) ||
+		(file === RENOVATE_ANNOTATED_FILE && RENOVATE_ANNOTATION.test(comment))
+	);
+};
 
 describe("the workflows", () => {
 	const workflows = walk(".github/workflows").filter((file) => file.endsWith(".yml"));
@@ -1951,6 +2814,18 @@ describe("the workflows", () => {
 		expect(read(".github/workflows/cleanup-development.yml")).toMatch(CLEANUP_GROUP);
 	});
 
+	it("names every deploy with a --message of its own, so a long commit message cannot reach the annotation", () => {
+		const deploys = steps.flatMap(({ file, step }) =>
+			step
+				.split(NEWLINE)
+				.filter((line) => DEPLOY_COMMAND.test(line))
+				.map((line) => ({ file, line })),
+		);
+
+		expect(deploys.length).toBeGreaterThan(0);
+		expect(deploys.filter(({ line }) => !line.includes("--message")).map(({ file }) => file)).toEqual([]);
+	});
+
 	it("aggregates every gated job under Check, so the preview E2E run gates a merge", () => {
 		const needs = (read(".github/workflows/ci.yml").match(AGGREGATE_NEEDS)?.[1] ?? "")
 			.split(",")
@@ -1959,6 +2834,54 @@ describe("the workflows", () => {
 		expect(needs).toEqual(
 			expect.arrayContaining(["verify", "deploy-development", "e2e", "deploy-production", "smoke", "release"]),
 		);
+	});
+});
+
+describe("the YAML", () => {
+	it("pins every action of another repository to a full commit SHA, its version or branch in a trailing comment", () => {
+		const sha = "0".repeat(40);
+		const pinned = YAML_FILES.flatMap((file) =>
+			read(file)
+				.split(NEWLINE)
+				.filter((line) => USES_LINE.test(line) && line.includes("@")),
+		);
+		const unpinned = YAML_FILES.flatMap((file) => unpinnedUses(read(file)).map((target) => `${file}: ${target}`));
+
+		expect(unpinnedUses(`      - uses: actions/checkout@${sha} # v7.0.1`)).toEqual([]);
+		expect(unpinnedUses("      - uses: actions/checkout@v7")).toEqual(["actions/checkout@v7"]);
+		expect(unpinnedUses(`        uses: actions/checkout@${sha}`)).toEqual([`actions/checkout@${sha}`]);
+		expect(unpinnedUses("      - uses: $/.github/actions/prepare-env")).toEqual([]);
+		expect(pinned.length).toBeGreaterThan(0);
+		expect(unpinned).toEqual([]);
+	});
+
+	it("carries no comment but a SHA pin's version, a tool directive and the line Renovate writes above an entry it exempts", () => {
+		const commented = YAML_FILES.flatMap((file) => {
+			const lines = read(file).split(NEWLINE);
+
+			return yamlComments(read(file))
+				.filter(({ line, comment }) => !allowedYamlComment({ file, line: lines[line - 1], comment }))
+				.map(({ line, comment }) => `${file}:${line}: ${comment}`);
+		});
+		const scanned = (source: string) => yamlComments(source).map(({ line, comment }) => `${line}: ${comment}`);
+		const renovate = "# Renovate security update: astro@7.1.0";
+
+		expect(scanned("a: 1 # why\nb: '#kept'\nc: |\n  # content\nd: x#y\n")).toEqual(["1: # why"]);
+		expect(scanned("run: |\n  echo '#1' # shell\n  ### heading\nnext: 2 # why\n")).toEqual(["4: # why"]);
+		expect(scanned("- run: |\n    x # inside\n  shell: bash # why\n")).toEqual(["3: # why"]);
+		expect(scanned(`name: "a # b"\nurl: https://a.b/#c\n`)).toEqual([]);
+		expect(allowedYamlComment({ file: "a.yml", line: `uses: a/b@${"0".repeat(40)} # v1`, comment: "# v1" })).toBe(true);
+		expect(
+			allowedYamlComment({
+				file: "a.yml",
+				line: "# zizmor: ignore[artipacked]",
+				comment: "# zizmor: ignore[artipacked]",
+			}),
+		).toBe(true);
+		expect(allowedYamlComment({ file: RENOVATE_ANNOTATED_FILE, line: `  ${renovate}`, comment: renovate })).toBe(true);
+		expect(allowedYamlComment({ file: "a.yml", line: `  ${renovate}`, comment: renovate })).toBe(false);
+		expect(YAML_FILES).toContain(RENOVATE_ANNOTATED_FILE);
+		expect(commented).toEqual([]);
 	});
 });
 
@@ -1971,6 +2894,7 @@ const VERSIONED_DEPENDENCIES: Record<string, string[]> = {
 	tailwindcss: ["Tailwind", "Tailwind CSS"],
 	typescript: ["TypeScript"],
 	wrangler: ["wrangler", "Wrangler"],
+	zod: ["Zod", "zod"],
 };
 const escapeForRegExp = (name: string): string => name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const statedVersionPattern = (names: string[]): RegExp =>
@@ -1989,7 +2913,6 @@ const declaredIn = (manifests: { dependencies?: object; devDependencies?: object
 	new Set(manifests.flatMap((manifest) => Object.keys({ ...manifest.dependencies, ...manifest.devDependencies })));
 const POLICED_NAMES = policedNames({ declared: declaredIn([PACKAGE_JSON]), runtimes: ["Node", "Node.js", "pnpm"] });
 const STATED_VERSION = statedVersionPattern(POLICED_NAMES);
-const NARRATED_VERSIONS: Record<string, string[]> = { "AGENTS.md": ["Node 26.5.1", "pnpm 11.15.1"] };
 
 describe("stated versions", () => {
 	it("polices the runtimes and every versioned dependency the manifests declare, and nothing else", () => {
@@ -2005,15 +2928,12 @@ describe("stated versions", () => {
 		expect(POLICED_NAMES.filter((name) => namesOf(false).includes(name))).toEqual([]);
 	});
 
-	it("states the current version of nothing a bot moves, outside the ADRs", () => {
-		const documents = [...DOCS, "README.md", ".github/CONTRIBUTING.md"].filter(
+	it("states the current version of nothing a bot moves, outside the ADRs, which are dated", () => {
+		const documents = [...new Set([...DOCS, "README.md", ".github/CONTRIBUTING.md"])].filter(
 			(file) => !file.startsWith("docs/adr/") && existsSync(join(ROOT, file)),
 		);
 		const stated = documents.flatMap((file) =>
-			[...read(file).matchAll(STATED_VERSION)]
-				.map(([match]) => match)
-				.filter((match) => !(NARRATED_VERSIONS[file] ?? []).includes(match))
-				.map((match) => `${file}: ${match}`),
+			[...read(file).matchAll(STATED_VERSION)].map(([match]) => `${file}: ${match}`),
 		);
 
 		expect(documents.length).toBeGreaterThan(0);
@@ -2057,7 +2977,7 @@ describe("the release config parses the commit grammar commitlint accepts", () =
 		expect(wrong).toEqual([]);
 	});
 
-	it("commits the release under the release scope, and tells CI to leave it alone", () => {
+	it("commits the release, which commitlint never sees, under the release scope and [skip ci] so it starts no run", () => {
 		const wrong = configs.flatMap((file) => {
 			const { plugins } = readJson(file) as { plugins: ReleasePlugin[] };
 			const entry = plugins.find(
@@ -2073,7 +2993,7 @@ describe("the release config parses the commit grammar commitlint accepts", () =
 		expect(wrong).toEqual([]);
 	});
 
-	it("commits only the files a release rewrites", () => {
+	it("commits only the files a release rewrites, and a version bump never touches the lockfile", () => {
 		const listed = configs.flatMap((file) => {
 			const { plugins } = readJson(file) as { plugins: ReleasePlugin[] };
 			const entry = plugins.find(

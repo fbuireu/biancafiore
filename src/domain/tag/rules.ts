@@ -1,4 +1,5 @@
-import { type TagIndexBucket, type TagIndexEntryDTO, TagType } from "@domain/tag/types";
+import { DEFAULT_LOCALE_STRING } from "@const/locale";
+import { type TagIndexBucket, type TagIndexEntryDTO, TagType } from "./types";
 
 export function resolveSlugCollisions(entries: TagIndexEntryDTO[]): TagIndexEntryDTO[] {
 	const addressed = new Map<string, TagIndexEntryDTO>();
@@ -21,7 +22,7 @@ export function buildTagIndexBuckets(entries: TagIndexEntryDTO[]): TagIndexBucke
 	return Object.entries(grouped)
 		.map(([letter, bucket]) => ({
 			letter,
-			entries: (bucket ?? []).toSorted((first, second) => first.name.localeCompare(second.name)),
+			entries: (bucket ?? []).toSorted((first, second) => first.name.localeCompare(second.name, DEFAULT_LOCALE_STRING)),
 		}))
-		.toSorted((first, second) => first.letter.localeCompare(second.letter));
+		.toSorted((first, second) => first.letter.localeCompare(second.letter, DEFAULT_LOCALE_STRING));
 }

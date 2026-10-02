@@ -1,8 +1,8 @@
-import type { RawProject } from "@application/dto/project/types";
-import { createImage } from "@application/dto/shared/images";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { ProjectDTO } from "@domain/project";
 import { slugify } from "@shared/utils/strings";
+import { createImage } from "../shared/images";
+import type { RawProject } from "./types";
 
 export function createProjects(raw: RawProject[]): ProjectDTO[] {
 	return raw.map((rawProject): ProjectDTO => {

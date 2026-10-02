@@ -1,5 +1,5 @@
-import { isWithin } from "@modules/core/utils/pathname";
 import { describe, expect, it } from "vitest";
+import { isWithin } from "./pathname";
 
 describe("isWithin", () => {
 	it("matches a route against itself", () => {

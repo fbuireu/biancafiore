@@ -1,5 +1,5 @@
-import type { articleSchema } from "@domain/article/schema";
 import type { z } from "astro/zod";
+import type { articleSchema } from "./schema";
 
 export type ArticleDTO = z.infer<typeof articleSchema>;
 

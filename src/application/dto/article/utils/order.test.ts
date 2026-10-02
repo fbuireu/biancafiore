@@ -1,6 +1,6 @@
-import type { RawArticle } from "@application/dto/article/types";
-import { orderArticleReferences } from "@application/dto/article/utils/order";
 import { describe, expect, it } from "vitest";
+import type { RawArticle } from "../types";
+import { orderArticleReferences } from "./order";
 
 interface MakeArticleParams {
 	slug: string;
@@ -22,13 +22,13 @@ describe("orderArticleReferences", () => {
 		]);
 	});
 
-	it("puts the favourites first, whatever order they arrived in", () => {
+	it("puts the favorites first, whatever order they arrived in", () => {
 		const ordered = orderArticleReferences([
 			makeArticle({ slug: "newest", publishDate: "2026-01-01" }),
-			makeArticle({ slug: "old-favourite", publishDate: "2019-01-01", isFavorite: true }),
+			makeArticle({ slug: "old-favorite", publishDate: "2019-01-01", isFavorite: true }),
 		]);
 
-		expect(idsOf(ordered)).toEqual(["old-favourite", "newest"]);
+		expect(idsOf(ordered)).toEqual(["old-favorite", "newest"]);
 	});
 
 	it("orders the rest newest first", () => {
@@ -68,11 +68,11 @@ describe("orderArticleReferences", () => {
 		).toThrow("An Article reached the mapper with an unreadable publish date: not-a-date");
 	});
 
-	it("refuses an undated favourite too, since being one does not date it", () => {
+	it("refuses an undated favorite too, since being one does not date it", () => {
 		expect(() =>
 			orderArticleReferences([
 				makeArticle({ slug: "dated", publishDate: "2026-01-01" }),
-				makeArticle({ slug: "undated-favourite", publishDate: null, isFavorite: true }),
+				makeArticle({ slug: "undated-favorite", publishDate: null, isFavorite: true }),
 			]),
 		).toThrow("An Article reached the mapper with an unreadable publish date");
 	});

@@ -4,7 +4,9 @@ Date: 2026-09-12
 
 ## Status
 
-Accepted.
+Accepted. Amended 2026-10-02: a context value that cannot be serialised is written as `"[unserializable]"`
+instead of costing the line, and the whole call, `logError`'s description of the error included, sits inside the
+`try`, for the reason the Consequences now record.
 
 ## Context
 
@@ -42,9 +44,9 @@ The top level and both `[env.*]` blocks each declare `enabled`, `redact_query_st
 `biancafiore-web-<stage>-traces`, the `<repo>-<package>-<stage>-<signal>` shape both siblings use. The top level is
 production's twin, block for block, so a bare `wrangler deploy` cannot reach the development source.
 
-[`src/infrastructure/logging/contract.ts`](../../src/infrastructure/logging/contract.ts) and
-[`logger.ts`](../../src/infrastructure/logging/logger.ts) are **byte for byte what the siblings carry**, bar
-`LOG_SERVICE` and the alias this tree's import convention wants. One `write` serialises the context, the service, the level and the message, and hands it to
+[`src/infrastructure/logging/logger.ts`](../../src/infrastructure/logging/logger.ts) is **byte for byte what the
+siblings carry**, and [`contract.ts`](../../src/infrastructure/logging/contract.ts) differs from theirs only in
+`LOG_SERVICE`. One `write` serialises the context, the service, the level and the message, and hands it to
 `console[level]`. The spread order is load-bearing: context first, so a caller cannot relabel its own line, which
 was a real bug in forever-pto before it was a rule anywhere.
 
@@ -76,8 +78,11 @@ everywhere, which would delete the compile-time signal with nothing to replace i
   all three at once.
 - **The structured fields are parsed by the sink rather than received as fields**, because the line is serialised
   here. If a field stops being queryable, the answer is the sink's parsing rather than the caller.
-- **A log call cannot fail its caller.** The guarantee belongs to the `try` around `JSON.stringify`, which throws on
-  a circular reference or a `BigInt`. A caller passing either loses the line instead of taking down a request.
+- **A log call cannot fail its caller, and it does not lose its line.** Every method runs inside one `try`, so a
+  console that throws, or an error `logError` cannot describe, never reaches the caller. `JSON.stringify` throws on a
+  circular reference or a `BigInt`, so each context value is tried on its own and one it cannot write is written as
+  `"[unserializable]"`: the line still reaches the sink with its service, level, message and every other field. A
+  line that vanished took the one record of a failure with it, which is the opposite of what the sink is for.
 - **`console` is the transport, so the `noConsole` exemption is structural rather than a concession.** `biome.json`
   scopes it to `logger.ts` and nothing else, exactly as both siblings do, and it must not widen.
 - **`redacted` and `redact_query_string` are not the same control.** The wrangler setting redacts the *request* URL

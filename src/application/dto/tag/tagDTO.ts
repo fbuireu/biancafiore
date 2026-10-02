@@ -1,8 +1,8 @@
-import type { RawArticle } from "@application/dto/article/types";
-import type { RawAuthor } from "@application/dto/author/types";
-import type { RawTag } from "@application/dto/tag/types";
-import { getAuthors, getTags } from "@application/dto/tag/utils/tags";
 import { resolveSlugCollisions, type TagIndexEntryDTO } from "@domain/tag";
+import type { RawArticle } from "../article/types";
+import type { RawAuthor } from "../author/types";
+import type { RawTag } from "./types";
+import { getAuthors, getTags } from "./utils/tags";
 
 export interface CreateTagIndexParams {
 	rawTags: RawTag[];

@@ -6,8 +6,9 @@ Cloudflare Workers with content served from Contentful, and that split decides w
 commit.
 
 If you want the shape of the codebase, that is [AGENTS.md](../AGENTS.md) and the nested guides it links. If
-you want the vocabulary, that is [CONTEXT.md](../CONTEXT.md). If you want the *why*, that is
-[docs/adr/](../docs/adr/).
+you want how code here is written, and what a review holds a diff to, that is
+[CODING_STANDARDS.md](../CODING_STANDARDS.md). If you want the vocabulary, that is [CONTEXT.md](../CONTEXT.md).
+If you want the *why*, that is [docs/adr/](../docs/adr/).
 
 ## Code of Conduct
 
@@ -42,8 +43,8 @@ already being talked about.
 Use the [documentation template](ISSUE_TEMPLATE/documentation.yml), or just open a pull request. The
 user-facing documentation is the [wiki](../docs/wiki/), edited **in this repository** and published by
 [`sync-wiki.yml`](./workflows/sync-wiki.yml) on every push touching it, so an edit made in the wiki UI is
-overwritten on the next sync. The agent-facing guides (`AGENTS.md` and friends) are held to the code by a
-test, so read *The docs are part of the change* below before editing one.
+overwritten on the next sync. The agent-facing guides (`AGENTS.md` and friends) and `CODING_STANDARDS.md` are
+held to the code by a test, so read *The docs are part of the change* below before editing one.
 
 ## Getting started
 
@@ -85,23 +86,16 @@ pnpm verify             # format check, typecheck, astro check and coverage: wha
 
 Husky runs lint-staged on `pre-commit`, commitlint on `commit-msg` and `pnpm verify:changed` on `pre-push`.
 The hook runs the changed-only variant rather than `verify` because the coverage floor and a subset run
-cannot both hold; CI runs the full `pnpm verify` on the pushed sha, so a push whose coverage dropped still
-fails its check. [AGENTS.md](../AGENTS.md) explains the trade.
+cannot both hold: `coverage.include` spans all of `src`, so a file no test loaded reports as zero and drags a
+subset under the floor on a clean tree. CI runs the full `pnpm verify` on the pushed sha, so a push whose
+coverage dropped still fails its check. The variant ends with `pnpm test:docs`, because the docs test reads
+documents and stylesheets from disk rather than importing them, and a changed-only run would skip it.
 
-## Conventions that will bite you if you skip them
+## Code conventions
 
-- **Use the glossary's words.** [CONTEXT.md](../CONTEXT.md) names one canonical term per concept. A
-  variable named after a retired term is a defect, not a style preference.
-- **No code comments.** Rationale belongs in commit messages, pull requests, an ADR or the folder's guide,
-  not inline.
-- **One argument is positional and two or more are a single object typed `<FunctionName>Params`**:
-  `isWithin({ pathname, route }: IsWithinParams)`. The exception is a function a runtime calls back, such
-  as a `sort` comparator, which is handed its arguments one at a time.
-- **No Biome suppressions.** Fix the root cause instead of `biome-ignore`. `noConsole` is an error
-  everywhere but the log transport: log through `LoggerService` or the `logger` import.
-- **Design tokens over magic numbers**, and respect the CSS `@layer` order; cascade correctness depends on
-  it. Details in the styles guide under [`src/ui/styles/`](../src/ui/styles).
-- **Cross-layer imports use the path aliases; same-folder imports stay relative.**
+How code here is written is [CODING_STANDARDS.md](../CODING_STANDARDS.md), the file a review holds a diff to. It
+opens with what Biome, the type checkers and the tests already enforce; the rules after that are the ones a
+reviewer checks by hand.
 
 ## Commit rules
 

@@ -1,7 +1,7 @@
 import { CONTACT_DETAILS } from "@const/const";
-import { EmailError } from "@infrastructure/errors";
 import { Context, Effect, Layer } from "effect";
 import { Resend } from "resend";
+import { EmailError } from "../errors";
 
 const CONTACT_FORM_CATEGORY = "web_contact_form";
 const UNKNOWN_FAILURE_MESSAGE = "Something went wrong while sending the email";

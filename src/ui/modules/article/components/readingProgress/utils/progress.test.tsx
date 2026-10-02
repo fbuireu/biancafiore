@@ -1,5 +1,5 @@
-import { initReadingProgress } from "@modules/article/components/readingProgress/utils/progress";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { initReadingProgress } from "./progress";
 
 const MARKUP = '<div class="article-wrapper"></div><div class="reading-progress"></div>';
 

@@ -1,4 +1,4 @@
-import type { CityPeriod } from "@domain/city/types";
+import type { CityPeriod } from "./types";
 
 const OPEN_END_LABEL = "Present";
 

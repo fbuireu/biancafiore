@@ -1,5 +1,5 @@
-import { motionTimeScale } from "@modules/core/utils/motion";
 import { gsap, Power2, Power3, Power4 } from "gsap";
+import { motionTimeScale } from "../../../utils/motion";
 
 const BACKGROUND_OBSERVER_SELECTORS = {
 	HEADER: ".header",

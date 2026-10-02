@@ -20,37 +20,49 @@
 	}
 
 	.project-image-wrapper {
-		animation: in-and-out both linear;
-		animation-timeline: --project;
 		height: var(--info-size);
 		inset-block-start: 0;
 		inset-inline: 0;
 		position: sticky;
 
 		@container projects-page (width >= 768px) {
-			animation: brighten both linear;
-			animation-range: entry 0% entry 50%;
-			animation-timeline: --project;
 			height: 100dvh;
 			inset-block: 0;
 			inset-inline: 40% 0;
 			position: fixed;
 		}
+
+		@supports (animation-timeline: view()) {
+			animation: in-and-out both linear;
+			animation-timeline: --project;
+
+			@container projects-page (width >= 768px) {
+				animation: brighten both linear;
+				animation-range: entry 0% entry 50%;
+				animation-timeline: --project;
+			}
+		}
 	}
 
 	.project-image {
-		animation: filter-out both linear;
-		animation-range: exit 0% cover 100%;
-		animation-timeline: --project;
 		height: calc(100dvh - var(--info-size));
 		object-fit: cover;
 		width: 100%;
 
 		@container projects-page (width >= 768px) {
-			animation: clip-out both linear;
-			animation-range: exit 0% exit 100%;
-			animation-timeline: --project;
 			height: 100%;
+		}
+
+		@supports (animation-timeline: view()) {
+			animation: filter-out both linear;
+			animation-range: exit 0% cover 100%;
+			animation-timeline: --project;
+
+			@container projects-page (width >= 768px) {
+				animation: clip-out both linear;
+				animation-range: exit 0% exit 100%;
+				animation-timeline: --project;
+			}
 		}
 	}
 

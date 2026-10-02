@@ -1,13 +1,13 @@
 ---
 import { GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
-import { DEFAULT_LOCALE_STRING, PAGES_ROUTES, tagHref } from "@const/index";
+import { DEFAULT_LOCALE_STRING, PAGES_ROUTES, SITE_AUTHOR_SLUG, tagHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
-import Footer from "@modules/core/components/footer/Footer.astro";
-import Head from "@modules/core/components/head/Head.astro";
-import Header from "@modules/core/components/header/Header.astro";
-import ScrollTop from "@modules/core/components/scrollTop/ScrollTop.astro";
-import { getPage } from "@modules/core/utils/page";
-import { siteChrome } from "@modules/core/utils/siteChrome";
+import { getPage } from "../../utils/page";
+import { siteChrome } from "../../utils/siteChrome";
+import Footer from "../footer/Footer.astro";
+import Head from "../head/Head.astro";
+import Header from "../header/Header.astro";
+import ScrollTop from "../scrollTop/ScrollTop.astro";
 
 type Props = Partial<SeoMetadata>;
 
@@ -34,7 +34,7 @@ const { showsHeader, servesRealContent } = siteChrome(Astro.url);
             <div style="text-align:center;margin-top:40vh">
               <h1 style="font-size:52px;margin:0">Site under construction<br />We'll be back soon</h1>
               <p style="margin-top:1.5rem;font-size:18px">
-                In the meantime, you can read what I've already written: browse <a href={PAGES_ROUTES.TAGS} style="color:var(--primary-main);text-decoration:underline">all the tags</a> or head straight to <a href={tagHref("bianca-fiore")} style="color:var(--primary-main);text-decoration:underline">Bianca Fiore</a>.
+                In the meantime, you can read what I've already written: browse <a href={PAGES_ROUTES.TAGS} style="color:var(--primary-main);text-decoration:underline">all the tags</a> or head straight to <a href={tagHref(SITE_AUTHOR_SLUG)} style="color:var(--primary-main);text-decoration:underline">Bianca Fiore</a>.
               </p>
             </div>
           )

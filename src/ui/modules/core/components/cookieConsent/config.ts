@@ -1,4 +1,5 @@
 import { PAGES_ROUTES } from "@const/index";
+import type { CookieConsentConfig } from "vanilla-cookieconsent";
 import {
 	ANALYTICS_CATEGORY,
 	BETTER_STACK_COOKIES,
@@ -6,8 +7,7 @@ import {
 	CONSENT_COOKIE_NAME,
 	CONSENT_REVISION,
 	NECESSARY_CATEGORY,
-} from "@modules/core/components/cookieConsent/utils/consentGate";
-import type { CookieConsentConfig } from "vanilla-cookieconsent";
+} from "./utils/consentGate";
 import { updatePreferences } from "./utils/preferences";
 
 export const config: CookieConsentConfig = {

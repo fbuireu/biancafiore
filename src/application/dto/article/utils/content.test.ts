@@ -1,6 +1,6 @@
-import type { RawArticle } from "@application/dto/article/types";
-import { renderArticleContent } from "@application/dto/article/utils/content";
 import { describe, expect, it, vi } from "vitest";
+import type { RawArticle } from "../types";
+import { renderArticleContent } from "./content";
 
 vi.mock("astro:content", () => ({ reference: () => ({ parse: (value: unknown) => value }) }));
 
@@ -45,7 +45,7 @@ describe("renderArticleContent headings", () => {
 		expect(headings.map(({ text: value }) => value)).toEqual(["Third", "First", "Second"]);
 	});
 
-	it("renders an h1 but collects nothing for it, so the page title stays out of the outline", () => {
+	it("renders an h1 but collects nothing for it, so the page title stays out of the Table of Contents", () => {
 		const { content, headings } = renderArticleContent(
 			makeArticle([heading({ level: 1, value: "Title" }), heading({ level: 2, value: "Section" })]),
 		);
@@ -98,10 +98,10 @@ describe("renderArticleContent headings", () => {
 	});
 });
 
-const hyperlink = (uri: string, label = "a link") => ({
+const hyperlink = (uri: string) => ({
 	nodeType: "hyperlink",
 	data: { uri },
-	content: [text(label)],
+	content: [text("a link")],
 });
 
 interface EmbedParams {
@@ -128,10 +128,10 @@ const entryHyperlink = ({ contentType, fields, label = "read this" }: EntryHyper
 	content: [text(label)],
 });
 
-const assetHyperlink = (file: unknown, label = "the file") => ({
+const assetHyperlink = (file: unknown) => ({
 	nodeType: "asset-hyperlink",
 	data: { target: { fields: { file } } },
-	content: [text(label)],
+	content: [text("the file")],
 });
 
 interface AssetParams {
@@ -194,6 +194,17 @@ describe("renderArticleContent embedded articles", () => {
 		expect(html).toContain('<a href="/articles/a-piece">A piece</a>');
 	});
 
+	it("links an embedded Article by its trimmed slug, the id its page is generated from", () => {
+		const html = render([
+			{
+				...paragraph("x"),
+				content: [embed({ contentType: "article", fields: { slug: "  a-piece  ", title: "A piece" }, inline: true })],
+			},
+		]);
+
+		expect(html).toContain('<a href="/articles/a-piece">A piece</a>');
+	});
+
 	it("renders nothing for an embedded entry that is not an Article", () => {
 		const html = render([
 			{
@@ -231,6 +242,14 @@ describe("renderArticleContent entry and asset hyperlinks", () => {
 	it("addresses an Article an editor linked by its slug", () => {
 		const html = render([
 			{ ...paragraph("x"), content: [entryHyperlink({ contentType: "article", fields: { slug: "a-piece" } })] },
+		]);
+
+		expect(html).toContain('<a href="/articles/a-piece">read this</a>');
+	});
+
+	it("addresses a linked Article by its trimmed slug, the id its page is generated from", () => {
+		const html = render([
+			{ ...paragraph("x"), content: [entryHyperlink({ contentType: "article", fields: { slug: " a-piece " } })] },
 		]);
 
 		expect(html).toContain('<a href="/articles/a-piece">read this</a>');

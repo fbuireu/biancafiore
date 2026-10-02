@@ -10,16 +10,17 @@ Editorial content is authored in Contentful and reaches the site as typed domain
 |---|---|
 | **Article** | A single piece of long-form writing: title, body, author, publish date, topical Tags. The core unit of the Blog |
 | **Blog** | The collection of all Articles, and the section that lists them. Never a single piece |
-| **Project** | A typology of work rather than a single deliverable, shown in the portfolio. Titled "Disciplines" in reader-facing copy |
-| **Testimonial** | A short attributed quote of praise, with role and photo, used as social proof |
+| **Project** | A typology of work rather than a single deliverable, shown in the portfolio. Counted as "Disciplines" in reader-facing copy |
+| **Testimonial** | A short quote of praise attributed to a Quotee, with their role and photo, used as social proof |
+| **Quotee** | The named person a Testimonial quotes. Never an Author: an Author writes Articles |
 | **Author** | The person credited with an Article. One Author is one Slug: the name is a display label, so two Authors sharing a name are still two Authors |
 | **City** | A place the Author has lived, with a Period, coordinates, description and image, plotted on the About page |
 | **Tag** | A topic label attached to Articles, identified by a name and a slug |
 | **Author Tag** | An Author surfaced inside the Tag Index as if they were a Tag. One Slug addresses one page, so a collision with a topical Tag yields to the Tag |
-| **Featured Article** | The reader-facing hero of the Blog |
+| **Featured Article** | The Article the Blog leads with, chosen for the reader |
 | **Favorite** | The Author's own pick, which sorts to the top. Separate from Featured, and chosen for a different reason |
 
-Concept names are binding. A folder, field or rule whose name disagrees with the glossary is a bug in one of the two.
+Code is named after these terms; [`CODING_STANDARDS.md`](https://github.com/fbuireu/biancafiore/blob/main/CODING_STANDARDS.md) holds a review to it.
 
 ---
 
@@ -50,13 +51,13 @@ Some things are worth knowing about that path.
 
 **Bad data fails the build rather than degrading a page.** A malformed publish date, an unresolved author link or an Original Source the Republished flag would hide are refused where they are mapped. One entry taking the build down is the deliberate trade: the alternative is one page quietly rendering wrong.
 
-**Identity is stated per concept.** Articles, Tags and Authors are keyed on their slug; Cities on their name, because a City's slug is derived from it and the two are one identity; Projects on the id their mapper derives; Testimonials on the quoted person's name, because a Testimonial has no other identifier. That last one has a known cost: two quotes from one person would collapse. It is recorded rather than fixed with an id the CMS does not have.
+**Identity is stated per concept.** Articles, Tags and Authors are keyed on their slug; Cities on their name, because a City's slug is derived from it and the two are one identity; Projects on the id their mapper derives; Testimonials on the Quotee's name, because a Testimonial has no other identifier. That last one has a known cost: two quotes from one person would collapse. It is recorded rather than fixed with an id the CMS does not have.
 
 ---
 
 ## Republished writing
 
-An Article can carry an `isRepublished` flag and an `originalSource`. They are two independent Contentful fields and only one of them the banner reads, so a source named without the flag would go nowhere and an editor would get no signal. One rule pairs them, which is why naming a source without ticking the flag is refused rather than ignored.
+An Article can carry an `isRepublished` flag and an `originalSource`. They are two independent Contentful fields, and the banner crediting the source shows only when the flag is set. One rule pairs them, so naming a source without ticking the flag fails the build rather than crediting nothing.
 
 ---
 

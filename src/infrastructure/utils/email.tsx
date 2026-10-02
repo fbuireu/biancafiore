@@ -1,11 +1,13 @@
 import { CONTACT_DETAILS, DEFAULT_LOCALE_STRING } from "@const/index";
 import type { Except } from "@const/types";
-import { ContactNotificationEmail } from "@infrastructure/email/ContactNotificationEmail";
-import { EmailClient } from "@infrastructure/email/server";
-import type { EmailError } from "@infrastructure/errors";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
 import { render } from "react-email";
+import { ContactNotificationEmail } from "../email/ContactNotificationEmail";
+import { EmailClient } from "../email/server";
+import type { EmailError } from "../errors";
+
+type CreateEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
 type SendEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
@@ -14,7 +16,7 @@ interface ContactEmailContent {
 	text: string;
 }
 
-export async function createEmail({ name, email, message }: SendEmailParams): Promise<ContactEmailContent> {
+export async function createEmail({ name, email, message }: CreateEmailParams): Promise<ContactEmailContent> {
 	const date = new Date().toLocaleString(DEFAULT_LOCALE_STRING);
 	const subject = encodeURIComponent(`Re: ${CONTACT_DETAILS.EMAIL_SUBJECT} from biancafiore.me`);
 	const mailTo = `mailto:${email}?subject=${subject}`;

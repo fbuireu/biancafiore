@@ -1,8 +1,8 @@
-import { getImagePlaceholders } from "@infrastructure/images/imagePlaceholder";
 import { imageDouble, imagesDouble } from "@tests/doubles/network";
 import { describe, expect, it } from "vitest";
+import { getImagePlaceholders } from "./imagePlaceholder";
 
-const SOURCE = "https://images.ctfassets.net/space/asset/hero.jpg";
+const SOURCE = "https://images.ctfassets.net/space/asset/image.jpg";
 const PLACEHOLDER_URL = `${SOURCE}?w=24&q=35&fm=webp`;
 
 const BYTES = new Uint8Array([82, 73, 70, 70]);
@@ -11,7 +11,7 @@ const DATA_URL = `data:image/webp;base64,${Buffer.from(BYTES).toString("base64")
 const PLACEHOLDER_CONCURRENCY = 6;
 
 const sources = (count: number) =>
-	Array.from({ length: count }, (_, index) => `https://images.ctfassets.net/space/asset/hero-${index}.jpg`);
+	Array.from({ length: count }, (_, index) => `https://images.ctfassets.net/space/asset/image-${index}.jpg`);
 
 describe("getImagePlaceholders", () => {
 	it("requests a 24 pixel wide webp derivative at quality 35", async () => {
@@ -77,7 +77,7 @@ describe("getImagePlaceholders", () => {
 	it("gives up on a source the platform cannot even turn into a request", async () => {
 		const cdn = imageDouble({ url: SOURCE, bytes: BYTES.buffer });
 
-		await expect(getImagePlaceholders(["/local/hero.jpg"])).resolves.toStrictEqual(new Map());
+		await expect(getImagePlaceholders(["/local/image.jpg"])).resolves.toStrictEqual(new Map());
 		expect(cdn.calls).toEqual([]);
 	});
 

@@ -1,4 +1,3 @@
-import type { RawArticle } from "@application/dto/article/types";
 import { articleHref, isTagPath } from "@const/index";
 import { documentToHtmlString, type Next, type RenderNode } from "@contentful/rich-text-html-renderer";
 import type { Block, Text } from "@contentful/rich-text-types";
@@ -7,6 +6,9 @@ import { type ArticleHeading, isTableOfContentsHeading } from "@domain/article";
 import { getOptimizedImageUrl, getOptimizedSrcset } from "@infrastructure/images/imageOptimization";
 import { escapeHtml, safeUrl, slugify } from "@shared/utils/strings";
 import { z } from "astro/zod";
+import { assetFileSchema } from "../../shared/images";
+import type { RawArticle } from "../types";
+import { articleSlug } from "./reference";
 
 export const IMAGE_EMBED_LAYOUT = {
 	FULL_BLEED: "fullBleed",
@@ -17,6 +19,7 @@ const IMAGE_WRAPPER_CLASS: Record<ImageEmbedLayout, string> = {
 	[IMAGE_EMBED_LAYOUT.BREAKOUT]: "breakout",
 };
 const HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
+const PRODUCTION_HOSTNAME = "biancafiore.me";
 
 type ImageEmbedLayout = (typeof IMAGE_EMBED_LAYOUT)[keyof typeof IMAGE_EMBED_LAYOUT];
 
@@ -34,22 +37,17 @@ const entrySchema = <Fields extends z.ZodObject>(fields: Fields) =>
 
 const embeddedArticleSchema = entrySchema(z.object({ slug: z.string().optional(), title: z.string().optional() }));
 
-const assetFileSchema = z.object({
-	url: z.string().min(1),
-	details: z
-		.object({ image: z.object({ width: z.number().optional(), height: z.number().optional() }).optional() })
-		.optional(),
-});
+const richTextFileSchema = assetFileSchema.extend({ url: z.string().min(1) });
 
-const linkedAssetSchema = z.object({ target: z.object({ fields: z.object({ file: assetFileSchema }) }) });
+const linkedAssetSchema = z.object({ target: z.object({ fields: z.object({ file: richTextFileSchema }) }) });
 
 const embeddedAssetSchema = z.object({
-	target: z.object({ fields: z.object({ file: assetFileSchema, description: z.string().optional() }) }),
+	target: z.object({ fields: z.object({ file: richTextFileSchema, description: z.string().optional() }) }),
 });
 
 const embeddedImageSchema = z.object({
 	fields: z.object({
-		file: assetFileSchema,
+		file: richTextFileSchema,
 		description: z.string().optional(),
 		title: z.string().optional(),
 	}),
@@ -149,8 +147,8 @@ function renderOptions({ rawArticle, collected }: RenderOptionsParams): RenderOp
 				}
 
 				const { uri } = data;
-				const { hostname, pathname } = new URL(uri, "https://biancafiore.me");
-				const isExternal = hostname !== "biancafiore.me";
+				const { hostname, pathname } = new URL(uri, `https://${PRODUCTION_HOSTNAME}`);
+				const isExternal = hostname !== PRODUCTION_HOSTNAME;
 				const isTagPage = isTagPath(pathname);
 
 				if (isExternal) {
@@ -170,7 +168,7 @@ function renderOptions({ rawArticle, collected }: RenderOptionsParams): RenderOp
 				const { slug, title } = data.target.fields;
 
 				if (contentTypeId === "article" && slug && title) {
-					return `<a href="${escapeHtml(articleHref(slug))}">${escapeHtml(title)}</a>`;
+					return `<a href="${escapeHtml(articleHref(articleSlug(data.target)))}">${escapeHtml(title)}</a>`;
 				}
 				return "";
 			},
@@ -183,7 +181,7 @@ function renderOptions({ rawArticle, collected }: RenderOptionsParams): RenderOp
 				const { slug } = data.target.fields;
 
 				if (contentTypeId === "article" && slug) {
-					return `<a href="${escapeHtml(articleHref(slug))}">${next(content)}</a>`;
+					return `<a href="${escapeHtml(articleHref(articleSlug(data.target)))}">${next(content)}</a>`;
 				}
 				return next(content);
 			},

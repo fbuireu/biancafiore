@@ -32,12 +32,13 @@ An Astro SSR site on Cloudflare Workers, with editorial content authored in Cont
 
 ## Where The Rules Live
 
-This wiki is the shape, not the rules. Anything normative lives in the repository beside the code it governs, and a test asserts it: restating it here would be another copy that nothing checks.
+This wiki is the shape, not the rules. Anything normative lives in the repository, where a test asserts what it can: restating it here would be another copy that nothing checks.
 
 | Question | Where |
 |---|---|
 | What does a domain word mean, and what does it displace? | [`CONTEXT.md`](https://github.com/fbuireu/biancafiore/blob/main/CONTEXT.md) |
-| What rule does one folder obey? | the `AGENTS.md` inside that folder |
+| How is code written here, and what does a review hold a diff to? | [`CODING_STANDARDS.md`](https://github.com/fbuireu/biancafiore/blob/main/CODING_STANDARDS.md) |
+| What does someone editing one folder need to know? | the `AGENTS.md` inside that folder |
 | Why was a decision made this way? | [`docs/adr/`](https://github.com/fbuireu/biancafiore/tree/main/docs/adr) |
 | What is known-broken or deliberately deferred? | [`docs/BACKLOG.md`](https://github.com/fbuireu/biancafiore/blob/main/docs/BACKLOG.md) |
 | How do I contribute? | [`CONTRIBUTING.md`](https://github.com/fbuireu/biancafiore/blob/main/.github/CONTRIBUTING.md) |

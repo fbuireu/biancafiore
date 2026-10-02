@@ -7,9 +7,9 @@ import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import ErrorLayer from "@modules/core/components/errorLayer/ErrorLayer.astro";
 import "./_404.css";
 
-const MAX_SUGGESTED_ARTICLES = 3;
+const MAX_ARTICLES = 3;
 
-const articles = (await getCollection("articles")).slice(0, MAX_SUGGESTED_ARTICLES);
+const articles = (await getCollection("articles")).slice(0, MAX_ARTICLES);
 
 const title = "404: Not Found";
 const description = "It seems you've stumbled upon a page that doesn't exist.";

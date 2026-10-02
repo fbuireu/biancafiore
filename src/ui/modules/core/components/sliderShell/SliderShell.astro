@@ -39,7 +39,6 @@ const dots = hasDots ? Array.from({ length: slideCount }, (_, index) => index) :
 				<button
 					class:list={["slider__dot clickable", { "slider__dot--active": index === 0 }]}
 					type="button"
-					data-index={index}
 					aria-label={`Go to slide ${index + 1}`}
 				/>
 			))}
@@ -49,7 +48,7 @@ const dots = hasDots ? Array.from({ length: slideCount }, (_, index) => index) :
 </div>
 
 <script>
-	import { initSlider } from "@modules/core/components/sliderShell/utils/slider";
+	import { initSlider } from "./utils/slider";
 
 	document.addEventListener('astro:page-load', () => {
 		document.querySelectorAll<HTMLElement>('.slider-wrapper[data-has-buttons="true"]').forEach(initSlider);

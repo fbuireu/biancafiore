@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
-import { toArticleCardContent } from "@modules/core/components/articleCard/utils/card";
 import { describe, expect, it } from "vitest";
+import { toArticleCardContent } from "./card";
 
 const tag = (name: string) => ({ slug: name.toLowerCase(), name });
 

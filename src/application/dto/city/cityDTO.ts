@@ -1,7 +1,7 @@
-import type { RawCity } from "@application/dto/city/types";
-import { createImage } from "@application/dto/shared/images";
 import { type CityDTO, createPeriod } from "@domain/city";
 import { slugify } from "@shared/utils/strings";
+import { createImage } from "../shared/images";
+import type { RawCity } from "./types";
 
 export function createCities(raw: RawCity[]): CityDTO[] {
 	return raw.map((rawCity): CityDTO => {

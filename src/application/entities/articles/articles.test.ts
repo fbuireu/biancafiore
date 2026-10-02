@@ -1,9 +1,9 @@
-import type { RawArticle } from "@application/dto/article/types";
-import { articles } from "@application/entities/articles/articles";
 import { CmsError } from "@infrastructure/errors";
 import { cmsAnswers, cmsFailsWith, cmsQueries, resetCms } from "@tests/doubles/cmsLayer";
 import { imageDouble } from "@tests/doubles/network";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { RawArticle } from "../../dto/article/types";
+import { articles } from "./articles";
 
 vi.mock("astro:content", async () => {
 	const { z } = await import("astro/zod");
@@ -101,18 +101,18 @@ describe("articles loader", () => {
 		expect(entry).toMatchObject({ id: "an-article", slug: "an-article" });
 	});
 
-	it("puts the favourites first and orders the rest newest first, whatever order Contentful answered in", async () => {
+	it("puts the favorites first and orders the rest newest first, whatever order Contentful answered in", async () => {
 		cmsAnswers({
 			article: [
 				makeArticle({ slug: "middle", publishDate: "2024-03-01" }),
-				makeArticle({ slug: "old-favourite", publishDate: "2023-01-01", isFavorite: true }),
+				makeArticle({ slug: "old-favorite", publishDate: "2023-01-01", isFavorite: true }),
 				makeArticle({ slug: "newest", publishDate: "2024-05-01" }),
 			],
 		});
 
 		const entries = await load();
 
-		expect(entries.map((entry) => entry.id)).toEqual(["old-favourite", "newest", "middle"]);
+		expect(entries.map((entry) => entry.id)).toEqual(["old-favorite", "newest", "middle"]);
 	});
 
 	it("attaches a blur placeholder to the featured image after the DTO has run", async () => {
@@ -121,7 +121,7 @@ describe("articles loader", () => {
 				makeArticle({
 					slug: "illustrated",
 					publishDate: "2024-03-15",
-					featuredImage: image("//images.ctfassets.net/hero.jpg"),
+					featuredImage: image("//images.ctfassets.net/featured.jpg"),
 				}),
 			],
 		});
@@ -129,10 +129,10 @@ describe("articles loader", () => {
 		const [entry] = await load();
 
 		expect(entry.featuredImage).toMatchObject({
-			url: "https://images.ctfassets.net/hero.jpg",
+			url: "https://images.ctfassets.net/featured.jpg",
 			placeholder: PLACEHOLDER,
 		});
-		expect(cdn.calls).toStrictEqual(["https://images.ctfassets.net/hero.jpg?w=24&q=35&fm=webp"]);
+		expect(cdn.calls).toStrictEqual(["https://images.ctfassets.net/featured.jpg?w=24&q=35&fm=webp"]);
 	});
 
 	it("leaves an article without a featured image without one, rather than inventing a placeholder", async () => {

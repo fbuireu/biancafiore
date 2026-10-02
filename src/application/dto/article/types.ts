@@ -1,6 +1,6 @@
-import type { AuthorSkeleton } from "@application/dto/author/types";
-import type { TagSkeleton } from "@application/dto/tag/types";
 import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { AuthorSkeleton } from "../author/types";
+import type { TagSkeleton } from "../tag/types";
 
 export type ArticleSkeleton = EntrySkeletonType<
 	{

@@ -1,7 +1,7 @@
-import { CmsError } from "@infrastructure/errors";
 import type { EntryCollection, EntrySkeletonType } from "contentful";
 import * as contentful from "contentful";
 import { Context, Effect, Layer } from "effect";
+import { CmsError } from "../errors";
 
 type ContentfulClient = ReturnType<typeof contentful.createClient>;
 

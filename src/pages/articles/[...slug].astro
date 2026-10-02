@@ -37,6 +37,7 @@ export async function getStaticPaths() {
 }
 
 const { article } = Astro.props;
+const tagNames = article.data.tags?.map(({ name }) => name);
 const metadata: Partial<SeoMetadata> = {
 	title: article.data.title,
 	description: article.data.description,
@@ -44,7 +45,7 @@ const metadata: Partial<SeoMetadata> = {
 	publishedTime: article.data.publishDateISO,
 	modifiedTime: article.data.updatedAt,
 	author: article.data.author.name,
-	tags: article.data.tags?.map((tag: { name: string }) => tag.name),
+	tags: tagNames,
 	...(article.data.featuredImage && {
 		image: article.data.featuredImage.url,
 		imageWidth: article.data.featuredImage.details.width,
@@ -69,7 +70,7 @@ const blogPostingSchema = buildBlogPostingSchema({
 		name: article.data.author.name,
 		path: PAGES_ROUTES.HOME,
 	},
-	keywords: article.data.tags?.map((tag: { name: string }) => tag.name),
+	keywords: tagNames,
 });
 ---
 <BaseLayout {...metadata}>

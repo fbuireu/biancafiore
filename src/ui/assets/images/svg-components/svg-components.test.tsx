@@ -1,10 +1,10 @@
-import { Infinite } from "@assets/images/svg-components/infinite/Infinite";
-import { StretchArrow } from "@assets/images/svg-components/stretchArrow/StretchArrow";
-import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn";
-import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
 import { cleanup, render } from "@testing-library/react";
 import type { ComponentType, SVGProps } from "react";
 import { afterEach, describe, expect, it } from "vitest";
+import { Infinite } from "./infinite/Infinite";
+import { StretchArrow } from "./stretchArrow/StretchArrow";
+import { ZoomIn } from "./zoomIn/ZoomIn";
+import { ZoomOut } from "./zoomOut/ZoomOut";
 
 interface IconProps extends SVGProps<SVGSVGElement> {
 	classNames?: string;

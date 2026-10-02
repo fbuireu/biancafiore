@@ -1,7 +1,7 @@
 import { SECURITY_HEADERS } from "@const/securityHeaders";
-import { generateStaticHeaders } from "@infrastructure/integrations/generateStaticHeaders";
 import type { AstroIntegration } from "astro";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { generateStaticHeaders } from "./generateStaticHeaders";
 
 const writeFileSync = vi.hoisted(() => vi.fn());
 

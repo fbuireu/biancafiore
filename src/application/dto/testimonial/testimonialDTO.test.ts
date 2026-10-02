@@ -1,6 +1,6 @@
-import { createTestimonials } from "@application/dto/testimonial";
-import type { RawTestimonial } from "@application/dto/testimonial/types";
 import { describe, expect, it } from "vitest";
+import { createTestimonials } from "./testimonialDTO";
+import type { RawTestimonial } from "./types";
 
 interface AssetParams {
 	url?: string;
@@ -19,24 +19,24 @@ const asset = ({
 });
 
 interface MakeTestimonialParams {
-	author?: string;
+	quotee?: string;
 	quote?: string;
 	role?: string;
 	image?: unknown;
 }
 
 const makeTestimonial = ({
-	author = "Ada Lovelace",
+	quotee = "Ada Lovelace",
 	quote = "She turned our launch into a story",
 	role = "Head of Marketing",
 	image = asset(),
-}: MakeTestimonialParams = {}) => ({ fields: { author, quote, image, role } }) as unknown as RawTestimonial;
+}: MakeTestimonialParams = {}) => ({ fields: { author: quotee, quote, image, role } }) as unknown as RawTestimonial;
 
 describe("createTestimonials", () => {
-	it("carries author, quote and role across verbatim and drops nothing else in", () => {
+	it("carries the Quotee, quote and role across verbatim and drops nothing else in", () => {
 		const [testimonial] = createTestimonials([
 			makeTestimonial({
-				author: "Ada Lovelace",
+				quotee: "Ada Lovelace",
 				quote: "She turned our launch into a story",
 				role: "Head of Marketing",
 				image: asset({ url: "//cdn/ada.webp", contentType: "image/webp", width: 128, height: 128 }),
@@ -44,7 +44,7 @@ describe("createTestimonials", () => {
 		]);
 
 		expect(testimonial).toEqual({
-			author: "Ada Lovelace",
+			quotee: "Ada Lovelace",
 			quote: "She turned our launch into a story",
 			role: "Head of Marketing",
 			image: {
@@ -70,8 +70,8 @@ describe("createTestimonials", () => {
 	});
 
 	it("preserves the order of the batch it was given, leaving any ordering rule to the loader", () => {
-		const testimonials = createTestimonials([makeTestimonial({ author: "Zoe" }), makeTestimonial({ author: "Ada" })]);
+		const testimonials = createTestimonials([makeTestimonial({ quotee: "Zoe" }), makeTestimonial({ quotee: "Ada" })]);
 
-		expect(testimonials.map(({ author }) => author)).toEqual(["Zoe", "Ada"]);
+		expect(testimonials.map(({ quotee }) => quotee)).toEqual(["Zoe", "Ada"]);
 	});
 });

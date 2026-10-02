@@ -1,8 +1,8 @@
 import { defineCollection } from "astro:content";
-import { createArticles } from "@application/dto/article";
-import type { ArticleSkeleton } from "@application/dto/article/types";
-import { cmsCollection } from "@application/entities/collection";
 import { articleSchema, sortFavoriteFirst } from "@domain/article";
+import { createArticles } from "../../dto/article";
+import type { ArticleSkeleton } from "../../dto/article/types";
+import { cmsCollection } from "../collection";
 
 export const articles = defineCollection({
 	loader: cmsCollection<ArticleSkeleton, ReturnType<typeof createArticles>[number], "featuredImage">({

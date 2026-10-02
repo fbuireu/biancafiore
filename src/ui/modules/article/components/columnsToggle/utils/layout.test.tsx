@@ -1,11 +1,6 @@
-import { ARTICLE_COLUMNS_STORAGE_KEY } from "@modules/article/components/columnsToggle/const";
-import {
-	ARTICLE_COLUMNS_ACTIVE_CLASS,
-	applyColumns,
-	initializeColumnsToggle,
-	isColumnsEnabled,
-} from "@modules/article/components/columnsToggle/utils/layout";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ARTICLE_COLUMNS_STORAGE_KEY } from "../const";
+import { ARTICLE_COLUMNS_ACTIVE_CLASS, applyColumns, initializeColumnsToggle, isColumnsEnabled } from "./layout";
 
 const MARKUP = '<div class="article-wrapper"></div><button class="columns-toggle__button"></button>';
 

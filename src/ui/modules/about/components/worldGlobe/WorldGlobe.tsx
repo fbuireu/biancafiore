@@ -1,6 +1,6 @@
-import type { CityPoint } from "@modules/about/utils/globe";
 import { lazy, Suspense, use, useEffect, useRef, useState } from "react";
 import { browser } from "react-dom";
+import type { CityPoint } from "../../utils/globe";
 import { WORLD_GLOBE_CONFIG } from "./const";
 import "./world-globe.css";
 

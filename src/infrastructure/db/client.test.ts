@@ -1,8 +1,8 @@
-import { Database, DatabaseLive } from "@infrastructure/db/client";
-import { DatabaseError } from "@infrastructure/errors";
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
 import { Cause, Effect, Exit, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { DatabaseError } from "../errors";
+import { Database, DatabaseLive } from "./client";
 
 type DatabaseService = Effect.Effect.Success<typeof Database>;
 
@@ -18,10 +18,6 @@ const createClient = vi.hoisted(() => vi.fn(() => ({})));
 vi.mock("@libsql/client/web", () => ({ createClient }));
 
 vi.mock("drizzle-orm/libsql/web", () => {
-	const record = (method: string, args: unknown[]) => {
-		calls.push({ method, args });
-	};
-
 	const settle = () =>
 		answer.rejection === undefined ? Promise.resolve(answer.rows) : Promise.reject(answer.rejection);
 
@@ -30,14 +26,14 @@ vi.mock("drizzle-orm/libsql/web", () => {
 
 		for (const method of ["from", "where", "orderBy"]) {
 			link[method] = (...args: unknown[]) => {
-				record(method, args);
+				calls.push({ method, args });
 				return link;
 			};
 		}
 
 		for (const method of ["limit", "values"]) {
 			link[method] = (...args: unknown[]) => {
-				record(method, args);
+				calls.push({ method, args });
 				return settle();
 			};
 		}
@@ -141,7 +137,7 @@ describe("Database", () => {
 		expect(createClient).toHaveBeenCalledWith({ url: "libsql://example.turso.io", authToken: "a-token" });
 	});
 
-	it("answers the newest contact in the window rather than the whole list", async () => {
+	it("answers the latest contact in the window rather than the whole list", async () => {
 		answer.rows = [A_CONTACT, { ...A_CONTACT, id: "contact-2" }];
 		const database = await buildDatabase();
 

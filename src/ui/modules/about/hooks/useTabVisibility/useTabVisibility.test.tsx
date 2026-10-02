@@ -1,6 +1,6 @@
-import { useTabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
 import { act, cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { useTabVisibility } from "./useTabVisibility";
 
 const Reader = () => <output>{useTabVisibility()}</output>;
 

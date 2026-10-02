@@ -1,5 +1,5 @@
-import { createEmail } from "@infrastructure/utils/email";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { createEmail } from "./email";
 
 const SUBMISSION = {
 	name: "Ada",

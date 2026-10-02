@@ -1,5 +1,5 @@
-import { buildContentfulImageUrl } from "@infrastructure/images/imageOptimization";
-import { logger } from "@infrastructure/logging/logger";
+import { logger } from "../../logging/logger";
+import { buildContentfulImageUrl } from "../imageOptimization";
 
 const PLACEHOLDER_WIDTH = 24;
 const PLACEHOLDER_QUALITY = 35;

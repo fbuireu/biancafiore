@@ -1,8 +1,8 @@
-import { imageSchema } from "@domain/shared/image";
 import { z } from "astro/zod";
+import { imageSchema } from "../shared/image";
 
-export const testimonialsSchema = z.object({
-	author: z.string(),
+export const testimonialSchema = z.object({
+	quotee: z.string(),
 	quote: z.string(),
 	image: imageSchema,
 	role: z.string(),

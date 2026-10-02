@@ -1,7 +1,8 @@
-import { ContactForm } from "@modules/contact/components/contactForm/ContactForm";
-import { type ContactSubmission, UNDELIVERED_MESSAGE } from "@modules/contact/utils/submission";
+import { BOT_REFUSAL_MESSAGE } from "@domain/contact/schema";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, type Mock, vi } from "vitest";
+import { type ContactSubmission, UNDELIVERED_MESSAGE } from "../../utils/submission";
+import { ContactForm } from "./ContactForm";
 
 const VISITOR = {
 	name: "Ada",
@@ -12,10 +13,15 @@ const VISITOR = {
 const TOKEN = "recaptcha-token";
 const SUCCESS_DELAY = 2000;
 
+interface RenderFormParams {
+	submit?: Mock<(contactData: FormData) => Promise<ContactSubmission>>;
+	getRecaptchaToken?: Mock<() => Promise<string | undefined>>;
+}
+
 const renderForm = ({
 	submit = vi.fn<(contactData: FormData) => Promise<ContactSubmission>>(async () => ({ ok: true })),
 	getRecaptchaToken = vi.fn<() => Promise<string | undefined>>(async () => TOKEN),
-} = {}) => {
+}: RenderFormParams = {}) => {
 	render(<ContactForm submit={submit} getRecaptchaToken={getRecaptchaToken} />);
 
 	return { submit, getRecaptchaToken };
@@ -117,7 +123,7 @@ describe("ContactForm", () => {
 		await send();
 
 		expect(submit).not.toHaveBeenCalled();
-		expect(screen.getByText("Mr. Robot, is that you?")).toBeTruthy();
+		expect(screen.getByText(BOT_REFUSAL_MESSAGE)).toBeTruthy();
 	});
 
 	it("treats a reCAPTCHA call that throws as a missing token", async () => {
@@ -128,7 +134,7 @@ describe("ContactForm", () => {
 		await send();
 
 		expect(submit).not.toHaveBeenCalled();
-		expect(screen.getByText("Mr. Robot, is that you?")).toBeTruthy();
+		expect(screen.getByText(BOT_REFUSAL_MESSAGE)).toBeTruthy();
 	});
 
 	it("waits rather than accusing the visitor when reCAPTCHA has not loaded yet", async () => {
@@ -138,6 +144,6 @@ describe("ContactForm", () => {
 		await send();
 
 		expect(submit).not.toHaveBeenCalled();
-		expect(screen.queryByText("Mr. Robot, is that you?")).toBeNull();
+		expect(screen.queryByText(BOT_REFUSAL_MESSAGE)).toBeNull();
 	});
 });

@@ -13,7 +13,6 @@ export const ZoomOut = ({ fill = "currentColor", title = "Zoom Out", classNames,
 			<g
 				fill="none"
 				fillRule="evenodd"
-				stroke="#232326"
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				strokeWidth="1.5"

@@ -28,7 +28,7 @@ const withToken = async (token: string) => {
 	vi.resetModules();
 	vi.doMock("astro:env/client", () => ({ BETTER_STACK_TRACKING_TOKEN: token }));
 
-	return import("@modules/core/utils/telemetry");
+	return import("./telemetry");
 };
 
 afterEach(() => {

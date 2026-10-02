@@ -1,8 +1,8 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import Cities from "@modules/about/components/cities/Cities.astro";
-import { WorldGlobe } from "@modules/about/components/worldGlobe/WorldGlobe";
-import { toCityPoints } from "@modules/about/utils/globe";
+import { toCityPoints } from "../../utils/globe";
+import Cities from "../cities/Cities.astro";
+import { WorldGlobe } from "../worldGlobe/WorldGlobe";
 import "./little-more-of-me.css";
 
 interface Props {

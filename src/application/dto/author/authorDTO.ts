@@ -1,6 +1,6 @@
-import type { RawArticle } from "@application/dto/article/types";
-import type { RawAuthor } from "@application/dto/author/types";
 import type { AuthorDTO } from "@domain/author";
+import type { RawArticle } from "../article/types";
+import type { RawAuthor } from "./types";
 import { getLatestArticleByAuthor } from "./utils/articles";
 import { createAuthor } from "./utils/author";
 

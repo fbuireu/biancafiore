@@ -14,5 +14,4 @@ ignore:
   - "**/schema.ts"
   - "**/*.astro"
   - "src/const/**"
-  - "src/data/**"
   - "src/tests/**"

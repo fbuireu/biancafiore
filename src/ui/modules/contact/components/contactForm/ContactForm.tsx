@@ -1,10 +1,5 @@
 import { BOT_REFUSAL_MESSAGE, contactFormSchema } from "@domain/contact/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@modules/contact/components/form/input/Input";
-import { Recaptcha } from "@modules/contact/components/form/recaptcha/Recaptcha";
-import { Textarea } from "@modules/contact/components/form/textarea/Textarea";
-import { flyPlane } from "@modules/contact/utils/form";
-import { type ContactSubmission, UNDELIVERED_SUBMISSION } from "@modules/contact/utils/submission";
 import Spinner from "@modules/core/components/spinner/Spinner";
 import { successDelay } from "@modules/core/utils/motion";
 import type { ContactFormData } from "@shared/ui/types";
@@ -12,6 +7,11 @@ import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
 import { startTransition, useEffect, useId, useRef, useState, useTransition, ViewTransition } from "react";
 import { useForm } from "react-hook-form";
+import { flyPlane } from "../../utils/form";
+import { type ContactSubmission, UNDELIVERED_SUBMISSION } from "../../utils/submission";
+import { Input } from "../form/input/Input";
+import { Recaptcha } from "../form/recaptcha/Recaptcha";
+import { Textarea } from "../form/textarea/Textarea";
 import "./contact-form.css";
 
 interface ContactFormProps {
@@ -160,15 +160,15 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 					</div>
 					<button
 						ref={submitRef}
-						className={clsx("contact-form__submit plane clickable", {
+						className={clsx("contact-form__submit clickable", {
 							"contact-form__submit--loading": pending || formStatus === FormStatus.LOADING,
 						})}
 						disabled={formStatus === FormStatus.UNAUTHORIZED}
 						type="submit"
 					>
 						<span className="flex">{!pending ? <>Send email</> : <Spinner aria-label="Sending" />}</span>
-						<div className="plane__left-wing" />
-						<div className="plane__right-wing" />
+						<div className="contact-form__left-wing" />
+						<div className="contact-form__right-wing" />
 						<span />
 					</button>
 				</form>

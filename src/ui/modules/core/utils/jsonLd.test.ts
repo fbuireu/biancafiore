@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import {
 	buildArticleListSchema,
 	buildBlogPostingSchema,
@@ -7,8 +8,7 @@ import {
 	buildProjectListSchema,
 	buildTagListSchema,
 	buildWebSiteSchema,
-} from "@modules/core/utils/jsonLd";
-import { describe, expect, it } from "vitest";
+} from "./jsonLd";
 
 const ORIGIN = "https://biancafiore.test";
 
@@ -142,7 +142,7 @@ describe("buildProfilePageSchema and buildWebSiteSchema", () => {
 		expect(parse(buildProfilePageSchema({ person: PERSON }))).not.toHaveProperty("hasPart");
 	});
 
-	it("credits the latest article to the person the page is about", () => {
+	it("attributes the Latest Article to the Author the page is about", () => {
 		const schema = parse(
 			buildProfilePageSchema({
 				person: PERSON,

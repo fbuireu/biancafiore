@@ -1,6 +1,6 @@
-import { Textarea } from "@modules/contact/components/form/textarea/Textarea";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
+import { Textarea } from "./Textarea";
 
 afterEach(cleanup);
 

@@ -1,5 +1,5 @@
-import { toContactSubmission, UNDELIVERED_SUBMISSION } from "@modules/contact/utils/submission";
 import { describe, expect, it } from "vitest";
+import { toContactSubmission, UNDELIVERED_SUBMISSION } from "./submission";
 
 describe("toContactSubmission", () => {
 	it("answers ok when the action reports the message went out", () => {

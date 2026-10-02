@@ -1,6 +1,6 @@
-import { LOG_LEVEL, LOG_SERVICE, type LogLevel } from "@infrastructure/logging/contract";
-import { logger } from "@infrastructure/logging/logger";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { LOG_LEVEL, LOG_SERVICE, type LogLevel } from "./contract";
+import { logger } from "./logger";
 
 const spies = {
 	info: vi.spyOn(console, "info").mockImplementation(() => {}),
@@ -116,6 +116,29 @@ describe("logger.logError", () => {
 		]);
 	});
 
+	it("keeps the line when the thrown object has no prototype to fall back on", () => {
+		const bare: Record<string, unknown> = Object.create(null);
+		bare.self = bare;
+
+		expect(() => logger.logError({ message: "test", error: bare })).not.toThrow();
+		expect(lineFrom(LOG_LEVEL.ERROR).error.message).toBe("[object Object]");
+	});
+
+	it("keeps the message, name and stack of an Error whose own field cannot be serialised", () => {
+		const loop: Record<string, unknown> = {};
+		loop.self = loop;
+
+		logger.logError({ message: "test", error: Object.assign(new Error("boom"), { code: "E_LOOP", loop }) });
+
+		expect(lineFrom(LOG_LEVEL.ERROR).error).toMatchObject({
+			message: "boom",
+			name: "Error",
+			code: "E_LOOP",
+			loop: "[unserializable]",
+		});
+		expect(lineFrom(LOG_LEVEL.ERROR).error.stack).toContain("Error: boom");
+	});
+
 	it("merges caller context with error context", () => {
 		logger.logError({ message: "test", error: new Error("x"), context: { emailId: "re_1" } });
 
@@ -127,12 +150,21 @@ describe("logger.logError", () => {
 });
 
 describe("a log never fails its caller", () => {
-	it("swallows a context that cannot be serialised, rather than throwing from a render", () => {
+	it("writes a context value that cannot be serialised as [unserializable] and keeps the rest of the line, rather than throwing from a render", () => {
 		const circular: Record<string, unknown> = {};
 		circular.self = circular;
 
-		expect(() => logger.info({ message: "round trip", context: circular })).not.toThrow();
-		expect(spies.info).not.toHaveBeenCalled();
+		expect(() =>
+			logger.info({ message: "round trip", context: { circular, size: 1n, emailId: "re_1" } }),
+		).not.toThrow();
+		expect(lineFrom(LOG_LEVEL.INFO)).toEqual({
+			circular: "[unserializable]",
+			size: "[unserializable]",
+			emailId: "re_1",
+			service: LOG_SERVICE,
+			level: LOG_LEVEL.INFO,
+			message: "round trip",
+		});
 	});
 
 	it("swallows a console that throws synchronously", () => {

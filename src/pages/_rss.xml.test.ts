@@ -72,7 +72,7 @@ describe("the feed", () => {
 		expect(feed().items[0]).toMatchObject({ title: "A piece", description: "About a-piece" });
 	});
 
-	it("puts the newest Article first, whatever order the collection came back in", async () => {
+	it("orders the items reverse-chronologically, whatever order the collection came back in", async () => {
 		getCollection.mockResolvedValue([
 			makeArticle({ slug: "middle", publishDateISO: "2026-02-01" }),
 			makeArticle({ slug: "oldest", publishDateISO: "2025-06-01" }),

@@ -1,10 +1,5 @@
-import {
-	ANALYTICS_CATEGORY,
-	CONSENT_COOKIE_NAME,
-	CONSENT_STATUS,
-	consentBootstrapScript,
-} from "@modules/core/components/cookieConsent/utils/consentGate";
 import { describe, expect, it } from "vitest";
+import { ANALYTICS_CATEGORY, CONSENT_COOKIE_NAME, CONSENT_STATUS, consentBootstrapScript } from "./consentGate";
 
 const stored = (value: unknown) => `${CONSENT_COOKIE_NAME}=${encodeURIComponent(JSON.stringify(value))}`;
 

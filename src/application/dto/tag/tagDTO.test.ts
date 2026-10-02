@@ -1,19 +1,24 @@
-import type { RawArticle } from "@application/dto/article/types";
-import type { RawAuthor } from "@application/dto/author/types";
-import { createTagIndex } from "@application/dto/tag";
-import type { RawTag } from "@application/dto/tag/types";
 import { describe, expect, it, vi } from "vitest";
+import type { RawArticle } from "../article/types";
+import type { RawAuthor } from "../author/types";
+import { createTagIndex } from "./tagDTO";
+import type { RawTag } from "./types";
 
 vi.mock("astro:content", () => ({ reference: () => ({ parse: (value: unknown) => value }) }));
 
-interface NamedParams {
+interface MakeTagParams {
 	name: string;
 	slug: string;
 }
 
-const makeTag = ({ name, slug }: NamedParams) => ({ fields: { name, slug } }) as unknown as RawTag;
+const makeTag = ({ name, slug }: MakeTagParams) => ({ fields: { name, slug } }) as unknown as RawTag;
 
-const makeAuthor = ({ name, slug }: NamedParams) => ({ fields: { name, slug } }) as unknown as RawAuthor;
+interface MakeAuthorParams {
+	name: string;
+	slug: string;
+}
+
+const makeAuthor = ({ name, slug }: MakeAuthorParams) => ({ fields: { name, slug } }) as unknown as RawAuthor;
 
 interface MakeArticleParams {
 	slug: string;

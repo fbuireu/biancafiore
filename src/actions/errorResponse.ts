@@ -1,6 +1,6 @@
-import type { ContactError } from "@actions/contact";
 import { LoggerService } from "@infrastructure/logging/service";
 import { Cause, Effect, Option } from "effect";
+import type { ContactError } from "./contact";
 
 type ContactErrorCode = "BAD_REQUEST" | "UNAUTHORIZED" | "INTERNAL_SERVER_ERROR";
 

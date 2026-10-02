@@ -1,7 +1,7 @@
-import type { RawArticle } from "@application/dto/article/types";
-import { createAuthors } from "@application/dto/author";
-import type { RawAuthor } from "@application/dto/author/types";
 import { describe, expect, it } from "vitest";
+import type { RawArticle } from "../article/types";
+import { createAuthors } from "./authorDTO";
+import type { RawAuthor } from "./types";
 
 interface AssetParams {
 	url?: string;

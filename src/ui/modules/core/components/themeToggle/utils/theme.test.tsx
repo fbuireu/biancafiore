@@ -71,12 +71,22 @@ const toggledClass = () => document.querySelector(TOGGLE)?.classList.contains(TO
 
 beforeEach(() => {
 	vi.stubGlobal("localStorage", memoryStorage());
-	document.documentElement.removeAttribute(THEME_ATTRIBUTE);
-	document.body.innerHTML = "";
+	vi.spyOn(window, "addEventListener");
+	vi.spyOn(document, "addEventListener");
 });
 
 afterEach(() => {
+	for (const [type, listener] of vi.mocked(window.addEventListener).mock.calls) {
+		window.removeEventListener(type, listener);
+	}
+	for (const [type, listener] of vi.mocked(document.addEventListener).mock.calls) {
+		document.removeEventListener(type, listener);
+	}
+	vi.restoreAllMocks();
 	vi.unstubAllGlobals();
+	document.documentElement.removeAttribute(THEME_ATTRIBUTE);
+	document.documentElement.style.colorScheme = "";
+	document.body.innerHTML = "";
 });
 
 describe("the theme runtime", () => {

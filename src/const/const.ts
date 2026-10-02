@@ -21,13 +21,7 @@ export const CONTACT_DETAILS = {
 	ENCODED_EMAIL_FROM: btoa("hello@biancafiore.me"),
 	ENCODED_EMAIL_BIANCA: btoa(BIANCA_EMAIL),
 } as const;
-export const DEFAULT_DATE_FORMAT: Intl.DateTimeFormatOptions = {
-	weekday: "long",
-	year: "numeric",
-	month: "long",
-	day: "numeric",
-};
-export const DEFAULT_LOCALE_STRING = "en-GB" as const;
 
 export type { ImageCdn } from "./imageCdn";
 export { IMAGE_CDN } from "./imageCdn";
+export { DEFAULT_DATE_FORMAT, DEFAULT_LOCALE_STRING } from "./locale";

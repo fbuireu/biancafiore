@@ -1,6 +1,6 @@
-import { createCities } from "@application/dto/city";
-import type { RawCity } from "@application/dto/city/types";
 import { describe, expect, it } from "vitest";
+import { createCities } from "./cityDTO";
+import type { RawCity } from "./types";
 
 interface AssetParams {
 	url?: string;
@@ -77,19 +77,19 @@ describe("createCities slug", () => {
 });
 
 describe("createCities period", () => {
-	it("keeps the years of a closed stay, leaving the hyphenated label to formatPeriod", () => {
+	it("keeps the years of a closed period, leaving the hyphenated label to formatPeriod", () => {
 		const [city] = createCities([makeCity({ startDate: "2019-06-01", endDate: "2021-09-30" })]);
 
 		expect(city.period).toEqual({ startYear: 2019, endYear: 2021 });
 	});
 
-	it("leaves the end of a stay open when the CMS has no end date", () => {
+	it("leaves the end of a period open when the CMS has no end date", () => {
 		const [city] = createCities([makeCity({ startDate: "2022-01-15" })]);
 
 		expect(city.period).toEqual({ startYear: 2022 });
 	});
 
-	it("treats an empty end date as an open ended stay too, because the field is spread only when truthy", () => {
+	it("treats an empty end date as an open period too, because the field is spread only when truthy", () => {
 		const [city] = createCities([makeCity({ startDate: "2022-01-15", endDate: "" })]);
 
 		expect(city.period).toEqual({ startYear: 2022 });

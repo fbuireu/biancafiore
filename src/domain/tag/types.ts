@@ -1,5 +1,5 @@
-import type { tagIndexEntrySchema, tagSchema } from "@domain/tag/schema";
 import type { z } from "astro/zod";
+import type { tagIndexEntrySchema, tagSchema } from "./schema";
 
 export const TagType = {
 	TAG: "tag",

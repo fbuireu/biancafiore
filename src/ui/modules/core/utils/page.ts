@@ -1,5 +1,5 @@
 import { PAGES_ROUTES } from "@const/index";
-import { isWithin } from "@modules/core/utils/pathname";
+import { isWithin } from "./pathname";
 
 type GetPageReturn = Lowercase<keyof typeof PAGES_ROUTES> | undefined;
 

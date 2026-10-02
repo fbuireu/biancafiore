@@ -1,7 +1,7 @@
-import { type CarriesImage, withImagePlaceholders } from "@application/entities/placeholders";
 import type { EntriesQuery } from "@infrastructure/cms/client";
 import { fetchEntries } from "@infrastructure/cms/entries";
 import type { EntryCollection, EntrySkeletonType } from "contentful";
+import { type CarriesImage, withImagePlaceholders } from "./placeholders";
 
 type RawItems<SKELETON extends EntrySkeletonType> = EntryCollection<SKELETON, undefined>["items"];
 

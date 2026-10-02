@@ -1,6 +1,9 @@
-import { CALENDLY, CALENDLY_MEETING_URL, CALENDLY_WIDGET_SCRIPT } from "@const/calendly";
-import { securityHeaders } from "@const/securityHeaders";
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { CALENDLY, CALENDLY_MEETING_URL, CALENDLY_WIDGET_SCRIPT } from "./calendly";
+import { securityHeaders } from "./securityHeaders";
+
+const TABS_STYLESHEET = new URL("../ui/modules/contact/components/tabs/tabs.css", import.meta.url);
 
 const policy = securityHeaders()["Content-Security-Policy"] as string;
 const directive = (name: string) => policy.split("; ").find((entry) => entry.startsWith(`${name} `)) ?? "";
@@ -35,5 +38,6 @@ describe("the Calendly integration", () => {
 
 	it("names the class the vendor mounts on, which the stylesheet also spells", () => {
 		expect(CALENDLY.WIDGET_CLASS).toBe("calendly-inline-widget");
+		expect(readFileSync(TABS_STYLESHEET, "utf8")).toContain(`.${CALENDLY.WIDGET_CLASS} {`);
 	});
 });

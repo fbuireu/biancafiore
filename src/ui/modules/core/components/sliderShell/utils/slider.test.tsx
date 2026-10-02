@@ -1,5 +1,5 @@
-import { activeSlideIndex, initSlider } from "@modules/core/components/sliderShell/utils/slider";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { activeSlideIndex, initSlider } from "./slider";
 
 interface BoxOfParams {
 	left: number;
@@ -29,7 +29,7 @@ const render = ({ slides, dots = false, looping = false }: RenderParams) => {
 				dots
 					? `<nav class="slider__nav">${Array.from(
 							{ length: slides },
-							(_, index) => `<button class="slider__dot" data-index="${index}"></button>`,
+							() => '<button class="slider__dot"></button>',
 						).join("")}</nav>`
 					: ""
 			}
@@ -58,7 +58,7 @@ const render = ({ slides, dots = false, looping = false }: RenderParams) => {
 	};
 };
 
-beforeEach(() => {
+afterEach(() => {
 	document.body.innerHTML = "";
 });
 

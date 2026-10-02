@@ -1,7 +1,4 @@
 .header {
-	animation: add-shadow linear both;
-	animation-range: 0 1cqi;
-	animation-timeline: scroll();
 	height: var(--header-height);
 	margin-inline: auto;
 	position: sticky;
@@ -28,5 +25,11 @@
 		mask-image: linear-gradient(to bottom, black 0, black var(--cutoff), transparent var(--cutoff));
 		pointer-events: none;
 		position: absolute;
+	}
+
+	@supports (animation-timeline: scroll()) {
+		animation: add-shadow linear both;
+		animation-range: 0 1cqi;
+		animation-timeline: scroll();
 	}
 }

@@ -1,9 +1,9 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import ArticleSlider from "@modules/core/components/articleSlider/ArticleSlider.astro";
-import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
-import { resolveArticles } from "@modules/core/utils/entries";
-import { buildArticleListSchema } from "@modules/core/utils/jsonLd";
+import { resolveArticles } from "../../utils/entries";
+import { buildArticleListSchema } from "../../utils/jsonLd";
+import ArticleSlider from "../articleSlider/ArticleSlider.astro";
+import JsonLd from "../jsonLd/JsonLd.astro";
 import "./related-articles.css";
 
 interface Props {

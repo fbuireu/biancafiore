@@ -1,5 +1,3 @@
-import { fetchEntries } from "@infrastructure/cms/entries";
-import { CmsError } from "@infrastructure/errors";
 import {
 	cmsAnswers,
 	cmsFailsWith,
@@ -11,9 +9,11 @@ import {
 } from "@tests/doubles/cmsLayer";
 import type { EntrySkeletonType } from "contentful";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { CmsError } from "../errors";
+import { fetchEntries } from "./entries";
 
-vi.mock("@infrastructure/cms/client", async () => {
-	const actual = await vi.importActual<typeof import("@infrastructure/cms/client")>("@infrastructure/cms/client");
+vi.mock("./client", async () => {
+	const actual = await vi.importActual<typeof import("./client")>("./client");
 	const { cmsClientLayer } = await import("@tests/doubles/cmsLayer");
 
 	return { ...actual, CmsClientLive: cmsClientLayer(actual.CmsClient) };

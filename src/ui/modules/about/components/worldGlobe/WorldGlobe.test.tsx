@@ -1,7 +1,7 @@
-import type { CityPoint } from "@modules/about/utils/globe";
 import { act, cleanup, render, screen } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { CityPoint } from "../../utils/globe";
 import { WORLD_GLOBE_CONFIG } from "./const";
 import { WorldGlobe } from "./WorldGlobe";
 

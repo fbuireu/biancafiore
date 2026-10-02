@@ -1,8 +1,8 @@
-import { CmsClient, CmsClientLive, isContentfulConfigured } from "@infrastructure/cms/client";
-import { CmsError } from "@infrastructure/errors";
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
 import { Cause, Effect, Exit, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { CmsError } from "../errors";
+import { CmsClient, CmsClientLive, isContentfulConfigured } from "./client";
 
 const getEntries = vi.hoisted(() => vi.fn());
 const createClient = vi.hoisted(() => vi.fn(() => ({ getEntries })));
@@ -149,31 +149,20 @@ describe("CmsClient.getEntries", () => {
 });
 
 describe("isContentfulConfigured", () => {
-	const originalSpace = process.env.CONTENTFUL_SPACE_ID;
-
-	afterEach(() => {
-		if (originalSpace === undefined) {
-			delete process.env.CONTENTFUL_SPACE_ID;
-			return;
-		}
-
-		process.env.CONTENTFUL_SPACE_ID = originalSpace;
-	});
-
 	it("reads process.env rather than a secret, because fetchEntries asks before any layer exists", () => {
-		process.env.CONTENTFUL_SPACE_ID = "a-space";
+		vi.stubEnv("CONTENTFUL_SPACE_ID", "a-space");
 
 		expect(isContentfulConfigured()).toBe(true);
 	});
 
 	it("answers false for an absent space", () => {
-		delete process.env.CONTENTFUL_SPACE_ID;
+		vi.stubEnv("CONTENTFUL_SPACE_ID", undefined);
 
 		expect(isContentfulConfigured()).toBe(false);
 	});
 
 	it("answers false for an empty space rather than letting a blank string configure a build", () => {
-		process.env.CONTENTFUL_SPACE_ID = "";
+		vi.stubEnv("CONTENTFUL_SPACE_ID", "");
 
 		expect(isContentfulConfigured()).toBe(false);
 	});

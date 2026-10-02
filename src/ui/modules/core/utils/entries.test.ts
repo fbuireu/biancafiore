@@ -1,6 +1,6 @@
 import { SITE_AUTHOR_SLUG } from "@const/const";
-import { getSiteAuthor, resolveArticle, resolveArticles } from "@modules/core/utils/entries";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { getSiteAuthor, resolveArticle, resolveArticles } from "./entries";
 
 const { stored, answerDelays, asked, authors } = vi.hoisted(() => ({
 	stored: new Map<string, unknown>(),

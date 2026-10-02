@@ -1,5 +1,5 @@
-import { SECURITY_HEADERS, securityHeaders } from "@const/securityHeaders";
 import { describe, expect, it } from "vitest";
+import { SECURITY_HEADERS, securityHeaders } from "./securityHeaders";
 
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
 

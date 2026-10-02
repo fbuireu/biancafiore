@@ -1,4 +1,4 @@
-import { scrollBehavior } from "@modules/core/utils/motion";
+import { scrollBehavior } from "../../../utils/motion";
 
 const SELECTORS = {
 	TRACK: ".slider__track",

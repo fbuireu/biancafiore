@@ -23,7 +23,7 @@ export interface RecaptchaCall {
 	response: string | null;
 }
 
-export interface RecaptchaDoubleOptions {
+export interface RecaptchaDoubleParams {
 	success?: boolean;
 	score?: number;
 	errorCodes?: string[];
@@ -43,7 +43,7 @@ export function recaptchaDouble({
 	unreachable,
 	malformed,
 	answer,
-}: RecaptchaDoubleOptions = {}): RecaptchaDouble {
+}: RecaptchaDoubleParams = {}): RecaptchaDouble {
 	const calls: RecaptchaCall[] = [];
 
 	server.use(
@@ -68,7 +68,7 @@ export function recaptchaDouble({
 	return { calls };
 }
 
-export interface ImagesDoubleOptions {
+export interface ImagesDoubleParams {
 	urls: string[];
 	bytes?: ArrayBuffer;
 }
@@ -78,7 +78,7 @@ export interface ImagesDouble {
 	maxInFlight: number;
 }
 
-export function imagesDouble({ urls, bytes }: ImagesDoubleOptions): ImagesDouble {
+export function imagesDouble({ urls, bytes }: ImagesDoubleParams): ImagesDouble {
 	const double: ImagesDouble = { calls: [], maxInFlight: 0 };
 	let inFlight = 0;
 
@@ -100,7 +100,7 @@ export function imagesDouble({ urls, bytes }: ImagesDoubleOptions): ImagesDouble
 	return double;
 }
 
-export interface ImageDoubleOptions {
+export interface ImageDoubleParams {
 	url: string;
 	bytes?: ArrayBuffer;
 	status?: number;
@@ -112,7 +112,7 @@ export interface ImageDouble {
 	calls: string[];
 }
 
-export function imageDouble({ url, bytes, status = 200, unreachable, failFirst = 0 }: ImageDoubleOptions): ImageDouble {
+export function imageDouble({ url, bytes, status = 200, unreachable, failFirst = 0 }: ImageDoubleParams): ImageDouble {
 	const calls: string[] = [];
 
 	server.use(
@@ -130,7 +130,7 @@ export function imageDouble({ url, bytes, status = 200, unreachable, failFirst =
 	return { calls };
 }
 
-export interface GreenCheckDoubleOptions {
+export interface GreenCheckDoubleParams {
 	green?: boolean;
 	unreachable?: boolean;
 	malformed?: boolean;
@@ -146,7 +146,7 @@ export function greenCheckDouble({
 	unreachable,
 	malformed,
 	answer,
-}: GreenCheckDoubleOptions = {}): GreenCheckDouble {
+}: GreenCheckDoubleParams = {}): GreenCheckDouble {
 	const calls: string[] = [];
 
 	server.use(

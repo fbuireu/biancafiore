@@ -36,10 +36,6 @@ export function calculateCenter(points: CityPoint[]): CalculateCenterReturn {
 	return { latitude: total.latitude / points.length, longitude: total.longitude / points.length };
 }
 
-interface RenderPinParams {
-	markerData: CityPoint;
-}
-
 interface CreatePinSvgParams {
 	fill: string;
 	title: string;
@@ -71,7 +67,7 @@ function createPinSvg({ fill, title }: CreatePinSvgParams): SVGSVGElement {
 	return svg;
 }
 
-export function renderPin({ markerData }: RenderPinParams): HTMLElement {
+export function renderPin(markerData: CityPoint): HTMLElement {
 	const markerWrapper = document.createElement("button");
 	markerWrapper.type = "button";
 	markerWrapper.classList.add("marker-wrapper", `marker-wrapper--${markerData.slug}`);

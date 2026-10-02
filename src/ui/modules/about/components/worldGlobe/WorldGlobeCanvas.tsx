@@ -1,13 +1,13 @@
 import { StretchArrow } from "@assets/images/svg-components/stretchArrow/StretchArrow";
 import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn";
 import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
-import { TabVisibility, useTabVisibility } from "@modules/about/hooks/useTabVisibility/useTabVisibility";
-import { type CityPoint, calculateCenter, renderPin } from "@modules/about/utils/globe";
 import { prefersReducedMotion } from "@modules/core/utils/motion";
 import { use, useEffect, useRef } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
+import { TabVisibility, useTabVisibility } from "../../hooks/useTabVisibility/useTabVisibility";
+import { type CityPoint, calculateCenter, renderPin } from "../../utils/globe";
 import { WORLD_GLOBE_CONFIG } from "./const";
 import { type CountryFeature, fetchCountries } from "./utils/countries";
 
@@ -43,7 +43,6 @@ const {
 	BACKGROUND_COLOR,
 	SHOW_ATMOSPHERE,
 	ANIMATE_IN,
-	POINTS_MERGE,
 	ANIMATION_DURATION,
 	MOVEMENT_OFFSET,
 	ZOOM_OFFSET,
@@ -111,19 +110,14 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 				height={HEIGHT}
 				width={width}
 				onGlobeReady={onGlobeReady}
-				pointsMerge={POINTS_MERGE}
 				animateIn={ANIMATE_IN}
 				showAtmosphere={SHOW_ATMOSPHERE}
 				backgroundColor={BACKGROUND_COLOR}
 				hexPolygonsData={hexPolygons}
 				hexPolygonColor={() => HEXAGON_POLYGON_COLOR}
 				globeMaterial={GLOBE_MATERIAL}
-				pointsData={points}
-				pointAltitude="altitude"
-				pointRadius="radius"
-				pointColor="color"
 				htmlElementsData={points}
-				htmlElement={(data) => renderPin({ markerData: data as CityPoint })}
+				htmlElement={(data) => renderPin(data as CityPoint)}
 			/>
 			<div className="world-globe__controls flex row-wrap justify-center">
 				<div className="world-globe__direction-wrapper flex row-wrap">

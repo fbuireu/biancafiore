@@ -1,9 +1,3 @@
-import type { RawArticle } from "@application/dto/article/types";
-import { createRelatedArticles } from "@application/dto/article/utils/articles";
-import { renderArticleContent } from "@application/dto/article/utils/content";
-import { articleSlug } from "@application/dto/article/utils/reference";
-import { createAuthor } from "@application/dto/author/utils/author";
-import { createImage } from "@application/dto/shared/images";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import {
 	type ArticleDTO,
@@ -13,6 +7,12 @@ import {
 	getReadingTime,
 	publishDateISO,
 } from "@domain/article";
+import { createAuthor } from "../author/utils/author";
+import { createImage } from "../shared/images";
+import type { RawArticle } from "./types";
+import { createRelatedArticles } from "./utils/articles";
+import { renderArticleContent } from "./utils/content";
+import { articleSlug } from "./utils/reference";
 import { createTags } from "./utils/tags";
 
 export function createArticles(raw: RawArticle[]): ArticleDTO[] {

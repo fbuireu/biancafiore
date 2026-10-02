@@ -1,5 +1,3 @@
-import type { ContactError } from "@actions/contact";
-import { submitContact } from "@actions/contact";
 import type { DatabaseError } from "@infrastructure/errors";
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
 import {
@@ -10,9 +8,11 @@ import {
 	emailError,
 	loggerDouble,
 } from "@tests/doubles/contactLayers";
-import { type RecaptchaDoubleOptions, recaptchaDouble } from "@tests/doubles/network";
+import { type RecaptchaDoubleParams, recaptchaDouble } from "@tests/doubles/network";
 import { Cause, Effect, Exit, Layer, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import type { ContactError } from "./contact";
+import { submitContact } from "./contact";
 
 const VALID_INPUT = {
 	name: "Ada",
@@ -21,19 +21,17 @@ const VALID_INPUT = {
 	recaptcha: "token",
 };
 
-const recaptchaResponds = (verdict: RecaptchaDoubleOptions) => recaptchaDouble(verdict);
+const recaptchaResponds = (verdict: RecaptchaDoubleParams) => recaptchaDouble(verdict);
 
 const log = loggerDouble();
 
-const run = ({
-	database,
-	email,
-	input = VALID_INPUT,
-}: {
+interface RunParams {
 	database: ReturnType<typeof databaseDouble>;
 	email: ReturnType<typeof emailDouble>;
 	input?: typeof VALID_INPUT;
-}) =>
+}
+
+const run = ({ database, email, input = VALID_INPUT }: RunParams) =>
 	Effect.runPromiseExit(
 		submitContact(input).pipe(Effect.provide(Layer.mergeAll(database.layer, email.layer, log.layer))),
 	);

@@ -1,6 +1,6 @@
-import { createProjects } from "@application/dto/project";
-import type { RawProject } from "@application/dto/project/types";
 import { describe, expect, it } from "vitest";
+import { createProjects } from "./projectDTO";
+import type { RawProject } from "./types";
 
 const text = (value: string) => ({ nodeType: "text", value, marks: [], data: {} });
 const paragraph = (value: string) => ({ nodeType: "paragraph", data: {}, content: [text(value)] });

@@ -6,7 +6,11 @@ const CONTACT_PATH = "/contact";
 const ACTIVE_TAB_CLASS = "contact-tab--active";
 const ACTIVE_CONTENT_CLASS = "contact-tab__content--active";
 
-const renderTabs = ({ booking = false }: { booking?: boolean } = {}): void => {
+interface RenderTabsParams {
+	booking?: boolean;
+}
+
+const renderTabs = ({ booking = false }: RenderTabsParams = {}): void => {
 	document.body.innerHTML = `
 		<ul>
 			<li class="contact-tab" data-target="email"><button type="button">Email me</button></li>
@@ -47,7 +51,12 @@ const tabButton = (target: string): HTMLElement => {
 	return button;
 };
 
-const press = ({ target, key }: { target: string; key: string }): void => {
+interface PressParams {
+	target: string;
+	key: string;
+}
+
+const press = ({ target, key }: PressParams): void => {
 	tabButton(target).dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }));
 };
 
@@ -56,6 +65,8 @@ const paintedTab = (): string | undefined =>
 	document.querySelector<HTMLElement>(`.${ACTIVE_TAB_CLASS}`)?.dataset.target;
 
 const contactUrl = (search = ""): URL => new URL(`${CONTACT_PATH}${search}`, window.location.href);
+
+const ORIGINAL_URL = window.location.href;
 
 const watchHistory = () => ({
 	push: vi.spyOn(history, "pushState"),
@@ -69,6 +80,7 @@ beforeEach(() => {
 
 afterEach(() => {
 	vi.restoreAllMocks();
+	history.replaceState(null, "", ORIGINAL_URL);
 	Reflect.deleteProperty(window, "Calendly");
 	document.body.innerHTML = "";
 });

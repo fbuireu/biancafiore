@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
-import { partitionFeatured } from "@modules/articles/utils/featured";
 import { describe, expect, it } from "vitest";
+import { partitionFeatured } from "./featured";
 
 interface MakeArticleParams {
 	slug: string;
@@ -20,7 +20,7 @@ const makeArticle = ({ slug, isFeaturedArticle = false, hasImage = true }: MakeA
 const slugsOf = (articles: CollectionEntry<"articles">[]) => articles.map(({ data }) => data.slug);
 
 describe("partitionFeatured", () => {
-	it("takes the first article flagged as featured that also carries a cover image", () => {
+	it("takes the first article flagged as featured that also carries a Featured Image", () => {
 		const { featured } = partitionFeatured([
 			makeArticle({ slug: "plain" }),
 			makeArticle({ slug: "flagged-no-image", isFeaturedArticle: true, hasImage: false }),
@@ -31,7 +31,7 @@ describe("partitionFeatured", () => {
 		expect(featured?.data.slug).toBe("the-hero");
 	});
 
-	it("falls back to the first article with a cover image when none is flagged", () => {
+	it("falls back to the first article with a Featured Image when none is flagged", () => {
 		const { featured } = partitionFeatured([
 			makeArticle({ slug: "no-image", hasImage: false }),
 			makeArticle({ slug: "first-illustrated" }),
@@ -47,7 +47,7 @@ describe("partitionFeatured", () => {
 		expect(featured?.data.slug).toBe("newest");
 	});
 
-	it("names no hero when not one article carries a cover image", () => {
+	it("names no Featured Article when not one article carries a Featured Image", () => {
 		const { featured, rest } = partitionFeatured([
 			makeArticle({ slug: "a", hasImage: false }),
 			makeArticle({ slug: "b", isFeaturedArticle: true, hasImage: false }),
@@ -57,7 +57,7 @@ describe("partitionFeatured", () => {
 		expect(slugsOf(rest)).toEqual(["a", "b"]);
 	});
 
-	it("keeps the hero out of the rest, so the listing never shows it twice", () => {
+	it("keeps the Featured Article out of the rest, so the listing never shows it twice", () => {
 		const { rest } = partitionFeatured([
 			makeArticle({ slug: "the-hero", isFeaturedArticle: true }),
 			makeArticle({ slug: "second" }),
@@ -67,7 +67,7 @@ describe("partitionFeatured", () => {
 		expect(slugsOf(rest)).toEqual(["second", "third"]);
 	});
 
-	it("answers an empty listing and no hero for an empty Blog", () => {
+	it("answers an empty listing and no Featured Article for an empty Blog", () => {
 		expect(partitionFeatured([])).toEqual({ featured: undefined, rest: [] });
 	});
 });

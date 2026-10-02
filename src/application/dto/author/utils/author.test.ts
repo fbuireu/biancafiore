@@ -1,7 +1,7 @@
-import type { RawAuthor } from "@application/dto/author/types";
-import { createAuthor } from "@application/dto/author/utils/author";
 import type { UnresolvedLink } from "contentful";
 import { describe, expect, it } from "vitest";
+import type { RawAuthor } from "../types";
+import { createAuthor } from "./author";
 
 interface MakeRawAuthorParams {
 	name?: string;
@@ -66,7 +66,7 @@ describe("createAuthor, given a link Contentful did not resolve", () => {
 		sys: { type: "Link", linkType: "Entry", id: "5tK5nWFxOrTBpKS3nDLPtI" },
 	} as UnresolvedLink<"Entry">;
 
-	it("refuses it by name, rather than reading fields off undefined", () => {
+	it("refuses it by its link id, rather than reading fields off undefined", () => {
 		expect(() => createAuthor(unresolvedLink)).toThrow(
 			"A raw author entry reached the mapper unresolved (5tK5nWFxOrTBpKS3nDLPtI), so no byline can name it",
 		);

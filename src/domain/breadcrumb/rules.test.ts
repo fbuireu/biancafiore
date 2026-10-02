@@ -1,5 +1,5 @@
-import { createBreadcrumbs } from "@domain/breadcrumb/rules";
 import { describe, expect, it } from "vitest";
+import { createBreadcrumbs } from "./rules";
 
 describe("createBreadcrumbs", () => {
 	it("shows no trail at all on the home page", () => {

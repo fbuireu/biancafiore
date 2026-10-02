@@ -1,5 +1,5 @@
-import { normalizeEmail } from "@domain/contact/rules";
 import { describe, expect, it } from "vitest";
+import { normalizeEmail } from "./rules";
 
 describe("normalizeEmail", () => {
 	it("lowercases the whole address", () => {

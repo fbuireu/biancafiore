@@ -30,7 +30,7 @@ The check re-runs on `synchronize` because a required check is evaluated against
 
 ## The smoke run, and the rollback
 
-**The smoke job is the only one that touches production, and until it existed nothing did.** The end-to-end run needs the preview deploy, which happens on pull requests only, so a push to `main` used to deploy production, cut a tag, and make no request to the live site at all.
+**The smoke job is the only one that touches production.** The end-to-end run needs the preview deploy, which happens on pull requests only, so without the smoke job a push to `main` would deploy production and cut a tag without a single request to the live site.
 
 The preview is not a faithful target either: `HIDE_CHROME` is true there, so the suite sees an under-construction placeholder on the unpublished routes. See [Rendering and Routing](Rendering-and-Routing).
 
@@ -40,7 +40,7 @@ The step passes no `--pass-with-no-tests`, and that is the point: Playwright exi
 
 **A failing smoke rolls production back.** A tag means the version is live *and answering*, so the release job needs both the production deploy and the smoke run. On its own that would leave a bad version serving traffic with only the tag withheld, so a separate rollback job returns the Worker to the previously live version when the deploy succeeded and the smoke failed. It is a separate job because it needs the Cloudflare credentials, and the smoke job deliberately declares no environment.
 
-**A merge landing mid-release joins the release in flight.** The release job used to release from the run's own sha, so a commit reaching `main` while it ran made its version-bump push a non-fast-forward: the job failed after the deploy and the smoke run passed, no tag was written, and a re-run stood down because the branch it held was behind the remote. It fast-forwards onto the head of `main` before semantic-release runs now, so the version covers every commit on `main` at that moment and the run those commits queued has nothing left to publish. A tag can therefore precede the deploy of the commits it absorbed by a few minutes. Two cases still stand the job down, `main` rewritten under the run or a merge landing in the seconds between the fast-forward and the push, and both heal on their own: no tag was written, so the run the newer head queued cuts the release over everything since the last one. A manual dispatch on `main` redeploys production with the smoke run behind it, for a rotated credential, and cuts no release.
+**A merge landing mid-release joins the release in flight.** The release job fast-forwards onto the head of `main` before semantic-release runs, so the version covers every commit on `main` at that moment and the run those commits queued has nothing left to publish; releasing from the run's own sha would make its version-bump push a non-fast-forward once another commit had landed. A tag can therefore precede the deploy of the commits it absorbed by a few minutes. Two cases still stand the job down, `main` rewritten under the run or a merge landing in the seconds between the fast-forward and the push, and both heal on their own: no tag was written, so the run the newer head queued cuts the release over everything since the last one. A manual dispatch on `main` redeploys production with the smoke run behind it, for a rotated credential, and cuts no release.
 
 **What that costs is worth stating.** A case that fails for a reason outside the Worker now reverts a deploy that was fine. A case whose result depends on the caller's address does not belong in a set that can undo a release, which is why the feed and the sitemap are not in it: both answer `403` to a request from a datacenter address, from the edge rather than from the Worker, while a browser gets both.
 
@@ -50,7 +50,7 @@ The step passes no `--pass-with-no-tests`, and that is the point: Playwright exi
 
 The ruleset on `main` requires these contexts: `Check`, `Lint the pull request title`, `Dependency Review` and `zizmor`. `Check` is an aggregate job that needs the verify, deploy, end-to-end, smoke and release jobs in `ci.yml` and fails when any of them failed or was cancelled, so the end-to-end run against the preview gates a merge without being named, which it could not be: every job in that workflow is conditional on the event, and a required check that never reports blocks the merge forever. Approvals are not required; the checks are the gate. Settings outside it back it up: a `release-tags` ruleset that forbids deleting or moving any `v*` tag, and a deployment-branch policy on the `production` environment that accepts `main` only.
 
-**The preview Worker outlives the end-to-end run, and it used to be deleted under it.** Closing a pull request does not cancel the CI run already going, so the cleanup queues behind that run, in a concurrency group spelled from the pull request number. A weekly sweep deletes any preview Worker whose pull request is closed, for the cases a cleanup missed.
+**The preview Worker outlives the end-to-end run.** Closing a pull request does not cancel the CI run already going, so the cleanup queues behind that run, in a concurrency group spelled from the pull request number. A weekly sweep deletes any preview Worker whose pull request is closed, for the cases a cleanup missed.
 
 ---
 
@@ -64,6 +64,12 @@ The application's own log lines reach the same place through `console`. That is 
 
 ---
 
-## Things the deploy learned the hard way
+## How the deploy step is shaped
 
-The commit-message truncation, the secrets-file timing and the reason there is no retry wrapper are recorded once, in [`AGENTS.md`](https://github.com/fbuireu/biancafiore/blob/main/AGENTS.md)'s Deploy section, rather than restated here.
+The shared deploy workflow passes wrangler a short `--message` of its own, the sha and the trigger as one token, because wrangler otherwise sends the latest commit message verbatim as the deployment annotation, and a long one fails the deploy with *Received a malformed response from the API* after a clean build and upload.
+
+The runtime secrets travel with the deploy in a secrets file, so a deploy is one version rather than a deploy followed by a secret write that leaves the new code running against the old values in between. The upload is additive: a secret the file omits is not deleted.
+
+Neither the build nor the deploy is wrapped in a retry. Both fail deterministically far more often than on a network flake, a retry wrapper cannot tell the two apart, and wrangler already retries its own API calls.
+
+The release commit, `chore(release): <version> [skip ci]`, is the one commit on `main` that commitlint never sees, since the hook runs on a branch and the pull request check reads the title. The `[skip ci]` is load-bearing: without it that push starts the run that cuts the next release.

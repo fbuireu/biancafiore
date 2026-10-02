@@ -1,5 +1,5 @@
-import { createPeriod, formatPeriod } from "@domain/city/rules";
 import { describe, expect, it } from "vitest";
+import { createPeriod, formatPeriod } from "./rules";
 
 describe("createPeriod", () => {
 	it("keeps the years the Author lived in a City, not the dates the CMS holds", () => {
@@ -46,7 +46,7 @@ describe("formatPeriod", () => {
 		expect(formatPeriod({ startYear: 2021 })).toBe("2021-Present");
 	});
 
-	it("prints a stay that opened and closed in one year as that year on both sides", () => {
+	it("prints a period that opened and closed in one year as that year on both sides", () => {
 		expect(formatPeriod({ startYear: 2024, endYear: 2024 })).toBe("2024-2024");
 	});
 });

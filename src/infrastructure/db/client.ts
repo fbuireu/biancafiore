@@ -1,9 +1,9 @@
-import * as schema from "@infrastructure/db/schema";
-import { DatabaseError } from "@infrastructure/errors";
 import { createClient } from "@libsql/client/web";
 import { and, desc, eq, gte } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/libsql/web";
 import { Context, Effect, Layer } from "effect";
+import { DatabaseError } from "../errors";
+import * as schema from "./schema";
 
 export interface FindLatestContactSinceParams {
 	email: string;

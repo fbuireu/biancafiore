@@ -1,9 +1,9 @@
 import { CONTACT_DETAILS } from "@const/const";
-import { EmailClient, EmailClientLive } from "@infrastructure/email/server";
-import { EmailError } from "@infrastructure/errors";
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
 import { Cause, Effect, Exit, Option } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { EmailError } from "../errors";
+import { EmailClient, EmailClientLive } from "./server";
 
 const send = vi.hoisted(() => vi.fn());
 

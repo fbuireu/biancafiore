@@ -1,5 +1,5 @@
-import { articleReference, articleSlug } from "@application/dto/article/utils/reference";
 import { describe, expect, it } from "vitest";
+import { articleReference, articleSlug } from "./reference";
 
 describe("articleSlug", () => {
 	it("trims the whitespace Contentful preserves around the slug", () => {

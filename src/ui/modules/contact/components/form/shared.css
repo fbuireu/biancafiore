@@ -14,12 +14,6 @@
 	bottom: -1.75rem;
 }
 
-.contact-form__generic-error-wrapper {
-	bottom: 2rem;
-	width: 100%;
-	position: relative;
-}
-
 .contact-form__input-label,
 .contact-form__textarea-label {
 	color: var(--neutral-light-1);

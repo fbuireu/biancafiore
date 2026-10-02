@@ -1,19 +1,19 @@
 import type { Except } from "@const/types";
-import { CONTACT_COOLDOWN_HOURS, contactCooldownStart, normalizeEmail } from "@domain/contact/rules";
-import { Database } from "@infrastructure/db/client";
-import { type DatabaseError, DuplicateContactError } from "@infrastructure/errors";
-import { LoggerService } from "@infrastructure/logging/service";
+import { contactCooldownStart, normalizeEmail } from "@domain/contact/rules";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
+import { Database } from "../db/client";
+import { type DatabaseError, DuplicateContactError } from "../errors";
+import { LoggerService } from "../logging/service";
 
-const ALREADY_HEARD_MESSAGE = `I have already heard from you in the last ${CONTACT_COOLDOWN_HOURS} hours. Please be patient, I will get back to you ASAP.`;
+const ALREADY_HEARD_MESSAGE = "I've already received a message from you, and I'll reply as soon as I can.";
 const COOLDOWN_REASON = "inside the cooldown window";
 const REPEATED_REASON = "the same message as a previous submission";
 
-type CheckDuplicatedEntriesParams = Except<ContactFormData, "recaptcha" | "emailId">;
+type CheckDuplicateContactParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
-export const checkDuplicatedEntries = (
-	data: CheckDuplicatedEntriesParams,
+export const checkDuplicateContact = (
+	data: CheckDuplicateContactParams,
 ): Effect.Effect<void, DatabaseError | DuplicateContactError, Database | LoggerService> =>
 	Effect.gen(function* () {
 		const database = yield* Database;

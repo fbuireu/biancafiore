@@ -1,7 +1,9 @@
-import { buildTagIndexBuckets, resolveSlugCollisions } from "@domain/tag/rules";
-import type { TagIndexEntryDTO } from "@domain/tag/types";
-import { TagType } from "@domain/tag/types";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { buildTagIndexBuckets, resolveSlugCollisions } from "./rules";
+import type { TagIndexEntryDTO } from "./types";
+import { TagType } from "./types";
+
+const MACHINE_LOCALE = "sv";
 
 interface EntryStubParams {
 	name: string;
@@ -113,5 +115,34 @@ describe("buildTagIndexBuckets", () => {
 
 	it("answers no buckets for an index with nothing filed under it", () => {
 		expect(buildTagIndexBuckets([])).toEqual([]);
+	});
+});
+
+describe("buildTagIndexBuckets on a machine whose own locale collates Ö after Z", () => {
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
+	it("orders the letters and the names inside them under the site's locale, so every build prints one Tag Index", () => {
+		vi.spyOn(String.prototype, "localeCompare").mockImplementation(function (
+			this: string,
+			that: string,
+			locales?: Intl.LocalesArgument,
+		) {
+			return new Intl.Collator(locales ?? MACHINE_LOCALE).compare(this, that);
+		});
+
+		const buckets = buildTagIndexBuckets([
+			entry({ name: "Zebra" }),
+			entry({ name: "Österreich" }),
+			entry({ name: "Oz" }),
+			entry({ name: "Oåsis" }),
+		]);
+
+		expect(buckets.map(({ letter, entries }) => [letter, entries.map(({ name }) => name)])).toEqual([
+			["O", ["Oåsis", "Oz"]],
+			["Ö", ["Österreich"]],
+			["Z", ["Zebra"]],
+		]);
 	});
 });

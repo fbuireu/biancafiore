@@ -1,9 +1,9 @@
-import type { CityPoint } from "@modules/about/utils/globe";
 import { act, cleanup, render, screen } from "@testing-library/react";
 import { server } from "@tests/doubles/network";
 import { HttpResponse, http } from "msw";
 import { Suspense } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { CityPoint } from "../../utils/globe";
 import { WORLD_GLOBE_CONFIG } from "./const";
 
 interface GlobeProps {
@@ -14,7 +14,6 @@ interface GlobeProps {
 	htmlElement?: (data: unknown) => Element;
 	width?: number;
 	height?: number;
-	pointsData?: unknown;
 	globeMaterial?: unknown;
 	showAtmosphere?: boolean;
 	backgroundColor?: string;
@@ -128,6 +127,12 @@ describe("WorldGlobeCanvas", () => {
 		});
 		expect(globeProps.at(-1)?.backgroundColor).toBe(WORLD_GLOBE_CONFIG.BACKGROUND_COLOR);
 		expect(globeProps.at(-1)?.showAtmosphere).toBe(false);
+	});
+
+	it("hands the globe no points layer, whose accessors read an altitude, a radius and a colour no CityPoint carries", async () => {
+		await mountCanvas();
+
+		expect(Object.keys(globeProps.at(-1) ?? {}).filter((prop) => prop.startsWith("point"))).toEqual([]);
 	});
 
 	it("renders a pin per city, labelled with the city's name", async () => {

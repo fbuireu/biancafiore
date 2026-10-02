@@ -1,7 +1,7 @@
 /// <reference path="../.astro/types.d.ts" />
 
 interface ImportMetaEnv {
-	readonly IMAGE_CDN: import("./const/const").ImageCdn;
+	readonly IMAGE_CDN: import("@const/imageCdn").ImageCdn;
 	readonly SITE_URL: string;
 	readonly BIANCA_EMAIL: string;
 	readonly TWITTER_HANDLE: string;

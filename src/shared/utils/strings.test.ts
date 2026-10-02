@@ -1,5 +1,5 @@
-import { deSlugify, escapeHtml, safeUrl, slugify } from "@shared/utils/strings";
 import { describe, expect, it } from "vitest";
+import { deSlugify, escapeHtml, safeUrl, slugify } from "./strings";
 
 describe("slugify", () => {
 	it("lowercases the text and joins words with a single hyphen", () => {

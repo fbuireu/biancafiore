@@ -1,9 +1,9 @@
-import type { RawArticle } from "@application/dto/article/types";
-import type { RawAuthor } from "@application/dto/author/types";
-import { AUTHOR_LATEST_ARTICLE_FIELDS } from "@application/dto/author/utils/articles";
-import { authors } from "@application/entities/authors/authors";
 import { cmsAnswers, cmsHoldsUntilQueries, cmsQueries, cmsQueriesOverlapped, resetCms } from "@tests/doubles/cmsLayer";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { RawArticle } from "../../dto/article/types";
+import type { RawAuthor } from "../../dto/author/types";
+import { AUTHOR_LATEST_ARTICLE_FIELDS } from "../../dto/author/utils/articles";
+import { authors } from "./authors";
 
 vi.mock("astro:content", async () => {
 	const { z } = await import("astro/zod");

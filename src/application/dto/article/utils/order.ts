@@ -1,7 +1,7 @@
-import type { RawArticle } from "@application/dto/article/types";
-import { articleReference } from "@application/dto/article/utils/reference";
 import { publishDateISO, sortFavoriteFirst } from "@domain/article/rules";
 import type { Reference } from "@domain/shared/reference";
+import type { RawArticle } from "../types";
+import { articleReference } from "./reference";
 
 interface OrderableArticle {
 	reference: Reference<"articles">;

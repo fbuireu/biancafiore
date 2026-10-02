@@ -1,10 +1,6 @@
 import { CONTACT_DETAILS } from "@const/index";
-import {
-	EMAIL_ADDRESS_PLACEHOLDER,
-	EMAIL_BUTTON_ADDRESS_CLASS,
-	EMAIL_BUTTON_CLASS,
-} from "@modules/core/components/emailButton/const";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { EMAIL_ADDRESS_PLACEHOLDER, EMAIL_BUTTON_ADDRESS_CLASS, EMAIL_BUTTON_CLASS } from "../const";
 import { activateEmailButtons } from "./interactions";
 
 const ADDRESS = atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA);

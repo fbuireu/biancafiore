@@ -1,6 +1,6 @@
 import { TagType } from "@domain/tag/types";
-import { tagPageCopy } from "@modules/core/utils/tagPage";
 import { describe, expect, it } from "vitest";
+import { tagPageCopy } from "./tagPage";
 
 describe("tagPageCopy for a topical Tag", () => {
 	it("heads the page with the hash form of the slug, as the tag pages always have", () => {
