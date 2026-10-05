@@ -1,3 +1,10 @@
+## [1.25.6](https://github.com/fbuireu/biancafiore/compare/v1.25.5...v1.25.6) (2026-10-05)
+
+
+### Bug Fixes
+
+* close the known breaches, lighten every page and drop unsafe-inline from script-src ([302d6a5](https://github.com/fbuireu/biancafiore/commit/302d6a5bf38d647a7212362bb27cdb72cad556ab))
+
 ## [1.25.5](https://github.com/fbuireu/biancafiore/compare/v1.25.4...v1.25.5) (2026-10-02)
 
 
