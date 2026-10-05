@@ -1,0 +1,20 @@
+---
+import { PAGES_ROUTES } from "@const/index";
+import ArticleSlider from "@modules/core/components/articleSlider/ArticleSlider.astro";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import { blogPreview } from "@modules/core/utils/blogPreview";
+import "./about-blog-preview.css";
+
+const MAX_ARTICLES = 4;
+
+const { articles, itemListSchema } = await blogPreview(MAX_ARTICLES);
+---
+<section class="about-blog-preview-wrapper common-wrapper">
+    <h2 class="about-blog-preview__title editorial-section-title reveal">
+        Fresh from <a class="about-blog-preview__title__link clickable underline-on-hover" href={`${PAGES_ROUTES.ARTICLES}`}>the blog</a>
+    </h2>
+    <div class="about-blog-preview__inner">
+        <ArticleSlider articles={articles} class="about-blog-preview__slider" />
+        <JsonLd schema={itemListSchema} />
+    </div>
+</section>

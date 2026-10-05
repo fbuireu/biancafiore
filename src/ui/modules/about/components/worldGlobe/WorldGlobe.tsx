@@ -6,7 +6,6 @@ import "./world-globe.css";
 
 interface WorldGlobeProps {
 	points: CityPoint[];
-	width?: number;
 }
 
 const WorldGlobeCanvas = lazy(() => import("./WorldGlobeCanvas"));
@@ -17,22 +16,17 @@ const WRAPPER_CLASS_NAME = "world-globe-wrapper reveal reveal--fade";
 
 const getResponsiveWidth = () => (window.innerWidth > 720 ? 680 : undefined);
 
-const BrowserWorldGlobe = ({ points, width: widthProp }: WorldGlobeProps) => {
+const BrowserWorldGlobe = ({ points }: WorldGlobeProps) => {
 	use(browser());
 
-	const [autoWidth, setAutoWidth] = useState<number | undefined>(() => getResponsiveWidth());
-	const width = widthProp ?? autoWidth;
+	const [width, setWidth] = useState<number | undefined>(() => getResponsiveWidth());
 
 	useEffect(() => {
-		if (widthProp !== undefined) {
-			return;
-		}
-
-		const handleResize = () => setAutoWidth(getResponsiveWidth());
+		const handleResize = () => setWidth(getResponsiveWidth());
 		window.addEventListener("resize", handleResize);
 
 		return () => window.removeEventListener("resize", handleResize);
-	}, [widthProp]);
+	}, []);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [isVisible, setIsVisible] = useState(false);
@@ -68,8 +62,8 @@ const BrowserWorldGlobe = ({ points, width: widthProp }: WorldGlobeProps) => {
 	);
 };
 
-export const WorldGlobe = ({ points, width }: WorldGlobeProps) => (
-	<Suspense fallback={<aside className={WRAPPER_CLASS_NAME} style={{ height: HEIGHT, width }} />}>
-		<BrowserWorldGlobe points={points} width={width} />
+export const WorldGlobe = ({ points }: WorldGlobeProps) => (
+	<Suspense fallback={<aside className={WRAPPER_CLASS_NAME} style={{ height: HEIGHT }} />}>
+		<BrowserWorldGlobe points={points} />
 	</Suspense>
 );

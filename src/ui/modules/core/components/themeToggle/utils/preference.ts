@@ -13,7 +13,7 @@ export const readPreference = (store: Pick<Storage, "getItem">): ThemePreference
 	return PREFERENCES.has(stored ?? "") ? (stored as ThemePreference) : ThemePreference.SYSTEM;
 };
 
-export interface WritePreferenceParams {
+interface WritePreferenceParams {
 	store: Pick<Storage, "setItem">;
 	preference: ThemePreference;
 }
@@ -21,7 +21,7 @@ export interface WritePreferenceParams {
 export const writePreference = ({ store, preference }: WritePreferenceParams): void =>
 	store.setItem(THEME_STORAGE_KEY, preference);
 
-export interface ResolveThemeParams {
+interface ResolveThemeParams {
 	preference: ThemePreference;
 	prefersDark: boolean;
 }

@@ -11,8 +11,6 @@ export const CONSENT_STATUS = {
 	DENIED: "denied",
 } as const;
 
-export type ConsentStatus = (typeof CONSENT_STATUS)[keyof typeof CONSENT_STATUS];
-
 const literal = (value: string) => JSON.stringify(value);
 
 export const consentBootstrapScript = (analyticsId: string): string => `

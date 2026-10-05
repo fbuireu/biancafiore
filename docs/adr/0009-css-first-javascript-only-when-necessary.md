@@ -19,5 +19,5 @@ This is why reveal-on-scroll uses native scroll timelines rather than the GSAP a
 ## Consequences
 
 - The baseline is a choice, not an accident: features are used without prefix stacks or polyfills, and a non-evergreen browser gets a degraded but readable page.
-- Adding a React island is a decision that has to be argued, not a default; [`CODING_STANDARDS.md`](../../CODING_STANDARDS.md) holds a reviewer to it, and the modules guide censuses the hydration roots.
+- Adding a React island is a decision that has to be argued, not a default; [`CODING_STANDARDS.md`](../../CODING_STANDARDS.md) holds a reviewer to it, and the modules guide censuses the hydration roots. The cookie banner shows what the argument looks like: its library needs no framework, so it is an Astro component with a bundled script and no page loads React for it.
 - Some effects are harder to express this way than they would be in JavaScript. That cost is accepted; the escape hatch is real but has to be justified.

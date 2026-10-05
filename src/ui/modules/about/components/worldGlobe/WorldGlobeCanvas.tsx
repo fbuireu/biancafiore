@@ -2,7 +2,7 @@ import { StretchArrow } from "@assets/images/svg-components/stretchArrow/Stretch
 import { ZoomIn } from "@assets/images/svg-components/zoomIn/ZoomIn";
 import { ZoomOut } from "@assets/images/svg-components/zoomOut/ZoomOut";
 import { prefersReducedMotion } from "@modules/core/utils/motion";
-import { use, useEffect, useRef } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import type { GlobeMethods } from "react-globe.gl";
 import Globe from "react-globe.gl";
 import * as Three from "three";
@@ -10,6 +10,7 @@ import { TabVisibility, useTabVisibility } from "../../hooks/useTabVisibility/us
 import { type CityPoint, calculateCenter, renderPin } from "../../utils/globe";
 import { WORLD_GLOBE_CONFIG } from "./const";
 import { type CountryFeature, fetchCountries } from "./utils/countries";
+import { observeTheme, readGlobePalette } from "./utils/palette";
 
 interface WorldGlobeCanvasProps {
 	points: CityPoint[];
@@ -26,7 +27,7 @@ const Direction = {
 	COUNTERCLOCKWISE: "counterClockwise",
 } as const;
 
-export const Zoom = {
+const Zoom = {
 	IN: "in",
 	OUT: "out",
 } as const;
@@ -39,7 +40,6 @@ interface HandleActionParams {
 const {
 	HEIGHT,
 	MESH_PHONG_MATERIAL_CONFIG,
-	HEXAGON_POLYGON_COLOR,
 	BACKGROUND_COLOR,
 	SHOW_ATMOSPHERE,
 	ANIMATE_IN,
@@ -47,12 +47,6 @@ const {
 	MOVEMENT_OFFSET,
 	ZOOM_OFFSET,
 } = WORLD_GLOBE_CONFIG;
-
-const GLOBE_MATERIAL = new Three.MeshPhongMaterial({
-	color: MESH_PHONG_MATERIAL_CONFIG.COLOR,
-	opacity: MESH_PHONG_MATERIAL_CONFIG.OPACITY,
-	transparent: MESH_PHONG_MATERIAL_CONFIG.TRANSPARENT,
-});
 
 let countries: Promise<CountryFeature[]> | undefined;
 
@@ -62,6 +56,21 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 	const tabVisibility = useTabVisibility();
 	const hexPolygons = use(loadCountries());
 	const worldGlobeReference = useRef<GlobeMethods | undefined>(undefined);
+	const [palette, setPalette] = useState(readGlobePalette);
+	const [globeMaterial] = useState(
+		() =>
+			new Three.MeshPhongMaterial({
+				color: palette.ocean,
+				opacity: MESH_PHONG_MATERIAL_CONFIG.OPACITY,
+				transparent: MESH_PHONG_MATERIAL_CONFIG.TRANSPARENT,
+			}),
+	);
+
+	useEffect(() => observeTheme(() => setPalette(readGlobePalette())), []);
+
+	useEffect(() => {
+		globeMaterial.color.set(palette.ocean);
+	}, [globeMaterial, palette.ocean]);
 
 	const onGlobeReady = () => {
 		if (!worldGlobeReference.current) {
@@ -114,8 +123,8 @@ const WorldGlobeCanvas = ({ points, width }: WorldGlobeCanvasProps) => {
 				showAtmosphere={SHOW_ATMOSPHERE}
 				backgroundColor={BACKGROUND_COLOR}
 				hexPolygonsData={hexPolygons}
-				hexPolygonColor={() => HEXAGON_POLYGON_COLOR}
-				globeMaterial={GLOBE_MATERIAL}
+				hexPolygonColor={() => palette.land}
+				globeMaterial={globeMaterial}
 				htmlElementsData={points}
 				htmlElement={(data) => renderPin(data as CityPoint)}
 			/>

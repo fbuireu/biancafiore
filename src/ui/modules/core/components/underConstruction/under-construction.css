@@ -1,0 +1,19 @@
+.under-construction {
+	margin-block-start: 40vh;
+	text-align: center;
+}
+
+.under-construction__title {
+	font-size: var(--font-size-h2);
+	margin: 0;
+}
+
+.under-construction__text {
+	font-size: var(--font-size-h6);
+	margin-block-start: var(--space-m);
+}
+
+.under-construction__link {
+	color: var(--primary-main);
+	text-decoration: underline;
+}

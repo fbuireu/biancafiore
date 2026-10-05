@@ -1,8 +1,9 @@
 ---
 import logo from "@assets/images/svg/logo.svg?raw";
 import { PAGES_ROUTES } from "@const/index";
+import { LOGO_LINK_CLASS } from "./const";
 import "./logo.css";
 ---
-<a class="site__logo flex" href={PAGES_ROUTES.HOME}>
+<a class:list={[LOGO_LINK_CLASS, "flex"]} href={PAGES_ROUTES.HOME}>
   <Fragment set:html={logo} />
 </a>

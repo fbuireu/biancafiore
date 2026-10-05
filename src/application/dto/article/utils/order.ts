@@ -1,7 +1,7 @@
-import { publishDateISO, sortFavoriteFirst } from "@domain/article/rules";
+import { sortFavoriteFirst } from "@domain/article/rules";
 import type { Reference } from "@domain/shared/reference";
 import type { RawArticle } from "../types";
-import { articleReference } from "./reference";
+import { articleIsFavorite, articlePublishDateISO, articleReference } from "./reference";
 
 interface OrderableArticle {
 	reference: Reference<"articles">;
@@ -12,8 +12,8 @@ interface OrderableArticle {
 function toOrderableArticle(rawArticle: RawArticle): OrderableArticle {
 	return {
 		reference: articleReference(rawArticle),
-		isFavorite: rawArticle.fields.isFavorite ?? false,
-		publishDateISO: publishDateISO(rawArticle.fields.publishDate),
+		isFavorite: articleIsFavorite(rawArticle),
+		publishDateISO: articlePublishDateISO(rawArticle),
 	};
 }
 

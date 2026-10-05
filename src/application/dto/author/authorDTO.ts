@@ -4,7 +4,7 @@ import type { RawAuthor } from "./types";
 import { getLatestArticleByAuthor } from "./utils/articles";
 import { createAuthor } from "./utils/author";
 
-export interface CreateAuthorsParams {
+interface CreateAuthorsParams {
 	rawAuthors: RawAuthor[];
 	rawArticles: RawArticle[];
 }

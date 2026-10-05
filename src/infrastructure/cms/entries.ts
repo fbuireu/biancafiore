@@ -1,9 +1,13 @@
-import type { EntryCollection, EntrySkeletonType } from "contentful";
+import type { EntriesQueries, EntryCollection, EntrySkeletonType } from "contentful";
 import { type Context, Effect, ManagedRuntime } from "effect";
 import { CmsClient, CmsClientLive, type EntriesQuery, isContentfulConfigured } from "./client";
 
 type RawEntries<Skeletons extends readonly EntrySkeletonType[]> = {
 	[Index in keyof Skeletons]: EntryCollection<Skeletons[Index], undefined>["items"];
+};
+
+type SkeletonQueries<Skeletons extends readonly EntrySkeletonType[]> = {
+	[Index in keyof Skeletons]: EntriesQueries<Skeletons[Index], undefined>;
 };
 
 type PagedQuery = NonNullable<EntriesQuery> & { skip?: number; limit?: number };
@@ -42,7 +46,7 @@ const fetchEveryPage = ({ cms, query }: FetchEveryPageParams) =>
 	});
 
 export const fetchEntries = <Skeletons extends readonly EntrySkeletonType[]>(
-	...queries: { [Index in keyof Skeletons]: EntriesQuery }
+	...queries: SkeletonQueries<Skeletons>
 ): Promise<RawEntries<Skeletons>> => {
 	if (!isContentfulConfigured()) return Promise.resolve(queries.map(() => []) as RawEntries<Skeletons>);
 

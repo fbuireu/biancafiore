@@ -142,6 +142,8 @@
 
 .article-card__link:is(:hover, :focus-visible) ~ .article-card__item,
 .article-card__item:hover {
+	--stretch-arrow: hover;
+
 	& .article-card__featured-image {
 		scale: 1.05;
 	}
@@ -153,14 +155,6 @@
 	& .article-card__arrow {
 		opacity: 1;
 		translate: 0 0;
-
-		& .stretch-arrow__shaft {
-			d: var(--stretch-arrow-shaft-hover);
-		}
-
-		& .stretch-arrow__tip {
-			d: var(--stretch-arrow-tip-hover);
-		}
 	}
 
 	& .article-card__excerpt {

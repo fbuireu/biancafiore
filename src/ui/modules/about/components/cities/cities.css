@@ -1,13 +1,15 @@
-.city-card__list {
+.cities__list {
+	--card-gap: 3rem;
+	--card-height: 400px;
 	--num-columns: 2;
-	--num-cards: attr(data-num-cards type(<number>), 1);
 	display: grid;
-	gap: 3rem;
+	gap: var(--card-gap);
+	grid-auto-rows: var(--card-height);
 	grid-template-columns: 1fr;
-	grid-template-rows: repeat(var(--num-cards), 400px);
 	list-style: none;
 	margin-block-end: 3rem;
 	max-width: calc(100% / var(--num-columns));
+	padding-block-end: calc(var(--card-height) + var(--card-gap));
 	view-timeline-name: --cities-scales-in-view;
 
 	@container about-page (width <= 760px) {
@@ -15,14 +17,9 @@
 	}
 }
 
-@supports not (z-index: attr(data-num-cards type(<number>))) {
-	.city-card__list {
-		--num-cards: 1;
-	}
-}
-
-.city-card__item {
+.cities__item {
 	--index: sibling-index();
+	--num-cards: calc(sibling-count() + 1);
 	--index0: calc(var(--index) - 1);
 	--reverse-index: calc(var(--num-cards) - var(--index0));
 	padding-top: calc(var(--index) * 0.5rem);
@@ -34,7 +31,7 @@
 	}
 }
 
-.city-card__content {
+.cities__content {
 	align-items: stretch;
 	background: var(--surface);
 	border: 1px solid var(--line);
@@ -51,14 +48,16 @@
 		gap: 0.5rem;
 	}
 
-	@supports (animation-timeline: view()) {
-		animation: linear scale-by-index forwards;
-		animation-range: exit-crossing var(--start-range) exit-crossing var(--end-range);
-		animation-timeline: --cities-scales-in-view;
+	@media (prefers-reduced-motion: no-preference) {
+		@supports (animation-timeline: view()) {
+			animation: linear scale-by-index forwards;
+			animation-range: exit-crossing var(--start-range) exit-crossing var(--end-range);
+			animation-timeline: --cities-scales-in-view;
+		}
 	}
 }
 
-.city-card__item:nth-child(even) .city-card__content {
+.cities__item:nth-child(even) .cities__content {
 	grid:
 		"City-Image City-Image City-Period City-Period" min-content
 		"City-Image City-Image City-Name City-Name" min-content
@@ -77,7 +76,7 @@
 	}
 }
 
-.city-card__item:nth-child(odd) .city-card__content {
+.cities__item:nth-child(odd) .cities__content {
 	grid:
 		"City-Period City-Period City-Image City-Image" min-content
 		"City-Name City-Name City-Image City-Image" min-content
@@ -96,7 +95,7 @@
 	}
 }
 
-.city-card__content__image {
+.cities__content__image {
 	block-size: 100%;
 	border: 1px solid var(--line);
 	grid-area: City-Image;
@@ -104,7 +103,7 @@
 	object-fit: cover;
 }
 
-.city-card__content__period {
+.cities__content__period {
 	grid-area: City-Period;
 	padding-top: 1rem;
 
@@ -114,7 +113,7 @@
 	}
 }
 
-.city-card__content__name {
+.cities__content__name {
 	color: var(--ink);
 	font-family: var(--font-display);
 	font-size: clamp(28px, 3cqi, 40px);
@@ -130,7 +129,7 @@
 	}
 }
 
-.city-card__content__description {
+.cities__content__description {
 	color: var(--muted);
 	font-family: var(--font-serif);
 	font-size: var(--font-size-sm);
@@ -141,5 +140,11 @@
 	@container about-page (width <= 720px) {
 		padding-bottom: 1rem;
 		padding-inline: 1rem;
+	}
+}
+
+@keyframes scale-by-index {
+	to {
+		transform: scale(calc(1.1 - calc(0.05 * var(--reverse-index))));
 	}
 }

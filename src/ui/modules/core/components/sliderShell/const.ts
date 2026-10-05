@@ -1,0 +1,9 @@
+export const SLIDER_WRAPPER_CLASS = "slider-wrapper" as const;
+export const SLIDER_TRACK_CLASS = "slider__track" as const;
+export const SLIDER_SLIDE_CLASS = "slider__slide" as const;
+export const SLIDER_BUTTON_CLASS = "slider__btn" as const;
+export const SLIDER_PREVIOUS_CLASS = `${SLIDER_BUTTON_CLASS}--prev` as const;
+export const SLIDER_NEXT_CLASS = `${SLIDER_BUTTON_CLASS}--next` as const;
+export const SLIDER_DOT_CLASS = "slider__dot" as const;
+export const SLIDER_DOT_ACTIVE_CLASS = `${SLIDER_DOT_CLASS}--active` as const;
+export const SLIDER_LOOPING_ATTRIBUTE = "data-is-looping" as const;

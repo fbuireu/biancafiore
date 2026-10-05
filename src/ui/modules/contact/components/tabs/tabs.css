@@ -1,29 +1,29 @@
-.contact-tabs-wrapper {
+.tabs-wrapper {
 	background-color: light-dark(var(--neutral-light-4), var(--background-main));
 	margin: 2rem 0;
 	padding: 3rem 0;
 }
-.contact-tabs__inner {
+.tabs__inner {
 	@container contact-page (width <= 960px) {
 		padding-inline: 1rem;
 	}
 }
 
-.contact-tabs__header {
+.tabs__header {
 	gap: 1rem 0;
 	margin: 3rem 0;
 }
 
-.contact-tabs__divider {
+.tabs__divider {
 	background-color: var(--neutral-light-3);
 	height: 1px;
 }
 
-.contact-tabs__title {
+.tabs__title {
 	text-align: start;
 }
 
-.contact-tab {
+.tabs__tab {
 	color: var(--neutral-main);
 	cursor: pointer;
 	padding: 1rem;
@@ -34,19 +34,26 @@
 	}
 }
 
-.contact-tab--active {
+.tabs__tab--active {
 	font-weight: bold;
 }
 
-.contact-tab__content {
+.tabs__content {
 	display: none;
 	padding: 3rem 0;
 
-	&.contact-tab__content--active {
+	&.tabs__content--active {
 		display: block;
 	}
 }
 
 .calendly-inline-widget {
 	height: 700px;
+
+	& iframe {
+		/* biome-ignore lint/correctness/noUnknownProperty: Biome does not know frame-sizing yet */
+		frame-sizing: content-height;
+		height: auto;
+		min-height: 100%;
+	}
 }

@@ -1,5 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { WORLD_GLOBE_MARKER_CLASS, WORLD_GLOBE_MARKER_LABEL_CLASS } from "../components/worldGlobe/const";
 import { type CityPoint, calculateCenter, renderPin, toCityPoints } from "./globe";
 
 const point = (overrides: Partial<CityPoint> = {}): CityPoint => ({
@@ -77,8 +78,8 @@ describe("renderPin", () => {
 	it("names the marker after the city's slug rather than re-deriving it from the label", () => {
 		const pin = renderPin(point({ label: "New York City", slug: "new-york-city" }));
 
-		expect([...pin.classList]).toEqual(["marker-wrapper", "marker-wrapper--new-york-city"]);
-		expect(pin.querySelector(".marker__label")?.textContent).toBe("New York City");
+		expect([...pin.classList]).toEqual([WORLD_GLOBE_MARKER_CLASS, `${WORLD_GLOBE_MARKER_CLASS}--new-york-city`]);
+		expect(pin.querySelector(`.${WORLD_GLOBE_MARKER_LABEL_CLASS}`)?.textContent).toBe("New York City");
 		expect(pin.querySelector("title")?.textContent).toBe("New York City");
 	});
 

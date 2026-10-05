@@ -2,8 +2,8 @@
 import { getCollection } from "astro:content";
 import { articleHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
+import AboutBlogPreview from "@modules/about/components/aboutBlogPreview/AboutBlogPreview.astro";
 import AboutIntro from "@modules/about/components/aboutIntro/AboutIntro.astro";
-import AboutLatestArticles from "@modules/about/components/aboutLatestArticles/AboutLatestArticles.astro";
 import LittleMoreOfMe from "@modules/about/components/littleMoreOfMe/LittleMoreOfMe.astro";
 import WhatIDo from "@modules/about/components/whatIDo/WhatIDo.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
@@ -48,6 +48,6 @@ const profilePageSchema = buildProfilePageSchema({
     <AboutIntro />
     <WhatIDo />
     <LittleMoreOfMe cities={cities} />
-    <AboutLatestArticles />
+    <AboutBlogPreview />
     <JsonLd schema={profilePageSchema} />
 </BaseLayout>

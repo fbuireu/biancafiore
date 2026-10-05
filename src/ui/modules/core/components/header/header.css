@@ -27,9 +27,17 @@
 		position: absolute;
 	}
 
-	@supports (animation-timeline: scroll()) {
-		animation: add-shadow linear both;
-		animation-range: 0 1cqi;
-		animation-timeline: scroll();
+	@media (prefers-reduced-motion: no-preference) {
+		@supports (animation-timeline: scroll()) {
+			animation: add-shadow linear both;
+			animation-range: 0 1cqi;
+			animation-timeline: scroll();
+		}
+	}
+}
+
+@keyframes add-shadow {
+	to {
+		box-shadow: 0 0.125rem 0.375rem var(--neutral-light-2);
 	}
 }

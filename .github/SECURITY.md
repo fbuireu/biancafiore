@@ -46,6 +46,7 @@ Please check these before reporting:
   the Better Stack tag, by contrast, are consent-gated. See
   [ADR 0013](../docs/adr/0013-analytics-gated-behind-cookie-consent.md) and
   [ADR 0020](../docs/adr/0020-logs-and-traces-leave-through-cloudflares-export.md).
+- **The policy allows inline styles.** `script-src` names each inline script by its digest and has no `'unsafe-inline'`, but `style-src` keeps it: Astro writes inline styles for islands, fonts and view transitions, and the templates carry custom properties in `style` attributes. A report that styles can be injected describes this decision.
 - **`/rss.xml` and `/sitemap-index.xml` answer `403` to some automated
   clients.** Nothing in this tree returns a 403; that answer comes from a zone
   rule at the edge, and a browser gets both. It is a Cloudflare setting, not a

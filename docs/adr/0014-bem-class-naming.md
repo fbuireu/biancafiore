@@ -14,11 +14,11 @@ That split had costs. The `is-`/`has-` prefixes are SMACSS vocabulary, so the co
 
 ## Decision
 
-Modifiers are fused onto their owner: `block--modifier` or `block__element--modifier`, with the `is-`/`has-` prefix dropped. `.contact-tab--active`, `.contact-form__submit--loading`, `.theme-toggle--toggled`.
+Modifiers are fused onto their owner: `block--modifier` or `block__element--modifier`, with the `is-`/`has-` prefix dropped. `.tabs__tab--active`, `.contact-form__submit--loading`, `.theme-toggle--toggled`.
 
 The consequences worth recording:
 
-**Cross-block utilities become blocks, used as a BEM mix.** `underline-on-hover`, `clickable`, `inverted-color-scheme` and `current-page` are used by unrelated blocks, so under strict BEM they would have to be duplicated as a modifier on each one: a synchronised copy of `underline-on-hover` per block that uses it. Instead they are blocks in their own right, mixed in: `class="navigation__menu__link underline-on-hover clickable"`. BEM sanctions the mix; the honest caveat is that a block is meant to be a UI entity and these are behavioural utilities, so this is the seam where BEM and utility CSS blur.
+**Cross-block utilities become blocks, used as a BEM mix.** `underline-on-hover`, `clickable`, `inverted-color-scheme` and `current-page` are used by unrelated blocks, so under strict BEM they would have to be duplicated as a modifier on each one: a synchronised copy of `underline-on-hover` per block that uses it. Instead they are blocks in their own right, mixed in: `class="header__menu__link underline-on-hover clickable"`. BEM sanctions the mix; the honest caveat is that a block is meant to be a UI entity and these are behavioural utilities, so this is the seam where BEM and utility CSS blur.
 
 **Page-wide state hangs off a `page` block on `<html>`.** `<main>` becomes `page__main`. The block carries both the route (`page--about`) and state that restyles several unrelated blocks at once (`page--menu-open`), consumed by descent: `.page--menu-open .reading-progress { … }`. `<html>` is the only ancestor common to `body`, the header and the reading progress bar, so it is the only element that can own this.
 
@@ -28,7 +28,7 @@ The consequences worth recording:
 
 Menu state went from seven `classList.toggle` calls to one, which let five selector constants and five `querySelector` calls go.
 
-**An element that is a mix needs a modifier per block.** The contact tabs are `class="contact-tab underline-on-hover"`, and the single old `--is-active` class served both rules at once: the bold weight from `.contact-tab`, and the persistent underline (plus the hover suppression) from `.underline-on-hover`. Splitting it into `contact-tab--active` alone silently dropped the underline. [`tabs.ts`](../../src/ui/modules/contact/utils/tabs.ts) now toggles `contact-tab--active` and `underline-on-hover--active` together. Any shared modifier being split needs this check.
+**An element that is a mix needs a modifier per block.** The contact tabs are `class="tabs__tab underline-on-hover"`, and the single old `--is-active` class served both rules at once: the bold weight from `.tabs__tab`, and the persistent underline (plus the hover suppression) from `.underline-on-hover`. Splitting it into `tabs__tab--active` alone silently dropped the underline. [`tabs.ts`](../../src/ui/modules/contact/components/tabs/utils/tabs.ts) now toggles `tabs__tab--active` and `underline-on-hover--active` together. Any shared modifier being split needs this check.
 
 Classes that exist purely as JS state and style nothing are `data-` attributes, not classes: the re-entrancy guard in `flyPlane` is now `button.dataset.flying`.
 

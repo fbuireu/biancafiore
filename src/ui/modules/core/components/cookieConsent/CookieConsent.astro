@@ -1,0 +1,10 @@
+---
+import { COOKIE_CONSENT_BUTTON_CLASS } from "./const";
+---
+<button type="button" class:list={[COOKIE_CONSENT_BUTTON_CLASS, "clickable", "underline-on-hover"]}>Manage cookies</button>
+
+<script>
+  import { initCookieConsent } from "./utils/interactions";
+
+  document.addEventListener("astro:page-load", () => initCookieConsent());
+</script>

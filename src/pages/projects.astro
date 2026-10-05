@@ -14,20 +14,20 @@ const projects = await getCollection("projects");
 const itemListSchema = buildProjectListSchema(projects.map(({ data }) => data.id));
 const metadata: Partial<SeoMetadata> = {
 	title: "Projects",
-	description: "Explore Bianca Fiore's portfolio of web development projects and case studies.",
+	description: "Explore the disciplines Bianca Fiore works in, and what each one covers.",
 };
 ---
 <BaseLayout {...metadata}>
     <ProjectsIntro />
   {projects.map((project, index) => (
       <ProjectSection id={project.data.id}>
-          <article class="project-wrapper">
-              <div class="project-image-wrapper">
-                  <BlurImage class="project-image" layout="full-width" image={project.data.image} alt={project.data.name}
+          <article class="project-section__inner">
+              <div class="project-section__image-wrapper">
+                  <BlurImage class="project-section__image" layout="full-width" image={project.data.image} alt={project.data.name}
                          loading={index === 0 ? "eager" : "lazy"} />
               </div>
-              <div class="project-information">
-                  <h2 class="project-title editorial-headline">{project.data.name}</h2>
+              <div class="project-section__information">
+                  <h2 class="project-section__title editorial-headline">{project.data.name}</h2>
                   <div set:html={project.data.description} />
               </div>
           </article>

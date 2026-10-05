@@ -1,7 +1,7 @@
 import type { UnresolvedLink } from "contentful";
 import { describe, expect, it } from "vitest";
 import type { RawAuthor } from "../types";
-import { createAuthor } from "./author";
+import { authorIdentity, createAuthor } from "./author";
 
 interface MakeRawAuthorParams {
 	name?: string;
@@ -58,6 +58,33 @@ describe("createAuthor", () => {
 
 	it("trims the display name Contentful padded", () => {
 		expect(createAuthor(makeRawAuthor({ name: " Bianca Fiore\n" }))).toMatchObject({ name: "Bianca Fiore" });
+	});
+});
+
+describe("authorIdentity", () => {
+	it("answers the trimmed name and slug, the two strings every reader of a raw Author must agree on", () => {
+		expect(authorIdentity({ fields: { name: " Bianca Fiore\n", slug: "  bianca-fiore " } })).toEqual({
+			name: "Bianca Fiore",
+			slug: "bianca-fiore",
+		});
+	});
+
+	it("refuses an Author whose name is only padding, naming them, since the Tag Index files an Author Tag by name", () => {
+		expect(() => authorIdentity({ sys: { id: "3kLmNoPq" }, fields: { name: "  ", slug: "bianca-fiore" } })).toThrow(
+			'The Author "bianca-fiore" (sys.id 3kLmNoPq) has an empty name, so the Tag Index cannot file their Author Tag under a letter',
+		);
+	});
+
+	it("refuses an Author whose slug is only padding, since no page could address them", () => {
+		expect(() => authorIdentity({ sys: { id: "3kLmNoPq" }, fields: { name: "Bianca Fiore", slug: " " } })).toThrow(
+			'The Author "Bianca Fiore" (sys.id 3kLmNoPq) has no slug, so no page can address them',
+		);
+	});
+
+	it("is what createAuthor puts in the Byline, so the Byline and an Author Tag cannot disagree", () => {
+		const raw = makeRawAuthor({ name: " Bianca Fiore ", slug: " bianca-fiore " });
+
+		expect(createAuthor(raw)).toMatchObject(authorIdentity(raw));
 	});
 });
 

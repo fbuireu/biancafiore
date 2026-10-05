@@ -1,5 +1,5 @@
 import { logger } from "../../logging/logger";
-import { buildContentfulImageUrl } from "../imageOptimization";
+import { getOriginImageUrl } from "../imageOptimization";
 
 const PLACEHOLDER_WIDTH = 24;
 const PLACEHOLDER_QUALITY = 35;
@@ -21,7 +21,7 @@ async function requestPlaceholder(url: string): Promise<string | undefined> {
 }
 
 async function readPlaceholder(source: string): Promise<string | undefined> {
-	const url = buildContentfulImageUrl({
+	const url = getOriginImageUrl({
 		source,
 		options: { width: PLACEHOLDER_WIDTH, quality: PLACEHOLDER_QUALITY, format: "webp" },
 	});

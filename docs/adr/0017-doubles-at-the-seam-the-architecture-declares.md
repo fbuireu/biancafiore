@@ -24,7 +24,7 @@ Those two were tested by replacing the global `fetch` with `vi.stubGlobal`, whic
 
 For anything behind an Effect layer, the double is a layer. [`src/tests/doubles/contactLayers.ts`](../../src/tests/doubles/contactLayers.ts) and [`cmsLayer.ts`](../../src/tests/doubles/cmsLayer.ts) build stand-ins for `Database`, `EmailClient` and `CmsClient`. Dropping to HTTP for these would couple the suite to Contentful's and Resend's wire formats, which we do not control and cannot usefully assert; the layer is typed, so a contract change fails at compile time instead.
 
-For a bare `fetch`, the seam is the network, and MSW is the double. [`src/tests/doubles/network.ts`](../../src/tests/doubles/network.ts) exposes `recaptchaDouble`, `imageDouble`, `imagesDouble` and `greenCheckDouble`, following the same shape as the layer doubles already in that folder: a function taking one `…Params` object and returning what it recorded, scoped to the test rather than to the module. `cmsLayer.ts` is the exception: `vi.mock`'s factory reads its state, so it keeps that state at module level with a reset.
+For a bare `fetch`, the seam is the network, and MSW is the double. [`src/tests/doubles/network.ts`](../../src/tests/doubles/network.ts) exposes `recaptchaDouble`, `imageDouble`, `imagesDouble`, `greenCheckDouble` and `countriesDouble`, following the same shape as the layer doubles already in that folder: a function taking one `…Params` object and returning what it recorded, scoped to the test rather than to the module. `cmsLayer.ts` is the exception: `vi.mock`'s factory reads its state, so it keeps that state at module level with a reset.
 
 Routing does part of the asserting. MSW matches on method and URL path, so a request to the wrong endpoint reaches no double and records no call.
 
@@ -32,7 +32,7 @@ Routing does part of the asserting. MSW matches on method and URL path, so a req
 
 Routing also ignores the query string, which is why `recaptchaDouble` records `request.url` alongside the body fields. Without that, moving the secret from the form body into the URL (where it would land in access logs and proxies) changes nothing MSW can see.
 
-Matching a wildcard host is a convenience, not an assertion. [`articles.test.ts`](../../src/application/entities/articles/articles.test.ts) registers `imageDouble` for `https://images.ctfassets.net/*` so it does not have to predict every derivative URL, and therefore has to assert the recorded `calls` itself: without that, the loader could fetch a placeholder for the wrong asset entirely and the wildcard would answer it.
+Matching a wildcard host is a convenience, not an assertion. [`articles.test.ts`](../../src/application/entities/articles/articles.test.ts) registers `imageDouble` for `https://images.ctfassets.net/*` so it does not have to predict every derivative URL, and therefore has to assert the recorded `calls` itself: without that, the loader could fetch a placeholder for the wrong asset entirely and the wildcard would answer it. `countriesDouble` answers `*/countries.json`, a wildcard host too, and [`WorldGlobeCanvas.test.tsx`](../../src/ui/modules/about/components/worldGlobe/WorldGlobeCanvas.test.tsx) asserts its `calls` for the same reason: a request for the file from another directory would be answered as readily.
 
 MSW is **not** the default. These call sites justified it; another SDK behind a layer would not.
 

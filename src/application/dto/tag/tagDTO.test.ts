@@ -3,6 +3,7 @@ import type { RawArticle } from "../article/types";
 import type { RawAuthor } from "../author/types";
 import { createTagIndex } from "./tagDTO";
 import type { RawTag } from "./types";
+import { TAG_INDEX_ARTICLE_FIELDS, TAG_INDEX_AUTHOR_FIELDS } from "./utils/tags";
 
 vi.mock("astro:content", () => ({ reference: () => ({ parse: (value: unknown) => value }) }));
 
@@ -34,8 +35,8 @@ const makeArticle = ({ slug, authorSlug, tagSlugs, isFavorite, publishDate = "20
 			slug,
 			isFavorite,
 			publishDate: publishDate ?? undefined,
-			author: authorSlug === undefined ? undefined : { fields: { slug: authorSlug } },
-			tags: tagSlugs?.map((tagSlug) => ({ fields: { slug: tagSlug } })),
+			author: authorSlug === undefined ? undefined : { fields: { name: authorSlug, slug: authorSlug } },
+			tags: tagSlugs?.map((tagSlug) => ({ fields: { name: tagSlug, slug: tagSlug } })),
 		},
 	}) as unknown as RawArticle;
 
@@ -164,7 +165,19 @@ describe("createTagIndex article order", () => {
 				rawArticles: [makeArticle({ slug: "undated", tagSlugs: ["craft"], publishDate: null })],
 				rawAuthors: [],
 			}),
-		).toThrow("An Article reached the mapper with an unreadable publish date");
+		).toThrow('The Article "undated" has an unreadable publish date');
+	});
+});
+
+describe("createTagIndex, given a Tag the Index could not file", () => {
+	it("refuses a Tag named with nothing but padding, rather than opening the index with an unlabelled group", () => {
+		expect(() =>
+			createTagIndex({
+				rawTags: [makeTag({ name: "   ", slug: "craft" })],
+				rawArticles: [makeArticle({ slug: "an-article", tagSlugs: ["craft"] })],
+				rawAuthors: [],
+			}),
+		).toThrow('The Tag "craft" has an empty name');
 	});
 });
 
@@ -261,5 +274,17 @@ describe("createTagIndex author entries", () => {
 				articles: [{ id: "first", collection: "articles" }],
 			},
 		]);
+	});
+});
+
+describe("TAG_INDEX_ARTICLE_FIELDS", () => {
+	it("selects the sys.id a refused article is named by, since the list names every field its helpers reach", () => {
+		expect(TAG_INDEX_ARTICLE_FIELDS).toContain("sys.id");
+	});
+});
+
+describe("TAG_INDEX_AUTHOR_FIELDS", () => {
+	it("selects the sys.id a refused Author is named by, since the list names every field its helpers reach", () => {
+		expect(TAG_INDEX_AUTHOR_FIELDS).toContain("sys.id");
 	});
 });

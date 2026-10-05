@@ -11,12 +11,14 @@
 		transition-delay: calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-delay));
 		animation: reveal-up both;
 
-		@supports (animation-timeline: view()) {
-			animation-timeline: view();
-			animation-range-start: cover
-				calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-stagger-distance));
-			animation-range-end: cover
-				calc(30% + min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-stagger-distance));
+		@media (prefers-reduced-motion: no-preference) {
+			@supports (animation-timeline: view()) {
+				animation-timeline: view();
+				animation-range-start: cover
+					calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-stagger-distance));
+				animation-range-end: cover
+					calc(30% + min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-stagger-distance));
+			}
 		}
 
 		@starting-style {
@@ -36,20 +38,6 @@
 
 	.reveal--on-load.reveal--fade {
 		transform: none;
-	}
-
-	@supports (animation-timeline: view()) {
-		.slider-wrapper--reveal-items {
-			view-timeline-name: --reveal-slider;
-		}
-
-		.slider-wrapper--reveal-items .reveal {
-			animation-timeline: --reveal-slider;
-		}
-	}
-
-	.slider-wrapper--reveal-items .slider__slide {
-		--reveal-index: calc(sibling-index() - 1);
 	}
 
 	@supports not (z-index: attr(data-reveal-index type(<number>))) {

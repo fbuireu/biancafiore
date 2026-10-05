@@ -1,7 +1,4 @@
 import type { z } from "astro/zod";
-import type { Reference } from "../shared/reference";
-import type { authorSchema } from "./schema";
+import type { authorEntrySchema } from "./schema";
 
-export type AuthorDTO = z.infer<typeof authorSchema> & {
-	latestArticle?: Reference<"articles">;
-};
+export type AuthorDTO = z.infer<typeof authorEntrySchema>;

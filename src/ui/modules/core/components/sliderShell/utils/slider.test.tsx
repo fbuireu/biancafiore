@@ -1,4 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import {
+	SLIDER_BUTTON_CLASS,
+	SLIDER_DOT_ACTIVE_CLASS,
+	SLIDER_DOT_CLASS,
+	SLIDER_LOOPING_ATTRIBUTE,
+	SLIDER_NEXT_CLASS,
+	SLIDER_PREVIOUS_CLASS,
+	SLIDER_SLIDE_CLASS,
+	SLIDER_TRACK_CLASS,
+	SLIDER_WRAPPER_CLASS,
+} from "../const";
 import { activeSlideIndex, initSlider } from "./slider";
 
 interface BoxOfParams {
@@ -19,31 +30,31 @@ interface RenderParams {
 
 const render = ({ slides, dots = false, looping = false }: RenderParams) => {
 	document.body.innerHTML = `
-		<div class="slider-wrapper" data-has-buttons="true" data-is-looping="${looping}">
-			<button class="slider__btn slider__btn--prev" disabled></button>
-			<ul class="slider__track">
-				${Array.from({ length: slides }, () => '<li class="slider__slide"></li>').join("")}
+		<div class="${SLIDER_WRAPPER_CLASS}" ${SLIDER_LOOPING_ATTRIBUTE}="${looping}">
+			<button class="${SLIDER_BUTTON_CLASS} ${SLIDER_PREVIOUS_CLASS}" disabled></button>
+			<ul class="${SLIDER_TRACK_CLASS}">
+				${Array.from({ length: slides }, () => `<li class="${SLIDER_SLIDE_CLASS}"></li>`).join("")}
 			</ul>
-			<button class="slider__btn slider__btn--next"></button>
+			<button class="${SLIDER_BUTTON_CLASS} ${SLIDER_NEXT_CLASS}"></button>
 			${
 				dots
 					? `<nav class="slider__nav">${Array.from(
 							{ length: slides },
-							() => '<button class="slider__dot"></button>',
+							() => `<button class="${SLIDER_DOT_CLASS}"></button>`,
 						).join("")}</nav>`
 					: ""
 			}
 		</div>`;
 
-	const wrapper = document.querySelector<HTMLElement>(".slider-wrapper") as HTMLElement;
-	const track = document.querySelector<HTMLElement>(".slider__track") as HTMLElement;
+	const wrapper = document.querySelector<HTMLElement>(`.${SLIDER_WRAPPER_CLASS}`) as HTMLElement;
+	const track = document.querySelector<HTMLElement>(`.${SLIDER_TRACK_CLASS}`) as HTMLElement;
 
 	Object.defineProperty(track, "clientWidth", { value: 300, configurable: true });
 	Object.defineProperty(track, "scrollWidth", { value: 300 * slides, configurable: true });
 	track.scrollBy = vi.fn();
 	track.getBoundingClientRect = boxOf({ left: 0, width: 300 });
 
-	[...track.querySelectorAll<HTMLElement>(".slider__slide")].forEach((slide, index) => {
+	[...track.querySelectorAll<HTMLElement>(`.${SLIDER_SLIDE_CLASS}`)].forEach((slide, index) => {
 		slide.getBoundingClientRect = boxOf({ left: index * 300, width: 300 });
 		slide.scrollIntoView = vi.fn();
 	});
@@ -51,10 +62,10 @@ const render = ({ slides, dots = false, looping = false }: RenderParams) => {
 	return {
 		wrapper,
 		track,
-		previous: wrapper.querySelector<HTMLButtonElement>(".slider__btn--prev") as HTMLButtonElement,
-		next: wrapper.querySelector<HTMLButtonElement>(".slider__btn--next") as HTMLButtonElement,
-		slides: [...track.querySelectorAll<HTMLElement>(".slider__slide")],
-		dots: [...wrapper.querySelectorAll<HTMLButtonElement>(".slider__dot")],
+		previous: wrapper.querySelector<HTMLButtonElement>(`.${SLIDER_PREVIOUS_CLASS}`) as HTMLButtonElement,
+		next: wrapper.querySelector<HTMLButtonElement>(`.${SLIDER_NEXT_CLASS}`) as HTMLButtonElement,
+		slides: [...track.querySelectorAll<HTMLElement>(`.${SLIDER_SLIDE_CLASS}`)],
+		dots: [...wrapper.querySelectorAll<HTMLButtonElement>(`.${SLIDER_DOT_CLASS}`)],
 	};
 };
 
@@ -120,7 +131,7 @@ describe("initSlider", () => {
 
 		initSlider(wrapper);
 
-		expect(dots.map((dot) => dot.classList.contains("slider__dot--active"))).toEqual([true, false, false]);
+		expect(dots.map((dot) => dot.classList.contains(SLIDER_DOT_ACTIVE_CLASS))).toEqual([true, false, false]);
 	});
 
 	it("centres the slide a dot addresses rather than paging towards it", () => {
@@ -145,13 +156,13 @@ describe("initSlider", () => {
 		});
 		track.dispatchEvent(new Event("scroll"));
 
-		expect(dots.map((dot) => dot.classList.contains("slider__dot--active"))).toEqual([false, true, false]);
+		expect(dots.map((dot) => dot.classList.contains(SLIDER_DOT_ACTIVE_CLASS))).toEqual([false, true, false]);
 	});
 
 	it("leaves a wrapper with no track alone rather than throwing", () => {
-		document.body.innerHTML = '<div class="slider-wrapper"></div>';
+		document.body.innerHTML = `<div class="${SLIDER_WRAPPER_CLASS}"></div>`;
 
-		expect(() => initSlider(document.querySelector(".slider-wrapper") as HTMLElement)).not.toThrow();
+		expect(() => initSlider(document.querySelector(`.${SLIDER_WRAPPER_CLASS}`) as HTMLElement)).not.toThrow();
 	});
 
 	it("never disables a looping slider's buttons, because there is always somewhere to go", () => {

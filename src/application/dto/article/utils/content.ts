@@ -6,11 +6,11 @@ import { type ArticleHeading, isTableOfContentsHeading } from "@domain/article";
 import { getOptimizedImageUrl, getOptimizedSrcset } from "@infrastructure/images/imageOptimization";
 import { escapeHtml, safeUrl, slugify } from "@shared/utils/strings";
 import { z } from "astro/zod";
-import { assetFileSchema } from "../../shared/images";
+import { absoluteAssetUrl, assetFileSchema } from "../../shared/images";
 import type { RawArticle } from "../types";
 import { articleSlug } from "./reference";
 
-export const IMAGE_EMBED_LAYOUT = {
+const IMAGE_EMBED_LAYOUT = {
 	FULL_BLEED: "fullBleed",
 	BREAKOUT: "breakout",
 } as const;
@@ -18,7 +18,9 @@ const IMAGE_WRAPPER_CLASS: Record<ImageEmbedLayout, string> = {
 	[IMAGE_EMBED_LAYOUT.FULL_BLEED]: "full-bleed",
 	[IMAGE_EMBED_LAYOUT.BREAKOUT]: "breakout",
 };
+const IFRAME_EMBED_CLASS = "iframe-embed";
 const HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
+const BLANK_ANCHOR = "section";
 const PRODUCTION_HOSTNAME = "biancafiore.me";
 
 type ImageEmbedLayout = (typeof IMAGE_EMBED_LAYOUT)[keyof typeof IMAGE_EMBED_LAYOUT];
@@ -30,7 +32,7 @@ const hyperlinkSchema = z.object({ uri: z.string() });
 const entrySchema = <Fields extends z.ZodObject>(fields: Fields) =>
 	z.object({
 		target: z.object({
-			sys: z.object({ contentType: z.object({ sys: z.object({ id: z.string() }) }) }),
+			sys: z.object({ id: z.string().optional(), contentType: z.object({ sys: z.object({ id: z.string() }) }) }),
 			fields,
 		}),
 	});
@@ -66,7 +68,7 @@ const embeddedBlockSchema = entrySchema(
 	}),
 );
 
-export function getImageEmbedWrapperClass(layout?: string): string {
+function getImageEmbedWrapperClass(layout?: string): string {
 	return imageEmbedLayoutSchema.validate(layout) ? IMAGE_WRAPPER_CLASS[layout] : "";
 }
 
@@ -93,13 +95,32 @@ const createSection = ({ level, id, text, scope }: CreateSectionParams) => {
   `;
 };
 
+function createAnchors(): (text: string) => string {
+	const taken = new Set<string>();
+
+	return (text) => {
+		const base = slugify(text) || BLANK_ANCHOR;
+		let id = base;
+
+		for (let suffix = 2; taken.has(id); suffix++) {
+			id = `${base}-${suffix}`;
+		}
+
+		taken.add(id);
+
+		return id;
+	};
+}
+
 function parseHeadings(collected: ArticleHeading[]) {
+	const anchor = createAnchors();
+
 	return Object.fromEntries(
 		HEADING_LEVELS.map((level) => [
 			BLOCKS[`HEADING_${level}` as keyof typeof BLOCKS],
 			(node: HeadingBlock) => {
 				const text = node.content.map((child: Text) => child.value).join("");
-				const id = slugify(text);
+				const id = anchor(text);
 
 				if (!isTableOfContentsHeading(level)) {
 					return createSection({ level, id, text });
@@ -192,7 +213,7 @@ function renderOptions({ rawArticle, collected }: RenderOptionsParams): RenderOp
 
 				const { url } = data.target.fields.file;
 
-				return `<a href="${safeUrl(`https:${url}`)}" target="_blank" rel="noopener noreferrer">${next(content)}</a>`;
+				return `<a href="${safeUrl(absoluteAssetUrl(url))}" target="_blank" rel="noopener noreferrer">${next(content)}</a>`;
 			},
 			[BLOCKS.EMBEDDED_ENTRY]: ({ data }) => {
 				if (!embeddedBlockSchema.validate(data)) {
@@ -211,7 +232,7 @@ function renderOptions({ rawArticle, collected }: RenderOptionsParams): RenderOp
 				}
 
 				if (contentTypeId === "iframeEmbed" && url) {
-					return `<iframe src="${safeUrl(url)}" width="100%" title="${escapeHtml(title ?? "")}" allowfullscreen loading="lazy"></iframe>`;
+					return `<div class="${IFRAME_EMBED_CLASS}"><iframe src="${safeUrl(url)}" width="100%" title="${escapeHtml(title ?? "")}" allowfullscreen loading="lazy"></iframe></div>`;
 				}
 
 				if (!embeddedImageSchema.validate(image)) {
@@ -225,11 +246,11 @@ function renderOptions({ rawArticle, collected }: RenderOptionsParams): RenderOp
 					const wrapperClass = getImageEmbedWrapperClass(layout);
 					const displayWidth = width ?? 768;
 					const optimizedSrc = getOptimizedImageUrl({
-						source: `https:${imgUrl}`,
+						source: absoluteAssetUrl(imgUrl),
 						options: { width: displayWidth, format: "webp" },
 					});
 					const srcset = getOptimizedSrcset({
-						source: `https:${imgUrl}`,
+						source: absoluteAssetUrl(imgUrl),
 						widths: [400, 768, 1024],
 						options: { format: "webp" },
 					});
@@ -257,11 +278,11 @@ function renderOptions({ rawArticle, collected }: RenderOptionsParams): RenderOp
 					const alt = escapeHtml(image.fields.description ?? image.fields.title ?? "");
 					const displayWidth = width ?? 768;
 					const optimizedSrc = getOptimizedImageUrl({
-						source: `https:${imgUrl}`,
+						source: absoluteAssetUrl(imgUrl),
 						options: { width: displayWidth, format: "webp" },
 					});
 					const srcset = getOptimizedSrcset({
-						source: `https:${imgUrl}`,
+						source: absoluteAssetUrl(imgUrl),
 						widths: [400, 768, 1024],
 						options: { format: "webp" },
 					});
@@ -300,11 +321,11 @@ function renderOptions({ rawArticle, collected }: RenderOptionsParams): RenderOp
 
 				const displayWidth = width ?? 768;
 				const optimizedSrc = getOptimizedImageUrl({
-					source: `https:${url}`,
+					source: absoluteAssetUrl(url),
 					options: { width: displayWidth, format: "webp" },
 				});
 				const srcset = getOptimizedSrcset({
-					source: `https:${url}`,
+					source: absoluteAssetUrl(url),
 					widths: [400, 768, 1024],
 					options: { format: "webp" },
 				});
@@ -330,7 +351,7 @@ function renderOptions({ rawArticle, collected }: RenderOptionsParams): RenderOp
 	};
 }
 
-export interface RenderedArticle {
+interface RenderedArticle {
 	content: string;
 	headings: ArticleHeading[];
 }

@@ -1,15 +1,22 @@
 ---
-import { EMAIL_ADDRESS_PLACEHOLDER, EMAIL_BUTTON_ADDRESS_CLASS, EMAIL_BUTTON_CLASS } from "./const";
+import {
+	EMAIL_ADDRESS_PLACEHOLDER,
+	EMAIL_BUTTON_CLASS,
+	EMAIL_BUTTON_SHOWS_ADDRESS,
+	EMAIL_BUTTON_SHOWS_ATTRIBUTE,
+} from "./const";
 import "./email-button.css";
 
 type Props = { classNames?: string } & ({ shows?: "label"; label?: string } | { shows: "address"; label?: never });
 
 const { classNames, shows = "label", label = "Email" } = Astro.props;
 const showsAddress = shows === "address";
+const showsAttribute = showsAddress ? { [EMAIL_BUTTON_SHOWS_ATTRIBUTE]: EMAIL_BUTTON_SHOWS_ADDRESS } : {};
 ---
 <button
   type="button"
-  class:list={[classNames, "underline-on-hover", EMAIL_BUTTON_CLASS, showsAddress && EMAIL_BUTTON_ADDRESS_CLASS]}
+  class:list={[classNames, "underline-on-hover", EMAIL_BUTTON_CLASS]}
+  {...showsAttribute}
 >{showsAddress ? EMAIL_ADDRESS_PLACEHOLDER : label}</button>
 
 <script>

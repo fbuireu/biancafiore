@@ -1,0 +1,28 @@
+.blog-preview-wrapper {
+	background-color: var(--neutral-main);
+	padding-block: var(--space-l);
+	padding-inline: 0;
+
+	@media (720px <= width <= 1440px) {
+		padding-inline: var(--space-s);
+	}
+}
+
+.blog-preview__title {
+	color: var(--ink);
+	padding-block: 4rem;
+
+	.blog-preview__title__link {
+		color: var(--primary-main);
+		display: inline-block;
+	}
+}
+
+.blog-preview__slider {
+	padding-block: 2rem 4rem;
+	position: relative;
+
+	@media (width >= 1024px) {
+		--slides-per-view: 4;
+	}
+}

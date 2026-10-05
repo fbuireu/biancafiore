@@ -1,8 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ARTICLE_COLUMNS_STORAGE_KEY } from "../const";
-import { ARTICLE_COLUMNS_ACTIVE_CLASS, applyColumns, initializeColumnsToggle, isColumnsEnabled } from "./layout";
+import { ARTICLE_BODY_CLASS } from "../../../const";
+import { ARTICLE_COLUMNS_ACTIVE_CLASS, ARTICLE_COLUMNS_STORAGE_KEY, COLUMNS_TOGGLE_BUTTON_CLASS } from "../const";
+import { applyColumns, initializeColumnsToggle, isColumnsEnabled } from "./layout";
 
-const MARKUP = '<div class="article-wrapper"></div><button class="columns-toggle__button"></button>';
+const MARKUP = `<div class="${ARTICLE_BODY_CLASS}"></div><button class="${COLUMNS_TOGGLE_BUTTON_CLASS}"></button>`;
 
 const memoryStorage = () => {
 	const values = new Map<string, string>();
@@ -16,8 +17,8 @@ const memoryStorage = () => {
 	};
 };
 
-const article = () => document.querySelector(".article-wrapper") as HTMLElement;
-const toggle = () => document.querySelector(".columns-toggle__button") as HTMLButtonElement;
+const article = () => document.querySelector(`.${ARTICLE_BODY_CLASS}`) as HTMLElement;
+const toggle = () => document.querySelector(`.${COLUMNS_TOGGLE_BUTTON_CLASS}`) as HTMLButtonElement;
 const isTwoColumn = () => article().classList.contains(ARTICLE_COLUMNS_ACTIVE_CLASS);
 
 beforeEach(() => {
@@ -112,11 +113,13 @@ describe("initializeColumnsToggle", () => {
 		Object.defineProperty(event, "newDocument", { value: newDocument });
 		document.dispatchEvent(event);
 
-		expect(newDocument.querySelector(".article-wrapper")?.classList.contains(ARTICLE_COLUMNS_ACTIVE_CLASS)).toBe(true);
+		expect(newDocument.querySelector(`.${ARTICLE_BODY_CLASS}`)?.classList.contains(ARTICLE_COLUMNS_ACTIVE_CLASS)).toBe(
+			true,
+		);
 	});
 
 	it("leaves a page with no toggle alone rather than throwing", () => {
-		document.body.innerHTML = '<div class="article-wrapper"></div>';
+		document.body.innerHTML = `<div class="${ARTICLE_BODY_CLASS}"></div>`;
 
 		expect(() => initializeColumnsToggle()).not.toThrow();
 	});

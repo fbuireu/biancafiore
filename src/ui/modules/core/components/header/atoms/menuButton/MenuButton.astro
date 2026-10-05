@@ -1,8 +1,9 @@
 ---
+import { HEADER_MENU_BUTTON_CLASS, HEADER_MENU_BUTTON_OUTLINE_CLASS, HEADER_MENU_TEXT_CLASS } from "../../const";
 import "./menu-button.css";
 ---
-<button class="header__menu-button clickable" aria-expanded="false" aria-controls="header-menu">
-  <span class="header__menu-button__outline header__menu-button__outline--morphing"></span>
-  <span class="header__menu-button__outline header__menu-button__outline--still"></span>
-  <span class="header__menu-text">Menu</span>
+<button class:list={[HEADER_MENU_BUTTON_CLASS, "clickable"]} aria-expanded="false" aria-controls="header-menu">
+  <span class:list={[HEADER_MENU_BUTTON_OUTLINE_CLASS, `${HEADER_MENU_BUTTON_OUTLINE_CLASS}--morphing`]}></span>
+  <span class:list={[HEADER_MENU_BUTTON_OUTLINE_CLASS, `${HEADER_MENU_BUTTON_OUTLINE_CLASS}--still`]}></span>
+  <span class={HEADER_MENU_TEXT_CLASS}>Menu</span>
 </button>

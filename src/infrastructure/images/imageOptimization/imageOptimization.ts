@@ -40,26 +40,20 @@ interface GetOptimizedSrcsetParams {
 	options?: Omit<ImageTransformOptions, "width">;
 }
 
-interface BuildContentfulImageUrlParams {
+interface GetOriginImageUrlParams {
 	source: string;
 	options?: ImageTransformOptions;
 }
 
-function toAbsoluteSrc(source: string): string {
-	return source.startsWith("//") ? `https:${source}` : source;
-}
-
 function toCdnImageSource(source: string): string {
-	const absoluteSource = toAbsoluteSrc(source);
-
-	return absoluteSource.startsWith("/") ? absoluteSource.slice(1) : absoluteSource;
+	return source.startsWith("/") ? source.slice(1) : source;
 }
 
 export function getOptimizedImageUrl({ source, options = {} }: GetOptimizedImageUrlParams): string {
 	const quality = options.quality || DEFAULT_QUALITY;
 
 	if (import.meta.env.IMAGE_CDN === IMAGE_CDN.CONTENTFUL) {
-		return buildContentfulImageUrl({ source, options: { ...options, quality } });
+		return getOriginImageUrl({ source, options: { ...options, quality } });
 	}
 
 	const params = [`format=${options.format ?? "auto"}`, `quality=${quality}`];
@@ -76,9 +70,9 @@ export function getOptimizedSrcset({ source, widths, options = {} }: GetOptimize
 		.join(", ");
 }
 
-export function buildContentfulImageUrl({ source, options = {} }: BuildContentfulImageUrlParams): string {
+export function getOriginImageUrl({ source, options = {} }: GetOriginImageUrlParams): string {
 	try {
-		const url = new URL(toAbsoluteSrc(source));
+		const url = new URL(source);
 		if (options.width) url.searchParams.set("w", String(options.width));
 		if (options.height) url.searchParams.set("h", String(options.height));
 		if (options.quality) url.searchParams.set("q", String(options.quality));

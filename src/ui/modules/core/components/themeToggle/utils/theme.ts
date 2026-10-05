@@ -1,12 +1,19 @@
 import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
-import { DARK_SCHEME_QUERY, THEME_ATTRIBUTE, THEME_STORAGE_KEY, Theme, ThemePreference } from "../const";
+import {
+	DARK_SCHEME_QUERY,
+	THEME_ATTRIBUTE,
+	THEME_STORAGE_KEY,
+	THEME_TOGGLE_CLASS,
+	THEME_TOGGLE_TOGGLED_CLASS,
+	Theme,
+	ThemePreference,
+} from "../const";
 import { readPreference, resolveTheme, writePreference } from "./preference";
 
 const SELECTORS = {
-	THEME_INPUT: '.theme-toggle input[type="checkbox"]',
-	TOGGLE: ".theme-toggle",
+	THEME_INPUT: `.${THEME_TOGGLE_CLASS} input[type="checkbox"]`,
+	TOGGLE: `.${THEME_TOGGLE_CLASS}`,
 };
-const TOGGLED_MODIFIER = "theme-toggle--toggled";
 
 let darkScheme: MediaQueryList | undefined;
 
@@ -36,7 +43,7 @@ const applyTheme = ({ theme, document }: ApplyThemeParams): void => {
 	const isDarkMode = theme === Theme.DARK;
 
 	THEME_INPUT.checked = isDarkMode;
-	TOGGLE.classList.toggle(TOGGLED_MODIFIER, isDarkMode);
+	TOGGLE.classList.toggle(THEME_TOGGLE_TOGGLED_CLASS, isDarkMode);
 };
 
 function applyOnOtherTabWrite({ key }: StorageEvent): void {

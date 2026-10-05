@@ -7,7 +7,7 @@ import {
 	cmsServesPagesOf,
 	resetCms,
 } from "@tests/doubles/cmsLayer";
-import type { EntrySkeletonType } from "contentful";
+import type { EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CmsError } from "../errors";
 import { fetchEntries } from "./entries";
@@ -18,6 +18,9 @@ vi.mock("./client", async () => {
 
 	return { ...actual, CmsClientLive: cmsClientLayer(actual.CmsClient) };
 });
+
+type ArticleSkeleton = EntrySkeletonType<{ slug: EntryFieldTypes.Text }, "article">;
+type AuthorSkeleton = EntrySkeletonType<{ name: EntryFieldTypes.Text }, "author">;
 
 const ARTICLE = { fields: { slug: "an-article" } };
 const AUTHOR = { fields: { slug: "bianca-fiore" } };
@@ -111,5 +114,26 @@ describe("fetchEntries", () => {
 		await expect(fetchEntries<[EntrySkeletonType]>({ content_type: "article" })).rejects.toThrow(
 			"contentful is unreachable",
 		);
+	});
+});
+
+describe("fetchEntries, as typed", () => {
+	it("ties each content_type to the Skeleton it answers for, so a literal naming another content type fails tsc", () => {
+		const misnamed = () =>
+			// @ts-expect-error an author query cannot stand in for an article one
+			fetchEntries<[ArticleSkeleton]>({ content_type: "author" });
+		const named = () =>
+			fetchEntries<[ArticleSkeleton, AuthorSkeleton]>({ content_type: "article" }, { content_type: "author" });
+
+		expect([misnamed, named]).toHaveLength(2);
+	});
+
+	it("types a select list against the fields of its Skeleton, so a field that does not exist fails tsc", () => {
+		const misspelt = () =>
+			// @ts-expect-error an article has no field called slogan
+			fetchEntries<[ArticleSkeleton]>({ content_type: "article", select: ["fields.slogan"] });
+		const spelt = () => fetchEntries<[ArticleSkeleton]>({ content_type: "article", select: ["sys.id", "fields.slug"] });
+
+		expect([misspelt, spelt]).toHaveLength(2);
 	});
 });

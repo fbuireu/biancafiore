@@ -3,10 +3,14 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig, envField, fontProviders, memoryCache } from "astro/config";
 import { Features } from "lightningcss";
+import { loadEnv } from "vite";
 import { IMAGE_CDN } from "./src/const/imageCdn";
-import { NOINDEX_ROUTES } from "./src/const/noindexRoutes";
+import { isNoindexRoute } from "./src/const/noindexRoutes";
+import { securityHeaders } from "./src/const/securityHeaders";
 import { generateStaticHeaders } from "./src/infrastructure/integrations/generateStaticHeaders";
+import { inlineScriptHashes } from "./src/ui/modules/core/utils/inlineScripts";
 
+const environment = loadEnv(process.env.NODE_ENV ?? "production", process.cwd(), "");
 const isProductionBuild = process.env.CLOUDFLARE_ENV === "production";
 const imageCdn = isProductionBuild ? IMAGE_CDN.CLOUDFLARE : IMAGE_CDN.CONTENTFUL;
 
@@ -50,7 +54,7 @@ export default defineConfig({
 		domains: ["images.ctfassets.net"],
 	},
 	trailingSlash: "never",
-	site: "https://biancafiore.me",
+	site: environment.SITE_URL,
 	prefetch: {
 		prefetchAll: true,
 	},
@@ -77,14 +81,15 @@ export default defineConfig({
 		},
 	},
 	integrations: [
-		generateStaticHeaders(),
+		generateStaticHeaders(
+			securityHeaders({
+				isDevelopment: false,
+				inlineScriptHashes: inlineScriptHashes(environment.GOOGLE_ANALYTICS_ID),
+			}),
+		),
 		react({ compiler: true }),
 		sitemap({
-			filter: (page) => {
-				const { pathname } = new URL(page);
-
-				return !NOINDEX_ROUTES.some((route) => pathname === route || pathname === `${route}/`);
-			},
+			filter: (page) => !isNoindexRoute(new URL(page).pathname),
 		}),
 	],
 	adapter: cloudflare({ imageService: isProductionBuild ? "cloudflare" : "passthrough" }),
@@ -93,17 +98,14 @@ export default defineConfig({
 			SITE_URL: envField.string({
 				access: "public",
 				context: "client",
-				default: import.meta.env.SITE_URL,
 			}),
 			BIANCA_EMAIL: envField.string({
 				access: "public",
 				context: "client",
-				default: import.meta.env.BIANCA_EMAIL,
 			}),
 			TWITTER_HANDLE: envField.string({
 				access: "public",
 				context: "client",
-				default: import.meta.env.TWITTER_HANDLE,
 			}),
 			GOOGLE_ANALYTICS_ID: envField.string({
 				access: "public",

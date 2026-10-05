@@ -1,14 +1,16 @@
 import {
 	THEME_ATTRIBUTE,
 	THEME_STORAGE_KEY,
+	THEME_TOGGLE_CLASS,
+	THEME_TOGGLE_INPUT_CLASS,
+	THEME_TOGGLE_TOGGLED_CLASS,
 	Theme,
 	type ThemePreference,
 } from "@modules/core/components/themeToggle/const";
 import { expect, type Page, test } from "@playwright/test";
 
-const TOGGLE = ".theme-toggle";
-const TOGGLE_INPUT = ".theme-toggle__input";
-const TOGGLED_MODIFIER = "theme-toggle--toggled";
+const TOGGLE = `.${THEME_TOGGLE_CLASS}`;
+const TOGGLE_INPUT = `.${THEME_TOGGLE_INPUT_CLASS}`;
 
 const storedPreference = (page: Page) => page.evaluate((key) => localStorage.getItem(key), THEME_STORAGE_KEY);
 
@@ -38,7 +40,7 @@ test.describe("theme toggle", () => {
 			await page.goto("/");
 
 			await settle({ page, theme: "dark" });
-			await expect(page.locator(TOGGLE)).toHaveClass(new RegExp(TOGGLED_MODIFIER));
+			await expect(page.locator(TOGGLE)).toHaveClass(new RegExp(THEME_TOGGLE_TOGGLED_CLASS));
 		});
 	});
 
@@ -49,7 +51,7 @@ test.describe("theme toggle", () => {
 			await page.goto("/");
 
 			await settle({ page, theme: "light" });
-			await expect(page.locator(TOGGLE)).not.toHaveClass(new RegExp(TOGGLED_MODIFIER));
+			await expect(page.locator(TOGGLE)).not.toHaveClass(new RegExp(THEME_TOGGLE_TOGGLED_CLASS));
 		});
 
 		test("switches the document theme and persists the choice", async ({ page }) => {

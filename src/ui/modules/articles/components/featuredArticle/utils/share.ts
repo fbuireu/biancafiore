@@ -8,7 +8,7 @@ interface BuildArticleShareLinksParams {
 	tags?: { name: string }[];
 }
 
-export interface ArticleShareLinks {
+interface ArticleShareLinks {
 	linkedin: string;
 	x: string;
 }

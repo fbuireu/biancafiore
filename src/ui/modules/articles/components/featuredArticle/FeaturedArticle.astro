@@ -3,7 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import { articleHref, tagHref } from "@const/index";
 import { formatPublishDate } from "@domain/article";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
-import LinkWithArrow from "@modules/core/components/linkWithArrow/LinkWithArrow.astro";
+import LinkWithArrow from "../linkWithArrow/LinkWithArrow.astro";
 import { buildArticleShareLinks } from "./utils/share";
 import "./featured-article.css";
 
@@ -44,9 +44,9 @@ const shareLinks = buildArticleShareLinks({
                       (featuredArticle.data.tags?.length ?? 0) > 0 && (
                           <ul class="featured-article__tags__list flex row-balance">
                             {featuredArticle.data.tags?.map(({ name, slug }) => (
-                                <a class="featured-article__tag__item underline-on-hover" href={tagHref(slug)}>
-                                    #{name}
-                                </a>
+                                <li class="featured-article__tag__item underline-on-hover">
+                                    <a href={tagHref(slug)}>#{name}</a>
+                                </li>
                             ))}
                           </ul>
                       )

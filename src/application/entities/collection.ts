@@ -1,6 +1,5 @@
-import type { EntriesQuery } from "@infrastructure/cms/client";
 import { fetchEntries } from "@infrastructure/cms/entries";
-import type { EntryCollection, EntrySkeletonType } from "contentful";
+import type { EntriesQueries, EntryCollection, EntrySkeletonType } from "contentful";
 import { type CarriesImage, withImagePlaceholders } from "./placeholders";
 
 type RawItems<SKELETON extends EntrySkeletonType> = EntryCollection<SKELETON, undefined>["items"];
@@ -10,7 +9,7 @@ interface CmsCollectionParams<
 	ENTRY extends CarriesImage<FIELD>,
 	FIELD extends Extract<keyof ENTRY, string>,
 > {
-	query: NonNullable<EntriesQuery>;
+	query: EntriesQueries<SKELETON, undefined>;
 	map: (raw: RawItems<SKELETON>) => ENTRY[];
 	identify: (entry: ENTRY) => string;
 	imageField?: FIELD;

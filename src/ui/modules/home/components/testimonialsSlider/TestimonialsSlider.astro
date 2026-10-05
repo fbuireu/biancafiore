@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
+import { SLIDER_SLIDE_CLASS } from "@modules/core/components/sliderShell/const";
 import SliderShell from "@modules/core/components/sliderShell/SliderShell.astro";
 import "./testimonials-slider.css";
 
@@ -13,7 +14,7 @@ const { testimonials } = Astro.props;
 
 <div class="reveal">
 	<SliderShell
-		class="testimonials__slider"
+		class="testimonials-slider__slider"
 		hasDots
 		isLooping
 		slideCount={testimonials.length}
@@ -21,19 +22,19 @@ const { testimonials } = Astro.props;
 	>
 		{
 			testimonials.map((testimonial) => (
-				<li class="slider__slide testimonials__slide">
-					<figure class="testimonial">
-						<blockquote class="testimonial__quote">{testimonial.data.quote}</blockquote>
-						<figcaption class="testimonial__attribution">
+				<li class={SLIDER_SLIDE_CLASS}>
+					<figure class="testimonials-slider__testimonial">
+						<blockquote class="testimonials-slider__quote">{testimonial.data.quote}</blockquote>
+						<figcaption class="testimonials-slider__attribution">
 							<BlurImage
-								class="testimonial__avatar"
+								class="testimonials-slider__avatar"
 								image={testimonial.data.image}
 								alt={testimonial.data.quotee}
 								loading="lazy"
 							/>
-							<span class="testimonial__identity">
-								<span class="testimonial__quotee">{testimonial.data.quotee}</span>
-								<span class="editorial-meta testimonial__role">{testimonial.data.role}</span>
+							<span class="testimonials-slider__identity">
+								<span class="testimonials-slider__quotee">{testimonial.data.quotee}</span>
+								<span class="editorial-meta testimonials-slider__role">{testimonial.data.role}</span>
 							</span>
 						</figcaption>
 					</figure>

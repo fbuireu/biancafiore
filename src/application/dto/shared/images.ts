@@ -1,6 +1,6 @@
 import type { Except } from "@const/types";
 import type { ImageDTO } from "@domain/shared/image";
-import { buildContentfulImageUrl } from "@infrastructure/images/imageOptimization";
+import { getOriginImageUrl } from "@infrastructure/images/imageOptimization";
 import { z } from "astro/zod";
 import type { Asset, UnresolvedLink } from "contentful";
 
@@ -31,6 +31,10 @@ const imageAssetSchema = z.object({
 	}),
 });
 
+export function absoluteAssetUrl(url: string): string {
+	return url.startsWith(PROTOCOL_RELATIVE_PREFIX) ? `${ASSET_SCHEME}${url}` : url;
+}
+
 export function createImage(rawImage: Asset<undefined> | UnresolvedLink<"Asset">): Except<ImageDTO, "placeholder"> {
 	if (!imageAssetSchema.validate(rawImage)) {
 		throw new Error(
@@ -40,12 +44,12 @@ export function createImage(rawImage: Asset<undefined> | UnresolvedLink<"Asset">
 
 	const { contentType, details, url } = rawImage.fields.file;
 
-	const absoluteUrl = url.startsWith(PROTOCOL_RELATIVE_PREFIX) ? `${ASSET_SCHEME}${url}` : url;
+	const absoluteUrl = absoluteAssetUrl(url);
 
 	return {
 		url: absoluteUrl,
 		shareCrops: SHARE_CROPS.map(({ width, height }) =>
-			buildContentfulImageUrl({ source: absoluteUrl, options: { width, height, fit: "cover" } }),
+			getOriginImageUrl({ source: absoluteUrl, options: { width, height, fit: "cover" } }),
 		),
 		details: {
 			width: details.image.width,

@@ -25,7 +25,7 @@ Adding a client:
 
 ## Reading content: `fetchEntries`
 
-[`cms/entries.ts`](./cms/entries.ts) is the only way content is read, and the only thing `@application/entities` imports to read it. `fetchEntries<[Skeleton, …]>(query, …)` takes one Contentful query per array of raw entries it answers with and returns a plain promise, so a loader needs no Effect, no `CmsClient` and no runtime of its own. Some things belong to it rather than to its callers:
+[`cms/entries.ts`](./cms/entries.ts) is the only way content is read, and the only thing `@application/entities` imports to read it. `fetchEntries<[Skeleton, …]>(query, …)` takes one Contentful query per array of raw entries it answers with, each typed by its Skeleton so a `content_type` that is not that Skeleton's fails `tsc`, and returns a plain promise, so a loader needs no Effect, no `CmsClient` and no runtime of its own. Some things belong to it rather than to its callers:
 
 - the long-lived `ManagedRuntime` over `CmsClientLive`, one CMS client for the whole build/process
 - the `isContentfulConfigured()` bail, which answers an empty array per query instead of fetching, so a loader cannot forget it
@@ -62,6 +62,6 @@ Three files: `logger.ts` is **byte for byte what contribKit and forever-pto carr
 
 ## Other subfolders
 
-- `images/`: `imageOptimization`, `imagePlaceholder` (blur data URLs generated during loading). `getImagePlaceholders` takes every source at once and answers a `Map`: it caps requests in flight, gives a source a second attempt when the first answers no image, and logs how many placeholders were lost through the `logger` import. A source the module truly cannot read is simply absent from the `Map`
-- `integrations/`: build-time Astro integrations (`generateStaticHeaders`, which writes the security headers into the `_headers` file the prerendered pages are served with)
+- `images/`: `imageOptimization` (`getOptimizedImageUrl` and `getOptimizedSrcset` answer the CDN's URLs; `getOriginImageUrl` answers the absolute Contentful origin URL, for the two callers that cannot use a `/cdn-cgi/image` path: `getImagePlaceholders`, which fetches at build time, where no such path exists, and the share crops `createImage` builds for structured data), `imagePlaceholder` (blur data URLs generated during loading). `getImagePlaceholders` takes every source at once and answers a `Map`: it caps requests in flight, gives a source a second attempt when the first answers no image, and logs how many placeholders were lost through the `logger` import. A source the module truly cannot read is simply absent from the `Map`
+- `integrations/`: build-time Astro integrations (`generateStaticHeaders`, which writes the headers `astro.config.ts` hands it into the `_headers` file the prerendered pages are served with)
 - [`db/schema.ts`](./db/schema.ts): Drizzle tables; migrations live in `/drizzle`. [`db/client.ts`](./db/client.ts) imports the Workers-safe entry points only: `@libsql/client/web` + `drizzle-orm/libsql/web`.

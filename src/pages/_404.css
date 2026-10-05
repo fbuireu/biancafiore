@@ -44,6 +44,7 @@
 	transition: padding-inline-start 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
 
 	&:is(:hover, :focus-visible) {
+		--stretch-arrow: hover;
 		padding-inline-start: 10px;
 
 		& .error-404__link-title {
@@ -53,14 +54,6 @@
 		& .error-404__link-arrow {
 			opacity: 1;
 			translate: 0 0;
-
-			& .stretch-arrow__shaft {
-				d: var(--stretch-arrow-shaft-hover);
-			}
-
-			& .stretch-arrow__tip {
-				d: var(--stretch-arrow-tip-hover);
-			}
 		}
 	}
 }

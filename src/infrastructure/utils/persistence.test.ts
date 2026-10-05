@@ -1,5 +1,6 @@
 import { contactRow, databaseDouble, loggerDouble } from "@tests/doubles/contactLayers";
-import { Cause, Effect, Exit, Layer, Option } from "effect";
+import { failureOf } from "@tests/helpers/exit";
+import { Effect, Exit, Layer } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DatabaseError } from "../errors";
 import { checkDuplicateContact, saveContact } from "./persistence";
@@ -14,9 +15,6 @@ const REFUSAL = "I've already received a message from you, and I'll reply as soo
 const SUBMISSION = { ...ENQUIRY, emailId: "sent-1" };
 
 const log = loggerDouble();
-
-const failureOf = <E>(exit: Exit.Exit<unknown, E>): E | undefined =>
-	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause)) : undefined;
 
 const lookupFailingWith = (message: string) => databaseDouble({ failLookupWith: new DatabaseError({ message }) });
 

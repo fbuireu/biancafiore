@@ -8,7 +8,7 @@ interface ZoomOutProps extends SVGProps<SVGSVGElement> {
 
 export const ZoomOut = ({ fill = "currentColor", title = "Zoom Out", classNames, ...props }: ZoomOutProps) => {
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" id="zoom-out" viewBox="0 0 20 20" className={clsx(classNames)} {...props}>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" className={clsx(classNames)} {...props}>
 			<title>{title}</title>
 			<g
 				fill="none"

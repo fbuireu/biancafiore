@@ -1,11 +1,22 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { LOGO_INTERSECTED_CLASS, LOGO_LINK_CLASS } from "../../logo/const";
+import {
+	HEADER_CLASS,
+	HEADER_MENU_BUTTON_CLASS,
+	HEADER_MENU_BUTTON_INTERSECTED_CLASS,
+	HEADER_MENU_BUTTON_OUTLINE_CLASS,
+	HEADER_MENU_CLASS,
+	HEADER_MENU_ITEM_CLASS,
+	HEADER_MENU_NAV_CLASS,
+	HEADER_MENU_OVERLAY_CLASS,
+	HEADER_MENU_QUOTE_CLASS,
+	HEADER_MENU_TEXT_CLASS,
+	MENU_OPEN_CLASS,
+} from "../const";
 import { backgroundObserver, initMenu, watchBackground, wireMenu } from "./interactions";
 
 const HEADER_HEIGHT = 80;
 const HEADER_MIDLINE = HEADER_HEIGHT / 2;
-const MENU_OPEN_CLASS = "page--menu-open";
-const INTERSECTED_BUTTON_CLASS = "header__menu-button--intersected";
-const INTERSECTED_LOGO_CLASS = "logo--intersected";
 
 interface PlaceParams {
 	selector: string;
@@ -26,19 +37,20 @@ const place = ({ selector, top, height }: PlaceParams): void => {
 const render = (markup: string): void => {
 	document.documentElement.className = "";
 	document.body.innerHTML = `
-		<header class="header">
-			<a class="site__logo"><svg></svg></a>
-			<button class="header__menu-button"></button>
+		<header class="${HEADER_CLASS}">
+			<a class="${LOGO_LINK_CLASS}"><svg></svg></a>
+			<button class="${HEADER_MENU_BUTTON_CLASS}"></button>
 		</header>
 		${markup}
 	`;
-	place({ selector: ".header", top: 0, height: HEADER_HEIGHT });
+	place({ selector: `.${HEADER_CLASS}`, top: 0, height: HEADER_HEIGHT });
 };
 
-const logo = () => document.querySelector(".site__logo svg") as Element;
-const menuButton = () => document.querySelector(".header__menu-button") as Element;
+const logo = () => document.querySelector(`.${LOGO_LINK_CLASS} svg`) as Element;
+const menuButton = () => document.querySelector(`.${HEADER_MENU_BUTTON_CLASS}`) as Element;
 const isInverted = () =>
-	logo().classList.contains(INTERSECTED_LOGO_CLASS) && menuButton().classList.contains(INTERSECTED_BUTTON_CLASS);
+	logo().classList.contains(LOGO_INTERSECTED_CLASS) &&
+	menuButton().classList.contains(HEADER_MENU_BUTTON_INTERSECTED_CLASS);
 
 describe("backgroundObserver", () => {
 	afterEach(() => {
@@ -116,17 +128,17 @@ describe("backgroundObserver", () => {
 describe("wireMenu", () => {
 	const render = () => {
 		document.body.innerHTML = `
-			<button class="header__menu-button"><span class="header__menu-text">Menu</span></button>
-			<nav class="navigation__menu__nav"><a href="/about">About</a></nav>
+			<button class="${HEADER_MENU_BUTTON_CLASS}"><span class="${HEADER_MENU_TEXT_CLASS}">Menu</span></button>
+			<nav class="${HEADER_MENU_NAV_CLASS}"><a href="/about">About</a></nav>
 			<main><a href="/articles">Articles</a></main>
 			<footer><a href="/contact">Contact</a></footer>`;
 
-		const button = document.querySelector<HTMLElement>(".header__menu-button") as HTMLElement;
+		const button = document.querySelector<HTMLElement>(`.${HEADER_MENU_BUTTON_CLASS}`) as HTMLElement;
 
 		return {
 			html: document.documentElement,
 			button,
-			text: document.querySelector<HTMLElement>(".header__menu-text"),
+			text: document.querySelector<HTMLElement>(`.${HEADER_MENU_TEXT_CLASS}`),
 		};
 	};
 
@@ -161,11 +173,14 @@ describe("wireMenu", () => {
 	const wire = () => {
 		const elements = render();
 		const timeline = timelineDouble();
+		const buildTimeline = vi.fn(() => Promise.resolve(timeline));
 
-		wireMenu({ elements, signal: controller.signal, buildTimeline: () => timeline });
+		wireMenu({ elements, signal: controller.signal, buildTimeline });
 
-		return { elements, timeline };
+		return { elements, timeline, buildTimeline };
 	};
+
+	const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 	afterEach(() => {
 		controller.abort();
@@ -179,7 +194,7 @@ describe("wireMenu", () => {
 		elements.button.click();
 
 		expect(elements.button.getAttribute("aria-expanded")).toBe("true");
-		expect(document.documentElement.classList.contains("page--menu-open")).toBe(true);
+		expect(document.documentElement.classList.contains(MENU_OPEN_CLASS)).toBe(true);
 	});
 
 	it("closes on a second click", () => {
@@ -189,15 +204,62 @@ describe("wireMenu", () => {
 		elements.button.click();
 
 		expect(elements.button.getAttribute("aria-expanded")).toBe("false");
-		expect(document.documentElement.classList.contains("page--menu-open")).toBe(false);
+		expect(document.documentElement.classList.contains(MENU_OPEN_CLASS)).toBe(false);
 	});
 
-	it("drives the timeline rather than animating anything itself", () => {
+	it("drives the timeline rather than animating anything itself", async () => {
 		const { elements, timeline } = wire();
 
 		elements.button.click();
+		await settle();
 
 		expect(timeline.calls).toEqual([false]);
+	});
+
+	it("asks for the timeline on the first click and not before, so nothing animates before a reader opens the menu", async () => {
+		const { elements, buildTimeline } = wire();
+
+		await settle();
+		expect(buildTimeline).not.toHaveBeenCalled();
+
+		elements.button.click();
+		await settle();
+
+		expect(buildTimeline).toHaveBeenCalledTimes(1);
+	});
+
+	it("builds the timeline once however many times the button is clicked", async () => {
+		const { elements, buildTimeline, timeline } = wire();
+
+		elements.button.click();
+		await settle();
+		elements.button.click();
+		await settle();
+		elements.button.click();
+		await settle();
+
+		expect(buildTimeline).toHaveBeenCalledTimes(1);
+		expect(timeline.calls).toEqual([false, true, false]);
+	});
+
+	it("ends in the direction the last click chose when it is clicked again before the timeline is ready", async () => {
+		const elements = render();
+		const timeline = timelineDouble();
+		let ready: (value: ReturnType<typeof timelineDouble>) => void = () => undefined;
+
+		wireMenu({
+			elements,
+			signal: controller.signal,
+			buildTimeline: () => new Promise((resolve) => (ready = resolve)),
+		});
+
+		elements.button.click();
+		elements.button.click();
+		ready(timeline);
+		await settle();
+
+		expect(elements.button.getAttribute("aria-expanded")).toBe("false");
+		expect(timeline.calls).toEqual([true, true]);
 	});
 
 	it("closes on Escape while the menu is open", () => {
@@ -228,23 +290,24 @@ describe("wireMenu", () => {
 	});
 
 	it("clears the open state it inherited, so a swapped-in page never starts open", () => {
-		document.documentElement.classList.add("page--menu-open");
+		document.documentElement.classList.add(MENU_OPEN_CLASS);
 
 		wire();
 
-		expect(document.documentElement.classList.contains("page--menu-open")).toBe(false);
+		expect(document.documentElement.classList.contains(MENU_OPEN_CLASS)).toBe(false);
 	});
 
-	it("moves focus to the first menu link only once the overlay has finished opening", () => {
+	it("moves focus to the first menu link only once the overlay has finished opening", async () => {
 		const { elements, timeline } = wire();
 
 		elements.button.click();
+		await settle();
 
-		expect(document.activeElement).not.toBe(document.querySelector(".navigation__menu__nav a"));
+		expect(document.activeElement).not.toBe(document.querySelector(`.${HEADER_MENU_NAV_CLASS} a`));
 
 		timeline.completed?.();
 
-		expect(document.activeElement).toBe(document.querySelector(".navigation__menu__nav a"));
+		expect(document.activeElement).toBe(document.querySelector(`.${HEADER_MENU_NAV_CLASS} a`));
 	});
 
 	it("takes the page the overlay covers out of the tab order while it is open", () => {
@@ -307,8 +370,8 @@ describe("the menu button label", () => {
 	let controller: AbortController;
 
 	const wireWithUpdates = (text: HTMLElement | null) => {
-		document.body.innerHTML = `<button class="header__menu-button"></button>`;
-		const button = document.querySelector<HTMLElement>(".header__menu-button") as HTMLElement;
+		document.body.innerHTML = `<button class="${HEADER_MENU_BUTTON_CLASS}"></button>`;
+		const button = document.querySelector<HTMLElement>(`.${HEADER_MENU_BUTTON_CLASS}`) as HTMLElement;
 		if (text) button.appendChild(text);
 
 		let update = () => {};
@@ -319,19 +382,19 @@ describe("the menu button label", () => {
 			buildTimeline: (onButtonUpdate) => {
 				update = onButtonUpdate;
 
-				return {
+				return Promise.resolve({
 					eventCallback: () => undefined,
 					reversed: (value?: boolean) => (value === undefined ? true : value),
-				};
+				});
 			},
 		});
 
-		return { button, update };
+		return { button, update: () => update() };
 	};
 
 	const label = () => {
 		const element = document.createElement("span");
-		element.className = "header__menu-text";
+		element.className = HEADER_MENU_TEXT_CLASS;
 		element.textContent = "Menu";
 
 		return element;
@@ -405,17 +468,17 @@ describe("initMenu", () => {
 	const render = () => {
 		document.documentElement.className = "";
 		document.body.innerHTML = `
-			<button class="header__menu-button"><span class="header__menu-text">Menu</span></button>
-			<div class="header__menu-overlay-wrapper"><svg><path d="M0 0"></path></svg></div>
-			<div class="header__menu-button__outline"></div>
-			<nav class="header__menu">
-				<div class="navigation__menu__nav"><a href="/about">About</a></div>
-				<li class="navigation__menu__item"><a href="/projects">Projects</a></li>
-				<div class="navigation__menu__quote"><p>A quote</p></div>
+			<button class="${HEADER_MENU_BUTTON_CLASS}"><span class="${HEADER_MENU_TEXT_CLASS}">Menu</span></button>
+			<div class="${HEADER_MENU_OVERLAY_CLASS}"><svg><path d="M0 0"></path></svg></div>
+			<div class="${HEADER_MENU_BUTTON_OUTLINE_CLASS}"></div>
+			<nav class="${HEADER_MENU_CLASS}">
+				<div class="${HEADER_MENU_NAV_CLASS}"><a href="/about">About</a></div>
+				<li class="${HEADER_MENU_ITEM_CLASS}"><a href="/projects">Projects</a></li>
+				<div class="${HEADER_MENU_QUOTE_CLASS}"><p>A quote</p></div>
 			</nav>
 			<main></main>`;
 
-		return document.querySelector<HTMLElement>(".header__menu-button") as HTMLElement;
+		return document.querySelector<HTMLElement>(`.${HEADER_MENU_BUTTON_CLASS}`) as HTMLElement;
 	};
 
 	afterEach(() => {
@@ -430,17 +493,28 @@ describe("initMenu", () => {
 		expect(() => initMenu()).not.toThrow();
 	});
 
-	it("wires the real timeline, so a click opens the menu", () => {
+	it("wires the real timeline, so a click opens the menu", async () => {
 		const button = render();
 
 		initMenu();
 		button.click();
+		await vi.dynamicImportSettled();
 
 		expect(button.getAttribute("aria-expanded")).toBe("true");
 		expect(document.documentElement.classList.contains(MENU_OPEN_CLASS)).toBe(true);
 	});
 
-	it("marks the button so a second page-load does not wire it twice", () => {
+	it("plays the real timeline once the library has arrived, which shows the overlay", async () => {
+		const button = render();
+		const overlay = document.querySelector<HTMLElement>(`.${HEADER_MENU_OVERLAY_CLASS}`) as HTMLElement;
+
+		initMenu();
+		button.click();
+		await vi.dynamicImportSettled();
+		await vi.waitFor(() => expect(overlay.style.display).toBe("block"), { timeout: 2000 });
+	});
+
+	it("marks the button so a second page-load does not wire it twice", async () => {
 		const button = render();
 
 		initMenu();
@@ -448,11 +522,12 @@ describe("initMenu", () => {
 
 		initMenu();
 		button.click();
+		await vi.dynamicImportSettled();
 
 		expect(button.getAttribute("aria-expanded")).toBe("true");
 	});
 
-	it("makes what the menu covers inert while it is open", () => {
+	it("makes what the menu covers inert while it is open", async () => {
 		const button = render();
 
 		initMenu();
@@ -461,11 +536,12 @@ describe("initMenu", () => {
 		expect((document.querySelector("main") as HTMLElement).inert).toBe(true);
 
 		button.click();
+		await vi.dynamicImportSettled();
 
 		expect((document.querySelector("main") as HTMLElement).inert).toBe(false);
 	});
 
-	it("closes on Escape once it is open, and ignores it while it is closed", () => {
+	it("closes on Escape once it is open, and ignores it while it is closed", async () => {
 		const button = render();
 		initMenu();
 
@@ -474,6 +550,7 @@ describe("initMenu", () => {
 
 		button.click();
 		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+		await vi.dynamicImportSettled();
 
 		expect(document.documentElement.classList.contains(MENU_OPEN_CLASS)).toBe(false);
 	});

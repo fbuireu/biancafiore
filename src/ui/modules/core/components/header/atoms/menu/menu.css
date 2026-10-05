@@ -18,7 +18,7 @@
 	position: relative;
 }
 
-.navigation__menu {
+.header__menu__panel {
 	align-items: center;
 	background-color: var(--surface);
 	display: flex;
@@ -27,7 +27,7 @@
 	justify-content: center;
 }
 
-.navigation__menu__inner {
+.header__menu__inner {
 	display: grid;
 	gap: 1rem;
 	grid: "Header-Quote Header-Divider Header-Navigation" / 50% 1fr 50%;
@@ -41,7 +41,7 @@
 	}
 }
 
-.navigation__menu__nav {
+.header__menu__nav {
 	gap: 3rem 0;
 	grid-area: Header-Navigation;
 	padding-left: 4rem;
@@ -55,8 +55,8 @@
 	}
 }
 
-.navigation__menu__item,
-.navigation__menu__quote {
+.header__menu__item,
+.header__menu__quote {
 	position: relative;
 
 	&::after {
@@ -77,7 +77,7 @@
 	}
 }
 
-.navigation__menu__item {
+.header__menu__item {
 	& span:first-child {
 		margin-inline-end: 0.5rem;
 	}
@@ -87,7 +87,7 @@
 	}
 }
 
-.navigation__menu__quote {
+.header__menu__quote {
 	color: var(--ink);
 	font-family: var(--font-serif);
 	font-size: clamp(1rem, 3cqi + 1rem, 2rem);
@@ -115,7 +115,7 @@
 	}
 }
 
-.navigation__menu__divider {
+.header__menu__divider {
 	background-color: var(--ink);
 	grid-area: Header-Divider;
 	height: 125%;
@@ -141,7 +141,7 @@
 	}
 }
 
-.navigation__menu__link {
+.header__menu__link {
 	display: inline-block;
 	font-family: var(--font-display);
 	font-size: clamp(2rem, 5cqi + 1rem, 4rem);

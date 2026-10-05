@@ -62,6 +62,14 @@ describe("createCities coordinates", () => {
 	});
 });
 
+describe("createCities name", () => {
+	it("trims the name Contentful padded, since the cities collection is keyed on it", () => {
+		const [city] = createCities([makeCity({ name: "  Barcelona\n" })]);
+
+		expect(city).toMatchObject({ name: "Barcelona", slug: "barcelona" });
+	});
+});
+
 describe("createCities slug", () => {
 	it("derives the slug from the name, since the CMS entry carries no slug field", () => {
 		const [city] = createCities([makeCity({ name: "Buenos Aires" })]);
@@ -93,6 +101,28 @@ describe("createCities period", () => {
 		const [city] = createCities([makeCity({ startDate: "2022-01-15", endDate: "" })]);
 
 		expect(city.period).toEqual({ startYear: 2022 });
+	});
+});
+
+describe("createCities, given a Period it cannot read", () => {
+	it("refuses it by naming the City, since the date alone points at no entry", () => {
+		expect(() => createCities([makeCity({ name: "Lisbon", startDate: "not-a-date" })])).toThrow(
+			'The City "Lisbon" has an unreadable Period (start not-a-date, end open), so About cannot say when the Author lived there',
+		);
+	});
+
+	it("says which end it could not read when the Period is closed", () => {
+		expect(() => createCities([makeCity({ name: "Lisbon", startDate: "2019-01-01", endDate: "someday" })])).toThrow(
+			'The City "Lisbon" has an unreadable Period (start 2019-01-01, end someday)',
+		);
+	});
+
+	it("keeps the domain's own refusal as the cause", () => {
+		expect(() => createCities([makeCity({ startDate: "not-a-date" })])).toThrow(
+			expect.objectContaining({
+				cause: expect.objectContaining({ message: "A City reached the mapper with an unreadable date: not-a-date" }),
+			}),
+		);
 	});
 });
 

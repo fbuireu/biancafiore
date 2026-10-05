@@ -6,7 +6,7 @@ import type { RawProject } from "./types";
 
 export function createProjects(raw: RawProject[]): ProjectDTO[] {
 	return raw.map((rawProject): ProjectDTO => {
-		const id = rawProject.fields.id ?? slugify(rawProject.fields.name);
+		const id = rawProject.fields.id?.trim() || slugify(rawProject.fields.name);
 
 		return {
 			id,

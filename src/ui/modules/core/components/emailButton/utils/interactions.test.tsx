@@ -1,19 +1,23 @@
 import { CONTACT_DETAILS } from "@const/index";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { EMAIL_ADDRESS_PLACEHOLDER, EMAIL_BUTTON_ADDRESS_CLASS, EMAIL_BUTTON_CLASS } from "../const";
+import {
+	EMAIL_ADDRESS_PLACEHOLDER,
+	EMAIL_BUTTON_CLASS,
+	EMAIL_BUTTON_SHOWS_ADDRESS,
+	EMAIL_BUTTON_SHOWS_ATTRIBUTE,
+} from "../const";
 import { activateEmailButtons } from "./interactions";
 
 const ADDRESS = atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA);
 
-interface ButtonParams {
-	shows: "label" | "address";
-}
-
-const button = ({ shows }: ButtonParams): HTMLButtonElement => {
+const button = (shows: "label" | "address"): HTMLButtonElement => {
 	const element = document.createElement("button");
 
 	element.type = "button";
-	element.className = shows === "address" ? `${EMAIL_BUTTON_CLASS} ${EMAIL_BUTTON_ADDRESS_CLASS}` : EMAIL_BUTTON_CLASS;
+	element.className = EMAIL_BUTTON_CLASS;
+
+	if (shows === "address") element.setAttribute(EMAIL_BUTTON_SHOWS_ATTRIBUTE, EMAIL_BUTTON_SHOWS_ADDRESS);
+
 	element.textContent = shows === "address" ? EMAIL_ADDRESS_PLACEHOLDER : "Email me";
 	document.body.append(element);
 
@@ -42,7 +46,7 @@ afterEach(() => {
 describe("activateEmailButtons", () => {
 	it("opens the composer at the address the module owns, which no caller supplies", () => {
 		const assign = composerTargets();
-		const element = button({ shows: "label" });
+		const element = button("label");
 
 		activateEmailButtons();
 		click({ element: element, trusted: true });
@@ -52,7 +56,7 @@ describe("activateEmailButtons", () => {
 
 	it("ignores a click no human made, so a script cannot harvest the address", () => {
 		const assign = composerTargets();
-		const element = button({ shows: "label" });
+		const element = button("label");
 
 		activateEmailButtons();
 		click({ element: element, trusted: false });
@@ -62,7 +66,7 @@ describe("activateEmailButtons", () => {
 
 	it("does nothing until the module is activated", () => {
 		const assign = composerTargets();
-		const element = button({ shows: "label" });
+		const element = button("label");
 
 		click({ element: element, trusted: true });
 
@@ -70,7 +74,7 @@ describe("activateEmailButtons", () => {
 	});
 
 	it("prints the address only in the browser, replacing the placeholder the server rendered", () => {
-		const element = button({ shows: "address" });
+		const element = button("address");
 
 		expect(element.textContent).toBe(EMAIL_ADDRESS_PLACEHOLDER);
 
@@ -80,7 +84,7 @@ describe("activateEmailButtons", () => {
 	});
 
 	it("leaves a labelled button reading as its label", () => {
-		const element = button({ shows: "label" });
+		const element = button("label");
 
 		activateEmailButtons();
 
@@ -89,9 +93,9 @@ describe("activateEmailButtons", () => {
 
 	it("activates the buttons under the root it is given, and no others", () => {
 		const assign = composerTargets();
-		const outside = button({ shows: "label" });
+		const outside = button("label");
 		const root = document.createElement("div");
-		const inside = button({ shows: "label" });
+		const inside = button("label");
 
 		root.append(inside);
 		document.body.append(root);
@@ -108,7 +112,7 @@ describe("activateEmailButtons", () => {
 
 	it("wires a button once, however often it is activated", () => {
 		const assign = composerTargets();
-		const element = button({ shows: "label" });
+		const element = button("label");
 
 		activateEmailButtons();
 		activateEmailButtons();

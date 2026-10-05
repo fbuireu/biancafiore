@@ -46,6 +46,19 @@
 		animation-timing-function: ease;
 	}
 
+	@media (prefers-reduced-motion: reduce) {
+		@view-transition {
+			navigation: none;
+		}
+
+		::view-transition-group(*),
+		::view-transition-old(*),
+		::view-transition-new(*) {
+			/* biome-ignore lint/complexity/noImportantStyles: required to override an animation any page names for its own transition */
+			animation: none !important;
+		}
+	}
+
 	html {
 		container-type: scroll-state;
 		overflow-x: hidden;
@@ -109,7 +122,6 @@
 
 		@media (prefers-reduced-motion: reduce) {
 			scroll-behavior: auto;
-			navigation: auto;
 		}
 	}
 
@@ -148,7 +160,7 @@
 	svg {
 		-webkit-tap-highlight-color: transparent;
 
-		&:not(.logo, .theme-toggle__inner, .marker-wrapper svg) {
+		&:not(.logo, .theme-toggle__inner, .world-globe__marker svg) {
 			fill: var(--neutral-main);
 			color: var(--neutral-main);
 		}

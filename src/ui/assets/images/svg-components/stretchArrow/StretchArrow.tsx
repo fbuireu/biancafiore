@@ -1,5 +1,10 @@
 import clsx from "clsx";
 import type { SVGProps } from "react";
+import stretchArrow from "../../svg/stretch-arrow.svg?raw";
+
+const STRETCH_ARROW_PATH = /<path class="([^"]+)" d="([^"]+)"/g;
+
+const PATHS = [...stretchArrow.matchAll(STRETCH_ARROW_PATH)].map(([, className, data]) => ({ className, data }));
 
 interface StretchArrowProps extends SVGProps<SVGSVGElement> {
 	classNames?: string;
@@ -15,8 +20,9 @@ export const StretchArrow = ({ title = "Arrow", classNames, ...props }: StretchA
 			{...props}
 		>
 			<title>{title}</title>
-			<path className="stretch-arrow__shaft" d="M 5,12 h 14" />
-			<path className="stretch-arrow__tip" d="M 12,5 l 7,7 l -7,7" />
+			{PATHS.map(({ className, data }) => (
+				<path key={className} className={className} d={data} />
+			))}
 		</svg>
 	);
 };

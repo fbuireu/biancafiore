@@ -3,6 +3,7 @@ import { setupServer } from "msw/node";
 
 export const SITEVERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 export const GREEN_CHECK_URL = "https://api.thegreenwebfoundation.org/api/v3/greencheck/*";
+const COUNTRIES_URL = "*/countries.json";
 
 const CORS_HEADERS = { "access-control-allow-origin": "*" };
 
@@ -159,6 +160,33 @@ export function greenCheckDouble({
 			if (answer !== undefined) return HttpResponse.json(answer);
 
 			return HttpResponse.json({ green });
+		}),
+	);
+
+	return { calls };
+}
+
+export interface CountriesDoubleParams {
+	unreachable?: boolean;
+	malformed?: boolean;
+	answer?: unknown;
+}
+
+export interface CountriesDouble {
+	calls: string[];
+}
+
+export function countriesDouble({ unreachable, malformed, answer }: CountriesDoubleParams = {}): CountriesDouble {
+	const calls: string[] = [];
+
+	server.use(
+		http.get(COUNTRIES_URL, ({ request }) => {
+			calls.push(request.url);
+
+			if (unreachable) return HttpResponse.error();
+			if (malformed) return HttpResponse.text("<!doctype html>");
+
+			return HttpResponse.json(answer ?? { features: [] });
 		}),
 	);
 

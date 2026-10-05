@@ -1,4 +1,5 @@
 import type { CollectionEntry } from "astro:content";
+import { WORLD_GLOBE_MARKER_CLASS, WORLD_GLOBE_MARKER_LABEL_CLASS } from "../components/worldGlobe/const";
 
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 
@@ -70,14 +71,14 @@ function createPinSvg({ fill, title }: CreatePinSvgParams): SVGSVGElement {
 export function renderPin(markerData: CityPoint): HTMLElement {
 	const markerWrapper = document.createElement("button");
 	markerWrapper.type = "button";
-	markerWrapper.classList.add("marker-wrapper", `marker-wrapper--${markerData.slug}`);
+	markerWrapper.classList.add(WORLD_GLOBE_MARKER_CLASS, `${WORLD_GLOBE_MARKER_CLASS}--${markerData.slug}`);
 
 	const marker = document.createElement("div");
 	marker.append(createPinSvg({ fill: "currentColor", title: markerData.label }));
 	markerWrapper.append(marker);
 
 	const label = document.createElement("div");
-	label.classList.add("marker__label", "font-sans-serif");
+	label.classList.add(WORLD_GLOBE_MARKER_LABEL_CLASS, "font-sans-serif");
 	label.textContent = markerData.label;
 	markerWrapper.append(label);
 

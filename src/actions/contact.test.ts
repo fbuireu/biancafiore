@@ -9,9 +9,9 @@ import {
 	loggerDouble,
 } from "@tests/doubles/contactLayers";
 import { type RecaptchaDoubleParams, recaptchaDouble } from "@tests/doubles/network";
-import { Cause, Effect, Exit, Layer, Option } from "effect";
+import { failureOf } from "@tests/helpers/exit";
+import { Effect, Exit, Layer } from "effect";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { ContactError } from "./contact";
 import { submitContact } from "./contact";
 
 const VALID_INPUT = {
@@ -35,9 +35,6 @@ const run = ({ database, email, input = VALID_INPUT }: RunParams) =>
 	Effect.runPromiseExit(
 		submitContact(input).pipe(Effect.provide(Layer.mergeAll(database.layer, email.layer, log.layer))),
 	);
-
-const failureTag = (exit: Exit.Exit<{ ok: boolean }, ContactError>): string | undefined =>
-	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause))?._tag : undefined;
 
 beforeEach(() => {
 	log.lines.length = 0;
@@ -111,7 +108,7 @@ describe("submitContact", () => {
 
 		const exit = await run({ database, email });
 
-		expect(failureTag(exit)).toBe("DuplicateContactError");
+		expect(failureOf(exit)?._tag).toBe("DuplicateContactError");
 		expect(email.sent).toHaveLength(0);
 	});
 
@@ -121,7 +118,7 @@ describe("submitContact", () => {
 
 		const exit = await run({ database, email });
 
-		expect(failureTag(exit)).toBe("DuplicateContactError");
+		expect(failureOf(exit)?._tag).toBe("DuplicateContactError");
 		expect(email.sent).toHaveLength(0);
 	});
 
@@ -131,7 +128,7 @@ describe("submitContact", () => {
 
 		const exit = await run({ database, email });
 
-		expect(failureTag(exit)).toBe("EmailError");
+		expect(failureOf(exit)?._tag).toBe("EmailError");
 		expect(database.inserted).toHaveLength(0);
 	});
 
@@ -142,7 +139,7 @@ describe("submitContact", () => {
 
 		const exit = await run({ database, email, input: { ...VALID_INPUT, email: "not-an-email" } });
 
-		expect(failureTag(exit)).toBe("ValidationError");
+		expect(failureOf(exit)?._tag).toBe("ValidationError");
 		expect(recaptcha.calls).toEqual([]);
 	});
 
@@ -154,7 +151,7 @@ describe("submitContact", () => {
 
 		const exit = await run({ database, email });
 
-		expect(failureTag(exit)).toBe("ValidationError");
+		expect(failureOf(exit)?._tag).toBe("ValidationError");
 		expect(email.sent).toHaveLength(0);
 	});
 
@@ -166,7 +163,7 @@ describe("submitContact", () => {
 
 		const exit = await run({ database, email });
 
-		expect(failureTag(exit)).toBe("RecaptchaError");
+		expect(failureOf(exit)?._tag).toBe("RecaptchaError");
 		expect(email.sent).toHaveLength(0);
 	});
 

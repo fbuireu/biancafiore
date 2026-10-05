@@ -3,16 +3,16 @@ import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { PAGES_ROUTES } from "@const/index";
 import "./what-i-do.css";
 
-const DISCIPLINES = ["Creative direction", "Editorial & reports", "Impact storytelling", "Web content & copy"];
+const PROJECT_NAMES = ["Creative direction", "Editorial & reports", "Impact storytelling", "Web content & copy"];
 ---
 <section class="what-i-do common-wrapper">
     <div class="what-i-do__inner">
-        <div class="what-i-do__disciplines">
+        <div class="what-i-do__projects">
             <p class="editorial-eyebrow reveal">What I do</p>
             <hr class="what-i-do__rule reveal" />
             <ul class="what-i-do__list">
-              {DISCIPLINES.map((discipline) => (
-                <li class="what-i-do__list__item reveal">{discipline}</li>
+              {PROJECT_NAMES.map((name) => (
+                <li class="what-i-do__list__item reveal">{name}</li>
               ))}
             </ul>
         </div>

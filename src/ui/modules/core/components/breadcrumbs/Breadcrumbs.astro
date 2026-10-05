@@ -20,7 +20,7 @@ const breadcrumbListSchema = buildBreadcrumbListSchema(
         const isLast = breadcrumbs.at(-1)?.link === link;
 
         return (
-            <li class="breadcrumb__item flex">
+            <li class="breadcrumbs__item flex">
               {!isLast ? (
                   <a href={link} class="underline-on-hover clickable">{label}</a><span>/</span>
               ) : (

@@ -4,6 +4,8 @@ import { resolveArticles } from "../../utils/entries";
 import { buildArticleListSchema } from "../../utils/jsonLd";
 import ArticleSlider from "../articleSlider/ArticleSlider.astro";
 import JsonLd from "../jsonLd/JsonLd.astro";
+import { RELATED_ARTICLES_SLIDER_CLASS } from "./const";
+import { shuffle } from "./utils/shuffle";
 import "./related-articles.css";
 
 interface Props {
@@ -11,7 +13,7 @@ interface Props {
 }
 
 const { article } = Astro.props;
-const relatedArticles = await resolveArticles(article.data.relatedArticles);
+const relatedArticles = shuffle(await resolveArticles(article.data.relatedArticles));
 const itemListSchema = buildArticleListSchema(relatedArticles.map(({ data }) => data.slug));
 ---
 {
@@ -19,7 +21,7 @@ const itemListSchema = buildArticleListSchema(relatedArticles.map(({ data }) => 
     <section class="related-articles inverted-color-scheme">
       <div class="related-articles-wrapper common-wrapper">
         <h2 class="related-articles__title section-title reveal">You might also like</h2>
-        <ArticleSlider articles={relatedArticles} class="related-articles__slider common-wrapper" isShuffled />
+        <ArticleSlider articles={relatedArticles} class={`${RELATED_ARTICLES_SLIDER_CLASS} common-wrapper`} />
         <JsonLd schema={itemListSchema} />
       </div>
     </section>

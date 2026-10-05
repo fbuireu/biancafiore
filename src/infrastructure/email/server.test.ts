@@ -1,6 +1,7 @@
 import { CONTACT_DETAILS } from "@const/const";
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
-import { Cause, Effect, Exit, Option } from "effect";
+import { defectOf, failureOf } from "@tests/helpers/exit";
+import { Cause, Effect, Exit } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { EmailError } from "../errors";
 import { EmailClient, EmailClientLive } from "./server";
@@ -20,9 +21,6 @@ const build = () => Effect.runPromiseExit(EmailClient.pipe(Effect.provide(EmailC
 afterEach(() => {
 	resetSecrets();
 });
-
-const defectOf = (exit: Exit.Exit<unknown, unknown>): unknown =>
-	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.dieOption(exit.cause)) : undefined;
 
 describe("EmailClientLive", () => {
 	it("dies rather than handing the vendor an undefined key, which it answers with its own error", async () => {
@@ -64,9 +62,6 @@ const sendContact = async () => {
 		}),
 	);
 };
-
-const failureOf = (exit: Exit.Exit<unknown, unknown>): unknown =>
-	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause)) : undefined;
 
 describe("EmailClient.sendContactNotification", () => {
 	beforeEach(() => {

@@ -45,12 +45,20 @@ describe("createEmail", () => {
 		expect(html).toContain("mailto:Ada+news@Example.com?subject=");
 	});
 
-	it("stamps the message with a day first, twenty four hour timestamp", async () => {
-		vi.setSystemTime(new Date(2026, 2, 25, 15, 4, 5));
+	it("stamps the message with a day first, twenty four hour timestamp that names UTC, whatever zone the runtime is in", async () => {
+		vi.setSystemTime(new Date(Date.UTC(2026, 2, 25, 15, 4, 5)));
 
 		const { html } = await createEmail(SUBMISSION);
 
-		expect(html).toContain("25/03/2026, 15:04:05");
+		expect(html).toContain("25/03/2026, 15:04:05 UTC");
+	});
+
+	it("carries the same stamp into the plain text twin", async () => {
+		vi.setSystemTime(new Date(Date.UTC(2026, 2, 25, 15, 4, 5)));
+
+		const { text } = await createEmail(SUBMISSION);
+
+		expect(text).toContain("25/03/2026, 15:04:05 UTC");
 	});
 
 	it("returns a plain text twin that carries the same content without any markup", async () => {

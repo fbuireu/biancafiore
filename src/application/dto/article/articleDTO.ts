@@ -12,7 +12,7 @@ import { createImage } from "../shared/images";
 import type { RawArticle } from "./types";
 import { createRelatedArticles } from "./utils/articles";
 import { renderArticleContent } from "./utils/content";
-import { articleSlug } from "./utils/reference";
+import { articleIsFavorite, articlePublishDateISO, articleSlug } from "./utils/reference";
 import { createTags } from "./utils/tags";
 
 export function createArticles(raw: RawArticle[]): ArticleDTO[] {
@@ -27,12 +27,12 @@ export function createArticles(raw: RawArticle[]): ArticleDTO[] {
 			author: createAuthor(rawArticle.fields.author),
 			slug: articleSlug(rawArticle),
 			description: deriveDescription(rawArticle.fields.description ?? documentToHtmlString(rawArticle.fields.content)),
-			publishDateISO: publishDateISO(rawArticle.fields.publishDate),
+			publishDateISO: articlePublishDateISO(rawArticle),
 			updatedAt: publishDateISO(rawArticle.sys.updatedAt ?? rawArticle.fields.publishDate),
 			featuredImage,
 			content,
 			isFeaturedArticle: rawArticle.fields.featuredArticle,
-			isFavorite: rawArticle.fields.isFavorite ?? false,
+			isFavorite: articleIsFavorite(rawArticle),
 			isRepublished,
 			originalSource: creditedSource({ isRepublished, originalSource: rawArticle.fields.originalSource }),
 			readingTime: getReadingTime(content),

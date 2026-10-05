@@ -1,7 +1,7 @@
 import { imageSchema } from "@domain/shared/image";
 import type { Asset } from "contentful";
 import { describe, expect, it } from "vitest";
-import { createImage } from "./images";
+import { absoluteAssetUrl, createImage } from "./images";
 
 interface AssetParams {
 	url?: string;
@@ -19,6 +19,21 @@ const asset = ({
 	({
 		fields: { file: { url, contentType, details: { size: 1024, image: { width, height } } } },
 	}) as unknown as Asset<undefined>;
+
+describe("absoluteAssetUrl", () => {
+	it("gives Contentful's protocol-relative url the https scheme", () => {
+		expect(absoluteAssetUrl("//images.ctfassets.net/space/asset/hero.jpg")).toBe(
+			"https://images.ctfassets.net/space/asset/hero.jpg",
+		);
+	});
+
+	it.each(["https://images.ctfassets.net/space/asset/hero.jpg", "http://cdn/hero.jpg", "/_astro/hero.jpg"])(
+		"leaves %s as it is, so a url that is already whole is never prefixed twice",
+		(url) => {
+			expect(absoluteAssetUrl(url)).toBe(url);
+		},
+	);
+});
 
 describe("createImage", () => {
 	it("turns Contentful's protocol-relative asset url into an absolute https one", () => {

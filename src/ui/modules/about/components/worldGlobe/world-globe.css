@@ -19,7 +19,7 @@
 	}
 }
 
-.marker__label {
+.world-globe__marker__label {
 	background: var(--neutral-main);
 	border-radius: 0.5rem;
 	color: var(--white);
@@ -51,18 +51,20 @@
 	}
 }
 
-.marker-wrapper {
+.world-globe__marker {
 	color: var(--primary-dark-1);
 	cursor: pointer;
 	pointer-events: auto;
 	position: relative;
 	transition: width 0.2s;
 	width: 1.5rem;
+	z-index: inherit;
 
 	&:hover {
 		width: 2rem;
+		z-index: 5;
 
-		.marker__label {
+		.world-globe__marker__label {
 			display: block;
 		}
 	}
@@ -71,7 +73,7 @@
 		fill: var(--primary-light-2);
 	}
 
-	&.marker-wrapper--sydney {
+	&.world-globe__marker--sydney {
 		svg {
 			rotate: 0.5turn;
 		}
@@ -86,12 +88,6 @@
 	}
 
 	&:hover {
-		& .stretch-arrow__shaft {
-			d: var(--stretch-arrow-shaft-hover);
-		}
-
-		& .stretch-arrow__tip {
-			d: var(--stretch-arrow-tip-hover);
-		}
+		--stretch-arrow: hover;
 	}
 }

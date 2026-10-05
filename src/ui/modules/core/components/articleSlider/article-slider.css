@@ -1,0 +1,15 @@
+.article-slider {
+	@media (prefers-reduced-motion: no-preference) {
+		@supports (animation-timeline: view()) {
+			view-timeline-name: --reveal-slider;
+
+			.reveal {
+				animation-timeline: --reveal-slider;
+			}
+		}
+	}
+
+	.slider__slide {
+		--reveal-index: calc(sibling-index() - 1);
+	}
+}

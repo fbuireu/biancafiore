@@ -1,4 +1,3 @@
-import { SECURITY_HEADERS } from "@const/securityHeaders";
 import type { AstroIntegration } from "astro";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { generateStaticHeaders } from "./generateStaticHeaders";
@@ -7,8 +6,14 @@ const writeFileSync = vi.hoisted(() => vi.fn());
 
 vi.mock("node:fs", () => ({ writeFileSync }));
 
+const HEADERS = {
+	"X-Content-Type-Options": "nosniff",
+	"Content-Security-Policy": "default-src 'self'; script-src 'self' 'sha256-abc='",
+	"X-Frame-Options": "SAMEORIGIN",
+};
+
 const runBuildStart = () => {
-	const integration = generateStaticHeaders() as AstroIntegration & {
+	const integration = generateStaticHeaders(HEADERS) as AstroIntegration & {
 		hooks: { "astro:build:start": () => void };
 	};
 
@@ -32,19 +37,19 @@ describe("generateStaticHeaders", () => {
 		expect(runBuildStart().startsWith("/*\n")).toBe(true);
 	});
 
-	it("emits every security header the middleware sets, and nothing else", () => {
+	it("emits every header it is given, in the order it is given them, and nothing else", () => {
 		const emitted = runBuildStart()
 			.split("\n")
 			.filter((line) => line.startsWith("  "))
 			.map((line) => line.trim().split(": ").at(0));
 
-		expect(emitted).toStrictEqual(Object.keys(SECURITY_HEADERS));
+		expect(emitted).toStrictEqual(Object.keys(HEADERS));
 	});
 
-	it("emits each header with the value the constant declares, so the two delivery paths cannot disagree", () => {
+	it("emits each header with the value it is given, so the two delivery paths carry what the caller built", () => {
 		const emitted = runBuildStart();
 
-		for (const [header, value] of Object.entries(SECURITY_HEADERS)) {
+		for (const [header, value] of Object.entries(HEADERS)) {
 			expect(emitted).toContain(`  ${header}: ${value}`);
 		}
 	});

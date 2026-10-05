@@ -1,10 +1,12 @@
-import { DEFAULT_LOCALE_STRING } from "@const/locale";
-import { publishDateISO } from "@domain/article/rules";
+import { sortReverseChronological } from "@domain/article/rules";
 import type { Reference } from "@domain/shared/reference";
-import type { RawArticle } from "../../article/types";
-import { articleReference } from "../../article/utils/reference";
+import type { ArticleSkeleton, RawArticle } from "../../article/types";
+import { articlePublishDateISO, articleReference } from "../../article/utils/reference";
+import type { SelectedField } from "../../shared/select";
+import { articleAuthorSlug } from "./author";
 
-export const AUTHOR_LATEST_ARTICLE_FIELDS: `fields.${string}`[] = [
+export const AUTHOR_LATEST_ARTICLE_FIELDS: SelectedField<ArticleSkeleton>[] = [
+	"sys.id",
 	"fields.slug",
 	"fields.publishDate",
 	"fields.author",
@@ -15,26 +17,18 @@ interface GetLatestArticleByAuthorParams {
 	rawArticles: RawArticle[];
 }
 
-interface DatedArticle {
-	reference: Reference<"articles">;
-	publishedAt: string;
-}
-
 export function getLatestArticleByAuthor({
 	authorSlug,
 	rawArticles,
 }: GetLatestArticleByAuthorParams): Reference<"articles"> | undefined {
-	const latest = rawArticles
-		.filter((article) => "fields" in article.fields.author && article.fields.author.fields.slug.trim() === authorSlug)
-		.map<DatedArticle>((article) => ({
-			reference: articleReference(article),
-			publishedAt: publishDateISO(article.fields.publishDate),
-		}))
-		.reduce<DatedArticle | undefined>(
-			(newest, article) =>
-				!newest || article.publishedAt.localeCompare(newest.publishedAt, DEFAULT_LOCALE_STRING) > 0 ? article : newest,
-			undefined,
-		);
+	const [latest] = sortReverseChronological(
+		rawArticles
+			.filter((article) => articleAuthorSlug(article) === authorSlug)
+			.map((article) => ({
+				reference: articleReference(article),
+				publishDateISO: articlePublishDateISO(article),
+			})),
+	);
 
 	return latest?.reference;
 }

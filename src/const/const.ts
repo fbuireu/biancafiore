@@ -1,4 +1,5 @@
 import { BIANCA_EMAIL } from "astro:env/client";
+import { PRIVACY_POLICY_ROUTE, TERMS_AND_CONDITIONS_ROUTE } from "./noindexRoutes";
 
 export const PAGES_ROUTES = {
 	ARTICLE: "/articles/",
@@ -8,8 +9,8 @@ export const PAGES_ROUTES = {
 	TAG: "/tags/",
 	CONTACT: "/contact",
 	PROJECTS: "/projects",
-	"TERMS-AND-CONDITIONS": "/terms-and-conditions",
-	"PRIVACY-POLICY": "/privacy-policy",
+	"TERMS-AND-CONDITIONS": TERMS_AND_CONDITIONS_ROUTE,
+	"PRIVACY-POLICY": PRIVACY_POLICY_ROUTE,
 	"404": "/404",
 	"500": "/500",
 	HOME: "/",

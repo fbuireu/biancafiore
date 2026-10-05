@@ -1,12 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ARTICLE_BODY_CLASS } from "../../../const";
+import { READING_PROGRESS_CLASS } from "../const";
 import { initReadingProgress } from "./progress";
 
-const MARKUP = '<div class="article-wrapper"></div><div class="reading-progress"></div>';
+const MARKUP = `<div class="${ARTICLE_BODY_CLASS}"></div><div class="${READING_PROGRESS_CLASS}"></div>`;
 
-const bar = () => document.querySelector<HTMLElement>(".reading-progress") as HTMLElement;
+const bar = () => document.querySelector<HTMLElement>(`.${READING_PROGRESS_CLASS}`) as HTMLElement;
 
 const article = (offsetHeight: number) => {
-	const element = document.querySelector<HTMLElement>(".article-wrapper") as HTMLElement;
+	const element = document.querySelector<HTMLElement>(`.${ARTICLE_BODY_CLASS}`) as HTMLElement;
 
 	Object.defineProperty(element, "offsetHeight", { value: offsetHeight, configurable: true });
 };
@@ -71,7 +73,7 @@ describe("initReadingProgress", () => {
 	});
 
 	it("leaves a page carrying no bar alone rather than throwing", () => {
-		document.body.innerHTML = '<div class="article-wrapper"></div>';
+		document.body.innerHTML = `<div class="${ARTICLE_BODY_CLASS}"></div>`;
 
 		expect(() => initReadingProgress()).not.toThrow();
 	});

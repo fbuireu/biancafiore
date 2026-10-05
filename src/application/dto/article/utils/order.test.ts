@@ -56,7 +56,7 @@ describe("orderArticleReferences", () => {
 				makeArticle({ slug: "undated", publishDate: null }),
 				makeArticle({ slug: "dated", publishDate: "2019-01-01" }),
 			]),
-		).toThrow("An Article reached the mapper with an unreadable publish date");
+		).toThrow('The Article "undated" has an unreadable publish date');
 	});
 
 	it("refuses an unparseable publish date for the same reason", () => {
@@ -65,7 +65,7 @@ describe("orderArticleReferences", () => {
 				makeArticle({ slug: "nonsense", publishDate: "not-a-date" }),
 				makeArticle({ slug: "dated", publishDate: "2019-01-01" }),
 			]),
-		).toThrow("An Article reached the mapper with an unreadable publish date: not-a-date");
+		).toThrow('The Article "nonsense" has an unreadable publish date (not-a-date)');
 	});
 
 	it("refuses an undated favorite too, since being one does not date it", () => {
@@ -74,7 +74,7 @@ describe("orderArticleReferences", () => {
 				makeArticle({ slug: "dated", publishDate: "2026-01-01" }),
 				makeArticle({ slug: "undated-favorite", publishDate: null, isFavorite: true }),
 			]),
-		).toThrow("An Article reached the mapper with an unreadable publish date");
+		).toThrow('The Article "undated-favorite" has an unreadable publish date');
 	});
 
 	it("references an article by its trimmed slug, the id the collection is keyed on", () => {

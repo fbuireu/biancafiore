@@ -1,16 +1,23 @@
 import { scrollBehavior } from "../../../utils/motion";
+import {
+	SLIDER_DOT_ACTIVE_CLASS,
+	SLIDER_DOT_CLASS,
+	SLIDER_LOOPING_ATTRIBUTE,
+	SLIDER_NEXT_CLASS,
+	SLIDER_PREVIOUS_CLASS,
+	SLIDER_SLIDE_CLASS,
+	SLIDER_TRACK_CLASS,
+} from "../const";
 
 const SELECTORS = {
-	TRACK: ".slider__track",
-	SLIDE: ".slider__slide",
-	PREVIOUS: ".slider__btn--prev",
-	NEXT: ".slider__btn--next",
-	DOT: ".slider__dot",
+	TRACK: `.${SLIDER_TRACK_CLASS}`,
+	SLIDE: `.${SLIDER_SLIDE_CLASS}`,
+	PREVIOUS: `.${SLIDER_PREVIOUS_CLASS}`,
+	NEXT: `.${SLIDER_NEXT_CLASS}`,
+	DOT: `.${SLIDER_DOT_CLASS}`,
 } as const;
 
-const ACTIVE_DOT_CLASS = "slider__dot--active";
 const SCROLL_END_TOLERANCE = 1;
-const LOOPING_ATTRIBUTE = "data-is-looping";
 
 interface DistanceToCentreParams {
 	track: HTMLElement;
@@ -24,7 +31,7 @@ const distanceToCentre = ({ track, slide }: DistanceToCentreParams): number => {
 	return Math.abs(slideBox.left + slideBox.width / 2 - (trackBox.left + trackBox.width / 2));
 };
 
-export interface ActiveSlideIndexParams {
+interface ActiveSlideIndexParams {
 	track: HTMLElement;
 	slides: HTMLElement[];
 }
@@ -48,7 +55,7 @@ export function initSlider(wrapper: HTMLElement): void {
 
 	const slides = [...track.querySelectorAll<HTMLElement>(SELECTORS.SLIDE)];
 	const dots = [...wrapper.querySelectorAll<HTMLButtonElement>(SELECTORS.DOT)];
-	const isLooping = wrapper.getAttribute(LOOPING_ATTRIBUTE) === "true";
+	const isLooping = wrapper.getAttribute(SLIDER_LOOPING_ATTRIBUTE) === "true";
 
 	const centre = (index: number): void => {
 		slides.at(index)?.scrollIntoView({ behavior: scrollBehavior(), block: "nearest", inline: "center" });
@@ -63,7 +70,7 @@ export function initSlider(wrapper: HTMLElement): void {
 		const active = activeSlideIndex({ track, slides });
 
 		dots.forEach((dot, index) => {
-			dot.classList.toggle(ACTIVE_DOT_CLASS, index === active);
+			dot.classList.toggle(SLIDER_DOT_ACTIVE_CLASS, index === active);
 			dot.setAttribute("aria-current", String(index === active));
 		});
 	};

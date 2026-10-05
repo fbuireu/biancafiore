@@ -8,7 +8,7 @@ interface ZoomInProps extends SVGProps<SVGSVGElement> {
 
 export const ZoomIn = ({ fill = "currentColor", title = "Zoom In", classNames, ...props }: ZoomInProps) => {
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" id="zoom-in" viewBox="0 0 20 20" className={clsx(classNames)} {...props}>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" className={clsx(classNames)} {...props}>
 			<title>{title}</title>
 			<g
 				fill="none"

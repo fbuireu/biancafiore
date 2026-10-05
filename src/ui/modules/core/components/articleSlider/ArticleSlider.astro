@@ -1,37 +1,22 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import ArticleCard from "../articleCard/ArticleCard.astro";
+import { SLIDER_SLIDE_CLASS } from "../sliderShell/const";
 import SliderShell from "../sliderShell/SliderShell.astro";
+import "./article-slider.css";
 
 interface Props {
 	articles: CollectionEntry<"articles">[];
 	class?: string;
-	isShuffled?: boolean;
 }
 
-const { articles, class: className, isShuffled = false } = Astro.props;
-
-const shuffle = (entries: CollectionEntry<"articles">[]): CollectionEntry<"articles">[] => {
-	const shuffled = [...entries];
-
-	for (let index = shuffled.length - 1; index > 0; index--) {
-		const swap = Math.floor(Math.random() * (index + 1));
-		[shuffled[index], shuffled[swap]] = [shuffled[swap], shuffled[index]] as [
-			CollectionEntry<"articles">,
-			CollectionEntry<"articles">,
-		];
-	}
-
-	return shuffled;
-};
-
-const slides = isShuffled ? shuffle(articles) : articles;
+const { articles, class: className } = Astro.props;
 ---
 
-<SliderShell class={`${className ?? ''} slider-wrapper--reveal-items`.trim()}>
+<SliderShell class={`${className ?? ''} article-slider`.trim()}>
 	{
-		slides.map((article) => (
-			<li class="slider__slide item-wrapper reveal">
+		articles.map((article) => (
+			<li class:list={[SLIDER_SLIDE_CLASS, "item-wrapper", "reveal"]}>
 				<ArticleCard article={article} />
 			</li>
 		))

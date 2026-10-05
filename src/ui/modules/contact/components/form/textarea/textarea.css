@@ -26,9 +26,4 @@
 		font-size: clamp(1rem, 1.2cqi, 1.125rem);
 		top: -1.25rem;
 	}
-
-	&:is(:focus, :not(:placeholder-shown), :focus-within) ~ .contact-form__input-label {
-		font-size: clamp(1rem, 1.2cqi, 1.125rem);
-		top: -1.5rem;
-	}
 }

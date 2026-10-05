@@ -115,6 +115,19 @@ html.page--article body {
 		border: none;
 	}
 
+	.iframe-embed {
+		container-type: inline-size;
+
+		iframe {
+			aspect-ratio: auto;
+			display: block;
+			/* biome-ignore lint/correctness/noUnknownProperty: Biome does not know frame-sizing yet */
+			frame-sizing: content-height;
+			height: auto;
+			min-height: calc(100cqi * 9 / 16);
+		}
+	}
+
 	figure {
 		display: flex;
 		flex-flow: column;
@@ -218,15 +231,15 @@ html.page--article body {
 		text-transform: uppercase;
 	}
 
-	.breadcrumb__item {
+	.breadcrumbs__item {
 		display: inline;
 	}
 
-	.breadcrumb__item a {
+	.breadcrumbs__item a {
 		display: inline-block;
 	}
 
-	.breadcrumb__item span {
+	.breadcrumbs__item span {
 		margin-inline: 0.5ch;
 	}
 
@@ -317,11 +330,11 @@ html.page--article body {
 	& > .full-bleed,
 	& > .breakout,
 	& > .split,
-	& > .article__table-of-contents-wrapper {
+	& > .table-of-contents-wrapper {
 		column-span: all;
 	}
 
-	& > :is(figure, blockquote, pre, iframe, ul, ol, dl) {
+	& > :is(figure, blockquote, pre, iframe, .iframe-embed, ul, ol, dl) {
 		break-inside: avoid;
 	}
 

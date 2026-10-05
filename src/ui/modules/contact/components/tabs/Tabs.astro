@@ -1,45 +1,49 @@
 ---
 import { CALENDLY, CALENDLY_MEETING_URL } from "@const/calendly";
-import { activeTab } from "../../utils/tabs";
 import { ContactFormProvider } from "../contactFormProvider/ContactFormProvider";
+import { TAB_ACTIVE_CLASS, TAB_CLASS, TAB_CONTENT_ACTIVE_CLASS, TAB_CONTENT_CLASS, TabId } from "./const";
+import { activeTab } from "./utils/tabs";
 import "./tabs.css";
 
 const selected = activeTab(Astro.url);
 ---
 
-<section class="contact-tabs-wrapper">
-	<div class="contact-tabs__inner common-wrapper">
-		<div class="contact-tabs__header flex column-wrap">
-			<h2 class="contact-tabs__title section-title">Contact me</h2>
-			<hr class="contact-tabs__divider" />
-			<p class="contact-tabs__body">Multiple ways to get in touch with me :)</p>
+<section class="tabs-wrapper">
+	<div class="tabs__inner common-wrapper">
+		<div class="tabs__header flex column-wrap">
+			<h2 class="tabs__title section-title">Contact me</h2>
+			<hr class="tabs__divider" />
+			<p class="tabs__body">Multiple ways to get in touch with me :)</p>
 		</div>
-		<ul class="contact-tabs flex" role="tablist" aria-label="Ways to get in touch">
+		<ul class="tabs__list flex" role="tablist" aria-label="Ways to get in touch">
 			<li class:list={[
-					"contact-tab underline-on-hover",
-					{ "contact-tab--active": selected === "email", "underline-on-hover--active": selected === "email" },
-				]} data-target="email" role="presentation">
-				<button type="button" role="tab" id="email-tab" aria-controls="email" aria-selected={selected === "email"}>Email me</button>
+					TAB_CLASS,
+					"underline-on-hover",
+					{ [TAB_ACTIVE_CLASS]: selected === TabId.EMAIL, "underline-on-hover--active": selected === TabId.EMAIL },
+				]} data-target={TabId.EMAIL} role="presentation">
+				<button type="button" role="tab" id={`${TabId.EMAIL}-tab`} aria-controls={TabId.EMAIL} aria-selected={selected === TabId.EMAIL}>Email me</button>
 			</li>
 			<li class:list={[
-					"contact-tab underline-on-hover",
+					TAB_CLASS,
+					"underline-on-hover",
 					{
-						"contact-tab--active": selected === "appointment",
-						"underline-on-hover--active": selected === "appointment",
+						[TAB_ACTIVE_CLASS]: selected === TabId.APPOINTMENT,
+						"underline-on-hover--active": selected === TabId.APPOINTMENT,
 					},
-				]} data-target="appointment" role="presentation">
-				<button type="button" role="tab" id="appointment-tab" aria-controls="appointment" aria-selected={selected === "appointment"}>
+				]} data-target={TabId.APPOINTMENT} role="presentation">
+				<button type="button" role="tab" id={`${TabId.APPOINTMENT}-tab`} aria-controls={TabId.APPOINTMENT} aria-selected={selected === TabId.APPOINTMENT}>
 					Make an appointment
 				</button>
 			</li>
 		</ul>
-		<div id="email" class:list={["contact-tab__content", { "contact-tab__content--active": selected === "email" }]} role="tabpanel" aria-labelledby="email-tab" tabindex="0">
+		<div id={TabId.EMAIL} class:list={[TAB_CONTENT_CLASS, { [TAB_CONTENT_ACTIVE_CLASS]: selected === TabId.EMAIL }]} role="tabpanel" aria-labelledby={`${TabId.EMAIL}-tab`} tabindex="0">
 			<ContactFormProvider client:load />
 		</div>
-		<div id="appointment" class:list={["contact-tab__content", { "contact-tab__content--active": selected === "appointment" }]} role="tabpanel" aria-labelledby="appointment-tab" tabindex="0">
+		<div id={TabId.APPOINTMENT} class:list={[TAB_CONTENT_CLASS, { [TAB_CONTENT_ACTIVE_CLASS]: selected === TabId.APPOINTMENT }]} role="tabpanel" aria-labelledby={`${TabId.APPOINTMENT}-tab`} tabindex="0">
 			<div
 				class={CALENDLY.WIDGET_CLASS}
 				data-url={CALENDLY_MEETING_URL}
+				data-resize="true"
 			>
 			</div>
 		</div>
@@ -47,7 +51,7 @@ const selected = activeTab(Astro.url);
 </section>
 
 <script>
-	import { initTabs } from "../../utils/tabs";
+	import { initTabs } from "./utils/tabs";
 
 	document.addEventListener("astro:page-load", () => {
 		initTabs();

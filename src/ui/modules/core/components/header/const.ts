@@ -1,0 +1,11 @@
+export const HEADER_CLASS = "header" as const;
+export const HEADER_MENU_CLASS = `${HEADER_CLASS}__menu` as const;
+export const HEADER_MENU_ITEM_CLASS = `${HEADER_MENU_CLASS}__item` as const;
+export const HEADER_MENU_NAV_CLASS = `${HEADER_MENU_CLASS}__nav` as const;
+export const HEADER_MENU_QUOTE_CLASS = `${HEADER_MENU_CLASS}__quote` as const;
+export const HEADER_MENU_BUTTON_CLASS = `${HEADER_CLASS}__menu-button` as const;
+export const HEADER_MENU_BUTTON_INTERSECTED_CLASS = `${HEADER_MENU_BUTTON_CLASS}--intersected` as const;
+export const HEADER_MENU_BUTTON_OUTLINE_CLASS = `${HEADER_MENU_BUTTON_CLASS}__outline` as const;
+export const HEADER_MENU_TEXT_CLASS = `${HEADER_CLASS}__menu-text` as const;
+export const HEADER_MENU_OVERLAY_CLASS = `${HEADER_CLASS}__menu-overlay-wrapper` as const;
+export const MENU_OPEN_CLASS = "page--menu-open" as const;

@@ -1,6 +1,6 @@
 import { acceptedCategory, acceptedService } from "vanilla-cookieconsent";
-import { getTelemetry } from "../../../utils/telemetry";
 import { ANALYTICS_CATEGORY, BETTER_STACK_SERVICE, CONSENT_STATUS, CONSENT_UPDATE_WAIT } from "./consentGate";
+import { getTelemetry } from "./telemetry";
 
 export function updatePreferences(): void {
 	function gtag() {

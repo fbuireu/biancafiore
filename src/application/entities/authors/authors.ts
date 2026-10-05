@@ -1,5 +1,5 @@
-import { defineCollection, reference } from "astro:content";
-import { authorSchema } from "@domain/author";
+import { defineCollection } from "astro:content";
+import { authorEntrySchema } from "@domain/author";
 import { fetchEntries } from "@infrastructure/cms/entries";
 import type { ArticleSkeleton } from "../../dto/article/types";
 import { createAuthors } from "../../dto/author";
@@ -17,7 +17,5 @@ export const authors = defineCollection({
 
 		return authors.map((author) => ({ ...author, id: author.slug }));
 	},
-	schema: authorSchema.extend({
-		latestArticle: reference("articles").optional(),
-	}),
+	schema: authorEntrySchema,
 });

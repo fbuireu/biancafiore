@@ -1,8 +1,8 @@
 import clsx from "clsx";
-import type { InputHTMLAttributes, JSX } from "react";
+import type { JSX, TextareaHTMLAttributes } from "react";
 import "./textarea.css";
 
-interface TextareaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	hasError: boolean;
 	errorMessage?: string;
 	isLocked?: boolean;

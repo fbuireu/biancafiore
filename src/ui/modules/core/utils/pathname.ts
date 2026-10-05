@@ -1,6 +1,6 @@
 const TRAILING_SLASH = /\/$/;
 
-export interface IsWithinParams {
+interface IsWithinParams {
 	pathname: string;
 	route: string;
 }

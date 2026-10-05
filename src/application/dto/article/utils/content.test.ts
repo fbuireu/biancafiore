@@ -2,7 +2,11 @@ import { describe, expect, it, vi } from "vitest";
 import type { RawArticle } from "../types";
 import { renderArticleContent } from "./content";
 
-vi.mock("astro:content", () => ({ reference: () => ({ parse: (value: unknown) => value }) }));
+vi.mock("astro:content", async () => {
+	const { z } = await import("astro/zod");
+
+	return { reference: () => z.custom(() => true) };
+});
 
 const text = (value: string) => ({ nodeType: "text", value, marks: [], data: {} });
 const paragraph = (value: string) => ({ nodeType: "paragraph", data: {}, content: [text(value)] });
@@ -79,6 +83,62 @@ describe("renderArticleContent headings", () => {
 		expect(content).toContain(`<h2 id="${collected.id}" class="article__heading flex align-baseline">`);
 		expect(content).toContain(`<a href="#${collected.id}">Why &amp; How &lt;b&gt; &quot;now&quot;</a>`);
 		expect(collected.text).toBe(`Why & How <b> "now"`);
+	});
+
+	it("gives a heading that repeats an earlier one its own anchor, so the table of contents jumps to each", () => {
+		const { content, headings } = renderArticleContent(
+			makeArticle([
+				heading({ level: 2, value: "Conclusion" }),
+				heading({ level: 2, value: "Conclusion" }),
+				heading({ level: 3, value: "Conclusion" }),
+			]),
+		);
+
+		expect(headings.map(({ id }) => id)).toEqual(["conclusion", "conclusion-2", "conclusion-3"]);
+		expect(content).toContain('<h2 id="conclusion-2" class="article__heading flex align-baseline">');
+		expect(content).toContain('<a href="#conclusion-3">Conclusion</a>');
+	});
+
+	it("counts the h1 among the anchors too, since every heading id lives in the one document", () => {
+		const { content, headings } = renderArticleContent(
+			makeArticle([heading({ level: 1, value: "Title" }), heading({ level: 2, value: "Title" })]),
+		);
+
+		expect(content).toContain('<h1 id="title"');
+		expect(headings.map(({ id }) => id)).toEqual(["title-2"]);
+	});
+
+	it("never hands a heading an anchor an earlier heading already spells", () => {
+		const { headings } = renderArticleContent(
+			makeArticle([
+				heading({ level: 2, value: "A" }),
+				heading({ level: 2, value: "A" }),
+				heading({ level: 2, value: "A 2" }),
+			]),
+		);
+
+		expect(new Set(headings.map(({ id }) => id)).size).toBe(3);
+		expect(headings.map(({ id }) => id)).toEqual(["a", "a-2", "a-2-2"]);
+	});
+
+	it.each([
+		["only punctuation", "?!"],
+		["a script slugify strips whole", "Ελληνικά"],
+		["a script slugify strips whole", "日本語"],
+	])("gives a heading of %s (%s) an anchor rather than an empty id", (_name, value) => {
+		const { content, headings } = renderArticleContent(makeArticle([heading({ level: 2, value })]));
+
+		expect(headings.map(({ id }) => id)).toEqual(["section"]);
+		expect(content).toContain('<h2 id="section"');
+		expect(content).not.toContain('id=""');
+	});
+
+	it("numbers the headings that fall back to a section anchor, so each stays addressable", () => {
+		const { headings } = renderArticleContent(
+			makeArticle([heading({ level: 2, value: "日本語" }), heading({ level: 2, value: "?!" })]),
+		);
+
+		expect(headings.map(({ id }) => id)).toEqual(["section", "section-2"]);
 	});
 
 	it("answers with an empty heading list for a body that has none", () => {
@@ -271,6 +331,13 @@ describe("renderArticleContent entry and asset hyperlinks", () => {
 		expect(html).toContain('target="_blank"');
 	});
 
+	it("keeps an asset link that is already absolute, rather than prefixing the scheme twice", () => {
+		const html = render([{ ...paragraph("x"), content: [assetHyperlink({ url: "https://cdn/report.pdf" })] }]);
+
+		expect(html).toContain('href="https://cdn/report.pdf"');
+		expect(html).not.toContain("https:https:");
+	});
+
 	it("keeps the label but drops the link when the asset carries no file", () => {
 		const html = render([{ ...paragraph("x"), content: [assetHyperlink(undefined)] }]);
 
@@ -330,6 +397,19 @@ describe("renderArticleContent video and iframe embeds", () => {
 
 		expect(html).toContain('src=""');
 		expect(html).not.toContain("alert(1)");
+	});
+
+	it("wraps a generic iframe in the block the article stylesheet sizes it through, and a video in nothing", () => {
+		const generic = render([
+			embed({ contentType: "iframeEmbed", fields: { url: "https://example.com/widget", title: "A widget" } }),
+		]);
+		const video = render([
+			embed({ contentType: "videoEmbed", fields: { url: "https://youtu.be/a", title: "A talk" } }),
+		]);
+
+		expect(generic).toContain('<div class="iframe-embed"><iframe src="https://example.com/widget"');
+		expect(generic).toContain("</iframe></div>");
+		expect(video).not.toContain("iframe-embed");
 	});
 
 	it("renders an iframe embed with no title rather than the string undefined", () => {
@@ -472,6 +552,13 @@ describe("renderArticleContent tag links and embedded assets", () => {
 		expect(html).toContain('class="full-bleed"');
 		expect(html).toContain('width="1200"');
 		expect(html).toContain('height="630"');
+	});
+
+	it("addresses an embedded asset whose url is already absolute by that url, never by a doubled scheme", () => {
+		const html = render([embeddedAsset({ file: asset({ url: "https://cdn/hero.jpg" }) })]);
+
+		expect(html).toContain("/https://cdn/hero.jpg");
+		expect(html).not.toContain("https:https:");
 	});
 
 	it("falls back to the Article's own title for an asset the editor never described", () => {

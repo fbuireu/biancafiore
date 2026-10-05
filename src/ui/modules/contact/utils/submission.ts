@@ -1,4 +1,4 @@
-export interface ContactActionResult {
+interface ContactActionResult {
 	data?: { ok: boolean } | undefined;
 	error?: { status: number; message: string } | undefined;
 }

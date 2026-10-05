@@ -1,10 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { THEME_ATTRIBUTE, THEME_STORAGE_KEY, Theme, ThemePreference } from "../const";
+import {
+	THEME_ATTRIBUTE,
+	THEME_STORAGE_KEY,
+	THEME_TOGGLE_CLASS,
+	THEME_TOGGLE_INPUT_CLASS,
+	THEME_TOGGLE_TOGGLED_CLASS,
+	Theme,
+	ThemePreference,
+} from "../const";
 
-type SchemeListener = (event: { matches: boolean }) => void;
+type SchemeListener = (event: Pick<MediaQueryListEvent, "matches">) => void;
 
-const TOGGLE = ".theme-toggle";
-const TOGGLED_MODIFIER = "theme-toggle--toggled";
+const TOGGLE = `.${THEME_TOGGLE_CLASS}`;
 
 const operatingSystem = (prefersDark: boolean) => {
 	const listeners: SchemeListener[] = [];
@@ -27,9 +34,9 @@ const operatingSystem = (prefersDark: boolean) => {
 };
 
 const renderToggle = (): HTMLInputElement => {
-	document.body.innerHTML = `<label class="theme-toggle"><input type="checkbox" class="theme-toggle__input" /></label>`;
+	document.body.innerHTML = `<label class="${THEME_TOGGLE_CLASS}"><input type="checkbox" class="${THEME_TOGGLE_INPUT_CLASS}" /></label>`;
 
-	const input = document.querySelector<HTMLInputElement>('.theme-toggle input[type="checkbox"]');
+	const input = document.querySelector<HTMLInputElement>(`${TOGGLE} input[type="checkbox"]`);
 
 	if (!input) throw new Error("the theme toggle did not render");
 
@@ -67,7 +74,7 @@ const memoryStorage = () => {
 
 const paintedTheme = () => document.documentElement.getAttribute(THEME_ATTRIBUTE);
 const storedPreference = () => localStorage.getItem(THEME_STORAGE_KEY);
-const toggledClass = () => document.querySelector(TOGGLE)?.classList.contains(TOGGLED_MODIFIER);
+const toggledClass = () => document.querySelector(TOGGLE)?.classList.contains(THEME_TOGGLE_TOGGLED_CLASS);
 
 beforeEach(() => {
 	vi.stubGlobal("localStorage", memoryStorage());
@@ -193,7 +200,7 @@ describe("the theme runtime on a page without the toggle", () => {
 
 	it("paints the document but leaves a toggle with no input undressed, rather than throwing", async () => {
 		operatingSystem(true);
-		document.body.innerHTML = `<label class="theme-toggle"></label>`;
+		document.body.innerHTML = `<label class="${THEME_TOGGLE_CLASS}"></label>`;
 
 		await visit();
 

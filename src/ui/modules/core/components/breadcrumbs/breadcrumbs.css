@@ -1,15 +1,15 @@
-.breadcrumb__item,
+.breadcrumbs__item,
 .breadcrumbs__list {
 	gap: var(--space-s);
 }
 
-.breadcrumb__item {
+.breadcrumbs__item {
 	@container article-page (width <= 960px) {
 		min-width: 0;
 	}
 }
 
-.breadcrumb__item .current-page {
+.breadcrumbs__item .current-page {
 	@container article-page (width <= 960px) {
 		overflow: hidden;
 		text-overflow: ellipsis;

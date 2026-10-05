@@ -1,18 +1,36 @@
-import { EMAIL_ADDRESS_PLACEHOLDER, EMAIL_BUTTON_ADDRESS_CLASS } from "@modules/core/components/emailButton/const";
-import { THEME_ATTRIBUTE } from "@modules/core/components/themeToggle/const";
+import { READING_PROGRESS_CLASS } from "@modules/article/components/readingProgress/const";
+import { ARTICLE_BODY_CLASS } from "@modules/article/const";
+import { ARTICLE_CARD_LINK_CLASS } from "@modules/core/components/articleCard/const";
+import { COOKIE_CONSENT_BUTTON_CLASS } from "@modules/core/components/cookieConsent/const";
+import {
+	EMAIL_ADDRESS_PLACEHOLDER,
+	EMAIL_BUTTON_SHOWS_ADDRESS,
+	EMAIL_BUTTON_SHOWS_ATTRIBUTE,
+} from "@modules/core/components/emailButton/const";
+import { HEADER_MENU_BUTTON_CLASS, MENU_OPEN_CLASS } from "@modules/core/components/header/const";
+import { RELATED_ARTICLES_SLIDER_CLASS } from "@modules/core/components/relatedArticles/const";
+import { SLIDER_NEXT_CLASS, SLIDER_TRACK_CLASS } from "@modules/core/components/sliderShell/const";
+import { THEME_ATTRIBUTE, THEME_TOGGLE_CLASS } from "@modules/core/components/themeToggle/const";
 import { expect, type Page, test } from "@playwright/test";
 
-const ARTICLE_BODY = ".article-wrapper";
-const ARTICLE_CARD_LINK = ".article-card__link";
+const ARTICLE_BODY = `.${ARTICLE_BODY_CLASS}`;
+const ARTICLE_CARD_LINK = `.${ARTICLE_CARD_LINK_CLASS}`;
 const ARTICLE_URL = /\/articles\/.+/;
-const EMAIL_ADDRESS_BUTTON = `.${EMAIL_BUTTON_ADDRESS_CLASS}`;
-const MENU_BUTTON = ".header__menu-button";
-const MENU_OPEN_CLASS = "page--menu-open";
-const READING_PROGRESS = ".reading-progress";
-const SLIDER_NEXT = ".related-articles__slider .slider__btn--next";
-const THEME_TOGGLE = ".theme-toggle";
+const COOKIE_BANNER = "We use cookies";
+const COOKIE_CONSENT_BUTTON = `.${COOKIE_CONSENT_BUTTON_CLASS}`;
+const COOKIE_PREFERENCES = "Manage cookie preferences";
+const EMAIL_ADDRESS_BUTTON = `[${EMAIL_BUTTON_SHOWS_ATTRIBUTE}="${EMAIL_BUTTON_SHOWS_ADDRESS}"]`;
+const MENU_BUTTON = `.${HEADER_MENU_BUTTON_CLASS}`;
+const READING_PROGRESS = `.${READING_PROGRESS_CLASS}`;
+const RELATED_ARTICLES_SLIDER = `.${RELATED_ARTICLES_SLIDER_CLASS}`;
+const SLIDER_NEXT = `${RELATED_ARTICLES_SLIDER} .${SLIDER_NEXT_CLASS}`;
+const SLIDER_TRACK = `${RELATED_ARTICLES_SLIDER} .${SLIDER_TRACK_CLASS}`;
+const THEME_TOGGLE = `.${THEME_TOGGLE_CLASS}`;
 
 const paintedTheme = (page: Page) => page.locator("html").getAttribute(THEME_ATTRIBUTE);
+
+const presentAsAHumanVisitor = (page: Page) =>
+	page.addInitScript(() => Object.defineProperty(navigator, "webdriver", { get: () => false }));
 
 interface VisitParams {
 	page: Page;
@@ -120,7 +138,13 @@ test.describe("wiring survives a ClientRouter swap", () => {
 
 		test.skip((await next.count()) === 0, "this Article has no Related Articles");
 
-		const track = page.locator(".related-articles__slider .slider__track");
+		const track = page.locator(SLIDER_TRACK);
+
+		test.skip(
+			!(await track.evaluate((element) => element.scrollWidth > element.clientWidth)),
+			"this Article's Related Articles fit the track, so there is nothing to scroll to",
+		);
+
 		const before = await track.evaluate((element) => element.scrollLeft);
 
 		await next.click();
@@ -159,5 +183,27 @@ test.describe("wiring survives a ClientRouter swap", () => {
 
 		await expect(address).not.toHaveText(EMAIL_ADDRESS_PLACEHOLDER);
 		await expect(address).toContainText("@");
+	});
+
+	test("shows the unanswered cookie banner once after two swaps", async ({ page }) => {
+		await presentAsAHumanVisitor(page);
+		await visit({ page, path: "/articles" });
+		await followFooterLink({ page, path: "/terms-and-conditions" });
+		await followFooterLink({ page, path: "/privacy-policy" });
+
+		await expect(page.getByRole("dialog", { name: COOKIE_BANNER })).toHaveCount(1);
+		await expect(page.getByRole("dialog", { name: COOKIE_BANNER })).toBeVisible();
+	});
+
+	test("keeps the cookie preferences opening after two swaps", async ({ page }) => {
+		await presentAsAHumanVisitor(page);
+		await visit({ page, path: "/articles" });
+		await followFooterLink({ page, path: "/terms-and-conditions" });
+		await followFooterLink({ page, path: "/privacy-policy" });
+
+		await page.locator(COOKIE_CONSENT_BUTTON).click();
+
+		await expect(page.getByRole("dialog", { name: COOKIE_PREFERENCES })).toHaveCount(1);
+		await expect(page.getByRole("dialog", { name: COOKIE_PREFERENCES })).toBeVisible();
 	});
 });

@@ -1,3 +1,4 @@
+import { authorEntrySchema } from "@domain/author";
 import { cmsAnswers, cmsHoldsUntilQueries, cmsQueries, cmsQueriesOverlapped, resetCms } from "@tests/doubles/cmsLayer";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { RawArticle } from "../../dto/article/types";
@@ -68,6 +69,10 @@ afterEach(() => {
 });
 
 describe("authors loader", () => {
+	it("binds the entry schema the domain declares, so the field a loader adds and the DTO's type cannot disagree", () => {
+		expect((authors as unknown as { schema: unknown }).schema).toBe(authorEntrySchema);
+	});
+
 	it("asks for authors and for only the article fields the latest-article rule reads, in one batch", async () => {
 		cmsAnswers({ author: [BIANCA], article: [] });
 		cmsHoldsUntilQueries(2);

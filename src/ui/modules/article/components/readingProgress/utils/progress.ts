@@ -1,6 +1,9 @@
+import { ARTICLE_BODY_CLASS } from "../../../const";
+import { READING_PROGRESS_CLASS } from "../const";
+
 const SELECTORS = {
-	ARTICLE: ".article-wrapper",
-	PROGRESS_BAR: ".reading-progress",
+	ARTICLE: `.${ARTICLE_BODY_CLASS}`,
+	PROGRESS_BAR: `.${READING_PROGRESS_CLASS}`,
 };
 
 function paintReadingProgress(): void {

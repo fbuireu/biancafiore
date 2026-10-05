@@ -7,8 +7,10 @@ import ColumnsToggle from "@modules/article/components/columnsToggle/ColumnsTogg
 import ReadingProgress from "@modules/article/components/readingProgress/ReadingProgress.astro";
 import RepublishedBanner from "@modules/article/components/republishedBanner/RepublishedBanner.astro";
 import TableOfContents from "@modules/article/components/tableOfContents/TableOfContents.astro";
+import { ARTICLE_BODY_CLASS } from "@modules/article/const";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
+import { featuredImageTransitionName } from "@modules/core/components/blurImage/utils/transition";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
@@ -86,7 +88,7 @@ const blogPostingSchema = buildBlogPostingSchema({
                   fetchpriority="high"
                   decoding="async"
                   class="article__featured-image"
-                  transitionName={`featured-image-${article.data.slug}`}
+                  transitionName={featuredImageTransitionName(article.data.slug)}
               />
           </section>
       )
@@ -100,7 +102,7 @@ const blogPostingSchema = buildBlogPostingSchema({
       <RepublishedBanner originalSource={article.data.originalSource} />
     )}
     <ColumnsToggle />
-    <article class="article-wrapper" style={`--scopes: ${scopes}`}>
+    <article class={ARTICLE_BODY_CLASS} style={`--scopes: ${scopes}`}>
       {
           showsTableOfContents && article.data.tableOfContents.length > 1 &&
           <TableOfContents tableOfContents={article.data.tableOfContents} />

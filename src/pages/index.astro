@@ -7,7 +7,7 @@ import { DEFAULT_SEO_PARAMS } from "@modules/core/components/seo/const";
 import { getSiteAuthor } from "@modules/core/utils/entries";
 import { buildWebSiteSchema } from "@modules/core/utils/jsonLd";
 import Blog from "@modules/home/components/blog/Blog.astro";
-import MyWork from "@modules/home/components/myWork/MyWork.astro";
+import ProjectList from "@modules/home/components/projectList/ProjectList.astro";
 import Testimonials from "@modules/home/components/testimonials/Testimonials.astro";
 import Welcome from "@modules/home/components/welcome/Welcome.astro";
 
@@ -33,7 +33,7 @@ const webSiteSchema = buildWebSiteSchema({
 ---
 <BaseLayout {...metadata}>
     <Welcome />
-    <MyWork />
+    <ProjectList />
     <Testimonials />
     <Blog />
     <JsonLd schema={webSiteSchema} />

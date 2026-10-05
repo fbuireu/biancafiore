@@ -1,8 +1,9 @@
 ---
 import arrowUp from "@assets/images/svg/stretch-arrow.svg?raw";
+import { SCROLL_TOP_WRAPPER_CLASS } from "./const";
 import "./scroll-top.css";
 ---
-<div class="scroll-top-wrapper">
+<div class={SCROLL_TOP_WRAPPER_CLASS}>
     <a class="scroll-top flex clickable" href="#top" aria-label="Back to top">
         <Fragment set:html={arrowUp} />
     </a>

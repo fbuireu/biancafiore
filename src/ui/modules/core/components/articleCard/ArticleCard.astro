@@ -5,6 +5,8 @@ import { articleHref, tagHref } from "@const/index";
 import { formatPublishDate } from "@domain/article";
 import clsx from "clsx";
 import BlurImage from "../blurImage/BlurImage.astro";
+import { featuredImageTransitionName } from "../blurImage/utils/transition";
+import { ARTICLE_CARD_LINK_CLASS } from "./const";
 import { toArticleCardContent } from "./utils/card";
 import "./article-card.css";
 
@@ -18,7 +20,7 @@ const { article, isLandscape = false } = Astro.props;
 const { slug, title, description, publishDateISO, readingTime, author, featuredImage, visibleTags, remainingTags } =
 	toArticleCardContent(article);
 ---
-<a class="article-card__link" href={articleHref(slug)} aria-labelledby={`article-title-${slug}`}>{' '}</a>
+<a class={ARTICLE_CARD_LINK_CLASS} href={articleHref(slug)} aria-labelledby={`article-title-${slug}`}>{' '}</a>
 <article
     class={clsx('article-card__item', { 'article-card__item--landscape': isLandscape })}
 >
@@ -28,7 +30,7 @@ const { slug, title, description, publishDateISO, readingTime, author, featuredI
               class="article-card__featured-image"
               image={featuredImage}
               alt={title}
-              transitionName={`featured-image-${slug}`}
+              transitionName={featuredImageTransitionName(slug)}
           />
       </div>
   )}

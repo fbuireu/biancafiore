@@ -18,7 +18,15 @@
 	}
 
 	.slider-wrapper {
-		&[data-has-buttons="true"][data-has-dots="false"] {
+		--slider-gap: 0rem;
+		--slides-per-view: 1;
+
+		@media (width >= 720px) {
+			--slider-gap: 2rem;
+			--slides-per-view: 2;
+		}
+
+		&.slider-wrapper--buttons {
 			align-items: center;
 			display: grid;
 			gap: 1rem;
@@ -76,17 +84,10 @@
 		}
 
 		&:hover:not(:disabled) {
+			--stretch-arrow: hover;
 			background-color: var(--primary-main);
 			border-color: var(--primary-main);
 			color: var(--white, white);
-
-			& .stretch-arrow__shaft {
-				d: var(--stretch-arrow-shaft-hover);
-			}
-
-			& .stretch-arrow__tip {
-				d: var(--stretch-arrow-tip-hover);
-			}
 		}
 
 		&:active:not(:disabled) {

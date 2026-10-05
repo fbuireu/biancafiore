@@ -6,6 +6,7 @@ import { logger } from "@infrastructure/logging/logger";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import EmailButton from "@modules/core/components/emailButton/EmailButton.astro";
 import ErrorLayer from "@modules/core/components/errorLayer/ErrorLayer.astro";
+import { createErrorReference } from "@modules/core/components/errorLayer/utils/reference";
 import "./_500.css";
 
 interface Props {
@@ -14,14 +15,15 @@ interface Props {
 
 const { error } = Astro.props;
 
+const reference = error === undefined ? undefined : createErrorReference();
+
 if (error !== undefined)
-	logger.logError({ message: "Unhandled server error", error, context: { path: Astro.url.pathname } });
+	logger.logError({ message: "Unhandled server error", error, context: { path: Astro.url.pathname, reference } });
 
 const title = "500: Whoops!";
-const reference = error instanceof Error ? error.message : "Internal error";
 const metadata: Partial<SeoMetadata> = {
 	title,
-	description: `For full transparency this is the error: ${reference}`,
+	description: "A part of the site stumbled. Give it a moment and try again.",
 	robots: {
 		index: false,
 		follow: false,
@@ -47,7 +49,7 @@ const metadata: Partial<SeoMetadata> = {
                 </a>
             </div>
             <div class="error-layer__extra reveal reveal--on-load" data-reveal-index="5">
-                <p class="error-layer__code">Reference: 500 · {reference}</p>
+                <p class="error-layer__code">Reference: 500{reference && ` · ${reference}`}</p>
                 <p class="error-500__help">
                     Still stuck? <EmailButton classNames="error-500__email" label="Email me" /> and I'll take a look.
                 </p>

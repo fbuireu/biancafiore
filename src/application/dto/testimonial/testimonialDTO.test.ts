@@ -56,6 +56,12 @@ describe("createTestimonials", () => {
 		});
 	});
 
+	it("trims the Quotee Contentful padded, since the testimonials collection is keyed on the name", () => {
+		const [testimonial] = createTestimonials([makeTestimonial({ quotee: "  Ada Lovelace\n" })]);
+
+		expect(testimonial.quotee).toBe("Ada Lovelace");
+	});
+
 	it("does not trim the quote, so the CMS whitespace reaches the domain unchanged", () => {
 		const [testimonial] = createTestimonials([makeTestimonial({ quote: "  A padded quote  " })]);
 

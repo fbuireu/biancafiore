@@ -1,10 +1,14 @@
 import { type TagIndexEntryDTO, TagType } from "@domain/tag";
-import type { RawArticle } from "../../article/types";
+import type { ArticleSkeleton, RawArticle } from "../../article/types";
 import { orderArticleReferences } from "../../article/utils/order";
-import type { RawAuthor } from "../../author/types";
+import type { AuthorSkeleton, RawAuthor } from "../../author/types";
+import { articleAuthorSlug, authorIdentity } from "../../author/utils/author";
+import type { SelectedField } from "../../shared/select";
 import type { RawTag } from "../types";
+import { articleTagSlugs, tagIdentity } from "./tag";
 
-export const TAG_INDEX_ARTICLE_FIELDS: `fields.${string}`[] = [
+export const TAG_INDEX_ARTICLE_FIELDS: SelectedField<ArticleSkeleton>[] = [
+	"sys.id",
 	"fields.slug",
 	"fields.tags",
 	"fields.author",
@@ -12,13 +16,7 @@ export const TAG_INDEX_ARTICLE_FIELDS: `fields.${string}`[] = [
 	"fields.publishDate",
 ];
 
-export const TAG_INDEX_AUTHOR_FIELDS: `fields.${string}`[] = ["fields.name", "fields.slug"];
-
-const authorSlugOf = (article: RawArticle): string | undefined =>
-	"fields" in article.fields.author ? article.fields.author.fields.slug.trim() : undefined;
-
-const tagSlugsOf = (article: RawArticle): string[] =>
-	(article.fields.tags ?? []).flatMap((tag) => ("fields" in tag ? [tag.fields.slug.trim()] : []));
+export const TAG_INDEX_AUTHOR_FIELDS: SelectedField<AuthorSkeleton>[] = ["sys.id", "fields.name", "fields.slug"];
 
 interface GetAuthorsParams {
 	rawAuthors: RawAuthor[];
@@ -27,19 +25,12 @@ interface GetAuthorsParams {
 
 export function getAuthors({ rawAuthors, rawArticles }: GetAuthorsParams): TagIndexEntryDTO[] {
 	return rawAuthors.flatMap((rawAuthor) => {
-		const slug = rawAuthor.fields.slug.trim();
-		const articles = orderArticleReferences(rawArticles.filter((article) => authorSlugOf(article) === slug));
+		const { name, slug } = authorIdentity(rawAuthor);
+		const articles = orderArticleReferences(rawArticles.filter((article) => articleAuthorSlug(article) === slug));
 
 		if (articles.length === 0) return [];
 
-		return [
-			{
-				name: rawAuthor.fields.name.trim(),
-				slug,
-				type: TagType.AUTHOR,
-				articles,
-			},
-		];
+		return [{ name, slug, type: TagType.AUTHOR, articles }];
 	});
 }
 
@@ -50,18 +41,11 @@ interface GetTagsParams {
 
 export function getTags({ rawTags, rawArticles }: GetTagsParams): TagIndexEntryDTO[] {
 	return rawTags.flatMap((rawTag) => {
-		const slug = rawTag.fields.slug.trim();
-		const articles = orderArticleReferences(rawArticles.filter((article) => tagSlugsOf(article).includes(slug)));
+		const { name, slug } = tagIdentity(rawTag);
+		const articles = orderArticleReferences(rawArticles.filter((article) => articleTagSlugs(article).includes(slug)));
 
 		if (articles.length === 0) return [];
 
-		return [
-			{
-				name: rawTag.fields.name.trim(),
-				slug,
-				type: TagType.TAG,
-				articles,
-			},
-		];
+		return [{ name, slug, type: TagType.TAG, articles }];
 	});
 }

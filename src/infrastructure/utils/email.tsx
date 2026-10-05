@@ -17,7 +17,7 @@ interface ContactEmailContent {
 }
 
 export async function createEmail({ name, email, message }: CreateEmailParams): Promise<ContactEmailContent> {
-	const date = new Date().toLocaleString(DEFAULT_LOCALE_STRING);
+	const date = new Date().toLocaleString(DEFAULT_LOCALE_STRING, { timeZone: "UTC", timeZoneName: "short" });
 	const subject = encodeURIComponent(`Re: ${CONTACT_DETAILS.EMAIL_SUBJECT} from biancafiore.me`);
 	const mailTo = `mailto:${email}?subject=${subject}`;
 

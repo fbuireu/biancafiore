@@ -1,0 +1,19 @@
+.link-with-arrow {
+	--gap: 1.25rem;
+	align-content: center;
+	font-weight: 700;
+	gap: 0 1rem;
+	position: relative;
+	transition: gap 0.2s;
+	width: fit-content;
+	z-index: 10;
+
+	svg {
+		width: 2rem;
+	}
+
+	&:hover {
+		--stretch-arrow: hover;
+		gap: 0 1.5rem;
+	}
+}

@@ -1,17 +1,17 @@
 import { BOT_REFUSAL_MESSAGE, contactFormSchema } from "@domain/contact/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Spinner from "@modules/core/components/spinner/Spinner";
 import { successDelay } from "@modules/core/utils/motion";
 import type { ContactFormData } from "@shared/ui/types";
-import { FormStatus } from "@shared/ui/types";
 import clsx from "clsx";
 import { startTransition, useEffect, useId, useRef, useState, useTransition, ViewTransition } from "react";
 import { useForm } from "react-hook-form";
-import { flyPlane } from "../../utils/form";
 import { type ContactSubmission, UNDELIVERED_SUBMISSION } from "../../utils/submission";
 import { Input } from "../form/input/Input";
 import { Recaptcha } from "../form/recaptcha/Recaptcha";
 import { Textarea } from "../form/textarea/Textarea";
+import Spinner from "../spinner/Spinner";
+import { FormStatus } from "./const";
+import { flyPlane } from "./utils/form";
 import "./contact-form.css";
 
 interface ContactFormProps {

@@ -5,12 +5,12 @@ import { Context, Effect, Layer } from "effect";
 import { DatabaseError } from "../errors";
 import * as schema from "./schema";
 
-export interface FindLatestContactSinceParams {
+interface FindLatestContactSinceParams {
 	email: string;
 	since: string;
 }
 
-export interface FindContactWithMessageParams {
+interface FindContactWithMessageParams {
 	email: string;
 	message: string;
 }

@@ -105,5 +105,9 @@ The in-page list of an Article's headings, used to navigate longer pieces.
 _Avoid_: outline, index, TOC (bare), on-this-page.
 
 **Latest Article**:
-The Author's own Article with the latest publish date, carried on the Author. Not the "Fresh from the blog" sliders on About and Contact: those take the head of the Blog listing, which is Favorite-first and author-agnostic.
+The Author's own Article with the latest publish date, carried on the Author. Not the Blog Preview: that takes the head of the Blog listing, which is Favorite-first and author-agnostic.
 _Avoid_: newest, most recent post, recent.
+
+**Blog Preview**:
+The first few Articles of the Blog, in the Blog's own order, shown away from the Blog under the heading "Fresh from the blog" to lead a reader to it: a list on the home page, a slider on About and Contact, links on the 404 page. Which Articles lead is the Blog's decision (Favorite-first, whoever wrote them), not the Author's.
+_Avoid_: latest articles, recent articles, teaser, newest.

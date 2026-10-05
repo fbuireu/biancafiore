@@ -10,14 +10,10 @@ export const prerender = true;
 const lastUpdated = formatDate("2026-09-12");
 const metadata: Partial<SeoMetadata> = {
 	title: "Privacy Policy",
-	robots: {
-		index: false,
-		follow: false,
-	},
 };
 ---
 <BaseLayout {...metadata}>
-  <div class="privacy-policy-wrapper common-wrapper">
+  <div class="legal-section-wrapper common-wrapper">
     <LegalSection>
         <h1>Privacy Policy</h1>
     </LegalSection>
@@ -100,7 +96,7 @@ const metadata: Partial<SeoMetadata> = {
     <LegalSection>
         <h2>Your Rights</h2>
         <p>You have the right to access, rectify, delete, restrict, or object to the processing of your personal data. You can
-          exercise these rights by emailing us at <EmailButton classNames="legal-page__email" shows="address" />.
+          exercise these rights by emailing us at <EmailButton classNames="legal-section__email" shows="address" />.
           If you believe your data protection rights have not been respected, you also have the right to lodge a complaint with
           your local data protection supervisory authority.</p>
     </LegalSection>

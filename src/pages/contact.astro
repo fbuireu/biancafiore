@@ -3,9 +3,9 @@ import type { SeoMetadata } from "@const/types";
 import ContactIntro from "@modules/contact/components/contactIntro/ContactIntro.astro";
 import Tabs from "@modules/contact/components/tabs/Tabs.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
+import BlogPreview from "@modules/core/components/blogPreview/BlogPreview.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
-import LatestArticles from "@modules/core/components/latestArticles/LatestArticles.astro";
 import { buildContactPageSchema } from "@modules/core/utils/jsonLd";
 
 const metadata: Partial<SeoMetadata> = {
@@ -23,6 +23,6 @@ const contactPageSchema = buildContactPageSchema({
   <Breadcrumbs />
   <ContactIntro />
   <Tabs />
-  <LatestArticles />
+  <BlogPreview />
   <JsonLd schema={contactPageSchema} />
 </BaseLayout>

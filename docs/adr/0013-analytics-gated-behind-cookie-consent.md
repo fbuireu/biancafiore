@@ -22,6 +22,7 @@ Analytics load with consent denied by default. An inline script in `<head>` read
 
 - The ordering is load-bearing: the consent default has to be set before GA/GTM initialise, so this script stays inline and stays first ([ADR 0005](./0005-theme-token-families-and-inline-bootstrap.md) puts the theme bootstrap in the same position for the same reason).
 - Analytics under-report by design; visitors who never accept are invisible.
+- **The consent default is an inline script, so it is named in the policy by its digest, and the digest is derived rather than written down.** `script-src` has no `'unsafe-inline'`: `inlineScriptHashes` in `core/utils/inlineScripts.ts` hashes the text `consentBootstrapScript(GOOGLE_ANALYTICS_ID)` renders, so a new analytics id, a changed constant in `consentGate.ts` or an edit to the script changes the policy with it in the same build, in `_headers` for the prerendered pages and in the middleware for the rest. A script edited without its policy cannot ship, and one a page adds without its policy fails `docs/built-output.test.ts`.
 - **Adding a service to a category is a `revision` bump, or returning visitors never see it.** vanilla-cookieconsent
   stores the accepted *services* in `cc_cookie` and defaults `revision` to `0`. A visitor who accepted before a
   service existed carries a cookie that does not list it, so `acceptedService` answers false for that visitor
@@ -44,4 +45,4 @@ Analytics load with consent denied by default. An inline script in `<head>` read
   gated still is.
 - **Two mechanisms for two vendors is the cost, and it is not avoidable.** Consent Mode exists because Google built it; a vendor without it can only be gated by withholding its script. Do not "unify" them by moving GA behind the same switch: that would delete the consent default whose ordering the first consequence calls load-bearing.
 - The `betterstack` service and its `bs_` cookies are declared in the same `analytics` category, so rejecting the category clears them and the preferences modal lists both vendors by name.
-- The banner itself is one of the few React islands the project allows ([ADR 0009](./0009-css-first-javascript-only-when-necessary.md)); the consent default it depends on is plain inline script, and has to stay that way to run early enough.
+- The banner is not a React island ([ADR 0009](./0009-css-first-javascript-only-when-necessary.md)): `vanilla-cookieconsent` is framework-free, so `CookieConsent.astro` renders the Manage cookies button and a bundled script runs the library on `astro:page-load`, which keeps React off every page that has no other island. The consent default it depends on is plain inline script, and has to stay that way to run early enough.

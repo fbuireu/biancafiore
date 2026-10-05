@@ -2,7 +2,7 @@
 	--info-size: 35dvh;
 	--stack-index: calc(sibling-count() - sibling-index());
 
-	.project-wrapper {
+	.project-section__inner {
 		display: grid;
 		grid-template-rows: calc(100dvh - var(--info-size)) var(--info-size);
 		height: 100dvh;
@@ -11,40 +11,52 @@
 
 		@container projects-page (width >= 768px) {
 			display: grid;
+			grid-template-columns: 2fr 3fr;
 			grid-template-rows: unset;
-			place-items: start;
-			position: relative;
 			width: 100%;
-			z-index: var(--stack-index);
+		}
+
+		@media (prefers-reduced-motion: no-preference) {
+			@supports (animation-timeline: view()) {
+				@container projects-page (width >= 768px) {
+					position: relative;
+					z-index: var(--stack-index);
+				}
+			}
 		}
 	}
 
-	.project-image-wrapper {
+	.project-section__image-wrapper {
 		height: var(--info-size);
 		inset-block-start: 0;
 		inset-inline: 0;
 		position: sticky;
 
 		@container projects-page (width >= 768px) {
+			grid-column: 2;
+			grid-row: 1;
 			height: 100dvh;
-			inset-block: 0;
-			inset-inline: 40% 0;
-			position: fixed;
+			position: static;
 		}
 
-		@supports (animation-timeline: view()) {
-			animation: in-and-out both linear;
-			animation-timeline: --project;
-
-			@container projects-page (width >= 768px) {
-				animation: brighten both linear;
-				animation-range: entry 0% entry 50%;
+		@media (prefers-reduced-motion: no-preference) {
+			@supports (animation-timeline: view()) {
+				animation: in-and-out both linear;
 				animation-timeline: --project;
+
+				@container projects-page (width >= 768px) {
+					animation: brighten both linear;
+					animation-range: entry 0% entry 50%;
+					animation-timeline: --project;
+					inset-block: 0;
+					inset-inline: 40% 0;
+					position: fixed;
+				}
 			}
 		}
 	}
 
-	.project-image {
+	.project-section__image {
 		height: calc(100dvh - var(--info-size));
 		object-fit: cover;
 		width: 100%;
@@ -53,25 +65,27 @@
 			height: 100%;
 		}
 
-		@supports (animation-timeline: view()) {
-			animation: filter-out both linear;
-			animation-range: exit 0% cover 100%;
-			animation-timeline: --project;
-
-			@container projects-page (width >= 768px) {
-				animation: clip-out both linear;
-				animation-range: exit 0% exit 100%;
+		@media (prefers-reduced-motion: no-preference) {
+			@supports (animation-timeline: view()) {
+				animation: filter-out both linear;
+				animation-range: exit 0% cover 100%;
 				animation-timeline: --project;
+
+				@container projects-page (width >= 768px) {
+					animation: clip-out both linear;
+					animation-range: exit 0% exit 100%;
+					animation-timeline: --project;
+				}
 			}
 		}
 	}
 
-	.project-title {
+	.project-section__title {
 		font-size: clamp(1.75rem, 4cqi, 2.75rem);
 		margin: 0;
 	}
 
-	.project-information {
+	.project-section__information {
 		align-content: center;
 		display: grid;
 		gap: 0.5rem;
@@ -85,10 +99,48 @@
 			background: transparent;
 			display: grid;
 			gap: 1rem;
+			grid-column: 1;
+			grid-row: 1;
 			height: 100dvh;
 			padding: 1rem;
 			place-items: center;
-			width: 40%;
 		}
+	}
+}
+
+@keyframes filter-out {
+	100% {
+		filter: brightness(2);
+		translate: 0 -60%;
+	}
+}
+
+@keyframes in-and-out {
+	0%,
+	100% {
+		opacity: 0;
+	}
+	10%,
+	60% {
+		opacity: 1;
+	}
+}
+
+@keyframes brighten {
+	0% {
+		filter: brightness(2);
+	}
+	100% {
+		filter: brightness(1);
+	}
+}
+
+@keyframes clip-out {
+	0% {
+		clip-path: inset(0 0 0 0);
+	}
+	100% {
+		filter: brightness(0.5);
+		clip-path: inset(100% 0 0 0);
 	}
 }

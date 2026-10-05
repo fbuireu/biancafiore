@@ -3,9 +3,10 @@ import Logo from "../logo/Logo.astro";
 import Menu from "./atoms/menu/Menu.astro";
 import MenuButton from "./atoms/menuButton/MenuButton.astro";
 import MenuOverlay from "./atoms/menuOverlay/MenuOverlay.astro";
+import { HEADER_CLASS } from "./const";
 import "./header.css";
 ---
-<header class="header">
+<header class={HEADER_CLASS}>
     <div class="header__backdrop"></div>
     <section class="header__inner common-wrapper flex row-wrap justify-flex-end align-center">
         <Logo />

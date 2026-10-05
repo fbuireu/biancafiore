@@ -1,56 +1,60 @@
 ---
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
+import {
+	SLIDER_BUTTON_CLASS,
+	SLIDER_DOT_ACTIVE_CLASS,
+	SLIDER_DOT_CLASS,
+	SLIDER_LOOPING_ATTRIBUTE,
+	SLIDER_NEXT_CLASS,
+	SLIDER_PREVIOUS_CLASS,
+	SLIDER_TRACK_CLASS,
+	SLIDER_WRAPPER_CLASS,
+} from "./const";
 
 interface Props {
 	class?: string;
-	hasButtons?: boolean;
 	hasDots?: boolean;
 	isLooping?: boolean;
 	slideCount?: number;
 	label?: string;
 }
 
-const {
-	class: className,
-	hasButtons = true,
-	hasDots = false,
-	isLooping = false,
-	slideCount = 0,
-	label = "Slider",
-} = Astro.props;
+const { class: className, hasDots = false, isLooping = false, slideCount = 0, label = "Slider" } = Astro.props;
 
 const dots = hasDots ? Array.from({ length: slideCount }, (_, index) => index) : [];
+const looping = { [SLIDER_LOOPING_ATTRIBUTE]: isLooping };
 ---
 
-<div class={`slider-wrapper ${className ?? ''}`.trim()} data-has-buttons={hasButtons} data-has-dots={hasDots} data-is-looping={isLooping}>
-	{hasButtons && !hasDots && (
-		<button class="slider__btn slider__btn--prev" type="button" aria-label="Previous slide" disabled><Fragment set:html={stretchArrow} /></button>
+<div class:list={[SLIDER_WRAPPER_CLASS, { [`${SLIDER_WRAPPER_CLASS}--buttons`]: !hasDots }, className]} {...looping}>
+	{!hasDots && (
+		<button class:list={[SLIDER_BUTTON_CLASS, SLIDER_PREVIOUS_CLASS]} type="button" aria-label="Previous slide" disabled><Fragment set:html={stretchArrow} /></button>
 	)}
-	<ul class="slider__track">
+	<ul class={SLIDER_TRACK_CLASS}>
 		<slot />
 	</ul>
-	{hasButtons && !hasDots && (
-		<button class="slider__btn slider__btn--next" type="button" aria-label="Next slide"><Fragment set:html={stretchArrow} /></button>
+	{!hasDots && (
+		<button class:list={[SLIDER_BUTTON_CLASS, SLIDER_NEXT_CLASS]} type="button" aria-label="Next slide"><Fragment set:html={stretchArrow} /></button>
 	)}
 	{hasDots && (
 		<nav class="slider__nav" aria-label={label}>
-			<button class="slider__btn slider__btn--prev" type="button" aria-label="Previous slide" disabled={!isLooping}><Fragment set:html={stretchArrow} /></button>
+			<button class:list={[SLIDER_BUTTON_CLASS, SLIDER_PREVIOUS_CLASS]} type="button" aria-label="Previous slide" disabled={!isLooping}><Fragment set:html={stretchArrow} /></button>
 			{dots.map((index) => (
 				<button
-					class:list={["slider__dot clickable", { "slider__dot--active": index === 0 }]}
+					class:list={[SLIDER_DOT_CLASS, "clickable", { [SLIDER_DOT_ACTIVE_CLASS]: index === 0 }]}
 					type="button"
 					aria-label={`Go to slide ${index + 1}`}
 				/>
 			))}
-			<button class="slider__btn slider__btn--next" type="button" aria-label="Next slide"><Fragment set:html={stretchArrow} /></button>
+			<button class:list={[SLIDER_BUTTON_CLASS, SLIDER_NEXT_CLASS]} type="button" aria-label="Next slide"><Fragment set:html={stretchArrow} /></button>
 		</nav>
 	)}
 </div>
 
 <script>
+	import { SLIDER_WRAPPER_CLASS } from "./const";
 	import { initSlider } from "./utils/slider";
 
 	document.addEventListener('astro:page-load', () => {
-		document.querySelectorAll<HTMLElement>('.slider-wrapper[data-has-buttons="true"]').forEach(initSlider);
+		document.querySelectorAll<HTMLElement>(`.${SLIDER_WRAPPER_CLASS}`).forEach(initSlider);
 	});
 </script>

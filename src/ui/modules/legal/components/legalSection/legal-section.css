@@ -31,23 +31,23 @@
 	padding-inline-start: 1.5rem;
 }
 
-.privacy-policy-wrapper,
-.terms-and-conditions-wrapper {
+.legal-section-wrapper,
+.legal-section-wrapper {
 	counter-reset: legal-section;
 }
 
-.privacy-policy-wrapper .legal-section h2::before,
-.terms-and-conditions-wrapper .legal-section h2::before {
+.legal-section-wrapper .legal-section h2::before,
+.legal-section-wrapper .legal-section h2::before {
 	content: counter(legal-section) ". ";
 	counter-increment: legal-section;
 }
 
-.legal-page__email {
+.legal-section__email {
 	letter-spacing: normal;
 	text-decoration: none;
 }
 
-.legal-page__email,
+.legal-section__email,
 .legal-section {
 	color: var(--ink);
 }

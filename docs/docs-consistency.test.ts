@@ -46,7 +46,14 @@ const STYLESHEET_OUTSIDE_A_COMPONENT_FOLDER = "src/ui/modules/contact/components
 
 const ROUTES_WITH_NO_PAGE_CONTAINER = ["404", "500", "tag"];
 
-const HEX_COLOURS_AWAITING_A_TOKEN = ["src/ui/modules/about/components/worldGlobe/const.ts"];
+const MODULES_WHOSE_EXPORTS_THE_FRAMEWORK_READS = new Set([
+	"src/actions/index.ts",
+	"src/content.config.ts",
+	"src/env.d.ts",
+	"src/middleware.ts",
+]);
+
+const MODULES_SHARED_BYTE_FOR_BYTE = new Set(["src/infrastructure/logging/logger.ts"]);
 
 const PLAIN_LOGGER_READERS = [
 	"src/infrastructure/images/imagePlaceholder/imagePlaceholder.ts",
@@ -117,11 +124,12 @@ const CONTENTFUL_TYPE = /from "contentful"|@contentful\/|EntryFieldTypes|EntrySk
 const HAND_PREFIXED_ASSET_URL = /`https:\$\{/;
 const ABSOLUTE_IMAGE_URL_SCHEMA = /url:\s*z\.url\(\)/;
 const ASSET_SCHEME_CONSTANT = /ASSET_SCHEME = "https:"/;
+const PROTOCOL_RELATIVE_TEST = /startsWith\(\s*(?:"\/\/"|PROTOCOL_RELATIVE_PREFIX)\s*\)/;
 const CMS_LAYER_IMPORT = /import\s*\{[^}]*CmsClientLive[^}]*\}\s*from\s*"\.\/client"/;
 const LOADER_FETCH_ENTRIES = /await fetchEntries</;
 const CONTENTFUL_PAGE_CAP = /CONTENTFUL_MAX_PAGE_SIZE = (\d+)/;
 const LOADER_REACHING_PAST_FETCH_ENTRIES = /from "effect"|isContentfulConfigured|CmsClient|concurrency:/;
-const DOMAIN_SCHEMA_BINDING = /schema:\s*\w+Schema/;
+const DOMAIN_SCHEMA_BINDING = /schema:\s*\w+Schema,/;
 const DOMAIN_IMPORT = /from "@domain\//;
 const ASTRO_SITE_READ = /Astro\.site/;
 const ASTRO_URL_ORIGIN_READ = /Astro\.url\.(?:href|origin)|origin: originPath/;
@@ -148,7 +156,54 @@ const GRID_TOKEN_IN_QUERY = /@(?:container|media)[^{]*var\(--grid-/;
 const REVEAL_MODIFIER_DECLARATION = /\.reveal--[a-z-]+[^{\n]*\{/g;
 const CSS_COMMENT = /\/\*[\s\S]*?\*\//g;
 const ANIMATION_TIMELINE_DECLARATION = /^animation-timeline\s*:/;
+const FIXED_POSITION_DECLARATION = /^position\s*:\s*fixed$/;
+const NAVIGATION_DECLARATION = /^navigation\s*:/;
+const MOTION_REDUCE = /^@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/;
+const STOPPED_ANIMATION = /^animation\s*:\s*none\s*!important$/;
+const KEYFRAMES_DECLARATION = /@keyframes\s+([\w-]+)/g;
+const ANIMATION_PROPERTY = /^animation(?:-name)?\s*:/;
+const ANIMATION_VALUE_SEPARATOR = /[\s,]+/;
+const GLOBAL_CASCADE = "src/ui/styles/";
+const VENDOR_STYLESHEET = "src/ui/styles/vendor/cookie-consent.css";
+const NOT_ARGUMENT = /:not\([^)]*\)/g;
+const STRETCH_ARROW_SVG_PATH = /<path class="stretch-arrow__(\w+)" d="([^"]+)"/g;
+const STRETCH_ARROW_HOVER_TOKEN = /--stretch-arrow-(\w+)-hover:\s*path\("([^"]+)"\)/g;
+const PATH_COMMAND = /([a-zA-Z])([^a-zA-Z]*)/g;
+const PATH_NUMBER = /-?\d*\.?\d+/g;
+const PATH_DATA_LITERAL = /\bd="[Mm]/;
+const LAYER_WRAPPER = /^@layer\s/;
+const SINGLE_CLASS_RULE = /^\.([\w-]+)$/;
+const CLASS_ATTRIBUTE_VALUE = /class(?:Name)?="([^"{$]*)"/g;
+const FLEX_ONLY_PROPERTIES = new Set(["flex-flow", "flex-wrap", "flex-direction"]);
+const ALIGNMENT_PROPERTIES = new Set(["justify-content", "align-items"]);
+const FLEX_DISPLAYS = new Set(["flex", "inline-flex"]);
+const GRID_DISPLAYS = new Set(["grid", "inline-grid"]);
+const TYPED_ATTR_READ = /attr\(\s*(data-[\w-]+)\s+type\(/g;
+const STATIC_ID_ATTRIBUTE = /[\s<]id="([\w-]+)"/g;
+const COLOUR_LITERAL =
+	/(?<![\w-])(?:oklch|oklab|lch|lab|rgba?|hsla?|hwb|color)\(|(?<![\w&])#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{1,5})?(?![\w-])/g;
+const TOKEN_FILE = "src/ui/styles/global/variables.css";
+const SHARE_IMAGE_IMPORT = /import\s+\w+\s+from\s+"@assets\/images\/jpg\/([\w.-]+\.jpg)"/;
+const SHARE_IMAGE_WIDTH = 1200;
+const SHARE_IMAGE_HEIGHT = 630;
+const SHARE_IMAGE_MAX_BYTES = 250 * 1024;
+const STATIC_GSAP_IMPORT = /^\s*import\s[^;]*\sfrom\s+["']gsap["']/m;
+const DYNAMIC_GSAP_IMPORT = /import\(\s*["']gsap["']\s*\)/;
+const SLIDER_STYLESHEET = "src/ui/styles/global/slider.css";
+const SLIDER_RAMP_PROPERTY = /^--(?:slides-per-view|slider-gap)\s*:/;
+const ARTICLE_SLIDER_IMPORT = /import\s+ArticleSlider\s+from\s+["'][^"']*ArticleSlider\.astro["']/;
+const STRETCH_ARROW_MORPH_FILE = "src/ui/styles/global/global.css";
+const STRETCH_ARROW_STATE_QUERY = /@container style\(--stretch-arrow: hover\)/g;
+const STRETCH_ARROW_STATE_DECLARATION = /--stretch-arrow: hover;/;
+const SVG_URL = /url\(\s*["']?[^)"']*\.svg["']?\s*\)/;
+const MASK_PROPERTY = /^mask(?:-image)?\s*:/;
+const CURRENT_COLOUR_FILL = /^background-color\s*:\s*currentColor$/i;
+const REVEAL_BLOCKS = new Set(["reveal", "reveal-once"]);
+const VIEW_TRANSITION_PSEUDOS = "::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*)";
+const ANIMATION_TIMELINE_ANYWHERE = /animation-timeline\s*:/;
+const FIXED_ANYWHERE = /position\s*:\s*fixed/;
 const SCROLL_DRIVEN_SUPPORTS = /^@supports\s*\(\s*animation-timeline\s*:/;
+const MOTION_OPT_IN = /^@media\s*\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/;
 const PAGE_CONTAINER_DECLARATION = /&\.page--([a-z\d-]+)\s*\{\s*container:\s*([a-z\d-]+)\s*\/\s*([^;]+);/g;
 const SITE_ORIGIN_READ = /\bSITE_URL\b/;
 const PAGES_ROUTES_BLOCK = /PAGES_ROUTES = \{([\s\S]*?)\n\} as const;/;
@@ -169,9 +224,11 @@ const ANY_CLASS_TOKEN = /\.(-{0,2}[a-zA-Z_][\w-]*)/g;
 const COMPONENT_FILE = /^[A-Z][A-Za-z\d]*\.(astro|tsx)$/;
 const ASTRO_STYLE_BLOCK = /<style[\s>]/;
 const HYDRATION_DIRECTIVE = /<(\w+)[^>]*\sclient:([\w-]+)(?:="([^"]*)")?/g;
-const CLASS_ATTRIBUTE = /class(?:Name|:list)?=(?:"([^"]*)"|'([^']*)'|\{((?:[^{}]|\{[^}]*\})*)\})/g;
+const CLASS_ATTRIBUTE = /class(?:Names?|:list)?=(?:"([^"]*)"|'([^']*)'|\{((?:[^{}]|\{[^}]*\})*)\})/g;
 const CLASS_WORD = /[a-zA-Z][\w-]*/g;
-const ISLAND_ROOT_CENSUS = /only three hydration roots in the whole site: ([^\n]+?)\. Every one is/;
+const ISLAND_ROOT_COUNT = /only (\w+) hydration roots in the whole site/;
+const ISLAND_ROOT_CENSUS = /hydration roots in the whole site: ([^\n]+?)\. Every one is/;
+const NUMBER_WORDS = ["no", "one", "two", "three", "four", "five", "six"];
 const DTO_CITED_DEFAULT = /`(\?\? [^`\n]+)`/g;
 const CREATE_AUTHOR_DEFINITION = /export function createAuthor\(/;
 const AUTHOR_FIELD_MAPPING = /\bsocialNetworks: [^;\n]+,$/m;
@@ -182,14 +239,30 @@ const AUTHORED_RELATED_ARTICLES = /fields\.relatedArticles/;
 const RELATED_ARTICLES_CAP = /INFERRED_RELATED_ARTICLES_LIMIT = (\d+)/;
 const TITLE_AS_IDENTITY = /fields\.title ===/;
 const ARTICLE_SLUG_CALL = /articleSlug\(/;
+const ARTICLE_PUBLISH_DATE_READER = /export function articlePublishDateISO\(/;
+const EXIT_EXTRACTION = /\bCause\.(?:failureOption|dieOption)\(/;
+const LOCALE_DATE_CALL = /\.toLocaleDateString\(/g;
+const LOCALE_TIME_CALL = /\.toLocale(?:Time)?String\(/g;
+const PINNED_ZONE = /\btimeZone\s*:/;
+const NAMED_ZONE = /\btimeZoneName\s*:/;
+const TRANSITION_NAME_SPELLING = /featured-image-\$\{/;
+const ROBOTS_OVERRIDE = /\brobots\s*:/;
+const HEAD_OF_THE_BLOG = /getCollection\("articles"\)\)\s*\.slice\(/;
+const OPEN_GRAPH_LOCALE_FROM_SITE_LOCALE = /property="og:locale" content=\{openGraphLocale\(DEFAULT_LOCALE_STRING\)\}/;
+const DATA_HAS_ATTRIBUTE = /\bdata-has-/;
+const SCOPED_PACKAGE = /^(@[^/]+\/[^/]+)/;
+const RANDOM_DRAW = /\bMath\.random\(/;
+const MESSAGE_READ = /\.message\b/;
+const COMPARATOR = /\.(?:localeCompare|sort|toSorted)\(/;
+const AUTHOR_AND_TAG_READER = /\/dto\/(?:article|author|tag)\//;
+const IDENTITY_TRIM = /\bfields\.(?:name|slug)\.trim\(\)/;
+const RAW_FAVORITE_READ = /\w\.fields\.isFavorite\b/;
+const RAW_PUBLISH_DATE_READ = /\bpublishDateISO\(\s*\w+\.fields\.publishDate\s*\)/;
 const LEAKED_INFRASTRUCTURE_IMPORT = /@infrastructure\/|from "contentful"/;
 const DEREFERENCING_MODULE = "src/ui/modules/core/utils/entries.ts";
 const GET_ENTRY_CALL = /\bgetEntry\(/;
 const EFFECT_IMPORT = /from "effect"/;
 const CITED_CONTAINER_QUERY = /@container ([a-z-]+) \(width <= \d+px\)/;
-const EMAIL_BUTTON_MODULE = "src/ui/modules/core/components/emailButton/const.ts";
-const EMAIL_BUTTON_STYLESHEET = "src/ui/modules/core/components/emailButton/email-button.css";
-const EMAIL_BUTTON_HOOK_DECLARATION = /export const EMAIL_BUTTON_CLASS = "([\w-]+)" as const;/;
 const PLACEHOLDER_MODULE = "src/infrastructure/images/imagePlaceholder/imagePlaceholder.ts";
 const PER_ENTRY_PLACEHOLDER_AWAIT = /placeholder:\s*await/;
 const BOUNDED_PLACEHOLDER_READ = /const PLACEHOLDER_CONCURRENCY = \d+;/;
@@ -206,7 +279,9 @@ const EXPORT_DESTINATION = /destinations = \["([^"]+)"\]/g;
 const LOGGING_MODULE = "src/infrastructure/logging/logger.ts";
 const LOGGING_CONTRACT = "src/infrastructure/logging/contract.ts";
 const LOGGING_SERVICE = "src/infrastructure/logging/service.ts";
-const TELEMETRY_MODULE = "src/ui/modules/core/utils/telemetry.ts";
+const TELEMETRY_MODULE = "src/ui/modules/core/components/cookieConsent/utils/telemetry.ts";
+const INLINE_SCRIPTS_MODULE = "src/ui/modules/core/utils/inlineScripts.ts";
+const DIRECTIVE_SCRIPT_IMPORT = /from "astro\/runtime\/client\/(\w+)\.prebuilt\.js"/g;
 const TAG_ORIGIN = /BETTER_STACK_TAG_ORIGIN = "([^"]+)"/;
 const CONSENT_REVISION_DECLARATION = /CONSENT_REVISION = (\d+);/;
 const BETTER_STACK_CREDENTIAL = /BETTER_STACK_[A-Z_]*(?:TOKEN|SECRET|KEY|INGESTING_URL|SOURCE)/g;
@@ -219,6 +294,48 @@ const ASTRO_FRONTMATTER = /^---\n([\s\S]*?)\n---/;
 const ASTRO_SCRIPT = /<script\b[^>]*>([\s\S]*?)<\/script>/g;
 const TEMPLATE_COMMENT = /<!--[\s\S]*?-->|\{\s*\/\*[\s\S]*?\*\/\s*\}/g;
 const TOOL_DIRECTIVE = /^(?:\/\/\/\s*<reference\b|\/\/\s*(?:biome-ignore|@ts-expect-error)\b|\/\*\s*biome-ignore\b)/;
+const QUERY_SUFFIX = /\?.*$/;
+const MODULE_SUFFIXES = ["", ".ts", ".tsx", ".astro", "/index.ts", "/index.tsx"];
+const LAZY_LOADER = "lazy";
+const MODULES = "src/ui/modules";
+const CORE_MODULE = `${MODULES}/core`;
+const CORE_COMPONENTS = `${CORE_MODULE}/components`;
+const COMPONENT_FOLDER = /^(src\/ui\/modules\/[^/]+\/components\/[^/]+)\//;
+const FEATURE_OF_MODULE = /^src\/ui\/modules\/([^/]+)\//;
+const FEATURE_UTILITY = /^src\/ui\/modules\/[^/]+\/utils\//;
+const CALENDLY_WIDGET_CLASS_DECLARATION = /WIDGET_CLASS: "([^"]+)"/;
+const TYPE_SELECTOR_LEAD = /^[a-zA-Z]/;
+const FRAME_SIZING_BLOCK = /\{([^{}]*\bframe-sizing:\s*content-height[^{}]*)\}/g;
+const FRAME_FLOOR = /\bmin-height:\s*(?!0\b|auto\b)[^;\s]/;
+const AUTO_HEIGHT = /\bheight:\s*auto\b/;
+const IFRAME_EMBED_DECLARATION = /const IFRAME_EMBED_CLASS = "([\w-]+)";/;
+const SELECTOR_CLASS = /(?:^|[\s>+~,(])\.([A-Za-z][\w-]*)/g;
+const SELECTOR_ID = /(?:^|[\s>+~,(])#(?![\da-fA-F]{3,8}\b)([A-Za-z][\w-]*)/g;
+const HOOK_EXPORT = /_(CLASS|ID)$/;
+const CLASS_LIST_OPERATIONS = new Set(["add", "remove", "toggle", "contains", "replace"]);
+const ARIA_LABELLED_BY = /aria-labelledby="([^"]+)"/;
+const ARIA_LABEL = /\saria-label="/;
+const INLINE_STYLE = /\sstyle="([^"]*)"/g;
+const VENDOR_INLINE_STYLES = ["display:none;visibility:hidden"];
+const PARAMS_TYPE_NAME = /Params$/;
+const PARAMS_DECLARATION = /\b(?:interface|type)\s+\w+Params\b/g;
+const STRING_METHODS = new Set(["endsWith", "startsWith", "includes", "indexOf", "match", "replace", "split"]);
+const MIX_STYLESHEETS = ["global.css", "modifiers.css"];
+const CSS_RULE_PRELUDE = /([^{};]*)\{/g;
+const QUOTED_STRING = /"[^"]*"|'[^']*'/g;
+const CLASS_LITERAL = /"([^"]*)"|'([^']*)'|`([^`]*)`/g;
+const TEMPLATE_HOLE = /\$\{[^}]*\}/g;
+const HOLE_MARK = "\u0001";
+const WHITESPACE = /\s+/;
+const WHITESPACE_RUN = /\s+/g;
+const COMPARED_LITERAL = /[!=]==?\s*(?:"[^"]*"|'[^']*')|(?:"[^"]*"|'[^']*')\s*[!=]==?/g;
+const BLOCK_SEPARATOR = /__|--/;
+const WRAPPER_SUFFIX = /-wrapper$/;
+const PAGE_BLOCK = "page";
+const BLOCKS_GROUPED_UNDER_A_PARENT = [
+	{ folder: `${MODULES}/core/components/header/atoms/`, block: "header" },
+	{ folder: `${MODULES}/contact/components/form/`, block: "contact-form" },
+];
 const IMPORT_SPECIFIER = /(?:\bfrom|\bimport|@import)\s*\(?\s*["']([^"']+)["']/g;
 const MOCKED_MODULE =
 	/\bvi\.(?:mock|doMock|unmock|importActual|importMock)\s*(?:<(?:[^<>]|<[^<>]*>)*>)?\s*\(\s*["']([^"']+)["']/g;
@@ -353,7 +470,9 @@ const MODULE_SCOPE_SIDE_EFFECT = /^(?:\w[\w.]*\.addEventListener\(|(?:const|let)
 const ON_DEMAND_ROUTES = ["src/pages/404.astro", "src/pages/500.astro", "src/pages/contact.astro"];
 const ROBOTS_DISALLOW = /^Disallow: (.+)$/gm;
 const ROBOTS_SITEMAP = /^Sitemap: (.+)$/gm;
-const SITE_DECLARATION = /^\tsite: "([^"]+)",$/m;
+const SITE_DECLARATION = /^\tsite: environment\.SITE_URL,$/m;
+const CONFIG_TIME_ENV_READ = /(?<!["'])import\.meta\.env\.\w+/;
+const ENV_EXAMPLE_SITE_URL = /^SITE_URL=(.+)$/m;
 const COLLECTION_FACTORY = "src/application/entities/collection.ts";
 const IDENTIFY_CHOICE = /identify: \(\w+\) => \w+\.(\w+)/g;
 const INLINE_IDENTITY = /\.\.\.\w+, id: \w+\.(\w+) \}/g;
@@ -364,11 +483,11 @@ const EXACT_VERSION = /^\d+\.\d+\.\d+$/;
 const REPINNED_RUNTIME = /^\s*(?:node-version|version|ruby-version|wranglerVersion):\s*["']?\d/m;
 const CITED_IDENTITY = /`(\w+)` → `(\w+)`/g;
 const SPREAD_AFTER_ID = /\{\s*id:[^}]*\.\.\./;
-const HYDRATION_DIRECTIVES_ALLOWED = new Set(['only="react"', "load"]);
+const HYDRATION_DIRECTIVES_ALLOWED = new Set(["load"]);
 const NEWLINE = "\n";
 const SCHEMA_BOOLEAN_DEFAULT = /(\w+): z\.boolean\(\)\.default\(false\)/g;
 const DEFAULTED_IN_THE_DTO_LAYER = (field: string) =>
-	new RegExp(String.raw`\b${field}\s*[:=]\s*rawArticle\.fields\.${field} \?\? false`);
+	new RegExp(String.raw`\b(?:${field}\s*[:=]|return)\s*rawArticle\.fields\.${field} \?\? false`);
 const CONTEXT_TAG_CLASS = /class\s+\w+\s+extends\s+Context\.Tag/;
 const LAUNDERED_SECRET = /getSecret\([^)]*\)\s+as\s+string/;
 const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("AGENTS.md"));
@@ -400,22 +519,20 @@ interface NamesInParams {
 const namesIn = ({ text, pattern }: NamesInParams) =>
 	[...(text.match(pattern)?.[1] ?? "").matchAll(BACKTICKED_NAME)].map(([, name]) => name);
 
-const classSpelling = (name: string) => new RegExp(String.raw`\.${name}(?![\w-])|["'\x60\s]${name}["'\x60\s]`);
+interface CssDeclaration {
+	declaration: string;
+	preludes: string[];
+}
 
-const timelinesOutsideSupports = (stylesheet: string) => {
+const declarationsIn = (stylesheet: string): CssDeclaration[] => {
 	const preludes: string[] = [];
-	const unguarded: string[] = [];
+	const found: CssDeclaration[] = [];
 	let statement = "";
 
 	const settle = () => {
 		const declaration = statement.trim();
 
-		if (
-			ANIMATION_TIMELINE_DECLARATION.test(declaration) &&
-			!preludes.some((prelude) => SCROLL_DRIVEN_SUPPORTS.test(prelude))
-		) {
-			unguarded.push(declaration);
-		}
+		if (declaration) found.push({ declaration, preludes: [...preludes] });
 
 		statement = "";
 	};
@@ -434,8 +551,166 @@ const timelinesOutsideSupports = (stylesheet: string) => {
 		}
 	}
 
-	return unguarded;
+	return found;
 };
+
+const declaredOutsideTheGuard = (kind: RegExp) => (stylesheet: string) =>
+	declarationsIn(stylesheet)
+		.filter(
+			({ declaration, preludes }) =>
+				kind.test(declaration) &&
+				!(
+					preludes.some((prelude) => SCROLL_DRIVEN_SUPPORTS.test(prelude)) &&
+					preludes.some((prelude) => MOTION_OPT_IN.test(prelude))
+				),
+		)
+		.map(({ declaration }) => declaration);
+
+const pathCommands = (data: string) =>
+	[...data.matchAll(PATH_COMMAND)]
+		.map(([, letter, numbers]) => `${letter}${numbers.match(PATH_NUMBER)?.length ?? 0}`)
+		.join(" ");
+
+const deadUtilities = (stylesheets: string) => {
+	const declarations = declarationsIn(stylesheets);
+	const propertyOf = (declaration: string) => declaration.split(":")[0].trim();
+	const settingOf = (declaration: string) => declaration.slice(declaration.indexOf(":") + 1).trim();
+	const utilities = new Map<string, Map<string, string>>();
+	const nested = new Set<string>();
+	const settled = new Map<string, Map<string, string>>();
+
+	for (const { declaration, preludes } of declarations) {
+		const property = propertyOf(declaration);
+		const utility = LAYER_WRAPPER.test(preludes[0] ?? "") ? preludes[1]?.match(SINGLE_CLASS_RULE)?.[1] : undefined;
+		const component = preludes.length === 1 ? preludes[0].match(SINGLE_CLASS_RULE)?.[1] : undefined;
+
+		if (utility && preludes.length > 2) nested.add(utility);
+
+		if (utility && preludes.length === 2 && !property.startsWith("--")) {
+			utilities.set(utility, (utilities.get(utility) ?? new Map()).set(property, settingOf(declaration)));
+		}
+
+		if (component) settled.set(component, (settled.get(component) ?? new Map()).set(property, settingOf(declaration)));
+	}
+
+	for (const name of nested) utilities.delete(name);
+
+	return (markup: string) =>
+		[...markup.matchAll(CLASS_ATTRIBUTE_VALUE)].flatMap(([, value]) => {
+			const words = value.trim().split(WHITESPACE);
+			const owners = words.filter((word) => settled.has(word));
+			const settledBy = (property: string) => owners.map((word) => settled.get(word)?.get(property)).find(Boolean);
+			const display = settledBy("display") ?? words.map((word) => utilities.get(word)?.get("display")).find(Boolean);
+			const inert = (property: string) => {
+				if (display === undefined || FLEX_DISPLAYS.has(display)) return false;
+
+				return (
+					FLEX_ONLY_PROPERTIES.has(property) || (ALIGNMENT_PROPERTIES.has(property) && !GRID_DISPLAYS.has(display))
+				);
+			};
+
+			return words
+				.filter((word) => utilities.has(word))
+				.filter((word) =>
+					[...(utilities.get(word)?.keys() ?? [])].every(
+						(property) => settledBy(property) !== undefined || inert(property),
+					),
+				)
+				.map((word) => `class="${value}": .${word}`);
+		});
+};
+
+const unreadIds = (sources: string[]) => {
+	const declared = sources.flatMap((source) => [...source.matchAll(STATIC_ID_ATTRIBUTE)].map(([, id]) => id));
+	const mentions = (id: string) =>
+		sources.reduce(
+			(count, source) => count + (source.match(new RegExp(`(?<![\\w-])${id}(?![\\w-])`, "g"))?.length ?? 0),
+			0,
+		);
+
+	return [...new Set(declared)].filter((id) => mentions(id) <= declared.filter((other) => other === id).length);
+};
+
+const START_OF_FRAME_MARKERS = new Set([0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf]);
+
+const jpegSize = (bytes: Buffer) => {
+	let offset = 2;
+
+	while (offset + 9 <= bytes.length && bytes[offset] === 0xff) {
+		const marker = bytes[offset + 1];
+
+		if (START_OF_FRAME_MARKERS.has(marker)) {
+			return { width: bytes.readUInt16BE(offset + 7), height: bytes.readUInt16BE(offset + 5) };
+		}
+
+		offset += 2 + bytes.readUInt16BE(offset + 2);
+	}
+
+	return undefined;
+};
+
+const svgPaintFaults = (stylesheet: string) => {
+	const declarations = declarationsIn(stylesheet);
+
+	return declarations
+		.filter(({ declaration }) => SVG_URL.test(declaration))
+		.flatMap(({ declaration, preludes }) => {
+			if (!MASK_PROPERTY.test(declaration)) return [`${declaration} draws an svg with its own fill`];
+
+			const painted = declarations.some(
+				(other) => other.preludes.join("|") === preludes.join("|") && CURRENT_COLOUR_FILL.test(other.declaration),
+			);
+
+			return painted ? [] : [`${declaration} masks an svg that no background-color: currentColor paints`];
+		});
+};
+
+const keyframesDeclaredIn = (stylesheet: string) =>
+	[...stylesheet.matchAll(KEYFRAMES_DECLARATION)].map(([, name]) => name);
+
+const animationNamesIn = (stylesheet: string) =>
+	declarationsIn(stylesheet)
+		.filter(({ declaration }) => ANIMATION_PROPERTY.test(declaration))
+		.flatMap(({ declaration }) => declaration.replace(ANIMATION_PROPERTY, "").trim().split(ANIMATION_VALUE_SEPARATOR));
+
+const misplacedKeyframes = (sheets: Map<string, string>) => {
+	const readersOf = (name: string) =>
+		[...sheets].filter(([, css]) => animationNamesIn(css).includes(name)).map(([file]) => file);
+
+	return [...sheets].flatMap(([file, css]) =>
+		keyframesDeclaredIn(css).flatMap((name) => {
+			const readers = readersOf(name);
+			const inGlobalCascade = file.startsWith(GLOBAL_CASCADE);
+
+			if (readers.length === 0) return [`${file}: ${name} is read by no stylesheet`];
+
+			if (inGlobalCascade) {
+				return readers.length === 1 && !readers[0].startsWith(GLOBAL_CASCADE)
+					? [`${file}: ${name} is read only by ${readers[0]}, which should declare it`]
+					: [];
+			}
+
+			return readers.length === 1 && readers[0] === file
+				? []
+				: [`${file}: ${name} is read by ${readers.join(", ")}, so only the global cascade can declare it`];
+		}),
+	);
+};
+
+const classesOwnedBy = (owned: Set<string>) => (stylesheet: string) =>
+	selectorClassesIn(stylesheet.replace(NOT_ARGUMENT, "")).filter((name) => owned.has(classBlock(name)));
+
+const viewTransitionNavigations = (stylesheet: string) =>
+	declarationsIn(stylesheet)
+		.filter(({ declaration }) => NAVIGATION_DECLARATION.test(declaration))
+		.map(({ declaration, preludes }) => ({
+			value: declaration.replace(NAVIGATION_DECLARATION, "").trim(),
+			rule: preludes.at(-1),
+			reduced: preludes.some((prelude) => MOTION_REDUCE.test(prelude)),
+		}));
+
+const unguardedTimelines = declaredOutsideTheGuard(ANIMATION_TIMELINE_DECLARATION);
+const unguardedFixedLayers = declaredOutsideTheGuard(FIXED_POSITION_DECLARATION);
 
 const ALIAS_TARGETS = Object.entries(TSCONFIG.compilerOptions.paths as Record<string, string[]>).map(
 	([alias, [target]]) =>
@@ -1075,11 +1350,8 @@ describe("observability", () => {
 
 	it("writes the line through console, and exempts exactly the one file that does", () => {
 		const exempt = BIOME_JSON.overrides
-			.filter(
-				({ linter }: { linter?: { rules?: { suspicious?: { noConsole?: string } } } }) =>
-					linter?.rules?.suspicious?.noConsole === "off",
-			)
-			.flatMap(({ includes }: { includes: string[] }) => includes);
+			.filter(({ linter }: BiomeOverride) => linter?.rules?.suspicious?.noConsole === "off")
+			.flatMap(({ includes }: BiomeOverride) => includes);
 
 		expect(exempt).toEqual([`**/${LOGGING_MODULE}`]);
 		expect(SOURCE_FILES.filter((file) => CONSOLE_CALL.test(read(file)))).toEqual([LOGGING_MODULE]);
@@ -1153,6 +1425,25 @@ describe("observability", () => {
 		expect(read("docs/adr/0013-analytics-gated-behind-cookie-consent.md")).toContain("the stated exception");
 		expect(headers).toContain("https://static.cloudflareinsights.com");
 		expect(read("src/pages/privacy-policy.astro")).toContain("Cloudflare Web Analytics");
+	});
+
+	it("names each inline script in the production policy by its digest, derived from the text the page renders", () => {
+		const hashing = read(INLINE_SCRIPTS_MODULE);
+		const directives = [...hashing.matchAll(DIRECTIVE_SCRIPT_IMPORT)].map(([, name]) => name);
+
+		expect(AGENTS_MD).toContain("`script-src` names each inline script by its sha256");
+		expect(read("docs/adr/0013-analytics-gated-behind-cookie-consent.md")).toContain(
+			"named in the policy by its digest",
+		);
+		expect(hashing).toContain("THEME_BOOTSTRAP_SCRIPT");
+		expect(hashing).toContain("consentBootstrapScript(analyticsId)");
+		expect(read("astro.config.ts")).toContain("inlineScriptHashes(environment.GOOGLE_ANALYTICS_ID)");
+		expect(read("src/middleware.ts")).toContain("inlineScriptHashes(GOOGLE_ANALYTICS_ID)");
+		expect([
+			...'import load from "astro/runtime/client/load.prebuilt.js";'.matchAll(DIRECTIVE_SCRIPT_IMPORT),
+		]).toHaveLength(1);
+		expect(directives.length).toBeGreaterThan(0);
+		expect(directives.sort()).toEqual([...HYDRATION_DIRECTIVES_ALLOWED].sort());
 	});
 
 	it("lets the tag through the CSP it would otherwise be blocked by", () => {
@@ -1394,6 +1685,45 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(read("src/application/dto/article/articleDTO.ts")).toMatch(NORMALISED_ARTICLE_SLUG);
 	});
 
+	it("reads an Article's publish date in the one function that names the entry it refuses, beside the slug", () => {
+		const reader = "src/application/dto/article/utils/reference.ts";
+
+		expect(guide).toContain("`articlePublishDateISO`");
+		expect(read(reader)).toMatch(ARTICLE_PUBLISH_DATE_READER);
+		expect(dtoFiles).toContain(reader);
+		expect(dtoFiles.filter((file) => file !== reader && RAW_PUBLISH_DATE_READ.test(read(file)))).toEqual([]);
+	});
+
+	it("reads a raw Author's and Tag's name and slug, and an Article's Favorite flag, in one helper each, so every reader trims and defaults alike", () => {
+		const identities = ["src/application/dto/author/utils/author.ts", "src/application/dto/tag/utils/tag.ts"];
+		const reference = "src/application/dto/article/utils/reference.ts";
+
+		for (const helper of [
+			"authorIdentity",
+			"tagIdentity",
+			"articleTagSlugs",
+			"articleAuthorSlug",
+			"articleIsFavorite",
+		]) {
+			expect(guide).toContain(`\`${helper}\``);
+		}
+
+		const readers = dtoFiles.filter((file) => AUTHOR_AND_TAG_READER.test(file));
+
+		expect(identities.filter((file) => !IDENTITY_TRIM.test(read(file)))).toEqual([]);
+		expect(readers.length).toBeGreaterThan(identities.length);
+		expect(readers.filter((file) => !identities.includes(file) && IDENTITY_TRIM.test(read(file)))).toEqual([]);
+		expect(RAW_FAVORITE_READ.test(read(reference))).toBe(true);
+		expect(dtoFiles.filter((file) => file !== reference && RAW_FAVORITE_READ.test(read(file)))).toEqual([]);
+	});
+
+	it("orders nothing itself: a comparator is a domain rule the mappers call, so one rule has one implementation", () => {
+		const mappers = [...dtoFiles, ...loaderSteps];
+
+		expect(mappers.length).toBeGreaterThan(dtoFiles.length);
+		expect(mappers.filter((file) => COMPARATOR.test(read(file)))).toEqual([]);
+	});
+
 	it("decides Related Articles in the one module the guide names, on the slug and with the cap it quotes", () => {
 		const decider = "src/application/dto/article/utils/articles.ts";
 		const source = read(decider);
@@ -1427,10 +1757,13 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(read("src/domain/shared/image.ts")).toMatch(ABSOLUTE_IMAGE_URL_SCHEMA);
 		expect(read("src/application/dto/shared/images.ts")).toMatch(ASSET_SCHEME_CONSTANT);
 
-		const readers = production([...walk("src/pages"), ...walk("src/ui")]).filter((file) => SOURCE_FILE.test(file));
+		const readers = production(walk("src")).filter((file) => SOURCE_FILE.test(file));
 
 		expect(readers.length).toBeGreaterThan(0);
 		expect(readers.filter((file) => HAND_PREFIXED_ASSET_URL.test(read(file)))).toEqual([]);
+		expect(readers.filter((file) => PROTOCOL_RELATIVE_TEST.test(read(file)))).toEqual([
+			"src/application/dto/shared/images.ts",
+		]);
 	});
 
 	it("stops Contentful types at this layer: nothing downstream sees them", () => {
@@ -1442,7 +1775,7 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(downstream.filter((file) => CONTENTFUL_TYPE.test(read(file)))).toEqual([]);
 	});
 
-	it("fetches through fetchEntries, and takes its schema from the domain", () => {
+	it("fetches through fetchEntries, and binds a schema the domain exports as it is, never one it builds", () => {
 		expect(loaders.length).toBeGreaterThan(0);
 		expect(guide).toContain("`fetchEntries<[Skeleton, …]>(query, …)`");
 
@@ -1639,22 +1972,318 @@ describe("styles guide: derived constants and source order", () => {
 		expect(reveal).toContain("prefers-reduced-motion");
 	});
 
-	it("scrolls an animation only inside @supports, since without the feature it holds its last frame", () => {
+	it("scrolls an animation only inside @supports and a no-preference motion query, since without the feature it holds its last frame and a reduced-motion reset cannot shorten a scroll timeline", () => {
 		expect(guide).toContain("runs in zero seconds and holds its last frame");
+		expect(guide).toContain("a scroll timeline ignores the duration the reset shortens");
 
 		const stylesheets = walk("src").filter((file) => file.endsWith(".css"));
 		const unguarded = stylesheets.flatMap((file) =>
-			timelinesOutsideSupports(read(file)).map((declaration) => `${file}: ${declaration}`),
+			unguardedTimelines(read(file)).map((declaration) => `${file}: ${declaration}`),
 		);
+		const supports = "@supports (animation-timeline: view())";
+		const motion = "@media (prefers-reduced-motion: no-preference)";
+		const declaration = ".a { animation-timeline: view(); }";
 
+		expect(unguardedTimelines(`${motion} { ${supports} { ${declaration} } }`)).toEqual([]);
+		expect(unguardedTimelines(`${supports} { ${motion} { ${declaration} } }`)).toEqual([]);
+		expect(unguardedTimelines(`${supports} { ${declaration} }`)).toEqual(["animation-timeline: view()"]);
+		expect(unguardedTimelines(`${motion} { ${declaration} }`)).toEqual(["animation-timeline: view()"]);
 		expect(
-			timelinesOutsideSupports("@supports (animation-timeline: view()) { .a { animation-timeline: view(); } }"),
-		).toEqual([]);
-		expect(
-			timelinesOutsideSupports("@supports not (animation-timeline: view()) { .a { animation-timeline: view() } }"),
+			unguardedTimelines(
+				`${motion} { @supports not (animation-timeline: view()) { .a { animation-timeline: view() } } }`,
+			),
 		).toEqual(["animation-timeline: view()"]);
 		expect(stylesheets.length).toBeGreaterThan(0);
 		expect(unguarded).toEqual([]);
+	});
+
+	it("fixes a layer in place only inside the scroll timeline guard of a stylesheet that animates by one, since a layer only a timeline uncovers hides the rest without it", () => {
+		expect(guide).toContain("lays the image out beside its text in flow");
+
+		const timelined = walk("src").filter(
+			(file) => file.endsWith(".css") && ANIMATION_TIMELINE_ANYWHERE.test(read(file)),
+		);
+		const fixing = timelined.filter((file) => FIXED_ANYWHERE.test(read(file)));
+		const unguarded = timelined.flatMap((file) =>
+			unguardedFixedLayers(read(file)).map((declaration) => `${file}: ${declaration}`),
+		);
+		const supports = "@supports (animation-timeline: view())";
+		const motion = "@media (prefers-reduced-motion: no-preference)";
+		const declaration = ".a { position: fixed; }";
+
+		expect(unguardedFixedLayers(`${motion} { ${supports} { ${declaration} } }`)).toEqual([]);
+		expect(
+			unguardedFixedLayers(`${motion} { ${supports} { @container page (width >= 1px) { ${declaration} } } }`),
+		).toEqual([]);
+		expect(unguardedFixedLayers(`${supports} { ${declaration} }`)).toEqual(["position: fixed"]);
+		expect(unguardedFixedLayers(`@container page (width >= 1px) { ${declaration} }`)).toEqual(["position: fixed"]);
+		expect(unguardedFixedLayers(".a { position: sticky; }")).toEqual([]);
+		expect(timelined.length).toBeGreaterThan(0);
+		expect(fixing.length).toBeGreaterThan(0);
+		expect(unguarded).toEqual([]);
+	});
+
+	it("stops view transitions for a reader who asked for less motion: a cross-document one by opting its @view-transition rule out, any other by removing the animation of its pseudo-elements", () => {
+		expect(guide).toContain("`navigation` is a descriptor of that rule, not a property");
+
+		const stylesheets = walk("src").filter((file) => file.endsWith(".css"));
+		const found = stylesheets.flatMap((file) =>
+			viewTransitionNavigations(read(file)).map((navigation) => ({ file, ...navigation })),
+		);
+		const optIn = "@view-transition { navigation: auto; }";
+		const optOut = "@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }";
+		const pseudos = "::view-transition-group(*),\n::view-transition-old(*),\n::view-transition-new(*)";
+		const stopped = (stylesheet: string) =>
+			declarationsIn(stylesheet)
+				.filter(
+					({ declaration, preludes }) =>
+						STOPPED_ANIMATION.test(declaration) && preludes.some((prelude) => MOTION_REDUCE.test(prelude)),
+				)
+				.map(({ preludes }) => preludes.at(-1)?.replace(WHITESPACE_RUN, " "));
+
+		expect(viewTransitionNavigations(`${optIn} ${optOut}`)).toEqual([
+			{ value: "auto", rule: "@view-transition", reduced: false },
+			{ value: "none", rule: "@view-transition", reduced: true },
+		]);
+		expect(viewTransitionNavigations("html { @media (prefers-reduced-motion: reduce) { navigation: auto; } }")).toEqual(
+			[{ value: "auto", rule: "@media (prefers-reduced-motion: reduce)", reduced: true }],
+		);
+		expect(stopped(`@media (prefers-reduced-motion: reduce) { ${pseudos} { animation: none !important; } }`)).toEqual([
+			VIEW_TRANSITION_PSEUDOS,
+		]);
+		expect(stopped(`${pseudos} { animation: none !important; }`)).toEqual([]);
+		expect(found.length).toBeGreaterThan(0);
+		expect(found.filter(({ rule }) => rule !== "@view-transition")).toEqual([]);
+
+		for (const file of new Set(found.map((navigation) => navigation.file))) {
+			expect(
+				found
+					.filter((navigation) => navigation.file === file)
+					.map(({ value, reduced }) => `${value}${reduced ? " when reduced" : ""}`),
+				file,
+			).toEqual(["auto", "none when reduced"]);
+			expect(stopped(read(file)), file).toEqual([VIEW_TRANSITION_PSEUDOS]);
+		}
+	});
+
+	it("declares a keyframes block in the one stylesheet that reads it, and in the global cascade only for a global stylesheet or for two readers, since a stylesheet loads only where its component renders", () => {
+		expect(guide).toContain("`@keyframes` sit beside the stylesheet that reads them");
+
+		const sheets = new Map(
+			walk("src")
+				.filter((file) => file.endsWith(".css"))
+				.map((file) => [file, read(file)]),
+		);
+		const declared = [...sheets].flatMap(([file, css]) => keyframesDeclaredIn(css).map((name) => ({ file, name })));
+		const global = "src/ui/styles/global/animations.css";
+		const keyframes = "@keyframes a { to { opacity: 1; } }";
+		const sample = (files: Record<string, string>) => misplacedKeyframes(new Map(Object.entries(files)));
+
+		expect(sample({ [global]: keyframes, "src/ui/modules/x/x.css": ".x { animation: a 1s linear both; }" })).toEqual([
+			`${global}: a is read only by src/ui/modules/x/x.css, which should declare it`,
+		]);
+		expect(
+			sample({
+				[global]: keyframes,
+				"src/ui/modules/x/x.css": ".x { animation: a 1s; }",
+				"src/ui/modules/y/y.css": ".y { animation-name: b, a; }",
+			}),
+		).toEqual([]);
+		expect(sample({ [global]: keyframes, "src/ui/styles/global/reveal.css": ".r { animation: a both; }" })).toEqual([]);
+		expect(sample({ "src/ui/modules/x/x.css": `${keyframes} .x { animation: a 1s; }` })).toEqual([]);
+		expect(
+			sample({ "src/ui/modules/x/x.css": keyframes, "src/ui/modules/y/y.css": ".y { animation: a 1s; }" }),
+		).toEqual([
+			"src/ui/modules/x/x.css: a is read by src/ui/modules/y/y.css, so only the global cascade can declare it",
+		]);
+		expect(sample({ "src/ui/modules/x/x.css": keyframes })).toEqual([
+			"src/ui/modules/x/x.css: a is read by no stylesheet",
+		]);
+		expect(declared.filter(({ file }) => file.startsWith(GLOBAL_CASCADE)).length).toBeGreaterThan(0);
+		expect(declared.filter(({ file }) => !file.startsWith(GLOBAL_CASCADE)).length).toBeGreaterThan(0);
+		expect(misplacedKeyframes(sheets)).toEqual([]);
+	});
+
+	it("keeps the rules of a component in its stylesheet: the global cascade selects no class a component owns, and reveal.css names only the reveal blocks", () => {
+		expect(guide).toContain("A global stylesheet selects no class a component owns");
+
+		const owned = new Set(COMPONENT_FOLDERS.flatMap((folder) => [kebab(basename(folder)), ...parentBlocksOf(folder)]));
+		const stylesheets = walk("src/ui/styles").filter((file) => file.endsWith(".css") && file !== VENDOR_STYLESHEET);
+		const claimed = stylesheets.flatMap((file) => classesOwnedBy(owned)(read(file)).map((name) => `${file}: .${name}`));
+		const reveal = new Set(selectorClassesIn(read("src/ui/styles/global/reveal.css")).map(classBlock));
+
+		expect(classesOwnedBy(new Set(["logo"]))(".logo__link { scale: 1; } .logo { a: b; }")).toEqual([
+			"logo__link",
+			"logo",
+		]);
+		expect(classesOwnedBy(new Set(["logo"]))("svg { &:not(.logo, .x svg) { fill: red; } }")).toEqual([]);
+		expect(owned.size).toBeGreaterThan(0);
+		expect(stylesheets.length).toBeGreaterThan(0);
+		expect(claimed).toEqual([]);
+		expect(reveal.size).toBeGreaterThan(0);
+		expect([...reveal].filter((block) => !REVEAL_BLOCKS.has(block))).toEqual([]);
+	});
+
+	it("keeps the stretch arrow's rest path in its svg alone, with the hover tokens on the same path commands, since a d only morphs between paths of one shape", () => {
+		expect(guide).toContain("`StretchArrow.tsx` reads its paths from it");
+
+		const svg = read("src/ui/assets/images/svg/stretch-arrow.svg");
+		const component = read("src/ui/assets/images/svg-components/stretchArrow/StretchArrow.tsx");
+		const variables = read("src/ui/styles/global/variables.css");
+		const named = (matches: IterableIterator<RegExpMatchArray>) =>
+			Object.fromEntries([...matches].map(([, name, data]) => [name, pathCommands(data)]));
+		const rest = named(svg.matchAll(STRETCH_ARROW_SVG_PATH));
+		const hover = named(variables.matchAll(STRETCH_ARROW_HOVER_TOKEN));
+
+		expect(pathCommands("M 5,12 h 14")).toBe("M2 h1");
+		expect(pathCommands("M 12,5 l 7,7 l -7,7")).toBe("M2 l2 l2");
+		expect(pathCommands("M12 5L7.5-3z")).toBe("M2 L2 z0");
+		expect(Object.keys(rest).sort()).toEqual(["shaft", "tip"]);
+		expect(hover).toEqual(rest);
+		expect(component).toContain("stretch-arrow.svg?raw");
+		expect(PATH_DATA_LITERAL.test(component)).toBe(false);
+	});
+
+	it("draws an svg from a stylesheet as a mask over currentColor, never as a background, since the file's own fill ignores the theme", () => {
+		expect(guide).toContain("An svg a stylesheet draws is a mask painted with `currentColor`");
+
+		const stylesheets = walk("src").filter((file) => file.endsWith(".css"));
+		const drawing = stylesheets.filter((file) => SVG_URL.test(read(file)));
+		const faults = stylesheets.flatMap((file) => svgPaintFaults(read(file)).map((fault) => `${file}: ${fault}`));
+
+		expect(svgPaintFaults('.a::before { background: url("x.svg") no-repeat right center / 1rem; }')).toEqual([
+			'background: url("x.svg") no-repeat right center / 1rem draws an svg with its own fill',
+		]);
+		expect(svgPaintFaults('.a::before { background-color: currentColor; mask: url("x.svg") no-repeat; }')).toEqual([]);
+		expect(svgPaintFaults(".a::before { mask-image: url(x.svg); }")).toEqual([
+			"mask-image: url(x.svg) masks an svg that no background-color: currentColor paints",
+		]);
+		expect(svgPaintFaults('.a { background: url("x.png"); } @import url("y.css");')).toEqual([]);
+		expect(drawing.length).toBeGreaterThan(0);
+		expect(faults).toEqual([]);
+	});
+
+	it("puts no atomic utility on an element whose own block settles every property it sets, or makes it inert, since a component stylesheet is unlayered and beats it", () => {
+		expect(guide).toContain("A utility an element's own block already settles is dead there");
+
+		const stylesheets = [
+			...walk("src/ui/styles/global").filter((file) => file.endsWith(".css")),
+			...walk("src")
+				.filter((file) => file.endsWith(".css"))
+				.filter((file) => !file.startsWith("src/ui/styles/")),
+		]
+			.map((file) => read(file))
+			.join("\n");
+		const templates = production(walk("src").filter((file) => /\.(astro|tsx)$/.test(file)));
+		const attributes = templates.flatMap((file) => [...read(file).matchAll(CLASS_ATTRIBUTE_VALUE)]);
+		const dead = templates.flatMap((file) =>
+			deadUtilities(stylesheets)(read(file)).map((fault) => `${file}: ${fault}`),
+		);
+		const sample = `@layer global { .flex { display: flex; } .grid { display: grid; } .row-wrap { flex-flow: row wrap; } .between { justify-content: space-between; } .centre { align-items: center; } .wrapper { max-width: 10px; @container x (width > 1px) { padding: 0; } } } .a { display: grid; } .b { justify-content: flex-end; } .c { display: block; } .d { @media (width > 1px) { justify-content: start; } }`;
+		const deadIn = (markup: string) => deadUtilities(sample)(markup);
+
+		expect(deadIn('<div class="a flex row-wrap">')).toEqual([
+			'class="a flex row-wrap": .flex',
+			'class="a flex row-wrap": .row-wrap',
+		]);
+		expect(deadIn('<div class="b flex between">')).toEqual(['class="b flex between": .between']);
+		expect(deadIn('<div class="c flex centre">')).toEqual([
+			'class="c flex centre": .flex',
+			'class="c flex centre": .centre',
+		]);
+		expect(deadIn('<div class="a centre between">')).toEqual([]);
+		expect(deadIn('<div class="d between">')).toEqual([]);
+		expect(deadIn('<div class="a wrapper">')).toEqual([]);
+		expect(deadIn('<div class="flex row-wrap between centre">')).toEqual([]);
+		expect(deadIn('<div class="b {x}">')).toEqual([]);
+		expect(attributes.length).toBeGreaterThan(0);
+		expect(dead).toEqual([]);
+	});
+
+	it("reads a count with sibling-count(), so typed attr() reads only the two stagger attributes the guide names", () => {
+		expect(guide).toContain("`data-index` + typed `attr()`");
+		expect(guide).toContain("`data-reveal-index`");
+
+		const stylesheets = walk("src").filter((file) => file.endsWith(".css"));
+		const attributes = [
+			...new Set(stylesheets.flatMap((file) => [...read(file).matchAll(TYPED_ATTR_READ)].map(([, name]) => name))),
+		].sort();
+
+		expect([..."z-index: attr(data-x type(<number>), 0)".matchAll(TYPED_ATTR_READ)].map(([, name]) => name)).toEqual([
+			"data-x",
+		]);
+		expect([..."content: attr(data-x)".matchAll(TYPED_ATTR_READ)]).toEqual([]);
+		expect(attributes).toEqual(["data-index", "data-reveal-index"]);
+	});
+
+	it("writes a colour literal in variables.css alone, so every other stylesheet, the vendor's included, reads a token", () => {
+		expect(guide).toContain("Colour literals live in `variables.css`");
+
+		const stylesheets = walk("src").filter((file) => file.endsWith(".css") && file !== TOKEN_FILE);
+		const literals = stylesheets.flatMap((file) =>
+			[...read(file).matchAll(COLOUR_LITERAL)].map(([literal]) => `${file}: ${literal}`),
+		);
+		const found = (css: string) => [...css.matchAll(COLOUR_LITERAL)].map(([literal]) => literal);
+
+		expect(found("a { color: oklch(0 0 0); background: rgb(0 0 0 / 5%); }")).toEqual(["oklch(", "rgb("]);
+		expect(found("a { fill: #fff; stroke: #c0ffee; }")).toEqual(["#fff", "#c0ffee"]);
+		expect(found("a { color: color-mix(in srgb, var(--a) 5%, var(--b)); b: light-dark(var(--c), var(--d)); }")).toEqual(
+			[],
+		);
+		expect(found("a { background: url(#cutout); --x: var(--oklch-base); }")).toEqual([]);
+		expect(stylesheets.length).toBeGreaterThan(0);
+		expect(read(TOKEN_FILE).match(COLOUR_LITERAL)?.length).toBeGreaterThan(0);
+		expect(literals).toEqual([]);
+	});
+
+	it("writes the stretch arrow's hover morph once, in global.css, which every trigger reaches by declaring --stretch-arrow: hover", () => {
+		expect(guide).toContain("a trigger declares `--stretch-arrow: hover` in its hover state");
+
+		const stylesheets = walk("src").filter((file) => file.endsWith(".css"));
+		const reads = (token: string) =>
+			stylesheets.flatMap((file) =>
+				[...read(file).matchAll(new RegExp(`var\\(--stretch-arrow-${token}-hover\\)`, "g"))].map(() => file),
+			);
+		const triggers = stylesheets.filter((file) => STRETCH_ARROW_STATE_DECLARATION.test(read(file)));
+
+		expect(reads("shaft")).toEqual([STRETCH_ARROW_MORPH_FILE]);
+		expect(reads("tip")).toEqual([STRETCH_ARROW_MORPH_FILE]);
+		expect(read(STRETCH_ARROW_MORPH_FILE).match(STRETCH_ARROW_STATE_QUERY)).toHaveLength(1);
+		expect(triggers.length).toBeGreaterThan(1);
+	});
+
+	it("writes the slider's responsive ramp once, as the default in slider.css, so a placement states only the steps that differ from it", () => {
+		expect(guide).toContain("A placement states only the steps that differ from the slider's default ramp");
+
+		const steps = (stylesheet: string) =>
+			declarationsIn(stylesheet)
+				.filter(({ declaration }) => SLIDER_RAMP_PROPERTY.test(declaration))
+				.map(({ declaration, preludes }) =>
+					`${declaration.replace(WHITESPACE_RUN, " ")} @ ${preludes.filter((prelude) => prelude.startsWith("@media")).join(" ")}`.trim(),
+				);
+		const defaults = new Set(steps(read(SLIDER_STYLESHEET)));
+		const placements = walk("src/ui/modules")
+			.filter((file) => file.endsWith(".astro") && ARTICLE_SLIDER_IMPORT.test(read(file)))
+			.map((file) => dirname(file));
+		const stylesheets = placements.flatMap((folder) => filesIn(folder).filter((file) => file.endsWith(".css")));
+		const restated = stylesheets.flatMap((file) =>
+			steps(read(file))
+				.filter((step) => defaults.has(step))
+				.map((step) => `${file}: ${step}`),
+		);
+
+		expect(
+			steps("a { --slides-per-view: 1; @media (width >= 720px) { --slides-per-view: 2; --slider-gap: 2rem; } }"),
+		).toEqual([
+			"--slides-per-view: 1 @",
+			"--slides-per-view: 2 @ @media (width >= 720px)",
+			"--slider-gap: 2rem @ @media (width >= 720px)",
+		]);
+		expect(ARTICLE_SLIDER_IMPORT.test('import ArticleSlider from "../articleSlider/ArticleSlider.astro";')).toBe(true);
+		expect(defaults.size).toBeGreaterThan(0);
+		expect(placements.length).toBeGreaterThan(1);
+		expect(stylesheets.length).toBeGreaterThan(1);
+		expect(restated).toEqual([]);
 	});
 
 	it("names one container per route, derived from the page modifier", () => {
@@ -1684,7 +2313,9 @@ describe("styles guide: derived constants and source order", () => {
 		expect(guide).toContain("There is deliberately no `page--tag`");
 		expect(routes).toContain("TAGS");
 		expect(routes.indexOf("TAGS")).toBeLessThan(routes.indexOf("TAG"));
-		expect(read("src/ui/modules/core/utils/page.ts")).toContain("isWithin({ pathname: url.pathname");
+		expect(read("src/ui/modules/core/components/baseLayout/utils/page.ts")).toContain(
+			"isWithin({ pathname: url.pathname",
+		);
 		expect(read("src/ui/styles/base/base.css")).not.toContain("page--tag ");
 	});
 
@@ -1787,6 +2418,148 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(orphans).toEqual([]);
 	});
 
+	it("names every block after the component that owns it, and scopes every rule of a component stylesheet under a class", () => {
+		expect(guide).toContain("sits under one block named after it");
+
+		const shared = sharedBlocks();
+		const strays = COMPONENT_FOLDERS.flatMap((folder) => foreignClasses({ folder, shared }));
+		const unscoped = COMPONENT_FOLDERS.flatMap((folder) =>
+			filesIn(folder)
+				.filter((file) => file.endsWith(".css"))
+				.flatMap((file) =>
+					topLevelSelectors(read(file))
+						.filter((selector) => TYPE_SELECTOR_LEAD.test(selector))
+						.map((selector) => `${file}: ${selector}`),
+				),
+		);
+
+		expect(
+			selectorClassesIn(
+				'.a-b__c.d--e > .f[href$=".pdf"] { color: red; } @media (width > 1px) { .g { margin: 0.5rem; background: url(x.svg); } }',
+			),
+		).toEqual(["a-b__c", "d--e", "f", "g"]);
+		expect(
+			classLiteralsIn(
+				`<a class="x y" class:list={["z", \`w \${v}\`, \`\${a}--b c\`, { "r-k": sel === "k" }, cond && "u"]} classNames="t" className={clsx("s")} />`,
+			),
+		).toEqual(["x", "y", "z", "w", "c", "r-k", "u", "t", "s"]);
+		expect(["slider__btn--next", "footer-wrapper", "reveal"].map(classBlock)).toEqual(["slider", "footer", "reveal"]);
+		expect(topLevelSelectors("footer, .a:is(b, c) { x: y; } .d { .e { f: g; } } @media (a) { h { i: j; } }")).toEqual([
+			"footer",
+			".a:is(b, c)",
+			".d",
+		]);
+		expect(parentBlocksOf(`${MODULES}/core/components/header/atoms/menu`)).toEqual(["header"]);
+		expect(parentBlocksOf(`${MODULES}/core/components/header`)).toEqual([]);
+		expect(COMPONENT_FOLDERS.length).toBeGreaterThan(0);
+		expect(shared.size).toBeGreaterThan(0);
+		expect(strays).toEqual([]);
+		expect(unscoped).toEqual([]);
+	});
+
+	it("names the republished banner by the label it shows, so the name a screen reader says is the text a reader sees", () => {
+		const banner = read("src/ui/modules/article/components/republishedBanner/RepublishedBanner.astro");
+		const labelledBy = banner.match(ARIA_LABELLED_BY)?.[1] ?? "";
+
+		expect(labelledBy).not.toBe("");
+		expect(banner).toMatch(new RegExp(`id="${labelledBy}"[^>]*>Archival note<`));
+		expect(ARIA_LABEL.test(banner)).toBe(false);
+	});
+
+	it("declares a static id only where something reads it, since an unread id is a name that can repeat for nothing", () => {
+		expect(guide).toContain("An `id` is declared where something reads it");
+
+		const sources = production(walk("src").filter((file) => /\.(astro|tsx|ts|css)$/.test(file))).map((file) =>
+			read(file),
+		);
+		const declared = sources.flatMap((source) => [...source.matchAll(STATIC_ID_ATTRIBUTE)]);
+
+		expect(unreadIds(['<svg id="a">', '<p id="b" aria-labelledby="b">'])).toEqual(["a"]);
+		expect(unreadIds(['<clipPath id="c">', "fill: url(#c);"])).toEqual([]);
+		expect(unreadIds(["<div id={dynamic}>"])).toEqual([]);
+		expect(declared.length).toBeGreaterThan(0);
+		expect(unreadIds(sources)).toEqual([]);
+	});
+
+	it("imports gsap dynamically under core, since a static import there ships it on every page for an animation a reader may never trigger", () => {
+		expect(guide).toContain("The header loads GSAP when the first click needs it");
+
+		const core = production(walk(`${MODULES}/core`)).filter((file) => SOURCE_FILE.test(file));
+		const sources = core.map((file) => [file, read(file)] as const);
+
+		expect(STATIC_GSAP_IMPORT.test('import { gsap, Power2 } from "gsap";\nconst x = 1;')).toBe(true);
+		expect(STATIC_GSAP_IMPORT.test('const { gsap } = await import("gsap");')).toBe(false);
+		expect(DYNAMIC_GSAP_IMPORT.test('const { gsap } = await import("gsap");')).toBe(true);
+		expect(core.length).toBeGreaterThan(0);
+		expect(sources.filter(([, source]) => STATIC_GSAP_IMPORT.test(source)).map(([file]) => file)).toEqual([]);
+		expect(sources.filter(([, source]) => DYNAMIC_GSAP_IMPORT.test(source)).map(([file]) => file)).toEqual([
+			`${MODULES}/core/components/header/utils/interactions.ts`,
+		]);
+	});
+
+	it("shares a 1200 by 630 card as the default image, a tenth of the portrait's weight", () => {
+		expect(guide).toContain("The default share image is a 1200 by 630 card");
+
+		const file = read("src/ui/modules/core/components/seo/const.ts").match(SHARE_IMAGE_IMPORT)?.[1] ?? "";
+		const path = `src/ui/assets/images/jpg/${file}`;
+		const bytes = readFileSync(join(ROOT, path));
+		const sof = Buffer.from([0xff, 0xd8, 0xff, 0xc0, 0x00, 0x11, 0x08, 0x02, 0x76, 0x04, 0xb0, 0x03]);
+
+		expect(jpegSize(sof)).toEqual({ width: 1200, height: 630 });
+		expect(
+			jpegSize(
+				Buffer.from([
+					0xff, 0xd8, 0xff, 0xe0, 0x00, 0x04, 0x00, 0x00, 0xff, 0xc2, 0x00, 0x0b, 0x08, 0x00, 0x10, 0x00, 0x20,
+				]),
+			),
+		).toEqual({ width: 32, height: 16 });
+		expect(file).not.toBe("");
+		expect(jpegSize(bytes)).toEqual({ width: SHARE_IMAGE_WIDTH, height: SHARE_IMAGE_HEIGHT });
+		expect(bytes.length).toBeLessThanOrEqual(SHARE_IMAGE_MAX_BYTES);
+	});
+
+	it("styles a template through its stylesheet, an inline style carrying custom properties only, bar the vendor's own snippet", () => {
+		const templates = production([...walk("src/ui"), ...walk("src/pages")]).filter((file) => file.endsWith(".astro"));
+		const properties = (style: string) =>
+			style
+				.split(";")
+				.map((declaration) => declaration.split(":")[0].trim())
+				.filter((property) => property !== "" && !property.startsWith("--"));
+		const inline = templates.flatMap((file) =>
+			[...read(file).matchAll(INLINE_STYLE)]
+				.filter(([, style]) => !VENDOR_INLINE_STYLES.includes(style))
+				.flatMap(([, style]) => properties(style).map((property) => `${file}: ${property}`)),
+		);
+
+		expect(properties("--level: 2; color:red;margin: 0")).toEqual(["color", "margin"]);
+		expect(templates.length).toBeGreaterThan(0);
+		expect(templates.filter((file) => read(file).includes(" style=")).length).toBeGreaterThan(0);
+		expect(inline).toEqual([]);
+	});
+
+	it("writes a rule once, so no two stylesheets carry the same block", () => {
+		const copies = new Map<string, Set<string>>();
+
+		for (const file of walk("src").filter((entry) => entry.endsWith(".css"))) {
+			for (const { prelude, body } of topLevelRulesIn(read(file))) {
+				const key = `${prelude} {${body}}`;
+
+				copies.set(key, (copies.get(key) ?? new Set<string>()).add(file));
+			}
+		}
+
+		const repeated = [...copies]
+			.filter(([, files]) => files.size > 1)
+			.map(([rule, files]) => `${[...files].join(", ")}: ${rule.slice(0, 80)}`);
+
+		expect(topLevelRulesIn(".a { b: c; }\n@media (x) { .d { e: f; } }\n.g,\n.h { i: j; .k { l: m; } }")).toEqual([
+			{ prelude: ".a", body: "b: c;" },
+			{ prelude: ".g, .h", body: "i: j; .k { l: m; }" },
+		]);
+		expect(copies.size).toBeGreaterThan(0);
+		expect(repeated).toEqual([]);
+	});
+
 	it("reads content through astro:content only, never Contentful or infrastructure", () => {
 		expect(guide).toContain("never by calling Contentful or `@infrastructure` directly");
 
@@ -1812,21 +2585,87 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(sources.filter((file) => file.startsWith("src/ui/") && EFFECT_IMPORT.test(read(file)))).toEqual([]);
 	});
 
-	it("declares the Email button's hook once, where its template, its stylesheet and its listener all read it", () => {
-		expect(guide).toContain("declared once, in that module");
+	it("spells a class or an id a script or a spec reaches for once, in the const.ts of its component, which the template, the script and the spec import", async () => {
+		expect(guide).toContain("spelled once, in the component's `const.ts`");
 
-		const hook = read(EMAIL_BUTTON_MODULE).match(EMAIL_BUTTON_HOOK_DECLARATION)?.[1] ?? "";
-		const spelling = classSpelling(hook);
-		const candidates = production([...walk("src/ui"), ...walk("src/pages")]).filter(
-			(file) => file !== EMAIL_BUTTON_MODULE && file !== EMAIL_BUTTON_STYLESHEET,
+		const hooks = await declaredHooks();
+		const classes = new Set(hooks.filter(({ name }) => name.endsWith("_CLASS")).map(({ value }) => value));
+		const mixes = new Set(
+			walk("src/ui/styles/global")
+				.filter((file) => MIX_STYLESHEETS.includes(basename(file)))
+				.flatMap((file) => selectorClassesIn(read(file))),
 		);
+		const markup = production([...walk("src/ui"), ...walk("src/pages")]);
+		const scripts = [
+			...markup.filter(
+				(file) =>
+					file.startsWith("src/ui/") &&
+					file.endsWith(".ts") &&
+					!file.endsWith(".d.ts") &&
+					basename(file) !== "const.ts",
+			),
+			...markup.filter((file) => file.startsWith("src/ui/") && file.endsWith(".astro")),
+			...walk("e2e").filter((file) => file.endsWith(".ts")),
+			"docs/built-output.test.ts",
+		];
+		const reached = scripts.flatMap((file) =>
+			selectorLiteralsIn({ file, source: read(file) })
+				.filter((name) => !mixes.has(name))
+				.map((name) => `${file}: ${name}`),
+		);
+		const styled = new Set(
+			markup.filter((file) => file.endsWith(".css")).flatMap((file) => selectorClassesIn(read(file))),
+		);
+		const unstyled = hooks.filter(({ name, value }) => name.endsWith("_CLASS") && !styled.has(value));
+		const respelled = markup
+			.filter((file) => file.endsWith(".astro") || file.endsWith(".tsx"))
+			.flatMap((file) =>
+				classLiteralsIn(read(file))
+					.filter((name) => classes.has(name))
+					.map((name) => `${file}: ${name}`),
+			);
 
-		expect(hook).not.toBe("");
-		expect(spelling.test(read(EMAIL_BUTTON_STYLESHEET))).toBe(true);
-		expect(spelling.test(`<a class="x ${hook}">`)).toBe(true);
-		expect(spelling.test(`import "./${hook}.css";`)).toBe(false);
-		expect(candidates.length).toBeGreaterThan(0);
-		expect(candidates.filter((file) => spelling.test(read(file)))).toEqual([]);
+		expect(
+			selectorLiteralsIn({
+				file: "a.ts",
+				source:
+					'document.querySelector(".a-b > #c"); el.classList.toggle("d__e", on); import("./f"); const hex = "#fff"; const url = "a.b"; host.endsWith(".g.dev");',
+			}),
+		).toEqual(["a-b", "c", "d__e"]);
+		expect(hooks.length).toBeGreaterThan(0);
+		expect(scripts.length).toBeGreaterThan(0);
+		expect(mixes.size).toBeGreaterThan(0);
+		expect(reached).toEqual([]);
+		expect(unstyled).toEqual([]);
+		expect(respelled).toEqual([]);
+	});
+
+	it("sizes an iframe that follows its content from a floor that keeps its current size, since the embedded page decides when the property takes effect", () => {
+		expect(read(CODING_STANDARDS)).toContain("`frame-sizing: content-height`");
+
+		const blocks = [...walk("src/ui"), ...walk("src/pages")]
+			.filter((file) => file.endsWith(".css"))
+			.flatMap((file) => [...read(file).matchAll(FRAME_SIZING_BLOCK)].map(([, body]) => ({ file, body })));
+		const floorless = blocks.filter(({ body }) => !AUTO_HEIGHT.test(body) || !FRAME_FLOOR.test(body));
+
+		expect(FRAME_FLOOR.test("height: auto; min-height: 100%;")).toBe(true);
+		expect(FRAME_FLOOR.test("height: auto; min-height: calc(100cqi * 9 / 16);")).toBe(true);
+		expect(FRAME_FLOOR.test("height: auto; min-height: 0;")).toBe(false);
+		expect(FRAME_FLOOR.test("height: auto;")).toBe(false);
+		expect(blocks.length).toBeGreaterThan(1);
+		expect(floorless.map(({ file }) => file)).toEqual([]);
+	});
+
+	it("wraps the generic iframe embed in the block the article stylesheet sizes, and keeps it whole across a column", () => {
+		const renderer = read("src/application/dto/article/utils/content.ts");
+		const wrapper = renderer.match(IFRAME_EMBED_DECLARATION)?.[1] ?? "";
+		const stylesheet = read("src/pages/articles/_article.css");
+
+		expect(wrapper).not.toBe("");
+		expect(renderer).toContain(`<div class="\${IFRAME_EMBED_CLASS}"><iframe`);
+		expect(stylesheet).toMatch(new RegExp(`\\.${wrapper} \\{\\s*container-type: inline-size;`));
+		expect(stylesheet).toMatch(new RegExp(`:is\\([^)]*\\.${wrapper}[^)]*\\) \\{\\s*break-inside: avoid;`));
+		expect(stylesheet).toMatch(new RegExp(`\\.${wrapper} \\{[^}]*?iframe \\{[^}]*?display: block;`));
 	});
 
 	it("bootstraps the theme from the module that owns the preference, and paints without persisting", () => {
@@ -1875,7 +2714,6 @@ describe("modules guide: mixes, islands and data access", () => {
 	it("names each component folder camelCase, the component PascalCase and the stylesheet kebab-case of both", () => {
 		expect(guide).toContain("no folder deviates");
 
-		const kebab = (name: string) => name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
 		const folders = new Map<string, string[]>();
 
 		for (const file of walk("src/ui/modules")) {
@@ -1921,7 +2759,7 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(stylesheets.filter((file) => read(file).includes("@layer"))).toEqual([]);
 	});
 
-	it("hydrates only the roots the Islands section censuses, and server-renders every root that can survive it", () => {
+	it("hydrates only the roots the Islands section censuses, each with client:load so the server renders it", () => {
 		const hydrated = production([...walk("src/ui"), ...walk("src/pages")])
 			.filter((file) => SOURCE_FILE.test(file))
 			.flatMap((file) =>
@@ -1930,18 +2768,14 @@ describe("modules guide: mixes, islands and data access", () => {
 					directive: `${directive}${value ? `="${value}"` : ""}`,
 				})),
 			);
+		const censused = namesIn({ text: guide, pattern: ISLAND_ROOT_CENSUS }).sort();
 
 		expect(hydrated.length).toBeGreaterThan(0);
+		expect(censused.length).toBeGreaterThan(0);
+		expect(guide.match(ISLAND_ROOT_COUNT)?.[1]).toBe(NUMBER_WORDS[censused.length]);
 		expect(hydrated.filter(({ directive }) => !HYDRATION_DIRECTIVES_ALLOWED.has(directive))).toEqual([]);
-		expect(
-			hydrated
-				.filter(({ directive }) => directive === "load")
-				.map(({ name }) => name)
-				.sort(),
-		).toEqual(["ContactFormProvider", "WorldGlobe"]);
-		expect(hydrated.map(({ name }) => name).sort()).toEqual(
-			namesIn({ text: guide, pattern: ISLAND_ROOT_CENSUS }).sort(),
-		);
+		expect(hydrated.map(({ name }) => name).sort()).toEqual(["ContactFormProvider", "WorldGlobe"]);
+		expect(hydrated.map(({ name }) => name).sort()).toEqual(censused);
 	});
 
 	it("names every React island under modules", () => {
@@ -2110,13 +2944,19 @@ describe("conventions", () => {
 		expect(disallowed.toSorted()).toEqual([...NOINDEX_ROUTES].toSorted());
 	});
 
-	it("points robots.txt at the sitemap index the site writes, which the smoke run leaves to this file", () => {
-		const site = ASTRO_CONFIG.match(SITE_DECLARATION)?.[1];
+	it("writes the site origin once, in SITE_URL, which the config reads for `site` and robots.txt repeats because a static file reads nothing", () => {
+		const example = read(".env.example").match(ENV_EXAMPLE_SITE_URL)?.[1]?.trim();
 		const sitemaps = [...read("public/robots.txt").matchAll(ROBOTS_SITEMAP)].map(([, url]) => url.trim());
 
-		expect(site).toBeDefined();
+		expect(example).toBeDefined();
+		expect(ASTRO_CONFIG).toMatch(SITE_DECLARATION);
+		expect(ASTRO_CONFIG).not.toMatch(CONFIG_TIME_ENV_READ);
+		expect(CONFIG_TIME_ENV_READ.test("site: import.meta.env.SITE_URL,")).toBe(true);
+		expect(CONFIG_TIME_ENV_READ.test('"import.meta.env.IMAGE_CDN": 1')).toBe(false);
+		expect(ASTRO_CONFIG).not.toContain(example as string);
+		expect(read("docs/built-output.test.ts")).not.toContain(example as string);
 		expect(ASTRO_CONFIG).toContain("sitemap(");
-		expect(sitemaps).toEqual([`${site}/sitemap-index.xml`]);
+		expect(sitemaps).toEqual([`${example}/sitemap-index.xml`]);
 	});
 
 	it("passes two or more arguments as one object, in production code, the tests, e2e and this file alike", () => {
@@ -2132,6 +2972,29 @@ describe("conventions", () => {
 		expect(HAND_WRITTEN_CODE.filter((file) => file.startsWith("e2e/")).length).toBeGreaterThan(0);
 		expect(HAND_WRITTEN_CODE.filter((file) => CO_LOCATED_TEST_FILE.test(file)).length).toBeGreaterThan(0);
 		expect(positional).toEqual([]);
+	});
+
+	it("gives no params type, and no inline parameter type, a single field of its own", () => {
+		const findingsIn = (source: string) => singleFieldParameterTypesIn({ file: "a.ts", source });
+		const declared = HAND_WRITTEN_CODE.flatMap((file) => [...read(file).matchAll(PARAMS_DECLARATION)]);
+		const single = HAND_WRITTEN_CODE.flatMap((file) =>
+			singleFieldParameterTypesIn({ file, source: read(file) }).map((type) => `${file}: ${type}`),
+		);
+
+		expect(AGENTS_MD).toContain("A parameter object never holds a single field");
+		expect(findingsIn("interface FooParams { a: string }")).toEqual(["FooParams"]);
+		expect(findingsIn("interface FooParams { a: string; b: string }")).toEqual([]);
+		expect(findingsIn("type FooParams = { a: string };")).toEqual(["FooParams"]);
+		expect(findingsIn("interface FooParams extends Base { a: string }")).toEqual([]);
+		expect(findingsIn("type FooParams = Base & { a: string };")).toEqual([]);
+		expect(findingsIn("interface Props { id: string }")).toEqual([]);
+		expect(findingsIn(`const f = ${OPENING}{ a }: { a: string }) => a;`)).toEqual(["an inline parameter type"]);
+		expect(findingsIn(`items.map(${OPENING}item: { url: string }) => item.url);`)).toEqual([
+			"an inline parameter type",
+		]);
+		expect(findingsIn(`const f = ${OPENING}{ a, b }: { a: string; b: string }) => a;`)).toEqual([]);
+		expect(declared.length).toBeGreaterThan(0);
+		expect(single).toEqual([]);
 	});
 
 	it("types a parameter object after the function that takes it, the role sibling functions share, or the record it unpacks, never inline", () => {
@@ -2299,6 +3162,13 @@ const missingRestores = (source: string): string[] =>
 const unlocalisedComparisons = (source: string): string[] =>
 	callArguments({ source, call: LOCALE_COMPARE_CALL }).filter((args) => topLevelArity(args) < 2);
 
+const unpinnedDates = (source: string): string[] => [
+	...callArguments({ source, call: LOCALE_DATE_CALL }).filter((args) => !PINNED_ZONE.test(args)),
+	...callArguments({ source, call: LOCALE_TIME_CALL }).filter(
+		(args) => !PINNED_ZONE.test(args) || !NAMED_ZONE.test(args),
+	),
+];
+
 const documentLeaks = (source: string): string[] => [
 	...(DOM_WRITE.test(source) && !callArguments({ source, call: TEARDOWN_HOOK }).some((body) => DOM_EMPTYING.test(body))
 		? ["written and never emptied in an afterEach or afterAll"]
@@ -2337,6 +3207,539 @@ const importTarget = ({ file, specifier }: ImportTargetParams): string | undefin
 
 	return alias && specifier.replace(alias[0], alias[1]);
 };
+
+interface ScriptRegion {
+	body: string;
+	kind: ts.ScriptKind;
+}
+
+const scriptRegions = ({ file, source }: CodeSource): ScriptRegion[] => {
+	if (!file.endsWith(".astro"))
+		return [{ body: source, kind: file.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS }];
+
+	const frontmatter = source.match(ASTRO_FRONTMATTER)?.[1];
+
+	return [
+		...(frontmatter === undefined ? [] : [{ body: frontmatter, kind: ts.ScriptKind.TS }]),
+		...[...source.matchAll(ASTRO_SCRIPT)].map((match) => ({ body: match[1], kind: ts.ScriptKind.TS })),
+	];
+};
+
+interface ModuleOfParams {
+	file: string;
+	specifier: string;
+}
+
+const moduleOf = ({ file, specifier }: ModuleOfParams): string | undefined => {
+	const target = importTarget({ file, specifier: specifier.replace(QUERY_SUFFIX, "") });
+
+	return target === undefined
+		? undefined
+		: MODULE_SUFFIXES.map((suffix) => `${target}${suffix}`).find(
+				(candidate) => exists(candidate) && statSync(join(ROOT, candidate)).isFile(),
+			);
+};
+
+interface ModuleImports {
+	named: Map<string, Set<string>>;
+	whole: Set<string>;
+	reexported: Map<string, Set<string>>;
+}
+
+const emptyImports = (): ModuleImports => ({ named: new Map(), whole: new Set(), reexported: new Map() });
+
+interface NoteNamedImportParams {
+	imports: ModuleImports;
+	target: string;
+	name: string;
+}
+
+const noteNamedImport = ({ imports, target, name }: NoteNamedImportParams) =>
+	imports.named.set(target, (imports.named.get(target) ?? new Set<string>()).add(name));
+
+interface ImportsInParams extends CodeSource {
+	into: ModuleImports;
+}
+
+interface NamedParams {
+	specifier: string;
+	name: string | undefined;
+}
+
+const bindingKey = (element: ts.BindingElement | ts.ImportSpecifier | ts.ExportSpecifier): string | undefined => {
+	const key = element.propertyName ?? element.name;
+
+	return ts.isIdentifier(key) || ts.isStringLiteral(key) ? key.text : undefined;
+};
+
+const importsIn = ({ file, source, into: imports }: ImportsInParams): ModuleImports => {
+	const target = (specifier: string) => moduleOf({ file, specifier });
+	const named = ({ specifier, name }: NamedParams) => {
+		const resolved = target(specifier);
+
+		if (resolved !== undefined && name !== undefined) noteNamedImport({ imports, target: resolved, name });
+	};
+	const whole = (specifier: string) => {
+		const resolved = target(specifier);
+
+		if (resolved !== undefined) imports.whole.add(resolved);
+	};
+	const visit = (node: ts.Node): void => {
+		if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
+			const specifier = node.moduleSpecifier.text;
+			const bindings = node.importClause?.namedBindings;
+
+			if (node.importClause?.name) named({ specifier, name: "default" });
+			if (bindings && ts.isNamespaceImport(bindings)) whole(specifier);
+			if (bindings && ts.isNamedImports(bindings)) {
+				for (const element of bindings.elements) named({ specifier, name: bindingKey(element) });
+			}
+			if (!node.importClause) whole(specifier);
+		}
+
+		if (ts.isExportDeclaration(node) && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) {
+			const specifier = node.moduleSpecifier.text;
+			const resolved = target(specifier);
+
+			if (node.exportClause && ts.isNamedExports(node.exportClause)) {
+				for (const element of node.exportClause.elements) named({ specifier, name: bindingKey(element) });
+			} else if (resolved !== undefined) {
+				imports.reexported.set(file, (imports.reexported.get(file) ?? new Set<string>()).add(resolved));
+			}
+		}
+
+		if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument) && ts.isStringLiteral(node.argument.literal)) {
+			whole(node.argument.literal.text);
+		}
+
+		if (
+			ts.isCallExpression(node) &&
+			node.expression.kind === ts.SyntaxKind.ImportKeyword &&
+			node.arguments[0] &&
+			ts.isStringLiteral(node.arguments[0])
+		) {
+			const specifier = node.arguments[0].text;
+			const declaration = ts.isAwaitExpression(node.parent) ? node.parent.parent : undefined;
+
+			if (declaration && ts.isVariableDeclaration(declaration) && ts.isObjectBindingPattern(declaration.name)) {
+				for (const element of declaration.name.elements) named({ specifier, name: bindingKey(element) });
+			} else if (
+				ts.isArrowFunction(node.parent) &&
+				ts.isCallExpression(node.parent.parent) &&
+				node.parent.parent.expression.getText() === LAZY_LOADER
+			) {
+				named({ specifier, name: "default" });
+			} else {
+				whole(specifier);
+			}
+		}
+
+		ts.forEachChild(node, visit);
+	};
+
+	for (const { body, kind } of scriptRegions({ file, source })) {
+		visit(ts.createSourceFile(file, body, ts.ScriptTarget.Latest, true, kind));
+	}
+
+	return imports;
+};
+
+const namesReached = (imports: ModuleImports): ModuleImports => {
+	const reached = {
+		named: new Map([...imports.named].map(([module, names]) => [module, new Set(names)])),
+		whole: new Set(imports.whole),
+		reexported: imports.reexported,
+	};
+
+	for (let changed = true; changed; ) {
+		changed = false;
+
+		for (const [barrel, modules] of reached.reexported) {
+			for (const module of modules) {
+				if (reached.whole.has(barrel) && !reached.whole.has(module)) {
+					reached.whole.add(module);
+					changed = true;
+				}
+
+				for (const name of reached.named.get(barrel) ?? []) {
+					const names = reached.named.get(module) ?? new Set<string>();
+
+					if (!names.has(name)) {
+						reached.named.set(module, names.add(name));
+						changed = true;
+					}
+				}
+			}
+		}
+	}
+
+	return reached;
+};
+
+const importedSpecifiers = ({ file, source }: CodeSource): string[] => {
+	const specifiers: string[] = [];
+	const visit = (node: ts.Node): void => {
+		if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier) {
+			if (ts.isStringLiteral(node.moduleSpecifier)) specifiers.push(node.moduleSpecifier.text);
+		}
+
+		if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument) && ts.isStringLiteral(node.argument.literal)) {
+			specifiers.push(node.argument.literal.text);
+		}
+
+		if (
+			ts.isCallExpression(node) &&
+			node.expression.kind === ts.SyntaxKind.ImportKeyword &&
+			node.arguments[0] &&
+			ts.isStringLiteral(node.arguments[0])
+		) {
+			specifiers.push(node.arguments[0].text);
+		}
+
+		ts.forEachChild(node, visit);
+	};
+
+	for (const { body, kind } of scriptRegions({ file, source })) {
+		visit(ts.createSourceFile(file, body, ts.ScriptTarget.Latest, true, kind));
+	}
+
+	return specifiers;
+};
+
+const exportedNames = ({ file, source }: CodeSource): string[] =>
+	ts
+		.createSourceFile(
+			file,
+			source,
+			ts.ScriptTarget.Latest,
+			true,
+			file.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+		)
+		.statements.flatMap((statement) => {
+			if (ts.isExportDeclaration(statement)) {
+				return !statement.moduleSpecifier && statement.exportClause && ts.isNamedExports(statement.exportClause)
+					? statement.exportClause.elements.map((element) => element.name.text)
+					: [];
+			}
+
+			const modifiers = ts.canHaveModifiers(statement) ? (ts.getModifiers(statement) ?? []) : [];
+			const exported = modifiers.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword);
+			const byDefault = modifiers.some((modifier) => modifier.kind === ts.SyntaxKind.DefaultKeyword);
+
+			if (!exported || byDefault) return [];
+			if (ts.isVariableStatement(statement)) {
+				return statement.declarationList.declarations.flatMap(({ name }) => (ts.isIdentifier(name) ? [name.text] : []));
+			}
+
+			return "name" in statement && statement.name && ts.isIdentifier(statement.name as ts.Node)
+				? [(statement.name as ts.Identifier).text]
+				: [];
+		});
+
+interface ExportedWithoutImporterParams {
+	modules: CodeSource[];
+	importers: CodeSource[];
+}
+
+const exportedWithoutImporter = ({ modules, importers }: ExportedWithoutImporterParams): string[] => {
+	const imports = namesReached(
+		importers.reduce((all, importer) => importsIn({ ...importer, into: all }), emptyImports()),
+	);
+
+	return modules.flatMap((module) =>
+		exportedNames(module)
+			.filter((name) => !imports.whole.has(module.file) && !imports.named.get(module.file)?.has(name))
+			.map((name) => `${module.file}: ${name}`),
+	);
+};
+
+const readersByModule = (): Map<string, Set<string>> => {
+	const readers = new Map<string, Set<string>>();
+
+	for (const file of SOURCE_FILES) {
+		const { named, whole } = importsIn({ file, source: read(file), into: emptyImports() });
+
+		for (const module of [...named.keys(), ...whole]) {
+			readers.set(module, (readers.get(module) ?? new Set<string>()).add(file));
+		}
+	}
+
+	return readers;
+};
+
+interface ReadersOfParams {
+	path: string;
+	readers: Map<string, Set<string>>;
+}
+
+const readersOf = ({ path, readers }: ReadersOfParams): string[] =>
+	[...readers].flatMap(([module, files]) =>
+		module === path || module.startsWith(`${path}/`)
+			? [...files].filter((file) => file !== path && !file.startsWith(`${path}/`))
+			: [],
+	);
+
+const staysInCore = (readers: string[]): boolean => {
+	const features = new Set(
+		readers.map((file) => file.match(FEATURE_OF_MODULE)?.[1]).filter((feature) => feature && feature !== "core"),
+	);
+
+	return (
+		readers.some((file) => file.startsWith("src/pages/") || file.startsWith(`${CORE_MODULE}/`)) || features.size > 1
+	);
+};
+
+const soleComponentReading = (readers: string[]): string | undefined => {
+	const components = new Set(readers.map((file) => file.match(COMPONENT_FOLDER)?.[1]));
+
+	return components.size === 1 ? [...components][0] : undefined;
+};
+
+const kebab = (name: string): string => name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+
+const classBlock = (name: string): string => name.split(BLOCK_SEPARATOR)[0].replace(WRAPPER_SUFFIX, "");
+
+const selectorClassesIn = (css: string): string[] =>
+	[...css.matchAll(CSS_RULE_PRELUDE)].flatMap(([, prelude]) =>
+		prelude.trimStart().startsWith("@")
+			? []
+			: [...prelude.replace(QUOTED_STRING, "").matchAll(ANY_CLASS_TOKEN)].map(([, name]) => name),
+	);
+
+const classLiteralsIn = (source: string): string[] =>
+	[...source.matchAll(CLASS_ATTRIBUTE)].flatMap(([, doubled, singled, braced]) =>
+		(
+			doubled ??
+			singled ??
+			[...(braced ?? "").replace(COMPARED_LITERAL, " ").matchAll(CLASS_LITERAL)]
+				.map(([, quoted, apostrophed, templated]) => quoted ?? apostrophed ?? templated)
+				.join(" ")
+		)
+			.replace(TEMPLATE_HOLE, HOLE_MARK)
+			.split(WHITESPACE)
+			.filter((word) => word !== "" && !word.includes(HOLE_MARK)),
+	);
+
+const selectorsOf = (prelude: string): string[] => {
+	const selectors: string[] = [];
+	let depth = 0;
+	let current = "";
+
+	for (const character of prelude) {
+		if (character === "(") depth += 1;
+		if (character === ")") depth -= 1;
+
+		if (character === "," && depth === 0) {
+			selectors.push(current.trim());
+			current = "";
+		} else {
+			current += character;
+		}
+	}
+
+	return [...selectors, current.trim()];
+};
+
+interface TopLevelRule {
+	prelude: string;
+	body: string;
+}
+
+const squash = (text: string): string => text.replace(WHITESPACE_RUN, " ").trim();
+
+const topLevelRulesIn = (css: string): TopLevelRule[] => {
+	const rules: TopLevelRule[] = [];
+	let depth = 0;
+	let prelude = "";
+	let body = "";
+
+	for (const character of css) {
+		if (character === "{") {
+			depth += 1;
+
+			if (depth > 1) body += character;
+		} else if (character === "}") {
+			depth -= 1;
+
+			if (depth > 0) {
+				body += character;
+			} else {
+				if (!prelude.trim().startsWith("@")) rules.push({ prelude: squash(prelude), body: squash(body) });
+
+				prelude = "";
+				body = "";
+			}
+		} else if (depth === 0) {
+			prelude = character === ";" ? "" : prelude + character;
+		} else {
+			body += character;
+		}
+	}
+
+	return rules;
+};
+
+const topLevelSelectors = (css: string): string[] =>
+	topLevelRulesIn(css).flatMap(({ prelude }) => selectorsOf(prelude));
+
+const filesIn = (folder: string): string[] =>
+	readdirSync(join(ROOT, folder), { withFileTypes: true })
+		.filter((entry) => entry.isFile())
+		.map((entry) => `${folder}/${entry.name}`);
+
+const COMPONENT_FOLDERS = [
+	...new Set(
+		walk(MODULES)
+			.filter((file) => COMPONENT_FILE.test(basename(file)))
+			.map((file) => dirname(file)),
+	),
+];
+
+const parentBlocksOf = (folder: string): string[] =>
+	BLOCKS_GROUPED_UNDER_A_PARENT.filter((group) => `${folder}/`.startsWith(group.folder)).map(({ block }) => block);
+
+const sharedBlocks = (): Set<string> =>
+	new Set(
+		[
+			PAGE_BLOCK,
+			read("src/const/calendly.ts").match(CALENDLY_WIDGET_CLASS_DECLARATION)?.[1] ?? "",
+			...walk("src/ui/styles/global")
+				.filter((file) => file.endsWith(".css"))
+				.flatMap((file) => selectorClassesIn(read(file))),
+			...walk("src/ui/assets")
+				.filter((file) => file.endsWith(".svg"))
+				.flatMap((file) => classLiteralsIn(read(file))),
+		].map(classBlock),
+	);
+
+interface ForeignClassesParams {
+	folder: string;
+	shared: Set<string>;
+}
+
+const foreignClasses = ({ folder, shared }: ForeignClassesParams): string[] => {
+	const files = filesIn(folder);
+	const templates = files.filter((file) => COMPONENT_FILE.test(basename(file)));
+	const rendered = templates
+		.flatMap((file) => {
+			const { named, whole } = importsIn({ file, source: read(file), into: emptyImports() });
+
+			return [...named.keys(), ...whole].map((module) => dirname(module));
+		})
+		.filter((imported) => COMPONENT_FOLDERS.includes(imported));
+	const allowed = new Set([
+		...shared,
+		...[folder, ...rendered].flatMap((owner) => [kebab(basename(owner)), ...parentBlocksOf(owner)]),
+	]);
+
+	return [
+		...new Set([
+			...templates.flatMap((file) => classLiteralsIn(read(file))),
+			...files.filter((file) => file.endsWith(".css")).flatMap((file) => selectorClassesIn(read(file))),
+		]),
+	]
+		.filter((name) => !allowed.has(classBlock(name)))
+		.map((name) => `${folder}: ${name}`);
+};
+
+const selectorLiteralsIn = ({ file, source }: CodeSource): string[] => {
+	const found: string[] = [];
+	const scan = (text: string) =>
+		found.push(...[...text.matchAll(SELECTOR_CLASS), ...text.matchAll(SELECTOR_ID)].map(([, name]) => name));
+	const isClassListOperation = (node: ts.CallExpression) =>
+		ts.isPropertyAccessExpression(node.expression) &&
+		CLASS_LIST_OPERATIONS.has(node.expression.name.text) &&
+		ts.isPropertyAccessExpression(node.expression.expression) &&
+		node.expression.expression.name.text === "classList";
+	const isTextArgument = (node: ts.Node) =>
+		ts.isCallExpression(node.parent) &&
+		ts.isPropertyAccessExpression(node.parent.expression) &&
+		STRING_METHODS.has(node.parent.expression.name.text);
+	const visit = (node: ts.Node): void => {
+		if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) return;
+
+		if (
+			(ts.isStringLiteralLike(node) ||
+				ts.isTemplateHead(node) ||
+				ts.isTemplateMiddle(node) ||
+				ts.isTemplateTail(node)) &&
+			!isTextArgument(node)
+		) {
+			scan(node.text);
+		}
+
+		if (ts.isCallExpression(node) && isClassListOperation(node)) {
+			found.push(...node.arguments.filter(ts.isStringLiteralLike).map((argument) => argument.text));
+		}
+
+		ts.forEachChild(node, visit);
+	};
+
+	for (const { body, kind } of scriptRegions({ file, source })) {
+		visit(ts.createSourceFile(file, body, ts.ScriptTarget.Latest, true, kind));
+	}
+
+	return found;
+};
+
+const singleFieldParameterTypesIn = ({ file, source }: CodeSource): string[] => {
+	const found: string[] = [];
+	const visit = (node: ts.Node): void => {
+		if (
+			ts.isInterfaceDeclaration(node) &&
+			PARAMS_TYPE_NAME.test(node.name.text) &&
+			!node.heritageClauses &&
+			node.members.length === 1
+		) {
+			found.push(node.name.text);
+		}
+
+		if (
+			ts.isTypeAliasDeclaration(node) &&
+			PARAMS_TYPE_NAME.test(node.name.text) &&
+			ts.isTypeLiteralNode(node.type) &&
+			node.type.members.length === 1
+		) {
+			found.push(node.name.text);
+		}
+
+		if (ts.isParameter(node) && node.type && ts.isTypeLiteralNode(node.type) && node.type.members.length === 1) {
+			found.push("an inline parameter type");
+		}
+
+		ts.forEachChild(node, visit);
+	};
+
+	for (const { body, kind } of scriptRegions({ file, source })) {
+		visit(ts.createSourceFile(file, body, ts.ScriptTarget.Latest, true, kind));
+	}
+
+	return found;
+};
+
+interface BiomeOverride {
+	includes: string[];
+	linter?: { rules?: { suspicious?: { noConsole?: string } } };
+}
+
+interface Hook {
+	file: string;
+	name: string;
+	value: string;
+}
+
+const declaredHooks = async (): Promise<Hook[]> =>
+	(
+		await Promise.all(
+			walk(MODULES)
+				.filter((file) => basename(file) === "const.ts")
+				.map(async (file) => ({ file, exports: (await import(join(ROOT, file))) as Record<string, unknown> })),
+		)
+	).flatMap(({ file, exports }) =>
+		Object.entries(exports).flatMap(([name, value]) =>
+			HOOK_EXPORT.test(name) && typeof value === "string" ? [{ file, name, value }] : [],
+		),
+	);
 
 const globToRegExp = (glob: string) =>
 	new RegExp(
@@ -2422,11 +3825,106 @@ describe("the hand-written code", () => {
 		expect(reachingActions).toEqual([]);
 	});
 
+	it("exports only what another module imports, so a name nothing reaches stays private", () => {
+		const modules = SOURCE_FILES.filter(
+			(file) =>
+				!file.startsWith("src/pages/") &&
+				!file.endsWith(".astro") &&
+				!file.endsWith(".d.ts") &&
+				!MODULES_WHOSE_EXPORTS_THE_FRAMEWORK_READS.has(file) &&
+				!MODULES_SHARED_BYTE_FOR_BYTE.has(file),
+		).map((file) => ({ file, source: read(file) }));
+		const importers = HAND_WRITTEN_CODE.map((file) => ({ file, source: read(file) }));
+		const sample = importsIn({
+			file: "src/pages/about.astro",
+			source:
+				'---\nimport { absoluteUrl, type Foo as Bar } from "@const/routes";\nconst { logger } = await import("@infrastructure/logging/logger");\n---\n<script>import "@modules/core/utils/pathname";</script>',
+			into: emptyImports(),
+		});
+		const barrel = namesReached({
+			named: new Map([["src/domain/author/index.ts", new Set(["authorSchema"])]]),
+			whole: new Set(),
+			reexported: new Map([["src/domain/author/index.ts", new Set(["src/domain/author/schema.ts"])]]),
+		});
+
+		expect([...(sample.named.get("src/const/routes.ts") ?? [])]).toEqual(["absoluteUrl", "Foo"]);
+		expect([...(sample.named.get("src/infrastructure/logging/logger.ts") ?? [])]).toEqual(["logger"]);
+		expect([...sample.whole]).toEqual(["src/ui/modules/core/utils/pathname.ts"]);
+		expect(barrel.named.get("src/domain/author/schema.ts")).toEqual(new Set(["authorSchema"]));
+		expect(
+			exportedNames({
+				file: "a.ts",
+				source:
+					"export const a = 1, b = 2; export function c() {} export interface D {} export type E = D; export class F {} const g = 3; export { g as h }; export default 1;",
+			}),
+		).toEqual(["a", "b", "c", "D", "E", "F", "h"]);
+		expect(modules.flatMap(exportedNames).length).toBeGreaterThan(0);
+		expect(importers.length).toBeGreaterThan(modules.length);
+		expect(exportedWithoutImporter({ modules, importers })).toEqual([]);
+	});
+
+	it("keeps in @shared/ui only what two units read, since a name one feature reads belongs to that feature", () => {
+		const modules = SOURCE_FILES.filter((file) => file.startsWith("src/shared/ui/"));
+		const readers = new Map<string, Set<string>>();
+
+		for (const importer of SOURCE_FILES) {
+			const { named } = importsIn({ file: importer, source: read(importer), into: emptyImports() });
+
+			for (const module of modules) {
+				for (const name of named.get(module) ?? []) {
+					readers.set(
+						`${module}: ${name}`,
+						(readers.get(`${module}: ${name}`) ?? new Set<string>()).add(unitOf(importer)),
+					);
+				}
+			}
+		}
+
+		const declared = [
+			...new Set(
+				modules.flatMap((file) => exportedNames({ file, source: read(file) }).map((name) => `${file}: ${name}`)),
+			),
+		];
+
+		expect(declared.length).toBeGreaterThan(0);
+		expect(declared.filter((name) => (readers.get(name)?.size ?? 0) < 2)).toEqual([]);
+	});
+
+	it("keeps a component in core only when core, a page or two features read it, and a helper in a feature's utils/ only when two components or a page read it", () => {
+		const readers = readersByModule();
+		const components = directoriesIn(CORE_COMPONENTS).map((name) => `${CORE_COMPONENTS}/${name}`);
+		const helpers = SOURCE_FILES.filter((file) => FEATURE_UTILITY.test(file));
+		const inFeature = (name: string) => `src/ui/modules/${name}/components/a/A.astro`;
+
+		expect(staysInCore([inFeature("articles")])).toBe(false);
+		expect(staysInCore([inFeature("about"), inFeature("home")])).toBe(true);
+		expect(staysInCore(["src/pages/index.astro"])).toBe(true);
+		expect(staysInCore([inFeature("core"), inFeature("contact")])).toBe(true);
+		expect(staysInCore([])).toBe(false);
+		expect(soleComponentReading([inFeature("contact"), "src/ui/modules/contact/components/a/utils/b.ts"])).toBe(
+			"src/ui/modules/contact/components/a",
+		);
+		expect(soleComponentReading(["src/pages/contact.astro", inFeature("contact")])).toBeUndefined();
+		expect(components.length).toBeGreaterThan(0);
+		expect(helpers.length).toBeGreaterThan(0);
+		expect(components.filter((path) => !staysInCore(readersOf({ path, readers })))).toEqual([]);
+		expect(helpers.filter((path) => soleComponentReading(readersOf({ path, readers })) !== undefined)).toEqual([]);
+	});
+
 	it("logs through logger or LoggerService and never through Effect's own log, whose lines reach the export in another shape", () => {
 		const sources = HAND_WRITTEN_CODE.filter((file) => file.startsWith("src/"));
 
 		expect(sources.length).toBeGreaterThan(0);
 		expect(sources.filter((file) => EFFECT_LOG.test(read(file)))).toEqual([]);
+	});
+
+	it("reads the failure or the defect off an Effect Exit in one shared helper, never in a copy a test declares", () => {
+		const helper = "src/tests/helpers/exit.ts";
+
+		expect(UNIT_TESTS.length).toBeGreaterThan(0);
+		expect(exists(helper)).toBe(true);
+		expect(read(helper)).toMatch(EXIT_EXTRACTION);
+		expect(UNIT_TESTS.filter((file) => EXIT_EXTRACTION.test(read(file)))).toEqual([]);
 	});
 
 	it("doubles a bare fetch with MSW and never replaces the global, which would answer a wrong request as readily", () => {
@@ -2475,6 +3973,72 @@ describe("the hand-written code", () => {
 		expect(leakingDocuments).toEqual([]);
 	});
 
+	it("spells the featured image's view transition name in one function, since the card and the page must agree on it", () => {
+		const helper = "src/ui/modules/core/components/blurImage/utils/transition.ts";
+		const spellers = SOURCE_FILES.filter((file) => TRANSITION_NAME_SPELLING.test(read(file)));
+
+		expect(spellers).toEqual([helper]);
+		expect(SOURCE_FILES.filter((file) => read(file).includes("featuredImageTransitionName"))).toContain(
+			"src/ui/modules/core/components/articleCard/ArticleCard.astro",
+		);
+		expect(SOURCE_FILES.filter((file) => read(file).includes("featuredImageTransitionName"))).toContain(
+			"src/pages/articles/[...slug].astro",
+		);
+	});
+
+	it("declares each unindexed route once, in the module the config loads, and lets the legal pages inherit their robots from it", () => {
+		const declarations = [...SOURCE_FILES, "astro.config.ts"].filter((file) =>
+			NOINDEX_ROUTES.some((route) => read(file).includes(`"${route}"`)),
+		);
+		const pages = NOINDEX_ROUTES.map((route) => `src/pages${route}.astro`);
+
+		expect(NOINDEX_ROUTES.length).toBeGreaterThan(0);
+		expect(declarations).toEqual(["src/const/noindexRoutes.ts"]);
+		expect(pages.filter((page) => !exists(page))).toEqual([]);
+		expect(pages.filter((page) => ROBOTS_OVERRIDE.test(read(page)))).toEqual([]);
+	});
+
+	it("takes the head of the Blog in blogPreview alone, so a page that wants a Blog Preview asks for one", () => {
+		const takers = SOURCE_FILES.filter((file) => HEAD_OF_THE_BLOG.test(read(file)));
+
+		expect(read("src/ui/modules/core/utils/blogPreview.ts")).toMatch(HEAD_OF_THE_BLOG);
+		expect(takers).toEqual(["src/ui/modules/core/utils/blogPreview.ts"]);
+	});
+
+	it("derives the Open Graph locale from the language the pages declare, never from a literal that can disagree with it", () => {
+		expect(read("src/ui/modules/core/components/seo/Seo.astro")).toMatch(OPEN_GRAPH_LOCALE_FROM_SITE_LOCALE);
+		expect(read("src/ui/modules/core/components/baseLayout/BaseLayout.astro")).toContain(
+			"<html lang={DEFAULT_LOCALE_STRING}",
+		);
+	});
+
+	it("expresses a variant as a modifier and never as a data-has-* attribute a stylesheet or a script tests", () => {
+		const stylesheets = walk("src").filter((file) => file.endsWith(".css"));
+		const markup = [...SOURCE_FILES, ...stylesheets];
+
+		expect(stylesheets.length).toBeGreaterThan(0);
+		expect(DATA_HAS_ATTRIBUTE.test('<div data-has-dots="true">')).toBe(true);
+		expect(markup.filter((file) => DATA_HAS_ATTRIBUTE.test(read(file)))).toEqual([]);
+	});
+
+	it("shuffles Related Articles once, in the module that owns it, so the slides and the structured data list one order", () => {
+		const owner = "src/ui/modules/core/components/relatedArticles/utils/shuffle.ts";
+		const drawers = SOURCE_FILES.filter((file) => RANDOM_DRAW.test(read(file)));
+		const section = read("src/ui/modules/core/components/relatedArticles/RelatedArticles.astro");
+
+		expect(drawers).toEqual([owner]);
+		expect(section).toContain("shuffle(");
+		expect(section.indexOf("shuffle(")).toBeLessThan(section.indexOf("buildArticleListSchema("));
+	});
+
+	it("prints no error message from a route, which only the Worker log is for", () => {
+		const routes = SOURCE_FILES.filter((file) => file.startsWith("src/pages/"));
+
+		expect(routes.length).toBeGreaterThan(0);
+		expect(MESSAGE_READ.test("const reference = error.message;")).toBe(true);
+		expect(routes.filter((file) => MESSAGE_READ.test(read(file)))).toEqual([]);
+	});
+
 	it("passes a locale to every localeCompare in src, so no order a visitor sees depends on the machine that built it", () => {
 		const sources = HAND_WRITTEN_CODE.filter((file) => file.startsWith("src/"));
 		const unlocalised = sources.flatMap((file) =>
@@ -2486,6 +4050,21 @@ describe("the hand-written code", () => {
 		expect(unlocalisedComparisons("a.localeCompare(pick(b, c))")).toEqual(["pick(b, c)"]);
 		expect(sources.filter((file) => read(file).includes(".localeCompare(")).length).toBeGreaterThan(0);
 		expect(unlocalised).toEqual([]);
+	});
+
+	it("pins the zone of every date it prints and names it on a time, so no line a reader sees depends on the machine that wrote it", () => {
+		const printing = SOURCE_FILES.filter((file) => /\.toLocale(?:Date|Time)?String\(/.test(read(file)));
+		const unpinned = SOURCE_FILES.flatMap((file) => unpinnedDates(read(file)).map((args) => `${file}: (${args})`));
+
+		expect(unpinnedDates("d.toLocaleDateString('en-GB')")).toEqual(["'en-GB'"]);
+		expect(unpinnedDates("d.toLocaleDateString('en-GB', { timeZone: 'UTC' })")).toEqual([]);
+		expect(unpinnedDates("d.toLocaleString('en-GB', { timeZone: 'UTC' })")).toEqual(["'en-GB', { timeZone: 'UTC' }"]);
+		expect(unpinnedDates("d.toLocaleTimeString('en-GB', { timeZoneName: 'short' })")).toEqual([
+			"'en-GB', { timeZoneName: 'short' }",
+		]);
+		expect(unpinnedDates("d.toLocaleString('en-GB', { timeZone: 'UTC', timeZoneName: 'short' })")).toEqual([]);
+		expect(printing.length).toBeGreaterThan(0);
+		expect(unpinned).toEqual([]);
 	});
 
 	it("pins the clock rather than reading the year off it or bracketing Date.now()", () => {
@@ -2506,6 +4085,33 @@ describe("the hand-written code", () => {
 		expect(CAST_JSON.test("const answer: unknown = await response.json();")).toBe(false);
 		expect(readers.length).toBeGreaterThan(0);
 		expect(readers.filter((file) => CAST_JSON.test(read(file)))).toEqual([]);
+	});
+
+	it("declares every package it imports, so none resolves by the accident of being hoisted", () => {
+		const declared = new Set(DEPENDENCY_FIELDS.flatMap((field) => Object.keys(PACKAGE_JSON[field] ?? {})));
+		const packageOf = (specifier: string) => specifier.match(SCOPED_PACKAGE)?.[1] ?? specifier.split("/")[0];
+		const isPackage = (specifier: string) =>
+			!specifier.startsWith(".") &&
+			!specifier.startsWith("node:") &&
+			!specifier.startsWith("astro:") &&
+			!ALIAS_TARGETS.some(([alias]) => specifier.startsWith(alias));
+		const imported = HAND_WRITTEN_CODE.flatMap((file) =>
+			importedSpecifiers({ file, source: read(file) })
+				.filter(isPackage)
+				.map((specifier) => ({ file, name: packageOf(specifier) })),
+		);
+
+		expect(
+			importedSpecifiers({
+				file: "a.ts",
+				source:
+					'import type { A } from "@commitlint/types"; export * from "vitest/config"; const b = await import("effect"); type C = import("msw").D; it("reads from", () => {}); const d = "import";',
+			}),
+		).toEqual(["@commitlint/types", "vitest/config", "effect", "msw"]);
+		expect(packageOf("@commitlint/types")).toBe("@commitlint/types");
+		expect(packageOf("react-dom/server")).toBe("react-dom");
+		expect(imported.length).toBeGreaterThan(0);
+		expect(imported.filter(({ name }) => !declared.has(name)).map(({ file, name }) => `${file}: ${name}`)).toEqual([]);
 	});
 
 	it("imports Zod only through astro/zod, and declares no zod of its own", () => {
@@ -2603,7 +4209,7 @@ describe("colour", () => {
 		expect(stylesheets.filter((file) => REGISTERED_COLOUR.test(read(file)))).toEqual([]);
 	});
 
-	it("writes no hex colour in a component or route stylesheet or a module under src/ui, bar the globe the backlog names", () => {
+	it("writes no hex colour in a component or route stylesheet or a module under src/ui, so a colour is a token resolved at runtime", () => {
 		const sources = production([...walk("src/ui"), ...walk("src/pages")])
 			.filter((file) => !file.startsWith("src/ui/styles/"))
 			.filter((file) => SOURCE_FILE.test(file) || file.endsWith(".css"));
@@ -2612,7 +4218,7 @@ describe("colour", () => {
 		expect(sources.filter((file) => file.endsWith(".css")).length).toBeGreaterThan(0);
 		expect(HEX_COLOUR.test("fill: #c0ffee;")).toBe(true);
 		expect(HEX_COLOUR.test('href="#contact" &#39;')).toBe(false);
-		expect(coloured.toSorted()).toEqual(HEX_COLOURS_AWAITING_A_TOKEN);
+		expect(coloured).toEqual([]);
 	});
 
 	it("registers every custom property that counts siblings, or a child would read its own index", () => {
@@ -2946,19 +4552,20 @@ const BREAKING_PARSER_OPTS = {
 	breakingHeaderPattern: "^(\\w*)(?:\\((.*)\\))?!: (.*)$",
 };
 const COMMIT_PARSING_PLUGINS = ["@semantic-release/commit-analyzer", "@semantic-release/release-notes-generator"];
+const RELEASE_COMMIT_PLUGIN = "@semantic-release/git";
 const RELEASE_CONFIG_PATTERN = /(^|\/)(\.releaserc(\.\w+)?|release\.config\.\w+)$/;
 
 type ReleasePlugin = string | [string, Record<string, unknown>?];
 
-interface ParserOptsOfParams {
+interface PluginOptionsOfParams {
 	plugins: ReleasePlugin[];
 	name: string;
 }
 
-const parserOptsOf = ({ plugins, name }: ParserOptsOfParams): unknown => {
+const pluginOptionsOf = ({ plugins, name }: PluginOptionsOfParams): Record<string, unknown> | undefined => {
 	const entry = plugins.find((plugin) => (Array.isArray(plugin) ? plugin[0] : plugin) === name);
 
-	return Array.isArray(entry) ? entry[1]?.parserOpts : undefined;
+	return Array.isArray(entry) ? entry[1] : undefined;
 };
 
 describe("the release config parses the commit grammar commitlint accepts", () => {
@@ -2969,7 +4576,8 @@ describe("the release config parses the commit grammar commitlint accepts", () =
 			const { plugins } = readJson(file) as { plugins: ReleasePlugin[] };
 
 			return COMMIT_PARSING_PLUGINS.filter(
-				(name) => JSON.stringify(parserOptsOf({ plugins, name })) !== JSON.stringify(BREAKING_PARSER_OPTS),
+				(name) =>
+					JSON.stringify(pluginOptionsOf({ plugins, name })?.parserOpts) !== JSON.stringify(BREAKING_PARSER_OPTS),
 			).map((name) => `${file}: ${name}`);
 		});
 
@@ -2980,10 +4588,7 @@ describe("the release config parses the commit grammar commitlint accepts", () =
 	it("commits the release, which commitlint never sees, under the release scope and [skip ci] so it starts no run", () => {
 		const wrong = configs.flatMap((file) => {
 			const { plugins } = readJson(file) as { plugins: ReleasePlugin[] };
-			const entry = plugins.find(
-				(plugin: ReleasePlugin) => (Array.isArray(plugin) ? plugin[0] : plugin) === "@semantic-release/git",
-			);
-			const message = Array.isArray(entry) ? String(entry[1]?.message) : "";
+			const message = String(pluginOptionsOf({ plugins, name: RELEASE_COMMIT_PLUGIN })?.message ?? "");
 
 			return message.startsWith(`chore(release): \${nextRelease.version}`) && message.includes("[skip ci]")
 				? []
@@ -2996,10 +4601,7 @@ describe("the release config parses the commit grammar commitlint accepts", () =
 	it("commits only the files a release rewrites, and a version bump never touches the lockfile", () => {
 		const listed = configs.flatMap((file) => {
 			const { plugins } = readJson(file) as { plugins: ReleasePlugin[] };
-			const entry = plugins.find(
-				(plugin: ReleasePlugin) => (Array.isArray(plugin) ? plugin[0] : plugin) === "@semantic-release/git",
-			);
-			const assets = Array.isArray(entry) ? ((entry[1]?.assets as string[]) ?? []) : [];
+			const assets = (pluginOptionsOf({ plugins, name: RELEASE_COMMIT_PLUGIN })?.assets as string[] | undefined) ?? [];
 
 			return assets.filter((asset) => asset.includes("lock")).map((asset) => `${file}: ${asset}`);
 		});

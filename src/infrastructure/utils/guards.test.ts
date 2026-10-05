@@ -1,13 +1,11 @@
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
 import { recaptchaDouble, SITEVERIFY_URL } from "@tests/doubles/network";
-import { Cause, Effect, Exit, Option } from "effect";
+import { failureOf } from "@tests/helpers/exit";
+import { Effect, Exit } from "effect";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { validateContact, verifyRecaptcha } from "./guards";
 
 const RECAPTCHA_ERROR_MESSAGE = "Mr. Robot, is that you? Please refresh the page and try again.";
-
-const failureOf = <E>(exit: Exit.Exit<unknown, E>): E | undefined =>
-	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause)) : undefined;
 
 const messageOf = <E extends { message: string }>(exit: Exit.Exit<unknown, E>): string | undefined =>
 	failureOf(exit)?.message;

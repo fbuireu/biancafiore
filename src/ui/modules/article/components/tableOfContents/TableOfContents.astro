@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { TABLE_OF_CONTENTS_WRAPPER_CLASS } from "./const";
 import "./table-of-contents.css";
 
 interface Props {
@@ -8,15 +9,15 @@ interface Props {
 
 const { tableOfContents } = Astro.props;
 ---
-<aside class="article__table-of-contents-wrapper" role="complementary" aria-labelledby="toc-heading">
-    <nav class="article__table-of-contents__nav">
-        <details class="article__table-of-contents__details" open>
-            <summary class="article__table-of-contents__summary">
-                <h5 id="toc-heading">Table of Contents</h5></summary>
-            <ul class="article__table-of-contents__list flex column-nowrap">
+<aside class={TABLE_OF_CONTENTS_WRAPPER_CLASS} role="complementary" aria-labelledby="toc-heading">
+    <nav class="table-of-contents__nav">
+        <details class="table-of-contents__details" open>
+            <summary class="table-of-contents__summary">
+                <p id="toc-heading" class="table-of-contents__title">Table of Contents</p></summary>
+            <ul class="table-of-contents__list flex column-nowrap">
               {tableOfContents.map(({ id, heading, level, scope }) => (
-                  <li class="article__table-of-contents__item" style={`--level: ${level};`}>
-                      <a class="article__table-of-contents__item__link flex align-center underline-on-hover clickable"
+                  <li class="table-of-contents__item" style={`--level: ${level};`}>
+                      <a class="table-of-contents__item__link underline-on-hover clickable"
                          href={`#${id}`} style={`--for: ${scope}`}>{heading}</a>
                   </li>
               ))}

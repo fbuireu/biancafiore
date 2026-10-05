@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { RawArticle } from "../article/types";
 import { createAuthors } from "./authorDTO";
 import type { RawAuthor } from "./types";
+import { AUTHOR_LATEST_ARTICLE_FIELDS } from "./utils/articles";
 
 interface AssetParams {
 	url?: string;
@@ -169,6 +170,18 @@ describe("createAuthors article attribution", () => {
 		expect(author.latestArticle).toEqual({ id: "newest", collection: "articles" });
 	});
 
+	it("names the first of two articles published at the same instant, so the tie is settled by arrival order", () => {
+		const [author] = createAuthors({
+			rawAuthors: [makeAuthor()],
+			rawArticles: [
+				makeArticle({ slug: "first", publishDate: "2026-07-30" }),
+				makeArticle({ slug: "second", publishDate: "2026-07-30" }),
+			],
+		});
+
+		expect(author.latestArticle).toEqual({ id: "first", collection: "articles" });
+	});
+
 	it("ignores an article somebody else published more recently when naming latestArticle", () => {
 		const [author] = createAuthors({
 			rawAuthors: [makeAuthor({ slug: "bianca-fiore" })],
@@ -209,6 +222,12 @@ describe("createAuthors, given an unreadable publish date", () => {
 				rawAuthors: [makeAuthor()],
 				rawArticles: [makeArticle({ slug: "nonsense", publishDate: "not-a-date" })],
 			}),
-		).toThrow("An Article reached the mapper with an unreadable publish date: not-a-date");
+		).toThrow('The Article "nonsense" has an unreadable publish date (not-a-date)');
+	});
+});
+
+describe("AUTHOR_LATEST_ARTICLE_FIELDS", () => {
+	it("selects the sys.id a refused article is named by, since the list names every field its helpers reach", () => {
+		expect(AUTHOR_LATEST_ARTICLE_FIELDS).toContain("sys.id");
 	});
 });

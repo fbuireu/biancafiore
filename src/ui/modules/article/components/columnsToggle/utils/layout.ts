@@ -1,11 +1,11 @@
 import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
-import { ARTICLE_COLUMNS_STORAGE_KEY } from "../const";
+import { ARTICLE_BODY_CLASS } from "../../../const";
+import { ARTICLE_COLUMNS_ACTIVE_CLASS, ARTICLE_COLUMNS_STORAGE_KEY, COLUMNS_TOGGLE_BUTTON_CLASS } from "../const";
 
 const SELECTORS = {
-	ARTICLE: ".article-wrapper",
-	TOGGLE: ".columns-toggle__button",
+	ARTICLE: `.${ARTICLE_BODY_CLASS}`,
+	TOGGLE: `.${COLUMNS_TOGGLE_BUTTON_CLASS}`,
 } as const;
-export const ARTICLE_COLUMNS_ACTIVE_CLASS = "article-wrapper--two-columns";
 
 interface ApplyColumnsParams {
 	enabled: boolean;

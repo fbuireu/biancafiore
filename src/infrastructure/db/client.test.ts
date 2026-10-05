@@ -1,5 +1,6 @@
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
-import { Cause, Effect, Exit, Option } from "effect";
+import { defectOf, failureOf } from "@tests/helpers/exit";
+import { Cause, Effect, Exit } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DatabaseError } from "../errors";
 import { Database, DatabaseLive } from "./client";
@@ -48,12 +49,6 @@ const URL_SECRET = "ASTRO_DB_REMOTE_URL";
 const TOKEN_SECRET = "ASTRO_DB_APP_TOKEN";
 
 const build = () => Effect.runPromiseExit(Database.pipe(Effect.provide(DatabaseLive)));
-
-const defectOf = (exit: Exit.Exit<unknown, unknown>): unknown =>
-	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.dieOption(exit.cause)) : undefined;
-
-const failureOf = (exit: Exit.Exit<unknown, unknown>): unknown =>
-	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause)) : undefined;
 
 afterEach(() => {
 	resetSecrets();

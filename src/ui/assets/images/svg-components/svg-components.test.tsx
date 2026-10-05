@@ -1,6 +1,7 @@
 import { cleanup, render } from "@testing-library/react";
 import type { ComponentType, SVGProps } from "react";
 import { afterEach, describe, expect, it } from "vitest";
+import stretchArrowSvg from "../svg/stretch-arrow.svg?raw";
 import { Infinite } from "./infinite/Infinite";
 import { StretchArrow } from "./stretchArrow/StretchArrow";
 import { ZoomIn } from "./zoomIn/ZoomIn";
@@ -72,6 +73,21 @@ describe("the zoom marks", () => {
 });
 
 describe("StretchArrow", () => {
+	it("draws the shaft and the tip of the svg the Astro pages inline", () => {
+		const { container } = render(<StretchArrow />);
+		const drawn = [...container.querySelectorAll("path")].map((path) => [
+			path.getAttribute("class"),
+			path.getAttribute("d"),
+		]);
+		const inlined = [...stretchArrowSvg.matchAll(/<path class="([^"]+)" d="([^"]+)"/g)].map(([, name, data]) => [
+			name,
+			data,
+		]);
+
+		expect(inlined).toHaveLength(2);
+		expect(drawn).toEqual(inlined);
+	});
+
 	it("keeps the block class its stylesheet animates beside the ones it is handed", () => {
 		const { container } = render(<StretchArrow classNames="reveal" />);
 

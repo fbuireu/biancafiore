@@ -1,4 +1,4 @@
-.testimonials__slider {
+.testimonials-slider__slider {
 	& .slider__track {
 		--slides-per-view: 1;
 		--slider-gap: 0px;
@@ -10,11 +10,11 @@
 	}
 }
 
-.testimonial {
+.testimonials-slider__testimonial {
 	margin: 0;
 }
 
-.testimonial__quote {
+.testimonials-slider__quote {
 	color: var(--ink);
 	font-family: var(--font-display);
 	font-size: clamp(24px, 2.58cqi, 33px);
@@ -38,27 +38,27 @@
 	}
 }
 
-.testimonial__attribution {
+.testimonials-slider__attribution {
 	align-items: center;
 	display: flex;
 	gap: 16px;
 	justify-content: center;
 }
 
-.testimonial__avatar {
+.testimonials-slider__avatar {
 	border-radius: 50%;
 	height: 54px;
 	object-fit: cover;
 	width: 54px;
 }
 
-.testimonial__identity {
+.testimonials-slider__identity {
 	display: grid;
 	gap: 3px;
 	text-align: left;
 }
 
-.testimonial__quotee {
+.testimonials-slider__quotee {
 	color: var(--ink);
 	font-family: var(--font-serif);
 	font-size: var(--font-size-h6);
@@ -67,7 +67,7 @@
 }
 
 @supports (container-type: scroll-state) {
-	.testimonials__slider .testimonial {
+	.testimonials-slider__slider .testimonials-slider__testimonial {
 		opacity: 0.15;
 		transition:
 			opacity 0.4s ease,
@@ -76,14 +76,14 @@
 	}
 
 	@container scroll-state(snapped: inline) {
-		.testimonials__slider .testimonial {
+		.testimonials-slider__slider .testimonials-slider__testimonial {
 			opacity: 1;
 			translate: 0 0;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.testimonials__slider .testimonial {
+		.testimonials-slider__slider .testimonials-slider__testimonial {
 			opacity: 1;
 			transition: none;
 			translate: 0 0;
@@ -91,7 +91,7 @@
 	}
 }
 
-.testimonials__slider .slider__btn {
+.testimonials-slider__slider .slider__btn {
 	&.slider__btn--prev {
 		margin-inline-end: 16px;
 	}

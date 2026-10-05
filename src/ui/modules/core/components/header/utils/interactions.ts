@@ -1,37 +1,50 @@
-import { gsap, Power2, Power3, Power4 } from "gsap";
 import { motionTimeScale } from "../../../utils/motion";
+import { LOGO_INTERSECTED_CLASS, LOGO_LINK_CLASS } from "../../logo/const";
+import { SCROLL_TOP_WRAPPER_CLASS } from "../../scrollTop/const";
+import {
+	HEADER_CLASS,
+	HEADER_MENU_BUTTON_CLASS,
+	HEADER_MENU_BUTTON_INTERSECTED_CLASS,
+	HEADER_MENU_BUTTON_OUTLINE_CLASS,
+	HEADER_MENU_CLASS,
+	HEADER_MENU_ITEM_CLASS,
+	HEADER_MENU_NAV_CLASS,
+	HEADER_MENU_OVERLAY_CLASS,
+	HEADER_MENU_QUOTE_CLASS,
+	HEADER_MENU_TEXT_CLASS,
+	MENU_OPEN_CLASS,
+} from "../const";
 
 const BACKGROUND_OBSERVER_SELECTORS = {
-	HEADER: ".header",
+	HEADER: `.${HEADER_CLASS}`,
 	INVERTED_SECTION: ".inverted-color-scheme",
-	HEADER_MENU_BUTTON: ".header__menu-button",
-	HEADER_MENU_LOGO: ".site__logo svg",
+	HEADER_MENU_BUTTON: `.${HEADER_MENU_BUTTON_CLASS}`,
+	HEADER_MENU_LOGO: `.${LOGO_LINK_CLASS} svg`,
 };
 const INTERSECTED_CLASSES = {
-	HEADER_MENU_BUTTON: "header__menu-button--intersected",
-	HEADER_MENU_LOGO: "logo--intersected",
+	HEADER_MENU_BUTTON: HEADER_MENU_BUTTON_INTERSECTED_CLASS,
+	HEADER_MENU_LOGO: LOGO_INTERSECTED_CLASS,
 };
-const MENU_OPEN_CLASS = "page--menu-open";
 const TOGGLE_MENU_ANIMATION_CONFIG = {
-	POWER4_IN_OUT: Power4.easeInOut,
-	POWER2_EASE_OUT: Power2.easeOut,
-	POWER2_EASE_IN: Power2.easeIn,
-	POWER3_OUT: Power3.easeOut,
+	POWER4_IN_OUT: "power4.inOut",
+	POWER2_EASE_OUT: "power2.out",
+	POWER2_EASE_IN: "power2.in",
+	POWER3_OUT: "power3.out",
 	PATH_START: "M0 502S175 272 500 272s500 230 500 230V0H0Z",
 	PATH_END: "M0,1005S175,995,500,995s500,5,500,5V0H0Z",
 };
 const TOGGLE_MENU_SELECTORS = {
 	HTML: "html",
-	TOGGLE_MENU_BUTTON: ".header__menu-button",
-	MENU_OVERLAY: ".header__menu-overlay-wrapper",
-	OVERLAY_PATH: ".header__menu-overlay-wrapper path",
-	HEADER_MENU_TEXT: ".header__menu-text",
-	BUTTON_OUTLINE: ".header__menu-button__outline",
-	HEADER_MENU: ".header__menu",
-	NAVIGATION_ITEMS: ".navigation__menu__item > *",
-	QUOTE: ".navigation__menu__quote > *",
-	FIRST_MENU_LINK: ".navigation__menu__nav a",
-	COVERED_BY_MENU: "main, footer, .scroll-top-wrapper",
+	TOGGLE_MENU_BUTTON: `.${HEADER_MENU_BUTTON_CLASS}`,
+	MENU_OVERLAY: `.${HEADER_MENU_OVERLAY_CLASS}`,
+	OVERLAY_PATH: `.${HEADER_MENU_OVERLAY_CLASS} path`,
+	HEADER_MENU_TEXT: `.${HEADER_MENU_TEXT_CLASS}`,
+	BUTTON_OUTLINE: `.${HEADER_MENU_BUTTON_OUTLINE_CLASS}`,
+	HEADER_MENU: `.${HEADER_MENU_CLASS}`,
+	NAVIGATION_ITEMS: `.${HEADER_MENU_ITEM_CLASS} > *`,
+	QUOTE: `.${HEADER_MENU_QUOTE_CLASS} > *`,
+	FIRST_MENU_LINK: `.${HEADER_MENU_NAV_CLASS} a`,
+	COVERED_BY_MENU: `main, footer, .${SCROLL_TOP_WRAPPER_CLASS}`,
 };
 
 interface IsIntersectingParams {
@@ -78,27 +91,28 @@ export function watchBackground(): void {
 	backgroundObserver();
 }
 
-export interface MenuTimeline {
+interface MenuTimeline {
 	reversed(value?: boolean): unknown;
 	eventCallback(type: "onComplete", callback: () => void): unknown;
 }
 
-export interface MenuElements {
+interface MenuElements {
 	html: HTMLElement;
 	button: HTMLElement;
 	text: HTMLElement | null;
 }
 
-export interface WireMenuParams {
+interface WireMenuParams {
 	elements: MenuElements;
 	signal: AbortSignal;
-	buildTimeline?: (onButtonUpdate: () => void) => MenuTimeline;
+	buildTimeline?: (onButtonUpdate: () => void) => Promise<MenuTimeline>;
 }
 
 const MENU_TEXT_LABEL = { OPEN: "Close", CLOSED: "Menu" } as const;
 const CLOSE_LABEL_DELAY = 500;
 
-function buildMenuTimeline(onButtonUpdate: () => void): MenuTimeline {
+async function buildMenuTimeline(onButtonUpdate: () => void): Promise<MenuTimeline> {
+	const { gsap } = await import("gsap");
 	const { MENU_OVERLAY, OVERLAY_PATH, BUTTON_OUTLINE, HEADER_MENU, NAVIGATION_ITEMS, QUOTE, HEADER_MENU_TEXT } =
 		TOGGLE_MENU_SELECTORS;
 	const { POWER4_IN_OUT, POWER2_EASE_IN, POWER2_EASE_OUT, POWER3_OUT, PATH_START, PATH_END } =
@@ -128,7 +142,10 @@ function buildMenuTimeline(onButtonUpdate: () => void): MenuTimeline {
 	timeline.to(NAVIGATION_ITEMS, { top: 0, ease: POWER3_OUT, stagger: { amount: 0.5 }, duration: 0.75 }, "<").reverse();
 	timeline.to(QUOTE, { top: 0, ease: POWER3_OUT, duration: 0.75 }, "<");
 
-	return timeline;
+	return {
+		reversed: (value) => timeline.reversed(value as boolean),
+		eventCallback: (type, callback) => timeline.eventCallback(type, callback),
+	};
 }
 
 const setInert = (isMenuOpen: boolean): void => {
@@ -155,24 +172,33 @@ export function wireMenu({ elements, signal, buildTimeline = buildMenuTimeline }
 		);
 	};
 
-	const timeline = buildTimeline(updateButton);
+	let timeline: Promise<MenuTimeline> | undefined;
 
-	timeline.eventCallback("onComplete", () => {
-		document.querySelector<HTMLElement>(TOGGLE_MENU_SELECTORS.FIRST_MENU_LINK)?.focus();
-	});
+	const loadTimeline = (): Promise<MenuTimeline> => {
+		timeline ??= buildTimeline(updateButton).then((built) => {
+			built.eventCallback("onComplete", () => {
+				document.querySelector<HTMLElement>(TOGGLE_MENU_SELECTORS.FIRST_MENU_LINK)?.focus();
+			});
+
+			return built;
+		});
+
+		return timeline;
+	};
 
 	html.classList.remove(MENU_OPEN_CLASS);
 	html.style.overflow = "";
 
 	button.addEventListener(
 		"click",
-		() => {
+		async () => {
 			isMenuOpen = !isMenuOpen;
-			timeline.reversed(!timeline.reversed());
 			button.setAttribute("aria-expanded", String(isMenuOpen));
 			html.classList.toggle(MENU_OPEN_CLASS, isMenuOpen);
 
 			setInert(isMenuOpen);
+
+			(await loadTimeline()).reversed(!isMenuOpen);
 		},
 		{ signal },
 	);

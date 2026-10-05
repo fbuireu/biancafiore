@@ -1,8 +1,15 @@
+import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
 import { defineMiddleware } from "astro:middleware";
 import { securityHeaders } from "@const/securityHeaders";
+import { inlineScriptHashes } from "@modules/core/utils/inlineScripts";
 
-const PRODUCTION_HEADERS = Object.entries(securityHeaders());
-const DEVELOPMENT_HEADERS = Object.entries(securityHeaders(true));
+const INLINE_SCRIPT_HASHES = inlineScriptHashes(GOOGLE_ANALYTICS_ID);
+const PRODUCTION_HEADERS = Object.entries(
+	securityHeaders({ isDevelopment: false, inlineScriptHashes: INLINE_SCRIPT_HASHES }),
+);
+const DEVELOPMENT_HEADERS = Object.entries(
+	securityHeaders({ isDevelopment: true, inlineScriptHashes: INLINE_SCRIPT_HASHES }),
+);
 
 export const onRequest = defineMiddleware(async (_, next) => {
 	const response = await next();

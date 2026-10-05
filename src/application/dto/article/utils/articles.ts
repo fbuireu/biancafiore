@@ -1,9 +1,10 @@
 import type { Reference } from "@domain/shared/reference";
+import { articleTagSlugs } from "../../tag/utils/tag";
 import type { RawArticle } from "../types";
 import { orderArticleReferences } from "./order";
 import { articleReference, articleSlug } from "./reference";
 
-export const INFERRED_RELATED_ARTICLES_LIMIT = 6;
+const INFERRED_RELATED_ARTICLES_LIMIT = 6;
 
 type AuthoredRelatedArticle = NonNullable<RawArticle["fields"]["relatedArticles"]>[number];
 type ResolvedRelatedArticle = Extract<AuthoredRelatedArticle, { fields: unknown }>;
@@ -15,10 +16,6 @@ interface CreateRelatedArticlesParams {
 
 function isResolvedEntry(entry: AuthoredRelatedArticle): entry is ResolvedRelatedArticle {
 	return "fields" in entry;
-}
-
-function getTagSlugs(article: RawArticle): string[] {
-	return (article.fields.tags ?? []).flatMap((tag) => ("fields" in tag ? [tag.fields.slug] : []));
 }
 
 export function createRelatedArticles({
@@ -35,13 +32,13 @@ export function createRelatedArticles({
 			.filter(({ id }) => id !== ownSlug);
 	}
 
-	const articleTags = new Set(getTagSlugs(rawArticle));
+	const articleTags = new Set(articleTagSlugs(rawArticle));
 
 	return orderArticleReferences(
 		allRawArticles.filter((article) => {
 			if (articleSlug(article) === ownSlug) return false;
 
-			return getTagSlugs(article).some((slug) => articleTags.has(slug));
+			return articleTagSlugs(article).some((slug) => articleTags.has(slug));
 		}),
 	).slice(0, INFERRED_RELATED_ARTICLES_LIMIT);
 }

@@ -39,12 +39,6 @@
 	}
 
 	&:hover {
-		.stretch-arrow__shaft {
-			d: var(--stretch-arrow-shaft-hover);
-		}
-
-		.stretch-arrow__tip {
-			d: var(--stretch-arrow-tip-hover);
-		}
+		--stretch-arrow: hover;
 	}
 }

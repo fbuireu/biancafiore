@@ -3,12 +3,12 @@ import type { ImageDTO } from "@domain/shared/image";
 
 const MAX_TAGS = 4;
 
-export interface ArticleCardTag {
+interface ArticleCardTag {
 	slug: string;
 	name: string;
 }
 
-export interface ArticleCardContent {
+interface ArticleCardContent {
 	slug: string;
 	title: string;
 	description: string;

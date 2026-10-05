@@ -1,6 +1,6 @@
+import { THEME_ATTRIBUTE } from "@modules/core/components/themeToggle/const";
 import { act, cleanup, render, screen } from "@testing-library/react";
-import { server } from "@tests/doubles/network";
-import { HttpResponse, http } from "msw";
+import { type CountriesDouble, countriesDouble } from "@tests/doubles/network";
 import { Suspense } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { CityPoint } from "../../utils/globe";
@@ -21,7 +21,10 @@ interface GlobeProps {
 
 const globeProps = vi.hoisted(() => [] as GlobeProps[]);
 const materials = vi.hoisted(() => [] as Record<string, unknown>[]);
+const colourSets = vi.hoisted(() => [] as string[]);
+const palette = vi.hoisted(() => ({ current: { land: "#c0ffee", ocean: "#0ddba1" } }));
 const globeDouble = vi.hoisted(() => ({ current: undefined as unknown }));
+const served = vi.hoisted(() => ({ countries: undefined as unknown }));
 
 vi.mock("react-globe.gl", () => ({
 	default: (props: GlobeProps) => {
@@ -35,13 +38,18 @@ vi.mock("react-globe.gl", () => ({
 
 vi.mock("three", () => ({
 	MeshPhongMaterial: class {
+		color = { set: (value: string) => colourSets.push(value) };
+
 		constructor(options: Record<string, unknown>) {
 			materials.push(options);
 		}
 	},
 }));
 
-const COUNTRIES_URL = "*/countries.json";
+vi.mock("./utils/palette", async (importOriginal) => ({
+	...(await importOriginal<typeof import("./utils/palette")>()),
+	readGlobePalette: () => ({ ...palette.current }),
+}));
 
 const FEATURES = [
 	{ type: "Feature", properties: { name: "Spain" }, geometry: { type: "Polygon", coordinates: [[[0, 0]]] } },
@@ -98,35 +106,71 @@ const lastView = (globe: ReturnType<typeof makeGlobe>) => globe.state.views.at(-
 beforeEach(() => {
 	globeProps.length = 0;
 	materials.length = 0;
+	colourSets.length = 0;
+	palette.current = { land: "#c0ffee", ocean: "#0ddba1" };
 	globeDouble.current = makeGlobe();
-	server.use(http.get(COUNTRIES_URL, () => HttpResponse.json({ features: FEATURES })));
+	served.countries = countriesDouble({ answer: { features: FEATURES } });
 });
 
 afterEach(() => {
+	document.documentElement.removeAttribute(THEME_ATTRIBUTE);
 	cleanup();
 	vi.unstubAllGlobals();
 	vi.restoreAllMocks();
 });
 
+const countriesCalls = () => (served.countries as CountriesDouble).calls;
+
 describe("WorldGlobeCanvas", () => {
+	it("asks the site for the countries file it serves, once", async () => {
+		await mountCanvas();
+
+		expect(countriesCalls()).toEqual([`${window.location.origin}/countries.json`]);
+	});
+
 	it("draws the countries it fetched", async () => {
 		await mountCanvas();
 
 		expect(screen.getByTestId("globe")).toBeDefined();
 		expect(globeProps.at(-1)?.hexPolygonsData).toStrictEqual(FEATURES);
-		expect(globeProps.at(-1)?.hexPolygonColor?.()).toBe(WORLD_GLOBE_CONFIG.HEXAGON_POLYGON_COLOR);
+		expect(globeProps.at(-1)?.hexPolygonColor?.()).toBe(palette.current.land);
 	});
 
 	it("draws a globe rather than a photograph of one, and leaves the page's background showing", async () => {
 		await mountCanvas();
 
 		expect(materials.at(-1)).toStrictEqual({
-			color: WORLD_GLOBE_CONFIG.MESH_PHONG_MATERIAL_CONFIG.COLOR,
+			color: palette.current.ocean,
 			opacity: WORLD_GLOBE_CONFIG.MESH_PHONG_MATERIAL_CONFIG.OPACITY,
 			transparent: WORLD_GLOBE_CONFIG.MESH_PHONG_MATERIAL_CONFIG.TRANSPARENT,
 		});
 		expect(globeProps.at(-1)?.backgroundColor).toBe(WORLD_GLOBE_CONFIG.BACKGROUND_COLOR);
 		expect(globeProps.at(-1)?.showAtmosphere).toBe(false);
+	});
+
+	it("repaints the land and the sea when the theme changes, since the tokens resolve to other colours then", async () => {
+		await mountCanvas();
+		palette.current = { land: "#facade", ocean: "#bada55" };
+
+		await act(async () => {
+			document.documentElement.setAttribute(THEME_ATTRIBUTE, "dark");
+			await new Promise((resolve) => setTimeout(resolve, 0));
+		});
+
+		expect(globeProps.at(-1)?.hexPolygonColor?.()).toBe("#facade");
+		expect(colourSets.at(-1)).toBe("#bada55");
+	});
+
+	it("stops watching the theme once the globe is gone", async () => {
+		await mountCanvas();
+		cleanup();
+		const drawn = globeProps.length;
+
+		palette.current = { land: "#facade", ocean: "#bada55" };
+		document.documentElement.setAttribute(THEME_ATTRIBUTE, "dark");
+		await new Promise((resolve) => setTimeout(resolve, 0));
+
+		expect(globeProps).toHaveLength(drawn);
 	});
 
 	it("hands the globe no points layer, whose accessors read an altitude, a radius and a colour no CityPoint carries", async () => {
@@ -231,32 +275,35 @@ describe("WorldGlobeCanvas", () => {
 	});
 
 	it("draws an empty globe rather than failing when the countries cannot be fetched", async () => {
-		server.use(http.get(COUNTRIES_URL, () => HttpResponse.error()));
+		const unreachable = countriesDouble({ unreachable: true });
 
 		await mountCanvas();
 
+		expect(unreachable.calls).toHaveLength(1);
 		expect(globeProps.at(-1)?.hexPolygonsData).toStrictEqual([]);
 		expect(screen.getByTestId("globe")).toBeDefined();
 	});
 
 	it.each([
-		["a body that is not json", () => HttpResponse.text("<!doctype html>")],
-		["json that is not an object", () => HttpResponse.json(null)],
-		["an object carrying no features", () => HttpResponse.json({})],
-		["features that are not a list", () => HttpResponse.json({ features: "Spain" })],
-		["a feature carrying no geometry", () => HttpResponse.json({ features: [{ type: "Feature", properties: {} }] })],
+		["a body that is not json", { malformed: true }],
+		["json that is not an object", { answer: null }],
+		["an object carrying no features", { answer: {} }],
+		["features that are not a list", { answer: { features: "Spain" } }],
+		["a feature carrying no geometry", { answer: { features: [{ type: "Feature", properties: {} }] } }],
 		[
 			"a feature whose geometry is not a polygon",
-			() =>
-				HttpResponse.json({
+			{
+				answer: {
 					features: [{ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: [0, 0] } }],
-				}),
+				},
+			},
 		],
-	])("draws an empty globe rather than handing the renderer %s", async (_name, answer) => {
-		server.use(http.get(COUNTRIES_URL, answer));
+	])("draws an empty globe rather than handing the renderer %s", async (_name, params) => {
+		const served = countriesDouble(params);
 
 		await mountCanvas();
 
+		expect(served.calls).toHaveLength(1);
 		expect(globeProps.at(-1)?.hexPolygonsData).toStrictEqual([]);
 	});
 
@@ -265,10 +312,11 @@ describe("WorldGlobeCanvas", () => {
 			{ type: "Feature", properties: { name: "Spain" }, geometry: { type: "Polygon", coordinates: [[[0, 0]]] } },
 			{ type: "Feature", properties: { name: "Italy" }, geometry: { type: "MultiPolygon", coordinates: [[[[0, 0]]]] } },
 		];
-		server.use(http.get(COUNTRIES_URL, () => HttpResponse.json({ type: "FeatureCollection", features })));
+		const polygons = countriesDouble({ answer: { type: "FeatureCollection", features } });
 
 		await mountCanvas();
 
+		expect(polygons.calls).toHaveLength(1);
 		expect(globeProps.at(-1)?.hexPolygonsData).toStrictEqual(features);
 	});
 });

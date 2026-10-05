@@ -2,7 +2,11 @@ import { describe, expect, it, vi } from "vitest";
 import { createArticles } from "./articleDTO";
 import type { RawArticle } from "./types";
 
-vi.mock("astro:content", () => ({ reference: () => ({ parse: (value: unknown) => value }) }));
+vi.mock("astro:content", async () => {
+	const { z } = await import("astro/zod");
+
+	return { reference: () => z.custom(() => true) };
+});
 
 const text = (value: string) => ({ nodeType: "text", value, marks: [], data: {} });
 const paragraph = (value: string) => ({ nodeType: "paragraph", data: {}, content: [text(value)] });
@@ -241,6 +245,15 @@ describe("createArticles related articles", () => {
 			makeArticle({ slug: "first", title: "First", tags: [craft] }),
 			makeArticle({ slug: "second", title: "Second", tags: [craft, travel] }),
 			makeArticle({ slug: "third", title: "Third", tags: [travel] }),
+		]);
+
+		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
+	});
+
+	it("matches two Tags the CMS padded differently, since the Tag Index trims them into one", () => {
+		const [article] = createArticles([
+			makeArticle({ slug: "first", title: "First", tags: [tag({ name: "Craft", slug: "craft" })] }),
+			makeArticle({ slug: "second", title: "Second", tags: [tag({ name: "Craft", slug: " craft " })] }),
 		]);
 
 		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);

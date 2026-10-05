@@ -154,21 +154,29 @@ describe("WorldGlobe", () => {
 		expect(wrapper().style.width).toBe("");
 	});
 
-	it("lets a caller's width win, and then stops listening for resizes", async () => {
+	it("takes no width of its own, since the viewport is the only thing that sizes it", () => {
+		// @ts-expect-error a caller cannot pass a width, the viewport decides it
 		render(<WorldGlobe points={POINTS} width={320} />);
-		expect(wrapper().style.width).toBe("320px");
 
-		await resizeTo(1200);
-
-		expect(wrapper().style.width).toBe("320px");
+		expect(wrapper().style.width).toBe("680px");
 	});
 
 	it("hands the canvas the width it settled on", async () => {
-		render(<WorldGlobe points={POINTS} width={320} />);
+		vi.stubGlobal("innerWidth", 1200);
+		render(<WorldGlobe points={POINTS} />);
 
 		await scrollIntoView();
 
-		expect(canvasProps.at(-1)?.width).toBe(320);
+		expect(canvasProps.at(-1)?.width).toBe(680);
+	});
+
+	it("hands the canvas no width on a narrow viewport, where the stylesheet sizes it", async () => {
+		vi.stubGlobal("innerWidth", 480);
+		render(<WorldGlobe points={POINTS} />);
+
+		await scrollIntoView();
+
+		expect(canvasProps.at(-1)?.width).toBeUndefined();
 	});
 
 	it("stops listening for resizes once it goes away", async () => {

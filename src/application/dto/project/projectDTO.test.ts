@@ -56,10 +56,22 @@ describe("createProjects identity", () => {
 		expect(project.id).toBe("cafes-cities-a-guide");
 	});
 
-	it("keeps an empty authored id, because the fallback is nullish and an empty string is not", () => {
-		const [project] = createProjects([makeProject({ id: "", name: "The Weekly Dispatch" })]);
+	it.each([
+		["empty", ""],
+		["only whitespace", "  \n "],
+	])(
+		"falls back to a slug of the name when the authored id is %s, since an id like that addresses nothing",
+		(_name, id) => {
+			const [project] = createProjects([makeProject({ id, name: "The Weekly Dispatch" })]);
 
-		expect(project.id).toBe("");
+			expect(project.id).toBe("the-weekly-dispatch");
+		},
+	);
+
+	it("trims an authored id, the key the projects collection and the anchor on /projects are built from", () => {
+		const [project] = createProjects([makeProject({ id: "  weekly-dispatch\n" })]);
+
+		expect(project.id).toBe("weekly-dispatch");
 	});
 
 	it("leaves the name itself untouched by the slugification", () => {

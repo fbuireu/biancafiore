@@ -1,5 +1,6 @@
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
-import { Cause, Effect, Exit, Option } from "effect";
+import { defectOf, failureOf } from "@tests/helpers/exit";
+import { Cause, Effect, Exit } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CmsError } from "../errors";
 import { CmsClient, CmsClientLive, isContentfulConfigured } from "./client";
@@ -14,9 +15,6 @@ const DELIVERY_SECRET = "CONTENTFUL_DELIVERY_TOKEN";
 const PREVIEW_SECRET = "CONTENTFUL_PREVIEW_TOKEN";
 
 const build = () => Effect.runPromiseExit(CmsClient.pipe(Effect.provide(CmsClientLive)));
-
-const defectOf = (exit: Exit.Exit<unknown, unknown>): unknown =>
-	Exit.isFailure(exit) ? Option.getOrUndefined(Cause.dieOption(exit.cause)) : undefined;
 
 const MISSING_MESSAGE = "CONTENTFUL_SPACE_ID and a Contentful access token must be defined";
 
@@ -131,7 +129,7 @@ describe("CmsClient.getEntries", () => {
 
 		expect(Exit.isFailure(exit)).toBe(true);
 
-		const failure = Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause)) : undefined;
+		const failure = failureOf(exit);
 
 		expect(failure).toBeInstanceOf(CmsError);
 		expect((failure as CmsError).message).toBe("The access token you sent could not be found");
@@ -141,7 +139,7 @@ describe("CmsClient.getEntries", () => {
 		getEntries.mockRejectedValue("gateway timeout");
 
 		const exit = await getEntriesOf(A_QUERY);
-		const failure = Exit.isFailure(exit) ? Option.getOrUndefined(Cause.failureOption(exit.cause)) : undefined;
+		const failure = failureOf(exit);
 
 		expect((failure as CmsError).message).toBe("gateway timeout");
 		expect((failure as CmsError).cause).toBe("gateway timeout");

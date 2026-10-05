@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
+import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import "./project-list.css";
+import { projectHref } from "@const/index";
+import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
+import { buildProjectListSchema } from "@modules/core/utils/jsonLd";
+
+const projects = await getCollection("projects");
+
+const projectCount = String(projects.length).padStart(2, "0");
+const itemListSchema = buildProjectListSchema(projects.map(({ data }) => data.id));
+---
+<section class="project-list">
+    <div class="project-list__inner">
+        <header class="project-list__header reveal">
+            <h2 class="project-list__title editorial-section-title">My&nbsp;Work</h2>
+            <p class="editorial-meta">{projectCount} Disciplines</p>
+        </header>
+        {projects.map((project) => {
+          const projectUrl = projectHref(project.data.id);
+
+          return (
+              <details class="project-list__item reveal" name="project-list">
+                  <summary class="project-list__summary">
+                      <h3 class="project-list__name">{project.data.name}</h3>
+                      <BlurImage
+                          class="project-list__thumbnail"
+                          image={project.data.image}
+                          alt={project.data.name}
+                          loading="lazy"
+                      />
+                  </summary>
+                  <div class="project-list__panel">
+                      <article class="project-list__description" set:html={project.data.description} />
+                      <a class="editorial-cta" href={projectUrl}>
+                          More details <span class="editorial-cta__arrow" aria-hidden="true" set:html={stretchArrow} />
+                      </a>
+                  </div>
+              </details>
+          );
+        })}
+    </div>
+    <JsonLd schema={itemListSchema} />
+</section>

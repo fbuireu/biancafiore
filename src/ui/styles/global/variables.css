@@ -19,6 +19,7 @@
 		--success-main: oklch(52.29% 0.17558211290701223 142.8999328999691);
 		--white: oklch(100% 0 0);
 		--black: oklch(0 0 0);
+		--scrim: color-mix(in srgb, oklch(0 0 0) 90%, transparent);
 		--ink: light-dark(#1b1813, #ece6d8);
 		--ink-soft: light-dark(#3a352d, #cdc6b6);
 		--muted: light-dark(#756e62, #968d7c);
@@ -490,6 +491,12 @@
 }
 
 @property --stack-index {
+	syntax: "<integer>";
+	inherits: true;
+	initial-value: 1;
+}
+
+@property --num-cards {
 	syntax: "<integer>";
 	inherits: true;
 	initial-value: 1;
