@@ -62,6 +62,10 @@ const articlePages = (): string[] =>
 
 const headingLevels = (html: string): number[] => [...html.matchAll(HEADING_TAG)].map(([, level]) => Number(level));
 
+const ARTICLE_BODY = new RegExp(`<article class="${ARTICLE_BODY_CLASS}"[\\s\\S]*?</article>`);
+
+const withoutArticleBody = (html: string): string => html.replace(ARTICLE_BODY, "");
+
 const sitemapUrls = (): string[] => [...read(join(CLIENT, "sitemap-0.xml")).matchAll(LOCATION)].map(([, url]) => url);
 
 const locations = (): string[] => sitemapUrls().map((url) => new URL(url).pathname);
@@ -88,11 +92,11 @@ describe("the built output", () => {
 		expect(rendered.length).toBe(HIDES_CHROME ? 0 : owed.length);
 	});
 
-	it("hydrates an island on About alone among the prerendered pages, so no other page loads React", () => {
+	it("hydrates an island on About alone among the prerendered pages, so no other page loads React, and on none while the chrome hides About", () => {
 		const pages = prerenderedPages();
 
 		expect(pages.length).toBeGreaterThan(1);
-		expect(pages.filter((page) => read(page).includes(ISLAND))).toEqual([pageAt("about")]);
+		expect(pages.filter((page) => read(page).includes(ISLAND))).toEqual(HIDES_CHROME ? [] : [pageAt("about")]);
 	});
 
 	it("renders the Manage cookies button in the footer of every prerendered page, before any script runs", () => {
@@ -192,14 +196,16 @@ describe("the built output", () => {
 		expect(feed).not.toContain(`${firstArticle}/</link>`);
 	});
 
-	it("skips no heading level and never puts a deeper heading above a shallower one", () => {
+	it("skips no heading level the templates write and never puts a deeper one above a shallower one, an Article's body being its author's", () => {
 		const outlines = [
 			...["about", "privacy-policy", "terms-and-conditions"].map((route) => ({
 				route,
 				levels: headingLevels(read(pageAt(route))),
 			})),
-			...articlePages().map((page) => ({ route: page, levels: headingLevels(read(page)) })),
+			...articlePages().map((page) => ({ route: page, levels: headingLevels(withoutArticleBody(read(page))) })),
 		];
+
+		expect(articlePages().filter((page) => withoutArticleBody(read(page)) === read(page))).toEqual([]);
 
 		for (const { route, levels } of outlines) {
 			const skips = levels.filter((level, index) => index > 0 && level - (levels[index - 1] as number) > 1);
