@@ -1,3 +1,10 @@
+## [1.25.7](https://github.com/fbuireu/biancafiore/compare/v1.25.6...v1.25.7) (2026-10-05)
+
+
+### Bug Fixes
+
+* build every zod schema without its JIT, so no page reports an eval the policy refuses ([cf06a24](https://github.com/fbuireu/biancafiore/commit/cf06a24adf758489742a989daefa0ce9955f0985))
+
 ## [1.25.6](https://github.com/fbuireu/biancafiore/compare/v1.25.5...v1.25.6) (2026-10-05)
 
 
