@@ -3,7 +3,7 @@ import { createArticles } from "./articleDTO";
 import type { RawArticle } from "./types";
 
 vi.mock("astro:content", async () => {
-	const { z } = await import("astro/zod");
+	const { z } = await import("@shared/utils/zod");
 
 	return { reference: () => z.custom(() => true) };
 });

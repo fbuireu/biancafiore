@@ -1,7 +1,7 @@
 import type { Except } from "@const/types";
 import type { ImageDTO } from "@domain/shared/image";
 import { getOriginImageUrl } from "@infrastructure/images/imageOptimization";
-import { z } from "astro/zod";
+import { z } from "@shared/utils/zod";
 import type { Asset, UnresolvedLink } from "contentful";
 
 const PROTOCOL_RELATIVE_PREFIX = "//";

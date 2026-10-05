@@ -1,4 +1,4 @@
-import type { z } from "astro/zod";
+import type { z } from "@shared/utils/zod";
 import type { articleSchema } from "./schema";
 
 export type ArticleDTO = z.infer<typeof articleSchema>;

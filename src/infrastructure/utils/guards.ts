@@ -1,7 +1,7 @@
 import type { Except } from "@const/types";
 import { BOT_REFUSAL_MESSAGE, contactFormSchema } from "@domain/contact/schema";
 import type { ContactFormData } from "@shared/ui/types";
-import { z } from "astro/zod";
+import { z } from "@shared/utils/zod";
 import { Effect } from "effect";
 import { RecaptchaError, ValidationError } from "../errors";
 

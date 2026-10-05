@@ -1,5 +1,5 @@
 import { reference } from "astro:content";
-import { z } from "astro/zod";
+import { z } from "@shared/utils/zod";
 import { TagType } from "./types";
 
 export const tagSchema = z.object({

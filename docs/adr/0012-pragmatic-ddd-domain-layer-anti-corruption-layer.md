@@ -4,7 +4,7 @@ Date: 2026-07-26
 
 ## Status
 
-Accepted. Amended 2026-10-02: the domain also reads the site's fixed locale from `@const/locale`, a module that imports nothing, because a rule that orders text has to order it the same way on every machine, for the reason the Decision now records.
+Accepted. Amended 2026-10-02: the domain also reads the site's fixed locale from `@const/locale`, a module that imports nothing, because a rule that orders text has to order it the same way on every machine, for the reason the Decision now records. Amended 2026-10-05: the schemas take `z` from `@shared/utils/zod`, which is `astro/zod` with its JIT off, because the site's policy refuses the `new Function` probe an object schema otherwise runs in the browser.
 
 ## Context
 
@@ -37,7 +37,7 @@ Per practice, that lands here. A strategic row is the shape of the tree; a tacti
 
 Most of the dropped rows share one reason worth stating once: aggregates, repositories and domain events all assume an application that owns its own writes, and this one does not. Content is authored in Contentful and read here.
 
-The load-bearing invariant: **`domain/` never imports from `application/` or `infrastructure/`**. It may use `astro/zod`, `astro:content`'s `reference()`, other `@domain/*`, generic `@shared/utils` helpers and `DEFAULT_LOCALE_STRING` from `@const/locale` only. The locale is there because `localeCompare` without one collates under the locale of whatever machine runs it: CI prerenders under one, an author builds under another, and a Swedish one files Ö after Z, so the Tag Index a build prints would depend on where it ran.
+The load-bearing invariant: **`domain/` never imports from `application/` or `infrastructure/`**. It may use `astro/zod` through `@shared/utils/zod`, `astro:content`'s `reference()`, other `@domain/*`, generic `@shared/utils` helpers and `DEFAULT_LOCALE_STRING` from `@const/locale` only. The locale is there because `localeCompare` without one collates under the locale of whatever machine runs it: CI prerenders under one, an author builds under another, and a Swedish one files Ö after Z, so the Tag Index a build prints would depend on where it ran.
 
 ```mermaid
 ---

@@ -1,5 +1,5 @@
 import { reference } from "astro:content";
-import { z } from "astro/zod";
+import { z } from "@shared/utils/zod";
 import { authorSchema } from "../author";
 import { imageSchema } from "../shared/image";
 import { tagSchema } from "../tag";

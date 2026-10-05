@@ -1,4 +1,4 @@
-import { z } from "astro/zod";
+import { z } from "@shared/utils/zod";
 
 export const BOT_REFUSAL_MESSAGE = "Mr. Robot, is that you?";
 

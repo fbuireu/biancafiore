@@ -5,7 +5,7 @@ import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import { type ArticleHeading, isTableOfContentsHeading } from "@domain/article";
 import { getOptimizedImageUrl, getOptimizedSrcset } from "@infrastructure/images/imageOptimization";
 import { escapeHtml, safeUrl, slugify } from "@shared/utils/strings";
-import { z } from "astro/zod";
+import { z } from "@shared/utils/zod";
 import { absoluteAssetUrl, assetFileSchema } from "../../shared/images";
 import type { RawArticle } from "../types";
 import { articleSlug } from "./reference";

@@ -345,6 +345,8 @@ const PROCESS_ENV_WRITE = /\bprocess\.env(?:\.\w+|\[[^\]]+\])\s*=(?!=)|\bdelete\
 const JSON_READ = /\.json\(\)|JSON\.parse\(/;
 const CAST_JSON = /(?:\.json\(\)|JSON\.parse\([^;]*?\))\)?\s+as\s/;
 const ZOD_SPECIFIER = /^zod(?:\/|$)/;
+const ZOD_MODULE = "src/shared/utils/zod";
+const JITLESS_ZOD = "z.config({ jitless: true });";
 const DEPENDENCY_FIELDS = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"];
 const HAND_WRITTEN_MEMOISATION = /\buse(?:Memo|Callback)\(|\bmemo\(/;
 const REACT_COMPILER = "react({ compiler: true })";
@@ -4114,17 +4116,25 @@ describe("the hand-written code", () => {
 		expect(imported.filter(({ name }) => !declared.has(name)).map(({ file, name }) => `${file}: ${name}`)).toEqual([]);
 	});
 
-	it("imports Zod only through astro/zod, and declares no zod of its own", () => {
+	it("imports Zod only through @shared/utils/zod, which turns its JIT off before any schema is built, so no page probes an eval the policy refuses, and declares no zod of its own", () => {
 		const specifiers = HAND_WRITTEN_CODE.flatMap((file) =>
 			[...read(file).matchAll(IMPORT_SPECIFIER)].map(([, specifier]) => ({ file, specifier })),
 		);
 		const direct = specifiers
 			.filter(({ specifier }) => ZOD_SPECIFIER.test(specifier))
 			.map(({ file, specifier }) => `${file} imports ${specifier}`);
+		const astroZodReaders = specifiers
+			.filter(({ specifier }) => specifier === "astro/zod")
+			.map(({ file }) => file.replace(TYPESCRIPT_FILE, ""));
+		const wrapperReaders = specifiers.filter((specifier) => importTarget(specifier) === ZOD_MODULE);
 
 		expect(zodDeclarationsIn({ devDependencies: { zod: "x" } })).toEqual(["devDependencies"]);
-		expect(specifiers.filter(({ specifier }) => specifier === "astro/zod").length).toBeGreaterThan(0);
+		expect(importTarget({ file: "src/shared/ui/types.ts", specifier: "../utils/zod" })).toBe(ZOD_MODULE);
+		expect(importTarget({ file: "src/domain/city/schema.ts", specifier: "@shared/utils/zod" })).toBe(ZOD_MODULE);
+		expect(wrapperReaders.length).toBeGreaterThan(0);
 		expect(direct).toEqual([]);
+		expect(astroZodReaders).toEqual([ZOD_MODULE]);
+		expect(read(`${ZOD_MODULE}.ts`)).toContain(JITLESS_ZOD);
 		expect(zodDeclarationsIn(PACKAGE_JSON)).toEqual([]);
 	});
 

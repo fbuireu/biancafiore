@@ -1,5 +1,5 @@
 import { CALENDLY, CALENDLY_WIDGET_SCRIPT } from "@const/calendly";
-import { z } from "astro/zod";
+import { z } from "@shared/utils/zod";
 import { TAB_ACTIVE_CLASS, TAB_CLASS, TAB_CONTENT_ACTIVE_CLASS, TAB_QUERY_KEY, TabId } from "../const";
 
 const SELECTORS = {

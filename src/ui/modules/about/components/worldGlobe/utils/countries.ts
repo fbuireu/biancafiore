@@ -1,4 +1,4 @@
-import { z } from "astro/zod";
+import { z } from "@shared/utils/zod";
 
 const COUNTRIES_URL = "/countries.json";
 

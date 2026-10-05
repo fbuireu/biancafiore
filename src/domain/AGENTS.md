@@ -6,7 +6,7 @@ The pure domain layer. One folder per domain concept, named in the singular afte
 
 ```
 <concept>/
-  schema.ts   # astro/zod schema: what validates at the edge (a content collection, or the action input for contact)
+  schema.ts   # zod schema (`@shared/utils/zod`): what validates at the edge (a content collection, or the action input for contact)
   types.ts    # DTO type + concept-specific types (e.g. ArticleHeading, CityPeriod)
   rules.ts    # pure functions encoding editorial rules
   index.ts    # barrel: export * from each of the above
@@ -16,7 +16,7 @@ Not every concept needs all of them. `rules.ts` exists for `article`, `breadcrum
 
 ## What the domain may reach
 
-Nothing here imports from `@application/*`, `@infrastructure/*` or `@modules/*`. The only non-domain imports are `astro/zod`, `reference` from `astro:content`, `@shared/utils/*` for generic helpers (`deSlugify`, `formatDate`), and `@const/locale` for `DEFAULT_LOCALE_STRING`, which every `localeCompare` passes so a rule orders text the same way on any machine. No Effect, no I/O, no env access: a rule is a synchronous function over plain data. Something that needs to fetch belongs in `@application/entities`, something that needs a client in `@infrastructure`. The docs test rejects a local-time `Date` API here, and the `node` test project runs in `America/New_York`, so a rule's own tests run away from UTC.
+Nothing here imports from `@application/*`, `@infrastructure/*` or `@modules/*`. The only non-domain imports are `reference` from `astro:content`, `@shared/utils/*` for zod (`z`, from `astro/zod` with its JIT off) and generic helpers (`deSlugify`, `formatDate`), and `@const/locale` for `DEFAULT_LOCALE_STRING`, which every `localeCompare` passes so a rule orders text the same way on any machine. No Effect, no I/O, no env access: a rule is a synchronous function over plain data. Something that needs to fetch belongs in `@application/entities`, something that needs a client in `@infrastructure`. The docs test rejects a local-time `Date` API here, and the `node` test project runs in `America/New_York`, so a rule's own tests run away from UTC.
 
 ## Where the rules live
 

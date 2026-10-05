@@ -6,7 +6,7 @@ import type { RawArticle } from "../../dto/article/types";
 import { articles } from "./articles";
 
 vi.mock("astro:content", async () => {
-	const { z } = await import("astro/zod");
+	const { z } = await import("@shared/utils/zod");
 	const unresolvable = () => {
 		throw new Error("reference() is a stub here: a loader test cannot validate entries against the collection schema");
 	};

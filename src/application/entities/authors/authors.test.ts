@@ -7,7 +7,7 @@ import { AUTHOR_LATEST_ARTICLE_FIELDS } from "../../dto/author/utils/articles";
 import { authors } from "./authors";
 
 vi.mock("astro:content", async () => {
-	const { z } = await import("astro/zod");
+	const { z } = await import("@shared/utils/zod");
 	const unresolvable = () => {
 		throw new Error("reference() is a stub here: a loader test cannot validate entries against the collection schema");
 	};
