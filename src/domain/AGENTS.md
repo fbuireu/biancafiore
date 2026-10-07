@@ -1,6 +1,6 @@
 # src/domain
 
-The pure domain layer. One folder per domain concept, named in the singular after the term in [CONTEXT.md](../../CONTEXT.md) (`article`, `author`, `city`, `project`, `tag`, `testimonial`, `breadcrumb`, `contact`). See ADR 0012.
+The pure domain layer. One folder per domain concept, named in the singular after the term in [GLOSSARY.md](../../GLOSSARY.md) (`article`, `author`, `city`, `project`, `tag`, `testimonial`, `breadcrumb`, `contact`). See ADR 0012.
 
 ## Anatomy of a concept
 

@@ -47,8 +47,8 @@
 - [ ] `pnpm verify` passes (format check, typecheck, `astro check` and coverage)
 - [ ] I have reviewed my own diff against [`CODING_STANDARDS.md`](../CODING_STANDARDS.md)
 - [ ] My change carries no inline comments; rationale lives in this PR, the commit messages, an ADR or a rule in [`CODING_STANDARDS.md`](../CODING_STANDARDS.md)
-- [ ] I used the glossary's words ([`CONTEXT.md`](../CONTEXT.md)) rather than synonyms
-- [ ] I updated any `AGENTS.md`, [`CODING_STANDARDS.md`](../CODING_STANDARDS.md), [`CONTEXT.md`](../CONTEXT.md), ADR or wiki page my change affects, in this same PR, and `pnpm test:docs` passes
+- [ ] I used the glossary's words ([`GLOSSARY.md`](../GLOSSARY.md)) rather than synonyms
+- [ ] I updated any `AGENTS.md`, [`CODING_STANDARDS.md`](../CODING_STANDARDS.md), [`GLOSSARY.md`](../GLOSSARY.md), ADR or wiki page my change affects, in this same PR, and `pnpm test:docs` passes
 - [ ] My changes generate no new warnings or errors
 - [ ] I have added tests that prove my fix is effective or that my feature works
 

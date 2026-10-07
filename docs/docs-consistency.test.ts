@@ -459,7 +459,7 @@ const section = ({ markdown, heading }: SectionParams) => {
 };
 
 const AGENTS_MD = read("AGENTS.md");
-const CONTEXT_MD = read("CONTEXT.md");
+const GLOSSARY_MD = read("GLOSSARY.md");
 const PACKAGE_JSON = readJson("package.json");
 const TSCONFIG = readJson("tsconfig.json");
 const BIOME_JSON = readJson("biome.json");
@@ -496,7 +496,7 @@ const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("AGENTS.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
 const WIKI_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/wiki/"));
 const CODING_STANDARDS = "CODING_STANDARDS.md";
-const GUIDES = ["AGENTS.md", "CONTEXT.md", CODING_STANDARDS, ...NESTED_GUIDES];
+const GUIDES = ["AGENTS.md", "GLOSSARY.md", CODING_STANDARDS, ...NESTED_GUIDES];
 const DOCS = [...GUIDES, "docs/BACKLOG.md", ".github/CONTRIBUTING.md", ...ADR_FILES, ...WIKI_FILES];
 const isWiki = (doc: string) => doc.startsWith("docs/wiki/");
 const wikiPages = new Set(WIKI_FILES.map((file) => basename(file, ".md")));
@@ -1074,12 +1074,12 @@ describe("ADRs", () => {
 describe("domain vocabulary", () => {
 	const concepts = directoriesIn("src/domain");
 
-	it("gives every domain concept a glossary entry in CONTEXT.md", () => {
+	it("gives every domain concept a glossary entry in GLOSSARY.md", () => {
 		expect(concepts.length).toBeGreaterThan(CONCEPTS_OUTSIDE_THE_GLOSSARY.size);
 
 		const missing = concepts
 			.filter((concept) => !CONCEPTS_OUTSIDE_THE_GLOSSARY.has(concept))
-			.filter((concept) => !CONTEXT_MD.includes(`**${concept[0].toUpperCase()}${concept.slice(1)}**`));
+			.filter((concept) => !GLOSSARY_MD.includes(`**${concept[0].toUpperCase()}${concept.slice(1)}**`));
 
 		expect(missing).toEqual([]);
 	});

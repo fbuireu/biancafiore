@@ -1,6 +1,6 @@
 # Coding standards
 
-What a review checks a diff against. The words are the ones [CONTEXT.md](./CONTEXT.md) defines, the reasons are in [docs/adr/](./docs/adr/), and what an implementer needs while working is in the `AGENTS.md` guides.
+What a review checks a diff against. The words are the ones [GLOSSARY.md](./GLOSSARY.md) defines, the reasons are in [docs/adr/](./docs/adr/), and what an implementer needs while working is in the `AGENTS.md` guides.
 
 **hard** marks a rule whose breach is a defect: report it with the rule. **judgement** marks a call the reviewer weighs against the diff: report it as a question. A rule here outranks the smell baseline; where it endorses something a smell would flag, the case is listed under *Deliberate overrides of the smell baseline* at the end.
 
@@ -40,7 +40,7 @@ No rule below restates these, and a diff that breaks one fails CI:
 
 ## Across the tree
 
-- **hard**: Name every folder, type, field, function and test after the term `CONTEXT.md` defines, never a word it lists under _Avoid_, for that concept or for anything a reader could take for it, because a name that disagrees with the glossary is a defect in one of the two ([ADR 0012](./docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md)). The _Avoid_ lists govern the names of concepts, not a vendor's own terms for its records (`entry`, an Astro `id`, `reference()`).
+- **hard**: Name every folder, type, field, function and test after the term `GLOSSARY.md` defines, never a word it lists under _Avoid_, for that concept or for anything a reader could take for it, because a name that disagrees with the glossary is a defect in one of the two ([ADR 0012](./docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md)). The _Avoid_ lists govern the names of concepts, not a vendor's own terms for its records (`entry`, an Astro `id`, `reference()`).
 - **hard**: Keep Featured Article and Favorite apart (`isFeaturedArticle`, `isFavorite`), because the reader-facing lead of the Blog and the Author's own pick are chosen for different reasons.
 - **hard**: Pass one argument positionally and two or more as one object, so no `…Params` type and no inline parameter type declares a single field of its own, because a wrapper around one value adds a type and a destructure for nothing and hides that the function takes a single subject. A signature the runtime or a vendor owns (a route handler, a component's `Props`, a vendor's options object) stays that owner's type; it is never a local `…Params` with one field.
 - **hard**: Name a parameter object after the function that takes it, `<FunctionName>Params`, so a reader landing on the type finds what takes it; a function handed one record (a domain object, a row, a vendor query or response, one event) keeps that record's type. Sibling functions that take the same input may share one type named for that role (`LogParams`, which `info`, `warn` and `error` take). The rule holds where the tooling cannot see it too (an object method, a parameter taken whole), and a React component takes `<Component>Props` and an Astro component `Props`, the name Astro reads.
@@ -145,7 +145,7 @@ No rule below restates these, and a diff that breaks one fails CI:
 
 ## Docs
 
-- **hard**: Keep `CONTEXT.md` to vocabulary: the term, one or two sentences on what it is, and the words it displaces, never how it is built, because mechanism belongs to the folder guide or an ADR.
+- **hard**: Keep `GLOSSARY.md` to vocabulary: the term, one or two sentences on what it is, and the words it displaces, never how it is built, because mechanism belongs to the folder guide or an ADR.
 - **hard**: State a rule once: a rule about how code is written here, a coupling or a gotcha in the guide of the folder it bites, a decision in an ADR; a wiki page says where the rule lives, because `docs/wiki/` is published and nothing checks a copy.
 - **hard**: Write a guide in the present tense, holding what an implementer needs while working; the reason for a line goes in the commit message, the pull request, an ADR or a rule here, and history ("used to", "was", "until …") stays in git, because a guide is loaded into every session that works in its folder.
 - **judgement**: Propose an ADR only for a decision that is hard to reverse, surprising without context and the result of a real trade-off, and link it from where it bites.
@@ -161,5 +161,5 @@ No rule below restates these, and a diff that breaks one fails CI:
 - **Duplicated Code**: the Contact payload is validated at `defineAction`'s `input` and again in `validateContact`, because only the edge rejects an empty reCAPTCHA token and only the program is unit-testable; the `ManagedRuntime` behind `fetchEntries` and the per-request `ContactLayer` stay two runtimes ([ADR 0004](./docs/adr/0004-effect-for-infrastructure-clients.md)).
 - **Middle Man**: `LoggerService` is a `Layer.sync` over the `logger` object, kept for the `R` signal that makes an unintended log a compile error ([ADR 0020](./docs/adr/0020-logs-and-traces-leave-through-cloudflares-export.md)).
 - **Speculative Generality**: Effect tags and layers wrap the CMS, database and email clients although each has one consumer (`fetchEntries` for the CMS, the contact flow for the database and email), a heavy choice the ADR accepts ([ADR 0004](./docs/adr/0004-effect-for-infrastructure-clients.md)).
-- **Shotgun Surgery**: a new content type edits its domain concept, its DTO, its loader, `src/content.config.ts` and `CONTEXT.md` together by design ([ADR 0012](./docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md)); a new inverting or container-scaled component also edits its census line in the styles guide.
+- **Shotgun Surgery**: a new content type edits its domain concept, its DTO, its loader, `src/content.config.ts` and `GLOSSARY.md` together by design ([ADR 0012](./docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md)); a new inverting or container-scaled component also edits its census line in the styles guide.
 - **Mysterious Name**: `ASTRO_DB_REMOTE_URL` and `ASTRO_DB_APP_TOKEN` keep the Astro DB name, because renaming means re-provisioning the secrets ([ADR 0003](./docs/adr/0003-drizzle-libsql-turso-over-astro-db.md)); `HIDE_CHROME` keeps a name that understates it until the flag is deleted ([ADR 0018](./docs/adr/0018-hide-chrome-replaces-the-page.md)).

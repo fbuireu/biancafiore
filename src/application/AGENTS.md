@@ -52,4 +52,4 @@ Post-processing that *fetches* (`getImagePlaceholders`) happens in the loader, a
 
 ## Adding a content type
 
-domain concept (`schema`/`types`/`rules`) → `dto/<concept>` → `entities/<plural>` → register the collection in [`src/content.config.ts`](../content.config.ts). Add the glossary term to `CONTEXT.md` in the same change.
+domain concept (`schema`/`types`/`rules`) → `dto/<concept>` → `entities/<plural>` → register the collection in [`src/content.config.ts`](../content.config.ts). Add the glossary term to `GLOSSARY.md` in the same change.

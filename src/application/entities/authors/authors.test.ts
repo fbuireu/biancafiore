@@ -89,7 +89,7 @@ describe("authors loader", () => {
 		expect(cmsQueriesOverlapped()).toBe(true);
 	});
 
-	it("keys every entry by the author's slug, the identity CONTEXT.md gives an Author", async () => {
+	it("keys every entry by the author's slug, the identity GLOSSARY.md gives an Author", async () => {
 		cmsAnswers({ author: [BIANCA], article: [] });
 
 		const [entry] = await load();

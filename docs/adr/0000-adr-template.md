@@ -24,4 +24,4 @@ What follows from this, including what it costs. The bullets someone needs befor
 
 - What is now load-bearing and must not be removed, and what breaks if it is.
 - What this makes harder, slower, or impossible. An ADR with no cost recorded is usually not describing a real trade-off.
-- Where the decision bites in the rest of the docs: the rule in [`CODING_STANDARDS.md`](../../CODING_STANDARDS.md) a reviewer holds a diff to, the Gotchas bullet, the nested guide, the [`CONTEXT.md`](../../CONTEXT.md) entry that has to link back here. There is no index; an ADR nothing links to will not be read, and [`docs/docs-consistency.test.ts`](../docs-consistency.test.ts) fails on one that nothing links to.
+- Where the decision bites in the rest of the docs: the rule in [`CODING_STANDARDS.md`](../../CODING_STANDARDS.md) a reviewer holds a diff to, the Gotchas bullet, the nested guide, the [`GLOSSARY.md`](../../GLOSSARY.md) entry that has to link back here. There is no index; an ADR nothing links to will not be read, and [`docs/docs-consistency.test.ts`](../docs-consistency.test.ts) fails on one that nothing links to.

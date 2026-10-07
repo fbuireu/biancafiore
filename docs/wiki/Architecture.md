@@ -58,7 +58,7 @@ DDD is a set of practices, not one architecture. The failure mode the suffix nam
 
 The split runs along the strategic/tactical line, and only one half is negotiable.
 
-**The strategic half is taken whole.** One ubiquitous language, defined in [`CONTEXT.md`](https://github.com/fbuireu/biancafiore/blob/main/CONTEXT.md), where every domain word also lists the synonyms it displaces so a near-miss cannot drift in. A pure domain that performs no I/O, reads no env and holds no Effect. And the anti-corruption layer that keeps Contentful's `sys` and `fields` from reaching any of it, which is what keeps the CMS choice reversible.
+**The strategic half is taken whole.** One ubiquitous language, defined in [`GLOSSARY.md`](https://github.com/fbuireu/biancafiore/blob/main/GLOSSARY.md), where every domain word also lists the synonyms it displaces so a near-miss cannot drift in. A pure domain that performs no I/O, reads no env and holds no Effect. And the anti-corruption layer that keeps Contentful's `sys` and `fields` from reaching any of it, which is what keeps the CMS choice reversible.
 
 **The tactical half is applied where it pays**, and the test is a set of questions asked in order: can the illegal state actually be reached, does anything read it, does it cross a boundary. A "no" to every one of them means write the rule down instead of encoding it, because a divergence that is named is finished work.
 
@@ -72,7 +72,7 @@ Value objects are decided per concept rather than by default, which is why there
 
 | Question | Where |
 |---|---|
-| What does this domain word mean? | [`CONTEXT.md`](https://github.com/fbuireu/biancafiore/blob/main/CONTEXT.md), and **[Content Model](Content-Model)** |
+| What does this domain word mean? | [`GLOSSARY.md`](https://github.com/fbuireu/biancafiore/blob/main/GLOSSARY.md), and **[Content Model](Content-Model)** |
 | Why is the tree layered at all, and what did the (ish) drop? | [ADR 0012](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md) |
 | When does a concept earn a type of its own? | [ADR 0019](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0019-three-questions-before-modelling.md) |
 | How is code in a layer written? | [`CODING_STANDARDS.md`](https://github.com/fbuireu/biancafiore/blob/main/CODING_STANDARDS.md) |

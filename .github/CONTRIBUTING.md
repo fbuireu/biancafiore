@@ -7,7 +7,7 @@ commit.
 
 If you want the shape of the codebase, that is [AGENTS.md](../AGENTS.md) and the nested guides it links. If
 you want how code here is written, and what a review holds a diff to, that is
-[CODING_STANDARDS.md](../CODING_STANDARDS.md). If you want the vocabulary, that is [CONTEXT.md](../CONTEXT.md).
+[CODING_STANDARDS.md](../CODING_STANDARDS.md). If you want the vocabulary, that is [GLOSSARY.md](../GLOSSARY.md).
 If you want the *why*, that is [docs/adr/](../docs/adr/).
 
 ## Code of Conduct

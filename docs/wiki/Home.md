@@ -36,7 +36,7 @@ This wiki is the shape, not the rules. Anything normative lives in the repositor
 
 | Question | Where |
 |---|---|
-| What does a domain word mean, and what does it displace? | [`CONTEXT.md`](https://github.com/fbuireu/biancafiore/blob/main/CONTEXT.md) |
+| What does a domain word mean, and what does it displace? | [`GLOSSARY.md`](https://github.com/fbuireu/biancafiore/blob/main/GLOSSARY.md) |
 | How is code written here, and what does a review hold a diff to? | [`CODING_STANDARDS.md`](https://github.com/fbuireu/biancafiore/blob/main/CODING_STANDARDS.md) |
 | What does someone editing one folder need to know? | the `AGENTS.md` inside that folder |
 | Why was a decision made this way? | [`docs/adr/`](https://github.com/fbuireu/biancafiore/tree/main/docs/adr) |

@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Agent-facing guide for **biancafiore**, the portfolio and blog of a content writer: an Astro SSR site on Cloudflare Workers, with content from Contentful and contact submissions in Turso. [CONTEXT.md](./CONTEXT.md) is the domain glossary; do not duplicate it here.
+Agent-facing guide for **biancafiore**, the portfolio and blog of a content writer: an Astro SSR site on Cloudflare Workers, with content from Contentful and contact submissions in Turso. [GLOSSARY.md](./GLOSSARY.md) is the domain glossary; do not duplicate it here.
 
 Reviewing a diff: [CODING_STANDARDS.md](./CODING_STANDARDS.md).
 
@@ -117,7 +117,7 @@ These documents are not generated. When you change code, update the docs **in th
 
 | If you change | Update |
 | --- | --- |
-| What a domain word means, or introduce a new one | [`CONTEXT.md`](./CONTEXT.md): the glossary, vocabulary only |
+| What a domain word means, or introduce a new one | [`GLOSSARY.md`](./GLOSSARY.md): the glossary, vocabulary only |
 | A rule about how code is written | [`CODING_STANDARDS.md`](./CODING_STANDARDS.md) |
 | A folder's layout, the files a concept is made of, or a coupling or gotcha its guide states | that folder's nested `AGENTS.md` (table above) |
 | A behaviour a doc states as an invariant or a gotcha | that bullet, or delete it if it stopped being true |

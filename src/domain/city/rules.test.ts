@@ -42,7 +42,7 @@ describe("formatPeriod", () => {
 		expect(formatPeriod({ startYear: 2015, endYear: 2018 })).toBe("2015-2018");
 	});
 
-	it("prints an open period as running to Present, the word CONTEXT.md gives it", () => {
+	it("prints an open period as running to Present, the word GLOSSARY.md gives it", () => {
 		expect(formatPeriod({ startYear: 2021 })).toBe("2021-Present");
 	});
 

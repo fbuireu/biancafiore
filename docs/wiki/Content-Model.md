@@ -1,6 +1,6 @@
 # Content Model
 
-Editorial content is authored in Contentful and reaches the site as typed domain models. This page is the vocabulary and the path it travels; the normative glossary, with the synonyms each term displaces, is [`CONTEXT.md`](https://github.com/fbuireu/biancafiore/blob/main/CONTEXT.md).
+Editorial content is authored in Contentful and reaches the site as typed domain models. This page is the vocabulary and the path it travels; the normative glossary, with the synonyms each term displaces, is [`GLOSSARY.md`](https://github.com/fbuireu/biancafiore/blob/main/GLOSSARY.md).
 
 ---
 
