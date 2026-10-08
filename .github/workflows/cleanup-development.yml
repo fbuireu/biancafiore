@@ -66,6 +66,7 @@ jobs:
           persist-credentials: false
       - uses: $/.github/actions/prepare-env
       - name: Delete the preview Workers whose pull request is closed
+        shell: bash
         run: |
           scripts=$(curl -fsS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
             "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts" \
