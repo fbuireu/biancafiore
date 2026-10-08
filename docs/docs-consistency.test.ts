@@ -4409,6 +4409,9 @@ describe("the workflows", () => {
 	);
 	const RETRY_WRAPPER = "nick-fields/retry";
 	const DEPLOY_COMMAND = /\bwrangler deploy\b/;
+	const SHARED_DEPLOY_MESSAGE = /^\$\{\{ github\.sha \}\}-\$\{\{ github\.event_name \}\}$/;
+	const DEPLOY_MESSAGE_ARGUMENT = /--message[ =]("?)((?:\$\{\{[^}]*\}\}|[^\s"])+)\1/;
+	const SHELL_VARIABLE = /^\$\{?(\w+)\}?$/;
 	const BUILD_COMMAND = /\b(?:astro build|pnpm build)\b/;
 	const SECRET_COMMAND = /\bwrangler secret\b/;
 	const CLEANUP_GROUP = /group: CI-refs\/pull\/\$\{\{ github\.event\.pull_request\.number \}\}\/merge/;
@@ -4430,16 +4433,36 @@ describe("the workflows", () => {
 		expect(read(".github/workflows/cleanup-development.yml")).toMatch(CLEANUP_GROUP);
 	});
 
-	it("names every deploy with a --message of its own, the sha and the event, so a deployment reads as the commit it shipped", () => {
+	interface DeployMessageParams {
+		step: string;
+		line: string;
+	}
+
+	const deployMessage = ({ step, line }: DeployMessageParams): string => {
+		const argument = DEPLOY_MESSAGE_ARGUMENT.exec(line)?.[2] ?? "";
+		const variable = SHELL_VARIABLE.exec(argument)?.[1];
+		if (variable === undefined) return argument;
+		const declaration = step
+			.split(NEWLINE)
+			.map((text) => text.trim())
+			.find((text) => text.startsWith(`${variable}:`));
+		return declaration?.slice(variable.length + 1).trim() ?? "";
+	};
+
+	it("names every deploy with the --message the deploying repositories share, <sha>-<event> as one token, because forever-pto's OpenNext deploy re-spawns wrangler through a shell", () => {
 		const deploys = steps.flatMap(({ file, step }) =>
 			step
 				.split(NEWLINE)
 				.filter((line) => DEPLOY_COMMAND.test(line))
-				.map((line) => ({ file, line })),
+				.map((line) => ({ file, message: deployMessage({ step, line }) })),
 		);
 
 		expect(deploys.length).toBeGreaterThan(0);
-		expect(deploys.filter(({ line }) => !line.includes("--message")).map(({ file }) => file)).toEqual([]);
+		expect(
+			deploys
+				.filter(({ message }) => !SHARED_DEPLOY_MESSAGE.test(message))
+				.map(({ file, message }) => `${file} (${message})`),
+		).toEqual([]);
 	});
 
 	it("aggregates every gated job under Check, so the preview E2E run gates a merge", () => {

@@ -66,7 +66,7 @@ The application's own log lines reach the same place through `console`. That is 
 
 ## How the deploy step is shaped
 
-The shared deploy workflow passes wrangler a `--message` of its own, the sha and the trigger as one token, the shape every repository that deploys to Workers uses, so a deployment reads as the commit it shipped.
+The shared deploy workflow passes wrangler a `--message` of its own, `<sha>-<event>`, so a deployment reads as the commit it shipped. It is one token with no spaces because the three repositories that deploy share the format, and in forever-pto the OpenNext wrapper re-spawns wrangler through a shell that splits a message on its spaces; the docs test holds every deploy to it.
 
 The runtime secrets travel with the deploy in a secrets file, so a deploy is one version rather than a deploy followed by a secret write that leaves the new code running against the old values in between. The upload is additive: a secret the file omits is not deleted.
 
