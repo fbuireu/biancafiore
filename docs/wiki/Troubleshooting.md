@@ -48,12 +48,6 @@ Deliberate. A malformed publish date, an unresolved author link, or an Original 
 
 ---
 
-## A deploy dies after a clean build and upload
-
-If the error is `Received a malformed response from the API`, look at the deployment message before anything else. Left to itself, wrangler sends the latest commit message verbatim as a deployment annotation, and a merge commit carrying a long pull request body is enough to exceed what the API accepts. The shared deploy workflow passes a short message of its own, the sha and the trigger, so a commit cannot reach that annotation; a deploy run any other way can still hit it. See [CI/CD](CI-CD).
-
----
-
 ## The docs test fails and I did not touch the docs
 
 A test reads the project's documents and asserts the claims it can check against the repository: scripts, aliases, the folder tree, the route list, env vars, cited paths, links, ADR numbering, and the code rules the coding standards list as enforced. A failure means the documents and the code disagree, so fix whichever is wrong. It parses the markdown shape of those documents, which means reformatting one can fail the build on its own.

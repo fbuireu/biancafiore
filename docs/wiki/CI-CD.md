@@ -66,7 +66,7 @@ The application's own log lines reach the same place through `console`. That is 
 
 ## How the deploy step is shaped
 
-The shared deploy workflow passes wrangler a short `--message` of its own, the sha and the trigger as one token, because wrangler otherwise sends the latest commit message verbatim as the deployment annotation, and a long one fails the deploy with *Received a malformed response from the API* after a clean build and upload.
+The shared deploy workflow passes wrangler a `--message` of its own, the sha and the trigger as one token, the shape every repository that deploys to Workers uses, so a deployment reads as the commit it shipped.
 
 The runtime secrets travel with the deploy in a secrets file, so a deploy is one version rather than a deploy followed by a secret write that leaves the new code running against the old values in between. The upload is additive: a secret the file omits is not deleted.
 

@@ -4430,7 +4430,7 @@ describe("the workflows", () => {
 		expect(read(".github/workflows/cleanup-development.yml")).toMatch(CLEANUP_GROUP);
 	});
 
-	it("names every deploy with a --message of its own, so a long commit message cannot reach the annotation", () => {
+	it("names every deploy with a --message of its own, the sha and the event, so a deployment reads as the commit it shipped", () => {
 		const deploys = steps.flatMap(({ file, step }) =>
 			step
 				.split(NEWLINE)
