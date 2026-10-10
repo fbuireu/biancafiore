@@ -7,7 +7,8 @@ import {
 	Theme,
 	type ThemePreference,
 } from "@modules/core/components/themeToggle/const";
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const TOGGLE = `.${THEME_TOGGLE_CLASS}`;
 const TOGGLE_INPUT = `.${THEME_TOGGLE_INPUT_CLASS}`;

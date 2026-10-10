@@ -52,6 +52,8 @@ The ruleset on `main` requires these contexts: `Check`, `Lint the pull request t
 
 **Every Playwright run uses two browsers.** The end-to-end run against the preview and the smoke run against production both run each case in Chromium and in WebKit, the engine behind Safari, and each job installs both behind a cache keyed on the pair, so a cache saved with one browser is never restored into a run of both. The docs test holds the projects and the install.
 
+**The Access token reaches the preview alone.** The preview sits behind Cloudflare Access, so the end-to-end job carries a service token, `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET`, and [`e2e/fixtures.ts`](https://github.com/fbuireu/biancafiore/blob/main/e2e/fixtures.ts), where every spec takes its `test` from, adds it as `CF-Access-Client-Id` and `CF-Access-Client-Secret` to the requests whose origin is the preview's, and to the requests a spec makes itself. What a page asks of a third party, Tag Manager, Calendly or any other, carries no token, which `extraHTTPHeaders` in the config could not promise: Playwright sends those on every request. The docs test holds the imports and the config.
+
 **The preview Worker outlives the end-to-end run.** Closing a pull request does not cancel the CI run already going, so the cleanup queues behind that run, in a concurrency group spelled from the pull request number. A weekly sweep deletes any preview Worker whose pull request is closed, for the cases a cleanup missed.
 
 ---

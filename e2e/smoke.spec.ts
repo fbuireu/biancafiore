@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const UNKNOWN_PATH = "/this-does-not-exist-xyz";
 

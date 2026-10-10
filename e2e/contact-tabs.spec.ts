@@ -1,5 +1,6 @@
 import { TAB_CLASS, TabId } from "@modules/contact/components/tabs/const";
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const TAB = `.${TAB_CLASS}`;
 const APPOINTMENT_TAB = `${TAB}[data-target="${TabId.APPOINTMENT}"]`;

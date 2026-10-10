@@ -11,7 +11,8 @@ import { HEADER_MENU_BUTTON_CLASS, MENU_OPEN_CLASS } from "@modules/core/compone
 import { RELATED_ARTICLES_SLIDER_CLASS } from "@modules/core/components/relatedArticles/const";
 import { SLIDER_NEXT_CLASS, SLIDER_TRACK_CLASS } from "@modules/core/components/sliderShell/const";
 import { THEME_ATTRIBUTE, THEME_TOGGLE_CLASS } from "@modules/core/components/themeToggle/const";
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const ARTICLE_BODY = `.${ARTICLE_BODY_CLASS}`;
 const ARTICLE_CARD_LINK = `.${ARTICLE_CARD_LINK_CLASS}`;

@@ -3,16 +3,6 @@ import { defineConfig, devices } from "@playwright/test";
 const LOCAL_URL = "http://localhost:4321";
 const deployedUrl = process.env.BASE_URL;
 
-const accessHeaders = ((): Record<string, string> => {
-	const id = process.env.CF_ACCESS_CLIENT_ID;
-	const secret = process.env.CF_ACCESS_CLIENT_SECRET;
-	if (!id && !secret) return {};
-	if (!id || !secret) {
-		throw new Error(`CF Access misconfigured: ${!id ? "CF_ACCESS_CLIENT_ID" : "CF_ACCESS_CLIENT_SECRET"} is missing`);
-	}
-	return { "CF-Access-Client-Id": id, "CF-Access-Client-Secret": secret };
-})();
-
 export default defineConfig({
 	webServer: deployedUrl
 		? undefined
@@ -24,6 +14,7 @@ export default defineConfig({
 				timeout: 120_000,
 			},
 	testDir: "./e2e",
+	testMatch: "**/*.spec.ts",
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 0,
@@ -33,7 +24,6 @@ export default defineConfig({
 	use: {
 		trace: "on-first-retry",
 		baseURL: deployedUrl ?? LOCAL_URL,
-		extraHTTPHeaders: accessHeaders,
 	},
 	projects: [
 		{

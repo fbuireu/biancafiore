@@ -4761,6 +4761,71 @@ describe("the end-to-end browsers", () => {
 	});
 });
 
+const ACCESS_FIXTURE = "e2e/fixtures.ts";
+const PLAYWRIGHT_PACKAGE = "@playwright/test";
+const EXTRA_HEADERS_OPTION = "extraHTTPHeaders";
+const EXTRA_HEADERS_SETTER = "setExtraHTTPHeaders";
+
+const importsPlaywrightValues = (source: string): boolean =>
+	ts
+		.createSourceFile("spec.ts", source, ts.ScriptTarget.Latest, true)
+		.statements.filter(ts.isImportDeclaration)
+		.filter(({ moduleSpecifier }) => ts.isStringLiteral(moduleSpecifier) && moduleSpecifier.text === PLAYWRIGHT_PACKAGE)
+		.some(({ importClause }) => {
+			if (!importClause) return true;
+			if (importClause.isTypeOnly) return false;
+			if (importClause.name) return true;
+			const bindings = importClause.namedBindings;
+
+			return !bindings || ts.isNamespaceImport(bindings) || bindings.elements.some((element) => !element.isTypeOnly);
+		});
+
+const setsExtraHeaders = (source: string): boolean => {
+	const file = ts.createSourceFile("source.ts", source, ts.ScriptTarget.Latest, true);
+	let found = false;
+	const visit = (node: ts.Node): void => {
+		if (
+			(ts.isPropertyAssignment(node) || ts.isShorthandPropertyAssignment(node)) &&
+			node.name.getText(file) === EXTRA_HEADERS_OPTION
+		)
+			found = true;
+		if (ts.isPropertyAccessExpression(node) && node.name.text === EXTRA_HEADERS_SETTER) found = true;
+
+		ts.forEachChild(node, visit);
+	};
+
+	visit(file);
+
+	return found;
+};
+
+describe("the preview's Access token", () => {
+	const e2eSources = walk("e2e").filter((file) => file.endsWith(".ts") && file !== ACCESS_FIXTURE);
+
+	it("reaches every spec through e2e/fixtures.ts, which sends it to the preview's origin alone, so no spec takes a value from @playwright/test", () => {
+		expect(importsPlaywrightValues('import { expect, test } from "@playwright/test";')).toBe(true);
+		expect(importsPlaywrightValues('import { expect, type Page, test } from "@playwright/test";')).toBe(true);
+		expect(importsPlaywrightValues('import * as playwright from "@playwright/test";')).toBe(true);
+		expect(importsPlaywrightValues('import type { Page } from "@playwright/test";')).toBe(false);
+		expect(importsPlaywrightValues('import { type Page } from "@playwright/test";')).toBe(false);
+		expect(importsPlaywrightValues('import { expect, test } from "./fixtures";')).toBe(false);
+		expect(exists(ACCESS_FIXTURE)).toBe(true);
+		expect(e2eSources.filter((file) => file.endsWith(".spec.ts")).length).toBeGreaterThan(0);
+		expect(e2eSources.filter((file) => importsPlaywrightValues(read(file)))).toEqual([]);
+	});
+
+	it("is set as extraHTTPHeaders by no Playwright config and no spec, because Playwright sends those on every request a page makes, to every third party included", () => {
+		const configs = walk(".").filter((file) => PLAYWRIGHT_CONFIG.test(file));
+
+		expect(setsExtraHeaders("export default defineConfig({ use: { extraHTTPHeaders: headers } });")).toBe(true);
+		expect(setsExtraHeaders("test.use({ extraHTTPHeaders });")).toBe(true);
+		expect(setsExtraHeaders("await page.setExtraHTTPHeaders(headers);")).toBe(true);
+		expect(setsExtraHeaders('export default defineConfig({ use: { baseURL: "http://localhost" } });')).toBe(false);
+		expect(configs.length).toBeGreaterThan(0);
+		expect([...configs, ...e2eSources].filter((file) => setsExtraHeaders(read(file)))).toEqual([]);
+	});
+});
+
 describe("the YAML", () => {
 	it("pins every action of another repository to a full commit SHA, its version or branch in a trailing comment", () => {
 		const sha = "0".repeat(40);
