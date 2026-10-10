@@ -1,3 +1,10 @@
+## [1.25.8](https://github.com/fbuireu/biancafiore/compare/v1.25.7...v1.25.8) (2026-10-10)
+
+
+### Bug Fixes
+
+* give both hover arrows one box at -6px, and keep no backlog ([bce6d40](https://github.com/fbuireu/biancafiore/commit/bce6d400a3276d7b04773c306e1327ea90034415))
+
 ## [1.25.7](https://github.com/fbuireu/biancafiore/compare/v1.25.6...v1.25.7) (2026-10-05)
 
 
