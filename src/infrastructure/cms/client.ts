@@ -1,6 +1,6 @@
 import { Context, Effect, Layer } from "effect";
 import { CmsError } from "../errors";
-import { resolveMedia } from "./media";
+import { mediaFileUrl, resolveMedia } from "./media";
 
 export const PUBLISHED_STATUS = "published";
 
@@ -14,11 +14,31 @@ export interface CmsTerm {
 	label: string;
 }
 
+export interface CmsMedia {
+	id: string;
+	src: string;
+	alt?: string;
+	width?: number;
+	height?: number;
+	mimeType?: string;
+	blurhash?: string;
+}
+
+export interface CmsByline {
+	id: string;
+	slug: string | null;
+	displayName: string;
+	bio: string | null;
+	avatar?: CmsMedia;
+	customFields: Record<string, unknown>;
+}
+
 export interface CmsItem {
 	id: string;
 	slug: string | null;
 	data: Record<string, unknown>;
 	terms: Record<string, CmsTerm[]>;
+	bylines: CmsByline[];
 	updatedAt: string;
 }
 
@@ -57,6 +77,16 @@ interface Queried {
 	entries: QueriedEntry[];
 	nextCursor?: string;
 	error?: Error;
+}
+
+interface BylinesOfParams {
+	credits: unknown;
+	avatars: ReadonlyMap<string, CmsMedia>;
+}
+
+interface ItemOfParams {
+	entry: QueriedEntry;
+	avatars?: ReadonlyMap<string, CmsMedia>;
 }
 
 interface QueryParams {
@@ -101,12 +131,71 @@ function termsOf(value: unknown): Record<string, CmsTerm[]> {
 	);
 }
 
-export function itemOf({ data }: QueriedEntry): CmsItem | undefined {
-	const record = plain(data);
+const HYDRATED_KEYS = new Set(["terms", "bylines", "byline"]);
+
+const creditsOf = (value: unknown): Record<string, unknown>[] =>
+	(Array.isArray(value) ? value : [])
+		.filter(isRecord)
+		.toSorted((first, second) => Number(first.sortOrder ?? 0) - Number(second.sortOrder ?? 0));
+
+function avatarIdsOf(entries: QueriedEntry[]): string[] {
+	const ids = entries.flatMap(({ data }) =>
+		isRecord(data)
+			? creditsOf(data.bylines).flatMap(({ byline }) => (isRecord(byline) ? (asText(byline.avatarMediaId) ?? []) : []))
+			: [],
+	);
+
+	return [...new Set(ids)];
+}
+
+function bylinesOf({ credits, avatars }: BylinesOfParams): CmsByline[] {
+	return creditsOf(credits).flatMap(({ byline }) => {
+		if (!isRecord(byline)) return [];
+
+		const id = asText(byline.id);
+		const avatarId = asText(byline.avatarMediaId);
+		const avatar = avatarId ? avatars.get(avatarId) : undefined;
+
+		return id
+			? [
+					{
+						id,
+						slug: asText(byline.slug),
+						displayName: typeof byline.displayName === "string" ? byline.displayName : "",
+						bio: asText(byline.bio),
+						...(avatar && { avatar }),
+						customFields: isRecord(byline.customFields) ? byline.customFields : {},
+					},
+				]
+			: [];
+	});
+}
+
+const numberOf = (value: unknown): number | undefined => (typeof value === "number" ? value : undefined);
+
+function mediaOf(item: Record<string, unknown>): CmsMedia | undefined {
+	const id = asText(item.id);
+	const storageKey = asText(item.storageKey);
+
+	return id && storageKey
+		? {
+				id,
+				src: mediaFileUrl(storageKey),
+				alt: asText(item.alt) ?? undefined,
+				width: numberOf(item.width),
+				height: numberOf(item.height),
+				mimeType: asText(item.mimeType) ?? undefined,
+				blurhash: asText(item.blurhash) ?? undefined,
+			}
+		: undefined;
+}
+
+export function itemOf({ entry, avatars = new Map() }: ItemOfParams): CmsItem | undefined {
+	const record = plain(entry.data);
 
 	if (!isRecord(record)) return undefined;
 
-	const { terms, ...fields } = record;
+	const fields = Object.fromEntries(Object.entries(record).filter(([key]) => !HYDRATED_KEYS.has(key)));
 	const id = asText(fields.id);
 
 	if (!id) return undefined;
@@ -115,7 +204,8 @@ export function itemOf({ data }: QueriedEntry): CmsItem | undefined {
 		id,
 		slug: asText(fields.slug),
 		data: resolveMedia(fields),
-		terms: termsOf(terms),
+		terms: termsOf(record.terms),
+		bylines: bylinesOf({ credits: record.bylines, avatars }),
 		updatedAt: asText(fields.updatedAt) ?? "",
 	};
 }
@@ -133,40 +223,74 @@ const query = ({ run, failure }: QueryParams) =>
 		),
 	);
 
+const loadEmDash = () => Promise.all([import("emdash"), import("emdash/runtime")]);
+
 export const CmsClientLive = Layer.effect(
 	CmsClient,
-	Effect.promise(() => import("emdash")).pipe(
-		Effect.map((emdash) => ({
-			listEntries: ({ collection, limit, cursor, orderBy, order }: ListEntriesQuery) =>
+	Effect.promise(loadEmDash).pipe(
+		Effect.map(([emdash, runtime]) => {
+			const avatarsOf = (entries: QueriedEntry[]) =>
 				query({
-					run: () =>
-						emdash.getEmDashCollection(collection, {
-							status: PUBLISHED_STATUS,
-							limit,
-							cursor,
-							...(orderBy && { orderBy: { [orderBy]: order ?? "asc" } }),
-						}),
-					failure: `The ${collection} collection could not be read`,
-				}).pipe(
-					Effect.map(({ entries, nextCursor }) => ({
-						items: entries.flatMap((entry) => itemOf(entry) ?? []),
-						...(nextCursor && { nextCursor }),
-					})),
-				),
-			listReferences: ({ collection, id, field, limit, cursor }: ListReferencesQuery) =>
-				query({
-					run: () => emdash.getEmDashReferences(collection, id, field, { limit, cursor }),
-					failure: `The ${field} references of ${collection} ${id} could not be read`,
-				}).pipe(
-					Effect.map(({ entries, nextCursor }) => ({
-						children: entries.flatMap((entry) => {
-							const child = itemOf(entry);
+					run: async () => {
+						const ids = avatarIdsOf(entries);
 
-							return child ? [{ id: child.id }] : [];
-						}),
-						...(nextCursor && { nextCursor }),
-					})),
-				),
-		})),
+						if (ids.length === 0) return { entries: [] };
+
+						const media = new emdash.MediaRepository(await runtime.getDb());
+						const found = await Promise.all(ids.map((id) => media.findById(id)));
+
+						return { entries: found.flatMap((item) => (item ? [{ id: item.id, data: item }] : [])) };
+					},
+					failure: "The byline avatars could not be read",
+				}).pipe(
+					Effect.map(
+						({ entries: items }) =>
+							new Map(
+								items.flatMap(({ data }) => {
+									const media = isRecord(data) ? mediaOf(data) : undefined;
+
+									return media ? [[media.id, media] as const] : [];
+								}),
+							),
+					),
+				);
+
+			return {
+				listEntries: ({ collection, limit, cursor, orderBy, order }: ListEntriesQuery) =>
+					query({
+						run: () =>
+							emdash.getEmDashCollection(collection, {
+								status: PUBLISHED_STATUS,
+								limit,
+								cursor,
+								...(orderBy && { orderBy: { [orderBy]: order ?? "asc" } }),
+							}),
+						failure: `The ${collection} collection could not be read`,
+					}).pipe(
+						Effect.flatMap(({ entries, nextCursor }) =>
+							avatarsOf(entries).pipe(
+								Effect.map((avatars) => ({
+									items: entries.flatMap((entry) => itemOf({ entry, avatars }) ?? []),
+									...(nextCursor && { nextCursor }),
+								})),
+							),
+						),
+					),
+				listReferences: ({ collection, id, field, limit, cursor }: ListReferencesQuery) =>
+					query({
+						run: () => emdash.getEmDashReferences(collection, id, field, { limit, cursor }),
+						failure: `The ${field} references of ${collection} ${id} could not be read`,
+					}).pipe(
+						Effect.map(({ entries, nextCursor }) => ({
+							children: entries.flatMap((entry) => {
+								const child = itemOf({ entry });
+
+								return child ? [{ id: child.id }] : [];
+							}),
+							...(nextCursor && { nextCursor }),
+						})),
+					),
+			};
+		}),
 	),
 );

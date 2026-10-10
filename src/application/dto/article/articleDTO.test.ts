@@ -1,8 +1,8 @@
 import type { CmsReference } from "@infrastructure/cms/entries";
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
-import { rawEntry, rawImage, referenceTo, term } from "@tests/doubles/cmsEntries";
+import { avatar, rawByline, rawEntry, rawImage, term } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
-import type { AuthorFields, RawAuthor } from "../author/types";
+import type { RawAuthor } from "../author/types";
 import type { RawTag } from "../tag/types";
 import { createArticle, createArticles } from ".";
 import type { AnyRawArticle, ArticleFields, ArticleReference, RawArticle } from "./types";
@@ -31,18 +31,16 @@ interface HeadingParams {
 
 const heading = ({ level, value }: HeadingParams) => block({ text: value, style: `h${level}` });
 
-const AUTHOR = rawEntry<AuthorFields, "articles">({
-	id: "author-bianca",
+const AUTHOR = rawByline({
 	slug: "bianca-fiore",
-	data: {
-		name: "Bianca Fiore",
-		description: "Content writer",
+	displayName: "Bianca Fiore",
+	bio: "Content writer",
+	avatar: avatar({ name: "bianca.webp", mimeType: "image/webp", width: 1200, height: 630 }),
+	customFields: {
 		job_title: "Writer",
 		current_company: "Freelance",
-		profile_image: rawImage({ name: "bianca.webp", mimeType: "image/webp" }),
-		social_networks: [{ name: "LinkedIn", url: "https://linkedin.com/in/bianca" }],
+		social_networks: "LinkedIn | https://linkedin.com/in/bianca",
 	},
-	references: { articles: [] },
 });
 
 const CRAFT = term({ slug: "craft", label: "Craft" });
@@ -62,6 +60,7 @@ interface MakeArticleParams {
 	originalSource?: string;
 	tags?: RawTag[];
 	relatedArticles?: CmsReference[];
+	bylines?: RawAuthor[];
 }
 
 const makeArticle = ({
@@ -78,12 +77,14 @@ const makeArticle = ({
 	originalSource,
 	tags = [],
 	relatedArticles = [],
+	bylines = [AUTHOR],
 }: MakeArticleParams = {}): RawArticle<ArticleReference> =>
 	rawEntry<ArticleFields, ArticleReference>({
 		id: `article-${slug.trim()}`,
 		slug,
 		updatedAt,
 		terms: { tag: tags },
+		bylines,
 		data: {
 			title,
 			content: content as ArticleFields["content"],
@@ -100,12 +101,7 @@ const makeArticle = ({
 
 const related = (slug: string) => ({ id: `article-${slug.trim()}` });
 
-const crediting = (rawArticles: AnyRawArticle[]): RawAuthor => ({
-	...AUTHOR,
-	references: { articles: rawArticles.map((rawArticle) => referenceTo(rawArticle)) },
-});
-
-const create = (rawArticles: AnyRawArticle[]) => createArticles({ rawArticles, rawAuthors: [crediting(rawArticles)] });
+const create = (rawArticles: AnyRawArticle[]) => createArticles({ rawArticles, rawAuthors: [AUTHOR] });
 
 describe("createArticles defaults for optional CMS fields", () => {
 	it("defaults isFavorite and isRepublished to false when the CMS omits both flags", () => {
@@ -460,28 +456,23 @@ describe("createArticles author and batching", () => {
 		expect(articles.map(({ slug }) => slug)).toEqual(["first", "second"]);
 	});
 
-	it("credits the author whose own article list names the article, which is how EmDash answers the relation", () => {
+	it("credits the byline each article names first, which is how EmDash answers the credit", () => {
+		const other = rawByline({ ...AUTHOR, slug: "someone-else", displayName: "Someone Else" });
 		const first = makeArticle({ slug: "first" });
-		const second = makeArticle({ slug: "second" });
-		const other = rawEntry<AuthorFields, "articles">({
-			...AUTHOR,
-			slug: "someone-else",
-			data: { ...AUTHOR.data, name: "Someone Else" },
-			references: { articles: [referenceTo(second)] },
-		});
+		const second = makeArticle({ slug: "second", bylines: [other, AUTHOR] });
 
 		const [byBianca, byOther] = createArticles({
 			rawArticles: [first, second],
-			rawAuthors: [crediting([first]), other],
+			rawAuthors: [AUTHOR, other],
 		});
 
 		expect(byBianca.author.name).toBe("Bianca Fiore");
 		expect(byOther.author.name).toBe("Someone Else");
 	});
 
-	it("refuses the batch by the article rather than emitting one no published author credits", () => {
-		expect(() => createArticles({ rawArticles: [makeArticle()], rawAuthors: [AUTHOR] })).toThrow(
-			"An Article (an-article) is credited to no published author, so no byline can name it",
+	it("refuses the batch by the article rather than emitting one no byline credits", () => {
+		expect(() => createArticles({ rawArticles: [makeArticle({ bylines: [] })], rawAuthors: [AUTHOR] })).toThrow(
+			"An Article (an-article) is credited to no byline, so no byline can name it",
 		);
 	});
 });
@@ -500,7 +491,7 @@ describe("createArticle", () => {
 		const second = makeArticle({ slug: "second", title: "Second" });
 		const rawArticles = [first, second];
 
-		const article = createArticle({ rawArticle: first, rawArticles, rawAuthors: [crediting(rawArticles)] });
+		const article = createArticle({ rawArticle: first, rawArticles, rawAuthors: [AUTHOR] });
 
 		expect(article).toEqual(create(rawArticles)[0]);
 		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
@@ -511,7 +502,7 @@ describe("createArticle", () => {
 		const second = makeArticle({ slug: "second", tags: [CRAFT] });
 		const rawArticles = [first, second];
 
-		const article = createArticle({ rawArticle: first, rawArticles, rawAuthors: [crediting(rawArticles)] });
+		const article = createArticle({ rawArticle: first, rawArticles, rawAuthors: [AUTHOR] });
 
 		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
 	});

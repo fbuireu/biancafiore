@@ -65,7 +65,7 @@ export function preflight({ migrated, entries }: PreflightParams): Preflight {
 
 			return author && contentTypeOf(author) === "author"
 				? []
-				: [`article ${entry.sys.id} has no published author, and the articles collection requires one`];
+				: [`article ${entry.sys.id} has no published author, and the site refuses an Article no byline credits`];
 		});
 
 	return { errors, warnings };

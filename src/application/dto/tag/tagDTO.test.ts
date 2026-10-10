@@ -1,7 +1,7 @@
-import { rawEntry, rawImage, term } from "@tests/doubles/cmsEntries";
+import { avatar, rawByline, rawEntry, term } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
-import type { ArticleFields } from "../article/types";
-import type { AuthorFields, RawAuthor } from "../author/types";
+import type { AnyRawArticle, ArticleFields } from "../article/types";
+import type { RawAuthor } from "../author/types";
 import { createTagIndex } from ".";
 import type { RawTag } from "./types";
 
@@ -13,18 +13,28 @@ interface MakeAuthorParams {
 	credits?: string[];
 }
 
-const makeAuthor = ({ name, slug, credits = [] }: MakeAuthorParams): RawAuthor =>
-	rawEntry<AuthorFields, "articles">({
-		id: `author-${slug.trim()}`,
-		slug,
-		data: {
-			name,
-			description: "",
-			job_title: "",
-			current_company: "",
-			profile_image: rawImage(),
-		},
-		references: { articles: credits.map((credited) => ({ id: articleId(credited) })) },
+const creditedArticles = new Map<string, string[]>();
+
+const makeAuthor = ({ name, slug, credits = [] }: MakeAuthorParams): RawAuthor => {
+	const author = rawByline({ slug, displayName: name, avatar: avatar() });
+
+	creditedArticles.set(author.id, credits.map(articleId));
+
+	return author;
+};
+
+interface IndexParams {
+	rawArticles: AnyRawArticle[];
+	rawAuthors: RawAuthor[];
+}
+
+const index = ({ rawArticles, rawAuthors }: IndexParams) =>
+	createTagIndex({
+		rawArticles: rawArticles.map((rawArticle) => ({
+			...rawArticle,
+			bylines: rawAuthors.filter(({ id }) => creditedArticles.get(id)?.includes(rawArticle.id)),
+		})),
+		rawAuthors,
 	});
 
 interface MakeArticleParams {
@@ -47,7 +57,7 @@ const TRAVEL = term({ slug: "travel", label: "Travel" });
 
 describe("createTagIndex index entries", () => {
 	it("answers one flat entry per tag and per author, leaving the A–Z bucketing to the page that renders it", () => {
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [makeArticle({ slug: "first", tags: [CRAFT] })],
 			rawAuthors: [makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore", credits: ["first"] })],
 		});
@@ -57,14 +67,14 @@ describe("createTagIndex index entries", () => {
 	});
 
 	it("maps an entirely empty CMS to no entries, synchronously", () => {
-		const entries = createTagIndex({ rawArticles: [], rawAuthors: [] });
+		const entries = index({ rawArticles: [], rawAuthors: [] });
 
 		expect(entries).toEqual([]);
 		expect(entries).not.toBeInstanceOf(Promise);
 	});
 
 	it("lists the articles carrying the tag as articles collection references, and counts nothing beside them", () => {
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [
 				makeArticle({ slug: "first", tags: [CRAFT], publishDate: "2025-02-01" }),
 				makeArticle({ slug: "second", tags: [CRAFT, TRAVEL], publishDate: "2025-01-01" }),
@@ -85,7 +95,7 @@ describe("createTagIndex index entries", () => {
 	});
 
 	it("lists each tag once, in the order the articles first name it, however many articles carry it", () => {
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [
 				makeArticle({ slug: "first", tags: [TRAVEL] }),
 				makeArticle({ slug: "second", tags: [CRAFT, TRAVEL] }),
@@ -98,7 +108,7 @@ describe("createTagIndex index entries", () => {
 
 	it("trims the whitespace the CMS preserves on the term and on the article it lists", () => {
 		const padded = term({ slug: "  craft  ", label: "  Craft  " });
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [makeArticle({ slug: "  first  ", tags: [padded] })],
 			rawAuthors: [],
 		});
@@ -111,13 +121,13 @@ describe("createTagIndex index entries", () => {
 	});
 
 	it("ignores articles filed under no tag at all", () => {
-		expect(createTagIndex({ rawArticles: [makeArticle({ slug: "untagged" })], rawAuthors: [] })).toEqual([]);
+		expect(index({ rawArticles: [makeArticle({ slug: "untagged" })], rawAuthors: [] })).toEqual([]);
 	});
 });
 
 describe("createTagIndex article order", () => {
 	it("orders the references the way the blog listing does: favorites first, then newest to oldest", () => {
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [
 				makeArticle({ slug: "older", tags: [CRAFT], publishDate: "2024-01-01" }),
 				makeArticle({ slug: "newest", tags: [CRAFT], publishDate: "2026-01-01" }),
@@ -130,7 +140,7 @@ describe("createTagIndex article order", () => {
 	});
 
 	it("orders an author's articles by the same rule, so both kinds of page read one order", () => {
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [
 				makeArticle({ slug: "older", publishDate: "2024-01-01" }),
 				makeArticle({ slug: "favorite", publishDate: "2020-01-01", isFavorite: true }),
@@ -143,7 +153,7 @@ describe("createTagIndex article order", () => {
 	});
 
 	it("keeps the CMS order for articles published on the same date", () => {
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [
 				makeArticle({ slug: "first", tags: [CRAFT], publishDate: "2024-01-01" }),
 				makeArticle({ slug: "second", tags: [CRAFT], publishDate: "2024-01-01" }),
@@ -156,7 +166,7 @@ describe("createTagIndex article order", () => {
 
 	it("refuses an article with an unreadable publish date, so the index cannot list one the collection rejects", () => {
 		expect(() =>
-			createTagIndex({
+			index({
 				rawArticles: [makeArticle({ slug: "undated", tags: [CRAFT], publishDate: "" })],
 				rawAuthors: [],
 			}),
@@ -166,7 +176,7 @@ describe("createTagIndex article order", () => {
 
 describe("createTagIndex author entries", () => {
 	it("turns an author into a tag of type author, listing the articles their own list credits", () => {
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [makeArticle({ slug: "first" }), makeArticle({ slug: "second" })],
 			rawAuthors: [makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore", credits: ["first"] })],
 		});
@@ -180,7 +190,7 @@ describe("createTagIndex author entries", () => {
 	});
 
 	it("drops an author who has not published anything", () => {
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [],
 			rawAuthors: [makeAuthor({ name: "Ghost Writer", slug: "ghost" })],
 		});
@@ -189,7 +199,7 @@ describe("createTagIndex author entries", () => {
 	});
 
 	it("keeps two authors who share a display name apart, each listing only the articles credited to it", () => {
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [makeArticle({ slug: "hers" }), makeArticle({ slug: "the-namesakes" })],
 			rawAuthors: [
 				makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore", credits: ["hers"] }),
@@ -214,7 +224,7 @@ describe("createTagIndex author entries", () => {
 	});
 
 	it("does not count a credited article that is not among the published ones", () => {
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [],
 			rawAuthors: [makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore", credits: ["a-draft"] })],
 		});
@@ -223,7 +233,7 @@ describe("createTagIndex author entries", () => {
 	});
 
 	it("gives a slug the tag and the author share to the tag, so the index addresses each slug once", () => {
-		const entries = createTagIndex({
+		const entries = index({
 			rawArticles: [makeArticle({ slug: "first", tags: [term({ slug: "bianca", label: "Bianca" })] })],
 			rawAuthors: [makeAuthor({ name: "Bianca Fiore", slug: "bianca", credits: ["first"] })],
 		});
@@ -236,8 +246,8 @@ describe("createTagIndex author entries", () => {
 	it("refuses an author EmDash stored without a slug, naming them, since no page could address their Author Tag", () => {
 		const unslugged: RawAuthor = { ...makeAuthor({ name: "Ada", slug: "ada", credits: ["first"] }), slug: null };
 
-		expect(() => createTagIndex({ rawArticles: [makeArticle({ slug: "first" })], rawAuthors: [unslugged] })).toThrow(
-			'The Author "Ada" (id author-ada) has no slug, so no page can address them',
+		expect(() => index({ rawArticles: [makeArticle({ slug: "first" })], rawAuthors: [unslugged] })).toThrow(
+			'The Author "Ada" (id byline-ada) has no slug, so no page can address them',
 		);
 	});
 });

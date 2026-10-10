@@ -13,7 +13,7 @@ Editorial content is authored in EmDash, a CMS that runs inside the site's own C
 | **Project** | A typology of work rather than a single deliverable, shown in the portfolio. Counted as "Disciplines" in reader-facing copy |
 | **Testimonial** | A short quote of praise attributed to a Quotee, with their role and photo, used as social proof |
 | **Quotee** | The named person a Testimonial quotes. Never an Author: an Author writes Articles |
-| **Author** | The person credited with an Article. One Author is one Slug: the name is a display label, so two Authors sharing a name are still two Authors |
+| **Author** | The person credited with an Article, an EmDash byline in the CMS. One Author is one Slug: the name is a display label, so two Authors sharing a name are still two Authors |
 | **City** | A place the Author has lived, with a Period, coordinates, description and image, plotted on the About page |
 | **Tag** | A topic label attached to Articles, identified by a name and a slug |
 | **Author Tag** | An Author surfaced inside the Tag Index as if they were a Tag. One Slug addresses one page, so a collision with a topical Tag yields to the Tag |
@@ -49,7 +49,7 @@ Some things are worth knowing about that path.
 
 **The CMS's types stop at the mapper.** An entry's `data`, its `references` and Portable Text may appear in the application layer and nowhere downstream. The domain never sees them, which is why moving from Contentful to EmDash changed the mappers and nothing the pages render.
 
-**Bad data fails the build rather than degrading a page.** A malformed publish date, an unresolved author link or an Original Source the Republished flag would hide are refused where they are mapped. One entry taking the build down is the deliberate trade: the alternative is one page quietly rendering wrong.
+**Bad data fails the build rather than degrading a page.** A malformed publish date, an Article no byline credits or an Original Source the Republished flag would hide are refused where they are mapped. One entry taking the build down is the deliberate trade: the alternative is one page quietly rendering wrong.
 
 **Identity is stated per concept.** Articles, Tags and Authors are keyed on their slug; Cities on their name, because a City's slug is derived from it and the two are one identity; Projects on the id their mapper derives; Testimonials on the Quotee's name, because a Testimonial has no other identifier. That last one has a known cost: two quotes from one person would collapse. It is recorded rather than fixed with an id the CMS does not have.
 

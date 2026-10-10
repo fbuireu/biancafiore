@@ -1,7 +1,7 @@
 import { type Context, Effect, ManagedRuntime } from "effect";
 import { CmsClient, CmsClientLive, type CmsItem, type CmsReference } from "./client";
 
-export type { CmsReference, CmsTerm } from "./client";
+export type { CmsByline, CmsMedia, CmsReference, CmsTerm } from "./client";
 
 export const EMDASH_MAX_PAGE_SIZE = 100;
 const REFERENCE_READS_IN_FLIGHT = 8;

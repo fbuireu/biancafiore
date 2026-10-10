@@ -1,16 +1,8 @@
-import { rawEntry, rawImage } from "@tests/doubles/cmsEntries";
-import {
-	cmsAnswers,
-	cmsHoldsUntilQueries,
-	cmsQueries,
-	cmsQueriesOverlapped,
-	cmsReferenceQueries,
-	cmsRefersTo,
-	resetCms,
-} from "@tests/doubles/cmsLayer";
+import { avatar, rawByline, rawEntry } from "@tests/doubles/cmsEntries";
+import { cmsAnswers, cmsQueries, cmsReferenceQueries, resetCms } from "@tests/doubles/cmsLayer";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ArticleFields } from "../../dto/article/types";
-import { AUTHOR_ARTICLES_FIELD, type AuthorFields, type RawAuthor } from "../../dto/author/types";
+import type { RawAuthor } from "../../dto/author/types";
 import { authors } from "./authors";
 
 vi.mock("@infrastructure/cms/client", async () => {
@@ -34,41 +26,26 @@ interface MakeAuthorParams {
 }
 
 const makeAuthor = ({ name, slug }: MakeAuthorParams): RawAuthor =>
-	rawEntry<AuthorFields, "articles">({
-		id: `author-${slug}`,
+	rawByline({
 		slug,
-		data: {
-			name,
-			description: "Content writer",
-			job_title: "Writer",
-			current_company: "Freelance",
-			profile_image: rawImage({ name: `${slug}.jpg`, width: 400, height: 400 }),
-		},
+		displayName: name,
+		bio: "Content writer",
+		avatar: avatar({ name: `${slug}.jpg` }),
+		customFields: { job_title: "Writer", current_company: "Freelance" },
 	});
 
 interface MakeArticleParams {
 	slug: string;
 	publishDate: string;
+	credits?: RawAuthor[];
 }
 
-const makeArticle = ({ slug, publishDate }: MakeArticleParams) =>
+const makeArticle = ({ slug, publishDate, credits = [BIANCA] }: MakeArticleParams) =>
 	rawEntry<ArticleFields>({
 		id: `article-${slug}`,
 		slug,
 		data: { title: slug, content: [], publish_date: publishDate },
-	});
-
-interface CreditParams {
-	author: RawAuthor;
-	articles: ReturnType<typeof makeArticle>[];
-}
-
-const credit = ({ author, articles }: CreditParams) =>
-	cmsRefersTo({
-		collection: "authors",
-		id: author.id,
-		field: AUTHOR_ARTICLES_FIELD,
-		references: articles.map(({ id }) => ({ id })),
+		bylines: credits,
 	});
 
 const BIANCA = makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" });
@@ -78,24 +55,17 @@ beforeEach(() => {
 });
 
 describe("authors loader", () => {
-	it("asks for the authors, with the articles each one is credited with, and for the articles, in one batch", async () => {
-		const hers = makeArticle({ slug: "hers", publishDate: "2024-01-01" });
-
-		cmsAnswers({ authors: [BIANCA], articles: [hers] });
-		credit({ author: BIANCA, articles: [hers] });
-		cmsHoldsUntilQueries(2);
+	it("reads the authors off the articles' own bylines, in one query and no reference read", async () => {
+		cmsAnswers({ articles: [makeArticle({ slug: "hers", publishDate: "2024-01-01" })] });
 
 		await loadAll();
 
-		expect(cmsQueries.map(({ collection }) => collection).toSorted()).toEqual(["articles", "authors"]);
-		expect(cmsQueriesOverlapped()).toBe(true);
-		expect(cmsReferenceQueries).toEqual([
-			expect.objectContaining({ collection: "authors", id: BIANCA.id, field: AUTHOR_ARTICLES_FIELD }),
-		]);
+		expect(cmsQueries.map(({ collection }) => collection)).toEqual(["articles"]);
+		expect(cmsReferenceQueries).toEqual([]);
 	});
 
-	it("keys every entry by the author's slug, the identity CONTEXT.md gives an Author", async () => {
-		cmsAnswers({ authors: [BIANCA], articles: [] });
+	it("keys every entry by the author's slug, the identity GLOSSARY.md gives an Author", async () => {
+		cmsAnswers({ articles: [makeArticle({ slug: "hers", publishDate: "2024-01-01" })] });
 
 		const [entry] = await loadAll();
 
@@ -103,7 +73,14 @@ describe("authors loader", () => {
 	});
 
 	it("keeps two authors who share a display name apart, since the name is a label and the slug is the identity", async () => {
-		cmsAnswers({ authors: [BIANCA, makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore-ii" })], articles: [] });
+		const namesake = makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore-ii" });
+
+		cmsAnswers({
+			articles: [
+				makeArticle({ slug: "hers", publishDate: "2024-01-01" }),
+				makeArticle({ slug: "theirs", publishDate: "2024-01-01", credits: [namesake] }),
+			],
+		});
 
 		const entries = await loadAll();
 
@@ -111,30 +88,32 @@ describe("authors loader", () => {
 	});
 
 	it("calls the author's newest article the latest, whatever order the batch arrived in", async () => {
-		const articles = [
-			makeArticle({ slug: "oldest", publishDate: "2023-01-01" }),
-			makeArticle({ slug: "newest", publishDate: "2024-05-01" }),
-			makeArticle({ slug: "middle", publishDate: "2024-03-01" }),
-		];
-
-		cmsAnswers({ authors: [BIANCA], articles });
-		credit({ author: BIANCA, articles });
+		cmsAnswers({
+			articles: [
+				makeArticle({ slug: "oldest", publishDate: "2023-01-01" }),
+				makeArticle({ slug: "newest", publishDate: "2024-05-01" }),
+				makeArticle({ slug: "middle", publishDate: "2024-03-01" }),
+			],
+		});
 
 		const [entry] = await loadAll();
 
 		expect(entry?.data.latestArticle).toEqual({ id: "newest", collection: "articles" });
 	});
 
-	it("gives an author only their own article, and no latest article when they have none", async () => {
-		const ghost = makeAuthor({ name: "Ghost", slug: "ghost" });
-		const hers = makeArticle({ slug: "hers", publishDate: "2024-05-01" });
+	it("gives each author only the articles that credit them", async () => {
+		const guest = makeAuthor({ name: "A Guest", slug: "guest" });
 
-		cmsAnswers({ authors: [BIANCA, ghost], articles: [hers] });
-		credit({ author: BIANCA, articles: [hers] });
+		cmsAnswers({
+			articles: [
+				makeArticle({ slug: "hers", publishDate: "2024-05-01" }),
+				makeArticle({ slug: "theirs", publishDate: "2024-01-01", credits: [guest] }),
+			],
+		});
 
-		const [bianca, theGhost] = await loadAll();
+		const [bianca, theGuest] = await loadAll();
 
 		expect(bianca?.data.latestArticle).toEqual({ id: "hers", collection: "articles" });
-		expect(theGhost?.data.latestArticle).toBeUndefined();
+		expect(theGuest?.data.latestArticle).toEqual({ id: "theirs", collection: "articles" });
 	});
 });

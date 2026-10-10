@@ -241,7 +241,7 @@ const NUMBER_WORDS = ["no", "one", "two", "three", "four", "five", "six"];
 const DTO_CITED_DEFAULT = /`((?:\?\?|\|\|) [^`\n]+)`/g;
 const CREATE_AUTHOR_DEFINITION = /export function createAuthor\(/;
 const AUTHOR_FIELD_MAPPING = /\bsocialNetworks: [^;\n]+,$/m;
-const BYLINE_FIELD_READ = /\bdata\.(?:job_title|current_company|profile_image|social_networks)\b/;
+const BYLINE_FIELD_READ = /\bcustomFields\[AUTHOR_FIELD\.\w+\]/;
 const ARTICLE_REFERENCE_LITERAL = /collection: "articles"/;
 const NORMALISED_ARTICLE_SLUG = /slug: articleSlug\(/;
 const AUTHORED_RELATED_ARTICLES = /references\.related_articles/;
@@ -264,7 +264,7 @@ const RANDOM_DRAW = /\bMath\.random\(/;
 const MESSAGE_READ = /\.message\b/;
 const COMPARATOR = /\.(?:localeCompare|sort|toSorted)\(/;
 const AUTHOR_AND_TAG_READER = /\/dto\/(?:article|author|tag)\//;
-const IDENTITY_TRIM = /\b(?:data\.name|label|(?:author|tag)\.slug)(?: \?\? "")?\)?\.trim\(\)/;
+const IDENTITY_TRIM = /\b(?:data\.name|author\.displayName|label|(?:author|tag)\.slug)(?: \?\? "")?\)?\.trim\(\)/;
 const RAW_FAVORITE_READ = /\w\.data\.is_favorite\b/;
 const RAW_PUBLISH_DATE_READ = /\bpublishDateISO\(\s*\w+\.data\.publish_date\s*\)/;
 const LEAKED_INFRASTRUCTURE_IMPORT = /@infrastructure\/|from "emdash"/;
@@ -1937,7 +1937,8 @@ describe("application guide: the anti-corruption boundary", () => {
 		});
 
 		expect(broken).toEqual([]);
-		expect(read(SHARED_QUERIES)).toContain("fetchEntries<[RawArticle, RawAuthor]>(ARTICLES_QUERY, AUTHORS_QUERY)");
+		expect(read(SHARED_QUERIES)).toContain("fetchEntries<[RawArticle]>(ARTICLES_QUERY)");
+		expect(read(SHARED_QUERIES)).toContain("[rawArticles, creditedAuthors(rawArticles)]");
 	});
 
 	it("leaves the batching and Effect itself to that one interface", () => {
@@ -3145,7 +3146,9 @@ describe("conventions", () => {
 		const cache = read("src/const/contentCache.ts");
 		const cachedRoutes = [...cache.matchAll(QUOTED_ROUTE)].map(([, route]) => route);
 		const tags = [...(cache.match(CACHE_TAG_LIST)?.[1] ?? "").matchAll(DOUBLE_QUOTED_VALUE)].map(([, tag]) => tag);
-		const collections = directoriesIn("src/application/entities").filter((entity) => entity !== "tags");
+		const collections = directoriesIn("src/application/entities").filter(
+			(entity) => !["tags", "authors"].includes(entity),
+		);
 		const contentRoutes = walk("src/pages")
 			.filter((file) => ROUTE_FILE.test(file) && !basename(file).startsWith("_"))
 			.filter((file) => !read(file).includes("export const prerender = true"))
@@ -3164,6 +3167,8 @@ describe("conventions", () => {
 		expect(cachedRoutes.toSorted()).toEqual(contentRoutes.toSorted());
 		expect(collections.filter((collection) => !tags.includes(collection))).toEqual([]);
 		expect(tags).toContain("emdash:taxonomy:tag");
+		expect(cache).toContain('export const BYLINES_CACHE_TAG = "bylines";');
+		expect(cache.match(CACHE_TAG_LIST)?.[1]).toContain("BYLINES_CACHE_TAG");
 	});
 
 	it("disallows in robots.txt the routes it keeps out of the sitemap, and EmDash's admin", () => {
@@ -4322,6 +4327,7 @@ describe("the hand-written code", () => {
 		const isPackage = (specifier: string) =>
 			!specifier.startsWith(".") &&
 			!specifier.startsWith("node:") &&
+			!specifier.startsWith("cloudflare:") &&
 			!specifier.startsWith("astro:") &&
 			!ALIAS_TARGETS.some(([alias]) => specifier.startsWith(alias));
 		const imported = HAND_WRITTEN_CODE.flatMap((file) =>
@@ -5125,27 +5131,18 @@ describe("the CMS", () => {
 		expect(declaredCollections).not.toContain("tags");
 	});
 
-	it("reads only reference fields the seed declares, and the Author relation from both of its ends", () => {
+	it("reads only reference fields the seed declares, and credits an Author through a byline rather than a relation", () => {
 		const declared = collections
 			.flatMap(({ fields }) => fields.filter(({ type }) => type === "reference"))
 			.map(({ slug }) => slug);
 		const readFields = [
-			read("src/application/dto/author/types.ts").match(/AUTHOR_ARTICLES_FIELD = "(\w+)"/)?.[1],
 			read("src/application/entities/articles/articles.ts").match(/RELATED_ARTICLES_FIELD = "(\w+)"/)?.[1],
 		];
-		const authorRelation = relations.find(
-			({ parentCollection, childCollection }) => parentCollection === "articles" && childCollection === "authors",
-		);
-		const boundTo = (collection: string) =>
-			collections
-				.find(({ slug }) => slug === collection)
-				?.fields.filter(({ validation }) => validation?.relation === authorRelation?.slug)
-				.map(({ slug }) => slug);
 
 		expect(readFields.filter((field) => !field || !declared.includes(field))).toEqual([]);
-		expect(authorRelation).toBeDefined();
-		expect(boundTo("articles")).toEqual(["author"]);
-		expect(boundTo("authors")).toEqual([readFields[0]]);
+		expect(relations ?? []).toEqual([]);
+		expect(collections.map(({ slug }) => slug)).not.toContain("authors");
+		expect(read("src/application/dto/author/types.ts")).toContain("export type RawAuthor = CmsByline;");
 	});
 
 	it("orders by a field EmDash sorts on: a system column, or the collection's own date field", () => {

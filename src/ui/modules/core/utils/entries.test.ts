@@ -156,7 +156,7 @@ describe("getSiteAuthor", () => {
 		collections.set("authors", { entries: [{ id: "someone-else", data: { slug: "someone-else" } }] });
 
 		await expect(getSiteAuthor()).rejects.toThrow(
-			`The authors collection carries no author with the slug ${SITE_AUTHOR_SLUG}`,
+			`No published Article credits the byline the site is about (${SITE_AUTHOR_SLUG}), so the authors collection carries no such author`,
 		);
 	});
 });

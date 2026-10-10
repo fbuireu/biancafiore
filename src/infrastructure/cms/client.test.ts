@@ -1,12 +1,22 @@
 import { failureOf } from "@tests/helpers/exit";
 import { Effect } from "effect";
 import { getEmDashCollection, getEmDashReferences } from "emdash";
+import { getDb } from "emdash/runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CmsError } from "../errors";
 import { CmsClient, CmsClientLive, itemOf, PUBLISHED_STATUS } from "./client";
 import { MEDIA_FILE_PATH } from "./media";
 
-vi.mock("emdash", () => ({ getEmDashCollection: vi.fn(), getEmDashReferences: vi.fn() }));
+const findById = vi.hoisted(() => vi.fn());
+
+vi.mock("emdash", () => ({
+	getEmDashCollection: vi.fn(),
+	getEmDashReferences: vi.fn(),
+	MediaRepository: class {
+		findById = findById;
+	},
+}));
+vi.mock("emdash/runtime", () => ({ getDb: vi.fn() }));
 
 const collection = vi.mocked(getEmDashCollection);
 const references = vi.mocked(getEmDashReferences);
@@ -29,9 +39,43 @@ const ENTRY = {
 
 const client = () => Effect.runPromise(CmsClient.pipe(Effect.provide(CmsClientLive)));
 
+const AVATAR = {
+	id: "01AVATAR",
+	storageKey: "01FACE.jpg",
+	alt: "Bianca",
+	width: 400,
+	height: 400,
+	mimeType: "image/jpeg",
+	blurhash: "LXCacDM{RjxuOxogkCR.Dkt7t7Rj",
+};
+
+const credit = ({ sortOrder, ...byline }: Record<string, unknown>) => ({ sortOrder, byline });
+
+const CREDITED = {
+	id: "credited",
+	data: {
+		id: "01CREDITED",
+		bylines: [
+			credit({ sortOrder: 1, id: "01GUEST", slug: "guest", displayName: "A Guest", bio: null }),
+			credit({
+				sortOrder: 0,
+				id: "01BIANCA",
+				slug: "bianca-fiore",
+				displayName: "Bianca Fiore",
+				bio: "Writer",
+				avatarMediaId: "01AVATAR",
+				customFields: { job_title: "Writer" },
+			}),
+		],
+		byline: { id: "01BIANCA" },
+	},
+};
+
 beforeEach(() => {
 	collection.mockReset();
 	references.mockReset();
+	findById.mockReset();
+	vi.mocked(getDb).mockReset();
 });
 
 describe("CmsClientLive", () => {
@@ -67,7 +111,7 @@ describe("CmsClient.listEntries", () => {
 		const cms = await client();
 
 		await Effect.runPromise(cms.listEntries({ collection: "cities", limit: 10, orderBy: "start_date" }));
-		await Effect.runPromise(cms.listEntries({ collection: "authors", limit: 10 }));
+		await Effect.runPromise(cms.listEntries({ collection: "testimonials", limit: 10 }));
 
 		expect(collection.mock.calls.map(([, filter]) => filter)).toStrictEqual([
 			{ status: PUBLISHED_STATUS, limit: 10, cursor: undefined, orderBy: { start_date: "asc" } },
@@ -93,6 +137,56 @@ describe("CmsClient.listEntries", () => {
 			featured_image: { src: `${MEDIA_FILE_PATH}01KEY.jpg` },
 		});
 		expect(page.items[0]?.data).not.toHaveProperty("terms");
+	});
+
+	it("answers each entry's credited bylines in their credit order, with the avatar read once per media id", async () => {
+		collection.mockResolvedValue({ entries: [CREDITED, CREDITED] } as never);
+		findById.mockResolvedValue(AVATAR);
+
+		const page = await Effect.runPromise((await client()).listEntries({ collection: "articles", limit: 100 }));
+
+		expect(findById).toHaveBeenCalledTimes(1);
+		expect(page.items[0]?.bylines).toStrictEqual([
+			{
+				id: "01BIANCA",
+				slug: "bianca-fiore",
+				displayName: "Bianca Fiore",
+				bio: "Writer",
+				avatar: {
+					id: "01AVATAR",
+					src: `${MEDIA_FILE_PATH}01FACE.jpg`,
+					alt: "Bianca",
+					width: 400,
+					height: 400,
+					mimeType: "image/jpeg",
+					blurhash: AVATAR.blurhash,
+				},
+				customFields: { job_title: "Writer" },
+			},
+			{ id: "01GUEST", slug: "guest", displayName: "A Guest", bio: null, customFields: {} },
+		]);
+		expect(page.items[0]?.data).not.toHaveProperty("bylines");
+		expect(page.items[0]?.data).not.toHaveProperty("byline");
+	});
+
+	it("reads no media when no credited byline has an avatar, and leaves a missing avatar out", async () => {
+		collection.mockResolvedValue({ entries: [ENTRY] } as never);
+
+		await Effect.runPromise((await client()).listEntries({ collection: "articles", limit: 100 }));
+
+		expect(findById).not.toHaveBeenCalled();
+	});
+
+	it("fails typed when an avatar cannot be read, naming what it was reading", async () => {
+		collection.mockResolvedValue({ entries: [CREDITED] } as never);
+		findById.mockRejectedValue(new Error("D1 is down"));
+
+		const failure = failureOf(
+			await Effect.runPromiseExit((await client()).listEntries({ collection: "articles", limit: 100 })),
+		);
+
+		expect(failure).toBeInstanceOf(CmsError);
+		expect((failure as CmsError).message).toBe("The byline avatars could not be read: D1 is down");
 	});
 
 	it("leaves out the cursor when EmDash hands back none, so a caller knows the collection ended", async () => {
@@ -170,28 +264,31 @@ describe("CmsClient.listReferences", () => {
 
 describe("itemOf", () => {
 	it("answers nothing for an entry whose data is not a record, or that carries no database id", () => {
-		expect(itemOf({ id: "x", data: "not a record" })).toBeUndefined();
-		expect(itemOf({ id: "x", data: { slug: "x" } })).toBeUndefined();
+		expect(itemOf({ entry: { id: "x", data: "not a record" } })).toBeUndefined();
+		expect(itemOf({ entry: { id: "x", data: { slug: "x" } } })).toBeUndefined();
 	});
 
 	it("reads a missing slug and a missing update time as absent rather than inventing either", () => {
-		expect(itemOf({ id: "01X", data: { id: "01X" } })).toStrictEqual({
+		expect(itemOf({ entry: { id: "01X", data: { id: "01X" } } })).toStrictEqual({
 			id: "01X",
 			slug: null,
 			data: { id: "01X" },
 			terms: {},
+			bylines: [],
 			updatedAt: "",
 		});
 	});
 
 	it("keeps only well-formed terms, labelling one that has no label by its slug", () => {
 		const item = itemOf({
-			id: "01X",
-			data: {
+			entry: {
 				id: "01X",
-				terms: {
-					tag: [{ id: "01A", slug: "a" }, { id: "01B" }, "not a term", { slug: "no-id" }],
-					category: "not a list",
+				data: {
+					id: "01X",
+					terms: {
+						tag: [{ id: "01A", slug: "a" }, { id: "01B" }, "not a term", { slug: "no-id" }],
+						category: "not a list",
+					},
 				},
 			},
 		});
@@ -200,12 +297,33 @@ describe("itemOf", () => {
 	});
 
 	it("answers no terms when EmDash hydrated none", () => {
-		expect(itemOf({ id: "01X", data: { id: "01X", terms: null } })?.terms).toStrictEqual({});
+		expect(itemOf({ entry: { id: "01X", data: { id: "01X", terms: null } } })?.terms).toStrictEqual({});
 	});
 
 	it("turns every date EmDash hydrated, however deep, into the ISO string the mappers parse", () => {
-		const item = itemOf({ id: "01X", data: { id: "01X", rows: [{ at: new Date("2024-01-01T00:00:00.000Z") }] } });
+		const item = itemOf({
+			entry: { id: "01X", data: { id: "01X", rows: [{ at: new Date("2024-01-01T00:00:00.000Z") }] } },
+		});
 
 		expect(item?.data.rows).toStrictEqual([{ at: "2024-01-01T00:00:00.000Z" }]);
+	});
+
+	it("drops a credit that carries no byline or no byline id, and reads a missing name as empty", () => {
+		const item = itemOf({
+			entry: {
+				id: "01X",
+				data: {
+					id: "01X",
+					bylines: [
+						"not a credit",
+						{ byline: "not a byline" },
+						{ byline: { slug: "no-id" } },
+						{ byline: { id: "01B" } },
+					],
+				},
+			},
+		});
+
+		expect(item?.bylines).toStrictEqual([{ id: "01B", slug: null, displayName: "", bio: null, customFields: {} }]);
 	});
 });

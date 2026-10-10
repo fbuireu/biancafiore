@@ -1,6 +1,8 @@
+export const BYLINES_CACHE_TAG = "bylines";
+
 const CONTENT_CACHE_TAGS = [
 	"articles",
-	"authors",
+	BYLINES_CACHE_TAG,
 	"cities",
 	"projects",
 	"testimonials",

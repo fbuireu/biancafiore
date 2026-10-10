@@ -33,11 +33,11 @@ describe("preflight", () => {
 		]);
 	});
 
-	it("refuses an article with no published author before anything is written, since the collection requires one", () => {
+	it("refuses an article with no published author before anything is written, since the site needs its byline", () => {
 		const article = entry("article-1", "article", { author: link("draft-author") });
 
 		expect(check([article]).errors).toEqual([
-			"article article-1 has no published author, and the articles collection requires one",
+			"article article-1 has no published author, and the site refuses an Article no byline credits",
 		]);
 	});
 });

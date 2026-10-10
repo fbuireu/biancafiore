@@ -2,7 +2,8 @@ import type { Except } from "@const/types";
 import type { AuthorDTO } from "@domain/author";
 import type { AnyRawArticle } from "../../article/types";
 import { createImage } from "../../shared/images";
-import type { RawAuthor } from "../types";
+import { AUTHOR_FIELD, type RawAuthor } from "../types";
+import { socialNetworkUrls } from "./socialNetworks";
 
 interface BylineAuthorParams {
 	rawArticle: AnyRawArticle;
@@ -14,40 +15,40 @@ interface CreditsParams {
 	rawArticle: AnyRawArticle;
 }
 
-interface RawAuthorIdentity {
-	id?: string;
-	slug: string | null;
-	data: { name: string };
-}
-
-const entryOf = ({ id }: Pick<RawAuthorIdentity, "id">): string => (id ? ` (id ${id})` : "");
+const textOf = (value: unknown): string => (typeof value === "string" ? value.trim() : "");
 
 export const credits = ({ rawAuthor, rawArticle }: CreditsParams): boolean =>
-	rawAuthor.references.articles.some(({ id }) => id === rawArticle.id);
+	rawArticle.bylines.some(({ id }) => id === rawAuthor.id);
+
+export function creditedAuthors(rawArticles: AnyRawArticle[]): RawAuthor[] {
+	return [...new Map(rawArticles.flatMap(({ bylines }) => bylines).map((byline) => [byline.id, byline])).values()];
+}
 
 export function bylineAuthor({ rawArticle, rawAuthors }: BylineAuthorParams): RawAuthor {
-	const author = rawAuthors.find((rawAuthor) => credits({ rawAuthor, rawArticle }));
+	const [credited] = rawArticle.bylines;
+	const author = credited && rawAuthors.find(({ id }) => id === credited.id);
 
 	if (!author) {
 		throw new Error(
-			`An Article (${rawArticle.slug ?? rawArticle.id}) is credited to no published author, so no byline can name it`,
+			`An Article (${rawArticle.slug ?? rawArticle.id}) is credited to no byline, so no byline can name it`,
 		);
 	}
 
 	return author;
 }
 
-export function authorIdentity(author: RawAuthorIdentity): Pick<AuthorDTO, "name" | "slug"> {
-	const name = author.data.name.trim();
+export function authorIdentity(author: RawAuthor): Pick<AuthorDTO, "name" | "slug"> {
+	const { id } = author;
+	const name = author.displayName.trim();
 	const slug = (author.slug ?? "").trim();
 
 	if (!slug) {
-		throw new Error(`The Author "${name}"${entryOf(author)} has no slug, so no page can address them`);
+		throw new Error(`The Author "${name}" (id ${id}) has no slug, so no page can address them`);
 	}
 
 	if (!name) {
 		throw new Error(
-			`The Author "${slug}"${entryOf(author)} has an empty name, so the Tag Index cannot file their Author Tag under a letter`,
+			`The Author "${slug}" (id ${id}) has an empty name, so the Tag Index cannot file their Author Tag under a letter`,
 		);
 	}
 
@@ -55,14 +56,19 @@ export function authorIdentity(author: RawAuthorIdentity): Pick<AuthorDTO, "name
 }
 
 export function createAuthor(rawAuthor: RawAuthor): Except<AuthorDTO, "latestArticle"> {
-	const { data } = rawAuthor;
+	const identity = authorIdentity(rawAuthor);
+	const { avatar, bio, customFields } = rawAuthor;
+
+	if (!avatar) {
+		throw new Error(`The Author "${identity.slug}" (id ${rawAuthor.id}) has no avatar, so no profile image can render`);
+	}
 
 	return {
-		...authorIdentity(rawAuthor),
-		description: data.description,
-		jobTitle: data.job_title,
-		currentCompany: data.current_company,
-		profileImage: createImage(data.profile_image),
-		socialNetworks: (data.social_networks ?? []).map(({ url }) => url),
+		...identity,
+		description: bio ?? "",
+		jobTitle: textOf(customFields[AUTHOR_FIELD.JOB_TITLE]),
+		currentCompany: textOf(customFields[AUTHOR_FIELD.CURRENT_COMPANY]),
+		profileImage: createImage(avatar),
+		socialNetworks: socialNetworkUrls(customFields[AUTHOR_FIELD.SOCIAL_NETWORKS]),
 	};
 }

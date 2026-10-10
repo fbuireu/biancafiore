@@ -19,50 +19,7 @@
 			"collections": ["articles"]
 		}
 	],
-	"relations": [
-		{
-			"slug": "articles_author",
-			"parentCollection": "articles",
-			"childCollection": "authors",
-			"parentLabel": "Articles",
-			"parentLabelSingular": "Article",
-			"childLabel": "Author",
-			"childLabelSingular": "Author",
-			"maxChildrenPerParent": 1
-		}
-	],
 	"collections": [
-		{
-			"slug": "authors",
-			"label": "Authors",
-			"labelSingular": "Author",
-			"titleField": "name",
-			"supports": ["drafts", "revisions", "search"],
-			"fields": [
-				{ "slug": "name", "label": "Name", "type": "string", "required": true, "searchable": true },
-				{ "slug": "description", "label": "Description", "type": "text", "required": true },
-				{ "slug": "job_title", "label": "Job title", "type": "string", "required": true },
-				{ "slug": "current_company", "label": "Current company", "type": "string", "required": true },
-				{ "slug": "profile_image", "label": "Profile image", "type": "image", "required": true },
-				{
-					"slug": "social_networks",
-					"label": "Social networks",
-					"type": "repeater",
-					"validation": {
-						"subFields": [
-							{ "slug": "name", "label": "Name", "type": "string", "required": true },
-							{ "slug": "url", "label": "URL", "type": "url", "required": true }
-						]
-					}
-				},
-				{
-					"slug": "articles",
-					"label": "Articles",
-					"type": "reference",
-					"validation": { "relation": "articles_author" }
-				}
-			]
-		},
 		{
 			"slug": "articles",
 			"label": "Articles",
@@ -81,13 +38,6 @@
 				{ "slug": "is_favorite", "label": "Favorite", "type": "boolean", "defaultValue": false },
 				{ "slug": "is_republished", "label": "Republished", "type": "boolean", "defaultValue": false },
 				{ "slug": "original_source", "label": "Original source", "type": "string" },
-				{
-					"slug": "author",
-					"label": "Author",
-					"type": "reference",
-					"required": true,
-					"validation": { "relation": "articles_author" }
-				},
 				{
 					"slug": "related_articles",
 					"label": "Related articles",

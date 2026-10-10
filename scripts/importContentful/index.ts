@@ -2,7 +2,8 @@ import { type ContentfulAsset, type ContentfulEntry, contentTypeOf, linkedId, re
 import { type EmDashWriter, type EntryBody, emdashWriter } from "./emdash.ts";
 import {
 	articleBody,
-	authorBody,
+	authorByline,
+	BYLINE_FIELDS,
 	cityBody,
 	type MapEntryParams,
 	projectBody,
@@ -33,9 +34,9 @@ interface UploadMediaParams {
 }
 
 const TAG_TAXONOMY = "tag";
+const AUTHOR_CONTENT_TYPE = "author";
 
 const MIGRATIONS: Migration[] = [
-	{ contentType: "author", collection: "authors", body: authorBody },
 	{ contentType: "city", collection: "cities", body: cityBody },
 	{ contentType: "project", collection: "projects", body: projectBody },
 	{ contentType: "testimonial", collection: "testimonials", body: testimonialBody },
@@ -147,9 +148,10 @@ async function main(): Promise<void> {
 	const entries = new Map(space.entries.map((entry) => [entry.sys.id, entry]));
 	const assets = new Map(space.assets.map((asset) => [asset.sys.id, asset]));
 	const migrated = space.entries.filter((entry) =>
-		MIGRATIONS.some(({ contentType }) => contentType === contentTypeOf(entry)),
+		[AUTHOR_CONTENT_TYPE, ...MIGRATIONS.map(({ contentType }) => contentType)].includes(contentTypeOf(entry)),
 	);
 	const tags = space.entries.filter((entry) => contentTypeOf(entry) === "tag");
+	const authors = space.entries.filter((entry) => contentTypeOf(entry) === "author");
 
 	const checked = preflight({ migrated, entries });
 	const warnings = [...checked.warnings];
@@ -165,6 +167,16 @@ async function main(): Promise<void> {
 	const ids = new Map<string, string>();
 	const context = { entries, assets, media, ids, warnings, nextKey: () => `k${(key++).toString(36)}` };
 	const articles: Array<{ entry: ContentfulEntry; id: string }> = [];
+
+	say(`Creating ${authors.length} bylines…`);
+
+	if (!DRY_RUN) await writer.ensureBylineFields(BYLINE_FIELDS);
+
+	for (const entry of authors) {
+		const id = DRY_RUN ? `dry-${entry.sys.id}` : await writer.createByline(authorByline({ entry, context }));
+
+		ids.set(entry.sys.id, id);
+	}
 
 	say(`Creating ${tags.length} tags…`);
 

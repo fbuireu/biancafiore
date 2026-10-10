@@ -87,7 +87,6 @@ describe("tags loader", () => {
 					data: { title: "First", content: [], publish_date: "2024-01-01" },
 				}),
 			],
-			authors: [],
 		});
 
 		const entry = await tags.loader.loadEntry({ filter: { id: "craft" }, collection: "tags" });

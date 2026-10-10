@@ -59,7 +59,9 @@ export async function getSiteAuthor(): Promise<AuthorEntry> {
 	const siteAuthor = (await readAuthors()).find(({ data }) => data.slug === SITE_AUTHOR_SLUG);
 
 	if (!siteAuthor) {
-		throw new Error(`The authors collection carries no author with the slug ${SITE_AUTHOR_SLUG}`);
+		throw new Error(
+			`No published Article credits the byline the site is about (${SITE_AUTHOR_SLUG}), so the authors collection carries no such author`,
+		);
 	}
 
 	return siteAuthor;

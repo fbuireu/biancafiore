@@ -44,7 +44,7 @@ It is worth more than a CI curiosity: a feed reader is also an automated client 
 
 ## The build fails on one bad CMS entry
 
-Deliberate. A malformed publish date, an unresolved author link, or an Original Source without the Republished flag is refused where it is mapped, and one entry takes the build down rather than one page rendering wrong. The error names the entry. Fix it in the CMS, at `/_emdash/admin`.
+Deliberate. A malformed publish date, an Article no byline credits, or an Original Source without the Republished flag is refused where it is mapped, and one entry takes the build down rather than one page rendering wrong. The error names the entry. Fix it in the CMS, at `/_emdash/admin`.
 
 ---
 

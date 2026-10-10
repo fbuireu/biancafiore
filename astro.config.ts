@@ -9,6 +9,7 @@ import { loadEnv } from "vite";
 import { CONTENT_CACHE, CONTENT_ROUTES } from "./src/const/contentCache";
 import { IMAGE_CDN } from "./src/const/imageCdn";
 import { securityHeaders } from "./src/const/securityHeaders";
+import { bylineCache } from "./src/infrastructure/cms/plugins/bylineCache/descriptor";
 import { editorialBlocks } from "./src/infrastructure/cms/plugins/editorialBlocks/descriptor";
 import { emailDelivery } from "./src/infrastructure/cms/plugins/emailDelivery/descriptor";
 import { generateStaticHeaders } from "./src/infrastructure/integrations/generateStaticHeaders";
@@ -100,7 +101,7 @@ export default defineConfig({
 			storage: r2({ binding: "MEDIA" }),
 			fonts: false,
 			admin: { siteName: "Bianca Fiore", locales: ["en"] },
-			plugins: [editorialBlocks(), emailDelivery()],
+			plugins: [editorialBlocks(), emailDelivery(), bylineCache()],
 		}),
 	],
 	adapter: cloudflare({ imageService: isProductionBuild ? "cloudflare" : "passthrough" }),

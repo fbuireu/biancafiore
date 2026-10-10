@@ -1,10 +1,9 @@
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
-import { BLURHASH, rawEntry, rawImage } from "@tests/doubles/cmsEntries";
+import { avatar, BLURHASH, rawByline, rawEntry, rawImage } from "@tests/doubles/cmsEntries";
 import { cmsAnswers, cmsQueries, cmsReferenceQueries, cmsRefersTo, resetCms } from "@tests/doubles/cmsLayer";
 import { escapedRequests } from "@tests/doubles/network";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ArticleFields } from "../../dto/article/types";
-import type { AuthorFields } from "../../dto/author/types";
 import { articles, RELATED_ARTICLES_FIELD } from "./articles";
 
 vi.mock("@infrastructure/cms/client", async () => {
@@ -14,16 +13,12 @@ vi.mock("@infrastructure/cms/client", async () => {
 	return { ...actual, CmsClientLive: cmsClientLayer(actual.CmsClient) };
 });
 
-const AUTHOR = rawEntry<AuthorFields, "articles">({
-	id: "author-bianca",
+const AUTHOR = rawByline({
 	slug: "bianca-fiore",
-	data: {
-		name: "Bianca Fiore",
-		description: "Content writer",
-		job_title: "Writer",
-		current_company: "Freelance",
-		profile_image: rawImage({ name: "bianca.jpg" }),
-	},
+	displayName: "Bianca Fiore",
+	bio: "Content writer",
+	avatar: avatar({ name: "bianca.jpg" }),
+	customFields: { job_title: "Writer", current_company: "Freelance" },
 });
 
 interface MakeArticleParams {
@@ -39,6 +34,7 @@ const makeArticle = ({ slug, publishDate, isFavorite, featuredImage }: MakeArtic
 	rawEntry<ArticleFields>({
 		id: articleId(slug),
 		slug,
+		bylines: [AUTHOR],
 		data: {
 			title: `The title of ${slug}`,
 			content: [],
@@ -50,13 +46,7 @@ const makeArticle = ({ slug, publishDate, isFavorite, featuredImage }: MakeArtic
 	});
 
 const answer = (rawArticles: ReturnType<typeof makeArticle>[]) => {
-	cmsAnswers({ articles: rawArticles, authors: [AUTHOR] });
-	cmsRefersTo({
-		collection: "authors",
-		id: AUTHOR.id,
-		field: "articles",
-		references: rawArticles.map(({ id }) => ({ id })),
-	});
+	cmsAnswers({ articles: rawArticles });
 };
 
 const loadAll = async () => {
@@ -74,18 +64,15 @@ beforeEach(() => {
 });
 
 describe("articles loader", () => {
-	it("asks for articles newest first, beside the authors with the list of articles each one is credited with", async () => {
+	it("asks for the articles alone, newest first, since each one carries the bylines it credits", async () => {
 		answer([makeArticle({ slug: "an-article", publishDate: "2024-03-15" })]);
 
 		await loadAll();
 
-		expect(cmsQueries).toEqual(
-			expect.arrayContaining([
-				expect.objectContaining({ collection: "articles", orderBy: "publish_date", order: "desc" }),
-				expect.objectContaining({ collection: "authors" }),
-			]),
-		);
-		expect(cmsReferenceQueries.map(({ collection, field }) => `${collection}.${field}`)).toEqual(["authors.articles"]);
+		expect(cmsQueries).toEqual([
+			expect.objectContaining({ collection: "articles", orderBy: "publish_date", order: "desc" }),
+		]);
+		expect(cmsReferenceQueries).toEqual([]);
 	});
 
 	it("keys an entry by the trimmed slug, so a padded CMS slug still answers the references pointing at it", async () => {

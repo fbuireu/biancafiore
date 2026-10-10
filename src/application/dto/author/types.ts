@@ -1,15 +1,9 @@
-import type { CmsEntry } from "@infrastructure/cms/entries";
-import type { RawImage } from "../shared/images";
+import type { CmsByline } from "@infrastructure/cms/entries";
 
-export interface AuthorFields {
-	name: string;
-	description: string;
-	job_title: string;
-	current_company: string;
-	profile_image: RawImage;
-	social_networks?: Array<{ name: string; url: string }>;
-}
+export const AUTHOR_FIELD = {
+	JOB_TITLE: "job_title",
+	CURRENT_COMPANY: "current_company",
+	SOCIAL_NETWORKS: "social_networks",
+} as const;
 
-export const AUTHOR_ARTICLES_FIELD = "articles";
-
-export type RawAuthor = CmsEntry<AuthorFields, typeof AUTHOR_ARTICLES_FIELD>;
+export type RawAuthor = CmsByline;

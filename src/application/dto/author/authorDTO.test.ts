@@ -1,59 +1,58 @@
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
-import { rawEntry, rawImage } from "@tests/doubles/cmsEntries";
+import { avatar, rawByline, rawEntry } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
 import type { ArticleFields } from "../article/types";
 import { createAuthors } from ".";
-import type { AuthorFields } from "./types";
+import type { RawAuthor } from "./types";
 
-interface MakeAuthorParams extends Partial<AuthorFields> {
-	id?: string;
+interface MakeAuthorParams {
 	slug?: string;
-	credits?: string[];
+	displayName?: string;
+	bio?: string;
+	customFields?: Record<string, unknown>;
 }
 
-const articleId = (slug: string) => `article-${slug.trim()}`;
-
-const makeAuthor = ({ id, slug = "bianca-fiore", credits = [], ...fields }: MakeAuthorParams = {}) =>
-	rawEntry<AuthorFields, "articles">({
-		id: id ?? `author-${slug.trim()}`,
-		slug,
-		data: {
-			name: "Bianca Fiore",
-			description: "Content writer",
-			job_title: "Writer",
-			current_company: "Freelance",
-			profile_image: rawImage({ name: "bianca.jpg", width: 400, height: 400 }),
-			social_networks: [{ name: "LinkedIn", url: "https://linkedin.com/in/bianca" }],
-			...fields,
-		},
-		references: { articles: credits.map((slug) => ({ id: articleId(slug) })) },
-	});
+const makeAuthor = ({
+	slug = "bianca-fiore",
+	displayName = "Bianca Fiore",
+	bio = "Content writer",
+	customFields = {
+		job_title: "Writer",
+		current_company: "Freelance",
+		social_networks: "LinkedIn | https://linkedin.com/in/bianca",
+	},
+}: MakeAuthorParams = {}): RawAuthor =>
+	rawByline({ slug, displayName, bio, avatar: avatar({ name: "bianca.jpg" }), customFields });
 
 interface MakeArticleParams {
 	slug: string;
 	publishDate?: string;
+	credits?: RawAuthor[];
 }
 
-const makeArticle = ({ slug, publishDate = "2024-01-01" }: MakeArticleParams) =>
+const makeArticle = ({ slug, publishDate = "2024-01-01", credits = [] }: MakeArticleParams) =>
 	rawEntry<ArticleFields>({
-		id: articleId(slug),
+		id: `article-${slug.trim()}`,
 		slug,
 		data: { title: slug, content: [], publish_date: publishDate },
+		bylines: credits,
 	});
 
 describe("createAuthors field mapping", () => {
 	it("carries every authored field across and turns the profile image into url, dimensions and formats", () => {
 		const [author] = createAuthors({
 			rawAuthors: [
-				makeAuthor({
-					description: "Writes for a living",
-					job_title: "Content writer",
-					profile_image: rawImage({ name: "bianca.avif", mimeType: "image/avif", width: 512, height: 512 }),
-					social_networks: [
-						{ name: "LinkedIn", url: "https://linkedin.com/in/bianca" },
-						{ name: "X", url: "https://x.com/bianca" },
-					],
-				}),
+				{
+					...makeAuthor({
+						bio: "Writes for a living",
+						customFields: {
+							job_title: "Content writer",
+							current_company: "Freelance",
+							social_networks: "LinkedIn | https://linkedin.com/in/bianca\nX | https://x.com/bianca",
+						},
+					}),
+					avatar: avatar({ name: "bianca.avif", mimeType: "image/avif", width: 512, height: 512 }),
+				},
 			],
 			rawArticles: [],
 		});
@@ -84,7 +83,7 @@ describe("createAuthors field mapping", () => {
 
 	it("preserves the order of the authors it was given", () => {
 		const authors = createAuthors({
-			rawAuthors: [makeAuthor({ name: "Zoe", slug: "zoe" }), makeAuthor({ name: "Ada", slug: "ada" })],
+			rawAuthors: [makeAuthor({ displayName: "Zoe", slug: "zoe" }), makeAuthor({ displayName: "Ada", slug: "ada" })],
 			rawArticles: [],
 		});
 
@@ -93,19 +92,25 @@ describe("createAuthors field mapping", () => {
 });
 
 describe("createAuthors article attribution", () => {
-	it("names an article the author's own list credits, as an articles collection reference", () => {
+	const bianca = makeAuthor();
+
+	it("names an article that credits the author, as an articles collection reference", () => {
 		const [author] = createAuthors({
-			rawAuthors: [makeAuthor({ credits: ["only-one"] })],
-			rawArticles: [makeArticle({ slug: "only-one" })],
+			rawAuthors: [bianca],
+			rawArticles: [makeArticle({ slug: "only-one", credits: [bianca] })],
 		});
 
 		expect(author.latestArticle).toEqual({ id: "only-one", collection: "articles" });
 	});
 
-	it("keeps two authors who share a display name apart, because the entry is what identifies an author", () => {
+	it("keeps two authors who share a display name apart, because the byline is what identifies an author", () => {
+		const namesake = makeAuthor({ slug: "b-fiore" });
 		const [first, second] = createAuthors({
-			rawAuthors: [makeAuthor({ credits: ["hers"] }), makeAuthor({ slug: "b-fiore", credits: ["the-namesakes"] })],
-			rawArticles: [makeArticle({ slug: "hers" }), makeArticle({ slug: "the-namesakes" })],
+			rawAuthors: [bianca, namesake],
+			rawArticles: [
+				makeArticle({ slug: "hers", credits: [bianca] }),
+				makeArticle({ slug: "the-namesakes", credits: [namesake] }),
+			],
 		});
 
 		expect(first.latestArticle).toEqual({ id: "hers", collection: "articles" });
@@ -114,8 +119,8 @@ describe("createAuthors article attribution", () => {
 
 	it("references an article by its trimmed slug, because that is the id the articles collection stores", () => {
 		const [author] = createAuthors({
-			rawAuthors: [makeAuthor({ credits: ["hers"] })],
-			rawArticles: [makeArticle({ slug: " hers " })],
+			rawAuthors: [bianca],
+			rawArticles: [makeArticle({ slug: " hers ", credits: [bianca] })],
 		});
 
 		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
@@ -123,10 +128,10 @@ describe("createAuthors article attribution", () => {
 
 	it("names the newest of the author's articles latestArticle, even when it arrived last", () => {
 		const [author] = createAuthors({
-			rawAuthors: [makeAuthor({ credits: ["oldest", "newest"] })],
+			rawAuthors: [bianca],
 			rawArticles: [
-				makeArticle({ slug: "oldest", publishDate: "2019-03-01" }),
-				makeArticle({ slug: "newest", publishDate: "2026-07-30" }),
+				makeArticle({ slug: "oldest", publishDate: "2019-03-01", credits: [bianca] }),
+				makeArticle({ slug: "newest", publishDate: "2026-07-30", credits: [bianca] }),
 			],
 		});
 
@@ -134,46 +139,42 @@ describe("createAuthors article attribution", () => {
 	});
 
 	it("ignores an article somebody else published more recently when naming latestArticle", () => {
+		const someoneElse = makeAuthor({ slug: "someone-else" });
 		const [author] = createAuthors({
-			rawAuthors: [makeAuthor({ credits: ["hers"] }), makeAuthor({ slug: "someone-else", credits: ["his"] })],
+			rawAuthors: [bianca, someoneElse],
 			rawArticles: [
-				makeArticle({ slug: "his", publishDate: "2026-07-30" }),
-				makeArticle({ slug: "hers", publishDate: "2025-01-01" }),
+				makeArticle({ slug: "his", publishDate: "2026-07-30", credits: [someoneElse] }),
+				makeArticle({ slug: "hers", publishDate: "2025-01-01", credits: [bianca] }),
 			],
 		});
 
 		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
 	});
 
-	it("ignores a credited article that is not published, since the list holds only what EmDash answered", () => {
-		const [author] = createAuthors({
-			rawAuthors: [makeAuthor({ credits: ["a-draft", "hers"] })],
-			rawArticles: [makeArticle({ slug: "hers" })],
+	it("credits an article to every byline on it, not only the first", () => {
+		const coAuthor = makeAuthor({ slug: "co-author" });
+		const [, second] = createAuthors({
+			rawAuthors: [bianca, coAuthor],
+			rawArticles: [makeArticle({ slug: "together", credits: [bianca, coAuthor] })],
 		});
 
-		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
+		expect(second.latestArticle).toEqual({ id: "together", collection: "articles" });
 	});
 
 	it("leaves latestArticle undefined for an author with no articles", () => {
-		expect(createAuthors({ rawAuthors: [makeAuthor()], rawArticles: [] })[0].latestArticle).toBeUndefined();
+		expect(createAuthors({ rawAuthors: [bianca], rawArticles: [] })[0].latestArticle).toBeUndefined();
 	});
 });
 
 describe("createAuthors, given an unreadable publish date", () => {
 	it("refuses it rather than reading the article as the epoch and ranking it last", () => {
+		const bianca = makeAuthor();
+
 		expect(() =>
 			createAuthors({
-				rawAuthors: [makeAuthor({ credits: ["nonsense"] })],
-				rawArticles: [makeArticle({ slug: "nonsense", publishDate: "not-a-date" })],
+				rawAuthors: [bianca],
+				rawArticles: [makeArticle({ slug: "nonsense", publishDate: "not-a-date", credits: [bianca] })],
 			}),
 		).toThrow('The Article "nonsense" (id article-nonsense) has an unreadable publish date (not-a-date)');
-	});
-});
-
-describe("createAuthors, given an author whose required image is missing", () => {
-	it("refuses it naming the gap, rather than emitting a profile with no picture", () => {
-		expect(() =>
-			createAuthors({ rawAuthors: [makeAuthor({ profile_image: undefined as never })], rawArticles: [] }),
-		).toThrow("(no media at all)");
 	});
 });

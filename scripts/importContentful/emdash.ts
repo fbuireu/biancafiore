@@ -14,6 +14,7 @@ interface UploadParams {
 export interface EntryBody {
 	slug?: string;
 	data: Record<string, unknown>;
+	bylines?: Array<{ bylineId: string }>;
 	references?: Record<string, string[]>;
 	publishedAt?: string;
 	createdAt?: string;
@@ -33,6 +34,21 @@ interface UpdateParams {
 interface PublishParams {
 	collection: string;
 	id: string;
+}
+
+export interface BylineBody {
+	slug?: string;
+	displayName: string;
+	bio?: string;
+	avatarMediaId?: string;
+	customFields: Record<string, unknown>;
+}
+
+export interface BylineFieldBody {
+	slug: string;
+	label: string;
+	type: "string" | "text";
+	translatable: false;
 }
 
 export interface TermBody {
@@ -88,9 +104,19 @@ interface ListAnswer {
 	items: unknown[];
 }
 
+interface BylineFieldListAnswer {
+	items: Array<{ slug: string }>;
+}
+
+interface CreatedByline {
+	id: string;
+}
+
 export interface EmDashWriter {
 	countEntries(collection: string): Promise<number>;
 	countTerms(taxonomy: string): Promise<number>;
+	ensureBylineFields(fields: BylineFieldBody[]): Promise<void>;
+	createByline(body: BylineBody): Promise<string>;
 	createTerm(params: CreateTermParams): Promise<string>;
 	setTerms(params: SetTermsParams): Promise<void>;
 	uploadMedia(params: UploadParams): Promise<UploadedMedia>;
@@ -137,6 +163,16 @@ export function emdashWriter({ url, token }: EmDashConfig): EmDashWriter {
 			(await call<ListAnswer>({ path: `/content/${collection}?limit=1&status=all` })).items.length,
 		countTerms: async (taxonomy) =>
 			(await call<TermListAnswer>({ path: `/taxonomies/${taxonomy}/terms` })).terms.length,
+		ensureBylineFields: async (fields) => {
+			const { items } = await call<BylineFieldListAnswer>({ path: "/admin/byline-fields" });
+			const registered = new Set(items.map(({ slug }) => slug));
+
+			for (const field of fields.filter(({ slug }) => !registered.has(slug))) {
+				await call<unknown>({ path: "/admin/byline-fields", init: json({ method: "POST", body: field }) });
+			}
+		},
+		createByline: async (body) =>
+			(await call<CreatedByline>({ path: "/admin/bylines", init: json({ method: "POST", body }) })).id,
 		createTerm: async ({ taxonomy, body }) =>
 			(await call<CreatedTerm>({ path: `/taxonomies/${taxonomy}/terms`, init: json({ method: "POST", body }) })).term
 				.id,

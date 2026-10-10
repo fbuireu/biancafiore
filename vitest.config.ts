@@ -26,6 +26,7 @@ const alias = [
 	{ find: "astro:env/server", replacement: `${ROOT}src/tests/doubles/astroEnvServer.ts` },
 	{ find: "astro:env/client", replacement: `${ROOT}src/tests/doubles/astroEnvClient.ts` },
 	{ find: "astro:middleware", replacement: `${ROOT}src/tests/doubles/astroMiddleware.ts` },
+	{ find: "cloudflare:workers", replacement: `${ROOT}src/tests/doubles/cloudflareWorkers.ts` },
 ];
 
 const BUILT_OUTPUT_SUITE = "docs/built-output.test.ts";

@@ -1,5 +1,5 @@
 import { type ContentfulEntry, linkedId } from "./contentful.ts";
-import type { EntryBody, TermBody } from "./emdash.ts";
+import type { BylineBody, BylineFieldBody, EntryBody, TermBody } from "./emdash.ts";
 import {
 	type ConversionContext,
 	type PortableTextBlock,
@@ -107,20 +107,26 @@ export function socialNetworkName(url: string): string {
 	return label.charAt(0).toUpperCase() + label.slice(1);
 }
 
-export function authorBody({ entry, context }: MapEntryParams): EntryBody {
+export const BYLINE_FIELDS: BylineFieldBody[] = [
+	{ slug: "job_title", label: "Job title", type: "string", translatable: false },
+	{ slug: "current_company", label: "Current company", type: "string", translatable: false },
+	{ slug: "social_networks", label: "Social networks (one per line: Name | URL)", type: "text", translatable: false },
+];
+
+export function authorByline({ entry, context }: MapEntryParams): BylineBody {
 	const { fields } = entry;
 	const socialNetworks = Array.isArray(fields.socialNetworks) ? fields.socialNetworks : [];
+	const avatarMediaId = context.media.get(linkedId(fields.profileImage) ?? "")?.id;
 
 	return {
 		slug: textOf(fields.slug)?.trim(),
-		createdAt: entry.sys.createdAt,
-		data: withoutEmpty({
-			name: fields.name,
-			description: fields.description,
-			job_title: fields.jobTitle,
-			current_company: fields.currentCompany,
-			profile_image: imageOf({ link: fields.profileImage, context }),
-			social_networks: socialNetworks.map((url) => ({ name: socialNetworkName(url), url })),
+		displayName: String(fields.name ?? "").trim(),
+		bio: textOf(fields.description),
+		...(avatarMediaId && { avatarMediaId }),
+		customFields: withoutEmpty({
+			job_title: textOf(fields.jobTitle),
+			current_company: textOf(fields.currentCompany),
+			social_networks: socialNetworks.map((url) => `${socialNetworkName(url)} | ${url}`).join("\n") || undefined,
 		}),
 	};
 }
@@ -191,9 +197,7 @@ export function articleBody({ entry, context }: MapEntryParams): EntryBody {
 			is_republished: fields.isRepublished ?? false,
 			original_source: textOf(fields.originalSource),
 		}),
-		references: {
-			author: referencesTo({ links: fields.author, context }),
-		},
+		bylines: referencesTo({ links: fields.author, context }).map((bylineId) => ({ bylineId })),
 	};
 }
 

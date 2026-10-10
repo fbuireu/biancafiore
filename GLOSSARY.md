@@ -25,7 +25,7 @@ _Avoid_: review, endorsement, recommendation, quote (bare).
 ## People & Places
 
 **Author**:
-The person credited with writing an Article, described by name, job title, current company, bio, profile image, and social links. In practice almost always Bianca, but the model is deliberately not exclusive to one Author: multiple Authors are supported. One Author is one Slug: the name is a display label, so two Authors sharing a name are still two Authors, each with their own Articles.
+The person credited with writing an Article, described by name, job title, current company, bio, profile image, and social links. In the CMS an Author is a byline, credited on the Article. In practice almost always Bianca, but the model is deliberately not exclusive to one Author: multiple Authors are supported. One Author is one Slug: the name is a display label, so two Authors sharing a name are still two Authors, each with their own Articles.
 _Avoid_: writer, contributor, user, admin.
 
 **Byline**:
