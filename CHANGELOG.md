@@ -1,3 +1,11 @@
+# [1.26.0](https://github.com/fbuireu/biancafiore/compare/v1.25.9...v1.26.0) (2026-10-10)
+
+
+### Features
+
+* let editors sign in to the admin with Google ([cbf6772](https://github.com/fbuireu/biancafiore/commit/cbf67729049a6bb883e248bcdc0cf99e8a8a8360))
+* migrate content from Contentful to EmDash ([#1196](https://github.com/fbuireu/biancafiore/issues/1196)) ([a1d7516](https://github.com/fbuireu/biancafiore/commit/a1d7516e00a0d683a4a43faf7d1e89f6f738e01f))
+
 ## [1.25.9](https://github.com/fbuireu/biancafiore/compare/v1.25.8...v1.25.9) (2026-10-10)
 
 
