@@ -27,4 +27,17 @@
 			--in-view: true;
 		}
 	}
+
+	@keyframes slider-marker {
+		0%,
+		100% {
+			color: var(--faint);
+			inline-size: 14px;
+		}
+
+		50% {
+			color: var(--gold);
+			inline-size: 32px;
+		}
+	}
 }

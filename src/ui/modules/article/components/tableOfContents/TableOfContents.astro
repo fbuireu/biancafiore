@@ -15,10 +15,13 @@ const { tableOfContents } = Astro.props;
             <summary class="table-of-contents__summary">
                 <p id="toc-heading" class="table-of-contents__title">Table of Contents</p></summary>
             <ul class="table-of-contents__list flex column-nowrap">
-              {tableOfContents.map(({ id, heading, level, scope }) => (
+              {tableOfContents.map(({ id, heading, level, scope }, index) => (
                   <li class="table-of-contents__item" style={`--level: ${level};`}>
-                      <a class="table-of-contents__item__link underline-on-hover clickable"
-                         href={`#${id}`} style={`--for: ${scope}`}>{heading}</a>
+                      <a class="table-of-contents__item__link clickable"
+                         href={`#${id}`} style={`--for: ${scope}; --until: ${tableOfContents[index + 1]?.scope ?? "none"}`}>
+                          <span class="table-of-contents__item__marker" aria-hidden="true"></span>
+                          <span class="table-of-contents__item__label">{heading}</span>
+                      </a>
                   </li>
               ))}
             </ul>
