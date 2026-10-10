@@ -50,6 +50,8 @@ The step passes no `--pass-with-no-tests`, and that is the point: Playwright exi
 
 The ruleset on `main` requires these contexts: `Check`, `Lint the pull request title`, `Dependency Review` and `zizmor`. `Check` is an aggregate job that needs the verify, deploy, end-to-end, smoke and release jobs in `ci.yml` and fails when any of them failed or was cancelled, so the end-to-end run against the preview gates a merge without being named, which it could not be: every job in that workflow is conditional on the event, and a required check that never reports blocks the merge forever. Approvals are not required; the checks are the gate. Settings outside it back it up: a `release-tags` ruleset that forbids deleting or moving any `v*` tag, and a deployment-branch policy on the `production` environment that accepts `main` only.
 
+**Every Playwright run uses two browsers.** The end-to-end run against the preview and the smoke run against production both run each case in Chromium and in WebKit, the engine behind Safari, and each job installs both behind a cache keyed on the pair, so a cache saved with one browser is never restored into a run of both. The docs test holds the projects and the install.
+
 **The preview Worker outlives the end-to-end run.** Closing a pull request does not cancel the CI run already going, so the cleanup queues behind that run, in a concurrency group spelled from the pull request number. A weekly sweep deletes any preview Worker whose pull request is closed, for the cases a cleanup missed.
 
 ---

@@ -15,7 +15,7 @@ The collection of all Articles and the section that lists them (titled "The Blog
 _Avoid_: journal, news, feed, articles page.
 
 **Project**:
-A typology of work Bianca does (an area of her practice rather than a single deliverable), showcased in the portfolio with a name, a rich-text description, and an image. Reader-facing copy counts them as "Disciplines". The term is expected to widen: ADR 0010 proposes giving a Project its own page, which is what will force the Project/Article boundary to be settled.
+A typology of work Bianca does (an area of her practice rather than a single deliverable), showcased in the portfolio with a name, a rich-text description, and an image. Reader-facing copy counts them as "Disciplines". A Project has no page of its own: it is a section of the portfolio.
 _Avoid_: work, case study, portfolio item, sample.
 
 **Testimonial**:
@@ -63,7 +63,7 @@ The number of Articles associated with a Tag or Author Tag, shown next to it in 
 _Avoid_: total, frequency, tally.
 
 **Slug**:
-The URL-safe identifier that addresses a page: an Article under /articles, a Tag or an Author Tag under /tags. One Slug addresses one page. There is no author route: a Byline links to the Author's Slug under /tags, which is where an Author Tag lives. A City has a Slug too, derived from its name, which addresses its place on About rather than a page. A Project has none yet; ADR 0010 is what would give it one.
+The URL-safe identifier that addresses a page: an Article under /articles, a Tag or an Author Tag under /tags. One Slug addresses one page. There is no author route: a Byline links to the Author's Slug under /tags, which is where an Author Tag lives. A City has a Slug too, derived from its name, which addresses its place on About rather than a page. A Project has none, since it has no page of its own.
 _Avoid_: permalink, handle, id.
 
 ## Editorial Concepts

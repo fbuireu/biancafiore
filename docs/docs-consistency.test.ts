@@ -61,11 +61,13 @@ const PLAIN_LOGGER_READERS = [
 	"src/pages/500.astro",
 ];
 
-const DOCUMENTED_PATH_EXAMPLES = new Set(["file.ts:123", "NNNN-kebab-title.md"]);
+const DOCUMENTED_PATH_EXAMPLES = new Set(["file.ts:123", "NNNN-kebab-title.md", "BACKLOG.md"]);
 
 const ADR_TEMPLATE_SECTIONS = ["Status", "Context", "Decision", "Consequences"];
 
 const ADR_STATUSES = new Set(["Template", "Proposed", "Accepted", "Superseded", "Deprecated"]);
+
+const ADR_NUMBERS_WITHDRAWN = new Set([10]);
 
 const INLINE_CODE = /`([^`\n]+)`/g;
 const FENCED_BLOCK = /```(\w*)\n([\s\S]*?)```/g;
@@ -195,6 +197,14 @@ const ARTICLE_SLIDER_IMPORT = /import\s+ArticleSlider\s+from\s+["'][^"']*Article
 const STRETCH_ARROW_MORPH_FILE = "src/ui/styles/global/global.css";
 const STRETCH_ARROW_STATE_QUERY = /@container style\(--stretch-arrow: hover\)/g;
 const STRETCH_ARROW_STATE_DECLARATION = /--stretch-arrow: hover;/;
+const ARROW_BOX = "arrow-box";
+const INLINED_STRETCH_ARROW = /<[a-zA-Z][^<>]*\sset:html=\{stretchArrow\}[^<>]*>/g;
+const ARROW_BOX_MOTION = /^(?:opacity|translate|transition(?:-[a-z-]+)?)$/;
+const REVEALED_ARROW_BOX = new Map([
+	["opacity", "1"],
+	["translate", "0 0"],
+]);
+const COMBINATOR_OUTSIDE_PARENTHESES = /\s*[\s>~+]\s*(?![^(]*\))/;
 const SVG_URL = /url\(\s*["']?[^)"']*\.svg["']?\s*\)/;
 const MASK_PROPERTY = /^mask(?:-image)?\s*:/;
 const CURRENT_COLOUR_FILL = /^background-color\s*:\s*currentColor$/i;
@@ -497,7 +507,7 @@ const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.sta
 const WIKI_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/wiki/"));
 const CODING_STANDARDS = "CODING_STANDARDS.md";
 const GUIDES = ["AGENTS.md", "GLOSSARY.md", CODING_STANDARDS, ...NESTED_GUIDES];
-const DOCS = [...GUIDES, "docs/BACKLOG.md", ".github/CONTRIBUTING.md", ...ADR_FILES, ...WIKI_FILES];
+const DOCS = [...GUIDES, ".github/CONTRIBUTING.md", ...ADR_FILES, ...WIKI_FILES];
 const isWiki = (doc: string) => doc.startsWith("docs/wiki/");
 const wikiPages = new Set(WIKI_FILES.map((file) => basename(file, ".md")));
 
@@ -666,6 +676,48 @@ const svgPaintFaults = (stylesheet: string) => {
 			return painted ? [] : [`${declaration} masks an svg that no background-color: currentColor paints`];
 		});
 };
+
+interface ArrowBoxFaultsParams {
+	holders: Set<string>;
+	stylesheet: string;
+}
+
+interface StyledSubject {
+	rule: string;
+	classes: string[];
+	property: string;
+	value: string;
+}
+
+const styledSubjectsIn = (stylesheet: string): StyledSubject[] =>
+	declarationsIn(stylesheet).map(({ declaration, preludes }) => {
+		const rule = preludes.findLast((prelude) => !prelude.startsWith("@")) ?? "";
+		const subjects = selectorsOf(rule).map((selector) => selector.split(COMBINATOR_OUTSIDE_PARENTHESES).at(-1) ?? "");
+
+		return {
+			rule,
+			classes: subjects.flatMap((subject) => [...subject.matchAll(ANY_CLASS_TOKEN)].map(([, name]) => name)),
+			property: declaration.slice(0, declaration.indexOf(":")).trim(),
+			value: declaration
+				.slice(declaration.indexOf(":") + 1)
+				.replace(WHITESPACE_RUN, " ")
+				.trim(),
+		};
+	});
+
+const arrowBoxFaults = ({ holders, stylesheet }: ArrowBoxFaultsParams): string[] =>
+	styledSubjectsIn(stylesheet)
+		.filter(({ classes, property, value }) => {
+			const holdsTheArrow = classes.some((name) => holders.has(name));
+
+			return holdsTheArrow && ARROW_BOX_MOTION.test(property) && REVEALED_ARROW_BOX.get(property) !== value;
+		})
+		.map(({ rule, property, value }) => `${rule} { ${property}: ${value} }`);
+
+const revealedClassesIn = (stylesheet: string): string[] =>
+	styledSubjectsIn(stylesheet)
+		.filter(({ property, value }) => property === "opacity" && REVEALED_ARROW_BOX.get(property) === value)
+		.flatMap(({ classes }) => classes);
 
 const keyframesDeclaredIn = (stylesheet: string) =>
 	[...stylesheet.matchAll(KEYFRAMES_DECLARATION)].map(([, name]) => name);
@@ -1015,6 +1067,24 @@ describe("diagrams", () => {
 	});
 });
 
+interface ExpectedAdrNumbersParams {
+	numbers: number[];
+	withdrawn: Set<number>;
+}
+
+const expectedAdrNumbers = ({ numbers, withdrawn }: ExpectedAdrNumbersParams): number[] =>
+	Array.from({ length: Math.max(...numbers, ...withdrawn) + 1 }, (_, number) => number).filter(
+		(number) => !withdrawn.has(number),
+	);
+
+interface IsAdrSequenceParams {
+	numbers: number[];
+	withdrawn: Set<number>;
+}
+
+const isAdrSequence = ({ numbers, withdrawn }: IsAdrSequenceParams): boolean =>
+	JSON.stringify(numbers) === JSON.stringify(expectedAdrNumbers({ numbers, withdrawn }));
+
 describe("ADRs", () => {
 	const referencesIn = (doc: string) => {
 		const body = read(doc);
@@ -1025,10 +1095,17 @@ describe("ADRs", () => {
 		];
 	};
 
-	it("numbers files sequentially from the template, with no gaps or duplicates", () => {
+	it("numbers files sequentially from the template, with no duplicates and no gap but a withdrawn number, which is never taken again", () => {
 		const numbers = ADR_FILES.map((file) => Number(file.split("/").pop()?.slice(0, 4)));
 
-		expect(numbers).toEqual(numbers.map((_, index) => index));
+		expect(isAdrSequence({ numbers: [0, 1, 3], withdrawn: new Set([2]) })).toBe(true);
+		expect(isAdrSequence({ numbers: [0, 1, 3], withdrawn: new Set([2, 4]) })).toBe(true);
+		expect(isAdrSequence({ numbers: [0, 1, 3], withdrawn: new Set() })).toBe(false);
+		expect(isAdrSequence({ numbers: [0, 1, 2, 3], withdrawn: new Set([2]) })).toBe(false);
+		expect(isAdrSequence({ numbers: [0, 1, 1, 3], withdrawn: new Set([2]) })).toBe(false);
+		expect(isAdrSequence({ numbers: [0, 1, 3, 4], withdrawn: new Set([2, 4]) })).toBe(false);
+		expect(numbers.length).toBeGreaterThan(ADR_NUMBERS_WITHDRAWN.size);
+		expect(numbers).toEqual(expectedAdrNumbers({ numbers, withdrawn: ADR_NUMBERS_WITHDRAWN }));
 	});
 
 	it("names every file NNNN-kebab-title.md", () => {
@@ -1068,6 +1145,44 @@ describe("ADRs", () => {
 		const linked = new Set(GUIDES.flatMap(referencesIn));
 
 		expect(ADR_FILES.filter((file) => !linked.has(file.split("/").pop()?.slice(0, 4) ?? ""))).toEqual([]);
+	});
+});
+
+const BACKLOG_FILE = /(?:^|\/)backlog\.md$/i;
+const KNOWN_BREACHES_HEADING = /^#{1,6}\s+(?:\d+\.\s+)?Known (?:inconsistencies|defects|breaches)\b/im;
+
+describe("the documents keep no backlog", () => {
+	const tree = walk(".");
+	const markdown = tree.filter((file) => file.endsWith(".md"));
+
+	it("fixes a breach in the change that finds it, or reports it on the pull request, so no backlog and no list of known breaches holds a claim that nothing keeps true", () => {
+		const backlogs = tree.filter((file) => BACKLOG_FILE.test(file));
+		const listing = markdown.filter((file) => KNOWN_BREACHES_HEADING.test(read(file)));
+
+		expect(["./docs/BACKLOG.md", "./BACKLOG.md", "./docs/backlog.md"].map((file) => BACKLOG_FILE.test(file))).toEqual([
+			true,
+			true,
+			true,
+		]);
+		expect(["./docs/backlog-notes.md", "./docs/no-backlog.md"].map((file) => BACKLOG_FILE.test(file))).toEqual([
+			false,
+			false,
+		]);
+		expect(
+			[
+				"## 8. Known inconsistencies\n\n- an entry\n",
+				"### Known defects\n",
+				"intro\n\n## Known breaches of the coding standards\n",
+			].map((text) => KNOWN_BREACHES_HEADING.test(text)),
+		).toEqual([true, true, true]);
+		expect(
+			["a breach is not a known breaches list", "**Known defects** in a sentence"].map((text) =>
+				KNOWN_BREACHES_HEADING.test(text),
+			),
+		).toEqual([false, false]);
+		expect(DOCS.filter((doc) => !markdown.includes(`./${doc}`))).toEqual([]);
+		expect(backlogs).toEqual([]);
+		expect(listing).toEqual([]);
 	});
 });
 
@@ -2252,6 +2367,61 @@ describe("styles guide: derived constants and source order", () => {
 		expect(reads("tip")).toEqual([STRETCH_ARROW_MORPH_FILE]);
 		expect(read(STRETCH_ARROW_MORPH_FILE).match(STRETCH_ARROW_STATE_QUERY)).toHaveLength(1);
 		expect(triggers.length).toBeGreaterThan(1);
+	});
+
+	it("writes the box an arrow waits in once, as .arrow-box in global.css, so a trigger only reveals it and no two arrows hide at different offsets or speeds", () => {
+		expect(guide).toContain("The box an arrow waits in until a hover reveals it is written once too");
+
+		const box = declarationsIn(read(STRETCH_ARROW_MORPH_FILE)).filter(
+			({ preludes }) => preludes.at(-1) === `.${ARROW_BOX}`,
+		);
+		const declared = (property: string) =>
+			box
+				.map(({ declaration }) => declaration.replace(WHITESPACE_RUN, " "))
+				.find((declaration) => declaration.startsWith(`${property}: `));
+		const templates = production(walk("src").filter((file) => file.endsWith(".astro")));
+		const holding = templates.flatMap((file) => [...read(file).matchAll(INLINED_STRETCH_ARROW)].map(([tag]) => tag));
+		const holders = new Set(holding.flatMap((tag) => classLiteralsIn(tag)));
+		const stylesheets = walk("src").filter((file) => file.endsWith(".css") && file !== STRETCH_ARROW_MORPH_FILE);
+		const faults = stylesheets.flatMap((file) =>
+			arrowBoxFaults({ holders, stylesheet: read(file) }).map((fault) => `${file}: ${fault}`),
+		);
+		const revealed = new Set(stylesheets.flatMap((file) => revealedClassesIn(read(file))));
+		const unboxed = holding.filter((tag) => {
+			const classes = classLiteralsIn(tag);
+
+			return classes.some((name) => revealed.has(name)) && !classes.includes(ARROW_BOX);
+		});
+		const sample = (stylesheet: string) => arrowBoxFaults({ holders: new Set(["x__arrow"]), stylesheet });
+
+		expect(
+			sample(
+				".x__arrow { vertical-align: middle; } .x:is(:hover, :focus-visible) { & .x__arrow { opacity: 1; translate: 0 0; } }",
+			),
+		).toEqual([]);
+		expect(sample(".x__arrow { opacity: 0; translate: -7px 0; transition: opacity 0.3s ease; }")).toEqual([
+			".x__arrow { opacity: 0 }",
+			".x__arrow { translate: -7px 0 }",
+			".x__arrow { transition: opacity 0.3s ease }",
+		]);
+		expect(sample(".x:hover { & .x__arrow { translate: 4px 0; } }")).toEqual(["& .x__arrow { translate: 4px 0 }"]);
+		expect(sample(".x__arrow svg { translate: 1px 0; } .x__arrow-free { opacity: 0; }")).toEqual([]);
+		expect(
+			[
+				...'<a><span class="y__arrow arrow-box" aria-hidden="true" set:html={stretchArrow} /></a>'.matchAll(
+					INLINED_STRETCH_ARROW,
+				),
+			].flatMap(([tag]) => classLiteralsIn(tag)),
+		).toEqual(["y__arrow", ARROW_BOX]);
+		expect(guide).toContain(`\`${declared("translate")}\``);
+		expect(guide).toContain(`\`${declared("transition")}\``);
+		expect(revealedClassesIn(".x:hover { & .x__arrow { opacity: 1; } } .y { opacity: 0.5; }")).toEqual(["x__arrow"]);
+		expect(holding.length).toBeGreaterThan(1);
+		expect(holders).toContain(ARROW_BOX);
+		expect(stylesheets.length).toBeGreaterThan(0);
+		expect([...revealed].filter((name) => holders.has(name)).length).toBeGreaterThan(1);
+		expect(faults).toEqual([]);
+		expect(unboxed).toEqual([]);
 	});
 
 	it("writes the slider's responsive ramp once, as the default in slider.css, so a placement states only the steps that differ from it", () => {
@@ -4473,6 +4643,121 @@ describe("the workflows", () => {
 		expect(needs).toEqual(
 			expect.arrayContaining(["verify", "deploy-development", "e2e", "deploy-production", "smoke", "release"]),
 		);
+	});
+});
+
+const PLAYWRIGHT_CONFIG = /(?:^|\/)playwright\.config\.[cm]?[jt]s$/;
+const PLAYWRIGHT_PROJECTS = `[
+	{ name: "chromium", use: { ...devices["Desktop Chrome"] } },
+	{ name: "webkit", use: { ...devices["Desktop Safari"] } },
+]`;
+const COMMA_BEFORE_CLOSER = /,([}\]])/g;
+const WORKFLOW_JOBS = /^jobs:\s*$/m;
+const WORKFLOW_JOB_HEADER = /^ {2}(?=[\w-]+:\s*$)/m;
+const PLAYWRIGHT_RUN = /\bplaywright test\b|\bpnpm test:e2e\b/;
+const PLAYWRIGHT_INSTALL = /\bplaywright install(?:-deps)?\b([^\n]*)/g;
+const PLAYWRIGHT_BROWSERS = "chromium webkit";
+const YAML_ITEM_DASH = /^-\s+/;
+const PLAYWRIGHT_BROWSER_STEPS = [
+	/^path: ~\/\.cache\/ms-playwright$/,
+	/^key: .+-playwright-chromium-webkit-.+$/,
+	/^if: steps\.playwright-cache\.outputs\.cache-hit != 'true'$/,
+	/^run: pnpm exec playwright install --with-deps chromium webkit$/,
+	/^if: steps\.playwright-cache\.outputs\.cache-hit == 'true'$/,
+	/^run: pnpm exec playwright install-deps chromium webkit$/,
+];
+
+const compactCode = (code: string): string => code.replace(WHITESPACE_RUN, "").replace(COMMA_BEFORE_CLOSER, "$1");
+
+const playwrightProjects = (config: string): string | undefined => {
+	const file = ts.createSourceFile("playwright.config.ts", config, ts.ScriptTarget.Latest, true);
+	let projects: string | undefined;
+	const visit = (node: ts.Node): void => {
+		if (ts.isPropertyAssignment(node) && node.name.getText(file) === "projects")
+			projects = node.initializer.getText(file);
+
+		ts.forEachChild(node, visit);
+	};
+
+	visit(file);
+
+	return projects;
+};
+
+const jobsIn = (workflow: string): string[] =>
+	(workflow.split(WORKFLOW_JOBS)[1] ?? "").split(WORKFLOW_JOB_HEADER).filter((job) => job.trim() !== "");
+
+const missingBrowserSteps = (job: string): string[] => {
+	const lines = job.split(NEWLINE).map((line) => line.trim().replace(YAML_ITEM_DASH, ""));
+
+	return PLAYWRIGHT_RUN.test(job)
+		? PLAYWRIGHT_BROWSER_STEPS.filter((step) => !lines.some((line) => step.test(line))).map((step) => step.source)
+		: [];
+};
+
+const installedBrowsers = (workflow: string): string[] =>
+	[...workflow.matchAll(PLAYWRIGHT_INSTALL)].map(([, rest]) =>
+		rest
+			.trim()
+			.split(WHITESPACE)
+			.filter((word) => !word.startsWith("-"))
+			.join(" "),
+	);
+
+describe("the end-to-end browsers", () => {
+	it("runs every Playwright config in Chromium and WebKit alone, in CI and locally alike", () => {
+		const configs = walk(".").filter((file) => PLAYWRIGHT_CONFIG.test(file));
+		const sample = (projects: string) =>
+			compactCode(
+				playwrightProjects(`export default defineConfig({ testDir: "./e2e", projects: ${projects} });`) ?? "",
+			);
+		const expanded = `[\n\t{\n\t\tname: "chromium",\n\t\tuse: { ...devices["Desktop Chrome"] },\n\t},\n\t{\n\t\tname: "webkit",\n\t\tuse: { ...devices["Desktop Safari"] },\n\t},\n]`;
+
+		expect(sample(expanded)).toBe(compactCode(PLAYWRIGHT_PROJECTS));
+		expect(sample(`process.env.CI ? ${PLAYWRIGHT_PROJECTS} : [{ name: "chromium" }]`)).not.toBe(
+			compactCode(PLAYWRIGHT_PROJECTS),
+		);
+		expect(
+			sample(PLAYWRIGHT_PROJECTS.replace("]", `\t{ name: "firefox", use: { ...devices["Desktop Firefox"] } },\n]`)),
+		).not.toBe(compactCode(PLAYWRIGHT_PROJECTS));
+		expect(configs.length).toBeGreaterThan(0);
+		expect(
+			configs.filter((file) => compactCode(playwrightProjects(read(file)) ?? "") !== compactCode(PLAYWRIGHT_PROJECTS)),
+		).toEqual([]);
+	});
+
+	it("installs both browsers in every job that runs Playwright, behind a cache keyed on them, so a cache saved with one is never restored into a run of both", () => {
+		const workflows = walk(".github/workflows").filter((file) => file.endsWith(".yml"));
+		const jobs = workflows.flatMap((file) => jobsIn(read(file)).map((job) => ({ file, job })));
+		const running = jobs.filter(({ job }) => PLAYWRIGHT_RUN.test(job));
+		const steps = [
+			"path: ~/.cache/ms-playwright",
+			"key: os-playwright-chromium-webkit-lockfile",
+			"if: steps.playwright-cache.outputs.cache-hit != 'true'",
+			"run: pnpm exec playwright install --with-deps chromium webkit",
+			"if: steps.playwright-cache.outputs.cache-hit == 'true'",
+			"run: pnpm exec playwright install-deps chromium webkit",
+		];
+		const workflow = (lines: string[]) =>
+			`name: x\njobs:\n  e2e:\n    steps:\n      - name: Browsers\n${lines.map((line) => `        ${line}`).join(NEWLINE)}\n      - run: pnpm test:e2e\n  other:\n    steps:\n      - run: echo\n`;
+		const keyedOnChromium = steps.map((step) => step.replace("-playwright-chromium-webkit-", "-playwright-"));
+
+		expect(jobsIn(workflow(steps)).length).toBe(2);
+		expect(jobsIn(workflow(steps)).flatMap(missingBrowserSteps)).toEqual([]);
+		expect(jobsIn(workflow(keyedOnChromium)).flatMap(missingBrowserSteps)).toEqual([
+			PLAYWRIGHT_BROWSER_STEPS[1].source,
+		]);
+		expect(installedBrowsers("run: pnpm exec playwright install --with-deps chromium\n")).toEqual(["chromium"]);
+		expect(installedBrowsers(steps.join(NEWLINE))).toEqual([PLAYWRIGHT_BROWSERS, PLAYWRIGHT_BROWSERS]);
+		expect(running.length).toBeGreaterThan(1);
+		expect(running.flatMap(({ file, job }) => missingBrowserSteps(job).map((step) => `${file}: ${step}`))).toEqual([]);
+		expect(
+			workflows.flatMap((file) =>
+				installedBrowsers(read(file))
+					.filter((browsers) => browsers !== PLAYWRIGHT_BROWSERS)
+					.map((browsers) => `${file}: ${browsers}`),
+			),
+		).toEqual([]);
 	});
 });
 

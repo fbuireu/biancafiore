@@ -85,7 +85,7 @@ Unit tests are co-located with the code they cover: `src/**/*.test.ts`, and `src
 
 **A test co-located under [`src/pages`](./src/pages) carries a leading underscore** ([`_rss.xml.test.ts`](./src/pages/_rss.xml.test.ts)): Astro routes every other file in that folder, so without it the test would be a public URL, and the docs test fails on a route file the route list above does not name.
 
-[`src/tests/doubles/`](./src/tests/doubles) holds the stub layers, virtual-module doubles and MSW network doubles the co-located tests import, ADR 0017 decides which one a dependency gets, [`src/tests/helpers/`](./src/tests/helpers) holds what tests share that is no double (`failureOf` and `defectOf`, which read the typed failure or the defect off an Effect `Exit`), and [`src/tests/setup/`](./src/tests/setup) starts the MSW server for the `node` and `dom` projects. [`vitest.config.ts`](./vitest.config.ts) resolves the path aliases and Astro’s `astro:*` virtual modules itself rather than through `getViteConfig`; ADR 0016 records why that is forced, and which modules it leaves unreachable from a unit test. Playwright specs live in the `testDir` declared in [`playwright.config.ts`](./playwright.config.ts).
+[`src/tests/doubles/`](./src/tests/doubles) holds the stub layers, virtual-module doubles and MSW network doubles the co-located tests import, ADR 0017 decides which one a dependency gets, [`src/tests/helpers/`](./src/tests/helpers) holds what tests share that is no double (`failureOf` and `defectOf`, which read the typed failure or the defect off an Effect `Exit`), and [`src/tests/setup/`](./src/tests/setup) starts the MSW server for the `node` and `dom` projects. [`vitest.config.ts`](./vitest.config.ts) resolves the path aliases and Astro’s `astro:*` virtual modules itself rather than through `getViteConfig`; ADR 0016 records why that is forced, and which modules it leaves unreachable from a unit test. Playwright specs live in the `testDir` declared in [`playwright.config.ts`](./playwright.config.ts), and every one runs in its `chromium` and `webkit` projects, locally and in CI alike, so a local run needs both browsers (`pnpm exec playwright install chromium webkit`).
 
 Path aliases ([`tsconfig.json`](./tsconfig.json)): `@const/* @infrastructure/* @domain/* @application/* @modules/* (→ src/ui/modules) @assets/* (→ src/ui/assets) @styles/* (→ src/ui/styles) @shared/* @tests/* (→ src/tests)`. An import that leaves its layer or feature takes the alias and one that stays inside it is relative; `src/actions` has no alias, since nothing outside it imports from it.
 
@@ -127,11 +127,10 @@ These documents are not generated. When you change code, update the docs **in th
 | A decision an ADR records | that ADR: amend it, or supersede it with a new one and say so in both `## Status` blocks |
 | A claim `docs/docs-consistency.test.ts` asserts, on purpose | the doc first; the test only when the claim itself is what changed |
 | What a reader who is not editing this tree would see: the layers, the content model, what renders where, how a deploy works | the page it belongs to in [`docs/wiki/`](./docs/wiki), which is the only documentation a non-contributor reads |
-| An item in [`docs/BACKLOG.md`](./docs/BACKLOG.md) ships, or is decided against | delete the entry; an item that turns into a decision leaves as an ADR |
 
 **[`docs/wiki/`](./docs/wiki) is published.** [`sync-wiki.yml`](./.github/workflows/sync-wiki.yml), byte for byte the workflow the sibling repositories run, rsyncs it into the repository's GitHub wiki on every push to `main` that touches it, `--delete` included, so editing a page in the GitHub UI is a change the next sync throws away. The docs test holds its link format: a **filename is the page name** (`Getting-Started.md` is reachable as `Getting-Started`), a link to another page is that **bare name and never a path**, and a link into this repository is an **absolute `https://github.com/` URL**.
 
-A new ADR starts as a copy of [ADR 0000](./docs/adr/0000-adr-template.md), the template, which says when a decision earns one and where to link it from.
+A new ADR starts as a copy of [ADR 0000](./docs/adr/0000-adr-template.md), the template, which says when a decision earns one, where to link it from and how a Proposed one that will not be accepted is withdrawn.
 
 ## Gotchas
 

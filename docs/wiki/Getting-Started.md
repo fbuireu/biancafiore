@@ -42,6 +42,8 @@ pnpm test:built         # build, then assert the emitted HTML, sitemap, feed and
 pnpm test:e2e           # playwright
 ```
 
+`pnpm test:e2e` runs every spec in Chromium and in WebKit, the engine behind Safari, so install both browsers once with `pnpm exec playwright install chromium webkit`.
+
 A run shows more than one Vitest summary and they are different suites: the `node` and `dom` projects are the unit tests, and `built` is the handful of assertions over the emitted output, which cannot run until something has been built.
 
 ## Database

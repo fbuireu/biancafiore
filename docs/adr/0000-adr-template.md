@@ -8,7 +8,9 @@ Template. Not a decision: copy this file, do not edit it in place.
 
 ## Context
 
-Copy this file to `NNNN-kebab-title.md`, numbered one above the highest existing ADR. The `# N. Title` heading carries that same number and states the decision in one line; the file slug is the short form of it.
+Copy this file to `NNNN-kebab-title.md`, numbered one above the highest number an ADR has taken, a withdrawn one included. The `# N. Title` heading carries that same number and states the decision in one line; the file slug is the short form of it.
+
+A Proposed ADR that will not be accepted is withdrawn rather than left open: delete the file and every reference to it, and add its number to `ADR_NUMBERS_WITHDRAWN`, the allowlist at the top of [`docs/docs-consistency.test.ts`](../docs-consistency.test.ts), so the gap it leaves reads as deliberate and the number is never taken again. An accepted ADR is never deleted: a later one supersedes it.
 
 Write an ADR only when the decision is **hard to reverse**, **surprising without context** and **the result of a real trade-off**. All of them, or it is not an ADR.
 

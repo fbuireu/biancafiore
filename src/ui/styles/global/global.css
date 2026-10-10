@@ -100,6 +100,24 @@
 		}
 	}
 
+	.arrow-box {
+		block-size: 1rem;
+		color: var(--gold);
+		display: inline-block;
+		inline-size: 1rem;
+		opacity: 0;
+		transition:
+			opacity 0.35s ease,
+			translate 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+		translate: -6px 0;
+
+		& svg {
+			block-size: 100%;
+			display: block;
+			inline-size: 100%;
+		}
+	}
+
 	.editorial-cta {
 		align-items: baseline;
 		color: var(--ink);

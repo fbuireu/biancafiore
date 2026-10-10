@@ -16,21 +16,6 @@
 
 .error-404__link-arrow {
 	align-self: center;
-	block-size: 1rem;
-	color: var(--gold);
-	display: inline-block;
-	inline-size: 1rem;
-	opacity: 0;
-	translate: -6px 0;
-	transition:
-		opacity 0.3s ease,
-		translate 0.3s ease;
-
-	& svg {
-		block-size: 100%;
-		display: block;
-		inline-size: 100%;
-	}
 }
 
 .error-404__link {

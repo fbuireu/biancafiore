@@ -38,7 +38,7 @@ const { slug, title, description, publishDateISO, readingTime, author, featuredI
       {formatPublishDate(publishDateISO)}
     </time>
     <h3 class="article-card__title" id={`article-title-${slug}`}>
-      {title} <span class="article-card__arrow" aria-hidden="true" set:html={stretchArrow} />
+      {title} <span class="article-card__arrow arrow-box" aria-hidden="true" set:html={stretchArrow} />
     </h3>
     <p class="article-card__byline editorial-meta">
         by <a href={tagHref(author.slug)}
