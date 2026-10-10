@@ -1,3 +1,10 @@
+## [1.25.9](https://github.com/fbuireu/biancafiore/compare/v1.25.8...v1.25.9) (2026-10-10)
+
+
+### Bug Fixes
+
+* renew security.txt for two years, name its canonical URL and policy, and watch its expiry ([6621751](https://github.com/fbuireu/biancafiore/commit/6621751158d37480703f5cf97b5e83ca22ef9a56))
+
 ## [1.25.8](https://github.com/fbuireu/biancafiore/compare/v1.25.7...v1.25.8) (2026-10-10)
 
 
