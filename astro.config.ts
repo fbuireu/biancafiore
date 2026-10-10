@@ -4,6 +4,7 @@ import react from "@astrojs/react";
 import { d1, r2 } from "@emdash-cms/cloudflare";
 import { defineConfig, envField, fontProviders } from "astro/config";
 import emdash from "emdash/astro";
+import { google } from "emdash/auth/providers/google";
 import { Features } from "lightningcss";
 import { loadEnv } from "vite";
 import { CONTENT_CACHE, CONTENT_ROUTES } from "./src/const/contentCache";
@@ -101,6 +102,7 @@ export default defineConfig({
 			storage: r2({ binding: "MEDIA" }),
 			fonts: false,
 			admin: { siteName: "Bianca Fiore", locales: ["en"] },
+			authProviders: [google()],
 			plugins: [editorialBlocks(), emailDelivery(), bylineCache()],
 		}),
 	],
