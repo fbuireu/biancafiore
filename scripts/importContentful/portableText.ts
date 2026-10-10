@@ -1,3 +1,4 @@
+import { playerEmbed } from "../../src/application/dto/shared/embeds.ts";
 import { type ContentfulAsset, type ContentfulEntry, contentTypeOf, linkedId } from "./contentful.ts";
 
 export interface UploadedMedia {
@@ -272,8 +273,18 @@ function embeddedEntry({ node, context }: NodeParams): PortableTextBlock[] {
 	switch (contentTypeOf(entry)) {
 		case "codeBlock":
 			return textOf(fields.code) ? [{ _type: "code", _key: key, code: fields.code }] : [];
-		case "videoEmbed":
-			return [{ _type: "videoEmbed", _key: key, url: fields.url, title: fields.title }];
+		case "videoEmbed": {
+			const player = playerEmbed(String(fields.url ?? ""));
+
+			if (!player) {
+				context.warnings.push(
+					`A video (${id}) at ${String(fields.url)} is not a YouTube or Vimeo link, so it is dropped`,
+				);
+				return [];
+			}
+
+			return [{ _type: "iframe", _key: key, ...player, ...(textOf(fields.title) && { title: fields.title }) }];
+		}
 		case "iframeEmbed":
 			return [{ _type: "iframe", _key: key, src: fields.url, ...(textOf(fields.title) && { title: fields.title }) }];
 		case "imageEmbed":
@@ -320,7 +331,10 @@ function tableBlock({ node, context }: NodeParams): PortableTextBlock[] {
 		}),
 	}));
 
-	return [{ _type: "table", _key: context.nextKey(), rows }];
+	const hasHeaderRow =
+		rows.length > 1 && rows[0].cells.length > 0 && rows[0].cells.every((cell) => cell.isHeader === true);
+
+	return [{ _type: "table", _key: context.nextKey(), rows, ...(hasHeaderRow && { hasHeaderRow }) }];
 }
 
 function block({ node, context }: NodeParams): PortableTextBlock[] {
@@ -336,7 +350,7 @@ function block({ node, context }: NodeParams): PortableTextBlock[] {
 		case "blockquote":
 			return textBlock({ node: joinedParagraphs(node.content ?? []), style: "blockquote", context });
 		case "hr":
-			return [{ _type: "break", _key: context.nextKey(), style: "lineBreak" }];
+			return [{ _type: "break", _key: context.nextKey(), style: "line" }];
 		case "table":
 			return tableBlock({ node, context });
 		case "embedded-entry-block":

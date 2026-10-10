@@ -1,4 +1,11 @@
-import type { CmsClient, CmsReference, ListEntriesQuery, ListReferencesQuery } from "@infrastructure/cms/client";
+import type {
+	CmsClient,
+	CmsMenuItem,
+	CmsReference,
+	CmsSiteSettings,
+	ListEntriesQuery,
+	ListReferencesQuery,
+} from "@infrastructure/cms/client";
 import type { CmsError } from "@infrastructure/errors";
 import { Effect, Layer } from "effect";
 
@@ -21,6 +28,12 @@ interface PageOfParams<ITEM> {
 }
 
 const OVERLAP_DEADLINE = 1000;
+const EMPTY_SITE_SETTINGS: CmsSiteSettings = {
+	title: null,
+	tagline: null,
+	social: {},
+	titleSeparator: null,
+};
 const UNLIMITED_PAGE = Number.POSITIVE_INFINITY;
 
 export const cmsQueries: ListEntriesQuery[] = [];
@@ -28,6 +41,8 @@ export const cmsReferenceQueries: ListReferencesQuery[] = [];
 
 let entriesByCollection: Record<string, unknown[]> = {};
 let referencesByEntry: Record<string, CmsReference[]> = {};
+let siteSettings: CmsSiteSettings = EMPTY_SITE_SETTINGS;
+let menus: Record<string, CmsMenuItem[]> = {};
 let pageSize = UNLIMITED_PAGE;
 let failure: CmsError | undefined;
 let held = 0;
@@ -54,6 +69,14 @@ export function cmsAnswers(entries: Record<string, unknown[]>): void {
 
 export function cmsRefersTo(params: CmsRefersToParams): void {
 	referencesByEntry[referenceKey(params)] = params.references;
+}
+
+export function cmsSiteSettings(settings: Partial<CmsSiteSettings>): void {
+	siteSettings = { ...EMPTY_SITE_SETTINGS, ...settings };
+}
+
+export function cmsMenus(byName: Record<string, CmsMenuItem[]>): void {
+	menus = byName;
 }
 
 export function cmsServesPagesOf(size: number): void {
@@ -91,6 +114,8 @@ export function resetCms(): void {
 	cmsReferenceQueries.length = 0;
 	entriesByCollection = {};
 	referencesByEntry = {};
+	siteSettings = EMPTY_SITE_SETTINGS;
+	menus = {};
 	pageSize = UNLIMITED_PAGE;
 	failure = undefined;
 	held = 0;
@@ -128,5 +153,7 @@ export function cmsClientLayer(tag: CmsTag): Layer.Layer<CmsClient> {
 
 				return failure ? Effect.fail(failure) : Effect.succeed({ children: page, nextCursor });
 			}),
+		readSiteSettings: () => Effect.suspend(() => (failure ? Effect.fail(failure) : Effect.succeed(siteSettings))),
+		readMenu: (name: string) => Effect.suspend(() => (failure ? Effect.fail(failure) : Effect.succeed(menus[name]))),
 	} as never);
 }

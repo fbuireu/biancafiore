@@ -150,75 +150,75 @@
 		}
 	}
 
-	.slider-wrapper--dots {
-		@supports (scroll-marker-group: after) {
+	@supports (scroll-marker-group: after) {
+		.slider-wrapper--dots {
 			display: grid;
 			gap: 1rem 8px;
 			grid-template-areas:
 				"Slider-Track Slider-Track Slider-Track"
 				"Slider-Prev Slider-Markers Slider-Next";
 			grid-template-columns: auto 1fr auto;
+		}
 
-			& .slider__track {
-				grid-area: Slider-Track;
-				scroll-marker-group: after;
-			}
+		.slider-wrapper--dots .slider__track {
+			grid-area: Slider-Track;
+			scroll-marker-group: after;
+		}
 
-			& .slider__track::scroll-marker-group {
-				align-items: center;
-				display: flex;
-				gap: 8px;
-				grid-area: Slider-Markers;
-				justify-content: center;
-			}
+		.slider-wrapper--dots .slider__track::scroll-marker-group {
+			align-items: center;
+			display: flex;
+			gap: 8px;
+			grid-area: Slider-Markers;
+			justify-content: center;
+		}
 
-			& .slider__nav {
-				display: contents;
-			}
+		.slider-wrapper--dots .slider__nav {
+			display: contents;
+		}
 
-			& .slider__btn--prev {
-				grid-area: Slider-Prev;
-			}
+		.slider-wrapper--dots .slider__btn--prev {
+			grid-area: Slider-Prev;
+		}
 
-			& .slider__btn--next {
-				grid-area: Slider-Next;
-			}
+		.slider-wrapper--dots .slider__btn--next {
+			grid-area: Slider-Next;
+		}
 
-			& .slider__dot {
-				display: none;
-			}
+		.slider-wrapper--dots .slider__dot {
+			display: none;
+		}
 
-			& .slider__slide::scroll-marker {
-				background: linear-gradient(currentColor 0 0) center / 100% 2px no-repeat;
-				block-size: 28px;
-				color: var(--faint);
-				content: "";
-				cursor: pointer;
-				inline-size: 14px;
-				transition: color 0.3s;
-			}
+		.slider-wrapper--dots .slider__slide::scroll-marker {
+			background: linear-gradient(currentColor 0 0) center / 100% 2px no-repeat;
+			block-size: 28px;
+			color: var(--faint);
+			content: "";
+			cursor: pointer;
+			inline-size: 14px;
+			transition: color 0.3s;
+		}
 
-			& .slider__slide::scroll-marker:target-current {
-				color: var(--gold);
-				inline-size: 32px;
-			}
+		.slider-wrapper--dots .slider__slide::scroll-marker:target-current {
+			color: var(--gold);
+			inline-size: 32px;
+		}
 
-			& .slider__slide::scroll-marker:focus-visible {
-				outline: 2px solid currentColor;
-				outline-offset: 2px;
-			}
+		.slider-wrapper--dots .slider__slide::scroll-marker:focus-visible {
+			outline: 2px solid currentColor;
+			outline-offset: 2px;
+		}
 
-			@media (prefers-reduced-motion: no-preference) {
-				@supports (animation-timeline: view()) {
-					& .slider__slide {
-						view-timeline: --slide inline;
-					}
+		@media (prefers-reduced-motion: no-preference) {
+			@supports (animation-timeline: view()) {
+				.slider-wrapper--dots .slider__slide {
+					view-timeline: --slide inline;
+				}
 
-					& .slider__slide::scroll-marker {
-						animation: slider-marker linear both;
-						animation-range: cover;
-						animation-timeline: --slide;
-					}
+				.slider-wrapper--dots .slider__slide::scroll-marker {
+					animation: slider-marker linear both;
+					animation-range: cover;
+					animation-timeline: --slide;
 				}
 			}
 		}

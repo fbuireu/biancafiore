@@ -1,7 +1,6 @@
-const NAME_SEPARATOR = "|";
-const WEB_PROTOCOLS = new Set(["http:", "https:"]);
+import { isWebUrl } from "../../shared/urls";
 
-const isWebUrl = (url: string): boolean => URL.canParse(url) && WEB_PROTOCOLS.has(new URL(url).protocol);
+const NAME_SEPARATOR = "|";
 
 export function socialNetworkUrls(value: unknown): string[] {
 	if (typeof value !== "string") return [];

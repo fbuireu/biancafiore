@@ -50,16 +50,14 @@ describe("createProjects identity", () => {
 });
 
 describe("createProjects description", () => {
-	it("renders the rich text description to an HTML string, because the domain never sees Portable Text", () => {
-		const [project] = createProjects([
-			makeProject({ description: [paragraph("A newsletter"), paragraph("About cities")] }),
-		]);
+	it("hands the description to the page as the Portable Text the editor wrote, for EmDash's renderer", () => {
+		const description = [paragraph("A newsletter"), paragraph("About cities")];
 
-		expect(project.description).toBe("<p>A newsletter</p><p>About cities</p>");
+		expect(createProjects([makeProject({ description })])[0].description).toEqual(description);
 	});
 
-	it("renders an empty description to an empty string", () => {
-		expect(createProjects([makeProject({ description: [] })])[0].description).toBe("");
+	it("hands an empty description on as no blocks at all", () => {
+		expect(createProjects([makeProject({ description: [] })])[0].description).toEqual([]);
 	});
 });
 

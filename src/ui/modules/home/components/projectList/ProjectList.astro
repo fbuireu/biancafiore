@@ -6,6 +6,7 @@ import "./project-list.css";
 import { projectHref } from "@const/index";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import { buildProjectListSchema } from "@modules/core/utils/jsonLd";
+import { PortableText } from "emdash/ui";
 
 const projects = await readProjects();
 
@@ -33,7 +34,7 @@ const itemListSchema = buildProjectListSchema(projects.map(({ data }) => data.id
                       />
                   </summary>
                   <div class="project-list__panel">
-                      <article class="project-list__description" set:html={project.data.description} />
+                      <article class="project-list__description"><PortableText value={project.data.description} /></article>
                       <a class="editorial-cta" href={projectUrl}>
                           More details <span class="editorial-cta__arrow" aria-hidden="true" set:html={stretchArrow} />
                       </a>

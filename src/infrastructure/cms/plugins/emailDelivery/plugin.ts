@@ -17,7 +17,7 @@ export function createPlugin() {
 	return definePlugin({
 		id: EMAIL_DELIVERY.ID,
 		version: EMAIL_DELIVERY.VERSION,
-		capabilities: ["email:provide"],
+		capabilities: ["hooks.email-transport:register"],
 		hooks: { "email:deliver": { handler: deliver, exclusive: true } },
 	});
 }

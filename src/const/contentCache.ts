@@ -7,6 +7,9 @@ const CONTENT_CACHE_TAGS = [
 	"projects",
 	"testimonials",
 	"emdash:taxonomy:tag",
+	"emdash:settings",
+	"emdash:menu:header",
+	"emdash:menu:footer",
 ] as const;
 
 interface ContentCacheRule {

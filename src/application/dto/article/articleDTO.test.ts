@@ -157,7 +157,7 @@ describe("createArticles description", () => {
 		expect(article.description).toBe("Fallback");
 	});
 
-	it("derives the fallback from the plain text, so the external-link cue never reaches the description", () => {
+	it("derives the fallback from the prose alone, so a link's markup never reaches the description", () => {
 		const linked = {
 			...paragraph("Read it"),
 			children: [{ _type: "span", _key: "s", text: "Read it", marks: ["l"] }],
@@ -166,7 +166,9 @@ describe("createArticles description", () => {
 		const [article] = create([makeArticle({ content: [linked] })]);
 
 		expect(article.description).toBe("Read it");
-		expect(article.content).toContain("external-link-icon");
+		expect(article.content).toEqual([
+			expect.objectContaining({ markDefs: [expect.objectContaining({ blank: true })] }),
+		]);
 	});
 });
 
@@ -184,6 +186,12 @@ describe("createArticles images", () => {
 
 	it("leaves featuredImage undefined without one", () => {
 		expect(create([makeArticle()])[0].featuredImage).toBeUndefined();
+	});
+
+	it("leaves featuredImage undefined for the null EmDash stores when the editor never picked one", () => {
+		const article = makeArticle();
+
+		expect(create([{ ...article, data: { ...article.data, featured_image: null } }])[0].featuredImage).toBeUndefined();
 	});
 });
 
@@ -381,13 +389,13 @@ describe("createArticles content derivations", () => {
 		expect(create([makeArticle({ content: [heading({ level: 1, value: "Title" })] })])[0].tableOfContents).toEqual([]);
 	});
 
-	it("escapes a heading in the body but hands the table of contents the text as authored", () => {
+	it("hands the body's heading and the table of contents one anchor and the text as authored", () => {
 		const [article] = create([makeArticle({ content: [heading({ level: 2, value: "Why & How" })] })]);
 		const [entry] = article.tableOfContents;
 
 		expect(entry.heading).toBe("Why & How");
 		expect(entry.id).toBe("why-how");
-		expect(article.content).toContain(`<a href="#${entry.id}">Why &amp; How</a>`);
+		expect(article.content).toEqual([expect.objectContaining({ tag: "h2", anchor: entry.id, text: "Why & How" })]);
 	});
 
 	it("numbers each section by the position its entry takes in the table of contents", () => {
@@ -402,8 +410,9 @@ describe("createArticles content derivations", () => {
 		]);
 
 		for (const entry of article.tableOfContents) {
-			expect(article.content).toContain(`<section style="--is: ${entry.scope}">`);
-			expect(article.content).toContain(`<h${entry.level} id="${entry.id}"`);
+			expect(article.content).toContainEqual(
+				expect.objectContaining({ tag: `h${entry.level}`, anchor: entry.id, scope: entry.scope }),
+			);
 		}
 
 		expect(article.tableOfContents).toHaveLength(2);

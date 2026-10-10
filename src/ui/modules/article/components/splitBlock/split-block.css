@@ -1,0 +1,10 @@
+.split-block {
+	align-items: center;
+	gap: var(--space-m) var(--space-l);
+}
+
+.split-block__image {
+	height: 100%;
+	object-fit: cover;
+	width: 100%;
+}

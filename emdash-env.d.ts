@@ -26,6 +26,24 @@ export interface Article {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface Author {
+  id: string;
+  slug: string | null;
+  status: string;
+  name: string;
+  description: string;
+  job_title: string;
+  current_company: string;
+  profile_image: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  social_networks?: { "url": string }[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 export interface City {
   id: string;
   slug: string | null;
@@ -77,17 +95,24 @@ export interface Testimonial {
 }
 
 export interface ArticleReferences {
+  author: ReferencePage<Author>;
   related_articles: ReferencePage<Article>;
+}
+
+export interface AuthorReferences {
+  articles: ReferencePage<Article>;
 }
 
 declare module "emdash" {
   interface EmDashCollections {
     articles: Article;
+    authors: Author;
     cities: City;
     projects: Project;
     testimonials: Testimonial;
   }
   interface EmDashCollectionReferences {
     articles: ArticleReferences;
+    authors: AuthorReferences;
   }
 }

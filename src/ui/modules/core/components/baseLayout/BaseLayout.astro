@@ -2,12 +2,17 @@
 import { GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
 import { DEFAULT_LOCALE_STRING } from "@const/index";
 import type { SeoMetadata } from "@const/types";
+import { createPublicPageContext } from "emdash/page";
+import { EmDashBodyEnd, EmDashBodyStart } from "emdash/ui";
+import { readSiteSettings } from "../../utils/entries";
 import { siteChrome } from "../../utils/siteChrome";
 import Footer from "../footer/Footer.astro";
 import Head from "../head/Head.astro";
 import Header from "../header/Header.astro";
 import ScrollTop from "../scrollTop/ScrollTop.astro";
+import { pageSeo } from "../seo/utils/pageSeo";
 import UnderConstruction from "../underConstruction/UnderConstruction.astro";
+import { emdashPageFields } from "./utils/emdashPage";
 import { getPage } from "./utils/page";
 
 type Props = Partial<SeoMetadata>;
@@ -16,10 +21,14 @@ const props = Astro.props;
 const location = getPage(Astro.url);
 const pageModifier = { [`page--${location}`]: location };
 const { showsHeader, servesRealContent } = siteChrome(Astro.url);
+const site = await readSiteSettings(Astro.isPrerendered);
+const seo = pageSeo({ metadata: props, site, pathname: Astro.url.pathname });
+const page = createPublicPageContext({ Astro, ...emdashPageFields(seo) });
 ---
 <html lang={DEFAULT_LOCALE_STRING} class:list={["page", pageModifier]}>
-<Head {...props}><slot name="head" slot="head" /></Head>
+<Head seo={seo} page={page}><slot name="head" slot="head" /></Head>
 <body>
+<EmDashBodyStart page={page} />
 <noscript>
     <iframe src=`https://www.googletagmanager.com/ns.html?id=${GOOGLE_TAG_MANAGER_ID}`
             height="0" width="0" style="display:none;visibility:hidden">
@@ -32,5 +41,6 @@ const { showsHeader, servesRealContent } = siteChrome(Astro.url);
     {servesRealContent ? <slot /> : <UnderConstruction />}
 </main>
 <Footer />
+<EmDashBodyEnd page={page} />
 </body>
 </html>

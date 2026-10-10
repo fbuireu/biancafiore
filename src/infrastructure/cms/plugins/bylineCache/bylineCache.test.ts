@@ -14,7 +14,12 @@ afterEach(() => {
 
 describe("the byline cache plugin", () => {
 	it("purges on every byline save and delete, which EmDash's own byline routes never do", () => {
-		const { hooks } = createPlugin() as unknown as { hooks: Record<string, unknown> };
+		const { capabilities, hooks } = createPlugin() as unknown as {
+			capabilities: string[];
+			hooks: Record<string, unknown>;
+		};
+
+		expect(capabilities).toStrictEqual(["bylines:read"]);
 
 		expect(hooks).toStrictEqual({ "byline:afterSave": purgeBylines, "byline:afterDelete": purgeBylines });
 	});

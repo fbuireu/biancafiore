@@ -61,6 +61,18 @@ An Article can carry an `isRepublished` flag and an `originalSource`. They are t
 
 ---
 
+## What an editor sets beyond the content
+
+Three things a reader sees come from EmDash but are not entries:
+
+- **The site settings** (*Settings → General* and *Settings → SEO*): the site's name and description, its social links, the separator between a page's title and the site's, the default share image, and the Google and Bing verification tokens.
+- **The menus** `header` and `footer` (*Menus*): the links the header's menu and the footer's legal line show. A label can bracket the words that link, `know more [About] me`, and the words around them stay prose.
+- **An Article's SEO panel**: a title, a description and a share image that replace the ones the page derives, and a switch that keeps the page out of search engines.
+
+The seed writes today's settings and menus into a new database, and each value falls back to today's when it is empty, so a database seeded before they existed still renders the site as it was. A link an editor typed is only kept when it is a path on this site or an `http`, `https`, `mailto` or `tel` URL, and a social link only when it is a full `https://` URL. Saving any of them purges the cached pages, like a publish does.
+
+---
+
 ## Dynamic data
 
 Contact submissions are the one thing this site writes. They go to **Turso** through **Drizzle ORM**, and the env vars are `ASTRO_DB_REMOTE_URL` and `ASTRO_DB_APP_TOKEN` despite the project having migrated off Astro DB. The names stayed on purpose: renaming them buys nothing and costs a coordinated change across the local env, the CI secrets and the deployed Worker. [ADR 0003](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0003-drizzle-libsql-turso-over-astro-db.md) records it.

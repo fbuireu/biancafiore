@@ -1,17 +1,28 @@
 import { absoluteUrl, articleHref, PAGES_ROUTES } from "@const/index";
-import { DEFAULT_SEO_PARAMS } from "@modules/core/components/seo/const";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as route from "./rss.xml";
 
 const getLiveCollection = vi.hoisted(() => vi.fn());
+const getLiveEntry = vi.hoisted(() => vi.fn());
 const rss = vi.hoisted(() => vi.fn((_options: unknown) => new Response("<rss />")));
 
-vi.mock("astro:content", () => ({ getLiveCollection }));
+vi.mock("astro:content", () => ({ getLiveCollection, getLiveEntry }));
 
 const { GET } = route;
 
-const answers = (articles: ReturnType<typeof makeArticle>[]) =>
+interface AnswersWithParams {
+	articles: ReturnType<typeof makeArticle>[];
+	settings?: Record<string, unknown>;
+}
+
+const SETTINGS = { title: "Bianca Fiore", description: "A writer's site.", socialLinks: [], verification: {} };
+
+function answersWith({ articles, settings = SETTINGS }: AnswersWithParams): void {
 	getLiveCollection.mockResolvedValue({ entries: articles });
+	getLiveEntry.mockResolvedValue({ entry: { id: "settings", data: settings } });
+}
+
+const answers = (articles: ReturnType<typeof makeArticle>[]) => answersWith({ articles });
 vi.mock("@astrojs/rss", () => ({ default: rss }));
 
 interface MakeArticleParams {
@@ -41,11 +52,12 @@ interface Feed {
 
 const feed = () => rss.mock.calls[0]?.[0] as Feed;
 
-const context = {} as Parameters<typeof GET>[0];
+const context = { isPrerendered: false } as Parameters<typeof GET>[0];
 
 beforeEach(() => {
 	rss.mockClear();
 	getLiveCollection.mockReset();
+	getLiveEntry.mockReset();
 	answers([]);
 });
 
@@ -58,8 +70,19 @@ describe("the feed", () => {
 		await GET(context);
 
 		expect(feed().site).toBe(absoluteUrl(PAGES_ROUTES.HOME));
-		expect(feed().title).toBe(DEFAULT_SEO_PARAMS.title);
-		expect(feed().description).toBe(DEFAULT_SEO_PARAMS.description);
+		expect(feed().title).toBe(SETTINGS.title);
+		expect(feed().description).toBe(SETTINGS.description);
+	});
+
+	it("takes the site's name and description from the site settings an editor set", async () => {
+		answersWith({
+			articles: [],
+			settings: { title: "Bianca", description: "Words, mostly.", socialLinks: [], verification: {} },
+		});
+
+		await GET(context);
+
+		expect(feed()).toMatchObject({ title: "Bianca", description: "Words, mostly." });
 	});
 
 	it("links each item through the route module rather than joining a slug by hand", async () => {
@@ -107,9 +130,10 @@ describe("the feed", () => {
 		expect(feed().items).toStrictEqual([]);
 	});
 
-	it("reads the Articles collection and no other", async () => {
+	it("reads the Articles and the site settings and no other collection", async () => {
 		await GET(context);
 
 		expect(getLiveCollection.mock.calls).toStrictEqual([["articles"]]);
+		expect(getLiveEntry.mock.calls).toStrictEqual([["site", { id: "settings", prerendered: false }]]);
 	});
 });

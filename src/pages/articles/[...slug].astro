@@ -1,6 +1,7 @@
 ---
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
+import ArticleContent from "@modules/article/components/articleContent/ArticleContent.astro";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
 import ColumnsToggle from "@modules/article/components/columnsToggle/ColumnsToggle.astro";
 import ReadingProgress from "@modules/article/components/readingProgress/ReadingProgress.astro";
@@ -24,18 +25,12 @@ if (!article) return Astro.rewrite("/404");
 
 const tagNames = article.data.tags?.map(({ name }) => name);
 const metadata: Partial<SeoMetadata> = {
-	title: article.data.title,
-	description: article.data.description,
+	...article.data.seo,
 	type: "article",
 	publishedTime: article.data.publishDateISO,
 	modifiedTime: article.data.updatedAt,
 	author: article.data.author.name,
 	tags: tagNames,
-	...(article.data.featuredImage && {
-		image: article.data.featuredImage.url,
-		imageWidth: article.data.featuredImage.details.width,
-		imageHeight: article.data.featuredImage.details.height,
-	}),
 };
 const { showsTableOfContents } = siteChrome(Astro.url);
 const scopes = article.data.tableOfContents.map(({ scope }) => scope).join(",");
@@ -90,7 +85,7 @@ const blogPostingSchema = buildBlogPostingSchema({
           showsTableOfContents && article.data.tableOfContents.length > 1 &&
           <TableOfContents tableOfContents={article.data.tableOfContents} />
       }
-      <Fragment set:html={article.data.content} />
+      <ArticleContent content={article.data.content} />
     </article>
     <JsonLd schema={blogPostingSchema} />
     <RelatedArticles article={article} />

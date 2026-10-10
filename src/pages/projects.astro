@@ -7,6 +7,7 @@ import { readProjects } from "@modules/core/utils/entries";
 import { buildProjectListSchema } from "@modules/core/utils/jsonLd";
 import ProjectSection from "@modules/projects/components/projectSection/ProjectSection.astro";
 import ProjectsIntro from "@modules/projects/components/projectsIntro/ProjectsIntro.astro";
+import { PortableText } from "emdash/ui";
 
 const projects = await readProjects();
 const itemListSchema = buildProjectListSchema(projects.map(({ data }) => data.id));
@@ -26,7 +27,7 @@ const metadata: Partial<SeoMetadata> = {
               </div>
               <div class="project-section__information">
                   <h2 class="project-section__title editorial-headline">{project.data.name}</h2>
-                  <div set:html={project.data.description} />
+                  <div><PortableText value={project.data.description} /></div>
               </div>
           </article>
       </ProjectSection>

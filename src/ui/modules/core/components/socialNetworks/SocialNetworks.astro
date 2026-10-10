@@ -1,18 +1,20 @@
 ---
+import { readSiteSettings } from "../../utils/entries";
 import EmailButton from "../emailButton/EmailButton.astro";
-import { SOCIAL_NETWORKS } from "./const";
 import "./social-networks.css";
+
+const { socialLinks } = await readSiteSettings(Astro.isPrerendered);
 ---
 <ul class="social-networks__list flex row-wrap">
-  {Object.entries(SOCIAL_NETWORKS).map(([key, value]) => (
+  {socialLinks.map(({ name, url }) => (
       <li class="social-networks__item">
           <a
-              href={value}
+              href={url}
               target="_blank"
               rel="external"
               class="social-networks__link underline-on-hover"
           >
-            {key.toLowerCase()}
+            {name}
           </a>
       </li>
   ))}

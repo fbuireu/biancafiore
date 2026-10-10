@@ -7,7 +7,9 @@ import {
 	readArticles,
 	readAuthors,
 	readCities,
+	readMenu,
 	readProjects,
+	readSiteSettings,
 	readTag,
 	readTags,
 	readTestimonials,
@@ -15,10 +17,11 @@ import {
 	resolveArticles,
 } from "./entries";
 
-const { collections, entries, asked } = vi.hoisted(() => ({
+const { collections, entries, asked, filters } = vi.hoisted(() => ({
 	collections: new Map<string, { entries?: unknown[]; error?: Error }>(),
 	entries: new Map<string, { entry?: unknown; error?: Error }>(),
 	asked: [] as string[],
+	filters: [] as unknown[],
 }));
 
 vi.mock("astro:content", () => ({
@@ -27,8 +30,11 @@ vi.mock("astro:content", () => ({
 
 		return collections.get(collection) ?? { entries: [] };
 	},
-	getLiveEntry: async (collection: string, id: string) => {
+	getLiveEntry: async (collection: string, filter: string | { id: string }) => {
+		const id = typeof filter === "string" ? filter : filter.id;
+
 		asked.push(`${collection}:${id}`);
+		filters.push(filter);
 
 		return entries.get(`${collection}:${id}`) ?? {};
 	},
@@ -46,6 +52,7 @@ beforeEach(() => {
 	collections.clear();
 	entries.clear();
 	asked.length = 0;
+	filters.length = 0;
 });
 
 describe("the collection readers", () => {
@@ -73,6 +80,39 @@ describe("the collection readers", () => {
 		collections.set("articles", { error: new Error("emdash is unreachable") });
 
 		await expect(readArticles()).rejects.toThrow("emdash is unreachable");
+	});
+});
+
+describe("the site's chrome", () => {
+	it("answers the settings entry as the DTO handed it over, telling the loader whether the page is prerendered", async () => {
+		entries.set("site:settings", { entry: { id: "settings", data: { title: "Bianca Fiore" } } });
+
+		await expect(readSiteSettings(false)).resolves.toEqual({ title: "Bianca Fiore" });
+		await readSiteSettings(true);
+
+		expect(filters).toEqual([
+			{ id: "settings", prerendered: false },
+			{ id: "settings", prerendered: true },
+		]);
+	});
+
+	it("fails rather than render a site with no settings, which the loader never answers", async () => {
+		await expect(readSiteSettings(false)).rejects.toThrow("The site collection answered no settings entry");
+	});
+
+	it("answers the named menu as the DTO handed it over, passing the prerendering on", async () => {
+		entries.set("menus:header", { entry: { id: "header", data: { name: "header", items: [] } } });
+
+		await expect(readMenu({ name: "header", prerendered: true })).resolves.toEqual({ name: "header", items: [] });
+		expect(filters).toEqual([{ id: "header", prerendered: true }]);
+	});
+
+	it("fails rather than render a header with no menu, which the loader never answers", async () => {
+		entries.set("menus:footer", { error: notFound() });
+
+		await expect(readMenu({ name: "footer", prerendered: false })).rejects.toThrow(
+			"The menus collection answered no footer menu",
+		);
 	});
 });
 

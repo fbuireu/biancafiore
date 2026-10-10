@@ -2,7 +2,9 @@ import { defineLiveCollection } from "astro:content";
 import { articles } from "@application/entities/articles";
 import { authors } from "@application/entities/authors";
 import { cities } from "@application/entities/cities";
+import { menus } from "@application/entities/menus";
 import { projects } from "@application/entities/projects";
+import { site } from "@application/entities/site";
 import { tags } from "@application/entities/tags";
 import { testimonials } from "@application/entities/testimonials";
 import { emdashLoader } from "emdash/runtime";
@@ -12,7 +14,9 @@ export const collections = {
 	articles: defineLiveCollection(articles),
 	authors: defineLiveCollection(authors),
 	cities: defineLiveCollection(cities),
+	menus: defineLiveCollection(menus),
 	projects: defineLiveCollection(projects),
+	site: defineLiveCollection(site),
 	tags: defineLiveCollection(tags),
 	testimonials: defineLiveCollection(testimonials),
 };

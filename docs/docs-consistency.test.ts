@@ -38,7 +38,7 @@ const SCRIPTS_INTENTIONALLY_UNDOCUMENTED = new Set([
 	"test:e2e:changed",
 ]);
 
-const CONCEPTS_OUTSIDE_THE_GLOSSARY = new Set(["breadcrumb", "contact", "shared"]);
+const CONCEPTS_OUTSIDE_THE_GLOSSARY = new Set(["breadcrumb", "contact", "menu", "shared", "site"]);
 
 const STYLESHEETS_STYLING_A_VENDOR_DOM = new Set(["src/ui/styles/vendor/cookie-consent.css"]);
 
@@ -127,6 +127,8 @@ const RELATIVE_IMAGE_URL_SCHEMA = /url:\s*z\.string\(\)/;
 const MEDIA_RESOLUTION = /data: resolveMedia\(fields\)/;
 const CMS_LAYER_IMPORT = /import\s*\{[^}]*CmsClientLive[^}]*\}\s*from\s*"\.\/client"/;
 const LOADER_FETCH_ENTRIES = /await fetchEntries</;
+const CHROME_FETCH = /await fetch(?:SiteSettings\(\)|Menu\(name\))/;
+const SITE_LOADER = "src/application/entities/site/site.ts";
 const EMDASH_PAGE_CAP = /EMDASH_MAX_PAGE_SIZE = (\d+)/;
 const REFERENCE_CONCURRENCY = /REFERENCE_READS_IN_FLIGHT = (\d+)/;
 const LOADER_REACHING_PAST_FETCH_ENTRIES = /from "effect"|CmsClient|concurrency:/;
@@ -257,7 +259,7 @@ const NAMED_ZONE = /\btimeZoneName\s*:/;
 const TRANSITION_NAME_SPELLING = /featured-image-\$\{/;
 const ROBOTS_OVERRIDE = /\brobots\s*:/;
 const HEAD_OF_THE_BLOG = /readArticles\(\)\)\s*\.slice\(/;
-const OPEN_GRAPH_LOCALE_FROM_SITE_LOCALE = /property="og:locale" content=\{openGraphLocale\(DEFAULT_LOCALE_STRING\)\}/;
+const OPEN_GRAPH_LOCALE_FROM_SITE_LOCALE = /locale: openGraphLocale\(DEFAULT_LOCALE_STRING\)/;
 const DATA_HAS_ATTRIBUTE = /\bdata-has-/;
 const SCOPED_PACKAGE = /^(@[^/]+\/[^/]+)/;
 const RANDOM_DRAW = /\bMath\.random\(/;
@@ -316,7 +318,6 @@ const TYPE_SELECTOR_LEAD = /^[a-zA-Z]/;
 const FRAME_SIZING_BLOCK = /\{([^{}]*\bframe-sizing:\s*content-height[^{}]*)\}/g;
 const FRAME_FLOOR = /\bmin-height:\s*(?!0\b|auto\b)[^;\s]/;
 const AUTO_HEIGHT = /\bheight:\s*auto\b/;
-const IFRAME_EMBED_DECLARATION = /const IFRAME_EMBED_CLASS = "([\w-]+)";/;
 const SELECTOR_CLASS = /(?:^|[\s>+~,(])\.([A-Za-z][\w-]*)/g;
 const SELECTOR_ID = /(?:^|[\s>+~,(])#(?![\da-fA-F]{3,8}\b)([A-Za-z][\w-]*)/g;
 const HOOK_EXPORT = /_(CLASS|ID)$/;
@@ -487,6 +488,7 @@ const MODULE_SCOPE_SIDE_EFFECT = /^(?:\w[\w.]*\.addEventListener\(|(?:const|let)
 const PRERENDERED_ROUTES = ["src/pages/privacy-policy.astro", "src/pages/terms-and-conditions.astro"];
 const QUOTED_ROUTE = /^\t"(\/[^"]*)",$/gm;
 const CACHE_TAG_LIST = /CONTENT_CACHE_TAGS = \[([^\]]+)\]/;
+const MENU_NAME_LIST = /MENU_NAME = \{([^}]+)\}/;
 const DOUBLE_QUOTED_VALUE = /"([^"]+)"/g;
 const INDEX_ROUTE = /(?:^|\/)index$/;
 const TRAILING_ROUTE_SLASH = /\/$/;
@@ -1904,7 +1906,7 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(guide).toContain("An asset URL arrives relative, on this Worker's origin");
 		expect(read("src/domain/shared/image.ts")).toMatch(RELATIVE_IMAGE_URL_SCHEMA);
 		expect(read("src/infrastructure/cms/client.ts")).toMatch(MEDIA_RESOLUTION);
-		expect(read("src/ui/modules/core/components/seo/Seo.astro")).toContain("absoluteUrl(image)");
+		expect(read("src/ui/modules/core/components/seo/utils/pageSeo.ts")).toContain("absoluteUrl(image.url)");
 		expect(read("src/ui/modules/core/utils/jsonLd.ts")).toContain("absoluteUrl(person.image)");
 		expect(read("src/ui/modules/core/utils/jsonLd.ts")).toContain("imageCrops.map((crop) => absoluteUrl(crop))");
 
@@ -1931,7 +1933,10 @@ describe("application guide: the anti-corruption boundary", () => {
 
 		const broken = loaders.filter((file) => {
 			const source = read(file);
-			const fetches = LOADER_FETCH_ENTRIES.test(source) || source.includes("await fetchArticlesAndAuthors()");
+			const fetches =
+				LOADER_FETCH_ENTRIES.test(source) ||
+				source.includes("await fetchArticlesAndAuthors()") ||
+				CHROME_FETCH.test(source);
 
 			return !fetches || !DOMAIN_SCHEMA_BINDING.test(source) || !DOMAIN_IMPORT.test(source);
 		});
@@ -1953,17 +1958,19 @@ describe("application guide: the anti-corruption boundary", () => {
 
 	it("cites the id every loader assigns, and spreads before it rather than after", () => {
 		const step = guide.split(NEWLINE).find((line) => line.includes("key every entry with `identify`")) ?? "";
-		const identities = loaders.map((file) => {
-			const source = read(file);
+		const identities = loaders
+			.filter((file) => file !== SITE_LOADER)
+			.map((file) => {
+				const source = read(file);
 
-			return {
-				file,
-				fields: [
-					...[...source.matchAll(IDENTIFY_CHOICE)].map(([, field]) => field),
-					...[...source.matchAll(INLINE_IDENTITY)].map(([, field]) => field),
-				],
-			};
-		});
+				return {
+					file,
+					fields: [
+						...[...source.matchAll(IDENTIFY_CHOICE)].map(([, field]) => field),
+						...[...source.matchAll(INLINE_IDENTITY)].map(([, field]) => field),
+					],
+				};
+			});
 		const assigned = identities
 			.map(({ file, fields }) => `${file.split("/").at(-2)} → ${[...new Set(fields)].join(", ")}`)
 			.sort();
@@ -1973,6 +1980,9 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(identities.filter(({ fields }) => fields.length === 0).map(({ file }) => file)).toEqual([]);
 		expect(cited).toEqual(assigned);
 
+		expect(read("src/domain/site/types.ts")).toContain('export const SITE_SETTINGS_ID = "settings";');
+		expect(read(SITE_LOADER)).toContain("identify: () => SITE_SETTINGS_ID");
+		expect(step).toContain("`site` holds one entry, keyed `settings`");
 		expect(read(COLLECTION_FACTORY)).toContain("({ id: identify(data), data })");
 		expect([...loaders, COLLECTION_FACTORY].filter((file) => SPREAD_AFTER_ID.test(read(file)))).toEqual([]);
 	});
@@ -2705,7 +2715,7 @@ describe("modules guide: mixes, islands and data access", () => {
 	it("shares a 1200 by 630 card as the default image, a tenth of the portrait's weight", () => {
 		expect(guide).toContain("The default share image is a 1200 by 630 card");
 
-		const file = read("src/ui/modules/core/components/seo/const.ts").match(SHARE_IMAGE_IMPORT)?.[1] ?? "";
+		const file = read("src/const/site.ts").match(SHARE_IMAGE_IMPORT)?.[1] ?? "";
 		const path = `src/ui/assets/images/jpg/${file}`;
 		const bytes = readFileSync(join(ROOT, path));
 		const sof = Buffer.from([0xff, 0xd8, 0xff, 0xc0, 0x00, 0x11, 0x08, 0x02, 0x76, 0x04, 0xb0, 0x03]);
@@ -2861,16 +2871,13 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(floorless.map(({ file }) => file)).toEqual([]);
 	});
 
-	it("wraps the generic iframe embed in the block the article stylesheet sizes, and keeps it whole across a column", () => {
-		const renderer = read("src/application/dto/article/utils/content.ts");
-		const wrapper = renderer.match(IFRAME_EMBED_DECLARATION)?.[1] ?? "";
+	it("sizes the generic iframe from EmDash's wrapper, and keeps it whole across a column", () => {
 		const stylesheet = read("src/pages/articles/_article.css");
 
-		expect(wrapper).not.toBe("");
-		expect(renderer).toContain(`<div class="\${IFRAME_EMBED_CLASS}"><iframe`);
-		expect(stylesheet).toMatch(new RegExp(`\\.${wrapper} \\{\\s*container-type: inline-size;`));
-		expect(stylesheet).toMatch(new RegExp(`:is\\([^)]*\\.${wrapper}[^)]*\\) \\{\\s*break-inside: avoid;`));
-		expect(stylesheet).toMatch(new RegExp(`\\.${wrapper} \\{[^}]*?iframe \\{[^}]*?display: block;`));
+		expect(guide).toContain("`_article.css` sizes its `.emdash-iframe` instead");
+		expect(stylesheet).toMatch(/\.emdash-iframe:not\(\[style\]\) \{[^}]*?container-type: inline-size;/);
+		expect(stylesheet).toMatch(/:is\([^)]*\.emdash-iframe[^)]*\) \{\s*break-inside: avoid;/);
+		expect(stylesheet).toMatch(/\.emdash-iframe:not\(\[style\]\) \{[^}]*?iframe \{[^}]*?display: block;/);
 	});
 
 	it("bootstraps the theme from the module that owns the preference, and paints without persisting", () => {
@@ -3147,8 +3154,11 @@ describe("conventions", () => {
 		const cachedRoutes = [...cache.matchAll(QUOTED_ROUTE)].map(([, route]) => route);
 		const tags = [...(cache.match(CACHE_TAG_LIST)?.[1] ?? "").matchAll(DOUBLE_QUOTED_VALUE)].map(([, tag]) => tag);
 		const collections = directoriesIn("src/application/entities").filter(
-			(entity) => !["tags", "authors"].includes(entity),
+			(entity) => !["tags", "authors", "site", "menus"].includes(entity),
 		);
+		const menuNames = [
+			...(read("src/domain/menu/types.ts").match(MENU_NAME_LIST)?.[1] ?? "").matchAll(DOUBLE_QUOTED_VALUE),
+		].map(([, name]) => name);
 		const contentRoutes = walk("src/pages")
 			.filter((file) => ROUTE_FILE.test(file) && !basename(file).startsWith("_"))
 			.filter((file) => !read(file).includes("export const prerender = true"))
@@ -3169,6 +3179,10 @@ describe("conventions", () => {
 		expect(tags).toContain("emdash:taxonomy:tag");
 		expect(cache).toContain('export const BYLINES_CACHE_TAG = "bylines";');
 		expect(cache.match(CACHE_TAG_LIST)?.[1]).toContain("BYLINES_CACHE_TAG");
+		expect(menuNames.length).toBeGreaterThan(0);
+		expect(
+			["emdash:settings", ...menuNames.map((name) => `emdash:menu:${name}`)].filter((tag) => !tags.includes(tag)),
+		).toEqual([]);
 	});
 
 	it("disallows in robots.txt the routes it keeps out of the sitemap, and EmDash's admin", () => {
@@ -4240,7 +4254,7 @@ describe("the hand-written code", () => {
 	});
 
 	it("derives the Open Graph locale from the language the pages declare, never from a literal that can disagree with it", () => {
-		expect(read("src/ui/modules/core/components/seo/Seo.astro")).toMatch(OPEN_GRAPH_LOCALE_FROM_SITE_LOCALE);
+		expect(read("src/ui/modules/core/components/seo/utils/pageSeo.ts")).toMatch(OPEN_GRAPH_LOCALE_FROM_SITE_LOCALE);
 		expect(read("src/ui/modules/core/components/baseLayout/BaseLayout.astro")).toContain(
 			"<html lang={DEFAULT_LOCALE_STRING}",
 		);

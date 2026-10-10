@@ -1,6 +1,8 @@
 import { getLiveCollection, getLiveEntry } from "astro:content";
 import { SITE_AUTHOR_SLUG } from "@const/const";
+import type { MenuName } from "@domain/menu";
 import type { Reference } from "@domain/shared/reference";
+import { SITE_SETTINGS_ID } from "@domain/site";
 
 const ENTRY_NOT_FOUND = "LiveEntryNotFoundError";
 
@@ -65,4 +67,25 @@ export async function getSiteAuthor(): Promise<AuthorEntry> {
 	}
 
 	return siteAuthor;
+}
+
+interface ReadMenuParams {
+	name: MenuName;
+	prerendered: boolean;
+}
+
+export async function readSiteSettings(prerendered: boolean) {
+	const settings = entryOf(await getLiveEntry("site", { id: SITE_SETTINGS_ID, prerendered }));
+
+	if (!settings) throw new Error("The site collection answered no settings entry");
+
+	return settings.data;
+}
+
+export async function readMenu({ name, prerendered }: ReadMenuParams) {
+	const menu = entryOf(await getLiveEntry("menus", { id: name, prerendered }));
+
+	if (!menu) throw new Error(`The menus collection answered no ${name} menu`);
+
+	return menu.data;
 }

@@ -80,8 +80,6 @@
 		"@emdash-cms/cloudflare": "1.2.0",
 		"@hookform/resolvers": "5.9.1",
 		"@libsql/client": "0.18.0",
-		"@portabletext/to-html": "6.0.0",
-		"@portabletext/types": "4.0.2",
 		"@tgwf/co2": "0.19.0",
 		"astro": "7.3.5",
 		"blurhash": "2.0.5",

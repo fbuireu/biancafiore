@@ -8,8 +8,30 @@
 	},
 	"settings": {
 		"title": "Bianca Fiore",
-		"tagline": "It's all about details innit?"
+		"tagline": "Bianca Fiore: personal website.",
+		"social": { "linkedin": "https://www.linkedin.com/in/bianca-fiore-88b83199" }
 	},
+	"menus": [
+		{
+			"name": "header",
+			"label": "Header",
+			"items": [
+				{ "type": "custom", "label": "back to start [Home]", "url": "/" },
+				{ "type": "custom", "label": "[Projects] I worked on", "url": "/projects" },
+				{ "type": "custom", "label": "my [Articles]", "url": "/articles" },
+				{ "type": "custom", "label": "know more [About] me", "url": "/about" },
+				{ "type": "custom", "label": "[Contact] me", "url": "/contact" }
+			]
+		},
+		{
+			"name": "footer",
+			"label": "Footer",
+			"items": [
+				{ "type": "custom", "label": "Terms and Conditions", "url": "/terms-and-conditions" },
+				{ "type": "custom", "label": "Privacy Policy", "url": "/privacy-policy" }
+			]
+		}
+	],
 	"taxonomies": [
 		{
 			"name": "tag",
@@ -26,7 +48,7 @@
 			"labelSingular": "Article",
 			"titleField": "title",
 			"dateField": "publish_date",
-			"supports": ["drafts", "revisions", "scheduling", "search"],
+			"supports": ["drafts", "revisions", "scheduling", "search", "seo"],
 			"admin": { "listColumns": ["publish_date"] },
 			"fields": [
 				{ "slug": "title", "label": "Title", "type": "string", "required": true, "searchable": true },

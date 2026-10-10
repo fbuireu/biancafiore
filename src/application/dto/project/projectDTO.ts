@@ -1,7 +1,7 @@
 import type { ProjectDTO } from "@domain/project";
 import { slugify } from "@shared/utils/strings";
 import { createImage } from "../shared/images";
-import { renderPortableText } from "../shared/portableText";
+import { prepareProse } from "../shared/portableText";
 import type { RawProject } from "./types";
 
 export function createProjects(raw: RawProject[]): ProjectDTO[] {
@@ -9,7 +9,7 @@ export function createProjects(raw: RawProject[]): ProjectDTO[] {
 		({ slug, data }): ProjectDTO => ({
 			id: slug?.trim() || slugify(data.name),
 			name: data.name,
-			description: renderPortableText({ value: data.description }),
+			description: prepareProse(data.description),
 			image: createImage(data.image),
 		}),
 	);

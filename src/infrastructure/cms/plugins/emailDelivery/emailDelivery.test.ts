@@ -38,7 +38,7 @@ describe("the email delivery plugin", () => {
 			hooks: Record<string, { exclusive: boolean }>;
 		};
 
-		expect(plugin.capabilities).toStrictEqual(["email:provide"]);
+		expect(plugin.capabilities).toStrictEqual(["hooks.email-transport:register"]);
 		expect(plugin.hooks["email:deliver"]?.exclusive).toBe(true);
 	});
 

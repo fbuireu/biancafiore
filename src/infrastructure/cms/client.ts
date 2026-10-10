@@ -42,6 +42,27 @@ export interface CmsItem {
 	updatedAt: string;
 }
 
+export interface CmsSiteImage {
+	src: string;
+	width?: number;
+	height?: number;
+}
+
+export interface CmsSiteSettings {
+	title: string | null;
+	tagline: string | null;
+	social: Record<string, string>;
+	titleSeparator: string | null;
+	defaultOgImage?: CmsSiteImage;
+}
+
+export interface CmsMenuItem {
+	label: string;
+	url: string;
+	target: string | null;
+	children: CmsMenuItem[];
+}
+
 interface CmsItemPage {
 	items: CmsItem[];
 	nextCursor?: string;
@@ -99,6 +120,8 @@ export class CmsClient extends Context.Tag("CmsClient")<
 	{
 		listEntries(query: ListEntriesQuery): Effect.Effect<CmsItemPage, CmsError>;
 		listReferences(query: ListReferencesQuery): Effect.Effect<CmsReferencePage, CmsError>;
+		readSiteSettings(): Effect.Effect<CmsSiteSettings, CmsError>;
+		readMenu(name: string): Effect.Effect<CmsMenuItem[] | undefined, CmsError>;
 	}
 >() {}
 
@@ -210,6 +233,58 @@ export function itemOf({ entry, avatars = new Map() }: ItemOfParams): CmsItem | 
 	};
 }
 
+function siteImageOf(value: unknown): CmsSiteImage | undefined {
+	if (!isRecord(value)) return undefined;
+
+	const src = asText(value.url);
+
+	return src ? { src, width: numberOf(value.width), height: numberOf(value.height) } : undefined;
+}
+
+export function siteSettingsOf(value: unknown): CmsSiteSettings {
+	const settings = isRecord(value) ? value : {};
+	const seo = isRecord(settings.seo) ? settings.seo : {};
+	const social = isRecord(settings.social) ? settings.social : {};
+	const defaultOgImage = siteImageOf(seo.defaultOgImage);
+
+	return {
+		title: asText(settings.title),
+		tagline: asText(settings.tagline),
+		social: Object.fromEntries(
+			Object.entries(social).flatMap(([network, value]) => {
+				const url = asText(value);
+
+				return url ? [[network, url] as const] : [];
+			}),
+		),
+		titleSeparator: typeof seo.titleSeparator === "string" && seo.titleSeparator ? seo.titleSeparator : null,
+		...(defaultOgImage && { defaultOgImage }),
+	};
+}
+
+export function menuItemsOf(value: unknown): CmsMenuItem[] {
+	return (Array.isArray(value) ? value : []).flatMap((item) => {
+		if (!isRecord(item)) return [];
+
+		const label = asText(item.label);
+		const url = asText(item.url);
+
+		return label && url ? [{ label, url, target: asText(item.target), children: menuItemsOf(item.children) }] : [];
+	});
+}
+
+interface AttemptParams<VALUE> {
+	run: () => Promise<VALUE>;
+	failure: string;
+}
+
+const attempt = <VALUE>({ run, failure }: AttemptParams<VALUE>) =>
+	Effect.tryPromise({
+		try: run,
+		catch: (cause) =>
+			new CmsError({ message: `${failure}: ${cause instanceof Error ? cause.message : String(cause)}`, cause }),
+	});
+
 const query = ({ run, failure }: QueryParams) =>
 	Effect.tryPromise({
 		try: run,
@@ -289,6 +364,14 @@ export const CmsClientLive = Layer.effect(
 							}),
 							...(nextCursor && { nextCursor }),
 						})),
+					),
+				readSiteSettings: () =>
+					attempt({ run: () => emdash.getSiteSettings(), failure: "The site settings could not be read" }).pipe(
+						Effect.map((settings) => siteSettingsOf(plain(settings))),
+					),
+				readMenu: (name: string) =>
+					attempt({ run: () => emdash.getMenu(name), failure: `The ${name} menu could not be read` }).pipe(
+						Effect.map((menu) => (menu ? menuItemsOf(plain(menu.items)) : undefined)),
 					),
 			};
 		}),

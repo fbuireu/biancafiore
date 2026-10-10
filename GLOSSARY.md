@@ -2,7 +2,7 @@
 
 The content domain of a personal editorial site: a writer's blog and portfolio. It covers what gets written and shown (Articles, Projects, Testimonials), the people and places behind it (Authors, Quotees, Cities), how writing is organized (Tags), and the editorial rules that shape how pieces are surfaced.
 
-Contact submissions and breadcrumbs have folders under [`src/domain`](./src/domain) but no entry here: they are site plumbing, not editorial vocabulary.
+Contact submissions, breadcrumbs, the site settings and the navigation menus have folders under [`src/domain`](./src/domain) but no entry here: they are site plumbing, not editorial vocabulary.
 
 ## Content Types
 

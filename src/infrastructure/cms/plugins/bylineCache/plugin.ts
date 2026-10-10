@@ -12,6 +12,7 @@ export function createPlugin() {
 	return definePlugin({
 		id: BYLINE_CACHE.ID,
 		version: BYLINE_CACHE.VERSION,
+		capabilities: ["bylines:read"],
 		hooks: { "byline:afterSave": purgeBylines, "byline:afterDelete": purgeBylines },
 	});
 }

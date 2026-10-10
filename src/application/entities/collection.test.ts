@@ -59,4 +59,38 @@ describe("contentLoader", () => {
 		expect(result).toEqual({ error: expect.any(Error) });
 		expect("error" in result && result.error.message).toBe("the CMS said no");
 	});
+
+	it("answers a prerendered page from loadPrerendered without loading, since a build has no database to read", async () => {
+		const load = vi.fn(async () => ITEMS);
+		const loader = contentLoader({
+			name: "items",
+			load,
+			identify,
+			loadPrerendered: (id) => ({ slug: id, title: "Built" }),
+		});
+
+		await expect(
+			loader.loadEntry({ collection: "items", filter: { id: "first", prerendered: true } }),
+		).resolves.toEqual({
+			id: "first",
+			data: { slug: "first", title: "Built" },
+		});
+		expect(load).not.toHaveBeenCalled();
+	});
+
+	it("loads as usual for a page rendered on request, even when it can be prerendered", async () => {
+		const loader = contentLoader({
+			name: "items",
+			load: async () => ITEMS,
+			identify,
+			loadPrerendered: () => ({ slug: "first", title: "Built" }),
+		});
+
+		await expect(
+			loader.loadEntry({ collection: "items", filter: { id: "first", prerendered: false } }),
+		).resolves.toEqual({
+			id: "first",
+			data: ITEMS[0],
+		});
+	});
 });

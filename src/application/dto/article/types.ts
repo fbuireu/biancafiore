@@ -8,11 +8,19 @@ export interface ArticleFields {
 	content: PortableTextContent;
 	description?: string;
 	publish_date: string;
-	featured_image?: RawImage;
+	featured_image?: RawImage | null;
 	featured_article?: CmsFlag;
 	is_favorite?: CmsFlag;
 	is_republished?: CmsFlag;
 	original_source?: string;
+	seo?: ArticleSeoFields;
+}
+
+export interface ArticleSeoFields {
+	title: string | null;
+	description: string | null;
+	image: string | null;
+	noIndex: boolean;
 }
 
 export const ARTICLE_TAG_TAXONOMY = "tag";

@@ -80,7 +80,12 @@ beforeEach(() => {
 
 describe("CmsClientLive", () => {
 	it("hands out the reads the site performs rather than EmDash's whole query surface", async () => {
-		expect(Object.keys(await client()).toSorted()).toStrictEqual(["listEntries", "listReferences"]);
+		expect(Object.keys(await client()).toSorted()).toStrictEqual([
+			"listEntries",
+			"listReferences",
+			"readMenu",
+			"readSiteSettings",
+		]);
 	});
 });
 

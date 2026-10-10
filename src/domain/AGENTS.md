@@ -1,6 +1,6 @@
 # src/domain
 
-The pure domain layer. One folder per domain concept, named in the singular after the term in [GLOSSARY.md](../../GLOSSARY.md) (`article`, `author`, `city`, `project`, `tag`, `testimonial`, `breadcrumb`, `contact`). See ADR 0012.
+The pure domain layer. One folder per domain concept, named in the singular after the term in [GLOSSARY.md](../../GLOSSARY.md) (`article`, `author`, `city`, `project`, `tag`, `testimonial`, `breadcrumb`, `contact`, `menu`, `site`). See ADR 0012.
 
 ## Anatomy of a concept
 
@@ -12,7 +12,7 @@ The pure domain layer. One folder per domain concept, named in the singular afte
   index.ts    # barrel: export * from each of the above
 ```
 
-Not every concept needs all of them. `rules.ts` exists for `article`, `breadcrumb`, `city`, `contact`, `tag` and no one else; `contact` carries a schema and rules deciding when two addresses are the same person and bounding the cooldown, `breadcrumb` is rules + types, and every other concept carries a schema and types. Add a file when there is something to put in it.
+Not every concept needs all of them. `rules.ts` exists for `article`, `breadcrumb`, `city`, `contact`, `tag` and no one else; `contact` carries a schema and rules deciding when two addresses are the same person and bounding the cooldown, `breadcrumb` is rules + types, and every other concept carries a schema and types. `site` (the site settings: name, description, social links, the default share image and the search-console tokens) and `menu` (a named navigation menu and its items, with `MENU_NAME` naming the two the site renders) are plumbing like `contact` and `breadcrumb`, so the glossary leaves them out; an Article's optional `seo` is the editor's SEO panel, each value overriding the one the page derives. Add a file when there is something to put in it.
 
 ## What the domain may reach
 
@@ -22,7 +22,7 @@ Nothing here imports from `@application/*`, `@infrastructure/*` or `@modules/*`.
 
 - `article/rules.ts` owns the Blog's order and the publish date. `sortFavoriteFirst` is typed over `Pick<ArticleDTO, "isFavorite" | "publishDateISO">`, so the Tag Index orders its Article references by it too; `sortReverseChronological` is the date order it sorts by before it lifts the Favorites, and the RSS feed calls that one alone, as does the authors DTO, whose Latest Article is the head of it. `publishDateISO` is what a readable publish date is: every mapper that reads one calls it, and it throws on one it cannot read. [ADR 0019](../../docs/adr/0019-three-questions-before-modelling.md) records why there is one of each.
 - `creditedSource` pairs the Republished flag with the Original Source. They are two independent CMS fields and the article page renders the banner only when the flag is set, so a source named without the flag is refused rather than dropped.
-- `generateTableOfContents` takes the `ArticleHeading` list the article renderer collected while it wrote the body (level, anchor id, authored text), so the id in the Table of Contents *is* the string the body put in its `id` attribute. `article/rules.ts` also owns which levels belong there (`isTableOfContentsHeading`, h2 to h6), and the renderer asks it before numbering a section, which is what keeps the body's `--is: --section-N` and the entry's position in the list in step. Neither rule parses or unescapes HTML: heading text arrives as the author typed it.
+- `generateTableOfContents` takes the `ArticleHeading` list the application layer collected while it prepared the body (level, anchor id, authored text), the same anchor it stamped on the heading block the page renders as its `id`, so the id in the Table of Contents *is* the string the body puts in its `id` attribute. `article/rules.ts` also owns which levels belong there (`isTableOfContentsHeading`, h2 to h6), and the preparation asks it before numbering a section, which is what keeps the body's `--is: --section-N` and the entry's position in the list in step. Neither rule parses or unescapes HTML: heading text arrives as the author typed it.
 
 ## shared/
 
@@ -30,6 +30,7 @@ Cross-concept primitives only:
 
 - [`image.ts`](./shared/image.ts): `imageSchema`, reused by any concept carrying an image. Its `url` is an **absolute** URL and is validated as one (`z.url()`): the CMS stores a media path, and the CMS client resolves it against the CMS origin before any mapper sees it, so nothing reading this field has to finish it first
 - [`reference.ts`](./shared/reference.ts): shared reference shape
+- [`portableText.ts`](./shared/portableText.ts): `portableTextSchema`, the rich text an Article's body and a Project's description carry, as an array of typed objects the domain never looks inside: the application layer prepares it and the page renders it ([ADR 0023](../../docs/adr/0023-portable-text-renders-in-the-ui-through-emdash.md))
 
 ## Consumers
 

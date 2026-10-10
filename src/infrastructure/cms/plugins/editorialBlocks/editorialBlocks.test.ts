@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import { isAbsolute } from "node:path";
-import { renderArticleContent } from "@application/dto/article/utils/content";
+import { prepareArticleContent } from "@application/dto/article/utils/content";
 import { rawEntry } from "@tests/doubles/cmsEntries";
 import { describe, expect, it, vi } from "vitest";
 import { EDITORIAL_BLOCK_CONFIGS, EDITORIAL_BLOCK_TYPE, EDITORIAL_BLOCKS } from "./blocks";
@@ -10,8 +10,6 @@ import { createPlugin } from "./plugin";
 vi.mock("emdash", () => ({ definePlugin: (definition: unknown) => definition }));
 
 const SAMPLE_VALUES: Record<string, string> = {
-	url: "https://www.youtube.com/watch?v=abc123",
-	title: "A video",
 	heading: "A heading",
 	text: "Some text",
 	image: "/_emdash/api/media/file/split.jpg",
@@ -28,29 +26,29 @@ const blockOf = (type: string) => {
 	};
 };
 
-const render = (type: string) =>
-	renderArticleContent(
+const prepare = (type: string) =>
+	prepareArticleContent(
 		rawEntry({
 			slug: "an-article",
 			data: { title: "An article", content: [blockOf(type)], publish_date: "2024-01-01" },
-		}) as Parameters<typeof renderArticleContent>[0],
+		}) as Parameters<typeof prepareArticleContent>[0],
 	).content;
 
 describe("the editorial blocks", () => {
-	it("hand the editor exactly the fields the article renderer reads, so a filled-in video renders", () => {
-		const html = render(EDITORIAL_BLOCK_TYPE.VIDEO_EMBED);
-
-		expect(html).toContain("abc123");
-		expect(html).toContain('title="A video"');
+	it("declare only the split block, since a video is EmDash's own iframe block", () => {
+		expect(EDITORIAL_BLOCK_CONFIGS.map(({ type }) => type)).toEqual([EDITORIAL_BLOCK_TYPE.SPLIT_BLOCK]);
 	});
 
-	it("hand the editor exactly the fields the article renderer reads, so a filled-in split block renders", () => {
-		const html = render(EDITORIAL_BLOCK_TYPE.SPLIT_BLOCK);
+	it("hand the editor exactly the fields the article reads, so a filled-in split block reaches the page", () => {
+		const [split] = prepare(EDITORIAL_BLOCK_TYPE.SPLIT_BLOCK);
 
-		expect(html).toContain("<h3>A heading</h3>");
-		expect(html).toContain("<p>Some text</p>");
-		expect(html).toContain('alt="Described"');
-		expect(html).toContain("/_emdash/api/media/file/split.jpg");
+		expect(split).toMatchObject({
+			_type: EDITORIAL_BLOCK_TYPE.SPLIT_BLOCK,
+			heading: "A heading",
+			text: "Some text",
+			alt: "Described",
+			src: expect.stringContaining("/_emdash/api/media/file/split.jpg"),
+		});
 	});
 });
 

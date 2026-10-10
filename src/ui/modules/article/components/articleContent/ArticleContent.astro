@@ -1,0 +1,17 @@
+---
+import type { PortableText as Content } from "@domain/shared/portableText";
+import { PortableText } from "emdash/ui";
+import ArticleHeading from "../articleHeading/ArticleHeading.astro";
+import ArticleImage from "../articleImage/ArticleImage.astro";
+import SplitBlock from "../splitBlock/SplitBlock.astro";
+
+interface Props {
+	content: Content;
+}
+
+const { content } = Astro.props;
+---
+<PortableText
+    value={content}
+    components={{ type: { articleHeading: ArticleHeading, image: ArticleImage, splitBlock: SplitBlock } }}
+/>

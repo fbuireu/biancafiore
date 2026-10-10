@@ -1,6 +1,8 @@
 ---
 import Logo from "@assets/images/svg/logo.svg";
 import { PAGES_ROUTES } from "@const/index";
+import { MENU_NAME } from "@domain/menu";
+import { readMenu } from "../../utils/entries";
 import CarbonBadge from "../carbonBadge/CarbonBadge.astro";
 import CookieConsent from "../cookieConsent/CookieConsent.astro";
 import SocialNetworks from "../socialNetworks/SocialNetworks.astro";
@@ -8,6 +10,7 @@ import ThemeToggle from "../themeToggle/ThemeToggle.astro";
 import "./footer.css";
 
 const currentYear = new Date().getFullYear();
+const { items: legalLinks } = await readMenu({ name: MENU_NAME.FOOTER, prerendered: Astro.isPrerendered });
 ---
 <footer class="footer inverted-color-scheme">
     <section class="footer-wrapper common-wrapper">
@@ -19,10 +22,9 @@ const currentYear = new Date().getFullYear();
         <ThemeToggle />
         <SocialNetworks />
         <p class="footer__legal-pages flex justify-center">
-            <a href={PAGES_ROUTES['TERMS-AND-CONDITIONS']} rel="nofollow noreferrer" class="underline-on-hover">Terms
-                and Conditions</a>
-            <a href={PAGES_ROUTES['PRIVACY-POLICY']} rel="nofollow noreferrer" class="underline-on-hover">Privacy
-                Policy</a>
+            {legalLinks.map(({ label, href, opensInNewTab }) => (
+                <a href={href} rel="nofollow noreferrer" class="underline-on-hover" target={opensInNewTab ? "_blank" : undefined}>{label}</a>
+            ))}
             <CookieConsent />
         </p>
         <p class="footer__disclaimer flex justify-center">

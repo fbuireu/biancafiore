@@ -20,7 +20,7 @@ export function securityHeaders({ isDevelopment, inlineScriptHashes }: SecurityH
 		"font-src 'self' data: https://fonts.gstatic.com",
 		"connect-src 'self' https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com https://www.google.com https://api.websitecarbon.com https://api.thegreenwebfoundation.org https://betterstack.net https://*.betterstackdata.com https://cloudflareinsights.com",
 		"worker-src 'self' blob:",
-		`frame-src 'self' https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com ${CALENDLY.BOOKING_ORIGIN}`,
+		`frame-src 'self' https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com ${CALENDLY.BOOKING_ORIGIN}`,
 		"object-src 'none'",
 		"base-uri 'self'",
 		"form-action 'self'",

@@ -134,7 +134,7 @@ describe("richTextToPortableText text blocks", () => {
 	});
 
 	it("turns a rule into a break", () => {
-		expect(convert(doc(node("hr")))).toEqual([{ _type: "break", _key: "k0", style: "lineBreak" }]);
+		expect(convert(doc(node("hr")))).toEqual([{ _type: "break", _key: "k0", style: "line" }]);
 	});
 
 	it("keeps a cell's paragraphs apart with a line break, rather than running their words together", () => {
@@ -217,8 +217,17 @@ describe("richTextToPortableText embedded entries", () => {
 
 	it("maps each embedded content type onto the block the editor and the site know", () => {
 		expect(embed("codeBlock", { code: "<div>" }).blocks).toEqual([{ _type: "code", _key: "k0", code: "<div>" }]);
-		expect(embed("videoEmbed", { url: "https://youtu.be/a", title: "A talk" }).blocks).toEqual([
-			{ _type: "videoEmbed", _key: "k0", url: "https://youtu.be/a", title: "A talk" },
+		expect(embed("videoEmbed", { url: "https://youtu.be/abcdefghijk", title: "A talk" }).blocks).toEqual([
+			{
+				_type: "iframe",
+				_key: "k0",
+				src: "https://www.youtube.com/embed/abcdefghijk",
+				width: 560,
+				height: 315,
+				allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+				allowFullscreen: true,
+				title: "A talk",
+			},
 		]);
 		expect(embed("iframeEmbed", { url: "https://example.com", title: "Widget" }).blocks).toEqual([
 			{ _type: "iframe", _key: "k0", src: "https://example.com", title: "Widget" },
@@ -284,5 +293,16 @@ describe("assetIdsIn", () => {
 		);
 
 		expect(assetIdsIn({ document, entries })).toEqual(["asset-1", "asset-2", "asset-3"]);
+	});
+});
+
+describe("richTextToPortableText video embeds", () => {
+	it("drops a video whose address no player answers, and says so", () => {
+		const context = contextWith({
+			entries: new Map([["e-1", entry("e-1", "videoEmbed", { url: "https://example.com/v", title: "A talk" })]]),
+		});
+
+		expect(convert(doc(node("embedded-entry-block", [], { target: link("e-1") })), context)).toEqual([]);
+		expect(context.warnings).toEqual([expect.stringContaining("not a YouTube or Vimeo link")]);
 	});
 });

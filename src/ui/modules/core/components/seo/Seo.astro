@@ -1,69 +1,32 @@
 ---
 import { TWITTER_HANDLE } from "astro:env/client";
-import { DEFAULT_LOCALE_STRING } from "@const/locale";
-import { isNoindexRoute } from "@const/noindexRoutes";
-import { absoluteUrl } from "@const/routes";
-import type { SeoMetadata } from "@const/types";
-import { DEFAULT_SEO_PARAMS, NOINDEX_ROBOTS } from "./const";
-import { openGraphLocale } from "./utils/locale";
+import type { Seo } from "./utils/pageSeo";
 
-type Props = Partial<SeoMetadata>;
+interface Props {
+	seo: Seo;
+}
 
-const canonical = absoluteUrl(Astro.url.pathname);
-
-const {
-	image: defaultImage,
-	title: defaultTitle,
-	description: defaultDescription,
-	robots: defaultRobots,
-} = DEFAULT_SEO_PARAMS;
-
-const {
-	title = defaultTitle,
-	description = defaultDescription,
-	image = defaultImage,
-	imageWidth,
-	imageHeight,
-	robots = isNoindexRoute(Astro.url.pathname) ? NOINDEX_ROBOTS : (defaultRobots ?? { index: true, follow: true }),
-	type = "website",
-	publishedTime,
-	modifiedTime,
-	author,
-	tags,
-} = Astro.props;
+const { seo } = Astro.props;
 ---
-<title>{title !== defaultTitle ? `${title} | ${defaultTitle}` : defaultTitle}</title>
+<title>{seo.documentTitle}</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="icon" type="image/png" sizes="32x32" media="(prefers-color-scheme: light)" href="/favicon-light-32.png"/>
 <link rel="icon" type="image/png" sizes="32x32" media="(prefers-color-scheme: dark)" href="/favicon-dark-32.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
-<link rel="canonical" href={canonical}/>
-<link rel="sitemap" href="/sitemap-index.xml"/>
-<meta name="robots" content={`${robots.index ? 'index' : 'noindex'}, ${robots.follow ? 'follow' : 'nofollow'}`}/>
-<meta name="googlebot" content={`${robots.index ? 'index' : 'noindex'}, ${robots.follow ? 'follow' : 'nofollow'}`}/>
-<meta name="description" content={description}/>
-{tags && tags.length > 0 && <meta name="keywords" content={tags.join(', ')}/>}
-<meta property="og:type" content={type}/>
-<meta property="og:url" content={canonical}/>
-<meta property="og:title" content={title}/>
-<meta property="og:description" content={description}/>
-<meta property="og:image" content={absoluteUrl(image)}/>
-<meta property="og:image:alt" content={title}/>
-{imageWidth && <meta property="og:image:width" content={String(imageWidth)}/>}
-{imageHeight && <meta property="og:image:height" content={String(imageHeight)}/>}
-<meta property="og:site_name" content={defaultTitle}/>
-<meta property="og:locale" content={openGraphLocale(DEFAULT_LOCALE_STRING)}/>
-{type === 'article' && publishedTime && <meta property="og:article:published_time" content={publishedTime}/>}
-{type === 'article' && modifiedTime && <meta property="og:article:modified_time" content={modifiedTime}/>}
-{type === 'article' && author && <meta property="og:article:author" content={author}/>}
-{type === 'article' && tags?.map(tag => <meta property="og:article:tag" content={tag}/>)}
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:url" content={canonical}/>
-<meta name="twitter:title" content={title}/>
-<meta name="twitter:description" content={description}/>
-<meta name="twitter:image" content={absoluteUrl(image)}/>
-<meta name="twitter:image:alt" content={title}/>
+<link rel="canonical" href={seo.canonical}/>
+<link rel="sitemap" href="/sitemap.xml"/>
+<meta name="googlebot" content={seo.robots}/>
+{seo.tags.length > 0 && <meta name="keywords" content={seo.tags.join(", ")}/>}
+<meta property="og:url" content={seo.canonical}/>
+<meta property="og:image:alt" content={seo.title}/>
+{seo.imageWidth && <meta property="og:image:width" content={String(seo.imageWidth)}/>}
+{seo.imageHeight && <meta property="og:image:height" content={String(seo.imageHeight)}/>}
+<meta property="og:site_name" content={seo.siteName}/>
+<meta property="og:locale" content={seo.locale}/>
+{seo.tags.map((tag) => <meta property="article:tag" content={tag}/>)}
+<meta name="twitter:url" content={seo.canonical}/>
+<meta name="twitter:image:alt" content={seo.title}/>
 <meta name="twitter:creator" content={TWITTER_HANDLE}/>
 <meta name="twitter:site" content={TWITTER_HANDLE}/>
