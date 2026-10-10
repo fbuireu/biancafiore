@@ -1,5 +1,5 @@
 import { ARTICLE_BODY_CLASS } from "@modules/article/const";
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const LOCATION = /<loc>([^<]*)<\/loc>/g;
 const FEED_LINK = /<link>([^<]*)<\/link>/g;
