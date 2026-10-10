@@ -90,11 +90,11 @@ describe("logger.logError", () => {
 	});
 
 	it("carries the own enumerable fields of an Error subclass beside the standard three", () => {
-		const error = Object.assign(new Error("x"), { code: "CONTENTFUL_TIMEOUT" });
+		const error = Object.assign(new Error("x"), { code: "CMS_TIMEOUT" });
 
 		logger.logError({ message: "test", error });
 
-		expect(lineFrom(LOG_LEVEL.ERROR).error.code).toBe("CONTENTFUL_TIMEOUT");
+		expect(lineFrom(LOG_LEVEL.ERROR).error.code).toBe("CMS_TIMEOUT");
 	});
 
 	it("describes a thrown plain object as its JSON rather than as [object Object]", () => {

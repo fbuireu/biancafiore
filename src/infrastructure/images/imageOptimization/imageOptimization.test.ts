@@ -1,8 +1,9 @@
 import { IMAGE_CDN } from "@const/index";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getOptimizedImageUrl, getOptimizedSrcset, getOriginImageUrl } from "./imageOptimization";
+import { getOptimizedImageUrl, getOptimizedSrcset } from "./imageOptimization";
 
-const SOURCE = "https://images.ctfassets.net/space/asset/image.jpg";
+const SOURCE = "/_emdash/api/media/file/hero.jpg";
+const TRANSFORMED_SOURCE = "_emdash/api/media/file/hero.jpg";
 
 const useCdn = (cdn: string) => vi.stubEnv("IMAGE_CDN", cdn);
 
@@ -11,10 +12,12 @@ afterEach(() => {
 });
 
 describe("getOptimizedImageUrl on the Cloudflare CDN", () => {
-	it("wraps the source in /cdn-cgi/image with automatic format and the default quality", () => {
+	it("wraps a same-origin source in /cdn-cgi/image with automatic format and the default quality", () => {
 		useCdn(IMAGE_CDN.CLOUDFLARE);
 
-		expect(getOptimizedImageUrl({ source: SOURCE })).toBe(`/cdn-cgi/image/format=auto,quality=85/${SOURCE}`);
+		expect(getOptimizedImageUrl({ source: SOURCE })).toBe(
+			`/cdn-cgi/image/format=auto,quality=85/${TRANSFORMED_SOURCE}`,
+		);
 	});
 
 	it("emits the transform parameters in the fixed order format, quality, width, height, fit", () => {
@@ -25,201 +28,68 @@ describe("getOptimizedImageUrl on the Cloudflare CDN", () => {
 			options: { fit: "cover", height: 600, width: 800, quality: 60, format: "webp" },
 		});
 
-		expect(url).toBe(`/cdn-cgi/image/format=webp,quality=60,width=800,height=600,fit=cover/${SOURCE}`);
+		expect(url).toBe(`/cdn-cgi/image/format=webp,quality=60,width=800,height=600,fit=cover/${TRANSFORMED_SOURCE}`);
 	});
 
 	it("omits width, height and fit when they are not supplied", () => {
 		useCdn(IMAGE_CDN.CLOUDFLARE);
 
-		const url = getOptimizedImageUrl({ source: SOURCE, options: { format: "avif" } });
-
-		expect(url).toBe(`/cdn-cgi/image/format=avif,quality=85/${SOURCE}`);
+		expect(getOptimizedImageUrl({ source: SOURCE, options: { format: "avif" } })).toBe(
+			`/cdn-cgi/image/format=avif,quality=85/${TRANSFORMED_SOURCE}`,
+		);
 	});
 
 	it("drops a zero width and height because the dimensions are checked for truthiness, not for being defined", () => {
 		useCdn(IMAGE_CDN.CLOUDFLARE);
 
-		const url = getOptimizedImageUrl({ source: SOURCE, options: { width: 0, height: 0 } });
-
-		expect(url).toBe(`/cdn-cgi/image/format=auto,quality=85/${SOURCE}`);
+		expect(getOptimizedImageUrl({ source: SOURCE, options: { width: 0, height: 0 } })).toBe(
+			`/cdn-cgi/image/format=auto,quality=85/${TRANSFORMED_SOURCE}`,
+		);
 	});
 
-	it("reads a zero quality as no quality, the same on both branches", () => {
+	it("reads a zero quality as no quality, so the default applies", () => {
 		useCdn(IMAGE_CDN.CLOUDFLARE);
 
 		expect(getOptimizedImageUrl({ source: SOURCE, options: { quality: 0 } })).toBe(
-			`/cdn-cgi/image/format=auto,quality=85/${SOURCE}`,
+			`/cdn-cgi/image/format=auto,quality=85/${TRANSFORMED_SOURCE}`,
 		);
-
-		useCdn(IMAGE_CDN.CONTENTFUL);
-
-		expect(getOptimizedImageUrl({ source: SOURCE, options: { quality: 0 } })).toBe(`${SOURCE}?q=85`);
-	});
-
-	it("is the fallback branch whenever IMAGE_CDN is anything other than contentful", () => {
-		useCdn("");
-
-		expect(getOptimizedImageUrl({ source: SOURCE })).toBe(`/cdn-cgi/image/format=auto,quality=85/${SOURCE}`);
-	});
-
-	it("appends a root-relative source with a single separating slash", () => {
-		useCdn(IMAGE_CDN.CLOUDFLARE);
-
-		expect(getOptimizedImageUrl({ source: "/local/image.jpg" })).toBe(
-			"/cdn-cgi/image/format=auto,quality=85/local/image.jpg",
-		);
-	});
-
-	it("appends a path-relative source unchanged", () => {
-		useCdn(IMAGE_CDN.CLOUDFLARE);
-
-		expect(getOptimizedImageUrl({ source: "local/image.jpg" })).toBe(
-			"/cdn-cgi/image/format=auto,quality=85/local/image.jpg",
-		);
-	});
-
-	it("falls back to the default quality when quality is passed as an explicit undefined", () => {
-		useCdn(IMAGE_CDN.CLOUDFLARE);
-
-		expect(getOptimizedImageUrl({ source: SOURCE, options: { quality: undefined, width: 800 } })).toBe(
-			`/cdn-cgi/image/format=auto,quality=85,width=800/${SOURCE}`,
-		);
-	});
-});
-
-describe("getOptimizedImageUrl on the Contentful CDN", () => {
-	it("delegates to the Contentful image API and applies the default quality", () => {
-		useCdn(IMAGE_CDN.CONTENTFUL);
-
-		expect(getOptimizedImageUrl({ source: SOURCE })).toBe(`${SOURCE}?q=85`);
-	});
-
-	it("lets an explicit quality override the default", () => {
-		useCdn(IMAGE_CDN.CONTENTFUL);
-
-		expect(getOptimizedImageUrl({ source: SOURCE, options: { quality: 40 } })).toBe(`${SOURCE}?q=40`);
-	});
-
-	it("falls back to the default quality when quality is passed as an explicit undefined", () => {
-		useCdn(IMAGE_CDN.CONTENTFUL);
-
-		expect(getOptimizedImageUrl({ source: SOURCE, options: { quality: undefined, width: 800 } })).toBe(
-			`${SOURCE}?w=800&q=85`,
-		);
-	});
-
-	it("translates every option into its Contentful query parameter", () => {
-		useCdn(IMAGE_CDN.CONTENTFUL);
-
-		const url = getOptimizedImageUrl({
-			source: SOURCE,
-			options: { width: 800, height: 600, quality: 70, format: "jpeg", fit: "cover" },
-		});
-
-		expect(url).toBe(`${SOURCE}?w=800&h=600&q=70&fm=jpg&fit=fill`);
-	});
-});
-
-describe("getOriginImageUrl", () => {
-	it("returns the source unchanged when no options are given beyond a normalised URL", () => {
-		expect(getOriginImageUrl({ source: SOURCE })).toBe(SOURCE);
-	});
-
-	it("normalises an origin-only source by adding the root path", () => {
-		expect(getOriginImageUrl({ source: "https://images.ctfassets.net" })).toBe("https://images.ctfassets.net/");
-	});
-
-	it("writes the parameters in the order w, h, q, fm, fit regardless of the option order", () => {
-		const url = getOriginImageUrl({
-			source: SOURCE,
-			options: { fit: "pad", format: "png", quality: 50, height: 200, width: 100 },
-		});
-
-		expect(url).toBe(`${SOURCE}?w=100&h=200&q=50&fm=png&fit=pad`);
-	});
-
-	it("omits every parameter that was not supplied", () => {
-		expect(getOriginImageUrl({ source: SOURCE, options: { height: 480 } })).toBe(`${SOURCE}?h=480`);
-	});
-
-	it("omits the format parameter when the requested format is auto", () => {
-		expect(getOriginImageUrl({ source: SOURCE, options: { format: "auto", width: 640 } })).toBe(`${SOURCE}?w=640`);
 	});
 
 	it.each([
-		["avif", "avif"],
-		["webp", "webp"],
-		["jpeg", "jpg"],
-		["png", "png"],
-	] as const)("maps the %s format to the Contentful fm value %s", (format, expected) => {
-		expect(getOriginImageUrl({ source: SOURCE, options: { format } })).toBe(`${SOURCE}?fm=${expected}`);
+		["an absolute url on another host, which the zone would refuse to fetch", "https://images.example.com/hero.jpg"],
+		["a protocol-relative url, which names another host too", "//images.example.com/hero.jpg"],
+	])("leaves %s untouched", (_case, source) => {
+		useCdn(IMAGE_CDN.CLOUDFLARE);
+
+		expect(getOptimizedImageUrl({ source, options: { width: 800 } })).toBe(source);
+	});
+});
+
+describe("getOptimizedImageUrl without a CDN", () => {
+	it("serves the original, because only the production zone answers /cdn-cgi/image", () => {
+		useCdn(IMAGE_CDN.NONE);
+
+		expect(getOptimizedImageUrl({ source: SOURCE, options: { width: 800, format: "webp" } })).toBe(SOURCE);
 	});
 
-	it.each([
-		["scale-down", "scale"],
-		["contain", "thumb"],
-		["cover", "fill"],
-		["crop", "crop"],
-		["pad", "pad"],
-	] as const)("maps the %s fit to the Contentful fit value %s", (fit, expected) => {
-		expect(getOriginImageUrl({ source: SOURCE, options: { fit } })).toBe(`${SOURCE}?fit=${expected}`);
-	});
-
-	it("keeps query parameters already present on the source and overwrites the ones it owns", () => {
-		const url = getOriginImageUrl({
-			source: `${SOURCE}?fl=progressive&w=100`,
-			options: { width: 800, quality: 90 },
-		});
-
-		expect(url).toBe(`${SOURCE}?fl=progressive&w=800&q=90`);
-	});
-
-	it("drops zero width, height and quality because each is guarded by truthiness", () => {
-		expect(getOriginImageUrl({ source: SOURCE, options: { width: 0, height: 0, quality: 0 } })).toBe(SOURCE);
-	});
-
-	it("returns a source that is not a parseable URL verbatim, ignoring the options", () => {
-		expect(getOriginImageUrl({ source: "/local/image.jpg", options: { width: 800, quality: 30 } })).toBe(
-			"/local/image.jpg",
-		);
-	});
-
-	it("returns an empty source verbatim rather than throwing", () => {
-		expect(getOriginImageUrl({ source: "", options: { width: 800 } })).toBe("");
+	it("serves the original when no CDN was declared at all, which is what a unit run and a preview build see", () => {
+		expect(getOptimizedImageUrl({ source: SOURCE, options: { width: 800 } })).toBe(SOURCE);
 	});
 });
 
 describe("getOptimizedSrcset", () => {
-	it("joins one candidate per width with its width descriptor, comma separated", () => {
-		useCdn(IMAGE_CDN.CONTENTFUL);
-
-		expect(getOptimizedSrcset({ source: SOURCE, widths: [320, 640, 1280] })).toBe(
-			[`${SOURCE}?w=320&q=85 320w`, `${SOURCE}?w=640&q=85 640w`, `${SOURCE}?w=1280&q=85 1280w`].join(", "),
-		);
-	});
-
-	it("preserves the given width order rather than sorting it", () => {
-		useCdn(IMAGE_CDN.CONTENTFUL);
-
-		expect(getOptimizedSrcset({ source: SOURCE, widths: [1280, 320] })).toBe(
-			`${SOURCE}?w=1280&q=85 1280w, ${SOURCE}?w=320&q=85 320w`,
-		);
-	});
-
-	it("returns an empty string when no widths are requested", () => {
-		useCdn(IMAGE_CDN.CONTENTFUL);
-
-		expect(getOptimizedSrcset({ source: SOURCE, widths: [] })).toBe("");
-	});
-
-	it("applies the shared options to every candidate on the Cloudflare CDN", () => {
+	it("lists one transformed candidate per width, each tagged with its width descriptor", () => {
 		useCdn(IMAGE_CDN.CLOUDFLARE);
 
-		expect(getOptimizedSrcset({ source: SOURCE, widths: [400, 800], options: { format: "webp", fit: "cover" } })).toBe(
+		expect(getOptimizedSrcset({ source: SOURCE, widths: [400, 800], options: { format: "webp" } })).toBe(
 			[
-				`/cdn-cgi/image/format=webp,quality=85,width=400,fit=cover/${SOURCE} 400w`,
-				`/cdn-cgi/image/format=webp,quality=85,width=800,fit=cover/${SOURCE} 800w`,
+				`/cdn-cgi/image/format=webp,quality=85,width=400/${TRANSFORMED_SOURCE} 400w`,
+				`/cdn-cgi/image/format=webp,quality=85,width=800/${TRANSFORMED_SOURCE} 800w`,
 			].join(", "),
 		);
+	});
+
+	it("repeats the original per width without a CDN, so the markup keeps its shape", () => {
+		expect(getOptimizedSrcset({ source: SOURCE, widths: [400, 800] })).toBe(`${SOURCE} 400w, ${SOURCE} 800w`);
 	});
 });

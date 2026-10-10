@@ -1,0 +1,37 @@
+# 21. EmDash, integrated into the site and self-hosted on Cloudflare, as the content source
+
+Date: 2026-10-04
+
+## Status
+
+Accepted. Supersedes [ADR 0002](./0002-contentful-headless-cms.md).
+
+## Context
+
+[ADR 0002](./0002-contentful-headless-cms.md) put the content in Contentful and fenced it behind an anti-corruption layer precisely so it could leave. The reasons to leave are the ones that ADR named as costs: a vendor that owns the content model and its limits, an API whose undeclared defaults the code had to defend against (the 100-entry page, the protocol-relative asset URL, the link that comes back instead of the entry), and a second platform beside the one everything else already runs on.
+
+EmDash is an Astro-based CMS that runs on Cloudflare itself: D1 for the content, R2 for the media, and its admin and API served by an Astro application. Owning it means owning its database and its upgrades, which Contentful did for us.
+
+It can be adopted in two shapes. Its documentation's shape is an integration inside the site: the admin served by the same application, content read per request through its query API. The other is a separate CMS Worker the site reads over HTTP at build time, which its docs reserve for several applications sharing one content service. A first version of this migration took the second shape, to keep the content pages prerendered; it was rewritten into the first before it shipped, because the separate Worker bought that one property at the cost of a second deploy, a REST client with its own retry and timeout, a route of our own to keep a draft's staged references out of a build, a dispatch workflow to rebuild on publish, and a deviation from every example the docs give. [ADR 0022](./0022-content-renders-per-request-behind-the-workers-cache.md) records what replaced the prerendering.
+
+## Decision
+
+EmDash is an integration of this site: `emdash()` in `astro.config.ts` over the Worker's own `DB` (D1) and `MEDIA` (R2) bindings, its admin at `/_emdash/admin` on `biancafiore.me`, and a Worker entry, `src/worker.ts`, that adds EmDash's scheduled handler and its plugin bridge to Astro's.
+
+The content is read in process, through EmDash's public query API (`getEmDashCollection`, `getEmDashReferences`), behind the same seam as before: `fetchEntries` in `src/infrastructure/cms/entries.ts` over a `CmsClient` Effect tag, mapped into domain DTOs by `src/application`, exposed to pages as Astro live collections in `src/live.config.ts`. A public query reads published entries and their published selections only, whoever is signed in.
+
+The content model replicates the Contentful one in `seed/seed.json`, with two deliberate differences, both so a listing costs a handful of queries instead of one per entry: **Tags are EmDash's `tag` taxonomy**, whose terms a collection query hydrates onto every entry, rather than a collection behind a reference field; and **the Author relation has a field on both ends**, so the authors' side lists the Articles crediting each one and no listing has to read a reference per Article. Related Articles stay a reference field, read only for the one Article a page shows. The embedded entry types the rich text carried become Portable Text blocks: built-in `code`, `iframe` and `image`, and two a native plugin declares, `videoEmbed` and `splitBlock`.
+
+## Consequences
+
+- **Publishing is live on the next request.** Nothing rebuilds: EmDash purges the Workers cache by tag when an entry is published, unpublished, scheduled, restored or deleted, and when a term changes. The rebuild-on-publish workflow and its token are gone.
+- **The Worker owns a database, so a rollback is not a full undo.** EmDash applies its core migrations on the first request after a deploy, and `wrangler rollback`, which the smoke job runs when production stops answering, cannot reverse them. Renovate merges a minor or patch EmDash update on its own once its preview, which migrates the development database first, passes; a major one waits for a person, and the admin is covered by no suite either way.
+- **Previews read the development database, not production's.** EmDash's own guidance is never to bind a preview to the production database, so every pull request's preview shares `biancafiore-content-development` and `biancafiore-media-development`, which need content of their own: imported once, like production, through a stable development Worker whose origin the development passkeys are bound to.
+- **The site needs the Workers Paid plan.** EmDash takes the bundle past the Free plan's 3 MB compressed limit. R2 asks for a payment method too, even inside its free tier.
+- **Every anonymous request reads the session store.** EmDash's middleware does that on every request (emdash-cms/emdash#3702, about 250 ms on KV), which a cached page hides on a hit and pays on a miss.
+- **Astro's `checkOrigin` is off for the whole site.** The integration turns it off in favour of its own CSRF check on `/_emdash`. The only Action here is the anonymous contact form, which reCAPTCHA already guards and which has no session a forged request could ride.
+- **An Article's Tags lose the order the editor gave them.** A taxonomy assignment is a set, and EmDash hydrates it alphabetically; Contentful kept the order the links were added in.
+- **Assigning more than 33 terms in one request fails on D1.** EmDash inserts the new assignments in one statement of three bound variables each, and D1 caps a statement at 100. The import works around it by assigning in growing batches; an editor saving more than 33 new Tags at once in the admin gets an error.
+- **The cron runs every fifteen minutes.** EmDash's scheduled handler publishes scheduled entries, runs plugin cron, prunes expired tokens, revisions and uploads, scans its 404 log and takes backups into R2. Up to the version pinned here the 404-log scan reads the whole log on every tick, which at the recommended every minute exceeds D1's free daily reads (emdash-cms/emdash#3748, fixed upstream by #3753 and not yet released). `src/worker.ts` and `wrangler.toml` must name the same expression, because the handler ignores any other, and the development stage runs none.
+- **The content model lives in the database.** The seed is applied once, to an empty database; a later change is made in the admin or through the API in each environment, and the DTO types follow by hand. `emdash-env.d.ts` is regenerated by the dev server and committed.
+- **Moving off it is the same job as moving onto it was**: a client and a set of mappers. The importer that moved the content in, `scripts/importContentful`, is the record of every mapping decision, and goes once Contentful is retired.

@@ -1,5 +1,5 @@
-import type { CollectionEntry } from "astro:content";
 import type { ImageDTO } from "@domain/shared/image";
+import type { ArticleEntry } from "../../../utils/entries";
 
 const MAX_TAGS = 4;
 
@@ -20,7 +20,7 @@ interface ArticleCardContent {
 	remainingTags: number;
 }
 
-export function toArticleCardContent({ data }: CollectionEntry<"articles">): ArticleCardContent {
+export function toArticleCardContent({ data }: ArticleEntry): ArticleCardContent {
 	const tags = data.tags ?? [];
 	const visibleTags = tags.slice(0, MAX_TAGS).map(({ slug, name }) => ({ slug, name }));
 

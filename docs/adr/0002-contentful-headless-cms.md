@@ -4,7 +4,7 @@ Date: 2026-07-26
 
 ## Status
 
-Accepted.
+Superseded by [ADR 0021](./0021-emdash-self-hosted-cms.md), which moved the content to EmDash, integrated into the site and self-hosted on Cloudflare, and kept the anti-corruption layer this ADR introduced.
 
 ## Context
 

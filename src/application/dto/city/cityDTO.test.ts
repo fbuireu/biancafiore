@@ -1,55 +1,24 @@
+import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
+import { rawEntry, rawImage } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
-import { createCities } from "./cityDTO";
-import type { RawCity } from "./types";
+import { createCities } from ".";
+import type { CityFields } from "./types";
 
-interface AssetParams {
-	url?: string;
-	contentType?: string;
-	width?: number;
-	height?: number;
-}
-
-const asset = ({
-	url = "//images.ctfassets.net/city.jpg",
-	contentType = "image/jpeg",
-	width = 1600,
-	height = 900,
-}: AssetParams = {}) => ({
-	fields: { file: { url, contentType, details: { size: 2048, image: { width, height } } } },
-});
-
-interface MakeCityParams {
-	name?: string;
-	latitude?: number;
-	longitude?: number;
-	startDate?: string;
-	endDate?: string;
-	description?: string;
-	image?: unknown;
-}
-
-const makeCity = ({
-	name = "Barcelona",
-	latitude = 41.3874,
-	longitude = 2.1686,
-	startDate = "2019-06-01",
-	endDate,
-	description = "Two summers by the sea",
-	image = asset(),
-}: MakeCityParams = {}) =>
-	({
-		fields: {
-			name,
-			coordinates: { lat: latitude, lon: longitude },
-			startDate,
-			endDate,
-			description,
-			image,
+const makeCity = (fields: Partial<CityFields> = {}) =>
+	rawEntry<CityFields>({
+		data: {
+			name: "Barcelona",
+			latitude: 41.3874,
+			longitude: 2.1686,
+			start_date: "2019-06-01",
+			description: "Two summers by the sea",
+			image: rawImage({ name: "city.jpg", width: 1600, height: 900 }),
+			...fields,
 		},
-	}) as unknown as RawCity;
+	});
 
 describe("createCities coordinates", () => {
-	it("renames Contentful's lat and lon to the domain's latitude and longitude", () => {
+	it("carries the latitude and longitude across as the domain's coordinates", () => {
 		const [city] = createCities([makeCity({ latitude: 41.3874, longitude: 2.1686 })]);
 
 		expect(city.coordinates).toEqual({ latitude: 41.3874, longitude: 2.1686 });
@@ -62,63 +31,39 @@ describe("createCities coordinates", () => {
 	});
 });
 
+describe("createCities slug", () => {
+	it("derives the slug from the name, since a City addresses no page of its own", () => {
+		expect(createCities([makeCity({ name: "Buenos Aires" })])[0].slug).toBe("buenos-aires");
+	});
+
+	it("strips the diacritics and the punctuation a city name may carry", () => {
+		expect(createCities([makeCity({ name: "São Paulo, Brazil" })])[0].slug).toBe("sao-paulo-brazil");
+	});
+});
+
 describe("createCities name", () => {
-	it("trims the name Contentful padded, since the cities collection is keyed on it", () => {
+	it("trims the name the CMS padded, since the cities collection is keyed on it", () => {
 		const [city] = createCities([makeCity({ name: "  Barcelona\n" })]);
 
 		expect(city).toMatchObject({ name: "Barcelona", slug: "barcelona" });
 	});
 });
 
-describe("createCities slug", () => {
-	it("derives the slug from the name, since the CMS entry carries no slug field", () => {
-		const [city] = createCities([makeCity({ name: "Buenos Aires" })]);
-
-		expect(city.slug).toBe("buenos-aires");
-	});
-
-	it("strips the diacritics and the punctuation a city name may carry", () => {
-		const [city] = createCities([makeCity({ name: "São Paulo, Brazil" })]);
-
-		expect(city.slug).toBe("sao-paulo-brazil");
-	});
-});
-
-describe("createCities period", () => {
-	it("keeps the years of a closed period, leaving the hyphenated label to formatPeriod", () => {
-		const [city] = createCities([makeCity({ startDate: "2019-06-01", endDate: "2021-09-30" })]);
-
-		expect(city.period).toEqual({ startYear: 2019, endYear: 2021 });
-	});
-
-	it("leaves the end of a period open when the CMS has no end date", () => {
-		const [city] = createCities([makeCity({ startDate: "2022-01-15" })]);
-
-		expect(city.period).toEqual({ startYear: 2022 });
-	});
-
-	it("treats an empty end date as an open period too, because the field is spread only when truthy", () => {
-		const [city] = createCities([makeCity({ startDate: "2022-01-15", endDate: "" })]);
-
-		expect(city.period).toEqual({ startYear: 2022 });
-	});
-});
-
 describe("createCities, given a Period it cannot read", () => {
 	it("refuses it by naming the City, since the date alone points at no entry", () => {
-		expect(() => createCities([makeCity({ name: "Lisbon", startDate: "not-a-date" })])).toThrow(
+		expect(() => createCities([makeCity({ name: "Lisbon", start_date: "not-a-date" })])).toThrow(
 			'The City "Lisbon" has an unreadable Period (start not-a-date, end open), so About cannot say when the Author lived there',
 		);
 	});
 
 	it("says which end it could not read when the Period is closed", () => {
-		expect(() => createCities([makeCity({ name: "Lisbon", startDate: "2019-01-01", endDate: "someday" })])).toThrow(
+		expect(() => createCities([makeCity({ name: "Lisbon", start_date: "2019-01-01", end_date: "someday" })])).toThrow(
 			'The City "Lisbon" has an unreadable Period (start 2019-01-01, end someday)',
 		);
 	});
 
 	it("keeps the domain's own refusal as the cause", () => {
-		expect(() => createCities([makeCity({ startDate: "not-a-date" })])).toThrow(
+		expect(() => createCities([makeCity({ start_date: "not-a-date" })])).toThrow(
 			expect.objectContaining({
 				cause: expect.objectContaining({ message: "A City reached the mapper with an unreadable date: not-a-date" }),
 			}),
@@ -126,21 +71,35 @@ describe("createCities, given a Period it cannot read", () => {
 	});
 });
 
+describe("createCities period", () => {
+	it("keeps the years of a closed period, leaving the hyphenated label to formatPeriod", () => {
+		const [city] = createCities([makeCity({ start_date: "2019-06-01", end_date: "2021-09-30" })]);
+
+		expect(city.period).toEqual({ startYear: 2019, endYear: 2021 });
+	});
+
+	it("leaves the end of a period open when the CMS has no end date", () => {
+		expect(createCities([makeCity({ start_date: "2022-01-15" })])[0].period).toEqual({ startYear: 2022 });
+	});
+
+	it("treats an empty end date as an open period too, because the field is spread only when truthy", () => {
+		expect(createCities([makeCity({ start_date: "2022-01-15", end_date: "" })])[0].period).toEqual({
+			startYear: 2022,
+		});
+	});
+});
+
 describe("createCities passthrough fields", () => {
 	it("keeps the name and description verbatim and maps the image to url, dimensions and formats", () => {
 		const [city] = createCities([
-			makeCity({
-				name: "Barcelona",
-				description: "Two summers by the sea",
-				image: asset({ url: "//cdn/barcelona.webp", contentType: "image/webp", width: 800, height: 600 }),
-			}),
+			makeCity({ image: rawImage({ name: "barcelona.webp", mimeType: "image/webp", width: 800, height: 600 }) }),
 		]);
 
 		expect(city).toMatchObject({
 			name: "Barcelona",
 			description: "Two summers by the sea",
 			image: {
-				url: "https://cdn/barcelona.webp",
+				url: `${MEDIA_FILE_PATH}barcelona.webp`,
 				details: { width: 800, height: 600 },
 				formats: { avif: false, webp: true },
 				shareCrops: expect.any(Array),

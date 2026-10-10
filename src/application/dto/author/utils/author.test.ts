@@ -1,38 +1,36 @@
-import type { UnresolvedLink } from "contentful";
+import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
+import { rawEntry, rawImage, referenceTo } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
-import type { RawAuthor } from "../types";
-import { authorIdentity, createAuthor } from "./author";
+import type { ArticleFields } from "../../article/types";
+import type { AuthorFields, RawAuthor } from "../types";
+import { bylineAuthor, createAuthor, credits } from "./author";
 
-interface MakeRawAuthorParams {
-	name?: string;
+interface MakeRawAuthorParams extends Partial<AuthorFields> {
 	slug?: string;
-	description?: string;
-	jobTitle?: string;
-	currentCompany?: string;
-	profileImage?: unknown;
-	socialNetworks?: string[];
+	credited?: Array<{ id: string }>;
 }
 
-const makeRawAuthor = ({
-	name = "Bianca Fiore",
-	slug = "bianca-fiore",
-	description = "Content writer",
-	jobTitle = "Writer",
-	currentCompany = "Freelance",
-	profileImage = {
-		fields: {
-			file: {
-				url: "//images.ctfassets.net/bianca.avif",
-				contentType: "image/avif",
-				details: { size: 1024, image: { width: 512, height: 512 } },
-			},
+const makeRawAuthor = ({ slug = "bianca-fiore", credited = [], ...fields }: MakeRawAuthorParams = {}): RawAuthor =>
+	rawEntry<AuthorFields, "articles">({
+		slug,
+		data: {
+			name: "Bianca Fiore",
+			description: "Content writer",
+			job_title: "Writer",
+			current_company: "Freelance",
+			profile_image: rawImage({ name: "bianca.avif", width: 512, height: 512, mimeType: "image/avif" }),
+			social_networks: [{ url: "https://linkedin.com/in/bianca" }],
+			...fields,
 		},
-	},
-	socialNetworks = ["https://linkedin.com/in/bianca"],
-}: MakeRawAuthorParams = {}) =>
-	({
-		fields: { name, slug, description, jobTitle, currentCompany, profileImage, socialNetworks },
-	}) as unknown as RawAuthor;
+		references: { articles: credited.map((article) => referenceTo(article)) },
+	});
+
+const makeRawArticle = (slug: string | null = "an-article") =>
+	rawEntry<ArticleFields>({
+		id: "01ARTICLE",
+		slug,
+		data: { title: "An article", content: [], publish_date: "2024-01-01" },
+	});
 
 describe("createAuthor", () => {
 	it("carries every authored field across and turns the profile image into url, dimensions and formats", () => {
@@ -43,7 +41,7 @@ describe("createAuthor", () => {
 			jobTitle: "Writer",
 			currentCompany: "Freelance",
 			profileImage: {
-				url: "https://images.ctfassets.net/bianca.avif",
+				url: `${MEDIA_FILE_PATH}bianca.avif`,
 				details: { width: 512, height: 512 },
 				formats: { avif: true, webp: false },
 				shareCrops: expect.any(Array),
@@ -56,46 +54,49 @@ describe("createAuthor", () => {
 		expect(createAuthor(makeRawAuthor({ slug: "  bianca-fiore " }))).toMatchObject({ slug: "bianca-fiore" });
 	});
 
-	it("trims the display name Contentful padded", () => {
+	it("trims the display name the CMS padded", () => {
 		expect(createAuthor(makeRawAuthor({ name: " Bianca Fiore\n" }))).toMatchObject({ name: "Bianca Fiore" });
 	});
-});
 
-describe("authorIdentity", () => {
-	it("answers the trimmed name and slug, the two strings every reader of a raw Author must agree on", () => {
-		expect(authorIdentity({ fields: { name: " Bianca Fiore\n", slug: "  bianca-fiore " } })).toEqual({
-			name: "Bianca Fiore",
-			slug: "bianca-fiore",
-		});
+	it("answers no social networks for an author who listed none, rather than failing on the missing rows", () => {
+		expect(createAuthor(makeRawAuthor({ social_networks: undefined })).socialNetworks).toEqual([]);
 	});
 
-	it("refuses an Author whose name is only padding, naming them, since the Tag Index files an Author Tag by name", () => {
-		expect(() => authorIdentity({ sys: { id: "3kLmNoPq" }, fields: { name: "  ", slug: "bianca-fiore" } })).toThrow(
-			'The Author "bianca-fiore" (sys.id 3kLmNoPq) has an empty name, so the Tag Index cannot file their Author Tag under a letter',
+	it("refuses an author EmDash stored without a slug, naming them, since no page could address them", () => {
+		expect(() => createAuthor({ ...makeRawAuthor(), slug: null })).toThrow(
+			'The Author "Bianca Fiore" (id id-bianca-fiore) has no slug, so no page can address them',
 		);
 	});
 
-	it("refuses an Author whose slug is only padding, since no page could address them", () => {
-		expect(() => authorIdentity({ sys: { id: "3kLmNoPq" }, fields: { name: "Bianca Fiore", slug: " " } })).toThrow(
-			'The Author "Bianca Fiore" (sys.id 3kLmNoPq) has no slug, so no page can address them',
-		);
-	});
-
-	it("is what createAuthor puts in the Byline, so the Byline and an Author Tag cannot disagree", () => {
-		const raw = makeRawAuthor({ name: " Bianca Fiore ", slug: " bianca-fiore " });
-
-		expect(createAuthor(raw)).toMatchObject(authorIdentity(raw));
+	it("refuses an author whose name is only padding, naming them, since the Tag Index files them under a letter", () => {
+		expect(() => createAuthor(makeRawAuthor({ name: "   " }))).toThrow("has an empty name");
 	});
 });
 
-describe("createAuthor, given a link Contentful did not resolve", () => {
-	const unresolvedLink = {
-		sys: { type: "Link", linkType: "Entry", id: "5tK5nWFxOrTBpKS3nDLPtI" },
-	} as UnresolvedLink<"Entry">;
+describe("credits", () => {
+	it("reads the article off the author's own list, which is the end of the relation EmDash lists in one read", () => {
+		const rawArticle = makeRawArticle();
 
-	it("refuses it by its link id, rather than reading fields off undefined", () => {
-		expect(() => createAuthor(unresolvedLink)).toThrow(
-			"A raw author entry reached the mapper unresolved (5tK5nWFxOrTBpKS3nDLPtI), so no byline can name it",
+		expect(credits({ rawAuthor: makeRawAuthor({ credited: [rawArticle] }), rawArticle })).toBe(true);
+		expect(credits({ rawAuthor: makeRawAuthor(), rawArticle })).toBe(false);
+	});
+});
+
+describe("bylineAuthor", () => {
+	it("answers the published author whose list credits the article", () => {
+		const rawArticle = makeRawArticle();
+		const author = makeRawAuthor({ credited: [rawArticle] });
+
+		expect(bylineAuthor({ rawArticle, rawAuthors: [makeRawAuthor({ slug: "someone" }), author] })).toBe(author);
+	});
+
+	it("refuses an article no published author credits, naming it by its slug", () => {
+		expect(() => bylineAuthor({ rawArticle: makeRawArticle(), rawAuthors: [makeRawAuthor()] })).toThrow(
+			"An Article (an-article) is credited to no published author, so no byline can name it",
 		);
+	});
+
+	it("names the article by its id when it carries no slug to name it by", () => {
+		expect(() => bylineAuthor({ rawArticle: makeRawArticle(null), rawAuthors: [] })).toThrow("(01ARTICLE)");
 	});
 });

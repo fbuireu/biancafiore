@@ -1,7 +1,10 @@
 name = "biancafiore"
-main = "@astrojs/cloudflare/entrypoints/server"
+main = "./src/worker.ts"
 compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2026-03-12"
+
+[vars]
+EMDASH_SITE_URL = "https://biancafiore.me"
 
 [observability]
 enabled = true
@@ -31,8 +34,22 @@ binding = "SESSION"
 id = "c9f2626f1a4043c0aea8a75985bdc0a1"
 preview_id = "fde64789020f4160b0d835d190d8d5d6"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "biancafiore-content-production"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "biancafiore-media-production"
+
+[triggers]
+crons = ["*/15 * * * *"]
+
 [env.development]
 name = "biancafiore-development"
+
+[env.development.vars]
+EMDASH_SITE_URL = "https://biancafiore-development.fbuireu.workers.dev"
 
 [env.development.observability]
 enabled = true
@@ -53,8 +70,22 @@ destinations = ["biancafiore-web-development-traces"]
 binding = "SESSION"
 id = "fde64789020f4160b0d835d190d8d5d6"
 
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "biancafiore-content-development"
+
+[[env.development.r2_buckets]]
+binding = "MEDIA"
+bucket_name = "biancafiore-media-development"
+
+[env.development.triggers]
+crons = []
+
 [env.production]
 name = "biancafiore"
+
+[env.production.vars]
+EMDASH_SITE_URL = "https://biancafiore.me"
 
 [env.production.observability]
 enabled = true
@@ -74,6 +105,17 @@ destinations = ["biancafiore-web-production-traces"]
 [[env.production.kv_namespaces]]
 binding = "SESSION"
 id = "c9f2626f1a4043c0aea8a75985bdc0a1"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "biancafiore-content-production"
+
+[[env.production.r2_buckets]]
+binding = "MEDIA"
+bucket_name = "biancafiore-media-production"
+
+[env.production.triggers]
+crons = ["*/15 * * * *"]
 
 [[env.production.routes]]
 pattern = "biancafiore.me"

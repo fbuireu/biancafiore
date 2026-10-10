@@ -1,15 +1,13 @@
 import { resolveSlugCollisions, type TagIndexEntryDTO } from "@domain/tag";
-import type { RawArticle } from "../article/types";
+import type { AnyRawArticle } from "../article/types";
 import type { RawAuthor } from "../author/types";
-import type { RawTag } from "./types";
 import { getAuthors, getTags } from "./utils/tags";
 
 interface CreateTagIndexParams {
-	rawTags: RawTag[];
-	rawArticles: RawArticle[];
+	rawArticles: AnyRawArticle[];
 	rawAuthors: RawAuthor[];
 }
 
-export function createTagIndex({ rawTags, rawArticles, rawAuthors }: CreateTagIndexParams): TagIndexEntryDTO[] {
-	return resolveSlugCollisions([...getTags({ rawTags, rawArticles }), ...getAuthors({ rawAuthors, rawArticles })]);
+export function createTagIndex({ rawArticles, rawAuthors }: CreateTagIndexParams): TagIndexEntryDTO[] {
+	return resolveSlugCollisions([...getTags(rawArticles), ...getAuthors({ rawAuthors, rawArticles })]);
 }

@@ -11,8 +11,6 @@ import ProjectList from "@modules/home/components/projectList/ProjectList.astro"
 import Testimonials from "@modules/home/components/testimonials/Testimonials.astro";
 import Welcome from "@modules/home/components/welcome/Welcome.astro";
 
-export const prerender = true;
-
 const bianca = await getSiteAuthor();
 
 const metadata: Partial<SeoMetadata> = {

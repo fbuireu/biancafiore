@@ -1,24 +1,24 @@
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
-import type { AuthorSkeleton } from "../author/types";
-import type { TagSkeleton } from "../tag/types";
+import type { CmsEntry } from "@infrastructure/cms/entries";
+import type { CmsFlag } from "../shared/flags";
+import type { RawImage } from "../shared/images";
+import type { PortableTextContent } from "../shared/portableText";
 
-export type ArticleSkeleton = EntrySkeletonType<
-	{
-		title: EntryFieldTypes.Text;
-		slug: EntryFieldTypes.Text;
-		content: EntryFieldTypes.RichText;
-		description?: EntryFieldTypes.Text;
-		publishDate: EntryFieldTypes.Date;
-		featuredImage?: EntryFieldTypes.AssetLink;
-		featuredArticle: EntryFieldTypes.Boolean;
-		isFavorite?: EntryFieldTypes.Boolean;
-		isRepublished?: EntryFieldTypes.Boolean;
-		originalSource?: EntryFieldTypes.Text;
-		author: EntryFieldTypes.EntryLink<AuthorSkeleton>;
-		tags?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TagSkeleton>>;
-		relatedArticles?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<EntrySkeletonType>>;
-	},
-	"article"
->;
+export interface ArticleFields {
+	title: string;
+	content: PortableTextContent;
+	description?: string;
+	publish_date: string;
+	featured_image?: RawImage;
+	featured_article?: CmsFlag;
+	is_favorite?: CmsFlag;
+	is_republished?: CmsFlag;
+	original_source?: string;
+}
 
-export type RawArticle = Entry<ArticleSkeleton, undefined>;
+export const ARTICLE_TAG_TAXONOMY = "tag";
+
+export type ArticleReference = "related_articles";
+
+export type RawArticle<REFERENCE extends ArticleReference = never> = CmsEntry<ArticleFields, REFERENCE>;
+
+export type AnyRawArticle = RawArticle | RawArticle<ArticleReference>;

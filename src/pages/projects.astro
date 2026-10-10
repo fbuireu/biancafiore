@@ -1,16 +1,14 @@
 ---
-import { getCollection } from "astro:content";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import { readProjects } from "@modules/core/utils/entries";
 import { buildProjectListSchema } from "@modules/core/utils/jsonLd";
 import ProjectSection from "@modules/projects/components/projectSection/ProjectSection.astro";
 import ProjectsIntro from "@modules/projects/components/projectsIntro/ProjectsIntro.astro";
 
-export const prerender = true;
-
-const projects = await getCollection("projects");
+const projects = await readProjects();
 const itemListSchema = buildProjectListSchema(projects.map(({ data }) => data.id));
 const metadata: Partial<SeoMetadata> = {
 	title: "Projects",

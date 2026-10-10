@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
@@ -14,31 +13,15 @@ import { featuredImageTransitionName } from "@modules/core/components/blurImage/
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
+import { readArticle } from "@modules/core/utils/entries";
 import { buildBlogPostingSchema } from "@modules/core/utils/jsonLd";
 import { siteChrome } from "@modules/core/utils/siteChrome";
-import type { InferGetStaticPropsType } from "astro";
 import "./_article.css";
 
-type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const article = Astro.params.slug ? await readArticle(Astro.params.slug) : undefined;
 
-export const prerender = true;
+if (!article) return Astro.rewrite("/404");
 
-export async function getStaticPaths() {
-	const articles = await getCollection("articles");
-
-	return articles.map((article) => {
-		return {
-			params: {
-				slug: article.data.slug,
-			},
-			props: {
-				article,
-			},
-		};
-	});
-}
-
-const { article } = Astro.props;
 const tagNames = article.data.tags?.map(({ name }) => name);
 const metadata: Partial<SeoMetadata> = {
 	title: article.data.title,

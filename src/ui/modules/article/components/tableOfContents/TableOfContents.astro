@@ -1,10 +1,10 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import type { ArticleEntry } from "@modules/core/utils/entries";
 import { TABLE_OF_CONTENTS_WRAPPER_CLASS } from "./const";
 import "./table-of-contents.css";
 
 interface Props {
-	tableOfContents: CollectionEntry<"articles">["data"]["tableOfContents"];
+	tableOfContents: ArticleEntry["data"]["tableOfContents"];
 }
 
 const { tableOfContents } = Astro.props;

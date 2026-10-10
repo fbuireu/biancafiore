@@ -1,32 +1,20 @@
 import { type TagIndexEntryDTO, TagType } from "@domain/tag";
-import type { ArticleSkeleton, RawArticle } from "../../article/types";
+import type { AnyRawArticle } from "../../article/types";
 import { orderArticleReferences } from "../../article/utils/order";
-import type { AuthorSkeleton, RawAuthor } from "../../author/types";
-import { articleAuthorSlug, authorIdentity } from "../../author/utils/author";
-import type { SelectedField } from "../../shared/select";
-import type { RawTag } from "../types";
-import { articleTagSlugs, tagIdentity } from "./tag";
-
-export const TAG_INDEX_ARTICLE_FIELDS: SelectedField<ArticleSkeleton>[] = [
-	"sys.id",
-	"fields.slug",
-	"fields.tags",
-	"fields.author",
-	"fields.isFavorite",
-	"fields.publishDate",
-];
-
-export const TAG_INDEX_AUTHOR_FIELDS: SelectedField<AuthorSkeleton>[] = ["sys.id", "fields.name", "fields.slug"];
+import { articleTagSlugs, tagsOf } from "../../article/utils/tags";
+import type { RawAuthor } from "../../author/types";
+import { authorIdentity, credits } from "../../author/utils/author";
+import { tagIdentity } from "./tag";
 
 interface GetAuthorsParams {
 	rawAuthors: RawAuthor[];
-	rawArticles: RawArticle[];
+	rawArticles: AnyRawArticle[];
 }
 
 export function getAuthors({ rawAuthors, rawArticles }: GetAuthorsParams): TagIndexEntryDTO[] {
 	return rawAuthors.flatMap((rawAuthor) => {
 		const { name, slug } = authorIdentity(rawAuthor);
-		const articles = orderArticleReferences(rawArticles.filter((article) => articleAuthorSlug(article) === slug));
+		const articles = orderArticleReferences(rawArticles.filter((rawArticle) => credits({ rawAuthor, rawArticle })));
 
 		if (articles.length === 0) return [];
 
@@ -34,18 +22,17 @@ export function getAuthors({ rawAuthors, rawArticles }: GetAuthorsParams): TagIn
 	});
 }
 
-interface GetTagsParams {
-	rawTags: RawTag[];
-	rawArticles: RawArticle[];
-}
+export function getTags(rawArticles: AnyRawArticle[]): TagIndexEntryDTO[] {
+	const rawTags = new Map(rawArticles.flatMap(tagsOf).map((rawTag) => [rawTag.id, rawTag]));
 
-export function getTags({ rawTags, rawArticles }: GetTagsParams): TagIndexEntryDTO[] {
-	return rawTags.flatMap((rawTag) => {
+	return [...rawTags.values()].map((rawTag) => {
 		const { name, slug } = tagIdentity(rawTag);
-		const articles = orderArticleReferences(rawArticles.filter((article) => articleTagSlugs(article).includes(slug)));
 
-		if (articles.length === 0) return [];
-
-		return [{ name, slug, type: TagType.TAG, articles }];
+		return {
+			name,
+			slug,
+			type: TagType.TAG,
+			articles: orderArticleReferences(rawArticles.filter((rawArticle) => articleTagSlugs(rawArticle).includes(slug))),
+		};
 	});
 }

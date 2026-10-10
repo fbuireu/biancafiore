@@ -132,7 +132,7 @@ export function buildBlogPostingSchema({
 		headline,
 		description,
 		inLanguage: DEFAULT_LOCALE_STRING,
-		...(imageCrops?.length && { image: imageCrops }),
+		...(imageCrops?.length && { image: imageCrops.map((crop) => absoluteUrl(crop)) }),
 		datePublished,
 		dateModified,
 		author: {
@@ -176,7 +176,7 @@ export function buildProfilePageSchema({ person, latestArticle }: BuildProfilePa
 			"@type": "Person",
 			name: person.name,
 			url: absoluteUrl(person.path),
-			image: person.image,
+			image: absoluteUrl(person.image),
 			jobTitle: person.jobTitle,
 			worksFor: {
 				"@type": "Organization",

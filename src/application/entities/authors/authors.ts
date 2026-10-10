@@ -1,21 +1,17 @@
-import { defineCollection } from "astro:content";
-import { authorEntrySchema } from "@domain/author";
-import { fetchEntries } from "@infrastructure/cms/entries";
-import type { ArticleSkeleton } from "../../dto/article/types";
+import { type AuthorDTO, authorEntrySchema } from "@domain/author";
 import { createAuthors } from "../../dto/author";
-import type { AuthorSkeleton } from "../../dto/author/types";
-import { AUTHOR_LATEST_ARTICLE_FIELDS } from "../../dto/author/utils/articles";
+import { contentLoader } from "../collection";
+import { fetchArticlesAndAuthors } from "../queries";
 
-export const authors = defineCollection({
-	loader: async () => {
-		const [rawAuthors, rawArticles] = await fetchEntries<[AuthorSkeleton, ArticleSkeleton]>(
-			{ content_type: "author" },
-			{ content_type: "article", select: AUTHOR_LATEST_ARTICLE_FIELDS },
-		);
+export const authors = {
+	loader: contentLoader<AuthorDTO>({
+		name: "authors",
+		load: async () => {
+			const [rawArticles, rawAuthors] = await fetchArticlesAndAuthors();
 
-		const authors = createAuthors({ rawAuthors, rawArticles });
-
-		return authors.map((author) => ({ ...author, id: author.slug }));
-	},
+			return createAuthors({ rawAuthors, rawArticles });
+		},
+		identify: (author) => author.slug,
+	}),
 	schema: authorEntrySchema,
-});
+};

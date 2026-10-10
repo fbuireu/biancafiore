@@ -1,79 +1,67 @@
-import { describe, expect, it, vi } from "vitest";
-import { createArticles } from "./articleDTO";
-import type { RawArticle } from "./types";
+import type { CmsReference } from "@infrastructure/cms/entries";
+import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
+import { rawEntry, rawImage, referenceTo, term } from "@tests/doubles/cmsEntries";
+import { describe, expect, it } from "vitest";
+import type { AuthorFields, RawAuthor } from "../author/types";
+import type { RawTag } from "../tag/types";
+import { createArticle, createArticles } from ".";
+import type { AnyRawArticle, ArticleFields, ArticleReference, RawArticle } from "./types";
 
-vi.mock("astro:content", async () => {
-	const { z } = await import("@shared/utils/zod");
+let key = 0;
 
-	return { reference: () => z.custom(() => true) };
+interface BlockParams {
+	text: string;
+	style?: string;
+}
+
+const block = ({ text, style = "normal" }: BlockParams) => ({
+	_type: "block",
+	_key: `k${key++}`,
+	style,
+	children: [{ _type: "span", _key: `k${key++}`, text, marks: [] as string[] }],
+	markDefs: [],
 });
 
-const text = (value: string) => ({ nodeType: "text", value, marks: [], data: {} });
-const paragraph = (value: string) => ({ nodeType: "paragraph", data: {}, content: [text(value)] });
+const paragraph = (text: string) => block({ text });
 
 interface HeadingParams {
 	level: number;
 	value: string;
 }
 
-const heading = ({ level, value }: HeadingParams) => ({
-	nodeType: `heading-${level}`,
-	data: {},
-	content: [text(value)],
-});
+const heading = ({ level, value }: HeadingParams) => block({ text: value, style: `h${level}` });
 
-const richText = (content: unknown[]) => ({ nodeType: "document", data: {}, content });
-
-interface AssetParams {
-	url?: string;
-	contentType?: string;
-	width?: number;
-	height?: number;
-}
-
-const asset = ({
-	url = "//images.ctfassets.net/featured.jpg",
-	contentType = "image/jpeg",
-	width = 1200,
-	height = 630,
-}: AssetParams = {}) => ({
-	fields: { file: { url, contentType, details: { size: 1024, image: { width, height } } } },
-});
-
-const AUTHOR = {
-	fields: {
+const AUTHOR = rawEntry<AuthorFields, "articles">({
+	id: "author-bianca",
+	slug: "bianca-fiore",
+	data: {
 		name: "Bianca Fiore",
-		slug: "bianca-fiore",
 		description: "Content writer",
-		jobTitle: "Writer",
-		currentCompany: "Freelance",
-		profileImage: asset({ url: "//images.ctfassets.net/bianca.webp", contentType: "image/webp" }),
-		socialNetworks: ["https://linkedin.com/in/bianca"],
+		job_title: "Writer",
+		current_company: "Freelance",
+		profile_image: rawImage({ name: "bianca.webp", mimeType: "image/webp" }),
+		social_networks: [{ url: "https://linkedin.com/in/bianca" }],
 	},
-};
+	references: { articles: [] },
+});
 
-interface TagParams {
-	name: string;
-	slug: string;
-}
-
-const tag = ({ name, slug }: TagParams) => ({ fields: { name, slug } });
+const CRAFT = term({ slug: "craft", label: "Craft" });
+const TRAVEL = term({ slug: "travel", label: "Travel" });
 
 interface MakeArticleParams {
 	slug?: string;
 	title?: string;
 	content?: unknown[];
 	description?: string;
-	publishDate?: string | null;
+	publishDate?: string;
 	updatedAt?: string;
-	featuredImage?: unknown;
+	featuredImage?: ArticleFields["featured_image"];
 	featuredArticle?: boolean;
 	isFavorite?: boolean;
 	isRepublished?: boolean;
 	originalSource?: string;
-	author?: unknown;
-	tags?: unknown[];
-	relatedArticles?: unknown[];
+	tags?: RawTag[];
+	relatedArticles?: CmsReference[];
 }
 
 const makeArticle = ({
@@ -84,42 +72,50 @@ const makeArticle = ({
 	updatedAt,
 	description,
 	featuredImage,
-	featuredArticle = false,
+	featuredArticle,
 	isFavorite,
 	isRepublished,
 	originalSource,
-	author = AUTHOR,
-	tags,
-	relatedArticles,
-}: MakeArticleParams = {}) =>
-	({
-		sys: { updatedAt },
-		fields: {
+	tags = [],
+	relatedArticles = [],
+}: MakeArticleParams = {}): RawArticle<ArticleReference> =>
+	rawEntry<ArticleFields, ArticleReference>({
+		id: `article-${slug.trim()}`,
+		slug,
+		updatedAt,
+		terms: { tag: tags },
+		data: {
 			title,
-			slug,
-			content: richText(content),
+			content: content as ArticleFields["content"],
 			description,
-			publishDate,
-			featuredImage,
-			featuredArticle,
-			isFavorite,
-			isRepublished,
-			originalSource,
-			author,
-			tags,
-			relatedArticles,
+			publish_date: publishDate,
+			featured_image: featuredImage,
+			featured_article: featuredArticle,
+			is_favorite: isFavorite,
+			is_republished: isRepublished,
+			original_source: originalSource,
 		},
-	}) as unknown as RawArticle;
+		references: { related_articles: relatedArticles },
+	});
+
+const related = (slug: string) => ({ id: `article-${slug.trim()}` });
+
+const crediting = (rawArticles: AnyRawArticle[]): RawAuthor => ({
+	...AUTHOR,
+	references: { articles: rawArticles.map((rawArticle) => referenceTo(rawArticle)) },
+});
+
+const create = (rawArticles: AnyRawArticle[]) => createArticles({ rawArticles, rawAuthors: [crediting(rawArticles)] });
 
 describe("createArticles defaults for optional CMS fields", () => {
-	it("defaults isFavorite and isRepublished to false when Contentful omits both flags", () => {
-		const [article] = createArticles([makeArticle()]);
+	it("defaults isFavorite and isRepublished to false when the CMS omits both flags", () => {
+		const [article] = create([makeArticle()]);
 
 		expect(article).toMatchObject({ isFavorite: false, isRepublished: false, originalSource: undefined });
 	});
 
-	it("keeps the authored flags when Contentful does send them", () => {
-		const [article] = createArticles([
+	it("keeps the authored flags when the CMS does send them", () => {
+		const [article] = create([
 			makeArticle({ isFavorite: true, isRepublished: true, originalSource: "https://medium.com/post" }),
 		]);
 
@@ -130,16 +126,15 @@ describe("createArticles defaults for optional CMS fields", () => {
 		});
 	});
 
-	it("passes isFeaturedArticle through untouched, since it is a required CMS field with no default", () => {
-		const [article] = createArticles([makeArticle({ featuredArticle: true })]);
-
-		expect(article.isFeaturedArticle).toBe(true);
+	it("passes isFeaturedArticle through, and reads an unticked one as false", () => {
+		expect(create([makeArticle({ featuredArticle: true })])[0].isFeaturedArticle).toBe(true);
+		expect(create([makeArticle()])[0].isFeaturedArticle).toBe(false);
 	});
 });
 
 describe("createArticles description", () => {
 	it("falls back to the rendered content, stripped of markup and collapsed, when there is no description", () => {
-		const [article] = createArticles([
+		const [article] = create([
 			makeArticle({ content: [heading({ level: 2, value: "Intro" }), paragraph("Body text")] }),
 		]);
 
@@ -149,32 +144,42 @@ describe("createArticles description", () => {
 	it("truncates a fallback description longer than 200 characters, keeping the opening words verbatim", () => {
 		const long = Array.from({ length: 60 }, (_, index) => `word${index}`).join(" ");
 
-		const [article] = createArticles([makeArticle({ content: [paragraph(long)] })]);
+		const [article] = create([makeArticle({ content: [paragraph(long)] })]);
 
 		expect(article.description).toBe(`${long.slice(0, 200)}...`);
 	});
 
 	it("cleans an authored description rather than trusting the CMS whitespace", () => {
-		const [article] = createArticles([makeArticle({ description: "  A   <em>bold</em>\nclaim  " })]);
+		const [article] = create([makeArticle({ description: "  A   <em>bold</em>\nclaim  " })]);
 
 		expect(article.description).toBe("A bold claim");
 	});
 
-	it("keeps an empty authored description, because the fallback is nullish and an empty string is not", () => {
-		const [article] = createArticles([makeArticle({ description: "", content: [paragraph("Fallback")] })]);
+	it("reads a description the editor cleared as none, since EmDash keeps the empty string", () => {
+		const [article] = create([makeArticle({ description: "", content: [paragraph("Fallback")] })]);
 
-		expect(article.description).toBe("");
+		expect(article.description).toBe("Fallback");
+	});
+
+	it("derives the fallback from the plain text, so the external-link cue never reaches the description", () => {
+		const linked = {
+			...paragraph("Read it"),
+			children: [{ _type: "span", _key: "s", text: "Read it", marks: ["l"] }],
+			markDefs: [{ _type: "link", _key: "l", href: "https://example.com" }],
+		};
+		const [article] = create([makeArticle({ content: [linked] })]);
+
+		expect(article.description).toBe("Read it");
+		expect(article.content).toContain("external-link-icon");
 	});
 });
 
 describe("createArticles images", () => {
 	it("maps a featured image to url, pixel dimensions and format flags", () => {
-		const [article] = createArticles([
-			makeArticle({ featuredImage: asset({ url: "//cdn/featured.avif", contentType: "image/avif" }) }),
-		]);
+		const [article] = create([makeArticle({ featuredImage: rawImage({ name: "hero.avif", mimeType: "image/avif" }) })]);
 
 		expect(article.featuredImage).toEqual({
-			url: "https://cdn/featured.avif",
+			url: `${MEDIA_FILE_PATH}hero.avif`,
 			details: { width: 1200, height: 630 },
 			formats: { avif: true, webp: false },
 			shareCrops: expect.any(Array),
@@ -182,137 +187,117 @@ describe("createArticles images", () => {
 	});
 
 	it("leaves featuredImage undefined without one", () => {
-		const [article] = createArticles([makeArticle()]);
-
-		expect(article.featuredImage).toBeUndefined();
+		expect(create([makeArticle()])[0].featuredImage).toBeUndefined();
 	});
 });
 
 describe("createArticles dates", () => {
 	it("stores the machine readable date and leaves the label to the renderer", () => {
-		const [article] = createArticles([makeArticle({ publishDate: "2024-03-15" })]);
+		const [article] = create([makeArticle({ publishDate: "2024-03-15" })]);
 
 		expect(article.publishDateISO).toBe("2024-03-15T00:00:00.000Z");
 		expect(article).not.toHaveProperty("publishDate");
 	});
 
 	it.each([
-		["missing", null],
+		["missing", ""],
 		["unreadable", "not a date"],
 	])("refuses an entry whose publish date is %s, naming the value rather than throwing bare", (_name, publishDate) => {
-		expect(() => createArticles([makeArticle({ publishDate })])).toThrow("unreadable publish date");
+		expect(() => create([makeArticle({ publishDate })])).toThrow("unreadable publish date");
 	});
 
-	it("reads updatedAt off sys, not off fields", () => {
-		const [article] = createArticles([makeArticle({ updatedAt: "2024-04-01T10:00:00.000Z" })]);
+	it("reads updatedAt off the entry, normalised to the same ISO instant the publish date gets", () => {
+		const [article] = create([makeArticle({ updatedAt: "2024-04-01T10:00:00+02:00" })]);
 
-		expect(article.updatedAt).toBe("2024-04-01T10:00:00.000Z");
+		expect(article.updatedAt).toBe("2024-04-01T08:00:00.000Z");
 	});
 
-	it("falls back to the publish date when Contentful reports no updatedAt", () => {
-		const [article] = createArticles([makeArticle({ publishDate: "2024-03-15" })]);
-
-		expect(article.updatedAt).toBe("2024-03-15T00:00:00.000Z");
+	it("refuses an updatedAt it cannot read, rather than emitting it into the structured data", () => {
+		expect(() => create([makeArticle({ updatedAt: "not-a-date" })])).toThrow(
+			"An Article reached the mapper with an unreadable publish date: not-a-date",
+		);
 	});
 });
 
 describe("createArticles related articles", () => {
-	it("maps authored related articles to slug references and drops links Contentful left unresolved", () => {
-		const [article] = createArticles([
-			makeArticle({
-				relatedArticles: [{ fields: { slug: "resolved-one" } }, { sys: { type: "Link", linkType: "Entry", id: "x" } }],
-			}),
+	it("maps hand-picked related articles to slug references and drops any that is not published", () => {
+		const [article] = create([
+			makeArticle({ relatedArticles: [related("resolved-one"), related("a-draft")] }),
+			makeArticle({ slug: "resolved-one", title: "Resolved" }),
 		]);
 
 		expect(article.relatedArticles).toEqual([{ id: "resolved-one", collection: "articles" }]);
 	});
 
-	it("treats an empty authored list as an answer and never falls back to the tag matching", () => {
-		const sharedTag = tag({ name: "Craft", slug: "craft" });
-		const [article] = createArticles([
-			makeArticle({ slug: "first", tags: [sharedTag], relatedArticles: [] }),
-			makeArticle({ slug: "second", title: "Second", tags: [sharedTag] }),
+	it("keeps to a hand-picked list even when none of its picks is published, rather than inferring one", () => {
+		const [article] = create([
+			makeArticle({ slug: "first", tags: [CRAFT], relatedArticles: [related("a-draft")] }),
+			makeArticle({ slug: "second", title: "Second", tags: [CRAFT] }),
 		]);
 
 		expect(article.relatedArticles).toEqual([]);
 	});
 
-	it("derives related articles from a shared tag slug when the CMS field is absent", () => {
-		const craft = tag({ name: "Craft", slug: "craft" });
-		const travel = tag({ name: "Travel", slug: "travel" });
-
-		const [article] = createArticles([
-			makeArticle({ slug: "first", title: "First", tags: [craft] }),
-			makeArticle({ slug: "second", title: "Second", tags: [craft, travel] }),
-			makeArticle({ slug: "third", title: "Third", tags: [travel] }),
-		]);
-
-		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
-	});
-
-	it("matches two Tags the CMS padded differently, since the Tag Index trims them into one", () => {
-		const [article] = createArticles([
-			makeArticle({ slug: "first", title: "First", tags: [tag({ name: "Craft", slug: "craft" })] }),
-			makeArticle({ slug: "second", title: "Second", tags: [tag({ name: "Craft", slug: " craft " })] }),
+	it("derives related articles from a shared tag when the editor picked none", () => {
+		const [article] = create([
+			makeArticle({ slug: "first", title: "First", tags: [CRAFT] }),
+			makeArticle({ slug: "second", title: "Second", tags: [CRAFT, TRAVEL] }),
+			makeArticle({ slug: "third", title: "Third", tags: [TRAVEL] }),
 		]);
 
 		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
 	});
 
 	it("caps the derived related articles at six", () => {
-		const craft = tag({ name: "Craft", slug: "craft" });
 		const siblings = Array.from({ length: 9 }, (_, index) =>
-			makeArticle({ slug: `sibling-${index}`, title: `Sibling ${index}`, tags: [craft] }),
+			makeArticle({ slug: `sibling-${index}`, title: `Sibling ${index}`, tags: [CRAFT] }),
 		);
 
-		const [article] = createArticles([makeArticle({ slug: "first", title: "First", tags: [craft] }), ...siblings]);
+		const [article] = create([makeArticle({ slug: "first", title: "First", tags: [CRAFT] }), ...siblings]);
 
 		expect(article.relatedArticles).toHaveLength(6);
 		expect(article.relatedArticles?.at(0)).toEqual({ id: "sibling-0", collection: "articles" });
 	});
 
-	it("leaves an authored list uncapped, because an author who picks eight articles means eight", () => {
-		const picks = Array.from({ length: 8 }, (_, index) => ({ fields: { slug: `pick-${index}` } }));
+	it("leaves a hand-picked list uncapped, because an author who picks eight articles means eight", () => {
+		const picks = Array.from({ length: 8 }, (_, index) => makeArticle({ slug: `pick-${index}` }));
 
-		const [article] = createArticles([makeArticle({ slug: "first", relatedArticles: picks })]);
+		const [article] = create([
+			makeArticle({ slug: "first", relatedArticles: picks.map(({ slug }) => related(slug ?? "")) }),
+			...picks,
+		]);
 
 		expect(article.relatedArticles).toHaveLength(8);
 	});
 
 	it("suggests a namesake article, because an article is excluded by its slug and not by its title", () => {
-		const craft = tag({ name: "Craft", slug: "craft" });
-
-		const [article] = createArticles([
-			makeArticle({ slug: "first", title: "Same title", tags: [craft] }),
-			makeArticle({ slug: "namesake", title: "Same title", tags: [craft] }),
+		const [article] = create([
+			makeArticle({ slug: "first", title: "Same title", tags: [CRAFT] }),
+			makeArticle({ slug: "namesake", title: "Same title", tags: [CRAFT] }),
 		]);
 
 		expect(article.relatedArticles).toEqual([{ id: "namesake", collection: "articles" }]);
 	});
 
-	it("drops an authored reference an editor pointed back at the article itself", () => {
-		const [article] = createArticles([
-			makeArticle({
-				slug: "first",
-				relatedArticles: [{ fields: { slug: "  first  " } }, { fields: { slug: "second" } }],
-			}),
+	it("drops a hand-picked reference an editor pointed back at the article itself", () => {
+		const [article] = create([
+			makeArticle({ slug: "first", relatedArticles: [related("  first  "), related("second")] }),
+			makeArticle({ slug: "second" }),
 		]);
 
 		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
 	});
 
 	it("excludes the article from its own derived list even when it carries its own tags twice over", () => {
-		const craft = tag({ name: "Craft", slug: "craft" });
-
-		const [article] = createArticles([makeArticle({ slug: "  first  ", title: "First", tags: [craft, craft] })]);
+		const [article] = create([makeArticle({ slug: "  first  ", title: "First", tags: [CRAFT, CRAFT] })]);
 
 		expect(article.relatedArticles).toEqual([]);
 	});
 
 	it("derives nothing for an article with no tags at all", () => {
-		const [article] = createArticles([
+		const [article] = create([
 			makeArticle({ slug: "first", title: "First" }),
-			makeArticle({ slug: "second", title: "Second", tags: [tag({ name: "Craft", slug: "craft" })] }),
+			makeArticle({ slug: "second", title: "Second", tags: [CRAFT] }),
 		]);
 
 		expect(article.relatedArticles).toEqual([]);
@@ -320,50 +305,59 @@ describe("createArticles related articles", () => {
 });
 
 describe("createArticles tags", () => {
-	it("trims the whitespace Contentful preserves around tag names and slugs", () => {
-		const [article] = createArticles([makeArticle({ tags: [tag({ name: "  Craft  ", slug: " craft " })] })]);
+	it("trims the whitespace the CMS preserves around a term's label and slug", () => {
+		const padded = term({ slug: " craft ", label: "  Craft  " });
 
-		expect(article.tags).toEqual([{ name: "Craft", slug: "craft" }]);
+		expect(create([makeArticle({ tags: [padded] })])[0].tags).toEqual([{ name: "Craft", slug: "craft" }]);
 	});
 
-	it("maps a missing tag list to an empty array rather than undefined", () => {
-		const [article] = createArticles([makeArticle()]);
-
-		expect(article.tags).toEqual([]);
+	it("maps an article filed under no tag to an empty array rather than undefined", () => {
+		expect(create([makeArticle()])[0].tags).toEqual([]);
 	});
 
-	it("drops tag links Contentful did not resolve", () => {
-		const [article] = createArticles([
-			makeArticle({
-				tags: [{ sys: { type: "Link", linkType: "Entry", id: "x" } }, tag({ name: "Craft", slug: "craft" })],
-			}),
+	it("reads the tag taxonomy alone, so a term filed under another taxonomy never becomes a Tag", () => {
+		const article: RawArticle<ArticleReference> = {
+			...makeArticle({ tags: [CRAFT] }),
+			terms: { tag: [CRAFT], category: [term({ slug: "news" })] },
+		};
+
+		expect(create([article])[0].tags).toEqual([{ name: "Craft", slug: "craft" }]);
+	});
+
+	it("keeps the tags in the order EmDash hydrated them", () => {
+		expect(create([makeArticle({ tags: [TRAVEL, CRAFT] })])[0].tags?.map(({ slug }) => slug)).toEqual([
+			"travel",
+			"craft",
 		]);
+	});
 
-		expect(article.tags).toEqual([{ name: "Craft", slug: "craft" }]);
+	it("reads an article EmDash hydrated no terms for as filed under no tag", () => {
+		const article: RawArticle<ArticleReference> = { ...makeArticle(), terms: {} };
+
+		expect(create([article])[0].tags).toEqual([]);
 	});
 });
 
 describe("createArticles slug", () => {
 	it("trims the article's own slug, so the collection is keyed on the string every reference spells", () => {
-		const [article] = createArticles([makeArticle({ slug: "  a-piece  " })]);
-
-		expect(article.slug).toBe("a-piece");
+		expect(create([makeArticle({ slug: "  a-piece  " })])[0].slug).toBe("a-piece");
 	});
 
-	it("keys a derived reference on the slug the referenced article carries, however Contentful padded it", () => {
-		const craft = tag({ name: "Craft", slug: "craft" });
-
-		const [first, second] = createArticles([
-			makeArticle({ slug: "first", title: "First", tags: [craft] }),
-			makeArticle({ slug: "  second  ", title: "Second", tags: [craft] }),
+	it("keys a derived reference on the slug the referenced article carries, however the CMS padded it", () => {
+		const [first, second] = create([
+			makeArticle({ slug: "first", title: "First", tags: [CRAFT] }),
+			makeArticle({ slug: "  second  ", title: "Second", tags: [CRAFT] }),
 		]);
 
 		expect(second.slug).toBe("second");
 		expect(first.relatedArticles).toEqual([{ id: second.slug, collection: "articles" }]);
 	});
 
-	it("keys an authored reference the same way, rather than passing the padding through", () => {
-		const [article] = createArticles([makeArticle({ relatedArticles: [{ fields: { slug: "  resolved-one  " } }] })]);
+	it("keys a hand-picked reference the same way, rather than passing the padding through", () => {
+		const [article] = create([
+			makeArticle({ relatedArticles: [related("  resolved-one  ")] }),
+			makeArticle({ slug: "  resolved-one  " }),
+		]);
 
 		expect(article.relatedArticles).toEqual([{ id: "resolved-one", collection: "articles" }]);
 	});
@@ -371,7 +365,7 @@ describe("createArticles slug", () => {
 
 describe("createArticles content derivations", () => {
 	it("builds the table of contents from the headings the renderer collected, keeping their levels", () => {
-		const [article] = createArticles([
+		const [article] = create([
 			makeArticle({
 				content: [
 					heading({ level: 2, value: "The First Section" }),
@@ -388,31 +382,11 @@ describe("createArticles content derivations", () => {
 	});
 
 	it("ignores h1 headings, which are outside the h2-h6 range the table of contents scans", () => {
-		const [article] = createArticles([makeArticle({ content: [heading({ level: 1, value: "Title" })] })]);
-
-		expect(article.tableOfContents).toEqual([]);
-	});
-
-	it("points a table of contents entry at an id the rendered content actually defines", () => {
-		const [article] = createArticles([
-			makeArticle({
-				content: [
-					{
-						nodeType: "heading-2",
-						data: {},
-						content: [text("Deploying "), { ...text("astro"), marks: [{ type: "code" }] }],
-					},
-				],
-			}),
-		]);
-		const [entry] = article.tableOfContents;
-
-		expect(entry.id).toBe("deploying-astro");
-		expect(article.content).toContain(`<h2 id="${entry.id}"`);
+		expect(create([makeArticle({ content: [heading({ level: 1, value: "Title" })] })])[0].tableOfContents).toEqual([]);
 	});
 
 	it("escapes a heading in the body but hands the table of contents the text as authored", () => {
-		const [article] = createArticles([makeArticle({ content: [heading({ level: 2, value: "Why & How" })] })]);
+		const [article] = create([makeArticle({ content: [heading({ level: 2, value: "Why & How" })] })]);
 		const [entry] = article.tableOfContents;
 
 		expect(entry.heading).toBe("Why & How");
@@ -421,7 +395,7 @@ describe("createArticles content derivations", () => {
 	});
 
 	it("numbers each section by the position its entry takes in the table of contents", () => {
-		const [article] = createArticles([
+		const [article] = create([
 			makeArticle({
 				content: [
 					heading({ level: 1, value: "Title" }),
@@ -440,8 +414,8 @@ describe("createArticles content derivations", () => {
 	});
 
 	it("counts the words of every paragraph towards reading time, not just the first of each", () => {
-		const [article] = createArticles([
-			makeArticle({ content: Array.from({ length: 201 }, (_, index) => paragraph(`word${index}`)) }),
+		const [article] = create([
+			makeArticle({ content: Array.from({ length: 201 }, (_, index) => paragraph(`w${index}`)) }),
 		]);
 
 		expect(article.readingTime).toBe(2);
@@ -450,26 +424,21 @@ describe("createArticles content derivations", () => {
 	it("rounds reading time up from two hundred words a minute", () => {
 		const words = (count: number) => Array.from({ length: count }, (_, index) => `word${index}`).join(" ");
 
-		const [exactlyOneMinute] = createArticles([makeArticle({ content: [paragraph(words(200))] })]);
-		const [oneWordOver] = createArticles([makeArticle({ content: [paragraph(words(201))] })]);
-
-		expect(exactlyOneMinute.readingTime).toBe(1);
-		expect(oneWordOver.readingTime).toBe(2);
+		expect(create([makeArticle({ content: [paragraph(words(200))] })])[0].readingTime).toBe(1);
+		expect(create([makeArticle({ content: [paragraph(words(201))] })])[0].readingTime).toBe(2);
 	});
 });
 
 describe("createArticles author and batching", () => {
 	it("embeds the author without the author's own article references", () => {
-		const [article] = createArticles([makeArticle()]);
-
-		expect(article.author).toEqual({
+		expect(create([makeArticle()])[0].author).toEqual({
 			name: "Bianca Fiore",
 			slug: "bianca-fiore",
 			description: "Content writer",
 			jobTitle: "Writer",
 			currentCompany: "Freelance",
 			profileImage: {
-				url: "https://images.ctfassets.net/bianca.webp",
+				url: `${MEDIA_FILE_PATH}bianca.webp`,
 				details: { width: 1200, height: 630 },
 				formats: { avif: false, webp: true },
 				shareCrops: expect.any(Array),
@@ -479,50 +448,71 @@ describe("createArticles author and batching", () => {
 	});
 
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {
-		const result = createArticles([]);
+		const result = create([]);
 
 		expect(result).toEqual([]);
 		expect(result).not.toBeInstanceOf(Promise);
 	});
 
 	it("preserves the order of the batch it was given", () => {
-		const articles = createArticles([
-			makeArticle({ slug: "first", title: "First" }),
-			makeArticle({ slug: "second", title: "Second" }),
-		]);
+		const articles = create([makeArticle({ slug: "first" }), makeArticle({ slug: "second" })]);
 
 		expect(articles.map(({ slug }) => slug)).toEqual(["first", "second"]);
 	});
-});
 
-describe("createArticles, given an author link Contentful did not resolve", () => {
-	it("refuses the batch by the link id rather than emitting an article with no byline", () => {
-		const unresolved = { sys: { type: "Link", linkType: "Entry", id: "2fJkLpQrS" } };
+	it("credits the author whose own article list names the article, which is how EmDash answers the relation", () => {
+		const first = makeArticle({ slug: "first" });
+		const second = makeArticle({ slug: "second" });
+		const other = rawEntry<AuthorFields, "articles">({
+			...AUTHOR,
+			slug: "someone-else",
+			data: { ...AUTHOR.data, name: "Someone Else" },
+			references: { articles: [referenceTo(second)] },
+		});
 
-		expect(() => createArticles([makeArticle({ author: unresolved })])).toThrow(
-			"A raw author entry reached the mapper unresolved (2fJkLpQrS), so no byline can name it",
-		);
+		const [byBianca, byOther] = createArticles({
+			rawArticles: [first, second],
+			rawAuthors: [crediting([first]), other],
+		});
+
+		expect(byBianca.author.name).toBe("Bianca Fiore");
+		expect(byOther.author.name).toBe("Someone Else");
 	});
-});
 
-describe("createArticles updatedAt, which leaves as dateModified and modifiedTime", () => {
-	it("normalises what sys reports to the same ISO instant the publish date gets", () => {
-		const [article] = createArticles([makeArticle({ updatedAt: "2024-04-01T10:00:00+02:00" })]);
-
-		expect(article?.updatedAt).toBe("2024-04-01T08:00:00.000Z");
-	});
-
-	it("refuses an updatedAt it cannot read, rather than emitting it into the structured data", () => {
-		expect(() => createArticles([makeArticle({ updatedAt: "not-a-date" })])).toThrow(
-			"An Article reached the mapper with an unreadable publish date: not-a-date",
+	it("refuses the batch by the article rather than emitting one no published author credits", () => {
+		expect(() => createArticles({ rawArticles: [makeArticle()], rawAuthors: [AUTHOR] })).toThrow(
+			"An Article (an-article) is credited to no published author, so no byline can name it",
 		);
 	});
 });
 
 describe("createArticles republication credit", () => {
 	it("refuses an original source the republished flag would have hidden", () => {
-		expect(() =>
-			createArticles([makeArticle({ isRepublished: false, originalSource: "The Content Standard" })]),
-		).toThrow("An Article names an original source (The Content Standard) but is not flagged as republished");
+		expect(() => create([makeArticle({ isRepublished: false, originalSource: "The Content Standard" })])).toThrow(
+			"An Article names an original source (The Content Standard) but is not flagged as republished",
+		);
+	});
+});
+
+describe("createArticle", () => {
+	it("maps one article against the whole batch, the way the article page reads its own with its picks", () => {
+		const first = makeArticle({ slug: "first", relatedArticles: [related("second")] });
+		const second = makeArticle({ slug: "second", title: "Second" });
+		const rawArticles = [first, second];
+
+		const article = createArticle({ rawArticle: first, rawArticles, rawAuthors: [crediting(rawArticles)] });
+
+		expect(article).toEqual(create(rawArticles)[0]);
+		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
+	});
+
+	it("infers related articles for an article read without its picks, as every list reads them", () => {
+		const first: RawArticle = { ...makeArticle({ slug: "first", tags: [CRAFT] }), references: {} };
+		const second = makeArticle({ slug: "second", tags: [CRAFT] });
+		const rawArticles = [first, second];
+
+		const article = createArticle({ rawArticle: first, rawArticles, rawAuthors: [crediting(rawArticles)] });
+
+		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
 	});
 });

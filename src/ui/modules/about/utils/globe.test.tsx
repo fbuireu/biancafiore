@@ -1,4 +1,4 @@
-import type { CollectionEntry } from "astro:content";
+import type { CityEntry } from "@modules/core/utils/entries";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { WORLD_GLOBE_MARKER_CLASS, WORLD_GLOBE_MARKER_LABEL_CLASS } from "../components/worldGlobe/const";
 import { type CityPoint, calculateCenter, renderPin, toCityPoints } from "./globe";
@@ -11,20 +11,22 @@ const point = (overrides: Partial<CityPoint> = {}): CityPoint => ({
 	...overrides,
 });
 
-const city = (data: Partial<CollectionEntry<"cities">["data"]> = {}): CollectionEntry<"cities"> =>
+const city = (data: Partial<CityEntry["data"]> = {}): CityEntry =>
 	({
 		id: "barcelona",
-		collection: "cities",
 		data: {
 			name: "Barcelona",
 			slug: "barcelona",
 			coordinates: { latitude: 41.39, longitude: 2.16 },
 			period: { startYear: 2015 },
 			description: "Where the writing started.",
-			image: { url: "https://images.ctfassets.net/city.jpg", details: { width: 800, height: 600 } },
+			image: {
+				url: "/_emdash/api/media/file/city.jpg",
+				details: { width: 800, height: 600 },
+			},
 			...data,
 		},
-	}) as CollectionEntry<"cities">;
+	}) as CityEntry;
 
 describe("toCityPoints", () => {
 	it("projects a City onto the coordinates, name and Slug the globe reads, and ships nothing else", () => {

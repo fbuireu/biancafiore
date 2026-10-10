@@ -53,8 +53,8 @@ was a real bug in forever-pto before it was a rule anywhere.
 [`service.ts`](../../src/infrastructure/logging/service.ts) is this repository's seam:
 `Layer.sync(LoggerService, () => logger)`, merged into `ContactLayer`. Every Effect program that logs takes
 `LoggerService` in `R` and annotates its return type. Code with no layer to provide one, `500.astro` whose
-frontmatter has no runtime and `getImagePlaceholders` which runs inside `astro build`, imports the same object
-directly.
+frontmatter has no runtime, imports the same object directly. (`getImagePlaceholders`, which ran inside `astro build`,
+did too until the placeholders became a decoded blurhash, [ADR 0022](./0022-content-renders-per-request-behind-the-workers-cache.md).)
 
 The rejected alternatives are a tail consumer Worker, which both siblings deleted, and reaching `logger` directly
 everywhere, which would delete the compile-time signal with nothing to replace it.
@@ -91,8 +91,10 @@ everywhere, which would delete the compile-time signal with nothing to replace i
 - **Effect's own `Logger` is now unused here**, and `Effect.logError` / `Effect.logInfo` should not come back: they
   write through a logger nothing configures, so their lines would reach the export in Effect's shape rather than the
   shared one.
-- **Build-time logs reach no sink and that is fine.** `fetchEntries` and `getImagePlaceholders` run inside
-  `astro build`, printing into the build output for a person to read in a CI run.
+- **Content reads log through the Worker like everything else.** `fetchEntries` ran inside `astro build` when this
+  was decided, printing into the build output; since content renders per request
+  ([ADR 0022](./0022-content-renders-per-request-behind-the-workers-cache.md)) a failed read is a request's 500, and
+  its line reaches the export with the request's trace.
 - **Application tracing stays out of scope.** `[observability.traces]` records Cloudflare's own spans, and
   `Effect.withSpan` cannot be bridged onto the runtime's tracer: `Tracer.Span` needs `traceId`, `spanId` and
   `sampled` synchronously, and Cloudflare documents `spanContext()` as not yet available, which forever-pto measured

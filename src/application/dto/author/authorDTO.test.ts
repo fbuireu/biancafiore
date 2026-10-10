@@ -1,72 +1,55 @@
+import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
+import { rawEntry, rawImage } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
-import type { RawArticle } from "../article/types";
-import { createAuthors } from "./authorDTO";
-import type { RawAuthor } from "./types";
-import { AUTHOR_LATEST_ARTICLE_FIELDS } from "./utils/articles";
+import type { ArticleFields } from "../article/types";
+import { createAuthors } from ".";
+import type { AuthorFields } from "./types";
 
-interface AssetParams {
-	url?: string;
-	contentType?: string;
-	width?: number;
-	height?: number;
-}
-
-const asset = ({
-	url = "//images.ctfassets.net/bianca.jpg",
-	contentType = "image/jpeg",
-	width = 400,
-	height = 400,
-}: AssetParams = {}) => ({
-	fields: { file: { url, contentType, details: { size: 1024, image: { width, height } } } },
-});
-
-interface MakeAuthorParams {
-	name?: string;
+interface MakeAuthorParams extends Partial<AuthorFields> {
+	id?: string;
 	slug?: string;
-	description?: string;
-	jobTitle?: string;
-	currentCompany?: string;
-	profileImage?: unknown;
-	socialNetworks?: string[];
+	credits?: string[];
 }
 
-const makeAuthor = ({
-	name = "Bianca Fiore",
-	slug = "bianca-fiore",
-	description = "Content writer",
-	jobTitle = "Writer",
-	currentCompany = "Freelance",
-	profileImage = asset(),
-	socialNetworks = ["https://linkedin.com/in/bianca"],
-}: MakeAuthorParams = {}) =>
-	({
-		fields: { name, slug, description, jobTitle, currentCompany, profileImage, socialNetworks },
-	}) as unknown as RawAuthor;
+const articleId = (slug: string) => `article-${slug.trim()}`;
+
+const makeAuthor = ({ id, slug = "bianca-fiore", credits = [], ...fields }: MakeAuthorParams = {}) =>
+	rawEntry<AuthorFields, "articles">({
+		id: id ?? `author-${slug.trim()}`,
+		slug,
+		data: {
+			name: "Bianca Fiore",
+			description: "Content writer",
+			job_title: "Writer",
+			current_company: "Freelance",
+			profile_image: rawImage({ name: "bianca.jpg", width: 400, height: 400 }),
+			social_networks: [{ url: "https://linkedin.com/in/bianca" }],
+			...fields,
+		},
+		references: { articles: credits.map((slug) => ({ id: articleId(slug) })) },
+	});
 
 interface MakeArticleParams {
 	slug: string;
-	author?: unknown;
 	publishDate?: string;
 }
 
-const makeArticle = ({
-	slug,
-	author = { fields: { name: "Bianca Fiore", slug: "bianca-fiore" } },
-	publishDate = "2024-01-01",
-}: MakeArticleParams) => ({ fields: { slug, author, publishDate } }) as unknown as RawArticle;
+const makeArticle = ({ slug, publishDate = "2024-01-01" }: MakeArticleParams) =>
+	rawEntry<ArticleFields>({
+		id: articleId(slug),
+		slug,
+		data: { title: slug, content: [], publish_date: publishDate },
+	});
 
 describe("createAuthors field mapping", () => {
 	it("carries every authored field across and turns the profile image into url, dimensions and formats", () => {
 		const [author] = createAuthors({
 			rawAuthors: [
 				makeAuthor({
-					name: "Bianca Fiore",
-					slug: "bianca-fiore",
 					description: "Writes for a living",
-					jobTitle: "Content writer",
-					currentCompany: "Freelance",
-					profileImage: asset({ url: "//cdn/bianca.avif", contentType: "image/avif", width: 512, height: 512 }),
-					socialNetworks: ["https://linkedin.com/in/bianca", "https://x.com/bianca"],
+					job_title: "Content writer",
+					profile_image: rawImage({ name: "bianca.avif", mimeType: "image/avif", width: 512, height: 512 }),
+					social_networks: [{ url: "https://linkedin.com/in/bianca" }, { url: "https://x.com/bianca" }],
 				}),
 			],
 			rawArticles: [],
@@ -79,7 +62,7 @@ describe("createAuthors field mapping", () => {
 			jobTitle: "Content writer",
 			currentCompany: "Freelance",
 			profileImage: {
-				url: "https://cdn/bianca.avif",
+				url: `${MEDIA_FILE_PATH}bianca.avif`,
 				details: { width: 512, height: 512 },
 				formats: { avif: true, webp: false },
 				shareCrops: expect.any(Array),
@@ -107,60 +90,37 @@ describe("createAuthors field mapping", () => {
 });
 
 describe("createAuthors article attribution", () => {
-	it("names an article whose embedded author matches, as an articles collection reference", () => {
+	it("names an article the author's own list credits, as an articles collection reference", () => {
 		const [author] = createAuthors({
-			rawAuthors: [makeAuthor({ name: "Bianca Fiore" })],
+			rawAuthors: [makeAuthor({ credits: ["only-one"] })],
 			rawArticles: [makeArticle({ slug: "only-one" })],
 		});
 
 		expect(author.latestArticle).toEqual({ id: "only-one", collection: "articles" });
 	});
 
-	it("ignores author links Contentful left unresolved instead of throwing on the missing fields", () => {
-		const [author] = createAuthors({
-			rawAuthors: [makeAuthor()],
-			rawArticles: [makeArticle({ slug: "unresolved", author: { sys: { type: "Link", linkType: "Entry", id: "x" } } })],
-		});
-
-		expect(author.latestArticle).toBeUndefined();
-	});
-
-	it("keeps two authors who share a display name apart, because the slug is what identifies an author", () => {
+	it("keeps two authors who share a display name apart, because the entry is what identifies an author", () => {
 		const [first, second] = createAuthors({
-			rawAuthors: [
-				makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" }),
-				makeAuthor({ name: "Bianca Fiore", slug: "b-fiore" }),
-			],
-			rawArticles: [
-				makeArticle({ slug: "hers", author: { fields: { name: "Bianca Fiore", slug: "bianca-fiore" } } }),
-				makeArticle({ slug: "the-namesakes", author: { fields: { name: "Bianca Fiore", slug: "b-fiore" } } }),
-			],
+			rawAuthors: [makeAuthor({ credits: ["hers"] }), makeAuthor({ slug: "b-fiore", credits: ["the-namesakes"] })],
+			rawArticles: [makeArticle({ slug: "hers" }), makeArticle({ slug: "the-namesakes" })],
 		});
 
 		expect(first.latestArticle).toEqual({ id: "hers", collection: "articles" });
 		expect(second.latestArticle).toEqual({ id: "the-namesakes", collection: "articles" });
 	});
 
-	it("matches an author whose slug Contentful padded with whitespace on either side", () => {
-		const [author] = createAuthors({
-			rawAuthors: [makeAuthor({ slug: " bianca-fiore " })],
-			rawArticles: [
-				makeArticle({ slug: "hers", author: { fields: { name: "Bianca Fiore", slug: "bianca-fiore  " } } }),
-			],
-		});
-
-		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
-	});
-
 	it("references an article by its trimmed slug, because that is the id the articles collection stores", () => {
-		const [author] = createAuthors({ rawAuthors: [makeAuthor()], rawArticles: [makeArticle({ slug: " hers " })] });
+		const [author] = createAuthors({
+			rawAuthors: [makeAuthor({ credits: ["hers"] })],
+			rawArticles: [makeArticle({ slug: " hers " })],
+		});
 
 		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
 	});
 
 	it("names the newest of the author's articles latestArticle, even when it arrived last", () => {
 		const [author] = createAuthors({
-			rawAuthors: [makeAuthor()],
+			rawAuthors: [makeAuthor({ credits: ["oldest", "newest"] })],
 			rawArticles: [
 				makeArticle({ slug: "oldest", publishDate: "2019-03-01" }),
 				makeArticle({ slug: "newest", publishDate: "2026-07-30" }),
@@ -170,27 +130,11 @@ describe("createAuthors article attribution", () => {
 		expect(author.latestArticle).toEqual({ id: "newest", collection: "articles" });
 	});
 
-	it("names the first of two articles published at the same instant, so the tie is settled by arrival order", () => {
-		const [author] = createAuthors({
-			rawAuthors: [makeAuthor()],
-			rawArticles: [
-				makeArticle({ slug: "first", publishDate: "2026-07-30" }),
-				makeArticle({ slug: "second", publishDate: "2026-07-30" }),
-			],
-		});
-
-		expect(author.latestArticle).toEqual({ id: "first", collection: "articles" });
-	});
-
 	it("ignores an article somebody else published more recently when naming latestArticle", () => {
 		const [author] = createAuthors({
-			rawAuthors: [makeAuthor({ slug: "bianca-fiore" })],
+			rawAuthors: [makeAuthor({ credits: ["hers"] }), makeAuthor({ slug: "someone-else", credits: ["his"] })],
 			rawArticles: [
-				makeArticle({
-					slug: "his",
-					author: { fields: { name: "Someone Else", slug: "someone-else" } },
-					publishDate: "2026-07-30",
-				}),
+				makeArticle({ slug: "his", publishDate: "2026-07-30" }),
 				makeArticle({ slug: "hers", publishDate: "2025-01-01" }),
 			],
 		});
@@ -198,20 +142,17 @@ describe("createAuthors article attribution", () => {
 		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
 	});
 
-	it("leaves latestArticle undefined for an author with no articles", () => {
-		const [author] = createAuthors({ rawAuthors: [makeAuthor()], rawArticles: [] });
+	it("ignores a credited article that is not published, since the list holds only what EmDash answered", () => {
+		const [author] = createAuthors({
+			rawAuthors: [makeAuthor({ credits: ["a-draft", "hers"] })],
+			rawArticles: [makeArticle({ slug: "hers" })],
+		});
 
-		expect(author.latestArticle).toBeUndefined();
+		expect(author.latestArticle).toEqual({ id: "hers", collection: "articles" });
 	});
-});
 
-describe("createAuthors, given an author link Contentful did not resolve", () => {
-	it("refuses it by the link id, the same way the article mapper does", () => {
-		const unresolved = { sys: { type: "Link", linkType: "Entry", id: "7zXbYcVdE" } } as unknown as RawAuthor;
-
-		expect(() => createAuthors({ rawAuthors: [unresolved], rawArticles: [] })).toThrow(
-			"A raw author entry reached the mapper unresolved (7zXbYcVdE), so no byline can name it",
-		);
+	it("leaves latestArticle undefined for an author with no articles", () => {
+		expect(createAuthors({ rawAuthors: [makeAuthor()], rawArticles: [] })[0].latestArticle).toBeUndefined();
 	});
 });
 
@@ -219,15 +160,17 @@ describe("createAuthors, given an unreadable publish date", () => {
 	it("refuses it rather than reading the article as the epoch and ranking it last", () => {
 		expect(() =>
 			createAuthors({
-				rawAuthors: [makeAuthor()],
+				rawAuthors: [makeAuthor({ credits: ["nonsense"] })],
 				rawArticles: [makeArticle({ slug: "nonsense", publishDate: "not-a-date" })],
 			}),
-		).toThrow('The Article "nonsense" has an unreadable publish date (not-a-date)');
+		).toThrow('The Article "nonsense" (id article-nonsense) has an unreadable publish date (not-a-date)');
 	});
 });
 
-describe("AUTHOR_LATEST_ARTICLE_FIELDS", () => {
-	it("selects the sys.id a refused article is named by, since the list names every field its helpers reach", () => {
-		expect(AUTHOR_LATEST_ARTICLE_FIELDS).toContain("sys.id");
+describe("createAuthors, given an author whose required image is missing", () => {
+	it("refuses it naming the gap, rather than emitting a profile with no picture", () => {
+		expect(() =>
+			createAuthors({ rawAuthors: [makeAuthor({ profile_image: undefined as never })], rawArticles: [] }),
+		).toThrow("(no media at all)");
 	});
 });

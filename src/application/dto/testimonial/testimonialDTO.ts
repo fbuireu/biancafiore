@@ -3,12 +3,12 @@ import { createImage } from "../shared/images";
 import type { RawTestimonial } from "./types";
 
 export function createTestimonials(raw: RawTestimonial[]): TestimonialDTO[] {
-	return raw.map((rawTestimonial): TestimonialDTO => {
-		return {
-			quotee: rawTestimonial.fields.author.trim(),
-			quote: rawTestimonial.fields.quote,
-			image: createImage(rawTestimonial.fields.image),
-			role: rawTestimonial.fields.role,
-		};
-	});
+	return raw.map(
+		({ data }): TestimonialDTO => ({
+			quotee: data.author.trim(),
+			quote: data.quote,
+			image: createImage(data.image),
+			role: data.role,
+		}),
+	);
 }

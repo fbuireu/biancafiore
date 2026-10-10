@@ -1,11 +1,7 @@
-import type { Except } from "@const/types";
 import type { ImageDTO } from "@domain/shared/image";
-import { getOriginImageUrl } from "@infrastructure/images/imageOptimization";
+import { getOptimizedImageUrl } from "@infrastructure/images/imageOptimization";
+import { imagePlaceholder } from "@infrastructure/images/imagePlaceholder";
 import { z } from "@shared/utils/zod";
-import type { Asset, UnresolvedLink } from "contentful";
-
-const PROTOCOL_RELATIVE_PREFIX = "//";
-const ASSET_SCHEME = "https:";
 
 const SHARE_CROPS = [
 	{ width: 1200, height: 675 },
@@ -13,51 +9,50 @@ const SHARE_CROPS = [
 	{ width: 1200, height: 1200 },
 ] as const;
 
-export const assetFileSchema = z.object({
-	url: z.string(),
-	details: z
-		.object({ image: z.object({ width: z.number().optional(), height: z.number().optional() }).optional() })
-		.optional(),
-});
-
-const imageAssetSchema = z.object({
-	fields: z.object({
-		file: assetFileSchema.extend({
-			contentType: z.string(),
-			details: z.object({
-				image: z.object({ width: z.number(), height: z.number() }),
-			}),
-		}),
-	}),
-});
-
-export function absoluteAssetUrl(url: string): string {
-	return url.startsWith(PROTOCOL_RELATIVE_PREFIX) ? `${ASSET_SCHEME}${url}` : url;
+export interface RawImage {
+	id: string;
+	src?: string;
+	alt?: string;
+	width?: number;
+	height?: number;
+	mimeType?: string;
+	filename?: string;
+	provider?: string;
+	blurhash?: string | null;
+	meta?: Record<string, unknown>;
 }
 
-export function createImage(rawImage: Asset<undefined> | UnresolvedLink<"Asset">): Except<ImageDTO, "placeholder"> {
-	if (!imageAssetSchema.validate(rawImage)) {
+const resolvedImageSchema = z.object({
+	src: z.string().min(1),
+	width: z.number(),
+	height: z.number(),
+	mimeType: z.string(),
+});
+
+const blurhashOf = ({ blurhash, meta }: RawImage): string | undefined => {
+	const stored = blurhash ?? meta?.blurhash;
+
+	return typeof stored === "string" ? stored : undefined;
+};
+
+export function createImage(rawImage: RawImage | undefined): ImageDTO {
+	if (!resolvedImageSchema.validate(rawImage)) {
 		throw new Error(
-			`An image asset reached the mapper unresolved, without a file or without its pixel dimensions (${rawImage.sys.id}), so nothing can render it`,
+			`An image reached the mapper without a resolved file and its dimensions (${rawImage?.id ?? "no media at all"}), so nothing can render it`,
 		);
 	}
 
-	const { contentType, details, url } = rawImage.fields.file;
-
-	const absoluteUrl = absoluteAssetUrl(url);
+	const { src, width, height, mimeType } = rawImage;
+	const placeholder = imagePlaceholder({ blurhash: blurhashOf(rawImage), width, height });
 
 	return {
-		url: absoluteUrl,
-		shareCrops: SHARE_CROPS.map(({ width, height }) =>
-			getOriginImageUrl({ source: absoluteUrl, options: { width, height, fit: "cover" } }),
-		),
-		details: {
-			width: details.image.width,
-			height: details.image.height,
-		},
+		url: src,
+		shareCrops: SHARE_CROPS.map((crop) => getOptimizedImageUrl({ source: src, options: { ...crop, fit: "cover" } })),
+		details: { width, height },
 		formats: {
-			avif: contentType === "image/avif",
-			webp: contentType === "image/webp",
+			avif: mimeType === "image/avif",
+			webp: mimeType === "image/webp",
 		},
+		...(placeholder && { placeholder }),
 	};
 }

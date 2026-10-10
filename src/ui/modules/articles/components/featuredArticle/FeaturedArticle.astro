@@ -1,14 +1,14 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import { articleHref, tagHref } from "@const/index";
 import { formatPublishDate } from "@domain/article";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
+import type { ArticleEntry } from "@modules/core/utils/entries";
 import LinkWithArrow from "../linkWithArrow/LinkWithArrow.astro";
 import { buildArticleShareLinks } from "./utils/share";
 import "./featured-article.css";
 
 interface Props {
-	featuredArticle: CollectionEntry<"articles">;
+	featuredArticle: ArticleEntry;
 }
 
 const { featuredArticle } = Astro.props;

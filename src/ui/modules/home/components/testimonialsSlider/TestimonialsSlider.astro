@@ -1,12 +1,12 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import { SLIDER_SLIDE_CLASS } from "@modules/core/components/sliderShell/const";
 import SliderShell from "@modules/core/components/sliderShell/SliderShell.astro";
+import type { TestimonialEntry } from "@modules/core/utils/entries";
 import "./testimonials-slider.css";
 
 interface Props {
-	testimonials: CollectionEntry<"testimonials">[];
+	testimonials: TestimonialEntry[];
 }
 
 const { testimonials } = Astro.props;

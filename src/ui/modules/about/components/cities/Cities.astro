@@ -1,11 +1,11 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import { formatPeriod } from "@domain/city";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
+import type { CityEntry } from "@modules/core/utils/entries";
 import "./cities.css";
 
 interface Props {
-	cities: CollectionEntry<"cities">[];
+	cities: CityEntry[];
 }
 
 const { cities } = Astro.props;

@@ -1,33 +1,45 @@
 import type { Except } from "@const/types";
 import type { AuthorDTO } from "@domain/author";
-import type { UnresolvedLink } from "contentful";
+import type { AnyRawArticle } from "../../article/types";
 import { createImage } from "../../shared/images";
 import type { RawAuthor } from "../types";
 
-type LinkedAuthor = RawAuthor | UnresolvedLink<"Entry">;
+interface BylineAuthorParams {
+	rawArticle: AnyRawArticle;
+	rawAuthors: RawAuthor[];
+}
 
-function resolvedAuthor(author: LinkedAuthor): RawAuthor {
-	if (!("fields" in author)) {
-		throw new Error(`A raw author entry reached the mapper unresolved (${author.sys.id}), so no byline can name it`);
+interface CreditsParams {
+	rawAuthor: RawAuthor;
+	rawArticle: AnyRawArticle;
+}
+
+interface RawAuthorIdentity {
+	id?: string;
+	slug: string | null;
+	data: { name: string };
+}
+
+const entryOf = ({ id }: Pick<RawAuthorIdentity, "id">): string => (id ? ` (id ${id})` : "");
+
+export const credits = ({ rawAuthor, rawArticle }: CreditsParams): boolean =>
+	rawAuthor.references.articles.some(({ id }) => id === rawArticle.id);
+
+export function bylineAuthor({ rawArticle, rawAuthors }: BylineAuthorParams): RawAuthor {
+	const author = rawAuthors.find((rawAuthor) => credits({ rawAuthor, rawArticle }));
+
+	if (!author) {
+		throw new Error(
+			`An Article (${rawArticle.slug ?? rawArticle.id}) is credited to no published author, so no byline can name it`,
+		);
 	}
 
 	return author;
 }
 
-interface RawAuthorIdentity {
-	sys?: { id?: string };
-	fields: { name: string; slug: string };
-}
-
-interface RawAuthored {
-	fields: { author: LinkedAuthor };
-}
-
-const entryOf = ({ sys }: Pick<RawAuthorIdentity, "sys">): string => (sys?.id ? ` (sys.id ${sys.id})` : "");
-
 export function authorIdentity(author: RawAuthorIdentity): Pick<AuthorDTO, "name" | "slug"> {
-	const name = author.fields.name.trim();
-	const slug = author.fields.slug.trim();
+	const name = author.data.name.trim();
+	const slug = (author.slug ?? "").trim();
 
 	if (!slug) {
 		throw new Error(`The Author "${name}"${entryOf(author)} has no slug, so no page can address them`);
@@ -42,20 +54,15 @@ export function authorIdentity(author: RawAuthorIdentity): Pick<AuthorDTO, "name
 	return { name, slug };
 }
 
-export function articleAuthorSlug({ fields }: RawAuthored): string | undefined {
-	return "fields" in fields.author ? authorIdentity(fields.author).slug : undefined;
-}
-
-export function createAuthor(author: LinkedAuthor): Except<AuthorDTO, "latestArticle"> {
-	const resolved = resolvedAuthor(author);
-	const { fields } = resolved;
+export function createAuthor(rawAuthor: RawAuthor): Except<AuthorDTO, "latestArticle"> {
+	const { data } = rawAuthor;
 
 	return {
-		...authorIdentity(resolved),
-		description: fields.description,
-		jobTitle: fields.jobTitle,
-		currentCompany: fields.currentCompany,
-		profileImage: createImage(fields.profileImage),
-		socialNetworks: fields.socialNetworks,
+		...authorIdentity(rawAuthor),
+		description: data.description,
+		jobTitle: data.job_title,
+		currentCompany: data.current_company,
+		profileImage: createImage(data.profile_image),
+		socialNetworks: (data.social_networks ?? []).map(({ url }) => url),
 	};
 }

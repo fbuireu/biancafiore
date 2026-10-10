@@ -1,11 +1,11 @@
-import type { CollectionEntry } from "astro:content";
+import type { ArticleEntry } from "@modules/core/utils/entries";
 
 interface PartitionFeaturedReturn {
-	featured?: CollectionEntry<"articles">;
-	rest: CollectionEntry<"articles">[];
+	featured?: ArticleEntry;
+	rest: ArticleEntry[];
 }
 
-export function partitionFeatured(articles: CollectionEntry<"articles">[]): PartitionFeaturedReturn {
+export function partitionFeatured(articles: ArticleEntry[]): PartitionFeaturedReturn {
 	const featured =
 		articles.find(({ data }) => data.isFeaturedArticle && data.featuredImage) ??
 		articles.find(({ data }) => data.featuredImage);

@@ -1,9 +1,9 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import { articleHref, tagHref } from "@const/index";
 import { formatPublishDate } from "@domain/article";
 import clsx from "clsx";
+import type { ArticleEntry } from "../../utils/entries";
 import BlurImage from "../blurImage/BlurImage.astro";
 import { featuredImageTransitionName } from "../blurImage/utils/transition";
 import { ARTICLE_CARD_LINK_CLASS } from "./const";
@@ -11,7 +11,7 @@ import { toArticleCardContent } from "./utils/card";
 import "./article-card.css";
 
 interface Props {
-	article: CollectionEntry<"articles">;
+	article: ArticleEntry;
 	isLandscape?: boolean;
 }
 

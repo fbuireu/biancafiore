@@ -1,99 +1,39 @@
-import { imageDouble, imagesDouble } from "@tests/doubles/network";
 import { describe, expect, it } from "vitest";
-import { getImagePlaceholders } from "./imagePlaceholder";
+import { imagePlaceholder, MAX_PLACEHOLDER_HEIGHT, PLACEHOLDER_WIDTH } from "./imagePlaceholder";
 
-const SOURCE = "https://images.ctfassets.net/space/asset/image.jpg";
-const PLACEHOLDER_URL = `${SOURCE}?w=24&q=35&fm=webp`;
+const BLURHASH = "LXCacDM{RjxuOxogkCR.Dkt7t7Rj";
 
-const BYTES = new Uint8Array([82, 73, 70, 70]);
-const DATA_URL = `data:image/webp;base64,${Buffer.from(BYTES).toString("base64")}`;
+const bytesOf = (dataUrl: string) => Buffer.from(dataUrl.replace("data:image/bmp;base64,", ""), "base64");
 
-const PLACEHOLDER_CONCURRENCY = 6;
+describe("imagePlaceholder", () => {
+	it("decodes the blurhash EmDash stored on upload into a bitmap the page inlines, so no request is made for it", () => {
+		const placeholder = imagePlaceholder({ blurhash: BLURHASH, width: 1920, height: 1277 });
 
-const sources = (count: number) =>
-	Array.from({ length: count }, (_, index) => `https://images.ctfassets.net/space/asset/image-${index}.jpg`);
+		expect(placeholder).toMatch(/^data:image\/bmp;base64,/);
 
-describe("getImagePlaceholders", () => {
-	it("requests a 24 pixel wide webp derivative at quality 35", async () => {
-		const cdn = imageDouble({ url: SOURCE, bytes: BYTES.buffer });
+		const bytes = bytesOf(placeholder ?? "");
 
-		await getImagePlaceholders([SOURCE]);
-
-		expect(cdn.calls).toStrictEqual([PLACEHOLDER_URL]);
+		expect(bytes.subarray(0, 2).toString("latin1")).toBe("BM");
+		expect(bytes.readInt32LE(18)).toBe(PLACEHOLDER_WIDTH);
+		expect(bytes.readInt32LE(22)).toBe(8);
+		expect(bytes.readUInt32LE(2)).toBe(bytes.length);
 	});
 
-	it("answers each source, keyed by the source rather than the derivative, with its bytes as a base64 webp data URL", async () => {
-		imageDouble({ url: SOURCE, bytes: BYTES.buffer });
+	it("keeps the image's proportions, within a height a tall portrait cannot blow up", () => {
+		const portrait = bytesOf(imagePlaceholder({ blurhash: BLURHASH, width: 100, height: 1000 }) ?? "");
 
-		await expect(getImagePlaceholders([SOURCE])).resolves.toStrictEqual(new Map([[SOURCE, DATA_URL]]));
+		expect(portrait.readInt32LE(22)).toBe(MAX_PLACEHOLDER_HEIGHT);
 	});
 
-	it("never opens more requests at once than the concurrency it owns", async () => {
-		const many = sources(PLACEHOLDER_CONCURRENCY * 3);
-		const cdn = imagesDouble({ urls: many, bytes: BYTES.buffer });
-
-		const placeholders = await getImagePlaceholders(many);
-
-		expect(placeholders.size).toBe(many.length);
-		expect(cdn.calls).toHaveLength(many.length);
-		expect(cdn.maxInFlight).toBeLessThanOrEqual(PLACEHOLDER_CONCURRENCY);
+	it.each([
+		["no blurhash, which EmDash leaves out for formats it cannot decode", undefined],
+		["an empty one", ""],
+		["one that is not a blurhash", "not-a-hash"],
+	])("answers nothing for %s, and the image renders unblurred", (_case, blurhash) => {
+		expect(imagePlaceholder({ blurhash, width: 10, height: 10 })).toBeUndefined();
 	});
 
-	it("asks once for a source that appears more than once", async () => {
-		const cdn = imageDouble({ url: SOURCE, bytes: BYTES.buffer });
-
-		const placeholders = await getImagePlaceholders([SOURCE, SOURCE, SOURCE]);
-
-		expect(cdn.calls).toStrictEqual([PLACEHOLDER_URL]);
-		expect(placeholders.size).toBe(1);
-	});
-
-	it("retries a request that failed in transit, so a dropped connection does not cost the placeholder", async () => {
-		const cdn = imageDouble({ url: SOURCE, bytes: BYTES.buffer, failFirst: 1 });
-
-		await expect(getImagePlaceholders([SOURCE])).resolves.toStrictEqual(new Map([[SOURCE, DATA_URL]]));
-		expect(cdn.calls).toStrictEqual([PLACEHOLDER_URL, PLACEHOLDER_URL]);
-	});
-
-	it("gives up after the retry rather than asking forever", async () => {
-		const cdn = imageDouble({ url: SOURCE, unreachable: true });
-
-		await expect(getImagePlaceholders([SOURCE])).resolves.toStrictEqual(new Map());
-		expect(cdn.calls).toStrictEqual([PLACEHOLDER_URL, PLACEHOLDER_URL]);
-	});
-
-	it("leaves out a source the CDN answers with a non-ok status", async () => {
-		imageDouble({ url: SOURCE, status: 404 });
-
-		await expect(getImagePlaceholders([SOURCE])).resolves.toStrictEqual(new Map());
-	});
-
-	it("keeps an empty data URL when the response body has no bytes", async () => {
-		imageDouble({ url: SOURCE, bytes: new ArrayBuffer(0) });
-
-		await expect(getImagePlaceholders([SOURCE])).resolves.toStrictEqual(new Map([[SOURCE, "data:image/webp;base64,"]]));
-	});
-
-	it("gives up on a source the platform cannot even turn into a request", async () => {
-		const cdn = imageDouble({ url: SOURCE, bytes: BYTES.buffer });
-
-		await expect(getImagePlaceholders(["/local/image.jpg"])).resolves.toStrictEqual(new Map());
-		expect(cdn.calls).toEqual([]);
-	});
-
-	it("asks for nothing when there is nothing to ask for", async () => {
-		const cdn = imageDouble({ url: SOURCE, bytes: BYTES.buffer });
-
-		await expect(getImagePlaceholders([])).resolves.toStrictEqual(new Map());
-		expect(cdn.calls).toEqual([]);
-	});
-
-	it("loses one source without losing the rest", async () => {
-		const other = "https://images.ctfassets.net/space/asset/other.jpg";
-
-		imageDouble({ url: SOURCE, bytes: BYTES.buffer });
-		imageDouble({ url: other, status: 404 });
-
-		await expect(getImagePlaceholders([SOURCE, other])).resolves.toStrictEqual(new Map([[SOURCE, DATA_URL]]));
+	it("answers nothing for an image without dimensions", () => {
+		expect(imagePlaceholder({ blurhash: BLURHASH, width: 0, height: 10 })).toBeUndefined();
 	});
 });

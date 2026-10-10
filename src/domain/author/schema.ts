@@ -1,6 +1,6 @@
-import { reference } from "astro:content";
 import { z } from "@shared/utils/zod";
 import { imageSchema } from "../shared/image";
+import { referenceSchema } from "../shared/reference";
 
 export const authorSchema = z.object({
 	name: z.string(),
@@ -13,5 +13,5 @@ export const authorSchema = z.object({
 });
 
 export const authorEntrySchema = authorSchema.extend({
-	latestArticle: reference("articles").optional(),
+	latestArticle: referenceSchema("articles").optional(),
 });

@@ -1,7 +1,7 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"files": {
-		"includes": ["**", "!**/public/**/*"]
+		"includes": ["**", "!**/public/**/*", "!**/emdash-env.d.ts"]
 	},
 	"vcs": {
 		"enabled": true,

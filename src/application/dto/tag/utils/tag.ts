@@ -1,21 +1,13 @@
 import type { TagDTO } from "@domain/tag";
-import type { UnresolvedLink } from "contentful";
 import type { RawTag } from "../types";
 
-interface RawTagIdentity {
-	sys?: { id?: string };
-	fields: { name: string; slug: string };
-}
+type RawTagIdentity = Pick<RawTag, "label" | "slug"> & Partial<Pick<RawTag, "id">>;
 
-interface RawTagged {
-	fields: { tags?: Array<RawTag | UnresolvedLink<"Entry">> };
-}
-
-const entryOf = ({ sys }: Pick<RawTagIdentity, "sys">): string => (sys?.id ? ` (sys.id ${sys.id})` : "");
+const entryOf = ({ id }: RawTagIdentity): string => (id ? ` (id ${id})` : "");
 
 export function tagIdentity(tag: RawTagIdentity): TagDTO {
-	const name = tag.fields.name.trim();
-	const slug = tag.fields.slug.trim();
+	const name = tag.label.trim();
+	const slug = tag.slug.trim();
 
 	if (!slug) {
 		throw new Error(`The Tag "${name}"${entryOf(tag)} has no slug, so no page can address it`);
@@ -28,8 +20,4 @@ export function tagIdentity(tag: RawTagIdentity): TagDTO {
 	}
 
 	return { name, slug };
-}
-
-export function articleTagSlugs({ fields }: RawTagged): string[] {
-	return (fields.tags ?? []).flatMap((tag) => ("fields" in tag ? [tagIdentity(tag).slug] : []));
 }

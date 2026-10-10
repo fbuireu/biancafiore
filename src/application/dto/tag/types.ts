@@ -1,11 +1,3 @@
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { CmsTerm } from "@infrastructure/cms/entries";
 
-export type TagSkeleton = EntrySkeletonType<
-	{
-		name: EntryFieldTypes.Text;
-		slug: EntryFieldTypes.Text;
-	},
-	"tag"
->;
-
-export type RawTag = Entry<TagSkeleton, undefined>;
+export type RawTag = CmsTerm;

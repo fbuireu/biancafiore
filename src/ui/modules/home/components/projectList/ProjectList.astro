@@ -1,13 +1,13 @@
 ---
-import { getCollection } from "astro:content";
 import stretchArrow from "@assets/images/svg/stretch-arrow.svg?raw";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import { readProjects } from "@modules/core/utils/entries";
 import "./project-list.css";
 import { projectHref } from "@const/index";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import { buildProjectListSchema } from "@modules/core/utils/jsonLd";
 
-const projects = await getCollection("projects");
+const projects = await readProjects();
 
 const projectCount = String(projects.length).padStart(2, "0");
 const itemListSchema = buildProjectListSchema(projects.map(({ data }) => data.id));

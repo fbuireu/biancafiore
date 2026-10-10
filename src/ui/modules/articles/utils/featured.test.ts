@@ -1,4 +1,4 @@
-import type { CollectionEntry } from "astro:content";
+import type { ArticleEntry } from "@modules/core/utils/entries";
 import { describe, expect, it } from "vitest";
 import { partitionFeatured } from "./featured";
 
@@ -15,9 +15,9 @@ const makeArticle = ({ slug, isFeaturedArticle = false, hasImage = true }: MakeA
 			isFeaturedArticle,
 			...(hasImage && { featuredImage: { url: `https://cdn/${slug}.jpg` } }),
 		},
-	}) as unknown as CollectionEntry<"articles">;
+	}) as unknown as ArticleEntry;
 
-const slugsOf = (articles: CollectionEntry<"articles">[]) => articles.map(({ data }) => data.slug);
+const slugsOf = (articles: ArticleEntry[]) => articles.map(({ data }) => data.slug);
 
 describe("partitionFeatured", () => {
 	it("takes the first article flagged as featured that also carries a Featured Image", () => {

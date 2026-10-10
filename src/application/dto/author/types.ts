@@ -1,16 +1,15 @@
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { CmsEntry } from "@infrastructure/cms/entries";
+import type { RawImage } from "../shared/images";
 
-export type AuthorSkeleton = EntrySkeletonType<
-	{
-		name: EntryFieldTypes.Text;
-		slug: EntryFieldTypes.Text;
-		description: EntryFieldTypes.Text;
-		jobTitle: EntryFieldTypes.Text;
-		currentCompany: EntryFieldTypes.Text;
-		profileImage: EntryFieldTypes.AssetLink;
-		socialNetworks: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
-	},
-	"author"
->;
+export interface AuthorFields {
+	name: string;
+	description: string;
+	job_title: string;
+	current_company: string;
+	profile_image: RawImage;
+	social_networks?: Array<{ url: string }>;
+}
 
-export type RawAuthor = Entry<AuthorSkeleton, undefined>;
+export const AUTHOR_ARTICLES_FIELD = "articles";
+
+export type RawAuthor = CmsEntry<AuthorFields, typeof AUTHOR_ARTICLES_FIELD>;

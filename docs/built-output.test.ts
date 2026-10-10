@@ -2,20 +2,16 @@ import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { NOINDEX_ROUTES } from "@const/noindexRoutes";
-import { TABLE_OF_CONTENTS_WRAPPER_CLASS } from "@modules/article/components/tableOfContents/const";
-import { ARTICLE_BODY_CLASS } from "@modules/article/const";
 import { COOKIE_CONSENT_BUTTON_CLASS } from "@modules/core/components/cookieConsent/const";
 import { describe, expect, it } from "vitest";
 
 const CLIENT = "dist/client";
 const HEADING_TAG = /<h([1-6])[^>]*>/g;
-const LOCATION = /<loc>([^<]*)<\/loc>/g;
-const SCOPES = /--scopes: ([^"]*)"/;
-const HIDES_CHROME = process.env.HIDE_CHROME === "true";
+const CONTENT_PAGES = ["", "about", "articles", "contact", "projects", "tags"];
+const PRERENDERED_PAGES = ["privacy-policy", "terms-and-conditions"];
 const HTML_LANG = /<html lang="([^"]*)"/;
 const OG_LOCALE = /<meta property="og:locale" content="([^"]*)"\s*\/?>/;
 const ROBOTS_META = /<meta name="robots" content="([^"]*)"\s*\/?>/;
-const INDEXED_ROUTES = ["", "about", "articles", "projects", "tags"];
 const ISLAND = "<astro-island";
 const COOKIE_CONSENT_BUTTON = new RegExp(`<button[^>]*class="[^"]*\\b${COOKIE_CONSENT_BUTTON_CLASS}\\b`);
 const CONTENT_SECURITY_POLICY = /^\s+Content-Security-Policy: (.+)$/m;
@@ -55,20 +51,7 @@ const scriptSourcesOf = (headers: string): string[] =>
 		?.split(" ")
 		.slice(1) ?? [];
 
-const articlePages = (): string[] =>
-	readdirSync(join(CLIENT, "articles"), { withFileTypes: true })
-		.filter((entry) => entry.isDirectory())
-		.map((entry) => join(CLIENT, "articles", entry.name, "index.html"));
-
 const headingLevels = (html: string): number[] => [...html.matchAll(HEADING_TAG)].map(([, level]) => Number(level));
-
-const ARTICLE_BODY = new RegExp(`<article class="${ARTICLE_BODY_CLASS}"[\\s\\S]*?</article>`);
-
-const withoutArticleBody = (html: string): string => html.replace(ARTICLE_BODY, "");
-
-const sitemapUrls = (): string[] => [...read(join(CLIENT, "sitemap-0.xml")).matchAll(LOCATION)].map(([, url]) => url);
-
-const locations = (): string[] => sitemapUrls().map((url) => new URL(url).pathname);
 
 describe("the built output", () => {
 	it("exists, because every assertion below reads it rather than the source", () => {
@@ -78,25 +61,11 @@ describe("the built output", () => {
 		).toBe(true);
 	});
 
-	it("renders the table of contents on every article whose headings earn one, unless the chrome is hidden", () => {
-		const owed = articlePages().filter((page) => {
-			const scopes = SCOPES.exec(read(page))?.[1]?.trim() ?? "";
-
-			return scopes.length > 0 && scopes.split(",").length > 1;
-		});
-
-		expect(owed.length).toBeGreaterThan(0);
-
-		const rendered = owed.filter((page) => read(page).includes(TABLE_OF_CONTENTS_WRAPPER_CLASS));
-
-		expect(rendered.length).toBe(HIDES_CHROME ? 0 : owed.length);
-	});
-
-	it("hydrates an island on About alone among the prerendered pages, so no other page loads React, and on none while the chrome hides About", () => {
+	it("hydrates no island on a prerendered page, so none of them loads React", () => {
 		const pages = prerenderedPages();
 
 		expect(pages.length).toBeGreaterThan(1);
-		expect(pages.filter((page) => read(page).includes(ISLAND))).toEqual(HIDES_CHROME ? [] : [pageAt("about")]);
+		expect(pages.filter((page) => read(page).includes(ISLAND))).toEqual([]);
 	});
 
 	it("renders the Manage cookies button in the footer of every prerendered page, before any script runs", () => {
@@ -151,34 +120,16 @@ describe("the built output", () => {
 		expect(lines.filter((line) => line.length > HEADER_LINE_LIMIT).map((line) => line.slice(0, 40))).toEqual([]);
 	});
 
-	it("keeps the rendered article body, which set:html once replaced with nothing else", () => {
-		expect(articlePages().filter((page) => !read(page).includes(`class="${ARTICLE_BODY_CLASS}"`))).toEqual([]);
-	});
-
-	it("lists every page in the sitemap except the ones robots.txt disallows", () => {
-		const listed = locations();
-
-		for (const route of ["/", "/about", "/articles", "/contact", "/projects", "/tags"]) {
-			expect(`${route}: ${listed.includes(route)}`).toBe(`${route}: true`);
-		}
-
-		expect(listed.filter((route) => NOINDEX_ROUTES.some((noindex) => route.startsWith(noindex)))).toEqual([]);
-	});
-
-	it("tells a crawler not to index the routes robots.txt disallows, and to index the rest", () => {
+	it("tells a crawler not to index the routes robots.txt disallows", () => {
 		const robotsOf = (route: string) => ROBOTS_META.exec(read(pageAt(route)))?.[1];
 
 		for (const route of NOINDEX_ROUTES) {
 			expect(`${route}: ${robotsOf(route.slice(1))}`).toBe(`${route}: noindex, nofollow`);
 		}
-
-		for (const route of INDEXED_ROUTES) {
-			expect(`/${route}: ${robotsOf(route)}`).toBe(`/${route}: index, follow`);
-		}
 	});
 
 	it("declares the Open Graph locale of the language the page is written in", () => {
-		for (const route of ["", "about", "articles", "privacy-policy"]) {
+		for (const route of PRERENDERED_PAGES) {
 			const html = read(pageAt(route));
 			const lang = HTML_LANG.exec(html)?.[1] ?? "";
 
@@ -187,25 +138,19 @@ describe("the built output", () => {
 		}
 	});
 
-	it("agrees with itself about where a page lives, trailing slash included", () => {
-		const feed = read(join(CLIENT, "rss.xml"));
-		const [firstArticle] = sitemapUrls().filter((url) => new URL(url).pathname.startsWith("/articles/"));
-
-		expect(firstArticle).toBeDefined();
-		expect(feed).toContain(`<link>${firstArticle}</link>`);
-		expect(feed).not.toContain(`${firstArticle}/</link>`);
+	it("prerenders no page that reads content, since the build cannot reach the database it lives in", () => {
+		expect(CONTENT_PAGES.filter((route) => existsSync(pageAt(route)))).toEqual([]);
+		expect(["rss.xml", "sitemap.xml", "sitemap-index.xml"].filter((file) => existsSync(join(CLIENT, file)))).toEqual(
+			[],
+		);
 	});
 
-	it("skips no heading level the templates write and never puts a deeper one above a shallower one, an Article's body being its author's", () => {
-		const outlines = [
-			...["about", "privacy-policy", "terms-and-conditions"].map((route) => ({
-				route,
-				levels: headingLevels(read(pageAt(route))),
-			})),
-			...articlePages().map((page) => ({ route: page, levels: headingLevels(withoutArticleBody(read(page))) })),
-		];
+	it("prerenders the legal pages, which read none", () => {
+		expect(PRERENDERED_PAGES.filter((route) => !existsSync(pageAt(route)))).toEqual([]);
+	});
 
-		expect(articlePages().filter((page) => withoutArticleBody(read(page)) === read(page))).toEqual([]);
+	it("skips no heading level and never puts a deeper heading above a shallower one", () => {
+		const outlines = PRERENDERED_PAGES.map((route) => ({ route, levels: headingLevels(read(pageAt(route))) }));
 
 		for (const { route, levels } of outlines) {
 			const skips = levels.filter((level, index) => index > 0 && level - (levels[index - 1] as number) > 1);
@@ -213,10 +158,6 @@ describe("the built output", () => {
 			expect(`${route}: ${JSON.stringify(skips)}`).toBe(`${route}: []`);
 			expect(`${route}: ${levels[0]}`).toBe(`${route}: 1`);
 		}
-	});
-
-	it("leaves the contact page on demand, because a prerendered page can take no POST", () => {
-		expect(existsSync(pageAt("contact"))).toBe(false);
 	});
 
 	it("serves no script origin the site does not use", () => {

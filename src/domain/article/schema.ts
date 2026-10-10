@@ -1,7 +1,7 @@
-import { reference } from "astro:content";
 import { z } from "@shared/utils/zod";
 import { authorSchema } from "../author";
 import { imageSchema } from "../shared/image";
+import { referenceSchema } from "../shared/reference";
 import { tagSchema } from "../tag";
 
 export const articleSchema = z.object({
@@ -19,7 +19,7 @@ export const articleSchema = z.object({
 	content: z.string(),
 	readingTime: z.number(),
 	tags: z.array(tagSchema).optional(),
-	relatedArticles: z.array(reference("articles")).default([]),
+	relatedArticles: z.array(referenceSchema("articles")).default([]),
 	tableOfContents: z
 		.array(
 			z.object({

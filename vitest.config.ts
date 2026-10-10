@@ -51,7 +51,7 @@ export default defineConfig({
 					environment: "node",
 					env: { TZ: AWKWARD_TIMEZONE },
 					setupFiles: [`${ROOT}src/tests/setup/network.ts`],
-					include: ["src/**/*.test.ts", "docs/**/*.test.ts", "e2e/**/*.test.ts"],
+					include: ["src/**/*.test.ts", "docs/**/*.test.ts", "e2e/**/*.test.ts", "scripts/**/*.test.ts"],
 					exclude: [BUILT_OUTPUT_SUITE],
 				},
 			},
@@ -86,6 +86,8 @@ export default defineConfig({
 				"src/**/schema.ts",
 				"src/const/**",
 				"src/env.d.ts",
+				"src/live.config.ts",
+				"src/worker.ts",
 			],
 			thresholds: {
 				lines: MIN_THRESHOLD,
