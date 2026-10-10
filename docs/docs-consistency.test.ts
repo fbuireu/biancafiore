@@ -21,7 +21,7 @@ const SKIPPED_DIRECTORIES = new Set([
 	"test-results",
 ]);
 
-const INDEXED_DIRECTORIES = [".github", "docs", "drizzle", "src"];
+const INDEXED_DIRECTORIES = [".github", "docs", "drizzle", "scripts", "seed", "src"];
 
 const DOCUMENTED_PATH_EXTENSIONS = [".ts", ".tsx", ".astro", ".css", ".md", ".json", ".toml"];
 
@@ -38,7 +38,7 @@ const SCRIPTS_INTENTIONALLY_UNDOCUMENTED = new Set([
 	"test:e2e:changed",
 ]);
 
-const CONCEPTS_OUTSIDE_THE_GLOSSARY = new Set(["breadcrumb", "contact", "shared"]);
+const CONCEPTS_OUTSIDE_THE_GLOSSARY = new Set(["breadcrumb", "contact", "menu", "shared", "site"]);
 
 const STYLESHEETS_STYLING_A_VENDOR_DOM = new Set(["src/ui/styles/vendor/cookie-consent.css"]);
 
@@ -48,18 +48,17 @@ const ROUTES_WITH_NO_PAGE_CONTAINER = ["404", "500", "tag"];
 
 const MODULES_WHOSE_EXPORTS_THE_FRAMEWORK_READS = new Set([
 	"src/actions/index.ts",
-	"src/content.config.ts",
+	"src/live.config.ts",
+	"src/worker.ts",
 	"src/env.d.ts",
 	"src/middleware.ts",
 ]);
 
 const MODULES_SHARED_BYTE_FOR_BYTE = new Set(["src/infrastructure/logging/logger.ts"]);
 
-const PLAIN_LOGGER_READERS = [
-	"src/infrastructure/images/imagePlaceholder/imagePlaceholder.ts",
-	"src/infrastructure/logging/service.ts",
-	"src/pages/500.astro",
-];
+const GENERATED_SOURCES = new Set(["emdash-env.d.ts"]);
+
+const PLAIN_LOGGER_READERS = ["src/infrastructure/logging/service.ts", "src/pages/500.astro"];
 
 const DOCUMENTED_PATH_EXAMPLES = new Set(["file.ts:123", "NNNN-kebab-title.md", "BACKLOG.md"]);
 
@@ -119,18 +118,20 @@ const OUTWARD_IMPORT = /^@(application|infrastructure|modules)\//;
 const SHARED_UTILS_IMPORT = /import\s*\{([^}]+)\}\s*from\s*"@shared\/utils\/[^"]+"/g;
 const IMPURE_DOMAIN_CODE = /from "effect"|fetch\(|process\.env|astro:env/;
 const DOMAIN_RULES_CENSUS = /`rules\.ts` exists for ([^;\n]+?) and no one else/;
-const IMPURE_DTO_CODE = /astro:env|from "effect"|getEntries|getImagePlaceholder/;
+const IMPURE_DTO_CODE = /astro:env|from "effect"|fetchEntries|listEntries|getImagePlaceholder/;
 const ASYNC_DTO_MAPPER = /export\s+(?:const|async\s+function)\s+create\w+/;
 const DTO_INFRASTRUCTURE_IMPORT = /from "(@infrastructure\/[^"]+)"/g;
-const CONTENTFUL_TYPE = /from "contentful"|@contentful\/|EntryFieldTypes|EntrySkeletonType/;
+const CMS_TYPE = /from "emdash"|@portabletext\/|\bCmsEntry\b|\bCmsReference\b|\bCmsTerm\b/;
 const HAND_PREFIXED_ASSET_URL = /`https:\$\{/;
-const ABSOLUTE_IMAGE_URL_SCHEMA = /url:\s*z\.url\(\)/;
-const ASSET_SCHEME_CONSTANT = /ASSET_SCHEME = "https:"/;
-const PROTOCOL_RELATIVE_TEST = /startsWith\(\s*(?:"\/\/"|PROTOCOL_RELATIVE_PREFIX)\s*\)/;
+const RELATIVE_IMAGE_URL_SCHEMA = /url:\s*z\.string\(\)/;
+const MEDIA_RESOLUTION = /data: resolveMedia\(fields\)/;
 const CMS_LAYER_IMPORT = /import\s*\{[^}]*CmsClientLive[^}]*\}\s*from\s*"\.\/client"/;
 const LOADER_FETCH_ENTRIES = /await fetchEntries</;
-const CONTENTFUL_PAGE_CAP = /CONTENTFUL_MAX_PAGE_SIZE = (\d+)/;
-const LOADER_REACHING_PAST_FETCH_ENTRIES = /from "effect"|isContentfulConfigured|CmsClient|concurrency:/;
+const CHROME_FETCH = /await fetch(?:SiteSettings\(\)|Menu\(name\))/;
+const SITE_LOADER = "src/application/entities/site/site.ts";
+const EMDASH_PAGE_CAP = /EMDASH_MAX_PAGE_SIZE = (\d+)/;
+const REFERENCE_CONCURRENCY = /REFERENCE_READS_IN_FLIGHT = (\d+)/;
+const LOADER_REACHING_PAST_FETCH_ENTRIES = /from "effect"|CmsClient|concurrency:/;
 const DOMAIN_SCHEMA_BINDING = /schema:\s*\w+Schema,/;
 const DOMAIN_IMPORT = /from "@domain\//;
 const ASTRO_SITE_READ = /Astro\.site/;
@@ -239,15 +240,15 @@ const CLASS_WORD = /[a-zA-Z][\w-]*/g;
 const ISLAND_ROOT_COUNT = /only (\w+) hydration roots in the whole site/;
 const ISLAND_ROOT_CENSUS = /hydration roots in the whole site: ([^\n]+?)\. Every one is/;
 const NUMBER_WORDS = ["no", "one", "two", "three", "four", "five", "six"];
-const DTO_CITED_DEFAULT = /`(\?\? [^`\n]+)`/g;
+const DTO_CITED_DEFAULT = /`((?:\?\?|\|\|) [^`\n]+)`/g;
 const CREATE_AUTHOR_DEFINITION = /export function createAuthor\(/;
 const AUTHOR_FIELD_MAPPING = /\bsocialNetworks: [^;\n]+,$/m;
-const BYLINE_FIELD_READ = /\bfields\.(?:jobTitle|currentCompany|profileImage|socialNetworks)\b/;
+const BYLINE_FIELD_READ = /\bcustomFields\[AUTHOR_FIELD\.\w+\]/;
 const ARTICLE_REFERENCE_LITERAL = /collection: "articles"/;
 const NORMALISED_ARTICLE_SLUG = /slug: articleSlug\(/;
-const AUTHORED_RELATED_ARTICLES = /fields\.relatedArticles/;
+const AUTHORED_RELATED_ARTICLES = /references\.related_articles/;
 const RELATED_ARTICLES_CAP = /INFERRED_RELATED_ARTICLES_LIMIT = (\d+)/;
-const TITLE_AS_IDENTITY = /fields\.title ===/;
+const TITLE_AS_IDENTITY = /data\.title ===/;
 const ARTICLE_SLUG_CALL = /articleSlug\(/;
 const ARTICLE_PUBLISH_DATE_READER = /export function articlePublishDateISO\(/;
 const EXIT_EXTRACTION = /\bCause\.(?:failureOption|dieOption)\(/;
@@ -257,25 +258,24 @@ const PINNED_ZONE = /\btimeZone\s*:/;
 const NAMED_ZONE = /\btimeZoneName\s*:/;
 const TRANSITION_NAME_SPELLING = /featured-image-\$\{/;
 const ROBOTS_OVERRIDE = /\brobots\s*:/;
-const HEAD_OF_THE_BLOG = /getCollection\("articles"\)\)\s*\.slice\(/;
-const OPEN_GRAPH_LOCALE_FROM_SITE_LOCALE = /property="og:locale" content=\{openGraphLocale\(DEFAULT_LOCALE_STRING\)\}/;
+const HEAD_OF_THE_BLOG = /readArticles\(\)\)\s*\.slice\(/;
+const OPEN_GRAPH_LOCALE_FROM_SITE_LOCALE = /locale: openGraphLocale\(DEFAULT_LOCALE_STRING\)/;
 const DATA_HAS_ATTRIBUTE = /\bdata-has-/;
 const SCOPED_PACKAGE = /^(@[^/]+\/[^/]+)/;
 const RANDOM_DRAW = /\bMath\.random\(/;
 const MESSAGE_READ = /\.message\b/;
 const COMPARATOR = /\.(?:localeCompare|sort|toSorted)\(/;
 const AUTHOR_AND_TAG_READER = /\/dto\/(?:article|author|tag)\//;
-const IDENTITY_TRIM = /\bfields\.(?:name|slug)\.trim\(\)/;
-const RAW_FAVORITE_READ = /\w\.fields\.isFavorite\b/;
-const RAW_PUBLISH_DATE_READ = /\bpublishDateISO\(\s*\w+\.fields\.publishDate\s*\)/;
-const LEAKED_INFRASTRUCTURE_IMPORT = /@infrastructure\/|from "contentful"/;
+const IDENTITY_TRIM = /\b(?:data\.name|author\.displayName|label|(?:author|tag)\.slug)(?: \?\? "")?\)?\.trim\(\)/;
+const RAW_FAVORITE_READ = /\w\.data\.is_favorite\b/;
+const RAW_PUBLISH_DATE_READ = /\bpublishDateISO\(\s*\w+\.data\.publish_date\s*\)/;
+const LEAKED_INFRASTRUCTURE_IMPORT = /@infrastructure\/|from "emdash"/;
 const DEREFERENCING_MODULE = "src/ui/modules/core/utils/entries.ts";
-const GET_ENTRY_CALL = /\bgetEntry\(/;
+const LIVE_READ_CALL = /\bgetLive(?:Entry|Collection)\(/;
 const EFFECT_IMPORT = /from "effect"/;
 const CITED_CONTAINER_QUERY = /@container ([a-z-]+) \(width <= \d+px\)/;
 const PLACEHOLDER_MODULE = "src/infrastructure/images/imagePlaceholder/imagePlaceholder.ts";
-const PER_ENTRY_PLACEHOLDER_AWAIT = /placeholder:\s*await/;
-const BOUNDED_PLACEHOLDER_READ = /const PLACEHOLDER_CONCURRENCY = \d+;/;
+const PLACEHOLDER_FETCH = /\bfetch\(|getImagePlaceholders|withImagePlaceholders/;
 const BUNDLED_SCRIPT = /^\s*<script\s*>/im;
 const PAGE_LOAD_LISTENER = /addEventListener\(\s*["']astro:page-load["']/;
 const THEME_MODULE = "src/ui/modules/core/components/themeToggle/utils/theme.ts";
@@ -318,7 +318,6 @@ const TYPE_SELECTOR_LEAD = /^[a-zA-Z]/;
 const FRAME_SIZING_BLOCK = /\{([^{}]*\bframe-sizing:\s*content-height[^{}]*)\}/g;
 const FRAME_FLOOR = /\bmin-height:\s*(?!0\b|auto\b)[^;\s]/;
 const AUTO_HEIGHT = /\bheight:\s*auto\b/;
-const IFRAME_EMBED_DECLARATION = /const IFRAME_EMBED_CLASS = "([\w-]+)";/;
 const SELECTOR_CLASS = /(?:^|[\s>+~,(])\.([A-Za-z][\w-]*)/g;
 const SELECTOR_ID = /(?:^|[\s>+~,(])#(?![\da-fA-F]{3,8}\b)([A-Za-z][\w-]*)/g;
 const HOOK_EXPORT = /_(CLASS|ID)$/;
@@ -432,17 +431,24 @@ const PROJECT_FILES = [
 	...INDEXED_DIRECTORIES.filter(exists).flatMap(walk),
 ];
 
-const wranglerTable = (table: string): string => {
+interface TomlTableParams {
+	toml: string;
+	table: string;
+}
+
+const tomlTable = ({ toml, table }: TomlTableParams): string => {
 	const heading = `\n[${table}]\n`;
-	const opens = WRANGLER_TOML.indexOf(heading);
+	const opens = toml.indexOf(heading);
 
 	if (opens === -1) return "";
 
-	const body = WRANGLER_TOML.slice(opens + heading.length);
+	const body = toml.slice(opens + heading.length);
 	const closes = body.indexOf("\n[");
 
 	return (closes === -1 ? body : body.slice(0, closes)).trim();
 };
+
+const wranglerTable = (table: string): string => tomlTable({ toml: WRANGLER_TOML, table });
 
 const stripFences = (markdown: string) => markdown.replace(ANY_FENCED_BLOCK, "");
 
@@ -479,13 +485,20 @@ const WRANGLER_TOML = read("wrangler.toml");
 const IMPORT_META_ENV_READ = /import\.meta\.env\.([A-Z][A-Z0-9_]*)/g;
 const ENV_DTS_DECLARATION = /readonly ([A-Z][A-Z0-9_]*)/g;
 const MODULE_SCOPE_SIDE_EFFECT = /^(?:\w[\w.]*\.addEventListener\(|(?:const|let)\s+\w+\s*=\s*window\.matchMedia\()/m;
-const ON_DEMAND_ROUTES = ["src/pages/404.astro", "src/pages/500.astro", "src/pages/contact.astro"];
+const PRERENDERED_ROUTES = ["src/pages/privacy-policy.astro", "src/pages/terms-and-conditions.astro"];
+const QUOTED_ROUTE = /^\t"(\/[^"]*)",$/gm;
+const CACHE_TAG_LIST = /CONTENT_CACHE_TAGS = \[([^\]]+)\]/;
+const MENU_NAME_LIST = /MENU_NAME = \{([^}]+)\}/;
+const DOUBLE_QUOTED_VALUE = /"([^"]+)"/g;
+const INDEX_ROUTE = /(?:^|\/)index$/;
+const TRAILING_ROUTE_SLASH = /\/$/;
 const ROBOTS_DISALLOW = /^Disallow: (.+)$/gm;
 const ROBOTS_SITEMAP = /^Sitemap: (.+)$/gm;
 const SITE_DECLARATION = /^\tsite: environment\.SITE_URL,$/m;
 const CONFIG_TIME_ENV_READ = /(?<!["'])import\.meta\.env\.\w+/;
 const ENV_EXAMPLE_SITE_URL = /^SITE_URL=(.+)$/m;
 const COLLECTION_FACTORY = "src/application/entities/collection.ts";
+const SHARED_QUERIES = "src/application/entities/queries.ts";
 const IDENTIFY_CHOICE = /identify: \(\w+\) => \w+\.(\w+)/g;
 const INLINE_IDENTITY = /\.\.\.\w+, id: \w+\.(\w+) \}/g;
 const PINNED_RUNTIME = /^- (Node|pnpm)\b/;
@@ -498,8 +511,11 @@ const SPREAD_AFTER_ID = /\{\s*id:[^}]*\.\.\./;
 const HYDRATION_DIRECTIVES_ALLOWED = new Set(["load"]);
 const NEWLINE = "\n";
 const SCHEMA_BOOLEAN_DEFAULT = /(\w+): z\.boolean\(\)\.default\(false\)/g;
+const SNAKE_CASED = /[A-Z]/g;
 const DEFAULTED_IN_THE_DTO_LAYER = (field: string) =>
-	new RegExp(String.raw`\b(?:${field}\s*[:=]|return)\s*rawArticle\.fields\.${field} \?\? false`);
+	new RegExp(
+		String.raw`\b(?:${field}\s*[:=]|return)\s*flagOf\(rawArticle\.data\.${field.replace(SNAKE_CASED, (letter) => `_${letter.toLowerCase()}`)}\)`,
+	);
 const CONTEXT_TAG_CLASS = /class\s+\w+\s+extends\s+Context\.Tag/;
 const LAUNDERED_SECRET = /getSecret\([^)]*\)\s+as\s+string/;
 const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("AGENTS.md"));
@@ -993,10 +1009,10 @@ describe("the layer map the architecture ADR draws", () => {
 			[...read(file).matchAll(IMPORT_SOURCE)].some(([, source]) => source.startsWith(alias)),
 		);
 
-	it("is reached from outside only by content.config.ts, which is what makes astro:content the seam", () => {
+	it("is reached from outside only by live.config.ts, which is what makes astro:content the seam", () => {
 		const outside = importersOf("@application/").filter((file) => !file.startsWith("src/application/"));
 
-		expect(outside).toEqual(["src/content.config.ts"]);
+		expect(outside).toEqual(["src/live.config.ts"]);
 	});
 
 	it("draws no arrow from a page or a component to the application layer, because none exists", () => {
@@ -1213,12 +1229,12 @@ describe("domain vocabulary", () => {
 		expect(dtos.filter((concept) => !concepts.includes(concept))).toEqual([]);
 	});
 
-	it("registers every entity loader as a content collection", () => {
-		const contentConfig = read("src/content.config.ts");
+	it("registers every entity loader as a live collection", () => {
+		const liveConfig = read("src/live.config.ts");
 		const entities = directoriesIn("src/application/entities");
 
 		expect(entities.length).toBeGreaterThan(0);
-		expect(entities.filter((entity) => !contentConfig.includes(entity))).toEqual([]);
+		expect(entities.filter((entity) => !liveConfig.includes(`${entity}: defineLiveCollection(${entity})`))).toEqual([]);
 	});
 });
 
@@ -1263,12 +1279,32 @@ describe("infrastructure guide", () => {
 
 	it("owns the page cursor, and quotes the per-request cap the code walks it at", () => {
 		const entries = read("src/infrastructure/cms/entries.ts");
-		const cap = entries.match(CONTENTFUL_PAGE_CAP)?.[1];
+		const cap = entries.match(EMDASH_PAGE_CAP)?.[1];
 
 		expect(cap).toBeDefined();
 		expect(guide).toContain("the page cursor, and with it the promise that the answer is complete");
 		expect(guide).toContain(`capped at ${cap} per request`);
-		expect(entries).toContain("collection.total");
+		expect(entries).toContain("page.nextCursor");
+	});
+
+	it("reads references with the bounded concurrency it quotes", () => {
+		const entries = read("src/infrastructure/cms/entries.ts");
+		const inFlight = entries.match(REFERENCE_CONCURRENCY)?.[1];
+
+		expect(inFlight).toBeDefined();
+		expect(guide).toContain(`\`REFERENCE_READS_IN_FLIGHT\` (${inFlight})`);
+		expect(entries).toContain("{ concurrency: REFERENCE_READS_IN_FLIGHT }");
+	});
+
+	it("asks EmDash's public query API for published entries only, which serves no draft outside a preview", () => {
+		const client = read("src/infrastructure/cms/client.ts");
+
+		expect(client).toContain('PUBLISHED_STATUS = "published"');
+		expect(client).toContain("status: PUBLISHED_STATUS");
+		expect(client).toContain('import("emdash")');
+		expect(client).toContain("emdash.getEmDashCollection(");
+		expect(client).toContain("emdash.getEmDashReferences(");
+		expect(read("AGENTS.md")).toContain("A public query never sees a draft.");
 	});
 
 	it("builds the CMS runtime from an imported layer, which is what keeps the doubles substitutable", () => {
@@ -1351,7 +1387,7 @@ describe("gotchas", () => {
 
 	it("keeps the SSR externals and the server output the guide describes", () => {
 		expect(ASTRO_CONFIG).toContain('output: "server"');
-		expect(ASTRO_CONFIG).toContain('external: ["node:async_hooks", "contentful"]');
+		expect(ASTRO_CONFIG).toContain('external: ["node:async_hooks"]');
 		expect(WRANGLER_TOML).toContain('compatibility_flags = ["nodejs_compat"]');
 	});
 
@@ -1398,7 +1434,8 @@ describe("gotchas", () => {
 	});
 
 	it("serves dist as assets from a Workers deploy bound to the documented domain", () => {
-		expect(WRANGLER_TOML).toContain('main = "@astrojs/cloudflare/entrypoints/server"');
+		expect(WRANGLER_TOML).toContain('main = "./src/worker.ts"');
+		expect(read("src/worker.ts")).toContain('from "@emdash-cms/cloudflare/worker"');
 		expect(WRANGLER_TOML).toContain('directory = "dist/client"');
 		expect(WRANGLER_TOML).toContain('binding = "SESSION"');
 		expect(WRANGLER_TOML).toContain('pattern = "biancafiore.me"');
@@ -1766,10 +1803,12 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(dtoFiles.filter((file) => IMPURE_DTO_CODE.test(read(file)))).toEqual([]);
 	});
 
-	it("leaves the placeholder fan-out to the module that owns it, never to a loader", () => {
+	it("decodes the blur placeholder inside the image mapper, so nothing fetches after the DTO", () => {
+		expect(guide).toContain("Nothing here fetches after the DTO.");
+
 		expect(loaderSteps.length).toBeGreaterThan(loaders.length);
-		expect(loaderSteps.filter((file) => PER_ENTRY_PLACEHOLDER_AWAIT.test(read(file)))).toEqual([]);
-		expect(read(PLACEHOLDER_MODULE)).toMatch(BOUNDED_PLACEHOLDER_READ);
+		expect([...loaderSteps, PLACEHOLDER_MODULE].filter((file) => PLACEHOLDER_FETCH.test(read(file)))).toEqual([]);
+		expect(read("src/application/dto/shared/images.ts")).toContain("imagePlaceholder({");
 	});
 
 	it("applies every optional-field default it cites, so the domain DTO stays total", () => {
@@ -1815,13 +1854,7 @@ describe("application guide: the anti-corruption boundary", () => {
 		const identities = ["src/application/dto/author/utils/author.ts", "src/application/dto/tag/utils/tag.ts"];
 		const reference = "src/application/dto/article/utils/reference.ts";
 
-		for (const helper of [
-			"authorIdentity",
-			"tagIdentity",
-			"articleTagSlugs",
-			"articleAuthorSlug",
-			"articleIsFavorite",
-		]) {
+		for (const helper of ["authorIdentity", "tagIdentity", "articleTagSlugs", "credits", "articleIsFavorite"]) {
 			expect(guide).toContain(`\`${helper}\``);
 		}
 
@@ -1869,68 +1902,75 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(reached.filter((source) => !guide.includes(`\`${source}\``))).toEqual([]);
 	});
 
-	it("absolutises the asset url here, so nothing downstream re-adds the scheme", () => {
-		expect(guide).toContain("An asset URL is absolutised here");
-		expect(read("src/domain/shared/image.ts")).toMatch(ABSOLUTE_IMAGE_URL_SCHEMA);
-		expect(read("src/application/dto/shared/images.ts")).toMatch(ASSET_SCHEME_CONSTANT);
+	it("receives asset urls as paths from the client, made absolute only by absoluteUrl where they are written out", () => {
+		expect(guide).toContain("An asset URL arrives relative, on this Worker's origin");
+		expect(read("src/domain/shared/image.ts")).toMatch(RELATIVE_IMAGE_URL_SCHEMA);
+		expect(read("src/infrastructure/cms/client.ts")).toMatch(MEDIA_RESOLUTION);
+		expect(read("src/ui/modules/core/components/seo/utils/pageSeo.ts")).toContain("absoluteUrl(image.url)");
+		expect(read("src/ui/modules/core/utils/jsonLd.ts")).toContain("absoluteUrl(person.image)");
+		expect(read("src/ui/modules/core/utils/jsonLd.ts")).toContain("imageCrops.map((crop) => absoluteUrl(crop))");
 
 		const readers = production(walk("src")).filter((file) => SOURCE_FILE.test(file));
 
 		expect(readers.length).toBeGreaterThan(0);
 		expect(readers.filter((file) => HAND_PREFIXED_ASSET_URL.test(read(file)))).toEqual([]);
-		expect(readers.filter((file) => PROTOCOL_RELATIVE_TEST.test(read(file)))).toEqual([
-			"src/application/dto/shared/images.ts",
-		]);
 	});
 
-	it("stops Contentful types at this layer: nothing downstream sees them", () => {
-		expect(guide).toContain("Contentful types stop here");
+	it("stops EmDash types at this layer: nothing downstream sees them", () => {
+		expect(guide).toContain("EmDash types stop here");
 
-		const downstream = production([...walk("src/domain"), ...walk("src/ui")]).filter((file) => SOURCE_FILE.test(file));
+		const downstream = production([...walk("src/domain"), ...walk("src/ui"), ...walk("src/pages")]).filter((file) =>
+			SOURCE_FILE.test(file),
+		);
 
 		expect(downstream.length).toBeGreaterThan(0);
-		expect(downstream.filter((file) => CONTENTFUL_TYPE.test(read(file)))).toEqual([]);
+		expect(downstream.filter((file) => CMS_TYPE.test(read(file)))).toEqual([]);
 	});
 
 	it("fetches through fetchEntries, and binds a schema the domain exports as it is, never one it builds", () => {
 		expect(loaders.length).toBeGreaterThan(0);
-		expect(guide).toContain("`fetchEntries<[Skeleton, …]>(query, …)`");
+		expect(guide).toContain("`fetchEntries<[RawEntry, …]>(query, …)`");
 
 		const broken = loaders.filter((file) => {
 			const source = read(file);
-			const fetches = LOADER_FETCH_ENTRIES.test(source) || source.includes("cmsCollection");
+			const fetches =
+				LOADER_FETCH_ENTRIES.test(source) ||
+				source.includes("await fetchArticlesAndAuthors()") ||
+				CHROME_FETCH.test(source);
 
 			return !fetches || !DOMAIN_SCHEMA_BINDING.test(source) || !DOMAIN_IMPORT.test(source);
 		});
 
 		expect(broken).toEqual([]);
-		expect(read(COLLECTION_FACTORY)).toMatch(LOADER_FETCH_ENTRIES);
+		expect(read(SHARED_QUERIES)).toContain("fetchEntries<[RawArticle]>(ARTICLES_QUERY)");
+		expect(read(SHARED_QUERIES)).toContain("[rawArticles, creditedAuthors(rawArticles)]");
 	});
 
-	it("leaves the credential bail, the batching and Effect itself to that one interface", () => {
-		expect(guide).toContain("no Effect, no `CmsClient`, no runtime, and no credential guard");
+	it("leaves the batching and Effect itself to that one interface", () => {
+		expect(guide).toContain("no Effect, no `CmsClient`, no runtime; no page cursor either");
 
 		const entries = read("src/infrastructure/cms/entries.ts");
 
-		expect(entries).toContain("if (!isContentfulConfigured())");
 		expect(entries).toContain('{ concurrency: "unbounded" }');
 		expect(loaderSteps.length).toBeGreaterThan(loaders.length);
 		expect(loaderSteps.filter((file) => LOADER_REACHING_PAST_FETCH_ENTRIES.test(read(file)))).toEqual([]);
 	});
 
 	it("cites the id every loader assigns, and spreads before it rather than after", () => {
-		const step = guide.split(NEWLINE).find((line) => line.includes("return entries carrying an `id`")) ?? "";
-		const identities = loaders.map((file) => {
-			const source = read(file);
+		const step = guide.split(NEWLINE).find((line) => line.includes("key every entry with `identify`")) ?? "";
+		const identities = loaders
+			.filter((file) => file !== SITE_LOADER)
+			.map((file) => {
+				const source = read(file);
 
-			return {
-				file,
-				fields: [
-					...[...source.matchAll(IDENTIFY_CHOICE)].map(([, field]) => field),
-					...[...source.matchAll(INLINE_IDENTITY)].map(([, field]) => field),
-				],
-			};
-		});
+				return {
+					file,
+					fields: [
+						...[...source.matchAll(IDENTIFY_CHOICE)].map(([, field]) => field),
+						...[...source.matchAll(INLINE_IDENTITY)].map(([, field]) => field),
+					],
+				};
+			});
 		const assigned = identities
 			.map(({ file, fields }) => `${file.split("/").at(-2)} → ${[...new Set(fields)].join(", ")}`)
 			.sort();
@@ -1940,7 +1980,10 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(identities.filter(({ fields }) => fields.length === 0).map(({ file }) => file)).toEqual([]);
 		expect(cited).toEqual(assigned);
 
-		expect(read(COLLECTION_FACTORY)).toContain("...entry, id: identify(entry)");
+		expect(read("src/domain/site/types.ts")).toContain('export const SITE_SETTINGS_ID = "settings";');
+		expect(read(SITE_LOADER)).toContain("identify: () => SITE_SETTINGS_ID");
+		expect(step).toContain("`site` holds one entry, keyed `settings`");
+		expect(read(COLLECTION_FACTORY)).toContain("({ id: identify(data), data })");
 		expect([...loaders, COLLECTION_FACTORY].filter((file) => SPREAD_AFTER_ID.test(read(file)))).toEqual([]);
 	});
 });
@@ -2672,7 +2715,7 @@ describe("modules guide: mixes, islands and data access", () => {
 	it("shares a 1200 by 630 card as the default image, a tenth of the portrait's weight", () => {
 		expect(guide).toContain("The default share image is a 1200 by 630 card");
 
-		const file = read("src/ui/modules/core/components/seo/const.ts").match(SHARE_IMAGE_IMPORT)?.[1] ?? "";
+		const file = read("src/const/site.ts").match(SHARE_IMAGE_IMPORT)?.[1] ?? "";
 		const path = `src/ui/assets/images/jpg/${file}`;
 		const bytes = readFileSync(join(ROOT, path));
 		const sof = Buffer.from([0xff, 0xd8, 0xff, 0xc0, 0x00, 0x11, 0x08, 0x02, 0x76, 0x04, 0xb0, 0x03]);
@@ -2732,8 +2775,8 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(repeated).toEqual([]);
 	});
 
-	it("reads content through astro:content only, never Contentful or infrastructure", () => {
-		expect(guide).toContain("never by calling Contentful or `@infrastructure` directly");
+	it("reads content through astro:content only, never the CMS or infrastructure", () => {
+		expect(guide).toContain("never by calling the CMS or `@infrastructure` directly");
 
 		const components = production(walk("src/ui")).filter((file) => SOURCE_FILE.test(file));
 
@@ -2742,18 +2785,18 @@ describe("modules guide: mixes, islands and data access", () => {
 	});
 
 	it("dereferences through one module, on promises rather than Effect", () => {
-		expect(guide).toContain("`getEntry` is called nowhere else under `src/ui` or `src/pages`");
+		expect(guide).toContain("is the one module that calls `getLiveCollection` and `getLiveEntry`");
 		expect(guide).toContain("nothing under `src/ui` imports `effect` at all");
 
 		const resolver = read(DEREFERENCING_MODULE);
 
-		expect(resolver).toContain("export async function resolveArticle(");
-		expect(resolver).toContain("export async function resolveArticles(");
+		expect(resolver).toContain("export function resolveArticle(");
+		expect(resolver).toContain("export function resolveArticles(");
 
 		const sources = production([...walk("src/ui"), ...walk("src/pages")]).filter((file) => SOURCE_FILE.test(file));
 
 		expect(sources.length).toBeGreaterThan(0);
-		expect(sources.filter((file) => file !== DEREFERENCING_MODULE && GET_ENTRY_CALL.test(read(file)))).toEqual([]);
+		expect(sources.filter((file) => file !== DEREFERENCING_MODULE && LIVE_READ_CALL.test(read(file)))).toEqual([]);
 		expect(sources.filter((file) => file.startsWith("src/ui/") && EFFECT_IMPORT.test(read(file)))).toEqual([]);
 	});
 
@@ -2828,16 +2871,13 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(floorless.map(({ file }) => file)).toEqual([]);
 	});
 
-	it("wraps the generic iframe embed in the block the article stylesheet sizes, and keeps it whole across a column", () => {
-		const renderer = read("src/application/dto/article/utils/content.ts");
-		const wrapper = renderer.match(IFRAME_EMBED_DECLARATION)?.[1] ?? "";
+	it("sizes the generic iframe from EmDash's wrapper, and keeps it whole across a column", () => {
 		const stylesheet = read("src/pages/articles/_article.css");
 
-		expect(wrapper).not.toBe("");
-		expect(renderer).toContain(`<div class="\${IFRAME_EMBED_CLASS}"><iframe`);
-		expect(stylesheet).toMatch(new RegExp(`\\.${wrapper} \\{\\s*container-type: inline-size;`));
-		expect(stylesheet).toMatch(new RegExp(`:is\\([^)]*\\.${wrapper}[^)]*\\) \\{\\s*break-inside: avoid;`));
-		expect(stylesheet).toMatch(new RegExp(`\\.${wrapper} \\{[^}]*?iframe \\{[^}]*?display: block;`));
+		expect(guide).toContain("`_article.css` sizes its `.emdash-iframe` instead");
+		expect(stylesheet).toMatch(/\.emdash-iframe:not\(\[style\]\) \{[^}]*?container-type: inline-size;/);
+		expect(stylesheet).toMatch(/:is\([^)]*\.emdash-iframe[^)]*\) \{\s*break-inside: avoid;/);
+		expect(stylesheet).toMatch(/\.emdash-iframe:not\(\[style\]\) \{[^}]*?iframe \{[^}]*?display: block;/);
 	});
 
 	it("bootstraps the theme from the module that owns the preference, and paints without persisting", () => {
@@ -2985,7 +3025,7 @@ const MISNAMED_PARAMETER_OBJECT = /(?:Options|Opts|Args|Arguments)$/;
 const TRAILING_COMMA = /,\s*$/;
 
 const HAND_WRITTEN_CODE = [
-	...readdirSync(ROOT).filter((name) => TYPESCRIPT_FILE.test(name)),
+	...readdirSync(ROOT).filter((name) => TYPESCRIPT_FILE.test(name) && !GENERATED_SOURCES.has(name)),
 	...walk("src").filter((file) => SOURCE_FILE.test(file)),
 	...walk("e2e").filter((file) => TYPESCRIPT_FILE.test(file)),
 	...walk("docs").filter((file) => TYPESCRIPT_FILE.test(file)),
@@ -3097,23 +3137,60 @@ describe("conventions", () => {
 		expect(offenders).toEqual([]);
 	});
 
-	it("declares prerender on every page ADR 0011 says ships as static HTML", () => {
-		const adr = read("docs/adr/0011-hybrid-rendering-prerender-content-ssr-dynamic.md");
+	it("prerenders only the pages that read no content, as ADR 0022 says", () => {
+		const adr = read("docs/adr/0022-content-renders-per-request-behind-the-workers-cache.md");
 
-		expect(adr).toContain("forgetting the flag is what silently makes it dynamic");
+		expect(adr).toContain("Only the two legal pages, which read no content, keep `export const prerender = true`.");
 
 		const routes = walk("src/pages").filter((file) => ROUTE_FILE.test(file) && !basename(file).startsWith("_"));
-		const dynamic = routes.filter((file) => !read(file).includes("export const prerender = true"));
+		const prerendered = routes.filter((file) => read(file).includes("export const prerender = true"));
 
 		expect(routes.length).toBeGreaterThan(0);
-		expect(dynamic.toSorted()).toEqual(ON_DEMAND_ROUTES.toSorted());
+		expect(prerendered.toSorted()).toEqual(PRERENDERED_ROUTES.toSorted());
 	});
 
-	it("disallows the same routes in robots.txt that it keeps out of the sitemap", () => {
+	it("caches every content route under one rule, carrying every content collection's tag", () => {
+		const cache = read("src/const/contentCache.ts");
+		const cachedRoutes = [...cache.matchAll(QUOTED_ROUTE)].map(([, route]) => route);
+		const tags = [...(cache.match(CACHE_TAG_LIST)?.[1] ?? "").matchAll(DOUBLE_QUOTED_VALUE)].map(([, tag]) => tag);
+		const collections = directoriesIn("src/application/entities").filter(
+			(entity) => !["tags", "authors", "site", "menus"].includes(entity),
+		);
+		const menuNames = [
+			...(read("src/domain/menu/types.ts").match(MENU_NAME_LIST)?.[1] ?? "").matchAll(DOUBLE_QUOTED_VALUE),
+		].map(([, name]) => name);
+		const contentRoutes = walk("src/pages")
+			.filter((file) => ROUTE_FILE.test(file) && !basename(file).startsWith("_"))
+			.filter((file) => !read(file).includes("export const prerender = true"))
+			.filter((file) => !["src/pages/contact.astro", "src/pages/500.astro"].includes(file))
+			.map(
+				(file) =>
+					`/${file.replace("src/pages/", "").replace(ROUTE_FILE, "").replace(INDEX_ROUTE, "")}`.replace(
+						TRAILING_ROUTE_SLASH,
+						"",
+					) || "/",
+			);
+
+		expect(read("astro.config.ts")).toContain(
+			"routeRules: Object.fromEntries(CONTENT_ROUTES.map((route) => [route, CONTENT_CACHE]))",
+		);
+		expect(cachedRoutes.toSorted()).toEqual(contentRoutes.toSorted());
+		expect(collections.filter((collection) => !tags.includes(collection))).toEqual([]);
+		expect(tags).toContain("emdash:taxonomy:tag");
+		expect(cache).toContain('export const BYLINES_CACHE_TAG = "bylines";');
+		expect(cache.match(CACHE_TAG_LIST)?.[1]).toContain("BYLINES_CACHE_TAG");
+		expect(menuNames.length).toBeGreaterThan(0);
+		expect(
+			["emdash:settings", ...menuNames.map((name) => `emdash:menu:${name}`)].filter((tag) => !tags.includes(tag)),
+		).toEqual([]);
+	});
+
+	it("disallows in robots.txt the routes it keeps out of the sitemap, and EmDash's admin", () => {
 		const disallowed = [...read("public/robots.txt").matchAll(ROBOTS_DISALLOW)].map(([, route]) => route.trim());
 
 		expect(disallowed.length).toBeGreaterThan(0);
-		expect(disallowed.toSorted()).toEqual([...NOINDEX_ROUTES].toSorted());
+		expect(disallowed.toSorted()).toEqual([...NOINDEX_ROUTES, "/_emdash/"].toSorted());
+		expect(read("public/robots.txt")).toContain("Sitemap: https://biancafiore.me/sitemap.xml");
 	});
 
 	it("writes the site origin once, in SITE_URL, which the config reads for `site` and robots.txt repeats because a static file reads nothing", () => {
@@ -3127,8 +3204,7 @@ describe("conventions", () => {
 		expect(CONFIG_TIME_ENV_READ.test('"import.meta.env.IMAGE_CDN": 1')).toBe(false);
 		expect(ASTRO_CONFIG).not.toContain(example as string);
 		expect(read("docs/built-output.test.ts")).not.toContain(example as string);
-		expect(ASTRO_CONFIG).toContain("sitemap(");
-		expect(sitemaps).toEqual([`${example}/sitemap-index.xml`]);
+		expect(sitemaps).toEqual([`${example}/sitemap.xml`]);
 	});
 
 	it("passes two or more arguments as one object, in production code, the tests, e2e and this file alike", () => {
@@ -4158,7 +4234,7 @@ describe("the hand-written code", () => {
 		);
 	});
 
-	it("declares each unindexed route once, in the module the config loads, and lets the legal pages inherit their robots from it", () => {
+	it("declares each unindexed route once, in one module, and lets the legal pages inherit their robots from it", () => {
 		const declarations = [...SOURCE_FILES, "astro.config.ts"].filter((file) =>
 			NOINDEX_ROUTES.some((route) => read(file).includes(`"${route}"`)),
 		);
@@ -4178,7 +4254,7 @@ describe("the hand-written code", () => {
 	});
 
 	it("derives the Open Graph locale from the language the pages declare, never from a literal that can disagree with it", () => {
-		expect(read("src/ui/modules/core/components/seo/Seo.astro")).toMatch(OPEN_GRAPH_LOCALE_FROM_SITE_LOCALE);
+		expect(read("src/ui/modules/core/components/seo/utils/pageSeo.ts")).toMatch(OPEN_GRAPH_LOCALE_FROM_SITE_LOCALE);
 		expect(read("src/ui/modules/core/components/baseLayout/BaseLayout.astro")).toContain(
 			"<html lang={DEFAULT_LOCALE_STRING}",
 		);
@@ -4265,6 +4341,7 @@ describe("the hand-written code", () => {
 		const isPackage = (specifier: string) =>
 			!specifier.startsWith(".") &&
 			!specifier.startsWith("node:") &&
+			!specifier.startsWith("cloudflare:") &&
 			!specifier.startsWith("astro:") &&
 			!ALIAS_TARGETS.some(([alias]) => specifier.startsWith(alias));
 		const imported = HAND_WRITTEN_CODE.flatMap((file) =>
@@ -4344,7 +4421,7 @@ describe("the domain and the application layer", () => {
 		expect(domainSources.filter((file) => IN_PLACE_REORDER.test(read(file)))).toEqual([]);
 	});
 
-	it("reads no local-time Date API in either layer, since CI prerenders in one time zone and an author builds in another", () => {
+	it("reads no local-time Date API in either layer, since the Worker renders in one time zone and a contributor tests in another", () => {
 		const sources = production([...walk("src/domain"), ...walk("src/application")]).filter((file) =>
 			TYPESCRIPT_FILE.test(file),
 		);
@@ -4991,6 +5068,150 @@ describe("the YAML", () => {
 		expect(allowedYamlComment({ file: "a.yml", line: `  ${renovate}`, comment: renovate })).toBe(false);
 		expect(YAML_FILES).toContain(RENOVATE_ANNOTATED_FILE);
 		expect(commented).toEqual([]);
+	});
+});
+
+describe("the CMS", () => {
+	interface SeedField {
+		slug: string;
+		type: string;
+		validation?: { relation?: string };
+	}
+
+	interface SeedCollection {
+		slug: string;
+		dateField?: string;
+		fields: SeedField[];
+	}
+
+	interface SeedTaxonomy {
+		name: string;
+		collections: string[];
+	}
+
+	interface SeedRelation {
+		slug: string;
+		parentCollection: string;
+		childCollection: string;
+	}
+
+	interface Seed {
+		collections: SeedCollection[];
+		taxonomies: SeedTaxonomy[];
+		relations: SeedRelation[];
+	}
+
+	const WRANGLER = read("wrangler.toml");
+	const STAGES = ["production", "development"];
+	const SYSTEM_ORDER_FIELDS = ["created_at", "updated_at", "published_at"];
+	const HANDLED_CRON = /generalCron: "([^"]+)"/;
+	const TRIGGERED_CRONS = /crons = \[([^\]]*)\]/;
+	const QUERIED_COLLECTION = /collection: "(\w+)"/g;
+	const ORDERED_QUERY = /collection: "(\w+)"[^}]*?orderBy: "(\w+)"/g;
+	const { collections, taxonomies, relations } = readJson("seed/seed.json") as Seed;
+	const applicationGuide = read("src/application/AGENTS.md");
+	const loaders = production(walk("src/application/entities").filter((file) => TYPESCRIPT_FILE.test(file)));
+	const declaredCollections = collections.map(({ slug }) => slug);
+	const cronsOf = (table: string): string[] =>
+		[...(tomlTable({ toml: WRANGLER, table }).match(TRIGGERED_CRONS)?.[1] ?? "").matchAll(DOUBLE_QUOTED_VALUE)].map(
+			([, cron]) => cron,
+		);
+
+	it("names the same cron in the scheduled handler and in production's triggers, and none in development's", () => {
+		const handled = read("src/worker.ts").match(HANDLED_CRON)?.[1];
+
+		expect(handled).toBeDefined();
+		expect(cronsOf("triggers")).toEqual([handled]);
+		expect(cronsOf("env.production.triggers")).toEqual([handled]);
+		expect(cronsOf("env.development.triggers")).toEqual([]);
+		expect(AGENTS_MD).toContain("EmDash's cron is named twice");
+	});
+
+	it("asks the CMS only for collections its seed declares, and documents every one of them", () => {
+		const asked = [
+			...new Set(loaders.flatMap((file) => [...read(file).matchAll(QUERIED_COLLECTION)].map(([, name]) => name))),
+		];
+
+		expect(asked.length).toBeGreaterThan(0);
+		expect(asked.filter((name) => !declaredCollections.includes(name))).toEqual([]);
+		expect(declaredCollections.filter((name) => !applicationGuide.includes(`| \`${name}\` |`))).toEqual([]);
+	});
+
+	it("files Tags under the taxonomy the mappers read, on the collection they read it from", () => {
+		const taxonomy = read("src/application/dto/article/types.ts").match(/ARTICLE_TAG_TAXONOMY = "(\w+)"/)?.[1];
+
+		expect(taxonomy).toBeDefined();
+		expect(taxonomies.find(({ name }) => name === taxonomy)?.collections).toEqual(["articles"]);
+		expect(declaredCollections).not.toContain("tags");
+	});
+
+	it("reads only reference fields the seed declares, and credits an Author through a byline rather than a relation", () => {
+		const declared = collections
+			.flatMap(({ fields }) => fields.filter(({ type }) => type === "reference"))
+			.map(({ slug }) => slug);
+		const readFields = [
+			read("src/application/entities/articles/articles.ts").match(/RELATED_ARTICLES_FIELD = "(\w+)"/)?.[1],
+		];
+
+		expect(readFields.filter((field) => !field || !declared.includes(field))).toEqual([]);
+		expect(relations ?? []).toEqual([]);
+		expect(collections.map(({ slug }) => slug)).not.toContain("authors");
+		expect(read("src/application/dto/author/types.ts")).toContain("export type RawAuthor = CmsByline;");
+	});
+
+	it("orders by a field EmDash sorts on: a system column, or the collection's own date field", () => {
+		const ordered = loaders.flatMap((file) =>
+			[...read(file).matchAll(ORDERED_QUERY)].map(([, collection, field]) => ({ collection, field })),
+		);
+		const unsortable = ordered.filter(
+			({ collection, field }) =>
+				!SYSTEM_ORDER_FIELDS.includes(field) &&
+				collections.find(({ slug }) => slug === collection)?.dateField !== field,
+		);
+
+		expect(ordered.length).toBeGreaterThan(0);
+		expect(unsortable).toEqual([]);
+	});
+
+	it("keeps the generated collection types it typechecks against in step with the seed", () => {
+		const generated = read("emdash-env.d.ts");
+
+		expect(declaredCollections.filter((name) => !generated.includes(`${name}: `))).toEqual([]);
+		expect(read("tsconfig.json")).toContain('"emdash-env.d.ts"');
+	});
+
+	it("binds the database and the bucket under the names the integration reads, in every stage", () => {
+		const config = read("astro.config.ts");
+
+		expect(config).toContain('d1({ binding: "DB" })');
+		expect(config).toContain('r2({ binding: "MEDIA" })');
+		expect(config).toContain("provider: cacheCloudflare()");
+		expect(WRANGLER.match(/binding = "DB"/g)).toHaveLength(STAGES.length + 1);
+		expect(WRANGLER.match(/binding = "MEDIA"/g)).toHaveLength(STAGES.length + 1);
+		expect(WRANGLER).toContain('main = "./src/worker.ts"');
+		expect(tomlTable({ toml: WRANGLER, table: "vars" })).toBe(
+			tomlTable({ toml: WRANGLER, table: "env.production.vars" }),
+		);
+		expect(read("src/worker.ts")).toContain("PluginBridge");
+	});
+
+	it("leaves EmDash's routes to EmDash's own headers", () => {
+		const middleware = read("src/middleware.ts");
+
+		expect(middleware).toContain('const EMDASH_ROUTES = "/_emdash/"');
+		expect(middleware).toContain("if (url.pathname.startsWith(EMDASH_ROUTES)) return response;");
+	});
+
+	it("names in the guide every plugin astro.config.ts registers", () => {
+		const registered = [
+			...(read("astro.config.ts").match(/plugins: \[([^\]]*)\]/)?.[1] ?? "").matchAll(/(\w+)\(\)/g),
+		].map(([, plugin]) => plugin);
+
+		expect(registered.length).toBeGreaterThan(0);
+		expect(registered.filter((plugin) => !read("src/infrastructure/AGENTS.md").includes(`\`${plugin}\``))).toEqual([]);
+		expect(registered.filter((plugin) => !exists(`src/infrastructure/cms/plugins/${plugin}/descriptor.ts`))).toEqual(
+			[],
+		);
 	});
 });
 

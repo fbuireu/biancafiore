@@ -1,16 +1,9 @@
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { CmsByline } from "@infrastructure/cms/entries";
 
-export type AuthorSkeleton = EntrySkeletonType<
-	{
-		name: EntryFieldTypes.Text;
-		slug: EntryFieldTypes.Text;
-		description: EntryFieldTypes.Text;
-		jobTitle: EntryFieldTypes.Text;
-		currentCompany: EntryFieldTypes.Text;
-		profileImage: EntryFieldTypes.AssetLink;
-		socialNetworks: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
-	},
-	"author"
->;
+export const AUTHOR_FIELD = {
+	JOB_TITLE: "job_title",
+	CURRENT_COMPANY: "current_company",
+	SOCIAL_NETWORKS: "social_networks",
+} as const;
 
-export type RawAuthor = Entry<AuthorSkeleton, undefined>;
+export type RawAuthor = CmsByline;

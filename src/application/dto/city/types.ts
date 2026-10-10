@@ -1,15 +1,14 @@
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { CmsEntry } from "@infrastructure/cms/entries";
+import type { RawImage } from "../shared/images";
 
-export type CitySkeleton = EntrySkeletonType<
-	{
-		name: EntryFieldTypes.Text;
-		coordinates: EntryFieldTypes.Location;
-		startDate: EntryFieldTypes.Date;
-		endDate?: EntryFieldTypes.Date;
-		description: EntryFieldTypes.Text;
-		image: EntryFieldTypes.AssetLink;
-	},
-	"city"
->;
+export interface CityFields {
+	name: string;
+	latitude: number;
+	longitude: number;
+	start_date: string;
+	end_date?: string;
+	description: string;
+	image: RawImage;
+}
 
-export type RawCity = Entry<CitySkeleton, undefined>;
+export type RawCity = CmsEntry<CityFields>;

@@ -1,19 +1,9 @@
-import { authorEntrySchema } from "@domain/author";
-import { cmsAnswers, cmsHoldsUntilQueries, cmsQueries, cmsQueriesOverlapped, resetCms } from "@tests/doubles/cmsLayer";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { RawArticle } from "../../dto/article/types";
+import { avatar, rawByline, rawEntry } from "@tests/doubles/cmsEntries";
+import { cmsAnswers, cmsQueries, cmsReferenceQueries, resetCms } from "@tests/doubles/cmsLayer";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { ArticleFields } from "../../dto/article/types";
 import type { RawAuthor } from "../../dto/author/types";
-import { AUTHOR_LATEST_ARTICLE_FIELDS } from "../../dto/author/utils/articles";
 import { authors } from "./authors";
-
-vi.mock("astro:content", async () => {
-	const { z } = await import("@shared/utils/zod");
-	const unresolvable = () => {
-		throw new Error("reference() is a stub here: a loader test cannot validate entries against the collection schema");
-	};
-
-	return { defineCollection: (collection: unknown) => collection, reference: () => z.custom(unresolvable) };
-});
 
 vi.mock("@infrastructure/cms/client", async () => {
 	const actual = await vi.importActual<typeof import("@infrastructure/cms/client")>("@infrastructure/cms/client");
@@ -22,122 +12,108 @@ vi.mock("@infrastructure/cms/client", async () => {
 	return { ...actual, CmsClientLive: cmsClientLayer(actual.CmsClient) };
 });
 
-const load = () => (authors as unknown as { loader: () => Promise<Record<string, unknown>[]> }).loader();
+const loadAll = async () => {
+	const result = await authors.loader.loadCollection({ collection: "authors" });
 
-const image = (url: string) => ({
-	fields: { file: { url, contentType: "image/jpeg", details: { size: 1024, image: { width: 400, height: 400 } } } },
-});
+	if ("error" in result) throw result.error;
+
+	return result.entries;
+};
 
 interface MakeAuthorParams {
 	name: string;
 	slug: string;
 }
 
-const makeAuthor = ({ name, slug }: MakeAuthorParams) =>
-	({
-		fields: {
-			name,
-			slug,
-			description: "Content writer",
-			jobTitle: "Writer",
-			currentCompany: "Freelance",
-			profileImage: image(`//images.ctfassets.net/${slug}.jpg`),
-			socialNetworks: [],
-		},
-	}) as unknown as RawAuthor;
+const makeAuthor = ({ name, slug }: MakeAuthorParams): RawAuthor =>
+	rawByline({
+		slug,
+		displayName: name,
+		bio: "Content writer",
+		avatar: avatar({ name: `${slug}.jpg` }),
+		customFields: { job_title: "Writer", current_company: "Freelance" },
+	});
 
 interface MakeArticleParams {
 	slug: string;
 	publishDate: string;
-	authorSlug: string;
+	credits?: RawAuthor[];
 }
 
-const makeArticle = ({ slug, publishDate, authorSlug }: MakeArticleParams) =>
-	({
-		fields: { slug, publishDate, author: makeAuthor({ name: authorSlug, slug: authorSlug }) },
-	}) as unknown as RawArticle;
+const makeArticle = ({ slug, publishDate, credits = [BIANCA] }: MakeArticleParams) =>
+	rawEntry<ArticleFields>({
+		id: `article-${slug}`,
+		slug,
+		data: { title: slug, content: [], publish_date: publishDate },
+		bylines: credits,
+	});
 
 const BIANCA = makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" });
 
 beforeEach(() => {
 	resetCms();
-	vi.stubEnv("CONTENTFUL_SPACE_ID", "space-id");
-});
-
-afterEach(() => {
-	vi.unstubAllEnvs();
 });
 
 describe("authors loader", () => {
-	it("binds the entry schema the domain declares, so the field a loader adds and the DTO's type cannot disagree", () => {
-		expect((authors as unknown as { schema: unknown }).schema).toBe(authorEntrySchema);
-	});
+	it("reads the authors off the articles' own bylines, in one query and no reference read", async () => {
+		cmsAnswers({ articles: [makeArticle({ slug: "hers", publishDate: "2024-01-01" })] });
 
-	it("asks for authors and for only the article fields the latest-article rule reads, in one batch", async () => {
-		cmsAnswers({ author: [BIANCA], article: [] });
-		cmsHoldsUntilQueries(2);
+		await loadAll();
 
-		await load();
-
-		expect(cmsQueries).toEqual(
-			expect.arrayContaining([
-				expect.objectContaining({ content_type: "author" }),
-				expect.objectContaining({ content_type: "article", select: AUTHOR_LATEST_ARTICLE_FIELDS }),
-			]),
-		);
-		expect(cmsQueries).toHaveLength(2);
-		expect(cmsQueriesOverlapped()).toBe(true);
+		expect(cmsQueries.map(({ collection }) => collection)).toEqual(["articles"]);
+		expect(cmsReferenceQueries).toEqual([]);
 	});
 
 	it("keys every entry by the author's slug, the identity GLOSSARY.md gives an Author", async () => {
-		cmsAnswers({ author: [BIANCA], article: [] });
+		cmsAnswers({ articles: [makeArticle({ slug: "hers", publishDate: "2024-01-01" })] });
 
-		const [entry] = await load();
+		const [entry] = await loadAll();
 
-		expect(entry).toMatchObject({ id: "bianca-fiore", name: "Bianca Fiore", slug: "bianca-fiore" });
+		expect(entry).toMatchObject({ id: "bianca-fiore", data: { name: "Bianca Fiore", slug: "bianca-fiore" } });
 	});
 
 	it("keeps two authors who share a display name apart, since the name is a label and the slug is the identity", async () => {
+		const namesake = makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore-ii" });
+
 		cmsAnswers({
-			author: [
-				makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" }),
-				makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore-ii" }),
+			articles: [
+				makeArticle({ slug: "hers", publishDate: "2024-01-01" }),
+				makeArticle({ slug: "theirs", publishDate: "2024-01-01", credits: [namesake] }),
 			],
-			article: [],
 		});
 
-		const entries = await load();
+		const entries = await loadAll();
 
 		expect(entries.map(({ id }) => id)).toEqual(["bianca-fiore", "bianca-fiore-ii"]);
 	});
 
 	it("calls the author's newest article the latest, whatever order the batch arrived in", async () => {
 		cmsAnswers({
-			author: [makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" })],
-			article: [
-				makeArticle({ slug: "oldest", publishDate: "2023-01-01", authorSlug: "bianca-fiore" }),
-				makeArticle({ slug: "newest", publishDate: "2024-05-01", authorSlug: "bianca-fiore" }),
-				makeArticle({ slug: "middle", publishDate: "2024-03-01", authorSlug: "bianca-fiore" }),
+			articles: [
+				makeArticle({ slug: "oldest", publishDate: "2023-01-01" }),
+				makeArticle({ slug: "newest", publishDate: "2024-05-01" }),
+				makeArticle({ slug: "middle", publishDate: "2024-03-01" }),
 			],
 		});
 
-		const [entry] = await load();
+		const [entry] = await loadAll();
 
-		expect(entry.latestArticle).toEqual({ id: "newest", collection: "articles" });
+		expect(entry?.data.latestArticle).toEqual({ id: "newest", collection: "articles" });
 	});
 
-	it("gives an author only their own article, and no latest article when they have none", async () => {
+	it("gives each author only the articles that credit them", async () => {
+		const guest = makeAuthor({ name: "A Guest", slug: "guest" });
+
 		cmsAnswers({
-			author: [
-				makeAuthor({ name: "Bianca Fiore", slug: "bianca-fiore" }),
-				makeAuthor({ name: "Ghost", slug: "ghost" }),
+			articles: [
+				makeArticle({ slug: "hers", publishDate: "2024-05-01" }),
+				makeArticle({ slug: "theirs", publishDate: "2024-01-01", credits: [guest] }),
 			],
-			article: [makeArticle({ slug: "hers", publishDate: "2024-05-01", authorSlug: "bianca-fiore" })],
 		});
 
-		const [bianca, ghost] = await load();
+		const [bianca, theGuest] = await loadAll();
 
-		expect(bianca.latestArticle).toEqual({ id: "hers", collection: "articles" });
-		expect(ghost.latestArticle).toBeUndefined();
+		expect(bianca?.data.latestArticle).toEqual({ id: "hers", collection: "articles" });
+		expect(theGuest?.data.latestArticle).toEqual({ id: "theirs", collection: "articles" });
 	});
 });

@@ -11,8 +11,12 @@ const DEVELOPMENT_HEADERS = Object.entries(
 	securityHeaders({ isDevelopment: true, inlineScriptHashes: INLINE_SCRIPT_HASHES }),
 );
 
-export const onRequest = defineMiddleware(async (_, next) => {
+const EMDASH_ROUTES = "/_emdash/";
+
+export const onRequest = defineMiddleware(async ({ url }, next) => {
 	const response = await next();
+
+	if (url.pathname.startsWith(EMDASH_ROUTES)) return response;
 
 	for (const [header, value] of import.meta.env.DEV ? DEVELOPMENT_HEADERS : PRODUCTION_HEADERS) {
 		response.headers.set(header, value);

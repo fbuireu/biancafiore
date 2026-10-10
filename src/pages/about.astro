@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import { articleHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import AboutBlogPreview from "@modules/about/components/aboutBlogPreview/AboutBlogPreview.astro";
@@ -9,14 +8,12 @@ import WhatIDo from "@modules/about/components/whatIDo/WhatIDo.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
-import { getSiteAuthor, resolveArticle } from "@modules/core/utils/entries";
+import { getSiteAuthor, readArticles, readCities, resolveArticle } from "@modules/core/utils/entries";
 import { buildProfilePageSchema } from "@modules/core/utils/jsonLd";
 
-export const prerender = true;
+const [cities, bianca, articles] = await Promise.all([readCities(), getSiteAuthor(), readArticles()]);
 
-const [cities, bianca] = await Promise.all([getCollection("cities"), getSiteAuthor()]);
-
-const latestArticle = await resolveArticle(bianca.data.latestArticle);
+const latestArticle = resolveArticle({ reference: bianca.data.latestArticle, articles });
 
 const metadata: Partial<SeoMetadata> = {
 	title: "About me",

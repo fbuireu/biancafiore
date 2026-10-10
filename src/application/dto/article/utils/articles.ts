@@ -1,33 +1,30 @@
 import type { Reference } from "@domain/shared/reference";
-import { articleTagSlugs } from "../../tag/utils/tag";
-import type { RawArticle } from "../types";
+import type { CmsReference } from "@infrastructure/cms/entries";
+import { publishedEntriesOf } from "../../shared/references";
+import type { AnyRawArticle } from "../types";
 import { orderArticleReferences } from "./order";
 import { articleReference, articleSlug } from "./reference";
+import { articleTagSlugs } from "./tags";
 
 const INFERRED_RELATED_ARTICLES_LIMIT = 6;
 
-type AuthoredRelatedArticle = NonNullable<RawArticle["fields"]["relatedArticles"]>[number];
-type ResolvedRelatedArticle = Extract<AuthoredRelatedArticle, { fields: unknown }>;
-
 interface CreateRelatedArticlesParams {
-	rawArticle: RawArticle;
-	allRawArticles: RawArticle[];
+	rawArticle: AnyRawArticle;
+	allRawArticles: AnyRawArticle[];
 }
 
-function isResolvedEntry(entry: AuthoredRelatedArticle): entry is ResolvedRelatedArticle {
-	return "fields" in entry;
-}
+const authoredOf = ({ references }: AnyRawArticle): CmsReference[] =>
+	"related_articles" in references ? references.related_articles : [];
 
 export function createRelatedArticles({
 	rawArticle,
 	allRawArticles,
 }: CreateRelatedArticlesParams): Reference<"articles">[] {
 	const ownSlug = articleSlug(rawArticle);
-	const authored = rawArticle.fields.relatedArticles;
+	const authored = authoredOf(rawArticle);
 
-	if (authored) {
-		return authored
-			.filter(isResolvedEntry)
+	if (authored.length > 0) {
+		return publishedEntriesOf({ references: authored, published: allRawArticles })
 			.map((relatedArticle) => articleReference(relatedArticle))
 			.filter(({ id }) => id !== ownSlug);
 	}

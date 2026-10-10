@@ -1,0 +1,19 @@
+---
+import "./article-heading.css";
+
+interface Props {
+	node: {
+		tag: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+		anchor: string;
+		text: string;
+		scope?: string;
+	};
+}
+
+const { tag: Heading, anchor, text, scope } = Astro.props.node;
+---
+<section style={scope && `--is: ${scope}`}>
+    <Heading id={anchor} class="article-heading flex align-baseline">
+        <a href={`#${anchor}`}>{text}</a>
+    </Heading>
+</section>

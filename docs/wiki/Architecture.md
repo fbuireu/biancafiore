@@ -1,6 +1,6 @@
 # Architecture
 
-The site follows a **Domain-Driven Design<sub>(ish)</sub>** layering behind an anti-corruption layer over Contentful. The dependency direction is strict: `domain` knows nothing about anything else, and everything points inward toward it.
+The site follows a **Domain-Driven Design<sub>(ish)</sub>** layering behind an anti-corruption layer over the CMS, EmDash, which runs inside the same Worker. The dependency direction is strict: `domain` knows nothing about anything else, and everything points inward toward it.
 
 ```mermaid
 ---
@@ -10,15 +10,15 @@ config:
 ---
 flowchart RL
     subgraph application["application: anti-corruption layer"]
-        loaders["entities/*: loaders (defineCollection)"]
-        dto["dto/*DTO.ts: Contentful mappers"]
+        loaders["entities/*: live loaders"]
+        dto["dto/*DTO.ts: CMS mappers"]
     end
     pages["pages · middleware"] --> ui["ui: components · islands · styles"]
     pages --> domain["domain: schemas · models · rules"]
     ui --> domain
     actions["actions: the contact form"] --> infrastructure["infrastructure: cms · db · email · images"]
     actions --> domain
-    config["content.config.ts"] --> loaders
+    config["live.config.ts"] --> loaders
     loaders --> dto
     loaders --> infrastructure
     loaders --> domain
@@ -32,9 +32,9 @@ flowchart RL
     class infrastructure,loaders,actions,pages,ui,config shell
 ```
 
-Every arrow is an import some file really makes, read off the tree rather than intended; anything not drawn is forbidden. Gold is pure, red owns the side effects. `dto` reaches `infrastructure` and stays gold because what it imports there builds a CDN URL string: the line is I/O, not layering.
+Every arrow is an import some file really makes, read off the tree rather than intended; anything not drawn is forbidden. Gold is pure, red owns the side effects. `dto` reaches `infrastructure` and stays gold because what it imports there builds a CDN URL string or decodes a blurhash in memory: the line is I/O, not layering.
 
-Some edges are deliberately absent, because neither is an import. **Pages and components never reach the application layer**: one module registers the content collections, and a route then reads them through `astro:content`, which is what lets a page be typed against `CollectionEntry` without knowing a mapper exists. And **Contentful enters at `infrastructure`**, over the network.
+Some edges are deliberately absent, because neither is an import. **Pages and components never reach the application layer**: one module registers the live content collections, and a route then reads them through `astro:content`, which is what lets a page be typed against an entry without knowing a mapper exists. And **the CMS enters at `infrastructure`**: EmDash's query API is called in process, on the request, but only `infrastructure` calls it.
 
 ---
 
@@ -43,8 +43,8 @@ Some edges are deliberately absent, because neither is an import. **Pages and co
 | Layer | Role | Side effect |
 |---|---|---|
 | **domain** | Zod schemas, inferred types, and pure editorial rules: reading time, table of contents, favourite-first sort, city period | None |
-| **application** | The anti-corruption layer, in two halves: `dto/` maps raw Contentful entries to domain models, `entities/` loads them as Astro content collections | Content I/O, in the loaders only |
-| **infrastructure** | The Effect clients (Contentful, Turso, email, logging), and the build-time image and header helpers | Network, database, email API |
+| **application** | The anti-corruption layer, in two halves: `dto/` maps raw CMS entries to domain models, `entities/` loads them as Astro content collections | Content I/O, in the loaders only |
+| **infrastructure** | The Effect clients (the CMS, Turso, email, logging), and the image and header helpers | Network, database, email API |
 | **ui** | Astro components and React islands, grouped by feature area, with styles beside them | Rendering |
 | **pages** | Routes, and the composition root | Whatever a route needs |
 
@@ -58,11 +58,11 @@ DDD is a set of practices, not one architecture. The failure mode the suffix nam
 
 The split runs along the strategic/tactical line, and only one half is negotiable.
 
-**The strategic half is taken whole.** One ubiquitous language, defined in [`GLOSSARY.md`](https://github.com/fbuireu/biancafiore/blob/main/GLOSSARY.md), where every domain word also lists the synonyms it displaces so a near-miss cannot drift in. A pure domain that performs no I/O, reads no env and holds no Effect. And the anti-corruption layer that keeps Contentful's `sys` and `fields` from reaching any of it, which is what keeps the CMS choice reversible.
+**The strategic half is taken whole.** One ubiquitous language, defined in [`GLOSSARY.md`](https://github.com/fbuireu/biancafiore/blob/main/GLOSSARY.md), where every domain word also lists the synonyms it displaces so a near-miss cannot drift in. A pure domain that performs no I/O, reads no env and holds no Effect. And the anti-corruption layer that keeps the CMS's entry shape from reaching any of it, which is what kept the CMS choice reversible: moving from Contentful to EmDash changed the client and the mappers and nothing above them.
 
 **The tactical half is applied where it pays**, and the test is a set of questions asked in order: can the illegal state actually be reached, does anything read it, does it cross a boundary. A "no" to every one of them means write the rule down instead of encoding it, because a divergence that is named is finished work.
 
-What that rejected, concretely. There are **no aggregates**: an aggregate is a consistency boundary for writes, and nothing here writes content, since Contentful owns that and the only write path in the tree is a contact submission. There are **no repositories** as a domain abstraction, because a single read seam already exists and Astro's content collections are the read model. There are **no domain events**, because a publish is not an event this runtime observes: a Contentful webhook rebuilds the site instead. And the schemas are deliberately **not framework-free**, because Astro drives app-wide typing through `CollectionEntry` and a parallel model would be the same shapes written twice.
+What that rejected, concretely. There are **no aggregates**: an aggregate is a consistency boundary for writes, and nothing here writes content, since the CMS owns that and the only write path in the tree is a contact submission. There are **no repositories** as a domain abstraction, because a single read seam already exists and Astro's content collections are the read model. There are **no domain events**, because a publish is not an event this runtime observes: a publish in the CMS dispatches a rebuild of the site instead. And the schemas are deliberately **not framework-free**, because Astro drives app-wide typing through `CollectionEntry` and a parallel model would be the same shapes written twice.
 
 Value objects are decided per concept rather than by default, which is why there is no branded `Slug` type even though a Slug is persisted, addresses a page and reaches JSON-LD: it is minted in two modules and one module turns it into a path, so the minting boundary already gives the guarantee a brand would.
 

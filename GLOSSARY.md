@@ -2,7 +2,7 @@
 
 The content domain of a personal editorial site: a writer's blog and portfolio. It covers what gets written and shown (Articles, Projects, Testimonials), the people and places behind it (Authors, Quotees, Cities), how writing is organized (Tags), and the editorial rules that shape how pieces are surfaced.
 
-Contact submissions and breadcrumbs have folders under [`src/domain`](./src/domain) but no entry here: they are site plumbing, not editorial vocabulary.
+Contact submissions, breadcrumbs, the site settings and the navigation menus have folders under [`src/domain`](./src/domain) but no entry here: they are site plumbing, not editorial vocabulary.
 
 ## Content Types
 
@@ -25,7 +25,7 @@ _Avoid_: review, endorsement, recommendation, quote (bare).
 ## People & Places
 
 **Author**:
-The person credited with writing an Article, described by name, job title, current company, bio, profile image, and social links. In practice almost always Bianca, but the model is deliberately not exclusive to one Author: multiple Authors are supported. One Author is one Slug: the name is a display label, so two Authors sharing a name are still two Authors, each with their own Articles.
+The person credited with writing an Article, described by name, job title, current company, bio, profile image, and social links. In the CMS an Author is a byline, credited on the Article. In practice almost always Bianca, but the model is deliberately not exclusive to one Author: multiple Authors are supported. One Author is one Slug: the name is a display label, so two Authors sharing a name are still two Authors, each with their own Articles.
 _Avoid_: writer, contributor, user, admin.
 
 **Byline**:

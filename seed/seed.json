@@ -1,0 +1,117 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Bianca Fiore",
+		"description": "The editorial content model of biancafiore.me",
+		"author": "Ferran Buireu"
+	},
+	"settings": {
+		"title": "Bianca Fiore",
+		"tagline": "Bianca Fiore: personal website.",
+		"social": { "linkedin": "https://www.linkedin.com/in/bianca-fiore-88b83199" }
+	},
+	"menus": [
+		{
+			"name": "header",
+			"label": "Header",
+			"items": [
+				{ "type": "custom", "label": "back to start [Home]", "url": "/" },
+				{ "type": "custom", "label": "[Projects] I worked on", "url": "/projects" },
+				{ "type": "custom", "label": "my [Articles]", "url": "/articles" },
+				{ "type": "custom", "label": "know more [About] me", "url": "/about" },
+				{ "type": "custom", "label": "[Contact] me", "url": "/contact" }
+			]
+		},
+		{
+			"name": "footer",
+			"label": "Footer",
+			"items": [
+				{ "type": "custom", "label": "Terms and Conditions", "url": "/terms-and-conditions" },
+				{ "type": "custom", "label": "Privacy Policy", "url": "/privacy-policy" }
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": ["articles"]
+		}
+	],
+	"collections": [
+		{
+			"slug": "articles",
+			"label": "Articles",
+			"labelSingular": "Article",
+			"titleField": "title",
+			"dateField": "publish_date",
+			"supports": ["drafts", "revisions", "scheduling", "search", "seo"],
+			"admin": { "listColumns": ["publish_date"] },
+			"fields": [
+				{ "slug": "title", "label": "Title", "type": "string", "required": true, "searchable": true },
+				{ "slug": "content", "label": "Content", "type": "portableText", "required": true, "searchable": true },
+				{ "slug": "description", "label": "Description", "type": "text" },
+				{ "slug": "publish_date", "label": "Publish date", "type": "datetime", "required": true, "indexed": true },
+				{ "slug": "featured_image", "label": "Featured image", "type": "image" },
+				{ "slug": "featured_article", "label": "Featured article", "type": "boolean", "defaultValue": false },
+				{ "slug": "is_favorite", "label": "Favorite", "type": "boolean", "defaultValue": false },
+				{ "slug": "is_republished", "label": "Republished", "type": "boolean", "defaultValue": false },
+				{ "slug": "original_source", "label": "Original source", "type": "string" },
+				{
+					"slug": "related_articles",
+					"label": "Related articles",
+					"type": "reference",
+					"validation": { "targetCollection": "articles", "multiple": true }
+				}
+			]
+		},
+		{
+			"slug": "cities",
+			"label": "Cities",
+			"labelSingular": "City",
+			"titleField": "name",
+			"dateField": "start_date",
+			"routable": false,
+			"supports": ["drafts", "revisions"],
+			"fields": [
+				{ "slug": "name", "label": "Name", "type": "string", "required": true },
+				{ "slug": "latitude", "label": "Latitude", "type": "number", "required": true },
+				{ "slug": "longitude", "label": "Longitude", "type": "number", "required": true },
+				{ "slug": "start_date", "label": "Start date", "type": "datetime", "required": true, "indexed": true },
+				{ "slug": "end_date", "label": "End date", "type": "datetime" },
+				{ "slug": "description", "label": "Description", "type": "text", "required": true },
+				{ "slug": "image", "label": "Image", "type": "image", "required": true }
+			]
+		},
+		{
+			"slug": "projects",
+			"label": "Projects",
+			"labelSingular": "Project",
+			"titleField": "name",
+			"routable": false,
+			"supports": ["drafts", "revisions"],
+			"fields": [
+				{ "slug": "name", "label": "Name", "type": "string", "required": true },
+				{ "slug": "description", "label": "Description", "type": "portableText", "required": true },
+				{ "slug": "image", "label": "Image", "type": "image", "required": true }
+			]
+		},
+		{
+			"slug": "testimonials",
+			"label": "Testimonials",
+			"labelSingular": "Testimonial",
+			"titleField": "author",
+			"routable": false,
+			"supports": ["drafts", "revisions"],
+			"fields": [
+				{ "slug": "author", "label": "Author", "type": "string", "required": true },
+				{ "slug": "quote", "label": "Quote", "type": "text", "required": true },
+				{ "slug": "role", "label": "Role", "type": "string", "required": true },
+				{ "slug": "image", "label": "Image", "type": "image", "required": true }
+			]
+		}
+	]
+}

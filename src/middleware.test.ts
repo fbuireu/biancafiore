@@ -12,8 +12,10 @@ const respond = () =>
 		Parameters<typeof onRequest>[1]
 	>;
 
-const headersOf = async () => {
-	const response = await onRequest({} as Parameters<typeof onRequest>[0], respond);
+const SITE = "https://biancafiore.me";
+
+const headersOf = async (path = "/") => {
+	const response = await onRequest({ url: new URL(path, SITE) } as Parameters<typeof onRequest>[0], respond);
 
 	return (response as Response).headers;
 };
@@ -80,5 +82,23 @@ describe("onRequest", () => {
 		vi.stubEnv("DEV", true);
 
 		expect(scriptSources(await headersOf())).toContain("'unsafe-inline'");
+	});
+
+	it("leaves EmDash's own routes to the headers EmDash sets, so the site's policy cannot break the admin", async () => {
+		vi.stubEnv("DEV", false);
+
+		const headers = await headersOf("/_emdash/admin");
+
+		for (const header of Object.keys(securityHeaders({ isDevelopment: false, inlineScriptHashes: HASHES }))) {
+			expect(`${header}: ${headers.get(header)}`).toBe(`${header}: null`);
+		}
+	});
+
+	it("still sets the site's headers on a page whose path merely starts with the same letters", async () => {
+		vi.stubEnv("DEV", false);
+
+		expect((await headersOf("/_emdashboard")).get("Content-Security-Policy")).toBe(
+			securityHeaders({ isDevelopment: false, inlineScriptHashes: HASHES })["Content-Security-Policy"],
+		);
 	});
 });

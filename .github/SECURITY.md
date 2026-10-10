@@ -14,9 +14,10 @@ patch; fixes ship by deploying.
 
 ## Scope
 
-Most of the site is prerendered content; the dynamic surface is small. Content
-itself (articles, projects, testimonials) lives in Contentful and is not
-writable from this repository.
+The site is mostly content, rendered on request and served from the Workers
+cache. Content itself (articles, projects, testimonials) lives in EmDash, the CMS
+the same Worker hosts, and is written through its admin, never from this
+repository.
 
 ### In scope
 
@@ -24,12 +25,14 @@ writable from this repository.
   Resend, gated by reCAPTCHA v3.
 - **The security headers middleware**, which sets the CSP and friends on every
   response.
-- **The external service boundaries**: Contentful, Turso, and Resend.
+- **The external service boundaries**: Turso and Resend.
+- **The CMS itself**: its admin at `biancafiore.me/_emdash/admin`, its API and
+  tokens, and the plugins in `src/infrastructure/cms/plugins`.
 
 ### Out of scope
 
 - Vulnerabilities in the platforms and services the site is built on:
-  Cloudflare, Contentful, Turso, Resend, Google reCAPTCHA, Astro. Report those
+  Cloudflare, EmDash, Turso, Resend, Google reCAPTCHA, Astro. Report those
   to them.
 - Rate limiting, quota exhaustion or cost caused by ordinary use of the
   public routes.

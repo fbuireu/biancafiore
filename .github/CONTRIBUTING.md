@@ -1,7 +1,7 @@
 # Contributing to biancafiore
 
 Thanks for considering it. This is the portfolio and blog of a content writer, an Astro SSR site on
-Cloudflare Workers with content served from Contentful, and that split decides what a contribution can be:
+Cloudflare Workers with content authored in EmDash, the CMS the same Worker hosts, and that split decides what a contribution can be:
 **code lives here, content does not**. Read this before your first pull request; it will save you a rejected
 commit.
 
@@ -27,7 +27,7 @@ Check the existing issues first, then use the [bug report template](ISSUE_TEMPLA
 what you did, what you expected, and what actually happened, with the browser and OS.
 
 **A mistake in the text is a content issue, not a bug.** Articles, projects and testimonials live in
-Contentful, so a pull request cannot fix them; use the
+the CMS, so a pull request cannot fix them; use the
 [content issue template](ISSUE_TEMPLATE/content_issue.yml) and it will be corrected in the CMS.
 
 Security issues go through the [Security Policy](./SECURITY.md), never a public issue.

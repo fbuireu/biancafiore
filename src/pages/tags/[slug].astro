@@ -1,29 +1,21 @@
 ---
-import { getCollection } from "astro:content";
 import type { SeoMetadata } from "@const/types";
 import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
-import { resolveArticles } from "@modules/core/utils/entries";
+import { readArticles, readTag, resolveArticles } from "@modules/core/utils/entries";
 import { buildArticleListSchema } from "@modules/core/utils/jsonLd";
 import { tagPageCopy } from "@modules/core/utils/tagPage";
-import type { InferGetStaticPropsType } from "astro";
 import "./_page-tags.css";
 import "./_tag.css";
 
-type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const entry = Astro.params.slug ? await readTag(Astro.params.slug) : undefined;
 
-export const prerender = true;
+if (!entry) return Astro.rewrite("/404");
 
-export async function getStaticPaths() {
-	const tags = await getCollection("tags");
-
-	return tags.map(({ data }) => ({ params: { slug: data.slug }, props: { tag: data } }));
-}
-
-const { tag } = Astro.props;
-const articles = await resolveArticles(tag.articles);
+const tag = entry.data;
+const articles = resolveArticles({ references: tag.articles, articles: await readArticles() });
 const { heading, title, description } = tagPageCopy(tag);
 
 const metadata: Partial<SeoMetadata> = { title, description };

@@ -1,8 +1,8 @@
 # Rendering and Routing
 
-The site is configured as `output: "server"` on the Cloudflare adapter, and then almost none of it is rendered on request. Every content page opts into prerendering with `export const prerender = true`, so the site ships as HTML served from the edge and the SSR runtime is invoked only for genuinely dynamic paths: the contact page and its server action, and the on-demand 404 and 500. [ADR 0011](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0011-hybrid-rendering-prerender-content-ssr-dynamic.md) records the trade; [ADR 0001](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0001-astro-ssr-on-cloudflare-workers.md) records the host and the constraints it imposes.
+The site is configured as `output: "server"` on the Cloudflare adapter, and every content page renders on request: the content lives in the Worker's own D1 database, which a build cannot read, so there is nothing to prerender. What keeps that cheap is the Workers cache in front of the Worker, which answers a page until EmDash purges it on a publish; only the two legal pages, which read no content, still prerender. [ADR 0022](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0022-content-renders-per-request-behind-the-workers-cache.md) records the trade, which replaced the prerendering of [ADR 0011](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0011-hybrid-rendering-prerender-content-ssr-dynamic.md); [ADR 0001](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0001-astro-ssr-on-cloudflare-workers.md) records the host and the constraints it imposes.
 
-A test asserts `prerender` on every page the ADR says ships as static HTML, so a route cannot quietly start costing a request.
+The admin lives on the same origin, at `/_emdash/admin`, and EmDash's API under `/_emdash/api`; neither is ever cached.
 
 ---
 
@@ -20,6 +20,7 @@ A test asserts `prerender` on every page the ADR says ships as static HTML, so a
 | `/tags/[slug]` | A Tag, or an Author Tag |
 | `/privacy-policy`, `/terms-and-conditions` | Legal |
 | `/rss.xml` | The feed, re-sorted by publish date rather than by the Author's preference |
+| `/sitemap.xml` | Every published page, rendered on request; `/sitemap-index.xml` redirects to it |
 | `/404`, `/500` | Errors |
 
 **One module spells a content URL.** A route table turns a Slug into a path, and one helper folds in the origin: it is the tree's only reader of the site URL, so a canonical URL and a JSON-LD URL cannot disagree about where the site lives. Nothing concatenates a route constant with a slug.
@@ -44,4 +45,4 @@ It is `true` in the `development` environment, which is what makes the per-PR pr
 
 ## Images
 
-The image service switches by environment: Cloudflare's in a production build, Contentful or passthrough otherwise. One consequence is worth knowing, because it is the reason a helper is exported at all: a `/cdn-cgi/image` path cannot be fetched at build time, so the blur-up placeholder generator bypasses the switch and reads the origin URL directly.
+The image service switches by environment: Cloudflare's `/cdn-cgi/image` on the site's own origin in a production build, and the original file everywhere else, since a preview on `workers.dev` or `localhost` sits on no zone that could transform it. The blur-up placeholder costs nothing either way: it is decoded from the blurhash EmDash stores for every upload.

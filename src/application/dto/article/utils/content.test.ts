@@ -1,726 +1,437 @@
-import { describe, expect, it, vi } from "vitest";
-import type { RawArticle } from "../types";
-import { renderArticleContent } from "./content";
+import { IMAGE_CDN } from "@const/index";
+import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
+import { BLURHASH, rawEntry } from "@tests/doubles/cmsEntries";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import type { PortableTextContent } from "../../shared/portableText";
+import type { ArticleFields } from "../types";
+import { prepareArticleContent } from "./content";
 
-vi.mock("astro:content", async () => {
-	const { z } = await import("@shared/utils/zod");
+const IMAGE_URL = `${MEDIA_FILE_PATH}hero.jpg`;
 
-	return { reference: () => z.custom(() => true) };
+afterEach(() => {
+	vi.unstubAllEnvs();
 });
 
-const text = (value: string) => ({ nodeType: "text", value, marks: [], data: {} });
-const paragraph = (value: string) => ({ nodeType: "paragraph", data: {}, content: [text(value)] });
+let key = 0;
+const nextKey = () => `k${key++}`;
+
+interface SpanParams {
+	text: string;
+	marks?: string[];
+}
+
+const span = ({ text, marks = [] }: SpanParams) => ({ _type: "span", _key: nextKey(), text, marks });
+
+interface BlockParams {
+	text?: string;
+	style?: string;
+	children?: ReturnType<typeof span>[];
+	markDefs?: Record<string, unknown>[];
+}
+
+const block = ({ text = "", style = "normal", children = [span({ text })], markDefs = [] }: BlockParams) => ({
+	_type: "block",
+	_key: nextKey(),
+	style,
+	children,
+	markDefs,
+});
+
+const paragraph = (text: string) => block({ text });
 
 interface HeadingParams {
 	level: number;
 	value: string;
 }
 
-const heading = ({ level, value }: HeadingParams) => ({
-	nodeType: `heading-${level}`,
-	data: {},
-	content: [text(value)],
-});
+const heading = ({ level, value }: HeadingParams) => block({ text: value, style: `h${level}` });
 
-const makeArticle = (content: unknown[]): RawArticle =>
-	({
-		sys: {},
-		fields: { title: "An article", content: { nodeType: "document", data: {}, content } },
-	}) as unknown as RawArticle;
+const linked = (href: unknown) =>
+	block({
+		children: [span({ text: "a link", marks: ["link-1"] })],
+		markDefs: [{ _type: "link", _key: "link-1", href }],
+	});
 
-describe("renderArticleContent headings", () => {
-	it("collects a heading's level, anchor id, authored text and the scope it stamped on the section", () => {
-		const { content, headings } = renderArticleContent(makeArticle([heading({ level: 3, value: "Tips & Tricks" })]));
+interface TypedParams extends Record<string, unknown> {
+	_type: string;
+}
+
+const typed = (fields: TypedParams) => ({ _key: nextKey(), ...fields });
+
+const makeArticle = (content: unknown[]) =>
+	rawEntry<ArticleFields>({
+		slug: "an-article",
+		data: { title: "An article", content: content as PortableTextContent, publish_date: "2024-01-01" },
+	});
+
+const prepare = (content: unknown[]) => prepareArticleContent(makeArticle(content));
+
+const prepared = (content: unknown[]) => prepare(content).content;
+
+const markDefOf = (href: unknown) => {
+	const [{ markDefs }] = prepared([linked(href)]) as unknown as [{ markDefs: Record<string, unknown>[] }];
+
+	return markDefs[0];
+};
+
+describe("prepareArticleContent headings", () => {
+	it("collects a heading's level, anchor id, authored text and the scope it stamps on the heading", () => {
+		const { content, headings } = prepare([heading({ level: 3, value: "Tips & Tricks" })]);
 
 		expect(headings).toEqual([{ level: 3, id: "tips-tricks", text: "Tips & Tricks", scope: "--section-1" }]);
-		expect(content).toContain('<section style="--is: --section-1">');
+		expect(content[0]).toMatchObject({
+			_type: "articleHeading",
+			tag: "h3",
+			anchor: "tips-tricks",
+			text: "Tips & Tricks",
+			scope: "--section-1",
+		});
 	});
 
 	it("collects the headings in document order, whatever order their levels come in", () => {
-		const { headings } = renderArticleContent(
-			makeArticle([
-				heading({ level: 4, value: "Third" }),
-				paragraph("Body"),
-				heading({ level: 2, value: "First" }),
-				heading({ level: 3, value: "Second" }),
-			]),
-		);
+		const { headings } = prepare([
+			heading({ level: 4, value: "Deep" }),
+			paragraph("Body"),
+			heading({ level: 2, value: "Top" }),
+		]);
 
-		expect(headings.map(({ text: value }) => value)).toEqual(["Third", "First", "Second"]);
+		expect(headings.map(({ text }) => text)).toEqual(["Deep", "Top"]);
 	});
 
-	it("renders an h1 but collects nothing for it, so the page title stays out of the Table of Contents", () => {
-		const { content, headings } = renderArticleContent(
-			makeArticle([heading({ level: 1, value: "Title" }), heading({ level: 2, value: "Section" })]),
-		);
+	it("anchors an h1 but collects nothing for it, so the page title stays out of the Table of Contents", () => {
+		const { content, headings } = prepare([heading({ level: 1, value: "Title" })]);
 
-		expect(headings).toEqual([{ level: 2, id: "section", text: "Section", scope: "--section-1" }]);
-		expect(content).toContain('<h1 id="title"');
+		expect(headings).toEqual([]);
+		expect(content[0]).toMatchObject({ _type: "articleHeading", tag: "h1", anchor: "title", text: "Title" });
+		expect(content[0]).not.toHaveProperty("scope");
 	});
 
 	it("numbers a section with the place its heading takes in the collected list", () => {
-		const { content, headings } = renderArticleContent(
-			makeArticle([
-				heading({ level: 1, value: "Title" }),
-				heading({ level: 2, value: "First" }),
-				heading({ level: 3, value: "Second" }),
-			]),
-		);
+		const { headings } = prepare([
+			heading({ level: 2, value: "One" }),
+			heading({ level: 1, value: "Skipped" }),
+			heading({ level: 3, value: "Two" }),
+		]);
 
-		expect(headings).toHaveLength(2);
-		expect(content).toContain("<section>\n");
-		expect(content).toContain('<section style="--is: --section-1">');
-		expect(content).toContain('<section style="--is: --section-2">');
-		expect(content).not.toContain("--section-3");
+		expect(headings.map(({ scope }) => scope)).toEqual(["--section-1", "--section-2"]);
 	});
 
-	it("writes the anchor the collected id spells, escaping the text only in the body", () => {
-		const { content, headings } = renderArticleContent(
-			makeArticle([heading({ level: 2, value: `Why & How <b> "now"` })]),
-		);
-		const [collected] = headings;
+	it("reads a heading's text across every span, whatever marks the editor put on them", () => {
+		const { headings } = prepare([
+			block({ style: "h2", children: [span({ text: "Bold " }), span({ text: "move", marks: ["strong"] })] }),
+		]);
 
-		expect(content).toContain(`<h2 id="${collected.id}" class="article__heading flex align-baseline">`);
-		expect(content).toContain(`<a href="#${collected.id}">Why &amp; How &lt;b&gt; &quot;now&quot;</a>`);
-		expect(collected.text).toBe(`Why & How <b> "now"`);
+		expect(headings.map(({ text }) => text)).toEqual(["Bold move"]);
 	});
 
 	it("gives a heading that repeats an earlier one its own anchor, so the table of contents jumps to each", () => {
-		const { content, headings } = renderArticleContent(
-			makeArticle([
-				heading({ level: 2, value: "Conclusion" }),
-				heading({ level: 2, value: "Conclusion" }),
-				heading({ level: 3, value: "Conclusion" }),
-			]),
-		);
+		const { headings } = prepare([
+			heading({ level: 2, value: "Conclusion" }),
+			heading({ level: 2, value: "Conclusion" }),
+		]);
 
-		expect(headings.map(({ id }) => id)).toEqual(["conclusion", "conclusion-2", "conclusion-3"]);
-		expect(content).toContain('<h2 id="conclusion-2" class="article__heading flex align-baseline">');
-		expect(content).toContain('<a href="#conclusion-3">Conclusion</a>');
+		expect(headings.map(({ id }) => id)).toEqual(["conclusion", "conclusion-2"]);
 	});
 
 	it("counts the h1 among the anchors too, since every heading id lives in the one document", () => {
-		const { content, headings } = renderArticleContent(
-			makeArticle([heading({ level: 1, value: "Title" }), heading({ level: 2, value: "Title" })]),
-		);
+		const { headings } = prepare([heading({ level: 1, value: "Intro" }), heading({ level: 2, value: "Intro" })]);
 
-		expect(content).toContain('<h1 id="title"');
-		expect(headings.map(({ id }) => id)).toEqual(["title-2"]);
+		expect(headings.map(({ id }) => id)).toEqual(["intro-2"]);
 	});
 
 	it("never hands a heading an anchor an earlier heading already spells", () => {
-		const { headings } = renderArticleContent(
-			makeArticle([
-				heading({ level: 2, value: "A" }),
-				heading({ level: 2, value: "A" }),
-				heading({ level: 2, value: "A 2" }),
-			]),
-		);
+		const { headings } = prepare([
+			heading({ level: 2, value: "Step" }),
+			heading({ level: 2, value: "Step 2" }),
+			heading({ level: 2, value: "Step" }),
+		]);
 
 		expect(new Set(headings.map(({ id }) => id)).size).toBe(3);
-		expect(headings.map(({ id }) => id)).toEqual(["a", "a-2", "a-2-2"]);
-	});
-
-	it.each([
-		["only punctuation", "?!"],
-		["a script slugify strips whole", "Ελληνικά"],
-		["a script slugify strips whole", "日本語"],
-	])("gives a heading of %s (%s) an anchor rather than an empty id", (_name, value) => {
-		const { content, headings } = renderArticleContent(makeArticle([heading({ level: 2, value })]));
-
-		expect(headings.map(({ id }) => id)).toEqual(["section"]);
-		expect(content).toContain('<h2 id="section"');
-		expect(content).not.toContain('id=""');
 	});
 
 	it("numbers the headings that fall back to a section anchor, so each stays addressable", () => {
-		const { headings } = renderArticleContent(
-			makeArticle([heading({ level: 2, value: "日本語" }), heading({ level: 2, value: "?!" })]),
-		);
+		const { headings } = prepare([heading({ level: 2, value: "!!!" }), heading({ level: 2, value: "日本語" })]);
 
 		expect(headings.map(({ id }) => id)).toEqual(["section", "section-2"]);
 	});
 
 	it("answers with an empty heading list for a body that has none", () => {
-		const { content, headings } = renderArticleContent(makeArticle([paragraph("Just prose")]));
-
-		expect(headings).toEqual([]);
-		expect(content).toContain("<p>Just prose</p>");
+		expect(prepare([paragraph("Body")]).headings).toEqual([]);
 	});
 
 	it("starts a fresh heading list per article rather than accumulating across calls", () => {
-		const article = makeArticle([heading({ level: 2, value: "Section" })]);
+		prepare([heading({ level: 2, value: "First" })]);
 
-		renderArticleContent(article);
-		renderArticleContent(article);
-
-		expect(renderArticleContent(article).headings).toHaveLength(1);
+		expect(prepare([heading({ level: 2, value: "First" })]).headings.map(({ id }) => id)).toEqual(["first"]);
 	});
 });
 
-const hyperlink = (uri: string) => ({
-	nodeType: "hyperlink",
-	data: { uri },
-	content: [text("a link")],
-});
-
-interface EmbedParams {
-	contentType: string;
-	fields?: Record<string, unknown>;
-	inline?: boolean;
-}
-
-const embed = ({ contentType, fields = {}, inline = false }: EmbedParams) => ({
-	nodeType: inline ? "embedded-entry-inline" : "embedded-entry-block",
-	data: { target: { sys: { contentType: { sys: { id: contentType } } }, fields } },
-	content: [],
-});
-
-interface EntryHyperlinkParams {
-	contentType: string;
-	fields: Record<string, unknown>;
-	label?: string;
-}
-
-const entryHyperlink = ({ contentType, fields, label = "read this" }: EntryHyperlinkParams) => ({
-	nodeType: "entry-hyperlink",
-	data: { target: { sys: { contentType: { sys: { id: contentType } } }, fields } },
-	content: [text(label)],
-});
-
-const assetHyperlink = (file: unknown) => ({
-	nodeType: "asset-hyperlink",
-	data: { target: { fields: { file } } },
-	content: [text("the file")],
-});
-
-interface AssetParams {
-	url: string;
-	extra?: Record<string, unknown>;
-}
-
-const asset = ({ url, extra = {} }: AssetParams) => ({
-	url,
-	details: { image: { width: 1200, height: 630 } },
-	...extra,
-});
-
-const render = (content: unknown[]) => renderArticleContent(makeArticle(content)).content;
-
-describe("renderArticleContent hyperlinks", () => {
-	it("opens a link to somewhere else in a new tab, and says so to a screen reader", () => {
-		const html = render([{ ...paragraph("x"), content: [hyperlink("https://example.com/a")] }]);
-
-		expect(html).toContain('target="_blank"');
-		expect(html).toContain('rel="noopener noreferrer"');
-		expect(html).toContain('aria-hidden="true" class="external-link-icon"');
+describe("prepareArticleContent links", () => {
+	it("opens a link to somewhere else in a new tab, which the stylesheet marks as external", () => {
+		expect(markDefOf("https://example.com/a")).toMatchObject({ href: "https://example.com/a", blank: true });
 	});
 
-	it("keeps a link to our own page in the same tab, with no external cue", () => {
-		const html = render([{ ...paragraph("x"), content: [hyperlink("https://biancafiore.me/about")] }]);
-
-		expect(html).toContain('<a href="https://biancafiore.me/about">');
-		expect(html).not.toContain("external-link-icon");
-	});
-
-	it("treats a relative link as our own, whatever environment it renders in", () => {
-		expect(render([{ ...paragraph("x"), content: [hyperlink("/about")] }])).toContain('<a href="/about">');
-	});
-
-	it("refuses a javascript: link an editor typed, leaving the href empty rather than live", () => {
-		const html = render([{ ...paragraph("x"), content: [hyperlink("javascript:alert(1)")] }]);
-
-		expect(html).toContain('href=""');
-		expect(html).not.toContain("alert(1)");
-	});
-
-	it("escapes a quote in a link, so it cannot close the attribute carrying it", () => {
-		const html = render([{ ...paragraph("x"), content: [hyperlink('https://example.com/?q="onerror=x')] }]);
-
-		expect(html).not.toContain('?q="onerror');
-		expect(html).toContain("&quot;");
-	});
-});
-
-describe("renderArticleContent embedded articles", () => {
-	it("links an embedded Article through the routes module rather than a hand-written path", () => {
-		const html = render([
-			{
-				...paragraph("x"),
-				content: [embed({ contentType: "article", fields: { slug: "a-piece", title: "A piece" }, inline: true })],
-			},
-		]);
-
-		expect(html).toContain('<a href="/articles/a-piece">A piece</a>');
-	});
-
-	it("links an embedded Article by its trimmed slug, the id its page is generated from", () => {
-		const html = render([
-			{
-				...paragraph("x"),
-				content: [embed({ contentType: "article", fields: { slug: "  a-piece  ", title: "A piece" }, inline: true })],
-			},
-		]);
-
-		expect(html).toContain('<a href="/articles/a-piece">A piece</a>');
-	});
-
-	it("renders nothing for an embedded entry that is not an Article", () => {
-		const html = render([
-			{
-				...paragraph("x"),
-				content: [embed({ contentType: "author", fields: { slug: "bianca", title: "Bianca" }, inline: true })],
-			},
-		]);
-
-		expect(html).not.toContain("<a href");
-	});
-
-	it("renders nothing for an embedded Article the CMS left without a slug", () => {
-		const html = render([
-			{ ...paragraph("x"), content: [embed({ contentType: "article", fields: { title: "A piece" }, inline: true })] },
-		]);
-
-		expect(html).not.toContain("<a href");
-	});
-
-	it("escapes the title of an embedded Article", () => {
-		const html = render([
-			{
-				...paragraph("x"),
-				content: [
-					embed({ contentType: "article", fields: { slug: "a-piece", title: "Why <b>this</b>" }, inline: true }),
-				],
-			},
-		]);
-
-		expect(html).toContain("Why &lt;b&gt;this&lt;/b&gt;");
-	});
-});
-
-describe("renderArticleContent entry and asset hyperlinks", () => {
-	it("addresses an Article an editor linked by its slug", () => {
-		const html = render([
-			{ ...paragraph("x"), content: [entryHyperlink({ contentType: "article", fields: { slug: "a-piece" } })] },
-		]);
-
-		expect(html).toContain('<a href="/articles/a-piece">read this</a>');
-	});
-
-	it("addresses a linked Article by its trimmed slug, the id its page is generated from", () => {
-		const html = render([
-			{ ...paragraph("x"), content: [entryHyperlink({ contentType: "article", fields: { slug: " a-piece " } })] },
-		]);
-
-		expect(html).toContain('<a href="/articles/a-piece">read this</a>');
-	});
-
-	it("keeps the label but drops the link when the entry is not an Article", () => {
-		const html = render([
-			{ ...paragraph("x"), content: [entryHyperlink({ contentType: "author", fields: { slug: "bianca" } })] },
-		]);
-
-		expect(html).toContain("read this");
-		expect(html).not.toContain("<a href");
-	});
-
-	it("absolutises an asset link, since Contentful serves it protocol relative", () => {
-		const html = render([{ ...paragraph("x"), content: [assetHyperlink({ url: "//cdn/report.pdf" })] }]);
-
-		expect(html).toContain('href="https://cdn/report.pdf"');
-		expect(html).toContain('target="_blank"');
-	});
-
-	it("keeps an asset link that is already absolute, rather than prefixing the scheme twice", () => {
-		const html = render([{ ...paragraph("x"), content: [assetHyperlink({ url: "https://cdn/report.pdf" })] }]);
-
-		expect(html).toContain('href="https://cdn/report.pdf"');
-		expect(html).not.toContain("https:https:");
-	});
-
-	it("keeps the label but drops the link when the asset carries no file", () => {
-		const html = render([{ ...paragraph("x"), content: [assetHyperlink(undefined)] }]);
-
-		expect(html).toContain("the file");
-		expect(html).not.toContain("<a href");
-	});
-});
-
-describe("renderArticleContent video and iframe embeds", () => {
-	it("turns a youtube watch url into its embed url, which is what an iframe can load", () => {
-		const html = render([
-			embed({ contentType: "videoEmbed", fields: { url: "https://www.youtube.com/watch?v=abc123", title: "A talk" } }),
-		]);
-
-		expect(html).toContain('src="https://www.youtube.com/embed/abc123"');
-	});
-
-	it("turns a youtu.be short url into the same embed url", () => {
-		const html = render([
-			embed({ contentType: "videoEmbed", fields: { url: "https://youtu.be/abc123", title: "A talk" } }),
-		]);
-
-		expect(html).toContain('src="https://www.youtube.com/embed/abc123"');
-	});
-
-	it("leaves a url it does not recognise alone rather than mangling it", () => {
-		const html = render([
-			embed({ contentType: "videoEmbed", fields: { url: "https://vimeo.com/12345", title: "A talk" } }),
-		]);
-
-		expect(html).toContain('src="https://vimeo.com/12345"');
-	});
-
-	it("leaves an unparseable url alone rather than throwing on it", () => {
-		const html = render([embed({ contentType: "videoEmbed", fields: { url: "not a url", title: "A talk" } })]);
-
-		expect(html).toContain('src="not a url"');
-	});
-
-	it("escapes the title an editor gave a video", () => {
-		const html = render([
-			embed({ contentType: "videoEmbed", fields: { url: "https://youtu.be/a", title: 'x" onload="y' } }),
-		]);
-
-		expect(html).not.toContain('onload="y"');
-		expect(html).toContain("&quot;");
-	});
-
-	it("renders nothing for a video the CMS left without a title", () => {
-		expect(render([embed({ contentType: "videoEmbed", fields: { url: "https://youtu.be/a" } })])).not.toContain(
-			"<iframe",
-		);
-	});
-
-	it("refuses a javascript: iframe source, leaving the src empty rather than live", () => {
-		const html = render([embed({ contentType: "iframeEmbed", fields: { url: "javascript:alert(1)" } })]);
-
-		expect(html).toContain('src=""');
-		expect(html).not.toContain("alert(1)");
-	});
-
-	it("wraps a generic iframe in the block the article stylesheet sizes it through, and a video in nothing", () => {
-		const generic = render([
-			embed({ contentType: "iframeEmbed", fields: { url: "https://example.com/widget", title: "A widget" } }),
-		]);
-		const video = render([
-			embed({ contentType: "videoEmbed", fields: { url: "https://youtu.be/a", title: "A talk" } }),
-		]);
-
-		expect(generic).toContain('<div class="iframe-embed"><iframe src="https://example.com/widget"');
-		expect(generic).toContain("</iframe></div>");
-		expect(video).not.toContain("iframe-embed");
-	});
-
-	it("renders an iframe embed with no title rather than the string undefined", () => {
-		const html = render([embed({ contentType: "iframeEmbed", fields: { url: "https://example.com/widget" } })]);
-
-		expect(html).toContain('title=""');
-	});
-});
-
-describe("renderArticleContent image embeds", () => {
-	it("carries the asset's own dimensions onto the img, so the page reserves the space", () => {
-		const html = render([
-			embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset({ url: "//cdn/hero.jpg" }) } } } }),
-		]);
-
-		expect(html).toContain('width="1200"');
-		expect(html).toContain('height="630"');
-	});
-
-	it("emits a srcset, so a narrow screen does not download the widest crop", () => {
-		const html = render([
-			embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset({ url: "//cdn/hero.jpg" }) } } } }),
-		]);
-
-		expect(html).toContain("srcset=");
-		expect(html).toContain(" 400w");
-	});
-
-	it("takes the alt text from the asset's description, falling back to its title", () => {
-		const described = render([
-			embed({
-				contentType: "imageEmbed",
-				fields: { image: { fields: { file: asset({ url: "//cdn/a.jpg" }), description: "A described image" } } },
-			}),
-		]);
-		const titled = render([
-			embed({
-				contentType: "imageEmbed",
-				fields: { image: { fields: { file: asset({ url: "//cdn/a.jpg" }), title: "A titled image" } } },
-			}),
-		]);
-
-		expect(described).toContain('alt="A described image"');
-		expect(titled).toContain('alt="A titled image"');
-	});
-
-	it("emits an empty alt for a decorative image the editor described neither way", () => {
-		expect(
-			render([
-				embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } } }),
-			]),
-		).toContain('alt=""');
-	});
-
-	it("renders a caption only when the editor wrote one", () => {
-		const captioned = render([
-			embed({
-				contentType: "imageEmbed",
-				fields: { caption: "The caption", image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } },
-			}),
-		]);
-
-		expect(captioned).toContain("<figcaption>The caption</figcaption>");
-		expect(
-			render([
-				embed({ contentType: "imageEmbed", fields: { image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } } }),
-			]),
-		).not.toContain("<figcaption>");
-	});
-
-	it("escapes a caption, since an editor writes it", () => {
-		const html = render([
-			embed({
-				contentType: "imageEmbed",
-				fields: { caption: "<script>alert(1)</script>", image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } },
-			}),
-		]);
-
-		expect(html).not.toContain("<script>alert");
-		expect(html).toContain("&lt;script&gt;");
-	});
-
-	it("renders nothing for an image embed whose asset carries no file", () => {
-		expect(render([embed({ contentType: "imageEmbed", fields: { image: { fields: {} } } })])).not.toContain("<figure");
-	});
-});
-
-describe("renderArticleContent code and split blocks", () => {
-	it("escapes a code block, so a snippet about html does not become html", () => {
-		const html = render([embed({ contentType: "codeBlock", fields: { code: "<div onclick='x'>" } })]);
-
-		expect(html).toContain("<pre><code>&lt;div onclick=&#39;x&#39;&gt;</code></pre>");
-	});
-
-	it("renders nothing for a code block with no code", () => {
-		expect(render([embed({ contentType: "codeBlock", fields: {} })])).not.toContain("<pre>");
-	});
-
-	it("renders a split block's heading and text beside its image", () => {
-		const html = render([
-			embed({
-				contentType: "splitBlock",
-				fields: { heading: "A heading", text: "Some text", image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } },
-			}),
-		]);
-
-		expect(html).toContain("<h3>A heading</h3>");
-		expect(html).toContain("<p>Some text</p>");
-		expect(html).toContain('class="split"');
-	});
-
-	it("renders nothing for an embedded entry of a type it does not know, even one carrying a usable image", () => {
-		const image = { fields: { file: asset({ url: "//cdn/a.jpg" }) } };
-
-		expect(render([embed({ contentType: "somethingElse", fields: { image } })]).trim()).toBe("");
-	});
-
-	it("renders nothing at all for an embedded entry of a type it does not know", () => {
-		expect(render([embed({ contentType: "somethingElse", fields: { url: "https://example.com" } })]).trim()).toBe("");
-	});
-});
-
-describe("renderArticleContent tag links and embedded assets", () => {
-	const embeddedAsset = (fields: Record<string, unknown>) => ({
-		nodeType: "embedded-asset-block",
-		data: { target: { fields } },
-		content: [],
-	});
-
-	it("opens a link to a tag page in a new tab, but gives it no external cue", () => {
-		const html = render([{ ...paragraph("x"), content: [hyperlink("https://biancafiore.me/tags/craft")] }]);
-
-		expect(html).toContain('target="_blank"');
-		expect(html).not.toContain("external-link-icon");
-	});
-
-	it("renders an embedded asset full bleed, with the dimensions the asset carries", () => {
-		const html = render([embeddedAsset({ file: asset({ url: "//cdn/hero.jpg" }) })]);
-
-		expect(html).toContain('class="full-bleed"');
-		expect(html).toContain('width="1200"');
-		expect(html).toContain('height="630"');
-	});
-
-	it("addresses an embedded asset whose url is already absolute by that url, never by a doubled scheme", () => {
-		const html = render([embeddedAsset({ file: asset({ url: "https://cdn/hero.jpg" }) })]);
-
-		expect(html).toContain("/https://cdn/hero.jpg");
-		expect(html).not.toContain("https:https:");
-	});
-
-	it("falls back to the Article's own title for an asset the editor never described", () => {
-		expect(render([embeddedAsset({ file: asset({ url: "//cdn/hero.jpg" }) })])).toContain('alt="An article"');
-	});
-
-	it("prefers the asset's description, and repeats it as the caption", () => {
-		const html = render([embeddedAsset({ file: asset({ url: "//cdn/hero.jpg" }), description: "The scene" })]);
-
-		expect(html).toContain('alt="The scene"');
-		expect(html).toContain("<figcaption>The scene</figcaption>");
-	});
-
-	it("renders nothing for an embedded asset with no file behind it", () => {
-		expect(render([embeddedAsset({})]).trim()).toBe("");
-	});
-
-	it("renders a split block's image half with a srcset", () => {
-		const html = render([
-			embed({
-				contentType: "splitBlock",
-				fields: { image: { fields: { file: asset({ url: "//cdn/a.jpg" }), description: "Alt text" } } },
-			}),
-		]);
-
-		expect(html).toContain('alt="Alt text"');
-		expect(html).toContain("srcset=");
-	});
-
-	it("renders nothing for a split block with no image", () => {
-		expect(render([embed({ contentType: "splitBlock", fields: { heading: "Only a heading" } })]).trim()).toBe("");
-	});
-});
-
-describe("renderArticleContent image embeds with an incomplete asset", () => {
-	const bareAsset = { url: "//cdn/hero.jpg" };
-
-	const imageEmbed = (fields: Record<string, unknown>) =>
-		embed({ contentType: "imageEmbed", fields: { image: { fields: { file: bareAsset, ...fields } } } });
-
-	it("renders an asset carrying no dimensions rather than dropping it", () => {
-		const html = render([imageEmbed({})]);
-
-		expect(html).toContain("<figure");
-		expect(html).toContain('height=""');
-		expect(html).toContain('width=""');
-	});
-
-	it("asks the CDN for a sensible width when the asset declares none", () => {
-		const html = render([imageEmbed({})]);
-
-		expect(html).toContain("width=768");
-	});
-
-	it("prefers the description to the title for the alt", () => {
-		const html = render([imageEmbed({ description: "A view of the bay", title: "hero" })]);
-
-		expect(html).toContain('alt="A view of the bay"');
-	});
-
-	it("escapes an alt that carries markup", () => {
-		const html = render([imageEmbed({ description: 'A "quoted" <b>bay</b>' })]);
-
-		expect(html).toContain("&quot;quoted&quot;");
-		expect(html).not.toContain("<b>bay</b>");
-	});
-
-	it("renders no wrapper class when the embed names no layout", () => {
-		expect(render([imageEmbed({})])).toContain("<figure>");
-	});
-});
-
-describe("renderArticleContent split blocks with an incomplete asset", () => {
-	const splitBlock = (fields: Record<string, unknown>) =>
-		embed({
-			contentType: "splitBlock",
-			fields: { heading: "A heading", image: { fields: { file: { url: "//cdn/side.jpg" }, ...fields } } },
+	it("keeps a link to our own page in the same tab, as a path, so a preview stays on its own origin", () => {
+		expect(markDefOf("https://biancafiore.me/articles/x?y=1#z")).toMatchObject({
+			href: "/articles/x?y=1#z",
+			blank: false,
 		});
-
-	it("renders an asset carrying no dimensions rather than dropping the block", () => {
-		const html = render([splitBlock({})]);
-
-		expect(html).toContain('height=""');
-		expect(html).toContain('width=""');
-		expect(html).toContain("width=768");
 	});
 
-	it("prefers the description to the title for the alt, and falls back to neither", () => {
-		expect(render([splitBlock({ description: "Beside the text" })])).toContain('alt="Beside the text"');
-		expect(render([splitBlock({ title: "side" })])).toContain('alt="side"');
-		expect(render([splitBlock({})])).toContain('alt=""');
+	it("treats a relative link and an in-page anchor as our own and leaves them as written", () => {
+		expect(markDefOf("/about")).toMatchObject({ href: "/about", blank: false });
+		expect(markDefOf("#later")).toMatchObject({ href: "#later", blank: false });
+	});
+
+	it("opens a link to a tag page in a new tab, as a path, so it gets no external cue", () => {
+		expect(markDefOf("https://biancafiore.me/tags/travel")).toMatchObject({ href: "/tags/travel", blank: true });
+	});
+
+	it("keeps a mail link as written, in the same tab", () => {
+		expect(markDefOf("mailto:hi@example.com")).toMatchObject({ href: "mailto:hi@example.com" });
+		expect(markDefOf("mailto:hi@example.com")).not.toHaveProperty("blank");
+	});
+
+	it.each([
+		["a javascript: address", "javascript:alert(1)"],
+		["no href at all", undefined],
+		["an address no URL can be made of", "http://"],
+	])("keeps the label but drops the link for %s", (_case, href) => {
+		const [{ markDefs, children }] = prepared([linked(href)]) as unknown as [
+			{ markDefs: unknown[]; children: { text: string; marks: string[] }[] },
+		];
+
+		expect(markDefs).toEqual([]);
+		expect(children).toEqual([expect.objectContaining({ text: "a link", marks: [] })]);
+	});
+
+	it("prepares a table cell's links against the table's own definitions, and drops a dead one from its spans", () => {
+		const [table] = prepared([
+			typed({
+				_type: "table",
+				markDefs: [
+					{ _type: "link", _key: "shared", href: "https://example.com" },
+					{ _type: "link", _key: "dead", href: "javascript:x" },
+				],
+				rows: [
+					{
+						_key: "r",
+						cells: [
+							{
+								_key: "c",
+								content: [span({ text: "x", marks: ["shared", "dead"] })],
+								markDefs: [{ _type: "link", _key: "own", href: "/about" }],
+							},
+						],
+					},
+				],
+			}),
+		]) as unknown as [
+			{
+				markDefs: Record<string, unknown>[];
+				rows: [{ cells: [{ content: { marks: string[] }[]; markDefs: Record<string, unknown>[] }] }];
+			},
+		];
+
+		expect(table.markDefs).toEqual([expect.objectContaining({ _key: "shared", blank: true })]);
+		expect(table.rows[0].cells[0].content[0].marks).toEqual(["shared"]);
+		expect(table.rows[0].cells[0].markDefs).toEqual([expect.objectContaining({ _key: "own", href: "/about" })]);
 	});
 });
 
-describe("renderArticleContent nodes whose data is not the shape Contentful promised", () => {
-	const unresolvedEntry = { sys: { type: "Link", linkType: "Entry", id: "3kLmNoP" } };
-	const unresolvedAsset = { sys: { type: "Link", linkType: "Asset", id: "8qRsTuV" } };
+interface PreparedImageBlock {
+	src: string;
+	srcset: string;
+	alt: string;
+	width?: number;
+	height?: number;
+	placeholder?: string;
+	caption?: string;
+	layout?: string;
+}
 
-	it("keeps a hyperlink's label but links nowhere when the node carries no uri", () => {
-		const html = render([
-			{ ...paragraph("x"), content: [{ nodeType: "hyperlink", data: {}, content: [text("label")] }] },
-		]);
+describe("prepareArticleContent images", () => {
+	const image = (fields: Record<string, unknown> = {}) =>
+		typed({ _type: "image", asset: { _ref: "01MEDIA", url: IMAGE_URL }, width: 1200, height: 630, ...fields });
 
-		expect(html).toContain("label");
-		expect(html).not.toContain("<a href");
+	const preparedImage = (fields: Record<string, unknown> = {}) =>
+		prepared([image(fields)])[0] as unknown as PreparedImageBlock;
+
+	it("carries the media's own dimensions, so the page reserves the space", () => {
+		expect(preparedImage()).toMatchObject({ width: 1200, height: 630 });
 	});
 
-	it("renders nothing for an embedded entry Contentful left as an unresolved link, rather than failing the build", () => {
-		const inline = { nodeType: "embedded-entry-inline", data: { target: unresolvedEntry }, content: [] };
-		const block = { nodeType: "embedded-entry-block", data: { target: unresolvedEntry }, content: [] };
+	it("builds a srcset, so a narrow screen does not download the widest crop", () => {
+		vi.stubEnv("IMAGE_CDN", IMAGE_CDN.CLOUDFLARE);
 
-		expect(render([{ ...paragraph("x"), content: [inline] }, block])).not.toContain("<a href");
-		expect(render([block]).trim()).toBe("");
+		expect(preparedImage().srcset).toContain(" 400w");
 	});
 
-	it("keeps the label of an entry hyperlink whose target was left unresolved", () => {
-		const link = { nodeType: "entry-hyperlink", data: { target: unresolvedEntry }, content: [text("read this")] };
-		const html = render([{ ...paragraph("x"), content: [link] }]);
-
-		expect(html).toContain("read this");
-		expect(html).not.toContain("<a href");
+	it("takes the alt text the editor wrote, and falls back to the Article's own title", () => {
+		expect(preparedImage({ alt: "A described image" }).alt).toBe("A described image");
+		expect(preparedImage().alt).toBe("An article");
 	});
 
-	it("keeps the label of an asset hyperlink, and renders no embedded asset, whose target was left unresolved", () => {
-		const link = { nodeType: "asset-hyperlink", data: { target: unresolvedAsset }, content: [text("the file")] };
-		const block = { nodeType: "embedded-asset-block", data: { target: unresolvedAsset }, content: [] };
-
-		expect(render([{ ...paragraph("x"), content: [link] }])).not.toContain("<a href");
-		expect(render([block]).trim()).toBe("");
+	it("carries a caption only when the editor wrote one", () => {
+		expect(preparedImage({ caption: "The caption" }).caption).toBe("The caption");
+		expect(preparedImage()).not.toHaveProperty("caption");
 	});
 
-	it("renders no wrapper class for a layout it does not know, even one every object inherits", () => {
-		const html = render([
-			embed({
-				contentType: "imageEmbed",
-				fields: { layout: "toString", image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } },
-			}),
-		]);
-
-		expect(html).toContain("<figure>");
-		expect(html).not.toContain("function");
+	it("decodes the blurhash EmDash stores on the block into a placeholder", () => {
+		expect(preparedImage({ blurhash: BLURHASH }).placeholder).toMatch(/^data:image\/bmp;base64,/);
 	});
 
-	it("wraps an image in the class its known layout names", () => {
-		const html = render([
-			embed({
-				contentType: "imageEmbed",
-				fields: { layout: "breakout", image: { fields: { file: asset({ url: "//cdn/a.jpg" }) } } },
-			}),
-		]);
+	it("reads a blurhash an older block kept in its asset's meta", () => {
+		const fields = { asset: { _ref: "01MEDIA", url: IMAGE_URL, meta: { blurhash: BLURHASH } } };
 
-		expect(html).toContain('<figure class="breakout">');
+		expect(preparedImage(fields).placeholder).toMatch(/^data:image\/bmp;base64,/);
 	});
 
-	it("renders nothing for an image whose dimensions are not numbers, rather than writing them into the markup", () => {
-		const file = { url: "//cdn/a.jpg", details: { image: { width: '1" onerror="alert(1)', height: 630 } } };
+	it.each([
+		["no blurhash", {}],
+		["no dimensions to shape the placeholder", { blurhash: BLURHASH, width: undefined, height: undefined }],
+	])("carries no placeholder with %s", (_case, fields) => {
+		expect(preparedImage(fields)).not.toHaveProperty("placeholder");
+	});
 
-		expect(render([embed({ contentType: "imageEmbed", fields: { image: { fields: { file } } } })])).not.toContain(
-			"onerror",
+	it("names the layout its alignment asks for, and none for one the site does not lay out", () => {
+		expect(preparedImage({ alignment: "full" }).layout).toBe("full-bleed");
+		expect(preparedImage({ alignment: "wide" }).layout).toBe("breakout");
+		expect(preparedImage({ alignment: "center" })).not.toHaveProperty("layout");
+		expect(preparedImage({ alignment: "toString" })).not.toHaveProperty("layout");
+	});
+
+	it("keeps media carrying no dimensions, asking the CDN for a sensible width", () => {
+		vi.stubEnv("IMAGE_CDN", IMAGE_CDN.CLOUDFLARE);
+
+		const prepared = preparedImage({ width: undefined, height: undefined });
+
+		expect(prepared).not.toHaveProperty("width");
+		expect(prepared.src).toContain("width=768");
+	});
+
+	it("drops an image whose dimensions are not numbers, rather than handing them to the markup", () => {
+		expect(prepared([image({ width: '1" onerror="alert(1)' })])).toEqual([]);
+	});
+
+	it("serves an image hosted elsewhere from its absolute url, untransformed", () => {
+		expect(preparedImage({ asset: { _ref: "01MEDIA", url: "https://images.example.com/a.jpg" } }).src).toBe(
+			"https://images.example.com/a.jpg",
 		);
+	});
+
+	it("drops an image whose source is neither a url nor a path on this origin", () => {
+		expect(prepared([typed({ _type: "image", asset: { _ref: "01MEDIA", url: "a.jpg" } })])).toEqual([]);
 		expect(
-			render([{ nodeType: "embedded-asset-block", data: { target: { fields: { file } } }, content: [] }]),
-		).not.toContain("onerror");
+			prepared([typed({ _type: "image", asset: { _ref: "01MEDIA", url: "//images.example.com/a.jpg" } })]),
+		).toEqual([]);
+		expect(prepared([typed({ _type: "image", asset: { _ref: "01MEDIA" } })])).toEqual([]);
+	});
+});
+
+describe("prepareArticleContent split blocks", () => {
+	const split = (fields: Record<string, unknown> = {}) =>
+		typed({ _type: "splitBlock", image: IMAGE_URL, heading: "Heading", text: "Text", ...fields });
+
+	it("carries a split block's heading and text with its image prepared, and the alt the editor wrote", () => {
+		expect(prepared([split({ alt: "Described" })])[0]).toMatchObject({
+			_type: "splitBlock",
+			heading: "Heading",
+			text: "Text",
+			alt: "Described",
+			src: expect.stringContaining("hero.jpg"),
+		});
+	});
+
+	it("gives a split block's image an empty alt when the editor never described it", () => {
+		expect(prepared([split()])[0]).toMatchObject({ alt: "" });
+	});
+
+	it("drops a split block with no image", () => {
+		expect(prepared([split({ image: undefined })])).toEqual([]);
+	});
+});
+
+describe("prepareArticleContent native blocks", () => {
+	it("hands the blocks EmDash renders itself to the page as written, once their fields hold", () => {
+		const blocks = [
+			typed({ _type: "code", code: "<div>" }),
+			typed({ _type: "iframe", src: "https://example.com/widget", title: "Widget" }),
+			typed({ _type: "break", style: "line" }),
+			typed({ _type: "embed", url: "https://vimeo.com/1" }),
+			typed({ _type: "gallery", images: [] }),
+		];
+
+		expect(prepared(blocks)).toEqual(blocks);
+	});
+
+	it("drops a block no component renders, so nothing reaches the page as a hidden warning", () => {
+		expect(prepared([typed({ _type: "somethingElse" }), paragraph("Kept")])).toEqual([
+			expect.objectContaining({ _type: "block" }),
+		]);
+	});
+
+	it.each([
+		["a code block with no code", { _type: "code", code: "" }],
+		["an iframe served over http", { _type: "iframe", src: "http://example.com" }],
+		["an iframe with no source", { _type: "iframe" }],
+		["an embed with no address", { _type: "embed" }],
+	])("drops %s", (_case, fields) => {
+		expect(prepared([typed(fields)])).toEqual([]);
+	});
+
+	it("turns an iframe holding a YouTube watch link into the player, the shape EmDash's editor writes", () => {
+		const [iframe] = prepared([
+			typed({ _type: "iframe", src: "https://www.youtube.com/watch?v=abcdefghijk", title: "A talk" }),
+		]);
+
+		expect(iframe).toMatchObject({
+			src: "https://www.youtube.com/embed/abcdefghijk",
+			width: 560,
+			height: 315,
+			allowFullscreen: true,
+			title: "A talk",
+		});
+	});
+
+	it("turns a video block an earlier import wrote into the player iframe, and drops one no player answers", () => {
+		const [iframe] = prepared([typed({ _type: "videoEmbed", url: "https://youtu.be/abcdefghijk", title: "A talk" })]);
+
+		expect(iframe).toMatchObject({
+			_type: "iframe",
+			src: "https://www.youtube.com/embed/abcdefghijk",
+			title: "A talk",
+		});
+		expect(prepared([typed({ _type: "videoEmbed", url: "https://example.com/v" })])).toEqual([]);
+	});
+});
+
+describe("prepareArticleContent text", () => {
+	const fixture = () => [
+		heading({ level: 2, value: "Heading words" }),
+		paragraph("Paragraph words here"),
+		typed({ _type: "image", asset: { _ref: "m", url: IMAGE_URL }, caption: "Caption words" }),
+		typed({ _type: "splitBlock", image: IMAGE_URL, heading: "Split heading", text: "Split text" }),
+		typed({ _type: "code", code: "codeWord" }),
+		typed({ _type: "table", rows: [{ _key: "r", cells: [{ _key: "c", content: [span({ text: "Cell words" })] }] }] }),
+		typed({ _type: "iframe", src: "https://example.com", title: "Not prose" }),
+	];
+
+	it("reads the prose a description falls back to from the text blocks alone", () => {
+		expect(prepare(fixture()).prose).toBe("Heading words Paragraph words here");
+	});
+
+	it("reads everything a reader reads for the reading time: text, captions, split blocks, code and tables", () => {
+		expect(prepare(fixture()).readableText).toBe(
+			"Heading words Paragraph words here Caption words Split heading Split text codeWord Cell words",
+		);
+	});
+});
+
+describe("prepareArticleContent raw HTML", () => {
+	it("drops a raw HTML block, so an editor's markup never reaches the page unsanitised", () => {
+		expect(
+			prepared([typed({ _type: "htmlBlock", html: "<img src=x onerror=alert(1)>" }), paragraph("kept")]),
+		).toHaveLength(1);
 	});
 });

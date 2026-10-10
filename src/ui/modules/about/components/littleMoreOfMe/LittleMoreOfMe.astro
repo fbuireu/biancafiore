@@ -1,12 +1,12 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import type { CityEntry } from "@modules/core/utils/entries";
 import { toCityPoints } from "../../utils/globe";
 import Cities from "../cities/Cities.astro";
 import { WorldGlobe } from "../worldGlobe/WorldGlobe";
 import "./little-more-of-me.css";
 
 interface Props {
-	cities: CollectionEntry<"cities">[];
+	cities: CityEntry[];
 }
 
 const { cities } = Astro.props;

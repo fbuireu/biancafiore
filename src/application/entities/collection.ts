@@ -1,31 +1,47 @@
-import { fetchEntries } from "@infrastructure/cms/entries";
-import type { EntriesQueries, EntryCollection, EntrySkeletonType } from "contentful";
-import { type CarriesImage, withImagePlaceholders } from "./placeholders";
+import type { LiveLoader } from "astro/loaders";
 
-type RawItems<SKELETON extends EntrySkeletonType> = EntryCollection<SKELETON, undefined>["items"];
-
-interface CmsCollectionParams<
-	SKELETON extends EntrySkeletonType,
-	ENTRY extends CarriesImage<FIELD>,
-	FIELD extends Extract<keyof ENTRY, string>,
-> {
-	query: EntriesQueries<SKELETON, undefined>;
-	map: (raw: RawItems<SKELETON>) => ENTRY[];
-	identify: (entry: ENTRY) => string;
-	imageField?: FIELD;
-	order?: (entries: ENTRY[]) => ENTRY[];
+interface ContentLoaderParams<DATA extends Record<string, unknown>> {
+	name: string;
+	load: () => Promise<DATA[]>;
+	identify: (data: DATA) => string;
+	loadOne?: (id: string) => Promise<DATA | undefined>;
+	loadPrerendered?: (id: string) => DATA | undefined;
 }
 
-export function cmsCollection<
-	SKELETON extends EntrySkeletonType,
-	ENTRY extends CarriesImage<FIELD>,
-	FIELD extends Extract<keyof ENTRY, string>,
->({ query, map, identify, imageField, order }: CmsCollectionParams<SKELETON, ENTRY, FIELD>) {
-	return async () => {
-		const [raw] = await fetchEntries<[SKELETON]>(query);
-		const mapped = order ? order(map(raw)) : map(raw);
-		const entries = imageField ? await withImagePlaceholders({ field: imageField, entries: mapped }) : mapped;
+interface EntryFilter {
+	id: string;
+	prerendered?: boolean;
+}
 
-		return entries.map((entry) => ({ ...entry, id: identify(entry) }));
+const asError = (cause: unknown): Error => (cause instanceof Error ? cause : new Error(String(cause)));
+
+export function contentLoader<DATA extends Record<string, unknown>>({
+	name,
+	load,
+	identify,
+	loadOne,
+	loadPrerendered,
+}: ContentLoaderParams<DATA>): LiveLoader<DATA, EntryFilter> {
+	const findOne = async (id: string): Promise<DATA | undefined> =>
+		loadOne ? loadOne(id) : (await load()).find((data) => identify(data) === id);
+
+	return {
+		name,
+		loadCollection: async () => {
+			try {
+				return { entries: (await load()).map((data) => ({ id: identify(data), data })) };
+			} catch (cause) {
+				return { error: asError(cause) };
+			}
+		},
+		loadEntry: async ({ filter }) => {
+			try {
+				const data = filter.prerendered && loadPrerendered ? loadPrerendered(filter.id) : await findOne(filter.id);
+
+				return data ? { id: identify(data), data } : undefined;
+			} catch (cause) {
+				return { error: asError(cause) };
+			}
+		},
 	};
 }

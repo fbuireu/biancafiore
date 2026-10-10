@@ -3,17 +3,14 @@ import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
-import { DEFAULT_SEO_PARAMS } from "@modules/core/components/seo/const";
-import { getSiteAuthor } from "@modules/core/utils/entries";
+import { getSiteAuthor, readSiteSettings } from "@modules/core/utils/entries";
 import { buildWebSiteSchema } from "@modules/core/utils/jsonLd";
 import Blog from "@modules/home/components/blog/Blog.astro";
 import ProjectList from "@modules/home/components/projectList/ProjectList.astro";
 import Testimonials from "@modules/home/components/testimonials/Testimonials.astro";
 import Welcome from "@modules/home/components/welcome/Welcome.astro";
 
-export const prerender = true;
-
-const bianca = await getSiteAuthor();
+const [bianca, site] = await Promise.all([getSiteAuthor(), readSiteSettings(Astro.isPrerendered)]);
 
 const metadata: Partial<SeoMetadata> = {
 	description: bianca.data.description,
@@ -22,7 +19,7 @@ const metadata: Partial<SeoMetadata> = {
 
 const webSiteSchema = buildWebSiteSchema({
 	path: PAGES_ROUTES.HOME,
-	name: DEFAULT_SEO_PARAMS.title,
+	name: site.title,
 	description: bianca.data.description,
 	author: {
 		name: bianca.data.name,

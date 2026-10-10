@@ -11,7 +11,6 @@ Everything runs through GitHub Actions, and the site deploys to Cloudflare Worke
 | `ci.yml` | push to `main`, pull requests, manual dispatch | A `Verify` job running `pnpm verify`, then both deploys, the end-to-end run against the preview, the production smoke run and the release, and a `Check` job that aggregates them all: the one context the branch ruleset requires |
 | `_deploy.yml` | `workflow_call` | The shared deploy steps both environments call |
 | `cleanup-development.yml` | pull request closed; weekly | Deletes the per-PR preview Worker once its CI run has finished, and sweeps the Workers of closed pull requests every week |
-| `publish-article.yml` | Contentful webhook | Dispatches `ci.yml`, so a published Article redeploys production with the same smoke run and rollback as a push |
 | `sync-wiki.yml` | push to `main` touching `docs/wiki/**` | Publishes this wiki |
 | `zizmor.yml` | push to `main`, pull requests | Security linting of the workflows themselves |
 | `dependency-review.yml` | pull requests | Fails a pull request introducing a known-vulnerable dependency |
@@ -33,6 +32,8 @@ The check re-runs on `synchronize` because a required check is evaluated against
 **The smoke job is the only one that touches production.** The end-to-end run needs the preview deploy, which happens on pull requests only, so without the smoke job a push to `main` would deploy production and cut a tag without a single request to the live site.
 
 The preview is not a faithful target either: `HIDE_CHROME` is true there, so the suite sees an under-construction placeholder on the unpublished routes. See [Rendering and Routing](Rendering-and-Routing).
+
+Every preview reads the development database and media bucket, which they all share and which hold content of their own: EmDash's guidance is never to bind a preview to production's, and the first deploy of each stage is done by hand, in an order [`AGENTS.md`](https://github.com/fbuireu/biancafiore/blob/main/AGENTS.md)'s Deploy section spells out.
 
 A short set of cases carries a `@smoke` tag, and they are the cheapest things that prove the Worker is answering rather than merely deployed: the homepage with a non-empty title, an unknown path answering 404, `robots.txt`, and `/.well-known/security.txt`, served as plain text with a contact and an `Expires` still ahead. None of them names a feature, because a smoke case can only assert what the deploy it follows has already published. **The same set runs in every repository that deploys**, written the same way, so a set that differs between them is drift rather than a decision. The `security.txt` case also wants the body byte for byte the file in the repository: a `security.txt` the Cloudflare zone serves itself answers before the Worker, and the case is what notices one standing in for the repository's.
 

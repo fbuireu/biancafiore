@@ -1,99 +1,98 @@
-import { articleHref, isTagPath } from "@const/index";
-import { documentToHtmlString, type Next, type RenderNode } from "@contentful/rich-text-html-renderer";
-import type { Block, Text } from "@contentful/rich-text-types";
-import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import { type ArticleHeading, isTableOfContentsHeading } from "@domain/article";
+import type { PortableText } from "@domain/shared/portableText";
 import { getOptimizedImageUrl, getOptimizedSrcset } from "@infrastructure/images/imageOptimization";
-import { escapeHtml, safeUrl, slugify } from "@shared/utils/strings";
+import { imagePlaceholder } from "@infrastructure/images/imagePlaceholder";
+import { slugify } from "@shared/utils/strings";
 import { z } from "@shared/utils/zod";
-import { absoluteAssetUrl, assetFileSchema } from "../../shared/images";
-import type { RawArticle } from "../types";
-import { articleSlug } from "./reference";
+import { playerEmbed } from "../../shared/embeds";
+import { prepareLinks, proseOf, readableTextOf } from "../../shared/portableText";
+import type { AnyRawArticle } from "../types";
 
-const IMAGE_EMBED_LAYOUT = {
-	FULL_BLEED: "fullBleed",
-	BREAKOUT: "breakout",
+const IMAGE_LAYOUT = {
+	full: "full-bleed",
+	wide: "breakout",
 } as const;
-const IMAGE_WRAPPER_CLASS: Record<ImageEmbedLayout, string> = {
-	[IMAGE_EMBED_LAYOUT.FULL_BLEED]: "full-bleed",
-	[IMAGE_EMBED_LAYOUT.BREAKOUT]: "breakout",
-};
-const IFRAME_EMBED_CLASS = "iframe-embed";
-const HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
+const HEADING_STYLE = /^h([1-6])$/;
 const BLANK_ANCHOR = "section";
-const PRODUCTION_HOSTNAME = "biancafiore.me";
+const DEFAULT_DISPLAY_WIDTH = 768;
+const SRCSET_WIDTHS = [400, 768, 1024];
+const HEADING_TYPE = "articleHeading";
+const SPLIT_BLOCK_TYPE = "splitBlock";
+const LEGACY_VIDEO_TYPE = "videoEmbed";
+const EMDASH_RENDERED_TYPES = new Set([
+	"block",
+	"break",
+	"button",
+	"buttons",
+	"code",
+	"columns",
+	"cover",
+	"embed",
+	"file",
+	"gallery",
+	"iframe",
+	"pullquote",
+	"table",
+	"video",
+]);
 
-type ImageEmbedLayout = (typeof IMAGE_EMBED_LAYOUT)[keyof typeof IMAGE_EMBED_LAYOUT];
+type PortableTextNode = PortableText[number];
 
-const imageEmbedLayoutSchema = z.enum(IMAGE_EMBED_LAYOUT);
+const imageLayoutSchema = z.enum(Object.keys(IMAGE_LAYOUT) as [keyof typeof IMAGE_LAYOUT]);
 
-const hyperlinkSchema = z.object({ uri: z.string() });
+const spanSchema = z.object({ text: z.string() });
 
-const entrySchema = <Fields extends z.ZodObject>(fields: Fields) =>
-	z.object({
-		target: z.object({
-			sys: z.object({ id: z.string().optional(), contentType: z.object({ sys: z.object({ id: z.string() }) }) }),
-			fields,
-		}),
-	});
-
-const embeddedArticleSchema = entrySchema(z.object({ slug: z.string().optional(), title: z.string().optional() }));
-
-const richTextFileSchema = assetFileSchema.extend({ url: z.string().min(1) });
-
-const linkedAssetSchema = z.object({ target: z.object({ fields: z.object({ file: richTextFileSchema }) }) });
-
-const embeddedAssetSchema = z.object({
-	target: z.object({ fields: z.object({ file: richTextFileSchema, description: z.string().optional() }) }),
+const headingSchema = z.looseObject({
+	_type: z.literal("block"),
+	_key: z.string().optional(),
+	style: z.string().regex(HEADING_STYLE),
+	children: z.array(z.unknown()),
 });
 
-const embeddedImageSchema = z.object({
-	fields: z.object({
-		file: richTextFileSchema,
-		description: z.string().optional(),
-		title: z.string().optional(),
+const SAME_ORIGIN_PATH = /^\/(?!\/)/;
+
+const imageSourceSchema = z.union([z.url(), z.string().regex(SAME_ORIGIN_PATH)]);
+
+const imageSchema = z.looseObject({
+	_type: z.literal("image"),
+	_key: z.string().optional(),
+	asset: z.object({
+		url: imageSourceSchema,
+		meta: z.object({ blurhash: z.string().nullish() }).optional(),
 	}),
+	blurhash: z.string().optional(),
+	alt: z.string().optional(),
+	caption: z.string().optional(),
+	width: z.number().optional(),
+	height: z.number().optional(),
+	alignment: z.string().optional(),
 });
 
-const embeddedBlockSchema = entrySchema(
-	z.object({
-		code: z.string().optional(),
-		url: z.string().optional(),
-		title: z.string().optional(),
-		layout: z.string().optional(),
-		caption: z.string().optional(),
-		heading: z.string().optional(),
-		text: z.string().optional(),
-		image: z.unknown().optional(),
-	}),
-);
+const splitBlockSchema = z.looseObject({
+	_type: z.literal(SPLIT_BLOCK_TYPE),
+	_key: z.string().optional(),
+	image: imageSourceSchema,
+	alt: z.string().optional(),
+	heading: z.string().optional(),
+	text: z.string().optional(),
+});
 
-function getImageEmbedWrapperClass(layout?: string): string {
-	return imageEmbedLayoutSchema.validate(layout) ? IMAGE_WRAPPER_CLASS[layout] : "";
-}
+const httpsUrlSchema = z.url({ protocol: /^https$/ });
 
-type HeadingBlock = Block & { content: Text[] };
+const iframeSchema = z.looseObject({ _type: z.literal("iframe"), src: httpsUrlSchema });
+
+const legacyVideoSchema = z.looseObject({
+	_type: z.literal(LEGACY_VIDEO_TYPE),
+	_key: z.string().optional(),
+	url: z.string(),
+	title: z.string().optional(),
+});
+
+const codeSchema = z.looseObject({ _type: z.literal("code"), code: z.string().min(1) });
+
+const embedSchema = z.looseObject({ _type: z.literal("embed"), url: z.string().min(1) });
 
 const sectionScope = (ordinal: number): string => `--section-${ordinal}`;
-
-interface CreateSectionParams {
-	level: number;
-	scope?: string;
-	id: string;
-	text: string;
-}
-
-const createSection = ({ level, id, text, scope }: CreateSectionParams) => {
-	const timeline = scope ? ` style="--is: ${scope}"` : "";
-
-	return `
-    <section${timeline}>
-      <h${level} id="${id}" class="article__heading flex align-baseline">
-        <a href="#${id}">${escapeHtml(text)}</a>
-      </h${level}>
-    </section>
-  `;
-};
 
 function createAnchors(): (text: string) => string {
 	const taken = new Set<string>();
@@ -112,253 +111,145 @@ function createAnchors(): (text: string) => string {
 	};
 }
 
-function parseHeadings(collected: ArticleHeading[]) {
-	const anchor = createAnchors();
+const plainTextOf = (children: unknown[]): string =>
+	children.map((child) => (spanSchema.validate(child) ? child.text : "")).join("");
 
-	return Object.fromEntries(
-		HEADING_LEVELS.map((level) => [
-			BLOCKS[`HEADING_${level}` as keyof typeof BLOCKS],
-			(node: HeadingBlock) => {
-				const text = node.content.map((child: Text) => child.value).join("");
-				const id = anchor(text);
-
-				if (!isTableOfContentsHeading(level)) {
-					return createSection({ level, id, text });
-				}
-
-				const scope = sectionScope(collected.length + 1);
-
-				collected.push({ level, id, text, scope });
-
-				return createSection({ level, scope, id, text });
-			},
-		]),
-	);
+interface ResponsiveSourceParams {
+	source: string;
+	width?: number;
 }
 
-interface RenderOptionsReturn {
-	renderNode: RenderNode;
+const responsiveSource = ({ source, width }: ResponsiveSourceParams) => ({
+	src: getOptimizedImageUrl({ source, options: { width: width ?? DEFAULT_DISPLAY_WIDTH, format: "webp" } }),
+	srcset: getOptimizedSrcset({ source, widths: SRCSET_WIDTHS, options: { format: "webp" } }),
+});
+
+interface PrepareImageParams {
+	node: PortableTextNode;
+	title: string;
 }
 
-function toEmbedUrl(url: string): string {
-	try {
-		const parsed = new URL(url);
-		if (parsed.hostname === "youtu.be") {
-			return `https://www.youtube.com/embed${parsed.pathname}`;
-		}
-		const isYouTube = parsed.hostname === "youtube.com" || parsed.hostname.endsWith(".youtube.com");
-		if (isYouTube && parsed.searchParams.has("v")) {
-			return `https://www.youtube.com/embed/${parsed.searchParams.get("v")}`;
-		}
-	} catch {}
-	return url;
-}
+function prepareImage({ node, title }: PrepareImageParams): PortableTextNode[] {
+	if (!imageSchema.validate(node)) {
+		return [];
+	}
 
-interface RenderOptionsParams {
-	rawArticle: RawArticle;
-	collected: ArticleHeading[];
-}
+	const { _key, asset, alt, caption, width, height, alignment } = node;
+	const placeholder = imagePlaceholder({
+		blurhash: node.blurhash ?? asset.meta?.blurhash ?? undefined,
+		width: width ?? 0,
+		height: height ?? 0,
+	});
 
-function renderOptions({ rawArticle, collected }: RenderOptionsParams): RenderOptionsReturn {
-	return {
-		renderNode: {
-			[INLINES.HYPERLINK]: ({ data, content }, next: Next) => {
-				if (!hyperlinkSchema.validate(data)) {
-					return next(content);
-				}
-
-				const { uri } = data;
-				const { hostname, pathname } = new URL(uri, `https://${PRODUCTION_HOSTNAME}`);
-				const isExternal = hostname !== PRODUCTION_HOSTNAME;
-				const isTagPage = isTagPath(pathname);
-
-				if (isExternal) {
-					return `<a href="${safeUrl(uri)}" target="_blank" rel="noopener noreferrer">${next(content)}<span aria-hidden="true" class="external-link-icon"> ↗</span></a>`;
-				}
-				if (isTagPage) {
-					return `<a href="${safeUrl(uri)}" target="_blank" rel="noopener noreferrer">${next(content)}</a>`;
-				}
-				return `<a href="${safeUrl(uri)}">${next(content)}</a>`;
-			},
-			[INLINES.EMBEDDED_ENTRY]: ({ data }) => {
-				if (!embeddedArticleSchema.validate(data)) {
-					return "";
-				}
-
-				const contentTypeId = data.target.sys.contentType.sys.id;
-				const { slug, title } = data.target.fields;
-
-				if (contentTypeId === "article" && slug && title) {
-					return `<a href="${escapeHtml(articleHref(articleSlug(data.target)))}">${escapeHtml(title)}</a>`;
-				}
-				return "";
-			},
-			[INLINES.ENTRY_HYPERLINK]: ({ data, content }, next: Next) => {
-				if (!embeddedArticleSchema.validate(data)) {
-					return next(content);
-				}
-
-				const contentTypeId = data.target.sys.contentType.sys.id;
-				const { slug } = data.target.fields;
-
-				if (contentTypeId === "article" && slug) {
-					return `<a href="${escapeHtml(articleHref(articleSlug(data.target)))}">${next(content)}</a>`;
-				}
-				return next(content);
-			},
-			[INLINES.ASSET_HYPERLINK]: ({ data, content }, next: Next) => {
-				if (!linkedAssetSchema.validate(data)) {
-					return next(content);
-				}
-
-				const { url } = data.target.fields.file;
-
-				return `<a href="${safeUrl(absoluteAssetUrl(url))}" target="_blank" rel="noopener noreferrer">${next(content)}</a>`;
-			},
-			[BLOCKS.EMBEDDED_ENTRY]: ({ data }) => {
-				if (!embeddedBlockSchema.validate(data)) {
-					return "";
-				}
-
-				const contentTypeId = data.target.sys.contentType.sys.id;
-				const { code, url, title, image, layout, caption, heading, text } = data.target.fields;
-
-				if (contentTypeId === "codeBlock" && code) {
-					return `<pre><code>${escapeHtml(code)}</code></pre>`;
-				}
-
-				if (contentTypeId === "videoEmbed" && url && title) {
-					return `<iframe src="${safeUrl(toEmbedUrl(url))}" width="100%" title="${escapeHtml(title)}" allowfullscreen loading="lazy"></iframe>`;
-				}
-
-				if (contentTypeId === "iframeEmbed" && url) {
-					return `<div class="${IFRAME_EMBED_CLASS}"><iframe src="${safeUrl(url)}" width="100%" title="${escapeHtml(title ?? "")}" allowfullscreen loading="lazy"></iframe></div>`;
-				}
-
-				if (!embeddedImageSchema.validate(image)) {
-					return "";
-				}
-
-				if (contentTypeId === "imageEmbed") {
-					const { url: imgUrl, details } = image.fields.file;
-					const { height, width } = details?.image ?? {};
-					const alt = escapeHtml(image.fields.description ?? image.fields.title ?? "");
-					const wrapperClass = getImageEmbedWrapperClass(layout);
-					const displayWidth = width ?? 768;
-					const optimizedSrc = getOptimizedImageUrl({
-						source: absoluteAssetUrl(imgUrl),
-						options: { width: displayWidth, format: "webp" },
-					});
-					const srcset = getOptimizedSrcset({
-						source: absoluteAssetUrl(imgUrl),
-						widths: [400, 768, 1024],
-						options: { format: "webp" },
-					});
-
-					return `
-						<figure${wrapperClass ? ` class="${wrapperClass}"` : ""}>
-							<img
-								src="${escapeHtml(optimizedSrc)}"
-								srcset="${escapeHtml(srcset)}"
-								sizes="auto"
-								height="${height ?? ""}"
-								width="${width ?? ""}"
-								alt="${alt}"
-								loading="lazy"
-								decoding="async"
-							/>
-							${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ""}
-						</figure>
-					`;
-				}
-
-				if (contentTypeId === "splitBlock") {
-					const { url: imgUrl, details } = image.fields.file;
-					const { height, width } = details?.image ?? {};
-					const alt = escapeHtml(image.fields.description ?? image.fields.title ?? "");
-					const displayWidth = width ?? 768;
-					const optimizedSrc = getOptimizedImageUrl({
-						source: absoluteAssetUrl(imgUrl),
-						options: { width: displayWidth, format: "webp" },
-					});
-					const srcset = getOptimizedSrcset({
-						source: absoluteAssetUrl(imgUrl),
-						widths: [400, 768, 1024],
-						options: { format: "webp" },
-					});
-
-					return `
-						<div class="split">
-							<div class="split__content">
-								${heading ? `<h3>${escapeHtml(heading)}</h3>` : ""}
-								${text ? `<p>${escapeHtml(text)}</p>` : ""}
-							</div>
-							<img
-								class="split__image"
-								src="${escapeHtml(optimizedSrc)}"
-								srcset="${escapeHtml(srcset)}"
-								sizes="auto"
-								height="${height ?? ""}"
-								width="${width ?? ""}"
-								alt="${alt}"
-								loading="lazy"
-								decoding="async"
-							/>
-						</div>
-					`;
-				}
-
-				return "";
-			},
-			[BLOCKS.EMBEDDED_ASSET]: ({ data }) => {
-				if (!embeddedAssetSchema.validate(data)) {
-					return "";
-				}
-
-				const { file, description } = data.target.fields;
-				const { url, details } = file;
-				const { height, width } = details?.image ?? {};
-
-				const displayWidth = width ?? 768;
-				const optimizedSrc = getOptimizedImageUrl({
-					source: absoluteAssetUrl(url),
-					options: { width: displayWidth, format: "webp" },
-				});
-				const srcset = getOptimizedSrcset({
-					source: absoluteAssetUrl(url),
-					widths: [400, 768, 1024],
-					options: { format: "webp" },
-				});
-
-				return `
-            <figure class="full-bleed">
-              <img
-                src="${escapeHtml(optimizedSrc)}"
-                srcset="${escapeHtml(srcset)}"
-                sizes="auto"
-                height="${height ?? ""}"
-                width="${width ?? ""}"
-                alt="${escapeHtml(description || String(rawArticle.fields.title ?? ""))}"
-                loading="lazy"
-                decoding="async"
-              />
-              ${description ? `<figcaption>${escapeHtml(description)}</figcaption>` : ""}
-            </figure>
-          `;
-			},
-			...parseHeadings(collected),
+	return [
+		{
+			_type: "image",
+			_key,
+			...responsiveSource({ source: asset.url, width }),
+			alt: alt || title,
+			...(width && { width }),
+			...(height && { height }),
+			...(placeholder && { placeholder }),
+			...(caption && { caption }),
+			...(imageLayoutSchema.validate(alignment) && { layout: IMAGE_LAYOUT[alignment] }),
 		},
-	};
+	];
 }
 
-interface RenderedArticle {
-	content: string;
+function prepareSplitBlock(node: PortableTextNode): PortableTextNode[] {
+	if (!splitBlockSchema.validate(node)) {
+		return [];
+	}
+
+	const { _key, image, alt, heading, text } = node;
+
+	return [
+		{
+			_type: SPLIT_BLOCK_TYPE,
+			_key,
+			...responsiveSource({ source: image }),
+			alt: alt ?? "",
+			...(heading && { heading }),
+			...(text && { text }),
+		},
+	];
+}
+
+function prepareIframe(node: PortableTextNode): PortableTextNode[] {
+	if (!iframeSchema.validate(node)) {
+		return [];
+	}
+
+	const player = playerEmbed(node.src);
+
+	return [player ? { ...node, ...player } : node];
+}
+
+function prepareLegacyVideo(node: PortableTextNode): PortableTextNode[] {
+	if (!legacyVideoSchema.validate(node)) {
+		return [];
+	}
+
+	const player = playerEmbed(node.url);
+
+	return player ? [{ _type: "iframe", _key: node._key, ...player, ...(node.title && { title: node.title }) }] : [];
+}
+
+interface PrepareBlockParams {
+	node: PortableTextNode;
+	title: string;
+}
+
+function prepareBlock({ node, title }: PrepareBlockParams): PortableTextNode[] {
+	switch (node._type) {
+		case "image":
+			return prepareImage({ node, title });
+		case SPLIT_BLOCK_TYPE:
+			return prepareSplitBlock(node);
+		case "iframe":
+			return prepareIframe(node);
+		case LEGACY_VIDEO_TYPE:
+			return prepareLegacyVideo(node);
+		case "code":
+			return codeSchema.validate(node) ? [node] : [];
+		case "embed":
+			return embedSchema.validate(node) ? [node] : [];
+		default:
+			return EMDASH_RENDERED_TYPES.has(node._type) ? [node] : [];
+	}
+}
+
+interface PreparedArticleContent {
+	content: PortableText;
 	headings: ArticleHeading[];
+	prose: string;
+	readableText: string;
 }
 
-export function renderArticleContent(rawArticle: RawArticle): RenderedArticle {
+export function prepareArticleContent(rawArticle: AnyRawArticle): PreparedArticleContent {
+	const anchor = createAnchors();
 	const headings: ArticleHeading[] = [];
-	const content = documentToHtmlString(rawArticle.fields.content, renderOptions({ rawArticle, collected: headings }));
+	const linked = prepareLinks(rawArticle.data.content);
+	const content = linked.flatMap((node) => {
+		if (!headingSchema.validate(node)) {
+			return prepareBlock({ node, title: rawArticle.data.title });
+		}
 
-	return { content, headings };
+		const level = Number(node.style.slice(1));
+		const text = plainTextOf(node.children);
+		const id = anchor(text);
+		const heading = { _type: HEADING_TYPE, _key: node._key, tag: node.style, anchor: id, text };
+
+		if (!isTableOfContentsHeading(level)) {
+			return [heading];
+		}
+
+		const scope = sectionScope(headings.length + 1);
+
+		headings.push({ level, id, text, scope });
+
+		return [{ ...heading, scope }];
+	});
+
+	return { content, headings, prose: proseOf(linked), readableText: readableTextOf(content) };
 }

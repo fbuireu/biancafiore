@@ -1,18 +1,10 @@
-import { CmsError } from "@infrastructure/errors";
-import { cmsAnswers, cmsFailsWith, cmsQueries, resetCms } from "@tests/doubles/cmsLayer";
-import { imageDouble } from "@tests/doubles/network";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { RawArticle } from "../../dto/article/types";
-import { articles } from "./articles";
-
-vi.mock("astro:content", async () => {
-	const { z } = await import("@shared/utils/zod");
-	const unresolvable = () => {
-		throw new Error("reference() is a stub here: a loader test cannot validate entries against the collection schema");
-	};
-
-	return { defineCollection: (collection: unknown) => collection, reference: () => z.custom(unresolvable) };
-});
+import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
+import { avatar, BLURHASH, rawByline, rawEntry, rawImage } from "@tests/doubles/cmsEntries";
+import { cmsAnswers, cmsQueries, cmsReferenceQueries, cmsRefersTo, resetCms } from "@tests/doubles/cmsLayer";
+import { escapedRequests } from "@tests/doubles/network";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { ArticleFields } from "../../dto/article/types";
+import { articles, RELATED_ARTICLES_FIELD } from "./articles";
 
 vi.mock("@infrastructure/cms/client", async () => {
 	const actual = await vi.importActual<typeof import("@infrastructure/cms/client")>("@infrastructure/cms/client");
@@ -21,132 +13,140 @@ vi.mock("@infrastructure/cms/client", async () => {
 	return { ...actual, CmsClientLive: cmsClientLayer(actual.CmsClient) };
 });
 
-const PLACEHOLDER_BYTES = new Uint8Array([82, 73, 70, 70]);
-const PLACEHOLDER = `data:image/webp;base64,${Buffer.from(PLACEHOLDER_BYTES).toString("base64")}`;
-
-const load = () => (articles as unknown as { loader: () => Promise<Record<string, unknown>[]> }).loader();
-
-const image = (url: string) => ({
-	fields: { file: { url, contentType: "image/jpeg", details: { size: 1024, image: { width: 1200, height: 630 } } } },
-});
-
-const AUTHOR = {
-	fields: {
-		name: "Bianca Fiore",
-		slug: "bianca-fiore",
-		description: "Content writer",
-		jobTitle: "Writer",
-		currentCompany: "Freelance",
-		profileImage: image("//images.ctfassets.net/bianca.jpg"),
-		socialNetworks: [],
-	},
-};
-
-const body = (value: string) => ({
-	nodeType: "document",
-	data: {},
-	content: [{ nodeType: "paragraph", data: {}, content: [{ nodeType: "text", value, marks: [], data: {} }] }],
+const AUTHOR = rawByline({
+	slug: "bianca-fiore",
+	displayName: "Bianca Fiore",
+	bio: "Content writer",
+	avatar: avatar({ name: "bianca.jpg" }),
+	customFields: { job_title: "Writer", current_company: "Freelance" },
 });
 
 interface MakeArticleParams {
 	slug: string;
 	publishDate: string;
 	isFavorite?: boolean;
-	featuredImage?: unknown;
+	featuredImage?: ArticleFields["featured_image"];
 }
 
-const makeArticle = ({ slug, publishDate, isFavorite, featuredImage }: MakeArticleParams) =>
-	({
-		sys: { updatedAt: publishDate },
-		fields: {
-			title: `The title of ${slug}`,
-			slug,
-			content: body("Body text"),
-			description: "A description",
-			publishDate,
-			featuredImage,
-			featuredArticle: false,
-			isFavorite,
-			author: AUTHOR,
-			tags: [],
-		},
-	}) as unknown as RawArticle;
+const articleId = (slug: string) => `article-${slug.trim()}`;
 
-let cdn: ReturnType<typeof imageDouble>;
+const makeArticle = ({ slug, publishDate, isFavorite, featuredImage }: MakeArticleParams) =>
+	rawEntry<ArticleFields>({
+		id: articleId(slug),
+		slug,
+		bylines: [AUTHOR],
+		data: {
+			title: `The title of ${slug}`,
+			content: [],
+			description: "A description",
+			publish_date: publishDate,
+			featured_image: featuredImage,
+			is_favorite: isFavorite,
+		},
+	});
+
+const answer = (rawArticles: ReturnType<typeof makeArticle>[]) => {
+	cmsAnswers({ articles: rawArticles });
+};
+
+const loadAll = async () => {
+	const result = await articles.loader.loadCollection({ collection: "articles" });
+
+	if ("error" in result) throw result.error;
+
+	return result.entries;
+};
+
+const loadOne = (slug: string) => articles.loader.loadEntry({ filter: { id: slug }, collection: "articles" });
 
 beforeEach(() => {
 	resetCms();
-	vi.stubEnv("CONTENTFUL_SPACE_ID", "space-id");
-	cdn = imageDouble({ url: "https://images.ctfassets.net/*", bytes: PLACEHOLDER_BYTES.buffer });
-});
-
-afterEach(() => {
-	vi.unstubAllEnvs();
 });
 
 describe("articles loader", () => {
-	it("asks Contentful for articles, newest first", async () => {
-		cmsAnswers({ article: [makeArticle({ slug: "an-article", publishDate: "2024-03-15" })] });
+	it("asks for the articles alone, newest first, since each one carries the bylines it credits", async () => {
+		answer([makeArticle({ slug: "an-article", publishDate: "2024-03-15" })]);
 
-		await load();
+		await loadAll();
 
-		expect(cmsQueries).toEqual([expect.objectContaining({ content_type: "article", order: ["-fields.publishDate"] })]);
+		expect(cmsQueries).toEqual([
+			expect.objectContaining({ collection: "articles", orderBy: "publish_date", order: "desc" }),
+		]);
+		expect(cmsReferenceQueries).toEqual([]);
 	});
 
 	it("keys an entry by the trimmed slug, so a padded CMS slug still answers the references pointing at it", async () => {
-		cmsAnswers({ article: [makeArticle({ slug: "  an-article  ", publishDate: "2024-03-15" })] });
+		answer([makeArticle({ slug: "  an-article  ", publishDate: "2024-03-15" })]);
 
-		const [entry] = await load();
+		const [entry] = await loadAll();
 
-		expect(entry).toMatchObject({ id: "an-article", slug: "an-article" });
+		expect(entry).toMatchObject({ id: "an-article", data: { slug: "an-article" } });
 	});
 
-	it("puts the favorites first and orders the rest newest first, whatever order Contentful answered in", async () => {
-		cmsAnswers({
-			article: [
-				makeArticle({ slug: "middle", publishDate: "2024-03-01" }),
-				makeArticle({ slug: "old-favorite", publishDate: "2023-01-01", isFavorite: true }),
-				makeArticle({ slug: "newest", publishDate: "2024-05-01" }),
-			],
+	it("puts the favourites first and orders the rest newest first, whatever order the CMS answered in", async () => {
+		answer([
+			makeArticle({ slug: "middle", publishDate: "2024-03-01" }),
+			makeArticle({ slug: "old-favourite", publishDate: "2023-01-01", isFavorite: true }),
+			makeArticle({ slug: "newest", publishDate: "2024-05-01" }),
+		]);
+
+		const entries = await loadAll();
+
+		expect(entries.map((entry) => entry.id)).toEqual(["old-favourite", "newest", "middle"]);
+	});
+
+	it("blurs the featured image from the blurhash EmDash stored, without asking the network for anything", async () => {
+		answer([
+			makeArticle({
+				slug: "illustrated",
+				publishDate: "2024-03-15",
+				featuredImage: rawImage({ blurhash: BLURHASH }),
+			}),
+		]);
+
+		const [entry] = await loadAll();
+
+		expect(entry?.data.featuredImage).toMatchObject({
+			url: `${MEDIA_FILE_PATH}hero.jpg`,
+			placeholder: expect.stringMatching(/^data:image\/bmp;base64,/),
+		});
+		expect(escapedRequests).toEqual([]);
+	});
+
+	it("reads no article's hand-picked related articles for a list, which never shows them", async () => {
+		answer([makeArticle({ slug: "first", publishDate: "2024-03-15" })]);
+
+		await loadAll();
+
+		expect(cmsReferenceQueries.some(({ field }) => field === RELATED_ARTICLES_FIELD)).toBe(false);
+	});
+});
+
+describe("articles loader, one article", () => {
+	it("reads the hand-picked related articles of that article alone, and answers them", async () => {
+		const first = makeArticle({ slug: "first", publishDate: "2024-03-15" });
+		const second = makeArticle({ slug: "second", publishDate: "2024-03-01" });
+
+		answer([first, second]);
+		cmsRefersTo({
+			collection: "articles",
+			id: first.id,
+			field: RELATED_ARTICLES_FIELD,
+			references: [{ id: second.id }],
 		});
 
-		const entries = await load();
+		const entry = await loadOne("first");
 
-		expect(entries.map((entry) => entry.id)).toEqual(["old-favorite", "newest", "middle"]);
+		expect(entry).toMatchObject({ id: "first", data: { relatedArticles: [{ id: "second", collection: "articles" }] } });
+		expect(cmsReferenceQueries.filter(({ field }) => field === RELATED_ARTICLES_FIELD)).toEqual([
+			expect.objectContaining({ collection: "articles", id: first.id }),
+		]);
 	});
 
-	it("attaches a blur placeholder to the featured image after the DTO has run", async () => {
-		cmsAnswers({
-			article: [
-				makeArticle({
-					slug: "illustrated",
-					publishDate: "2024-03-15",
-					featuredImage: image("//images.ctfassets.net/featured.jpg"),
-				}),
-			],
-		});
+	it("answers no entry for a slug no published article carries, and reads no references for it", async () => {
+		answer([makeArticle({ slug: "first", publishDate: "2024-03-15" })]);
 
-		const [entry] = await load();
-
-		expect(entry.featuredImage).toMatchObject({
-			url: "https://images.ctfassets.net/featured.jpg",
-			placeholder: PLACEHOLDER,
-		});
-		expect(cdn.calls).toStrictEqual(["https://images.ctfassets.net/featured.jpg?w=24&q=35&fm=webp"]);
-	});
-
-	it("leaves an article without a featured image without one, rather than inventing a placeholder", async () => {
-		cmsAnswers({ article: [makeArticle({ slug: "plain", publishDate: "2024-03-15" })] });
-
-		const [entry] = await load();
-
-		expect(entry.featuredImage).toBeUndefined();
-		expect(cdn.calls).toEqual([]);
-	});
-
-	it("fails the build instead of returning a short collection when Contentful errors", async () => {
-		cmsFailsWith(new CmsError({ message: "contentful is unreachable" }));
-
-		await expect(load()).rejects.toThrow("contentful is unreachable");
+		await expect(loadOne("missing")).resolves.toBeUndefined();
+		expect(cmsReferenceQueries.some(({ field }) => field === RELATED_ARTICLES_FIELD)).toBe(false);
 	});
 });

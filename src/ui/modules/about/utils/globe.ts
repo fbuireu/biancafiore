@@ -1,4 +1,4 @@
-import type { CollectionEntry } from "astro:content";
+import type { CityEntry } from "@modules/core/utils/entries";
 import { WORLD_GLOBE_MARKER_CLASS, WORLD_GLOBE_MARKER_LABEL_CLASS } from "../components/worldGlobe/const";
 
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
@@ -10,7 +10,7 @@ export interface CityPoint {
 	slug: string;
 }
 
-export function toCityPoints(cities: CollectionEntry<"cities">[]): CityPoint[] {
+export function toCityPoints(cities: CityEntry[]): CityPoint[] {
 	return cities.map(({ data }) => ({
 		lat: data.coordinates.latitude,
 		lng: data.coordinates.longitude,

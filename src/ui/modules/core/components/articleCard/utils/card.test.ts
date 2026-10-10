@@ -1,5 +1,5 @@
-import type { CollectionEntry } from "astro:content";
 import { describe, expect, it } from "vitest";
+import type { ArticleEntry } from "../../../utils/entries";
 import { toArticleCardContent } from "./card";
 
 const tag = (name: string) => ({ slug: name.toLowerCase(), name });
@@ -16,7 +16,7 @@ const makeArticle = (data: Record<string, unknown> = {}) =>
 			content: "<p>the entire rendered body</p>",
 			...data,
 		},
-	}) as unknown as CollectionEntry<"articles">;
+	}) as unknown as ArticleEntry;
 
 describe("toArticleCardContent", () => {
 	it("carries only what the card renders, not the entry the page happened to have, the rendered body included", () => {

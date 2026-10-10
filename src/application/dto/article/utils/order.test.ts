@@ -1,17 +1,21 @@
+import { rawEntry } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
-import type { RawArticle } from "../types";
+import type { ArticleFields } from "../types";
 import { orderArticleReferences } from "./order";
 
 interface MakeArticleParams {
 	slug: string;
-	publishDate?: string | null;
+	publishDate?: string;
 	isFavorite?: boolean;
 }
 
 const DEFAULT_PUBLISH_DATE = "2024-03-15";
 
 const makeArticle = ({ slug, publishDate = DEFAULT_PUBLISH_DATE, isFavorite }: MakeArticleParams) =>
-	({ fields: { slug, publishDate: publishDate ?? undefined, isFavorite } }) as unknown as RawArticle;
+	rawEntry<ArticleFields>({
+		slug,
+		data: { title: slug, content: [], publish_date: publishDate, is_favorite: isFavorite },
+	});
 
 const idsOf = (references: { id: string }[]) => references.map(({ id }) => id);
 
@@ -22,13 +26,13 @@ describe("orderArticleReferences", () => {
 		]);
 	});
 
-	it("puts the favorites first, whatever order they arrived in", () => {
+	it("puts the favourites first, whatever order they arrived in", () => {
 		const ordered = orderArticleReferences([
 			makeArticle({ slug: "newest", publishDate: "2026-01-01" }),
-			makeArticle({ slug: "old-favorite", publishDate: "2019-01-01", isFavorite: true }),
+			makeArticle({ slug: "old-favourite", publishDate: "2019-01-01", isFavorite: true }),
 		]);
 
-		expect(idsOf(ordered)).toEqual(["old-favorite", "newest"]);
+		expect(idsOf(ordered)).toEqual(["old-favourite", "newest"]);
 	});
 
 	it("orders the rest newest first", () => {
@@ -41,7 +45,7 @@ describe("orderArticleReferences", () => {
 		expect(idsOf(ordered)).toEqual(["newest", "middle", "oldest"]);
 	});
 
-	it("compares dates as instants rather than as the strings Contentful sent", () => {
+	it("compares dates as instants rather than as the strings the CMS sent", () => {
 		const ordered = orderArticleReferences([
 			makeArticle({ slug: "earlier", publishDate: "2024-01-02T00:00:00Z" }),
 			makeArticle({ slug: "later", publishDate: "2024-01-02T12:00:00Z" }),
@@ -50,31 +54,22 @@ describe("orderArticleReferences", () => {
 		expect(idsOf(ordered)).toEqual(["later", "earlier"]);
 	});
 
-	it("refuses an article the CMS gave no publish date, the way the article mapper already did", () => {
-		expect(() =>
-			orderArticleReferences([
-				makeArticle({ slug: "undated", publishDate: null }),
-				makeArticle({ slug: "dated", publishDate: "2019-01-01" }),
-			]),
-		).toThrow('The Article "undated" has an unreadable publish date');
-	});
-
-	it("refuses an unparseable publish date for the same reason", () => {
+	it("refuses an unparseable publish date, the way the article mapper already does", () => {
 		expect(() =>
 			orderArticleReferences([
 				makeArticle({ slug: "nonsense", publishDate: "not-a-date" }),
 				makeArticle({ slug: "dated", publishDate: "2019-01-01" }),
 			]),
-		).toThrow('The Article "nonsense" has an unreadable publish date (not-a-date)');
+		).toThrow('The Article "nonsense" (id id-nonsense) has an unreadable publish date (not-a-date)');
 	});
 
-	it("refuses an undated favorite too, since being one does not date it", () => {
+	it("refuses an undated favourite too, since being one does not date it", () => {
 		expect(() =>
 			orderArticleReferences([
 				makeArticle({ slug: "dated", publishDate: "2026-01-01" }),
-				makeArticle({ slug: "undated-favorite", publishDate: null, isFavorite: true }),
+				makeArticle({ slug: "undated-favourite", publishDate: "", isFavorite: true }),
 			]),
-		).toThrow('The Article "undated-favorite" has an unreadable publish date');
+		).toThrow("has an unreadable publish date");
 	});
 
 	it("references an article by its trimmed slug, the id the collection is keyed on", () => {

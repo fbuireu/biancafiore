@@ -1,11 +1,11 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import { tagHref } from "@const/index";
 import { formatPublishDate } from "@domain/article";
+import type { ArticleEntry } from "@modules/core/utils/entries";
 import "./article-details.css";
 
 interface Props {
-	article: CollectionEntry<"articles">;
+	article: ArticleEntry;
 }
 
 const { article } = Astro.props;

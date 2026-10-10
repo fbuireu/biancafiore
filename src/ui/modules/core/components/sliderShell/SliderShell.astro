@@ -25,7 +25,7 @@ const dots = hasDots ? Array.from({ length: slideCount }, (_, index) => index) :
 const looping = { [SLIDER_LOOPING_ATTRIBUTE]: isLooping };
 ---
 
-<div class:list={[SLIDER_WRAPPER_CLASS, { [`${SLIDER_WRAPPER_CLASS}--buttons`]: !hasDots }, className]} {...looping}>
+<div class:list={[SLIDER_WRAPPER_CLASS, { [`${SLIDER_WRAPPER_CLASS}--buttons`]: !hasDots, [`${SLIDER_WRAPPER_CLASS}--dots`]: hasDots }, className]} {...looping}>
 	{!hasDots && (
 		<button class:list={[SLIDER_BUTTON_CLASS, SLIDER_PREVIOUS_CLASS]} type="button" aria-label="Previous slide" disabled><Fragment set:html={stretchArrow} /></button>
 	)}

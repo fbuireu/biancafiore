@@ -5,14 +5,14 @@ interface ListedItem {
 }
 
 const entries = vi.hoisted(() => [
-	{ data: { slug: "first" } },
-	{ data: { slug: "second" } },
-	{ data: { slug: "third" } },
-	{ data: { slug: "fourth" } },
-	{ data: { slug: "fifth" } },
+	{ id: "first", data: { slug: "first" } },
+	{ id: "second", data: { slug: "second" } },
+	{ id: "third", data: { slug: "third" } },
+	{ id: "fourth", data: { slug: "fourth" } },
+	{ id: "fifth", data: { slug: "fifth" } },
 ]);
 
-vi.mock("astro:content", () => ({ getCollection: vi.fn(async () => entries) }));
+vi.mock("astro:content", () => ({ getLiveCollection: vi.fn(async () => ({ entries })) }));
 
 const { blogPreview } = await import("./blogPreview");
 

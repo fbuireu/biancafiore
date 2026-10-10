@@ -1,5 +1,5 @@
-import { reference } from "astro:content";
 import { z } from "@shared/utils/zod";
+import { referenceSchema } from "../shared/reference";
 import { TagType } from "./types";
 
 export const tagSchema = z.object({
@@ -9,5 +9,5 @@ export const tagSchema = z.object({
 
 export const tagIndexEntrySchema = tagSchema.extend({
 	type: z.enum([TagType.TAG, TagType.AUTHOR]),
-	articles: z.array(reference("articles")),
+	articles: z.array(referenceSchema("articles")),
 });

@@ -1,0 +1,24 @@
+---
+import "./article-image.css";
+
+interface Props {
+	node: {
+		src: string;
+		srcset: string;
+		alt: string;
+		width?: number;
+		height?: number;
+		placeholder?: string;
+		caption?: string;
+		layout?: string;
+	};
+}
+
+const { src, srcset, alt, width, height, placeholder, caption, layout } = Astro.props.node;
+---
+<figure class:list={["article-image", layout && `article-image--${layout}`]}>
+    <span class="article-image__frame" style={placeholder && `--lqip: url("${placeholder}")`}>
+        <img src={src} srcset={srcset} sizes="auto" width={width} height={height} alt={alt} loading="lazy" decoding="async" />
+    </span>
+    {caption && <figcaption>{caption}</figcaption>}
+</figure>

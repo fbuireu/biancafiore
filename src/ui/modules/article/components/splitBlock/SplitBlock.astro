@@ -1,0 +1,22 @@
+---
+import "./split-block.css";
+
+interface Props {
+	node: {
+		src: string;
+		srcset: string;
+		alt: string;
+		heading?: string;
+		text?: string;
+	};
+}
+
+const { src, srcset, alt, heading, text } = Astro.props.node;
+---
+<div class="split-block">
+    <div class="split-block__content">
+        {heading && <h3>{heading}</h3>}
+        {text && <p>{text}</p>}
+    </div>
+    <img class="split-block__image" src={src} srcset={srcset} sizes="auto" alt={alt} loading="lazy" decoding="async" />
+</div>

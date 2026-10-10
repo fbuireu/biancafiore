@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import type { SeoMetadata } from "@const/types";
 import FeaturedArticle from "@modules/articles/components/featuredArticle/FeaturedArticle.astro";
 import { partitionFeatured } from "@modules/articles/utils/featured";
@@ -7,12 +6,11 @@ import ArticleCard from "@modules/core/components/articleCard/ArticleCard.astro"
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import { readArticles } from "@modules/core/utils/entries";
 import { buildArticleListSchema } from "@modules/core/utils/jsonLd";
 import "./_articles.css";
 
-export const prerender = true;
-
-const articles = await getCollection("articles");
+const articles = await readArticles();
 const { featured, rest } = partitionFeatured(articles);
 const itemListSchema = buildArticleListSchema(articles.map(({ data }) => data.slug));
 

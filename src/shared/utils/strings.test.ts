@@ -154,7 +154,7 @@ describe("safeUrl", () => {
 	});
 
 	it("lets a protocol-relative link through, for the same reason", () => {
-		expect(safeUrl("//images.ctfassets.net/hero.jpg")).toBe("//images.ctfassets.net/hero.jpg");
+		expect(safeUrl("//cms.biancafiore.me/hero.jpg")).toBe("//cms.biancafiore.me/hero.jpg");
 	});
 
 	it("escapes what it lets through, so a quote cannot close the attribute carrying it", () => {

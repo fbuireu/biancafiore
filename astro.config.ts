@@ -1,26 +1,32 @@
 import cloudflare from "@astrojs/cloudflare";
+import { cacheCloudflare } from "@astrojs/cloudflare/cache";
 import react from "@astrojs/react";
-import sitemap from "@astrojs/sitemap";
-import { defineConfig, envField, fontProviders, memoryCache } from "astro/config";
+import { d1, r2 } from "@emdash-cms/cloudflare";
+import { defineConfig, envField, fontProviders } from "astro/config";
+import emdash from "emdash/astro";
 import { Features } from "lightningcss";
 import { loadEnv } from "vite";
+import { CONTENT_CACHE, CONTENT_ROUTES } from "./src/const/contentCache";
 import { IMAGE_CDN } from "./src/const/imageCdn";
-import { isNoindexRoute } from "./src/const/noindexRoutes";
 import { securityHeaders } from "./src/const/securityHeaders";
+import { bylineCache } from "./src/infrastructure/cms/plugins/bylineCache/descriptor";
+import { editorialBlocks } from "./src/infrastructure/cms/plugins/editorialBlocks/descriptor";
+import { emailDelivery } from "./src/infrastructure/cms/plugins/emailDelivery/descriptor";
 import { generateStaticHeaders } from "./src/infrastructure/integrations/generateStaticHeaders";
 import { inlineScriptHashes } from "./src/ui/modules/core/utils/inlineScripts";
 
 const environment = loadEnv(process.env.NODE_ENV ?? "production", process.cwd(), "");
 const isProductionBuild = process.env.CLOUDFLARE_ENV === "production";
-const imageCdn = isProductionBuild ? IMAGE_CDN.CLOUDFLARE : IMAGE_CDN.CONTENTFUL;
+const imageCdn = isProductionBuild ? IMAGE_CDN.CLOUDFLARE : IMAGE_CDN.NONE;
 
 export default defineConfig({
 	experimental: {
 		contentIntellisense: true,
 	},
 	cache: {
-		provider: memoryCache(),
+		provider: cacheCloudflare(),
 	},
+	routeRules: Object.fromEntries(CONTENT_ROUTES.map((route) => [route, CONTENT_CACHE])),
 	fonts: [
 		{
 			provider: fontProviders.google(),
@@ -51,7 +57,9 @@ export default defineConfig({
 	image: {
 		layout: "constrained",
 		responsiveStyles: true,
-		domains: ["images.ctfassets.net"],
+	},
+	redirects: {
+		"/sitemap-index.xml": "/sitemap.xml",
 	},
 	trailingSlash: "never",
 	site: environment.SITE_URL,
@@ -77,7 +85,7 @@ export default defineConfig({
 			dedupe: ["react", "react-dom"],
 		},
 		ssr: {
-			external: ["node:async_hooks", "contentful"],
+			external: ["node:async_hooks"],
 		},
 	},
 	integrations: [
@@ -88,8 +96,12 @@ export default defineConfig({
 			}),
 		),
 		react({ compiler: true }),
-		sitemap({
-			filter: (page) => !isNoindexRoute(new URL(page).pathname),
+		emdash({
+			database: d1({ binding: "DB" }),
+			storage: r2({ binding: "MEDIA" }),
+			fonts: false,
+			admin: { siteName: "Bianca Fiore", locales: ["en"] },
+			plugins: [editorialBlocks(), emailDelivery(), bylineCache()],
 		}),
 	],
 	adapter: cloudflare({ imageService: isProductionBuild ? "cloudflare" : "passthrough" }),
@@ -129,18 +141,6 @@ export default defineConfig({
 				context: "server",
 			}),
 			RESEND_API_KEY: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			CONTENTFUL_SPACE_ID: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			CONTENTFUL_DELIVERY_TOKEN: envField.string({
-				access: "secret",
-				context: "server",
-			}),
-			CONTENTFUL_PREVIEW_TOKEN: envField.string({
 				access: "secret",
 				context: "server",
 			}),

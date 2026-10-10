@@ -1,29 +1,22 @@
 import { sortReverseChronological } from "@domain/article/rules";
 import type { Reference } from "@domain/shared/reference";
-import type { ArticleSkeleton, RawArticle } from "../../article/types";
+import type { AnyRawArticle } from "../../article/types";
 import { articlePublishDateISO, articleReference } from "../../article/utils/reference";
-import type { SelectedField } from "../../shared/select";
-import { articleAuthorSlug } from "./author";
-
-export const AUTHOR_LATEST_ARTICLE_FIELDS: SelectedField<ArticleSkeleton>[] = [
-	"sys.id",
-	"fields.slug",
-	"fields.publishDate",
-	"fields.author",
-];
+import type { RawAuthor } from "../types";
+import { credits } from "./author";
 
 interface GetLatestArticleByAuthorParams {
-	authorSlug: string;
-	rawArticles: RawArticle[];
+	rawAuthor: RawAuthor;
+	rawArticles: AnyRawArticle[];
 }
 
 export function getLatestArticleByAuthor({
-	authorSlug,
+	rawAuthor,
 	rawArticles,
 }: GetLatestArticleByAuthorParams): Reference<"articles"> | undefined {
 	const [latest] = sortReverseChronological(
 		rawArticles
-			.filter((article) => articleAuthorSlug(article) === authorSlug)
+			.filter((rawArticle) => credits({ rawAuthor, rawArticle }))
 			.map((article) => ({
 				reference: articleReference(article),
 				publishDateISO: articlePublishDateISO(article),

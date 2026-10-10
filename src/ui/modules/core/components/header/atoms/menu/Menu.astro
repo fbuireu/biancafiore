@@ -1,8 +1,11 @@
 ---
-import { PAGES_ROUTES } from "@const/index";
+import { MENU_NAME } from "@domain/menu";
+import { readMenu } from "../../../../utils/entries";
 import { HEADER_MENU_CLASS, HEADER_MENU_ITEM_CLASS, HEADER_MENU_NAV_CLASS, HEADER_MENU_QUOTE_CLASS } from "../../const";
 import HeaderLink from "../headerLink/HeaderLink.astro";
 import "./menu.css";
+
+const { items } = await readMenu({ name: MENU_NAME.HEADER, prerendered: Astro.isPrerendered });
 ---
 <section class={HEADER_MENU_CLASS} id="header-menu">
     <div class="header__menu__panel">
@@ -13,35 +16,19 @@ import "./menu.css";
             </blockquote>
             <hr class="header__menu__divider" />
             <nav class:list={[HEADER_MENU_NAV_CLASS, "column-nowrap", "flex"]}>
-                <div class={HEADER_MENU_ITEM_CLASS}>
-                    <span>back to start</span>
-                    <HeaderLink href={`${PAGES_ROUTES.HOME}`} class="header__menu__link underline-on-hover">Home
-                    </HeaderLink>
-                </div>
-                <div class={HEADER_MENU_ITEM_CLASS}>
-                    <HeaderLink href={`${PAGES_ROUTES.PROJECTS}`} class="header__menu__link underline-on-hover">
-                        Projects
-                    </HeaderLink>
-                    <span>I worked on</span>
-                </div>
-                <div class={HEADER_MENU_ITEM_CLASS}>
-                    <span>my</span>
-                    <HeaderLink href={`${PAGES_ROUTES.ARTICLES}`} class="header__menu__link underline-on-hover">
-                        Articles
-                    </HeaderLink>
-                </div>
-                <div class={HEADER_MENU_ITEM_CLASS}>
-                    <span>know more</span>
-                    <HeaderLink href={`${PAGES_ROUTES.ABOUT}`} class="header__menu__link underline-on-hover">About
-                    </HeaderLink>
-                    <span>me</span>
-                </div>
-                <div class={HEADER_MENU_ITEM_CLASS}>
-                    <HeaderLink href={`${PAGES_ROUTES.CONTACT}`} class="header__menu__link underline-on-hover">
-                        Contact
-                    </HeaderLink>
-                    <span>me</span>
-                </div>
+                {items.map(({ before, label, after, href, opensInNewTab }) => (
+                    <div class={HEADER_MENU_ITEM_CLASS}>
+                        {before && <span>{before}</span>}
+                        <HeaderLink
+                            href={href}
+                            class="header__menu__link underline-on-hover"
+                            {...(opensInNewTab && { target: "_blank", rel: "noopener noreferrer" })}
+                        >
+                            {label}
+                        </HeaderLink>
+                        {after && <span>{after}</span>}
+                    </div>
+                ))}
             </nav>
         </div>
     </div>

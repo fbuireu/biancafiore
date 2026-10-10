@@ -1,13 +1,11 @@
-import type { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import type { CmsEntry } from "@infrastructure/cms/entries";
+import type { RawImage } from "../shared/images";
 
-export type TestimonialSkeleton = EntrySkeletonType<
-	{
-		author: EntryFieldTypes.Text;
-		quote: EntryFieldTypes.Text;
-		image: EntryFieldTypes.AssetLink;
-		role: EntryFieldTypes.Text;
-	},
-	"testimonial"
->;
+export interface TestimonialFields {
+	author: string;
+	quote: string;
+	role: string;
+	image: RawImage;
+}
 
-export type RawTestimonial = Entry<TestimonialSkeleton, undefined>;
+export type RawTestimonial = CmsEntry<TestimonialFields>;

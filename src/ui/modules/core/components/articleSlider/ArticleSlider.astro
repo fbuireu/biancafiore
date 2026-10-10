@@ -1,12 +1,12 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import type { ArticleEntry } from "../../utils/entries";
 import ArticleCard from "../articleCard/ArticleCard.astro";
 import { SLIDER_SLIDE_CLASS } from "../sliderShell/const";
 import SliderShell from "../sliderShell/SliderShell.astro";
 import "./article-slider.css";
 
 interface Props {
-	articles: CollectionEntry<"articles">[];
+	articles: ArticleEntry[];
 	class?: string;
 }
 

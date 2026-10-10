@@ -1,6 +1,6 @@
 import { sortFavoriteFirst } from "@domain/article/rules";
 import type { Reference } from "@domain/shared/reference";
-import type { RawArticle } from "../types";
+import type { AnyRawArticle } from "../types";
 import { articleIsFavorite, articlePublishDateISO, articleReference } from "./reference";
 
 interface OrderableArticle {
@@ -9,7 +9,7 @@ interface OrderableArticle {
 	publishDateISO: string;
 }
 
-function toOrderableArticle(rawArticle: RawArticle): OrderableArticle {
+function toOrderableArticle(rawArticle: AnyRawArticle): OrderableArticle {
 	return {
 		reference: articleReference(rawArticle),
 		isFavorite: articleIsFavorite(rawArticle),
@@ -17,6 +17,6 @@ function toOrderableArticle(rawArticle: RawArticle): OrderableArticle {
 	};
 }
 
-export function orderArticleReferences(rawArticles: RawArticle[]): Reference<"articles">[] {
+export function orderArticleReferences(rawArticles: AnyRawArticle[]): Reference<"articles">[] {
 	return sortFavoriteFirst(rawArticles.map(toOrderableArticle)).map(({ reference }) => reference);
 }

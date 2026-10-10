@@ -1,18 +1,16 @@
 ---
-import { getCollection } from "astro:content";
 import { tagHref } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import { buildTagIndexBuckets } from "@domain/tag";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
+import { readTags } from "@modules/core/utils/entries";
 import { buildTagListSchema } from "@modules/core/utils/jsonLd";
 import "./_page-tags.css";
 import "./_tags.css";
 
-export const prerender = true;
-
-const tags = await getCollection("tags");
+const tags = await readTags();
 const buckets = buildTagIndexBuckets(tags.map(({ data }) => data));
 
 const metadata: Partial<SeoMetadata> = {

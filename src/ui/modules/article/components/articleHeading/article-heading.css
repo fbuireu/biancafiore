@@ -1,0 +1,8 @@
+.article-heading {
+	gap: 0 0.5rem;
+	scroll-margin-block-start: var(--header-height);
+
+	&:hover {
+		color: var(--primary-main);
+	}
+}

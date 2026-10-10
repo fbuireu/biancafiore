@@ -1,12 +1,28 @@
 import { absoluteUrl, articleHref, PAGES_ROUTES } from "@const/index";
-import { DEFAULT_SEO_PARAMS } from "@modules/core/components/seo/const";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { GET, prerender } from "./rss.xml";
+import * as route from "./rss.xml";
 
-const getCollection = vi.hoisted(() => vi.fn());
+const getLiveCollection = vi.hoisted(() => vi.fn());
+const getLiveEntry = vi.hoisted(() => vi.fn());
 const rss = vi.hoisted(() => vi.fn((_options: unknown) => new Response("<rss />")));
 
-vi.mock("astro:content", () => ({ getCollection }));
+vi.mock("astro:content", () => ({ getLiveCollection, getLiveEntry }));
+
+const { GET } = route;
+
+interface AnswersWithParams {
+	articles: ReturnType<typeof makeArticle>[];
+	settings?: Record<string, unknown>;
+}
+
+const SETTINGS = { title: "Bianca Fiore", description: "A writer's site.", socialLinks: [], verification: {} };
+
+function answersWith({ articles, settings = SETTINGS }: AnswersWithParams): void {
+	getLiveCollection.mockResolvedValue({ entries: articles });
+	getLiveEntry.mockResolvedValue({ entry: { id: "settings", data: settings } });
+}
+
+const answers = (articles: ReturnType<typeof makeArticle>[]) => answersWith({ articles });
 vi.mock("@astrojs/rss", () => ({ default: rss }));
 
 interface MakeArticleParams {
@@ -16,6 +32,7 @@ interface MakeArticleParams {
 }
 
 const makeArticle = ({ slug, title = slug, publishDateISO }: MakeArticleParams) => ({
+	id: slug,
 	data: { slug, title, description: `About ${slug}`, publishDateISO },
 });
 
@@ -35,29 +52,41 @@ interface Feed {
 
 const feed = () => rss.mock.calls[0]?.[0] as Feed;
 
-const context = {} as Parameters<typeof GET>[0];
+const context = { isPrerendered: false } as Parameters<typeof GET>[0];
 
 beforeEach(() => {
 	rss.mockClear();
-	getCollection.mockReset();
-	getCollection.mockResolvedValue([]);
+	getLiveCollection.mockReset();
+	getLiveEntry.mockReset();
+	answers([]);
 });
 
 describe("the feed", () => {
-	it("is prerendered, so a reader never waits on the CMS for it", () => {
-		expect(prerender).toBe(true);
+	it("is rendered when it is asked for, so a newly published Article reaches subscribers without a build", () => {
+		expect(route).not.toHaveProperty("prerender");
 	});
 
 	it("names the site once, from the module that owns the origin", async () => {
 		await GET(context);
 
 		expect(feed().site).toBe(absoluteUrl(PAGES_ROUTES.HOME));
-		expect(feed().title).toBe(DEFAULT_SEO_PARAMS.title);
-		expect(feed().description).toBe(DEFAULT_SEO_PARAMS.description);
+		expect(feed().title).toBe(SETTINGS.title);
+		expect(feed().description).toBe(SETTINGS.description);
+	});
+
+	it("takes the site's name and description from the site settings an editor set", async () => {
+		answersWith({
+			articles: [],
+			settings: { title: "Bianca", description: "Words, mostly.", socialLinks: [], verification: {} },
+		});
+
+		await GET(context);
+
+		expect(feed()).toMatchObject({ title: "Bianca", description: "Words, mostly." });
 	});
 
 	it("links each item through the route module rather than joining a slug by hand", async () => {
-		getCollection.mockResolvedValue([makeArticle({ slug: "a-first-piece", publishDateISO: "2026-01-01" })]);
+		answers([makeArticle({ slug: "a-first-piece", publishDateISO: "2026-01-01" })]);
 
 		await GET(context);
 
@@ -65,7 +94,7 @@ describe("the feed", () => {
 	});
 
 	it("carries each Article's own title and description", async () => {
-		getCollection.mockResolvedValue([makeArticle({ slug: "a-piece", title: "A piece", publishDateISO: "2026-01-01" })]);
+		answers([makeArticle({ slug: "a-piece", title: "A piece", publishDateISO: "2026-01-01" })]);
 
 		await GET(context);
 
@@ -73,7 +102,7 @@ describe("the feed", () => {
 	});
 
 	it("orders the items reverse-chronologically, whatever order the collection came back in", async () => {
-		getCollection.mockResolvedValue([
+		answers([
 			makeArticle({ slug: "middle", publishDateISO: "2026-02-01" }),
 			makeArticle({ slug: "oldest", publishDateISO: "2025-06-01" }),
 			makeArticle({ slug: "newest", publishDateISO: "2026-08-01" }),
@@ -89,7 +118,7 @@ describe("the feed", () => {
 	});
 
 	it("dates each item from the stored ISO string", async () => {
-		getCollection.mockResolvedValue([makeArticle({ slug: "a-piece", publishDateISO: "2026-03-04" })]);
+		answers([makeArticle({ slug: "a-piece", publishDateISO: "2026-03-04" })]);
 
 		await GET(context);
 
@@ -101,9 +130,10 @@ describe("the feed", () => {
 		expect(feed().items).toStrictEqual([]);
 	});
 
-	it("reads the Articles collection and no other", async () => {
+	it("reads the Articles and the site settings and no other collection", async () => {
 		await GET(context);
 
-		expect(getCollection.mock.calls).toStrictEqual([["articles"]]);
+		expect(getLiveCollection.mock.calls).toStrictEqual([["articles"]]);
+		expect(getLiveEntry.mock.calls).toStrictEqual([["site", { id: "settings", prerendered: false }]]);
 	});
 });

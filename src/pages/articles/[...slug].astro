@@ -1,7 +1,7 @@
 ---
-import { getCollection } from "astro:content";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
+import ArticleContent from "@modules/article/components/articleContent/ArticleContent.astro";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
 import ColumnsToggle from "@modules/article/components/columnsToggle/ColumnsToggle.astro";
 import ReadingProgress from "@modules/article/components/readingProgress/ReadingProgress.astro";
@@ -14,45 +14,23 @@ import { featuredImageTransitionName } from "@modules/core/components/blurImage/
 import Breadcrumbs from "@modules/core/components/breadcrumbs/Breadcrumbs.astro";
 import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
+import { readArticle } from "@modules/core/utils/entries";
 import { buildBlogPostingSchema } from "@modules/core/utils/jsonLd";
 import { siteChrome } from "@modules/core/utils/siteChrome";
-import type { InferGetStaticPropsType } from "astro";
 import "./_article.css";
 
-type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const article = Astro.params.slug ? await readArticle(Astro.params.slug) : undefined;
 
-export const prerender = true;
+if (!article) return Astro.rewrite("/404");
 
-export async function getStaticPaths() {
-	const articles = await getCollection("articles");
-
-	return articles.map((article) => {
-		return {
-			params: {
-				slug: article.data.slug,
-			},
-			props: {
-				article,
-			},
-		};
-	});
-}
-
-const { article } = Astro.props;
 const tagNames = article.data.tags?.map(({ name }) => name);
 const metadata: Partial<SeoMetadata> = {
-	title: article.data.title,
-	description: article.data.description,
+	...article.data.seo,
 	type: "article",
 	publishedTime: article.data.publishDateISO,
 	modifiedTime: article.data.updatedAt,
 	author: article.data.author.name,
 	tags: tagNames,
-	...(article.data.featuredImage && {
-		image: article.data.featuredImage.url,
-		imageWidth: article.data.featuredImage.details.width,
-		imageHeight: article.data.featuredImage.details.height,
-	}),
 };
 const { showsTableOfContents } = siteChrome(Astro.url);
 const scopes = article.data.tableOfContents.map(({ scope }) => scope).join(",");
@@ -107,7 +85,7 @@ const blogPostingSchema = buildBlogPostingSchema({
           showsTableOfContents && article.data.tableOfContents.length > 1 &&
           <TableOfContents tableOfContents={article.data.tableOfContents} />
       }
-      <Fragment set:html={article.data.content} />
+      <ArticleContent content={article.data.content} />
     </article>
     <JsonLd schema={blogPostingSchema} />
     <RelatedArticles article={article} />

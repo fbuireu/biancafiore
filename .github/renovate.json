@@ -57,6 +57,11 @@
 		{
 			"matchDepNames": ["pnpm"],
 			"groupName": "pnpm"
+		},
+		{
+			"matchPackageNames": ["emdash", "@emdash-cms/**"],
+			"groupName": "emdash",
+			"addLabels": ["cms"]
 		}
 	]
 }

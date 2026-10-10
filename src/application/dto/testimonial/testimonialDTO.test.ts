@@ -1,46 +1,24 @@
+import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
+import { rawEntry, rawImage } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
-import { createTestimonials } from "./testimonialDTO";
-import type { RawTestimonial } from "./types";
+import { createTestimonials } from ".";
+import type { TestimonialFields } from "./types";
 
-interface AssetParams {
-	url?: string;
-	contentType?: string;
-	width?: number;
-	height?: number;
-}
-
-const asset = ({
-	url = "//images.ctfassets.net/avatar.jpg",
-	contentType = "image/jpeg",
-	width = 200,
-	height = 200,
-}: AssetParams = {}) => ({
-	fields: { file: { url, contentType, details: { size: 512, image: { width, height } } } },
-});
-
-interface MakeTestimonialParams {
-	quotee?: string;
-	quote?: string;
-	role?: string;
-	image?: unknown;
-}
-
-const makeTestimonial = ({
-	quotee = "Ada Lovelace",
-	quote = "She turned our launch into a story",
-	role = "Head of Marketing",
-	image = asset(),
-}: MakeTestimonialParams = {}) => ({ fields: { author: quotee, quote, image, role } }) as unknown as RawTestimonial;
+const makeTestimonial = (fields: Partial<TestimonialFields> = {}) =>
+	rawEntry<TestimonialFields>({
+		data: {
+			author: "Ada Lovelace",
+			quote: "She turned our launch into a story",
+			role: "Head of Marketing",
+			image: rawImage({ name: "avatar.jpg", width: 200, height: 200 }),
+			...fields,
+		},
+	});
 
 describe("createTestimonials", () => {
 	it("carries the Quotee, quote and role across verbatim and drops nothing else in", () => {
 		const [testimonial] = createTestimonials([
-			makeTestimonial({
-				quotee: "Ada Lovelace",
-				quote: "She turned our launch into a story",
-				role: "Head of Marketing",
-				image: asset({ url: "//cdn/ada.webp", contentType: "image/webp", width: 128, height: 128 }),
-			}),
+			makeTestimonial({ image: rawImage({ name: "ada.webp", mimeType: "image/webp", width: 128, height: 128 }) }),
 		]);
 
 		expect(testimonial).toEqual({
@@ -48,7 +26,7 @@ describe("createTestimonials", () => {
 			quote: "She turned our launch into a story",
 			role: "Head of Marketing",
 			image: {
-				url: "https://cdn/ada.webp",
+				url: `${MEDIA_FILE_PATH}ada.webp`,
 				details: { width: 128, height: 128 },
 				formats: { avif: false, webp: true },
 				shareCrops: expect.any(Array),
@@ -56,16 +34,12 @@ describe("createTestimonials", () => {
 		});
 	});
 
-	it("trims the Quotee Contentful padded, since the testimonials collection is keyed on the name", () => {
-		const [testimonial] = createTestimonials([makeTestimonial({ quotee: "  Ada Lovelace\n" })]);
-
-		expect(testimonial.quotee).toBe("Ada Lovelace");
+	it("trims the Quotee the CMS padded, since the testimonials collection is keyed on the name", () => {
+		expect(createTestimonials([makeTestimonial({ author: "  Ada Lovelace\n" })])[0].quotee).toBe("Ada Lovelace");
 	});
 
 	it("does not trim the quote, so the CMS whitespace reaches the domain unchanged", () => {
-		const [testimonial] = createTestimonials([makeTestimonial({ quote: "  A padded quote  " })]);
-
-		expect(testimonial.quote).toBe("  A padded quote  ");
+		expect(createTestimonials([makeTestimonial({ quote: "  A padded quote  " })])[0].quote).toBe("  A padded quote  ");
 	});
 
 	it("maps an empty batch to an empty array synchronously, with no promise in sight", () => {
@@ -76,7 +50,7 @@ describe("createTestimonials", () => {
 	});
 
 	it("preserves the order of the batch it was given, leaving any ordering rule to the loader", () => {
-		const testimonials = createTestimonials([makeTestimonial({ quotee: "Zoe" }), makeTestimonial({ quotee: "Ada" })]);
+		const testimonials = createTestimonials([makeTestimonial({ author: "Zoe" }), makeTestimonial({ author: "Ada" })]);
 
 		expect(testimonials.map(({ quotee }) => quotee)).toEqual(["Zoe", "Ada"]);
 	});
