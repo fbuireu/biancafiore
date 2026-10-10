@@ -52,7 +52,7 @@ export default defineConfig({
 					environment: "node",
 					env: { TZ: AWKWARD_TIMEZONE },
 					setupFiles: [`${ROOT}src/tests/setup/network.ts`],
-					include: ["src/**/*.test.ts", "docs/**/*.test.ts", "e2e/**/*.test.ts", "scripts/**/*.test.ts"],
+					include: ["src/**/*.test.ts", "docs/**/*.test.ts", "e2e/**/*.test.ts"],
 					exclude: [BUILT_OUTPUT_SUITE],
 				},
 			},

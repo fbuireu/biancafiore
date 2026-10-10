@@ -14,7 +14,7 @@ pnpm dev                # astro dev, no browser
 
 `pnpm dev:open` opens one. Local secrets go in `.dev.vars`, which both wrangler and `drizzle.config.ts` load; the env schema itself is declared and validated in `astro.config.ts` under `env.schema`, and a new variable is added there first.
 
-The CMS runs inside `pnpm dev`: EmDash serves its admin at `/_emdash/admin` against a local D1 database and R2 bucket under `.wrangler/state`, and the dev server prints a dev-bypass link that signs you in without a passkey. The local database starts empty, and content pages fail until it holds an Author; `pnpm import:contentful` fills it from Contentful, with a token minted in the local admin.
+The CMS runs inside `pnpm dev`: EmDash serves its admin at `/_emdash/admin` against a local D1 database and R2 bucket under `.wrangler/state`, and the dev server prints a dev-bypass link that signs you in without a passkey. The local database starts empty, and content pages fail until it holds an Article credited to a byline, which the local admin creates.
 
 ## Running in the real runtime
 

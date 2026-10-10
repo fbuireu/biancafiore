@@ -69,8 +69,7 @@
 		"verify": "pnpm verify:static && pnpm test:ut:coverage",
 		"verify:changed": "pnpm verify:static && pnpm test:ut:changed && pnpm test:docs",
 		"test:built": "pnpm build && vitest run --project built",
-		"test:e2e:changed": "pnpm test:e2e --only-changed --pass-with-no-tests",
-		"import:contentful": "node --env-file-if-exists=.dev.vars scripts/importContentful/index.ts"
+		"test:e2e:changed": "pnpm test:e2e --only-changed --pass-with-no-tests"
 	},
 	"dependencies": {
 		"@astrojs/cloudflare": "14.3.3",

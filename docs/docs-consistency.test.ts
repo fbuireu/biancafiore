@@ -21,7 +21,7 @@ const SKIPPED_DIRECTORIES = new Set([
 	"test-results",
 ]);
 
-const INDEXED_DIRECTORIES = [".github", "docs", "drizzle", "scripts", "seed", "src"];
+const INDEXED_DIRECTORIES = [".github", "docs", "drizzle", "seed", "src"];
 
 const DOCUMENTED_PATH_EXTENSIONS = [".ts", ".tsx", ".astro", ".css", ".md", ".json", ".toml"];
 
