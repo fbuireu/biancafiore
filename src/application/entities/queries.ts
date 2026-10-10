@@ -1,4 +1,4 @@
-import { type EntriesQuery, fetchEntries } from "@infrastructure/cms/entries";
+import { type EntriesQuery, fetchEntries, fetchEntry } from "@infrastructure/cms/entries";
 import type { RawArticle } from "../dto/article/types";
 import type { RawAuthor } from "../dto/author/types";
 import { creditedAuthors } from "../dto/author/utils/author";
@@ -10,3 +10,6 @@ export const fetchArticlesAndAuthors = async (): Promise<[RawArticle[], RawAutho
 
 	return [rawArticles, creditedAuthors(rawArticles)];
 };
+
+export const fetchArticle = (slug: string): Promise<RawArticle | undefined> =>
+	fetchEntry<RawArticle>({ collection: ARTICLES_QUERY.collection, id: slug });

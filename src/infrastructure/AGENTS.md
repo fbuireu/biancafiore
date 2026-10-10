@@ -27,7 +27,7 @@ Adding a client:
 
 ## Reading content: `fetchEntries`
 
-[`cms/entries.ts`](./cms/entries.ts) is the only way content is read, and the only thing `@application/entities` imports to read it. `fetchEntries<[RawEntry, …]>(query, …)` takes one query per array of raw entries it answers with (a `collection`, the `references` to read, an optional `orderBy`/`order`/`limit`) and returns a plain promise, so a loader needs no Effect, no `CmsClient` and no runtime of its own; `fetchReferences({ collection, id, field })` reads one reference field of one entry the same way. Some things belong to them rather than to their callers:
+[`cms/entries.ts`](./cms/entries.ts) is the only way content is read, and the only thing `@application/entities` imports to read it. `fetchEntries<[RawEntry, …]>(query, …)` takes one query per array of raw entries it answers with (a `collection`, the `references` to read, an optional `orderBy`/`order`/`limit`) and returns a plain promise, so a loader needs no Effect, no `CmsClient` and no runtime of its own; `fetchReferences({ collection, id, field })` reads one reference field of one entry the same way, and `fetchEntry({ collection, id })` one entry by its id or slug, which is how a preview link reaches a draft no collection query answers. Some things belong to them rather than to their callers:
 
 - the long-lived `ManagedRuntime` over `CmsClientLive`, one CMS client for the whole isolate
 - `Effect.all(..., { concurrency: "unbounded" })`, so several queries overlap without a caller asking

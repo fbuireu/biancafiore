@@ -1,6 +1,6 @@
 import { failureOf } from "@tests/helpers/exit";
 import { Effect } from "effect";
-import { getEmDashCollection, getEmDashReferences } from "emdash";
+import { getEmDashCollection, getEmDashEntry, getEmDashReferences } from "emdash";
 import { getDb } from "emdash/runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CmsError } from "../errors";
@@ -11,6 +11,7 @@ const findById = vi.hoisted(() => vi.fn());
 
 vi.mock("emdash", () => ({
 	getEmDashCollection: vi.fn(),
+	getEmDashEntry: vi.fn(),
 	getEmDashReferences: vi.fn(),
 	MediaRepository: class {
 		findById = findById;
@@ -20,6 +21,7 @@ vi.mock("emdash/runtime", () => ({ getDb: vi.fn() }));
 
 const collection = vi.mocked(getEmDashCollection);
 const references = vi.mocked(getEmDashReferences);
+const entry = vi.mocked(getEmDashEntry);
 
 const UPDATED = new Date("2026-01-02T00:00:00.000Z");
 
@@ -73,6 +75,7 @@ const CREDITED = {
 
 beforeEach(() => {
 	collection.mockReset();
+	entry.mockReset();
 	references.mockReset();
 	findById.mockReset();
 	vi.mocked(getDb).mockReset();
@@ -83,6 +86,7 @@ describe("CmsClientLive", () => {
 		expect(Object.keys(await client()).toSorted()).toStrictEqual([
 			"listEntries",
 			"listReferences",
+			"readEntry",
 			"readMenu",
 			"readSiteSettings",
 		]);
@@ -221,6 +225,41 @@ describe("CmsClient.listEntries", () => {
 		);
 
 		expect((failure as CmsError).message).toBe("The articles collection could not be read: not an error");
+	});
+});
+
+describe("CmsClient.readEntry", () => {
+	it("asks EmDash for one entry, which serves its draft to a preview link and the published entry to anyone else", async () => {
+		entry.mockResolvedValue({ entry: CREDITED, isPreview: true } as never);
+		collection.mockResolvedValue({ entries: [] } as never);
+		vi.mocked(getDb).mockResolvedValue({} as never);
+		findById.mockResolvedValue(AVATAR);
+
+		const item = await Effect.runPromise((await client()).readEntry({ collection: "articles", id: "credited" }));
+
+		expect(entry).toHaveBeenCalledWith("articles", "credited");
+		expect(item).toMatchObject({
+			id: "01CREDITED",
+			bylines: [{ id: "01BIANCA", avatar: { id: "01AVATAR" } }, { id: "01GUEST" }],
+		});
+	});
+
+	it("answers nothing for an entry EmDash does not find", async () => {
+		entry.mockResolvedValue({ entry: null, isPreview: false } as never);
+
+		await expect(
+			Effect.runPromise((await client()).readEntry({ collection: "articles", id: "missing" })),
+		).resolves.toBeUndefined();
+	});
+
+	it("fails typed when EmDash answers its error as data, naming the entry", async () => {
+		entry.mockResolvedValue({ entry: null, error: new Error("D1 is down"), isPreview: false } as never);
+
+		const failure = failureOf(
+			await Effect.runPromiseExit((await client()).readEntry({ collection: "articles", id: "an-article" })),
+		);
+
+		expect((failure as CmsError).message).toBe("The articles entry an-article could not be read: D1 is down");
 	});
 });
 

@@ -81,6 +81,11 @@ export interface ListEntriesQuery {
 	order?: "asc" | "desc";
 }
 
+export interface ReadEntryQuery {
+	collection: string;
+	id: string;
+}
+
 export interface ListReferencesQuery {
 	collection: string;
 	id: string;
@@ -119,6 +124,7 @@ export class CmsClient extends Context.Tag("CmsClient")<
 	CmsClient,
 	{
 		listEntries(query: ListEntriesQuery): Effect.Effect<CmsItemPage, CmsError>;
+		readEntry(query: ReadEntryQuery): Effect.Effect<CmsItem | undefined, CmsError>;
 		listReferences(query: ListReferencesQuery): Effect.Effect<CmsReferencePage, CmsError>;
 		readSiteSettings(): Effect.Effect<CmsSiteSettings, CmsError>;
 		readMenu(name: string): Effect.Effect<CmsMenuItem[] | undefined, CmsError>;
@@ -348,6 +354,21 @@ export const CmsClientLive = Layer.effect(
 									items: entries.flatMap((entry) => itemOf({ entry, avatars }) ?? []),
 									...(nextCursor && { nextCursor }),
 								})),
+							),
+						),
+					),
+				readEntry: ({ collection, id }: ReadEntryQuery) =>
+					query({
+						run: async () => {
+							const { entry, error } = await emdash.getEmDashEntry(collection, id);
+
+							return { entries: entry ? [entry] : [], ...(error && { error }) };
+						},
+						failure: `The ${collection} entry ${id} could not be read`,
+					}).pipe(
+						Effect.flatMap(({ entries }) =>
+							avatarsOf(entries).pipe(
+								Effect.map((avatars) => entries.flatMap((entry) => itemOf({ entry, avatars }) ?? []).at(0)),
 							),
 						),
 					),

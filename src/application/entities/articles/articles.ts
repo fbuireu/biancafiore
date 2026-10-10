@@ -2,8 +2,9 @@ import { type ArticleDTO, articleSchema, sortFavoriteFirst } from "@domain/artic
 import { fetchReferences } from "@infrastructure/cms/entries";
 import { createArticle, createArticles } from "../../dto/article";
 import { articleSlug } from "../../dto/article/utils/reference";
+import { creditedAuthors } from "../../dto/author/utils/author";
 import { contentLoader } from "../collection";
-import { fetchArticlesAndAuthors } from "../queries";
+import { fetchArticle, fetchArticlesAndAuthors } from "../queries";
 
 export const RELATED_ARTICLES_FIELD = "related_articles";
 
@@ -16,8 +17,8 @@ export const articles = {
 			return sortFavoriteFirst(createArticles({ rawArticles, rawAuthors }));
 		},
 		loadOne: async (slug) => {
-			const [rawArticles, rawAuthors] = await fetchArticlesAndAuthors();
-			const rawArticle = rawArticles.find((article) => articleSlug(article) === slug);
+			const [rawArticles] = await fetchArticlesAndAuthors();
+			const rawArticle = rawArticles.find((article) => articleSlug(article) === slug) ?? (await fetchArticle(slug));
 
 			if (!rawArticle) return undefined;
 
@@ -30,7 +31,7 @@ export const articles = {
 			return createArticle({
 				rawArticle: { ...rawArticle, references: { [RELATED_ARTICLES_FIELD]: related } },
 				rawArticles,
-				rawAuthors,
+				rawAuthors: creditedAuthors([rawArticle, ...rawArticles]),
 			});
 		},
 		identify: (article) => article.slug,

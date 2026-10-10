@@ -48,7 +48,8 @@
 			"labelSingular": "Article",
 			"titleField": "title",
 			"dateField": "publish_date",
-			"supports": ["drafts", "revisions", "scheduling", "search", "seo"],
+			"supports": ["drafts", "revisions", "preview", "scheduling", "search", "seo"],
+			"urlPattern": "/articles/{slug}",
 			"admin": { "listColumns": ["publish_date"] },
 			"fields": [
 				{ "slug": "title", "label": "Title", "type": "string", "required": true, "searchable": true },

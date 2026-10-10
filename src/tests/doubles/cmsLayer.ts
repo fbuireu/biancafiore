@@ -5,6 +5,7 @@ import type {
 	CmsSiteSettings,
 	ListEntriesQuery,
 	ListReferencesQuery,
+	ReadEntryQuery,
 } from "@infrastructure/cms/client";
 import type { CmsError } from "@infrastructure/errors";
 import { Effect, Layer } from "effect";
@@ -38,9 +39,11 @@ const UNLIMITED_PAGE = Number.POSITIVE_INFINITY;
 
 export const cmsQueries: ListEntriesQuery[] = [];
 export const cmsReferenceQueries: ListReferencesQuery[] = [];
+export const cmsEntryQueries: ReadEntryQuery[] = [];
 
 let entriesByCollection: Record<string, unknown[]> = {};
 let referencesByEntry: Record<string, CmsReference[]> = {};
+let previewedByCollection: Record<string, unknown[]> = {};
 let siteSettings: CmsSiteSettings = EMPTY_SITE_SETTINGS;
 let menus: Record<string, CmsMenuItem[]> = {};
 let pageSize = UNLIMITED_PAGE;
@@ -50,6 +53,19 @@ let overlapped = false;
 let opened: Promise<void> = Promise.resolve();
 let open: (() => void) | undefined;
 let deadline: ReturnType<typeof setTimeout> | undefined;
+
+interface IsEntryNamedParams {
+	candidate: unknown;
+	id: string;
+}
+
+function isEntryNamed({ candidate, id }: IsEntryNamedParams): boolean {
+	if (typeof candidate !== "object" || candidate === null) return false;
+
+	const { id: entryId, slug } = candidate as { id?: unknown; slug?: unknown };
+
+	return entryId === id || slug === id;
+}
 
 function referenceKey({ collection, id, field }: ReferenceKeyParams): string {
 	return `${collection}/${id}/${field}`;
@@ -65,6 +81,10 @@ function pageOf<ITEM>({ all, cursor, limit }: PageOfParams<ITEM>): { page: ITEM[
 
 export function cmsAnswers(entries: Record<string, unknown[]>): void {
 	entriesByCollection = entries;
+}
+
+export function cmsPreviews(entries: Record<string, unknown[]>): void {
+	previewedByCollection = entries;
 }
 
 export function cmsRefersTo(params: CmsRefersToParams): void {
@@ -112,8 +132,10 @@ export function resetCms(): void {
 	clearTimeout(deadline);
 	cmsQueries.length = 0;
 	cmsReferenceQueries.length = 0;
+	cmsEntryQueries.length = 0;
 	entriesByCollection = {};
 	referencesByEntry = {};
+	previewedByCollection = {};
 	siteSettings = EMPTY_SITE_SETTINGS;
 	menus = {};
 	pageSize = UNLIMITED_PAGE;
@@ -140,6 +162,16 @@ export function cmsClientLayer(tag: CmsTag): Layer.Layer<CmsClient> {
 				const answer = failure ? Effect.fail(failure) : Effect.succeed({ items: page, nextCursor });
 
 				return held > 0 ? Effect.promise(() => opened).pipe(Effect.andThen(answer)) : answer;
+			}),
+		readEntry: (query: ReadEntryQuery) =>
+			Effect.suspend(() => {
+				cmsEntryQueries.push(query);
+
+				const entry = (previewedByCollection[query.collection] ?? []).find((candidate) =>
+					isEntryNamed({ candidate, id: query.id }),
+				);
+
+				return failure ? Effect.fail(failure) : Effect.succeed(entry);
 			}),
 		listReferences: (query: ListReferencesQuery) =>
 			Effect.suspend(() => {

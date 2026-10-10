@@ -1,6 +1,14 @@
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { avatar, BLURHASH, rawByline, rawEntry, rawImage } from "@tests/doubles/cmsEntries";
-import { cmsAnswers, cmsQueries, cmsReferenceQueries, cmsRefersTo, resetCms } from "@tests/doubles/cmsLayer";
+import {
+	cmsAnswers,
+	cmsEntryQueries,
+	cmsPreviews,
+	cmsQueries,
+	cmsReferenceQueries,
+	cmsRefersTo,
+	resetCms,
+} from "@tests/doubles/cmsLayer";
 import { escapedRequests } from "@tests/doubles/network";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ArticleFields } from "../../dto/article/types";
@@ -148,5 +156,31 @@ describe("articles loader, one article", () => {
 
 		await expect(loadOne("missing")).resolves.toBeUndefined();
 		expect(cmsReferenceQueries.some(({ field }) => field === RELATED_ARTICLES_FIELD)).toBe(false);
+	});
+
+	it("answers a never-published article that an editor's preview link reaches, credited to a byline no published article carries", async () => {
+		const guest = rawByline({
+			slug: "a-guest",
+			displayName: "A Guest",
+			bio: "Guest writer",
+			avatar: avatar({ name: "guest.jpg" }),
+			customFields: { job_title: "Writer", current_company: "Freelance" },
+		});
+
+		answer([makeArticle({ slug: "first", publishDate: "2024-03-15" })]);
+		cmsPreviews({ articles: [{ ...makeArticle({ slug: "draft", publishDate: "2024-04-01" }), bylines: [guest] }] });
+
+		const entry = await loadOne("draft");
+
+		expect(entry).toMatchObject({ id: "draft", data: { title: "The title of draft", author: { name: "A Guest" } } });
+		expect(cmsEntryQueries).toEqual([{ collection: "articles", id: "draft" }]);
+	});
+
+	it("asks for no single entry when the published articles already carry the slug", async () => {
+		answer([makeArticle({ slug: "first", publishDate: "2024-03-15" })]);
+
+		await loadOne("first");
+
+		expect(cmsEntryQueries).toEqual([]);
 	});
 });

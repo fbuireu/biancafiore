@@ -6,6 +6,7 @@ import {
 	type CmsMenuItem,
 	type CmsReference,
 	type CmsSiteSettings,
+	type ReadEntryQuery,
 } from "./client";
 
 export type { CmsByline, CmsMedia, CmsMenuItem, CmsReference, CmsSiteSettings, CmsTerm } from "./client";
@@ -126,6 +127,14 @@ export const fetchEntries = <ENTRIES extends readonly AnyEntry[]>(
 
 			return collections as RawEntries<ENTRIES>;
 		}),
+	);
+
+export const fetchEntry = <ENTRY extends AnyEntry>(query: ReadEntryQuery): Promise<ENTRY | undefined> =>
+	cmsRuntime.runPromise(
+		CmsClient.pipe(
+			Effect.flatMap((cms) => cms.readEntry(query)),
+			Effect.map((item) => (item ? ({ ...item, references: {} } as ENTRY) : undefined)),
+		),
 	);
 
 export const fetchReferences = (query: ReferencesQuery): Promise<CmsReference[]> =>
