@@ -1,3 +1,10 @@
+# [1.27.0](https://github.com/fbuireu/biancafiore/compare/v1.26.0...v1.27.0) (2026-10-10)
+
+
+### Features
+
+* let an editor preview an Article, including one never published ([42c43db](https://github.com/fbuireu/biancafiore/commit/42c43db06ea28032062bc89603698bcee0efda70))
+
 # [1.26.0](https://github.com/fbuireu/biancafiore/compare/v1.25.9...v1.26.0) (2026-10-10)
 
 
