@@ -4826,6 +4826,126 @@ describe("the preview's Access token", () => {
 	});
 });
 
+const SECURITY_TXT = /(?:^|\/)(?:public|assets)\/(?:.+\/)?security\.txt$/;
+const SECURITY_TXT_PATH = "/.well-known/security.txt";
+const SECURITY_TXT_FIELD = /^([\w-]+): *(.*)$/gm;
+const SECURITY_TXT_SHAPE = ["Contact", "Expires", "Preferred-Languages", "Canonical", "Policy"].join(", ");
+const SECURITY_TXT_RENEWAL_DAYS = 30;
+const SECURITY_TXT_LIFETIME_YEARS = 2;
+const DAY_IN_MS = 86_400_000;
+const BARE_ORIGIN = /^https:\/\/[^/]+$/;
+const GITHUB_REPOSITORY = /^git\+(https:\/\/github\.com\/[\w.-]+\/[\w-]+)\.git$/;
+const SITES_SERVED = 1;
+
+interface SecurityTxtFaultsParams {
+	text: string;
+	origin: string;
+	repository: string;
+	now: number;
+}
+
+const securityTxtFaults = ({ text, origin, repository, now }: SecurityTxtFaultsParams): string[] => {
+	const fields = new Map([...text.matchAll(SECURITY_TXT_FIELD)].map(([, name, value]) => [name, value.trim()]));
+	const shape = [...fields.keys()].join(", ");
+	const expires = fields.get("Expires") ?? "";
+	const instant = Date.parse(expires);
+	const ceiling = new Date(now);
+	const canonical = `${origin}${SECURITY_TXT_PATH}`;
+	const policy = `${repository}/security/policy`;
+
+	ceiling.setUTCFullYear(ceiling.getUTCFullYear() + SECURITY_TXT_LIFETIME_YEARS);
+
+	const checks: [boolean, string][] = [
+		[shape === SECURITY_TXT_SHAPE, `its fields are ${shape}, not ${SECURITY_TXT_SHAPE}`],
+		[
+			!Number.isNaN(instant) && new Date(instant).toISOString() === expires,
+			`Expires ${expires} is not an ISO 8601 instant`,
+		],
+		[
+			!(instant - now < SECURITY_TXT_RENEWAL_DAYS * DAY_IN_MS),
+			`Expires ${expires} is fewer than ${SECURITY_TXT_RENEWAL_DAYS} days away: renew it`,
+		],
+		[!(instant > ceiling.getTime()), `Expires ${expires} is more than ${SECURITY_TXT_LIFETIME_YEARS} years away`],
+		[fields.get("Canonical") === canonical, `Canonical ${fields.get("Canonical")} is not ${canonical}`],
+		[fields.get("Policy") === policy, `Policy ${fields.get("Policy")} is not ${policy}`],
+	];
+
+	return checks.filter(([holds]) => !holds).map(([, fault]) => fault);
+};
+
+describe("security.txt", () => {
+	const origin = read(".env.example").match(ENV_EXAMPLE_SITE_URL)?.[1]?.trim() ?? "";
+	const repository = String(PACKAGE_JSON.repository?.url).match(GITHUB_REPOSITORY)?.[1] ?? "";
+	const sites = new Map([["public", origin]]);
+	const files = walk(".")
+		.map((file) => file.replace(LEADING_RELATIVE, ""))
+		.filter((file) => SECURITY_TXT.test(file));
+
+	it("keeps one security.txt on every site this repository serves, naming a contact, the site's own canonical URL and this repository's policy, and reads the real clock on purpose: an Expires fewer than 30 days away turns main red a month before the file lapses, so the fix is to renew it, and one more than two years away is past the owner's ceiling", () => {
+		const now = Date.UTC(2026, 9, 10);
+		const inDays = (days: number) => new Date(now + days * DAY_IN_MS).toISOString();
+		const sample = (fields: Record<string, string>) =>
+			securityTxtFaults({
+				text: Object.entries(fields)
+					.map(([name, value]) => `${name}: ${value}`)
+					.join(NEWLINE),
+				origin: "https://example.org",
+				repository: "https://github.com/owner/site",
+				now,
+			});
+		const valid = {
+			Contact: "mailto:security@example.org",
+			Expires: inDays(365),
+			"Preferred-Languages": "en",
+			Canonical: "https://example.org/.well-known/security.txt",
+			Policy: "https://github.com/owner/site/security/policy",
+		};
+		const { Canonical: canonical, ...noCanonical } = valid;
+		const { Policy: policy, ...noPolicy } = valid;
+
+		expect(SECURITY_TXT.test("apps/docs/public/.well-known/security.txt")).toBe(true);
+		expect(SECURITY_TXT.test("app/assets/security.txt")).toBe(true);
+		expect(SECURITY_TXT.test("docs/security.txt")).toBe(false);
+		expect(sample(valid)).toEqual([]);
+		expect(sample({ ...valid, Expires: inDays(30) })).toEqual([]);
+		expect(sample({ ...valid, Expires: inDays(29) })).toEqual([
+			`Expires ${inDays(29)} is fewer than 30 days away: renew it`,
+		]);
+		expect(sample({ ...valid, Expires: "2028-10-01T00:00:00.000Z" })).toEqual([]);
+		expect(sample({ ...valid, Expires: "2028-10-11T00:00:00.000Z" })).toEqual([
+			"Expires 2028-10-11T00:00:00.000Z is more than 2 years away",
+		]);
+		expect(sample({ ...valid, Expires: "the first of October" })).toEqual([
+			"Expires the first of October is not an ISO 8601 instant",
+		]);
+		expect(sample(noCanonical)).toEqual([
+			"its fields are Contact, Expires, Preferred-Languages, Policy, not Contact, Expires, Preferred-Languages, Canonical, Policy",
+			`Canonical undefined is not ${canonical}`,
+		]);
+		expect(sample({ ...valid, Canonical: "https://example.com/.well-known/security.txt" })).toEqual([
+			`Canonical https://example.com/.well-known/security.txt is not ${canonical}`,
+		]);
+		expect(sample(noPolicy)).toEqual([
+			"its fields are Contact, Expires, Preferred-Languages, Canonical, not Contact, Expires, Preferred-Languages, Canonical, Policy",
+			`Policy undefined is not ${policy}`,
+		]);
+		expect(origin).toMatch(BARE_ORIGIN);
+		expect(repository).not.toBe("");
+		expect(files.length).toBeGreaterThanOrEqual(SITES_SERVED);
+		expect(files).toEqual([...sites.keys()].map((folder) => `${folder}${SECURITY_TXT_PATH}`));
+		expect(
+			files.flatMap((file) =>
+				securityTxtFaults({
+					text: read(file),
+					origin: sites.get(file.slice(0, -SECURITY_TXT_PATH.length)) ?? "",
+					repository,
+					now: Date.now(),
+				}).map((fault) => `${file}: ${fault}`),
+			),
+		).toEqual([]);
+	});
+});
+
 describe("the YAML", () => {
 	it("pins every action of another repository to a full commit SHA, its version or branch in a trailing comment", () => {
 		const sha = "0".repeat(40);

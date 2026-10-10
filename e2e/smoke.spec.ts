@@ -1,6 +1,11 @@
 import { expect, test } from "./fixtures";
 
 const UNKNOWN_PATH = "/this-does-not-exist-xyz";
+const SECURITY_TXT_PATH = "/.well-known/security.txt";
+const PLAIN_TEXT = /^text\/plain/;
+const EXPIRES_FIELD = /^Expires: *(.+)$/m;
+const CANONICAL_FIELD = /^Canonical: *(.+)$/m;
+const PRODUCTION_URL = process.env.PRODUCTION_URL;
 
 test.describe("smoke", () => {
 	test("the homepage answers with a rendered document @smoke", async ({ page }) => {
@@ -21,5 +26,21 @@ test.describe("smoke", () => {
 
 		expect(response.status()).toBe(200);
 		expect(response.headers()["content-type"]).toContain("text/plain");
+	});
+
+	test("security.txt is served and has not expired @smoke", async ({ request, baseURL }) => {
+		const response = await request.get(SECURITY_TXT_PATH);
+
+		expect(response.status()).toBe(200);
+		expect(response.headers()["content-type"]).toMatch(PLAIN_TEXT);
+
+		const body = await response.text();
+
+		expect(body).toContain("Contact:");
+		expect(Date.parse(body.match(EXPIRES_FIELD)?.[1] ?? "")).toBeGreaterThan(Date.now());
+
+		if (PRODUCTION_URL && baseURL === PRODUCTION_URL) {
+			expect(body.match(CANONICAL_FIELD)?.[1]).toBe(new URL(SECURITY_TXT_PATH, baseURL).href);
+		}
 	});
 });

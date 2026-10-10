@@ -96,6 +96,15 @@ Whichever way it reaches me, include:
 Reports made in good faith will not result in legal action. Thank you for
 helping keep the site and its readers safe.
 
+## security.txt
+
+[`public/.well-known/security.txt`](../public/.well-known/security.txt) is
+served at `https://biancafiore.me/.well-known/security.txt` and points to this
+policy. Its `Expires` is two years after its last renewal, and `pnpm test:docs`
+fails 30 days before that date, so `main` turns red a month before the file
+lapses. To renew it, move `Expires` forward, at most two years from the day
+you do it.
+
 ## Security Updates
 
 Security fixes ship as ordinary commits to `main`, which deploys them; there is
