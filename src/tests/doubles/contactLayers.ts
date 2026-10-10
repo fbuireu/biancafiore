@@ -105,6 +105,7 @@ export function emailDouble({ id = "email-id", failWith }: EmailDoubleParams = {
 
 				return Effect.succeed({ id });
 			},
+			sendCmsEmail: () => Effect.die(new Error("the contact action sends no CMS email")),
 		}),
 	};
 }

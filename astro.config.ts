@@ -10,6 +10,7 @@ import { CONTENT_CACHE, CONTENT_ROUTES } from "./src/const/contentCache";
 import { IMAGE_CDN } from "./src/const/imageCdn";
 import { securityHeaders } from "./src/const/securityHeaders";
 import { editorialBlocks } from "./src/infrastructure/cms/plugins/editorialBlocks/descriptor";
+import { emailDelivery } from "./src/infrastructure/cms/plugins/emailDelivery/descriptor";
 import { generateStaticHeaders } from "./src/infrastructure/integrations/generateStaticHeaders";
 import { inlineScriptHashes } from "./src/ui/modules/core/utils/inlineScripts";
 
@@ -99,7 +100,7 @@ export default defineConfig({
 			storage: r2({ binding: "MEDIA" }),
 			fonts: false,
 			admin: { siteName: "Bianca Fiore" },
-			plugins: [editorialBlocks()],
+			plugins: [editorialBlocks(), emailDelivery()],
 		}),
 	],
 	adapter: cloudflare({ imageService: isProductionBuild ? "cloudflare" : "passthrough" }),

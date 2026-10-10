@@ -38,12 +38,15 @@ describe("EmailClientLive", () => {
 		expect(Exit.isSuccess(exit)).toBe(true);
 	});
 
-	it("hands out the one notification the site sends rather than the vendor's send", async () => {
+	it("hands out the two emails the site sends rather than the vendor's send", async () => {
 		setSecret({ name: API_KEY_SECRET, value: "re_test_key" });
 
 		const exit = await build();
 
-		expect(Exit.isSuccess(exit) && Object.keys(exit.value).toSorted()).toStrictEqual(["sendContactNotification"]);
+		expect(Exit.isSuccess(exit) && Object.keys(exit.value).toSorted()).toStrictEqual([
+			"sendCmsEmail",
+			"sendContactNotification",
+		]);
 	});
 });
 
