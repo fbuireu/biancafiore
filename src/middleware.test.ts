@@ -2,7 +2,7 @@ import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
 import { securityHeaders } from "@const/securityHeaders";
 import { inlineScriptHashes } from "@modules/core/utils/inlineScripts";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { onRequest } from "./middleware";
+import type { onRequest } from "./middleware";
 
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
 const HASHES = inlineScriptHashes(GOOGLE_ANALYTICS_ID);
@@ -14,7 +14,16 @@ const respond = () =>
 
 const SITE = "https://biancafiore.me";
 
-const headersOf = async (path = "/") => {
+interface HeadersOfParams {
+	isDevelopment: boolean;
+	path?: string;
+}
+
+const headersOf = async ({ isDevelopment, path = "/" }: HeadersOfParams) => {
+	vi.stubEnv("DEV", isDevelopment);
+	vi.resetModules();
+
+	const { onRequest } = await import("./middleware");
 	const response = await onRequest({ url: new URL(path, SITE) } as Parameters<typeof onRequest>[0], respond);
 
 	return (response as Response).headers;
@@ -33,25 +42,21 @@ afterEach(() => {
 
 describe("onRequest", () => {
 	it("strips the https upgrade in dev, which is the directive WebKit obeys on localhost", async () => {
-		vi.stubEnv("DEV", true);
-
-		expect((await headersOf()).get("Content-Security-Policy")).not.toContain(HTTPS_UPGRADE_DIRECTIVE);
+		expect((await headersOf({ isDevelopment: true })).get("Content-Security-Policy")).not.toContain(
+			HTTPS_UPGRADE_DIRECTIVE,
+		);
 	});
 
 	it("keeps the https upgrade in production, where the whole point is to serve it", async () => {
-		vi.stubEnv("DEV", false);
-
-		expect((await headersOf()).get("Content-Security-Policy")).toContain(HTTPS_UPGRADE_DIRECTIVE);
+		expect((await headersOf({ isDevelopment: false })).get("Content-Security-Policy")).toContain(
+			HTTPS_UPGRADE_DIRECTIVE,
+		);
 	});
 
 	it("touches no header but the policy, and leaves the rest of the policy alone in both modes", async () => {
-		vi.stubEnv("DEV", true);
+		const development = await headersOf({ isDevelopment: true });
 
-		const development = await headersOf();
-
-		vi.stubEnv("DEV", false);
-
-		const production = await headersOf();
+		const production = await headersOf({ isDevelopment: false });
 		const productionHeaders = securityHeaders({ isDevelopment: false, inlineScriptHashes: HASHES });
 		const developmentHeaders = securityHeaders({ isDevelopment: true, inlineScriptHashes: HASHES });
 
@@ -67,9 +72,7 @@ describe("onRequest", () => {
 	});
 
 	it("runs in production the inline scripts the pages render, each by its digest, and no other", async () => {
-		vi.stubEnv("DEV", false);
-
-		const sources = scriptSources(await headersOf());
+		const sources = scriptSources(await headersOf({ isDevelopment: false }));
 
 		expect(HASHES.length).toBeGreaterThan(0);
 		expect(sources.filter((source) => source.startsWith("'sha256-"))).toStrictEqual(
@@ -79,15 +82,11 @@ describe("onRequest", () => {
 	});
 
 	it("allows inline scripts in dev, where the toolchain writes its own", async () => {
-		vi.stubEnv("DEV", true);
-
-		expect(scriptSources(await headersOf())).toContain("'unsafe-inline'");
+		expect(scriptSources(await headersOf({ isDevelopment: true }))).toContain("'unsafe-inline'");
 	});
 
 	it("leaves EmDash's own routes to the headers EmDash sets, so the site's policy cannot break the admin", async () => {
-		vi.stubEnv("DEV", false);
-
-		const headers = await headersOf("/_emdash/admin");
+		const headers = await headersOf({ isDevelopment: false, path: "/_emdash/admin" });
 
 		for (const header of Object.keys(securityHeaders({ isDevelopment: false, inlineScriptHashes: HASHES }))) {
 			expect(`${header}: ${headers.get(header)}`).toBe(`${header}: null`);
@@ -95,9 +94,7 @@ describe("onRequest", () => {
 	});
 
 	it("still sets the site's headers on a page whose path merely starts with the same letters", async () => {
-		vi.stubEnv("DEV", false);
-
-		expect((await headersOf("/_emdashboard")).get("Content-Security-Policy")).toBe(
+		expect((await headersOf({ isDevelopment: false, path: "/_emdashboard" })).get("Content-Security-Policy")).toBe(
 			securityHeaders({ isDevelopment: false, inlineScriptHashes: HASHES })["Content-Security-Policy"],
 		);
 	});
