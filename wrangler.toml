@@ -43,7 +43,7 @@ binding = "MEDIA"
 bucket_name = "biancafiore-media-production"
 
 [triggers]
-crons = ["*/15 * * * *"]
+crons = ["* * * * *"]
 
 [env.development]
 name = "biancafiore-development"
@@ -115,7 +115,7 @@ binding = "MEDIA"
 bucket_name = "biancafiore-media-production"
 
 [env.production.triggers]
-crons = ["*/15 * * * *"]
+crons = ["* * * * *"]
 
 [[env.production.routes]]
 pattern = "biancafiore.me"

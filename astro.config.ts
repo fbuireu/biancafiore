@@ -99,7 +99,7 @@ export default defineConfig({
 			database: d1({ binding: "DB" }),
 			storage: r2({ binding: "MEDIA" }),
 			fonts: false,
-			admin: { siteName: "Bianca Fiore" },
+			admin: { siteName: "Bianca Fiore", locales: ["en"] },
 			plugins: [editorialBlocks(), emailDelivery()],
 		}),
 	],

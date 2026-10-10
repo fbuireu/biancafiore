@@ -19,7 +19,7 @@ A DTO fed by more than one query takes them as one object, not as separate argum
 | Collection | Fields | Identified by |
 | --- | --- | --- |
 | `articles` | `title`, `content` (Portable Text), `description`, `publish_date`, `featured_image`, `featured_article`, `is_favorite`, `is_republished`, `original_source`; the `tag` taxonomy; references `author` and `related_articles` | its slug, which addresses the page |
-| `authors` | `name`, `description`, `job_title`, `current_company`, `profile_image`, `social_networks` (rows of `url`); `articles`, the other end of the Author relation | its slug, which addresses the Author Tag |
+| `authors` | `name`, `description`, `job_title`, `current_company`, `profile_image`, `social_networks` (rows of `name` and `url`); `articles`, the other end of the Author relation | its slug, which addresses the Author Tag |
 | `cities` | `name`, `latitude`, `longitude`, `start_date`, `end_date`, `description`, `image` | its name |
 | `projects` | `name`, `description` (Portable Text), `image` | its slug, else its slugified name |
 | `testimonials` | `author`, `quote`, `role`, `image` | the Quotee's name, which the CMS field still calls `author` |

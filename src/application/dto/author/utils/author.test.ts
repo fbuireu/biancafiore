@@ -19,7 +19,7 @@ const makeRawAuthor = ({ slug = "bianca-fiore", credited = [], ...fields }: Make
 			job_title: "Writer",
 			current_company: "Freelance",
 			profile_image: rawImage({ name: "bianca.avif", width: 512, height: 512, mimeType: "image/avif" }),
-			social_networks: [{ url: "https://linkedin.com/in/bianca" }],
+			social_networks: [{ name: "LinkedIn", url: "https://linkedin.com/in/bianca" }],
 			...fields,
 		},
 		references: { articles: credited.map((article) => referenceTo(article)) },

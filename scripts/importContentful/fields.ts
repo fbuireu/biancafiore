@@ -101,6 +101,12 @@ export function tagTerm({ entry }: Pick<MapEntryParams, "entry">): TermBody {
 	return { slug: textOf(entry.fields.slug)?.trim() || undefined, label: String(entry.fields.name ?? "").trim() };
 }
 
+export function socialNetworkName(url: string): string {
+	const [label = url] = new URL(url).hostname.replace(/^www\./, "").split(".");
+
+	return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
 export function authorBody({ entry, context }: MapEntryParams): EntryBody {
 	const { fields } = entry;
 	const socialNetworks = Array.isArray(fields.socialNetworks) ? fields.socialNetworks : [];
@@ -114,7 +120,7 @@ export function authorBody({ entry, context }: MapEntryParams): EntryBody {
 			job_title: fields.jobTitle,
 			current_company: fields.currentCompany,
 			profile_image: imageOf({ link: fields.profileImage, context }),
-			social_networks: socialNetworks.map((url) => ({ url })),
+			social_networks: socialNetworks.map((url) => ({ name: socialNetworkName(url), url })),
 		}),
 	};
 }

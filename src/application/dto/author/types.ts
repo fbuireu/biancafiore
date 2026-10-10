@@ -7,7 +7,7 @@ export interface AuthorFields {
 	job_title: string;
 	current_company: string;
 	profile_image: RawImage;
-	social_networks?: Array<{ url: string }>;
+	social_networks?: Array<{ name: string; url: string }>;
 }
 
 export const AUTHOR_ARTICLES_FIELD = "articles";

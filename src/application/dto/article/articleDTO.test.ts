@@ -40,7 +40,7 @@ const AUTHOR = rawEntry<AuthorFields, "articles">({
 		job_title: "Writer",
 		current_company: "Freelance",
 		profile_image: rawImage({ name: "bianca.webp", mimeType: "image/webp" }),
-		social_networks: [{ url: "https://linkedin.com/in/bianca" }],
+		social_networks: [{ name: "LinkedIn", url: "https://linkedin.com/in/bianca" }],
 	},
 	references: { articles: [] },
 });

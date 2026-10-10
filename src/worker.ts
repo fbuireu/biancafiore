@@ -4,5 +4,5 @@ export { PluginBridge };
 
 export default {
 	...handler,
-	scheduled: createScheduledHandler({ generalCron: "*/15 * * * *" }),
+	scheduled: createScheduledHandler({ generalCron: "* * * * *" }),
 };

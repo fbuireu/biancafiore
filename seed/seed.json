@@ -49,7 +49,10 @@
 					"label": "Social networks",
 					"type": "repeater",
 					"validation": {
-						"subFields": [{ "slug": "url", "label": "URL", "type": "url", "required": true }]
+						"subFields": [
+							{ "slug": "name", "label": "Name", "type": "string", "required": true },
+							{ "slug": "url", "label": "URL", "type": "url", "required": true }
+						]
 					}
 				},
 				{
