@@ -74,6 +74,7 @@ id = "fde64789020f4160b0d835d190d8d5d6"
 [[env.development.d1_databases]]
 binding = "DB"
 database_name = "biancafiore-content-development"
+database_id = "62582521-e769-4bba-8fc4-c914bfc53e7c"
 
 [[env.development.r2_buckets]]
 binding = "MEDIA"
