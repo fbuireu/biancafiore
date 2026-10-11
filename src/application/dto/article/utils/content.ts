@@ -5,7 +5,7 @@ import { imagePlaceholder } from "@infrastructure/images/imagePlaceholder";
 import { slugify } from "@shared/utils/strings";
 import { z } from "@shared/utils/zod";
 import { playerEmbed } from "../../shared/embeds";
-import { prepareLinks, proseOf, readableTextOf } from "../../shared/portableText";
+import { prepareLinks } from "../../shared/portableText";
 import type { AnyRawArticle } from "../types";
 
 const IMAGE_LAYOUT = {
@@ -222,15 +222,12 @@ function prepareBlock({ node, title }: PrepareBlockParams): PortableTextNode[] {
 interface PreparedArticleContent {
 	content: PortableText;
 	headings: ArticleHeading[];
-	prose: string;
-	readableText: string;
 }
 
 export function prepareArticleContent(rawArticle: AnyRawArticle): PreparedArticleContent {
 	const anchor = createAnchors();
 	const headings: ArticleHeading[] = [];
-	const linked = prepareLinks(rawArticle.data.content);
-	const content = linked.flatMap((node) => {
+	const content = prepareLinks(rawArticle.data.content).flatMap((node) => {
 		if (!headingSchema.validate(node)) {
 			return prepareBlock({ node, title: rawArticle.data.title });
 		}
@@ -251,5 +248,5 @@ export function prepareArticleContent(rawArticle: AnyRawArticle): PreparedArticl
 		return [{ ...heading, scope }];
 	});
 
-	return { content, headings, prose: proseOf(linked), readableText: readableTextOf(content) };
+	return { content, headings };
 }

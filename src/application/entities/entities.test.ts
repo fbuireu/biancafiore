@@ -7,7 +7,7 @@ import type { ArticleFields } from "../dto/article/types";
 import type { CityFields } from "../dto/city/types";
 import type { ProjectFields } from "../dto/project/types";
 import type { TestimonialFields } from "../dto/testimonial/types";
-import { articles } from "./articles/articles";
+import { article, articles } from "./articles/articles";
 import { authors } from "./authors/authors";
 import { cities } from "./cities/cities";
 import { projects } from "./projects/projects";
@@ -27,6 +27,7 @@ interface Collection {
 }
 
 const COLLECTIONS: [string, Collection][] = [
+	["article", article as unknown as Collection],
 	["articles", articles as unknown as Collection],
 	["authors", authors as unknown as Collection],
 	["cities", cities as unknown as Collection],

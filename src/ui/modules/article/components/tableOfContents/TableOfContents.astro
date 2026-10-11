@@ -1,10 +1,10 @@
 ---
-import type { ArticleEntry } from "@modules/core/utils/entries";
+import type { TableOfContents } from "@domain/article";
 import { TABLE_OF_CONTENTS_WRAPPER_CLASS } from "./const";
 import "./table-of-contents.css";
 
 interface Props {
-	tableOfContents: ArticleEntry["data"]["tableOfContents"];
+	tableOfContents: TableOfContents;
 }
 
 const { tableOfContents } = Astro.props;

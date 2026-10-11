@@ -1,6 +1,6 @@
 import { DEFAULT_LOCALE_STRING } from "@const/locale";
 import { formatDate } from "@shared/utils/dates";
-import type { ArticleDTO, ArticleHeading, TableOfContents } from "./types";
+import type { ArticleHeading, ArticleSummaryDTO, TableOfContents } from "./types";
 
 const WORDS_PER_MINUTE = 200;
 const MINIMUM_READING_MINUTES = 1;
@@ -73,10 +73,12 @@ export function formatPublishDate(isoDate: string): string {
 	return formatDate(isoDate);
 }
 
-export function sortReverseChronological<T extends Pick<ArticleDTO, "publishDateISO">>(articles: T[]): T[] {
+export function sortReverseChronological<T extends Pick<ArticleSummaryDTO, "publishDateISO">>(articles: T[]): T[] {
 	return articles.toSorted((a, b) => b.publishDateISO.localeCompare(a.publishDateISO, DEFAULT_LOCALE_STRING));
 }
 
-export function sortFavoriteFirst<T extends Pick<ArticleDTO, "isFavorite" | "publishDateISO">>(articles: T[]): T[] {
+export function sortFavoriteFirst<T extends Pick<ArticleSummaryDTO, "isFavorite" | "publishDateISO">>(
+	articles: T[],
+): T[] {
 	return sortReverseChronological(articles).toSorted((a, b) => Number(b.isFavorite) - Number(a.isFavorite));
 }

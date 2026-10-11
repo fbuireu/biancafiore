@@ -4,7 +4,7 @@ import { avatar, rawByline, rawEntry, rawImage, term } from "@tests/doubles/cmsE
 import { describe, expect, it } from "vitest";
 import type { RawAuthor } from "../author/types";
 import type { RawTag } from "../tag/types";
-import { createArticle, createArticles } from ".";
+import { createArticle, createArticleSummaries, createArticles } from ".";
 import type { AnyRawArticle, ArticleFields, ArticleReference, RawArticle } from "./types";
 
 let key = 0;
@@ -514,5 +514,38 @@ describe("createArticle", () => {
 		const article = createArticle({ rawArticle: first, rawArticles, rawAuthors: [AUTHOR] });
 
 		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
+	});
+});
+
+describe("createArticleSummaries", () => {
+	it("hands a listing the values the Article's own page reads, and none of its body", () => {
+		const rawArticles = [
+			makeArticle({
+				slug: "first",
+				tags: [CRAFT],
+				content: [
+					heading({ level: 2, value: "A section" }),
+					paragraph(Array.from({ length: 250 }, (_, index) => `word${index}`).join(" ")),
+				],
+			}),
+			makeArticle({ slug: "second", tags: [CRAFT] }),
+		];
+		const [summary] = createArticleSummaries({ rawArticles, rawAuthors: [AUTHOR] });
+		const [article] = create(rawArticles);
+
+		expect(summary).toEqual({
+			title: article.title,
+			author: article.author,
+			slug: article.slug,
+			description: article.description,
+			publishDateISO: article.publishDateISO,
+			updatedAt: article.updatedAt,
+			featuredImage: article.featuredImage,
+			isFeaturedArticle: article.isFeaturedArticle,
+			isFavorite: article.isFavorite,
+			readingTime: article.readingTime,
+			tags: article.tags,
+		});
+		expect(summary.readingTime).toBe(2);
 	});
 });

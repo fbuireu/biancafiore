@@ -1,5 +1,7 @@
 import type { z } from "@shared/utils/zod";
-import type { articleSchema } from "./schema";
+import type { articleSchema, articleSummarySchema } from "./schema";
+
+export type ArticleSummaryDTO = z.infer<typeof articleSummarySchema>;
 
 export type ArticleDTO = z.infer<typeof articleSchema>;
 

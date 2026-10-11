@@ -24,7 +24,7 @@ const entryOf = <ENTRY>(result: LiveResult<ENTRY>): ENTRY | undefined =>
 	result.error?.name === ENTRY_NOT_FOUND ? undefined : unwrap(result).entry;
 
 export const readArticles = async () => entriesOf(await getLiveCollection("articles"));
-export const readArticle = async (slug: string) => entryOf(await getLiveEntry("articles", slug));
+export const readArticle = async (slug: string) => entryOf(await getLiveEntry("article", slug));
 export const readAuthors = async () => entriesOf(await getLiveCollection("authors"));
 export const readCities = async () => entriesOf(await getLiveCollection("cities"));
 export const readProjects = async () => entriesOf(await getLiveCollection("projects"));
@@ -33,6 +33,7 @@ export const readTag = async (slug: string) => entryOf(await getLiveEntry("tags"
 export const readTestimonials = async () => entriesOf(await getLiveCollection("testimonials"));
 
 export type ArticleEntry = Awaited<ReturnType<typeof readArticles>>[number];
+export type WholeArticleEntry = NonNullable<Awaited<ReturnType<typeof readArticle>>>;
 type AuthorEntry = Awaited<ReturnType<typeof readAuthors>>[number];
 export type CityEntry = Awaited<ReturnType<typeof readCities>>[number];
 export type TestimonialEntry = Awaited<ReturnType<typeof readTestimonials>>[number];

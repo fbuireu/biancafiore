@@ -51,6 +51,8 @@ Some things are worth knowing about that path.
 
 **Bad data fails the build rather than degrading a page.** A malformed publish date, an Article no byline credits or an Original Source the Republished flag would hide are refused where they are mapped. One entry taking the build down is the deliberate trade: the alternative is one page quietly rendering wrong.
 
+**An Article is read whole only on its own page.** Every listing, the Blog, a tag page, the related Articles, the feed and the sitemap, reads a summary of each Article: its title, Author, description, dates, Featured Image, Tags and Reading Time. Its body, prepared for rendering, its Table of Contents and its SEO are read for the one Article a page shows, because preparing a body is the costly part and a listing would otherwise pay it for every Article.
+
 **Identity is stated per concept.** Articles, Tags and Authors are keyed on their slug; Cities on their name, because a City's slug is derived from it and the two are one identity; Projects on the id their mapper derives; Testimonials on the Quotee's name, because a Testimonial has no other identifier. That last one has a known cost: two quotes from one person would collapse. It is recorded rather than fixed with an id the CMS does not have.
 
 ---

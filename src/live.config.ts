@@ -1,5 +1,5 @@
 import { defineLiveCollection } from "astro:content";
-import { articles } from "@application/entities/articles";
+import { article, articles } from "@application/entities/articles";
 import { authors } from "@application/entities/authors";
 import { cities } from "@application/entities/cities";
 import { menus } from "@application/entities/menus";
@@ -11,6 +11,7 @@ import { emdashLoader } from "emdash/runtime";
 
 export const collections = {
 	_emdash: defineLiveCollection({ loader: emdashLoader() }),
+	article: defineLiveCollection(article),
 	articles: defineLiveCollection(articles),
 	authors: defineLiveCollection(authors),
 	cities: defineLiveCollection(cities),

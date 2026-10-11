@@ -118,7 +118,7 @@ describe("the site's chrome", () => {
 
 describe("the entry readers", () => {
 	it.each([
-		["articles", readArticle],
+		["article", readArticle],
 		["tags", readTag],
 	])("read one %s entry by its slug", async (collection, read) => {
 		entries.set(`${collection}:a-slug`, { entry: { id: "a-slug", data: {} } });
@@ -128,13 +128,13 @@ describe("the entry readers", () => {
 	});
 
 	it("answer undefined for an entry the loader does not hold, which the page turns into a 404", async () => {
-		entries.set("articles:missing", { error: notFound() });
+		entries.set("article:missing", { error: notFound() });
 
 		await expect(readArticle("missing")).resolves.toBeUndefined();
 	});
 
 	it("throw any other error the loader answered", async () => {
-		entries.set("articles:broken", { error: new Error("emdash is unreachable") });
+		entries.set("article:broken", { error: new Error("emdash is unreachable") });
 
 		await expect(readArticle("broken")).rejects.toThrow("emdash is unreachable");
 	});

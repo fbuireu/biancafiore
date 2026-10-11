@@ -14,7 +14,7 @@ const articleSeoSchema = z.object({
 	robots: z.object({ index: z.boolean(), follow: z.boolean() }),
 });
 
-export const articleSchema = z.object({
+export const articleSummarySchema = z.object({
 	title: z.string(),
 	author: authorSchema,
 	slug: z.string(),
@@ -24,12 +24,15 @@ export const articleSchema = z.object({
 	featuredImage: imageSchema.optional(),
 	isFeaturedArticle: z.boolean(),
 	isFavorite: z.boolean().default(false),
+	readingTime: z.number(),
+	tags: z.array(tagSchema).optional(),
+});
+
+export const articleSchema = articleSummarySchema.extend({
 	isRepublished: z.boolean().default(false),
 	originalSource: z.string().optional(),
 	seo: articleSeoSchema,
 	content: portableTextSchema,
-	readingTime: z.number(),
-	tags: z.array(tagSchema).optional(),
 	relatedArticles: z.array(referenceSchema("articles")).default([]),
 	tableOfContents: z
 		.array(

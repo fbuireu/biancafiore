@@ -12,7 +12,7 @@ import {
 import { escapedRequests } from "@tests/doubles/network";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ArticleFields } from "../../dto/article/types";
-import { articles, RELATED_ARTICLES_FIELD } from "./articles";
+import { article, articles, RELATED_ARTICLES_FIELD } from "./articles";
 
 vi.mock("@infrastructure/cms/client", async () => {
 	const actual = await vi.importActual<typeof import("@infrastructure/cms/client")>("@infrastructure/cms/client");
@@ -65,7 +65,7 @@ const loadAll = async () => {
 	return result.entries;
 };
 
-const loadOne = (slug: string) => articles.loader.loadEntry({ filter: { id: slug }, collection: "articles" });
+const loadOne = (slug: string) => article.loader.loadEntry({ filter: { id: slug }, collection: "article" });
 
 beforeEach(() => {
 	resetCms();
@@ -128,9 +128,19 @@ describe("articles loader", () => {
 
 		expect(cmsReferenceQueries.some(({ field }) => field === RELATED_ARTICLES_FIELD)).toBe(false);
 	});
+
+	it("hands a list no article's body or table of contents, which only the article's own page renders", async () => {
+		answer([makeArticle({ slug: "first", publishDate: "2024-03-15" })]);
+
+		const [entry] = await loadAll();
+
+		expect(Object.keys(entry?.data ?? {})).not.toContain("content");
+		expect(Object.keys(entry?.data ?? {})).not.toContain("tableOfContents");
+		expect(entry?.data.readingTime).toBe(1);
+	});
 });
 
-describe("articles loader, one article", () => {
+describe("article loader", () => {
 	it("reads the hand-picked related articles of that article alone, and answers them", async () => {
 		const first = makeArticle({ slug: "first", publishDate: "2024-03-15" });
 		const second = makeArticle({ slug: "second", publishDate: "2024-03-01" });

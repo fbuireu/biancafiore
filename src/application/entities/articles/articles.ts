@@ -1,6 +1,12 @@
-import { type ArticleDTO, articleSchema, sortFavoriteFirst } from "@domain/article";
+import {
+	type ArticleDTO,
+	type ArticleSummaryDTO,
+	articleSchema,
+	articleSummarySchema,
+	sortFavoriteFirst,
+} from "@domain/article";
 import { fetchReferences } from "@infrastructure/cms/entries";
-import { createArticle, createArticles } from "../../dto/article";
+import { createArticle, createArticleSummaries, createArticles } from "../../dto/article";
 import { articleSlug } from "../../dto/article/utils/reference";
 import { creditedAuthors } from "../../dto/author/utils/author";
 import { contentLoader } from "../collection";
@@ -9,8 +15,21 @@ import { fetchArticle, fetchArticlesAndAuthors } from "../queries";
 export const RELATED_ARTICLES_FIELD = "related_articles";
 
 export const articles = {
-	loader: contentLoader<ArticleDTO>({
+	loader: contentLoader<ArticleSummaryDTO>({
 		name: "articles",
+		load: async () => {
+			const [rawArticles, rawAuthors] = await fetchArticlesAndAuthors();
+
+			return sortFavoriteFirst(createArticleSummaries({ rawArticles, rawAuthors }));
+		},
+		identify: (summary) => summary.slug,
+	}),
+	schema: articleSummarySchema,
+};
+
+export const article = {
+	loader: contentLoader<ArticleDTO>({
+		name: "article",
 		load: async () => {
 			const [rawArticles, rawAuthors] = await fetchArticlesAndAuthors();
 
@@ -18,7 +37,7 @@ export const articles = {
 		},
 		loadOne: async (slug) => {
 			const [rawArticles] = await fetchArticlesAndAuthors();
-			const rawArticle = rawArticles.find((article) => articleSlug(article) === slug) ?? (await fetchArticle(slug));
+			const rawArticle = rawArticles.find((candidate) => articleSlug(candidate) === slug) ?? (await fetchArticle(slug));
 
 			if (!rawArticle) return undefined;
 
@@ -34,7 +53,7 @@ export const articles = {
 				rawAuthors: creditedAuthors([rawArticle, ...rawArticles]),
 			});
 		},
-		identify: (article) => article.slug,
+		identify: (whole) => whole.slug,
 	}),
 	schema: articleSchema,
 };

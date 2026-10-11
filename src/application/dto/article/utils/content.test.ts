@@ -406,28 +406,6 @@ describe("prepareArticleContent native blocks", () => {
 	});
 });
 
-describe("prepareArticleContent text", () => {
-	const fixture = () => [
-		heading({ level: 2, value: "Heading words" }),
-		paragraph("Paragraph words here"),
-		typed({ _type: "image", asset: { _ref: "m", url: IMAGE_URL }, caption: "Caption words" }),
-		typed({ _type: "splitBlock", image: IMAGE_URL, heading: "Split heading", text: "Split text" }),
-		typed({ _type: "code", code: "codeWord" }),
-		typed({ _type: "table", rows: [{ _key: "r", cells: [{ _key: "c", content: [span({ text: "Cell words" })] }] }] }),
-		typed({ _type: "iframe", src: "https://example.com", title: "Not prose" }),
-	];
-
-	it("reads the prose a description falls back to from the text blocks alone", () => {
-		expect(prepare(fixture()).prose).toBe("Heading words Paragraph words here");
-	});
-
-	it("reads everything a reader reads for the reading time: text, captions, split blocks, code and tables", () => {
-		expect(prepare(fixture()).readableText).toBe(
-			"Heading words Paragraph words here Caption words Split heading Split text codeWord Cell words",
-		);
-	});
-});
-
 describe("prepareArticleContent raw HTML", () => {
 	it("drops a raw HTML block, so an editor's markup never reaches the page unsanitised", () => {
 		expect(
