@@ -146,7 +146,7 @@ export function resetCms(): void {
 	open = undefined;
 }
 
-export function cmsClientLayer(tag: CmsTag): Layer.Layer<CmsClient> {
+function cmsClientLayer(tag: CmsTag): Layer.Layer<CmsClient> {
 	return Layer.succeed(tag, {
 		listEntries: (query: ListEntriesQuery) =>
 			Effect.suspend(() => {
@@ -188,4 +188,10 @@ export function cmsClientLayer(tag: CmsTag): Layer.Layer<CmsClient> {
 		readSiteSettings: () => Effect.suspend(() => (failure ? Effect.fail(failure) : Effect.succeed(siteSettings))),
 		readMenu: (name: string) => Effect.suspend(() => (failure ? Effect.fail(failure) : Effect.succeed(menus[name]))),
 	} as never);
+}
+
+export function cmsClientDouble(tag: CmsTag): CmsTag {
+	return class extends tag {
+		static override readonly layer = cmsClientLayer(tag);
+	};
 }

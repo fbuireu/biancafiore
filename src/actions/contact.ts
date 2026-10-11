@@ -19,24 +19,23 @@ export type ContactError = ValidationError | RecaptchaError | DuplicateContactEr
 
 export type SubmitContactParams = Except<ContactFormData, "emailId"> & { recaptcha: string };
 
-export const submitContact = ({
+export const submitContact = Effect.fn("submitContact")(function* ({
 	recaptcha,
 	...params
-}: SubmitContactParams): Effect.Effect<{ ok: boolean }, ContactError, Database | EmailClient | LoggerService> =>
-	Effect.gen(function* () {
-		const logger = yield* LoggerService;
-		const data = yield* validateContact(params);
-		yield* verifyRecaptcha(recaptcha);
-		yield* checkDuplicateContact(data);
-		const { id: emailId } = yield* sendEmail(data);
+}: SubmitContactParams): Effect.fn.Return<{ ok: boolean }, ContactError, Database | EmailClient | LoggerService> {
+	const logger = yield* LoggerService;
+	const data = yield* validateContact(params);
+	yield* verifyRecaptcha(recaptcha);
+	yield* checkDuplicateContact(data);
+	const { id: emailId } = yield* sendEmail(data);
 
-		yield* saveContact({ emailId, ...data }).pipe(
-			Effect.catch((error) =>
-				Effect.sync(() =>
-					logger.logError({ message: "Contact was delivered but not persisted", error, context: { emailId } }),
-				),
+	yield* saveContact({ emailId, ...data }).pipe(
+		Effect.catch((error) =>
+			Effect.sync(() =>
+				logger.logError({ message: "Contact was delivered but not persisted", error, context: { emailId } }),
 			),
-		);
+		),
+	);
 
-		return { ok: true };
-	});
+	return { ok: true };
+});

@@ -10,11 +10,11 @@ const loggerDouble = {
 
 vi.mock("./logger", () => ({ logger: loggerDouble }));
 
-const { LoggerService, LoggerServiceLive } = await import("./service");
+const { LoggerService } = await import("./service");
 
 describe("LoggerService", () => {
 	it("resolves to the same logger object plain code imports, so the tag and the import cannot disagree", async () => {
-		const resolved = await Effect.runPromise(LoggerService.pipe(Effect.provide(LoggerServiceLive)));
+		const resolved = await Effect.runPromise(LoggerService.pipe(Effect.provide(LoggerService.layer)));
 
 		expect(resolved).toBe(loggerDouble);
 	});

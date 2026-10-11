@@ -1,7 +1,6 @@
 import { Effect, ManagedRuntime } from "effect";
 import {
 	CmsClient,
-	CmsClientLive,
 	type CmsItem,
 	type CmsMenuItem,
 	type CmsReference,
@@ -57,48 +56,46 @@ interface WithReferencesParams {
 	items: CmsItem[];
 }
 
-const cmsRuntime = ManagedRuntime.make(CmsClientLive);
+const cmsRuntime = ManagedRuntime.make(CmsClient.layer);
 
-const fetchEveryPage = ({ cms, query }: FetchEveryPageParams) =>
-	Effect.gen(function* () {
-		const wanted = query.limit;
-		const items: CmsItem[] = [];
-		let cursor: string | undefined;
+const fetchEveryPage = Effect.fnUntraced(function* ({ cms, query }: FetchEveryPageParams) {
+	const wanted = query.limit;
+	const items: CmsItem[] = [];
+	let cursor: string | undefined;
 
-		while (wanted === undefined || items.length < wanted) {
-			const remaining = wanted === undefined ? EMDASH_MAX_PAGE_SIZE : wanted - items.length;
-			const page = yield* cms.listEntries({
-				collection: query.collection,
-				orderBy: query.orderBy,
-				order: query.order,
-				cursor,
-				limit: Math.min(remaining, EMDASH_MAX_PAGE_SIZE),
-			});
+	while (wanted === undefined || items.length < wanted) {
+		const remaining = wanted === undefined ? EMDASH_MAX_PAGE_SIZE : wanted - items.length;
+		const page = yield* cms.listEntries({
+			collection: query.collection,
+			orderBy: query.orderBy,
+			order: query.order,
+			cursor,
+			limit: Math.min(remaining, EMDASH_MAX_PAGE_SIZE),
+		});
 
-			items.push(...page.items);
+		items.push(...page.items);
 
-			if (page.items.length === 0 || !page.nextCursor) break;
+		if (page.items.length === 0 || !page.nextCursor) break;
 
-			cursor = page.nextCursor;
-		}
+		cursor = page.nextCursor;
+	}
 
-		return items;
-	});
+	return items;
+});
 
-const fetchEveryReference = ({ cms, collection, id, field }: FetchEveryReferenceParams) =>
-	Effect.gen(function* () {
-		const references: CmsReference[] = [];
-		let cursor: string | undefined;
+const fetchEveryReference = Effect.fnUntraced(function* ({ cms, collection, id, field }: FetchEveryReferenceParams) {
+	const references: CmsReference[] = [];
+	let cursor: string | undefined;
 
-		do {
-			const page = yield* cms.listReferences({ collection, id, field, cursor, limit: EMDASH_MAX_PAGE_SIZE });
+	do {
+		const page = yield* cms.listReferences({ collection, id, field, cursor, limit: EMDASH_MAX_PAGE_SIZE });
 
-			references.push(...page.children);
-			cursor = page.nextCursor;
-		} while (cursor);
+		references.push(...page.children);
+		cursor = page.nextCursor;
+	} while (cursor);
 
-		return references;
-	});
+	return references;
+});
 
 const withReferences = ({ cms, query, items }: WithReferencesParams) =>
 	Effect.forEach(

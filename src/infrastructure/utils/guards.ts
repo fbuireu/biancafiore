@@ -40,37 +40,38 @@ type RecaptchaVerificationResponse = z.infer<typeof recaptchaVerificationSchema>
 const refusedOurSecret = ({ success, "error-codes": errorCodes }: RecaptchaVerificationResponse): boolean =>
 	!success && !!errorCodes?.some((code) => RECAPTCHA_SECRET_ERROR_CODES.has(code));
 
-export const verifyRecaptcha = (token: string): Effect.Effect<void, ValidationError | RecaptchaError> =>
-	Effect.gen(function* () {
-		const { getSecret } = yield* Effect.promise(() => import("astro:env/server"));
+export const verifyRecaptcha = Effect.fn("verifyRecaptcha")(function* (
+	token: string,
+): Effect.fn.Return<void, ValidationError | RecaptchaError> {
+	const { getSecret } = yield* Effect.promise(() => import("astro:env/server"));
 
-		const verification = yield* Effect.tryPromise({
-			try: async (): Promise<unknown> => {
-				const response = await fetch(RECAPTCHA_VERIFY_URL, {
-					method: "POST",
-					headers: { "Content-Type": "application/x-www-form-urlencoded" },
-					body: new URLSearchParams({
-						secret: getSecret("GOOGLE_RECAPTCHA_SECRET_KEY") ?? "",
-						response: token,
-					}),
-				});
+	const verification = yield* Effect.tryPromise({
+		try: async (): Promise<unknown> => {
+			const response = await fetch(RECAPTCHA_VERIFY_URL, {
+				method: "POST",
+				headers: { "Content-Type": "application/x-www-form-urlencoded" },
+				body: new URLSearchParams({
+					secret: getSecret("GOOGLE_RECAPTCHA_SECRET_KEY") ?? "",
+					response: token,
+				}),
+			});
 
-				return response.json();
-			},
-			catch: (cause) => new RecaptchaError({ message: RECAPTCHA_UNANSWERED_MESSAGE, cause }),
-		});
-
-		if (!recaptchaVerificationSchema.validate(verification)) {
-			return yield* Effect.fail(new RecaptchaError({ message: RECAPTCHA_UNANSWERED_MESSAGE, cause: verification }));
-		}
-
-		if (refusedOurSecret(verification)) {
-			return yield* Effect.fail(
-				new RecaptchaError({ message: RECAPTCHA_SECRET_MESSAGE, cause: verification["error-codes"] }),
-			);
-		}
-
-		if (!verification.success || (verification.score ?? 0) < RECAPTCHA_MINIMUM_SCORE) {
-			return yield* Effect.fail(new ValidationError({ message: RECAPTCHA_ERROR_MESSAGE }));
-		}
+			return response.json();
+		},
+		catch: (cause) => new RecaptchaError({ message: RECAPTCHA_UNANSWERED_MESSAGE, cause }),
 	});
+
+	if (!recaptchaVerificationSchema.validate(verification)) {
+		return yield* Effect.fail(new RecaptchaError({ message: RECAPTCHA_UNANSWERED_MESSAGE, cause: verification }));
+	}
+
+	if (refusedOurSecret(verification)) {
+		return yield* Effect.fail(
+			new RecaptchaError({ message: RECAPTCHA_SECRET_MESSAGE, cause: verification["error-codes"] }),
+		);
+	}
+
+	if (!verification.success || (verification.score ?? 0) < RECAPTCHA_MINIMUM_SCORE) {
+		return yield* Effect.fail(new ValidationError({ message: RECAPTCHA_ERROR_MESSAGE }));
+	}
+});

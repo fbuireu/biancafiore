@@ -100,7 +100,7 @@ const ADR_PATH_REFERENCE = /docs\/adr\/(\d{4})-/g;
 const ADR_FILENAME = /^docs\/adr\/\d{4}(-[a-z\d]+)+\.md$/;
 const ADR_STATUS = /\n## Status\n\n(\w+)/;
 const ADR_DATE = /\nDate: \d{4}-\d{2}-\d{2}\n/;
-const CLIENT_TABLE_ROW = /^\| `(\w+)` \| `(\w+)` \| \[?`([\w/.]+)`(?:\]\([^)]+\))? \|$/gm;
+const CLIENT_TABLE_ROW = /^\| `(\w+)` \| `([\w.]+)` \| \[?`([\w/.]+)`(?:\]\([^)]+\))? \|$/gm;
 const TAGGED_ERROR_DECLARATION = /export class (\w+) extends Data\.TaggedError/g;
 const MODULE_LEVEL_ENV_IMPORT = /^\s*import\s[^\n]*"astro:env\/server"/m;
 const RECAPTCHA_SCORE_DECLARATION = /const RECAPTCHA_MINIMUM_SCORE = ([\d.]+);/;
@@ -125,7 +125,7 @@ const CMS_TYPE = /from "emdash"|@portabletext\/|\bCmsEntry\b|\bCmsReference\b|\b
 const HAND_PREFIXED_ASSET_URL = /`https:\$\{/;
 const RELATIVE_IMAGE_URL_SCHEMA = /url:\s*z\.string\(\)/;
 const MEDIA_RESOLUTION = /data: resolveMedia\(fields\)/;
-const CMS_LAYER_IMPORT = /import\s*\{[^}]*CmsClientLive[^}]*\}\s*from\s*"\.\/client"/;
+const CMS_LAYER_IMPORT = /import\s*\{[^}]*\bCmsClient\b[^}]*\}\s*from\s*"\.\/client"/;
 const LOADER_FETCH_ENTRIES = /await fetchEntries</;
 const CHROME_FETCH = /await fetch(?:SiteSettings\(\)|Menu\(name\))/;
 const SITE_LOADER = "src/application/entities/site/site.ts";
@@ -1254,7 +1254,10 @@ describe("infrastructure guide", () => {
 			const source = read(`src/infrastructure/${file}`);
 
 			expect(`${file}: ${source.includes(`class ${tag} extends Context.Service<`)}`).toBe(`${file}: true`);
-			const built = source.includes(`const ${live} = Layer.effect`) || source.includes(`const ${live} = Layer.sync`);
+			const built =
+				live === `${tag}.layer` &&
+				(source.includes("static readonly layer = Layer.effect") ||
+					source.includes("static readonly layer = Layer.sync"));
 
 			expect(`${file}: ${built}`).toBe(`${file}: true`);
 		}
@@ -1310,8 +1313,9 @@ describe("infrastructure guide", () => {
 	it("builds the CMS runtime from an imported layer, which is what keeps the doubles substitutable", () => {
 		const entries = read("src/infrastructure/cms/entries.ts");
 
-		expect(guide).toContain("imports `CmsClientLive` across the module boundary");
+		expect(guide).toContain("builds its runtime from `CmsClient.layer` across the module boundary");
 		expect(entries).toMatch(CMS_LAYER_IMPORT);
+		expect(entries).toContain("ManagedRuntime.make(CmsClient.layer)");
 		expect(read("src/infrastructure/cms/client.ts")).not.toContain("ManagedRuntime");
 	});
 
@@ -1525,7 +1529,7 @@ describe("observability", () => {
 
 		expect(guide).toContain("the tag and the import cannot disagree");
 		expect(read(LOGGING_SERVICE)).toContain("Layer.sync(LoggerService, () => logger)");
-		expect(read("src/infrastructure/layers.ts")).toContain("LoggerServiceLive");
+		expect(read("src/infrastructure/layers.ts")).toContain("LoggerService.layer");
 	});
 
 	it("carries LoggerService in R wherever a program logs, which is what the annotation turns into a signal", () => {
@@ -1536,7 +1540,7 @@ describe("observability", () => {
 
 		expect(guide).toContain("carries `LoggerService` in its `R`");
 		expect(logging.length).toBeGreaterThan(0);
-		expect(logging.filter((file) => !read(file).includes("LoggerService> =>"))).toEqual([]);
+		expect(logging.filter((file) => !read(file).includes("LoggerService> {"))).toEqual([]);
 	});
 
 	it("gates the Better Stack tag by withholding it, since it has no consent mode of its own", () => {
@@ -1634,7 +1638,7 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 	});
 
 	it("dies on irrecoverable misconfiguration rather than failing typed, in every layer that reads a secret", () => {
-		expect(guide).toContain("`Effect.die` (see `DatabaseLive`)");
+		expect(guide).toContain("`Effect.die` (see `Database.layer`)");
 
 		const secretReaders = infrastructureFiles
 			.filter((file) => read(file).includes("Layer.effect("))
@@ -1660,7 +1664,9 @@ describe("infrastructure guide: secrets, errors and clients", () => {
 
 	it("leaves the tag to HTTP mapping to the action, and to contactErrorResponse alone", () => {
 		expect(guide).toContain("(`contactErrorResponse`), never here");
-		expect(read("src/actions/errorResponse.ts")).toContain("export const contactErrorResponse = (");
+		expect(read("src/actions/errorResponse.ts")).toContain(
+			'export const contactErrorResponse = Effect.fn("contactErrorResponse")(',
+		);
 		expect(infrastructureFiles.length).toBeGreaterThan(0);
 		expect(infrastructureFiles.filter((file) => read(file).includes("ActionError"))).toEqual([]);
 	});

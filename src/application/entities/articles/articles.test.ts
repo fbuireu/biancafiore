@@ -16,9 +16,9 @@ import { articles, RELATED_ARTICLES_FIELD } from "./articles";
 
 vi.mock("@infrastructure/cms/client", async () => {
 	const actual = await vi.importActual<typeof import("@infrastructure/cms/client")>("@infrastructure/cms/client");
-	const { cmsClientLayer } = await import("@tests/doubles/cmsLayer");
+	const { cmsClientDouble } = await import("@tests/doubles/cmsLayer");
 
-	return { ...actual, CmsClientLive: cmsClientLayer(actual.CmsClient) };
+	return { ...actual, CmsClient: cmsClientDouble(actual.CmsClient) };
 });
 
 const AUTHOR = rawByline({

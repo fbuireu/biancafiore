@@ -26,50 +26,64 @@ export class Database extends Context.Service<
 		): Effect.Effect<schema.ContactRow | undefined, DatabaseError>;
 		insertContact(contact: schema.NewContact): Effect.Effect<void, DatabaseError>;
 	}
->()("Database") {}
+>()("Database") {
+	static readonly layer = Layer.effect(
+		Database,
+		Effect.gen(function* () {
+			const { getSecret } = yield* Effect.promise(() => import("astro:env/server"));
+			const url = getSecret("ASTRO_DB_REMOTE_URL");
+			const authToken = getSecret("ASTRO_DB_APP_TOKEN");
 
-export const DatabaseLive = Layer.effect(
-	Database,
-	Effect.gen(function* () {
-		const { getSecret } = yield* Effect.promise(() => import("astro:env/server"));
-		const url = getSecret("ASTRO_DB_REMOTE_URL");
-		const authToken = getSecret("ASTRO_DB_APP_TOKEN");
+			if (!url || !authToken) {
+				return yield* Effect.die(new Error("ASTRO_DB_REMOTE_URL and ASTRO_DB_APP_TOKEN must be defined"));
+			}
 
-		if (!url || !authToken) {
-			return yield* Effect.die(new Error("ASTRO_DB_REMOTE_URL and ASTRO_DB_APP_TOKEN must be defined"));
-		}
+			const db = drizzle(createClient({ url, authToken }), { schema });
 
-		const db = drizzle(createClient({ url, authToken }), { schema });
+			const run = <A>(query: PromiseLike<A>): Effect.Effect<A, DatabaseError> =>
+				Effect.tryPromise({
+					try: () => Promise.resolve(query),
+					catch: (cause) =>
+						new DatabaseError({
+							message: cause instanceof Error ? cause.message : String(cause),
+							cause,
+						}),
+				});
 
-		const run = <A>(query: PromiseLike<A>): Effect.Effect<A, DatabaseError> =>
-			Effect.tryPromise({
-				try: () => Promise.resolve(query),
-				catch: (cause) =>
-					new DatabaseError({
-						message: cause instanceof Error ? cause.message : String(cause),
-						cause,
-					}),
+			return Database.of({
+				findLatestContactSince: Effect.fn("Database.findLatestContactSince")(function* ({
+					email,
+					since,
+				}: FindLatestContactSinceParams) {
+					const rows = yield* run(
+						db
+							.select()
+							.from(schema.Contact)
+							.where(and(eq(schema.Contact.email, email), gte(schema.Contact.createdDate, since)))
+							.orderBy(desc(schema.Contact.createdDate))
+							.limit(1),
+					);
+
+					return rows.at(0);
+				}),
+				findContactWithMessage: Effect.fn("Database.findContactWithMessage")(function* ({
+					email,
+					message,
+				}: FindContactWithMessageParams) {
+					const rows = yield* run(
+						db
+							.select()
+							.from(schema.Contact)
+							.where(and(eq(schema.Contact.email, email), eq(schema.Contact.message, message)))
+							.limit(1),
+					);
+
+					return rows.at(0);
+				}),
+				insertContact: Effect.fn("Database.insertContact")(function* (contact: schema.NewContact) {
+					yield* run(db.insert(schema.Contact).values(contact));
+				}),
 			});
-
-		return {
-			findLatestContactSince: ({ email, since }: FindLatestContactSinceParams) =>
-				run(
-					db
-						.select()
-						.from(schema.Contact)
-						.where(and(eq(schema.Contact.email, email), gte(schema.Contact.createdDate, since)))
-						.orderBy(desc(schema.Contact.createdDate))
-						.limit(1),
-				).pipe(Effect.map((rows) => rows.at(0))),
-			findContactWithMessage: ({ email, message }: FindContactWithMessageParams) =>
-				run(
-					db
-						.select()
-						.from(schema.Contact)
-						.where(and(eq(schema.Contact.email, email), eq(schema.Contact.message, message)))
-						.limit(1),
-				).pipe(Effect.map((rows) => rows.at(0))),
-			insertContact: (contact: schema.NewContact) => run(db.insert(schema.Contact).values(contact)).pipe(Effect.asVoid),
-		};
-	}),
-);
+		}),
+	);
+}

@@ -4,7 +4,7 @@ import { defectOf, failureOf } from "@tests/helpers/exit";
 import { Cause, Effect, Exit } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { EmailError } from "../errors";
-import { EmailClient, EmailClientLive } from "./server";
+import { EmailClient } from "./server";
 
 const send = vi.hoisted(() => vi.fn());
 
@@ -16,13 +16,13 @@ vi.mock("resend", () => ({
 
 const API_KEY_SECRET = "RESEND_API_KEY";
 
-const build = () => Effect.runPromiseExit(EmailClient.pipe(Effect.provide(EmailClientLive)));
+const build = () => Effect.runPromiseExit(EmailClient.pipe(Effect.provide(EmailClient.layer)));
 
 afterEach(() => {
 	resetSecrets();
 });
 
-describe("EmailClientLive", () => {
+describe("EmailClient.layer", () => {
 	it("dies rather than handing the vendor an undefined key, which it answers with its own error", async () => {
 		const exit = await build();
 

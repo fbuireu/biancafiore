@@ -12,45 +12,45 @@ const REPEATED_REASON = "the same message as a previous submission";
 
 type CheckDuplicateContactParams = Except<ContactFormData, "recaptcha" | "emailId">;
 
-export const checkDuplicateContact = (
+export const checkDuplicateContact = Effect.fn("checkDuplicateContact")(function* (
 	data: CheckDuplicateContactParams,
-): Effect.Effect<void, DatabaseError | DuplicateContactError, Database | LoggerService> =>
-	Effect.gen(function* () {
-		const database = yield* Database;
-		const logger = yield* LoggerService;
-		const email = normalizeEmail(data.email);
+): Effect.fn.Return<void, DatabaseError | DuplicateContactError, Database | LoggerService> {
+	const database = yield* Database;
+	const logger = yield* LoggerService;
+	const email = normalizeEmail(data.email);
 
-		const [withinCooldown, repeated] = yield* Effect.all(
-			[
-				database.findLatestContactSince({ email, since: contactCooldownStart(new Date()) }),
-				database.findContactWithMessage({ email, message: data.message }),
-			],
-			{ concurrency: "unbounded" },
-		);
+	const [withinCooldown, repeated] = yield* Effect.all(
+		[
+			database.findLatestContactSince({ email, since: contactCooldownStart(new Date()) }),
+			database.findContactWithMessage({ email, message: data.message }),
+		],
+		{ concurrency: "unbounded" },
+	);
 
-		if (!repeated && !withinCooldown) {
-			return;
-		}
+	if (!repeated && !withinCooldown) {
+		return;
+	}
 
-		logger.info({ message: "Contact refused", context: { reason: repeated ? REPEATED_REASON : COOLDOWN_REASON } });
+	logger.info({ message: "Contact refused", context: { reason: repeated ? REPEATED_REASON : COOLDOWN_REASON } });
 
-		return yield* Effect.fail(new DuplicateContactError({ message: ALREADY_HEARD_MESSAGE }));
-	});
+	return yield* Effect.fail(new DuplicateContactError({ message: ALREADY_HEARD_MESSAGE }));
+});
 
 interface SaveContactParams extends Except<ContactFormData, "recaptcha"> {
 	emailId: string;
 }
 
-export const saveContact = (contactData: SaveContactParams): Effect.Effect<void, DatabaseError, Database> =>
-	Effect.gen(function* () {
-		const database = yield* Database;
-		const now = new Date().toISOString();
+export const saveContact = Effect.fn("saveContact")(function* (
+	contactData: SaveContactParams,
+): Effect.fn.Return<void, DatabaseError, Database> {
+	const database = yield* Database;
+	const now = new Date().toISOString();
 
-		yield* database.insertContact({
-			...contactData,
-			email: normalizeEmail(contactData.email),
-			id: crypto.randomUUID(),
-			createdDate: now,
-			modifiedDate: now,
-		});
+	yield* database.insertContact({
+		...contactData,
+		email: normalizeEmail(contactData.email),
+		id: crypto.randomUUID(),
+		createdDate: now,
+		modifiedDate: now,
 	});
+});

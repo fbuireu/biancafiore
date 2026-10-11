@@ -3,7 +3,7 @@ import { defectOf, failureOf } from "@tests/helpers/exit";
 import { Cause, Effect, Exit } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DatabaseError } from "../errors";
-import { Database, DatabaseLive } from "./client";
+import { Database } from "./client";
 
 type DatabaseService = Database["Service"];
 
@@ -48,13 +48,13 @@ vi.mock("drizzle-orm/libsql/web", () => {
 const URL_SECRET = "ASTRO_DB_REMOTE_URL";
 const TOKEN_SECRET = "ASTRO_DB_APP_TOKEN";
 
-const build = () => Effect.runPromiseExit(Database.pipe(Effect.provide(DatabaseLive)));
+const build = () => Effect.runPromiseExit(Database.pipe(Effect.provide(Database.layer)));
 
 afterEach(() => {
 	resetSecrets();
 });
 
-describe("DatabaseLive", () => {
+describe("Database.layer", () => {
 	it("builds a client when both secrets are configured", async () => {
 		setSecret({ name: URL_SECRET, value: "libsql://example.turso.io" });
 		setSecret({ name: TOKEN_SECRET, value: "a-token" });

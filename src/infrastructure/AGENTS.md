@@ -4,24 +4,24 @@ Everything that talks to the outside world. The clients and the contact steps ar
 
 ## Client shape
 
-Each client is a `Context.Service` class plus a `Layer.effect` implementation, co-located:
+Each client is a `Context.Service` class that carries its implementation as a static `layer`, and each of its methods is an `Effect.fn` named `<Service>.<method>`, so a failure's trace names the call that failed:
 
-| Tag | Live layer | File |
+| Service | Layer | File |
 | --- | --- | --- |
-| `CmsClient` | `CmsClientLive` | [`cms/client.ts`](./cms/client.ts) |
-| `Database` | `DatabaseLive` | [`db/client.ts`](./db/client.ts) |
-| `EmailClient` | `EmailClientLive` | [`email/server.ts`](./email/server.ts) |
-| `LoggerService` | `LoggerServiceLive` | [`logging/service.ts`](./logging/service.ts) |
+| `CmsClient` | `CmsClient.layer` | [`cms/client.ts`](./cms/client.ts) |
+| `Database` | `Database.layer` | [`db/client.ts`](./db/client.ts) |
+| `EmailClient` | `EmailClient.layer` | [`email/server.ts`](./email/server.ts) |
+| `LoggerService` | `LoggerService.layer` | [`logging/service.ts`](./logging/service.ts) |
 
-`LoggerServiceLive` is the one built with `Layer.sync` rather than `Layer.effect`, and that is the whole shape of it: it constructs nothing, reads no secret and cannot fail, because the adapter it hands back is a module-level object that was already there.
+`LoggerService.layer` is the one built with `Layer.sync` rather than `Layer.effect`, and that is the whole shape of it: it constructs nothing, reads no secret and cannot fail, because the adapter it hands back is a module-level object that was already there.
 
 Adding a client:
 
 - Its error class goes in [`errors.ts`](./errors.ts); don't define errors next to the client.
 - **Secrets are read inside the layer, lazily**: `const { getSecret } = yield* Effect.promise(() => import("astro:env/server"))`. Never import `astro:env/server` at module top level: it breaks the Workers build and content loading.
-- A secret the layer cannot build without is `Effect.die` (see `DatabaseLive`), with a message naming the secret.
+- A secret the layer cannot build without is `Effect.die` (see `Database.layer`), with a message naming the secret.
 - Its stub layer goes in [`src/tests/doubles/`](../tests/doubles), beside the others (ADR 0017).
-- **`CmsClient` wraps EmDash's public query API, in process.** `CmsClientLive` imports `emdash` lazily and calls `getEmDashCollection` for one page of a collection, always `status: "published"`, and `getEmDashReferences` for one page of the entries a reference field points at, answering each by database id. Both hand an error back as data rather than throwing, and the client turns it into a `CmsError` naming the collection, so nothing downstream checks an `error` field. Those helpers serve drafts only to a preview or EmDash's edit mode, never to a plain request, so the client needs no token and no check of its own.
+- **`CmsClient` wraps EmDash's public query API, in process.** `CmsClient.layer` imports `emdash` lazily and calls `getEmDashCollection` for one page of a collection, always `status: "published"`, and `getEmDashReferences` for one page of the entries a reference field points at, answering each by database id. Both hand an error back as data rather than throwing, and the client turns it into a `CmsError` naming the collection, so nothing downstream checks an `error` field. Those helpers serve drafts only to a preview or EmDash's edit mode, never to a plain request, so the client needs no token and no check of its own.
 - **The client hands the ACL plain data.** `itemOf` turns EmDash's `Date`s into ISO strings, lifts the hydrated `terms` out of `data` into `terms.<taxonomy>` (each term's id, slug and label) and the hydrated byline credits into `bylines`, in credit order (each byline's id, slug, display name, bio, avatar and `customFields`), and keeps the database id and slug beside `data`, so a mapper never meets a framework object or EmDash's `edit` proxies. A credit names its avatar only by media id, without its dimensions, so `listEntries` reads each distinct avatar once through EmDash's `MediaRepository` over `getDb` from `emdash/runtime` and hands it on resolved like any other image.
 - **Media is resolved by the client, not by a mapper.** EmDash stores an image as a storage key; `resolveMedia` in [`cms/media.ts`](./cms/media.ts) gives every local image a `src` on EmDash's media route (`/_emdash/api/media/file/<key>`), relative, because the media is served by this same Worker. An image from another provider, or one already carrying a `src`, is left alone.
 
@@ -29,13 +29,13 @@ Adding a client:
 
 [`cms/entries.ts`](./cms/entries.ts) is the only way content is read, and the only thing `@application/entities` imports to read it. `fetchEntries<[RawEntry, …]>(query, …)` takes one query per array of raw entries it answers with (a `collection`, the `references` to read, an optional `orderBy`/`order`/`limit`) and returns a plain promise, so a loader needs no Effect, no `CmsClient` and no runtime of its own; `fetchReferences({ collection, id, field })` reads one reference field of one entry the same way, and `fetchEntry({ collection, id })` one entry by its id or slug, which is how a preview link reaches a draft no collection query answers. Some things belong to them rather than to their callers:
 
-- the long-lived `ManagedRuntime` over `CmsClientLive`, one CMS client for the whole isolate
+- the long-lived `ManagedRuntime` over `CmsClient.layer`, one CMS client for the whole isolate
 - `Effect.all(..., { concurrency: "unbounded" })`, so several queries overlap without a caller asking
 - the `CmsError`, which stays a rejected promise: a page that lost the CMS answers 500 rather than rendering a short collection
 - **the page cursor, and with it the promise that the answer is complete.** Each query is walked page by page, following the `nextCursor` EmDash hands back (capped at 100 per request, `EMDASH_MAX_PAGE_SIZE`) until it stops handing one, so every matching entry is in hand. EmDash's default page is 50, so a query that named no limit would silently answer the first fifty, and under the articles' `orderBy: "publish_date"` what it dropped would be the oldest writing. A loader that genuinely wants a slice passes an explicit `limit` and is then answered exactly that many. A page that comes back empty ends the walk even if it carried a cursor, so a cursor EmDash cannot serve cannot spin a request.
 - **the references, one query per field per entry.** A collection query answers entries without them, so each reference field a query names is walked for every entry, `REFERENCE_READS_IN_FLIGHT` (8) entries at a time, and lands on the entry as `references.<field>`: the id of each target, never its fields. That is a query per entry, which is why no listing names one: an Article's Author is a byline credit, which the collection query already hydrates, and the only reference field read at all is `related_articles`, through `fetchReferences`, for the one Article a page shows.
 
-It imports `CmsClientLive` across the module boundary rather than building the runtime inside `cms/client.ts`, and that is load-bearing: the loader tests swap `CmsClientLive` with `vi.mock("@infrastructure/cms/client", …)`, which a runtime closing over the client module's own binding would never see. ADR 0016.
+It builds its runtime from `CmsClient.layer` across the module boundary rather than inside `cms/client.ts`, and that is load-bearing: the loader tests swap `CmsClient` with `vi.mock("@infrastructure/cms/client", …)` for `cmsClientDouble`, a subclass whose `layer` is the stub, which a runtime closing over the client module's own binding would never see. ADR 0016.
 
 ## EmDash, in this Worker
 
@@ -46,7 +46,7 @@ EmDash is an integration of the site, not a client of it: `emdash()` in [`astro.
 ## Two runtimes
 
 - `cms/entries.ts`: the `ManagedRuntime` above. Isolate-wide, read-only.
-- [`layers.ts`](./layers.ts): `ContactLayer` (`DatabaseLive` + `EmailClientLive` + `LoggerServiceLive`), provided per request with `Effect.provide` inside the contact action. Nothing here holds request state.
+- [`layers.ts`](./layers.ts): `ContactLayer` (`Database.layer` + `EmailClient.layer` + `LoggerService.layer`), provided per request with `Effect.provide` inside the contact action. Nothing here holds request state.
 
 ## utils/
 
@@ -66,7 +66,7 @@ Three files: `logger.ts` is **byte for byte what contribKit and forever-pto carr
 
 **The spread order in `write` is load-bearing**: `...serializable(redacted(context))` first, then `service`, `level` and `message`, so a caller passing `{ level: "info" }` or `{ service: "something-else" }` cannot relabel its own line. Writing it the other way round reads identically, and `logger.test.ts` turns red on all three if the order is inverted. `redacted` strips the query string off a `url` a caller puts in the context. A context value `JSON.stringify` cannot write, a circular reference or a `BigInt`, is written as `"[unserializable]"` and the rest of the line still reaches the sink; a thrown object with neither JSON nor a `toString` is described by its tag. Every method runs inside one `try`, so not even a console that throws reaches the caller.
 
-**A program that logs carries `LoggerService` in its `R`, and its return type is annotated**, so `R` answers "does this program log?" and an unintended log becomes a compile error at the function that introduced it. `LoggerServiceLive` resolves to the very object `logger.ts` exports, so the tag and the import cannot disagree: [`500.astro`](../pages/500.astro), whose frontmatter has no runtime, reaches it through the plain import because it has no layer to provide one.
+**A program that logs carries `LoggerService` in its `R`, and its return type is annotated**, so `R` answers "does this program log?" and an unintended log becomes a compile error at the function that introduced it. `LoggerService.layer` resolves to the very object `logger.ts` exports, so the tag and the import cannot disagree: [`500.astro`](../pages/500.astro), whose frontmatter has no runtime, reaches it through the plain import because it has no layer to provide one.
 
 ## Other subfolders
 

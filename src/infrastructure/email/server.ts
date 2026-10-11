@@ -31,65 +31,75 @@ export class EmailClient extends Context.Service<
 		sendContactNotification(notification: ContactNotification): Effect.Effect<{ id: string }, EmailError>;
 		sendCmsEmail(email: CmsEmail): Effect.Effect<{ id: string }, EmailError>;
 	}
->()("EmailClient") {}
+>()("EmailClient") {
+	static readonly layer = Layer.effect(
+		EmailClient,
+		Effect.gen(function* () {
+			const { getSecret } = yield* Effect.promise(() => import("astro:env/server"));
+			const apiKey = getSecret("RESEND_API_KEY");
 
-export const EmailClientLive = Layer.effect(
-	EmailClient,
-	Effect.gen(function* () {
-		const { getSecret } = yield* Effect.promise(() => import("astro:env/server"));
-		const apiKey = getSecret("RESEND_API_KEY");
+			if (!apiKey) {
+				return yield* Effect.die(new Error("RESEND_API_KEY must be defined"));
+			}
 
-		if (!apiKey) {
-			return yield* Effect.die(new Error("RESEND_API_KEY must be defined"));
-		}
+			const emails = new Resend(apiKey).emails;
 
-		const emails = new Resend(apiKey).emails;
+			const sender = `${CONTACT_DETAILS.NAME} Web <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`;
 
-		const sender = `${CONTACT_DETAILS.NAME} Web <${atob(CONTACT_DETAILS.ENCODED_EMAIL_FROM)}>`;
+			const send = Effect.fnUntraced(function* (payload: EmailPayload) {
+				const { data, error } = yield* Effect.tryPromise({
+					try: () => emails.send(payload),
+					catch: (cause) =>
+						new EmailError({
+							message: cause instanceof Error ? cause.message : String(cause),
+							cause,
+						}),
+				});
 
-		const send = (payload: EmailPayload) =>
-			Effect.tryPromise({
-				try: () => emails.send(payload),
-				catch: (cause) =>
-					new EmailError({
-						message: cause instanceof Error ? cause.message : String(cause),
-						cause,
-					}),
-			}).pipe(
-				Effect.flatMap(({ data, error }) =>
-					error || !data
-						? Effect.fail(
-								new EmailError({
-									message: error?.message ?? UNKNOWN_FAILURE_MESSAGE,
-									cause: error,
-								}),
-							)
-						: Effect.succeed({ id: data.id }),
-				),
-			);
+				if (error || !data) {
+					return yield* new EmailError({ message: error?.message ?? UNKNOWN_FAILURE_MESSAGE, cause: error });
+				}
 
-		return {
-			sendContactNotification: ({ name, email, html, text }: ContactNotification) =>
-				send({
-					from: sender,
-					to: atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA),
-					replyTo: email,
-					subject: `${CONTACT_DETAILS.EMAIL_SUBJECT} from ${name} (${email})`,
-					tags: [{ name: "category", value: CONTACT_FORM_CATEGORY }],
+				return { id: data.id };
+			});
+
+			return EmailClient.of({
+				sendContactNotification: Effect.fn("EmailClient.sendContactNotification")(function* ({
+					name,
+					email,
 					html,
 					text,
+				}: ContactNotification) {
+					return yield* send({
+						from: sender,
+						to: atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA),
+						replyTo: email,
+						subject: `${CONTACT_DETAILS.EMAIL_SUBJECT} from ${name} (${email})`,
+						tags: [{ name: "category", value: CONTACT_FORM_CATEGORY }],
+						html,
+						text,
+					});
 				}),
-			sendCmsEmail: ({ to, cc, replyTo, subject, html, text }: CmsEmail) =>
-				send({
-					from: sender,
+				sendCmsEmail: Effect.fn("EmailClient.sendCmsEmail")(function* ({
 					to,
-					...(cc && { cc }),
-					...(replyTo && { replyTo }),
+					cc,
+					replyTo,
 					subject,
-					tags: [{ name: "category", value: CMS_CATEGORY }],
-					...(html && { html }),
+					html,
 					text,
+				}: CmsEmail) {
+					return yield* send({
+						from: sender,
+						to,
+						...(cc && { cc }),
+						...(replyTo && { replyTo }),
+						subject,
+						tags: [{ name: "category", value: CMS_CATEGORY }],
+						...(html && { html }),
+						text,
+					});
 				}),
-		};
-	}),
-);
+			});
+		}),
+	);
+}

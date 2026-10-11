@@ -15,9 +15,9 @@ import { type CmsEntry, EMDASH_MAX_PAGE_SIZE, fetchEntries, fetchReferences } fr
 
 vi.mock("./client", async () => {
 	const actual = await vi.importActual<typeof import("./client")>("./client");
-	const { cmsClientLayer } = await import("@tests/doubles/cmsLayer");
+	const { cmsClientDouble } = await import("@tests/doubles/cmsLayer");
 
-	return { ...actual, CmsClientLive: cmsClientLayer(actual.CmsClient) };
+	return { ...actual, CmsClient: cmsClientDouble(actual.CmsClient) };
 });
 
 const entry = (slug: string) => ({ id: `id-${slug}`, slug, data: {}, terms: {}, updatedAt: "" });

@@ -4,7 +4,7 @@ import { getEmDashCollection, getEmDashEntry, getEmDashReferences } from "emdash
 import { getDb } from "emdash/runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CmsError } from "../errors";
-import { CmsClient, CmsClientLive, itemOf, PUBLISHED_STATUS } from "./client";
+import { CmsClient, itemOf, PUBLISHED_STATUS } from "./client";
 import { MEDIA_FILE_PATH } from "./media";
 
 const findById = vi.hoisted(() => vi.fn());
@@ -39,7 +39,7 @@ const ENTRY = {
 	},
 };
 
-const client = () => Effect.runPromise(CmsClient.pipe(Effect.provide(CmsClientLive)));
+const client = () => Effect.runPromise(CmsClient.pipe(Effect.provide(CmsClient.layer)));
 
 const AVATAR = {
 	id: "01AVATAR",
@@ -81,7 +81,7 @@ beforeEach(() => {
 	vi.mocked(getDb).mockReset();
 });
 
-describe("CmsClientLive", () => {
+describe("CmsClient.layer", () => {
 	it("hands out the reads the site performs rather than EmDash's whole query surface", async () => {
 		expect(Object.keys(await client()).toSorted()).toStrictEqual([
 			"listEntries",

@@ -120,17 +120,6 @@ interface QueryParams {
 	failure: string;
 }
 
-export class CmsClient extends Context.Service<
-	CmsClient,
-	{
-		listEntries(query: ListEntriesQuery): Effect.Effect<CmsItemPage, CmsError>;
-		readEntry(query: ReadEntryQuery): Effect.Effect<CmsItem | undefined, CmsError>;
-		listReferences(query: ListReferencesQuery): Effect.Effect<CmsReferencePage, CmsError>;
-		readSiteSettings(): Effect.Effect<CmsSiteSettings, CmsError>;
-		readMenu(name: string): Effect.Effect<CmsMenuItem[] | undefined, CmsError>;
-	}
->()("CmsClient") {}
-
 const isRecord = (value: unknown): value is Record<string, unknown> =>
 	typeof value === "object" && value !== null && !Array.isArray(value);
 
@@ -303,15 +292,25 @@ const query = ({ run, failure }: QueryParams) =>
 				: Effect.succeed(result),
 		),
 	);
-
 const loadEmDash = () => Promise.all([import("emdash"), import("emdash/runtime")]);
 
-export const CmsClientLive = Layer.effect(
+export class CmsClient extends Context.Service<
 	CmsClient,
-	Effect.promise(loadEmDash).pipe(
-		Effect.map(([emdash, runtime]) => {
-			const avatarsOf = (entries: QueriedEntry[]) =>
-				query({
+	{
+		listEntries(query: ListEntriesQuery): Effect.Effect<CmsItemPage, CmsError>;
+		readEntry(query: ReadEntryQuery): Effect.Effect<CmsItem | undefined, CmsError>;
+		listReferences(query: ListReferencesQuery): Effect.Effect<CmsReferencePage, CmsError>;
+		readSiteSettings(): Effect.Effect<CmsSiteSettings, CmsError>;
+		readMenu(name: string): Effect.Effect<CmsMenuItem[] | undefined, CmsError>;
+	}
+>()("CmsClient") {
+	static readonly layer = Layer.effect(
+		CmsClient,
+		Effect.gen(function* () {
+			const [emdash, runtime] = yield* Effect.promise(loadEmDash);
+
+			const avatarsOf = Effect.fnUntraced(function* (entries: QueriedEntry[]) {
+				const { entries: items } = yield* query({
 					run: async () => {
 						const ids = avatarIdsOf(entries);
 
@@ -323,22 +322,26 @@ export const CmsClientLive = Layer.effect(
 						return { entries: found.flatMap((item) => (item ? [{ id: item.id, data: item }] : [])) };
 					},
 					failure: "The byline avatars could not be read",
-				}).pipe(
-					Effect.map(
-						({ entries: items }) =>
-							new Map(
-								items.flatMap(({ data }) => {
-									const media = isRecord(data) ? mediaOf(data) : undefined;
+				});
 
-									return media ? [[media.id, media] as const] : [];
-								}),
-							),
-					),
+				return new Map(
+					items.flatMap(({ data }) => {
+						const media = isRecord(data) ? mediaOf(data) : undefined;
+
+						return media ? [[media.id, media] as const] : [];
+					}),
 				);
+			});
 
-			return {
-				listEntries: ({ collection, limit, cursor, orderBy, order }: ListEntriesQuery) =>
-					query({
+			return CmsClient.of({
+				listEntries: Effect.fn("CmsClient.listEntries")(function* ({
+					collection,
+					limit,
+					cursor,
+					orderBy,
+					order,
+				}: ListEntriesQuery) {
+					const { entries, nextCursor } = yield* query({
 						run: () =>
 							emdash.getEmDashCollection(collection, {
 								status: PUBLISHED_STATUS,
@@ -347,54 +350,65 @@ export const CmsClientLive = Layer.effect(
 								...(orderBy && { orderBy: { [orderBy]: order ?? "asc" } }),
 							}),
 						failure: `The ${collection} collection could not be read`,
-					}).pipe(
-						Effect.flatMap(({ entries, nextCursor }) =>
-							avatarsOf(entries).pipe(
-								Effect.map((avatars) => ({
-									items: entries.flatMap((entry) => itemOf({ entry, avatars }) ?? []),
-									...(nextCursor && { nextCursor }),
-								})),
-							),
-						),
-					),
-				readEntry: ({ collection, id }: ReadEntryQuery) =>
-					query({
+					});
+					const avatars = yield* avatarsOf(entries);
+
+					return {
+						items: entries.flatMap((entry) => itemOf({ entry, avatars }) ?? []),
+						...(nextCursor && { nextCursor }),
+					};
+				}),
+				readEntry: Effect.fn("CmsClient.readEntry")(function* ({ collection, id }: ReadEntryQuery) {
+					const { entries } = yield* query({
 						run: async () => {
 							const { entry, error } = await emdash.getEmDashEntry(collection, id);
 
 							return { entries: entry ? [entry] : [], ...(error && { error }) };
 						},
 						failure: `The ${collection} entry ${id} could not be read`,
-					}).pipe(
-						Effect.flatMap(({ entries }) =>
-							avatarsOf(entries).pipe(
-								Effect.map((avatars) => entries.flatMap((entry) => itemOf({ entry, avatars }) ?? []).at(0)),
-							),
-						),
-					),
-				listReferences: ({ collection, id, field, limit, cursor }: ListReferencesQuery) =>
-					query({
+					});
+					const avatars = yield* avatarsOf(entries);
+
+					return entries.flatMap((entry) => itemOf({ entry, avatars }) ?? []).at(0);
+				}),
+				listReferences: Effect.fn("CmsClient.listReferences")(function* ({
+					collection,
+					id,
+					field,
+					limit,
+					cursor,
+				}: ListReferencesQuery) {
+					const { entries, nextCursor } = yield* query({
 						run: () => emdash.getEmDashReferences(collection, id, field, { limit, cursor }),
 						failure: `The ${field} references of ${collection} ${id} could not be read`,
-					}).pipe(
-						Effect.map(({ entries, nextCursor }) => ({
-							children: entries.flatMap((entry) => {
-								const child = itemOf({ entry });
+					});
 
-								return child ? [{ id: child.id }] : [];
-							}),
-							...(nextCursor && { nextCursor }),
-						})),
-					),
-				readSiteSettings: () =>
-					attempt({ run: () => emdash.getSiteSettings(), failure: "The site settings could not be read" }).pipe(
-						Effect.map((settings) => siteSettingsOf(plain(settings))),
-					),
-				readMenu: (name: string) =>
-					attempt({ run: () => emdash.getMenu(name), failure: `The ${name} menu could not be read` }).pipe(
-						Effect.map((menu) => (menu ? menuItemsOf(plain(menu.items)) : undefined)),
-					),
-			};
+					return {
+						children: entries.flatMap((entry) => {
+							const child = itemOf({ entry });
+
+							return child ? [{ id: child.id }] : [];
+						}),
+						...(nextCursor && { nextCursor }),
+					};
+				}),
+				readSiteSettings: Effect.fn("CmsClient.readSiteSettings")(function* () {
+					const settings = yield* attempt({
+						run: () => emdash.getSiteSettings(),
+						failure: "The site settings could not be read",
+					});
+
+					return siteSettingsOf(plain(settings));
+				}),
+				readMenu: Effect.fn("CmsClient.readMenu")(function* (name: string) {
+					const menu = yield* attempt({
+						run: () => emdash.getMenu(name),
+						failure: `The ${name} menu could not be read`,
+					});
+
+					return menu ? menuItemsOf(plain(menu.items)) : undefined;
+				}),
+			});
 		}),
-	),
-);
+	);
+}

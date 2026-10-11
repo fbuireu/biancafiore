@@ -12,25 +12,23 @@ export interface ContactErrorResponse {
 const GENERIC_ERROR_MESSAGE =
 	"Whoopsie! Something went wrong. It's my fault (or actually my boyfriend's). Please try again in a few minutes after refreshing the page.";
 
-export const contactErrorResponse = (
+export const contactErrorResponse = Effect.fn("contactErrorResponse")(function* (
 	cause: Cause.Cause<ContactError>,
-): Effect.Effect<ContactErrorResponse, never, LoggerService> => {
+): Effect.fn.Return<ContactErrorResponse, never, LoggerService> {
 	const failure = Cause.findErrorOption(cause);
 
 	if (Option.isSome(failure)) {
 		switch (failure.value._tag) {
 			case "ValidationError":
-				return Effect.succeed({ code: "BAD_REQUEST", message: failure.value.message });
+				return { code: "BAD_REQUEST", message: failure.value.message };
 			case "DuplicateContactError":
-				return Effect.succeed({ code: "UNAUTHORIZED", message: failure.value.message });
+				return { code: "UNAUTHORIZED", message: failure.value.message };
 		}
 	}
 
-	return Effect.gen(function* () {
-		const logger = yield* LoggerService;
+	const logger = yield* LoggerService;
 
-		logger.error({ message: Cause.pretty(cause) });
+	logger.error({ message: Cause.pretty(cause) });
 
-		return { code: "INTERNAL_SERVER_ERROR", message: GENERIC_ERROR_MESSAGE };
-	});
-};
+	return { code: "INTERNAL_SERVER_ERROR", message: GENERIC_ERROR_MESSAGE };
+});

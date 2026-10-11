@@ -28,10 +28,11 @@ export async function createEmail({ name, email, message }: CreateEmailParams): 
 	return { html, text };
 }
 
-export const sendEmail = (params: SendEmailParams): Effect.Effect<{ id: string }, EmailError, EmailClient> =>
-	Effect.gen(function* () {
-		const emails = yield* EmailClient;
-		const { html, text } = yield* Effect.promise(() => createEmail(params));
+export const sendEmail = Effect.fn("sendEmail")(function* (
+	params: SendEmailParams,
+): Effect.fn.Return<{ id: string }, EmailError, EmailClient> {
+	const emails = yield* EmailClient;
+	const { html, text } = yield* Effect.promise(() => createEmail(params));
 
-		return yield* emails.sendContactNotification({ name: params.name, email: params.email, html, text });
-	});
+	return yield* emails.sendContactNotification({ name: params.name, email: params.email, html, text });
+});
