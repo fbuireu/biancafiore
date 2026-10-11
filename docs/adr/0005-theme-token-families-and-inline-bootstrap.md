@@ -22,6 +22,8 @@ What that script *is*, the theme module owns. [`Head.astro`](../../src/ui/module
 
 What is stored is a **preference** (`dark`, `light` or `system`), and only a click on the toggle writes it. Nothing stored means `system`, which resolves against `prefers-color-scheme` at boot and follows it while it changes; a stored `dark` or `light` is an explicit choice and neither the OS nor a later paint may overwrite it.
 
+**Amended 2026-10-11:** the site now opens light. The `system` preference and every read of `prefers-color-scheme` are gone: what is stored is `dark` or `light`, nothing stored (or anything unrecognised) paints `light`, and only a click on the toggle writes. The bootstrap, the token families and the rule that painting never persists are unchanged.
+
 ## Consequences
 
 - The bootstrap script is render-blocking on purpose. It is small, and it is the only way to avoid the flash on a page the server rendered without knowing the theme ([ADR 0011](./0011-hybrid-rendering-prerender-content-ssr-dynamic.md)).

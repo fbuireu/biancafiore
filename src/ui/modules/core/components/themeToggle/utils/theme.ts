@@ -1,30 +1,11 @@
 import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
-import {
-	DARK_SCHEME_QUERY,
-	THEME_ATTRIBUTE,
-	THEME_STORAGE_KEY,
-	THEME_TOGGLE_CLASS,
-	THEME_TOGGLE_TOGGLED_CLASS,
-	Theme,
-	ThemePreference,
-} from "../const";
-import { readPreference, resolveTheme, writePreference } from "./preference";
+import { THEME_ATTRIBUTE, THEME_STORAGE_KEY, THEME_TOGGLE_CLASS, THEME_TOGGLE_TOGGLED_CLASS, Theme } from "../const";
+import { readTheme, writeTheme } from "./preference";
 
 const SELECTORS = {
 	THEME_INPUT: `.${THEME_TOGGLE_CLASS} input[type="checkbox"]`,
 	TOGGLE: `.${THEME_TOGGLE_CLASS}`,
 };
-
-let darkScheme: MediaQueryList | undefined;
-
-const prefersDarkScheme = (): MediaQueryList => {
-	darkScheme ??= window.matchMedia(DARK_SCHEME_QUERY);
-
-	return darkScheme;
-};
-
-const effectiveTheme = (): Theme =>
-	resolveTheme({ preference: readPreference(localStorage), prefersDark: prefersDarkScheme().matches });
 
 interface ApplyThemeParams {
 	theme: Theme;
@@ -47,36 +28,27 @@ const applyTheme = ({ theme, document }: ApplyThemeParams): void => {
 };
 
 function applyOnOtherTabWrite({ key }: StorageEvent): void {
-	if (key === THEME_STORAGE_KEY) applyTheme({ theme: effectiveTheme(), document });
-}
-
-function applyOnSchemeChange({ matches }: MediaQueryListEvent): void {
-	const preference = readPreference(localStorage);
-
-	if (preference !== ThemePreference.SYSTEM) return;
-
-	applyTheme({ theme: resolveTheme({ preference, prefersDark: matches }), document });
+	if (key === THEME_STORAGE_KEY) applyTheme({ theme: readTheme(localStorage), document });
 }
 
 function applyBeforeSwap({ newDocument }: TransitionBeforeSwapEvent): void {
-	applyTheme({ theme: effectiveTheme(), document: newDocument });
+	applyTheme({ theme: readTheme(localStorage), document: newDocument });
 }
 
 export function initializeThemeSetter(): void {
 	window.addEventListener("storage", applyOnOtherTabWrite);
-	prefersDarkScheme().addEventListener("change", applyOnSchemeChange);
 	document.addEventListener("astro:before-swap", applyBeforeSwap);
 
-	applyTheme({ theme: effectiveTheme(), document });
+	applyTheme({ theme: readTheme(localStorage), document });
 
 	const THEME_INPUT = document.querySelector<HTMLInputElement>(SELECTORS.THEME_INPUT);
 
 	if (!THEME_INPUT) return;
 
 	THEME_INPUT.addEventListener("change", () => {
-		const preference = THEME_INPUT.checked ? ThemePreference.DARK : ThemePreference.LIGHT;
+		const theme = THEME_INPUT.checked ? Theme.DARK : Theme.LIGHT;
 
-		writePreference({ store: localStorage, preference });
-		applyTheme({ theme: preference, document });
+		writeTheme({ store: localStorage, theme });
+		applyTheme({ theme, document });
 	});
 }

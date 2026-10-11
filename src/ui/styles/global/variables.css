@@ -273,12 +273,6 @@
 		--background-main: oklch(18.72% 0.01 88.81);
 		--neutral-main: oklch(92.58% 0.02 87.52);
 	}
-
-	@media (prefers-color-scheme: dark) {
-		:root:not([data-theme]) {
-			color-scheme: dark;
-		}
-	}
 }
 
 @property --header-height {

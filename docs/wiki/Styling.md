@@ -36,7 +36,7 @@ The type ladder is viewport-driven, so type that must scale with its **container
 
 ## Colour scheme
 
-The root is light; dark comes from a `data-theme` attribute set before first paint by an inline bootstrap, with `prefers-color-scheme` as the fallback whenever the reader has chosen nothing. Only a click on the toggle is persisted. [ADR 0005](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0005-theme-token-families-and-inline-bootstrap.md) covers the token families and why the bootstrap is inline; [ADR 0008](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0008-unregistered-property-color-tokens.md) covers the unregistered colour properties.
+The root is light; dark comes from a `data-theme` attribute set before first paint by an inline bootstrap, and the site stays light until the reader picks dark, whatever the operating system prefers. Only a click on the toggle is persisted. [ADR 0005](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0005-theme-token-families-and-inline-bootstrap.md) covers the token families and why the bootstrap is inline; [ADR 0008](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0008-unregistered-property-color-tokens.md) covers the unregistered colour properties.
 
 Sections that invert against the page mix in an inversion block that flips in both directions. That mix is a runtime contract as well as paint: an observer watches every inverting section and flips the logo and menu button while the sticky header's midline sits over one. The header therefore names no section's class of its own, and a new inverting section needs no edit there.
 

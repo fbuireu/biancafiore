@@ -6,32 +6,9 @@ import {
 	THEME_TOGGLE_INPUT_CLASS,
 	THEME_TOGGLE_TOGGLED_CLASS,
 	Theme,
-	ThemePreference,
 } from "../const";
 
-type SchemeListener = (event: Pick<MediaQueryListEvent, "matches">) => void;
-
 const TOGGLE = `.${THEME_TOGGLE_CLASS}`;
-
-const operatingSystem = (prefersDark: boolean) => {
-	const listeners: SchemeListener[] = [];
-	const query = {
-		matches: prefersDark,
-		addEventListener: (_type: string, listener: SchemeListener) => {
-			listeners.push(listener);
-		},
-	};
-
-	vi.stubGlobal("matchMedia", () => query);
-
-	return {
-		flipTo: (matches: boolean) => {
-			query.matches = matches;
-
-			for (const listener of listeners) listener({ matches });
-		},
-	};
-};
 
 const renderToggle = (): HTMLInputElement => {
 	document.body.innerHTML = `<label class="${THEME_TOGGLE_CLASS}"><input type="checkbox" class="${THEME_TOGGLE_INPUT_CLASS}" /></label>`;
@@ -73,10 +50,11 @@ const memoryStorage = () => {
 };
 
 const paintedTheme = () => document.documentElement.getAttribute(THEME_ATTRIBUTE);
-const storedPreference = () => localStorage.getItem(THEME_STORAGE_KEY);
+const storedTheme = () => localStorage.getItem(THEME_STORAGE_KEY);
 const toggledClass = () => document.querySelector(TOGGLE)?.classList.contains(THEME_TOGGLE_TOGGLED_CLASS);
 
 beforeEach(() => {
+	vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener: vi.fn() }));
 	vi.stubGlobal("localStorage", memoryStorage());
 	vi.spyOn(window, "addEventListener");
 	vi.spyOn(document, "addEventListener");
@@ -97,99 +75,73 @@ afterEach(() => {
 });
 
 describe("the theme runtime", () => {
-	it("mirrors the operating system without storing a preference the reader never chose", async () => {
-		operatingSystem(false);
+	it("opens in the light theme without storing a choice, even under an operating system that prefers dark", async () => {
 		renderToggle();
 
 		await visit();
 
 		expect(paintedTheme()).toBe(Theme.LIGHT);
-		expect(storedPreference()).toBeNull();
-	});
-
-	it("still follows the operating system on a later visit, after it changed between them", async () => {
-		operatingSystem(false);
-		renderToggle();
-		await visit();
-
-		operatingSystem(true);
-		renderToggle();
-		await visit();
-
-		expect(paintedTheme()).toBe(Theme.DARK);
-		expect(storedPreference()).toBeNull();
-	});
-
-	it("follows an operating-system change while no preference is stored", async () => {
-		const os = operatingSystem(false);
-		renderToggle();
-		await visit();
-
-		os.flipTo(true);
-
-		expect(paintedTheme()).toBe(Theme.DARK);
-		expect(storedPreference()).toBeNull();
+		expect(document.documentElement.style.colorScheme).toBe(Theme.LIGHT);
+		expect(storedTheme()).toBeNull();
+		expect(toggledClass()).toBe(false);
 	});
 
 	it("persists the reader's choice and dresses the toggle for it", async () => {
-		operatingSystem(true);
 		const input = renderToggle();
 		await visit();
 
+		choose({ input, theme: Theme.DARK });
+
+		expect(paintedTheme()).toBe(Theme.DARK);
+		expect(storedTheme()).toBe(Theme.DARK);
+		expect(input.checked).toBe(true);
 		expect(toggledClass()).toBe(true);
 
-		choose({ input: input, theme: Theme.LIGHT });
+		choose({ input, theme: Theme.LIGHT });
 
 		expect(paintedTheme()).toBe(Theme.LIGHT);
-		expect(storedPreference()).toBe(ThemePreference.LIGHT);
+		expect(storedTheme()).toBe(Theme.LIGHT);
 		expect(input.checked).toBe(false);
 		expect(toggledClass()).toBe(false);
 	});
 
-	it("leaves an explicit choice alone when the operating system changes under it", async () => {
-		const os = operatingSystem(true);
+	it("keeps the chosen theme across a later visit", async () => {
 		const input = renderToggle();
 		await visit();
 
-		choose({ input: input, theme: Theme.LIGHT });
+		choose({ input, theme: Theme.DARK });
 
-		os.flipTo(false);
-		os.flipTo(true);
-
-		expect(paintedTheme()).toBe(Theme.LIGHT);
-		expect(storedPreference()).toBe(ThemePreference.LIGHT);
-		expect(input.checked).toBe(false);
-	});
-
-	it("keeps the chosen preference across a later visit", async () => {
-		operatingSystem(true);
-		const input = renderToggle();
-		await visit();
-
-		choose({ input: input, theme: Theme.LIGHT });
-
-		operatingSystem(true);
 		renderToggle();
 		await visit();
-
-		expect(paintedTheme()).toBe(Theme.LIGHT);
-	});
-
-	it("repaints when another tab changes the preference", async () => {
-		operatingSystem(false);
-		renderToggle();
-		await visit();
-
-		localStorage.setItem(THEME_STORAGE_KEY, ThemePreference.DARK);
-		window.dispatchEvent(new StorageEvent("storage", { key: THEME_STORAGE_KEY, newValue: ThemePreference.DARK }));
 
 		expect(paintedTheme()).toBe(Theme.DARK);
+		expect(toggledClass()).toBe(true);
+	});
+
+	it("repaints when another tab changes the theme", async () => {
+		renderToggle();
+		await visit();
+
+		localStorage.setItem(THEME_STORAGE_KEY, Theme.DARK);
+		window.dispatchEvent(new StorageEvent("storage", { key: THEME_STORAGE_KEY, newValue: Theme.DARK }));
+
+		expect(paintedTheme()).toBe(Theme.DARK);
+	});
+
+	it("ignores a storage write under another key", async () => {
+		renderToggle();
+		await visit();
+
+		localStorage.setItem(THEME_STORAGE_KEY, Theme.DARK);
+		window.dispatchEvent(new StorageEvent("storage", { key: "something-else", newValue: Theme.DARK }));
+
+		expect(paintedTheme()).toBe(Theme.LIGHT);
 	});
 });
 
 describe("the theme runtime on a page without the toggle", () => {
 	it("still paints the document, since every page carries the colour scheme", async () => {
-		operatingSystem(true);
+		localStorage.setItem(THEME_STORAGE_KEY, Theme.DARK);
 		document.body.innerHTML = "";
 
 		await visit();
@@ -199,20 +151,18 @@ describe("the theme runtime on a page without the toggle", () => {
 	});
 
 	it("paints the document but leaves a toggle with no input undressed, rather than throwing", async () => {
-		operatingSystem(true);
+		localStorage.setItem(THEME_STORAGE_KEY, Theme.DARK);
 		document.body.innerHTML = `<label class="${THEME_TOGGLE_CLASS}"></label>`;
 
 		await visit();
 
 		expect(paintedTheme()).toBe(Theme.DARK);
-		expect(storedPreference()).toBeNull();
 		expect(toggledClass()).toBe(false);
 	});
 });
 
 describe("a view transition", () => {
 	it("paints the document being swapped in, which the toggle's own listeners cannot reach", async () => {
-		operatingSystem(false);
 		const input = renderToggle();
 		await visit();
 		choose({ input, theme: Theme.DARK });

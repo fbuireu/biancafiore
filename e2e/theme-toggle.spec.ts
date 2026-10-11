@@ -5,7 +5,6 @@ import {
 	THEME_TOGGLE_INPUT_CLASS,
 	THEME_TOGGLE_TOGGLED_CLASS,
 	Theme,
-	type ThemePreference,
 } from "@modules/core/components/themeToggle/const";
 import type { Page } from "@playwright/test";
 import { expect, test } from "./fixtures";
@@ -13,15 +12,15 @@ import { expect, test } from "./fixtures";
 const TOGGLE = `.${THEME_TOGGLE_CLASS}`;
 const TOGGLE_INPUT = `.${THEME_TOGGLE_INPUT_CLASS}`;
 
-const storedPreference = (page: Page) => page.evaluate((key) => localStorage.getItem(key), THEME_STORAGE_KEY);
+const storedTheme = (page: Page) => page.evaluate((key) => localStorage.getItem(key), THEME_STORAGE_KEY);
 
-interface ChoosePreferenceParams {
+interface ChooseThemeParams {
 	page: Page;
-	preference: ThemePreference;
+	theme: Theme;
 }
 
-const choosePreference = ({ page, preference }: ChoosePreferenceParams) =>
-	page.evaluate(([key, value]) => localStorage.setItem(key, value), [THEME_STORAGE_KEY, preference]);
+const chooseTheme = ({ page, theme }: ChooseThemeParams) =>
+	page.evaluate(([key, value]) => localStorage.setItem(key, value), [THEME_STORAGE_KEY, theme]);
 
 interface SettleParams {
 	page: Page;
@@ -37,92 +36,58 @@ test.describe("theme toggle", () => {
 	test.describe("with a dark operating system", () => {
 		test.use({ colorScheme: "dark" });
 
-		test("follows the operating system when it prefers dark", async ({ page }) => {
+		test("opens light, without storing a choice, whatever the operating system prefers", async ({ page }) => {
 			await page.goto("/");
 
-			await settle({ page, theme: "dark" });
-			await expect(page.locator(TOGGLE)).toHaveClass(new RegExp(THEME_TOGGLE_TOGGLED_CLASS));
+			await settle({ page, theme: Theme.LIGHT });
+			await expect(page.locator(TOGGLE)).not.toHaveClass(new RegExp(THEME_TOGGLE_TOGGLED_CLASS));
+			expect(await storedTheme(page)).toBeNull();
 		});
 	});
 
 	test.describe("with a light operating system", () => {
 		test.use({ colorScheme: "light" });
 
-		test("follows the operating system when it prefers light", async ({ page }) => {
-			await page.goto("/");
-
-			await settle({ page, theme: "light" });
-			await expect(page.locator(TOGGLE)).not.toHaveClass(new RegExp(THEME_TOGGLE_TOGGLED_CLASS));
-		});
-
 		test("switches the document theme and persists the choice", async ({ page }) => {
 			await page.goto("/");
-			await settle({ page, theme: "light" });
+			await settle({ page, theme: Theme.LIGHT });
 
 			await page.locator(TOGGLE).click();
 
-			await settle({ page, theme: "dark" });
-			expect(await storedPreference(page)).toBe("dark");
-		});
-
-		test("stores nothing while it is only mirroring the operating system", async ({ page }) => {
-			await page.goto("/");
-
-			await settle({ page, theme: "light" });
-			expect(await storedPreference(page)).toBeNull();
-		});
-
-		test("still follows the operating system on a later visit", async ({ page }) => {
-			await page.goto("/");
-			await settle({ page, theme: "light" });
-
-			await page.emulateMedia({ colorScheme: "dark" });
-			await page.reload();
-
-			await settle({ page, theme: "dark" });
-			expect(await storedPreference(page)).toBeNull();
-		});
-
-		test("leaves an explicit choice alone when the operating system changes under it", async ({ page }) => {
-			await page.goto("/");
-			await settle({ page, theme: "light" });
-
-			await page.locator(TOGGLE).click();
-			await settle({ page, theme: "dark" });
-			await page.locator(TOGGLE).click();
-			await settle({ page, theme: "light" });
-
-			await page.emulateMedia({ colorScheme: "dark" });
-
-			await settle({ page, theme: "light" });
-			expect(await storedPreference(page)).toBe("light");
+			await settle({ page, theme: Theme.DARK });
+			expect(await storedTheme(page)).toBe(Theme.DARK);
 		});
 
 		test("keeps the chosen theme across a reload", async ({ page }) => {
 			await page.goto("/");
-			await settle({ page, theme: "light" });
+			await settle({ page, theme: Theme.LIGHT });
 
 			await page.locator(TOGGLE).click();
-			await settle({ page, theme: "dark" });
+			await settle({ page, theme: Theme.DARK });
 
 			await page.reload();
 
-			await settle({ page, theme: "dark" });
-			expect(await storedPreference(page)).toBe("dark");
+			await settle({ page, theme: Theme.DARK });
+			expect(await storedTheme(page)).toBe(Theme.DARK);
 		});
 
-		test("lets a stored preference win over the operating system", async ({ page }) => {
+		test("keeps a chosen light theme when the operating system turns dark", async ({ page }) => {
 			await page.goto("/");
-			await choosePreference({ page, preference: "dark" });
+			await page.locator(TOGGLE).click();
+			await settle({ page, theme: Theme.DARK });
+			await page.locator(TOGGLE).click();
+			await settle({ page, theme: Theme.LIGHT });
 
+			await page.emulateMedia({ colorScheme: "dark" });
 			await page.reload();
 
-			await settle({ page, theme: "dark" });
+			await settle({ page, theme: Theme.LIGHT });
+			expect(await storedTheme(page)).toBe(Theme.LIGHT);
 		});
 
 		test("applies the stored theme before the page renders, so there is no flash", async ({ page }) => {
 			await page.goto("/");
-			await choosePreference({ page, preference: "dark" });
+			await chooseTheme({ page, theme: Theme.DARK });
 			await page.addInitScript((attribute) => {
 				new MutationObserver((_, observer) => {
 					if (!document.body) return;
@@ -134,7 +99,7 @@ test.describe("theme toggle", () => {
 
 			await page.goto("/");
 
-			await expect(page.locator("html")).toHaveAttribute("data-theme-at-first-parse", "dark");
+			await expect(page.locator("html")).toHaveAttribute("data-theme-at-first-parse", Theme.DARK);
 		});
 	});
 });

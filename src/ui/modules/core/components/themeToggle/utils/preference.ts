@@ -1,39 +1,28 @@
-import { DARK_SCHEME_QUERY, THEME_ATTRIBUTE, THEME_STORAGE_KEY, Theme, ThemePreference } from "../const";
+import { DEFAULT_THEME, THEME_ATTRIBUTE, THEME_STORAGE_KEY, Theme } from "../const";
 
-const PREFERENCES = new Set<string>(Object.values(ThemePreference));
+const THEMES = new Set<string>(Object.values(Theme));
 
 const literal = (value: string) => JSON.stringify(value);
 
 const CHOSEN_THEMES = Object.values(Theme).map(literal).join(", ");
-const MIRRORED_THEME = `prefersDark ? ${literal(Theme.DARK)} : ${literal(Theme.LIGHT)}`;
 
-export const readPreference = (store: Pick<Storage, "getItem">): ThemePreference => {
+export const readTheme = (store: Pick<Storage, "getItem">): Theme => {
 	const stored = store.getItem(THEME_STORAGE_KEY);
 
-	return PREFERENCES.has(stored ?? "") ? (stored as ThemePreference) : ThemePreference.SYSTEM;
+	return THEMES.has(stored ?? "") ? (stored as Theme) : DEFAULT_THEME;
 };
 
-interface WritePreferenceParams {
+interface WriteThemeParams {
 	store: Pick<Storage, "setItem">;
-	preference: ThemePreference;
+	theme: Theme;
 }
 
-export const writePreference = ({ store, preference }: WritePreferenceParams): void =>
-	store.setItem(THEME_STORAGE_KEY, preference);
-
-interface ResolveThemeParams {
-	preference: ThemePreference;
-	prefersDark: boolean;
-}
-
-export const resolveTheme = ({ preference, prefersDark }: ResolveThemeParams): Theme =>
-	preference === ThemePreference.SYSTEM ? (prefersDark ? Theme.DARK : Theme.LIGHT) : preference;
+export const writeTheme = ({ store, theme }: WriteThemeParams): void => store.setItem(THEME_STORAGE_KEY, theme);
 
 export const THEME_BOOTSTRAP_SCRIPT = `(() => {
 	try {
 		const stored = localStorage.getItem(${literal(THEME_STORAGE_KEY)});
-		const prefersDark = window.matchMedia(${literal(DARK_SCHEME_QUERY)}).matches;
-		const theme = [${CHOSEN_THEMES}].includes(stored) ? stored : ${MIRRORED_THEME};
+		const theme = [${CHOSEN_THEMES}].includes(stored) ? stored : ${literal(DEFAULT_THEME)};
 		const root = document.documentElement;
 		root.setAttribute(${literal(THEME_ATTRIBUTE)}, theme);
 		root.style.colorScheme = theme;
