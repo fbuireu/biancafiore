@@ -26,7 +26,7 @@ describe("EmailClientLive", () => {
 	it("dies rather than handing the vendor an undefined key, which it answers with its own error", async () => {
 		const exit = await build();
 
-		expect(Exit.isFailure(exit) && Cause.isDie(exit.cause)).toBe(true);
+		expect(Exit.isFailure(exit) && Cause.hasDies(exit.cause)).toBe(true);
 		expect((defectOf(exit) as Error).message).toBe("RESEND_API_KEY must be defined");
 	});
 
@@ -124,7 +124,7 @@ describe("EmailClient.sendContactNotification", () => {
 
 		const exit = await sendContact();
 
-		expect(Exit.isFailure(exit) && Cause.isDie(exit.cause)).toBe(false);
+		expect(Exit.isFailure(exit) && Cause.hasDies(exit.cause)).toBe(false);
 		expect((failureOf(exit) as EmailError).message).toBe("network down");
 	});
 

@@ -15,7 +15,7 @@ const GENERIC_ERROR_MESSAGE =
 export const contactErrorResponse = (
 	cause: Cause.Cause<ContactError>,
 ): Effect.Effect<ContactErrorResponse, never, LoggerService> => {
-	const failure = Cause.failureOption(cause);
+	const failure = Cause.findErrorOption(cause);
 
 	if (Option.isSome(failure)) {
 		switch (failure.value._tag) {

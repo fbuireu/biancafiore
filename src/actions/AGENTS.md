@@ -47,7 +47,7 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   only then does the handler `throw new ActionError(result.error)`. It has to be the `Effect` variant of the
   combinator, not `Effect.matchCause`: `contactErrorResponse` logs, so the failure branch must return an Effect
   for that log to be part of the program. Never throw an `ActionError` from inside the program: it would
-  arrive as a defect, `Cause.failureOption` would find no failure, and the mapping would be lost. That last
+  arrive as a defect, `Cause.findErrorOption` would find no failure, and the mapping would be lost. That last
   sentence is a test: `errorResponse.test.ts` dies with a `ValidationError` and asserts the generic 500.
 - **Step order is load-bearing**: validate → verify reCAPTCHA → duplicate check → send email → save. The reCAPTCHA check runs *after* schema validation, so a malformed payload is rejected without
   spending a verification call. The email goes out **before** the row is written because the row stores the
@@ -55,7 +55,7 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
 - **A failed `saveContact` is logged, not raised.** Once the mail is away the visitor's message has reached
   Bianca; the row is bookkeeping for duplicate detection, not the deliverable. Failing the request there
   would show a 500 for work that actually succeeded and invite a retry that passes the duplicate check
-  (because no row exists) and mails Bianca a second time. So `Effect.catchAll` takes every failure of that
+  (because no row exists) and mails Bianca a second time. So `Effect.catch` takes every failure of that
   step, logs it with the `emailId` through `logger.logError`, and the action still answers `ok`. The cost is
   accepted and narrow: a dropped row means that address can contact again without being told it already did.
 - **The payload is validated twice, on purpose.** `defineAction`'s `input` validates at the edge, and

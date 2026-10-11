@@ -4,7 +4,7 @@ Everything that talks to the outside world. The clients and the contact steps ar
 
 ## Client shape
 
-Each client is a `Context.Tag` class plus a `Layer.effect` implementation, co-located:
+Each client is a `Context.Service` class plus a `Layer.effect` implementation, co-located:
 
 | Tag | Live layer | File |
 | --- | --- | --- |

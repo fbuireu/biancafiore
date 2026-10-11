@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DatabaseError } from "../errors";
 import { Database, DatabaseLive } from "./client";
 
-type DatabaseService = Effect.Effect.Success<typeof Database>;
+type DatabaseService = Database["Service"];
 
 interface RecordedCall {
 	method: string;
@@ -81,7 +81,7 @@ describe("DatabaseLive", () => {
 		const exit = await build();
 
 		expect(failureOf(exit)).toBeUndefined();
-		expect(Exit.isFailure(exit) && Cause.isDie(exit.cause)).toBe(true);
+		expect(Exit.isFailure(exit) && Cause.hasDies(exit.cause)).toBe(true);
 	});
 
 	it("hands out the contact operations rather than the query builder", async () => {
@@ -198,7 +198,7 @@ describe("Database", () => {
 
 		const exit = await Effect.runPromiseExit(run(database));
 
-		expect(Cause.isDie((exit as Exit.Failure<never, unknown>).cause)).toBe(false);
+		expect(Cause.hasDies((exit as Exit.Failure<never, unknown>).cause)).toBe(false);
 		expect(failureOf(exit)).toBeInstanceOf(DatabaseError);
 		expect((failureOf(exit) as DatabaseError).message).toBe("connection refused");
 	});

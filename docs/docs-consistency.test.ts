@@ -105,7 +105,7 @@ const TAGGED_ERROR_DECLARATION = /export class (\w+) extends Data\.TaggedError/g
 const MODULE_LEVEL_ENV_IMPORT = /^\s*import\s[^\n]*"astro:env\/server"/m;
 const RECAPTCHA_SCORE_DECLARATION = /const RECAPTCHA_MINIMUM_SCORE = ([\d.]+);/;
 const DRIZZLE_IMPORT = /from "drizzle-orm(\/[\w/]+)?"/;
-const CAUGHT_SAVE_CONTACT = /saveContact\([^)]*\)\.pipe\(\s*Effect\.catchAll/;
+const CAUGHT_SAVE_CONTACT = /saveContact\([^)]*\)\.pipe\(\s*Effect\.catch\(/;
 const CONSOLE_CALL = /\bconsole(\.\w+|\[\w+\])\(/;
 const TAG_TO_STATUS_CASE = /case "(\w+)":[\s\S]{0,60}?code: "(\w+)"/g;
 const DOCUMENTED_TAG_TO_STATUS = /`(?:\w+Error)` → `[A-Z_]+`/g;
@@ -251,7 +251,7 @@ const RELATED_ARTICLES_CAP = /INFERRED_RELATED_ARTICLES_LIMIT = (\d+)/;
 const TITLE_AS_IDENTITY = /data\.title ===/;
 const ARTICLE_SLUG_CALL = /articleSlug\(/;
 const ARTICLE_PUBLISH_DATE_READER = /export function articlePublishDateISO\(/;
-const EXIT_EXTRACTION = /\bCause\.(?:failureOption|dieOption)\(/;
+const EXIT_EXTRACTION = /\bCause\.(?:findErrorOption|findDefect)\(/;
 const LOCALE_DATE_CALL = /\.toLocaleDateString\(/g;
 const LOCALE_TIME_CALL = /\.toLocale(?:Time)?String\(/g;
 const PINNED_ZONE = /\btimeZone\s*:/;
@@ -516,7 +516,7 @@ const DEFAULTED_IN_THE_DTO_LAYER = (field: string) =>
 	new RegExp(
 		String.raw`\b(?:${field}\s*[:=]|return)\s*flagOf\(rawArticle\.data\.${field.replace(SNAKE_CASED, (letter) => `_${letter.toLowerCase()}`)}\)`,
 	);
-const CONTEXT_TAG_CLASS = /class\s+\w+\s+extends\s+Context\.Tag/;
+const CONTEXT_SERVICE_CLASS = /class\s+\w+\s+extends\s+Context\.Service</;
 const LAUNDERED_SECRET = /getSecret\([^)]*\)\s+as\s+string/;
 const NESTED_GUIDES = walk("src").filter((file) => file.endsWith("AGENTS.md"));
 const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/adr/"));
@@ -1253,13 +1253,13 @@ describe("infrastructure guide", () => {
 		for (const { tag, live, file } of rows) {
 			const source = read(`src/infrastructure/${file}`);
 
-			expect(`${file}: ${source.includes(`class ${tag} extends Context.Tag`)}`).toBe(`${file}: true`);
+			expect(`${file}: ${source.includes(`class ${tag} extends Context.Service<`)}`).toBe(`${file}: true`);
 			const built = source.includes(`const ${live} = Layer.effect`) || source.includes(`const ${live} = Layer.sync`);
 
 			expect(`${file}: ${built}`).toBe(`${file}: true`);
 		}
 
-		const declared = SOURCE_FILES.filter((file) => CONTEXT_TAG_CLASS.test(read(file))).map((file) =>
+		const declared = SOURCE_FILES.filter((file) => CONTEXT_SERVICE_CLASS.test(read(file))).map((file) =>
 			file.replace("src/infrastructure/", ""),
 		);
 

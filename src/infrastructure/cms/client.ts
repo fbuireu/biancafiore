@@ -120,7 +120,7 @@ interface QueryParams {
 	failure: string;
 }
 
-export class CmsClient extends Context.Tag("CmsClient")<
+export class CmsClient extends Context.Service<
 	CmsClient,
 	{
 		listEntries(query: ListEntriesQuery): Effect.Effect<CmsItemPage, CmsError>;
@@ -129,7 +129,7 @@ export class CmsClient extends Context.Tag("CmsClient")<
 		readSiteSettings(): Effect.Effect<CmsSiteSettings, CmsError>;
 		readMenu(name: string): Effect.Effect<CmsMenuItem[] | undefined, CmsError>;
 	}
->() {}
+>()("CmsClient") {}
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
 	typeof value === "object" && value !== null && !Array.isArray(value);

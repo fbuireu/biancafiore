@@ -134,7 +134,6 @@ html.page--article body {
 		iframe {
 			aspect-ratio: auto;
 			display: block;
-			/* biome-ignore lint/correctness/noUnknownProperty: Biome does not know frame-sizing yet */
 			frame-sizing: content-height;
 			height: auto;
 			min-height: calc(100cqi * 9 / 16);

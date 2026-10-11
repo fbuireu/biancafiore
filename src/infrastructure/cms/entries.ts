@@ -1,4 +1,4 @@
-import { type Context, Effect, ManagedRuntime } from "effect";
+import { Effect, ManagedRuntime } from "effect";
 import {
 	CmsClient,
 	CmsClientLive,
@@ -40,7 +40,7 @@ type ReferenceOf<ENTRY> = ENTRY extends CmsEntry<unknown, infer REFERENCE> ? REF
 
 type RawEntries<ENTRIES extends readonly AnyEntry[]> = { [INDEX in keyof ENTRIES]: ENTRIES[INDEX][] };
 
-type Cms = Context.Tag.Service<CmsClient>;
+type Cms = CmsClient["Service"];
 
 interface FetchEveryPageParams {
 	cms: Cms;

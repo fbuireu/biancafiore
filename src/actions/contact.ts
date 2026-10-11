@@ -31,7 +31,7 @@ export const submitContact = ({
 		const { id: emailId } = yield* sendEmail(data);
 
 		yield* saveContact({ emailId, ...data }).pipe(
-			Effect.catchAll((error) =>
+			Effect.catch((error) =>
 				Effect.sync(() =>
 					logger.logError({ message: "Contact was delivered but not persisted", error, context: { emailId } }),
 				),

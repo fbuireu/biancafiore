@@ -15,7 +15,7 @@ interface FindContactWithMessageParams {
 	message: string;
 }
 
-export class Database extends Context.Tag("Database")<
+export class Database extends Context.Service<
 	Database,
 	{
 		findLatestContactSince(
@@ -26,7 +26,7 @@ export class Database extends Context.Tag("Database")<
 		): Effect.Effect<schema.ContactRow | undefined, DatabaseError>;
 		insertContact(contact: schema.NewContact): Effect.Effect<void, DatabaseError>;
 	}
->() {}
+>()("Database") {}
 
 export const DatabaseLive = Layer.effect(
 	Database,

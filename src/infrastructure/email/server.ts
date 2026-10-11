@@ -25,13 +25,13 @@ interface CmsEmail {
 
 type EmailPayload = Parameters<Resend["emails"]["send"]>[0];
 
-export class EmailClient extends Context.Tag("EmailClient")<
+export class EmailClient extends Context.Service<
 	EmailClient,
 	{
 		sendContactNotification(notification: ContactNotification): Effect.Effect<{ id: string }, EmailError>;
 		sendCmsEmail(email: CmsEmail): Effect.Effect<{ id: string }, EmailError>;
 	}
->() {}
+>()("EmailClient") {}
 
 export const EmailClientLive = Layer.effect(
 	EmailClient,
