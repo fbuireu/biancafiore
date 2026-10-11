@@ -37,6 +37,7 @@ preview_id = "fde64789020f4160b0d835d190d8d5d6"
 [[d1_databases]]
 binding = "DB"
 database_name = "biancafiore-content-production"
+database_id = "a7433220-eb9b-4121-9e6e-0b4f3097a768"
 
 [[r2_buckets]]
 binding = "MEDIA"
@@ -109,6 +110,7 @@ id = "c9f2626f1a4043c0aea8a75985bdc0a1"
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "biancafiore-content-production"
+database_id = "a7433220-eb9b-4121-9e6e-0b4f3097a768"
 
 [[env.production.r2_buckets]]
 binding = "MEDIA"
