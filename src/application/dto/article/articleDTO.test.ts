@@ -390,12 +390,14 @@ describe("createArticles content derivations", () => {
 	});
 
 	it("hands the body's heading and the table of contents one anchor and the text as authored", () => {
-		const [article] = create([makeArticle({ content: [heading({ level: 2, value: "Why & How" })] })]);
+		const [article] = create([
+			makeArticle({ content: [heading({ level: 2, value: "Why & How" }), heading({ level: 2, value: "Closing" })] }),
+		]);
 		const [entry] = article.tableOfContents;
 
 		expect(entry.heading).toBe("Why & How");
 		expect(entry.id).toBe("why-how");
-		expect(article.content).toEqual([expect.objectContaining({ tag: "h2", anchor: entry.id, text: "Why & How" })]);
+		expect(article.content[0]).toEqual(expect.objectContaining({ tag: "h2", anchor: entry.id, text: "Why & How" }));
 	});
 
 	it("numbers each section by the position its entry takes in the table of contents", () => {

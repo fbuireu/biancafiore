@@ -82,7 +82,7 @@ const blogPostingSchema = buildBlogPostingSchema({
     <ColumnsToggle />
     <article class={ARTICLE_BODY_CLASS} style={`--scopes: ${scopes}`}>
       {
-          showsTableOfContents && article.data.tableOfContents.length > 1 &&
+          showsTableOfContents && article.data.tableOfContents.length > 0 &&
           <TableOfContents tableOfContents={article.data.tableOfContents} />
       }
       <ArticleContent content={article.data.content} />

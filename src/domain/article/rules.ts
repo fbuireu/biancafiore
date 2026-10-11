@@ -4,6 +4,7 @@ import type { ArticleHeading, ArticleSummaryDTO, TableOfContents } from "./types
 
 const WORDS_PER_MINUTE = 200;
 const MINIMUM_READING_MINUTES = 1;
+const MIN_TABLE_OF_CONTENTS_HEADINGS = 2;
 const HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 const HTML_ENTITY_CHARACTERS: Record<string, string> = {
 	"&amp;": "&",
@@ -29,6 +30,8 @@ export function isTableOfContentsHeading(level: number): boolean {
 }
 
 export function generateTableOfContents(headings: ArticleHeading[]): TableOfContents {
+	if (headings.length < MIN_TABLE_OF_CONTENTS_HEADINGS) return [];
+
 	return headings.map(({ id, text, level, scope }) => ({ id, heading: text, level, scope }));
 }
 

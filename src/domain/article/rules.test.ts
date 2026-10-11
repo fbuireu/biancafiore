@@ -100,6 +100,10 @@ describe("generateTableOfContents", () => {
 		expect(generateTableOfContents([])).toEqual([]);
 	});
 
+	it("returns an empty table for an article with a single heading, which a table of contents would only repeat", () => {
+		expect(generateTableOfContents([headingStub({ level: 2, text: "Only", ordinal: 1 })])).toEqual([]);
+	});
+
 	it("carries the heading level untouched, so the stylesheet owns the indentation ramp", () => {
 		expect(
 			generateTableOfContents([
@@ -134,6 +138,7 @@ describe("generateTableOfContents", () => {
 	it("takes the anchor id the renderer wrote instead of deriving a second one from the text", () => {
 		const [entry] = generateTableOfContents([
 			{ level: 2, id: "the-renderers-anchor", text: "Tips & Tricks", scope: "--section-1" },
+			{ level: 2, id: "closing", text: "Closing", scope: "--section-2" },
 		]);
 
 		expect(entry.id).toBe("the-renderers-anchor");
