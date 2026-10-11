@@ -1424,7 +1424,6 @@ describe("gotchas", () => {
 
 		expect(asking.sort()).toEqual(
 			[
-				"src/pages/articles/[...slug].astro",
 				"src/ui/modules/core/components/baseLayout/BaseLayout.astro",
 				"src/ui/modules/core/components/breadcrumbs/Breadcrumbs.astro",
 			].sort(),

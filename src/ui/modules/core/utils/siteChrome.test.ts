@@ -23,16 +23,15 @@ describe("siteChrome", () => {
 		expect(siteChrome(at("/about"))).toEqual({
 			showsHeader: true,
 			showsBreadcrumbs: true,
-			showsTableOfContents: true,
 			servesRealContent: true,
 		});
 	});
 
-	it("hides the header, the breadcrumbs and the table of contents together", async () => {
+	it("hides the header and the breadcrumbs together", async () => {
 		const siteChrome = await siteChromeWith(true);
-		const { showsHeader, showsBreadcrumbs, showsTableOfContents } = siteChrome(at("/articles/a-story"));
+		const { showsHeader, showsBreadcrumbs } = siteChrome(at("/articles/a-story"));
 
-		expect([showsHeader, showsBreadcrumbs, showsTableOfContents]).toEqual([false, false, false]);
+		expect([showsHeader, showsBreadcrumbs]).toEqual([false, false]);
 	});
 
 	it.each(["/articles", "/articles/a-story", "/tags", "/tags/seo", "/terms-and-conditions", "/privacy-policy"])(

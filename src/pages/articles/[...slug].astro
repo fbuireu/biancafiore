@@ -16,7 +16,6 @@ import JsonLd from "@modules/core/components/jsonLd/JsonLd.astro";
 import RelatedArticles from "@modules/core/components/relatedArticles/RelatedArticles.astro";
 import { readArticle } from "@modules/core/utils/entries";
 import { buildBlogPostingSchema } from "@modules/core/utils/jsonLd";
-import { siteChrome } from "@modules/core/utils/siteChrome";
 import "./_article.css";
 
 const article = Astro.params.slug ? await readArticle(Astro.params.slug) : undefined;
@@ -32,7 +31,6 @@ const metadata: Partial<SeoMetadata> = {
 	author: article.data.author.name,
 	tags: tagNames,
 };
-const { showsTableOfContents } = siteChrome(Astro.url);
 const scopes = article.data.tableOfContents.map(({ scope }) => scope).join(",");
 const blogPostingSchema = buildBlogPostingSchema({
 	path: Astro.url.pathname,
@@ -82,7 +80,7 @@ const blogPostingSchema = buildBlogPostingSchema({
     <ColumnsToggle />
     <article class={ARTICLE_BODY_CLASS} style={`--scopes: ${scopes}`}>
       {
-          showsTableOfContents && article.data.tableOfContents.length > 0 &&
+          article.data.tableOfContents.length > 0 &&
           <TableOfContents tableOfContents={article.data.tableOfContents} />
       }
       <ArticleContent content={article.data.content} />

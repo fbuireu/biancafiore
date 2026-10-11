@@ -14,7 +14,6 @@ const PUBLISHED_ROUTES = [
 export type SiteChrome = {
 	showsHeader: boolean;
 	showsBreadcrumbs: boolean;
-	showsTableOfContents: boolean;
 	servesRealContent: boolean;
 };
 
@@ -22,7 +21,6 @@ export function siteChrome(url: URL): SiteChrome {
 	return {
 		showsHeader: !HIDE_CHROME,
 		showsBreadcrumbs: !HIDE_CHROME,
-		showsTableOfContents: !HIDE_CHROME,
 		servesRealContent: !HIDE_CHROME || PUBLISHED_ROUTES.some((route) => isWithin({ pathname: url.pathname, route })),
 	};
 }

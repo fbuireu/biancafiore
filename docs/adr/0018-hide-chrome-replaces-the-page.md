@@ -14,7 +14,7 @@ The cheapest way to express that would have been a per-page flag, or simply not 
 
 ## Decision
 
-One public boolean env var, `HIDE_CHROME`, is read in exactly one module, `siteChrome` in `@modules/core/utils/siteChrome.ts`, which answers a fixed set of questions about a URL: `showsHeader`, `showsBreadcrumbs`, `showsTableOfContents` and `servesRealContent`. No component reads the variable, and no call site is conditional: `BaseLayout` always asks whether to render the `Header` and whether to serve the `<slot />` or the placeholder, `Breadcrumbs` always asks about itself, and the Article route always asks about the Table of Contents.
+One public boolean env var, `HIDE_CHROME`, is read in exactly one module, `siteChrome` in `@modules/core/utils/siteChrome.ts`, which answers a fixed set of questions about a URL: `showsHeader`, `showsBreadcrumbs` and `servesRealContent`. (It also answered `showsTableOfContents` until 2026-10-11, when an Article's Table of Contents left the flag and started showing on a hidden site too.) No component reads the variable, and no call site is conditional: `BaseLayout` always asks whether to render the `Header` and whether to serve the `<slot />` or the placeholder and `Breadcrumbs` always asks about itself.
 
 **It is deny-by-default.** A route serves real content only if it sits within one of the `PUBLISHED_ROUTES` `siteChrome` names, `/articles`, `/tags`, `/terms-and-conditions`, `/privacy-policy`, `/404`, `/500`, so a page added tomorrow inherits the placeholder rather than the exemption. "Within" is whole path segments (`isWithin` in `@modules/core/utils/pathname`), shared with `getPage`, so `/tags-manifesto` is not under `/tags`.
 
