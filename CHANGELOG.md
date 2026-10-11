@@ -1,3 +1,10 @@
+## [1.28.1](https://github.com/fbuireu/biancafiore/compare/v1.28.0...v1.28.1) (2026-10-11)
+
+
+### Performance Improvements
+
+* read EmDash's database from the nearest D1 replica ([2a7091c](https://github.com/fbuireu/biancafiore/commit/2a7091c74a5415aa69945c755cb917a12150dda5))
+
 # [1.28.0](https://github.com/fbuireu/biancafiore/compare/v1.27.0...v1.28.0) (2026-10-11)
 
 
