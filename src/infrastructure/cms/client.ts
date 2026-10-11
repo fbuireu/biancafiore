@@ -73,6 +73,11 @@ interface CmsReferencePage {
 	nextCursor?: string;
 }
 
+export interface CmsPreview {
+	collection: string;
+	id: string;
+}
+
 export interface ListEntriesQuery {
 	collection: string;
 	limit: number;
@@ -300,6 +305,7 @@ export class CmsClient extends Context.Service<
 		listEntries(query: ListEntriesQuery): Effect.Effect<CmsItemPage, CmsError>;
 		readEntry(query: ReadEntryQuery): Effect.Effect<CmsItem | undefined, CmsError>;
 		listReferences(query: ListReferencesQuery): Effect.Effect<CmsReferencePage, CmsError>;
+		readPreview(): Effect.Effect<CmsPreview | undefined>;
 		readSiteSettings(): Effect.Effect<CmsSiteSettings, CmsError>;
 		readMenu(name: string): Effect.Effect<CmsMenuItem[] | undefined, CmsError>;
 	}
@@ -391,6 +397,11 @@ export class CmsClient extends Context.Service<
 						}),
 						...(nextCursor && { nextCursor }),
 					};
+				}),
+				readPreview: Effect.fn("CmsClient.readPreview")(function* () {
+					const preview = yield* Effect.sync(() => emdash.getRequestContext()?.preview);
+
+					return preview ? { collection: preview.collection, id: preview.id } : undefined;
 				}),
 				readSiteSettings: Effect.fn("CmsClient.readSiteSettings")(function* () {
 					const settings = yield* attempt({

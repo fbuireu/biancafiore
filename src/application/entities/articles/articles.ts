@@ -5,8 +5,9 @@ import {
 	articleSummarySchema,
 	sortFavoriteFirst,
 } from "@domain/article";
-import { fetchReferences } from "@infrastructure/cms/entries";
+import { fetchPreview, fetchReferences } from "@infrastructure/cms/entries";
 import { createArticle, createArticleSummaries, createArticles } from "../../dto/article";
+import { isPreviewed } from "../../dto/article/utils/preview";
 import { articleSlug } from "../../dto/article/utils/reference";
 import { creditedAuthors } from "../../dto/author/utils/author";
 import { contentLoader } from "../collection";
@@ -41,16 +42,16 @@ export const article = {
 
 			if (!rawArticle) return undefined;
 
-			const related = await fetchReferences({
-				collection: "articles",
-				id: rawArticle.id,
-				field: RELATED_ARTICLES_FIELD,
-			});
+			const [related, preview] = await Promise.all([
+				fetchReferences({ collection: "articles", id: rawArticle.id, field: RELATED_ARTICLES_FIELD }),
+				fetchPreview(),
+			]);
 
 			return createArticle({
 				rawArticle: { ...rawArticle, references: { [RELATED_ARTICLES_FIELD]: related } },
 				rawArticles,
 				rawAuthors: creditedAuthors([rawArticle, ...rawArticles]),
+				isPreview: isPreviewed({ preview, rawArticle }),
 			});
 		},
 		identify: (whole) => whole.slug,

@@ -3,12 +3,21 @@ import {
 	CmsClient,
 	type CmsItem,
 	type CmsMenuItem,
+	type CmsPreview,
 	type CmsReference,
 	type CmsSiteSettings,
 	type ReadEntryQuery,
 } from "./client";
 
-export type { CmsByline, CmsMedia, CmsMenuItem, CmsReference, CmsSiteSettings, CmsTerm } from "./client";
+export type {
+	CmsByline,
+	CmsMedia,
+	CmsMenuItem,
+	CmsPreview,
+	CmsReference,
+	CmsSiteSettings,
+	CmsTerm,
+} from "./client";
 
 export const EMDASH_MAX_PAGE_SIZE = 100;
 const REFERENCE_READS_IN_FLIGHT = 8;
@@ -139,6 +148,9 @@ export const fetchReferences = (query: ReferencesQuery): Promise<CmsReference[]>
 
 export const fetchSiteSettings = (): Promise<CmsSiteSettings> =>
 	cmsRuntime.runPromise(CmsClient.pipe(Effect.flatMap((cms) => cms.readSiteSettings())));
+
+export const fetchPreview = (): Promise<CmsPreview | undefined> =>
+	cmsRuntime.runPromise(CmsClient.pipe(Effect.flatMap((cms) => cms.readPreview())));
 
 export const fetchMenu = (name: string): Promise<CmsMenuItem[] | undefined> =>
 	cmsRuntime.runPromise(CmsClient.pipe(Effect.flatMap((cms) => cms.readMenu(name))));

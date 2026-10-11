@@ -4,6 +4,7 @@ import type { SeoMetadata } from "@const/types";
 import ArticleContent from "@modules/article/components/articleContent/ArticleContent.astro";
 import ArticleDetails from "@modules/article/components/articleDetails/ArticleDetails.astro";
 import ColumnsToggle from "@modules/article/components/columnsToggle/ColumnsToggle.astro";
+import PreviewBanner from "@modules/article/components/previewBanner/PreviewBanner.astro";
 import ReadingProgress from "@modules/article/components/readingProgress/ReadingProgress.astro";
 import RepublishedBanner from "@modules/article/components/republishedBanner/RepublishedBanner.astro";
 import TableOfContents from "@modules/article/components/tableOfContents/TableOfContents.astro";
@@ -74,6 +75,7 @@ const blogPostingSchema = buildBlogPostingSchema({
       <Breadcrumbs />
       <ArticleDetails article={article} />
     </div>
+    {article.data.isPreview && <PreviewBanner />}
     {article.data.isRepublished && (
       <RepublishedBanner originalSource={article.data.originalSource} />
     )}

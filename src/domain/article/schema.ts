@@ -29,6 +29,7 @@ export const articleSummarySchema = z.object({
 });
 
 export const articleSchema = articleSummarySchema.extend({
+	isPreview: z.boolean(),
 	isRepublished: z.boolean().default(false),
 	originalSource: z.string().optional(),
 	seo: articleSeoSchema,

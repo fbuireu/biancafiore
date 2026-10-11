@@ -502,7 +502,7 @@ describe("createArticle", () => {
 		const second = makeArticle({ slug: "second", title: "Second" });
 		const rawArticles = [first, second];
 
-		const article = createArticle({ rawArticle: first, rawArticles, rawAuthors: [AUTHOR] });
+		const article = createArticle({ rawArticle: first, rawArticles, rawAuthors: [AUTHOR], isPreview: false });
 
 		expect(article).toEqual(create(rawArticles)[0]);
 		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
@@ -513,9 +513,18 @@ describe("createArticle", () => {
 		const second = makeArticle({ slug: "second", tags: [CRAFT] });
 		const rawArticles = [first, second];
 
-		const article = createArticle({ rawArticle: first, rawArticles, rawAuthors: [AUTHOR] });
+		const article = createArticle({ rawArticle: first, rawArticles, rawAuthors: [AUTHOR], isPreview: false });
 
 		expect(article.relatedArticles).toEqual([{ id: "second", collection: "articles" }]);
+	});
+
+	it("carries the preview flag the loader decided, and a batch flags none", () => {
+		const rawArticles = [makeArticle({ slug: "first" })];
+
+		expect(
+			createArticle({ rawArticle: rawArticles[0], rawArticles, rawAuthors: [AUTHOR], isPreview: true }).isPreview,
+		).toBe(true);
+		expect(create(rawArticles)[0].isPreview).toBe(false);
 	});
 });
 

@@ -1,6 +1,7 @@
 import type {
 	CmsClient,
 	CmsMenuItem,
+	CmsPreview,
 	CmsReference,
 	CmsSiteSettings,
 	ListEntriesQuery,
@@ -44,6 +45,7 @@ export const cmsEntryQueries: ReadEntryQuery[] = [];
 let entriesByCollection: Record<string, unknown[]> = {};
 let referencesByEntry: Record<string, CmsReference[]> = {};
 let previewedByCollection: Record<string, unknown[]> = {};
+let previewLink: CmsPreview | undefined;
 let siteSettings: CmsSiteSettings = EMPTY_SITE_SETTINGS;
 let menus: Record<string, CmsMenuItem[]> = {};
 let pageSize = UNLIMITED_PAGE;
@@ -85,6 +87,10 @@ export function cmsAnswers(entries: Record<string, unknown[]>): void {
 
 export function cmsPreviews(entries: Record<string, unknown[]>): void {
 	previewedByCollection = entries;
+}
+
+export function cmsServesPreviewLinkTo(preview: CmsPreview): void {
+	previewLink = preview;
 }
 
 export function cmsRefersTo(params: CmsRefersToParams): void {
@@ -136,6 +142,7 @@ export function resetCms(): void {
 	entriesByCollection = {};
 	referencesByEntry = {};
 	previewedByCollection = {};
+	previewLink = undefined;
 	siteSettings = EMPTY_SITE_SETTINGS;
 	menus = {};
 	pageSize = UNLIMITED_PAGE;
@@ -185,6 +192,7 @@ function cmsClientLayer(tag: CmsTag): Layer.Layer<CmsClient> {
 
 				return failure ? Effect.fail(failure) : Effect.succeed({ children: page, nextCursor });
 			}),
+		readPreview: () => Effect.sync(() => previewLink),
 		readSiteSettings: () => Effect.suspend(() => (failure ? Effect.fail(failure) : Effect.succeed(siteSettings))),
 		readMenu: (name: string) => Effect.suspend(() => (failure ? Effect.fail(failure) : Effect.succeed(menus[name]))),
 	} as never);

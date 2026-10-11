@@ -7,6 +7,7 @@ import {
 	cmsQueries,
 	cmsReferenceQueries,
 	cmsRefersTo,
+	cmsServesPreviewLinkTo,
 	resetCms,
 } from "@tests/doubles/cmsLayer";
 import { escapedRequests } from "@tests/doubles/network";
@@ -192,5 +193,26 @@ describe("article loader", () => {
 		await loadOne("first");
 
 		expect(cmsEntryQueries).toEqual([]);
+	});
+
+	it.each([
+		{ by: "its database id", id: articleId("first") },
+		{ by: "its slug", id: "first" },
+	])("flags an article a verified preview link names by $by, so its page can say it is a preview", async ({ id }) => {
+		answer([makeArticle({ slug: "first", publishDate: "2024-03-15" })]);
+		cmsServesPreviewLinkTo({ collection: "articles", id });
+
+		await expect(loadOne("first")).resolves.toMatchObject({ data: { isPreview: true } });
+	});
+
+	it.each([
+		{ reason: "no preview link", preview: undefined },
+		{ reason: "a preview link to another article", preview: { collection: "articles", id: articleId("second") } },
+		{ reason: "a preview link to an entry of another collection", preview: { collection: "projects", id: "first" } },
+	])("does not flag an article read through $reason", async ({ preview }) => {
+		answer([makeArticle({ slug: "first", publishDate: "2024-03-15" })]);
+		if (preview) cmsServesPreviewLinkTo(preview);
+
+		await expect(loadOne("first")).resolves.toMatchObject({ data: { isPreview: false } });
 	});
 });

@@ -31,6 +31,7 @@ interface CreateArticleSummaryParams {
 
 interface CreateArticleParams extends ArticleBatch {
 	rawArticle: AnyRawArticle;
+	isPreview: boolean;
 }
 
 export function createArticleSummaries({ rawArticles, rawAuthors }: ArticleBatch): ArticleSummaryDTO[] {
@@ -56,16 +57,17 @@ function createArticleSummary({ rawArticle, rawAuthors }: CreateArticleSummaryPa
 }
 
 export function createArticles({ rawArticles, rawAuthors }: ArticleBatch): ArticleDTO[] {
-	return rawArticles.map((rawArticle) => createArticle({ rawArticle, rawArticles, rawAuthors }));
+	return rawArticles.map((rawArticle) => createArticle({ rawArticle, rawArticles, rawAuthors, isPreview: false }));
 }
 
-export function createArticle({ rawArticle, rawArticles, rawAuthors }: CreateArticleParams): ArticleDTO {
+export function createArticle({ rawArticle, rawArticles, rawAuthors, isPreview }: CreateArticleParams): ArticleDTO {
 	const summary = createArticleSummary({ rawArticle, rawAuthors });
 	const { content, headings } = prepareArticleContent(rawArticle);
 	const isRepublished = flagOf(rawArticle.data.is_republished);
 
 	return {
 		...summary,
+		isPreview,
 		isRepublished,
 		originalSource: creditedSource({ isRepublished, originalSource: rawArticle.data.original_source }),
 		seo: articleSeo({

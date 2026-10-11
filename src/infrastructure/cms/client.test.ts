@@ -1,6 +1,6 @@
 import { failureOf } from "@tests/helpers/exit";
 import { Effect } from "effect";
-import { getEmDashCollection, getEmDashEntry, getEmDashReferences } from "emdash";
+import { getEmDashCollection, getEmDashEntry, getEmDashReferences, getRequestContext } from "emdash";
 import { getDb } from "emdash/runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CmsError } from "../errors";
@@ -13,6 +13,7 @@ vi.mock("emdash", () => ({
 	getEmDashCollection: vi.fn(),
 	getEmDashEntry: vi.fn(),
 	getEmDashReferences: vi.fn(),
+	getRequestContext: vi.fn(),
 	MediaRepository: class {
 		findById = findById;
 	},
@@ -88,6 +89,7 @@ describe("CmsClient.layer", () => {
 			"listReferences",
 			"readEntry",
 			"readMenu",
+			"readPreview",
 			"readSiteSettings",
 		]);
 	});
@@ -260,6 +262,28 @@ describe("CmsClient.readEntry", () => {
 		);
 
 		expect((failure as CmsError).message).toBe("The articles entry an-article could not be read: D1 is down");
+	});
+});
+
+describe("CmsClient.readPreview", () => {
+	it("answers the entry a verified preview link names, which EmDash's middleware left in the request context", async () => {
+		vi.mocked(getRequestContext).mockReturnValue({ preview: { collection: "articles", id: "01ARTICLE" } } as never);
+
+		await expect(Effect.runPromise((await client()).readPreview())).resolves.toStrictEqual({
+			collection: "articles",
+			id: "01ARTICLE",
+		});
+	});
+
+	it("answers nothing for a request that carries no verified preview link, or runs outside a request", async () => {
+		vi.mocked(getRequestContext)
+			.mockReturnValueOnce({} as never)
+			.mockReturnValueOnce(undefined);
+
+		const cms = await client();
+
+		await expect(Effect.runPromise(cms.readPreview())).resolves.toBeUndefined();
+		await expect(Effect.runPromise(cms.readPreview())).resolves.toBeUndefined();
 	});
 });
 
