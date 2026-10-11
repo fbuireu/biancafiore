@@ -1,3 +1,10 @@
+# [1.28.0](https://github.com/fbuireu/biancafiore/compare/v1.27.0...v1.28.0) (2026-10-11)
+
+
+### Features
+
+* open the site in the light theme until a reader picks dark ([748bc51](https://github.com/fbuireu/biancafiore/commit/748bc514573e15431492444d8303e85a682e7aa0))
+
 # [1.27.0](https://github.com/fbuireu/biancafiore/compare/v1.26.0...v1.27.0) (2026-10-10)
 
 
