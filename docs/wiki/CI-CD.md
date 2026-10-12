@@ -79,4 +79,10 @@ The runtime secrets travel with the deploy in a secrets file, so a deploy is one
 
 Neither the build nor the deploy is wrapped in a retry. Both fail deterministically far more often than on a network flake, a retry wrapper cannot tell the two apart, and wrangler already retries its own API calls.
 
-The release commit, `chore(release): <version> [skip ci]`, is the one commit on `main` that commitlint never sees, since the hook runs on a branch and the pull request check reads the title. The `[skip ci]` is load-bearing: without it that push starts the run that cuts the next release.
+---
+
+## The release configuration
+
+[`.releaserc.json`](https://github.com/fbuireu/biancafiore/blob/main/.releaserc.json) is one of six release configurations, this one, github-star-tracker's, contribKit's `web` and `app` and forever-pto's `apps/web` and `apps/docs`, and the six are the same file, laid out the same way, bar what a repository's shape demands: a package of a monorepo extends `semantic-release-monorepo` and sets its own `tagFormat`, github-star-tracker also commits `dist/`, and contribKit's app bumps `pubspec.yaml` through `@semantic-release/exec` where every other one bumps `package.json` through `@semantic-release/npm`. The `package.json` that runs semantic-release declares every plugin its configuration names, and `semantic-release` itself, so none resolves to the copy bundled inside `semantic-release` and Renovate moves every one of them. The docs test holds this repository's configuration to that shape, and [`CODING_STANDARDS.md`](https://github.com/fbuireu/biancafiore/blob/main/CODING_STANDARDS.md) lists the rule.
+
+The release commit, `chore(biancafiore): release <version> [skip ci]`, is scoped to the package it releases, as in every one of those repositories, and here the scope is the package's `name`. No pull request check sees it, because the release job pushes it straight to `main`, but the `commit-msg` hook does: the release job's install sets the hooks up, and commitlint's `ignores` in `commitlint.config.ts` lets it through: its notes are semantic-release's, and a `BREAKING CHANGES` line longer than `body-max-line-length` would otherwise fail the commit after the tag exists. The `[skip ci]` is load-bearing: without it that push starts the run that cuts the next release.
