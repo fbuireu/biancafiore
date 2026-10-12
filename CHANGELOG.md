@@ -1,3 +1,21 @@
+# [1.29.0](https://github.com/fbuireu/biancafiore/compare/v1.28.1...v1.29.0) (2026-10-12)
+
+
+### Bug Fixes
+
+* leave out the Table of Contents of an Article with fewer than two headings ([3daa1af](https://github.com/fbuireu/biancafiore/commit/3daa1af4ae9a68e1f2f14973a69b81b00fa87e14))
+
+
+### Features
+
+* show an Article's Table of Contents even while the site's chrome is hidden ([9ee24e0](https://github.com/fbuireu/biancafiore/commit/9ee24e09c670bec17777d770c05ca6823737773a))
+* tell a reader of a preview link that the Article is not published as shown ([6639b98](https://github.com/fbuireu/biancafiore/commit/6639b98dc3dbdca158c3715638444c684f1b020b))
+
+
+### Performance Improvements
+
+* prepare an Article's body only for its own page, not for every list ([05604f8](https://github.com/fbuireu/biancafiore/commit/05604f82353e5c9e62ba5e8aaefb139f56b2f762))
+
 ## [1.28.1](https://github.com/fbuireu/biancafiore/compare/v1.28.0...v1.28.1) (2026-10-11)
 
 
