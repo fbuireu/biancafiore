@@ -1,7 +1,7 @@
-import { appendFileSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
-import type { TestModule } from "vitest/node";
+import { GithubActionsReporter, type Reporter, type TestModule } from "vitest/node";
 
 const ROOT = fileURLToPath(new URL(".", import.meta.url));
 
@@ -31,19 +31,28 @@ const alias = [
 
 const BUILT_OUTPUT_SUITE = "docs/built-output.test.ts";
 
-const summaryLabel = {
-	onTestRunEnd(testModules: readonly TestModule[]) {
-		if (!process.env.GITHUB_STEP_SUMMARY || testModules.length === 0) return;
-		const projects = [...new Set(testModules.map((module) => module.project.name))].sort();
-		appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n## Vitest run: ${projects.join(" + ")}\n`);
-	},
+const jobSummary = (titleOf: (testModules: readonly TestModule[]) => string): Reporter => {
+	const github = new GithubActionsReporter();
+
+	return {
+		onInit: (vitest) => github.onInit(vitest),
+		onTestCaseAnnotate: (testCase, annotation) => github.onTestCaseAnnotate(testCase, annotation),
+		onTestRunEnd: (testModules, unhandledErrors) => {
+			if (testModules.length === 0 && unhandledErrors.length === 0) return;
+			github.options.jobSummary.title = titleOf(testModules);
+			github.onTestRunEnd(testModules, unhandledErrors);
+		},
+	};
 };
+
+const projectsRun = (testModules: readonly TestModule[]) =>
+	`Vitest run: ${[...new Set(testModules.map((module) => module.project.name))].sort().join(" + ")}`;
 
 export default defineConfig({
 	resolve: { alias },
 	test: {
 		testTimeout: 20_000,
-		reporters: process.env.GITHUB_ACTIONS ? ["default", summaryLabel, "github-actions"] : ["default"],
+		reporters: process.env.GITHUB_ACTIONS ? ["default", jobSummary(projectsRun)] : ["default"],
 		projects: [
 			{
 				resolve: { alias },
