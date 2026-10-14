@@ -10,7 +10,7 @@ Every rule carries an id, and a finding cites it with this file: `CODING_STANDAR
 
 No rule below restates these, and a diff that breaks one fails CI:
 
-- Biome ([`biome.json`](./biome.json)): formatting, import order and lint, `noConsole` included.
+- Biome ([`biome.json`](./biome.json)): formatting, import order and lint, `noConsole` included, and every object shape declared an `interface`, never a `type` alias of an object literal (`useConsistentTypeDefinitions`).
 - Strict `tsc` ([`tsconfig.json`](./tsconfig.json)) and `astro check`.
 - commitlint ([`commitlint.config.ts`](./commitlint.config.ts)): the commit format, on the commit and on the pull request title.
 - The coverage floor ([`vitest.config.ts`](./vitest.config.ts)).
@@ -39,6 +39,7 @@ No rule below restates these, and a diff that breaks one fails CI:
   - every spec taking `test` and `expect` from `e2e/fixtures.ts`, which hands the preview's Cloudflare Access token to the preview's origin alone, and no Playwright config or spec setting `extraHTTPHeaders`;
   - no `BACKLOG.md` anywhere in the tree, and no `Known inconsistencies`, `Known defects` or `Known breaches` heading in any document;
   - this file: every rule between this list and the smell overrides opening with its id and its **hard** or **judgement** label, no id carried by two rules, and every id in a section drawn from one letter;
+  - no object literal in a type alias but as a member of its union or beside the primitive it brands, nor one wrapped in `Readonly`, `Partial` or `Required`, so a shape built on others is an `interface` that `extends` them: `extends` reports a field the shapes disagree on where it is declared, where `&` folds it into `never` in silence, and the compiler caches an interface's relations by name and names it in an error, where it recomputes an intersection and spells it out;
   - one `security.txt` on every site the repository serves, counted under every `public` or `assets` folder, with `Contact`, `Expires`, `Preferred-Languages`, `Canonical` and `Policy` in that order, its `Canonical` the site's origin in `SITE_URL` plus `/.well-known/security.txt`, its `Policy` this repository's, and its `Expires` an ISO 8601 instant 30 days to two years from the day the suite runs, which reads the real clock on purpose so `main` turns red a month before the file lapses;
   - every `uses:` of another repository pinned to a full commit SHA with its version or branch in a trailing comment, and no comment in a YAML file (`pnpm-lock.yaml`, which pnpm writes, aside) but that one, a tool directive and the line Renovate writes above an entry it adds to `minimumReleaseAgeExclude`.
 
@@ -60,6 +61,8 @@ No rule below restates these, and a diff that breaks one fails CI:
 - `B10` **judgement**: Before a concept gets a type, a wrapper or a schema of its own, ask in order whether the illegal state can be reached, whether anything reads it and whether it crosses a boundary; a no to all three means writing the rule down (an assertion, a guide line, an ADR) instead of encoding it ([ADR 0019](./docs/adr/0019-three-questions-before-modelling.md)).
 - `B11` **judgement**: Send a failure through the typed error channel when a caller must answer it differently, and make it a defect when it is our bug or an unrecoverable misconfiguration (a template that cannot render, a secret a live layer cannot build without, which the `Effect.die` message names), because a typed error promises the caller a choice ([ADR 0004](./docs/adr/0004-effect-for-infrastructure-clients.md)).
 - `B12` **judgement**: Fix a lint finding at its cause; a `biome-ignore` is for the irreplaceable case and says why, as the `gtag` `arguments` shim and the reduced-motion `!important` reset do.
+- `B13` **hard**: Compose object shapes declared elsewhere as `interface X extends A, B`, never `type X = A & B`, which no check tells from an intersection with a union, because that takes the types. Keep `&` for a member an interface cannot extend (a union, a type parameter, a conditional type), and `type` for what an interface cannot say: a union, a mapped or conditional type, an alias of a primitive, a tuple or a function, and a computed type on its own (`z.infer`, `Pick`, `(typeof X)[keyof typeof X]`).
+- `B14` **hard**: Give an interface a name no other interface in its scope carries, because two declarations of one name merge in silence; merging is for a declaration file that augments a global or a vendor's module on purpose (`ImportMetaEnv` and `Window` in `src/env.d.ts`).
 
 ## Domain (`src/domain`)
 
@@ -167,6 +170,7 @@ No rule below restates these, and a diff that breaks one fails CI:
 - **Duplicated Code**: the stated-version helpers (`VERSIONED_DEPENDENCIES` through `declaredIn`) in `docs/docs-consistency.test.ts` are byte for byte the same in biancafiore, contribKit and github-star-tracker, so a change to one is made in all three.
 - **Duplicated Code**: the release-configuration rule (`BREAKING_PARSER_OPTS` through the `describe` that holds every release configuration to the shared one) in `docs/docs-consistency.test.ts` is byte for byte the same in biancafiore, contribKit, forever-pto and github-star-tracker, so a change to it is made in all four; only the shapes declared above it, which name each repository's files, differ.
 - **Duplicated Code**: the id rule (the `describe` that gives every rule of this file an id a finding can cite) in `docs/docs-consistency.test.ts` is the same in biancafiore, contribKit, forever-pto and github-star-tracker, so a change to it is made in all four; only the floor its census holds and the call that reads this file differ.
+- **Duplicated Code**: the shape rule (the `describe` that keeps every object shape an interface) in `docs/docs-consistency.test.ts` is the same in biancafiore, contribKit, forever-pto and github-star-tracker, so a change to it is made in all four; only the floor its census holds and the files it reads differ.
 - **Duplicated Code**: the four smoke cases are word for word the same in every repository that deploys, so a difference between them is drift, not a variant.
 - **Duplicated Code**: the Contact payload is validated at `defineAction`'s `input` and again in `validateContact`, because only the edge rejects an empty reCAPTCHA token and only the program is unit-testable; the `ManagedRuntime` behind `fetchEntries` and the per-request `ContactLayer` stay two runtimes ([ADR 0004](./docs/adr/0004-effect-for-infrastructure-clients.md)).
 - **Middle Man**: `LoggerService` is a `Layer.sync` over the `logger` object, kept for the `R` signal that makes an unintended log a compile error ([ADR 0020](./docs/adr/0020-logs-and-traces-leave-through-cloudflares-export.md)).

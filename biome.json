@@ -32,6 +32,9 @@
 			"preset": "recommended",
 			"suspicious": {
 				"noConsole": "error"
+			},
+			"style": {
+				"useConsistentTypeDefinitions": { "level": "error", "options": { "style": "interface" } }
 			}
 		}
 	},

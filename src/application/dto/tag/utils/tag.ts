@@ -1,7 +1,7 @@
 import type { TagDTO } from "@domain/tag";
 import type { RawTag } from "../types";
 
-type RawTagIdentity = Pick<RawTag, "label" | "slug"> & Partial<Pick<RawTag, "id">>;
+interface RawTagIdentity extends Pick<RawTag, "label" | "slug">, Partial<Pick<RawTag, "id">> {}
 
 const entryOf = ({ id }: RawTagIdentity): string => (id ? ` (id ${id})` : "");
 

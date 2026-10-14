@@ -17,7 +17,9 @@ import { Effect } from "effect";
 
 export type ContactError = ValidationError | RecaptchaError | DuplicateContactError | EmailError | DatabaseError;
 
-export type SubmitContactParams = Except<ContactFormData, "emailId"> & { recaptcha: string };
+export interface SubmitContactParams extends Except<ContactFormData, "emailId"> {
+	recaptcha: string;
+}
 
 export const submitContact = Effect.fn("submitContact")(function* ({
 	recaptcha,

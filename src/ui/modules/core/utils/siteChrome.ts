@@ -11,11 +11,11 @@ const PUBLISHED_ROUTES = [
 	PAGES_ROUTES["500"],
 ] as const;
 
-export type SiteChrome = {
+export interface SiteChrome {
 	showsHeader: boolean;
 	showsBreadcrumbs: boolean;
 	servesRealContent: boolean;
-};
+}
 
 export function siteChrome(url: URL): SiteChrome {
 	return {

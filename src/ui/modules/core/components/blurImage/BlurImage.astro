@@ -5,10 +5,12 @@ import type { Except } from "@const/types";
 import type { ImageDTO } from "@domain/shared/image";
 import "./blur-image.css";
 
-type Props = Except<RemoteImageProps, "src" | "width" | "height"> & {
+interface OwnProps {
 	image: ImageDTO;
 	transitionName?: string;
-};
+}
+
+type Props = Except<RemoteImageProps, "src" | "width" | "height"> & OwnProps;
 
 const { image, transitionName, ...rest } = Astro.props;
 const lqip = image.placeholder ? `--lqip: url("${image.placeholder}")` : undefined;

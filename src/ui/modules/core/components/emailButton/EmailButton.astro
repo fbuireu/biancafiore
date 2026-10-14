@@ -7,7 +7,11 @@ import {
 } from "./const";
 import "./email-button.css";
 
-type Props = { classNames?: string } & ({ shows?: "label"; label?: string } | { shows: "address"; label?: never });
+interface SharedProps {
+	classNames?: string;
+}
+
+type Props = SharedProps & ({ shows?: "label"; label?: string } | { shows: "address"; label?: never });
 
 const { classNames, shows = "label", label = "Email" } = Astro.props;
 const showsAddress = shows === "address";
