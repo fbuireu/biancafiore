@@ -1,3 +1,10 @@
+## [1.29.4](https://github.com/fbuireu/biancafiore/compare/v1.29.3...v1.29.4) (2026-10-15)
+
+
+### Bug Fixes
+
+* sit the 404 page's link arrows on their title's first line ([643180c](https://github.com/fbuireu/biancafiore/commit/643180c17f6fd8ea7edac6aec3c7ebf4c6d0e5c3))
+
 ## [1.29.3](https://github.com/fbuireu/biancafiore/compare/v1.29.2...v1.29.3) (2026-10-15)
 
 
