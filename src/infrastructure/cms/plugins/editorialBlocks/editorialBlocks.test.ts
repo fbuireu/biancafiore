@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { isAbsolute } from "node:path";
 import { prepareArticleContent } from "@application/dto/article/utils/content";
+import type { PortableText } from "@domain/shared/portableText";
 import { rawEntry } from "@tests/doubles/cmsEntries";
 import { describe, expect, it, vi } from "vitest";
 import { EDITORIAL_BLOCK_CONFIGS, EDITORIAL_BLOCK_TYPE, EDITORIAL_BLOCKS } from "./blocks";
@@ -16,7 +17,7 @@ const SAMPLE_VALUES: Record<string, string> = {
 	alt: "Described",
 };
 
-const blockOf = (type: string) => {
+const blockOf = (type: string): PortableText[number] => {
 	const config = EDITORIAL_BLOCK_CONFIGS.find((block) => block.type === type);
 
 	return {
@@ -26,7 +27,7 @@ const blockOf = (type: string) => {
 	};
 };
 
-const prepare = (type: string) =>
+const prepare = (type: string): PortableText =>
 	prepareArticleContent(
 		rawEntry({
 			slug: "an-article",

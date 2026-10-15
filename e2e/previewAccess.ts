@@ -16,7 +16,7 @@ export const previewAccessHeaders = (): RequestHeaders | undefined => {
 };
 
 export const isPreviewRequest =
-	(baseURL: string) =>
+	(baseURL: string): ((url: URL) => boolean) =>
 	(url: URL): boolean =>
 		url.origin === new URL(baseURL).origin;
 

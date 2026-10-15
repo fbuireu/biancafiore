@@ -14,7 +14,7 @@ const { HEIGHT } = WORLD_GLOBE_CONFIG;
 
 const WRAPPER_CLASS_NAME = "world-globe-wrapper reveal reveal--fade";
 
-const getResponsiveWidth = () => (window.innerWidth > 720 ? 680 : undefined);
+const getResponsiveWidth = (): number | undefined => (window.innerWidth > 720 ? 680 : undefined);
 
 const BrowserWorldGlobe = ({ points }: WorldGlobeProps) => {
 	use(browser());

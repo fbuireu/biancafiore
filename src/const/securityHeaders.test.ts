@@ -9,12 +9,12 @@ interface PolicyParams {
 	inlineScriptHashes?: readonly string[];
 }
 
-const policy = ({ isDevelopment, inlineScriptHashes = HASHES }: PolicyParams) =>
+const policy = ({ isDevelopment, inlineScriptHashes = HASHES }: PolicyParams): string =>
 	securityHeaders({ isDevelopment, inlineScriptHashes })["Content-Security-Policy"] as string;
 
-const directivesOf = (params: PolicyParams) => policy(params).split("; ");
+const directivesOf = (params: PolicyParams): string[] => policy(params).split("; ");
 
-const scriptSources = (params: PolicyParams) =>
+const scriptSources = (params: PolicyParams): string[] =>
 	(directivesOf(params).find((directive) => directive.startsWith("script-src ")) ?? "").split(" ").slice(1);
 
 describe("securityHeaders", () => {

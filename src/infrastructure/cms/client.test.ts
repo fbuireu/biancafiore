@@ -40,7 +40,7 @@ const ENTRY = {
 	},
 };
 
-const client = () => Effect.runPromise(CmsClient.pipe(Effect.provide(CmsClient.layer)));
+const client = (): Promise<CmsClient["Service"]> => Effect.runPromise(CmsClient.pipe(Effect.provide(CmsClient.layer)));
 
 const AVATAR = {
 	id: "01AVATAR",
@@ -52,7 +52,12 @@ const AVATAR = {
 	blurhash: "LXCacDM{RjxuOxogkCR.Dkt7t7Rj",
 };
 
-const credit = ({ sortOrder, ...byline }: Record<string, unknown>) => ({ sortOrder, byline });
+interface RawCredit {
+	sortOrder: unknown;
+	byline: Record<string, unknown>;
+}
+
+const credit = ({ sortOrder, ...byline }: Record<string, unknown>): RawCredit => ({ sortOrder, byline });
 
 const CREDITED = {
 	id: "credited",

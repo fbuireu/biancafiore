@@ -46,9 +46,9 @@ const render = (markup: string): void => {
 	place({ selector: `.${HEADER_CLASS}`, top: 0, height: HEADER_HEIGHT });
 };
 
-const logo = () => document.querySelector(`.${LOGO_LINK_CLASS} svg`) as Element;
-const menuButton = () => document.querySelector(`.${HEADER_MENU_BUTTON_CLASS}`) as Element;
-const isInverted = () =>
+const logo = (): Element => document.querySelector(`.${LOGO_LINK_CLASS} svg`) as Element;
+const menuButton = (): Element => document.querySelector(`.${HEADER_MENU_BUTTON_CLASS}`) as Element;
+const isInverted = (): boolean =>
 	logo().classList.contains(LOGO_INTERSECTED_CLASS) &&
 	menuButton().classList.contains(HEADER_MENU_BUTTON_INTERSECTED_CLASS);
 

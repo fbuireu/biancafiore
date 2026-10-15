@@ -8,7 +8,7 @@ interface MakeArticleParams {
 	hasImage?: boolean;
 }
 
-const makeArticle = ({ slug, isFeaturedArticle = false, hasImage = true }: MakeArticleParams) =>
+const makeArticle = ({ slug, isFeaturedArticle = false, hasImage = true }: MakeArticleParams): ArticleEntry =>
 	({
 		data: {
 			slug,
@@ -17,7 +17,7 @@ const makeArticle = ({ slug, isFeaturedArticle = false, hasImage = true }: MakeA
 		},
 	}) as unknown as ArticleEntry;
 
-const slugsOf = (articles: ArticleEntry[]) => articles.map(({ data }) => data.slug);
+const slugsOf = (articles: ArticleEntry[]): string[] => articles.map(({ data }) => data.slug);
 
 describe("partitionFeatured", () => {
 	it("takes the first article flagged as featured that also carries a Featured Image", () => {

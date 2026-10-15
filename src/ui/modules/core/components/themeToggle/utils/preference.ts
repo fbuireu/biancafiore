@@ -2,7 +2,7 @@ import { DEFAULT_THEME, THEME_ATTRIBUTE, THEME_STORAGE_KEY, Theme } from "../con
 
 const THEMES = new Set<string>(Object.values(Theme));
 
-const literal = (value: string) => JSON.stringify(value);
+const literal = (value: string): string => JSON.stringify(value);
 
 const CHOSEN_THEMES = Object.values(Theme).map(literal).join(", ");
 

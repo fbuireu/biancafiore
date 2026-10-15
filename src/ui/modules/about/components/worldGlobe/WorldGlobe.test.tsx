@@ -33,14 +33,14 @@ class ObserverDouble {
 
 const POINTS: CityPoint[] = [{ lat: 41.4, lng: 2.2, label: "Barcelona", slug: "barcelona" }];
 
-const wrapper = () => document.querySelector(".world-globe-wrapper") as HTMLElement;
+const wrapper = (): HTMLElement => document.querySelector(".world-globe-wrapper") as HTMLElement;
 
-const scrollIntoView = async () =>
+const scrollIntoView = async (): Promise<void> =>
 	act(async () => {
 		observers.at(-1)?.fire(true);
 	});
 
-const resizeTo = async (innerWidth: number) => {
+const resizeTo = async (innerWidth: number): Promise<void> => {
 	vi.stubGlobal("innerWidth", innerWidth);
 
 	await act(async () => {

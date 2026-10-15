@@ -1,4 +1,5 @@
 import { MENU_NAME } from "@domain/menu";
+import type { CmsMenuItem } from "@infrastructure/cms/entries";
 import { describe, expect, it } from "vitest";
 import { DEFAULT_MENU_ITEMS } from "./defaults";
 import { createMenu } from "./menuDTO";
@@ -9,7 +10,12 @@ interface ItemParams {
 	target?: string;
 }
 
-const item = ({ label, url, target }: ItemParams) => ({ label, url, target: target ?? null, children: [] });
+const item = ({ label, url, target }: ItemParams): CmsMenuItem => ({
+	label,
+	url,
+	target: target ?? null,
+	children: [],
+});
 
 describe("createMenu", () => {
 	it("splits a label around its bracketed link, so the words beside the link stay prose", () => {

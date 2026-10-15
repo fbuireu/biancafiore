@@ -1,7 +1,7 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, type Mock, vi } from "vitest";
 import { motionTimeScale, prefersReducedMotion, scrollBehavior, successDelay } from "./motion";
 
-const preference = (matches: boolean) => {
+const preference = (matches: boolean): Mock => {
 	const matchMedia = vi.fn().mockReturnValue({ matches });
 
 	vi.stubGlobal("matchMedia", matchMedia as unknown as typeof window.matchMedia);

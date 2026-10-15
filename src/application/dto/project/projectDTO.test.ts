@@ -1,10 +1,11 @@
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { rawEntry, rawImage } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
+import type { PortableTextContent } from "../shared/portableText";
 import { createProjects } from ".";
-import type { ProjectFields } from "./types";
+import type { ProjectFields, RawProject } from "./types";
 
-const paragraph = (text: string) => ({
+const paragraph = (text: string): PortableTextContent[number] => ({
 	_type: "block",
 	_key: text,
 	style: "normal",
@@ -16,7 +17,7 @@ interface MakeProjectParams extends Partial<ProjectFields> {
 	slug?: string | null;
 }
 
-const makeProject = ({ slug = null, ...fields }: MakeProjectParams = {}) =>
+const makeProject = ({ slug = null, ...fields }: MakeProjectParams = {}): RawProject =>
 	rawEntry<ProjectFields>({
 		slug,
 		data: {

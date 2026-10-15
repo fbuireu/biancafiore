@@ -6,7 +6,7 @@ import { observeTheme, readColour, readGlobePalette } from "./palette";
 const { LAND_TOKEN, MESH_PHONG_MATERIAL_CONFIG } = WORLD_GLOBE_CONFIG;
 const { OCEAN_TOKEN } = MESH_PHONG_MATERIAL_CONFIG;
 
-const stubColours = (pixels: Record<string, number[]>) => {
+const stubColours = (pixels: Record<string, number[]>): string[] => {
 	const probes: string[] = [];
 	let filled = "";
 
@@ -28,7 +28,7 @@ const stubColours = (pixels: Record<string, number[]>) => {
 	return probes;
 };
 
-const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
+const settle = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 0));
 
 afterEach(() => {
 	vi.restoreAllMocks();

@@ -2,9 +2,9 @@ import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { rawEntry, rawImage } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
 import { createCities } from ".";
-import type { CityFields } from "./types";
+import type { CityFields, RawCity } from "./types";
 
-const makeCity = (fields: Partial<CityFields> = {}) =>
+const makeCity = (fields: Partial<CityFields> = {}): RawCity =>
 	rawEntry<CityFields>({
 		data: {
 			name: "Barcelona",

@@ -60,9 +60,26 @@ const POINTS: CityPoint[] = [
 	{ lat: 20, lng: 40, label: "East", slug: "east" },
 ];
 
-const makeGlobe = () => {
+interface GlobeControls {
+	autoRotate: boolean;
+	enableZoom: boolean;
+	autoRotateSpeed: number;
+}
+
+interface RecordedView {
+	view: Record<string, number>;
+	duration?: number;
+}
+
+interface GlobeDouble {
+	controls: () => GlobeControls;
+	pointOfView: (view?: Record<string, number>, duration?: number) => Record<string, number>;
+	state: { controls: GlobeControls; views: RecordedView[] };
+}
+
+const makeGlobe = (): GlobeDouble => {
 	const controls = { autoRotate: false, enableZoom: true, autoRotateSpeed: 0 };
-	const views: { view: Record<string, number>; duration?: number }[] = [];
+	const views: RecordedView[] = [];
 
 	return {
 		controls: () => controls,
@@ -77,7 +94,7 @@ const makeGlobe = () => {
 	};
 };
 
-const mountCanvas = async () => {
+const mountCanvas = async (): Promise<void> => {
 	vi.resetModules();
 
 	const { default: WorldGlobeCanvas } = await import("./WorldGlobeCanvas");
@@ -91,17 +108,17 @@ const mountCanvas = async () => {
 	});
 };
 
-const ready = async () =>
+const ready = async (): Promise<void> =>
 	act(async () => {
 		globeProps.at(-1)?.onGlobeReady?.();
 	});
 
-const press = async (name: string) =>
+const press = async (name: string): Promise<void> =>
 	act(async () => {
 		screen.getByRole("button", { name }).click();
 	});
 
-const lastView = (globe: ReturnType<typeof makeGlobe>) => globe.state.views.at(-1);
+const lastView = (globe: ReturnType<typeof makeGlobe>): RecordedView | undefined => globe.state.views.at(-1);
 
 beforeEach(() => {
 	globeProps.length = 0;
@@ -119,7 +136,7 @@ afterEach(() => {
 	vi.restoreAllMocks();
 });
 
-const countriesCalls = () => (served.countries as CountriesDouble).calls;
+const countriesCalls = (): string[] => (served.countries as CountriesDouble).calls;
 
 describe("WorldGlobeCanvas", () => {
 	it("asks the site for the countries file it serves, once", async () => {

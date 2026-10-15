@@ -1,10 +1,11 @@
 import { actions } from "astro:actions";
 import { GOOGLE_RECAPTCHA_SITE_KEY } from "astro:env/client";
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { toContactSubmission } from "../../utils/submission";
+import { type ContactSubmission, toContactSubmission } from "../../utils/submission";
 import { ContactForm } from "../contactForm/ContactForm";
 
-const submit = (contactData: FormData) => actions.contact(contactData).then(toContactSubmission);
+const submit = (contactData: FormData): Promise<ContactSubmission> =>
+	actions.contact(contactData).then(toContactSubmission);
 
 const BoundContactForm = () => {
 	const { executeRecaptcha } = useGoogleReCaptcha();

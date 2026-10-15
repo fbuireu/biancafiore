@@ -11,6 +11,7 @@ import {
 } from "@tests/doubles/cmsLayer";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CmsError } from "../errors";
+import type { CmsItem } from "./client";
 import { type CmsEntry, EMDASH_MAX_PAGE_SIZE, fetchEntries, fetchReferences } from "./entries";
 
 vi.mock("./client", async () => {
@@ -20,7 +21,13 @@ vi.mock("./client", async () => {
 	return { ...actual, CmsClient: cmsClientDouble(actual.CmsClient) };
 });
 
-const entry = (slug: string) => ({ id: `id-${slug}`, slug, data: {}, terms: {}, updatedAt: "" });
+const entry = (slug: string): Omit<CmsItem, "bylines"> => ({
+	id: `id-${slug}`,
+	slug,
+	data: {},
+	terms: {},
+	updatedAt: "",
+});
 
 const ARTICLE = entry("an-article");
 const AUTHOR = entry("bianca-fiore");

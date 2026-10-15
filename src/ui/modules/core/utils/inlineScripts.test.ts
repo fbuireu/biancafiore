@@ -8,7 +8,7 @@ import { inlineScriptHashes } from "./inlineScripts";
 
 const SHA256_BASE64 = /^[A-Za-z0-9+/]{43}=$/;
 
-const sha256 = (source: string) => createHash("sha256").update(source).digest("base64");
+const sha256 = (source: string): string => createHash("sha256").update(source).digest("base64");
 
 describe("inlineScriptHashes", () => {
 	it("hashes every inline script the pages carry: both bootstraps, Astro's island runtime and the load directive", () => {

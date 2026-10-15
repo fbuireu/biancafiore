@@ -48,7 +48,8 @@ vi.mock("drizzle-orm/libsql/web", () => {
 const URL_SECRET = "ASTRO_DB_REMOTE_URL";
 const TOKEN_SECRET = "ASTRO_DB_APP_TOKEN";
 
-const build = () => Effect.runPromiseExit(Database.pipe(Effect.provide(Database.layer)));
+const build = (): Promise<Exit.Exit<DatabaseService>> =>
+	Effect.runPromiseExit(Database.pipe(Effect.provide(Database.layer)));
 
 afterEach(() => {
 	resetSecrets();
@@ -98,7 +99,7 @@ describe("Database.layer", () => {
 	});
 });
 
-const buildDatabase = async () => {
+const buildDatabase = async (): Promise<DatabaseService> => {
 	setSecret({ name: URL_SECRET, value: "libsql://example.turso.io" });
 	setSecret({ name: TOKEN_SECRET, value: "a-token" });
 

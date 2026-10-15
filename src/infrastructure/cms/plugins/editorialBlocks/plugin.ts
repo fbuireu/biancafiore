@@ -1,7 +1,7 @@
-import { definePlugin } from "emdash";
+import { definePlugin, type ResolvedPlugin } from "emdash";
 import { EDITORIAL_BLOCK_CONFIGS, EDITORIAL_BLOCKS } from "./blocks";
 
-export function createPlugin() {
+export function createPlugin(): ResolvedPlugin {
 	return definePlugin({
 		id: EDITORIAL_BLOCKS.ID,
 		version: EDITORIAL_BLOCKS.VERSION,

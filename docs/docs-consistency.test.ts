@@ -356,7 +356,7 @@ const CAST_JSON = /(?:\.json\(\)|JSON\.parse\([^;]*?\))\)?\s+as\s/;
 const ZOD_SPECIFIER = /^zod(?:\/|$)/;
 const ZOD_MODULE = "src/shared/utils/zod";
 const JITLESS_ZOD = "z.config({ jitless: true });";
-const DEPENDENCY_FIELDS = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"];
+const DEPENDENCY_FIELDS = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"] as const;
 const HAND_WRITTEN_MEMOISATION = /\buse(?:Memo|Callback)\(|\bmemo\(/;
 const REACT_COMPILER = "react({ compiler: true })";
 const TEARDOWN_HOOK = /\bafter(?:Each|All)\(/g;
@@ -395,10 +395,10 @@ const MERMAID_DIAGRAM = /```mermaid\n([\s\S]*?)```/g;
 const MERMAID_FRONTMATTER = /^---\n([\s\S]*?)\n---\n/;
 const DAGRE_LAYOUT = /^\s+layout: dagre$/m;
 
-const toPosix = (value: string) => value.split("\\").join("/");
-const read = (relativePath: string) => readFileSync(join(ROOT, relativePath), "utf8").split("\r\n").join("\n");
-const readJson = (relativePath: string) => JSON.parse(read(relativePath));
-const exists = (relativePath: string) => existsSync(join(ROOT, relativePath));
+const toPosix = (value: string): string => value.split("\\").join("/");
+const read = (relativePath: string): string => readFileSync(join(ROOT, relativePath), "utf8").split("\r\n").join("\n");
+const readJson = (relativePath: string): unknown => JSON.parse(read(relativePath));
+const exists = (relativePath: string): boolean => existsSync(join(ROOT, relativePath));
 
 const walk = (relativeDirectory: string): string[] =>
 	readdirSync(join(ROOT, relativeDirectory), { withFileTypes: true }).flatMap((entry) => {
@@ -409,16 +409,16 @@ const walk = (relativeDirectory: string): string[] =>
 		return SKIPPED_DIRECTORIES.has(entry.name) ? [] : walk(entryPath);
 	});
 
-const directoriesIn = (relativeDirectory: string) =>
+const directoriesIn = (relativeDirectory: string): string[] =>
 	readdirSync(join(ROOT, relativeDirectory), { withFileTypes: true })
 		.filter((entry) => entry.isDirectory() && !SKIPPED_DIRECTORIES.has(entry.name))
 		.map((entry) => entry.name)
 		.sort();
 
-const populatedDirectoriesIn = (relativeDirectory: string) =>
+const populatedDirectoriesIn = (relativeDirectory: string): string[] =>
 	directoriesIn(relativeDirectory).filter((name) => walk(`${relativeDirectory}/${name}`).length > 0);
 
-const isTracked = (relativePath: string) =>
+const isTracked = (relativePath: string): boolean =>
 	exists(relativePath) && (statSync(join(ROOT, relativePath)).isFile() || walk(relativePath).length > 0);
 
 const PROJECT_FILES = [
@@ -447,11 +447,17 @@ const tomlTable = ({ toml, table }: TomlTableParams): string => {
 
 const wranglerTable = (table: string): string => tomlTable({ toml: WRANGLER_TOML, table });
 
-const stripFences = (markdown: string) => markdown.replace(ANY_FENCED_BLOCK, "");
+const stripFences = (markdown: string): string => markdown.replace(ANY_FENCED_BLOCK, "");
 
-const inlineCode = (markdown: string) => [...stripFences(markdown).matchAll(INLINE_CODE)].map(([, code]) => code);
+const inlineCode = (markdown: string): string[] =>
+	[...stripFences(markdown).matchAll(INLINE_CODE)].map(([, code]) => code);
 
-const fences = (markdown: string) =>
+interface FencedBlock {
+	language: string;
+	body: string;
+}
+
+const fences = (markdown: string): FencedBlock[] =>
 	[...markdown.matchAll(FENCED_BLOCK)].map(([, language, body]) => ({ language, body }));
 
 interface SectionParams {
@@ -459,7 +465,7 @@ interface SectionParams {
 	heading: string;
 }
 
-const section = ({ markdown, heading }: SectionParams) => {
+const section = ({ markdown, heading }: SectionParams): string => {
 	const lines = markdown.split("\n");
 	const start = lines.findIndex((line) => line.startsWith(`## ${heading}`));
 
@@ -471,11 +477,38 @@ const section = ({ markdown, heading }: SectionParams) => {
 	return (end === -1 ? rest : rest.slice(0, end)).join("\n");
 };
 
+interface DependencyFields {
+	dependencies?: Record<string, string>;
+	devDependencies?: Record<string, string>;
+	peerDependencies?: Record<string, string>;
+	optionalDependencies?: Record<string, string>;
+}
+
+interface PackageManifest extends DependencyFields {
+	name: string;
+	packageManager: string;
+	engines: { node: string };
+	repository?: { url: string };
+	scripts: Record<string, string>;
+}
+
+interface TsConfig {
+	compilerOptions: { paths: Record<string, string[]> };
+}
+
+interface BiomeConfig {
+	files: { includes: string[] };
+	formatter: { lineWidth: number };
+	assist: { actions: { source: { organizeImports: string } } };
+	linter: { rules: { suspicious: { noConsole: string } } };
+	overrides: BiomeOverride[];
+}
+
 const AGENTS_MD = read("AGENTS.md");
 const GLOSSARY_MD = read("GLOSSARY.md");
-const PACKAGE_JSON = readJson("package.json");
-const TSCONFIG = readJson("tsconfig.json");
-const BIOME_JSON = readJson("biome.json");
+const PACKAGE_JSON = readJson("package.json") as PackageManifest;
+const TSCONFIG = readJson("tsconfig.json") as TsConfig;
+const BIOME_JSON = readJson("biome.json") as BiomeConfig;
 const ASTRO_CONFIG = read("astro.config.ts");
 const WRANGLER_TOML = read("wrangler.toml");
 
@@ -509,7 +542,7 @@ const HYDRATION_DIRECTIVES_ALLOWED = new Set(["load"]);
 const NEWLINE = "\n";
 const SCHEMA_BOOLEAN_DEFAULT = /(\w+): z\.boolean\(\)\.default\(false\)/g;
 const SNAKE_CASED = /[A-Z]/g;
-const DEFAULTED_IN_THE_DTO_LAYER = (field: string) =>
+const DEFAULTED_IN_THE_DTO_LAYER = (field: string): RegExp =>
 	new RegExp(
 		String.raw`\b(?:${field}\s*[:=]|return)\s*flagOf\(rawArticle\.data\.${field.replace(SNAKE_CASED, (letter) => `_${letter.toLowerCase()}`)}\)`,
 	);
@@ -521,17 +554,17 @@ const WIKI_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.st
 const CODING_STANDARDS = "CODING_STANDARDS.md";
 const GUIDES = ["AGENTS.md", "GLOSSARY.md", CODING_STANDARDS, ...NESTED_GUIDES];
 const DOCS = [...GUIDES, ".github/CONTRIBUTING.md", ...ADR_FILES, ...WIKI_FILES];
-const isWiki = (doc: string) => doc.startsWith("docs/wiki/");
+const isWiki = (doc: string): boolean => doc.startsWith("docs/wiki/");
 const wikiPages = new Set(WIKI_FILES.map((file) => basename(file, ".md")));
 
 const TEST_INFRASTRUCTURE = "src/tests/";
 
-const production = (files: string[]) =>
+const production = (files: string[]): string[] =>
 	files.filter((file) => !CO_LOCATED_TEST_FILE.test(file) && !file.startsWith(TEST_INFRASTRUCTURE));
 
 const SOURCE_FILES = production(walk("src").filter((file) => SOURCE_FILE.test(file)));
 
-const classesApplied = (source: string) =>
+const classesApplied = (source: string): string[] =>
 	[...source.matchAll(CLASS_ATTRIBUTE)].flatMap(([, doubled, singled, braced]) =>
 		[...(doubled ?? singled ?? braced ?? "").matchAll(CLASS_WORD)].map(([word]) => word),
 	);
@@ -541,7 +574,7 @@ interface NamesInParams {
 	pattern: RegExp;
 }
 
-const namesIn = ({ text, pattern }: NamesInParams) =>
+const namesIn = ({ text, pattern }: NamesInParams): string[] =>
 	[...(text.match(pattern)?.[1] ?? "").matchAll(BACKTICKED_NAME)].map(([, name]) => name);
 
 interface CssDeclaration {
@@ -579,24 +612,26 @@ const declarationsIn = (stylesheet: string): CssDeclaration[] => {
 	return found;
 };
 
-const declaredOutsideTheGuard = (kind: RegExp) => (stylesheet: string) =>
-	declarationsIn(stylesheet)
-		.filter(
-			({ declaration, preludes }) =>
-				kind.test(declaration) &&
-				!(
-					preludes.some((prelude) => SCROLL_DRIVEN_SUPPORTS.test(prelude)) &&
-					preludes.some((prelude) => MOTION_OPT_IN.test(prelude))
-				),
-		)
-		.map(({ declaration }) => declaration);
+const declaredOutsideTheGuard =
+	(kind: RegExp): ((stylesheet: string) => string[]) =>
+	(stylesheet: string) =>
+		declarationsIn(stylesheet)
+			.filter(
+				({ declaration, preludes }) =>
+					kind.test(declaration) &&
+					!(
+						preludes.some((prelude) => SCROLL_DRIVEN_SUPPORTS.test(prelude)) &&
+						preludes.some((prelude) => MOTION_OPT_IN.test(prelude))
+					),
+			)
+			.map(({ declaration }) => declaration);
 
-const pathCommands = (data: string) =>
+const pathCommands = (data: string): string =>
 	[...data.matchAll(PATH_COMMAND)]
 		.map(([, letter, numbers]) => `${letter}${numbers.match(PATH_NUMBER)?.length ?? 0}`)
 		.join(" ");
 
-const deadUtilities = (stylesheets: string) => {
+const deadUtilities = (stylesheets: string): ((markup: string) => string[]) => {
 	const declarations = declarationsIn(stylesheets);
 	const propertyOf = (declaration: string) => declaration.split(":")[0].trim();
 	const settingOf = (declaration: string) => declaration.slice(declaration.indexOf(":") + 1).trim();
@@ -645,7 +680,7 @@ const deadUtilities = (stylesheets: string) => {
 		});
 };
 
-const unreadIds = (sources: string[]) => {
+const unreadIds = (sources: string[]): string[] => {
 	const declared = sources.flatMap((source) => [...source.matchAll(STATIC_ID_ATTRIBUTE)].map(([, id]) => id));
 	const mentions = (id: string) =>
 		sources.reduce(
@@ -658,7 +693,12 @@ const unreadIds = (sources: string[]) => {
 
 const START_OF_FRAME_MARKERS = new Set([0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf]);
 
-const jpegSize = (bytes: Buffer) => {
+interface JpegSize {
+	width: number;
+	height: number;
+}
+
+const jpegSize = (bytes: Buffer): JpegSize | undefined => {
 	let offset = 2;
 
 	while (offset + 9 <= bytes.length && bytes[offset] === 0xff) {
@@ -674,7 +714,7 @@ const jpegSize = (bytes: Buffer) => {
 	return undefined;
 };
 
-const svgPaintFaults = (stylesheet: string) => {
+const svgPaintFaults = (stylesheet: string): string[] => {
 	const declarations = declarationsIn(stylesheet);
 
 	return declarations
@@ -732,15 +772,15 @@ const revealedClassesIn = (stylesheet: string): string[] =>
 		.filter(({ property, value }) => property === "opacity" && REVEALED_ARROW_BOX.get(property) === value)
 		.flatMap(({ classes }) => classes);
 
-const keyframesDeclaredIn = (stylesheet: string) =>
+const keyframesDeclaredIn = (stylesheet: string): string[] =>
 	[...stylesheet.matchAll(KEYFRAMES_DECLARATION)].map(([, name]) => name);
 
-const animationNamesIn = (stylesheet: string) =>
+const animationNamesIn = (stylesheet: string): string[] =>
 	declarationsIn(stylesheet)
 		.filter(({ declaration }) => ANIMATION_PROPERTY.test(declaration))
 		.flatMap(({ declaration }) => declaration.replace(ANIMATION_PROPERTY, "").trim().split(ANIMATION_VALUE_SEPARATOR));
 
-const misplacedKeyframes = (sheets: Map<string, string>) => {
+const misplacedKeyframes = (sheets: Map<string, string>): string[] => {
 	const readersOf = (name: string) =>
 		[...sheets].filter(([, css]) => animationNamesIn(css).includes(name)).map(([file]) => file);
 
@@ -764,10 +804,18 @@ const misplacedKeyframes = (sheets: Map<string, string>) => {
 	);
 };
 
-const classesOwnedBy = (owned: Set<string>) => (stylesheet: string) =>
-	selectorClassesIn(stylesheet.replace(NOT_ARGUMENT, "")).filter((name) => owned.has(classBlock(name)));
+const classesOwnedBy =
+	(owned: Set<string>): ((stylesheet: string) => string[]) =>
+	(stylesheet: string) =>
+		selectorClassesIn(stylesheet.replace(NOT_ARGUMENT, "")).filter((name) => owned.has(classBlock(name)));
 
-const viewTransitionNavigations = (stylesheet: string) =>
+interface ViewTransitionNavigation {
+	value: string;
+	rule: string | undefined;
+	reduced: boolean;
+}
+
+const viewTransitionNavigations = (stylesheet: string): ViewTransitionNavigation[] =>
 	declarationsIn(stylesheet)
 		.filter(({ declaration }) => NAVIGATION_DECLARATION.test(declaration))
 		.map(({ declaration, preludes }) => ({
@@ -3208,9 +3256,9 @@ const HAND_WRITTEN_CODE = [
 	...walk("docs").filter((file) => TYPESCRIPT_FILE.test(file)),
 ];
 
-const paramsTypeFor = (name: string) => `${name[0].toUpperCase()}${name.slice(1)}${PARAMETER_OBJECT_SUFFIX}`;
+const paramsTypeFor = (name: string): string => `${name[0].toUpperCase()}${name.slice(1)}${PARAMETER_OBJECT_SUFFIX}`;
 
-const positionalSignatures = (source: string) =>
+const positionalSignatures = (source: string): string[] =>
 	[...source.matchAll(FUNCTION_SIGNATURE), ...source.matchAll(ARROW_SIGNATURE)]
 		.map(([, name, parameters]) => ({ name, parameters: (parameters ?? "").trim().replace(TRAILING_COMMA, "") }))
 		.filter(({ parameters }) => parameters.length > 0 && !parameters.startsWith("{"))
@@ -3222,21 +3270,26 @@ interface CodeSource {
 	source: string;
 }
 
-const parameterObjects = (source: string) =>
+interface ParameterObject {
+	name: string;
+	type: string;
+}
+
+const parameterObjects = (source: string): ParameterObject[] =>
 	[...source.matchAll(DESTRUCTURED_PARAMETER)].map(([, declared, assigned, type]) => ({
 		name: declared ?? assigned,
 		type,
 	}));
 
-const declaredFunctions = (source: string) => [
+const declaredFunctions = (source: string): string[] => [
 	...[...source.matchAll(FUNCTION_SIGNATURE), ...source.matchAll(ARROW_SIGNATURE)].map(([, name]) => name),
 	...parameterObjects(source).map(({ name }) => name),
 ];
 
-const countOf = (names: string[]) =>
+const countOf = (names: string[]): Map<string, number> =>
 	names.reduce((counts, name) => counts.set(name, (counts.get(name) ?? 0) + 1), new Map<string, number>());
 
-const roleTypes = (sources: CodeSource[]) => {
+const roleTypes = (sources: CodeSource[]): Set<string> => {
 	const takers = countOf(sources.flatMap(({ source }) => parameterObjects(source).map(({ type }) => type)));
 	const declarations = countOf(
 		sources.flatMap(({ source }) => [...source.matchAll(DECLARED_PARAMS_TYPE)].map(([, type]) => type)),
@@ -3250,7 +3303,7 @@ const roleTypes = (sources: CodeSource[]) => {
 	);
 };
 
-const misnamedParameterObjects = (sources: CodeSource[]) => {
+const misnamedParameterObjects = (sources: CodeSource[]): string[] => {
 	const roles = roleTypes(sources);
 
 	return sources.flatMap(({ file, source }) =>
@@ -3555,7 +3608,7 @@ interface LineAtParams {
 	at: number;
 }
 
-const lineAt = ({ source, at }: LineAtParams) => source.slice(0, at).split(NEWLINE).length;
+const lineAt = ({ source, at }: LineAtParams): number => source.slice(0, at).split(NEWLINE).length;
 
 const COMMENTED_SOURCES = [...HAND_WRITTEN_CODE, ...walk("src").filter((file) => file.endsWith(".css"))];
 
@@ -3605,10 +3658,10 @@ const documentLeaks = (source: string): string[] => [
 
 const UNIT_TESTS = HAND_WRITTEN_CODE.filter((file) => file.startsWith("src/") && CO_LOCATED_TEST_FILE.test(file));
 
-const zodDeclarationsIn = (manifest: Record<string, Record<string, string> | undefined>): string[] =>
+const zodDeclarationsIn = (manifest: DependencyFields): string[] =>
 	DEPENDENCY_FIELDS.filter((field) => manifest[field]?.zod !== undefined);
 
-const unitOf = (file: string) => {
+const unitOf = (file: string): string => {
 	const parts = file.split("/");
 
 	if (parts[1] === "ui" && parts[2] === "modules") return parts.slice(0, 4).join("/");
@@ -3679,7 +3732,7 @@ interface NoteNamedImportParams {
 	name: string;
 }
 
-const noteNamedImport = ({ imports, target, name }: NoteNamedImportParams) =>
+const noteNamedImport = ({ imports, target, name }: NoteNamedImportParams): Map<string, Set<string>> =>
 	imports.named.set(target, (imports.named.get(target) ?? new Set<string>()).add(name));
 
 interface ImportsInParams extends CodeSource {
@@ -4166,7 +4219,7 @@ const declaredHooks = async (): Promise<Hook[]> =>
 		),
 	);
 
-const globToRegExp = (glob: string) =>
+const globToRegExp = (glob: string): RegExp =>
 	new RegExp(
 		`^${glob.replace(GLOB_TOKEN, (token) => {
 			if (token === "**/") return "(?:.*/)?";
@@ -5438,9 +5491,7 @@ const RELEASE_CONFIG_PATTERN = /(^|\/)(\.releaserc(\.\w+)?|release\.config\.\w+)
 const RELEASE_CONFIG_FILES = walk(".")
 	.filter((file) => RELEASE_CONFIG_PATTERN.test(file))
 	.map((file) => file.slice("./".length));
-const RELEASES: ReleaseShape[] = [
-	{ config: ".releaserc.json", manifest: "package.json", scope: readJson("package.json").name },
-];
+const RELEASES: ReleaseShape[] = [{ config: ".releaserc.json", manifest: "package.json", scope: PACKAGE_JSON.name }];
 const releaseText = read;
 
 const BREAKING_PARSER_OPTS = {

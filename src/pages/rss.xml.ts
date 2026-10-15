@@ -4,7 +4,7 @@ import { sortReverseChronological } from "@domain/article/rules";
 import { readArticles, readSiteSettings } from "@modules/core/utils/entries";
 import type { APIRoute } from "astro";
 
-export const GET: APIRoute = async ({ isPrerendered }) => {
+export const GET: APIRoute = async ({ isPrerendered }): Promise<Response> => {
 	const [articles, site] = await Promise.all([readArticles(), readSiteSettings(isPrerendered)]);
 
 	return rss({

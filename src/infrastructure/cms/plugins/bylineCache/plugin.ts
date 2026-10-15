@@ -1,5 +1,5 @@
 import { BYLINES_CACHE_TAG } from "@const/contentCache";
-import { definePlugin } from "emdash";
+import { definePlugin, type ResolvedPlugin } from "emdash";
 import { BYLINE_CACHE } from "./const";
 
 export async function purgeBylines(): Promise<void> {
@@ -8,7 +8,7 @@ export async function purgeBylines(): Promise<void> {
 	await cache.purge({ tags: [BYLINES_CACHE_TAG] });
 }
 
-export function createPlugin() {
+export function createPlugin(): ResolvedPlugin {
 	return definePlugin({
 		id: BYLINE_CACHE.ID,
 		version: BYLINE_CACHE.VERSION,

@@ -4,11 +4,11 @@ import { useTabVisibility } from "./useTabVisibility";
 
 const Reader = () => <output>{useTabVisibility()}</output>;
 
-const setVisibility = (state: DocumentVisibilityState) => {
+const setVisibility = (state: DocumentVisibilityState): void => {
 	vi.spyOn(document, "visibilityState", "get").mockReturnValue(state);
 };
 
-const switchTab = () =>
+const switchTab = (): void =>
 	act(() => {
 		document.dispatchEvent(new Event("visibilitychange"));
 	});

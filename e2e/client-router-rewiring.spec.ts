@@ -11,7 +11,7 @@ import { HEADER_MENU_BUTTON_CLASS, MENU_OPEN_CLASS } from "@modules/core/compone
 import { RELATED_ARTICLES_SLIDER_CLASS } from "@modules/core/components/relatedArticles/const";
 import { SLIDER_NEXT_CLASS, SLIDER_TRACK_CLASS } from "@modules/core/components/sliderShell/const";
 import { THEME_ATTRIBUTE, THEME_TOGGLE_CLASS } from "@modules/core/components/themeToggle/const";
-import type { Page } from "@playwright/test";
+import type { Disposable, Page } from "@playwright/test";
 import { expect, test } from "./fixtures";
 
 const ARTICLE_BODY = `.${ARTICLE_BODY_CLASS}`;
@@ -28,9 +28,9 @@ const SLIDER_NEXT = `${RELATED_ARTICLES_SLIDER} .${SLIDER_NEXT_CLASS}`;
 const SLIDER_TRACK = `${RELATED_ARTICLES_SLIDER} .${SLIDER_TRACK_CLASS}`;
 const THEME_TOGGLE = `.${THEME_TOGGLE_CLASS}`;
 
-const paintedTheme = (page: Page) => page.locator("html").getAttribute(THEME_ATTRIBUTE);
+const paintedTheme = (page: Page): Promise<string | null> => page.locator("html").getAttribute(THEME_ATTRIBUTE);
 
-const presentAsAHumanVisitor = (page: Page) =>
+const presentAsAHumanVisitor = (page: Page): Promise<Disposable> =>
 	page.addInitScript(() => Object.defineProperty(navigator, "webdriver", { get: () => false }));
 
 interface VisitParams {
@@ -40,7 +40,7 @@ interface VisitParams {
 
 const SUPERSEDED = "interrupted by another navigation";
 
-const visit = async ({ page, path }: VisitParams) => {
+const visit = async ({ page, path }: VisitParams): Promise<void> => {
 	await page.goto(path).catch((error: Error) => {
 		if (!error.message.includes(SUPERSEDED)) throw error;
 	});
@@ -54,7 +54,7 @@ interface ClickArticleCardParams {
 	index: number;
 }
 
-const clickArticleCard = async ({ page, index }: ClickArticleCardParams) => {
+const clickArticleCard = async ({ page, index }: ClickArticleCardParams): Promise<void> => {
 	const link = page.locator(ARTICLE_CARD_LINK).nth(index);
 
 	await link.scrollIntoViewIfNeeded();
@@ -68,7 +68,7 @@ interface OpenAnArticleParams {
 	index: number;
 }
 
-const openAnArticle = async ({ page, index }: OpenAnArticleParams) => {
+const openAnArticle = async ({ page, index }: OpenAnArticleParams): Promise<void> => {
 	await visit({ page, path: "/articles" });
 	await expect(page.locator("[data-astro-exec]").first()).toBeAttached();
 
@@ -80,7 +80,7 @@ interface OpenAnotherArticleParams {
 	index: number;
 }
 
-const openAnotherArticle = async ({ page, index }: OpenAnotherArticleParams) => {
+const openAnotherArticle = async ({ page, index }: OpenAnotherArticleParams): Promise<void> => {
 	await page.goBack();
 	await page.waitForURL("**/articles");
 	await expect(page.locator(ARTICLE_BODY)).toHaveCount(0);
@@ -93,7 +93,7 @@ interface FollowFooterLinkParams {
 	path: string;
 }
 
-const followFooterLink = async ({ page, path }: FollowFooterLinkParams) => {
+const followFooterLink = async ({ page, path }: FollowFooterLinkParams): Promise<void> => {
 	await page.locator(`footer a[href="${path}"]`).first().click();
 	await page.waitForURL(`**${path}`);
 };

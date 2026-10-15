@@ -7,13 +7,13 @@ const APPOINTMENT_TAB = `${TAB}[data-target="${TabId.APPOINTMENT}"]`;
 const APPOINTMENT_CONTENT = `#${TabId.APPOINTMENT}`;
 const EMAIL_CONTENT = `#${TabId.EMAIL}`;
 
-const skipWithoutTabs = async (page: Page) => {
+const skipWithoutTabs = async (page: Page): Promise<void> => {
 	const servesTabs = (await page.locator(TAB).count()) > 0;
 
 	test.skip(!servesTabs, "HIDE_CHROME serves /contact as the under-construction placeholder");
 };
 
-const arriveAtContact = async (page: Page) => {
+const arriveAtContact = async (page: Page): Promise<void> => {
 	await page.goto("/");
 	await page.goto("/contact");
 	await skipWithoutTabs(page);

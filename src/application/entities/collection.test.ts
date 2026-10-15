@@ -11,7 +11,7 @@ const ITEMS: Item[] = [
 	{ slug: "second", title: "Second" },
 ];
 
-const identify = ({ slug }: Item) => slug;
+const identify = ({ slug }: Item): string => slug;
 
 describe("contentLoader", () => {
 	it("answers every item keyed by the identity the collection declares, in the order the load answered", async () => {

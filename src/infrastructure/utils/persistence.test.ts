@@ -1,8 +1,8 @@
-import { contactRow, databaseDouble, loggerDouble } from "@tests/doubles/contactLayers";
+import { contactRow, type DatabaseDouble, databaseDouble, loggerDouble } from "@tests/doubles/contactLayers";
 import { failureOf } from "@tests/helpers/exit";
 import { Effect, Exit, Layer } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { DatabaseError } from "../errors";
+import { DatabaseError, type DuplicateContactError } from "../errors";
 import { checkDuplicateContact, saveContact } from "./persistence";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -16,14 +16,18 @@ const SUBMISSION = { ...ENQUIRY, emailId: "sent-1" };
 
 const log = loggerDouble();
 
-const lookupFailingWith = (message: string) => databaseDouble({ failLookupWith: new DatabaseError({ message }) });
+const lookupFailingWith = (message: string): DatabaseDouble =>
+	databaseDouble({ failLookupWith: new DatabaseError({ message }) });
 
 interface CheckParams {
 	database: ReturnType<typeof databaseDouble>;
 	data?: typeof ENQUIRY;
 }
 
-const check = ({ database, data = ENQUIRY }: CheckParams) =>
+const check = ({
+	database,
+	data = ENQUIRY,
+}: CheckParams): Promise<Exit.Exit<void, DatabaseError | DuplicateContactError>> =>
 	Effect.runPromiseExit(checkDuplicateContact(data).pipe(Effect.provide(Layer.merge(database.layer, log.layer))));
 
 beforeEach(() => {

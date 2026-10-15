@@ -12,7 +12,7 @@ const HEADERS = {
 	"X-Frame-Options": "SAMEORIGIN",
 };
 
-const runBuildStart = () => {
+const runBuildStart = (): string => {
 	const integration = generateStaticHeaders(HEADERS) as AstroIntegration & {
 		hooks: { "astro:build:start": () => void };
 	};

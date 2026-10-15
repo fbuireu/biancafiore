@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getPage } from "./page";
 
-const at = (pathname: string) => new URL(pathname, "https://biancafiore.test");
+const at = (pathname: string): URL => new URL(pathname, "https://biancafiore.test");
 
 describe("getPage", () => {
 	it.each([

@@ -3,7 +3,7 @@ import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { BLURHASH, rawEntry } from "@tests/doubles/cmsEntries";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { PortableTextContent } from "../../shared/portableText";
-import type { ArticleFields } from "../types";
+import type { ArticleFields, RawArticle } from "../types";
 import { prepareArticleContent } from "./content";
 
 const IMAGE_URL = `${MEDIA_FILE_PATH}hero.jpg`;
@@ -13,14 +13,19 @@ afterEach(() => {
 });
 
 let key = 0;
-const nextKey = () => `k${key++}`;
+const nextKey = (): string => `k${key++}`;
 
 interface SpanParams {
 	text: string;
 	marks?: string[];
 }
 
-const span = ({ text, marks = [] }: SpanParams) => ({ _type: "span", _key: nextKey(), text, marks });
+const span = ({ text, marks = [] }: SpanParams): PortableTextContent[number] => ({
+	_type: "span",
+	_key: nextKey(),
+	text,
+	marks,
+});
 
 interface BlockParams {
 	text?: string;
@@ -29,7 +34,12 @@ interface BlockParams {
 	markDefs?: Record<string, unknown>[];
 }
 
-const block = ({ text = "", style = "normal", children = [span({ text })], markDefs = [] }: BlockParams) => ({
+const block = ({
+	text = "",
+	style = "normal",
+	children = [span({ text })],
+	markDefs = [],
+}: BlockParams): PortableTextContent[number] => ({
 	_type: "block",
 	_key: nextKey(),
 	style,
@@ -37,16 +47,17 @@ const block = ({ text = "", style = "normal", children = [span({ text })], markD
 	markDefs,
 });
 
-const paragraph = (text: string) => block({ text });
+const paragraph = (text: string): PortableTextContent[number] => block({ text });
 
 interface HeadingParams {
 	level: number;
 	value: string;
 }
 
-const heading = ({ level, value }: HeadingParams) => block({ text: value, style: `h${level}` });
+const heading = ({ level, value }: HeadingParams): PortableTextContent[number] =>
+	block({ text: value, style: `h${level}` });
 
-const linked = (href: unknown) =>
+const linked = (href: unknown): PortableTextContent[number] =>
 	block({
 		children: [span({ text: "a link", marks: ["link-1"] })],
 		markDefs: [{ _type: "link", _key: "link-1", href }],
@@ -56,19 +67,20 @@ interface TypedParams extends Record<string, unknown> {
 	_type: string;
 }
 
-const typed = (fields: TypedParams) => ({ _key: nextKey(), ...fields });
+const typed = (fields: TypedParams): PortableTextContent[number] => ({ _key: nextKey(), ...fields });
 
-const makeArticle = (content: unknown[]) =>
+const makeArticle = (content: unknown[]): RawArticle =>
 	rawEntry<ArticleFields>({
 		slug: "an-article",
 		data: { title: "An article", content: content as PortableTextContent, publish_date: "2024-01-01" },
 	});
 
-const prepare = (content: unknown[]) => prepareArticleContent(makeArticle(content));
+const prepare = (content: unknown[]): ReturnType<typeof prepareArticleContent> =>
+	prepareArticleContent(makeArticle(content));
 
-const prepared = (content: unknown[]) => prepare(content).content;
+const prepared = (content: unknown[]): PortableTextContent => prepare(content).content;
 
-const markDefOf = (href: unknown) => {
+const markDefOf = (href: unknown): Record<string, unknown> => {
 	const [{ markDefs }] = prepared([linked(href)]) as unknown as [{ markDefs: Record<string, unknown>[] }];
 
 	return markDefs[0];

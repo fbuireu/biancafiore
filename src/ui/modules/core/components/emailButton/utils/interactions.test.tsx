@@ -1,5 +1,5 @@
 import { CONTACT_DETAILS } from "@const/index";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
 	EMAIL_ADDRESS_PLACEHOLDER,
 	EMAIL_BUTTON_CLASS,
@@ -29,14 +29,15 @@ interface ClickParams {
 	trusted: boolean;
 }
 
-const click = ({ element, trusted }: ClickParams) => {
+const click = ({ element, trusted }: ClickParams): void => {
 	const event = new MouseEvent("click", { bubbles: true, cancelable: true });
 
 	Object.defineProperty(event, "isTrusted", { value: trusted });
 	element.dispatchEvent(event);
 };
 
-const composerTargets = () => vi.spyOn(window.location, "assign").mockImplementation(() => undefined);
+const composerTargets = (): Mock<Location["assign"]> =>
+	vi.spyOn(window.location, "assign").mockImplementation(() => undefined);
 
 afterEach(() => {
 	vi.restoreAllMocks();

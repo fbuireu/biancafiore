@@ -1,4 +1,6 @@
 import { absoluteUrl, articleHref, PAGES_ROUTES } from "@const/index";
+import type { ArticleSummaryDTO } from "@domain/article";
+import type { LiveDataEntry } from "astro";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as route from "./rss.xml";
 
@@ -22,7 +24,7 @@ function answersWith({ articles, settings = SETTINGS }: AnswersWithParams): void
 	getLiveEntry.mockResolvedValue({ entry: { id: "settings", data: settings } });
 }
 
-const answers = (articles: ReturnType<typeof makeArticle>[]) => answersWith({ articles });
+const answers = (articles: ReturnType<typeof makeArticle>[]): void => answersWith({ articles });
 vi.mock("@astrojs/rss", () => ({ default: rss }));
 
 interface MakeArticleParams {
@@ -31,7 +33,11 @@ interface MakeArticleParams {
 	publishDateISO: string;
 }
 
-const makeArticle = ({ slug, title = slug, publishDateISO }: MakeArticleParams) => ({
+const makeArticle = ({
+	slug,
+	title = slug,
+	publishDateISO,
+}: MakeArticleParams): LiveDataEntry<Pick<ArticleSummaryDTO, "slug" | "title" | "description" | "publishDateISO">> => ({
 	id: slug,
 	data: { slug, title, description: `About ${slug}`, publishDateISO },
 });
@@ -50,7 +56,7 @@ interface Feed {
 	items: FeedItem[];
 }
 
-const feed = () => rss.mock.calls[0]?.[0] as Feed;
+const feed = (): Feed => rss.mock.calls[0]?.[0] as Feed;
 
 const context = { isPrerendered: false } as Parameters<typeof GET>[0];
 

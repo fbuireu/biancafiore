@@ -38,7 +38,7 @@ const choose = ({ input, theme }: ChooseParams): void => {
 	input.dispatchEvent(new Event("change"));
 };
 
-const memoryStorage = () => {
+const memoryStorage = (): Pick<Storage, "getItem" | "setItem"> => {
 	const values = new Map<string, string>();
 
 	return {
@@ -49,9 +49,10 @@ const memoryStorage = () => {
 	};
 };
 
-const paintedTheme = () => document.documentElement.getAttribute(THEME_ATTRIBUTE);
-const storedTheme = () => localStorage.getItem(THEME_STORAGE_KEY);
-const toggledClass = () => document.querySelector(TOGGLE)?.classList.contains(THEME_TOGGLE_TOGGLED_CLASS);
+const paintedTheme = (): string | null => document.documentElement.getAttribute(THEME_ATTRIBUTE);
+const storedTheme = (): string | null => localStorage.getItem(THEME_STORAGE_KEY);
+const toggledClass = (): boolean | undefined =>
+	document.querySelector(TOGGLE)?.classList.contains(THEME_TOGGLE_TOGGLED_CLASS);
 
 beforeEach(() => {
 	vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener: vi.fn() }));

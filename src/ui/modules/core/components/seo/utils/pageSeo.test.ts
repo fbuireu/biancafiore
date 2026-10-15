@@ -11,7 +11,7 @@ const SITE: SiteSettingsDTO = {
 	defaultImage: { url: "/og.jpg", width: 1200, height: 630 },
 };
 
-const absolute = (path: string) => new URL(path, SITE_URL).href;
+const absolute = (path: string): string => new URL(path, SITE_URL).href;
 
 describe("pageSeo", () => {
 	it("falls back to the site's title, description and share image on a page that sets none", () => {

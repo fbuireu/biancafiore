@@ -1,11 +1,12 @@
+import type { TagIndexEntryDTO } from "@domain/tag";
 import { avatar, rawByline, rawEntry, term } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
-import type { AnyRawArticle, ArticleFields } from "../article/types";
+import type { AnyRawArticle, ArticleFields, RawArticle } from "../article/types";
 import type { RawAuthor } from "../author/types";
 import { createTagIndex } from ".";
 import type { RawTag } from "./types";
 
-const articleId = (slug: string) => `article-${slug.trim()}`;
+const articleId = (slug: string): string => `article-${slug.trim()}`;
 
 interface MakeAuthorParams {
 	name: string;
@@ -28,7 +29,7 @@ interface IndexParams {
 	rawAuthors: RawAuthor[];
 }
 
-const index = ({ rawArticles, rawAuthors }: IndexParams) =>
+const index = ({ rawArticles, rawAuthors }: IndexParams): TagIndexEntryDTO[] =>
 	createTagIndex({
 		rawArticles: rawArticles.map((rawArticle) => ({
 			...rawArticle,
@@ -44,7 +45,7 @@ interface MakeArticleParams {
 	publishDate?: string;
 }
 
-const makeArticle = ({ slug, tags = [], isFavorite, publishDate = "2024-01-01" }: MakeArticleParams) =>
+const makeArticle = ({ slug, tags = [], isFavorite, publishDate = "2024-01-01" }: MakeArticleParams): RawArticle =>
 	rawEntry<ArticleFields>({
 		id: articleId(slug),
 		slug,

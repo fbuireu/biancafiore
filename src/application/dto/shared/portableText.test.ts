@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { proseOf, readableTextOf } from "./portableText";
+import { type PortableTextContent, proseOf, readableTextOf } from "./portableText";
 
-const span = (text: string) => ({ _type: "span", _key: text, text, marks: [] });
+const span = (text: string): PortableTextContent[number] => ({ _type: "span", _key: text, text, marks: [] });
 
 interface BlockParams {
 	text: string;
 	style?: string;
 }
 
-const block = ({ text, style = "normal" }: BlockParams) => ({
+const block = ({ text, style = "normal" }: BlockParams): PortableTextContent[number] => ({
 	_type: "block",
 	_key: text,
 	style,

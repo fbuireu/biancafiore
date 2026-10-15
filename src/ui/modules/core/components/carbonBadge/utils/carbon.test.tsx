@@ -7,7 +7,7 @@ interface EntriesParams {
 	resources: number[];
 }
 
-const entries = ({ navigation, resources }: EntriesParams) => {
+const entries = ({ navigation, resources }: EntriesParams): void => {
 	vi.spyOn(performance, "getEntriesByType").mockImplementation((type) =>
 		type === "navigation"
 			? ((navigation === undefined ? [] : [{ transferSize: navigation }]) as unknown as PerformanceEntry[])

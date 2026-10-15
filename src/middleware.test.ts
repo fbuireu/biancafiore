@@ -7,7 +7,7 @@ import type { onRequest } from "./middleware";
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
 const HASHES = inlineScriptHashes(GOOGLE_ANALYTICS_ID);
 
-const respond = () =>
+const respond = (): Promise<Response> =>
 	Promise.resolve(new Response("", { headers: { "Content-Type": "text/html" } })) as ReturnType<
 		Parameters<typeof onRequest>[1]
 	>;
@@ -19,7 +19,7 @@ interface HeadersOfParams {
 	path?: string;
 }
 
-const headersOf = async ({ isDevelopment, path = "/" }: HeadersOfParams) => {
+const headersOf = async ({ isDevelopment, path = "/" }: HeadersOfParams): Promise<Headers> => {
 	vi.stubEnv("DEV", isDevelopment);
 	vi.resetModules();
 
@@ -29,7 +29,7 @@ const headersOf = async ({ isDevelopment, path = "/" }: HeadersOfParams) => {
 	return (response as Response).headers;
 };
 
-const scriptSources = (headers: Headers) =>
+const scriptSources = (headers: Headers): string[] =>
 	(headers.get("Content-Security-Policy") ?? "")
 		.split("; ")
 		.find((directive) => directive.startsWith("script-src "))

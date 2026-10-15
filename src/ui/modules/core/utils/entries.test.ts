@@ -1,4 +1,5 @@
 import { SITE_AUTHOR_SLUG } from "@const/const";
+import type { Reference } from "@domain/shared/reference";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	type ArticleEntry,
@@ -40,13 +41,13 @@ vi.mock("astro:content", () => ({
 	},
 }));
 
-const notFound = () => Object.assign(new Error("Entry was not found."), { name: "LiveEntryNotFoundError" });
+const notFound = (): Error => Object.assign(new Error("Entry was not found."), { name: "LiveEntryNotFoundError" });
 
-const article = (slug: string) => ({ id: slug, data: { slug } }) as unknown as ArticleEntry;
+const article = (slug: string): ArticleEntry => ({ id: slug, data: { slug } }) as unknown as ArticleEntry;
 
-const reference = (id: string) => ({ id, collection: "articles" }) as const;
+const reference = (id: string): Reference<"articles"> => ({ id, collection: "articles" }) as const;
 
-const slugsOf = (resolved: ArticleEntry[]) => resolved.map(({ id }) => id);
+const slugsOf = (resolved: ArticleEntry[]): string[] => resolved.map(({ id }) => id);
 
 beforeEach(() => {
 	collections.clear();

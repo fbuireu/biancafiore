@@ -19,7 +19,7 @@ const ICONS: [string, ComponentType<IconProps>, string][] = [
 	["Infinite", Infinite, "Loading..."],
 ];
 
-const svgOf = (container: HTMLElement) => container.querySelector("svg") as SVGSVGElement;
+const svgOf = (container: HTMLElement): SVGSVGElement => container.querySelector("svg") as SVGSVGElement;
 
 afterEach(() => {
 	cleanup();

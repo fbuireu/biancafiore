@@ -11,7 +11,7 @@ export const CONSENT_STATUS = {
 	DENIED: "denied",
 } as const;
 
-const literal = (value: string) => JSON.stringify(value);
+const literal = (value: string): string => JSON.stringify(value);
 
 export const consentBootstrapScript = (analyticsId: string): string => `
 window.dataLayer = window.dataLayer || [];

@@ -278,14 +278,14 @@ interface AttemptParams<VALUE> {
 	failure: string;
 }
 
-const attempt = <VALUE>({ run, failure }: AttemptParams<VALUE>) =>
+const attempt = <VALUE>({ run, failure }: AttemptParams<VALUE>): Effect.Effect<VALUE, CmsError> =>
 	Effect.tryPromise({
 		try: run,
 		catch: (cause) =>
 			new CmsError({ message: `${failure}: ${cause instanceof Error ? cause.message : String(cause)}`, cause }),
 	});
 
-const query = ({ run, failure }: QueryParams) =>
+const query = ({ run, failure }: QueryParams): Effect.Effect<Omit<Queried, "error">, CmsError> =>
 	Effect.tryPromise({
 		try: run,
 		catch: (cause) =>
@@ -297,7 +297,8 @@ const query = ({ run, failure }: QueryParams) =>
 				: Effect.succeed(result),
 		),
 	);
-const loadEmDash = () => Promise.all([import("emdash"), import("emdash/runtime")]);
+const loadEmDash = (): Promise<[typeof import("emdash"), typeof import("emdash/runtime")]> =>
+	Promise.all([import("emdash"), import("emdash/runtime")]);
 
 export class CmsClient extends Context.Service<
 	CmsClient,

@@ -14,7 +14,12 @@ const TAGS = [{ id: "craft", data: { slug: "craft" } }];
 
 const context = {} as Parameters<typeof GET>[0];
 
-const sitemap = async () => {
+interface ServedSitemap {
+	response: Response;
+	body: string;
+}
+
+const sitemap = async (): Promise<ServedSitemap> => {
 	const response = await GET(context);
 
 	return { response, body: await response.text() };

@@ -1,7 +1,7 @@
 import { CONTACT_DETAILS } from "@const/index";
 import { EMAIL_BUTTON_CLASS, EMAIL_BUTTON_SHOWS_ADDRESS, EMAIL_BUTTON_SHOWS_ATTRIBUTE } from "../const";
 
-const emailAddress = () => atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA);
+const emailAddress = (): string => atob(CONTACT_DETAILS.ENCODED_EMAIL_BIANCA);
 
 function openComposer(event: Event): void {
 	if (!event.isTrusted) {

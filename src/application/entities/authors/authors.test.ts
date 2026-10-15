@@ -1,7 +1,9 @@
+import type { AuthorDTO } from "@domain/author";
 import { avatar, rawByline, rawEntry } from "@tests/doubles/cmsEntries";
 import { cmsAnswers, cmsQueries, cmsReferenceQueries, resetCms } from "@tests/doubles/cmsLayer";
+import type { LiveDataEntry } from "astro";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { ArticleFields } from "../../dto/article/types";
+import type { ArticleFields, RawArticle } from "../../dto/article/types";
 import type { RawAuthor } from "../../dto/author/types";
 import { authors } from "./authors";
 
@@ -12,7 +14,7 @@ vi.mock("@infrastructure/cms/client", async () => {
 	return { ...actual, CmsClient: cmsClientDouble(actual.CmsClient) };
 });
 
-const loadAll = async () => {
+const loadAll = async (): Promise<LiveDataEntry<AuthorDTO>[]> => {
 	const result = await authors.loader.loadCollection({ collection: "authors" });
 
 	if ("error" in result) throw result.error;
@@ -40,7 +42,7 @@ interface MakeArticleParams {
 	credits?: RawAuthor[];
 }
 
-const makeArticle = ({ slug, publishDate, credits = [BIANCA] }: MakeArticleParams) =>
+const makeArticle = ({ slug, publishDate, credits = [BIANCA] }: MakeArticleParams): RawArticle =>
 	rawEntry<ArticleFields>({
 		id: `article-${slug}`,
 		slug,

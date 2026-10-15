@@ -1,10 +1,11 @@
+import type { TagDTO } from "@domain/tag";
 import { describe, expect, it } from "vitest";
 import type { ArticleEntry } from "../../../utils/entries";
 import { toArticleCardContent } from "./card";
 
-const tag = (name: string) => ({ slug: name.toLowerCase(), name });
+const tag = (name: string): TagDTO => ({ slug: name.toLowerCase(), name });
 
-const makeArticle = (data: Record<string, unknown> = {}) =>
+const makeArticle = (data: Record<string, unknown> = {}): ArticleEntry =>
 	({
 		data: {
 			slug: "a-piece",

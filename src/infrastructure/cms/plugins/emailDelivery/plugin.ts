@@ -1,5 +1,5 @@
 import { Effect } from "effect";
-import { definePlugin } from "emdash";
+import { definePlugin, type ResolvedPlugin } from "emdash";
 import type { EmailDeliverEvent } from "emdash/plugin";
 import { EmailClient } from "../../../email/server";
 import { EMAIL_DELIVERY } from "./const";
@@ -13,7 +13,7 @@ export const deliver = ({ message }: EmailDeliverEvent): Promise<void> =>
 		),
 	);
 
-export function createPlugin() {
+export function createPlugin(): ResolvedPlugin {
 	return definePlugin({
 		id: EMAIL_DELIVERY.ID,
 		version: EMAIL_DELIVERY.VERSION,

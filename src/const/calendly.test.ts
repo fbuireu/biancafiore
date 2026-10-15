@@ -10,7 +10,7 @@ const WIDGET_STARTING_HEIGHT = /\.calendly-inline-widget \{\s*height: 700px;/;
 const FRAME_RULE = /\.calendly-inline-widget \{[^}]*?& iframe \{([^}]*)\}/;
 
 const policy = securityHeaders({ isDevelopment: false, inlineScriptHashes: [] })["Content-Security-Policy"] as string;
-const directive = (name: string) => policy.split("; ").find((entry) => entry.startsWith(`${name} `)) ?? "";
+const directive = (name: string): string => policy.split("; ").find((entry) => entry.startsWith(`${name} `)) ?? "";
 
 describe("the Calendly integration", () => {
 	it("loads its widget from the origin the policy allows a script from", () => {

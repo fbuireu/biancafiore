@@ -1,5 +1,5 @@
 import { CALENDLY, CALENDLY_WIDGET_SCRIPT } from "@const/calendly";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
 	TAB_ACTIVE_CLASS,
 	TAB_CLASS,
@@ -25,7 +25,7 @@ const renderTabs = (booking = false): void => {
 	`;
 };
 
-const bookingWidget = () => {
+const bookingWidget = (): Mock => {
 	const initInlineWidgets = vi.fn();
 
 	Object.assign(window, { Calendly: { initInlineWidgets } });
@@ -72,7 +72,12 @@ const visit = (search: string): void => {
 
 const ORIGINAL_URL = window.location.href;
 
-const watchHistory = () => ({
+interface HistorySpies {
+	push: Mock<History["pushState"]>;
+	replace: Mock<History["replaceState"]>;
+}
+
+const watchHistory = (): HistorySpies => ({
 	push: vi.spyOn(history, "pushState"),
 	replace: vi.spyOn(history, "replaceState"),
 });

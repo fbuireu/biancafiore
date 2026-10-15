@@ -1,8 +1,15 @@
 import { getLiveCollection, getLiveEntry } from "astro:content";
 import { SITE_AUTHOR_SLUG } from "@const/const";
-import type { MenuName } from "@domain/menu";
+import type { ArticleDTO, ArticleSummaryDTO } from "@domain/article";
+import type { AuthorDTO } from "@domain/author";
+import type { CityDTO } from "@domain/city";
+import type { MenuDTO, MenuName } from "@domain/menu";
+import type { ProjectDTO } from "@domain/project";
 import type { Reference } from "@domain/shared/reference";
-import { SITE_SETTINGS_ID } from "@domain/site";
+import { SITE_SETTINGS_ID, type SiteSettingsDTO } from "@domain/site";
+import type { TagIndexEntryDTO } from "@domain/tag";
+import type { TestimonialDTO } from "@domain/testimonial";
+import type { LiveDataEntry } from "astro";
 
 const ENTRY_NOT_FOUND = "LiveEntryNotFoundError";
 
@@ -23,20 +30,25 @@ const entriesOf = <ENTRY>(result: LiveResult<ENTRY>): ENTRY[] => unwrap(result).
 const entryOf = <ENTRY>(result: LiveResult<ENTRY>): ENTRY | undefined =>
 	result.error?.name === ENTRY_NOT_FOUND ? undefined : unwrap(result).entry;
 
-export const readArticles = async () => entriesOf(await getLiveCollection("articles"));
-export const readArticle = async (slug: string) => entryOf(await getLiveEntry("article", slug));
-export const readAuthors = async () => entriesOf(await getLiveCollection("authors"));
-export const readCities = async () => entriesOf(await getLiveCollection("cities"));
-export const readProjects = async () => entriesOf(await getLiveCollection("projects"));
-export const readTags = async () => entriesOf(await getLiveCollection("tags"));
-export const readTag = async (slug: string) => entryOf(await getLiveEntry("tags", slug));
-export const readTestimonials = async () => entriesOf(await getLiveCollection("testimonials"));
+export type ArticleEntry = LiveDataEntry<ArticleSummaryDTO>;
+export type WholeArticleEntry = LiveDataEntry<ArticleDTO>;
+type AuthorEntry = LiveDataEntry<AuthorDTO>;
+export type CityEntry = LiveDataEntry<CityDTO>;
+export type TestimonialEntry = LiveDataEntry<TestimonialDTO>;
 
-export type ArticleEntry = Awaited<ReturnType<typeof readArticles>>[number];
-export type WholeArticleEntry = NonNullable<Awaited<ReturnType<typeof readArticle>>>;
-type AuthorEntry = Awaited<ReturnType<typeof readAuthors>>[number];
-export type CityEntry = Awaited<ReturnType<typeof readCities>>[number];
-export type TestimonialEntry = Awaited<ReturnType<typeof readTestimonials>>[number];
+export const readArticles = async (): Promise<ArticleEntry[]> => entriesOf(await getLiveCollection("articles"));
+export const readArticle = async (slug: string): Promise<WholeArticleEntry | undefined> =>
+	entryOf(await getLiveEntry("article", slug));
+export const readAuthors = async (): Promise<AuthorEntry[]> => entriesOf(await getLiveCollection("authors"));
+export const readCities = async (): Promise<CityEntry[]> => entriesOf(await getLiveCollection("cities"));
+export const readProjects = async (): Promise<LiveDataEntry<ProjectDTO>[]> =>
+	entriesOf(await getLiveCollection("projects"));
+export const readTags = async (): Promise<LiveDataEntry<TagIndexEntryDTO>[]> =>
+	entriesOf(await getLiveCollection("tags"));
+export const readTag = async (slug: string): Promise<LiveDataEntry<TagIndexEntryDTO> | undefined> =>
+	entryOf(await getLiveEntry("tags", slug));
+export const readTestimonials = async (): Promise<TestimonialEntry[]> =>
+	entriesOf(await getLiveCollection("testimonials"));
 
 interface ResolveArticlesParams {
 	references: Reference<"articles">[];
@@ -75,7 +87,7 @@ interface ReadMenuParams {
 	prerendered: boolean;
 }
 
-export async function readSiteSettings(prerendered: boolean) {
+export async function readSiteSettings(prerendered: boolean): Promise<SiteSettingsDTO> {
 	const settings = entryOf(await getLiveEntry("site", { id: SITE_SETTINGS_ID, prerendered }));
 
 	if (!settings) throw new Error("The site collection answered no settings entry");
@@ -83,7 +95,7 @@ export async function readSiteSettings(prerendered: boolean) {
 	return settings.data;
 }
 
-export async function readMenu({ name, prerendered }: ReadMenuParams) {
+export async function readMenu({ name, prerendered }: ReadMenuParams): Promise<MenuDTO> {
 	const menu = entryOf(await getLiveEntry("menus", { id: name, prerendered }));
 
 	if (!menu) throw new Error(`The menus collection answered no ${name} menu`);

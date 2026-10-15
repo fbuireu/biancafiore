@@ -5,7 +5,7 @@ import { applyColumns, initializeColumnsToggle, isColumnsEnabled } from "./layou
 
 const MARKUP = `<div class="${ARTICLE_BODY_CLASS}"></div><button class="${COLUMNS_TOGGLE_BUTTON_CLASS}"></button>`;
 
-const memoryStorage = () => {
+const memoryStorage = (): Pick<Storage, "getItem" | "setItem" | "clear"> => {
 	const values = new Map<string, string>();
 
 	return {
@@ -17,9 +17,9 @@ const memoryStorage = () => {
 	};
 };
 
-const article = () => document.querySelector(`.${ARTICLE_BODY_CLASS}`) as HTMLElement;
-const toggle = () => document.querySelector(`.${COLUMNS_TOGGLE_BUTTON_CLASS}`) as HTMLButtonElement;
-const isTwoColumn = () => article().classList.contains(ARTICLE_COLUMNS_ACTIVE_CLASS);
+const article = (): HTMLElement => document.querySelector(`.${ARTICLE_BODY_CLASS}`) as HTMLElement;
+const toggle = (): HTMLButtonElement => document.querySelector(`.${COLUMNS_TOGGLE_BUTTON_CLASS}`) as HTMLButtonElement;
+const isTwoColumn = (): boolean => article().classList.contains(ARTICLE_COLUMNS_ACTIVE_CLASS);
 
 beforeEach(() => {
 	vi.stubGlobal("localStorage", memoryStorage());

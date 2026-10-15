@@ -16,7 +16,8 @@ vi.mock("resend", () => ({
 
 const API_KEY_SECRET = "RESEND_API_KEY";
 
-const build = () => Effect.runPromiseExit(EmailClient.pipe(Effect.provide(EmailClient.layer)));
+const build = (): Promise<Exit.Exit<EmailClient["Service"]>> =>
+	Effect.runPromiseExit(EmailClient.pipe(Effect.provide(EmailClient.layer)));
 
 afterEach(() => {
 	resetSecrets();
@@ -50,7 +51,7 @@ describe("EmailClient.layer", () => {
 	});
 });
 
-const sendContact = async () => {
+const sendContact = async (): Promise<Exit.Exit<{ id: string }, EmailError>> => {
 	setSecret({ name: API_KEY_SECRET, value: "re_test_key" });
 
 	const exit = await build();

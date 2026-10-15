@@ -24,7 +24,7 @@ const stubDocument = (): { appendChild: ReturnType<typeof vi.fn>; scripts: Stubb
 	return { appendChild, scripts };
 };
 
-const withToken = async (token: string) => {
+const withToken = async (token: string): Promise<typeof import("./telemetry")> => {
 	vi.resetModules();
 	vi.doMock("astro:env/client", () => ({ BETTER_STACK_TRACKING_TOKEN: token }));
 

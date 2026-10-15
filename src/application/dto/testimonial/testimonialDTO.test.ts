@@ -2,9 +2,9 @@ import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { rawEntry, rawImage } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
 import { createTestimonials } from ".";
-import type { TestimonialFields } from "./types";
+import type { RawTestimonial, TestimonialFields } from "./types";
 
-const makeTestimonial = (fields: Partial<TestimonialFields> = {}) =>
+const makeTestimonial = (fields: Partial<TestimonialFields> = {}): RawTestimonial =>
 	rawEntry<TestimonialFields>({
 		data: {
 			author: "Ada Lovelace",

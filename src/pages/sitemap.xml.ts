@@ -12,7 +12,7 @@ const INDEXED_PAGES = [
 	PAGES_ROUTES.CONTACT,
 ];
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async (): Promise<Response> => {
 	const [articles, tags] = await Promise.all([readArticles(), readTags()]);
 
 	return new Response(

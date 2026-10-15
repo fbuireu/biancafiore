@@ -1,8 +1,10 @@
+import type { ArticleDTO } from "@domain/article";
 import type { CmsReference } from "@infrastructure/cms/entries";
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { avatar, rawByline, rawEntry, rawImage, term } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
 import type { RawAuthor } from "../author/types";
+import type { PortableTextContent } from "../shared/portableText";
 import type { RawTag } from "../tag/types";
 import { createArticle, createArticleSummaries, createArticles } from ".";
 import type { AnyRawArticle, ArticleFields, ArticleReference, RawArticle } from "./types";
@@ -14,7 +16,7 @@ interface BlockParams {
 	style?: string;
 }
 
-const block = ({ text, style = "normal" }: BlockParams) => ({
+const block = ({ text, style = "normal" }: BlockParams): PortableTextContent[number] => ({
 	_type: "block",
 	_key: `k${key++}`,
 	style,
@@ -22,14 +24,15 @@ const block = ({ text, style = "normal" }: BlockParams) => ({
 	markDefs: [],
 });
 
-const paragraph = (text: string) => block({ text });
+const paragraph = (text: string): PortableTextContent[number] => block({ text });
 
 interface HeadingParams {
 	level: number;
 	value: string;
 }
 
-const heading = ({ level, value }: HeadingParams) => block({ text: value, style: `h${level}` });
+const heading = ({ level, value }: HeadingParams): PortableTextContent[number] =>
+	block({ text: value, style: `h${level}` });
 
 const AUTHOR = rawByline({
 	slug: "bianca-fiore",
@@ -99,9 +102,9 @@ const makeArticle = ({
 		references: { related_articles: relatedArticles },
 	});
 
-const related = (slug: string) => ({ id: `article-${slug.trim()}` });
+const related = (slug: string): CmsReference => ({ id: `article-${slug.trim()}` });
 
-const create = (rawArticles: AnyRawArticle[]) => createArticles({ rawArticles, rawAuthors: [AUTHOR] });
+const create = (rawArticles: AnyRawArticle[]): ArticleDTO[] => createArticles({ rawArticles, rawAuthors: [AUTHOR] });
 
 describe("createArticles defaults for optional CMS fields", () => {
 	it("defaults isFavorite and isRepublished to false when the CMS omits both flags", () => {

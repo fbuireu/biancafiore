@@ -119,7 +119,12 @@ interface ResponsiveSourceParams {
 	width?: number;
 }
 
-const responsiveSource = ({ source, width }: ResponsiveSourceParams) => ({
+interface ResponsiveSource {
+	src: string;
+	srcset: string;
+}
+
+const responsiveSource = ({ source, width }: ResponsiveSourceParams): ResponsiveSource => ({
 	src: getOptimizedImageUrl({ source, options: { width: width ?? DEFAULT_DISPLAY_WIDTH, format: "webp" } }),
 	srcset: getOptimizedSrcset({ source, widths: SRCSET_WIDTHS, options: { format: "webp" } }),
 });

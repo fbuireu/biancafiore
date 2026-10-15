@@ -3,7 +3,8 @@ import { imagePlaceholder, MAX_PLACEHOLDER_HEIGHT, PLACEHOLDER_WIDTH } from "./i
 
 const BLURHASH = "LXCacDM{RjxuOxogkCR.Dkt7t7Rj";
 
-const bytesOf = (dataUrl: string) => Buffer.from(dataUrl.replace("data:image/bmp;base64,", ""), "base64");
+const bytesOf = (dataUrl: string): Buffer<ArrayBuffer> =>
+	Buffer.from(dataUrl.replace("data:image/bmp;base64,", ""), "base64");
 
 describe("imagePlaceholder", () => {
 	it("decodes the blurhash EmDash stored on upload into a bitmap the page inlines, so no request is made for it", () => {

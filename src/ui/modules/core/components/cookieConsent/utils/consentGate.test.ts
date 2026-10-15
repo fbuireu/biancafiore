@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { ANALYTICS_CATEGORY, CONSENT_COOKIE_NAME, CONSENT_STATUS, consentBootstrapScript } from "./consentGate";
 
-const stored = (value: unknown) => `${CONSENT_COOKIE_NAME}=${encodeURIComponent(JSON.stringify(value))}`;
+const stored = (value: unknown): string => `${CONSENT_COOKIE_NAME}=${encodeURIComponent(JSON.stringify(value))}`;
 
 const runBootstrap = (cookie: string): { command: string; payload: Record<string, string> } => {
 	const dataLayer: unknown[] = [];
@@ -18,7 +18,7 @@ const runBootstrap = (cookie: string): { command: string; payload: Record<string
 	return { command, payload };
 };
 
-const analyticsStorage = (cookie: string) => runBootstrap(cookie).payload.analytics_storage;
+const analyticsStorage = (cookie: string): string => runBootstrap(cookie).payload.analytics_storage;
 
 describe("the script that actually ships", () => {
 	it("grants only when the visitor accepted the analytics category by name", () => {

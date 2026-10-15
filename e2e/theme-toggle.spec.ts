@@ -12,14 +12,15 @@ import { expect, test } from "./fixtures";
 const TOGGLE = `.${THEME_TOGGLE_CLASS}`;
 const TOGGLE_INPUT = `.${THEME_TOGGLE_INPUT_CLASS}`;
 
-const storedTheme = (page: Page) => page.evaluate((key) => localStorage.getItem(key), THEME_STORAGE_KEY);
+const storedTheme = (page: Page): Promise<string | null> =>
+	page.evaluate((key) => localStorage.getItem(key), THEME_STORAGE_KEY);
 
 interface ChooseThemeParams {
 	page: Page;
 	theme: Theme;
 }
 
-const chooseTheme = ({ page, theme }: ChooseThemeParams) =>
+const chooseTheme = ({ page, theme }: ChooseThemeParams): Promise<void> =>
 	page.evaluate(([key, value]) => localStorage.setItem(key, value), [THEME_STORAGE_KEY, theme]);
 
 interface SettleParams {
@@ -27,7 +28,7 @@ interface SettleParams {
 	theme: Theme;
 }
 
-const settle = async ({ page, theme }: SettleParams) => {
+const settle = async ({ page, theme }: SettleParams): Promise<void> => {
 	await expect(page.locator("html")).toHaveAttribute(THEME_ATTRIBUTE, theme);
 	await expect(page.locator(TOGGLE_INPUT)).toBeChecked({ checked: theme === Theme.DARK });
 };

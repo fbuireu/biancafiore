@@ -5,15 +5,15 @@ import { initReadingProgress } from "./progress";
 
 const MARKUP = `<div class="${ARTICLE_BODY_CLASS}"></div><div class="${READING_PROGRESS_CLASS}"></div>`;
 
-const bar = () => document.querySelector<HTMLElement>(`.${READING_PROGRESS_CLASS}`) as HTMLElement;
+const bar = (): HTMLElement => document.querySelector<HTMLElement>(`.${READING_PROGRESS_CLASS}`) as HTMLElement;
 
-const article = (offsetHeight: number) => {
+const article = (offsetHeight: number): void => {
 	const element = document.querySelector<HTMLElement>(`.${ARTICLE_BODY_CLASS}`) as HTMLElement;
 
 	Object.defineProperty(element, "offsetHeight", { value: offsetHeight, configurable: true });
 };
 
-const scrollTo = (scrollY: number) => {
+const scrollTo = (scrollY: number): void => {
 	vi.stubGlobal("scrollY", scrollY);
 	window.dispatchEvent(new Event("scroll"));
 };

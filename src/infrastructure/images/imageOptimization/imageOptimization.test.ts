@@ -5,7 +5,7 @@ import { getOptimizedImageUrl, getOptimizedSrcset } from "./imageOptimization";
 const SOURCE = "/_emdash/api/media/file/hero.jpg";
 const TRANSFORMED_SOURCE = "_emdash/api/media/file/hero.jpg";
 
-const useCdn = (cdn: string) => vi.stubEnv("IMAGE_CDN", cdn);
+const useCdn = (cdn: string): typeof vi => vi.stubEnv("IMAGE_CDN", cdn);
 
 afterEach(() => {
 	vi.unstubAllEnvs();

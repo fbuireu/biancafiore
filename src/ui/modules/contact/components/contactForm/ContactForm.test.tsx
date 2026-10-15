@@ -21,7 +21,7 @@ interface RenderFormParams {
 const renderForm = ({
 	submit = vi.fn<(contactData: FormData) => Promise<ContactSubmission>>(async () => ({ ok: true })),
 	getRecaptchaToken = vi.fn<() => Promise<string | undefined>>(async () => TOKEN),
-}: RenderFormParams = {}) => {
+}: RenderFormParams = {}): Required<RenderFormParams> => {
 	render(<ContactForm submit={submit} getRecaptchaToken={getRecaptchaToken} />);
 
 	return { submit, getRecaptchaToken };
@@ -34,10 +34,10 @@ interface AnswerParams {
 	value: string;
 }
 
-const answer = ({ label, value }: AnswerParams) =>
+const answer = ({ label, value }: AnswerParams): boolean =>
 	fireEvent.change(screen.getByLabelText(label), { target: { value } });
 
-const send = async () => {
+const send = async (): Promise<void> => {
 	answer({ label: "(your name)", value: VISITOR.name });
 	answer({ label: "(your email)", value: VISITOR.email });
 	answer({ label: "(your message)", value: VISITOR.message });
@@ -48,7 +48,8 @@ const send = async () => {
 	});
 };
 
-const sentFields = (contactData: FormData) => Object.fromEntries(contactData.entries());
+const sentFields = (contactData: FormData): Record<string, FormDataEntryValue> =>
+	Object.fromEntries(contactData.entries());
 
 beforeEach(() => {
 	vi.useFakeTimers();

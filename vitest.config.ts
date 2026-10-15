@@ -45,7 +45,7 @@ const jobSummary = (titleOf: (testModules: readonly TestModule[]) => string): Re
 	};
 };
 
-const projectsRun = (testModules: readonly TestModule[]) =>
+const projectsRun = (testModules: readonly TestModule[]): string =>
 	`Vitest run: ${[...new Set(testModules.map((module) => module.project.name))].sort().join(" + ")}`;
 
 export default defineConfig({

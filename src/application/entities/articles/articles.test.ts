@@ -1,3 +1,4 @@
+import type { ArticleDTO, ArticleSummaryDTO } from "@domain/article";
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { avatar, BLURHASH, rawByline, rawEntry, rawImage } from "@tests/doubles/cmsEntries";
 import {
@@ -11,8 +12,9 @@ import {
 	resetCms,
 } from "@tests/doubles/cmsLayer";
 import { escapedRequests } from "@tests/doubles/network";
+import type { LiveDataEntry } from "astro";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { ArticleFields } from "../../dto/article/types";
+import type { ArticleFields, RawArticle } from "../../dto/article/types";
 import { article, articles, RELATED_ARTICLES_FIELD } from "./articles";
 
 vi.mock("@infrastructure/cms/client", async () => {
@@ -37,9 +39,9 @@ interface MakeArticleParams {
 	featuredImage?: ArticleFields["featured_image"];
 }
 
-const articleId = (slug: string) => `article-${slug.trim()}`;
+const articleId = (slug: string): string => `article-${slug.trim()}`;
 
-const makeArticle = ({ slug, publishDate, isFavorite, featuredImage }: MakeArticleParams) =>
+const makeArticle = ({ slug, publishDate, isFavorite, featuredImage }: MakeArticleParams): RawArticle =>
 	rawEntry<ArticleFields>({
 		id: articleId(slug),
 		slug,
@@ -54,11 +56,11 @@ const makeArticle = ({ slug, publishDate, isFavorite, featuredImage }: MakeArtic
 		},
 	});
 
-const answer = (rawArticles: ReturnType<typeof makeArticle>[]) => {
+const answer = (rawArticles: ReturnType<typeof makeArticle>[]): void => {
 	cmsAnswers({ articles: rawArticles });
 };
 
-const loadAll = async () => {
+const loadAll = async (): Promise<LiveDataEntry<ArticleSummaryDTO>[]> => {
 	const result = await articles.loader.loadCollection({ collection: "articles" });
 
 	if ("error" in result) throw result.error;
@@ -66,7 +68,8 @@ const loadAll = async () => {
 	return result.entries;
 };
 
-const loadOne = (slug: string) => article.loader.loadEntry({ filter: { id: slug }, collection: "article" });
+const loadOne = (slug: string): Promise<LiveDataEntry<ArticleDTO> | { error: Error } | undefined> =>
+	article.loader.loadEntry({ filter: { id: slug }, collection: "article" });
 
 beforeEach(() => {
 	resetCms();

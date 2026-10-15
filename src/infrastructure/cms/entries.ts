@@ -1,4 +1,5 @@
 import { Effect, ManagedRuntime } from "effect";
+import type { CmsError } from "../errors";
 import {
 	CmsClient,
 	type CmsItem,
@@ -106,7 +107,11 @@ const fetchEveryReference = Effect.fnUntraced(function* ({ cms, collection, id, 
 	return references;
 });
 
-const withReferences = ({ cms, query, items }: WithReferencesParams) =>
+const withReferences = ({
+	cms,
+	query,
+	items,
+}: WithReferencesParams): Effect.Effect<CmsEntry<Record<string, unknown>, string>[], CmsError> =>
 	Effect.forEach(
 		items,
 		(item) =>

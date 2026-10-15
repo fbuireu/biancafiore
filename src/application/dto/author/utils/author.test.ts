@@ -1,7 +1,7 @@
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { avatar, rawByline, rawEntry } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
-import type { ArticleFields } from "../../article/types";
+import type { ArticleFields, RawArticle } from "../../article/types";
 import type { RawAuthor } from "../types";
 import { bylineAuthor, createAuthor, creditedAuthors, credits } from "./author";
 
@@ -33,7 +33,7 @@ interface MakeRawArticleParams {
 	bylines?: RawAuthor[];
 }
 
-const makeRawArticle = ({ slug = "an-article", bylines = [] }: MakeRawArticleParams = {}) =>
+const makeRawArticle = ({ slug = "an-article", bylines = [] }: MakeRawArticleParams = {}): RawArticle =>
 	rawEntry<ArticleFields>({
 		id: "01ARTICLE",
 		slug,

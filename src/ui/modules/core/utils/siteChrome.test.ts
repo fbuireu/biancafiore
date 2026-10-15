@@ -1,8 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import type { SiteChrome } from "./siteChrome";
 
-const at = (pathname: string) => new URL(pathname, "https://biancafiore.test");
+const at = (pathname: string): URL => new URL(pathname, "https://biancafiore.test");
 
-const siteChromeWith = async (hideChrome: boolean) => {
+const siteChromeWith = async (hideChrome: boolean): Promise<(url: URL) => SiteChrome> => {
 	vi.doMock("astro:env/client", async () => ({
 		...(await vi.importActual<typeof import("astro:env/client")>("astro:env/client")),
 		HIDE_CHROME: hideChrome,

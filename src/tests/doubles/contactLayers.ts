@@ -110,9 +110,9 @@ export function emailDouble({ id = "email-id", failWith }: EmailDoubleParams = {
 	};
 }
 
-export const databaseError = (message: string) => new DatabaseError({ message });
+export const databaseError = (message: string): DatabaseError => new DatabaseError({ message });
 
-export const emailError = (message: string) => new EmailError({ message });
+export const emailError = (message: string): EmailError => new EmailError({ message });
 
 export interface LoggedLine {
 	level: LogLevel;

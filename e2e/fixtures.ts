@@ -1,7 +1,7 @@
 import { test as base, expect } from "@playwright/test";
 import { isPreviewRequest, previewAccessHeaders, type RequestHeaders, withAccessHeaders } from "./previewAccess";
 
-const throughPreviewAccess = (access: RequestHeaders) =>
+const throughPreviewAccess = (access: RequestHeaders): typeof base =>
 	base.extend({
 		context: async ({ context, baseURL }, use) => {
 			if (baseURL) {

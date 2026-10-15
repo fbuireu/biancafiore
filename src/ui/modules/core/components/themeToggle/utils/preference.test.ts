@@ -1,16 +1,21 @@
 import { runInNewContext } from "node:vm";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, type Mock, vi } from "vitest";
 import { THEME_ATTRIBUTE, THEME_STORAGE_KEY, Theme } from "../const";
 import { readTheme, THEME_BOOTSTRAP_SCRIPT, writeTheme } from "./preference";
 
 const STORED_VALUES = [null, "dark", "light", "system", "sepia", ""];
 
-const storeHolding = (stored: string | null) => ({
+const storeHolding = (stored: string | null): Pick<Storage, "getItem" | "setItem"> => ({
 	getItem: (key: string) => (key === THEME_STORAGE_KEY ? stored : null),
 	setItem: vi.fn(),
 });
 
-const boot = (stored: string | null) => {
+interface BootedPage {
+	documentElement: { setAttribute: Mock; style: { colorScheme?: string } };
+	store: Pick<Storage, "getItem" | "setItem">;
+}
+
+const boot = (stored: string | null): BootedPage => {
 	const store = storeHolding(stored);
 	const documentElement = { setAttribute: vi.fn(), style: {} as { colorScheme?: string } };
 

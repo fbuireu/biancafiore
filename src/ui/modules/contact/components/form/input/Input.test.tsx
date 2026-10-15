@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, type RenderResult, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { Input } from "./Input";
 
@@ -6,7 +6,7 @@ afterEach(cleanup);
 
 type InputProps = Parameters<typeof Input>[0];
 
-const renderInput = (props: Partial<InputProps> = {}) =>
+const renderInput = (props: Partial<InputProps> = {}): RenderResult =>
 	render(<Input id="email" label="Email" hasError={false} {...props} />);
 
 const field = (): HTMLInputElement => screen.getByLabelText("Email") as HTMLInputElement;

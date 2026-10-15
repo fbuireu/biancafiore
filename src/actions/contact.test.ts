@@ -8,11 +8,11 @@ import {
 	emailError,
 	loggerDouble,
 } from "@tests/doubles/contactLayers";
-import { type RecaptchaDoubleParams, recaptchaDouble } from "@tests/doubles/network";
+import { type RecaptchaDouble, type RecaptchaDoubleParams, recaptchaDouble } from "@tests/doubles/network";
 import { failureOf } from "@tests/helpers/exit";
 import { Effect, Exit, Layer } from "effect";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { submitContact } from "./contact";
+import { type ContactError, submitContact } from "./contact";
 
 const VALID_INPUT = {
 	name: "Ada",
@@ -21,7 +21,7 @@ const VALID_INPUT = {
 	recaptcha: "token",
 };
 
-const recaptchaResponds = (verdict: RecaptchaDoubleParams) => recaptchaDouble(verdict);
+const recaptchaResponds = (verdict: RecaptchaDoubleParams): RecaptchaDouble => recaptchaDouble(verdict);
 
 const log = loggerDouble();
 
@@ -31,7 +31,7 @@ interface RunParams {
 	input?: typeof VALID_INPUT;
 }
 
-const run = ({ database, email, input = VALID_INPUT }: RunParams) =>
+const run = ({ database, email, input = VALID_INPUT }: RunParams): Promise<Exit.Exit<{ ok: boolean }, ContactError>> =>
 	Effect.runPromiseExit(
 		submitContact(input).pipe(Effect.provide(Layer.mergeAll(database.layer, email.layer, log.layer))),
 	);

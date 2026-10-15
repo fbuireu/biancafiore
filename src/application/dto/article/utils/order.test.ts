@@ -1,6 +1,6 @@
 import { rawEntry } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
-import type { ArticleFields } from "../types";
+import type { ArticleFields, RawArticle } from "../types";
 import { orderArticleReferences } from "./order";
 
 interface MakeArticleParams {
@@ -11,13 +11,13 @@ interface MakeArticleParams {
 
 const DEFAULT_PUBLISH_DATE = "2024-03-15";
 
-const makeArticle = ({ slug, publishDate = DEFAULT_PUBLISH_DATE, isFavorite }: MakeArticleParams) =>
+const makeArticle = ({ slug, publishDate = DEFAULT_PUBLISH_DATE, isFavorite }: MakeArticleParams): RawArticle =>
 	rawEntry<ArticleFields>({
 		slug,
 		data: { title: slug, content: [], publish_date: publishDate, is_favorite: isFavorite },
 	});
 
-const idsOf = (references: { id: string }[]) => references.map(({ id }) => id);
+const idsOf = (references: { id: string }[]): string[] => references.map(({ id }) => id);
 
 describe("orderArticleReferences", () => {
 	it("answers articles collection references, so no caller writes that literal", () => {

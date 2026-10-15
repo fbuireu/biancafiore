@@ -18,7 +18,7 @@ interface BoxOfParams {
 }
 
 const boxOf =
-	({ left, width }: BoxOfParams) =>
+	({ left, width }: BoxOfParams): (() => DOMRect) =>
 	() =>
 		({ left, width, right: left + width }) as DOMRect;
 
@@ -28,7 +28,16 @@ interface RenderParams {
 	looping?: boolean;
 }
 
-const render = ({ slides, dots = false, looping = false }: RenderParams) => {
+interface RenderedSlider {
+	wrapper: HTMLElement;
+	track: HTMLElement;
+	previous: HTMLButtonElement;
+	next: HTMLButtonElement;
+	slides: HTMLElement[];
+	dots: HTMLButtonElement[];
+}
+
+const render = ({ slides, dots = false, looping = false }: RenderParams): RenderedSlider => {
 	document.body.innerHTML = `
 		<div class="${SLIDER_WRAPPER_CLASS}" ${SLIDER_LOOPING_ATTRIBUTE}="${looping}">
 			<button class="${SLIDER_BUTTON_CLASS} ${SLIDER_PREVIOUS_CLASS}" disabled></button>
