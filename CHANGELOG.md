@@ -1,3 +1,10 @@
+## [1.29.5](https://github.com/fbuireu/biancafiore/compare/v1.29.4...v1.29.5) (2026-10-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency react-hook-form to v7.90.0 ([#1208](https://github.com/fbuireu/biancafiore/issues/1208)) ([f3c74e3](https://github.com/fbuireu/biancafiore/commit/f3c74e3949d5e1d98a0c7284a512f94d36548085))
+
 ## [1.29.4](https://github.com/fbuireu/biancafiore/compare/v1.29.3...v1.29.4) (2026-10-15)
 
 
