@@ -123,7 +123,7 @@
 		"husky": "9.1.7",
 		"lightningcss": "1.33.0",
 		"lint-staged": "17.6.0",
-		"msw": "3.0.2",
+		"msw": "3.0.3",
 		"oxc-transform-react": "0.153.0",
 		"semantic-release": "25.0.9",
 		"typescript": "6.0.3",
