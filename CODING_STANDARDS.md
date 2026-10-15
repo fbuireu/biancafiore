@@ -131,6 +131,7 @@ No rule below restates these, and a diff that breaks one fails CI:
 - `S12` **hard**: Make an animation's un-animated state the one a visitor without the feature sees, with `prefers-reduced-motion` handled once in `reset.css` unless a component's un-animated state differs from its end state, because content must never stay hidden behind a missing feature ([ADR 0007](./docs/adr/0007-css-scroll-driven-reveal-animations.md)).
 - `S13` **judgement**: Size an iframe that should follow its content with `frame-sizing: content-height` on top of `height: auto` and a `min-height` equal to the size it has today, because the embedded page decides when the property takes effect: until it opts in with `<meta name="responsive-embedded-sizing">`, an iframe left at `height: auto` falls back to 150px in a browser that implements the property.
 - `S14` **judgement**: Use modern CSS against the Chromium-forward baseline (`light-dark()`, `color-mix`, `round()`, `@starting-style`) with no prefix stacks or polyfills, and add JavaScript only when CSS cannot express the effect ([ADR 0009](./docs/adr/0009-css-first-javascript-only-when-necessary.md)).
+- `S15` **judgement**: Align an icon beside a label that can wrap with the label's first line, through `.icon-first-line` on the icon and a row aligned to the start, never with a hand-tuned margin, because a nudge holds for one font size and one icon size and a centred row moves the icon to the middle of a wrapped label.
 
 ## Tests
 

@@ -118,6 +118,10 @@
 		}
 	}
 
+	.icon-first-line {
+		translate: 0 calc((1lh - 100%) / 2);
+	}
+
 	.editorial-cta {
 		align-items: baseline;
 		color: var(--ink);

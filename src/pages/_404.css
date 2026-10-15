@@ -14,8 +14,10 @@
 	transition: color 0.3s ease;
 }
 
-.error-404__link-arrow {
-	align-self: center;
+.error-404__link-icon {
+	align-self: start;
+	display: flex;
+	font-size: var(--font-size-h6);
 }
 
 .error-404__link {
