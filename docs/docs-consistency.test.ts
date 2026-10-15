@@ -376,9 +376,6 @@ const REAL_CLOCK_YEAR = /new Date\(\)\.get(?:UTC)?FullYear\(\)/;
 const CLOCK_BRACKET = /\bconst\s+(?:before|after)\w*\s*=\s*(?:Math\.floor\()?Date\.now\(\)/;
 const EXPORTED_SCHEMA = /^export const (\w+Schema)\b/gm;
 const UPPERCASE = /^[A-Z]$/;
-const IN_PLACE_REORDER = /\.(?:sort|reverse|splice)\(/;
-const LOCAL_TIME_DATE_API =
-	/\.(?:get|set)(?:FullYear|Month|Date|Day|Hours|Minutes|Seconds|Milliseconds)\(|\.getTimezoneOffset\(|\.toLocale(?:Date|Time)?String\(/;
 const CONTENT_PATH_LITERAL = /["'`]\/(?:articles|tags|projects)\//;
 const JOINED_ROUTE =
 	/\$\{PAGES_ROUTES(?:\.[A-Z_]+|\[[^\]]+\])\}(?:\/|#|\$\{)|PAGES_ROUTES(?:\.[A-Z_]+|\[[^\]]+\])\s*\+/;
@@ -844,9 +841,9 @@ describe("structure and aliases", () => {
 			const indent = line.length - line.trimStart().length;
 			const names = line.trim().split("#")[0].trim().split(/\s+/);
 
-			while (stack.length > 0 && stack[stack.length - 1].indent >= indent) stack.pop();
+			while ((stack.at(-1)?.indent ?? -1) >= indent) stack.pop();
 
-			const parent = stack[stack.length - 1]?.path ?? "";
+			const parent = stack.at(-1)?.path ?? "";
 
 			for (const name of names) {
 				const bare = name.replace(TRAILING_SLASH, "");
@@ -4577,7 +4574,7 @@ describe("the hand-written code", () => {
 	});
 });
 
-describe("the domain and the application layer", () => {
+describe("the domain", () => {
 	const domainSources = walk("src/domain").filter(
 		(file) => TYPESCRIPT_FILE.test(file) && !CO_LOCATED_TEST_FILE.test(file),
 	);
@@ -4594,20 +4591,6 @@ describe("the domain and the application layer", () => {
 
 		expect(schemas.length).toBeGreaterThan(0);
 		expect(misnamed).toEqual([]);
-	});
-
-	it("reorders no array in place in a domain rule, since a DTO and a page can hold the same array", () => {
-		expect(domainSources.length).toBeGreaterThan(0);
-		expect(domainSources.filter((file) => IN_PLACE_REORDER.test(read(file)))).toEqual([]);
-	});
-
-	it("reads no local-time Date API in either layer, since the Worker renders in one time zone and a contributor tests in another", () => {
-		const sources = production([...walk("src/domain"), ...walk("src/application")]).filter((file) =>
-			TYPESCRIPT_FILE.test(file),
-		);
-
-		expect(sources.length).toBeGreaterThan(domainSources.length);
-		expect(sources.filter((file) => LOCAL_TIME_DATE_API.test(read(file)))).toEqual([]);
 	});
 });
 

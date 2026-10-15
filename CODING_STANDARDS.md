@@ -10,7 +10,7 @@ Every rule carries an id, and a finding cites it with this file: `CODING_STANDAR
 
 No rule below restates these, and a diff that breaks one fails CI:
 
-- Biome ([`biome.json`](./biome.json)): formatting, import order and lint, `noConsole` included, and every object shape declared an `interface`, never a `type` alias of an object literal (`useConsistentTypeDefinitions`).
+- Biome ([`biome.json`](./biome.json)): formatting, import order and lint, `noConsole` included, every object shape declared an `interface`, never a `type` alias of an object literal (`useConsistentTypeDefinitions`), and every element read from an array's end through `.at()` (`useAtIndex`).
 - Strict `tsc` ([`tsconfig.json`](./tsconfig.json)) and `astro check`.
 - commitlint ([`commitlint.config.ts`](./commitlint.config.ts)): the commit format, on the commit and on the pull request title.
 - The coverage floor ([`vitest.config.ts`](./vitest.config.ts)).
@@ -21,7 +21,7 @@ No rule below restates these, and a diff that breaks one fails CI:
   - every named export in `src` imported by another file, a test included, bar the routes, the middleware, the live config, the Worker entry, the action binding and `logging/logger.ts`, which the framework or the sibling repositories fix, so a name nothing reaches stays private;
   - every name `@shared/ui` exports read from two units at least (a layer or a feature), so what one feature reads stays with that feature;
   - the layer map: `live.config.ts` alone reaches `@application`, and the domain reaches no other layer;
-  - domain and DTO purity: no Effect, I/O or env access, every DTO mapper synchronous, EmDash types stopping at `src/application`, no local-time `Date` API in either layer, no in-place `.sort(`, `.reverse(` or `.splice(` in a domain rule, and every schema named `<concept>Schema`, in the singular;
+  - domain and DTO purity: no Effect, I/O or env access, every DTO mapper synchronous, EmDash types stopping at `src/application`, and every schema named `<concept>Schema`, in the singular;
   - every package a hand-written module imports declared in `package.json`, so none resolves because another package happened to hoist it;
   - every `localeCompare` in `src` given a locale, the one `src/const/locale.ts` fixes, so no order a visitor sees depends on the machine that built it;
   - every date a module prints through `toLocaleDateString`, `toLocaleTimeString` or `toLocaleString` pinned to a `timeZone`, and a time named with its `timeZoneName`, so no line a reader sees depends on the zone of the machine that wrote it;

@@ -34,6 +34,7 @@
 				"noConsole": "error"
 			},
 			"style": {
+				"useAtIndex": "error",
 				"useConsistentTypeDefinitions": { "level": "error", "options": { "style": "interface" } }
 			}
 		}
