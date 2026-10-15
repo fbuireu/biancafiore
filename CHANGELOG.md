@@ -1,3 +1,10 @@
+## [1.29.2](https://github.com/fbuireu/biancafiore/compare/v1.29.1...v1.29.2) (2026-10-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency drizzle-orm to v0.45.4 ([#1203](https://github.com/fbuireu/biancafiore/issues/1203)) ([e5acacb](https://github.com/fbuireu/biancafiore/commit/e5acacb5452abd71fc6dadbb83a3fd44f79a695f))
+
 ## [1.29.1](https://github.com/fbuireu/biancafiore/compare/v1.29.0...v1.29.1) (2026-10-15)
 
 
