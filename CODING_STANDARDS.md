@@ -11,7 +11,7 @@ Every rule carries an id, and a finding cites it with this file: `CODING_STANDAR
 No rule below restates these, and a diff that breaks one fails CI:
 
 - Biome ([`biome.json`](./biome.json)): formatting, import order and lint, `noConsole` included, every object shape declared an `interface`, never a `type` alias of an object literal (`useConsistentTypeDefinitions`), and every element read from an array's end through `.at()` (`useAtIndex`).
-- Strict `tsc` ([`tsconfig.json`](./tsconfig.json)) and `astro check`.
+- Strict `tsc` ([`tsconfig.json`](./tsconfig.json)) and `astro check`, which through `lib` reject a built-in the Workers runtime or a stable Safari lacks, `Temporal` among them.
 - commitlint ([`commitlint.config.ts`](./commitlint.config.ts)): the commit format, on the commit and on the pull request title.
 - The coverage floor ([`vitest.config.ts`](./vitest.config.ts)).
 - `pnpm test:docs` ([`docs/docs-consistency.test.ts`](./docs/docs-consistency.test.ts)), which holds every document to the claims it can check, every Mermaid diagram to the `layout: dagre` it was drawn with, so a renderer that defaults to ELK cannot redraw it, and the code to these:

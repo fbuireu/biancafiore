@@ -18,6 +18,8 @@ Reviewing a diff: [CODING_STANDARDS.md](./CODING_STANDARDS.md).
 
 This section names where each runtime is pinned and never what the pin says: read `engines.node` or `.nvmrc`. Each runtime is pinned once: `.nvmrc` and `engines.node` must agree, no workflow pins either again, and no document outside the ADRs names a runtime or a framework beside a version. `pnpm test:docs` asserts all three.
 
+The language's own built-ins are held by `lib` in [`tsconfig.json`](./tsconfig.json) to the edition both places the code runs implement whole: the Cloudflare Workers runtime and every stable browser, Safari included. An `ESNext` lib would type `Temporal`, which neither has, so a call to it type-checks, passes `pnpm verify` and then throws on the deployed Worker or in Safari; `lib` moves only once both ship it.
+
 ## Commands
 
 ```bash
