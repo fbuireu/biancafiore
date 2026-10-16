@@ -8,7 +8,7 @@ Everything runs through GitHub Actions, and the site deploys to Cloudflare Worke
 
 | Workflow | Runs on | Does |
 |---|---|---|
-| `ci.yml` | push to `main`, pull requests, manual dispatch | A `Verify` job running `pnpm verify`, then both deploys, the end-to-end run against the preview, the production smoke run and the release, and a `Check` job that aggregates them all: the one context the branch ruleset requires |
+| `ci.yml` | push to `main`, pull requests, manual dispatch | A `Verify` job running the checks of `pnpm verify` as parallel steps, then both deploys, the end-to-end run against the preview, the production smoke run and the release, and a `Check` job that aggregates them all: the one context the branch ruleset requires |
 | `_deploy.yml` | `workflow_call` | The shared deploy steps both environments call |
 | `cleanup-development.yml` | pull request closed; weekly | Deletes the per-PR preview Worker once its CI run has finished, and sweeps the Workers of closed pull requests every week |
 | `sync-wiki.yml` | push to `main` touching `docs/wiki/**` | Publishes this wiki |

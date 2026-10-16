@@ -84,12 +84,12 @@ pnpm test:e2e           # end-to-end tests (playwright)
 pnpm verify             # format check, typecheck, astro check and coverage: what CI runs
 ```
 
-Husky runs lint-staged on `pre-commit`, commitlint on `commit-msg` and `pnpm verify:changed` on `pre-push`.
-The hook runs the changed-only variant rather than `verify` because the coverage floor and a subset run
-cannot both hold: `coverage.include` spans all of `src`, so a file no test loaded reports as zero and drags a
-subset under the floor on a clean tree. CI runs the full `pnpm verify` on the pushed sha, so a push whose
-coverage dropped still fails its check. The variant ends with `pnpm test:docs`, because the docs test reads
-documents and stylesheets from disk rather than importing them, and a changed-only run would skip it.
+Husky runs lint-staged on `pre-commit`, commitlint on `commit-msg` and `pnpm verify:changed` on `pre-push`. The hook
+runs the changed-only variant rather than `verify` because the coverage floor and a subset run cannot both hold:
+`coverage.include` spans all of `src`, so a file no test loaded reports as zero and drags a subset under the floor on a
+clean tree. CI runs every check of `pnpm verify` on the pushed sha, as parallel steps, so a push whose coverage dropped
+still fails its check. The variant ends with `pnpm test:docs`, because the docs test reads documents and stylesheets
+from disk rather than importing them, and a changed-only run would skip it.
 
 ## Code conventions
 
