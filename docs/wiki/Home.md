@@ -13,6 +13,7 @@ An Astro SSR site on Cloudflare Workers, with editorial content authored in a se
 - A **Tag Index** that browses writing by subject, and by the person who wrote it
 - A **contact form** backed by a server action, reCAPTCHA and transactional email
 - **Content pages rendered on request** behind the Workers cache, which a publish in the CMS purges
+- **One language**, British English: there is no i18n
 
 ---
 
@@ -24,8 +25,12 @@ An Astro SSR site on Cloudflare Workers, with editorial content authored in a se
 | **[Architecture](Architecture)** | The layers, and how much DDD this tree takes |
 | **[Content Model](Content-Model)** | The domain vocabulary, and how the CMS reaches it |
 | **[Rendering and Routing](Rendering-and-Routing)** | What renders on request, what the cache holds, and `HIDE_CHROME` |
+| **[Request Lifecycle](Request-Lifecycle)** | A request from the browser through the Workers cache to D1, the routes, images, draft previews, and what a visitor gets when something fails |
+| **[Publishing](Publishing)** | What a save in the CMS purges, what purges nothing, and the email the CMS sends |
+| **[Contact Form](Contact-Form)** | A submission step by step: reCAPTCHA, the cooldown, Resend and Turso, and every way it can fail |
+| **[Consent and Analytics](Consent-and-Analytics)** | The cookie banner, and the two ways analytics wait for it |
 | **[Styling](Styling)** | The cascade layers, the token system, the colour scheme |
-| **[CI/CD](CI-CD)** | Workflows, the deploys, the smoke run and the rollback |
+| **[CI/CD](CI-CD)** | The pipeline, the deploys, the smoke run and the rollback, the secrets, the rulesets and the limits |
 | **[Troubleshooting](Troubleshooting)** | The failures that have actually happened here |
 
 ---

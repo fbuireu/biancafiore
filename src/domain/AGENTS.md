@@ -29,7 +29,7 @@ Nothing here imports from `@application/*`, `@infrastructure/*` or `@modules/*`.
 
 Cross-concept primitives only:
 
-- [`image.ts`](./shared/image.ts): `imageSchema`, reused by any concept carrying an image. Its `url` is an **absolute** URL and is validated as one (`z.url()`): the CMS stores a media path, and the CMS client resolves it against the CMS origin before any mapper sees it, so nothing reading this field has to finish it first
+- [`image.ts`](./shared/image.ts): `imageSchema`, reused by any concept carrying an image. Its `url` is a **path** on this Worker's origin, validated as a string (`z.string()`): the CMS stores a storage key, and the CMS client resolves it to a path on EmDash's media route before any mapper sees it, so nothing reading this field has to finish it, and whatever needs an absolute URL takes it from `absoluteUrl` in `@const/routes.ts` where it writes one out
 - [`reference.ts`](./shared/reference.ts): shared reference shape
 - [`portableText.ts`](./shared/portableText.ts): `portableTextSchema`, the rich text an Article's body and a Project's description carry, as an array of typed objects the domain never looks inside: the application layer prepares it and the page renders it ([ADR 0023](../../docs/adr/0023-portable-text-renders-in-the-ui-through-emdash.md))
 

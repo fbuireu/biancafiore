@@ -4,7 +4,7 @@ Date: 2026-10-04
 
 ## Status
 
-Accepted. Supersedes [ADR 0011](./0011-hybrid-rendering-prerender-content-ssr-dynamic.md).
+Accepted. Supersedes [ADR 0011](./0011-hybrid-rendering-prerender-content-ssr-dynamic.md). Amended 2026-10-17: the rule's tags are listed in full, the bylines, the site settings and the two menus beside the collections and the taxonomy, with what purges each, since a page that read one of them and carried no tag for it would stay stale for a day.
 
 ## Context
 
@@ -16,7 +16,7 @@ EmDash's answer is to render per request and let a cache absorb the cost: its qu
 
 Content pages render per request. Only the two legal pages, which read no content, keep `export const prerender = true`.
 
-Pages read through Astro live collections (`src/live.config.ts`), whose loaders in `src/application/entities` call `fetchEntries`. The response is cached by the Workers cache through Astro's Cloudflare cache provider (`cache.provider: cacheCloudflare()`), and `routeRules` in `astro.config.ts` give every content route, from `src/const/contentCache.ts`, one rule: a day's `max-age`, an hour of `stale-while-revalidate`, and the tags of every content collection and of the `tag` taxonomy. EmDash purges by those tags on every publish, so the long lifetime never serves a stale page past a change.
+Pages read through Astro live collections (`src/live.config.ts`), whose loaders in `src/application/entities` call `fetchEntries`. The response is cached by the Workers cache through Astro's Cloudflare cache provider (`cache.provider: cacheCloudflare()`), and `routeRules` in `astro.config.ts` give every content route, from `src/const/contentCache.ts`, one rule: a day's `max-age`, an hour of `stale-while-revalidate`, and the tags of every content collection, of the `tag` taxonomy, of the bylines (`bylines`), of the site settings (`emdash:settings`) and of the `header` and `footer` menus (`emdash:menu:header`, `emdash:menu:footer`). EmDash purges a collection's tag on every write to one of its entries, publishing included, the taxonomy's on a Tag edit, the settings' on a settings save and a menu's on a menu edit; its byline routes purge nothing, so the `bylineCache` plugin purges `bylines` on every byline save and delete. The long lifetime therefore never serves a stale page past a change.
 
 Every content route carries every content tag, rather than the tags of what it reads. A page here reads more than it seems to (the Article page reads every Article to infer its Related Articles, the tag pages read every Article), and a missing tag is a page that stays stale for a day with nothing to show for it. Purging the whole site on any publish costs a few cold renders on a site this size.
 

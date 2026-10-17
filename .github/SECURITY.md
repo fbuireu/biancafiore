@@ -24,7 +24,8 @@ repository.
 - **The contact form server action**: the one write path, backed by Turso and
   Resend, gated by reCAPTCHA v3.
 - **The security headers middleware**, which sets the CSP and friends on every
-  response.
+  response the site renders; EmDash's routes under `/_emdash/` carry EmDash's
+  own, stricter policy instead.
 - **The external service boundaries**: Turso and Resend.
 - **The CMS itself**: its admin at `biancafiore.me/_emdash/admin`, its API and
   tokens, and the plugins in `src/infrastructure/cms/plugins`.
@@ -50,10 +51,10 @@ Please check these before reporting:
   [ADR 0013](../docs/adr/0013-analytics-gated-behind-cookie-consent.md) and
   [ADR 0020](../docs/adr/0020-logs-and-traces-leave-through-cloudflares-export.md).
 - **The policy allows inline styles.** `script-src` names each inline script by its digest and has no `'unsafe-inline'`, but `style-src` keeps it: Astro writes inline styles for islands, fonts and view transitions, and the templates carry custom properties in `style` attributes. A report that styles can be injected describes this decision.
-- **`/rss.xml` and `/sitemap-index.xml` answer `403` to some automated
-  clients.** Nothing in this tree returns a 403; that answer comes from a zone
-  rule at the edge, and a browser gets both. It is a Cloudflare setting, not a
-  finding against the site.
+- **`/rss.xml` and `/sitemap.xml` answer `403` to some automated clients.**
+  Nothing in this tree returns a 403; that answer comes from a zone rule at
+  the edge, and a browser gets both. It is a Cloudflare setting, not a finding
+  against the site. `/sitemap-index.xml` only redirects to `/sitemap.xml`.
 
 A report that one of these exposes something *beyond* its documented scope is
 very much welcome.

@@ -1,6 +1,6 @@
 # src/infrastructure
 
-Everything that talks to the outside world. The clients and the contact steps are Effect programs (ADR 0004); `images/` and `integrations/` are plain functions that run at build time.
+Everything that talks to the outside world. The clients and the contact steps are Effect programs (ADR 0004); `images/` and `integrations/` are plain functions, the first called by the DTOs on every request that renders an image and the second run at build time.
 
 ## Client shape
 

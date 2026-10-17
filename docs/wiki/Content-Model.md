@@ -39,9 +39,10 @@ flowchart LR
     dto --> rules["domain rules"]
     rules --> collection["live collection"]
     collection -- "astro:content" --> page["page"]
+    page -- "the rendered response" --> cache[("Workers cache<br/>until a purge or a day")]
 ```
 
-**These arrows are the path one entry travels on a request, not imports.** The import graph is a different picture and is on **[Architecture](Architecture)**; reading this one as dependencies would get the direction of half of them wrong.
+**These arrows are the path one entry travels on a request, not imports.** The last one is why most requests never take it: the page it renders is stored in the Workers cache, which answers every request after that until a save in the CMS purges it ([Request Lifecycle](Request-Lifecycle), [Publishing](Publishing)). The import graph is a different picture and is on **[Architecture](Architecture)**; reading this one as dependencies would get the direction of half of them wrong.
 
 Some things are worth knowing about that path.
 
@@ -49,7 +50,7 @@ Some things are worth knowing about that path.
 
 **The CMS's types stop at the mapper.** An entry's `data`, its `references` and Portable Text may appear in the application layer and nowhere downstream. The domain never sees them, which is why moving from Contentful to EmDash changed the mappers and nothing the pages render.
 
-**Bad data fails the build rather than degrading a page.** A malformed publish date, an Article no byline credits or an Original Source the Republished flag would hide are refused where they are mapped. One entry taking the build down is the deliberate trade: the alternative is one page quietly rendering wrong.
+**Bad data fails the request rather than degrading a page.** A malformed publish date, an Article no byline credits or an Original Source the Republished flag would hide are refused where they are mapped, on the request that renders them, so every page that reads the entry, every listing included, answers 500 until it is fixed in the admin. One entry taking those pages down is the deliberate trade: the alternative is one page quietly rendering wrong. [Request Lifecycle](Request-Lifecycle#when-the-database-is-down) says what the visitor sees.
 
 **An Article is read whole only on its own page.** Every listing, the Blog, a tag page, the related Articles, the feed and the sitemap, reads a summary of each Article: its title, Author, description, dates, Featured Image, Tags and Reading Time. Its body, prepared for rendering, its Table of Contents and its SEO are read for the one Article a page shows, because preparing a body is the costly part and a listing would otherwise pay it for every Article.
 
