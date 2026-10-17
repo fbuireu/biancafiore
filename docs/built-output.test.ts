@@ -3,7 +3,8 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { NOINDEX_ROUTES } from "@const/noindexRoutes";
 import { COOKIE_CONSENT_BUTTON_CLASS } from "@modules/core/components/cookieConsent/const";
-import { describe, expect, it } from "vitest";
+import { type Document, Window } from "happy-dom";
+import { afterAll, describe, expect, it } from "vitest";
 
 const CLIENT = "dist/client";
 const HEADING_TAG = /<h([1-6])[^>]*>/g;
@@ -15,17 +16,20 @@ const ROBOTS_META = /<meta name="robots" content="([^"]*)"\s*\/?>/;
 const ISLAND = "<astro-island";
 const COOKIE_CONSENT_BUTTON = new RegExp(`<button[^>]*class="[^"]*\\b${COOKIE_CONSENT_BUTTON_CLASS}\\b`);
 const CONTENT_SECURITY_POLICY = /^\s+Content-Security-Policy: (.+)$/m;
-const SCRIPT_ELEMENT = /<script(\s[^>]*)?>([\s\S]*?)<\/script>/g;
-const SCRIPT_WITH_A_SOURCE = /\ssrc=/;
-const SCRIPT_TYPE = /\stype="([^"]*)"/;
 const EXECUTABLE_SCRIPT_TYPES = new Set(["", "module", "text/javascript"]);
 const DIGEST_SOURCE_PREFIX = "'sha256-";
-const SCRIPT_AND_STYLE_ELEMENTS = /<(script|style)[\s>][\s\S]*?<\/\1>/g;
-const EVENT_HANDLER_ATTRIBUTE = /<[a-z][^>]*\son[a-z]+\s*=/i;
-const JAVASCRIPT_URL = /\s(?:href|src|action|formaction)\s*=\s*"javascript:/i;
+const EVENT_HANDLER_ATTRIBUTE = /^on[a-z]+$/;
+const URL_ATTRIBUTES = new Set(["href", "src", "action", "formaction"]);
+const JAVASCRIPT_URL = /^\s*javascript:/i;
 const HEADER_LINE_LIMIT = 2000;
 
 const read = (path: string): string => readFileSync(path, "utf-8");
+
+const browserWindow = new Window({
+	settings: { disableJavaScriptEvaluation: true, disableJavaScriptFileLoading: true, disableCSSFileLoading: true },
+});
+
+const parse = (html: string): Document => new browserWindow.DOMParser().parseFromString(html, "text/html");
 
 const pageAt = (route: string): string => join(CLIENT, route, "index.html");
 
@@ -35,12 +39,19 @@ const prerenderedPages = (): string[] =>
 		.map((path) => join(CLIENT, path));
 
 const inlineScriptsOf = (html: string): string[] =>
-	[...html.matchAll(SCRIPT_ELEMENT)]
-		.filter(
-			([, attributes = ""]) =>
-				!SCRIPT_WITH_A_SOURCE.test(attributes) && EXECUTABLE_SCRIPT_TYPES.has(SCRIPT_TYPE.exec(attributes)?.[1] ?? ""),
-		)
-		.map(([, , body]) => body);
+	[...parse(html).querySelectorAll("script")]
+		.filter((script) => !script.hasAttribute("src") && EXECUTABLE_SCRIPT_TYPES.has(script.getAttribute("type") ?? ""))
+		.map((script) => script.textContent ?? "");
+
+const blockedAttributesOf = (html: string): string[] =>
+	[...parse(html).querySelectorAll("*")].flatMap((element) =>
+		[...element.attributes]
+			.filter(
+				({ name, value }) =>
+					EVENT_HANDLER_ATTRIBUTE.test(name) || (URL_ATTRIBUTES.has(name) && JAVASCRIPT_URL.test(value ?? "")),
+			)
+			.map(({ name }) => `<${element.localName} ${name}>`),
+	);
 
 const digest = (script: string): string => createHash("sha256").update(script, "utf8").digest("base64");
 
@@ -54,6 +65,8 @@ const scriptSourcesOf = (headers: string): string[] =>
 const headingLevels = (html: string): number[] => [...html.matchAll(HEADING_TAG)].map(([, level]) => Number(level));
 
 describe("the built output", () => {
+	afterAll(() => browserWindow.happyDOM.close());
+
 	it("exists, because every assertion below reads it rather than the source", () => {
 		expect(
 			existsSync(CLIENT),
@@ -91,9 +104,9 @@ describe("the built output", () => {
 
 		expect(
 			inlineScriptsOf(
-				'<script>a</script><script src="x"></script><script type="application/ld+json">{}</script><script type="module">b</script>',
+				'<script>a</script><script src="x"></script><script type="application/ld+json">{}</script><script type="module">b</script><SCRIPT>c</SCRIPT >',
 			),
-		).toEqual(["a", "b"]);
+		).toEqual(["a", "b", "c"]);
 		expect(pages.length).toBeGreaterThan(1);
 		expect(pages.filter((page) => inlineScriptsOf(read(page)).length < 2)).toEqual([]);
 		expect(named.size).toBeGreaterThan(0);
@@ -102,15 +115,15 @@ describe("the built output", () => {
 	});
 
 	it("puts no inline event handler and no javascript: address on a prerendered page, which the policy would block", () => {
-		const markup = (page: string) => read(page).replace(SCRIPT_AND_STYLE_ELEMENTS, "");
 		const pages = prerenderedPages();
 
-		expect(EVENT_HANDLER_ATTRIBUTE.test('<button type="button" onclick="go()">')).toBe(true);
-		expect(EVENT_HANDLER_ATTRIBUTE.test('<a data-online="1" href="/on">')).toBe(false);
-		expect(JAVASCRIPT_URL.test('<a href="javascript:void(0)">')).toBe(true);
+		expect(blockedAttributesOf('<button type="button" onclick="go()">')).toEqual(["<button onclick>"]);
+		expect(blockedAttributesOf('<BUTTON ONCLICK="go()">')).toEqual(["<button onclick>"]);
+		expect(blockedAttributesOf('<a data-online="1" href="/on">')).toEqual([]);
+		expect(blockedAttributesOf('<a href=" javascript:void(0)">')).toEqual(["<a href>"]);
+		expect(blockedAttributesOf("<script>const markup = '<b onclick=\"go()\">';</script>")).toEqual([]);
 		expect(pages.length).toBeGreaterThan(1);
-		expect(pages.filter((page) => EVENT_HANDLER_ATTRIBUTE.test(markup(page)))).toEqual([]);
-		expect(pages.filter((page) => JAVASCRIPT_URL.test(markup(page)))).toEqual([]);
+		expect(pages.flatMap((page) => blockedAttributesOf(read(page)).map((found) => `${page}: ${found}`))).toEqual([]);
 	});
 
 	it("keeps every line of the headers file within the length Cloudflare reads, past which the rule is dropped", () => {

@@ -301,8 +301,8 @@ const CHROME_POLICY = "src/ui/modules/core/utils/siteChrome.ts";
 const CHROME_ANSWER = /^\t(\w+): boolean;$/gm;
 const ASTRO_FENCE = "---\n";
 const ASTRO_FRONTMATTER = /^---\n([\s\S]*?)\n---/;
-const ASTRO_SCRIPT = /<script\b[^>]*>([\s\S]*?)<\/script>/g;
-const TEMPLATE_COMMENT = /<!--[\s\S]*?-->|\{\s*\/\*[\s\S]*?\*\/\s*\}/g;
+const ASTRO_SCRIPT = /<script\b[^>]*>([\s\S]*?)<\/script[^>]*>/gi;
+const TEMPLATE_COMMENT = /<!--[\s\S]*?--!?>|\{\s*\/\*[\s\S]*?\*\/\s*\}/g;
 const TOOL_DIRECTIVE = /^(?:\/\/\/\s*<reference\b|\/\/\s*(?:biome-ignore|@ts-expect-error)\b|\/\*\s*biome-ignore\b)/;
 const QUERY_SUFFIX = /\?.*$/;
 const MODULE_SUFFIXES = ["", ".ts", ".tsx", ".astro", "/index.ts", "/index.tsx"];
@@ -4942,7 +4942,7 @@ describe("the workflows", () => {
 	const RETRY_WRAPPER = "nick-fields/retry";
 	const DEPLOY_COMMAND = /\bwrangler deploy\b/;
 	const SHARED_DEPLOY_MESSAGE = /^\$\{\{ github\.sha \}\}-\$\{\{ github\.event_name \}\}$/;
-	const DEPLOY_MESSAGE_ARGUMENT = /--message[ =]("?)((?:\$\{\{[^}]*\}\}|[^\s"])+)\1/;
+	const DEPLOY_MESSAGE_ARGUMENT = /--message[ =]("?)((?:\$\{\{[^}]*\}\}|\$(?!\{\{)|[^\s"$])+)\1/;
 	const SHELL_VARIABLE = /^\$\{?(\w+)\}?$/;
 	const BUILD_COMMAND = /\b(?:astro build|pnpm build)\b/;
 	const SECRET_COMMAND = /\bwrangler secret\b/;
@@ -4995,6 +4995,14 @@ describe("the workflows", () => {
 				.filter(({ message }) => !SHARED_DEPLOY_MESSAGE.test(message))
 				.map(({ file, message }) => `${file} (${message})`),
 		).toEqual([]);
+	});
+
+	it("reads a --message argument in linear time, so an unclosed quote around a run of expressions cannot stall the suite", () => {
+		expect(DEPLOY_MESSAGE_ARGUMENT.exec(`--message "${`\${{{{}}}}`.repeat(40)}`)).toBeNull();
+		expect(DEPLOY_MESSAGE_ARGUMENT.exec(`--message "\${{ github.sha }}-\${{ github.event_name }}"`)?.[2]).toBe(
+			`\${{ github.sha }}-\${{ github.event_name }}`,
+		);
+		expect(DEPLOY_MESSAGE_ARGUMENT.exec("--message $DEPLOY_MESSAGE")?.[2]).toBe("$DEPLOY_MESSAGE");
 	});
 
 	it("aggregates every gated job under Check, so the preview E2E run gates a merge", () => {
@@ -5080,7 +5088,7 @@ describe("the end-to-end browsers", () => {
 			compactCode(PLAYWRIGHT_PROJECTS),
 		);
 		expect(
-			sample(PLAYWRIGHT_PROJECTS.replace("]", `\t{ name: "firefox", use: { ...devices["Desktop Firefox"] } },\n]`)),
+			sample(PLAYWRIGHT_PROJECTS.replace(/\]$/, `\t{ name: "firefox", use: { ...devices["Desktop Firefox"] } },\n]`)),
 		).not.toBe(compactCode(PLAYWRIGHT_PROJECTS));
 		expect(configs.length).toBeGreaterThan(0);
 		expect(
