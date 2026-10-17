@@ -8,12 +8,14 @@ import type {
 	RecaptchaError,
 	ValidationError,
 } from "@infrastructure/errors";
+import { ContactLayer } from "@infrastructure/layers";
 import { LoggerService } from "@infrastructure/logging/service";
 import { sendEmail } from "@infrastructure/utils/email";
 import { validateContact, verifyRecaptcha } from "@infrastructure/utils/guards";
 import { checkDuplicateContact, saveContact } from "@infrastructure/utils/persistence";
 import type { ContactFormData } from "@shared/ui/types";
 import { Effect } from "effect";
+import { type ContactErrorResponse, contactErrorResponse } from "./errorResponse";
 
 export type ContactError = ValidationError | RecaptchaError | DuplicateContactError | EmailError | DatabaseError;
 
@@ -41,3 +43,18 @@ export const submitContact = Effect.fn("submitContact")(function* ({
 
 	return { ok: true };
 });
+
+type ContactAnswer = { success: true; value: { ok: boolean } } | { success: false; error: ContactErrorResponse };
+
+export const answerContact = (params: SubmitContactParams): Promise<ContactAnswer> =>
+	Effect.runPromise(
+		submitContact(params).pipe(
+			Effect.provide(ContactLayer),
+			Effect.matchCauseEffect({
+				onSuccess: (value) => Effect.succeed({ success: true as const, value }),
+				onFailure: (cause) =>
+					contactErrorResponse(cause).pipe(Effect.map((error) => ({ success: false as const, error }))),
+			}),
+			Effect.provide(LoggerService.layer),
+		),
+	);

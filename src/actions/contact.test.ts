@@ -10,9 +10,10 @@ import {
 } from "@tests/doubles/contactLayers";
 import { type RecaptchaDouble, type RecaptchaDoubleParams, recaptchaDouble } from "@tests/doubles/network";
 import { failureOf } from "@tests/helpers/exit";
-import { Effect, Exit, Layer } from "effect";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { type ContactError, submitContact } from "./contact";
+import { Cause, Effect, Exit, Layer } from "effect";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { answerContact, type ContactError, submitContact } from "./contact";
+import { type ContactErrorResponse, contactErrorResponse } from "./errorResponse";
 
 const VALID_INPUT = {
 	name: "Ada",
@@ -44,6 +45,7 @@ beforeEach(() => {
 
 afterEach(() => {
 	resetSecrets();
+	vi.restoreAllMocks();
 });
 
 describe("submitContact", () => {
@@ -176,5 +178,59 @@ describe("submitContact", () => {
 		const exit = await run({ database, email });
 
 		expect(Exit.isSuccess(exit)).toBe(true);
+	});
+});
+
+describe("answerContact", () => {
+	const TURSO_SECRETS = ["ASTRO_DB_REMOTE_URL", "ASTRO_DB_APP_TOKEN"];
+	const RESEND_SECRET = "RESEND_API_KEY";
+	const CONFIGURED_VALUES: Record<string, string> = {
+		ASTRO_DB_REMOTE_URL: "libsql://contacts.example.turso.io",
+		ASTRO_DB_APP_TOKEN: "turso-token",
+		RESEND_API_KEY: "re_resend_key",
+	};
+
+	const configure = (names: string[]): void => {
+		for (const name of names) setSecret({ name, value: CONFIGURED_VALUES[name] ?? "" });
+	};
+
+	const answerToAnyOtherFailure = (): Promise<ContactErrorResponse> =>
+		Effect.runPromise(contactErrorResponse(Cause.fail(emailError("resend down"))).pipe(Effect.provide(log.layer)));
+
+	it.each([
+		{ missing: "the Turso secrets", configured: [RESEND_SECRET], named: TURSO_SECRETS[0] },
+		{ missing: "the Resend key", configured: TURSO_SECRETS, named: RESEND_SECRET },
+	])(
+		"answers a Worker missing $missing with the generic server error every other failure gets, because the layer's message names our configuration",
+		async ({ configured, named }) => {
+			vi.spyOn(console, "error").mockImplementation(() => undefined);
+			configure(configured);
+
+			const answer = await answerContact(VALID_INPUT);
+
+			expect(answer).toStrictEqual({ success: false, error: await answerToAnyOtherFailure() });
+			expect(JSON.stringify(answer)).not.toContain(named);
+		},
+	);
+
+	it("logs the layer that could not be built, so the Worker log still names the missing secret", async () => {
+		const consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined);
+		configure([RESEND_SECRET]);
+
+		await answerContact(VALID_INPUT);
+
+		expect(consoleError).toHaveBeenCalledTimes(1);
+		expect(String(consoleError.mock.calls[0]?.[0])).toContain(TURSO_SECRETS[0]);
+	});
+
+	it("still answers a refusal the program raises with its own status and copy, through the layers it builds", async () => {
+		configure([...TURSO_SECRETS, RESEND_SECRET]);
+
+		const answer = await answerContact({ ...VALID_INPUT, email: "not-an-email" });
+
+		expect(answer).toStrictEqual({
+			success: false,
+			error: { code: "BAD_REQUEST", message: "Still not a valid email fella" },
+		});
 	});
 });

@@ -97,7 +97,7 @@ No rule below restates these, and a diff that breaks one fails CI:
 ## Actions (`src/actions`)
 
 - `H1` **hard**: Answer an unauthenticated caller with one refusal sentence whatever check fired, and log which check fired, because distinct wording turns the Contact form into an oracle over the contacts table.
-- `H2` **hard**: Provide `ContactLayer` per request inside the handler, never at module scope, because contact writes are per request and the `ManagedRuntime` behind `fetchEntries` serves CMS reads only ([ADR 0004](./docs/adr/0004-effect-for-infrastructure-clients.md)).
+- `H2` **hard**: Provide `ContactLayer` per request, in `answerContact` and inside the fold that maps its failures, never at module scope and never around that fold, because contact writes are per request and the `ManagedRuntime` behind `fetchEntries` serves CMS reads only, and because a layer that cannot be built must reach `contactErrorResponse` like any other failure rather than hand the secret it names to the visitor ([ADR 0004](./docs/adr/0004-effect-for-infrastructure-clients.md)).
 
 ## UI modules (`src/ui/modules`)
 

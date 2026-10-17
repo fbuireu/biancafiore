@@ -1,17 +1,20 @@
 # src/actions
 
 One Astro server action, `server.contact`, split across a handful of files. [`contact.ts`](./contact.ts) holds `submitContact`, the
-Effect program that orchestrates the submission; [`errorResponse.ts`](./errorResponse.ts) holds `contactErrorResponse`, which turns a
+Effect program that orchestrates the submission, and `answerContact`, which runs it for one request: it builds `ContactLayer`
+for that request, folds the outcome into a plain `{ success, value | error }` answer and resolves;
+[`errorResponse.ts`](./errorResponse.ts) holds `contactErrorResponse`, which turns a
 failed `Cause` into the `{ code, message }` the visitor gets; [`index.ts`](./index.ts) holds the Astro binding and nothing
 else: `defineAction`, `accept: "form"`, `contactFormSchema` (`@domain/contact/schema`) validating the payload
-before the handler body runs, `ContactLayer`, provided per request, and the `new ActionError(…)` throw. Every step is imported from
+before the handler body runs, the call to `answerContact`, and the `new ActionError(…)` throw. Every step is imported from
 `@infrastructure/utils/*` and every one of them is an Effect, so nothing
 here talks to the database, Resend or reCAPTCHA directly. ADR 0004 records why the Effect world is sealed at
 this edge and nowhere deeper.
 
 **The split is what makes the action testable.** `contact.ts` and `errorResponse.ts` import nothing from
 `astro:*`, so `submitContact` runs in a unit test against stub `Database`, `EmailClient` and `LoggerService` layers (see
-[`contact.test.ts`](./contact.test.ts) and the doubles in [`src/tests/doubles/`](../tests/doubles)), and **so a unit test can run the mapping** over real
+[`contact.test.ts`](./contact.test.ts) and the doubles in [`src/tests/doubles/`](../tests/doubles)), `answerContact` runs against the real
+`ContactLayer` with its secrets seeded through the `astro:env/server` double, and **so a unit test can run the mapping** over real
 `Cause` values, defects included ([`errorResponse.test.ts`](./errorResponse.test.ts)). The one `astro:*` module the program reaches
 is `astro:env/server`, lazily imported inside `verifyRecaptcha`, and [`vitest.config.ts`](../../vitest.config.ts) maps it onto a double.
 Keep `astro:actions` out of both: the moment either imports `ActionError`, it stops resolving under vitest,
@@ -42,9 +45,15 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   message *has* been delivered, so answering "you already contacted" would be false, and the next submission
   from that address is inside the cooldown and refused normally. A unique constraint would not reach the
   `UNAUTHORIZED` path either: `submitContact` logs and swallows every failure of that step.
-- **The answer is decided inside the Effect and thrown outside it.** `Effect.matchCauseEffect` folds both
+- **The answer is decided inside the Effect and thrown outside it.** In `answerContact`, `Effect.matchCauseEffect` folds both
   outcomes into an Effect of a plain `{ success, value | error }` union, `Effect.runPromise` resolves it, and
-  only then does the handler `throw new ActionError(result.error)`. It has to be the `Effect` variant of the
+  only then does the handler `throw new ActionError(result.error)`.
+- **`ContactLayer` is provided inside the fold, never around it.** A layer that cannot be built (`Database.layer` and
+  `EmailClient.layer` are an `Effect.die` naming the secret they lack) then fails the program like any other defect, so
+  `contactErrorResponse` logs it and the visitor gets the generic `INTERNAL_SERVER_ERROR` message. Provided around the
+  fold, the defect would skip the mapping, `Effect.runPromise` would reject with it, and Astro would hand its message,
+  which names the secret, to the form. `LoggerService.layer` is provided again outside the fold, for the mapping's own
+  log line. `contact.test.ts` holds both the answer and the log, for a missing Turso secret and a missing Resend key. It has to be the `Effect` variant of the
   combinator, not `Effect.matchCause`: `contactErrorResponse` logs, so the failure branch must return an Effect
   for that log to be part of the program. Never throw an `ActionError` from inside the program: it would
   arrive as a defect, `Cause.findErrorOption` would find no failure, and the mapping would be lost. That last

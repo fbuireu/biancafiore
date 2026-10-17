@@ -1555,7 +1555,7 @@ describe("infrastructure guide", () => {
 		const provided = SOURCE_FILES.filter((file) => read(file).includes("Effect.provide(ContactLayer)"));
 
 		expect(managed).toEqual(["src/infrastructure/cms/entries.ts"]);
-		expect(provided).toEqual(["src/actions/index.ts"]);
+		expect(provided).toEqual(["src/actions/contact.ts"]);
 		expect(read("src/infrastructure/layers.ts")).toContain("ContactLayer");
 	});
 
@@ -2006,8 +2006,18 @@ describe("actions guide", () => {
 	it("keeps the mapping runnable from a test, and the astro edge free of statuses", () => {
 		expect(guide).toContain("so a unit test can run the mapping");
 		expect(mapping).not.toMatch(ASTRO_MODULE_IMPORT);
-		expect(action).toContain("contactErrorResponse(cause)");
+		expect(program).not.toMatch(ASTRO_MODULE_IMPORT);
+		expect(program).toContain("contactErrorResponse(cause)");
+		expect(action).toContain("answerContact(params)");
 		expect(action).not.toMatch(CONSTRUCTED_ACTION_ERROR);
+	});
+
+	it("builds ContactLayer inside the fold that maps a failure, so a layer that cannot be built is answered like any other failure", () => {
+		const provided = program.indexOf("Effect.provide(ContactLayer)");
+
+		expect(guide).toContain("`ContactLayer` is provided inside the fold, never around it.");
+		expect(provided).toBeGreaterThan(-1);
+		expect(provided).toBeLessThan(program.indexOf("Effect.matchCauseEffect("));
 	});
 });
 

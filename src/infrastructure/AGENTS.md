@@ -46,7 +46,7 @@ EmDash is an integration of the site, not a client of it: `emdash()` in [`astro.
 ## Two runtimes
 
 - `cms/entries.ts`: the `ManagedRuntime` above. Isolate-wide, read-only.
-- [`layers.ts`](./layers.ts): `ContactLayer` (`Database.layer` + `EmailClient.layer` + `LoggerService.layer`), provided per request with `Effect.provide` inside the contact action. Nothing here holds request state.
+- [`layers.ts`](./layers.ts): `ContactLayer` (`Database.layer` + `EmailClient.layer` + `LoggerService.layer`), provided per request with `Effect.provide` inside the contact action, by `answerContact`, within the fold that maps a failure, so a layer that dies for a missing secret is answered like any other failure. Nothing here holds request state.
 
 ## utils/
 
