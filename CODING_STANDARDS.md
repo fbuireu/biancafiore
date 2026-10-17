@@ -20,7 +20,7 @@ No rule below restates these, and a diff that breaks one fails CI:
   - an import that leaves its layer or feature written with the alias and one that stays inside it written relative, so an alias always marks a crossed boundary, and nothing outside `src/actions` importing from it;
   - every named export in `src` imported by another file, a test included, bar the routes, the middleware, the live config, the Worker entry, the action binding and `logging/logger.ts`, which the framework or the sibling repositories fix, so a name nothing reaches stays private;
   - every name `@shared/ui` exports read from two units at least (a layer or a feature), so what one feature reads stays with that feature;
-  - the layer map: `live.config.ts` alone reaches `@application`, and the domain reaches no other layer;
+  - the layer map: `live.config.ts` alone reaches `@application`, `500.astro`'s logger is the one import a page or the middleware makes into `@infrastructure`, drawn as the dotted exception, and the domain reaches no other layer;
   - domain and DTO purity: no Effect, I/O or env access, every DTO mapper synchronous, EmDash types stopping at `src/application`, and every schema named `<concept>Schema`, in the singular;
   - every package a hand-written module imports declared in `package.json`, so none resolves because another package happened to hoist it;
   - every `localeCompare` in `src` given a locale, the one `src/const/locale.ts` fixes, so no order a visitor sees depends on the machine that built it;

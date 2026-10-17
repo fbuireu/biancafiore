@@ -4,7 +4,7 @@ Date: 2026-07-26
 
 ## Status
 
-Accepted. Amended 2026-10-02: the domain also reads the site's fixed locale from `@const/locale`, a module that imports nothing, because a rule that orders text has to order it the same way on every machine, for the reason the Decision now records. Amended 2026-10-05: the schemas take `z` from `@shared/utils/zod`, which is `astro/zod` with its JIT off, because the site's policy refuses the `new Function` probe an object schema otherwise runs in the browser. Amended 2026-10-10 by [ADR 0023](./0023-portable-text-renders-in-the-ui-through-emdash.md): Portable Text crosses the boundary as blocks, and the UI renders it through `emdash/ui`.
+Accepted. Amended 2026-10-02: the domain also reads the site's fixed locale from `@const/locale`, a module that imports nothing, because a rule that orders text has to order it the same way on every machine, for the reason the Decision now records. Amended 2026-10-05: the schemas take `z` from `@shared/utils/zod`, which is `astro/zod` with its JIT off, because the site's policy refuses the `new Function` probe an object schema otherwise runs in the browser. Amended 2026-10-10 by [ADR 0023](./0023-portable-text-renders-in-the-ui-through-emdash.md): Portable Text crosses the boundary as blocks, and the UI renders it through `emdash/ui`. Amended 2026-10-17: the diagram draws the one import a page makes into `infrastructure`, the logger `500.astro` writes through, as the stated exception rather than an edge the sentence under it forbids, and the list of what the domain may use drops `astro:content`'s `reference()`, which no domain module imports since the live collections do not support it.
 
 ## Context
 
@@ -37,7 +37,7 @@ Per practice, that lands here. A strategic row is the shape of the tree; a tacti
 
 Most of the dropped rows share one reason worth stating once: aggregates, repositories and domain events all assume an application that owns its own writes, and this one does not. Content is authored in the CMS and read here.
 
-The load-bearing invariant: **`domain/` never imports from `application/` or `infrastructure/`**. It may use `astro/zod` through `@shared/utils/zod`, `astro:content`'s `reference()`, other `@domain/*`, generic `@shared/utils` helpers and `DEFAULT_LOCALE_STRING` from `@const/locale` only. The locale is there because `localeCompare` without one collates under the locale of whatever machine runs it: CI prerenders under one, an author builds under another, and a Swedish one files Ö after Z, so the Tag Index a build prints would depend on where it ran.
+The load-bearing invariant: **`domain/` never imports from `application/` or `infrastructure/`**. It may use `astro/zod` through `@shared/utils/zod`, other `@domain/*`, generic `@shared/utils` helpers and `DEFAULT_LOCALE_STRING` from `@const/locale` only; a reference between entries is the domain's own `referenceSchema`, since the live collections the site reads do not support `astro:content`'s `reference()`. The locale is there because `localeCompare` without one collates under the locale of whatever machine runs it: CI prerenders under one, an author builds under another, and a Swedish one files Ö after Z, so the Tag Index a build prints would depend on where it ran.
 
 ```mermaid
 ---
@@ -53,8 +53,9 @@ flowchart RL
     pages["pages · middleware"] --> ui["ui: components · islands · styles"]
     pages --> domain["domain: schemas · models · rules"]
     ui --> domain
-    actions["actions: the contact form"] --> infrastructure["infrastructure: cms · db · email · images"]
+    actions["actions: the contact form"] --> infrastructure["infrastructure: cms · db · email · images · logging"]
     actions --> domain
+    pages -. "500.astro: the logger, and nothing else" .-> infrastructure
     config["live.config.ts"] --> loaders
     loaders --> dto
     loaders --> infrastructure
@@ -69,7 +70,7 @@ flowchart RL
     class infrastructure,loaders,actions,pages,ui,config shell
 ```
 
-Every arrow is an import some file really makes, read off the tree rather than intended; anything not drawn is forbidden. Gold is pure, red owns the side effects. `dto` reaches `infrastructure` and stays gold because what it imports there builds a CDN URL string or names the raw entry type: the line is I/O, not layering, which is why `dto` sits on the pure side of a layer that also loads.
+Every arrow is an import some file really makes, read off the tree rather than intended; anything not drawn is forbidden. Gold is pure, red owns the side effects. **The dotted arrow is the one exception to the layering**, and the only import a page makes into `infrastructure`: [`500.astro`](../../src/pages/500.astro) logs the unhandled error it renders through the plain `logger`, because a page's frontmatter has no Effect runtime to hand it `LoggerService`. No other page and not the middleware reaches `infrastructure`, and the docs test holds both that and the arrow. `dto` reaches `infrastructure` and stays gold because what it imports there builds a CDN URL string or names the raw entry type: the line is I/O, not layering, which is why `dto` sits on the pure side of a layer that also loads.
 
 Some things the arrows deliberately do not show, because neither is an import. **Pages and components never reach the application layer**: [`live.config.ts`](../../src/live.config.ts) is the only module in the tree that imports it, and a route then reads the registered live collections through `astro:content`. That indirection is the seam, and it is what lets a page be typed against an entry without knowing a mapper exists. And **the CMS enters at `infrastructure`**: EmDash runs in the same Worker, but only `infrastructure` calls its query API, which is the vendor detail everything above it is built to absorb. One thing of EmDash's does reach the UI, by [ADR 0023](./0023-portable-text-renders-in-the-ui-through-emdash.md): its renderer. An Article's body and a Project's description cross the boundary as Portable Text, an open format the domain carries as typed objects it never reads, prepared by the application layer, and the page renders them with `emdash/ui`'s components. That is a rendering library, not the CMS's data: no `CmsEntry`, no query, no `data` or `references` gets past `application/`, and a CMS that also speaks Portable Text would leave the page untouched.
 

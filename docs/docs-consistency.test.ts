@@ -1080,6 +1080,27 @@ describe("the layer map the architecture ADR draws", () => {
 		expect(importersOf("@application/").filter((file) => file.startsWith("src/domain/"))).toEqual([]);
 		expect(importersOf("@infrastructure/").filter((file) => file.startsWith("src/domain/"))).toEqual([]);
 	});
+
+	it("draws the one import a page makes into infrastructure, 500.astro's logger, as the dotted exception, and no page or the middleware makes another", () => {
+		const pagesAndMiddleware = SOURCE_FILES.filter(
+			(file) => file.startsWith("src/pages/") || file === "src/middleware.ts",
+		);
+		const reachingInfrastructure = pagesAndMiddleware.flatMap((file) =>
+			[...read(file).matchAll(IMPORT_SOURCE)]
+				.map(([, source]) => source)
+				.filter((source) => source.startsWith("@infrastructure/"))
+				.map((source) => `${file} -> ${source}`),
+		);
+		const drawnException = /^\s{4}pages\s+-\.\s+"500\.astro: the logger, and nothing else"\s+\.->\s+infrastructure$/m;
+
+		expect(pagesAndMiddleware.length).toBeGreaterThan(1);
+		expect(reachingInfrastructure).toEqual(["src/pages/500.astro -> @infrastructure/logging/logger"]);
+		expect(
+			["docs/wiki/Architecture.md", "docs/adr/0012-pragmatic-ddd-domain-layer-anti-corruption-layer.md"].filter(
+				(doc) => !drawnException.test(read(doc)),
+			),
+		).toEqual([]);
+	});
 });
 
 describe("the published wiki", () => {

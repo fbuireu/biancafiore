@@ -16,8 +16,9 @@ flowchart RL
     pages["pages · middleware"] --> ui["ui: components · islands · styles"]
     pages --> domain["domain: schemas · models · rules"]
     ui --> domain
-    actions["actions: the contact form"] --> infrastructure["infrastructure: cms · db · email · images"]
+    actions["actions: the contact form"] --> infrastructure["infrastructure: cms · db · email · images · logging"]
     actions --> domain
+    pages -. "500.astro: the logger, and nothing else" .-> infrastructure
     config["live.config.ts"] --> loaders
     loaders --> dto
     loaders --> infrastructure
@@ -32,7 +33,7 @@ flowchart RL
     class infrastructure,loaders,actions,pages,ui,config shell
 ```
 
-Every arrow is an import some file really makes, read off the tree rather than intended; anything not drawn is forbidden. Gold is pure, red owns the side effects. `dto` reaches `infrastructure` and stays gold because what it imports there builds a CDN URL string or decodes a blurhash in memory: the line is I/O, not layering.
+Every arrow is an import some file really makes, read off the tree rather than intended; anything not drawn is forbidden. Gold is pure, red owns the side effects. **The dotted arrow is the one exception to the layering**, and the only import a page makes into `infrastructure`: `500.astro` logs the unhandled error it renders through the plain `logger`, because a page's frontmatter has no Effect runtime to hand it `LoggerService`, and the line it writes carries the reference the visitor reads ([Request Lifecycle](Request-Lifecycle#the-500-page-and-its-reference)). No other page and not the middleware reaches `infrastructure`, and the test that reads the imports holds both that and the arrow. `dto` reaches `infrastructure` and stays gold because what it imports there builds a CDN URL string or decodes a blurhash in memory: the line is I/O, not layering.
 
 Some edges are deliberately absent, because neither is an import. **Pages and components never reach the application layer**: one module registers the live content collections, and a route then reads them through `astro:content`, which is what lets a page be typed against an entry without knowing a mapper exists. And **the CMS enters at `infrastructure`**: EmDash's query API is called in process, on the request, but only `infrastructure` calls it.
 
