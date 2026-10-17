@@ -1,3 +1,10 @@
+## [1.29.6](https://github.com/fbuireu/biancafiore/compare/v1.29.5...v1.29.6) (2026-10-17)
+
+
+### Bug Fixes
+
+* **actions:** answer a missing contact secret with the generic error, not its message ([b1290cd](https://github.com/fbuireu/biancafiore/commit/b1290cd332c5996132f33789f06ab6325289ed41))
+
 ## [1.29.5](https://github.com/fbuireu/biancafiore/compare/v1.29.4...v1.29.5) (2026-10-15)
 
 
