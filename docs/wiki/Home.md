@@ -46,4 +46,4 @@ This wiki is the shape, not the rules. Anything normative lives in the repositor
 
 ## A Note On Content
 
-Articles, Projects and Testimonials are **not in this repository**. They live in the CMS, so a typo in an article cannot be fixed by a pull request. Code contributions go through the normal fork-and-PR flow; content corrections go through the content issue template.
+Articles, Projects and Testimonials are **not in this repository**. They live in the CMS, so a typo in an article cannot be fixed by a pull request. Code contributions go through the normal fork-and-PR flow, with one catch: a pull request from a fork gets no secrets, so its preview deploy fails until the change is pushed to a branch of this repository ([CI/CD](CI-CD) lists the limits). Content corrections go through the content issue template.

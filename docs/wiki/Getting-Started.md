@@ -30,7 +30,7 @@ pnpm wrangler:dev       # build + wrangler dev --remote
 pnpm verify             # format:check && typecheck && check && test:ut:coverage
 ```
 
-That one command is the CI gate, so running it locally is running what the pull request will run. The `pre-push` hook runs `pnpm verify:changed`, the same static checks followed by only the unit tests affected by what changed since `origin/main`, and then the docs test, which a changed-only run cannot select. Its parts, plus the rest:
+CI's `Verify` job runs the same checks, as parallel steps rather than one after another, so running it locally is running what the pull request will run; [CI/CD](CI-CD) draws the job. The `pre-push` hook runs `pnpm verify:changed`, the same static checks followed by only the unit tests affected by what changed since `origin/main`, and then the docs test, which a changed-only run cannot select. Its parts, plus the rest:
 
 ```bash
 pnpm check              # astro check (type + template)
@@ -55,6 +55,8 @@ pnpm db:generate        # drizzle-kit generate (migrations)
 pnpm db:migrate         # apply them
 pnpm db:studio          # drizzle studio
 ```
+
+No deploy runs them: a schema change is migrated by hand, before the code that reads it ships, which [CI/CD](CI-CD) lists among its limits.
 
 ## Before your first pull request
 

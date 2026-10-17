@@ -36,7 +36,7 @@ pnpm lint:all         # biome lint (append :fix to autofix)
 pnpm format:all       # biome check --write
 pnpm format:check     # biome check, no writes (what verify runs)
 pnpm verify:static    # format:check && typecheck && check: everything verify does but the suite
-pnpm verify           # verify:static && test:ut:coverage (the CI gate)
+pnpm verify           # verify:static && test:ut:coverage (CI's Verify runs these checks as parallel steps)
 pnpm verify:changed   # verify:static && test:ut:changed && test:docs (what pre-push runs)
 
 pnpm test:ut          # vitest, the node and dom projects
@@ -54,7 +54,7 @@ pnpm db:studio        # drizzle studio
 
 ```
 
-`test:ut:changed` picks tests through the import graph, and neither a Markdown file nor a stylesheet the docs test reads is in it, which is why `verify:changed` ends with `test:docs`. The hooks: `pre-commit` formats staged files, `commit-msg` runs commitlint, `pre-push` runs `pnpm verify:changed`, and CI runs the full `pnpm verify`; [CONTRIBUTING.md](./.github/CONTRIBUTING.md) says why the hook stops short of it.
+`test:ut:changed` picks tests through the import graph, and neither a Markdown file nor a stylesheet the docs test reads is in it, which is why `verify:changed` ends with `test:docs`. The hooks: `pre-commit` formats staged files, `commit-msg` runs commitlint, `pre-push` runs `pnpm verify:changed`, and CI's `Verify` job runs every check `pnpm verify` chains, as parallel steps, with the typecheck and `astro check` sharing one because both regenerate Astro's types; [CONTRIBUTING.md](./.github/CONTRIBUTING.md) says why the hook stops short of it.
 
 `--pass-with-no-tests` belongs to `test:e2e:changed` alone, and the docs test holds it there: its `--only-changed` set is empty whenever no spec changed, while on `test:e2e` or on the smoke step the flag would turn a broken `testDir` or a grep that stopped matching green.
 

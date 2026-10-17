@@ -118,8 +118,8 @@ A scope is optional and free-form: [`commitlint.config.ts`](../commitlint.config
 
 **`main` takes squash merges, so the pull request title is the commit that lands.** The `commit-msg` hook
 lints what you type locally, and [`commit-message.yml`](./workflows/commit-message.yml) lints the pull
-request title on every open and edit, because that title is what semantic-release parses. Title the pull
-request the way you would title a commit.
+request title whenever the pull request is opened, edited, reopened or pushed to, because that title is what
+semantic-release parses. Title the pull request the way you would title a commit.
 
 Do **not** add a `Co-Authored-By` trailer for an AI assistant to a commit or a pull request.
 
@@ -138,9 +138,13 @@ green. [AGENTS.md](../AGENTS.md) has the full table of what to update for a give
 2. Run the checks above; fill in the pull request template, GIF included.
 3. CI deploys a per-PR preview Worker and comments its URL on the pull request. Previews run with
    `HIDE_CHROME`, so parts of the site are deliberately hidden there. The E2E suite runs against the
-   preview and gates the merge.
-4. After merge to `main`, semantic-release versions and deploys automatically; there is no manual release
-   step. A release is cut only after the production deploy and its smoke run pass.
+   preview and gates the merge. **A pull request from a fork gets no secrets**, so its preview deploy
+   fails and `Check` stays red until the change is pushed to a branch of this repository, whose pull
+   request gets the preview and the E2E run.
+4. After merge to `main`, the `Deploy to production` job deploys the site and the smoke run tests it; a
+   failed smoke run rolls production back. semantic-release then tags the version and writes the release
+   notes; there is no manual release step, and a release is cut only after the production deploy and its
+   smoke run pass. The [CI/CD wiki page](../docs/wiki/CI-CD.md) draws the whole path.
 
 ## Use of AI
 
