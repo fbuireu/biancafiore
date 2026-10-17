@@ -391,9 +391,6 @@ const SHELL_SUBSTITUTION = /\$\(|`/;
 const COVERAGE_EXCLUDE = /coverage: \{[\s\S]*?exclude: \[([\s\S]*?)\]/;
 const QUOTED_GLOB = /"([^"]+)"/g;
 const GLOB_TOKEN = /\*\*\/|\*\*|\*|\{[^}]*\}|[.+?^$()|[\]\\]/g;
-const MERMAID_DIAGRAM = /```mermaid\n([\s\S]*?)```/g;
-const MERMAID_FRONTMATTER = /^---\n([\s\S]*?)\n---\n/;
-const DAGRE_LAYOUT = /^\s+layout: dagre$/m;
 
 const toPosix = (value: string): string => value.split("\\").join("/");
 const read = (relativePath: string): string => readFileSync(join(ROOT, relativePath), "utf8").split("\r\n").join("\n");
@@ -553,7 +550,7 @@ const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.sta
 const WIKI_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/wiki/"));
 const CODING_STANDARDS = "CODING_STANDARDS.md";
 const GUIDES = ["AGENTS.md", "GLOSSARY.md", CODING_STANDARDS, ...NESTED_GUIDES];
-const DOCS = [...GUIDES, ".github/CONTRIBUTING.md", ...ADR_FILES, ...WIKI_FILES];
+const DOCS = [...GUIDES, "README.md", ".github/CONTRIBUTING.md", ".github/SECURITY.md", ...ADR_FILES, ...WIKI_FILES];
 const isWiki = (doc: string): boolean => doc.startsWith("docs/wiki/");
 const wikiPages = new Set(WIKI_FILES.map((file) => basename(file, ".md")));
 
@@ -1137,15 +1134,56 @@ describe("the published wiki", () => {
 	});
 });
 
-describe("diagrams", () => {
-	it("pins every Mermaid diagram to the dagre layout, so a renderer that defaults to ELK draws it as it was drawn", () => {
-		const diagrams = DOCS.flatMap((doc) => [...read(doc).matchAll(MERMAID_DIAGRAM)].map(([, body]) => ({ doc, body })));
-		const pinned = (body: string) => DAGRE_LAYOUT.test(body.match(MERMAID_FRONTMATTER)?.[1] ?? "");
+describe("the CI/CD guide names every workflow, action, secret and variable, and every diagram is hand-drawn on dagre", () => {
+	const CI_CD_GUIDES = ["docs/wiki/CI-CD.md"];
+	const MARKDOWN_DOCS = walk(".")
+		.filter((file) => file.endsWith(".md") && basename(file) !== "CHANGELOG.md")
+		.map((file) => file.slice("./".length));
+	const WORKFLOW_FILES = readdirSync(join(ROOT, ".github/workflows")).filter((name) => /\.ya?ml$/.test(name));
+	const ACTION_NAMES = existsSync(join(ROOT, ".github/actions")) ? readdirSync(join(ROOT, ".github/actions")) : [];
+	const AUTOMATION_FILES = [
+		...WORKFLOW_FILES.map((name) => `.github/workflows/${name}`),
+		...ACTION_NAMES.map((name) => `.github/actions/${name}/action.yml`),
+	];
+	const SECRET_OR_VARIABLE = /\$\{\{[^}]*?\b(?:secrets|vars)\.([A-Za-z0-9_]+)/g;
+	const IMPLICIT_SECRETS = new Set(["GITHUB_TOKEN"]);
+	const MERMAID_FENCE = /^([ \t]*)```mermaid[^\n]*\n([\s\S]*?)^\1```/gm;
+	const FRONTMATTER = /^---\n([\s\S]*?)\n---\n/;
+	const guide = (): string => CI_CD_GUIDES.map(read).join("\n");
 
-		expect(pinned("---\nconfig:\n  look: handDrawn\n  layout: dagre\n---\nflowchart LR")).toBe(true);
-		expect(pinned("flowchart LR\n  a --> b")).toBe(false);
+	it("names every workflow file and composite action in the CI/CD guide", () => {
+		const text = guide();
+		expect(WORKFLOW_FILES.length).toBeGreaterThan(0);
+		expect([...WORKFLOW_FILES, ...ACTION_NAMES].filter((name) => !text.includes(name))).toEqual([]);
+	});
+
+	it("names every secret and variable a workflow or action reads in the CI/CD guide", () => {
+		const text = guide();
+		const used = new Set(
+			AUTOMATION_FILES.flatMap((path) => [...read(path).matchAll(SECRET_OR_VARIABLE)].map(([, name]) => name)),
+		);
+		expect(used.size).toBeGreaterThan(0);
+		expect([...used].filter((name) => !IMPLICIT_SECRETS.has(name) && !text.includes(`\`${name}\``))).toEqual([]);
+	});
+
+	it("describes the verify checks as the parallel steps ci.yml runs", () => {
+		expect(read(".github/workflows/ci.yml")).toMatch(/^\s*- parallel:/m);
+		expect(guide()).toMatch(/\bparallel\b/i);
+	});
+
+	it("draws every Mermaid diagram hand-drawn on the dagre layout", () => {
+		const diagrams = MARKDOWN_DOCS.flatMap((path) =>
+			[...read(path).matchAll(MERMAID_FENCE)].map(([, indent, body]) => ({
+				path,
+				front: FRONTMATTER.exec(body.replaceAll(new RegExp(`^${indent}`, "gm"), ""))?.[1] ?? "",
+			})),
+		);
 		expect(diagrams.length).toBeGreaterThan(0);
-		expect(diagrams.filter(({ body }) => !pinned(body)).map(({ doc }) => doc)).toEqual([]);
+		expect(
+			diagrams
+				.filter(({ front }) => !/^\s*look:\s*handDrawn\s*$/m.test(front) || !/^\s*layout:\s*dagre\s*$/m.test(front))
+				.map(({ path }) => path),
+		).toEqual([]);
 	});
 });
 
@@ -5456,6 +5494,7 @@ const VERSIONED_DEPENDENCIES: Record<string, string[]> = {
 	astro: ["Astro"],
 	"@astrojs/starlight": ["Starlight"],
 	effect: ["Effect"],
+	emdash: ["EmDash"],
 	next: ["Next", "Next.js"],
 	react: ["React"],
 	tailwindcss: ["Tailwind", "Tailwind CSS"],
