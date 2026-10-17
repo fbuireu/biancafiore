@@ -185,7 +185,7 @@ Every name a workflow or the composite action reads, besides the `GITHUB_TOKEN` 
 | `EMDASH_OAUTH_GOOGLE_CLIENT_SECRET` | secret, optional | Environment | `_deploy.yml`: the Worker | the same |
 | `CF_ACCESS_CLIENT_ID` | secret | Environment, `development` | `E2E (preview)` | with neither, every request meets the Access login and the run fails; with one alone the fixture throws |
 | `CF_ACCESS_CLIENT_SECRET` | secret | Environment, `development` | `E2E (preview)` | the same |
-| `PAT` | secret | repository, and Dependabot | `Semantic Release`, `sync-wiki.yml`, `dependabot-auto-merge.yml` | the release cannot push its commit and tag, the wiki sync cannot clone the wiki, and a Dependabot update is neither approved nor merged |
+| `PAT` | secret | repository, and Dependabot | `Semantic Release`, `sync-wiki.yml`, `dependabot-auto-merge.yml` | the release cannot push its commit and tag, the wiki sync cannot clone and push the wiki, which needs the token's write access to it, and a Dependabot update is neither approved nor merged |
 | `CODECOV_TOKEN` | secret | repository | `Verify`, the Codecov upload | the upload can be refused, which does not fail `Verify`; the commit has no coverage report |
 | `SITE_URL` | variable | repository, and Environment | `_deploy.yml`'s build, `Production smoke tests`, the production deploy's URL | the build fails on the env schema; when only the repository's is empty, production deploys, the smoke job's first step exits 1 and production rolls back |
 | `BIANCA_EMAIL` | variable | Environment | `_deploy.yml`: the build | the build fails on the env schema |

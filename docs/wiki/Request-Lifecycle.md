@@ -50,7 +50,7 @@ sequenceDiagram
                 Loader-->>Page: domain models, mapped by the DTOs
                 Page-->>SiteMW: HTML, with the route's cache rule and tags
                 SiteMW-->>EmDashMW: the security headers set, outside /_emdash/
-                EmDashMW-->>Cache: the response, a 404 logged for the admin
+                EmDashMW-->>Cache: the response, logged for the admin when it is a 404
                 Cache-->>Browser: the page, stored under its tags
             end
         end
@@ -59,7 +59,7 @@ sequenceDiagram
 
 1. **Static assets answer first.** Whatever the build put in `dist/client`, the scripts, the stylesheets, the fonts, `robots.txt`, `/.well-known/security.txt` and the two prerendered legal pages, is served by Cloudflare before the Worker runs, with the security headers the build wrote into `_headers`.
 2. **The Workers cache answers next.** A content page is stored with a day's `max-age`, an hour of `stale-while-revalidate` and the nine content tags, so most visits end here, at the edge, without a line of the Worker running. Because the cache answers before the Worker, a signed-in editor gets the same cached page as everyone else, without EmDash's toolbar.
-3. **On a miss, EmDash's middleware runs before the site's.** The integration registers it ahead of [`src/middleware.ts`](https://github.com/fbuireu/biancafiore/blob/main/src/middleware.ts): it opens the D1 session (an anonymous read goes to the nearest replica), answers a path an editor redirected with its 301 or 302, reads the admin session from the `SESSION` KV, and opens the preview context a [draft preview](#a-draft-preview) needs. After the page has rendered, it logs a 404 for the admin's *Redirects* screen.
+3. **On a miss, EmDash's middleware runs before the site's.** The integration registers it ahead of [`src/middleware.ts`](https://github.com/fbuireu/biancafiore/blob/main/src/middleware.ts): it opens the D1 session (an anonymous read goes to the nearest replica), answers a path an editor redirected with its 301 or 302, reads the admin session from the `SESSION` KV, and opens the preview context a [draft preview](#a-draft-preview) needs. After the page has rendered, it records the path of any 404 for the admin's *Redirects* screen, so an editor can see which old links still arrive.
 4. **The site's middleware sets the security headers** on every response the Worker renders, and leaves anything under `/_emdash/` alone, because EmDash sets its own, stricter policy there.
 5. **The page reads content through a live collection**, never through the CMS. `core/utils/entries.ts` is the one module that calls `getLiveCollection` and `getLiveEntry`; the collection's loader, in `src/application/entities`, calls `fetchEntries`, which walks every page of the query and hands the entries to the DTOs that map them into the domain. [Content Model](Content-Model) follows one entry along that path.
 6. **The response leaves with its cache rule.** Astro's Cloudflare cache provider writes the route's rule into `Cloudflare-CDN-Cache-Control` and the tags into `Cache-Tag`, and the cache stores the page under them until it expires or a [publish](Publishing) purges a tag it carries.
