@@ -1,3 +1,10 @@
+## [1.29.7](https://github.com/fbuireu/biancafiore/compare/v1.29.6...v1.29.7) (2026-10-18)
+
+
+### Bug Fixes
+
+* **images:** serve every BlurImage through /cdn-cgi/image in production, as the docs assumed ([c1dfb3e](https://github.com/fbuireu/biancafiore/commit/c1dfb3e9ee9291d184a8085465898342d99746c2))
+
 ## [1.29.6](https://github.com/fbuireu/biancafiore/compare/v1.29.5...v1.29.6) (2026-10-17)
 
 
