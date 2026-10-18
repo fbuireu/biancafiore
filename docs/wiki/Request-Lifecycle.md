@@ -89,6 +89,7 @@ sequenceDiagram
 | `/500` | on request, after an unhandled error | none | nothing of its own |
 | `/_emdash/admin`, `/_emdash/api/…` | by EmDash | `private, no-store` | what the admin edits |
 | `/_emdash/api/media/file/…` | by EmDash | `public, max-age=0, must-revalidate` for an image | the file, from R2 |
+| `/_image?href=…` | by EmDash's image endpoint | `public, max-age=0, must-revalidate`, never stored by the Workers cache | an EmDash media file from R2, resized by the `IMAGES` binding; an imported image from the assets |
 
 The **content rule** is the one `CONTENT_CACHE` in [`src/const/contentCache.ts`](https://github.com/fbuireu/biancafiore/blob/main/src/const/contentCache.ts) holds for every route in `CONTENT_ROUTES`: a day's `max-age`, an hour of `stale-while-revalidate`, and the tags of every content collection, of the `tag` taxonomy, of the bylines, of the site settings and of the two menus. Every content route carries every tag, because a page reads more than it looks like it does (the Article page reads every Article to infer its Related Articles) and a missing tag is a page a day stale.
 
@@ -144,7 +145,7 @@ Logs and traces leave the Worker through Cloudflare's export to Better Stack ([C
 
 ## An image
 
-Every image an editor uploads lives in R2, in the stage's `MEDIA` bucket, and EmDash records its dimensions and a blurhash in D1. A page never links the bucket: it links EmDash's media route, on the site's own origin, and in production it asks Cloudflare to resize and convert on the way.
+Every image an editor uploads lives in R2, in the stage's `MEDIA` bucket, and EmDash records its dimensions and a blurhash in D1. A page never links the bucket: it links Astro's `/_image` endpoint, on the site's own origin, which EmDash answers by reading the file from the bucket and resizing it with the Cloudflare Images binding, on every stage ([ADR 0024](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0024-images-render-through-emdashs-endpoint-and-the-images-binding.md)).
 
 ```mermaid
 ---
@@ -154,19 +155,23 @@ config:
 ---
 flowchart TB
     render(["a page renders on a cache miss"]) --> resolve["resolveMedia in the CMS client<br/>storage key to /_emdash/api/media/file/key"]
-    resolve --> create["createImage in the DTO<br/>url, src and srcset, dimensions, share crops"]
-    create --> placeholder["an inline bitmap decoded from the blurhash<br/>shown while the image loads, no request"]
-    create --> blur["BlurImage hands Astro's Image the src and srcset<br/>Astro keeps the layout, sizes and lazy loading"]
-    blur -- "a production build" --> transformed["the img points under /cdn-cgi/image/<br/>format, quality, width"]
-    blur -- "a preview, localhost" --> original["the img points at the media route itself"]
-    transformed --> zone["Cloudflare on the biancafiore.me zone<br/>fetches the original, resizes and converts it"]
-    zone --> route
-    original --> route["EmDash's media route<br/>/_emdash/api/media/file/key"]
-    route --> bucket[("R2, the MEDIA bucket")]
+    resolve --> create["createImage in the DTO<br/>the path, its dimensions, the blurhash bitmap"]
+    create --> component["BlurImage or ArticleImage<br/>Astro's Image, given absoluteUrl of the path"]
+    component --> html["src, srcset and sizes written by Astro<br/>/_image?href=...&w=...&h=...&f=webp"]
+    html --> browser(["the browser asks for the width it needs"])
+    browser --> endpoint["EmDash's image endpoint at /_image<br/>matches the media path, never fetches the host"]
+    endpoint -- "an EmDash media path" --> read[("reads the file from MEDIA, the R2 bucket")]
+    read -- "the browser's ETag still matches" --> notModified["304, no transform"]
+    read -- "a first visit, or a width not fetched yet" --> binding["the IMAGES binding resizes it<br/>webp at quality 85"]
+    binding --> answer["public, max-age=0, must-revalidate<br/>an ETag naming the transform"]
+    endpoint -- "anything else, an imported image" --> stock["the adapter's endpoint<br/>reads ASSETS, resizes with IMAGES"]
 ```
 
-- **The URL is a path, made once.** `resolveMedia` in [`src/infrastructure/cms/media.ts`](https://github.com/fbuireu/biancafiore/blob/main/src/infrastructure/cms/media.ts) turns EmDash's storage key into a path on the media route before any mapper sees it, and nothing but `absoluteUrl` turns that path into a full URL, where an Open Graph tag or a JSON-LD document needs one.
-- **Production transforms; nothing else can.** In a production build, `getOptimizedImageUrl` and `getOptimizedSrcset` point every image under `/cdn-cgi/image/…`: the `src` and `srcset` `createImage` builds for a `BlurImage` (the featured images, the article cards, the Projects, the Cities and the Testimonials), an Article's body images and the share crops. The `src` is the image at its own size in the format the browser accepts, and the `srcset` offers a width at each common breakpoint narrower than the image and one at its own width, so the zone is never asked to upscale. `BlurImage` hands both to Astro's `<Image>` rather than the media path, because Astro's Cloudflare image service rewrites only an imported image or a remote one its `image.domains` allow, and passes a path on the site's own origin through untransformed. A preview on `workers.dev` and the dev server sit on no zone that could transform, so both serve the original from the media route, every `srcset` candidate included.
+- **The URL is a path, made once.** `resolveMedia` in [`src/infrastructure/cms/media.ts`](https://github.com/fbuireu/biancafiore/blob/main/src/infrastructure/cms/media.ts) turns EmDash's storage key into a path on the media route before any mapper sees it, and nothing but `absoluteUrl` turns that path into a full URL, where an Open Graph tag, a JSON-LD document or Astro's image service needs one.
+- **Astro writes the image URLs, and nothing here does.** `BlurImage` and `ArticleImage` hand Astro's `<Image>` the media path made absolute, and the Article page asks `getImage` for its structured-data image the same way (`shareImage`). Astro writes the `src`, the `srcset` and the `sizes` as `/_image?href=…` URLs, because the adapter runs with `imageService: "cloudflare-binding"` and `astro.config.ts` authorizes `SITE_URL`'s host under the media path: Astro transforms only an absolute source a remote pattern allows, and passes anything else through as it is. A `constrained` image's `srcset` reaches twice the width it is given, since Astro cannot know a remote image's size; the Article's featured image names its own widths instead.
+- **EmDash's endpoint answers `/_image`, the same on every stage.** EmDash's integration installs it over the adapter's: for a path under the media route it reads the file through the `MEDIA` binding and resizes it with the `IMAGES` binding, to WebP at quality 85 unless asked otherwise, and it hands any other image, such as the imported portrait, to the adapter's endpoint, which reads it from the Worker's assets. It matches the path and never fetches the host in the `href`, so a preview on its own `workers.dev` address, behind Access, resizes from the bucket it is bound to, and `pnpm dev` resizes through Miniflare's local binding.
+- **Every new visitor's image reaches the Worker.** The endpoint answers `public, max-age=0, must-revalidate` with an ETag that names the transform, because an editor can replace a file under the same key, and the adapter marks a response no route rule covers `Cloudflare-CDN-Cache-Control: no-store`, so the Workers cache stores no image. A browser that holds one revalidates it and gets a `304` without a transform; a first visit, or a width it has not fetched, costs a transform, billed per unique transformation.
+- **Some images go out as they are.** Astro needs both dimensions to transform a remote source, so an image whose block carries none, a split block's among them, is served from the media route untransformed, as EmDash's own components serve it. The endpoint reads only a width, a height, a format and a quality, and cannot crop, so the Article's structured-data image is one rendition at the image's own ratio, 1200 pixels wide or narrower, and Open Graph and Twitter point at the original file with its true dimensions.
 - **The media route serves R2 under EmDash's own headers.** An image answers `public, max-age=0, must-revalidate` with validators, so a browser revalidates instead of downloading again, and a sandboxing content security policy; a type that is not a plain image is served as a download. The site's middleware leaves the route alone, as it does everything under `/_emdash/`.
 - **The blur costs nothing.** EmDash computes a blurhash on upload, and `createImage` decodes it into a small inline bitmap the `BlurImage` component shows behind the image until it arrives. A format EmDash computes no blurhash for, AVIF among them, renders unblurred.
 

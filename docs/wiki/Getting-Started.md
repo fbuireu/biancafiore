@@ -38,7 +38,7 @@ pnpm typecheck          # astro sync && tsc --noEmit
 pnpm lint:all           # biome lint (append :fix to autofix)
 pnpm format:all         # biome check --write
 pnpm test:ut            # unit tests (vitest)
-pnpm test:built         # build, then assert what it emits: the legal pages and the headers
+pnpm test:built         # build, then assert what it emits: the legal pages, the headers and the image endpoint
 pnpm test:e2e           # playwright
 ```
 

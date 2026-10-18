@@ -61,7 +61,7 @@ The tag list is `CONTENT_CACHE` in [`src/const/contentCache.ts`](https://github.
 ## What purges nothing
 
 - **A redirect.** EmDash's *Redirects* run in its middleware, in this Worker, ahead of every page, and a redirect is not a content write, so adding one purges nothing: when its source is a page the cache still holds, the cache keeps answering that page until its entry expires or another write purges it, and only then does the request reach the Worker and the redirect. A redirect whose source answered 404 works at once, because no 404 is ever stored. The common case needs nothing, because changing an Article's slug saves the Article and purges every content route.
-- **A media upload on its own.** An image reaches a page only through an entry, a byline or the settings that reference it, and saving that reference purges. The image itself is served by EmDash's media route, which tells the browser to revalidate every time ([Request Lifecycle](Request-Lifecycle#an-image)).
+- **A media upload on its own.** An image reaches a page only through an entry, a byline or the settings that reference it, and saving that reference purges. The image itself is served through EmDash's image endpoint, which tells the browser to revalidate every time, so a file an editor replaces under the same key shows on the next view ([Request Lifecycle](Request-Lifecycle#an-image)).
 
 ---
 
