@@ -45,15 +45,15 @@ flowchart TB
         unit --> join
         join --> codecov["Upload coverage to Codecov<br/>unless cancelled, never fails the job"]
     end
-    codecov -- "push or dispatch on main" --> production["Deploy to production<br/>_deploy.yml"]
+    verify -- "Verify green, push or dispatch on main" --> production["Deploy to production<br/>_deploy.yml"]
     production --> smoke["Production smoke tests<br/>the @smoke cases against SITE_URL"]
     smoke -- "failed" --> rollback["Roll back production<br/>wrangler rollback"]
     smoke -- "passed, on a push" --> release["Semantic Release"]
-    codecov -- "pull request" --> development["Deploy to development<br/>_deploy.yml, Worker pr-N"]
+    verify -- "Verify green, pull request" --> development["Deploy to development<br/>_deploy.yml, Worker pr-N"]
     development --> comment["Post preview URL"]
     development --> e2e["E2E (preview)"]
     check["Check<br/>always(): red when a job it needs failed or was cancelled"]
-    codecov -.-> check
+    verify -.-> check
     production -.-> check
     smoke -.-> check
     release -.-> check
@@ -156,15 +156,26 @@ flowchart TB
     state -- "closed or merged" --> gone["deleted"]
 ```
 
-**The preview Worker outlives the end-to-end run.** Closing a pull request does not cancel the CI run already going, so the cleanup queues behind that run, in a concurrency group spelled from the pull request number, `CI-refs/pull/<number>/merge`, the group `ci.yml` computes for the pull request's own run; the coupling is by `ci.yml`'s `name:`, `CI`. The delete is retried up to five times, ten seconds apart, and wrangler answering that the Worker does not exist counts as done, so a preview that never deployed closes cleanly. The weekly sweep, which a dispatch also runs, deletes any preview Worker whose pull request is closed or merged, for the cases a cleanup missed, and keeps one whose pull request it cannot read rather than guess.
-
-**The preview is not a faithful target.** `HIDE_CHROME` is true there, so the suite sees an under-construction placeholder on the unpublished routes. See [Rendering and Routing](Rendering-and-Routing). Every preview reads the development database and media bucket, which they all share and which hold content of their own: EmDash's guidance is never to bind a preview to production's, and the first deploy of each stage is done by hand, in an order [`AGENTS.md`](https://github.com/fbuireu/biancafiore/blob/main/AGENTS.md)'s Deploy section spells out.
+The preview a pull request deploys is an ephemeral environment of its own, [below](#per-pr-previews-ephemeral-environments): what creates it, what it serves, who can reach it and what is left once it is deleted.
 
 **Every Playwright run uses two browsers.** The end-to-end run against the preview and the smoke run against production both run each case in Chromium and in WebKit, the engine behind Safari, and each job installs both behind a cache keyed on the pair, so a cache saved with one browser is never restored into a run of both. The docs test holds the projects and the install.
 
-**The Access token reaches the preview alone.** The preview sits behind Cloudflare Access, so the end-to-end job carries a service token, `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET`, and [`e2e/fixtures.ts`](https://github.com/fbuireu/biancafiore/blob/main/e2e/fixtures.ts), where every spec takes its `test` from, adds it as `CF-Access-Client-Id` and `CF-Access-Client-Secret` to the requests whose origin is the preview's, and to the requests a spec makes itself. What a page asks of a third party, Tag Manager, Calendly or any other, carries no token, which `extraHTTPHeaders` in the config could not promise: Playwright sends those on every request. The docs test holds the imports and the config.
-
 **The wiki is a copy.** `sync-wiki.yml` clones the repository's wiki with `PAT`, mirrors `docs/wiki` into it with `rsync --delete`, and commits only when something changed, under the author of the commit that triggered it. A page edited in the GitHub UI is overwritten by the next sync.
+
+---
+
+## Per-PR previews (ephemeral environments)
+
+Every pull request to `main` gets a Worker of its own on `workers.dev`, built from the pull request merged into `main`, as GitHub tests it, and deleted when the pull request closes. It lives as long as the pull request does, so nothing about it needs tidying by hand.
+
+- **Created by the pull request's own CI run.** `Deploy to development` runs on every `pull_request` event `ci.yml` takes, opened, a push to the branch and a reopen, once `Verify` is green, and calls `_deploy.yml` with the `development` Environment and the Worker name `pr-<number>-biancafiore-development`. The first deploy creates the Worker and every later push replaces its version. It deploys the `[env.development]` block of `wrangler.toml` under that name, so it binds the same `SESSION` KV, `DB` and `MEDIA` as every other preview, with `HIDE_CHROME` true and no cron trigger. A pull request into any other branch gets no preview, and neither does one from a fork, whose build has no secrets ([Limits](#limits)).
+- **Its address goes into one comment.** The preview answers at `https://pr-<number>-biancafiore-development.fbuireu.workers.dev`, which is also the URL of the `development` Environment's deployment on the pull request. `Post preview URL` finds the comment `github-actions[bot]` left with the `<!-- preview-deployment -->` marker and replaces its body with the URL, the branch and the head commit, so the pull request carries one comment however many times it is pushed, and a new one only the first time.
+- **Cloudflare Access stands in front of it.** The preview sits behind Cloudflare Access, which is configured in the account's dashboard and not in this repository, so nothing here creates, checks or changes it. A person opening the link meets the Access login. `E2E (preview)` gets through with the service token the `development` Environment holds, `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET`, which [`e2e/fixtures.ts`](https://github.com/fbuireu/biancafiore/blob/main/e2e/fixtures.ts), where every spec takes its `test` from, adds as `CF-Access-Client-Id` and `CF-Access-Client-Secret` to the requests whose origin is the preview's, and to the requests a spec makes itself. What a page asks of a third party, Tag Manager, Calendly or any other, carries no token, which `extraHTTPHeaders` in the config could not promise: Playwright sends those on every request. The docs test holds the imports and the config.
+- **The end-to-end suite runs against it, and gates the merge.** `E2E (preview)` needs the deploy, sets `BASE_URL` to the preview's address and runs `pnpm test:e2e` in Chromium and WebKit, uploading the Playwright report for seven days. `Check` needs it, so a red run blocks the merge. The preview is not a faithful target: `HIDE_CHROME` is true there, so the suite sees an under-construction placeholder on the unpublished routes (see [Rendering and Routing](Rendering-and-Routing)), and the contact specs skip themselves.
+- **It shares its data with every other preview.** Every preview reads and writes the development database, media bucket and `SESSION` namespace, which hold content of their own: EmDash's guidance is never to bind a preview to production's, and the first deploy of each stage is done by hand, in an order [`AGENTS.md`](https://github.com/fbuireu/biancafiore/blob/main/AGENTS.md)'s Deploy section spells out. An EmDash release a pull request brings migrates that shared database on the preview's first request, under every other preview too.
+- **Deleted when the pull request closes, merged or not.** `Delete the preview Worker` in `cleanup-development.yml` runs on the `closed` event with the `development` Environment's Cloudflare credentials. Closing a pull request does not cancel the CI run already going, so the cleanup queues behind that run, in a concurrency group spelled from the pull request number, `CI-refs/pull/<number>/merge`, the group `ci.yml` computes for the pull request's own run; the coupling is by `ci.yml`'s `name:`, `CI`, and it is what lets the end-to-end run finish against a Worker that still exists. It then runs `wrangler delete` on the Worker, retried up to five times, ten seconds apart, and wrangler answering that the Worker does not exist counts as done, so a preview that never deployed closes cleanly. A reopened pull request deploys a new one on its next run.
+- **A weekly sweep catches what a cleanup missed.** `Sweep orphaned preview Workers`, in the same workflow, runs on Mondays at 03:00 UTC and on a manual dispatch. It lists every Worker on the account through Cloudflare's API, takes the ones named `pr-<number>-biancafiore-development`, and asks GitHub for each pull request's state: an open one is kept, one it cannot read is kept rather than guessed at, and a closed or merged one is deleted. A delete that fails stops the sweep and turns its run red, and the next run tries again.
+- **What survives a preview.** Only the Worker goes. What it wrote stays where it wrote it: entries, media and admin logins in the shared development database, bucket and namespace, and any migration it applied to that database. So do the stable `biancafiore-development` Worker, which no sweep matches and which `EMDASH_SITE_URL` names for development because a preview's own address changes with every pull request, the pull request's comment, now pointing at nothing, the Environment's deployment record, the Playwright report until its seven days are up, and whatever the preview logged, already exported to the development pair of log and trace destinations.
 
 ---
 
