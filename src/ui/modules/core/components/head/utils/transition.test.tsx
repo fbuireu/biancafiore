@@ -100,6 +100,33 @@ describe("FEATURED_IMAGE_TRANSITION_SCRIPT", () => {
 		expect(SLUGS.map(nameOf)).toEqual([featuredImageTransitionName("first"), ""]);
 	});
 
+	it("unnames the card it named before, since a page the back/forward cache restores keeps the name it was left with", () => {
+		const page = boot();
+
+		fire({ page, type: "pageswap", activation: { navigationType: "push", entry: { url: urlOf("second") } } });
+		fire({ page, type: "pageswap", activation: { navigationType: "push", entry: { url: urlOf("first") } } });
+
+		expect(SLUGS.map(nameOf)).toEqual([featuredImageTransitionName("first"), ""]);
+	});
+
+	it("unnames every card as the reader leaves for a page no card links to", () => {
+		const page = boot();
+
+		fire({ page, type: "pageswap", activation: { navigationType: "push", entry: { url: urlOf("second") } } });
+		fire({ page, type: "pageswap", activation: { navigationType: "traverse", entry: { url: urlOf("second") } } });
+
+		expect(SLUGS.map(nameOf)).toEqual(["", ""]);
+	});
+
+	it("unnames, on the way back, the card the page was left with before naming the one the reader comes back from", () => {
+		const page = boot({ navigationType: "traverse", from: { url: urlOf("first") } });
+
+		fire({ page, type: "pageswap", activation: { navigationType: "push", entry: { url: urlOf("second") } } });
+		fire({ page, type: "pagereveal" });
+
+		expect(SLUGS.map(nameOf)).toEqual([featuredImageTransitionName("first"), ""]);
+	});
+
 	it("names no card of a page reached forward, or the image the reader left would fly to a Related Article", () => {
 		const page = boot({ navigationType: "push", from: { url: urlOf("first") } });
 
