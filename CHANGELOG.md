@@ -1,3 +1,10 @@
+## [1.29.10](https://github.com/fbuireu/biancafiore/compare/v1.29.9...v1.29.10) (2026-10-18)
+
+
+### Bug Fixes
+
+* navigation delay native transitions ([#1211](https://github.com/fbuireu/biancafiore/issues/1211)) ([60516d1](https://github.com/fbuireu/biancafiore/commit/60516d1891c8c53efbea07242c6b15c5b3945755))
+
 ## [1.29.9](https://github.com/fbuireu/biancafiore/compare/v1.29.8...v1.29.9) (2026-10-18)
 
 
