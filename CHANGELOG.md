@@ -1,3 +1,10 @@
+## [1.29.9](https://github.com/fbuireu/biancafiore/compare/v1.29.8...v1.29.9) (2026-10-18)
+
+
+### Performance Improvements
+
+* **images:** store each resized image in the Workers cache for a day ([d3f341c](https://github.com/fbuireu/biancafiore/commit/d3f341cfa070b70a47896d6dc625f8b5a06c225a))
+
 ## [1.29.8](https://github.com/fbuireu/biancafiore/compare/v1.29.7...v1.29.8) (2026-10-18)
 
 
