@@ -6,7 +6,7 @@ import {
 	IMAGE_BROWSER_CACHE_CONTROL,
 	IMAGE_ROUTE,
 } from "@const/contentCache";
-import { securityHeaders } from "@const/securityHeaders";
+import { OPENER_POLICY_HEADER, securityHeaders } from "@const/securityHeaders";
 import { inlineScriptHashes } from "@modules/core/utils/inlineScripts";
 
 const HEADERS = Object.entries(
@@ -15,6 +15,8 @@ const HEADERS = Object.entries(
 		inlineScriptHashes: inlineScriptHashes({ analyticsId: GOOGLE_ANALYTICS_ID, tagManagerId: GOOGLE_TAG_MANAGER_ID }),
 	}),
 );
+
+const CONTENT_HEADERS = HEADERS.filter(([header]) => header !== OPENER_POLICY_HEADER);
 
 const CONTENT_ROUTE_PATTERNS = new Set<string>(CONTENT_ROUTES);
 
@@ -27,11 +29,13 @@ export const onRequest = defineMiddleware(async ({ url, cache, routePattern }, n
 
 	if (url.pathname.startsWith(EMDASH_ROUTES)) return response;
 
-	for (const [header, value] of HEADERS) {
+	const isContentPage = response.status === 200 && CONTENT_ROUTE_PATTERNS.has(routePattern);
+
+	for (const [header, value] of isContentPage ? CONTENT_HEADERS : HEADERS) {
 		response.headers.set(header, value);
 	}
 
-	if (response.status === 200 && CONTENT_ROUTE_PATTERNS.has(routePattern)) {
+	if (isContentPage) {
 		response.headers.set("Cache-Control", CONTENT_BROWSER_CACHE_CONTROL);
 	}
 
