@@ -1912,6 +1912,13 @@ describe("observability", () => {
 		expect(directives.sort()).toEqual([...HYDRATION_DIRECTIVES_ALLOWED].sort());
 	});
 
+	it("never inlines a bundled script, which no digest names and the policy would block with nothing failing", () => {
+		expect(AGENTS_MD).toContain("A bundled `<script>` is never inlined");
+		expect(read("astro.config.ts")).toContain(
+			'assetsInlineLimit: (file) => (file.endsWith(".js") ? false : undefined)',
+		);
+	});
+
 	it("lets the tag through the CSP it would otherwise be blocked by", () => {
 		const headers = read("src/const/securityHeaders.ts");
 		const origin = TAG_ORIGIN.exec(read(TELEMETRY_MODULE))?.[1];
