@@ -4,7 +4,7 @@ Date: 2026-07-26
 
 ## Status
 
-Accepted. Amended 2026-09-12: Better Stack's browser tag joined Google Analytics behind the same category, and it is gated a *different* way, for the reason the Decision now records. Amended 2026-10-18: the consent default's script loads Google's two scripts itself, and only once the page is shown, since a page Chrome prerenders from its address bar runs its scripts for a reader who may never open it ([ADR 0025](./0025-navigation-is-the-browsers-own-with-cross-document-view-transitions.md)).
+Accepted. Amended 2026-09-12: Better Stack's browser tag joined Google Analytics behind the same category, and it is gated a *different* way, for the reason the Decision now records. Amended 2026-10-18: the consent default's script loads Google's two scripts itself, and only once the page is shown, since a page the browser prerenders on a hover ([ADR 0025](./0025-navigation-is-the-browsers-own-with-cross-document-view-transitions.md)) runs its scripts for a reader who may never open it.
 
 ## Context
 

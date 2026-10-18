@@ -9,7 +9,7 @@ import PreviewBanner from "@modules/article/components/previewBanner/PreviewBann
 import ReadingProgress from "@modules/article/components/readingProgress/ReadingProgress.astro";
 import RepublishedBanner from "@modules/article/components/republishedBanner/RepublishedBanner.astro";
 import TableOfContents from "@modules/article/components/tableOfContents/TableOfContents.astro";
-import { ARTICLE_BODY_CLASS } from "@modules/article/const";
+import { ARTICLE_BODY_CLASS, ARTICLE_FEATURED_IMAGE_CLASS, ARTICLE_MASTHEAD_CLASS } from "@modules/article/const";
 import { shareImage } from "@modules/article/utils/shareImage";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
@@ -66,14 +66,14 @@ const blogPostingSchema = buildBlogPostingSchema({
                   loading="eager"
                   fetchpriority="high"
                   decoding="async"
-                  class="article__featured-image"
+                  class={ARTICLE_FEATURED_IMAGE_CLASS}
                   transitionName={featuredImageTransitionName(article.data.slug)}
               />
           </section>
       )
   }
     <ReadingProgress />
-    <div class:list={["article-masthead", { "article-masthead--featured": !!article.data.featuredImage }]}>
+    <div class:list={[ARTICLE_MASTHEAD_CLASS, { "article-masthead--featured": !!article.data.featuredImage }]}>
       <Breadcrumbs />
       <ArticleDetails article={article} />
     </div>

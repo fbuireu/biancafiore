@@ -3,6 +3,7 @@ import loadDirective from "astro/runtime/client/load.prebuilt.js";
 import islandRuntime from "astro/runtime/server/astro-island.prebuilt.js";
 import { describe, expect, it } from "vitest";
 import { consentBootstrapScript, type GoogleTagIds } from "../components/cookieConsent/utils/consentGate";
+import { SPECULATION_RULES } from "../components/head/utils/speculation";
 import { FEATURED_IMAGE_TRANSITION_SCRIPT } from "../components/head/utils/transition";
 import { THEME_BOOTSTRAP_SCRIPT } from "../components/themeToggle/utils/preference";
 import { inlineScriptHashes } from "./inlineScripts";
@@ -14,7 +15,7 @@ const sha256 = (source: string): string => createHash("sha256").update(source).d
 const idsFor = (analyticsId: string): GoogleTagIds => ({ analyticsId, tagManagerId: "GTM-TEST" });
 
 describe("inlineScriptHashes", () => {
-	it("hashes every inline script the pages carry: both bootstraps, Astro's island runtime, the load directive and the featured image's transition naming", () => {
+	it("hashes every inline script the pages carry: both bootstraps, Astro's island runtime, the load directive, the featured image's transition naming and the speculation rules", () => {
 		expect(inlineScriptHashes(idsFor("G-TEST"))).toStrictEqual(
 			[
 				THEME_BOOTSTRAP_SCRIPT,
@@ -22,6 +23,7 @@ describe("inlineScriptHashes", () => {
 				islandRuntime,
 				loadDirective,
 				FEATURED_IMAGE_TRANSITION_SCRIPT,
+				SPECULATION_RULES,
 			].map(sha256),
 		);
 	});

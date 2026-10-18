@@ -4,7 +4,7 @@ Date: 2026-07-26
 
 ## Status
 
-Accepted.
+Accepted. Amended 2026-10-18: `.reveal`'s load fade runs only in a browser without scroll timelines, since where `view()` drives the element it replayed a 700 ms fade over content already on screen on every page the reader opened; `.reveal--on-load` keeps it everywhere.
 
 ## Context
 

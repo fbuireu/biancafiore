@@ -1912,6 +1912,7 @@ describe("observability", () => {
 		);
 		expect(hashing).toContain("THEME_BOOTSTRAP_SCRIPT");
 		expect(hashing).toContain("FEATURED_IMAGE_TRANSITION_SCRIPT");
+		expect(hashing).toContain("SPECULATION_RULES");
 		expect(hashing).toContain("consentBootstrapScript(googleTagIds)");
 		expect(read("astro.config.ts")).toContain("analyticsId: environment.GOOGLE_ANALYTICS_ID");
 		expect(read("astro.config.ts")).toContain("tagManagerId: environment.GOOGLE_TAG_MANAGER_ID");
@@ -3267,12 +3268,19 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(read("src/ui/modules/core/components/head/Head.astro")).not.toContain("ClientRouter");
 	});
 
-	it("renders no speculation rules, since Chrome shows a prerendered page served with an opener policy without its view transition", () => {
+	it("prerenders a content page on a hover and sends that page no opener policy, since Chrome activates a prerendered page that has one without its view transition", () => {
 		expect(read("docs/adr/0025-navigation-is-the-browsers-own-with-cross-document-view-transitions.md")).toContain(
-			"No page carries speculation rules",
+			"A content page sends no `Cross-Origin-Opener-Policy`",
 		);
-		expect(read("src/const/securityHeaders.ts")).toContain("Cross-Origin-Opener-Policy");
-		expect(read("src/ui/modules/core/components/head/Head.astro")).not.toContain("speculationrules");
+		expect(read("src/const/securityHeaders.ts")).toContain(
+			'export const OPENER_POLICY_HEADER = "Cross-Origin-Opener-Policy";',
+		);
+		expect(read("src/middleware.ts")).toContain(
+			"const CONTENT_HEADERS = HEADERS.filter(([header]) => header !== OPENER_POLICY_HEADER);",
+		);
+		expect(read("src/ui/modules/core/components/head/Head.astro")).toContain(
+			'<script is:inline type="speculationrules" set:html={SPECULATION_RULES} />',
+		);
 	});
 
 	it("cites a container query that matches a container base.css declares and a stylesheet uses", () => {
@@ -3584,8 +3592,12 @@ describe("conventions", () => {
 		expect(read(EMDASH_MIDDLEWARE)).toMatch(IMAGE_REQUEST_SKIPS_THE_BOOKMARK);
 		expect(read(EMDASH_REDIRECT_MIDDLEWARE)).toMatch(REDIRECTS_SKIP_THE_IMAGE_ENDPOINT);
 		expect(read("src/middleware.ts")).toContain("if (url.pathname === IMAGE_ROUTE && !response.ok) cache.set(false);");
+		expect(read("src/middleware.ts")).toContain(
+			'if (response.status === 200 && url.pathname === IMAGE_ROUTE) {\n\t\tresponse.headers.set("Cache-Control", IMAGE_BROWSER_CACHE_CONTROL);',
+		);
+		expect(cache).toContain("export const IMAGE_BROWSER_CACHE_CONTROL = `max-age=${IMAGE_CACHE.maxAge}`;");
 		expect(read("docs/wiki/Request-Lifecycle.md")).toContain(
-			"| `/_image?href=…` | by EmDash's image endpoint | image rule, a 200 alone; the browser gets `public, max-age=0, must-revalidate` for a media file |",
+			"| `/_image?href=…` | by EmDash's image endpoint | image rule, a 200 alone; the browser keeps a 200 for the same day |",
 		);
 		expect(AGENTS_MD).toContain("`routeRules` give `IMAGE_ROUTE` the `IMAGE_CACHE` rule");
 	});
@@ -5582,7 +5594,7 @@ describe("the CMS", () => {
 	it("binds the database and the bucket under the names the integration reads, in every stage", () => {
 		const config = read("astro.config.ts");
 
-		expect(config).toContain('d1({ binding: "DB", session: "auto" })');
+		expect(config).toContain('d1({ binding: "DB", session: "auto", coalesce: true })');
 		expect(config).toContain('r2({ binding: "MEDIA" })');
 		expect(config).toContain("provider: cacheCloudflare()");
 		expect(WRANGLER.match(/binding = "DB"/g)).toHaveLength(STAGES.length + 1);

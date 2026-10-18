@@ -4,6 +4,7 @@ import { articleHref, tagHref } from "@const/index";
 import { formatPublishDate } from "@domain/article";
 import clsx from "clsx";
 import type { ArticleEntry } from "../../utils/entries";
+import { PREFETCH_IN_VIEWPORT } from "../../utils/prefetch";
 import BlurImage from "../blurImage/BlurImage.astro";
 import { featuredImageTransitionName } from "../blurImage/utils/transition";
 import {
@@ -23,9 +24,12 @@ const { article, isLandscape = false } = Astro.props;
 
 const { slug, title, description, publishDateISO, readingTime, author, featuredImage, visibleTags, remainingTags } =
 	toArticleCardContent(article);
+const CARD_IMAGE_WIDTHS = [440, 880, 1320];
+const CARD_IMAGE_SIZES = isLandscape ? "(width <= 720px) 100vw, 210px" : "(width <= 720px) 100vw, 440px";
+
 const transitionName = { [ARTICLE_CARD_TRANSITION_NAME_ATTRIBUTE]: featuredImageTransitionName(slug) };
 ---
-<a class={ARTICLE_CARD_LINK_CLASS} href={articleHref(slug)} aria-labelledby={`article-title-${slug}`}>{' '}</a>
+<a class={ARTICLE_CARD_LINK_CLASS} href={articleHref(slug)} aria-labelledby={`article-title-${slug}`} {...PREFETCH_IN_VIEWPORT}>{' '}</a>
 <article
     class={clsx('article-card__item', { 'article-card__item--landscape': isLandscape })}
 >
@@ -35,6 +39,8 @@ const transitionName = { [ARTICLE_CARD_TRANSITION_NAME_ATTRIBUTE]: featuredImage
               class={ARTICLE_CARD_FEATURED_IMAGE_CLASS}
               image={featuredImage}
               alt={title}
+              widths={CARD_IMAGE_WIDTHS}
+              sizes={CARD_IMAGE_SIZES}
               {...transitionName}
           />
       </div>
@@ -47,7 +53,7 @@ const transitionName = { [ARTICLE_CARD_TRANSITION_NAME_ATTRIBUTE]: featuredImage
     </h3>
     <p class="article-card__byline editorial-meta">
         by <a href={tagHref(author.slug)}
-              class="article-card__author clickable underline-on-hover">{author.name}</a>
+              class="article-card__author clickable underline-on-hover" {...PREFETCH_IN_VIEWPORT}>{author.name}</a>
         · {readingTime} min
     </p>
     <div class="article-card__switch">
@@ -57,7 +63,7 @@ const transitionName = { [ARTICLE_CARD_TRANSITION_NAME_ATTRIBUTE]: featuredImage
             <ul class="article-card__tags__list flex row-balance">
               {visibleTags.map(({ slug: tagSlug, name }) => (
                   <li class="article-card__tag__item">
-                      <a class="clickable underline-on-hover" href={tagHref(tagSlug)}>{name}</a>
+                      <a class="clickable underline-on-hover" href={tagHref(tagSlug)} {...PREFETCH_IN_VIEWPORT}>{name}</a>
                   </li>
               ))}
               {remainingTags > 0 && (

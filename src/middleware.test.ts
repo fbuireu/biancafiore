@@ -1,6 +1,6 @@
 import { GOOGLE_ANALYTICS_ID, GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
-import { CONTENT_ROUTES, IMAGE_ROUTE } from "@const/contentCache";
-import { securityHeaders } from "@const/securityHeaders";
+import { CONTENT_ROUTES, IMAGE_CACHE, IMAGE_ROUTE } from "@const/contentCache";
+import { OPENER_POLICY_HEADER, securityHeaders } from "@const/securityHeaders";
 import { inlineScriptHashes } from "@modules/core/utils/inlineScripts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { onRequest } from "./middleware";
@@ -52,15 +52,30 @@ const cacheCallsOf = async ({ path, status }: CacheCallsOfParams): Promise<unkno
 	return calls;
 };
 
-interface BrowserCacheOfParams {
+interface RouteResponseOfParams {
 	routePattern: string;
 	status: number;
 }
 
-const browserCacheOf = async ({ routePattern, status }: BrowserCacheOfParams): Promise<string | null> => {
+const routeResponseOf = async ({ routePattern, status }: RouteResponseOfParams): Promise<Response> => {
+	const { onRequest } = await import("./middleware");
+
+	return (await onRequest(
+		{ url: new URL("/", SITE), routePattern } as Parameters<typeof onRequest>[0],
+		() => Promise.resolve(new Response(null, { status })) as ReturnType<Parameters<typeof onRequest>[1]>,
+	)) as Response;
+};
+
+const browserCacheOf = async (params: RouteResponseOfParams): Promise<string | null> =>
+	(await routeResponseOf(params)).headers.get("Cache-Control");
+
+const openerPolicyOf = async (params: RouteResponseOfParams): Promise<string | null> =>
+	(await routeResponseOf(params)).headers.get(OPENER_POLICY_HEADER);
+
+const imageCacheOf = async (status: number): Promise<string | null> => {
 	const { onRequest } = await import("./middleware");
 	const response = await onRequest(
-		{ url: new URL("/", SITE), routePattern } as Parameters<typeof onRequest>[0],
+		{ url: new URL(IMAGE_ROUTE, SITE), cache: { set: () => {} } } as unknown as Parameters<typeof onRequest>[0],
 		() => Promise.resolve(new Response(null, { status })) as ReturnType<Parameters<typeof onRequest>[1]>,
 	);
 
@@ -161,6 +176,26 @@ describe("onRequest", () => {
 	it("gives the browser no lifetime for a route the Workers cache does not hold, nor for a content route's answer that is not a 200", async () => {
 		expect(await browserCacheOf({ routePattern: "/contact", status: 200 })).toBeNull();
 		expect(await browserCacheOf({ routePattern: "/articles/[...slug]", status: 404 })).toBeNull();
+	});
+
+	it("sends no opener policy on a content page, since Chrome activates a prerendered page that has one without its view transition", async () => {
+		for (const routePattern of CONTENT_ROUTES) {
+			expect(`${routePattern}: ${await openerPolicyOf({ routePattern, status: 200 })}`).toBe(`${routePattern}: null`);
+		}
+	});
+
+	it("keeps the opener policy on every page no speculation rule prerenders, and on a content route's answer that is not a 200", async () => {
+		expect(await openerPolicyOf({ routePattern: "/contact", status: 200 })).toBe("same-origin-allow-popups");
+		expect(await openerPolicyOf({ routePattern: "/articles/[...slug]", status: 404 })).toBe("same-origin-allow-popups");
+	});
+
+	it("keeps a resized image in the browser for the day the Workers cache keeps it, so a navigation stops revalidating every image it already showed", async () => {
+		expect(await imageCacheOf(200)).toBe(`max-age=${IMAGE_CACHE.maxAge}`);
+	});
+
+	it("gives the browser no lifetime for an image answer that is not a 200, so a refused transform is tried again", async () => {
+		expect(await imageCacheOf(404)).toBeNull();
+		expect(await imageCacheOf(304)).toBeNull();
 	});
 
 	it("still sets the site's headers on a page whose path merely starts with the same letters", async () => {

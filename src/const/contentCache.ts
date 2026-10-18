@@ -36,6 +36,8 @@ export const IMAGE_CACHE: RouteCacheRule = {
 	swr: CONTENT_CACHE.swr,
 };
 
+export const IMAGE_BROWSER_CACHE_CONTROL = `max-age=${IMAGE_CACHE.maxAge}`;
+
 export const CONTENT_ROUTES = [
 	"/",
 	"/about",

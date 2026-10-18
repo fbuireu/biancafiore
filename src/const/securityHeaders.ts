@@ -2,6 +2,8 @@ import { CALENDLY } from "./calendly";
 
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
 
+export const OPENER_POLICY_HEADER = "Cross-Origin-Opener-Policy";
+
 const SCRIPT_ORIGINS = `https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com https://betterstack.net https://static.cloudflareinsights.com ${CALENDLY.ASSETS_ORIGIN}`;
 
 interface SecurityHeadersParams {
@@ -33,7 +35,7 @@ export function securityHeaders({ isDevelopment, inlineScriptHashes }: SecurityH
 		"X-Frame-Options": "SAMEORIGIN",
 		"Referrer-Policy": "strict-origin-when-cross-origin",
 		"Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
-		"Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+		[OPENER_POLICY_HEADER]: "same-origin-allow-popups",
 		"Cross-Origin-Resource-Policy": "cross-origin",
 		"Content-Security-Policy": directives.join("; "),
 	};

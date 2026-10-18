@@ -7,8 +7,6 @@
 		--reveal-distance: 10rem;
 		--reveal-stagger-distance: 3rem;
 		--reveal: 1;
-		transition: --reveal var(--reveal-duration) ease;
-		transition-delay: calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-delay));
 		animation: reveal-up both;
 
 		@media (prefers-reduced-motion: no-preference) {
@@ -21,8 +19,13 @@
 			}
 		}
 
-		@starting-style {
-			--reveal: 0;
+		@supports not (animation-timeline: view()) {
+			transition: --reveal var(--reveal-duration) ease;
+			transition-delay: calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-delay));
+
+			@starting-style {
+				--reveal: 0;
+			}
 		}
 	}
 
@@ -34,6 +37,12 @@
 		animation: none;
 		opacity: var(--reveal);
 		transform: translateY(calc(var(--reveal-distance) * (1 - var(--reveal))));
+		transition: --reveal var(--reveal-duration) ease;
+		transition-delay: calc(min(var(--reveal-index), var(--reveal-index-cap)) * var(--reveal-delay));
+
+		@starting-style {
+			--reveal: 0;
+		}
 	}
 
 	.reveal--on-load.reveal--fade {
