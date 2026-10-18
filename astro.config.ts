@@ -72,6 +72,7 @@ export default defineConfig({
 	vite: {
 		build: {
 			target: "esnext",
+			assetsInlineLimit: (file) => (file.endsWith(".js") ? false : undefined),
 		},
 		css: {
 			transformer: "lightningcss",
