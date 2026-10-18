@@ -1,3 +1,10 @@
+## [1.29.11](https://github.com/fbuireu/biancafiore/compare/v1.29.10...v1.29.11) (2026-10-18)
+
+
+### Bug Fixes
+
+* **navigation:** keep the card's view transition in Chrome and after going back ([#1212](https://github.com/fbuireu/biancafiore/issues/1212)) ([f31b7e5](https://github.com/fbuireu/biancafiore/commit/f31b7e5c725b6362d2a39e75aa8f2f882b9cc414))
+
 ## [1.29.10](https://github.com/fbuireu/biancafiore/compare/v1.29.9...v1.29.10) (2026-10-18)
 
 
