@@ -534,6 +534,15 @@ const NOT_FOUND_OUT_OF_ROUTE_CACHE = /if \(response\.status === 404\) context\.c
 const NO_STORE_WITHOUT_A_RULE =
 	/needsNoStoreDefault = cacheProviderEnabled && !response\.headers\.has\("Cloudflare-CDN-Cache-Control"\)[\s\S]*?\.set\("Cloudflare-CDN-Cache-Control", "no-store"\)/;
 const CACHE_TAG_LIST = /CONTENT_CACHE_TAGS = \[([^\]]+)\]/;
+const EMDASH_MIDDLEWARE = "node_modules/emdash/dist/astro/middleware.mjs";
+const EMDASH_MEDIA_ROUTES = "node_modules/emdash/dist/astro/routes/api/media";
+const EMDASH_MEDIA_REPLACE = `${EMDASH_MEDIA_ROUTES}/_id_/replace.mjs`;
+const IMAGE_RULE =
+	/export const IMAGE_CACHE: RouteCacheRule = \{\n\tmaxAge: CONTENT_CACHE\.maxAge,\n\tswr: CONTENT_CACHE\.swr,\n\};/;
+const REPLACE_KEEPS_THE_STORAGE_KEY = /storage\.upload\(\{\s*key: media\.storageKey,/;
+const IMAGE_REQUEST_SKIPS_THE_BOOKMARK = /async function runImageRequest\([\s\S]*?commit: \(\) => \{\}/;
+const REDIRECTS_SKIP_THE_IMAGE_ENDPOINT = /const SKIP_PREFIXES = \[[^\]]*"\/_image"[^\]]*\];/;
+const CACHE_PURGE = "invalidate(";
 const MENU_NAME_LIST = /MENU_NAME = \{([^}]+)\}/;
 const DOUBLE_QUOTED_VALUE = /"([^"]+)"/g;
 const INDEX_ROUTE = /(?:^|\/)index$/;
@@ -3525,7 +3534,7 @@ describe("conventions", () => {
 			);
 
 		expect(read("astro.config.ts")).toContain(
-			"routeRules: Object.fromEntries(CONTENT_ROUTES.map((route) => [route, CONTENT_CACHE]))",
+			"...Object.fromEntries(CONTENT_ROUTES.map((route) => [route, CONTENT_CACHE])),",
 		);
 		expect(cachedRoutes.toSorted()).toEqual(contentRoutes.toSorted());
 		expect(collections.filter((collection) => !tags.includes(collection))).toEqual([]);
@@ -3549,6 +3558,25 @@ describe("conventions", () => {
 		expect(read(ADAPTER_RESPONSE_HEADERS)).toMatch(NO_STORE_WITHOUT_A_RULE);
 		expect(lifecycle).toContain("| `/404` | on request, for every unknown path | none: `no-store`, like every 404 |");
 		expect(AGENTS_MD).toContain("No 404 is stored either, which is why `404` is not one of those routes");
+	});
+
+	it("stores each resized image for a content page's lifetime and under no tag, since EmDash's replace keeps the key and purges nothing, and stores a 200 alone", () => {
+		const cache = read("src/const/contentCache.ts");
+		const mediaRoutes = walk(EMDASH_MEDIA_ROUTES).filter((file) => file.endsWith(".mjs"));
+
+		expect(ASTRO_CONFIG).toContain("[IMAGE_ROUTE]: IMAGE_CACHE,");
+		expect(cache).toContain('export const IMAGE_ROUTE = "/_image";');
+		expect(cache).toMatch(IMAGE_RULE);
+		expect(read(EMDASH_MEDIA_REPLACE)).toMatch(REPLACE_KEEPS_THE_STORAGE_KEY);
+		expect(mediaRoutes).toContain(EMDASH_MEDIA_REPLACE);
+		expect(mediaRoutes.filter((file) => read(file).includes(CACHE_PURGE))).toEqual([]);
+		expect(read(EMDASH_MIDDLEWARE)).toMatch(IMAGE_REQUEST_SKIPS_THE_BOOKMARK);
+		expect(read(EMDASH_REDIRECT_MIDDLEWARE)).toMatch(REDIRECTS_SKIP_THE_IMAGE_ENDPOINT);
+		expect(read("src/middleware.ts")).toContain("if (url.pathname === IMAGE_ROUTE && !response.ok) cache.set(false);");
+		expect(read("docs/wiki/Request-Lifecycle.md")).toContain(
+			"| `/_image?href=…` | by EmDash's image endpoint | image rule, a 200 alone; the browser gets `public, max-age=0, must-revalidate` for a media file |",
+		);
+		expect(AGENTS_MD).toContain("`routeRules` give `IMAGE_ROUTE` the `IMAGE_CACHE` rule");
 	});
 
 	it("disallows in robots.txt the routes it keeps out of the sitemap, and EmDash's admin", () => {

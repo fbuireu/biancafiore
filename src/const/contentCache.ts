@@ -12,9 +12,12 @@ const CONTENT_CACHE_TAGS = [
 	"emdash:menu:footer",
 ] as const;
 
-interface ContentCacheRule {
+interface RouteCacheRule {
 	maxAge: number;
 	swr: number;
+}
+
+interface ContentCacheRule extends RouteCacheRule {
 	tags: string[];
 }
 
@@ -25,6 +28,13 @@ export const CONTENT_CACHE: ContentCacheRule = {
 };
 
 export const CONTENT_BROWSER_CACHE_CONTROL = "max-age=60";
+
+export const IMAGE_ROUTE = "/_image";
+
+export const IMAGE_CACHE: RouteCacheRule = {
+	maxAge: CONTENT_CACHE.maxAge,
+	swr: CONTENT_CACHE.swr,
+};
 
 export const CONTENT_ROUTES = [
 	"/",

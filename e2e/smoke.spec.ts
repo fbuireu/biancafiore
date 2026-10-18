@@ -9,12 +9,15 @@ const EXPIRES_FIELD = /^Expires: *(.+)$/m;
 const PUBLISHED_SECURITY_TXT = "../public/.well-known/security.txt";
 const SHADOWED_AT_THE_EDGE =
 	"the served security.txt is not the one in public/: a security.txt the Cloudflare zone serves itself answers before the Worker";
-const RESIZED_IMAGE = 'img[src^="/_image?"]';
+const ARTICLES_PATH = "/articles";
+const RENDERED_BY_THIS_DEPLOY = "?smoke=";
+const TRANSFORMED_BY_THIS_DEPLOY = "&smoke=";
+const IMAGE_ENDPOINT = "/_image?";
 const WEBP = "image/webp";
 const NOT_RESIZED =
-	"the homepage renders no /_image source: Astro builds one only for a media URL image.remotePatterns allows";
+	"the Articles page renders no /_image source: Astro builds one only for a media URL image.remotePatterns allows. Its first images";
 const NOT_TRANSFORMED =
-	"EmDash's image endpoint did not answer a WebP: it answers 500 when the IMAGES binding refuses the transform, and the original when the Worker has no IMAGES binding";
+	"EmDash's image endpoint did not answer the page a WebP: it answers 500 when the IMAGES binding refuses the transform, and the original when the Worker has no IMAGES binding";
 
 test.describe("smoke", () => {
 	test("the homepage answers with a rendered document @smoke", async ({ page }) => {
@@ -52,19 +55,27 @@ test.describe("smoke", () => {
 		expect(Date.parse(body.match(EXPIRES_FIELD)?.[1] ?? "")).toBeGreaterThan(Date.now());
 	});
 
-	test("the homepage's images are resized by the Images binding through EmDash's image endpoint @smoke", async ({
+	test("the Articles page's images are resized by the Images binding through EmDash's image endpoint @smoke", async ({
 		page,
-		request,
 	}) => {
-		await page.goto("/");
+		const smokeRun = Date.now();
+		const response = await page.goto(`${ARTICLES_PATH}${RENDERED_BY_THIS_DEPLOY}${smokeRun}`);
 
-		const image = page.locator(RESIZED_IMAGE).first();
+		expect(response?.status()).toBe(200);
 
-		await expect(image, NOT_RESIZED).toBeAttached();
+		const sources = await page
+			.locator("img")
+			.evaluateAll((images) => images.map((image) => image.getAttribute("src") ?? ""));
+		const resized = sources.find((source) => source.startsWith(IMAGE_ENDPOINT));
 
-		const response = await request.get((await image.getAttribute("src")) ?? "");
+		expect(resized, `${NOT_RESIZED}: ${sources.slice(0, 3).join(" | ")}`).toBeDefined();
 
-		expect(response.status(), NOT_TRANSFORMED).toBe(200);
-		expect(response.headers()["content-type"], NOT_TRANSFORMED).toBe(WEBP);
+		const image = await page.evaluate(async (source) => {
+			const response = await fetch(source);
+
+			return { status: response.status, type: response.headers.get("content-type") };
+		}, `${resized}${TRANSFORMED_BY_THIS_DEPLOY}${smokeRun}`);
+
+		expect(image, NOT_TRANSFORMED).toEqual({ status: 200, type: WEBP });
 	});
 });
