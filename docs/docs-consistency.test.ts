@@ -5586,7 +5586,7 @@ describe("the CMS", () => {
 	it("binds the database and the bucket under the names the integration reads, in every stage", () => {
 		const config = read("astro.config.ts");
 
-		expect(config).toContain('d1({ binding: "DB", session: "auto" })');
+		expect(config).toContain('d1({ binding: "DB", session: "auto", coalesce: true })');
 		expect(config).toContain('r2({ binding: "MEDIA" })');
 		expect(config).toContain("provider: cacheCloudflare()");
 		expect(WRANGLER.match(/binding = "DB"/g)).toHaveLength(STAGES.length + 1);
