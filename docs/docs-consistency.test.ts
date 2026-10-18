@@ -1913,7 +1913,6 @@ describe("observability", () => {
 		expect(hashing).toContain("THEME_BOOTSTRAP_SCRIPT");
 		expect(hashing).toContain("FEATURED_IMAGE_TRANSITION_SCRIPT");
 		expect(hashing).toContain("consentBootstrapScript(googleTagIds)");
-		expect(hashing).toContain("SPECULATION_RULES");
 		expect(read("astro.config.ts")).toContain("analyticsId: environment.GOOGLE_ANALYTICS_ID");
 		expect(read("astro.config.ts")).toContain("tagManagerId: environment.GOOGLE_TAG_MANAGER_ID");
 		expect(read("src/middleware.ts")).toContain(
@@ -3266,6 +3265,14 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(bundled.length).toBeGreaterThan(0);
 		expect(SOURCE_FILES.filter((file) => ASTRO_EVENT_LISTENER.test(read(file)))).toEqual([]);
 		expect(read("src/ui/modules/core/components/head/Head.astro")).not.toContain("ClientRouter");
+	});
+
+	it("renders no speculation rules, since Chrome shows a prerendered page served with an opener policy without its view transition", () => {
+		expect(read("docs/adr/0025-navigation-is-the-browsers-own-with-cross-document-view-transitions.md")).toContain(
+			"No page carries speculation rules",
+		);
+		expect(read("src/const/securityHeaders.ts")).toContain("Cross-Origin-Opener-Policy");
+		expect(read("src/ui/modules/core/components/head/Head.astro")).not.toContain("speculationrules");
 	});
 
 	it("cites a container query that matches a container base.css declares and a stylesheet uses", () => {
