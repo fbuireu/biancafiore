@@ -39,14 +39,16 @@ flowchart TB
     menuTag --> fresh
     bylinesTag --> fresh
     redirect --> nothing["purges nothing:<br/>a page the cache holds answers until it expires or is purged"]
-    deploy(["a deploy"]) --> cold["a new Worker version reads none of the old version's cache:<br/>the site starts cold"]
+    deploy(["a deploy"]) --> versions{"wrangler.toml sets no cross_version_cache:<br/>Cloudflare's default decides"}
+    versions -- "kept per version" --> cold["each page renders on its first request"]
+    versions -- "shared across versions" --> kept["the stored pages keep answering<br/>until they expire or are purged"]
 ```
 
 ---
 
 ## What purges what
 
-- **An entry write purges its collection's tag.** Publishing, unpublishing, scheduling, restoring, editing and deleting an Article, a City, a Project or a Testimonial purge that collection's tag, which every content route carries, so the Blog, the Article, the tag pages, the feed, the sitemap and `/404` all render fresh on their next request.
+- **An entry write purges its collection's tag.** Publishing, unpublishing, scheduling, restoring, editing and deleting an Article, a City, a Project or a Testimonial purge that collection's tag, which every content route carries, so the Blog, the Article, the tag pages, the feed and the sitemap all render fresh on their next request.
 - **A scheduled publish purges when it happens.** EmDash promotes a scheduled entry from the Worker's `scheduled` handler, which the production cron calls every minute, and purges as it publishes, so a scheduled Article goes live within the minute after its time. Development declares no cron, so the previews, which share one database, never publish a scheduled entry by themselves.
 - **A Tag purges the taxonomy's tag**, `emdash:taxonomy:tag`, whether the Tag itself changed or the Tags on an Article did. One save that adds more than 33 new Tags to an Article fails instead, because EmDash writes the new assignments in one D1 statement and D1 caps the variables a statement binds; the editor saves them in two goes, and nothing is purged until a save succeeds.
 - **Settings and menus purge their own tags.** Saving *Settings* purges `emdash:settings`, and editing the `header` or the `footer` menu purges `emdash:menu:header` or `emdash:menu:footer`. Every page reads both in its chrome, so a new social link or menu label reaches every cached page at once. The two legal pages are the exception: they are prerendered, take today's defaults at build time and read nothing from EmDash, so a setting or a menu changed in the admin reaches them on the next deploy.
@@ -58,14 +60,14 @@ The tag list is `CONTENT_CACHE` in [`src/const/contentCache.ts`](https://github.
 
 ## What purges nothing
 
-- **A redirect.** EmDash's *Redirects* run in its middleware, in this Worker, ahead of every page, and a redirect is not a content write, so adding one purges nothing: when its source is a page the cache still holds, the cache keeps answering that page until its entry expires or another write purges it, and only then does the request reach the Worker and the redirect. The common case needs nothing, because changing an Article's slug saves the Article and purges every content route.
+- **A redirect.** EmDash's *Redirects* run in its middleware, in this Worker, ahead of every page, and a redirect is not a content write, so adding one purges nothing: when its source is a page the cache still holds, the cache keeps answering that page until its entry expires or another write purges it, and only then does the request reach the Worker and the redirect. A redirect whose source answered 404 works at once, because no 404 is ever stored. The common case needs nothing, because changing an Article's slug saves the Article and purges every content route.
 - **A media upload on its own.** An image reaches a page only through an entry, a byline or the settings that reference it, and saving that reference purges. The image itself is served by EmDash's media route, which tells the browser to revalidate every time ([Request Lifecycle](Request-Lifecycle#an-image)).
 
 ---
 
-## A deploy starts cold
+## A deploy and the stored pages
 
-The Worker's cache is kept per version: `wrangler.toml` leaves `cross_version_cache` off, so a new version reads none of the pages the previous one stored. After every deploy each page renders on its first request, from D1, which is also the moment EmDash applies any migration the new version brought. A rollback returns the previous Worker version but does not undo those migrations ([CI/CD](CI-CD#limits)).
+Whether a new Worker version reads the pages the previous one stored is `cross_version_cache`, under `[cache]`, and `wrangler.toml` does not set it, so Cloudflare's default for it decides and nothing in this repository pins which way that goes. If the cache is kept per version, each page renders on its first request after a deploy, from D1. If it is shared, the pages the previous version stored keep answering, with that version's markup, until they expire or a publish purges them. Either way the first request that reaches the new version is the moment EmDash applies any migration it brought, and a rollback returns the previous Worker version without undoing them ([CI/CD](CI-CD#limits)).
 
 ---
 

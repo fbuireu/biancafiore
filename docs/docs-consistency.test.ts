@@ -519,6 +519,12 @@ const ENV_DTS_DECLARATION = /readonly ([A-Z][A-Z0-9_]*)/g;
 const MODULE_SCOPE_SIDE_EFFECT = /^(?:\w[\w.]*\.addEventListener\(|(?:const|let)\s+\w+\s*=\s*window\.matchMedia\()/m;
 const PRERENDERED_ROUTES = ["src/pages/privacy-policy.astro", "src/pages/terms-and-conditions.astro"];
 const QUOTED_ROUTE = /^\t"(\/[^"]*)",$/gm;
+const ROUTES_NEVER_STORED = ["src/pages/contact.astro", "src/pages/500.astro", "src/pages/404.astro"];
+const EMDASH_REDIRECT_MIDDLEWARE = "node_modules/emdash/dist/astro/middleware/redirect.mjs";
+const ADAPTER_RESPONSE_HEADERS = "node_modules/@astrojs/cloudflare/dist/utils/response.js";
+const NOT_FOUND_OUT_OF_ROUTE_CACHE = /if \(response\.status === 404\) context\.cache\?\.set\(false\);/;
+const NO_STORE_WITHOUT_A_RULE =
+	/needsNoStoreDefault = cacheProviderEnabled && !response\.headers\.has\("Cloudflare-CDN-Cache-Control"\)[\s\S]*?\.set\("Cloudflare-CDN-Cache-Control", "no-store"\)/;
 const CACHE_TAG_LIST = /CONTENT_CACHE_TAGS = \[([^\]]+)\]/;
 const MENU_NAME_LIST = /MENU_NAME = \{([^}]+)\}/;
 const DOUBLE_QUOTED_VALUE = /"([^"]+)"/g;
@@ -3475,7 +3481,7 @@ describe("conventions", () => {
 		const contentRoutes = walk("src/pages")
 			.filter((file) => ROUTE_FILE.test(file) && !basename(file).startsWith("_"))
 			.filter((file) => !read(file).includes("export const prerender = true"))
-			.filter((file) => !["src/pages/contact.astro", "src/pages/500.astro"].includes(file))
+			.filter((file) => !ROUTES_NEVER_STORED.includes(file))
 			.map(
 				(file) =>
 					`/${file.replace("src/pages/", "").replace(ROUTE_FILE, "").replace(INDEX_ROUTE, "")}`.replace(
@@ -3496,6 +3502,19 @@ describe("conventions", () => {
 		expect(
 			["emdash:settings", ...menuNames.map((name) => `emdash:menu:${name}`)].filter((tag) => !tags.includes(tag)),
 		).toEqual([]);
+	});
+
+	it("stores no 404 and no response without a rule, so no rule names /404 and the routes table says no-store", () => {
+		const cache = read("src/const/contentCache.ts");
+		const cachedRoutes = [...cache.matchAll(QUOTED_ROUTE)].map(([, route]) => route);
+		const lifecycle = read("docs/wiki/Request-Lifecycle.md");
+
+		expect(cachedRoutes.length).toBeGreaterThan(0);
+		expect(cachedRoutes).not.toContain("/404");
+		expect(read(EMDASH_REDIRECT_MIDDLEWARE)).toMatch(NOT_FOUND_OUT_OF_ROUTE_CACHE);
+		expect(read(ADAPTER_RESPONSE_HEADERS)).toMatch(NO_STORE_WITHOUT_A_RULE);
+		expect(lifecycle).toContain("| `/404` | on request, for every unknown path | none: `no-store`, like every 404 |");
+		expect(AGENTS_MD).toContain("No 404 is stored either, which is why `404` is not one of those routes");
 	});
 
 	it("disallows in robots.txt the routes it keeps out of the sitemap, and EmDash's admin", () => {

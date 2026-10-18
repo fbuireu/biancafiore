@@ -34,5 +34,4 @@ export const CONTENT_ROUTES = [
 	"/tags/[slug]",
 	"/rss.xml",
 	"/sitemap.xml",
-	"/404",
 ] as const;

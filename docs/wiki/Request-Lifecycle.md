@@ -6,7 +6,7 @@ What happens between a visitor asking for a page and the page arriving: which la
 
 ## A page request
 
-Everything runs in one Cloudflare Worker, [`src/worker.ts`](https://github.com/fbuireu/biancafiore/blob/main/src/worker.ts), which is EmDash's handler wrapped around Astro's. Three things stand in front of the code this repository writes, and most requests never get past the second:
+Everything runs in one Cloudflare Worker, [`src/worker.ts`](https://github.com/fbuireu/biancafiore/blob/main/src/worker.ts): Astro's own request handler, which EmDash's Worker entry re-exports as it is, beside EmDash's scheduled handler and its plugin bridge. Three things stand in front of the code this repository writes, and most requests never get past the second:
 
 ```mermaid
 ---
@@ -31,7 +31,7 @@ sequenceDiagram
     else no such file
         Assets->>Cache: the Worker's route
         alt held, fresh or within the hour of stale-while-revalidate
-            Cache-->>Browser: the stored page, and the Worker never runs
+            Cache-->>Browser: the stored page, and a stale one is refreshed through the Worker in the background
         else a miss
             Cache->>EmDashMW: run the Worker
             EmDashMW->>EmDashMW: runtime and D1 session, redirects, setup, auth from the SESSION KV, preview context
@@ -48,21 +48,22 @@ sequenceDiagram
                 EmDash-->>Fetch: published entries
                 Fetch-->>Loader: raw entries
                 Loader-->>Page: domain models, mapped by the DTOs
-                Page-->>SiteMW: HTML, with the route's cache rule and tags
+                Page-->>SiteMW: HTML
                 SiteMW-->>EmDashMW: the security headers set, outside /_emdash/
-                EmDashMW-->>Cache: the response, logged for the admin when it is a 404
-                Cache-->>Browser: the page, stored under its tags
+                EmDashMW-->>Cache: the response, a 404 logged for the admin and opted out of the route cache
+                Note over EmDashMW,Cache: Astro then writes the route's rule and tags as Cloudflare-CDN-Cache-Control and Cache-Tag, and a response without them leaves with no-store
+                Cache-->>Browser: the page, stored under its tags, a 404 never
             end
         end
     end
 ```
 
 1. **Static assets answer first.** Whatever the build put in `dist/client`, the scripts, the stylesheets, the fonts, `robots.txt`, `/.well-known/security.txt` and the two prerendered legal pages, is served by Cloudflare before the Worker runs, with the security headers the build wrote into `_headers`.
-2. **The Workers cache answers next.** A content page is stored with a day's `max-age`, an hour of `stale-while-revalidate` and the nine content tags, so most visits end here, at the edge, without a line of the Worker running. Because the cache answers before the Worker, a signed-in editor gets the same cached page as everyone else, without EmDash's toolbar.
-3. **On a miss, EmDash's middleware runs before the site's.** The integration registers it ahead of [`src/middleware.ts`](https://github.com/fbuireu/biancafiore/blob/main/src/middleware.ts): it opens the D1 session (an anonymous read goes to the nearest replica), answers a path an editor redirected with its 301 or 302, reads the admin session from the `SESSION` KV, and opens the preview context a [draft preview](#a-draft-preview) needs. After the page has rendered, it records the path of any 404 for the admin's *Redirects* screen, so an editor can see which old links still arrive.
+2. **The Workers cache answers next.** A content page is stored with a day's `max-age`, an hour of `stale-while-revalidate` and the nine content tags, so most visits end here, at the edge, without a line of the Worker running for them; in the hour after the day, the visitor still gets the stored page while the cache asks the Worker for a fresh one in the background. Because the cache answers before the Worker, a signed-in editor gets the same cached page as everyone else, without EmDash's toolbar.
+3. **On a miss, EmDash's middleware runs before the site's.** The integration registers it ahead of [`src/middleware.ts`](https://github.com/fbuireu/biancafiore/blob/main/src/middleware.ts): it opens the D1 session (an anonymous read goes to the nearest replica), answers a path an editor redirected with its 301 or 302, reads the admin session from the `SESSION` KV, and opens the preview context a [draft preview](#a-draft-preview) needs. After the page has rendered, it records the path of any 404 for the admin's *Redirects* screen, so an editor can see which old links still arrive, and switches the route cache off for that response, so no 404 is ever stored.
 4. **The site's middleware sets the security headers** on every response the Worker renders, and leaves anything under `/_emdash/` alone, because EmDash sets its own, stricter policy there.
 5. **The page reads content through a live collection**, never through the CMS. `core/utils/entries.ts` is the one module that calls `getLiveCollection` and `getLiveEntry`; the collection's loader, in `src/application/entities`, calls `fetchEntries`, which walks every page of the query and hands the entries to the DTOs that map them into the domain. [Content Model](Content-Model) follows one entry along that path.
-6. **The response leaves with its cache rule.** Astro's Cloudflare cache provider writes the route's rule into `Cloudflare-CDN-Cache-Control` and the tags into `Cache-Tag`, and the cache stores the page under them until it expires or a [publish](Publishing) purges a tag it carries.
+6. **The response leaves with its cache rule.** Once both middlewares have returned, Astro's Cloudflare cache provider writes the route's rule into `Cloudflare-CDN-Cache-Control` and the tags into `Cache-Tag`, and the cache stores the page under them until it expires or a [publish](Publishing) purges a tag it carries. Writing them last is what lets EmDash's middleware cancel them for a 404, a preview or a signed-in editor's render. A response that leaves with no rule at all, because no route rule covers it or because it was cancelled, gets `Cloudflare-CDN-Cache-Control: no-store` from the adapter, and the cache does not store it.
 
 **There is no locale anywhere on this path.** The site has no i18n: one language, `en-GB`, which every date and every sort uses, no locale in a URL, no page that reads the visitor's `Accept-Language`, and an admin EmDash offers in English alone.
 
@@ -84,16 +85,16 @@ sequenceDiagram
 | `/rss.xml` | on request | content rule | every Article, the site settings |
 | `/sitemap.xml` | on request | content rule | every Article, the Tag Index |
 | `/sitemap-index.xml` | a redirect to `/sitemap.xml` | none | nothing |
-| `/404` | on request, for every unknown path | content rule | the head of the Blog |
+| `/404` | on request, for every unknown path | none: `no-store`, like every 404 | the head of the Blog |
 | `/500` | on request, after an unhandled error | none | nothing of its own |
 | `/_emdash/admin`, `/_emdash/api/…` | by EmDash | `private, no-store` | what the admin edits |
 | `/_emdash/api/media/file/…` | by EmDash | `public, max-age=0, must-revalidate` for an image | the file, from R2 |
 
 The **content rule** is the one `CONTENT_CACHE` in [`src/const/contentCache.ts`](https://github.com/fbuireu/biancafiore/blob/main/src/const/contentCache.ts) holds for every route in `CONTENT_ROUTES`: a day's `max-age`, an hour of `stale-while-revalidate`, and the tags of every content collection, of the `tag` taxonomy, of the bylines, of the site settings and of the two menus. Every content route carries every tag, because a page reads more than it looks like it does (the Article page reads every Article to infer its Related Articles) and a missing tag is a page a day stale.
 
-Every page the Worker renders also reads its **chrome**: the site settings, the `footer` menu and, unless `HIDE_CHROME` hides the header, the `header` menu. That is why `/500` reads EmDash although it shows no content, and why a route with no rule still needs the settings and menus to answer. A response with no rule can still be cached heuristically for up to two hours, so a changed menu or setting reaches `/contact` that much later.
+Every page the Worker renders also reads its **chrome**: the site settings, the `footer` menu and, unless `HIDE_CHROME` hides the header, the `header` menu. That is why `/500` reads EmDash although it shows no content, and why a route with no rule still needs the settings and menus to answer. A response with no rule is never stored, since the adapter answers it `no-store`, so `/contact`, `/500` and every 404 render on each request and always show the current menus and settings.
 
-An unknown Article or Tag slug renders the 404 page in place (`Astro.rewrite("/404")`), so the visitor stays on the URL they asked for and gets the 404 status. An unknown path first passes EmDash's redirects, and when none matches it gets the same 404 page, which the cache stores under the content rule like any other.
+An unknown Article or Tag slug renders the 404 page in place (`Astro.rewrite("/404")`), so the visitor stays on the URL they asked for and gets the 404 status. An unknown path first passes EmDash's redirects, and when none matches it gets the same 404 page. No 404 is stored, whichever way it was reached: EmDash's redirect middleware switches the route cache off for every 404 it answers, so a path that starts to exist, a new Article's slug or a redirect an editor adds, works on the very next request.
 
 ---
 
