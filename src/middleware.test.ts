@@ -1,4 +1,4 @@
-import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
+import { GOOGLE_ANALYTICS_ID, GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
 import { CONTENT_ROUTES, IMAGE_ROUTE } from "@const/contentCache";
 import { securityHeaders } from "@const/securityHeaders";
 import { inlineScriptHashes } from "@modules/core/utils/inlineScripts";
@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import type { onRequest } from "./middleware";
 
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
-const HASHES = inlineScriptHashes(GOOGLE_ANALYTICS_ID);
+const HASHES = inlineScriptHashes({ analyticsId: GOOGLE_ANALYTICS_ID, tagManagerId: GOOGLE_TAG_MANAGER_ID });
 
 const respond = (): Promise<Response> =>
 	Promise.resolve(new Response("", { headers: { "Content-Type": "text/html" } })) as ReturnType<

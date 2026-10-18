@@ -15,6 +15,10 @@ declare module "@tgwf/co2" {
 
 type DataLayerEntry = IArguments | unknown[];
 
+interface Document {
+	readonly prerendering?: boolean;
+}
+
 interface Window {
 	dataLayer: DataLayerEntry[];
 	betterstack?: (command: string, ...args: unknown[]) => void;

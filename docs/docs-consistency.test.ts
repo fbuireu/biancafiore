@@ -1912,9 +1912,13 @@ describe("observability", () => {
 		);
 		expect(hashing).toContain("THEME_BOOTSTRAP_SCRIPT");
 		expect(hashing).toContain("FEATURED_IMAGE_TRANSITION_SCRIPT");
-		expect(hashing).toContain("consentBootstrapScript(analyticsId)");
-		expect(read("astro.config.ts")).toContain("inlineScriptHashes(environment.GOOGLE_ANALYTICS_ID)");
-		expect(read("src/middleware.ts")).toContain("inlineScriptHashes(GOOGLE_ANALYTICS_ID)");
+		expect(hashing).toContain("consentBootstrapScript(googleTagIds)");
+		expect(hashing).toContain("SPECULATION_RULES");
+		expect(read("astro.config.ts")).toContain("analyticsId: environment.GOOGLE_ANALYTICS_ID");
+		expect(read("astro.config.ts")).toContain("tagManagerId: environment.GOOGLE_TAG_MANAGER_ID");
+		expect(read("src/middleware.ts")).toContain(
+			"inlineScriptHashes({ analyticsId: GOOGLE_ANALYTICS_ID, tagManagerId: GOOGLE_TAG_MANAGER_ID })",
+		);
 		expect([
 			...'import load from "astro/runtime/client/load.prebuilt.js";'.matchAll(DIRECTIVE_SCRIPT_IMPORT),
 		]).toHaveLength(1);
@@ -3692,11 +3696,11 @@ describe("conventions", () => {
 
 		expect(adr).toContain("stays first");
 		expect(gate).toContain("gtag('consent', 'default'");
-		expect(head.indexOf("consentBootstrapScript")).toBeGreaterThan(-1);
-		expect(head.indexOf("set:html={consentBootstrapScript(")).toBeLessThan(
-			head.indexOf("googletagmanager.com/gtag/js"),
-		);
-		expect(head.indexOf("set:html={consentBootstrapScript(")).toBeLessThan(head.indexOf("googletagmanager.com/gtm.js"));
+		expect(head.indexOf("set:html={consentBootstrapScript(")).toBeGreaterThan(-1);
+		expect(head).not.toContain("googletagmanager.com/gtag/js");
+		expect(head).not.toContain("googletagmanager.com/gtm.js");
+		expect(gate.indexOf("gtag('consent', 'default'")).toBeGreaterThan(-1);
+		expect(gate.indexOf("gtag('consent', 'default'")).toBeLessThan(gate.indexOf("document.head.append(script)"));
 	});
 });
 

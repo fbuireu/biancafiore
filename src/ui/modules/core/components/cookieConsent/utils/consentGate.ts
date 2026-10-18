@@ -11,9 +11,16 @@ export const CONSENT_STATUS = {
 	DENIED: "denied",
 } as const;
 
+const GOOGLE_TAG_ORIGIN = "https://www.googletagmanager.com";
+
+export interface GoogleTagIds {
+	analyticsId: string;
+	tagManagerId: string;
+}
+
 const literal = (value: string): string => JSON.stringify(value);
 
-export const consentBootstrapScript = (analyticsId: string): string => `
+export const consentBootstrapScript = ({ analyticsId, tagManagerId }: GoogleTagIds): string => `
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('consent', 'default', { analytics_storage: (() => {
@@ -25,6 +32,18 @@ gtag('consent', 'default', { analytics_storage: (() => {
 	} catch {}
 	return ${literal(CONSENT_STATUS.DENIED)};
 })() });
-gtag('js', new Date());
-gtag('config', ${literal(analyticsId)});
+(() => {
+	const start = () => {
+		gtag('js', new Date());
+		gtag('config', ${literal(analyticsId)});
+		for (const src of [${literal(`${GOOGLE_TAG_ORIGIN}/gtag/js?id=${analyticsId}`)}, ${literal(`${GOOGLE_TAG_ORIGIN}/gtm.js?id=${tagManagerId}`)}]) {
+			const script = document.createElement('script');
+			script.async = true;
+			script.src = src;
+			document.head.append(script);
+		}
+	};
+	if (document.prerendering) document.addEventListener('prerenderingchange', start, { once: true });
+	else start();
+})();
 `;

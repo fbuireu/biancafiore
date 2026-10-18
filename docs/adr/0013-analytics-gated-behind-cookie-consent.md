@@ -4,7 +4,7 @@ Date: 2026-07-26
 
 ## Status
 
-Accepted. Amended 2026-09-12: Better Stack's browser tag joined Google Analytics behind the same category, and it is gated a *different* way, for the reason the Decision now records.
+Accepted. Amended 2026-09-12: Better Stack's browser tag joined Google Analytics behind the same category, and it is gated a *different* way, for the reason the Decision now records. Amended 2026-10-18: the consent default's script loads Google's two scripts itself, and only once the page is shown, since a page the browser prerenders ([ADR 0025](./0025-navigation-is-the-browsers-own-with-cross-document-view-transitions.md)) runs its scripts for a reader who may never open it.
 
 ## Context
 
@@ -20,7 +20,7 @@ Analytics load with consent denied by default. An inline script in `<head>` read
 
 ## Consequences
 
-- The ordering is load-bearing: the consent default has to be set before GA/GTM initialise, so this script stays inline and stays first ([ADR 0005](./0005-theme-token-families-and-inline-bootstrap.md) puts the theme bootstrap in the same position for the same reason).
+- The ordering is load-bearing: the consent default has to be set before GA/GTM initialise, so this script stays inline and stays first, and it is the script that appends `gtag.js` and `gtm.js`, after the default, when `document.prerendering` is false or `prerenderingchange` fires; a prerendered page sets the default and nothing else until it is shown ([ADR 0005](./0005-theme-token-families-and-inline-bootstrap.md) puts the theme bootstrap in the same position for the same reason).
 - Analytics under-report by design; visitors who never accept are invisible.
 - **The consent default is an inline script, so it is named in the policy by its digest, and the digest is derived rather than written down.** `script-src` has no `'unsafe-inline'`: `inlineScriptHashes` in `core/utils/inlineScripts.ts` hashes the text `consentBootstrapScript(GOOGLE_ANALYTICS_ID)` renders, so a new analytics id, a changed constant in `consentGate.ts` or an edit to the script changes the policy with it in the same build, in `_headers` for the prerendered pages and in the middleware for the rest. A script edited without its policy cannot ship, and one a page adds without its policy fails `docs/built-output.test.ts`.
 - **Adding a service to a category is a `revision` bump, or returning visitors never see it.** vanilla-cookieconsent

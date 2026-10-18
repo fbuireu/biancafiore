@@ -2,7 +2,8 @@ import { createHash } from "node:crypto";
 import loadDirective from "astro/runtime/client/load.prebuilt.js";
 import islandRuntime from "astro/runtime/server/astro-island.prebuilt.js";
 import { describe, expect, it } from "vitest";
-import { consentBootstrapScript } from "../components/cookieConsent/utils/consentGate";
+import { consentBootstrapScript, type GoogleTagIds } from "../components/cookieConsent/utils/consentGate";
+import { SPECULATION_RULES } from "../components/head/utils/speculation";
 import { FEATURED_IMAGE_TRANSITION_SCRIPT } from "../components/head/utils/transition";
 import { THEME_BOOTSTRAP_SCRIPT } from "../components/themeToggle/utils/preference";
 import { inlineScriptHashes } from "./inlineScripts";
@@ -11,39 +12,42 @@ const SHA256_BASE64 = /^[A-Za-z0-9+/]{43}=$/;
 
 const sha256 = (source: string): string => createHash("sha256").update(source).digest("base64");
 
+const idsFor = (analyticsId: string): GoogleTagIds => ({ analyticsId, tagManagerId: "GTM-TEST" });
+
 describe("inlineScriptHashes", () => {
-	it("hashes every inline script the pages carry: both bootstraps, Astro's island runtime, the load directive and the featured image's transition naming", () => {
-		expect(inlineScriptHashes("G-TEST")).toStrictEqual(
+	it("hashes every inline script the pages carry: both bootstraps, Astro's island runtime, the load directive, the featured image's transition naming and the speculation rules", () => {
+		expect(inlineScriptHashes(idsFor("G-TEST"))).toStrictEqual(
 			[
 				THEME_BOOTSTRAP_SCRIPT,
-				consentBootstrapScript("G-TEST"),
+				consentBootstrapScript(idsFor("G-TEST")),
 				islandRuntime,
 				loadDirective,
 				FEATURED_IMAGE_TRANSITION_SCRIPT,
+				SPECULATION_RULES,
 			].map(sha256),
 		);
 	});
 
 	it("names each script by the base64 sha256 digest a policy source expects", () => {
-		const hashes = inlineScriptHashes("G-TEST");
+		const hashes = inlineScriptHashes(idsFor("G-TEST"));
 
 		expect(hashes.length).toBeGreaterThan(0);
 		expect(hashes.filter((hash) => !SHA256_BASE64.test(hash))).toEqual([]);
 	});
 
 	it("hashes the consent default that the page renders for the analytics id it is given", () => {
-		const [, consent] = inlineScriptHashes("G-ONE");
-		const [, other] = inlineScriptHashes("G-TWO");
+		const [, consent] = inlineScriptHashes(idsFor("G-ONE"));
+		const [, other] = inlineScriptHashes(idsFor("G-TWO"));
 
-		expect(consent).toBe(sha256(consentBootstrapScript("G-ONE")));
+		expect(consent).toBe(sha256(consentBootstrapScript(idsFor("G-ONE"))));
 		expect(other).not.toBe(consent);
 	});
 
 	it("hashes the scripts that no analytics id touches the same whichever id it is given", () => {
 		const withoutTheConsentDefault = (hashes: string[]) => hashes.filter((_, index) => index !== 1);
 
-		expect(withoutTheConsentDefault(inlineScriptHashes("G-ONE"))).toStrictEqual(
-			withoutTheConsentDefault(inlineScriptHashes("G-TWO")),
+		expect(withoutTheConsentDefault(inlineScriptHashes(idsFor("G-ONE")))).toStrictEqual(
+			withoutTheConsentDefault(inlineScriptHashes(idsFor("G-TWO"))),
 		);
 	});
 });

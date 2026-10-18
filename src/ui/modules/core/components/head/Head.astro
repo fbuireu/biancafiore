@@ -6,6 +6,7 @@ import { consentBootstrapScript } from "../cookieConsent/utils/consentGate";
 import Seo from "../seo/Seo.astro";
 import type { Seo as SeoValues } from "../seo/utils/pageSeo";
 import { THEME_BOOTSTRAP_SCRIPT } from "../themeToggle/utils/preference";
+import { SPECULATION_RULES } from "./utils/speculation";
 import { FEATURED_IMAGE_TRANSITION_SCRIPT } from "./utils/transition";
 import "@styles/index.css";
 import { Font } from "astro:assets";
@@ -24,9 +25,8 @@ const { seo, page } = Astro.props;
     <script is:inline set:html={FEATURED_IMAGE_TRANSITION_SCRIPT} />
     <link rel="alternate" type="application/rss+xml" href="/rss.xml" />
     <link rel="preconnect" href="https://www.googletagmanager.com" />
-    <script is:inline set:html={consentBootstrapScript(GOOGLE_ANALYTICS_ID)} />
-    <script is:inline async src=`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`></script>
-    <script is:inline async src=`https://www.googletagmanager.com/gtm.js?id=${GOOGLE_TAG_MANAGER_ID}`></script>
+    <script is:inline set:html={consentBootstrapScript({ analyticsId: GOOGLE_ANALYTICS_ID, tagManagerId: GOOGLE_TAG_MANAGER_ID })} />
+    <script is:inline type="speculationrules" set:html={SPECULATION_RULES} />
     <Font cssVariable="--font-serif" preload />
     <Font cssVariable="--font-display" preload />
     <Font cssVariable="--font-sans-serif" preload/>

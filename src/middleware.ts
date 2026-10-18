@@ -1,11 +1,14 @@
-import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
+import { GOOGLE_ANALYTICS_ID, GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
 import { defineMiddleware } from "astro:middleware";
 import { CONTENT_BROWSER_CACHE_CONTROL, CONTENT_ROUTES, IMAGE_ROUTE } from "@const/contentCache";
 import { securityHeaders } from "@const/securityHeaders";
 import { inlineScriptHashes } from "@modules/core/utils/inlineScripts";
 
 const HEADERS = Object.entries(
-	securityHeaders({ isDevelopment: import.meta.env.DEV, inlineScriptHashes: inlineScriptHashes(GOOGLE_ANALYTICS_ID) }),
+	securityHeaders({
+		isDevelopment: import.meta.env.DEV,
+		inlineScriptHashes: inlineScriptHashes({ analyticsId: GOOGLE_ANALYTICS_ID, tagManagerId: GOOGLE_TAG_MANAGER_ID }),
+	}),
 );
 
 const CONTENT_ROUTE_PATTERNS = new Set<string>(CONTENT_ROUTES);

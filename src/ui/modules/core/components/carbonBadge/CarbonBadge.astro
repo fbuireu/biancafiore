@@ -4,7 +4,8 @@ import "./carbon-badge.css";
 ---
 <div class="carbon-badge font-sans-serif" id={BADGE_ID} aria-live="polite"></div>
 <script>
+  import { onceActivated } from "../../utils/prerender";
   import { renderCarbonBadge } from "./utils/carbon";
 
-  renderCarbonBadge();
+  onceActivated(renderCarbonBadge);
 </script>
