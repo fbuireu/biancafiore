@@ -1,3 +1,10 @@
+## [1.29.12](https://github.com/fbuireu/biancafiore/compare/v1.29.11...v1.29.12) (2026-10-18)
+
+
+### Performance Improvements
+
+* **navigation:** make navigating between pages fast again ([#1213](https://github.com/fbuireu/biancafiore/issues/1213)) ([195ea0f](https://github.com/fbuireu/biancafiore/commit/195ea0f3c71c0da82894d76ebc1048f414b93275))
+
 ## [1.29.11](https://github.com/fbuireu/biancafiore/compare/v1.29.10...v1.29.11) (2026-10-18)
 
 
