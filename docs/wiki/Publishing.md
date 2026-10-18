@@ -61,13 +61,14 @@ The tag list is `CONTENT_CACHE` in [`src/const/contentCache.ts`](https://github.
 ## What purges nothing
 
 - **A redirect.** EmDash's *Redirects* run in its middleware, in this Worker, ahead of every page, and a redirect is not a content write, so adding one purges nothing: when its source is a page the cache still holds, the cache keeps answering that page until its entry expires or another write purges it, and only then does the request reach the Worker and the redirect. A redirect whose source answered 404 works at once, because no 404 is ever stored. The common case needs nothing, because changing an Article's slug saves the Article and purges every content route.
-- **A media upload on its own.** An image reaches a page only through an entry, a byline or the settings that reference it, and saving that reference purges. The image itself is served through EmDash's image endpoint, which tells the browser to revalidate every time, so a file an editor replaces under the same key shows on the next view ([Request Lifecycle](Request-Lifecycle#an-image)).
+- **A media upload on its own.** An image reaches a page only through an entry, a byline or the settings that reference it, and saving that reference purges. A new upload has a key of its own, so the page that now names it shows it on its next request.
+- **Replacing a file in the media library.** The replacement keeps the file's storage key, and the Workers cache stores each resized rendition for a day under a rule that carries no tag, since no tag EmDash purges names a media file. A page that shows the image keeps its old rendition until that day, and the hour of `stale-while-revalidate` after it, run out; uploading the new file instead and picking it in the entry shows it at once ([Request Lifecycle](Request-Lifecycle#an-image)).
 
 ---
 
 ## A deploy and the stored pages
 
-Whether a new Worker version reads the pages the previous one stored is `cross_version_cache`, under `[cache]`, and `wrangler.toml` does not set it, so Cloudflare's default for it decides and nothing in this repository pins which way that goes. If the cache is kept per version, each page renders on its first request after a deploy, from D1. If it is shared, the pages the previous version stored keep answering, with that version's markup, until they expire or a publish purges them. Either way the first request that reaches the new version is the moment EmDash applies any migration it brought, and a rollback returns the previous Worker version without undoing them ([CI/CD](CI-CD#limits)).
+Whether a new Worker version reads the pages the previous one stored is `cross_version_cache`, under `[cache]`, and `wrangler.toml` does not set it, so Cloudflare's default for it decides and nothing in this repository pins which way that goes. If the cache is kept per version, each page renders on its first request after a deploy, from D1, and each image is resized again on its first. If it is shared, the pages the previous version stored keep answering, with that version's markup, until they expire or a publish purges them, and the resized images until they expire. Either way the first request that reaches the new version is the moment EmDash applies any migration it brought, and a rollback returns the previous Worker version without undoing them ([CI/CD](CI-CD#limits)).
 
 ---
 

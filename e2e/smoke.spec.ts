@@ -11,6 +11,7 @@ const SHADOWED_AT_THE_EDGE =
 	"the served security.txt is not the one in public/: a security.txt the Cloudflare zone serves itself answers before the Worker";
 const ARTICLES_PATH = "/articles";
 const RENDERED_BY_THIS_DEPLOY = "?smoke=";
+const TRANSFORMED_BY_THIS_DEPLOY = "&smoke=";
 const IMAGE_ENDPOINT = "/_image?";
 const WEBP = "image/webp";
 const NOT_RESIZED =
@@ -57,7 +58,8 @@ test.describe("smoke", () => {
 	test("the Articles page's images are resized by the Images binding through EmDash's image endpoint @smoke", async ({
 		page,
 	}) => {
-		const response = await page.goto(`${ARTICLES_PATH}${RENDERED_BY_THIS_DEPLOY}${Date.now()}`);
+		const smokeRun = Date.now();
+		const response = await page.goto(`${ARTICLES_PATH}${RENDERED_BY_THIS_DEPLOY}${smokeRun}`);
 
 		expect(response?.status()).toBe(200);
 
@@ -72,7 +74,7 @@ test.describe("smoke", () => {
 			const response = await fetch(source);
 
 			return { status: response.status, type: response.headers.get("content-type") };
-		}, resized ?? "");
+		}, `${resized}${TRANSFORMED_BY_THIS_DEPLOY}${smokeRun}`);
 
 		expect(image, NOT_TRANSFORMED).toEqual({ status: 200, type: WEBP });
 	});

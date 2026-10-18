@@ -7,7 +7,7 @@ import emdash from "emdash/astro";
 import { google } from "emdash/auth/providers/google";
 import { Features } from "lightningcss";
 import { loadEnv } from "vite";
-import { CONTENT_CACHE, CONTENT_ROUTES } from "./src/const/contentCache";
+import { CONTENT_CACHE, CONTENT_ROUTES, IMAGE_CACHE, IMAGE_ROUTE } from "./src/const/contentCache";
 import { securityHeaders } from "./src/const/securityHeaders";
 import { MEDIA_FILE_PATH } from "./src/infrastructure/cms/media";
 import { bylineCache } from "./src/infrastructure/cms/plugins/bylineCache/descriptor";
@@ -25,7 +25,10 @@ export default defineConfig({
 	cache: {
 		provider: cacheCloudflare(),
 	},
-	routeRules: Object.fromEntries(CONTENT_ROUTES.map((route) => [route, CONTENT_CACHE])),
+	routeRules: {
+		...Object.fromEntries(CONTENT_ROUTES.map((route) => [route, CONTENT_CACHE])),
+		[IMAGE_ROUTE]: IMAGE_CACHE,
+	},
 	fonts: [
 		{
 			provider: fontProviders.google(),

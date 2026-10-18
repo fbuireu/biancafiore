@@ -1,4 +1,5 @@
 import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
+import { IMAGE_ROUTE } from "@const/contentCache";
 import { securityHeaders } from "@const/securityHeaders";
 import { inlineScriptHashes } from "@modules/core/utils/inlineScripts";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -27,6 +28,28 @@ const headersOf = async ({ isDevelopment, path = "/" }: HeadersOfParams): Promis
 	const response = await onRequest({ url: new URL(path, SITE) } as Parameters<typeof onRequest>[0], respond);
 
 	return (response as Response).headers;
+};
+
+interface CacheCallsOfParams {
+	path: string;
+	status: number;
+}
+
+const cacheCallsOf = async ({ path, status }: CacheCallsOfParams): Promise<unknown[]> => {
+	const calls: unknown[] = [];
+	const { onRequest } = await import("./middleware");
+	const cache = {
+		set: (input: unknown) => {
+			calls.push(input);
+		},
+	};
+
+	await onRequest(
+		{ url: new URL(path, SITE), cache } as Parameters<typeof onRequest>[0],
+		() => Promise.resolve(new Response(null, { status })) as ReturnType<Parameters<typeof onRequest>[1]>,
+	);
+
+	return calls;
 };
 
 const scriptSources = (headers: Headers): string[] =>
@@ -91,6 +114,23 @@ describe("onRequest", () => {
 		for (const header of Object.keys(securityHeaders({ isDevelopment: false, inlineScriptHashes: HASHES }))) {
 			expect(`${header}: ${headers.get(header)}`).toBe(`${header}: null`);
 		}
+	});
+
+	it("keeps an image answer that is not a 200 out of the route cache, because EmDash's 404 opt-out skips /_image and a refused transform would otherwise be stored for a day", async () => {
+		for (const status of [304, 404, 500]) {
+			expect(`${status}: ${JSON.stringify(await cacheCallsOf({ path: IMAGE_ROUTE, status }))}`).toBe(
+				`${status}: [false]`,
+			);
+		}
+	});
+
+	it("leaves a resized image to its route rule, so the Workers cache stores it", async () => {
+		expect(await cacheCallsOf({ path: IMAGE_ROUTE, status: 200 })).toEqual([]);
+	});
+
+	it("leaves the route cache of every other path alone, whatever it answers", async () => {
+		expect(await cacheCallsOf({ path: "/articles", status: 500 })).toEqual([]);
+		expect(await cacheCallsOf({ path: `${IMAGE_ROUTE}s`, status: 404 })).toEqual([]);
 	});
 
 	it("still sets the site's headers on a page whose path merely starts with the same letters", async () => {
