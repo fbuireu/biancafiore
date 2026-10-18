@@ -2,6 +2,7 @@
 import { tagHref } from "@const/index";
 import { formatPublishDate } from "@domain/article";
 import type { ArticleEntry } from "@modules/core/utils/entries";
+import { PREFETCH_IN_VIEWPORT } from "@modules/core/utils/prefetch";
 import "./article-details.css";
 
 interface Props {
@@ -18,7 +19,7 @@ const { article } = Astro.props;
       {article.data.title}
     </h1>
     <p class="article-details__byline font-sans-serif">
-      by <a class="underline-on-hover" href={tagHref(article.data.author.slug)}>{article.data.author.name}</a>
+      by <a class="underline-on-hover" href={tagHref(article.data.author.slug)} {...PREFETCH_IN_VIEWPORT}>{article.data.author.name}</a>
       <span class="article-details__byline__sep" aria-hidden="true">·</span>
       {article.data.readingTime} minutes read
     </p>
@@ -27,7 +28,7 @@ const { article } = Astro.props;
           <ul class="article-details__tags__list flex row-balance justify-center">
             {article.data.tags?.map(({ slug, name }) => (
                 <li class="article-details__tag__item font-sans-serif">
-                    <a href={tagHref(slug)} class="underline-on-hover">#{name}</a>
+                    <a href={tagHref(slug)} class="underline-on-hover" {...PREFETCH_IN_VIEWPORT}>#{name}</a>
                 </li>
             ))}
           </ul>

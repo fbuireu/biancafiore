@@ -3584,8 +3584,12 @@ describe("conventions", () => {
 		expect(read(EMDASH_MIDDLEWARE)).toMatch(IMAGE_REQUEST_SKIPS_THE_BOOKMARK);
 		expect(read(EMDASH_REDIRECT_MIDDLEWARE)).toMatch(REDIRECTS_SKIP_THE_IMAGE_ENDPOINT);
 		expect(read("src/middleware.ts")).toContain("if (url.pathname === IMAGE_ROUTE && !response.ok) cache.set(false);");
+		expect(read("src/middleware.ts")).toContain(
+			'if (response.status === 200 && url.pathname === IMAGE_ROUTE) {\n\t\tresponse.headers.set("Cache-Control", IMAGE_BROWSER_CACHE_CONTROL);',
+		);
+		expect(cache).toContain("export const IMAGE_BROWSER_CACHE_CONTROL = `max-age=${IMAGE_CACHE.maxAge}`;");
 		expect(read("docs/wiki/Request-Lifecycle.md")).toContain(
-			"| `/_image?href=…` | by EmDash's image endpoint | image rule, a 200 alone; the browser gets `public, max-age=0, must-revalidate` for a media file |",
+			"| `/_image?href=…` | by EmDash's image endpoint | image rule, a 200 alone; the browser keeps a 200 for the same day |",
 		);
 		expect(AGENTS_MD).toContain("`routeRules` give `IMAGE_ROUTE` the `IMAGE_CACHE` rule");
 	});

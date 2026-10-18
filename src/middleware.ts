@@ -1,6 +1,11 @@
 import { GOOGLE_ANALYTICS_ID, GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
 import { defineMiddleware } from "astro:middleware";
-import { CONTENT_BROWSER_CACHE_CONTROL, CONTENT_ROUTES, IMAGE_ROUTE } from "@const/contentCache";
+import {
+	CONTENT_BROWSER_CACHE_CONTROL,
+	CONTENT_ROUTES,
+	IMAGE_BROWSER_CACHE_CONTROL,
+	IMAGE_ROUTE,
+} from "@const/contentCache";
 import { securityHeaders } from "@const/securityHeaders";
 import { inlineScriptHashes } from "@modules/core/utils/inlineScripts";
 
@@ -28,6 +33,10 @@ export const onRequest = defineMiddleware(async ({ url, cache, routePattern }, n
 
 	if (response.status === 200 && CONTENT_ROUTE_PATTERNS.has(routePattern)) {
 		response.headers.set("Cache-Control", CONTENT_BROWSER_CACHE_CONTROL);
+	}
+
+	if (response.status === 200 && url.pathname === IMAGE_ROUTE) {
+		response.headers.set("Cache-Control", IMAGE_BROWSER_CACHE_CONTROL);
 	}
 
 	return response;
