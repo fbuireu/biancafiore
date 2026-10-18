@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { IMAGE_CACHE, IMAGE_ROUTE } from "@const/contentCache";
 import { NOINDEX_ROUTES } from "@const/noindexRoutes";
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { COOKIE_CONSENT_BUTTON_CLASS } from "@modules/core/components/cookieConsent/const";
@@ -11,6 +12,8 @@ const CLIENT = "dist/client";
 const SERVER = "dist/server";
 const SERVER_CHUNKS = join(SERVER, "chunks");
 const IMAGE_CONFIG = /^var imageConfig = (\{[\s\S]*?^\});$/m;
+const SERIALIZED_MANIFEST = /^var _manifest = deserializeManifest\((\{.*\})\);$/m;
+const CLOUDFLARE_CACHE_PROVIDER = "@astrojs/cloudflare/cache/provider";
 const HEADING_TAG = /<h([1-6])[^>]*>/g;
 const CONTENT_PAGES = ["", "about", "articles", "contact", "projects", "tags"];
 const PRERENDERED_PAGES = ["privacy-policy", "terms-and-conditions"];
@@ -46,6 +49,16 @@ interface DeployedConfig {
 	images?: { binding: string };
 }
 
+interface BuiltCacheRule {
+	maxAge?: number;
+	swr?: number;
+	tags?: string[];
+}
+
+interface BuiltManifest {
+	cacheConfig?: { provider: string; routes?: Record<string, BuiltCacheRule> };
+}
+
 const read = (path: string): string => readFileSync(path, "utf-8");
 
 const builtImageConfigs = (): BuiltImageConfig[] =>
@@ -53,6 +66,12 @@ const builtImageConfigs = (): BuiltImageConfig[] =>
 		.filter((file) => file.endsWith(".mjs"))
 		.flatMap((file) => IMAGE_CONFIG.exec(read(join(SERVER_CHUNKS, file)))?.[1] ?? [])
 		.map((config) => JSON.parse(config) as BuiltImageConfig);
+
+const builtManifests = (): BuiltManifest[] =>
+	readdirSync(SERVER_CHUNKS)
+		.filter((file) => file.endsWith(".mjs"))
+		.flatMap((file) => SERIALIZED_MANIFEST.exec(read(join(SERVER_CHUNKS, file)))?.[1] ?? [])
+		.map((manifest) => JSON.parse(manifest) as BuiltManifest);
 
 const browserWindow = new Window({
 	settings: { disableJavaScriptEvaluation: true, disableJavaScriptFileLoading: true, disableCSSFileLoading: true },
@@ -217,6 +236,24 @@ describe("the built output", () => {
 		}
 
 		expect(deployed.images).toEqual({ binding: "IMAGES" });
+	});
+
+	it("gives the route the image endpoint answers the image rule, so the Workers cache stores each rendition for a day", () => {
+		const manifests = builtManifests();
+		const routes = builtImageConfigs().map(({ endpoint }) => endpoint.route);
+
+		expect(manifests.length).toBeGreaterThan(0);
+		expect(routes).toContain(IMAGE_ROUTE);
+
+		for (const { cacheConfig } of manifests) {
+			expect(cacheConfig?.provider).toBe(CLOUDFLARE_CACHE_PROVIDER);
+
+			for (const route of routes) {
+				expect(`${route}: ${JSON.stringify(cacheConfig?.routes?.[route])}`).toBe(
+					`${route}: ${JSON.stringify(IMAGE_CACHE)}`,
+				);
+			}
+		}
 	});
 
 	it("serves no script origin the site does not use", () => {

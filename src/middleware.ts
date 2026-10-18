@@ -1,6 +1,6 @@
 import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
 import { defineMiddleware } from "astro:middleware";
-import { CONTENT_BROWSER_CACHE_CONTROL, CONTENT_ROUTES } from "@const/contentCache";
+import { CONTENT_BROWSER_CACHE_CONTROL, CONTENT_ROUTES, IMAGE_ROUTE } from "@const/contentCache";
 import { securityHeaders } from "@const/securityHeaders";
 import { inlineScriptHashes } from "@modules/core/utils/inlineScripts";
 
@@ -12,8 +12,10 @@ const CONTENT_ROUTE_PATTERNS = new Set<string>(CONTENT_ROUTES);
 
 const EMDASH_ROUTES = "/_emdash/";
 
-export const onRequest = defineMiddleware(async ({ url, routePattern }, next) => {
+export const onRequest = defineMiddleware(async ({ url, cache, routePattern }, next) => {
 	const response = await next();
+
+	if (url.pathname === IMAGE_ROUTE && !response.ok) cache.set(false);
 
 	if (url.pathname.startsWith(EMDASH_ROUTES)) return response;
 
