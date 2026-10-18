@@ -26,7 +26,7 @@ sequenceDiagram
     Note over Head: analytics_storage is granted only when cc_cookie lists analytics, and denied otherwise
     Head->>Google: both load, async, on every page
     Google->>Google: start under the consent default
-    Visitor->>Banner: astro:page-load runs initCookieConsent
+    Visitor->>Banner: each page's script runs initCookieConsent
     alt no stored answer, or one from an older revision
         Banner-->>Visitor: the banner asks
         Visitor->>Banner: accept all, reject all, or choose per service
@@ -44,10 +44,10 @@ sequenceDiagram
 
 1. **The consent default runs before Google does.** An inline script in `<head>`, built by `consentBootstrapScript`, reads the `cc_cookie` the banner writes and calls `gtag('consent', 'default', …)` with `analytics_storage` granted only when the stored answer lists the `analytics` category. It sits above the two Google scripts on purpose: Consent Mode applies the default it finds when Google's code starts, so a reorder, or this script dropped as dead weight, would collect first and ask later, with nothing visibly broken.
 2. **Google's scripts load on every page.** `gtag.js` and `gtm.js` load `async` whatever the answer, and store nothing until consent is granted.
-3. **The banner runs on every `astro:page-load`**, the first load and every navigation the `ClientRouter` makes, from the bundled script of the *Manage cookies* button in the footer. With no stored answer it shows the banner, bottom left; with one, it stays closed.
+3. **The banner runs on every page**, from the bundled script of the *Manage cookies* button in the footer, which every page loads. With no stored answer it shows the banner, bottom left; with one, it stays closed.
 4. **`onConsent` and `onChange` both call `updatePreferences`.** `onConsent` fires when the visitor first answers and again on every page load that finds an answer stored, which is why a returning visitor who accepted gets the Better Stack tag on every visit; `onFirstConsent` would fire once and leave them without it. `onChange` covers a visitor who changes their mind from *Manage cookies*.
 5. **`updatePreferences` tells Google and decides about Better Stack.** It pushes a `consent update` with the category's answer, and when the `betterstack` service is accepted it asks `getTelemetry()` to append Better Stack's tag, which loads at most once per page however often it is asked, and only when the build had a `BETTER_STACK_TRACKING_TOKEN`.
-6. **Rejecting clears what was stored.** The category auto-clears Google's `_ga` and `_gid` cookies and Better Stack's `bs_` ones, and the next `consent update` tells Google to store nothing. A Better Stack tag already running stays until the next full page load, since a `ClientRouter` navigation keeps the document, and is not appended again.
+6. **Rejecting clears what was stored.** The category auto-clears Google's `_ga` and `_gid` cookies and Better Stack's `bs_` ones, and the next `consent update` tells Google to store nothing. A Better Stack tag already running stays until the reader leaves the page, and the next page does not append it.
 
 ---
 

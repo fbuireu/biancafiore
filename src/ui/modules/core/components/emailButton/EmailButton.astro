@@ -26,5 +26,5 @@ const showsAttribute = showsAddress ? { [EMAIL_BUTTON_SHOWS_ATTRIBUTE]: EMAIL_BU
 <script>
   import { activateEmailButtons } from "./utils/interactions";
 
-  document.addEventListener("astro:page-load", () => activateEmailButtons());
+  activateEmailButtons();
 </script>

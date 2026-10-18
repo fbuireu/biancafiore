@@ -53,7 +53,5 @@ const selected = activeTab(Astro.url);
 <script>
 	import { initTabs } from "./utils/tabs";
 
-	document.addEventListener("astro:page-load", () => {
-		initTabs();
-	});
+	initTabs();
 </script>

@@ -1,4 +1,3 @@
-import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
 import { ARTICLE_BODY_CLASS } from "../../../const";
 import { ARTICLE_COLUMNS_ACTIVE_CLASS, ARTICLE_COLUMNS_STORAGE_KEY, COLUMNS_TOGGLE_BUTTON_CLASS } from "../const";
 
@@ -28,13 +27,8 @@ const applyOnOtherTabWrite = ({ key, newValue }: StorageEvent): void => {
 	}
 };
 
-const applyBeforeSwap = ({ newDocument }: TransitionBeforeSwapEvent): void => {
-	applyColumns({ enabled: isColumnsEnabled(), document: newDocument });
-};
-
 export function initializeColumnsToggle(): void {
 	globalThis.addEventListener("storage", applyOnOtherTabWrite);
-	document.addEventListener("astro:before-swap", applyBeforeSwap);
 	applyColumns({ enabled: isColumnsEnabled(), document });
 
 	const TOGGLE = document.querySelector<HTMLButtonElement>(SELECTORS.TOGGLE);

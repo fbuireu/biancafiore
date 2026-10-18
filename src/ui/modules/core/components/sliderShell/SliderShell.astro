@@ -54,7 +54,5 @@ const looping = { [SLIDER_LOOPING_ATTRIBUTE]: isLooping };
 	import { SLIDER_WRAPPER_CLASS } from "./const";
 	import { initSlider } from "./utils/slider";
 
-	document.addEventListener('astro:page-load', () => {
-		document.querySelectorAll<HTMLElement>(`.${SLIDER_WRAPPER_CLASS}`).forEach(initSlider);
-	});
+	document.querySelectorAll<HTMLElement>(`.${SLIDER_WRAPPER_CLASS}`).forEach(initSlider);
 </script>

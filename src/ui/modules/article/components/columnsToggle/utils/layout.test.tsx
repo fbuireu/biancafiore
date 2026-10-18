@@ -102,22 +102,6 @@ describe("initializeColumnsToggle", () => {
 		expect(isTwoColumn()).toBe(false);
 	});
 
-	it("paints the incoming page before the router swaps it in, so the choice never flashes off", () => {
-		localStorage.setItem(ARTICLE_COLUMNS_STORAGE_KEY, "true");
-		initializeColumnsToggle();
-
-		const newDocument = document.implementation.createHTMLDocument();
-		newDocument.body.innerHTML = MARKUP;
-
-		const event = new Event("astro:before-swap");
-		Object.defineProperty(event, "newDocument", { value: newDocument });
-		document.dispatchEvent(event);
-
-		expect(newDocument.querySelector(`.${ARTICLE_BODY_CLASS}`)?.classList.contains(ARTICLE_COLUMNS_ACTIVE_CLASS)).toBe(
-			true,
-		);
-	});
-
 	it("leaves a page with no toggle alone rather than throwing", () => {
 		document.body.innerHTML = `<div class="${ARTICLE_BODY_CLASS}"></div>`;
 

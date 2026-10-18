@@ -1,4 +1,3 @@
-import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
 import { THEME_ATTRIBUTE, THEME_STORAGE_KEY, THEME_TOGGLE_CLASS, THEME_TOGGLE_TOGGLED_CLASS, Theme } from "../const";
 import { readTheme, writeTheme } from "./preference";
 
@@ -31,13 +30,8 @@ function applyOnOtherTabWrite({ key }: StorageEvent): void {
 	if (key === THEME_STORAGE_KEY) applyTheme({ theme: readTheme(localStorage), document });
 }
 
-function applyBeforeSwap({ newDocument }: TransitionBeforeSwapEvent): void {
-	applyTheme({ theme: readTheme(localStorage), document: newDocument });
-}
-
 export function initializeThemeSetter(): void {
 	window.addEventListener("storage", applyOnOtherTabWrite);
-	document.addEventListener("astro:before-swap", applyBeforeSwap);
 
 	applyTheme({ theme: readTheme(localStorage), document });
 

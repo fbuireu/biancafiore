@@ -70,7 +70,6 @@ interface OpenAnArticleParams {
 
 const openAnArticle = async ({ page, index }: OpenAnArticleParams): Promise<void> => {
 	await visit({ page, path: "/articles" });
-	await expect(page.locator("[data-astro-exec]").first()).toBeAttached();
 
 	await clickArticleCard({ page, index });
 };
@@ -98,20 +97,22 @@ const followFooterLink = async ({ page, path }: FollowFooterLinkParams): Promise
 	await page.waitForURL(`**${path}`);
 };
 
-test.describe("wiring survives a ClientRouter swap", () => {
-	test("swaps the document without re-running the bundled scripts", async ({ page }) => {
+test.describe("wiring holds on every page a reader navigates to", () => {
+	test("loads every page as a document of its own, so nothing the last page wired answers for this one", async ({
+		page,
+	}) => {
 		await openAnArticle({ page, index: 0 });
 
-		const executed = await page.locator("[data-astro-exec]").count();
 		const firstArticle = page.url();
 
+		await page.evaluate(() => Object.assign(window, { [Symbol.for("previous-page")]: true }));
 		await openAnotherArticle({ page, index: 1 });
 
 		expect(page.url()).not.toBe(firstArticle);
-		expect(await page.locator("[data-astro-exec]").count()).toBe(executed);
+		expect(await page.evaluate(() => Symbol.for("previous-page") in window)).toBe(false);
 	});
 
-	test("keeps the theme toggle repainting after two swaps", async ({ page }) => {
+	test("keeps the theme toggle repainting after two navigations", async ({ page }) => {
 		await openAnArticle({ page, index: 0 });
 		await openAnotherArticle({ page, index: 1 });
 
@@ -122,7 +123,7 @@ test.describe("wiring survives a ClientRouter swap", () => {
 		await expect(page.locator("html")).not.toHaveAttribute(THEME_ATTRIBUTE, String(before));
 	});
 
-	test("keeps the reading progress bar following the reader after two swaps", async ({ page }) => {
+	test("keeps the reading progress bar following the reader after two navigations", async ({ page }) => {
 		await openAnArticle({ page, index: 0 });
 		await openAnotherArticle({ page, index: 1 });
 
@@ -131,7 +132,7 @@ test.describe("wiring survives a ClientRouter swap", () => {
 		await expect.poll(() => page.locator(READING_PROGRESS).evaluate((bar) => bar.style.width)).not.toBe("");
 	});
 
-	test("keeps the related-articles slider moving after two swaps", async ({ page }) => {
+	test("keeps the related-articles slider moving after two navigations", async ({ page }) => {
 		await openAnArticle({ page, index: 0 });
 		await openAnotherArticle({ page, index: 1 });
 
@@ -173,7 +174,7 @@ test.describe("wiring survives a ClientRouter swap", () => {
 		await expect(page.locator("html")).toHaveClass(new RegExp(MENU_OPEN_CLASS));
 	});
 
-	test("keeps decoding the email address after two swaps", async ({ page }) => {
+	test("keeps decoding the email address after two navigations", async ({ page }) => {
 		await visit({ page, path: "/articles" });
 		await followFooterLink({ page, path: "/terms-and-conditions" });
 		await followFooterLink({ page, path: "/privacy-policy" });
@@ -186,7 +187,7 @@ test.describe("wiring survives a ClientRouter swap", () => {
 		await expect(address).toContainText("@");
 	});
 
-	test("shows the unanswered cookie banner once after two swaps", async ({ page }) => {
+	test("shows the unanswered cookie banner once after two navigations", async ({ page }) => {
 		await presentAsAHumanVisitor(page);
 		await visit({ page, path: "/articles" });
 		await followFooterLink({ page, path: "/terms-and-conditions" });
@@ -196,7 +197,7 @@ test.describe("wiring survives a ClientRouter swap", () => {
 		await expect(page.getByRole("dialog", { name: COOKIE_BANNER })).toBeVisible();
 	});
 
-	test("keeps the cookie preferences opening after two swaps", async ({ page }) => {
+	test("keeps the cookie preferences opening after two navigations", async ({ page }) => {
 		await presentAsAHumanVisitor(page);
 		await visit({ page, path: "/articles" });
 		await followFooterLink({ page, path: "/terms-and-conditions" });
