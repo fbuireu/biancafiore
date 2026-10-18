@@ -107,10 +107,17 @@ you choose is the version bump you get.
 | `feat` | minor | `feat: add a reading-time estimate to articles` |
 | `fix` | patch | `fix: keep the table of contents in view on scroll` |
 | `perf` | patch | `perf: prerender the tag pages` |
-| `revert` | patch | `revert: feat: add a reading-time estimate to articles` |
+| `revert` | patch, only with git's revert line in the body | `revert: feat: add a reading-time estimate to articles` |
 | `docs`, `style`, `refactor`, `test`, `chore`, `ci`, `build` | none | `docs: correct the article glossary entry` |
 
 Breaking changes take a `!` after the type or a `BREAKING CHANGE:` footer, and bump the major.
+
+A revert releases only when the commit that lands carries git's `This reverts commit <sha>.` line, because
+semantic-release reads a revert off that line and has no rule for the `revert` type itself. A `revert: …`
+title, or the `Revert "…"` title GitHub's Revert button writes, passes the title lint either way, and with no
+such line it releases nothing. The squash commit's body is the pull request's description, where the Revert
+button writes `Reverts <owner>/<repo>#<number>` instead, so put git's line in the description, or title the
+pull request `fix: …`, which always cuts a patch.
 
 A scope is optional and free-form: [`commitlint.config.ts`](../commitlint.config.ts) extends
 `@commitlint/config-conventional` and declares no `scope-enum`. It does constrain the case of a scope
