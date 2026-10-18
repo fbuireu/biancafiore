@@ -17,11 +17,15 @@ const { image, transitionName, ...rest } = Astro.props;
 const lqip = image.placeholder ? `--lqip: url("${image.placeholder}")` : undefined;
 ---
 <div class="blur-image" style={lqip}>
-    <Image
-        src={absoluteUrl(image.url)}
-        width={image.details.width}
-        height={image.details.height}
-        transition:name={transitionName}
-        {...rest}
-    />
+    {transitionName ? (
+        <Image
+            src={absoluteUrl(image.url)}
+            width={image.details.width}
+            height={image.details.height}
+            transition:name={transitionName}
+            {...rest}
+        />
+    ) : (
+        <Image src={absoluteUrl(image.url)} width={image.details.width} height={image.details.height} {...rest} />
+    )}
 </div>
