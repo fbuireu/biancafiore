@@ -1,6 +1,6 @@
 {
 	"name": "biancafiore",
-	"version": "1.29.7",
+	"version": "1.29.8",
 	"private": true,
 	"description": "Portfolio and blog of content writer Bianca Fiore. Astro on Cloudflare Workers, content from the EmDash CMS it hosts itself",
 	"keywords": [

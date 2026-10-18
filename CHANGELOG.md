@@ -1,3 +1,10 @@
+## [1.29.8](https://github.com/fbuireu/biancafiore/compare/v1.29.7...v1.29.8) (2026-10-18)
+
+
+### Bug Fixes
+
+* **images:** resize media through EmDash's image endpoint and the IMAGES binding on every stage ([cbe36cf](https://github.com/fbuireu/biancafiore/commit/cbe36cff88b10bfcf8b670e0b34526d09448a851))
+
 ## [1.29.7](https://github.com/fbuireu/biancafiore/compare/v1.29.6...v1.29.7) (2026-10-18)
 
 
