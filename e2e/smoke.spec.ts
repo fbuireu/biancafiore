@@ -16,7 +16,7 @@ const WEBP = "image/webp";
 const NOT_RESIZED =
 	"the Articles page renders no /_image source: Astro builds one only for a media URL image.remotePatterns allows. Its first images";
 const NOT_TRANSFORMED =
-	"EmDash's image endpoint did not answer a WebP: it answers 500 when the IMAGES binding refuses the transform, and the original when the Worker has no IMAGES binding";
+	"EmDash's image endpoint did not answer the page a WebP: it answers 500 when the IMAGES binding refuses the transform, and the original when the Worker has no IMAGES binding";
 
 test.describe("smoke", () => {
 	test("the homepage answers with a rendered document @smoke", async ({ page }) => {
@@ -56,7 +56,6 @@ test.describe("smoke", () => {
 
 	test("the Articles page's images are resized by the Images binding through EmDash's image endpoint @smoke", async ({
 		page,
-		request,
 	}) => {
 		const response = await page.goto(`${ARTICLES_PATH}${RENDERED_BY_THIS_DEPLOY}${Date.now()}`);
 
@@ -69,9 +68,12 @@ test.describe("smoke", () => {
 
 		expect(resized, `${NOT_RESIZED}: ${sources.slice(0, 3).join(" | ")}`).toBeDefined();
 
-		const image = await request.get(resized ?? "");
+		const image = await page.evaluate(async (source) => {
+			const response = await fetch(source);
 
-		expect(image.status(), NOT_TRANSFORMED).toBe(200);
-		expect(image.headers()["content-type"], NOT_TRANSFORMED).toBe(WEBP);
+			return { status: response.status, type: response.headers.get("content-type") };
+		}, resized ?? "");
+
+		expect(image, NOT_TRANSFORMED).toEqual({ status: 200, type: WEBP });
 	});
 });
