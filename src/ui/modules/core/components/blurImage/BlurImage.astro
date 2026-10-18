@@ -10,14 +10,15 @@ interface OwnProps {
 	transitionName?: string;
 }
 
-type Props = Except<RemoteImageProps, "src" | "width" | "height"> & OwnProps;
+type Props = Except<RemoteImageProps, "src" | "srcset" | "widths" | "width" | "height"> & OwnProps;
 
 const { image, transitionName, ...rest } = Astro.props;
 const lqip = image.placeholder ? `--lqip: url("${image.placeholder}")` : undefined;
 ---
 <div class="blur-image" style={lqip}>
     <Image
-        src={image.url}
+        src={image.src}
+        srcset={image.srcset}
         width={image.details.width}
         height={image.details.height}
         transition:name={transitionName}

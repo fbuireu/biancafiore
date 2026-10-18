@@ -125,6 +125,11 @@ const CMS_TYPE = /from "emdash"|@portabletext\/|\bCmsEntry\b|\bCmsReference\b|\b
 const HAND_PREFIXED_ASSET_URL = /`https:\$\{/;
 const RELATIVE_IMAGE_URL_SCHEMA = /url:\s*z\.string\(\)/;
 const MEDIA_RESOLUTION = /data: resolveMedia\(fields\)/;
+const BLUR_IMAGE = "src/ui/modules/core/components/blurImage/BlurImage.astro";
+const CDN_IMAGE_SRC = /\bsrc: getOptimizedImageUrl\(\{ source: src \}\)/;
+const CDN_IMAGE_SRCSET = /\bsrcset: getOptimizedSrcset\(\{ source: src, widths: srcsetWidths\(width\) \}\)/;
+const BLUR_IMAGE_SRC = /\ssrc=\{image\.src\}/;
+const BLUR_IMAGE_SRCSET = /\ssrcset=\{image\.srcset\}/;
 const CMS_LAYER_IMPORT = /import\s*\{[^}]*\bCmsClient\b[^}]*\}\s*from\s*"\.\/client"/;
 const LOADER_FETCH_ENTRIES = /await fetchEntries</;
 const CHROME_FETCH = /await fetch(?:SiteSettings\(\)|Menu\(name\))/;
@@ -2208,6 +2213,15 @@ describe("application guide: the anti-corruption boundary", () => {
 
 		expect(readers.length).toBeGreaterThan(0);
 		expect(readers.filter((file) => HAND_PREFIXED_ASSET_URL.test(read(file)))).toEqual([]);
+	});
+
+	it("hands every BlurImage the CDN sources createImage builds, because Astro's image service passes a same-origin path through untransformed", () => {
+		expect(guide).toContain("the `src` and `srcset` a `BlurImage` renders");
+		expect(read("src/application/dto/shared/images.ts")).toMatch(CDN_IMAGE_SRC);
+		expect(read("src/application/dto/shared/images.ts")).toMatch(CDN_IMAGE_SRCSET);
+		expect(read(BLUR_IMAGE)).toMatch(BLUR_IMAGE_SRC);
+		expect(read(BLUR_IMAGE)).toMatch(BLUR_IMAGE_SRCSET);
+		expect(read(BLUR_IMAGE)).not.toContain("image.url");
 	});
 
 	it("stops EmDash types at this layer: nothing downstream sees them", () => {

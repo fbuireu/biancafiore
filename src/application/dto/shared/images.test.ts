@@ -40,6 +40,42 @@ describe("createImage", () => {
 		]);
 	});
 
+	it("renders the image through the CDN in production at its own size, re-encoded in the format the browser accepts", () => {
+		vi.stubEnv("IMAGE_CDN", IMAGE_CDN.CLOUDFLARE);
+
+		expect(createImage(rawImage()).src).toBe("/cdn-cgi/image/format=auto,quality=85/_emdash/api/media/file/hero.jpg");
+	});
+
+	it("offers a transformed candidate at every breakpoint narrower than the image, and at the image's own width", () => {
+		vi.stubEnv("IMAGE_CDN", IMAGE_CDN.CLOUDFLARE);
+
+		expect(createImage(rawImage({ width: 1300, height: 650 })).srcset).toBe(
+			[
+				"/cdn-cgi/image/format=auto,quality=85,width=640/_emdash/api/media/file/hero.jpg 640w",
+				"/cdn-cgi/image/format=auto,quality=85,width=750/_emdash/api/media/file/hero.jpg 750w",
+				"/cdn-cgi/image/format=auto,quality=85,width=828/_emdash/api/media/file/hero.jpg 828w",
+				"/cdn-cgi/image/format=auto,quality=85,width=1080/_emdash/api/media/file/hero.jpg 1080w",
+				"/cdn-cgi/image/format=auto,quality=85,width=1280/_emdash/api/media/file/hero.jpg 1280w",
+				"/cdn-cgi/image/format=auto,quality=85,width=1300/_emdash/api/media/file/hero.jpg 1300w",
+			].join(", "),
+		);
+	});
+
+	it("never asks the CDN to upscale: an image narrower than every breakpoint is offered at its own width alone", () => {
+		vi.stubEnv("IMAGE_CDN", IMAGE_CDN.CLOUDFLARE);
+
+		expect(createImage(rawImage({ width: 480, height: 480 })).srcset).toBe(
+			"/cdn-cgi/image/format=auto,quality=85,width=480/_emdash/api/media/file/hero.jpg 480w",
+		);
+	});
+
+	it("serves the original as the src and every candidate without a CDN, since a preview and localhost sit on no zone", () => {
+		const { src, srcset } = createImage(rawImage({ width: 700, height: 350 }));
+
+		expect(src).toBe(HERO);
+		expect(srcset).toBe(`${HERO} 640w, ${HERO} 700w`);
+	});
+
 	it("shares the original three times without a CDN, rather than inventing crops nothing can serve", () => {
 		expect(createImage(rawImage()).shareCrops).toStrictEqual([HERO, HERO, HERO]);
 	});

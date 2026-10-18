@@ -153,10 +153,11 @@ config:
 ---
 flowchart TB
     render(["a page renders on a cache miss"]) --> resolve["resolveMedia in the CMS client<br/>storage key to /_emdash/api/media/file/key"]
-    resolve --> create["createImage in the DTO<br/>url, dimensions, share crops"]
+    resolve --> create["createImage in the DTO<br/>url, src and srcset, dimensions, share crops"]
     create --> placeholder["an inline bitmap decoded from the blurhash<br/>shown while the image loads, no request"]
-    create -- "a production build" --> transformed["the img points under /cdn-cgi/image/<br/>format, quality, width"]
-    create -- "a preview, localhost" --> original["the img points at the media route itself"]
+    create --> blur["BlurImage hands Astro's Image the src and srcset<br/>Astro keeps the layout, sizes and lazy loading"]
+    blur -- "a production build" --> transformed["the img points under /cdn-cgi/image/<br/>format, quality, width"]
+    blur -- "a preview, localhost" --> original["the img points at the media route itself"]
     transformed --> zone["Cloudflare on the biancafiore.me zone<br/>fetches the original, resizes and converts it"]
     zone --> route
     original --> route["EmDash's media route<br/>/_emdash/api/media/file/key"]
@@ -164,7 +165,7 @@ flowchart TB
 ```
 
 - **The URL is a path, made once.** `resolveMedia` in [`src/infrastructure/cms/media.ts`](https://github.com/fbuireu/biancafiore/blob/main/src/infrastructure/cms/media.ts) turns EmDash's storage key into a path on the media route before any mapper sees it, and nothing but `absoluteUrl` turns that path into a full URL, where an Open Graph tag or a JSON-LD document needs one.
-- **Production transforms; nothing else can.** In a production build, Astro's image service is Cloudflare's, so an `<Image>` component points at `/cdn-cgi/image/…`, and `getOptimizedImageUrl` does the same for an Article's body images and the share crops. A preview on `workers.dev` and the dev server sit on no zone that could transform, so both serve the original from the media route.
+- **Production transforms; nothing else can.** In a production build, `getOptimizedImageUrl` and `getOptimizedSrcset` point every image under `/cdn-cgi/image/…`: the `src` and `srcset` `createImage` builds for a `BlurImage` (the featured images, the article cards, the Projects, the Cities and the Testimonials), an Article's body images and the share crops. The `src` is the image at its own size in the format the browser accepts, and the `srcset` offers a width at each common breakpoint narrower than the image and one at its own width, so the zone is never asked to upscale. `BlurImage` hands both to Astro's `<Image>` rather than the media path, because Astro's Cloudflare image service rewrites only an imported image or a remote one its `image.domains` allow, and passes a path on the site's own origin through untransformed. A preview on `workers.dev` and the dev server sit on no zone that could transform, so both serve the original from the media route, every `srcset` candidate included.
 - **The media route serves R2 under EmDash's own headers.** An image answers `public, max-age=0, must-revalidate` with validators, so a browser revalidates instead of downloading again, and a sandboxing content security policy; a type that is not a plain image is served as a download. The site's middleware leaves the route alone, as it does everything under `/_emdash/`.
 - **The blur costs nothing.** EmDash computes a blurhash on upload, and `createImage` decodes it into a small inline bitmap the `BlurImage` component shows behind the image until it arrives. A format EmDash computes no blurhash for, AVIF among them, renders unblurred.
 

@@ -1,5 +1,5 @@
 import type { ImageDTO } from "@domain/shared/image";
-import { getOptimizedImageUrl } from "@infrastructure/images/imageOptimization";
+import { getOptimizedImageUrl, getOptimizedSrcset } from "@infrastructure/images/imageOptimization";
 import { imagePlaceholder } from "@infrastructure/images/imagePlaceholder";
 import { z } from "@shared/utils/zod";
 
@@ -8,6 +8,8 @@ const SHARE_CROPS = [
 	{ width: 1200, height: 900 },
 	{ width: 1200, height: 1200 },
 ] as const;
+
+const SRCSET_WIDTHS = [640, 750, 828, 1080, 1280, 1668, 1920, 2048, 2560] as const;
 
 export interface RawImage {
 	id: string;
@@ -35,6 +37,8 @@ const blurhashOf = ({ blurhash, meta }: RawImage): string | undefined => {
 	return typeof stored === "string" ? stored : undefined;
 };
 
+const srcsetWidths = (width: number): number[] => [...SRCSET_WIDTHS.filter((candidate) => candidate < width), width];
+
 export function createImage(rawImage: RawImage | undefined): ImageDTO {
 	if (!resolvedImageSchema.validate(rawImage)) {
 		throw new Error(
@@ -47,6 +51,8 @@ export function createImage(rawImage: RawImage | undefined): ImageDTO {
 
 	return {
 		url: src,
+		src: getOptimizedImageUrl({ source: src }),
+		srcset: getOptimizedSrcset({ source: src, widths: srcsetWidths(width) }),
 		shareCrops: SHARE_CROPS.map((crop) => getOptimizedImageUrl({ source: src, options: { ...crop, fit: "cover" } })),
 		details: { width, height },
 		formats: {

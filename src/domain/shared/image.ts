@@ -2,6 +2,8 @@ import { z } from "@shared/utils/zod";
 
 export const imageSchema = z.object({
 	url: z.string(),
+	src: z.string(),
+	srcset: z.string(),
 	details: z.object({
 		width: z.number(),
 		height: z.number(),

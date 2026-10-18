@@ -183,6 +183,8 @@ describe("createArticles images", () => {
 			url: `${MEDIA_FILE_PATH}hero.avif`,
 			details: { width: 1200, height: 630 },
 			formats: { avif: true, webp: false },
+			src: expect.any(String),
+			srcset: expect.any(String),
 			shareCrops: expect.any(Array),
 		});
 	});
@@ -451,6 +453,8 @@ describe("createArticles author and batching", () => {
 				url: `${MEDIA_FILE_PATH}bianca.webp`,
 				details: { width: 1200, height: 630 },
 				formats: { avif: false, webp: true },
+				src: expect.any(String),
+				srcset: expect.any(String),
 				shareCrops: expect.any(Array),
 			},
 			socialNetworks: ["https://linkedin.com/in/bianca"],
