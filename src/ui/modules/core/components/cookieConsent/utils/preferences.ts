@@ -1,4 +1,5 @@
 import { acceptedCategory, acceptedService } from "vanilla-cookieconsent";
+import { onceActivated } from "../../../utils/prerender";
 import { ANALYTICS_CATEGORY, BETTER_STACK_SERVICE, CONSENT_STATUS, CONSENT_UPDATE_WAIT } from "./consentGate";
 import { getTelemetry } from "./telemetry";
 
@@ -14,5 +15,5 @@ export function updatePreferences(): void {
 		wait_for_update: CONSENT_UPDATE_WAIT,
 	});
 
-	if (acceptedService(BETTER_STACK_SERVICE, ANALYTICS_CATEGORY)) getTelemetry().loadBetterStack();
+	if (acceptedService(BETTER_STACK_SERVICE, ANALYTICS_CATEGORY)) onceActivated(() => getTelemetry().loadBetterStack());
 }

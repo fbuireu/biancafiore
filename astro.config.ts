@@ -75,6 +75,7 @@ export default defineConfig({
 	vite: {
 		build: {
 			target: "esnext",
+			assetsInlineLimit: (file) => (file.endsWith(".js") ? false : undefined),
 		},
 		css: {
 			transformer: "lightningcss",
@@ -94,7 +95,10 @@ export default defineConfig({
 		generateStaticHeaders(
 			securityHeaders({
 				isDevelopment: false,
-				inlineScriptHashes: inlineScriptHashes(environment.GOOGLE_ANALYTICS_ID),
+				inlineScriptHashes: inlineScriptHashes({
+					analyticsId: environment.GOOGLE_ANALYTICS_ID,
+					tagManagerId: environment.GOOGLE_TAG_MANAGER_ID,
+				}),
 			}),
 		),
 		react({ compiler: true }),

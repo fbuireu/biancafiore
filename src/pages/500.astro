@@ -59,9 +59,7 @@ const metadata: Partial<SeoMetadata> = {
 </BaseLayout>
 
 <script>
-	document.addEventListener("astro:page-load", () => {
-		document.querySelector<HTMLButtonElement>(".error-500__reload")?.addEventListener("click", () => {
-			window.location.reload();
-		});
+	document.querySelector<HTMLButtonElement>(".error-500__reload")?.addEventListener("click", () => {
+		window.location.reload();
 	});
 </script>

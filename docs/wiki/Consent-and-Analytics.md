@@ -24,9 +24,9 @@ sequenceDiagram
     Visitor->>Head: the page arrives
     Head->>Head: the theme, then the consent default
     Note over Head: analytics_storage is granted only when cc_cookie lists analytics, and denied otherwise
-    Head->>Google: both load, async, on every page
+    Head->>Google: the same script appends both, async, once the page is shown
     Google->>Google: start under the consent default
-    Visitor->>Banner: astro:page-load runs initCookieConsent
+    Visitor->>Banner: each page's script runs initCookieConsent
     alt no stored answer, or one from an older revision
         Banner-->>Visitor: the banner asks
         Visitor->>Banner: accept all, reject all, or choose per service
@@ -42,12 +42,12 @@ sequenceDiagram
     Banner->>Prefs: onChange, the same update
 ```
 
-1. **The consent default runs before Google does.** An inline script in `<head>`, built by `consentBootstrapScript`, reads the `cc_cookie` the banner writes and calls `gtag('consent', 'default', …)` with `analytics_storage` granted only when the stored answer lists the `analytics` category. It sits above the two Google scripts on purpose: Consent Mode applies the default it finds when Google's code starts, so a reorder, or this script dropped as dead weight, would collect first and ask later, with nothing visibly broken.
-2. **Google's scripts load on every page.** `gtag.js` and `gtm.js` load `async` whatever the answer, and store nothing until consent is granted.
-3. **The banner runs on every `astro:page-load`**, the first load and every navigation the `ClientRouter` makes, from the bundled script of the *Manage cookies* button in the footer. With no stored answer it shows the banner, bottom left; with one, it stays closed.
+1. **The consent default runs before Google does.** An inline script in `<head>`, built by `consentBootstrapScript`, reads the `cc_cookie` the banner writes and calls `gtag('consent', 'default', …)` with `analytics_storage` granted only when the stored answer lists the `analytics` category. The same script appends the two Google scripts after it, on purpose: Consent Mode applies the default it finds when Google's code starts, so a reorder, or this script dropped as dead weight, would collect first and ask later, with nothing visibly broken.
+2. **Google's scripts load on every page the reader is shown.** The bootstrap appends `gtag.js` and `gtm.js`, `async`, whatever the answer, and they store nothing until consent is granted. A page the browser prerenders because the reader hovered a link to it ([ADR 0025](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0025-navigation-is-the-browsers-own-with-cross-document-view-transitions.md)) waits for `prerenderingchange` before it configures the analytics id or appends either script, and the Better Stack tag and the carbon badge wait the same way, so a page the reader never opens counts no visit.
+3. **The banner runs on every page**, from the bundled script of the *Manage cookies* button in the footer, which every page loads. With no stored answer it shows the banner, bottom left; with one, it stays closed.
 4. **`onConsent` and `onChange` both call `updatePreferences`.** `onConsent` fires when the visitor first answers and again on every page load that finds an answer stored, which is why a returning visitor who accepted gets the Better Stack tag on every visit; `onFirstConsent` would fire once and leave them without it. `onChange` covers a visitor who changes their mind from *Manage cookies*.
 5. **`updatePreferences` tells Google and decides about Better Stack.** It pushes a `consent update` with the category's answer, and when the `betterstack` service is accepted it asks `getTelemetry()` to append Better Stack's tag, which loads at most once per page however often it is asked, and only when the build had a `BETTER_STACK_TRACKING_TOKEN`.
-6. **Rejecting clears what was stored.** The category auto-clears Google's `_ga` and `_gid` cookies and Better Stack's `bs_` ones, and the next `consent update` tells Google to store nothing. A Better Stack tag already running stays until the next full page load, since a `ClientRouter` navigation keeps the document, and is not appended again.
+6. **Rejecting clears what was stored.** The category auto-clears Google's `_ga` and `_gid` cookies and Better Stack's `bs_` ones, and the next `consent update` tells Google to store nothing. A Better Stack tag already running stays until the reader leaves the page, and the next page does not append it.
 
 ---
 
@@ -68,4 +68,4 @@ sequenceDiagram
 
 **Adding or removing a service is a `CONSENT_REVISION` bump.** The banner stores the services a visitor accepted, so one who accepted before a service existed carries a cookie that does not list it: `acceptedService` answers false for them forever and the banner never asks again. Raising `CONSENT_REVISION` in `consentGate.ts` in the same change re-prompts every visitor once, which is the only way a new service reaches people who already answered.
 
-**Changing the inline consent script changes the policy.** `script-src` names every inline script by its sha256 and allows no `'unsafe-inline'`, and the digests are computed from the text each script is rendered from, with the analytics id baked in, in the same build. A change to the script, to a constant it reads, or to `GOOGLE_ANALYTICS_ID` moves its digest with it, and `docs/built-output.test.ts` fails a deploy whose prerendered pages carry an inline script the policy does not name.
+**Changing the inline consent script changes the policy.** `script-src` names every inline script by its sha256 and allows no `'unsafe-inline'`, and the digests are computed from the text each script is rendered from, with the analytics and Tag Manager ids baked in, in the same build. A change to the script, to a constant it reads, or to `GOOGLE_ANALYTICS_ID` or `GOOGLE_TAG_MANAGER_ID` moves its digest with it, and `docs/built-output.test.ts` fails a deploy whose prerendered pages carry an inline script the policy does not name.

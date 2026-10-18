@@ -161,17 +161,3 @@ describe("the theme runtime on a page without the toggle", () => {
 		expect(toggledClass()).toBe(false);
 	});
 });
-
-describe("a view transition", () => {
-	it("paints the document being swapped in, which the toggle's own listeners cannot reach", async () => {
-		const input = renderToggle();
-		await visit();
-		choose({ input, theme: Theme.DARK });
-
-		const newDocument = document.implementation.createHTMLDocument();
-		document.dispatchEvent(Object.assign(new Event("astro:before-swap"), { newDocument }) as unknown as Event);
-
-		expect(newDocument.documentElement.getAttribute(THEME_ATTRIBUTE)).toBe(Theme.DARK);
-		expect(newDocument.documentElement.style.colorScheme).toBe(Theme.DARK);
-	});
-});

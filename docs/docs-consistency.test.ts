@@ -289,7 +289,7 @@ const CITED_CONTAINER_QUERY = /@container ([a-z-]+) \(width <= \d+px\)/;
 const PLACEHOLDER_MODULE = "src/infrastructure/images/imagePlaceholder/imagePlaceholder.ts";
 const PLACEHOLDER_FETCH = /\bfetch\(|getImagePlaceholders|withImagePlaceholders/;
 const BUNDLED_SCRIPT = /^\s*<script\s*>/im;
-const PAGE_LOAD_LISTENER = /addEventListener\(\s*["']astro:page-load["']/;
+const ASTRO_EVENT_LISTENER = /addEventListener\(\s*["']astro:/;
 const THEME_MODULE = "src/ui/modules/core/components/themeToggle/utils/theme.ts";
 const THEME_PREFERENCE_MODULE = "src/ui/modules/core/components/themeToggle/utils/preference.ts";
 const THEME_KEY_DECLARATION = /export const THEME_STORAGE_KEY = "([\w-]+)" as const;/;
@@ -1911,14 +1911,26 @@ describe("observability", () => {
 			"named in the policy by its digest",
 		);
 		expect(hashing).toContain("THEME_BOOTSTRAP_SCRIPT");
-		expect(hashing).toContain("consentBootstrapScript(analyticsId)");
-		expect(read("astro.config.ts")).toContain("inlineScriptHashes(environment.GOOGLE_ANALYTICS_ID)");
-		expect(read("src/middleware.ts")).toContain("inlineScriptHashes(GOOGLE_ANALYTICS_ID)");
+		expect(hashing).toContain("FEATURED_IMAGE_TRANSITION_SCRIPT");
+		expect(hashing).toContain("consentBootstrapScript(googleTagIds)");
+		expect(hashing).toContain("SPECULATION_RULES");
+		expect(read("astro.config.ts")).toContain("analyticsId: environment.GOOGLE_ANALYTICS_ID");
+		expect(read("astro.config.ts")).toContain("tagManagerId: environment.GOOGLE_TAG_MANAGER_ID");
+		expect(read("src/middleware.ts")).toContain(
+			"inlineScriptHashes({ analyticsId: GOOGLE_ANALYTICS_ID, tagManagerId: GOOGLE_TAG_MANAGER_ID })",
+		);
 		expect([
 			...'import load from "astro/runtime/client/load.prebuilt.js";'.matchAll(DIRECTIVE_SCRIPT_IMPORT),
 		]).toHaveLength(1);
 		expect(directives.length).toBeGreaterThan(0);
 		expect(directives.sort()).toEqual([...HYDRATION_DIRECTIVES_ALLOWED].sort());
+	});
+
+	it("never inlines a bundled script, which no digest names and the policy would block with nothing failing", () => {
+		expect(AGENTS_MD).toContain("A bundled `<script>` is never inlined");
+		expect(read("astro.config.ts")).toContain(
+			'assetsInlineLimit: (file) => (file.endsWith(".js") ? false : undefined)',
+		);
 	});
 
 	it("lets the tag through the CSP it would otherwise be blocked by", () => {
@@ -3244,14 +3256,16 @@ describe("modules guide: mixes, islands and data access", () => {
 		expect(templates.filter((file) => DECODED_EMAIL_ADDRESS.test(read(file)))).toEqual([]);
 	});
 
-	it("initialises every bundled script on astro:page-load, so a swapped-in body is still wired", () => {
-		expect(guide).toContain("once per session");
+	it("initialises every bundled script as it loads, since no router fires an astro: event for it to wait on", () => {
+		expect(guide).toContain("a bundled script runs once per page");
 
 		const templates = production([...walk("src/ui"), ...walk("src/pages")]).filter((file) => file.endsWith(".astro"));
 		const bundled = templates.filter((file) => BUNDLED_SCRIPT.test(read(file)));
 
+		expect(ASTRO_EVENT_LISTENER.test('document.addEventListener("astro:page-load", () => init());')).toBe(true);
 		expect(bundled.length).toBeGreaterThan(0);
-		expect(bundled.filter((file) => !PAGE_LOAD_LISTENER.test(read(file)))).toEqual([]);
+		expect(SOURCE_FILES.filter((file) => ASTRO_EVENT_LISTENER.test(read(file)))).toEqual([]);
+		expect(read("src/ui/modules/core/components/head/Head.astro")).not.toContain("ClientRouter");
 	});
 
 	it("cites a container query that matches a container base.css declares and a stylesheet uses", () => {
@@ -3682,11 +3696,11 @@ describe("conventions", () => {
 
 		expect(adr).toContain("stays first");
 		expect(gate).toContain("gtag('consent', 'default'");
-		expect(head.indexOf("consentBootstrapScript")).toBeGreaterThan(-1);
-		expect(head.indexOf("set:html={consentBootstrapScript(")).toBeLessThan(
-			head.indexOf("googletagmanager.com/gtag/js"),
-		);
-		expect(head.indexOf("set:html={consentBootstrapScript(")).toBeLessThan(head.indexOf("googletagmanager.com/gtm.js"));
+		expect(head.indexOf("set:html={consentBootstrapScript(")).toBeGreaterThan(-1);
+		expect(head).not.toContain("googletagmanager.com/gtag/js");
+		expect(head).not.toContain("googletagmanager.com/gtm.js");
+		expect(gate.indexOf("gtag('consent', 'default'")).toBeGreaterThan(-1);
+		expect(gate.indexOf("gtag('consent', 'default'")).toBeLessThan(gate.indexOf("document.head.append(script)"));
 	});
 });
 

@@ -1,12 +1,12 @@
-import { GOOGLE_ANALYTICS_ID } from "astro:env/client";
-import { IMAGE_ROUTE } from "@const/contentCache";
+import { GOOGLE_ANALYTICS_ID, GOOGLE_TAG_MANAGER_ID } from "astro:env/client";
+import { CONTENT_ROUTES, IMAGE_ROUTE } from "@const/contentCache";
 import { securityHeaders } from "@const/securityHeaders";
 import { inlineScriptHashes } from "@modules/core/utils/inlineScripts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { onRequest } from "./middleware";
 
 const HTTPS_UPGRADE_DIRECTIVE = "upgrade-insecure-requests";
-const HASHES = inlineScriptHashes(GOOGLE_ANALYTICS_ID);
+const HASHES = inlineScriptHashes({ analyticsId: GOOGLE_ANALYTICS_ID, tagManagerId: GOOGLE_TAG_MANAGER_ID });
 
 const respond = (): Promise<Response> =>
 	Promise.resolve(new Response("", { headers: { "Content-Type": "text/html" } })) as ReturnType<
@@ -50,6 +50,21 @@ const cacheCallsOf = async ({ path, status }: CacheCallsOfParams): Promise<unkno
 	);
 
 	return calls;
+};
+
+interface BrowserCacheOfParams {
+	routePattern: string;
+	status: number;
+}
+
+const browserCacheOf = async ({ routePattern, status }: BrowserCacheOfParams): Promise<string | null> => {
+	const { onRequest } = await import("./middleware");
+	const response = await onRequest(
+		{ url: new URL("/", SITE), routePattern } as Parameters<typeof onRequest>[0],
+		() => Promise.resolve(new Response(null, { status })) as ReturnType<Parameters<typeof onRequest>[1]>,
+	);
+
+	return (response as Response).headers.get("Cache-Control");
 };
 
 const scriptSources = (headers: Headers): string[] =>
@@ -131,6 +146,21 @@ describe("onRequest", () => {
 	it("leaves the route cache of every other path alone, whatever it answers", async () => {
 		expect(await cacheCallsOf({ path: "/articles", status: 500 })).toEqual([]);
 		expect(await cacheCallsOf({ path: `${IMAGE_ROUTE}s`, status: 404 })).toEqual([]);
+	});
+
+	it("keeps a content page a minute in the browser, so the click takes the page its hover prefetched instead of downloading it again", async () => {
+		expect(CONTENT_ROUTES.length).toBeGreaterThan(0);
+
+		for (const routePattern of CONTENT_ROUTES) {
+			expect(`${routePattern}: ${await browserCacheOf({ routePattern, status: 200 })}`).toBe(
+				`${routePattern}: max-age=60`,
+			);
+		}
+	});
+
+	it("gives the browser no lifetime for a route the Workers cache does not hold, nor for a content route's answer that is not a 200", async () => {
+		expect(await browserCacheOf({ routePattern: "/contact", status: 200 })).toBeNull();
+		expect(await browserCacheOf({ routePattern: "/articles/[...slug]", status: 404 })).toBeNull();
 	});
 
 	it("still sets the site's headers on a page whose path merely starts with the same letters", async () => {

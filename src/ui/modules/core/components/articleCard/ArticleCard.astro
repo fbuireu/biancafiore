@@ -6,7 +6,11 @@ import clsx from "clsx";
 import type { ArticleEntry } from "../../utils/entries";
 import BlurImage from "../blurImage/BlurImage.astro";
 import { featuredImageTransitionName } from "../blurImage/utils/transition";
-import { ARTICLE_CARD_LINK_CLASS } from "./const";
+import {
+	ARTICLE_CARD_FEATURED_IMAGE_CLASS,
+	ARTICLE_CARD_LINK_CLASS,
+	ARTICLE_CARD_TRANSITION_NAME_ATTRIBUTE,
+} from "./const";
 import { toArticleCardContent } from "./utils/card";
 import "./article-card.css";
 
@@ -19,6 +23,7 @@ const { article, isLandscape = false } = Astro.props;
 
 const { slug, title, description, publishDateISO, readingTime, author, featuredImage, visibleTags, remainingTags } =
 	toArticleCardContent(article);
+const transitionName = { [ARTICLE_CARD_TRANSITION_NAME_ATTRIBUTE]: featuredImageTransitionName(slug) };
 ---
 <a class={ARTICLE_CARD_LINK_CLASS} href={articleHref(slug)} aria-labelledby={`article-title-${slug}`}>{' '}</a>
 <article
@@ -27,10 +32,10 @@ const { slug, title, description, publishDateISO, readingTime, author, featuredI
   {featuredImage && (
       <div class="article-card__media">
           <BlurImage
-              class="article-card__featured-image"
+              class={ARTICLE_CARD_FEATURED_IMAGE_CLASS}
               image={featuredImage}
               alt={title}
-              transitionName={featuredImageTransitionName(slug)}
+              {...transitionName}
           />
       </div>
   )}
