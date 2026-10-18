@@ -29,9 +29,6 @@ describe("createTestimonials", () => {
 				url: `${MEDIA_FILE_PATH}ada.webp`,
 				details: { width: 128, height: 128 },
 				formats: { avif: false, webp: true },
-				src: expect.any(String),
-				srcset: expect.any(String),
-				shareCrops: expect.any(Array),
 			},
 		});
 	});

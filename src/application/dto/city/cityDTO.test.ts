@@ -102,7 +102,6 @@ describe("createCities passthrough fields", () => {
 				url: `${MEDIA_FILE_PATH}barcelona.webp`,
 				details: { width: 800, height: 600 },
 				formats: { avif: false, webp: true },
-				shareCrops: expect.any(Array),
 			},
 		});
 	});

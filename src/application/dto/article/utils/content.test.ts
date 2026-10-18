@@ -1,16 +1,11 @@
-import { IMAGE_CDN } from "@const/index";
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { BLURHASH, rawEntry } from "@tests/doubles/cmsEntries";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import type { PortableTextContent } from "../../shared/portableText";
 import type { ArticleFields, RawArticle } from "../types";
 import { prepareArticleContent } from "./content";
 
 const IMAGE_URL = `${MEDIA_FILE_PATH}hero.jpg`;
-
-afterEach(() => {
-	vi.unstubAllEnvs();
-});
 
 let key = 0;
 const nextKey = (): string => `k${key++}`;
@@ -253,7 +248,6 @@ describe("prepareArticleContent links", () => {
 
 interface PreparedImageBlock {
 	src: string;
-	srcset: string;
 	alt: string;
 	width?: number;
 	height?: number;
@@ -273,10 +267,9 @@ describe("prepareArticleContent images", () => {
 		expect(preparedImage()).toMatchObject({ width: 1200, height: 630 });
 	});
 
-	it("builds a srcset, so a narrow screen does not download the widest crop", () => {
-		vi.stubEnv("IMAGE_CDN", IMAGE_CDN.CLOUDFLARE);
-
-		expect(preparedImage().srcset).toContain(" 400w");
+	it("hands the page the media's own path and no srcset, since the page asks Astro's image service for the renditions", () => {
+		expect(preparedImage().src).toBe(IMAGE_URL);
+		expect(preparedImage()).not.toHaveProperty("srcset");
 	});
 
 	it("takes the alt text the editor wrote, and falls back to the Article's own title", () => {
@@ -313,13 +306,11 @@ describe("prepareArticleContent images", () => {
 		expect(preparedImage({ alignment: "toString" })).not.toHaveProperty("layout");
 	});
 
-	it("keeps media carrying no dimensions, asking the CDN for a sensible width", () => {
-		vi.stubEnv("IMAGE_CDN", IMAGE_CDN.CLOUDFLARE);
-
+	it("keeps media carrying no dimensions, as its own path, which the page then serves untransformed", () => {
 		const prepared = preparedImage({ width: undefined, height: undefined });
 
 		expect(prepared).not.toHaveProperty("width");
-		expect(prepared.src).toContain("width=768");
+		expect(prepared.src).toBe(IMAGE_URL);
 	});
 
 	it("drops an image whose dimensions are not numbers, rather than handing them to the markup", () => {
@@ -351,7 +342,7 @@ describe("prepareArticleContent split blocks", () => {
 			heading: "Heading",
 			text: "Text",
 			alt: "Described",
-			src: expect.stringContaining("hero.jpg"),
+			src: IMAGE_URL,
 		});
 	});
 

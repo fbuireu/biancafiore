@@ -2,8 +2,6 @@ import { z } from "@shared/utils/zod";
 
 export const imageSchema = z.object({
 	url: z.string(),
-	src: z.string(),
-	srcset: z.string(),
 	details: z.object({
 		width: z.number(),
 		height: z.number(),
@@ -13,7 +11,6 @@ export const imageSchema = z.object({
 		webp: z.boolean(),
 	}),
 	placeholder: z.string().optional(),
-	shareCrops: z.array(z.string()).default([]),
 });
 
 export type ImageDTO = z.infer<typeof imageSchema>;

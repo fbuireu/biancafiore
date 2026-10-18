@@ -1,6 +1,7 @@
 ---
 import type { RemoteImageProps } from "astro:assets";
 import { Image } from "astro:assets";
+import { absoluteUrl } from "@const/routes";
 import type { Except } from "@const/types";
 import type { ImageDTO } from "@domain/shared/image";
 import "./blur-image.css";
@@ -10,15 +11,14 @@ interface OwnProps {
 	transitionName?: string;
 }
 
-type Props = Except<RemoteImageProps, "src" | "srcset" | "widths" | "width" | "height"> & OwnProps;
+type Props = Except<RemoteImageProps, "src" | "width" | "height"> & OwnProps;
 
 const { image, transitionName, ...rest } = Astro.props;
 const lqip = image.placeholder ? `--lqip: url("${image.placeholder}")` : undefined;
 ---
 <div class="blur-image" style={lqip}>
     <Image
-        src={image.src}
-        srcset={image.srcset}
+        src={absoluteUrl(image.url)}
         width={image.details.width}
         height={image.details.height}
         transition:name={transitionName}

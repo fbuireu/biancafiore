@@ -2,11 +2,15 @@ import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { NOINDEX_ROUTES } from "@const/noindexRoutes";
+import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { COOKIE_CONSENT_BUTTON_CLASS } from "@modules/core/components/cookieConsent/const";
 import { type Document, Window } from "happy-dom";
 import { afterAll, describe, expect, it } from "vitest";
 
 const CLIENT = "dist/client";
+const SERVER = "dist/server";
+const SERVER_CHUNKS = join(SERVER, "chunks");
+const IMAGE_CONFIG = /^var imageConfig = (\{[\s\S]*?^\});$/m;
 const HEADING_TAG = /<h([1-6])[^>]*>/g;
 const CONTENT_PAGES = ["", "about", "articles", "contact", "projects", "tags"];
 const PRERENDERED_PAGES = ["privacy-policy", "terms-and-conditions"];
@@ -23,7 +27,32 @@ const URL_ATTRIBUTES = new Set(["href", "src", "action", "formaction"]);
 const JAVASCRIPT_URL = /^\s*javascript:/i;
 const HEADER_LINE_LIMIT = 2000;
 
+interface ImageEntrypoint {
+	entrypoint: string;
+}
+
+interface RemotePattern {
+	hostname?: string;
+	pathname?: string;
+}
+
+interface BuiltImageConfig {
+	endpoint: ImageEntrypoint & { route: string };
+	service: ImageEntrypoint;
+	remotePatterns: RemotePattern[];
+}
+
+interface DeployedConfig {
+	images?: { binding: string };
+}
+
 const read = (path: string): string => readFileSync(path, "utf-8");
+
+const builtImageConfigs = (): BuiltImageConfig[] =>
+	readdirSync(SERVER_CHUNKS)
+		.filter((file) => file.endsWith(".mjs"))
+		.flatMap((file) => IMAGE_CONFIG.exec(read(join(SERVER_CHUNKS, file)))?.[1] ?? [])
+		.map((config) => JSON.parse(config) as BuiltImageConfig);
 
 const browserWindow = new Window({
 	settings: { disableJavaScriptEvaluation: true, disableJavaScriptFileLoading: true, disableCSSFileLoading: true },
@@ -171,6 +200,23 @@ describe("the built output", () => {
 			expect(`${route}: ${JSON.stringify(skips)}`).toBe(`${route}: []`);
 			expect(`${route}: ${levels[0]}`).toBe(`${route}: 1`);
 		}
+	});
+
+	it("answers /_image with EmDash's endpoint, which reads the media from R2 and transforms it through the Images binding the deployed config declares", () => {
+		const configs = builtImageConfigs();
+		const deployed = JSON.parse(read(join(SERVER, "wrangler.json"))) as DeployedConfig;
+
+		expect(configs.length).toBeGreaterThan(0);
+
+		for (const { endpoint, service, remotePatterns } of configs) {
+			expect(endpoint).toEqual({ entrypoint: "@emdash-cms/cloudflare/image-endpoint", route: "/_image" });
+			expect(service.entrypoint).toBe("@astrojs/cloudflare/image-service-workerd");
+			expect(
+				remotePatterns.filter(({ hostname, pathname }) => hostname && pathname === `${MEDIA_FILE_PATH}**`),
+			).not.toEqual([]);
+		}
+
+		expect(deployed.images).toEqual({ binding: "IMAGES" });
 	});
 
 	it("serves no script origin the site does not use", () => {

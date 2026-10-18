@@ -1,0 +1,37 @@
+# 24. Images render through EmDash's image endpoint and the Images binding
+
+Date: 2026-10-18
+
+## Status
+
+Accepted. Amends [ADR 0001](./0001-astro-ssr-on-cloudflare-workers.md), whose image service this replaces, and [ADR 0023](./0023-portable-text-renders-in-the-ui-through-emdash.md), whose image blocks no longer carry a transform URL.
+
+## Context
+
+Every image an editor uploads lives in R2 and is served by EmDash's media route, `/_emdash/api/media/file/…`, on the Worker's own origin ([ADR 0021](./0021-emdash-self-hosted-cms.md)). [ADR 0001](./0001-astro-ssr-on-cloudflare-workers.md) chose the host partly for image resizing that needed no third service, through `imageService: "cloudflare"`: the adapter wrote zone URL transformations, `/cdn-cgi/image/…`. That service rewrites only an imported image or a remote one `image.domains` allows, and passes any other source through. While the media lived on Contentful's CDN, `image.domains` named its host and every `<Image>` was transformed; once the media moved into the Worker, the featured images, the article cards, the Projects, the Cities and the Testimonials were served at full size in production, with nothing failing. A hand-written `getOptimizedImageUrl` built `/cdn-cgi/image` URLs for the body images and the share crops, and was then made to build every `BlurImage`'s too.
+
+Zone transformations had two limits of their own here. They exist only on a zone, so a preview on `workers.dev` and the dev server served the originals; and the zone fetches the source over HTTP, which a preview behind Cloudflare Access refuses.
+
+EmDash ships its own answer. Its Astro integration replaces Astro's `/_image` endpoint with `@emdash-cms/cloudflare/image-endpoint` whenever the endpoint is one it can delegate to, the adapter's `image-transform-endpoint` among them. For an `href` under the media route, that endpoint reads the bytes straight from the storage binding and resizes them with the Cloudflare `IMAGES` binding, at quality 85 for a lossy format unless asked otherwise, and it hands every other image to the adapter's own endpoint. EmDash's components make the media path absolute against the site's origin, and the integration registers that origin's media path as a remote pattern, because Astro builds a transform URL only for an absolute source it is allowed to transform. Since 2026-07 Cloudflare bills the binding per unique transformation, as it bills URL transformations.
+
+## Decision
+
+**The adapter transforms with the Images binding on every stage, and EmDash's endpoint serves the media.**
+
+- `astro.config.ts` sets `imageService: "cloudflare-binding"` for every build. It is the adapter's default, and stating it keeps a change of default from changing what production serves.
+- `wrangler.toml` declares `[images] binding = "IMAGES"` at the top level and in each `[env.*]` block, because wrangler does not inherit a binding into an environment.
+- A component hands Astro the media path made absolute with `absoluteUrl` from `@const/routes`: `BlurImage` through `<Image>`, `ArticleImage` through `<Image>` when the block carries the image's dimensions, and the Article page's structured data through `getImage`, in `shareImage`. Astro then writes every `src`, `srcset` and `sizes` itself, as `/_image?href=…` URLs, from the configured `layout: "constrained"`.
+- `astro.config.ts` declares `SITE_URL`'s host under `MEDIA_FILE_PATH` in `image.remotePatterns`. EmDash registers the same pattern from the process environment while the config loads, which a build that keeps `SITE_URL` in `.env` does not have yet, since Astro copies `.env` into the process environment only once the build starts; declaring it from the `loadEnv` the config already reads makes the pattern and `absoluteUrl`'s origin one value.
+- No module builds an image URL by hand. `getOptimizedImageUrl`, `getOptimizedSrcset` and the `IMAGE_CDN` switch are gone, and the image a DTO hands the page is its media path, its dimensions and its placeholder.
+
+Keeping zone URL transformations was rejected: they need the source reachable on the production zone, cannot resize a preview's media at all, and do over HTTP what EmDash's endpoint does in the Worker.
+
+## Consequences
+
+- **One path serves every stage.** The endpoint matches the media by its path and never fetches the `href`'s host, so a preview on its own `workers.dev` address, behind Access, resizes from the bucket it is bound to, and `pnpm dev` resizes through Miniflare's local binding, which uses sharp. An imported image, such as the portrait, goes on to the adapter's endpoint, which reads it from `ASSETS`.
+- **Each new visitor reaches the Worker for every image.** The endpoint answers `public, max-age=0, must-revalidate` with an ETag that names the transform, because an editor can replace a file under the same key, and the adapter marks a response no route rule covers `Cloudflare-CDN-Cache-Control: no-store`, so the Workers cache stores none of them. A browser that already holds an image revalidates it and gets a 304 without a transform; a new visitor, or a width it has not fetched, costs a transform in the Worker. The bill is per unique transformation, as before; the Worker's requests and CPU for every image are the new cost.
+- **The endpoint cannot crop.** It reads `w`, `h`, `f` and `q`, and hands the binding a width and a height but no `fit`, so a box of another ratio scales the image into it rather than covering it. The Article's structured-data image is therefore one rendition at the image's own ratio, `SHARE_IMAGE_WIDTH` wide or the image's own width if narrower, and the three cropped ratios it used to list are gone. Open Graph and Twitter keep the original file with its true dimensions.
+- **Astro offers candidates up to twice the declared width.** It cannot know a remote source's size, so a `constrained` image's `srcset` reaches twice the width it is rendered at, which here is the original's. The local binding answers a wider request at the original size; the production binding's default `fit` is not something this repository pins. Each candidate is a unique transformation, so a placement that knows its sizes passes `widths`, as the Article's featured image does.
+- **An image without dimensions is served as it is.** Astro needs both dimensions to transform a remote source, and a split block's media picker stores the path alone, so that image, and a body image block that carries none, is the original, as it is in EmDash's own components.
+- **The binding is an account dependency.** A transform the binding refuses answers 500 for that image, logged as `[emdash] image transform failed`, while a Worker with no `IMAGES` binding at all streams the originals.
+- The rule is held by [`docs/docs-consistency.test.ts`](../docs-consistency.test.ts): the binding mode, the binding in every environment, the absolute media source in each component, the remote pattern, EmDash's endpoint taking over Astro's, and no `/cdn-cgi/image` anywhere in the code; [`docs/built-output.test.ts`](../built-output.test.ts) holds, before each deploy, that the build answers `/_image` with EmDash's endpoint, allows the media path, and binds `IMAGES` in the config it deploys. The *Images* gotcha in [`AGENTS.md`](../../AGENTS.md) carries it for an implementer.

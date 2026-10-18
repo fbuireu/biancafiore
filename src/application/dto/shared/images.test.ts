@@ -1,15 +1,10 @@
-import { IMAGE_CDN } from "@const/index";
 import { imageSchema } from "@domain/shared/image";
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 import { BLURHASH, rawImage } from "@tests/doubles/cmsEntries";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { createImage } from "./images";
 
 const HERO = `${MEDIA_FILE_PATH}hero.jpg`;
-
-afterEach(() => {
-	vi.unstubAllEnvs();
-});
 
 describe("createImage", () => {
 	it("carries the same-origin path the CMS client resolved, which the Worker that renders the page also serves", () => {
@@ -30,54 +25,8 @@ describe("createImage", () => {
 		expect(createImage(rawImage({ mimeType: "image/png" })).formats).toStrictEqual({ avif: false, webp: false });
 	});
 
-	it("carries the share crops a structured-data payload needs, as transform paths the page makes absolute", () => {
-		vi.stubEnv("IMAGE_CDN", IMAGE_CDN.CLOUDFLARE);
-
-		expect(createImage(rawImage()).shareCrops).toStrictEqual([
-			"/cdn-cgi/image/format=auto,quality=85,width=1200,height=675,fit=cover/_emdash/api/media/file/hero.jpg",
-			"/cdn-cgi/image/format=auto,quality=85,width=1200,height=900,fit=cover/_emdash/api/media/file/hero.jpg",
-			"/cdn-cgi/image/format=auto,quality=85,width=1200,height=1200,fit=cover/_emdash/api/media/file/hero.jpg",
-		]);
-	});
-
-	it("renders the image through the CDN in production at its own size, re-encoded in the format the browser accepts", () => {
-		vi.stubEnv("IMAGE_CDN", IMAGE_CDN.CLOUDFLARE);
-
-		expect(createImage(rawImage()).src).toBe("/cdn-cgi/image/format=auto,quality=85/_emdash/api/media/file/hero.jpg");
-	});
-
-	it("offers a transformed candidate at every breakpoint narrower than the image, and at the image's own width", () => {
-		vi.stubEnv("IMAGE_CDN", IMAGE_CDN.CLOUDFLARE);
-
-		expect(createImage(rawImage({ width: 1300, height: 650 })).srcset).toBe(
-			[
-				"/cdn-cgi/image/format=auto,quality=85,width=640/_emdash/api/media/file/hero.jpg 640w",
-				"/cdn-cgi/image/format=auto,quality=85,width=750/_emdash/api/media/file/hero.jpg 750w",
-				"/cdn-cgi/image/format=auto,quality=85,width=828/_emdash/api/media/file/hero.jpg 828w",
-				"/cdn-cgi/image/format=auto,quality=85,width=1080/_emdash/api/media/file/hero.jpg 1080w",
-				"/cdn-cgi/image/format=auto,quality=85,width=1280/_emdash/api/media/file/hero.jpg 1280w",
-				"/cdn-cgi/image/format=auto,quality=85,width=1300/_emdash/api/media/file/hero.jpg 1300w",
-			].join(", "),
-		);
-	});
-
-	it("never asks the CDN to upscale: an image narrower than every breakpoint is offered at its own width alone", () => {
-		vi.stubEnv("IMAGE_CDN", IMAGE_CDN.CLOUDFLARE);
-
-		expect(createImage(rawImage({ width: 480, height: 480 })).srcset).toBe(
-			"/cdn-cgi/image/format=auto,quality=85,width=480/_emdash/api/media/file/hero.jpg 480w",
-		);
-	});
-
-	it("serves the original as the src and every candidate without a CDN, since a preview and localhost sit on no zone", () => {
-		const { src, srcset } = createImage(rawImage({ width: 700, height: 350 }));
-
-		expect(src).toBe(HERO);
-		expect(srcset).toBe(`${HERO} 640w, ${HERO} 700w`);
-	});
-
-	it("shares the original three times without a CDN, rather than inventing crops nothing can serve", () => {
-		expect(createImage(rawImage()).shareCrops).toStrictEqual([HERO, HERO, HERO]);
+	it("builds no rendering URL of its own, since the page hands the path to Astro's image service, which EmDash's endpoint answers", () => {
+		expect(Object.keys(createImage(rawImage())).toSorted()).toStrictEqual(["details", "formats", "url"]);
 	});
 
 	it("inlines the blurhash EmDash stored on upload as the placeholder, so the page asks for nothing to blur it", () => {

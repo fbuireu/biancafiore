@@ -4,7 +4,7 @@ Date: 2026-07-26
 
 ## Status
 
-Accepted.
+Accepted. Amended 2026-10-18 by [ADR 0024](./0024-images-render-through-emdashs-endpoint-and-the-images-binding.md): images are resized by the Cloudflare `IMAGES` binding, through EmDash's image endpoint, on every stage, instead of by zone URL transformations in production.
 
 ## Context
 
@@ -12,7 +12,7 @@ The site is CMS-driven, so pages have to be rendered rather than committed. The 
 
 ## Decision
 
-Astro runs with `output: "server"` on the `@astrojs/cloudflare` adapter and ships to Cloudflare Workers (`wrangler deploy`), with `imageService: "cloudflare"` in production. The price accepted for it is that the code is bound to web-standard APIs instead of Node.
+Astro runs with `output: "server"` on the `@astrojs/cloudflare` adapter and ships to Cloudflare Workers (`wrangler deploy`), with the adapter's `imageService: "cloudflare-binding"` resizing images through the `IMAGES` binding on every stage ([ADR 0024](./0024-images-render-through-emdashs-endpoint-and-the-images-binding.md)). The price accepted for it is that the code is bound to web-standard APIs instead of Node.
 
 ## Consequences
 

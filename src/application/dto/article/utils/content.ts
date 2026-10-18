@@ -1,6 +1,5 @@
 import { type ArticleHeading, isTableOfContentsHeading } from "@domain/article";
 import type { PortableText } from "@domain/shared/portableText";
-import { getOptimizedImageUrl, getOptimizedSrcset } from "@infrastructure/images/imageOptimization";
 import { imagePlaceholder } from "@infrastructure/images/imagePlaceholder";
 import { slugify } from "@shared/utils/strings";
 import { z } from "@shared/utils/zod";
@@ -14,8 +13,6 @@ const IMAGE_LAYOUT = {
 } as const;
 const HEADING_STYLE = /^h([1-6])$/;
 const BLANK_ANCHOR = "section";
-const DEFAULT_DISPLAY_WIDTH = 768;
-const SRCSET_WIDTHS = [400, 768, 1024];
 const HEADING_TYPE = "articleHeading";
 const SPLIT_BLOCK_TYPE = "splitBlock";
 const LEGACY_VIDEO_TYPE = "videoEmbed";
@@ -114,21 +111,6 @@ function createAnchors(): (text: string) => string {
 const plainTextOf = (children: unknown[]): string =>
 	children.map((child) => (spanSchema.validate(child) ? child.text : "")).join("");
 
-interface ResponsiveSourceParams {
-	source: string;
-	width?: number;
-}
-
-interface ResponsiveSource {
-	src: string;
-	srcset: string;
-}
-
-const responsiveSource = ({ source, width }: ResponsiveSourceParams): ResponsiveSource => ({
-	src: getOptimizedImageUrl({ source, options: { width: width ?? DEFAULT_DISPLAY_WIDTH, format: "webp" } }),
-	srcset: getOptimizedSrcset({ source, widths: SRCSET_WIDTHS, options: { format: "webp" } }),
-});
-
 interface PrepareImageParams {
 	node: PortableTextNode;
 	title: string;
@@ -150,7 +132,7 @@ function prepareImage({ node, title }: PrepareImageParams): PortableTextNode[] {
 		{
 			_type: "image",
 			_key,
-			...responsiveSource({ source: asset.url, width }),
+			src: asset.url,
 			alt: alt || title,
 			...(width && { width }),
 			...(height && { height }),
@@ -172,7 +154,7 @@ function prepareSplitBlock(node: PortableTextNode): PortableTextNode[] {
 		{
 			_type: SPLIT_BLOCK_TYPE,
 			_key,
-			...responsiveSource({ source: image }),
+			src: image,
 			alt: alt ?? "",
 			...(heading && { heading }),
 			...(text && { text }),

@@ -1,6 +1,6 @@
 # src/infrastructure
 
-Everything that talks to the outside world. The clients and the contact steps are Effect programs (ADR 0004); `images/` and `integrations/` are plain functions, the first called by the DTOs on every request that renders an image and the second run at build time.
+Everything that talks to the outside world. The clients and the contact steps are Effect programs (ADR 0004); `images/` and `integrations/` are plain functions, the first called by the DTOs on every request that renders a blurred image and the second run at build time.
 
 ## Client shape
 
@@ -70,6 +70,6 @@ Three files: `logger.ts` is **byte for byte what contribKit and forever-pto carr
 
 ## Other subfolders
 
-- `images/`: `imageOptimization` and `imagePlaceholder`, both pure. `getOptimizedImageUrl` builds a `/cdn-cgi/image` URL for a same-origin image in a production build and answers the source itself everywhere else, since only the zone transforms. `imagePlaceholder` decodes the `blurhash` EmDash computes on upload into a small inline bitmap (`PLACEHOLDER_WIDTH` pixels wide, the height following the image, capped at `MAX_PLACEHOLDER_HEIGHT`), so a blur placeholder costs no request at all. A format EmDash computes no blurhash for, AVIF among them, renders unblurred.
+- `images/`: `imagePlaceholder`, pure. No module here builds an image URL: a component hands Astro's image service the media path, and EmDash's endpoint answers it (ADR 0024). `imagePlaceholder` decodes the `blurhash` EmDash computes on upload into a small inline bitmap (`PLACEHOLDER_WIDTH` pixels wide, the height following the image, capped at `MAX_PLACEHOLDER_HEIGHT`), so a blur placeholder costs no request at all. A format EmDash computes no blurhash for, AVIF among them, renders unblurred.
 - `integrations/`: build-time Astro integrations (`generateStaticHeaders`, which writes the headers `astro.config.ts` hands it into the `_headers` file the prerendered pages are served with)
 - [`db/schema.ts`](./db/schema.ts): Drizzle tables; migrations live in `/drizzle`. [`db/client.ts`](./db/client.ts) imports the Workers-safe entry points only: `@libsql/client/web` + `drizzle-orm/libsql/web`.

@@ -23,6 +23,4 @@ export const CONTACT_DETAILS = {
 	ENCODED_EMAIL_BIANCA: btoa(BIANCA_EMAIL),
 } as const;
 
-export type { ImageCdn } from "./imageCdn";
-export { IMAGE_CDN } from "./imageCdn";
 export { DEFAULT_DATE_FORMAT, DEFAULT_LOCALE_STRING } from "./locale";

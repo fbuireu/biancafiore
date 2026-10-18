@@ -21,7 +21,7 @@ interface BuildBlogPostingSchemaParams {
 	path: string;
 	headline: string;
 	description: string;
-	imageCrops?: string[];
+	images?: string[];
 	datePublished: string;
 	dateModified?: string;
 	author: {
@@ -116,7 +116,7 @@ export function buildBlogPostingSchema({
 	path,
 	headline,
 	description,
-	imageCrops,
+	images,
 	datePublished,
 	dateModified,
 	author,
@@ -132,7 +132,7 @@ export function buildBlogPostingSchema({
 		headline,
 		description,
 		inLanguage: DEFAULT_LOCALE_STRING,
-		...(imageCrops?.length && { image: imageCrops.map((crop) => absoluteUrl(crop)) }),
+		...(images?.length && { image: images.map((image) => absoluteUrl(image)) }),
 		datePublished,
 		dateModified,
 		author: {

@@ -126,10 +126,17 @@ const HAND_PREFIXED_ASSET_URL = /`https:\$\{/;
 const RELATIVE_IMAGE_URL_SCHEMA = /url:\s*z\.string\(\)/;
 const MEDIA_RESOLUTION = /data: resolveMedia\(fields\)/;
 const BLUR_IMAGE = "src/ui/modules/core/components/blurImage/BlurImage.astro";
-const CDN_IMAGE_SRC = /\bsrc: getOptimizedImageUrl\(\{ source: src \}\)/;
-const CDN_IMAGE_SRCSET = /\bsrcset: getOptimizedSrcset\(\{ source: src, widths: srcsetWidths\(width\) \}\)/;
-const BLUR_IMAGE_SRC = /\ssrc=\{image\.src\}/;
-const BLUR_IMAGE_SRCSET = /\ssrcset=\{image\.srcset\}/;
+const ARTICLE_IMAGE = "src/ui/modules/article/components/articleImage/ArticleImage.astro";
+const ABSOLUTE_MEDIA_SOURCE = /<Image\s+src=\{absoluteUrl\((?:image\.url|src)\)\}/;
+const MEDIA_REMOTE_PATTERN =
+	/remotePatterns: \[\{ hostname: new URL\(environment\.SITE_URL\)\.hostname, pathname: `\$\{MEDIA_FILE_PATH\}\*\*` \}\]/;
+const ZONE_TRANSFORM_PATH = /\/cdn-cgi\/image/;
+const EMDASH_INTEGRATION = "node_modules/emdash/dist/astro/index.mjs";
+const EMDASH_IMAGE_ENDPOINT = "node_modules/@emdash-cms/cloudflare/dist/image-endpoint.mjs";
+const EMDASH_WRAPS_THE_TRANSFORM_ENDPOINT =
+	/"@astrojs\/cloudflare\/image-transform-endpoint"[\s\S]*?opts\.isCloudflare \? "@emdash-cms\/cloudflare\/image-endpoint"/;
+const EMDASH_READS_MEDIA_FROM_STORAGE =
+	/matchInternalMediaKey\(url\.searchParams\.get\("href"\)\)[\s\S]*?storage\.download\(key\)[\s\S]*?images\.input\(source\.body\)/;
 const CMS_LAYER_IMPORT = /import\s*\{[^}]*\bCmsClient\b[^}]*\}\s*from\s*"\.\/client"/;
 const LOADER_FETCH_ENTRIES = /await fetchEntries</;
 const CHROME_FETCH = /await fetch(?:SiteSettings\(\)|Menu\(name\))/;
@@ -288,7 +295,8 @@ const THEME_PREFERENCE_MODULE = "src/ui/modules/core/components/themeToggle/util
 const THEME_KEY_DECLARATION = /export const THEME_STORAGE_KEY = "([\w-]+)" as const;/;
 const THEME_PERSISTENCE = /localStorage\.setItem|store\.setItem/;
 const DECODED_EMAIL_ADDRESS = /ENCODED_EMAIL_BIANCA/;
-const IMAGE_SERVICE_SWITCH = /imageService: isProductionBuild \? "cloudflare" : "passthrough"/;
+const IMAGES_BINDING_MODE = /adapter: cloudflare\(\{ imageService: "cloudflare-binding" \}\)/;
+const IMAGES_BINDING_TABLES = ["images", "env.development.images", "env.production.images"];
 const HEAD_SAMPLING_RATE = /head_sampling_rate = ([\d.]+)/g;
 const EXPORT_DESTINATION = /destinations = \["([^"]+)"\]/g;
 const LOGGING_MODULE = "src/infrastructure/logging/logger.ts";
@@ -1685,9 +1693,20 @@ describe("gotchas", () => {
 		expect(WRANGLER_TOML).toContain('compatibility_flags = ["nodejs_compat"]');
 	});
 
-	it("switches the image service on CLOUDFLARE_ENV", () => {
-		expect(ASTRO_CONFIG).toContain('process.env.CLOUDFLARE_ENV === "production"');
-		expect(ASTRO_CONFIG).toMatch(IMAGE_SERVICE_SWITCH);
+	it("transforms images with the Images binding on every stage, which wrangler declares per environment because a binding is not inherited", () => {
+		expect(ASTRO_CONFIG).toMatch(IMAGES_BINDING_MODE);
+		expect(
+			IMAGES_BINDING_TABLES.filter((table) => !WRANGLER_TOML.includes(`[${table}]\nbinding = "IMAGES"\n`)),
+		).toEqual([]);
+		expect(AGENTS_MD).toContain('`imageService: "cloudflare-binding"`');
+	});
+
+	it("names no zone transformation URL anywhere in the code, since EmDash's endpoint and the binding do the resizing", () => {
+		const code = [...HAND_WRITTEN_CODE, "wrangler.toml"];
+
+		expect(code.length).toBeGreaterThan(1);
+		expect(ZONE_TRANSFORM_PATH.test(`${"/cdn-cgi"}/image/width=640/hero.jpg`)).toBe(true);
+		expect(code.filter((file) => ZONE_TRANSFORM_PATH.test(read(file)))).toEqual([]);
 	});
 
 	it("keeps the https upgrade out of the dev CSP, which WebKit obeys on localhost", () => {
@@ -2213,7 +2232,7 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(read("src/infrastructure/cms/client.ts")).toMatch(MEDIA_RESOLUTION);
 		expect(read("src/ui/modules/core/components/seo/utils/pageSeo.ts")).toContain("absoluteUrl(image.url)");
 		expect(read("src/ui/modules/core/utils/jsonLd.ts")).toContain("absoluteUrl(person.image)");
-		expect(read("src/ui/modules/core/utils/jsonLd.ts")).toContain("imageCrops.map((crop) => absoluteUrl(crop))");
+		expect(read("src/ui/modules/core/utils/jsonLd.ts")).toContain("images.map((image) => absoluteUrl(image))");
 
 		const readers = production(walk("src")).filter((file) => SOURCE_FILE.test(file));
 
@@ -2221,13 +2240,12 @@ describe("application guide: the anti-corruption boundary", () => {
 		expect(readers.filter((file) => HAND_PREFIXED_ASSET_URL.test(read(file)))).toEqual([]);
 	});
 
-	it("hands every BlurImage the CDN sources createImage builds, because Astro's image service passes a same-origin path through untransformed", () => {
-		expect(guide).toContain("the `src` and `srcset` a `BlurImage` renders");
-		expect(read("src/application/dto/shared/images.ts")).toMatch(CDN_IMAGE_SRC);
-		expect(read("src/application/dto/shared/images.ts")).toMatch(CDN_IMAGE_SRCSET);
-		expect(read(BLUR_IMAGE)).toMatch(BLUR_IMAGE_SRC);
-		expect(read(BLUR_IMAGE)).toMatch(BLUR_IMAGE_SRCSET);
-		expect(read(BLUR_IMAGE)).not.toContain("image.url");
+	it("hands Astro's image service each media path made absolute on SITE_URL, the origin the remote pattern authorizes, so EmDash's endpoint answers it", () => {
+		expect(guide).toContain("builds no rendering URL");
+		expect([BLUR_IMAGE, ARTICLE_IMAGE].filter((file) => !ABSOLUTE_MEDIA_SOURCE.test(read(file)))).toEqual([]);
+		expect(ASTRO_CONFIG).toMatch(MEDIA_REMOTE_PATTERN);
+		expect(read(EMDASH_INTEGRATION)).toMatch(EMDASH_WRAPS_THE_TRANSFORM_ENDPOINT);
+		expect(read(EMDASH_IMAGE_ENDPOINT)).toMatch(EMDASH_READS_MEDIA_FROM_STORAGE);
 	});
 
 	it("stops EmDash types at this layer: nothing downstream sees them", () => {
@@ -3431,15 +3449,21 @@ describe("conventions", () => {
 	});
 
 	it("types exactly the variables something reads through import.meta.env, and no others", () => {
+		const readers = [...walk("src"), "astro.config.ts"].filter(
+			(file) => SOURCE_FILE.test(file) || file === "astro.config.ts",
+		);
 		const consumed = new Set(
-			[...walk("src"), "astro.config.ts"]
-				.filter((file) => SOURCE_FILE.test(file) || file === "astro.config.ts")
+			readers
 				.flatMap((file) => [...read(file).matchAll(IMPORT_META_ENV_READ)].map(([, name]) => name))
 				.filter((name) => name !== "DEV"),
 		);
 		const declared = new Set([...read("src/env.d.ts").matchAll(ENV_DTS_DECLARATION)].map(([, name]) => name));
 
-		expect(consumed.size).toBeGreaterThan(0);
+		expect(readers.length).toBeGreaterThan(0);
+		expect(
+			[..."const value = import.meta.env.EXAMPLE;".matchAll(IMPORT_META_ENV_READ)].map(([, name]) => name),
+		).toEqual(["EXAMPLE"]);
+		expect([..."readonly EXAMPLE: string;".matchAll(ENV_DTS_DECLARATION)].map(([, name]) => name)).toEqual(["EXAMPLE"]);
 		expect([...declared].filter((name) => !consumed.has(name)).toSorted()).toEqual([]);
 		expect([...consumed].filter((name) => !declared.has(name)).toSorted()).toEqual([]);
 	});

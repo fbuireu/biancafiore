@@ -1,4 +1,5 @@
 ---
+import { getImage } from "astro:assets";
 import { PAGES_ROUTES } from "@const/index";
 import type { SeoMetadata } from "@const/types";
 import ArticleContent from "@modules/article/components/articleContent/ArticleContent.astro";
@@ -9,6 +10,7 @@ import ReadingProgress from "@modules/article/components/readingProgress/Reading
 import RepublishedBanner from "@modules/article/components/republishedBanner/RepublishedBanner.astro";
 import TableOfContents from "@modules/article/components/tableOfContents/TableOfContents.astro";
 import { ARTICLE_BODY_CLASS } from "@modules/article/const";
+import { shareImage } from "@modules/article/utils/shareImage";
 import BaseLayout from "@modules/core/components/baseLayout/BaseLayout.astro";
 import BlurImage from "@modules/core/components/blurImage/BlurImage.astro";
 import { featuredImageTransitionName } from "@modules/core/components/blurImage/utils/transition";
@@ -37,7 +39,7 @@ const blogPostingSchema = buildBlogPostingSchema({
 	path: Astro.url.pathname,
 	headline: article.data.title,
 	description: article.data.description,
-	imageCrops: (article.data.featuredImage ?? article.data.author.profileImage).shareCrops,
+	images: [await shareImage({ image: article.data.featuredImage ?? article.data.author.profileImage, getImage })],
 	datePublished: article.data.publishDateISO,
 	dateModified: article.data.updatedAt,
 	author: {
@@ -58,6 +60,7 @@ const blogPostingSchema = buildBlogPostingSchema({
           <section class="article__featured-image-wrapper">
               <BlurImage
                   image={article.data.featuredImage}
+                  widths={[640, 960, 1280, 1920]}
                   sizes="100vw"
                   alt={article.data.title}
                   loading="eager"

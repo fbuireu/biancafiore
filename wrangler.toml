@@ -43,6 +43,9 @@ database_id = "a7433220-eb9b-4121-9e6e-0b4f3097a768"
 binding = "MEDIA"
 bucket_name = "biancafiore-media-production"
 
+[images]
+binding = "IMAGES"
+
 [triggers]
 crons = ["* * * * *"]
 
@@ -80,6 +83,9 @@ database_id = "62582521-e769-4bba-8fc4-c914bfc53e7c"
 binding = "MEDIA"
 bucket_name = "biancafiore-media-development"
 
+[env.development.images]
+binding = "IMAGES"
+
 [env.development.triggers]
 crons = []
 
@@ -116,6 +122,9 @@ database_id = "a7433220-eb9b-4121-9e6e-0b4f3097a768"
 [[env.production.r2_buckets]]
 binding = "MEDIA"
 bucket_name = "biancafiore-media-production"
+
+[env.production.images]
+binding = "IMAGES"
 
 [env.production.triggers]
 crons = ["* * * * *"]

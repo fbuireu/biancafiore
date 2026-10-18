@@ -53,9 +53,6 @@ describe("createAuthor", () => {
 				url: `${MEDIA_FILE_PATH}bianca.avif`,
 				details: { width: 512, height: 512 },
 				formats: { avif: true, webp: false },
-				src: expect.any(String),
-				srcset: expect.any(String),
-				shareCrops: expect.any(Array),
 			},
 			socialNetworks: ["https://linkedin.com/in/bianca"],
 		});

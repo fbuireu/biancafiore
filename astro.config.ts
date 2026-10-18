@@ -8,8 +8,8 @@ import { google } from "emdash/auth/providers/google";
 import { Features } from "lightningcss";
 import { loadEnv } from "vite";
 import { CONTENT_CACHE, CONTENT_ROUTES } from "./src/const/contentCache";
-import { IMAGE_CDN } from "./src/const/imageCdn";
 import { securityHeaders } from "./src/const/securityHeaders";
+import { MEDIA_FILE_PATH } from "./src/infrastructure/cms/media";
 import { bylineCache } from "./src/infrastructure/cms/plugins/bylineCache/descriptor";
 import { editorialBlocks } from "./src/infrastructure/cms/plugins/editorialBlocks/descriptor";
 import { emailDelivery } from "./src/infrastructure/cms/plugins/emailDelivery/descriptor";
@@ -17,8 +17,6 @@ import { generateStaticHeaders } from "./src/infrastructure/integrations/generat
 import { inlineScriptHashes } from "./src/ui/modules/core/utils/inlineScripts";
 
 const environment = loadEnv(process.env.NODE_ENV ?? "production", process.cwd(), "");
-const isProductionBuild = process.env.CLOUDFLARE_ENV === "production";
-const imageCdn = isProductionBuild ? IMAGE_CDN.CLOUDFLARE : IMAGE_CDN.NONE;
 
 export default defineConfig({
 	experimental: {
@@ -58,6 +56,9 @@ export default defineConfig({
 	image: {
 		layout: "constrained",
 		responsiveStyles: true,
+		...(environment.SITE_URL && {
+			remotePatterns: [{ hostname: new URL(environment.SITE_URL).hostname, pathname: `${MEDIA_FILE_PATH}**` }],
+		}),
 	},
 	redirects: {
 		"/sitemap-index.xml": "/sitemap.xml",
@@ -69,9 +70,6 @@ export default defineConfig({
 	},
 	output: "server",
 	vite: {
-		define: {
-			"import.meta.env.IMAGE_CDN": JSON.stringify(imageCdn),
-		},
 		build: {
 			target: "esnext",
 		},
@@ -106,7 +104,7 @@ export default defineConfig({
 			plugins: [editorialBlocks(), emailDelivery(), bylineCache()],
 		}),
 	],
-	adapter: cloudflare({ imageService: isProductionBuild ? "cloudflare" : "passthrough" }),
+	adapter: cloudflare({ imageService: "cloudflare-binding" }),
 	env: {
 		schema: {
 			SITE_URL: envField.string({

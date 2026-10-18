@@ -72,9 +72,6 @@ describe("createProjects image and batching", () => {
 			url: `${MEDIA_FILE_PATH}dispatch.avif`,
 			details: { width: 640, height: 480 },
 			formats: { avif: true, webp: false },
-			src: expect.any(String),
-			srcset: expect.any(String),
-			shareCrops: expect.any(Array),
 		});
 	});
 
