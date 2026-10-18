@@ -4,7 +4,7 @@ Date: 2026-10-04
 
 ## Status
 
-Accepted. Supersedes [ADR 0011](./0011-hybrid-rendering-prerender-content-ssr-dynamic.md). Amended 2026-10-17: the rule's tags are listed in full, the bylines, the site settings and the two menus beside the collections and the taxonomy, with what purges each, since a page that read one of them and carried no tag for it would stay stale for a day.
+Accepted. Supersedes [ADR 0011](./0011-hybrid-rendering-prerender-content-ssr-dynamic.md). Amended 2026-10-17: the rule's tags are listed in full, the bylines, the site settings and the two menus beside the collections and the taxonomy, with what purges each, since a page that read one of them and carried no tag for it would stay stale for a day. Amended 2026-10-18: a content page also tells the browser to keep it a minute, so a navigation reuses the page its hover prefetch downloaded.
 
 ## Context
 
@@ -27,4 +27,5 @@ Every content route carries every content tag, rather than the tags of what it r
 - **The sitemap is a route.** `@astrojs/sitemap` lists what a build knows, which is now no Article and no Tag, so `/sitemap.xml` is rendered per request from the same collections; `/sitemap-index.xml` redirects to it. It shadows EmDash's own `/sitemap.xml`, which would list only collections with SEO enabled.
 - **Images are no longer placeholders fetched at build.** The blur placeholder is decoded from the `blurhash` EmDash stores on upload, into an inline bitmap, with no request; a format EmDash computes no blurhash for renders unblurred.
 - **An Article listed somewhere carries Related Articles inferred from its Tags.** Hand-picked ones are read only for the Article a page shows, the one place they are rendered.
+- **The browser keeps a page a minute.** The rule speaks to Cloudflare alone, so a page left with no `Cache-Control` had no lifetime in the browser, and the browser reused nothing it had fetched ahead: a navigation downloaded again the page its hover prefetch had just downloaded. The site's middleware answers a content page `Cache-Control: max-age=60`, which Cloudflare ignores beside its own header. The cost is a minute: a reader who loaded a page just before a publish sees the change on a reload or once the minute is out.
 - **The order the loader decided is the order a page gets.** Build-time collections answered in their store's key order, which is why production listed Articles alphabetically; a live collection answers in the loader's.

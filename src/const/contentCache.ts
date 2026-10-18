@@ -24,6 +24,8 @@ export const CONTENT_CACHE: ContentCacheRule = {
 	tags: [...CONTENT_CACHE_TAGS],
 };
 
+export const CONTENT_BROWSER_CACHE_CONTROL = "max-age=60";
+
 export const CONTENT_ROUTES = [
 	"/",
 	"/about",
