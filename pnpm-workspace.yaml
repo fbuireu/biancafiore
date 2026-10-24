@@ -10,3 +10,6 @@ allowBuilds:
 savePrefix: ""
 minimumReleaseAge: 4320
 blockExoticSubdeps: true
+minimumReleaseAgeExclude:
+  # Renovate security update: happy-dom@21.0.4
+  - happy-dom@21.0.4
