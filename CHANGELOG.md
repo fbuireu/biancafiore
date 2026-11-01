@@ -1,3 +1,11 @@
+## [1.29.17](https://github.com/fbuireu/biancafiore/compare/v1.29.16...v1.29.17) (2026-11-01)
+
+
+### Bug Fixes
+
+* **deps:** update astro monorepo ([#1223](https://github.com/fbuireu/biancafiore/issues/1223)) ([bbd1a77](https://github.com/fbuireu/biancafiore/commit/bbd1a7747765df310e90d72b5d4fe92a0a278a7d))
+* **deps:** update dependency react-email to v6.11.5 ([#1224](https://github.com/fbuireu/biancafiore/issues/1224)) ([0d6ff34](https://github.com/fbuireu/biancafiore/commit/0d6ff345883131fd570fed73098f92044a25f995))
+
 ## [1.29.16](https://github.com/fbuireu/biancafiore/compare/v1.29.15...v1.29.16) (2026-11-01)
 
 
