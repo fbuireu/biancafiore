@@ -1,3 +1,10 @@
+## [1.29.15](https://github.com/fbuireu/biancafiore/compare/v1.29.14...v1.29.15) (2026-11-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @hookform/resolvers to v5.9.2 ([#1221](https://github.com/fbuireu/biancafiore/issues/1221)) ([1c2e5cf](https://github.com/fbuireu/biancafiore/commit/1c2e5cf271c360fba348a6b9842160cee2161c3b))
+
 ## [1.29.14](https://github.com/fbuireu/biancafiore/compare/v1.29.13...v1.29.14) (2026-11-01)
 
 
