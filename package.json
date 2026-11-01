@@ -72,15 +72,15 @@
 		"test:e2e:changed": "pnpm test:e2e --only-changed --pass-with-no-tests"
 	},
 	"dependencies": {
-		"@astrojs/cloudflare": "14.4.2",
+		"@astrojs/cloudflare": "14.4.3",
 		"@astrojs/compiler-rs": "0.5.2",
-		"@astrojs/react": "7.1.1",
+		"@astrojs/react": "7.1.2",
 		"@astrojs/rss": "4.0.19",
 		"@emdash-cms/cloudflare": "1.2.0",
 		"@hookform/resolvers": "5.9.2",
 		"@libsql/client": "0.18.0",
 		"@tgwf/co2": "0.19.0",
-		"astro": "7.4.2",
+		"astro": "7.4.3",
 		"blurhash": "2.0.5",
 		"clsx": "2.1.1",
 		"drizzle-orm": "0.45.4",
