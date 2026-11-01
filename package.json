@@ -73,7 +73,7 @@
 	},
 	"dependencies": {
 		"@astrojs/cloudflare": "14.3.4",
-		"@astrojs/compiler-rs": "0.5.1",
+		"@astrojs/compiler-rs": "0.5.2",
 		"@astrojs/react": "7.0.1",
 		"@astrojs/rss": "4.0.19",
 		"@emdash-cms/cloudflare": "1.2.0",
