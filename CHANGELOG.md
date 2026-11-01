@@ -1,3 +1,10 @@
+## [1.29.13](https://github.com/fbuireu/biancafiore/compare/v1.29.12...v1.29.13) (2026-11-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @astrojs/compiler-rs to v0.5.2 ([#1220](https://github.com/fbuireu/biancafiore/issues/1220)) ([ef15b32](https://github.com/fbuireu/biancafiore/commit/ef15b32e9e8fc8318db0efc496d28f866d883ca0))
+
 ## [1.29.12](https://github.com/fbuireu/biancafiore/compare/v1.29.11...v1.29.12) (2026-10-18)
 
 
