@@ -1,3 +1,10 @@
+## [1.29.16](https://github.com/fbuireu/biancafiore/compare/v1.29.15...v1.29.16) (2026-11-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency effect to v4.0.7 ([#1222](https://github.com/fbuireu/biancafiore/issues/1222)) ([2e121b6](https://github.com/fbuireu/biancafiore/commit/2e121b6f0678642d115935ed045af7832c4867c6))
+
 ## [1.29.15](https://github.com/fbuireu/biancafiore/compare/v1.29.14...v1.29.15) (2026-11-01)
 
 
