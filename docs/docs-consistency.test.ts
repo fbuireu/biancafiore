@@ -672,10 +672,10 @@ const deadUtilities = (stylesheets: string): ((markup: string) => string[]) => {
 		if (utility && preludes.length > 2) nested.add(utility);
 
 		if (utility && preludes.length === 2 && !property.startsWith("--")) {
-			utilities.set(utility, (utilities.get(utility) ?? new Map()).set(property, settingOf(declaration)));
+			utilities.getOrInsertComputed(utility, () => new Map()).set(property, settingOf(declaration));
 		}
 
-		if (component) settled.set(component, (settled.get(component) ?? new Map()).set(property, settingOf(declaration)));
+		if (component) settled.getOrInsertComputed(component, () => new Map()).set(property, settingOf(declaration));
 	}
 
 	for (const name of nested) utilities.delete(name);
@@ -3112,7 +3112,7 @@ describe("modules guide: mixes, islands and data access", () => {
 			for (const { prelude, body } of topLevelRulesIn(read(file))) {
 				const key = `${prelude} {${body}}`;
 
-				copies.set(key, (copies.get(key) ?? new Set<string>()).add(file));
+				copies.getOrInsertComputed(key, () => new Set<string>()).add(file);
 			}
 		}
 
@@ -3301,7 +3301,7 @@ describe("modules guide: mixes, islands and data access", () => {
 		for (const file of walk("src/ui/modules")) {
 			const folder = file.slice(0, file.lastIndexOf("/"));
 
-			folders.set(folder, [...(folders.get(folder) ?? []), file.split("/").pop() ?? ""]);
+			folders.getOrInsertComputed(folder, () => []).push(file.split("/").pop() ?? "");
 		}
 
 		const misnamed = [...folders].flatMap(([folder, names]) => {
@@ -3919,8 +3919,8 @@ interface NoteNamedImportParams {
 	name: string;
 }
 
-const noteNamedImport = ({ imports, target, name }: NoteNamedImportParams): Map<string, Set<string>> =>
-	imports.named.set(target, (imports.named.get(target) ?? new Set<string>()).add(name));
+const noteNamedImport = ({ imports, target, name }: NoteNamedImportParams): Set<string> =>
+	imports.named.getOrInsertComputed(target, () => new Set<string>()).add(name);
 
 interface ImportsInParams extends CodeSource {
 	into: ModuleImports;
@@ -3969,7 +3969,7 @@ const importsIn = ({ file, source, into: imports }: ImportsInParams): ModuleImpo
 			if (node.exportClause && ts.isNamedExports(node.exportClause)) {
 				for (const element of node.exportClause.elements) named({ specifier, name: bindingKey(element) });
 			} else if (resolved !== undefined) {
-				imports.reexported.set(file, (imports.reexported.get(file) ?? new Set<string>()).add(resolved));
+				imports.reexported.getOrInsertComputed(file, () => new Set<string>()).add(resolved);
 			}
 		}
 
@@ -4027,10 +4027,10 @@ const namesReached = (imports: ModuleImports): ModuleImports => {
 				}
 
 				for (const name of reached.named.get(barrel) ?? []) {
-					const names = reached.named.get(module) ?? new Set<string>();
+					const names = reached.named.getOrInsertComputed(module, () => new Set<string>());
 
 					if (!names.has(name)) {
-						reached.named.set(module, names.add(name));
+						names.add(name);
 						changed = true;
 					}
 				}
@@ -4125,7 +4125,7 @@ const readersByModule = (): Map<string, Set<string>> => {
 		const { named, whole } = importsIn({ file, source: read(file), into: emptyImports() });
 
 		for (const module of [...named.keys(), ...whole]) {
-			readers.set(module, (readers.get(module) ?? new Set<string>()).add(file));
+			readers.getOrInsertComputed(module, () => new Set<string>()).add(file);
 		}
 	}
 
@@ -4537,10 +4537,7 @@ describe("the hand-written code", () => {
 
 			for (const module of modules) {
 				for (const name of named.get(module) ?? []) {
-					readers.set(
-						`${module}: ${name}`,
-						(readers.get(`${module}: ${name}`) ?? new Set<string>()).add(unitOf(importer)),
-					);
+					readers.getOrInsertComputed(`${module}: ${name}`, () => new Set<string>()).add(unitOf(importer));
 				}
 			}
 		}
