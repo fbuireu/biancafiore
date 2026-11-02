@@ -62,5 +62,5 @@ export function imagePlaceholder({ blurhash, width, height }: ImagePlaceholderPa
 	);
 	const pixels = decode(blurhash, PLACEHOLDER_WIDTH, placeholderHeight);
 
-	return `data:image/bmp;base64,${Buffer.from(bitmap({ pixels, width: PLACEHOLDER_WIDTH, height: placeholderHeight })).toString("base64")}`;
+	return `data:image/bmp;base64,${bitmap({ pixels, width: PLACEHOLDER_WIDTH, height: placeholderHeight }).toBase64()}`;
 }
