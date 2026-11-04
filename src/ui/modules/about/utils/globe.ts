@@ -92,7 +92,11 @@ export function renderPin(markerData: CityPoint): HTMLElement {
 		city.style.position = "static";
 
 		let naturalTop = 0;
-		for (let node: HTMLElement | null = city; node; node = node.offsetParent as HTMLElement | null) {
+		for (
+			let node: HTMLElement | null = city;
+			node;
+			node = node.offsetParent instanceof HTMLElement ? node.offsetParent : null
+		) {
 			naturalTop += node.offsetTop;
 		}
 

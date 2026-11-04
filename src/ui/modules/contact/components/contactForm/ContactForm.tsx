@@ -14,6 +14,8 @@ import { FormStatus } from "./const";
 import { flyPlane } from "./utils/form";
 import "./contact-form.css";
 
+const FAILED_STATUSES: ReadonlySet<FormStatus> = new Set([FormStatus.ERROR, FormStatus.UNAUTHORIZED]);
+
 interface ContactFormProps {
 	submit: (contactData: FormData) => Promise<ContactSubmission>;
 	getRecaptchaToken?: () => Promise<string | undefined>;
@@ -154,7 +156,7 @@ export const ContactForm = ({ submit, getRecaptchaToken }: ContactFormProps) => 
 					/>
 					<Recaptcha hasError={!!errors.recaptcha} errorMessage={errors.recaptcha?.message} />
 					<div className="contact-form__generic-error-wrapper" role="alert" aria-live="assertive">
-						{([FormStatus.ERROR, FormStatus.UNAUTHORIZED] as FormStatus[]).includes(formStatus) && (
+						{FAILED_STATUSES.has(formStatus) && (
 							<p className="contact-form__generic-error-message">{errors.root?.message}</p>
 						)}
 					</div>

@@ -2,6 +2,8 @@ import { DEFAULT_THEME, THEME_ATTRIBUTE, THEME_STORAGE_KEY, Theme } from "../con
 
 const THEMES = new Set<string>(Object.values(Theme));
 
+const isTheme = (value: string | null): value is Theme => value !== null && THEMES.has(value);
+
 const literal = (value: string): string => JSON.stringify(value);
 
 const CHOSEN_THEMES = Object.values(Theme).map(literal).join(", ");
@@ -9,7 +11,7 @@ const CHOSEN_THEMES = Object.values(Theme).map(literal).join(", ");
 export const readTheme = (store: Pick<Storage, "getItem">): Theme => {
 	const stored = store.getItem(THEME_STORAGE_KEY);
 
-	return THEMES.has(stored ?? "") ? (stored as Theme) : DEFAULT_THEME;
+	return isTheme(stored) ? stored : DEFAULT_THEME;
 };
 
 interface WriteThemeParams {

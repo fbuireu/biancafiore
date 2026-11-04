@@ -92,7 +92,7 @@ export function watchBackground(): void {
 }
 
 interface MenuTimeline {
-	reversed(value?: boolean): unknown;
+	reversed(value: boolean): unknown;
 	eventCallback(type: "onComplete", callback: () => void): unknown;
 }
 
@@ -143,7 +143,7 @@ async function buildMenuTimeline(onButtonUpdate: () => void): Promise<MenuTimeli
 	timeline.to(QUOTE, { top: 0, ease: POWER3_OUT, duration: 0.75 }, "<");
 
 	return {
-		reversed: (value) => timeline.reversed(value as boolean),
+		reversed: (value) => timeline.reversed(value),
 		eventCallback: (type, callback) => timeline.eventCallback(type, callback),
 	};
 }
