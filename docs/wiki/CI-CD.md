@@ -50,8 +50,9 @@ flowchart TB
     smoke -- "failed" --> rollback["Roll back production<br/>wrangler rollback"]
     smoke -- "passed, on a push" --> release["Semantic Release"]
     verify -- "Verify green, pull request" --> development["Deploy to development<br/>_deploy.yml, Worker pr-N"]
-    development --> comment["Post preview URL"]
-    development --> e2e["E2E (preview)"]
+    development -- "not Dependabot" --> comment["Post preview URL"]
+    development -- "not Dependabot" --> e2e["E2E (preview)"]
+    development -. "Dependabot: deploy false" .-> built["built and checked, nothing deployed"]
     check["Check<br/>always(): red when a job it needs failed or was cancelled"]
     verify -.-> check
     production -.-> check
@@ -87,15 +88,19 @@ sequenceDiagram
     participant Smoke as Production smoke tests
     participant Release as Semantic Release
     participant GitHub
-    CI->>Deploy: environment and url, plus worker_name on a pull request
+    CI->>Deploy: environment and url, plus worker_name on a pull request, and deploy false on a Dependabot run
     Note over Deploy: queued in deploy-environment-worker, never cancelled
     Deploy->>Deploy: Checkout, then prepare-env
     Deploy->>Deploy: wrangler environment = the last dash-separated segment of the Environment
     Deploy->>Deploy: pnpm build, with CLOUDFLARE_ENV and the four schema secrets
     Deploy->>Deploy: vitest run --project built
-    Deploy->>Deploy: write the secrets file, exit 1 when a required secret is missing
-    Deploy->>CF: wrangler deploy --env --message sha-event --secrets-file, and --name on a preview
-    CF-->>Deploy: the new version answers the stage
+    alt deploy is true, every run but Dependabot's
+        Deploy->>Deploy: write the secrets file, exit 1 when a required secret is missing
+        Deploy->>CF: wrangler deploy --env --message sha-event --secrets-file, and --name on a preview
+        CF-->>Deploy: the new version answers the stage
+    else deploy is false
+        Note over Deploy: the build and its check are the whole job, no secret is read and nothing ships
+    end
     Deploy->>Deploy: remove the secrets file, whatever happened
     Note over CI,CF: a failure before wrangler deploy leaves the stage on the version it had
     CI->>Smoke: production only
@@ -136,10 +141,13 @@ flowchart TB
     open --> review["Dependency Review"]
     open --> zizmor["zizmor"]
     open --> verify["CI: Verify"]
-    verify --> deploy["Deploy to development<br/>Worker pr-N-biancafiore-development"]
+    verify --> bot{"run started by Dependabot?"}
+    bot -- "no" --> deploy["Deploy to development<br/>Worker pr-N-biancafiore-development"]
+    bot -- "yes" --> buildonly["Deploy to development, deploy false<br/>built and checked, nothing deployed"]
     deploy --> comment["Post preview URL<br/>one comment, updated in place"]
     deploy --> e2e["E2E (preview)<br/>Chromium and WebKit, behind Cloudflare Access"]
     e2e --> check["Check"]
+    buildonly --> check
     title --> gate{"ruleset: Check, the title, Dependency Review and zizmor green"}
     review --> gate
     zizmor --> gate
@@ -148,7 +156,7 @@ flowchart TB
     merged --> pipeline["CI on main<br/>deploy, smoke, release"]
     merged -- "docs/wiki changed" --> wiki["Sync Wiki<br/>rsync --delete into the wiki"]
     merged --> wait
-    abandoned(["closed without merging"]) --> wait["Cleanup waits in CI-refs/pull/N/merge<br/>behind the run still going"]
+    abandoned(["closed without merging"]) --> wait["Cleanup waits in CI-refs/pull/N/merge<br/>behind the run still going, skipped on a Dependabot run"]
     wait --> delete["wrangler delete, up to 5 attempts<br/>does not exist counts as deleted"]
     sweep(["Mondays 03:00 UTC, or a dispatch"]) --> list["every pr-N Worker on the account"]
     list --> state{"its pull request"}
@@ -166,7 +174,7 @@ The preview a pull request deploys is an ephemeral environment of its own, [belo
 
 ## Per-PR previews (ephemeral environments)
 
-Every pull request to `main` gets a Worker of its own on `workers.dev`, built from the pull request merged into `main`, as GitHub tests it, and deleted when the pull request closes. It lives as long as the pull request does, so nothing about it needs tidying by hand.
+Every pull request to `main` but Dependabot's (built without a Worker, [below](#limits)) gets a Worker of its own on `workers.dev`, built from the pull request merged into `main`, as GitHub tests it, and deleted when the pull request closes. It lives as long as the pull request does, so nothing about it needs tidying by hand.
 
 - **Created by the pull request's own CI run.** `Deploy to development` runs on every `pull_request` event `ci.yml` takes, opened, a push to the branch and a reopen, once `Verify` is green, and calls `_deploy.yml` with the `development` Environment and the Worker name `pr-<number>-biancafiore-development`. The first deploy creates the Worker and every later push replaces its version. It deploys the `[env.development]` block of `wrangler.toml` under that name, so it binds the same `SESSION` KV, `DB` and `MEDIA` as every other preview, with `HIDE_CHROME` true and no cron trigger. A pull request into any other branch gets no preview, and neither does one from a fork, whose build has no secrets ([Limits](#limits)).
 - **Its address goes into one comment.** The preview answers at `https://pr-<number>-biancafiore-development.fbuireu.workers.dev`, which is also the URL of the `development` Environment's deployment on the pull request. `Post preview URL` finds the comment `github-actions[bot]` left with the `<!-- preview-deployment -->` marker and replaces its body with the URL, the branch and the head commit, so the pull request carries one comment however many times it is pushed, and a new one only the first time.
