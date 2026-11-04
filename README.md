@@ -53,7 +53,7 @@ pnpm verify             # format check, typecheck, astro check, unit tests with 
 
 ## Deploy model
 
-- **Every pull request** gets a preview Worker of its own on `workers.dev`, its URL commented on the pull request, and the end-to-end suite runs against it. A preview hides the unpublished routes (`HIDE_CHROME`), and a pull request from a fork gets no secrets, so no preview; a Dependabot one gets none either, so it is built and checked without one.
+- **Every pull request** gets a preview Worker of its own on `workers.dev`, its URL commented on the pull request, and the end-to-end suite runs against it. A preview hides the unpublished routes (`HIDE_CHROME`), and a pull request from a fork gets no secrets, so no preview; a Dependabot one, should one ever be opened, gets none either, so it is built and checked without one.
 - **Every merge to `main`** deploys production, runs the smoke cases against it and rolls it back when one fails; semantic-release then tags the version.
 - **Every publish in the CMS** goes live on the next request, because EmDash purges the cached pages it touched.
 
