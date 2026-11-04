@@ -176,7 +176,7 @@ jobs:
   deploy-development:
     name: Deploy to development
     needs: [verify]
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
     uses: $/.github/workflows/_deploy.yml
     with:
       environment: development

@@ -13,7 +13,7 @@ permissions:
 jobs:
   cleanup:
     name: Delete the preview Worker
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     concurrency:
