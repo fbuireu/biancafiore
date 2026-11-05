@@ -511,7 +511,10 @@ describe("initMenu", () => {
 		initMenu();
 		button.click();
 		await vi.dynamicImportSettled();
-		await vi.waitFor(() => expect(overlay.style.display).toBe("block"), { timeout: 2000 });
+		await vi.waitFor(() => expect(overlay.style.display).toBe("block"), {
+			timeout: 2000,
+			message: "the menu timeline shows the overlay",
+		});
 	});
 
 	it("marks the button so a second page-load does not wire it twice", async () => {
