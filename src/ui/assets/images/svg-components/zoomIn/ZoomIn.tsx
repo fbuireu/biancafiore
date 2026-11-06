@@ -1,14 +1,12 @@
-import clsx from "clsx";
 import type { SVGProps } from "react";
 
 interface ZoomInProps extends SVGProps<SVGSVGElement> {
-	classNames?: string;
 	title?: string;
 }
 
-export const ZoomIn = ({ fill = "currentColor", title = "Zoom In", classNames, ...props }: ZoomInProps) => {
+export const ZoomIn = ({ fill = "currentColor", title = "Zoom In", ...props }: ZoomInProps) => {
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" className={clsx(classNames)} {...props}>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" {...props}>
 			<title>{title}</title>
 			<g
 				fill="none"

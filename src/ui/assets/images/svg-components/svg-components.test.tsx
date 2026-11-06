@@ -8,7 +8,6 @@ import { ZoomIn } from "./zoomIn/ZoomIn";
 import { ZoomOut } from "./zoomOut/ZoomOut";
 
 interface IconProps extends SVGProps<SVGSVGElement> {
-	classNames?: string;
 	title?: string;
 }
 
@@ -36,12 +35,6 @@ describe.each(ICONS)("%s", (_name, Icon, defaultTitle) => {
 		const { container } = render(<Icon title="Expand the image" />);
 
 		expect(svgOf(container).querySelector("title")?.textContent).toBe("Expand the image");
-	});
-
-	it("carries the classes it is handed onto the svg", () => {
-		const { container } = render(<Icon classNames="article__zoom" />);
-
-		expect(svgOf(container).getAttribute("class")).toContain("article__zoom");
 	});
 
 	it("passes anything else it is given straight to the svg", () => {
@@ -72,6 +65,14 @@ describe("the zoom marks", () => {
 	});
 });
 
+describe("Infinite", () => {
+	it("carries the classes it is handed onto the svg", () => {
+		const { container } = render(<Infinite classNames="spinner" />);
+
+		expect(svgOf(container).getAttribute("class")).toContain("spinner");
+	});
+});
+
 describe("StretchArrow", () => {
 	it("draws the shaft and the tip of the svg the Astro pages inline", () => {
 		const { container } = render(<StretchArrow />);
@@ -88,10 +89,9 @@ describe("StretchArrow", () => {
 		expect(drawn).toEqual(inlined);
 	});
 
-	it("keeps the block class its stylesheet animates beside the ones it is handed", () => {
-		const { container } = render(<StretchArrow classNames="reveal" />);
+	it("keeps the block class its stylesheet animates", () => {
+		const { container } = render(<StretchArrow />);
 
-		expect(svgOf(container).getAttribute("class")).toContain("stretch-arrow");
-		expect(svgOf(container).getAttribute("class")).toContain("reveal");
+		expect(svgOf(container).getAttribute("class")).toBe("stretch-arrow");
 	});
 });
