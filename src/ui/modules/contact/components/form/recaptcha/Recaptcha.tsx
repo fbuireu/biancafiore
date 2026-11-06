@@ -1,7 +1,7 @@
 import "./recaptcha.css";
 
 interface RecaptchaProps {
-	hasError?: boolean;
+	hasError: boolean;
 	errorMessage?: string;
 }
 

@@ -12,7 +12,7 @@ const RECAPTCHA_UNANSWERED_MESSAGE = "reCAPTCHA siteverify could not be reached 
 const RECAPTCHA_SECRET_MESSAGE = "reCAPTCHA refused GOOGLE_RECAPTCHA_SECRET_KEY, so no verdict was obtained";
 const RECAPTCHA_SECRET_ERROR_CODES = new Set(["missing-input-secret", "invalid-input-secret"]);
 
-type ValidateContactParams = Except<ContactFormData, "recaptcha" | "emailId">;
+type ValidateContactParams = Except<ContactFormData, "recaptcha">;
 
 export const validateContact = (
 	contact: ValidateContactParams,

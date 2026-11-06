@@ -7,13 +7,13 @@ import "./article-slider.css";
 
 interface Props {
 	articles: ArticleEntry[];
-	class?: string;
+	class: string;
 }
 
 const { articles, class: className } = Astro.props;
 ---
 
-<SliderShell class={`${className ?? ''} article-slider`.trim()}>
+<SliderShell class={`${className} article-slider`}>
 	{
 		articles.map((article) => (
 			<li class:list={[SLIDER_SLIDE_CLASS, "item-wrapper", "reveal"]}>

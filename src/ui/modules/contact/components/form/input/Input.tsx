@@ -3,14 +3,15 @@ import type { InputHTMLAttributes } from "react";
 import "./input.css";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+	id: string;
 	hasError: boolean;
 	errorMessage?: string;
-	isLocked?: boolean;
-	label?: string;
+	isLocked: boolean;
+	label: string;
 }
 
 export const Input = ({ id, type, placeholder, label, isLocked, hasError, errorMessage, ...rest }: InputProps) => {
-	const errorId = id ? `${id}-error` : undefined;
+	const errorId = `${id}-error`;
 
 	return (
 		<div
@@ -28,11 +29,9 @@ export const Input = ({ id, type, placeholder, label, isLocked, hasError, errorM
 				aria-describedby={hasError ? errorId : undefined}
 				{...rest}
 			/>
-			{label && id && (
-				<label htmlFor={id} className="contact-form__input-label">
-					{label}
-				</label>
-			)}
+			<label htmlFor={id} className="contact-form__input-label">
+				{label}
+			</label>
 			{hasError && errorMessage && (
 				<p id={errorId} className="contact-form__input__error-message">
 					{errorMessage}

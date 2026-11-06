@@ -4,5 +4,4 @@ import type { z } from "../utils/zod";
 
 export interface ContactFormData extends Except<z.infer<typeof contactFormSchema>, "recaptcha"> {
 	recaptcha?: string;
-	emailId?: string;
 }

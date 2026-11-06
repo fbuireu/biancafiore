@@ -7,9 +7,9 @@ import { ContactNotificationEmail } from "../email/ContactNotificationEmail";
 import { EmailClient } from "../email/server";
 import type { EmailError } from "../errors";
 
-type CreateEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
+type CreateEmailParams = Except<ContactFormData, "recaptcha">;
 
-type SendEmailParams = Except<ContactFormData, "recaptcha" | "emailId">;
+type SendEmailParams = Except<ContactFormData, "recaptcha">;
 
 interface ContactEmailContent {
 	html: string;

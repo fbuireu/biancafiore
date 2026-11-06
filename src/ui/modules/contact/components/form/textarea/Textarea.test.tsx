@@ -6,18 +6,20 @@ afterEach(cleanup);
 
 describe("Textarea", () => {
 	it("takes the attributes a textarea has, which an input does not", () => {
-		render(<Textarea id="message" label="Message" hasError={false} rows={3} />);
+		render(<Textarea id="message" label="Message" hasError={false} isLocked={false} rows={3} />);
 
 		expect(screen.getByLabelText("Message").getAttribute("rows")).toBe("3");
 	});
 
 	it("points the field at its error only while there is one", () => {
-		const { rerender } = render(<Textarea id="message" label="Message" hasError errorMessage="Too short" />);
+		const { rerender } = render(
+			<Textarea id="message" label="Message" hasError isLocked={false} errorMessage="Too short" />,
+		);
 
 		expect(screen.getByLabelText("Message").getAttribute("aria-describedby")).toBe("message-error");
 		expect(screen.getByText("Too short").id).toBe("message-error");
 
-		rerender(<Textarea id="message" label="Message" hasError={false} errorMessage="Too short" />);
+		rerender(<Textarea id="message" label="Message" hasError={false} isLocked={false} errorMessage="Too short" />);
 
 		expect(screen.getByLabelText("Message").getAttribute("aria-describedby")).toBeNull();
 	});

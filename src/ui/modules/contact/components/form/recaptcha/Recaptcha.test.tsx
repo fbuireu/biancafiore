@@ -13,7 +13,7 @@ describe("Recaptcha", () => {
 	});
 
 	it("shows nothing while the form has no refusal to report", () => {
-		const { container } = render(<Recaptcha errorMessage="Prove you are human" />);
+		const { container } = render(<Recaptcha hasError={false} errorMessage="Prove you are human" />);
 
 		expect(container.textContent).toBe("");
 	});

@@ -3,9 +3,10 @@ import type { JSX, TextareaHTMLAttributes } from "react";
 import "./textarea.css";
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+	id: string;
 	hasError: boolean;
 	errorMessage?: string;
-	isLocked?: boolean;
+	isLocked: boolean;
 	label: string;
 }
 
@@ -18,7 +19,7 @@ export const Textarea = ({
 	errorMessage,
 	...rest
 }: TextareaProps): JSX.Element => {
-	const errorId = id ? `${id}-error` : undefined;
+	const errorId = `${id}-error`;
 
 	return (
 		<div

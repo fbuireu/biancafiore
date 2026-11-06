@@ -17,7 +17,6 @@ export interface CmsTerm {
 export interface CmsMedia {
 	id: string;
 	src: string;
-	alt?: string;
 	width?: number;
 	height?: number;
 	blurhash?: string;
@@ -203,7 +202,6 @@ function mediaOf(item: Record<string, unknown>): CmsMedia | undefined {
 		? {
 				id,
 				src: mediaFileUrl(storageKey),
-				alt: asText(item.alt) ?? undefined,
 				width: numberOf(item.width),
 				height: numberOf(item.height),
 				blurhash: asText(item.blurhash) ?? undefined,

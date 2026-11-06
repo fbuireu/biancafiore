@@ -45,7 +45,6 @@ const client = (): Promise<CmsClient["Service"]> => Effect.runPromise(CmsClient.
 const AVATAR = {
 	id: "01AVATAR",
 	storageKey: "01FACE.jpg",
-	alt: "Bianca",
 	width: 400,
 	height: 400,
 	blurhash: "LXCacDM{RjxuOxogkCR.Dkt7t7Rj",
@@ -170,7 +169,6 @@ describe("CmsClient.listEntries", () => {
 				avatar: {
 					id: "01AVATAR",
 					src: `${MEDIA_FILE_PATH}01FACE.jpg`,
-					alt: "Bianca",
 					width: 400,
 					height: 400,
 					blurhash: AVATAR.blurhash,

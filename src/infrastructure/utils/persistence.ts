@@ -10,7 +10,7 @@ const ALREADY_HEARD_MESSAGE = "I've already received a message from you, and I'l
 const COOLDOWN_REASON = "inside the cooldown window";
 const REPEATED_REASON = "the same message as a previous submission";
 
-type CheckDuplicateContactParams = Except<ContactFormData, "recaptcha" | "emailId">;
+type CheckDuplicateContactParams = Except<ContactFormData, "recaptcha">;
 
 export const checkDuplicateContact = Effect.fn("checkDuplicateContact")(function* (
 	data: CheckDuplicateContactParams,

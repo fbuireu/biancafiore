@@ -5,11 +5,8 @@ import { z } from "@shared/utils/zod";
 export interface RawImage {
 	id: string;
 	src?: string;
-	alt?: string;
 	width?: number;
 	height?: number;
-	filename?: string;
-	provider?: string;
 	blurhash?: string | null;
 	meta?: Record<string, unknown>;
 }

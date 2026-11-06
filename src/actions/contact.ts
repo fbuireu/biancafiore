@@ -19,7 +19,7 @@ import { type ContactErrorResponse, contactErrorResponse } from "./errorResponse
 
 export type ContactError = ValidationError | RecaptchaError | DuplicateContactError | EmailError | DatabaseError;
 
-export interface SubmitContactParams extends Except<ContactFormData, "emailId"> {
+export interface SubmitContactParams extends Except<ContactFormData, "recaptcha"> {
 	recaptcha: string;
 }
 

@@ -7,7 +7,7 @@ afterEach(cleanup);
 type InputProps = Parameters<typeof Input>[0];
 
 const renderInput = (props: Partial<InputProps> = {}): RenderResult =>
-	render(<Input id="email" label="Email" hasError={false} {...props} />);
+	render(<Input id="email" label="Email" hasError={false} isLocked={false} {...props} />);
 
 const field = (): HTMLInputElement => screen.getByLabelText("Email") as HTMLInputElement;
 
@@ -34,12 +34,6 @@ describe("Input", () => {
 
 		expect(field().disabled).toBe(true);
 		expect(container.querySelector(".contact-form__input-wrapper")?.className).not.toContain("underline-on-hover");
-	});
-
-	it("renders no label when there is no id for it to point at", () => {
-		renderInput({ id: undefined });
-
-		expect(screen.queryByText("Email")).toBeNull();
 	});
 
 	it("forwards the caller's own attributes onto the field", () => {

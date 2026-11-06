@@ -14,7 +14,6 @@ interface IconProps extends SVGProps<SVGSVGElement> {
 const ICONS: [string, ComponentType<IconProps>, string][] = [
 	["ZoomIn", ZoomIn, "Zoom In"],
 	["ZoomOut", ZoomOut, "Zoom Out"],
-	["StretchArrow", StretchArrow, "Arrow"],
 	["Infinite", Infinite, "Loading..."],
 ];
 
@@ -74,8 +73,15 @@ describe("Infinite", () => {
 });
 
 describe("StretchArrow", () => {
+	it("is named by the control it sits in, and passes anything else straight to the svg", () => {
+		const { container } = render(<StretchArrow title="Move left" aria-hidden="true" />);
+
+		expect(svgOf(container).querySelector("title")?.textContent).toBe("Move left");
+		expect(svgOf(container).getAttribute("aria-hidden")).toBe("true");
+	});
+
 	it("draws the shaft and the tip of the svg the Astro pages inline", () => {
-		const { container } = render(<StretchArrow />);
+		const { container } = render(<StretchArrow title="Move left" />);
 		const drawn = [...container.querySelectorAll("path")].map((path) => [
 			path.getAttribute("class"),
 			path.getAttribute("d"),
@@ -90,7 +96,7 @@ describe("StretchArrow", () => {
 	});
 
 	it("keeps the block class its stylesheet animates", () => {
-		const { container } = render(<StretchArrow />);
+		const { container } = render(<StretchArrow title="Move left" />);
 
 		expect(svgOf(container).getAttribute("class")).toBe("stretch-arrow");
 	});
