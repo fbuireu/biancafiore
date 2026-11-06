@@ -11,8 +11,8 @@ function openComposer(event: Event): void {
 	window.location.assign(`mailto:${emailAddress()}`);
 }
 
-export function activateEmailButtons(root: ParentNode = document): void {
-	for (const button of root.querySelectorAll<HTMLElement>(`.${EMAIL_BUTTON_CLASS}`)) {
+export function activateEmailButtons(): void {
+	for (const button of document.querySelectorAll<HTMLElement>(`.${EMAIL_BUTTON_CLASS}`)) {
 		if (button.getAttribute(EMAIL_BUTTON_SHOWS_ATTRIBUTE) === EMAIL_BUTTON_SHOWS_ADDRESS) {
 			button.textContent = emailAddress();
 		}

@@ -92,25 +92,6 @@ describe("activateEmailButtons", () => {
 		expect(element.textContent).toBe("Email me");
 	});
 
-	it("activates the buttons under the root it is given, and no others", () => {
-		const assign = composerTargets();
-		const outside = button("label");
-		const root = document.createElement("div");
-		const inside = button("label");
-
-		root.append(inside);
-		document.body.append(root);
-
-		activateEmailButtons(root);
-		click({ element: outside, trusted: true });
-
-		expect(assign).not.toHaveBeenCalled();
-
-		click({ element: inside, trusted: true });
-
-		expect(assign).toHaveBeenCalledWith(`mailto:${ADDRESS}`);
-	});
-
 	it("wires a button once, however often it is activated", () => {
 		const assign = composerTargets();
 		const element = button("label");
