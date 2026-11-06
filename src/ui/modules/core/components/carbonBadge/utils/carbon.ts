@@ -9,11 +9,6 @@ const GRAMS_PRECISION = 2;
 let countedResources = 0;
 let countedNavigation = false;
 
-export function resetTransferredBytes(): void {
-	countedResources = 0;
-	countedNavigation = false;
-}
-
 export function transferredBytes(): number {
 	const resources = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
 	const [navigation] = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
