@@ -76,7 +76,7 @@ src/
   middleware.ts       # securityHeaders on what the Worker renders (a content page without the opener policy), a content page's minute of browser cache, and no route cache for an /_image answer that is not a 200; prerendered pages take the same set from public/_headers
   domain/              # DDD domain layer: per-concept models (schema.ts/types.ts) + pure rules (rules.ts). See ADR 0012
   application/         # anti-corruption layer: entities/* loaders + dto/*DTO.ts CMS mappers (call domain rules)
-  shared/              # cross-cutting ui/utils + generic helpers (slugify, deSlugify, formatDate, escapeHtml, safeUrl)
+  shared/              # cross-cutting ui/utils + generic helpers (slugify, deSlugify, formatDate, escapeHtml)
   infrastructure/     # cms/ db/ email/ logging/ clients (Effect), cms/entries.ts, utils/, images/, integrations/, cache/, layers.ts, errors.ts
   ui/
     modules/          # feature areas: home, about, article(s), contact, projects, legal, core
