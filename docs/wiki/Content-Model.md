@@ -46,7 +46,7 @@ flowchart LR
 
 Some things are worth knowing about that path.
 
-**Reading is complete by construction.** One module is the only way content is read, and it owns the page cursor: each query is walked page by page until every matching entry is in hand. EmDash's default page is 50, so a query naming no limit would silently answer the first fifty, and under the Articles' reverse-chronological order what it drops is the oldest writing, with no error. A limit in a loader is therefore an editorial decision, never a guess at how much content exists.
+**Reading is complete by construction.** One module is the only way content is read, and it owns the page cursor: each query is walked page by page until every matching entry is in hand. EmDash's default page is 50, so a query naming no limit would silently answer the first fifty, and under the Articles' reverse-chronological order what it drops is the oldest writing, with no error.
 
 **The CMS's types stop at the mapper.** An entry's `data`, its `references` and Portable Text may appear in the application layer and nowhere downstream. The domain never sees them, which is why moving from Contentful to EmDash changed the mappers and nothing the pages render.
 

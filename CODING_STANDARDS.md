@@ -85,7 +85,6 @@ No rule below restates these, and a diff that breaks one fails CI:
 - `A7` **judgement**: Key a collection's `id` on what the glossary says identifies the concept (one Author is one Slug), and write down a key that is not unique, as `testimonials` keeps the Quotee's name ([ADR 0019](./docs/adr/0019-three-questions-before-modelling.md)).
 - `A8` **judgement**: Store in a collection what identifies an entry, never how one page arranges it (the Tag Index's letter buckets are `buildTagIndexBuckets`, called from the page), because every other reader would have to undo a stored arrangement.
 - `A9` **judgement**: Declare a query's `select` list beside the helper that reads those fields, so the list and its reader sit in one place.
-- `A10` **judgement**: Treat a `limit` in a loader query as an editorial decision (this page wants five), because `fetchEntries` already pages until the collection is exhausted.
 - `A11` **judgement**: Hand an I/O step every source at once and let the module doing the I/O bound its concurrency (`fetchEntries` reads every reference at once, at most `REFERENCE_READS_IN_FLIGHT` in flight), because a per-entry `await` sizes the burst by the collection.
 
 ## Infrastructure (`src/infrastructure`)

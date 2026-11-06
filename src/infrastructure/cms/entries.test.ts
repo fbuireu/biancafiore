@@ -69,16 +69,6 @@ describe("fetchEntries", () => {
 		expect(cmsQueries.map(({ cursor }) => cursor)).toEqual([undefined, "2", "4"]);
 	});
 
-	it("stops at an explicit limit, so a caller that wants a slice still gets one", async () => {
-		cmsAnswers({ articles: Array.from({ length: 5 }, (_, index) => entry(`article-${index}`)) });
-		cmsServesPagesOf(2);
-
-		const [fetched] = await fetchEntries<[Entry]>({ collection: "articles", limit: 3 });
-
-		expect(fetched).toHaveLength(3);
-		expect(cmsQueries.map(({ limit }) => limit)).toEqual([3, 1]);
-	});
-
 	it("gives up on a page that answers nothing, so a cursor the CMS cannot actually serve cannot hang the build", async () => {
 		cmsServesPagesOf(0);
 

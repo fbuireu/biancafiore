@@ -28,7 +28,6 @@ export interface EntriesQuery<REFERENCE extends string = string> {
 	references?: readonly REFERENCE[];
 	orderBy?: string;
 	order?: "asc" | "desc";
-	limit?: number;
 }
 
 interface ReferencesQuery {
@@ -69,26 +68,21 @@ interface WithReferencesParams {
 const cmsRuntime = ManagedRuntime.make(CmsClient.layer);
 
 const fetchEveryPage = Effect.fnUntraced(function* ({ cms, query }: FetchEveryPageParams) {
-	const wanted = query.limit;
 	const items: CmsItem[] = [];
 	let cursor: string | undefined;
 
-	while (wanted === undefined || items.length < wanted) {
-		const remaining = wanted === undefined ? EMDASH_MAX_PAGE_SIZE : wanted - items.length;
+	do {
 		const page = yield* cms.listEntries({
 			collection: query.collection,
 			orderBy: query.orderBy,
 			order: query.order,
 			cursor,
-			limit: Math.min(remaining, EMDASH_MAX_PAGE_SIZE),
+			limit: EMDASH_MAX_PAGE_SIZE,
 		});
 
 		items.push(...page.items);
-
-		if (page.items.length === 0 || !page.nextCursor) break;
-
-		cursor = page.nextCursor;
-	}
+		cursor = page.items.length === 0 ? undefined : page.nextCursor;
+	} while (cursor);
 
 	return items;
 });
