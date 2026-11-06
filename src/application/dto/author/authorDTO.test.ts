@@ -39,7 +39,7 @@ const makeArticle = ({ slug, publishDate = "2024-01-01", credits = [] }: MakeArt
 	});
 
 describe("createAuthors field mapping", () => {
-	it("carries every authored field across and turns the profile image into url, dimensions and formats", () => {
+	it("carries every authored field across and turns the profile image into url and dimensions", () => {
 		const [author] = createAuthors({
 			rawAuthors: [
 				{
@@ -51,7 +51,7 @@ describe("createAuthors field mapping", () => {
 							social_networks: "LinkedIn | https://linkedin.com/in/bianca\nX | https://x.com/bianca",
 						},
 					}),
-					avatar: avatar({ name: "bianca.avif", mimeType: "image/avif", width: 512, height: 512 }),
+					avatar: avatar({ name: "bianca.avif", width: 512, height: 512 }),
 				},
 			],
 			rawArticles: [],
@@ -66,7 +66,6 @@ describe("createAuthors field mapping", () => {
 			profileImage: {
 				url: `${MEDIA_FILE_PATH}bianca.avif`,
 				details: { width: 512, height: 512 },
-				formats: { avif: true, webp: false },
 			},
 			socialNetworks: ["https://linkedin.com/in/bianca", "https://x.com/bianca"],
 			latestArticle: undefined,

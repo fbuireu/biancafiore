@@ -8,7 +8,6 @@ export interface RawImage {
 	alt?: string;
 	width?: number;
 	height?: number;
-	mimeType?: string;
 	filename?: string;
 	provider?: string;
 	blurhash?: string | null;
@@ -19,7 +18,6 @@ const resolvedImageSchema = z.object({
 	src: z.string().min(1),
 	width: z.number(),
 	height: z.number(),
-	mimeType: z.string(),
 });
 
 const blurhashOf = ({ blurhash, meta }: RawImage): string | undefined => {
@@ -35,16 +33,12 @@ export function createImage(rawImage: RawImage | undefined): ImageDTO {
 		);
 	}
 
-	const { src, width, height, mimeType } = rawImage;
+	const { src, width, height } = rawImage;
 	const placeholder = imagePlaceholder({ blurhash: blurhashOf(rawImage), width, height });
 
 	return {
 		url: src,
 		details: { width, height },
-		formats: {
-			avif: mimeType === "image/avif",
-			webp: mimeType === "image/webp",
-		},
 		...(placeholder && { placeholder }),
 	};
 }

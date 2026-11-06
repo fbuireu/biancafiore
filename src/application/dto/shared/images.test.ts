@@ -19,14 +19,8 @@ describe("createImage", () => {
 		expect(createImage(rawImage({ width: 640, height: 480 })).details).toStrictEqual({ width: 640, height: 480 });
 	});
 
-	it("flags the modern formats off the mime type and nothing else", () => {
-		expect(createImage(rawImage({ mimeType: "image/avif" })).formats).toStrictEqual({ avif: true, webp: false });
-		expect(createImage(rawImage({ mimeType: "image/webp" })).formats).toStrictEqual({ avif: false, webp: true });
-		expect(createImage(rawImage({ mimeType: "image/png" })).formats).toStrictEqual({ avif: false, webp: false });
-	});
-
 	it("builds no rendering URL of its own, since the page hands the path to Astro's image service, which EmDash's endpoint answers", () => {
-		expect(Object.keys(createImage(rawImage())).toSorted()).toStrictEqual(["details", "formats", "url"]);
+		expect(Object.keys(createImage(rawImage())).toSorted()).toStrictEqual(["details", "url"]);
 	});
 
 	it("inlines the blurhash EmDash stored on upload as the placeholder, so the page asks for nothing to blur it", () => {
@@ -44,7 +38,7 @@ describe("createImage", () => {
 	});
 
 	it("refuses media the client could not resolve to a file, naming it rather than rendering nothing", () => {
-		const unresolved = { id: "01MEDIA", provider: "cloudflare-images", width: 10, height: 10, mimeType: "image/png" };
+		const unresolved = { id: "01MEDIA", provider: "cloudflare-images", width: 10, height: 10 };
 
 		expect(() => createImage(unresolved)).toThrow(
 			"An image reached the mapper without a resolved file and its dimensions (01MEDIA), so nothing can render it",

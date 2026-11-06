@@ -18,7 +18,6 @@ interface ImageOfParams {
 const imageOf = ({ width, height }: ImageOfParams) => ({
 	url: `${MEDIA_FILE_PATH}hero.jpg`,
 	details: { width, height },
-	formats: { avif: false, webp: false },
 });
 
 const recordingGetImage = () => {

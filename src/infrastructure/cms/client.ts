@@ -20,7 +20,6 @@ export interface CmsMedia {
 	alt?: string;
 	width?: number;
 	height?: number;
-	mimeType?: string;
 	blurhash?: string;
 }
 
@@ -207,7 +206,6 @@ function mediaOf(item: Record<string, unknown>): CmsMedia | undefined {
 				alt: asText(item.alt) ?? undefined,
 				width: numberOf(item.width),
 				height: numberOf(item.height),
-				mimeType: asText(item.mimeType) ?? undefined,
 				blurhash: asText(item.blurhash) ?? undefined,
 			}
 		: undefined;

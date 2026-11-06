@@ -18,7 +18,7 @@ const makeTestimonial = (fields: Partial<TestimonialFields> = {}): RawTestimonia
 describe("createTestimonials", () => {
 	it("carries the Quotee, quote and role across verbatim and drops nothing else in", () => {
 		const [testimonial] = createTestimonials([
-			makeTestimonial({ image: rawImage({ name: "ada.webp", mimeType: "image/webp", width: 128, height: 128 }) }),
+			makeTestimonial({ image: rawImage({ name: "ada.webp", width: 128, height: 128 }) }),
 		]);
 
 		expect(testimonial).toEqual({
@@ -28,7 +28,6 @@ describe("createTestimonials", () => {
 			image: {
 				url: `${MEDIA_FILE_PATH}ada.webp`,
 				details: { width: 128, height: 128 },
-				formats: { avif: false, webp: true },
 			},
 		});
 	});

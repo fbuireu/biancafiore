@@ -38,7 +38,7 @@ const AUTHOR = rawByline({
 	slug: "bianca-fiore",
 	displayName: "Bianca Fiore",
 	bio: "Content writer",
-	avatar: avatar({ name: "bianca.webp", mimeType: "image/webp", width: 1200, height: 630 }),
+	avatar: avatar({ name: "bianca.webp", width: 1200, height: 630 }),
 	customFields: {
 		job_title: "Writer",
 		current_company: "Freelance",
@@ -177,12 +177,11 @@ describe("createArticles description", () => {
 
 describe("createArticles images", () => {
 	it("maps a featured image to url, pixel dimensions and format flags", () => {
-		const [article] = create([makeArticle({ featuredImage: rawImage({ name: "hero.avif", mimeType: "image/avif" }) })]);
+		const [article] = create([makeArticle({ featuredImage: rawImage({ name: "hero.avif" }) })]);
 
 		expect(article.featuredImage).toEqual({
 			url: `${MEDIA_FILE_PATH}hero.avif`,
 			details: { width: 1200, height: 630 },
-			formats: { avif: true, webp: false },
 		});
 	});
 
@@ -449,7 +448,6 @@ describe("createArticles author and batching", () => {
 			profileImage: {
 				url: `${MEDIA_FILE_PATH}bianca.webp`,
 				details: { width: 1200, height: 630 },
-				formats: { avif: false, webp: true },
 			},
 			socialNetworks: ["https://linkedin.com/in/bianca"],
 		});

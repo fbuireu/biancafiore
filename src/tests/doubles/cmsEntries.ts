@@ -64,9 +64,9 @@ export function rawByline({
 type AvatarParams = RawImageParams;
 
 export function avatar({ blurhash, ...image }: AvatarParams = {}): CmsMedia {
-	const { id, src = "", width, height, mimeType } = rawImage({ name: "avatar.jpg", width: 400, height: 400, ...image });
+	const { id, src = "", width, height } = rawImage({ name: "avatar.jpg", width: 400, height: 400, ...image });
 
-	return { id, src, width, height, mimeType, ...(blurhash && { blurhash }) };
+	return { id, src, width, height, ...(blurhash && { blurhash }) };
 }
 
 interface TermParams {
@@ -82,23 +82,15 @@ interface RawImageParams {
 	name?: string;
 	width?: number;
 	height?: number;
-	mimeType?: string;
 	blurhash?: string;
 }
 
-export function rawImage({
-	name = "hero.jpg",
-	width = 1200,
-	height = 630,
-	mimeType = "image/jpeg",
-	blurhash,
-}: RawImageParams = {}): RawImage {
+export function rawImage({ name = "hero.jpg", width = 1200, height = 630, blurhash }: RawImageParams = {}): RawImage {
 	return {
 		id: `media-${name}`,
 		src: `${MEDIA_FILE_PATH}${name}`,
 		width,
 		height,
-		mimeType,
 		...(blurhash && { blurhash }),
 	};
 }

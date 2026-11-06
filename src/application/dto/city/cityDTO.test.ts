@@ -90,10 +90,8 @@ describe("createCities period", () => {
 });
 
 describe("createCities passthrough fields", () => {
-	it("keeps the name and description verbatim and maps the image to url, dimensions and formats", () => {
-		const [city] = createCities([
-			makeCity({ image: rawImage({ name: "barcelona.webp", mimeType: "image/webp", width: 800, height: 600 }) }),
-		]);
+	it("keeps the name and description verbatim and maps the image to url and dimensions", () => {
+		const [city] = createCities([makeCity({ image: rawImage({ name: "barcelona.webp", width: 800, height: 600 }) })]);
 
 		expect(city).toMatchObject({
 			name: "Barcelona",
@@ -101,7 +99,6 @@ describe("createCities passthrough fields", () => {
 			image: {
 				url: `${MEDIA_FILE_PATH}barcelona.webp`,
 				details: { width: 800, height: 600 },
-				formats: { avif: false, webp: true },
 			},
 		});
 	});

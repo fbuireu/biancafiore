@@ -24,7 +24,7 @@ const makeRawAuthor = ({
 		slug,
 		displayName,
 		bio: "Content writer",
-		avatar: avatar({ name: "bianca.avif", width: 512, height: 512, mimeType: "image/avif" }),
+		avatar: avatar({ name: "bianca.avif", width: 512, height: 512 }),
 		customFields,
 	});
 
@@ -42,7 +42,7 @@ const makeRawArticle = ({ slug = "an-article", bylines = [] }: MakeRawArticlePar
 	});
 
 describe("createAuthor", () => {
-	it("carries the byline and its custom fields across, and turns the avatar into url, dimensions and formats", () => {
+	it("carries the byline and its custom fields across, and turns the avatar into url and dimensions", () => {
 		expect(createAuthor(makeRawAuthor())).toEqual({
 			name: "Bianca Fiore",
 			slug: "bianca-fiore",
@@ -52,7 +52,6 @@ describe("createAuthor", () => {
 			profileImage: {
 				url: `${MEDIA_FILE_PATH}bianca.avif`,
 				details: { width: 512, height: 512 },
-				formats: { avif: true, webp: false },
 			},
 			socialNetworks: ["https://linkedin.com/in/bianca"],
 		});

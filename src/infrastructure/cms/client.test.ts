@@ -48,7 +48,6 @@ const AVATAR = {
 	alt: "Bianca",
 	width: 400,
 	height: 400,
-	mimeType: "image/jpeg",
 	blurhash: "LXCacDM{RjxuOxogkCR.Dkt7t7Rj",
 };
 
@@ -174,7 +173,6 @@ describe("CmsClient.listEntries", () => {
 					alt: "Bianca",
 					width: 400,
 					height: 400,
-					mimeType: "image/jpeg",
 					blurhash: AVATAR.blurhash,
 				},
 				customFields: { job_title: "Writer" },

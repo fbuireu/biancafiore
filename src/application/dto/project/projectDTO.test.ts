@@ -65,13 +65,12 @@ describe("createProjects description", () => {
 describe("createProjects image and batching", () => {
 	it("maps the image to url, pixel dimensions and format flags", () => {
 		const [project] = createProjects([
-			makeProject({ image: rawImage({ name: "dispatch.avif", mimeType: "image/avif", width: 640, height: 480 }) }),
+			makeProject({ image: rawImage({ name: "dispatch.avif", width: 640, height: 480 }) }),
 		]);
 
 		expect(project.image).toEqual({
 			url: `${MEDIA_FILE_PATH}dispatch.avif`,
 			details: { width: 640, height: 480 },
-			formats: { avif: true, webp: false },
 		});
 	});
 

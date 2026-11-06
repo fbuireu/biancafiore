@@ -6,10 +6,6 @@ export const imageSchema = z.object({
 		width: z.number(),
 		height: z.number(),
 	}),
-	formats: z.object({
-		avif: z.boolean(),
-		webp: z.boolean(),
-	}),
 	placeholder: z.string().optional(),
 });
 
