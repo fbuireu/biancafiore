@@ -52,6 +52,7 @@ export default defineConfig({
 	resolve: { alias },
 	test: {
 		testTimeout: 20_000,
+		experimental: { traceTimeline: true },
 		reporters: process.env.GITHUB_ACTIONS ? ["default", jobSummary(projectsRun)] : ["default"],
 		projects: [
 			{
