@@ -57,7 +57,6 @@
 }
 
 .contact-form__submit {
-	--overflow: hidden;
 	--rotate: 0;
 	--left-body-background: var(--neutral-main);
 	--right-body-background: var(--neutral-main);

@@ -42,7 +42,7 @@ export interface CmsItem {
 	updatedAt: string;
 }
 
-export interface CmsSiteImage {
+interface CmsSiteImage {
 	src: string;
 	width?: number;
 	height?: number;
@@ -241,7 +241,7 @@ function siteImageOf(value: unknown): CmsSiteImage | undefined {
 	return src ? { src, width: numberOf(value.width), height: numberOf(value.height) } : undefined;
 }
 
-export function siteSettingsOf(value: unknown): CmsSiteSettings {
+function siteSettingsOf(value: unknown): CmsSiteSettings {
 	const settings = isRecord(value) ? value : {};
 	const seo = isRecord(settings.seo) ? settings.seo : {};
 	const social = isRecord(settings.social) ? settings.social : {};
@@ -262,7 +262,7 @@ export function siteSettingsOf(value: unknown): CmsSiteSettings {
 	};
 }
 
-export function menuItemsOf(value: unknown): CmsMenuItem[] {
+function menuItemsOf(value: unknown): CmsMenuItem[] {
 	return (Array.isArray(value) ? value : []).flatMap((item) => {
 		if (!isRecord(item)) return [];
 

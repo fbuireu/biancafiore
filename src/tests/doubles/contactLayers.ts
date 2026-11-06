@@ -13,12 +13,12 @@ export interface DatabaseDoubleParams {
 	failInsertWith?: DatabaseError;
 }
 
-export interface CooldownLookup {
+interface CooldownLookup {
 	email: string;
 	since: string;
 }
 
-export interface MessageLookup {
+interface MessageLookup {
 	email: string;
 	message: string;
 }
@@ -114,7 +114,7 @@ export const databaseError = (message: string): DatabaseError => new DatabaseErr
 
 export const emailError = (message: string): EmailError => new EmailError({ message });
 
-export interface LoggedLine {
+interface LoggedLine {
 	level: LogLevel;
 	message: string;
 	context?: Record<string, unknown>;

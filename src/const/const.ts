@@ -23,4 +23,4 @@ export const CONTACT_DETAILS = {
 	ENCODED_EMAIL_BIANCA: btoa(BIANCA_EMAIL),
 } as const;
 
-export { DEFAULT_DATE_FORMAT, DEFAULT_LOCALE_STRING } from "./locale";
+export { DEFAULT_LOCALE_STRING } from "./locale";

@@ -36,10 +36,6 @@ export function rawEntry<FIELDS, REFERENCE extends string = never>({
 	};
 }
 
-export function referenceTo({ id }: CmsReference): CmsReference {
-	return { id };
-}
-
 interface RawBylineParams {
 	slug: string;
 	displayName?: string;

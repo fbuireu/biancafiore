@@ -16,7 +16,6 @@
 		--neutral-light-4: color-mix(in srgb, var(--neutral-main), var(--white) 90%);
 		--background-main: oklch(97.90% 0.008 91.48);
 		--error-main: oklch(58.08% 0.196 25.77);
-		--success-main: oklch(52.29% 0.17558211290701223 142.8999328999691);
 		--white: oklch(100% 0 0);
 		--black: oklch(0 0 0);
 		--scrim: color-mix(in srgb, oklch(0 0 0) 90%, transparent);

@@ -2,7 +2,7 @@ import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 
 export const SITEVERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
-export const GREEN_CHECK_URL = "https://api.thegreenwebfoundation.org/api/v3/greencheck/*";
+const GREEN_CHECK_URL = "https://api.thegreenwebfoundation.org/api/v3/greencheck/*";
 const COUNTRIES_URL = "*/countries.json";
 
 const CORS_HEADERS = { "access-control-allow-origin": "*" };
@@ -17,7 +17,7 @@ export const server = setupServer(
 	}),
 );
 
-export interface RecaptchaCall {
+interface RecaptchaCall {
 	url: string;
 	contentType: string | null;
 	secret: string | null;
