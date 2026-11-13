@@ -578,7 +578,15 @@ const ADR_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.sta
 const WIKI_FILES = walk("docs").filter((file) => file.endsWith(".md") && file.startsWith("docs/wiki/"));
 const CODING_STANDARDS = "CODING_STANDARDS.md";
 const GUIDES = ["AGENTS.md", "GLOSSARY.md", CODING_STANDARDS, ...NESTED_GUIDES];
-const DOCS = [...GUIDES, "README.md", ".github/CONTRIBUTING.md", ".github/SECURITY.md", ...ADR_FILES, ...WIKI_FILES];
+const DOCS = [
+	...GUIDES,
+	"README.md",
+	".github/CONTRIBUTING.md",
+	".github/SECURITY.md",
+	".github/ACCESSIBILITY.md",
+	...ADR_FILES,
+	...WIKI_FILES,
+];
 const isWiki = (doc: string): boolean => doc.startsWith("docs/wiki/");
 const wikiPages = new Set(WIKI_FILES.map((file) => basename(file, ".md")));
 

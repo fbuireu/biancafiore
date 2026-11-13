@@ -30,7 +30,9 @@ what you did, what you expected, and what actually happened, with the browser an
 the CMS, so a pull request cannot fix them; use the
 [content issue template](ISSUE_TEMPLATE/content_issue.yml) and it will be corrected in the CMS.
 
-Security issues go through the [Security Policy](./SECURITY.md), never a public issue.
+Security issues go through the [Security Policy](./SECURITY.md), never a public issue. A barrier for someone
+using a keyboard, a screen reader, zoom or reduced motion is a bug like any other;
+[ACCESSIBILITY.md](./ACCESSIBILITY.md) lists what helps in the report.
 
 ### Suggesting features
 

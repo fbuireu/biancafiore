@@ -62,6 +62,7 @@ pnpm verify             # format check, typecheck, astro check, unit tests with 
 - [The wiki](https://github.com/fbuireu/biancafiore/wiki): the architecture, how a request, a publish and a contact submission flow, and CI/CD, with diagrams.
 - [CONTRIBUTING.md](.github/CONTRIBUTING.md): the checks, the commit rules and the pull request flow.
 - [SECURITY.md](.github/SECURITY.md): what is in scope, and how to report a vulnerability privately.
+- [ACCESSIBILITY.md](.github/ACCESSIBILITY.md): what the site does for keyboard, screen reader and reduced-motion use, and how to report a barrier.
 - [AGENTS.md](AGENTS.md) and the guide in each folder: what someone editing the tree needs to know.
 - [CODING_STANDARDS.md](CODING_STANDARDS.md) and [GLOSSARY.md](GLOSSARY.md): how code is written here, and what its words mean.
 - [docs/adr/](docs/adr/): why each decision was made.
