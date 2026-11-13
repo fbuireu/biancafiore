@@ -23,6 +23,10 @@
 		}
 	}
 
+	.page__main:focus-visible {
+		outline: none;
+	}
+
 	[data-theme="dark"] {
 		::selection,
 		::search-text {

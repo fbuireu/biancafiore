@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { LOGO_INTERSECTED_CLASS, LOGO_LINK_CLASS } from "../../logo/const";
+import { SKIP_LINK_CLASS } from "../../skipLink/const";
 import {
 	HEADER_CLASS,
 	HEADER_MENU_BUTTON_CLASS,
@@ -128,6 +129,7 @@ describe("backgroundObserver", () => {
 describe("wireMenu", () => {
 	const render = () => {
 		document.body.innerHTML = `
+			<a class="${SKIP_LINK_CLASS}" href="#main-content">Skip to content</a>
 			<button class="${HEADER_MENU_BUTTON_CLASS}"><span class="${HEADER_MENU_TEXT_CLASS}">Menu</span></button>
 			<nav class="${HEADER_MENU_NAV_CLASS}"><a href="/about">About</a></nav>
 			<main><a href="/articles">Articles</a></main>
@@ -310,9 +312,11 @@ describe("wireMenu", () => {
 		expect(document.activeElement).toBe(document.querySelector(`.${HEADER_MENU_NAV_CLASS} a`));
 	});
 
-	it("takes the page the overlay covers out of the tab order while it is open", () => {
+	it("takes the page the overlay covers out of the tab order while it is open, the skip link included, because activating it would send focus into an inert main", () => {
 		const { elements } = wire();
-		const covered = () => [...document.querySelectorAll<HTMLElement>("main, footer")];
+		const covered = () => [...document.querySelectorAll<HTMLElement>(`.${SKIP_LINK_CLASS}, main, footer`)];
+
+		expect(covered()).toHaveLength(3);
 
 		expect(covered().every((region) => region.inert)).toBe(false);
 

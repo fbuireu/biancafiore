@@ -11,6 +11,8 @@ import Head from "../head/Head.astro";
 import Header from "../header/Header.astro";
 import ScrollTop from "../scrollTop/ScrollTop.astro";
 import { pageSeo } from "../seo/utils/pageSeo";
+import { MAIN_CONTENT_ID } from "../skipLink/const";
+import SkipLink from "../skipLink/SkipLink.astro";
 import UnderConstruction from "../underConstruction/UnderConstruction.astro";
 import { emdashPageFields } from "./utils/emdashPage";
 import { getPage } from "./utils/page";
@@ -28,6 +30,7 @@ const page = createPublicPageContext({ Astro, ...emdashPageFields(seo) });
 <html lang={DEFAULT_LOCALE_STRING} class:list={["page", pageModifier]}>
 <Head seo={seo} page={page}><slot name="head" slot="head" /></Head>
 <body>
+{showsHeader && <SkipLink />}
 <EmDashBodyStart page={page} />
 <noscript>
     <iframe src=`https://www.googletagmanager.com/ns.html?id=${GOOGLE_TAG_MANAGER_ID}`
@@ -37,7 +40,7 @@ const page = createPublicPageContext({ Astro, ...emdashPageFields(seo) });
 </noscript>
 {showsHeader && <Header />}
 {servesRealContent && <ScrollTop />}
-<main class="page__main">
+<main id={MAIN_CONTENT_ID} class="page__main" tabindex="-1">
     {servesRealContent ? <slot /> : <UnderConstruction />}
 </main>
 <Footer />

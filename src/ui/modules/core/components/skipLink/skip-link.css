@@ -1,0 +1,22 @@
+.skip-link {
+	position: fixed;
+
+	&:focus {
+		background-color: var(--neutral-main);
+		block-size: auto;
+		clip-path: none;
+		color: var(--background-main);
+		font-size: var(--font-size-sm);
+		inset: var(--space-xs) auto auto var(--space-xs);
+		inline-size: auto;
+		overflow: visible;
+		padding: var(--space-2xs) var(--space-xs);
+		text-decoration: none;
+		z-index: 1100;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--primary-main);
+		outline-offset: 2px;
+	}
+}

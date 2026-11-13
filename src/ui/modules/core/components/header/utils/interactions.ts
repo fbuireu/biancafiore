@@ -1,6 +1,7 @@
 import { motionTimeScale } from "../../../utils/motion";
 import { LOGO_INTERSECTED_CLASS, LOGO_LINK_CLASS } from "../../logo/const";
 import { SCROLL_TOP_WRAPPER_CLASS } from "../../scrollTop/const";
+import { SKIP_LINK_CLASS } from "../../skipLink/const";
 import {
 	HEADER_CLASS,
 	HEADER_MENU_BUTTON_CLASS,
@@ -44,7 +45,7 @@ const TOGGLE_MENU_SELECTORS = {
 	NAVIGATION_ITEMS: `.${HEADER_MENU_ITEM_CLASS} > *`,
 	QUOTE: `.${HEADER_MENU_QUOTE_CLASS} > *`,
 	FIRST_MENU_LINK: `.${HEADER_MENU_NAV_CLASS} a`,
-	COVERED_BY_MENU: `main, footer, .${SCROLL_TOP_WRAPPER_CLASS}`,
+	COVERED_BY_MENU: `.${SKIP_LINK_CLASS}, main, footer, .${SCROLL_TOP_WRAPPER_CLASS}`,
 };
 
 interface IsIntersectingParams {
