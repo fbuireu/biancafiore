@@ -1,4 +1,4 @@
-import { type ArticleHeading, isTableOfContentsHeading } from "@domain/article";
+import { type ArticleHeading, imageAlt, isTableOfContentsHeading } from "@domain/article";
 import type { PortableText } from "@domain/shared/portableText";
 import { imagePlaceholder } from "@infrastructure/images/imagePlaceholder";
 import { slugify } from "@shared/utils/strings";
@@ -59,6 +59,7 @@ const imageSchema = z.looseObject({
 	}),
 	blurhash: z.string().optional(),
 	alt: z.string().optional(),
+	decorative: z.boolean().optional(),
 	caption: z.string().optional(),
 	width: z.number().optional(),
 	height: z.number().optional(),
@@ -70,6 +71,7 @@ const splitBlockSchema = z.looseObject({
 	_key: z.string().optional(),
 	image: imageSourceSchema,
 	alt: z.string().optional(),
+	decorative: z.boolean().optional(),
 	heading: z.string().optional(),
 	text: z.string().optional(),
 });
@@ -111,17 +113,12 @@ function createAnchors(): (text: string) => string {
 const plainTextOf = (children: unknown[]): string =>
 	children.map((child) => (spanSchema.validate(child) ? child.text : "")).join("");
 
-interface PrepareImageParams {
-	node: PortableTextNode;
-	title: string;
-}
-
-function prepareImage({ node, title }: PrepareImageParams): PortableTextNode[] {
+function prepareImage(node: PortableTextNode): PortableTextNode[] {
 	if (!imageSchema.validate(node)) {
 		return [];
 	}
 
-	const { _key, asset, alt, caption, width, height, alignment } = node;
+	const { _key, asset, alt, decorative, caption, width, height, alignment } = node;
 	const placeholder = imagePlaceholder({
 		blurhash: node.blurhash ?? asset.meta?.blurhash ?? undefined,
 		width: width ?? 0,
@@ -133,7 +130,7 @@ function prepareImage({ node, title }: PrepareImageParams): PortableTextNode[] {
 			_type: "image",
 			_key,
 			src: asset.url,
-			alt: alt || title,
+			alt: imageAlt({ alt, decorative }) ?? "",
 			...(width && { width }),
 			...(height && { height }),
 			...(placeholder && { placeholder }),
@@ -148,14 +145,14 @@ function prepareSplitBlock(node: PortableTextNode): PortableTextNode[] {
 		return [];
 	}
 
-	const { _key, image, alt, heading, text } = node;
+	const { _key, image, alt, decorative, heading, text } = node;
 
 	return [
 		{
 			_type: SPLIT_BLOCK_TYPE,
 			_key,
 			src: image,
-			alt: alt ?? "",
+			alt: imageAlt({ alt, decorative }) ?? "",
 			...(heading && { heading }),
 			...(text && { text }),
 		},
@@ -182,15 +179,10 @@ function prepareLegacyVideo(node: PortableTextNode): PortableTextNode[] {
 	return player ? [{ _type: "iframe", _key: node._key, ...player, ...(node.title && { title: node.title }) }] : [];
 }
 
-interface PrepareBlockParams {
-	node: PortableTextNode;
-	title: string;
-}
-
-function prepareBlock({ node, title }: PrepareBlockParams): PortableTextNode[] {
+function prepareBlock(node: PortableTextNode): PortableTextNode[] {
 	switch (node._type) {
 		case "image":
-			return prepareImage({ node, title });
+			return prepareImage(node);
 		case SPLIT_BLOCK_TYPE:
 			return prepareSplitBlock(node);
 		case "iframe":
@@ -216,7 +208,7 @@ export function prepareArticleContent(rawArticle: AnyRawArticle): PreparedArticl
 	const headings: ArticleHeading[] = [];
 	const content = prepareLinks(rawArticle.data.content).flatMap((node) => {
 		if (!headingSchema.validate(node)) {
-			return prepareBlock({ node, title: rawArticle.data.title });
+			return prepareBlock(node);
 		}
 
 		const level = Number(node.style.slice(1));

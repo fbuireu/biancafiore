@@ -1,6 +1,6 @@
 import { DEFAULT_LOCALE_STRING } from "@const/locale";
 import { formatDate } from "@shared/utils/dates";
-import type { ArticleHeading, ArticleSummaryDTO, TableOfContents } from "./types";
+import type { ArticleHeading, ArticleSummaryDTO, ImageAltParams, TableOfContents } from "./types";
 
 const WORDS_PER_MINUTE = 200;
 const MINIMUM_READING_MINUTES = 1;
@@ -27,6 +27,12 @@ export function getReadingTime(content: string): number {
 
 export function isTableOfContentsHeading(level: number): boolean {
 	return TABLE_OF_CONTENTS_LEVELS.includes(level);
+}
+
+export function imageAlt({ alt, decorative }: ImageAltParams): string | undefined {
+	if (decorative) return "";
+
+	return alt?.trim() || undefined;
 }
 
 export function generateTableOfContents(headings: ArticleHeading[]): TableOfContents {

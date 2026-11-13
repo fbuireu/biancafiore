@@ -4,6 +4,7 @@ import {
 	deriveDescription,
 	generateTableOfContents,
 	getReadingTime,
+	imageAlt,
 	isTableOfContentsHeading,
 	sortFavoriteFirst,
 	sortReverseChronological,
@@ -326,5 +327,22 @@ describe("creditedSource", () => {
 		expect(() => creditedSource({ isRepublished: false, originalSource: "The Content Standard" })).toThrow(
 			"An Article names an original source (The Content Standard) but is not flagged as republished, so nothing would credit it",
 		);
+	});
+});
+
+describe("imageAlt", () => {
+	it("answers the description the editor wrote, trimmed", () => {
+		expect(imageAlt({ alt: "  A lighthouse at dusk " })).toBe("A lighthouse at dusk");
+	});
+
+	it("answers an empty string for a decorative image, whatever description it still carries, because empty is the decision then", () => {
+		expect(imageAlt({ decorative: true })).toBe("");
+		expect(imageAlt({ alt: "A lighthouse", decorative: true })).toBe("");
+	});
+
+	it("answers nothing for an image with neither a description nor the decorative choice, so no caller can mistake the omission for the decision", () => {
+		expect(imageAlt({})).toBeUndefined();
+		expect(imageAlt({ alt: "" })).toBeUndefined();
+		expect(imageAlt({ alt: "   ", decorative: false })).toBeUndefined();
 	});
 });

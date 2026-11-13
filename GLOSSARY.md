@@ -80,6 +80,10 @@ _Avoid_: starred, pinned, highlight, best-of.
 The image an Article carries at the top of the piece and in listings. An Article may have none, in which case it is presented in an image-less form.
 _Avoid_: cover, thumbnail, hero image, banner.
 
+**Image Description**:
+The plain-text account of what an image in an Article's body shows, written by the Author for readers who cannot see it. An image has one, or is marked decorative, which gives it none on purpose: an empty description is a decision the Author makes and never a default, and an Article does not go live while an image has neither.
+_Avoid_: caption, tooltip, label.
+
 **Republished Article**:
 An Article that first appeared elsewhere and is re-run here, flagged as such so a banner can credit the earlier publication.
 _Avoid_: cross-post, syndicated, reprint, mirror.

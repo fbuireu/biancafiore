@@ -23,7 +23,7 @@ EmDash ships the renderer: `emdash/ui`'s `<PortableText>`, built on `astro-porta
 - The domain carries rich text as `portableTextSchema` ([`src/domain/shared/portableText.ts`](../../src/domain/shared/portableText.ts)): an array of typed objects the domain never reads. It is an open format, not an EmDash type, so the domain still knows no CMS.
 - **The application layer hands the page blocks ready to render, and the page decides nothing.** `prepareArticleContent` in [`content.ts`](../../src/application/dto/article/utils/content.ts) does all of the deciding:
   - a heading becomes an `articleHeading` block with its tag, its unique anchor and, from h2 down, the `--section-N` scope the Table of Contents animates on;
-  - an image block becomes its media path, its dimensions, its blurhash placeholder, its alt fallback and its layout, and a split block's image its path;
+  - an image block becomes its media path, its dimensions, its blurhash placeholder, its alt (the editor's description, or empty for a decorative image) and its layout, and a split block's image its path;
   - an iframe holding a watch link, and a legacy `videoEmbed`, become the player iframe;
   - every link is settled through `prepareLinks` ([`dto/shared/portableText.ts`](../../src/application/dto/shared/portableText.ts)): `blank` for another site or a tag page, a path for the production domain, dropped for a scheme it does not trust;
   - a block that fails its schema is dropped, and so is a type no component renders, because `astro-portabletext`'s fallback for an unknown type is a hidden warning in the markup.

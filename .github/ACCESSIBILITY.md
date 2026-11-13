@@ -8,6 +8,9 @@ barrier, and what a pull request has to keep working.
 ## What the site does
 
 - **A declared language.** Every page declares British English, so a screen reader reads it with the right voice.
+- **A link past the header.** The first Tab on a page reaches *Skip to content*, which appears over the header and
+  moves focus into the page's main content, so the logo, the links and the menu button need not be tabbed through on
+  every page. It is not offered while the menu is open, because the page behind the menu cannot be reached.
 - **Visible focus.** Links and controls show a focus ring when reached with the keyboard.
 - **A menu that holds focus.** The menu button says whether the menu is open, and while it is, the page behind it
   cannot be reached with Tab or a screen reader.
@@ -23,7 +26,12 @@ The booking calendar on the Contact page is Calendly's embedded widget, so how w
 technology is down to Calendly. If you cannot use it, the *Email me* tab on the same page reaches the same person.
 
 Articles, projects and testimonials are written in the CMS, not in this repository, so their headings, link text
-and image descriptions are set there.
+and image descriptions are set there. For the images in an article's body, the editor offers an *Image description*
+field, and a *Decorative image (no description)* switch on a split block, so an image has no description only when
+that was chosen. An article cannot be published or scheduled while one of its images has neither, and the CMS says
+which image. An image saved before this rule with neither is read to a screen reader as nothing at all. It is never
+given the article's title in place of a description. Images that are not in an article's body, such as the featured
+image, are described by the article's title.
 
 ## What is tested
 

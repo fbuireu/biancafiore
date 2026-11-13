@@ -272,9 +272,19 @@ describe("prepareArticleContent images", () => {
 		expect(preparedImage()).not.toHaveProperty("srcset");
 	});
 
-	it("takes the alt text the editor wrote, and falls back to the Article's own title", () => {
-		expect(preparedImage({ alt: "A described image" }).alt).toBe("A described image");
-		expect(preparedImage().alt).toBe("An article");
+	it("takes the description the editor wrote, trimmed", () => {
+		expect(preparedImage({ alt: "  A described image " }).alt).toBe("A described image");
+	});
+
+	it("gives an image the editor marked decorative an empty alt, whatever else the block carries", () => {
+		expect(preparedImage({ decorative: true }).alt).toBe("");
+		expect(preparedImage({ decorative: true, alt: "Left over from before" }).alt).toBe("");
+	});
+
+	it("gives an image saved with neither a description nor the decorative choice an empty alt, never the Article's title, which says nothing about what the image shows", () => {
+		expect(preparedImage().alt).toBe("");
+		expect(preparedImage({ alt: "   " }).alt).toBe("");
+		expect(preparedImage({ decorative: false }).alt).toBe("");
 	});
 
 	it("carries a caption only when the editor wrote one", () => {
@@ -346,8 +356,14 @@ describe("prepareArticleContent split blocks", () => {
 		});
 	});
 
-	it("gives a split block's image an empty alt when the editor never described it", () => {
+	it("gives a split block's image an empty alt when the editor marked it decorative, even with a description left in the field", () => {
+		expect(prepared([split({ decorative: true })])[0]).toMatchObject({ alt: "" });
+		expect(prepared([split({ decorative: true, alt: "Left over from before" })])[0]).toMatchObject({ alt: "" });
+	});
+
+	it("gives a split block's image an empty alt when it was saved with neither a description nor the decorative choice", () => {
 		expect(prepared([split()])[0]).toMatchObject({ alt: "" });
+		expect(prepared([split({ decorative: false })])[0]).toMatchObject({ alt: "" });
 	});
 
 	it("drops a split block with no image", () => {

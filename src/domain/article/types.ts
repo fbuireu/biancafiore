@@ -13,3 +13,8 @@ export interface ArticleHeading {
 	text: string;
 	scope: string;
 }
+
+export interface ImageAltParams {
+	alt?: string | undefined;
+	decorative?: boolean | undefined;
+}
