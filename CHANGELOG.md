@@ -1,3 +1,11 @@
+## [1.29.19](https://github.com/fbuireu/biancafiore/compare/v1.29.18...v1.29.19) (2026-11-13)
+
+
+### Bug Fixes
+
+* add a link that skips past the header to the content ([8d3aec2](https://github.com/fbuireu/biancafiore/commit/8d3aec29d914c26e703a0b944ba2cd1535051045)), closes [#1229](https://github.com/fbuireu/biancafiore/issues/1229)
+* ask for a description of every image before an article is published ([acb8f4e](https://github.com/fbuireu/biancafiore/commit/acb8f4ef6d95e45633da3eeec01d59d0b6bea7f3)), closes [#1230](https://github.com/fbuireu/biancafiore/issues/1230)
+
 ## [1.29.18](https://github.com/fbuireu/biancafiore/compare/v1.29.17...v1.29.18) (2026-11-01)
 
 
