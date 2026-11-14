@@ -13,3 +13,7 @@ blockExoticSubdeps: true
 minimumReleaseAgeExclude:
   # Renovate security update: happy-dom@21.0.4
   - happy-dom@21.0.4
+packageExtensions:
+  "@astrojs/astro2tsx@0.1.2":
+    dependencies:
+      "@emnapi/runtime": "1.11.3"
