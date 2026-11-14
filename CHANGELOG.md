@@ -1,3 +1,10 @@
+## [1.29.20](https://github.com/fbuireu/biancafiore/compare/v1.29.19...v1.29.20) (2026-11-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency astro to v7.4.7 [security] ([#1231](https://github.com/fbuireu/biancafiore/issues/1231)) ([4296622](https://github.com/fbuireu/biancafiore/commit/42966224cffc2ec2e0051ae2a9bfa9a9ca9d6d97))
+
 ## [1.29.19](https://github.com/fbuireu/biancafiore/compare/v1.29.18...v1.29.19) (2026-11-13)
 
 
