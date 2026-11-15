@@ -1,3 +1,11 @@
+## [1.29.21](https://github.com/fbuireu/biancafiore/compare/v1.29.20...v1.29.21) (2026-11-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency gsap to v3.15.1 ([#1236](https://github.com/fbuireu/biancafiore/issues/1236)) ([7d4b2e4](https://github.com/fbuireu/biancafiore/commit/7d4b2e42a56af5924a7b2d8e61629a4772ed4ed6))
+* **deps:** update dependency react-email to v6.11.11 ([#1237](https://github.com/fbuireu/biancafiore/issues/1237)) ([a3ad901](https://github.com/fbuireu/biancafiore/commit/a3ad901704247102570ad7aab85240c1a6f4c8c3))
+
 ## [1.29.20](https://github.com/fbuireu/biancafiore/compare/v1.29.19...v1.29.20) (2026-11-14)
 
 
