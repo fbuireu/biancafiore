@@ -1,3 +1,10 @@
+## [1.29.22](https://github.com/fbuireu/biancafiore/compare/v1.29.21...v1.29.22) (2026-11-15)
+
+
+### Bug Fixes
+
+* **deps:** update react monorepo to v19.3.1 ([#1238](https://github.com/fbuireu/biancafiore/issues/1238)) ([67aa0bf](https://github.com/fbuireu/biancafiore/commit/67aa0bf57edd43531a9b5d35d01397ab26db66b3))
+
 ## [1.29.21](https://github.com/fbuireu/biancafiore/compare/v1.29.20...v1.29.21) (2026-11-15)
 
 
