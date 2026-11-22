@@ -29,6 +29,14 @@
 		--gold-bright: light-dark(#b58e4d, #ddc084);
 		--surface: light-dark(#f1ede3, #1d1a13);
 		--header-height: 80px;
+		--safe-top: env(safe-area-inset-top);
+		--safe-right: env(safe-area-inset-right);
+		--safe-bottom: env(safe-area-inset-bottom);
+		--safe-left: env(safe-area-inset-left);
+		--header-extent: calc(var(--header-height) + var(--safe-top));
+		--page-gutter: clamp(1.25rem, 5cqi, 4rem);
+		--page-gutter-start: max(var(--page-gutter), var(--safe-left));
+		--page-gutter-end: max(var(--page-gutter), var(--safe-right));
 		--base-font-size: 16px;
 		--leading: 1.5;
 		--leading-heading: 1.2;
@@ -278,6 +286,30 @@
 	syntax: "<length>";
 	inherits: false;
 	initial-value: 80px;
+}
+
+@property --safe-top {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0px;
+}
+
+@property --safe-right {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0px;
+}
+
+@property --safe-bottom {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0px;
+}
+
+@property --safe-left {
+	syntax: "<length>";
+	inherits: true;
+	initial-value: 0px;
 }
 
 @property --leading {

@@ -41,7 +41,7 @@
 
 	@container articles-page (width <= 960px) {
 		gap: 1rem 0;
-		padding-inline: 1rem;
+		padding-inline: max(1rem, var(--safe-left)) max(1rem, var(--safe-right));
 	}
 }
 
@@ -57,7 +57,7 @@
 		inset-block-end: -1.5rem;
 		gap: 0.5rem 1rem;
 		justify-content: flex-start;
-		padding-inline: 1rem;
+		padding-inline: max(1rem, var(--safe-left)) max(1rem, var(--safe-right));
 	}
 }
 

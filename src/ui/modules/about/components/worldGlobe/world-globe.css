@@ -9,7 +9,7 @@
 .world-globe-wrapper {
 	height: fit-content;
 	position: sticky;
-	top: calc(var(--header-height) + 0.5rem);
+	top: calc(var(--header-extent) + 0.5rem);
 
 	@container about-page (width <= 960px) {
 		order: 2;

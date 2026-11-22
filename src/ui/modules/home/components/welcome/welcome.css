@@ -1,5 +1,6 @@
 .welcome {
 	padding-block: 104px 88px;
+	padding-inline: 0;
 
 	@container home-page (width <= 960px) {
 		padding-block: 56px 64px;
@@ -9,7 +10,7 @@
 .welcome__inner {
 	margin-inline: auto;
 	max-width: var(--grid-content);
-	padding-inline: clamp(1.25rem, 5cqi, 64px);
+	padding-inline: var(--page-gutter-start) var(--page-gutter-end);
 }
 
 .welcome__grid {

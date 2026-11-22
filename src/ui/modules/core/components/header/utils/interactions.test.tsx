@@ -3,6 +3,7 @@ import { LOGO_INTERSECTED_CLASS, LOGO_LINK_CLASS } from "../../logo/const";
 import { SKIP_LINK_CLASS } from "../../skipLink/const";
 import {
 	HEADER_CLASS,
+	HEADER_INNER_CLASS,
 	HEADER_MENU_BUTTON_CLASS,
 	HEADER_MENU_BUTTON_INTERSECTED_CLASS,
 	HEADER_MENU_BUTTON_OUTLINE_CLASS,
@@ -39,12 +40,13 @@ const render = (markup: string): void => {
 	document.documentElement.className = "";
 	document.body.innerHTML = `
 		<header class="${HEADER_CLASS}">
+			<section class="${HEADER_INNER_CLASS}"></section>
 			<a class="${LOGO_LINK_CLASS}"><svg></svg></a>
 			<button class="${HEADER_MENU_BUTTON_CLASS}"></button>
 		</header>
 		${markup}
 	`;
-	place({ selector: `.${HEADER_CLASS}`, top: 0, height: HEADER_HEIGHT });
+	place({ selector: `.${HEADER_INNER_CLASS}`, top: 0, height: HEADER_HEIGHT });
 };
 
 const logo = (): Element => document.querySelector(`.${LOGO_LINK_CLASS} svg`) as Element;
@@ -65,6 +67,24 @@ describe("backgroundObserver", () => {
 		backgroundObserver();
 
 		expect(isInverted()).toBe(true);
+	});
+
+	it("takes the midline of the bar, so the inset the header pads itself with does not move it", () => {
+		const INSET = 59;
+
+		render(`<section class="blog inverted-color-scheme"></section>`);
+		place({ selector: `.${HEADER_CLASS}`, top: 0, height: HEADER_HEIGHT + INSET });
+		place({ selector: `.${HEADER_INNER_CLASS}`, top: INSET, height: HEADER_HEIGHT });
+		place({ selector: ".blog", top: INSET + HEADER_MIDLINE - 10, height: 500 });
+
+		backgroundObserver();
+
+		expect(isInverted()).toBe(true);
+
+		place({ selector: ".blog", top: INSET + HEADER_MIDLINE + 10, height: 500 });
+		backgroundObserver();
+
+		expect(isInverted()).toBe(false);
 	});
 
 	it("tests every inverted section on the page, not only the first", () => {

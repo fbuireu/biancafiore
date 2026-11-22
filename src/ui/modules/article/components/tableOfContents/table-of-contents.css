@@ -32,13 +32,13 @@
 }
 
 .table-of-contents-wrapper {
-	--top: calc(var(--header-height) + 2rem);
+	--top: calc(var(--header-extent) + 2rem);
 	position: sticky;
 	timeline-scope: --toc;
 	top: var(--top);
 
 	@container article-page (width <= 960px) {
-		--top: var(--header-height);
+		--top: var(--header-extent);
 		margin-block: 1rem;
 		width: 100%;
 	}
@@ -149,7 +149,7 @@
 			animation:
 				toc-reached forwards,
 				toc-left forwards;
-			animation-range: entry calc(100cqh - var(--header-height) - 1rem);
+			animation-range: entry calc(100cqh - var(--header-extent) - 1rem);
 			animation-timeline: var(--for), var(--until);
 		}
 	}

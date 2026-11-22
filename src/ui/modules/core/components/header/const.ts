@@ -1,4 +1,5 @@
 export const HEADER_CLASS = "header" as const;
+export const HEADER_INNER_CLASS = `${HEADER_CLASS}__inner` as const;
 export const HEADER_MENU_CLASS = `${HEADER_CLASS}__menu` as const;
 export const HEADER_MENU_ITEM_CLASS = `${HEADER_MENU_CLASS}__item` as const;
 export const HEADER_MENU_NAV_CLASS = `${HEADER_MENU_CLASS}__nav` as const;

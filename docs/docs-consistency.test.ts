@@ -198,6 +198,9 @@ const STATIC_ID_ATTRIBUTE = /[\s<]id="([\w-]+)"/g;
 const COLOUR_LITERAL =
 	/(?<![\w-])(?:oklch|oklab|lch|lab|rgba?|hsla?|hwb|color)\(|(?<![\w&])#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{1,5})?(?![\w-])/g;
 const TOKEN_FILE = "src/ui/styles/global/variables.css";
+const VIEWPORT_META = /<meta\s+name="viewport"\s+content="([^"]*)"/g;
+const SAFE_AREA_ENV_READ = /env\(\s*safe-area-inset-(top|right|bottom|left)\s*\)/g;
+const SAFE_AREA_ENV_PRESENCE = new RegExp(SAFE_AREA_ENV_READ.source);
 const SHARE_IMAGE_IMPORT = /import\s+\w+\s+from\s+"@assets\/images\/jpg\/([\w.-]+\.jpg)"/;
 const SHARE_IMAGE_WIDTH = 1200;
 const SHARE_IMAGE_HEIGHT = 630;
@@ -2755,6 +2758,35 @@ describe("styles guide: derived constants and source order", () => {
 		expect(stylesheets.length).toBeGreaterThan(0);
 		expect(read(TOKEN_FILE).match(COLOUR_LITERAL)?.length).toBeGreaterThan(0);
 		expect(literals).toEqual([]);
+	});
+
+	it("opts into viewport-fit=cover in the one viewport meta, and reads the safe-area insets in variables.css alone", () => {
+		expect(guide).toContain("`width=device-width,initial-scale=1,viewport-fit=cover`");
+
+		const sources = walk("src").filter((file) => SOURCE_FILE.test(file));
+		const metas = sources.flatMap((file) =>
+			[...read(file).matchAll(VIEWPORT_META)].map(([, content]) => ({ file, content })),
+		);
+		const reads = walk("src")
+			.filter((file) => file.endsWith(".css") || SOURCE_FILE.test(file))
+			.filter((file) => file !== TOKEN_FILE && !/\.test\.[jt]sx?$/.test(file))
+			.filter((file) => SAFE_AREA_ENV_PRESENCE.test(read(file)));
+		const tokens = [...read(TOKEN_FILE).matchAll(SAFE_AREA_ENV_READ)].map(([, edge]) => edge).sort();
+
+		expect(metas).toEqual([
+			{
+				file: "src/ui/modules/core/components/seo/Seo.astro",
+				content: "width=device-width,initial-scale=1,viewport-fit=cover",
+			},
+		]);
+		expect(reads).toEqual([]);
+		expect(tokens).toEqual(["bottom", "left", "right", "top"]);
+		for (const edge of ["top", "right", "bottom", "left"]) {
+			expect(read(TOKEN_FILE)).toMatch(new RegExp(`--safe-${edge}: env\\(safe-area-inset-${edge}\\);`));
+			expect(read(TOKEN_FILE)).toMatch(
+				new RegExp(`@property --safe-${edge} \\{[^}]*syntax: "<length>";[^}]*initial-value: 0px;`),
+			);
+		}
 	});
 
 	it("writes the stretch arrow's hover morph once, in global.css, which every trigger reaches by declaring --stretch-arrow: hover", () => {

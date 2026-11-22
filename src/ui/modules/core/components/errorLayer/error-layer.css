@@ -2,10 +2,10 @@
 	align-items: center;
 	display: grid;
 	justify-items: center;
-	min-height: calc(100dvh - var(--header-height));
+	min-height: calc(100dvh - var(--header-extent));
 	overflow: hidden;
 	padding-block: var(--space-xl);
-	padding-inline: clamp(1.25rem, 5vw, 4rem);
+	padding-inline: max(clamp(1.25rem, 5vw, 4rem), var(--safe-left)) max(clamp(1.25rem, 5vw, 4rem), var(--safe-right));
 	position: relative;
 	text-align: center;
 

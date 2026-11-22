@@ -1,5 +1,6 @@
 .what-i-do {
 	padding-block: var(--space-3xl);
+	padding-inline: 0;
 
 	@container about-page (width <= 960px) {
 		padding-block: var(--space-2xl);
@@ -12,7 +13,7 @@
 	grid-template-columns: 1fr 1.4fr;
 	margin-inline: auto;
 	max-width: var(--grid-content);
-	padding-inline: clamp(1.25rem, 5cqi, 64px);
+	padding-inline: var(--page-gutter-start) var(--page-gutter-end);
 
 	@container about-page (width <= 960px) {
 		gap: var(--space-l);

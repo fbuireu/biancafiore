@@ -5,7 +5,7 @@
 }
 .tabs__inner {
 	@container contact-page (width <= 960px) {
-		padding-inline: 1rem;
+		padding-inline: max(1rem, var(--safe-left)) max(1rem, var(--safe-right));
 	}
 }
 

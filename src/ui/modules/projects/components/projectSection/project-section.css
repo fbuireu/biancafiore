@@ -90,6 +90,8 @@
 		display: grid;
 		gap: 0.5rem;
 		height: var(--info-size);
+		padding-block-end: var(--safe-bottom);
+		padding-inline: var(--safe-left) var(--safe-right);
 		place-items: center;
 		text-align: center;
 		z-index: 2;
@@ -102,7 +104,8 @@
 			grid-column: 1;
 			grid-row: 1;
 			height: 100dvh;
-			padding: 1rem;
+			padding-block: max(1rem, var(--safe-top)) max(1rem, var(--safe-bottom));
+			padding-inline: max(1rem, var(--safe-left)) 1rem;
 			place-items: center;
 		}
 	}

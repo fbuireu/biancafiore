@@ -1,5 +1,6 @@
 .about-intro {
 	padding-block: 90px 0;
+	padding-inline: 0;
 
 	@container about-page (width <= 960px) {
 		padding-block: 56px 0;
@@ -9,7 +10,7 @@
 .about-intro__inner {
 	margin-inline: auto;
 	max-width: var(--grid-content);
-	padding-inline: clamp(1.25rem, 5cqi, 64px);
+	padding-inline: var(--page-gutter-start) var(--page-gutter-end);
 }
 
 .about-intro__eyebrow {

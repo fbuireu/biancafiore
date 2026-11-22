@@ -9,6 +9,7 @@
 		grid:
 			"Contact-Text" min-content
 			"Contact-Image" 1fr / 1fr;
+		padding-inline: 0;
 	}
 }
 
@@ -21,7 +22,7 @@
 	@container contact-page (width <= 960px) {
 		margin-block-end: 0;
 		max-width: 100%;
-		padding-inline: 1rem;
+		padding-inline: max(1rem, var(--safe-left)) max(1rem, var(--safe-right));
 	}
 }
 
