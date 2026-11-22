@@ -1,6 +1,6 @@
 .footer {
 	background-color: var(--surface);
-	padding-block: clamp(2.5rem, 5vw, 3.5rem) clamp(1.75rem, 4vw, 2.5rem);
+	padding-block: clamp(2.5rem, 5vw, 3.5rem) max(clamp(1.75rem, 4vw, 2.5rem), var(--safe-bottom));
 	position: relative;
 	text-align: center;
 	z-index: 10;

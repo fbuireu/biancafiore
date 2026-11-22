@@ -1,5 +1,5 @@
 .theme-toggle-wrapper {
-	inset-inline-end: 2rem;
+	inset-inline-end: max(2rem, var(--safe-right));
 	position: absolute;
 	transform: translateY(-75%);
 

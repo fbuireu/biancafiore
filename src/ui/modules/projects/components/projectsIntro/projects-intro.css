@@ -1,5 +1,6 @@
 .projects-intro {
 	padding-block: 5.625rem 0;
+	padding-inline: 0;
 
 	@container projects-page (width <= 960px) {
 		padding-block: 3.5rem 0;
@@ -9,7 +10,7 @@
 .projects-intro__inner {
 	margin-inline: auto;
 	max-width: var(--grid-content);
-	padding-inline: clamp(1.25rem, 5cqi, 4rem);
+	padding-inline: var(--page-gutter-start) var(--page-gutter-end);
 }
 
 .projects-intro__eyebrow {

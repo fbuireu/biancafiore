@@ -7,7 +7,7 @@
 		clip-path: none;
 		color: var(--background-main);
 		font-size: var(--font-size-sm);
-		inset: var(--space-xs) auto auto var(--space-xs);
+		inset: max(var(--space-xs), var(--safe-top)) auto auto max(var(--space-xs), var(--safe-left));
 		inline-size: auto;
 		overflow: visible;
 		padding: var(--space-2xs) var(--space-xs);

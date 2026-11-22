@@ -3,7 +3,7 @@ import { LOGO_INTERSECTED_CLASS, LOGO_LINK_CLASS } from "../../logo/const";
 import { SCROLL_TOP_WRAPPER_CLASS } from "../../scrollTop/const";
 import { SKIP_LINK_CLASS } from "../../skipLink/const";
 import {
-	HEADER_CLASS,
+	HEADER_INNER_CLASS,
 	HEADER_MENU_BUTTON_CLASS,
 	HEADER_MENU_BUTTON_INTERSECTED_CLASS,
 	HEADER_MENU_BUTTON_OUTLINE_CLASS,
@@ -17,7 +17,7 @@ import {
 } from "../const";
 
 const BACKGROUND_OBSERVER_SELECTORS = {
-	HEADER: `.${HEADER_CLASS}`,
+	HEADER_BAR: `.${HEADER_INNER_CLASS}`,
 	INVERTED_SECTION: ".inverted-color-scheme",
 	HEADER_MENU_BUTTON: `.${HEADER_MENU_BUTTON_CLASS}`,
 	HEADER_MENU_LOGO: `.${LOGO_LINK_CLASS} svg`,
@@ -61,21 +61,21 @@ const isIntersecting = ({ element, midline }: IsIntersectingParams): boolean => 
 
 export function backgroundObserver(): void {
 	const {
-		HEADER: HEADER_SELECTOR,
+		HEADER_BAR: HEADER_BAR_SELECTOR,
 		INVERTED_SECTION: INVERTED_SECTION_SELECTOR,
 		HEADER_MENU_BUTTON: HEADER_MENU_BUTTON_SELECTOR,
 		HEADER_MENU_LOGO: HEADER_MENU_LOGO_SELECTOR,
 	} = BACKGROUND_OBSERVER_SELECTORS;
 
-	const HEADER = document.querySelector(HEADER_SELECTOR);
+	const HEADER_BAR = document.querySelector(HEADER_BAR_SELECTOR);
 	const isMenuOpen = document.documentElement.classList.contains(MENU_OPEN_CLASS);
 
-	if (!HEADER || isMenuOpen) {
+	if (!HEADER_BAR || isMenuOpen) {
 		return;
 	}
 
-	const { top: headerTop, height: headerHeight } = HEADER.getBoundingClientRect();
-	const midline = headerTop + headerHeight / 2;
+	const { top: barTop, height: barHeight } = HEADER_BAR.getBoundingClientRect();
+	const midline = barTop + barHeight / 2;
 	const INVERTED_SECTIONS = Array.from(document.querySelectorAll(INVERTED_SECTION_SELECTOR));
 	const hasIntersected = INVERTED_SECTIONS.some((element) => isIntersecting({ element, midline }));
 

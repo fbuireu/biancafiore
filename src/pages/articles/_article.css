@@ -1,5 +1,6 @@
 html.page--article {
 	--article-body-size: 1.125rem;
+	--edge: max(1rem, var(--safe-left), var(--safe-right));
 	--leading: 1.7;
 	--rhythm: calc(var(--article-body-size) * var(--leading));
 }
@@ -23,7 +24,7 @@ html.page--article body {
 	grid-template-columns:
 		[article-start] 1fr
 		[breakout-start] var(--breakout-margin)
-		[content-start] min(var(--grid-article), 100% - 2rem - (var(--breakout-margin) * 2)) [content-end]
+		[content-start] min(var(--grid-article), 100% - (var(--edge) * 2) - (var(--breakout-margin) * 2)) [content-end]
 		var(--breakout-margin) [breakout-end]
 		1fr [article-end];
 	margin-block: 2rem 4rem;
@@ -216,7 +217,7 @@ html.page--article body {
 	position: relative;
 	z-index: 2;
 	view-transition-name: article-masthead;
-	width: min(var(--grid-article), 100% - 2rem);
+	width: min(var(--grid-article), 100% - 2 * var(--edge));
 	margin-inline: auto;
 	padding-block: 40px 0;
 	background: var(--white);
@@ -228,7 +229,7 @@ html.page--article body {
 	}
 
 	&:not(.article-masthead--featured) {
-		margin-block-start: calc(var(--header-height) + 1rem);
+		margin-block-start: calc(var(--header-extent) + 1rem);
 	}
 
 	.breadcrumbs__list {
@@ -313,7 +314,7 @@ html.page--article body {
 	grid-column: content-start / content-end;
 
 	@container article-page (width <= 960px) {
-		padding-inline: 1rem;
+		padding-inline: max(1rem, var(--safe-left)) max(1rem, var(--safe-right));
 	}
 }
 
@@ -323,7 +324,7 @@ html.page--article body {
 
 .article-wrapper--two-columns {
 	--article-columns-gap: clamp(1.5rem, 4cqi, 3rem);
-	--gutter: 2rem;
+	--gutter: calc(2 * var(--edge));
 	display: block;
 	max-inline-size: min(calc(var(--grid-article) * 2 + var(--article-columns-gap)), 100% - var(--gutter));
 	margin-inline: auto;

@@ -3,7 +3,7 @@
 	height: 0.25rem;
 	left: 0;
 	position: fixed;
-	top: 0;
+	top: var(--safe-top);
 	transition: width 0.3s;
 	z-index: 1000;
 

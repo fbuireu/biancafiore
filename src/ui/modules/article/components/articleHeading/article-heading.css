@@ -1,6 +1,6 @@
 .article-heading {
 	gap: 0 0.5rem;
-	scroll-margin-block-start: var(--header-height);
+	scroll-margin-block-start: var(--header-extent);
 
 	&:hover {
 		color: var(--primary-main);

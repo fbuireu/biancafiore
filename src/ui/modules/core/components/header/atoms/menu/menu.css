@@ -25,11 +25,13 @@
 	flex: 3;
 	flex-direction: column;
 	justify-content: center;
+	padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
 }
 
 .header__menu__inner {
 	display: grid;
 	gap: 1rem;
+	padding-inline: 0;
 	grid: "Header-Quote Header-Divider Header-Navigation" / 50% 1fr 50%;
 
 	@media (width <= 1024px) {

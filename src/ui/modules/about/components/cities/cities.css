@@ -24,7 +24,7 @@
 	--reverse-index: calc(var(--num-cards) - var(--index0));
 	padding-top: calc(var(--index) * 0.5rem);
 	position: sticky;
-	top: calc(var(--header-height) + 0.5rem);
+	top: calc(var(--header-extent) + 0.5rem);
 
 	@container about-page (width <= 960px) {
 		padding-inline: 1rem;

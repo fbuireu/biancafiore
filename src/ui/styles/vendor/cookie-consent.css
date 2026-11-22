@@ -112,4 +112,41 @@
 			color-scheme: dark;
 		}
 	}
+
+	.cm--top {
+		top: max(var(--cc-modal-margin), var(--safe-top));
+	}
+
+	.cm--bottom {
+		bottom: max(var(--cc-modal-margin), var(--safe-bottom));
+	}
+
+	.cm--left {
+		left: max(var(--cc-modal-margin), var(--safe-left));
+		margin-right: max(var(--cc-modal-margin), var(--safe-right));
+	}
+
+	.cm--right {
+		margin-left: max(var(--cc-modal-margin), var(--safe-left));
+		right: max(var(--cc-modal-margin), var(--safe-right));
+	}
+
+	.cm--center {
+		left: max(var(--cc-modal-margin), var(--safe-left));
+		right: max(var(--cc-modal-margin), var(--safe-right));
+	}
+
+	@media (width > 640px) {
+		.pm--box {
+			height: calc(100% - 2 * max(1em, var(--safe-top), var(--safe-bottom)));
+			left: max(var(--cc-modal-margin), var(--safe-left));
+			right: max(var(--cc-modal-margin), var(--safe-right));
+		}
+	}
+
+	@media (width <= 640px) {
+		.pm {
+			padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+		}
+	}
 }

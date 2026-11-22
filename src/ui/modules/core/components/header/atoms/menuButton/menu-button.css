@@ -46,11 +46,11 @@
 	}
 
 	@media (width <= 1500px) {
-		margin-inline-end: 2rem;
+		margin-inline-end: max(2rem, var(--safe-right));
 		padding: 0;
 	}
 	@media (width <= 575px) {
-		margin-inline-end: 0.5rem;
+		margin-inline-end: max(0.5rem, var(--safe-right));
 	}
 }
 

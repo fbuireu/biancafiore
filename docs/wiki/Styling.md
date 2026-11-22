@@ -38,9 +38,20 @@ The type ladder is viewport-driven, so type that must scale with its **container
 
 The root is light; dark comes from a `data-theme` attribute set before first paint by an inline bootstrap, and the site stays light until the reader picks dark, whatever the operating system prefers. Only a click on the toggle is persisted. [ADR 0005](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0005-theme-token-families-and-inline-bootstrap.md) covers the token families and why the bootstrap is inline; [ADR 0008](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0008-unregistered-property-color-tokens.md) covers the unregistered colour properties.
 
-Sections that invert against the page mix in an inversion block that flips in both directions. That mix is a runtime contract as well as paint: an observer watches every inverting section and flips the logo and menu button while the sticky header's midline sits over one. The header therefore names no section's class of its own, and a new inverting section needs no edit there.
+Sections that invert against the page mix in an inversion block that flips in both directions. That mix is a runtime contract as well as paint: an observer watches every inverting section and flips the logo and menu button while the midline of the sticky header's bar sits over one. The header therefore names no section's class of its own, and a new inverting section needs no edit there.
 
 **That nested inversion is what breaks in production**, and only in production: lightningcss downlevels `light-dark()` into an inherited-variable polyfill that cannot express it. The feature is excluded from the transformer for exactly this reason. Dev looks fine and prod does not, so do not remove the exclusion to tidy the config. [ADR 0006](https://github.com/fbuireu/biancafiore/blob/main/docs/adr/0006-lightningcss-native-css-passthrough.md) has it.
+
+---
+
+## Safe areas
+
+The page asks the browser to draw edge to edge on a phone or tablet with a notch, a status bar or a home indicator, and every element pinned to a screen edge keeps clear of the part of that edge the hardware covers. Four tokens carry the insets the browser reports, each of them zero on a desktop and on a phone with no cutout, so the page looks the same there.
+
+- **An element that already keeps a distance from an edge** takes the larger of that distance and the inset: the scroll-to-top button, the skip link, the cookie banner and a section's horizontal padding.
+- **An element flush with an edge** keeps its position and pads its content by the inset, so its background still reaches the edge. The sticky header grows by the top inset, the full-screen menu pads its panel, the footer pads its bottom, and the measure every full-bleed band wraps its content in pads its sides, so a band's background runs under a landscape notch and its text does not.
+
+The styles guide has the tokens, the rule for a component that keeps its own gutter, and what the docs test holds.
 
 ---
 
