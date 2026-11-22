@@ -1,3 +1,10 @@
+# [1.30.0](https://github.com/fbuireu/biancafiore/compare/v1.29.22...v1.30.0) (2026-11-22)
+
+
+### Features
+
+* draw edge to edge and keep the content out of the notch ([#1242](https://github.com/fbuireu/biancafiore/issues/1242)) ([c6fcd91](https://github.com/fbuireu/biancafiore/commit/c6fcd91b5c68ede4b7fc3cf752e56a9b3a8a7a9c)), closes [#123](https://github.com/fbuireu/biancafiore/issues/123)
+
 ## [1.29.22](https://github.com/fbuireu/biancafiore/compare/v1.29.21...v1.29.22) (2026-11-15)
 
 
