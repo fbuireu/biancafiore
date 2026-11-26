@@ -72,14 +72,14 @@
 		"test:e2e:changed": "pnpm test:e2e --only-changed --pass-with-no-tests"
 	},
 	"dependencies": {
-		"@astrojs/cloudflare": "14.4.3",
-		"@astrojs/react": "7.1.2",
+		"@astrojs/cloudflare": "14.4.9",
+		"@astrojs/react": "7.1.9",
 		"@astrojs/rss": "4.0.19",
 		"@emdash-cms/cloudflare": "1.2.0",
 		"@hookform/resolvers": "5.9.2",
 		"@libsql/client": "0.18.0",
 		"@tgwf/co2": "0.19.0",
-		"astro": "7.4.7",
+		"astro": "7.4.13",
 		"blurhash": "2.0.5",
 		"clsx": "2.1.1",
 		"drizzle-orm": "0.45.4",
@@ -98,7 +98,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/check": "0.9.12",
-		"@astrojs/ts-plugin": "1.10.12",
+		"@astrojs/ts-plugin": "1.11.0",
 		"@biomejs/biome": "2.5.15",
 		"@commitlint/cli": "21.2.4",
 		"@commitlint/config-conventional": "21.2.4",
