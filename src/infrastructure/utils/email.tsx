@@ -1,22 +1,17 @@
 import { CONTACT_DETAILS, DEFAULT_LOCALE_STRING } from "@const/index";
-import type { Except } from "@const/types";
-import type { ContactFormData } from "@shared/ui/types";
+import type { ValidatedContact } from "@domain/contact/types";
 import { Effect } from "effect";
 import { render } from "react-email";
 import { ContactNotificationEmail } from "../email/ContactNotificationEmail";
-import { EmailClient } from "../email/server";
+import { EmailClient, type SentEmail } from "../email/server";
 import type { EmailError } from "../errors";
-
-type CreateEmailParams = Except<ContactFormData, "recaptcha">;
-
-type SendEmailParams = Except<ContactFormData, "recaptcha">;
 
 interface ContactEmailContent {
 	html: string;
 	text: string;
 }
 
-export async function createEmail({ name, email, message }: CreateEmailParams): Promise<ContactEmailContent> {
+export async function createEmail({ name, email, message }: ValidatedContact): Promise<ContactEmailContent> {
 	const date = new Date().toLocaleString(DEFAULT_LOCALE_STRING, { timeZone: "UTC", timeZoneName: "short" });
 	const subject = encodeURIComponent(`Re: ${CONTACT_DETAILS.EMAIL_SUBJECT} from biancafiore.me`);
 	const mailTo = `mailto:${email}?subject=${subject}`;
@@ -29,8 +24,8 @@ export async function createEmail({ name, email, message }: CreateEmailParams): 
 }
 
 export const sendEmail = Effect.fn("sendEmail")(function* (
-	params: SendEmailParams,
-): Effect.fn.Return<{ id: string }, EmailError, EmailClient> {
+	params: ValidatedContact,
+): Effect.fn.Return<SentEmail, EmailError, EmailClient> {
 	const emails = yield* EmailClient;
 	const { html, text } = yield* Effect.promise(() => createEmail(params));
 

@@ -60,7 +60,7 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   sentence is a test: `errorResponse.test.ts` dies with a `ValidationError` and asserts the generic 500.
 - **Step order is load-bearing**: validate → verify reCAPTCHA → duplicate check → send email → save. The reCAPTCHA check runs *after* schema validation, so a malformed payload is rejected without
   spending a verification call. The email goes out **before** the row is written because the row stores the
-  Resend `emailId`, so that order cannot simply be swapped.
+  Resend `emailId` (an `EmailId`, which only the email step can mint), so that order cannot simply be swapped.
 - **A failed `saveContact` is logged, not raised.** Once the mail is away the visitor's message has reached
   Bianca; the row is bookkeeping for duplicate detection, not the deliverable. Failing the request there
   would show a 500 for work that actually succeeded and invite a retry that passes the duplicate check
@@ -77,9 +77,9 @@ which is why the code stays a plain `{ code, message }` and only `index.ts` know
   space and leaves the trim dead. Reordering those calls fails no type check, only the tests that submit a
   padded address.
 - **Two forms of the address are in flight on purpose, and producing neither is this file's job.** Every step
-  that takes the address is handed the same **validated** data; `normalizeEmail` (`@domain/contact/rules`) trims, lowercases and
-  strips the `+alias` segment, and `checkDuplicateContact` and `saveContact` each call it on their own way to
-  the database, so `a+anything@d.com` and `a@d.com` are treated as the same person. `sendEmail` does not, so
+  that takes the address is handed the same **validated** data (`ValidatedContact`, whose `email` is a `ContactEmail`); `normalizeEmail` (`@domain/contact/rules`) trims, lowercases and
+  strips the `+alias` segment into a `NormalizedContactEmail`, and `checkDuplicateContact` and `saveContact` each call it on their own way to
+  the database, which takes no other form of the address, so `a+anything@d.com` and `a@d.com` are treated as the same person. `sendEmail` does not, so
   the reply goes to the address as it was typed: alias and capitalisation intact, surrounding whitespace
   aside. Normalizing here, before the steps, would break alias delivery; dropping either call inside them
   would break duplicate detection.

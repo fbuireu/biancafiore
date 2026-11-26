@@ -1,8 +1,9 @@
+import type { WebUrl } from "@domain/shared/url";
 import { isWebUrl } from "../../shared/urls";
 
 const NAME_SEPARATOR = "|";
 
-export function socialNetworkUrls(value: unknown): string[] {
+export function socialNetworkUrls(value: unknown): WebUrl[] {
 	if (typeof value !== "string") return [];
 
 	return value.split("\n").flatMap((line) => {

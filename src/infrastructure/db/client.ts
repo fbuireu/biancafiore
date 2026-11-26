@@ -1,3 +1,4 @@
+import type { NormalizedContactEmail } from "@domain/contact/types";
 import { createClient } from "@libsql/client/web";
 import { and, desc, eq, gte } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/libsql/web";
@@ -6,12 +7,12 @@ import { DatabaseError } from "../errors";
 import * as schema from "./schema";
 
 interface FindLatestContactSinceParams {
-	email: string;
+	email: NormalizedContactEmail;
 	since: string;
 }
 
 interface FindContactWithMessageParams {
-	email: string;
+	email: NormalizedContactEmail;
 	message: string;
 }
 

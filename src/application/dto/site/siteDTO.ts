@@ -1,4 +1,5 @@
 import { SITE_DEFAULTS } from "@const/site";
+import { webUrlSchema } from "@domain/shared/url";
 import type { SiteSettingsDTO } from "@domain/site";
 import { isSafeImageUrl, isWebUrl } from "../shared/urls";
 import type { RawSiteSettings } from "./types";
@@ -6,11 +7,15 @@ import type { RawSiteSettings } from "./types";
 const textOf = (value: string | null): string | undefined => value?.trim() || undefined;
 
 function socialLinksOf(social: RawSiteSettings["social"]): SiteSettingsDTO["socialLinks"] {
-	const networks = Object.entries(social).flatMap(([name, url]) =>
-		isWebUrl(url.trim()) ? [{ name, url: url.trim() }] : [],
-	);
+	const networks = Object.entries(social).flatMap(([name, url]) => {
+		const trimmed = url.trim();
 
-	return networks.length > 0 ? networks : SITE_DEFAULTS.SOCIAL_LINKS.map((network) => ({ ...network }));
+		return isWebUrl(trimmed) ? [{ name, url: trimmed }] : [];
+	});
+
+	return networks.length > 0
+		? networks
+		: SITE_DEFAULTS.SOCIAL_LINKS.map(({ name, url }) => ({ name, url: webUrlSchema.parse(url) }));
 }
 
 function defaultImageOf(image: RawSiteSettings["defaultOgImage"]): SiteSettingsDTO["defaultImage"] {

@@ -1,7 +1,7 @@
 import type { ArticleDTO } from "@domain/article";
 import type { CmsReference } from "@infrastructure/cms/entries";
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
-import { avatar, rawByline, rawEntry, rawImage, term } from "@tests/doubles/cmsEntries";
+import { avatar, entryId, rawByline, rawEntry, rawImage, term } from "@tests/doubles/cmsEntries";
 import { describe, expect, it } from "vitest";
 import type { RawAuthor } from "../author/types";
 import type { PortableTextContent } from "../shared/portableText";
@@ -102,7 +102,7 @@ const makeArticle = ({
 		references: { related_articles: relatedArticles },
 	});
 
-const related = (slug: string): CmsReference => ({ id: `article-${slug.trim()}` });
+const related = (slug: string): CmsReference => ({ id: entryId(`article-${slug.trim()}`) });
 
 const create = (rawArticles: AnyRawArticle[]): ArticleDTO[] => createArticles({ rawArticles, rawAuthors: [AUTHOR] });
 

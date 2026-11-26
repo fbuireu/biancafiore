@@ -1,3 +1,4 @@
+import { entryId } from "@tests/doubles/cmsEntries";
 import {
 	cmsAnswers,
 	cmsFailsWith,
@@ -22,7 +23,7 @@ vi.mock("./client", async () => {
 });
 
 const entry = (slug: string): Omit<CmsItem, "bylines"> => ({
-	id: `id-${slug}`,
+	id: entryId(`id-${slug}`),
 	slug,
 	data: {},
 	terms: {},
@@ -90,7 +91,10 @@ describe("fetchEntries", () => {
 	});
 
 	it("follows the cursor of a reference field too, so a long hand-picked list arrives whole", async () => {
-		const references = Array.from({ length: 3 }, (_, index) => ({ ...AUTHOR_REFERENCE, id: `author-${index}` }));
+		const references = Array.from({ length: 3 }, (_, index) => ({
+			...AUTHOR_REFERENCE,
+			id: entryId(`author-${index}`),
+		}));
 
 		cmsRefersTo({ collection: "articles", id: ARTICLE.id, field: "author", references });
 		cmsServesPagesOf(2);
@@ -134,7 +138,10 @@ describe("fetchEntries", () => {
 
 describe("fetchReferences", () => {
 	it("answers every reference of one field of one entry, following the cursor to the end", async () => {
-		const references = Array.from({ length: 3 }, (_, index) => ({ ...AUTHOR_REFERENCE, id: `author-${index}` }));
+		const references = Array.from({ length: 3 }, (_, index) => ({
+			...AUTHOR_REFERENCE,
+			id: entryId(`author-${index}`),
+		}));
 
 		cmsRefersTo({ collection: "articles", id: ARTICLE.id, field: "related_articles", references });
 		cmsServesPagesOf(2);

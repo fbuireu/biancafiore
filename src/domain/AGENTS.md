@@ -7,12 +7,12 @@ The pure domain layer. One folder per domain concept, named in the singular afte
 ```
 <concept>/
   schema.ts   # zod schema (`@shared/utils/zod`): what validates at the edge (a content collection, or the action input for contact)
-  types.ts    # DTO type + concept-specific types (e.g. ArticleHeading, CityPeriod)
+  types.ts    # DTO type + concept-specific types (e.g. ArticleHeading, CityPeriod, the branded ContactEmail)
   rules.ts    # pure functions encoding editorial rules
   index.ts    # barrel: export * from each of the above
 ```
 
-Not every concept needs all of them. `rules.ts` exists for `article`, `breadcrumb`, `city`, `contact`, `tag` and no one else; `contact` carries a schema and rules deciding when two addresses are the same person and bounding the cooldown, `breadcrumb` is rules + types, and every other concept carries a schema and types. `site` (the site settings: name, description, social links, the default share image and the search-console tokens) and `menu` (a named navigation menu and its items, with `MENU_NAME` naming the two the site renders) are plumbing like `contact` and `breadcrumb`, so the glossary leaves them out; an Article's optional `seo` is the editor's SEO panel, each value overriding the one the page derives. Add a file when there is something to put in it.
+Not every concept needs all of them. `rules.ts` exists for `article`, `breadcrumb`, `city`, `contact`, `tag` and no one else; `contact` carries a schema, types and rules deciding when two addresses are the same person and bounding the cooldown, `breadcrumb` is rules + types, and every other concept carries a schema and types. `site` (the site settings: name, description, social links, the default share image and the search-console tokens) and `menu` (a named navigation menu and its items, with `MENU_NAME` naming the two the site renders) are plumbing like `contact` and `breadcrumb`, so the glossary leaves them out; an Article's optional `seo` is the editor's SEO panel, each value overriding the one the page derives. Add a file when there is something to put in it.
 
 ## What the domain may reach
 
@@ -25,12 +25,20 @@ Nothing here imports from `@application/*`, `@infrastructure/*` or `@modules/*`.
 - `creditedSource` pairs the Republished flag with the Original Source. They are two independent CMS fields and the article page renders the banner only when the flag is set, so a source named without the flag is refused rather than dropped.
 - `generateTableOfContents` takes the `ArticleHeading` list the application layer collected while it prepared the body (level, anchor id, authored text), the same anchor it stamped on the heading block the page renders as its `id`, so the id in the Table of Contents *is* the string the body puts in its `id` attribute. `article/rules.ts` also owns which levels belong there (`isTableOfContentsHeading`, h2 to h6), and the preparation asks it before numbering a section, which is what keeps the body's `--is: --section-N` and the entry's position in the list in step. It answers an empty table for an Article with fewer than two such headings (`MIN_TABLE_OF_CONTENTS_HEADINGS`), since a single entry only repeats the heading, so the page shows the table whenever it holds an entry. Neither rule parses or unescapes HTML: heading text arrives as the author typed it.
 
+## Branded values
+
+A value that is a plain primitive at run time but that two functions must not swap carries a brand: `.brand<"Name">()` on the zod schema that checks it, and the type is `z.infer` of that schema (`ContactEmail`, `NormalizedContactEmail`, `WebUrl`). The schema is the constructor, through `.parse()` or `.safeParse()`, so no `as` builds one and a test builds one through the same schema. The brand lives in the layer that owns the concept: these three here, `EntryId` in [`cms/client.ts`](../infrastructure/cms/client.ts) and `EmailId` in [`email/server.ts`](../infrastructure/email/server.ts) in the infrastructure. A Slug and a publish date stay plain strings ([ADR 0019](../../docs/adr/0019-three-questions-before-modelling.md)), and so do the display text, the class names and the UI props.
+
+- `ContactEmail` is an address `contactFormSchema` accepted, trimmed and left as typed, which is the one the reply goes to. `NormalizedContactEmail` is what `normalizeEmail` answers: lower-cased and stripped of its `+alias`, the only form the database takes, so a lookup or an insert that skipped the normalisation does not compile.
+- `WebUrl` is an `http` or `https` URL (`webUrlSchema` in [`shared/url.ts`](./shared/url.ts)), what an Author's social networks, the site's social links and the JSON-LD `sameAs` carry. An editor's URL becomes one through `isWebUrl` in `@application/dto/shared/urls`, which asks the same schema.
+
 ## shared/
 
 Cross-concept primitives only:
 
 - [`image.ts`](./shared/image.ts): `imageSchema`, reused by any concept carrying an image. Its `url` is a **path** on this Worker's origin, validated as a string (`z.string()`): the CMS stores a storage key, and the CMS client resolves it to a path on EmDash's media route before any mapper sees it, so nothing reading this field has to finish it, and whatever needs an absolute URL takes it from `absoluteUrl` in `@const/routes.ts` where it writes one out
 - [`reference.ts`](./shared/reference.ts): shared reference shape
+- [`url.ts`](./shared/url.ts): `webUrlSchema` and the `WebUrl` it brands
 - [`portableText.ts`](./shared/portableText.ts): `portableTextSchema`, the rich text an Article's body and a Project's description carry, as an array of typed objects the domain never looks inside: the application layer prepares it and the page renders it ([ADR 0023](../../docs/adr/0023-portable-text-renders-in-the-ui-through-emdash.md))
 
 ## Consumers

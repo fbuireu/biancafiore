@@ -7,6 +7,7 @@ import {
 	type CmsPreview,
 	type CmsReference,
 	type CmsSiteSettings,
+	type EntryId,
 	type ReadEntryQuery,
 } from "./client";
 
@@ -18,6 +19,7 @@ export type {
 	CmsReference,
 	CmsSiteSettings,
 	CmsTerm,
+	EntryId,
 } from "./client";
 
 export const EMDASH_MAX_PAGE_SIZE = 100;
@@ -32,7 +34,7 @@ export interface EntriesQuery<REFERENCE extends string = string> {
 
 interface ReferencesQuery {
 	collection: string;
-	id: string;
+	id: EntryId;
 	field: string;
 }
 

@@ -1,13 +1,15 @@
+import type { NormalizedContactEmail } from "@domain/contact/types";
 import { index, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import type { EmailId } from "../email/server";
 
 export const Contact = sqliteTable(
 	"Contact",
 	{
 		id: text("id").primaryKey(),
 		name: text("name").notNull(),
-		email: text("email").notNull(),
+		email: text("email").$type<NormalizedContactEmail>().notNull(),
 		message: text("message").notNull(),
-		emailId: text("emailId").notNull(),
+		emailId: text("emailId").$type<EmailId>().notNull(),
 		createdDate: text("createdDate").notNull(),
 		modifiedDate: text("modifiedDate").notNull(),
 	},

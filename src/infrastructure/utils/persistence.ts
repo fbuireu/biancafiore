@@ -1,8 +1,8 @@
-import type { Except } from "@const/types";
 import { contactCooldownStart, normalizeEmail } from "@domain/contact/rules";
-import type { ContactFormData } from "@shared/ui/types";
+import type { ValidatedContact } from "@domain/contact/types";
 import { Effect } from "effect";
 import { Database } from "../db/client";
+import type { EmailId } from "../email/server";
 import { type DatabaseError, DuplicateContactError } from "../errors";
 import { LoggerService } from "../logging/service";
 
@@ -10,10 +10,8 @@ const ALREADY_HEARD_MESSAGE = "I've already received a message from you, and I'l
 const COOLDOWN_REASON = "inside the cooldown window";
 const REPEATED_REASON = "the same message as a previous submission";
 
-type CheckDuplicateContactParams = Except<ContactFormData, "recaptcha">;
-
 export const checkDuplicateContact = Effect.fn("checkDuplicateContact")(function* (
-	data: CheckDuplicateContactParams,
+	data: ValidatedContact,
 ): Effect.fn.Return<void, DatabaseError | DuplicateContactError, Database | LoggerService> {
 	const database = yield* Database;
 	const logger = yield* LoggerService;
@@ -36,8 +34,8 @@ export const checkDuplicateContact = Effect.fn("checkDuplicateContact")(function
 	return yield* Effect.fail(new DuplicateContactError({ message: ALREADY_HEARD_MESSAGE }));
 });
 
-interface SaveContactParams extends Except<ContactFormData, "recaptcha"> {
-	emailId: string;
+interface SaveContactParams extends ValidatedContact {
+	emailId: EmailId;
 }
 
 export const saveContact = Effect.fn("saveContact")(function* (

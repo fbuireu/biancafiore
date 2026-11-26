@@ -1,4 +1,6 @@
 import { CONTACT_DETAILS } from "@const/const";
+import type { ContactEmail } from "@domain/contact/types";
+import { z } from "@shared/utils/zod";
 import { Context, Effect, Layer } from "effect";
 import { Resend } from "resend";
 import { EmailError } from "../errors";
@@ -6,10 +8,19 @@ import { EmailError } from "../errors";
 const CONTACT_FORM_CATEGORY = "web_contact_form";
 const CMS_CATEGORY = "cms";
 const UNKNOWN_FAILURE_MESSAGE = "Something went wrong while sending the email";
+const UNREADABLE_ID_MESSAGE = "Resend accepted the email but answered no readable id for it";
+
+export const emailIdSchema = z.string().min(1).brand<"EmailId">();
+
+export type EmailId = z.infer<typeof emailIdSchema>;
+
+export interface SentEmail {
+	id: EmailId;
+}
 
 export interface ContactNotification {
 	name: string;
-	email: string;
+	email: ContactEmail;
 	html: string;
 	text: string;
 }
@@ -28,8 +39,8 @@ type EmailPayload = Parameters<Resend["emails"]["send"]>[0];
 export class EmailClient extends Context.Service<
 	EmailClient,
 	{
-		sendContactNotification(notification: ContactNotification): Effect.Effect<{ id: string }, EmailError>;
-		sendCmsEmail(email: CmsEmail): Effect.Effect<{ id: string }, EmailError>;
+		sendContactNotification(notification: ContactNotification): Effect.Effect<SentEmail, EmailError>;
+		sendCmsEmail(email: CmsEmail): Effect.Effect<SentEmail, EmailError>;
 	}
 >()("EmailClient") {
 	static readonly layer = Layer.effect(
@@ -60,7 +71,13 @@ export class EmailClient extends Context.Service<
 					return yield* new EmailError({ message: error?.message ?? UNKNOWN_FAILURE_MESSAGE, cause: error });
 				}
 
-				return { id: data.id };
+				const { success, data: id } = emailIdSchema.safeParse(data.id);
+
+				if (!success) {
+					return yield* new EmailError({ message: UNREADABLE_ID_MESSAGE, cause: data });
+				}
+
+				return { id };
 			});
 
 			return EmailClient.of({

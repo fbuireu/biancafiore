@@ -1,11 +1,16 @@
+import { z } from "@shared/utils/zod";
 import { Context, Effect, Layer } from "effect";
 import { CmsError } from "../errors";
 import { mediaFileUrl, resolveMedia } from "./media";
 
 export const PUBLISHED_STATUS = "published";
 
+export const entryIdSchema = z.string().min(1).brand<"EntryId">();
+
+export type EntryId = z.infer<typeof entryIdSchema>;
+
 export interface CmsReference {
-	id: string;
+	id: EntryId;
 }
 
 export interface CmsTerm {
@@ -32,7 +37,7 @@ export interface CmsByline {
 }
 
 export interface CmsItem {
-	id: string;
+	id: EntryId;
 	slug: string | null;
 	data: Record<string, unknown>;
 	terms: Record<string, CmsTerm[]>;
@@ -91,7 +96,7 @@ export interface ReadEntryQuery {
 
 export interface ListReferencesQuery {
 	collection: string;
-	id: string;
+	id: EntryId;
 	field: string;
 	limit: number;
 	cursor?: string;
@@ -127,6 +132,12 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 	typeof value === "object" && value !== null && !Array.isArray(value);
 
 const asText = (value: unknown): string | null => (typeof value === "string" && value ? value : null);
+
+function entryIdOf(value: unknown): EntryId | null {
+	const { success, data } = entryIdSchema.safeParse(value);
+
+	return success ? data : null;
+}
 
 function plain(value: unknown): unknown {
 	if (value instanceof Date) return value.toISOString();
@@ -215,7 +226,7 @@ export function itemOf({ entry, avatars = new Map() }: ItemOfParams): CmsItem | 
 	if (!isRecord(record)) return undefined;
 
 	const fields = Object.fromEntries(Object.entries(record).filter(([key]) => !HYDRATED_KEYS.has(key)));
-	const id = asText(fields.id);
+	const id = entryIdOf(fields.id);
 
 	if (!id) return undefined;
 

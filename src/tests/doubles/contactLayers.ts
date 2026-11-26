@@ -1,6 +1,8 @@
+import { contactEmailSchema, contactNormalizedEmailSchema } from "@domain/contact/schema";
+import type { ContactEmail, NormalizedContactEmail } from "@domain/contact/types";
 import { Database } from "@infrastructure/db/client";
 import type { ContactRow, NewContact } from "@infrastructure/db/schema";
-import { type ContactNotification, EmailClient } from "@infrastructure/email/server";
+import { type ContactNotification, EmailClient, type EmailId, emailIdSchema } from "@infrastructure/email/server";
 import { DatabaseError, EmailError } from "@infrastructure/errors";
 import { LOG_LEVEL, type LogLevel } from "@infrastructure/logging/contract";
 import { LoggerService } from "@infrastructure/logging/service";
@@ -13,13 +15,20 @@ export interface DatabaseDoubleParams {
 	failInsertWith?: DatabaseError;
 }
 
+export const contactEmail = (address: string): ContactEmail => contactEmailSchema.parse(address);
+
+export const normalizedContactEmail = (address: string): NormalizedContactEmail =>
+	contactNormalizedEmailSchema.parse(address);
+
+export const emailId = (id: string): EmailId => emailIdSchema.parse(id);
+
 interface CooldownLookup {
-	email: string;
+	email: NormalizedContactEmail;
 	since: string;
 }
 
 interface MessageLookup {
-	email: string;
+	email: NormalizedContactEmail;
 	message: string;
 }
 
@@ -38,9 +47,9 @@ export interface ContactRowParams {
 export const contactRow = ({ email, overrides = {} }: ContactRowParams): ContactRow => ({
 	id: "contact-id",
 	name: "Ada",
-	email,
+	email: normalizedContactEmail(email),
 	message: "Hello there",
-	emailId: "email-id",
+	emailId: emailId("email-id"),
 	createdDate: "2026-07-30T09:15:00.000Z",
 	modifiedDate: "2026-07-30T09:15:00.000Z",
 	...overrides,
@@ -103,7 +112,7 @@ export function emailDouble({ id = "email-id", failWith }: EmailDoubleParams = {
 
 				sent.push(notification);
 
-				return Effect.succeed({ id });
+				return Effect.succeed({ id: emailId(id) });
 			},
 			sendCmsEmail: () => Effect.die(new Error("the contact action sends no CMS email")),
 		}),

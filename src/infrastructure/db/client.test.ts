@@ -1,4 +1,5 @@
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
+import { emailId, normalizedContactEmail } from "@tests/doubles/contactLayers";
 import { defectOf, failureOf } from "@tests/helpers/exit";
 import { Cause, Effect, Exit } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -109,12 +110,14 @@ const buildDatabase = async (): Promise<DatabaseService> => {
 	return exit.value;
 };
 
+const READER = normalizedContactEmail("reader@example.com");
+
 const A_CONTACT = {
 	id: "contact-1",
 	name: "A Reader",
-	email: "reader@example.com",
+	email: READER,
 	message: "Hello",
-	emailId: "email-1",
+	emailId: emailId("email-1"),
 	createdDate: "2026-08-30T00:00:00.000Z",
 	modifiedDate: "2026-08-30T00:00:00.000Z",
 };
@@ -138,7 +141,7 @@ describe("Database", () => {
 		const database = await buildDatabase();
 
 		const found = await Effect.runPromise(
-			database.findLatestContactSince({ email: "reader@example.com", since: "2026-08-29T00:00:00.000Z" }),
+			database.findLatestContactSince({ email: READER, since: "2026-08-29T00:00:00.000Z" }),
 		);
 
 		expect(found).toStrictEqual(A_CONTACT);
@@ -150,9 +153,7 @@ describe("Database", () => {
 		const database = await buildDatabase();
 
 		await expect(
-			Effect.runPromise(
-				database.findLatestContactSince({ email: "reader@example.com", since: "2026-08-29T00:00:00.000Z" }),
-			),
+			Effect.runPromise(database.findLatestContactSince({ email: READER, since: "2026-08-29T00:00:00.000Z" })),
 		).resolves.toBeUndefined();
 	});
 
@@ -160,9 +161,7 @@ describe("Database", () => {
 		answer.rows = [A_CONTACT];
 		const database = await buildDatabase();
 
-		const found = await Effect.runPromise(
-			database.findContactWithMessage({ email: "reader@example.com", message: "Hello" }),
-		);
+		const found = await Effect.runPromise(database.findContactWithMessage({ email: READER, message: "Hello" }));
 
 		expect(found).toStrictEqual(A_CONTACT);
 		expect(calls.map(({ method }) => method)).toStrictEqual(["from", "where", "limit"]);
@@ -172,7 +171,7 @@ describe("Database", () => {
 		const database = await buildDatabase();
 
 		await expect(
-			Effect.runPromise(database.findContactWithMessage({ email: "reader@example.com", message: "Hello" })),
+			Effect.runPromise(database.findContactWithMessage({ email: READER, message: "Hello" })),
 		).resolves.toBeUndefined();
 	});
 
@@ -186,11 +185,13 @@ describe("Database", () => {
 	it.each([
 		[
 			"findLatestContactSince",
-			(database: DatabaseService) => database.findLatestContactSince({ email: "a@b.c", since: "x" }),
+			(database: DatabaseService) =>
+				database.findLatestContactSince({ email: normalizedContactEmail("a@b.c"), since: "x" }),
 		],
 		[
 			"findContactWithMessage",
-			(database: DatabaseService) => database.findContactWithMessage({ email: "a@b.c", message: "x" }),
+			(database: DatabaseService) =>
+				database.findContactWithMessage({ email: normalizedContactEmail("a@b.c"), message: "x" }),
 		],
 		["insertContact", (database: DatabaseService) => database.insertContact(A_CONTACT)],
 	])("turns a rejected %s into a DatabaseError rather than a defect", async (_name, run) => {
@@ -208,9 +209,7 @@ describe("Database", () => {
 		answer.rejection = "gateway timeout";
 		const database = await buildDatabase();
 
-		const exit = await Effect.runPromiseExit(
-			database.findContactWithMessage({ email: "reader@example.com", message: "Hello" }),
-		);
+		const exit = await Effect.runPromiseExit(database.findContactWithMessage({ email: READER, message: "Hello" }));
 
 		expect((failureOf(exit) as DatabaseError).message).toBe("gateway timeout");
 	});

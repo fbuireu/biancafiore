@@ -1,4 +1,5 @@
 import { absoluteUrl, articleHref, DEFAULT_LOCALE_STRING, projectHref, tagHref } from "@const/index";
+import type { WebUrl } from "@domain/shared/url";
 
 interface BuildWebSiteSchemaParams {
 	path: string;
@@ -49,7 +50,7 @@ interface BuildProfilePageSchemaParams {
 		image: string;
 		jobTitle: string;
 		company: string;
-		sameAs: string[];
+		sameAs: WebUrl[];
 	};
 	latestArticle?: {
 		headline: string;

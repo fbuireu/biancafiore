@@ -1,6 +1,7 @@
 import { z } from "@shared/utils/zod";
 import { imageSchema } from "../shared/image";
 import { referenceSchema } from "../shared/reference";
+import { webUrlSchema } from "../shared/url";
 
 export const authorSchema = z.object({
 	name: z.string(),
@@ -9,7 +10,7 @@ export const authorSchema = z.object({
 	jobTitle: z.string(),
 	currentCompany: z.string(),
 	profileImage: imageSchema,
-	socialNetworks: z.array(z.url()),
+	socialNetworks: z.array(webUrlSchema),
 });
 
 export const authorEntrySchema = authorSchema.extend({

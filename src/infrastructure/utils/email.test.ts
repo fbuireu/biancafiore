@@ -1,9 +1,10 @@
+import { contactEmail } from "@tests/doubles/contactLayers";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createEmail } from "./email";
 
 const SUBMISSION = {
 	name: "Ada",
-	email: "ada@example.com",
+	email: contactEmail("ada@example.com"),
 	message: "Hello there",
 };
 
@@ -40,7 +41,7 @@ describe("createEmail", () => {
 	});
 
 	it("keeps the alias in the reply link, because the mail must reach the address as typed", async () => {
-		const { html } = await createEmail({ ...SUBMISSION, email: "Ada+news@Example.com" });
+		const { html } = await createEmail({ ...SUBMISSION, email: contactEmail("Ada+news@Example.com") });
 
 		expect(html).toContain("mailto:Ada+news@Example.com?subject=");
 	});

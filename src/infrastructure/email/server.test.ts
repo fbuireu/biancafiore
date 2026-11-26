@@ -1,10 +1,11 @@
 import { CONTACT_DETAILS } from "@const/const";
 import { resetSecrets, setSecret } from "@tests/doubles/astroEnvServer";
+import { contactEmail } from "@tests/doubles/contactLayers";
 import { defectOf, failureOf } from "@tests/helpers/exit";
 import { Cause, Effect, Exit } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { EmailError } from "../errors";
-import { EmailClient } from "./server";
+import { EmailClient, type SentEmail } from "./server";
 
 const send = vi.hoisted(() => vi.fn());
 
@@ -51,7 +52,7 @@ describe("EmailClient.layer", () => {
 	});
 });
 
-const sendContact = async (): Promise<Exit.Exit<{ id: string }, EmailError>> => {
+const sendContact = async (): Promise<Exit.Exit<SentEmail, EmailError>> => {
 	setSecret({ name: API_KEY_SECRET, value: "re_test_key" });
 
 	const exit = await build();
@@ -60,7 +61,7 @@ const sendContact = async (): Promise<Exit.Exit<{ id: string }, EmailError>> => 
 	return Effect.runPromiseExit(
 		exit.value.sendContactNotification({
 			name: "A Reader",
-			email: "reader@example.com",
+			email: contactEmail("reader@example.com"),
 			html: "<p>Hello</p>",
 			text: "Hello",
 		}),
@@ -118,6 +119,15 @@ describe("EmailClient.sendContactNotification", () => {
 		send.mockResolvedValue({ data: null, error: null });
 
 		expect((failureOf(await sendContact()) as EmailError).message).toBe("Something went wrong while sending the email");
+	});
+
+	it("fails when the vendor accepts the send but answers an empty id, since the contact would be stored with nothing to find the email by", async () => {
+		send.mockResolvedValue({ data: { id: "" }, error: null });
+
+		const failure = failureOf(await sendContact());
+
+		expect(failure).toBeInstanceOf(EmailError);
+		expect((failure as EmailError).message).toBe("Resend accepted the email but answered no readable id for it");
 	});
 
 	it("turns a rejected send into an EmailError rather than a defect", async () => {

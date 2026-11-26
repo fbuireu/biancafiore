@@ -1,4 +1,11 @@
-import { contactRow, type DatabaseDouble, databaseDouble, loggerDouble } from "@tests/doubles/contactLayers";
+import {
+	contactEmail,
+	contactRow,
+	type DatabaseDouble,
+	databaseDouble,
+	emailId,
+	loggerDouble,
+} from "@tests/doubles/contactLayers";
 import { failureOf } from "@tests/helpers/exit";
 import { Effect, Exit, Layer } from "effect";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -8,11 +15,11 @@ import { checkDuplicateContact, saveContact } from "./persistence";
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const FROZEN_NOW = "2026-07-30T09:15:00.000Z";
 
-const ENQUIRY = { name: "Ada", email: "ada@example.com", message: "Hello there" };
+const ENQUIRY = { name: "Ada", email: contactEmail("ada@example.com"), message: "Hello there" };
 
 const REFUSAL = "I've already received a message from you, and I'll reply as soon as I can.";
 
-const SUBMISSION = { ...ENQUIRY, emailId: "sent-1" };
+const SUBMISSION = { ...ENQUIRY, emailId: emailId("sent-1") };
 
 const log = loggerDouble();
 
@@ -88,7 +95,7 @@ describe("checkDuplicateContact", () => {
 	it("asks about the normalised address, so an alias cannot escape either check", async () => {
 		const database = databaseDouble();
 
-		await check({ database, data: { ...ENQUIRY, email: "  Ada+news@Example.com " } });
+		await check({ database, data: { ...ENQUIRY, email: contactEmail("  Ada+news@Example.com ") } });
 
 		expect(database.cooldownLookups.map(({ email }) => email)).toStrictEqual(["ada@example.com"]);
 		expect(database.messageLookups.map(({ email }) => email)).toStrictEqual(["ada@example.com"]);
@@ -144,7 +151,9 @@ describe("saveContact", () => {
 		const database = databaseDouble();
 
 		await Effect.runPromiseExit(
-			saveContact({ ...SUBMISSION, email: "  Ada+news@Example.com " }).pipe(Effect.provide(database.layer)),
+			saveContact({ ...SUBMISSION, email: contactEmail("  Ada+news@Example.com ") }).pipe(
+				Effect.provide(database.layer),
+			),
 		);
 
 		expect(database.inserted[0]?.email).toBe("ada@example.com");

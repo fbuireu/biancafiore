@@ -1,5 +1,6 @@
 import type { Except } from "@const/types";
 import { BOT_REFUSAL_MESSAGE, contactFormSchema } from "@domain/contact/schema";
+import type { ValidatedContact } from "@domain/contact/types";
 import type { ContactFormData } from "@shared/ui/types";
 import { z } from "@shared/utils/zod";
 import { Effect } from "effect";
@@ -14,9 +15,7 @@ const RECAPTCHA_SECRET_ERROR_CODES = new Set(["missing-input-secret", "invalid-i
 
 type ValidateContactParams = Except<ContactFormData, "recaptcha">;
 
-export const validateContact = (
-	contact: ValidateContactParams,
-): Effect.Effect<ValidateContactParams, ValidationError> =>
+export const validateContact = (contact: ValidateContactParams): Effect.Effect<ValidatedContact, ValidationError> =>
 	Effect.suspend(() => {
 		const { success, data, error } = contactFormSchema.omit({ recaptcha: true }).safeParse(contact);
 

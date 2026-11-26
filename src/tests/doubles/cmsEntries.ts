@@ -1,8 +1,11 @@
 import type { RawImage } from "@application/dto/shared/images";
+import { type EntryId, entryIdSchema } from "@infrastructure/cms/client";
 import type { CmsByline, CmsEntry, CmsMedia, CmsReference, CmsTerm } from "@infrastructure/cms/entries";
 import { MEDIA_FILE_PATH } from "@infrastructure/cms/media";
 
 const TIMESTAMP = "2026-01-01T00:00:00.000Z";
+
+export const entryId = (id: string): EntryId => entryIdSchema.parse(id);
 
 export const BLURHASH = "LXCacDM{RjxuOxogkCR.Dkt7t7Rj";
 
@@ -26,7 +29,7 @@ export function rawEntry<FIELDS, REFERENCE extends string = never>({
 	updatedAt = TIMESTAMP,
 }: RawEntryParams<FIELDS, REFERENCE>): CmsEntry<FIELDS, REFERENCE> {
 	return {
-		id: id ?? `id-${slug ?? "entry"}`,
+		id: entryId(id ?? `id-${slug ?? "entry"}`),
 		slug,
 		data,
 		terms,

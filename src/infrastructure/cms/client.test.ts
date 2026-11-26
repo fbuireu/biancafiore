@@ -1,3 +1,4 @@
+import { entryId } from "@tests/doubles/cmsEntries";
 import { failureOf } from "@tests/helpers/exit";
 import { Effect } from "effect";
 import { getEmDashCollection, getEmDashEntry, getEmDashReferences, getRequestContext } from "emdash";
@@ -295,7 +296,7 @@ describe("CmsClient.listReferences", () => {
 		const page = await Effect.runPromise(
 			(await client()).listReferences({
 				collection: "authors",
-				id: "01AUTHOR",
+				id: entryId("01AUTHOR"),
 				field: "articles",
 				limit: 100,
 				cursor: "c",
@@ -310,7 +311,12 @@ describe("CmsClient.listReferences", () => {
 		references.mockResolvedValue({ entries: [{ id: "orphan", data: { slug: "orphan" } }] } as never);
 
 		const page = await Effect.runPromise(
-			(await client()).listReferences({ collection: "authors", id: "01AUTHOR", field: "articles", limit: 100 }),
+			(await client()).listReferences({
+				collection: "authors",
+				id: entryId("01AUTHOR"),
+				field: "articles",
+				limit: 100,
+			}),
 		);
 
 		expect(page).toStrictEqual({ children: [] });
@@ -321,7 +327,12 @@ describe("CmsClient.listReferences", () => {
 
 		const failure = failureOf(
 			await Effect.runPromiseExit(
-				(await client()).listReferences({ collection: "authors", id: "01AUTHOR", field: "articles", limit: 100 }),
+				(await client()).listReferences({
+					collection: "authors",
+					id: entryId("01AUTHOR"),
+					field: "articles",
+					limit: 100,
+				}),
 			),
 		);
 
